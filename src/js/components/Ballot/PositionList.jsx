@@ -62,6 +62,8 @@ export default class PositionList extends Component {
       filteredPositionList: incomingPositionList,
     });
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+
+    // Replicate in componentWillReceiveProps
     let oneOrganization = {};
     const organizationWeVoteIdsNeeded = [];
     // console.log('PositionList componentDidMount, incomingPositionList: ', incomingPositionList);
@@ -77,6 +79,14 @@ export default class PositionList extends Component {
       // Add bulk Organization retrieve here
     }
     OrganizationActions.organizationsFollowedRetrieve();
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const { incomingPositionList } = nextProps;
+    this.setState({
+      positionList: incomingPositionList,
+      filteredPositionList: incomingPositionList,
+    });
   }
 
   componentWillUnmount () {

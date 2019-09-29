@@ -58,6 +58,7 @@ class VoterGuideBallot extends Component {
       ballotRemainingChoicesLength: 0,
       ballotWithAllItems: [],
       ballotWithOrganizationEndorsements: [],
+      ballotWithOrganizationEndorsementsLength: 0,
       ballotReturnedWeVoteId: '',
       ballotLocationShortcut: '',
       candidateForModal: {
@@ -103,9 +104,11 @@ class VoterGuideBallot extends Component {
 
     const ballotWithAllItems = BallotStore.getBallotByCompletionLevelFilterType('all');
     const ballotWithOrganizationEndorsements = this.updateBallotWithOrganizationEndorsements(ballotWithAllItems);
+    const ballotWithOrganizationEndorsementsLength = ballotWithOrganizationEndorsements.length;
     this.setState({
       ballotWithAllItems,
       ballotWithOrganizationEndorsements,
+      ballotWithOrganizationEndorsementsLength,
     });
 
     let googleCivicElectionIdFromUrl = this.props.params.google_civic_election_id || 0;
@@ -259,9 +262,11 @@ class VoterGuideBallot extends Component {
     }
     const ballotWithAllItems = BallotStore.getBallotByCompletionLevelFilterType('all');
     const ballotWithOrganizationEndorsements = this.updateBallotWithOrganizationEndorsements(ballotWithAllItems);
+    const ballotWithOrganizationEndorsementsLength = ballotWithOrganizationEndorsements.length;
     this.setState({
       ballotWithAllItems,
       ballotWithOrganizationEndorsements,
+      ballotWithOrganizationEndorsementsLength,
       organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organizationWeVoteId),
       organizationWeVoteId: nextProps.organizationWeVoteId,
       voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organizationWeVoteId, VoterStore.electionId()),
@@ -294,6 +299,10 @@ class VoterGuideBallot extends Component {
     }
     if (this.state.ballotReturnedWeVoteId !== nextState.ballotReturnedWeVoteId) {
       // console.log('shouldComponentUpdate: this.state.ballotReturnedWeVoteId', this.state.ballotReturnedWeVoteId, ', nextState.ballotReturnedWeVoteId', nextState.ballotReturnedWeVoteId);
+      return true;
+    }
+    if (this.state.ballotWithOrganizationEndorsementsLength !== nextState.ballotWithOrganizationEndorsementsLength) {
+      // console.log('shouldComponentUpdate: this.state.ballotWithOrganizationEndorsementsLength', this.state.ballotWithOrganizationEndorsementsLength, ', nextState.ballotWithOrganizationEndorsementsLength', nextState.ballotWithOrganizationEndorsementsLength);
       return true;
     }
     if (this.state.googleCivicElectionId !== nextState.googleCivicElectionId) {
@@ -393,9 +402,11 @@ class VoterGuideBallot extends Component {
         // Find ballot items this organization is highlighting
         const ballotWithAllItems = BallotStore.getBallotByCompletionLevelFilterType('all');
         const ballotWithOrganizationEndorsements = this.updateBallotWithOrganizationEndorsements(ballotWithAllItems);
+        const ballotWithOrganizationEndorsementsLength = ballotWithOrganizationEndorsements.length;
         this.setState({
           ballotWithAllItems,
           ballotWithOrganizationEndorsements,
+          ballotWithOrganizationEndorsementsLength,
         });
       }
     }
@@ -654,7 +665,7 @@ class VoterGuideBallot extends Component {
     renderLog(__filename);
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
     const {
-      ballotWithAllItems, ballotWithOrganizationEndorsements, organization, organizationWeVoteId, voterIsAdmin, voterIsVerifiedVolunteer,
+      ballotWithAllItems, ballotWithOrganizationEndorsements, ballotWithOrganizationEndorsementsLength, organization, organizationWeVoteId, voterIsAdmin, voterIsVerifiedVolunteer,
     } = this.state;
     // console.log('VoterGuideBallot render');
     if (!ballotWithAllItems) {
@@ -687,13 +698,7 @@ class VoterGuideBallot extends Component {
     const organizationAdminUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}org/${organizationWeVoteId}/pos/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}pl/${sourcePollingLocationWeVoteId}/summary/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
-    const emptyBallotButton = !voterAddressMissing ? (
-      <span>
-        {/* <Link to={ballotBaseUrl}>
-              <Button variant="primary">View Full Ballot</Button>
-          </Link> */}
-      </span>
-    ) : (
+    const emptyBallotButton = voterAddressMissing ? (
       <div className="container-fluid well u-stack--md u-inset--md">
         <Helmet title="Enter Your Address - We Vote" />
         <h3 className="h3">
@@ -703,6 +708,12 @@ class VoterGuideBallot extends Component {
           <AddressBox {...this.props} saveUrl={ballotBaseUrl} />
         </div>
       </div>
+    ) : (
+      <span>
+        {/* <Link to={ballotBaseUrl}>
+              <Button variant="primary">View Full Ballot</Button>
+          </Link> */}
+      </span>
     );
 
     const emptyBallot = ballotWithAllItems.length === 0 ? (
@@ -755,14 +766,14 @@ class VoterGuideBallot extends Component {
             </header>
 
             <div className="d-print-none">
-              { ballotWithOrganizationEndorsements.length ?
+              { ballotWithOrganizationEndorsementsLength ?
                 <PledgeToSupportOrganizationStatusBar organization={organization} /> :
                 null
               }
             </div>
 
             <div className="d-print-none">
-              { ballotWithOrganizationEndorsements.length ? (
+              { ballotWithOrganizationEndorsementsLength ? (
                 <PledgeToSupportOrganizationButton
                   organization={organization}
                   pledgeToVoteAction={this.pledgeToVoteWithVoterGuide}
@@ -780,7 +791,7 @@ class VoterGuideBallot extends Component {
               <div className="col-xs-12 col-md-12">
                 {/* The ballot items the organization wants to promote */}
                 <div>
-                  {ballotWithOrganizationEndorsements.length > 0 && (
+                  {ballotWithOrganizationEndorsementsLength > 0 && (
                     <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
                       {ballotWithOrganizationEndorsements.map(item => (
                         <VoterGuideBallotItemCompressed

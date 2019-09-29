@@ -20,11 +20,9 @@ import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 
 class MeasureItemCompressed extends Component {
   static propTypes = {
-    // currentBallotIdInUrl: PropTypes.string,
     organization: PropTypes.object,
     organizationWeVoteId: PropTypes.string,
     showPositionStatementActionBar: PropTypes.bool,
-    // urlWithoutHash: PropTypes.string,
     measureWeVoteId: PropTypes.string.isRequired,
     classes: PropTypes.object,
     theme: PropTypes.object,
@@ -33,12 +31,12 @@ class MeasureItemCompressed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // ballotItemWeVoteId: '',
       componentDidMountFinished: false,
       measureText: '',
       measureWeVoteId: '',
       noVoteDescription: '',
       organizationWeVoteId: '',
+      positionListHasBeenRetrievedOnce: {},
       showPositionStatement: false,
       yesVoteDescription: '',
     };
@@ -50,12 +48,18 @@ class MeasureItemCompressed extends Component {
   componentDidMount () {
     const { measureWeVoteId, organization } = this.props;
     const measure = MeasureStore.getMeasure(measureWeVoteId);
-    // console.log('componentDidMount, measure:', measure, ', measureWeVoteId: ', measureWeVoteId);
+    // console.log('componentDidMount, measureWeVoteId: ', measureWeVoteId);
     if (!measure.we_vote_id) {
+      // If the measure isn't in the MeasureStore, retrieve it
       MeasureActions.measureRetrieve(measureWeVoteId);
     }
-    if (measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
+    if (measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
       MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
+      const { positionListHasBeenRetrievedOnce } = this.state;
+      positionListHasBeenRetrievedOnce[measureWeVoteId] = true;
+      this.setState({
+        positionListHasBeenRetrievedOnce,
+      });
     }
     const organizationWeVoteId = (organization && organization.organization_we_vote_id) ? organization.organization_we_vote_id : this.props.organizationWeVoteId;
     this.setState({
@@ -75,10 +79,16 @@ class MeasureItemCompressed extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log('componentWillReceiveProps, measureWeVoteId: ', nextProps.measureWeVoteId);
     const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organizationWeVoteId;
     const measure = MeasureStore.getMeasure(nextProps.measureWeVoteId);
-    if (nextProps.measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(nextProps.measureWeVoteId)) {
+    if (nextProps.measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(nextProps.measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(nextProps.measureWeVoteId)) {
       MeasureActions.positionListForBallotItemPublic(nextProps.measureWeVoteId);
+      const { positionListHasBeenRetrievedOnce } = this.state;
+      positionListHasBeenRetrievedOnce[nextProps.measureWeVoteId] = true;
+      this.setState({
+        positionListHasBeenRetrievedOnce,
+      });
     }
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
@@ -141,9 +151,14 @@ class MeasureItemCompressed extends Component {
   onMeasureStoreChange () {
     const { measureWeVoteId } = this.state;
     const measure = MeasureStore.getMeasure(measureWeVoteId);
-    // console.log('MeasureItemCompressed, onMeasureStoreChange, measure:', measure);
-    if (measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
+    // console.log('MeasureItemCompressed, onMeasureStoreChange, measureWeVoteId:', measureWeVoteId);
+    if (measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
       MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
+      const { positionListHasBeenRetrievedOnce } = this.state;
+      positionListHasBeenRetrievedOnce[measureWeVoteId] = true;
+      this.setState({
+        positionListHasBeenRetrievedOnce,
+      });
     }
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
@@ -184,6 +199,14 @@ class MeasureItemCompressed extends Component {
     this.setState({
       showPositionStatement: !showPositionStatement,
     });
+  }
+
+  localPositionListHasBeenRetrievedOnce (measureWeVoteId) {
+    if (measureWeVoteId) {
+      const { positionListHasBeenRetrievedOnce } = this.state;
+      return positionListHasBeenRetrievedOnce[measureWeVoteId];
+    }
+    return false;
   }
 
   render () {

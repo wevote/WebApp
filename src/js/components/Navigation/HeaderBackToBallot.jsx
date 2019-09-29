@@ -46,12 +46,12 @@ class HeaderBackToBallot extends Component {
       officeName: '',
       officeWeVoteId: '',
       organization: {},
+      organizationHasBeenRetrievedOnce: {},
       organizationWeVoteId: '',
       profilePopUpOpen: false,
       showSignInModal: AppStore.showSignInModal(),
       scrolledDown: AppStore.getScrolledDown(),
       voter: {},
-      organizationHasBeenRetrievedOnce: {},
     };
     this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
     this.hideAccountMenu = this.hideAccountMenu.bind(this);

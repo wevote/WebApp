@@ -44,6 +44,7 @@ import OrganizationVoterGuideCandidate from './routes/VoterGuide/OrganizationVot
 import OrganizationVoterGuideEdit from './routes/VoterGuide/OrganizationVoterGuideEdit';
 import OrganizationVoterGuideMeasure from './routes/VoterGuide/OrganizationVoterGuideMeasure';
 import OrganizationVoterGuideOffice from './routes/VoterGuide/OrganizationVoterGuideOffice';
+import PageNotFound from './routes/PageNotFound';
 import PollingPlaceLocatorModal from './routes/Vote/PollingPlaceLocatorModal';
 import Pricing from './routes/More/Pricing';
 import Privacy from './routes/More/Privacy';
@@ -214,6 +215,16 @@ const routes = () => (
     <Route path="/voterguide/:organization_we_vote_id/following" component={props => <OrganizationVoterGuide {...props} active_route="following" />} />
     <Route path="/voterguide/:organization_we_vote_id/positions" component={props => <OrganizationVoterGuide {...props} active_route="positions" />} />
     <Route path="/voterguide/:organization_we_vote_id/:action_variable" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/followers" component={props => <OrganizationVoterGuide {...props} active_route="followers" />} />
+    <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/following" component={props => <OrganizationVoterGuide {...props} active_route="following" />} />
+    <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/positions" component={props => <OrganizationVoterGuide {...props} active_route="positions" />} />
+    <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable" component={OrganizationVoterGuide} />
+    <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/followers" component={props => <OrganizationVoterGuide {...props} active_route="followers" />} />
+    <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/following" component={props => <OrganizationVoterGuide {...props} active_route="following" />} />
+    <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/positions" component={props => <OrganizationVoterGuide {...props} active_route="positions" />} />
+    <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable" component={OrganizationVoterGuide} />
     <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
     <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" component={OrganizationVoterGuideEdit} />
 
@@ -262,6 +273,7 @@ const routes = () => (
     <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/following" component={props => <TwitterHandleLanding {...props} active_route="following" />} />
     <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/positions" component={props => <TwitterHandleLanding {...props} active_route="positions" />} />
     <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable" component={TwitterHandleLanding} />
+    <Route path="*" component={PageNotFound} />
   </Route>
 );
 
