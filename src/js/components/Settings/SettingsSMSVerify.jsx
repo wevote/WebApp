@@ -46,107 +46,24 @@ class SettingsSMSVerify extends Component {
           </Button>
         </ModalTitleArea>
         <ModalContent>
-          <Title>SMS Verification</Title>
-          <Subtitle>A 6-digit code has been sent to</Subtitle>
-          <PhoneSubtitle>{voterPhoneNumber}</PhoneSubtitle>
-          <InputContainer>
-            {/* <div
-              style={{
-                overflow: 'hidden',
-                width: '50px',
-                minWidth: '50px',
-                // minHeight: '42px',
-                // height: '42px',
-                maxWidth: '132px !important',
-                // maxHeight: '42px !important',
-                marginRight: 'auto',
-                textAlign: 'left',
-              }}
-            >
-              <OutlinedInput classes={{ root: classes.input }} />
-            </div>
-            <div
-              style={{
-                overflow: 'hidden',
-                width: '50px',
-                minWidth: '50px',
-                // minHeight: '42px',
-                // height: '42px',
-                maxWidth: '132px !important',
-                // maxHeight: '42px !important',
-                marginRight: 'auto',
-                textAlign: 'left',
-              }}
-            >
-              <OutlinedInput classes={{ root: classes.input }} />
-            </div>
-            <div
-              style={{
-                overflow: 'hidden',
-                width: '50px',
-                minWidth: '50px',
-                // minHeight: '42px',
-                // height: '42px',
-                maxWidth: '132px !important',
-                // maxHeight: '42px !important',
-                marginRight: 'auto',
-                textAlign: 'left',
-              }}
-            >
-              <OutlinedInput classes={{ root: classes.input }} />
-            </div>
-            <div
-              style={{
-                overflow: 'hidden',
-                width: '50px',
-                minWidth: '50px',
-                // minHeight: '42px',
-                // height: '42px',
-                maxWidth: '132px !important',
-                // maxHeight: '42px !important',
-                marginRight: 'auto',
-                textAlign: 'left',
-              }}
-            >
-              <OutlinedInput classes={{ root: classes.input }} />
-            </div>
-            <div
-              style={{
-                overflow: 'hidden',
-                width: '50px',
-                minWidth: '50px',
-                // minHeight: '42px',
-                // height: '42px',
-                maxWidth: '132px !important',
-                // maxHeight: '42px !important',
-                marginRight: 'auto',
-                textAlign: 'left',
-              }}
-            >
-              <OutlinedInput classes={{ root: classes.input }} />
-            </div>
-            <div
-              style={{
-                overflow: 'hidden',
-                width: '50px',
-                minWidth: '50px',
-                // minHeight: '42px',
-                // height: '42px',
-                maxWidth: '132px !important',
-                // maxHeight: '42px !important',
-                marginRight: 'auto',
-                textAlign: 'left',
-              }}
-            >
-              <OutlinedInput classes={{ root: classes.input }} />
-            </div> */}
-            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
-            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
-            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
-            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
-            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
-            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
-          </InputContainer>
+          <TextContainer>
+            <Title>SMS Verification</Title>
+            <Subtitle>A 6-digit code has been sent to</Subtitle>
+            <PhoneSubtitle>{voterPhoneNumber}</PhoneSubtitle>
+            <InputContainer>
+              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+            </InputContainer>
+          </TextContainer>
+          <ButtonsContainer>
+            <Button classes={{ root: classes.button }} color="primary">RESEND SMS</Button>
+            <Button classes={{ root: classes.button }} color="primary">CHANGE PHONE NUMBER</Button>
+            <Button classes={{ root: classes.button }} color="primary">VERIFY</Button>
+          </ButtonsContainer>
         </ModalContent>
       </Dialog>
     );
@@ -177,21 +94,35 @@ const styles = () => ({
   inputBase: {
     alignContent: 'center',
     display: 'flex',
-    flex: '0 0 1',
+    // flex: '0 0 1',
     justifyContent: 'center',
     margin: '0 4px',
-    '@media(min-width: 569px)': {
-      margin: '0 8px',
-    },
     // maintain aspect ratio
     width: '10vw',
     height: '10vw',
-    maxWidth: 60,
-    maxHeight: 60,
-    fontSize: 40,
+    maxWidth: 53,
+    maxHeight: 53,
+    fontSize: 22,
+    '@media(min-width: 569px)': {
+      margin: '0 8px',
+      fontSize: 35,
+    },
+    '&:first-child': {
+      marginLeft: 0,
+    },
+    '&:last-child': {
+      marginRight: 0,
+    },
   },
   input: {
     textAlign: 'center',
+    padding: '8px 0',
+  },
+  button: {
+    width: '100%',
+    border: '1px solid #ddd',
+    fontWeight: 'bold',
+    margin: '6px 0',
   },
 });
 
@@ -202,10 +133,8 @@ const ModalTitleArea = styled.div`
   z-index: 999;
   display: flex;
   justify-content: flex-start;
-  @media (min-width: 769px) {
-    text-align: center;
-    border-bottom: 2px solid #f7f7f7;
-  }
+  position: absolute;
+  top: 0;
 `;
 
 const ModalContent = styled.div`
@@ -214,8 +143,18 @@ const ModalContent = styled.div`
   align-content: space-evenly;
   justify-content: center;
   height: 100%;
-  max-width: 769px;
+  width: 80%;
+  max-width: 400px;
   margin: 0 auto;
+  padding: 86px 0 72px 0;
+`;
+
+const TextContainer = styled.div`
+  margin-bottom: auto;
+`;
+
+const ButtonsContainer = styled.div`
+  margin-top: auto;
 `;
 
 const Title = styled.h3`
@@ -231,7 +170,7 @@ const Title = styled.h3`
 `;
 
 const Subtitle = styled.h4`
-  color: #ddd;
+  color: #ccc;
   font-weight: bold;
   text-align: center;
 `;
@@ -248,6 +187,7 @@ const InputContainer = styled.div`
   justify-content: space-between;
   margin: auto;
   width: 100%;
+  margin-top: 32px;
 `;
 
 export default withStyles(styles)(SettingsSMSVerify);
