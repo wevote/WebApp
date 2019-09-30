@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactSVG from 'react-svg';
 import styled from 'styled-components';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
-import StickyPopover from '../Ballot/StickyPopover';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import ValueIconAndText from './ValueIconAndText';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByBallotItemDisplayList extends Component {
@@ -32,7 +30,12 @@ class IssuesByBallotItemDisplayList extends Component {
       issuesUnderThisBallotItemVoterIsNotFollowingLength: 0,
       maximumNumberOfIssuesToDisplay: 26,
       expand: false,
+      totalWidth: null,
+      totalRemainingWidth: null,
     };
+    this.issuesList = React.createRef();
+    // This is meant to live outside of state.
+    this.issueWidths = {};
   }
 
   componentDidMount () {
@@ -83,7 +86,22 @@ class IssuesByBallotItemDisplayList extends Component {
       // console.log('this.state.issuesUnderThisBallotItemVoterIsNotFollowingLength: ', this.state.issuesUnderThisBallotItemVoterIsNotFollowingLength, ', nextState.issuesUnderThisBallotItemVoterIsNotFollowingLength', nextState.issuesUnderThisBallotItemVoterIsNotFollowingLength);
       return true;
     }
+    if (this.state.totalWidth !== nextState.totalWidth) {
+      return true;
+    }
+    if (this.state.totalRemainingWidth !== nextState.totalRemainingWidth) {
+      return true;
+    }
     return false;
+  }
+
+  componentDidUpdate () {
+    if (this.issuesList.current && this.state.totalWidth === null && this.state.totalRemainingWidth === null) {
+      this.setState({
+        totalWidth: this.issuesList.current.offsetWidth,
+        totalRemainingWidth: this.issuesList.current.offsetWidth,
+      });
+    }
   }
 
   componentWillUnmount () {
@@ -110,64 +128,6 @@ class IssuesByBallotItemDisplayList extends Component {
     this.setState();
   }
 
-  generateValueListItem = (oneIssue) => {
-    const valuePopover = (
-      <PopoverWrapper>
-        <PopoverHeader>
-          <PopoverTitleIcon>
-            <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-              svgStyle={{ fill: '#fff', padding: '1px 1px 1px 0px' }}
-            />
-          </PopoverTitleIcon>
-          <PopoverTitleText>
-            {oneIssue.issue_name}
-          </PopoverTitleText>
-        </PopoverHeader>
-        <PopoverDescriptionText>
-          {oneIssue.issue_description}
-        </PopoverDescriptionText>
-      </PopoverWrapper>
-    );
-    // Tried to make the issues icons accessible via tabbing, caused too many side affects
-    const valueIconAndText = (
-      <ValueIconAndText
-        id={`valueIconAndText-${oneIssue.issue_we_vote_id}`}
-        key={`valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
-        className="u-no-break u-cursor--pointer issue-icon-list__issue-block"
-      >
-        {oneIssue.issue_icon_local_path ? (
-          <div className="issue-icon-list__issue-icon">
-            <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                      svgStyle={{ fill: '#999', padding: '1px 1px 1px 0px' }}
-            />
-          </div>
-        ) : null
-        }
-        <div className="u-margin-left--xxs issue-icon-list__issue-label-name">
-          {oneIssue.issue_name}
-        </div>
-      </ValueIconAndText>
-    );
-
-    return (
-      <StickyPopover
-        delay={{ show: 1000000, hide: 100 }}
-        popoverComponent={valuePopover}
-        placement="auto"
-        id="issues-popover-trigger-click-root-close"
-        key={`issueByBallotItemPopover-${this.state.ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}`}
-        openOnClick
-        showCloseIcon
-      >
-        {valueIconAndText}
-        {/* <ValueIconAndTextListItem
-          className="u-push--sm"
-          key={`issue-icon-${oneIssue.issue_we_vote_id}`}
-        /> */}
-      </StickyPopover>
-    );
-  }
-
   handleEnterHoverLocalArea = () => {
     if (this.props.handleLeaveCandidateCard) {
       this.props.handleLeaveCandidateCard();
@@ -185,6 +145,13 @@ class IssuesByBallotItemDisplayList extends Component {
     }
   }
 
+  handleSubtractTotalRemainingWidth = (issueWeVoteId, width) => {
+    const { totalWidth } = this.state;
+    this.issueWidths[issueWeVoteId] = width;
+    const totalWidthOccupied = Object.values(this.issueWidths).reduce((a, b) => a + b);
+    this.setState({ totalRemainingWidth: totalWidth - totalWidthOccupied });
+  }
+
   render () {
     // console.log('IssuesByBallotItemDisplayList, render');
 
@@ -194,6 +161,7 @@ class IssuesByBallotItemDisplayList extends Component {
       issuesUnderThisBallotItemVoterIsFollowing, issuesUnderThisBallotItemVoterIsNotFollowing,
       issuesUnderThisBallotItemVoterIsFollowingLength, issuesUnderThisBallotItemVoterIsNotFollowingLength,
       maximumNumberOfIssuesToDisplay,
+      totalRemainingWidth,
     } = this.state;
 
     // console.log('this.state.ballotItemWeVoteId: ', this.state.ballotItemWeVoteId);
@@ -216,7 +184,15 @@ class IssuesByBallotItemDisplayList extends Component {
         // console.log('oneIssue.issue_name: ', oneIssue.issue_name);
         localCounter++;
         if (localCounter <= maximumNumberOfIssuesToDisplay) {
-          return this.generateValueListItem(oneIssue);
+          return (
+            <ValueIconAndText
+              key={oneIssue.issue_we_vote_id}
+              oneIssue={oneIssue}
+              ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+              subtractTotalWidth={this.handleSubtractTotalRemainingWidth}
+              issueWidths={this.issueWidths}
+            />
+          );
         } else {
           return null;
         }
@@ -230,7 +206,15 @@ class IssuesByBallotItemDisplayList extends Component {
         }
         localCounter++;
         if (localCounter <= maximumNumberOfIssuesToDisplay) {
-          return this.generateValueListItem(oneIssue);
+          return (
+            <ValueIconAndText
+              key={oneIssue.issue_we_vote_id}
+              oneIssue={oneIssue}
+              ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+              subtractTotalWidth={this.handleSubtractTotalRemainingWidth}
+              issueWidths={this.issueWidths}
+            />
+          );
         } else {
           return null;
         }
@@ -246,14 +230,16 @@ class IssuesByBallotItemDisplayList extends Component {
       >
         <Issues>
           {/* Show a break-down of the current positions in your network */}
-          <IssueList key={`issuesByBallotItemDisplayList-${ballotItemWeVoteId}`} expand={expand}>
-            {/* Issues the voter is already following */}
-            {issuesVoterIsFollowingHtml}
-            {/* Issues the voter is not following yet */}
-            {issuesVoterIsNotFollowingHtml}
-          </IssueList>
+          <div ref={this.issuesList}>
+            <IssueList key={`issuesByBallotItemDisplayList-${ballotItemWeVoteId}`} expand={expand}>
+              {/* Issues the voter is already following */}
+              {issuesVoterIsFollowingHtml}
+              {/* Issues the voter is not following yet */}
+              {issuesVoterIsNotFollowingHtml}
+            </IssueList>
+          </div>
         </Issues>
-        {(expand || this.props.disableMoreWrapper) ? null : (
+        {(expand || this.props.disableMoreWrapper || totalRemainingWidth > 0) ? null : (
           <MoreWrapper onClick={this.handleExpandIssues}>
             <MoreHorizIcon
               id="issuesByBallotItemDisplayListMoreIssuesIcon"
@@ -286,13 +272,6 @@ const IssueList = styled.ul`
   padding-inline-start: 0;
 `;
 
-const ValueIconAndText = styled.span`
-  position: relative;
-  width: fit-content;
-  flex: none;
-  padding: 4px;
-`;
-
 const MoreWrapper = styled.p`
   display: flex;
   flex-flow: row;
@@ -307,46 +286,6 @@ const MoreWrapper = styled.p`
   align-items: center;
   cursor: pointer;
   padding-left: 4px;
-`;
-
-const PopoverWrapper = styled.div`
-  overflow-x: hidden;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  right: 12px;
-  bottom: 8px;
-  border-radius: 3px;
-  margin-left: 12px;
-  margin-top: 8px;
-`;
-
-const PopoverHeader = styled.div`
-  background: ${({ theme }) => theme.colors.brandBlue};
-  padding: 4px 8px;
-  height: 35px;
-  color: white;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  border-radius: 4px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-`;
-
-const PopoverTitleIcon = styled.span`
-  font-weight: bold;
-  font-size: 16px;
-`;
-
-const PopoverTitleText = styled.div`
-  font-size: 14px;
-  font-weight: bold;
-  margin-left: 8px;
-`;
-
-const PopoverDescriptionText = styled.div`
-  padding: 8px;
 `;
 
 // const ValueIconAndTextListItem = styled.li`
