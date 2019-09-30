@@ -7,8 +7,8 @@ class MeasureStore extends ReduceStore {
   getInitialState () {
     return {
       allCachedMeasures: {}, // Dictionary with measureWeVoteId as key and the measure as value
-      allCachedPositionsAboutMeasures: {}, // Dictionary with measureWeVoteId as one key, organization_we_vote_id as the second key, and the position as value
-      positionListFromAdvisersFollowedByVoter: {}, // Dictionary with measureWeVoteId as key and list of positions as value
+      allCachedPositionsAboutMeasuresByOrganization: {}, // Dictionary with measureWeVoteId as one key, organization_we_vote_id as the second key, and the position as value
+      allCachedPositionsAboutMeasures: {}, // Dictionary with measureWeVoteId as key and list of positions as value
     };
   }
 
@@ -44,8 +44,8 @@ class MeasureStore extends ReduceStore {
     let numberOfSupportPositions = 0;
     let numberOfOpposePositions = 0;
     let numberOfInfoOnlyPositions = 0;
-    if (this.getState().allCachedPositionsAboutMeasures[measureWeVoteId]) {
-      const results = extractNumberOfPositionsFromPositionList(this.getState().allCachedPositionsAboutMeasures[measureWeVoteId]);
+    if (this.getState().allCachedPositionsAboutMeasuresByOrganization[measureWeVoteId]) {
+      const results = extractNumberOfPositionsFromPositionList(this.getState().allCachedPositionsAboutMeasuresByOrganization[measureWeVoteId]);
       ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = results);
     }
     return {
@@ -56,11 +56,11 @@ class MeasureStore extends ReduceStore {
   }
 
   getPositionList (measureWeVoteId) {
-    return this.getState().positionListFromAdvisersFollowedByVoter[measureWeVoteId] || [];
+    return this.getState().allCachedPositionsAboutMeasures[measureWeVoteId] || [];
   }
 
   getPositionAboutMeasureFromOrganization (measureWeVoteId, organizationWeVoteId) {
-    const positionsAboutMeasure = this.getState().allCachedPositionsAboutMeasures[measureWeVoteId] || [];
+    const positionsAboutMeasure = this.getState().allCachedPositionsAboutMeasuresByOrganization[measureWeVoteId] || [];
     return positionsAboutMeasure[organizationWeVoteId] || [];
   }
 
@@ -108,7 +108,7 @@ class MeasureStore extends ReduceStore {
   }
 
   reduce (state, action) { // eslint-disable-line
-    const { allCachedPositionsAboutMeasures, allCachedMeasures, positionListFromAdvisersFollowedByVoter } = state;
+    const { allCachedPositionsAboutMeasuresByOrganization, allCachedMeasures, allCachedPositionsAboutMeasures } = state;
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
 
@@ -141,28 +141,28 @@ class MeasureStore extends ReduceStore {
         if (positionListForMeasure) {
           measureWeVoteId = action.res.ballot_item_we_vote_id;
           newPositionList = action.res.position_list;
-          positionListFromAdvisersFollowedByVoter[measureWeVoteId] = newPositionList;
+          allCachedPositionsAboutMeasures[measureWeVoteId] = newPositionList;
 
           newPositionList.forEach((one) => {
             ballotItemWeVoteId = one.ballot_item_we_vote_id;
             organizationWeVoteId = one.speaker_we_vote_id;
 
-            if (!allCachedPositionsAboutMeasures[ballotItemWeVoteId]) {
-              allCachedPositionsAboutMeasures[ballotItemWeVoteId] = {};
+            if (!allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId]) {
+              allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId] = {};
             }
 
-            if (!allCachedPositionsAboutMeasures[ballotItemWeVoteId][organizationWeVoteId]) {
-              allCachedPositionsAboutMeasures[ballotItemWeVoteId][organizationWeVoteId] = {};
+            if (!allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][organizationWeVoteId]) {
+              allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][organizationWeVoteId] = {};
             }
 
             // console.log('CandidateStore one_position_here: ', one_position_here);
-            allCachedPositionsAboutMeasures[ballotItemWeVoteId][organizationWeVoteId] = one;
+            allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][organizationWeVoteId] = one;
           });
 
           return {
             ...state,
+            allCachedPositionsAboutMeasuresByOrganization,
             allCachedPositionsAboutMeasures,
-            positionListFromAdvisersFollowedByVoter,
           };
         } else {
           return state;
@@ -175,21 +175,21 @@ class MeasureStore extends ReduceStore {
         positionList.forEach((one) => {
           ballotItemWeVoteId = one.ballot_item_we_vote_id;
           if (stringContains('meas', ballotItemWeVoteId)) {
-            if (!allCachedPositionsAboutMeasures[ballotItemWeVoteId]) {
-              allCachedPositionsAboutMeasures[ballotItemWeVoteId] = {};
+            if (!allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId]) {
+              allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId] = {};
             }
 
-            if (!allCachedPositionsAboutMeasures[ballotItemWeVoteId][organizationWeVoteId]) {
-              allCachedPositionsAboutMeasures[ballotItemWeVoteId][organizationWeVoteId] = {};
+            if (!allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][organizationWeVoteId]) {
+              allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][organizationWeVoteId] = {};
             }
 
             // console.log('MeasureStore one_position_here: ', one_position_here);
-            allCachedPositionsAboutMeasures[ballotItemWeVoteId][organizationWeVoteId] = one;
+            allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][organizationWeVoteId] = one;
           }
         });
         return {
           ...state,
-          allCachedPositionsAboutMeasures,
+          allCachedPositionsAboutMeasuresByOrganization,
         };
 
       case 'voterBallotItemsRetrieve':
@@ -224,11 +224,11 @@ class MeasureStore extends ReduceStore {
         voterGuides.forEach((oneVoterGuide) => {
           // Make sure we have a position in the voter guide
           if (oneVoterGuide.is_support_or_positive_rating || oneVoterGuide.is_oppose_or_negative_rating || oneVoterGuide.is_information_only) {
-            if (!allCachedPositionsAboutMeasures[ballotItemWeVoteId]) {
-              allCachedPositionsAboutMeasures[ballotItemWeVoteId] = {};
+            if (!allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId]) {
+              allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId] = {};
             }
-            if (!allCachedPositionsAboutMeasures[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id]) {
-              allCachedPositionsAboutMeasures[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
+            if (!allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id]) {
+              allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
             }
 
             onePosition = {
@@ -264,13 +264,13 @@ class MeasureStore extends ReduceStore {
               last_updated: oneVoterGuide.last_updated,
             };
             // console.log('MeasureStore onePosition: ', onePosition);
-            allCachedPositionsAboutMeasures[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
+            allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
           }
         });
-        // console.log('MeasureStore allCachedPositionsAboutMeasures:', allCachedPositionsAboutMeasures);
+        // console.log('MeasureStore allCachedPositionsAboutMeasuresByOrganization:', allCachedPositionsAboutMeasuresByOrganization);
         return {
           ...state,
-          allCachedPositionsAboutMeasures,
+          allCachedPositionsAboutMeasuresByOrganization,
         };
 
 
@@ -293,15 +293,15 @@ class MeasureStore extends ReduceStore {
             // Support
             oneVoterGuide.ballot_item_we_vote_ids_this_org_supports.forEach((oneMeasureWeVoteId) => {
               if (stringContains('meas', oneMeasureWeVoteId)) {
-                if (!allCachedPositionsAboutMeasures[oneMeasureWeVoteId]) {
-                  allCachedPositionsAboutMeasures[oneMeasureWeVoteId] = {};
+                if (!allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId]) {
+                  allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId] = {};
                 }
 
-                if (!allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id]) {
-                  allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
+                if (!allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id]) {
+                  allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
                 }
 
-                onePosition = allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id];
+                onePosition = allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
@@ -314,22 +314,22 @@ class MeasureStore extends ReduceStore {
                   onePosition.is_support_or_positive_rating = true;
 
                   // console.log('MeasureStore support onePosition: ', onePosition);
-                  allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
+                  allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
                 }
               }
             });
             // Information Only
             oneVoterGuide.ballot_item_we_vote_ids_this_org_info_only.forEach((oneMeasureWeVoteId) => {
               if (stringContains('meas', oneMeasureWeVoteId)) {
-                if (!allCachedPositionsAboutMeasures[oneMeasureWeVoteId]) {
-                  allCachedPositionsAboutMeasures[oneMeasureWeVoteId] = {};
+                if (!allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId]) {
+                  allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId] = {};
                 }
 
-                if (!allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id]) {
-                  allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
+                if (!allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id]) {
+                  allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
                 }
 
-                onePosition = allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id];
+                onePosition = allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
@@ -340,22 +340,22 @@ class MeasureStore extends ReduceStore {
                   onePosition.is_information_only = true;
 
                   // console.log('MeasureStore info onePosition: ', onePosition);
-                  allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
+                  allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
                 }
               }
             });
             // Opposition
             oneVoterGuide.ballot_item_we_vote_ids_this_org_opposes.forEach((oneMeasureWeVoteId) => {
               if (stringContains('meas', oneMeasureWeVoteId)) {
-                if (!allCachedPositionsAboutMeasures[oneMeasureWeVoteId]) {
-                  allCachedPositionsAboutMeasures[oneMeasureWeVoteId] = {};
+                if (!allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId]) {
+                  allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId] = {};
                 }
 
-                if (!allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id]) {
-                  allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
+                if (!allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id]) {
+                  allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
                 }
 
-                onePosition = allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id];
+                onePosition = allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
@@ -368,17 +368,17 @@ class MeasureStore extends ReduceStore {
                   onePosition.is_oppose_or_negative_rating = true;
 
                   // console.log('MeasureStore oppose onePosition: ', onePosition);
-                  allCachedPositionsAboutMeasures[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
+                  allCachedPositionsAboutMeasuresByOrganization[oneMeasureWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
                 }
               }
             });
           }
         });
 
-        // console.log('Measure allCachedPositionsAboutMeasures:', allCachedPositionsAboutMeasures);
+        // console.log('Measure allCachedPositionsAboutMeasuresByOrganization:', allCachedPositionsAboutMeasuresByOrganization);
         return {
           ...state,
-          allCachedPositionsAboutMeasures,
+          allCachedPositionsAboutMeasuresByOrganization,
         };
 
       case 'error-measureRetrieve' || 'error-positionListForBallotItem':

@@ -100,26 +100,27 @@ export default class OrganizationVoterGuideTabs extends Component {
     });
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.activeRoute !== nextState.activeRoute) {
-      // console.log('shouldComponentUpdate: this.state.activeRoute', this.state.activeRoute, ', nextState.activeRoute', nextState.activeRoute);
-      return true;
-    }
-    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-      // console.log('shouldComponentUpdate: this.state.organizationWeVoteId', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
-      return true;
-    }
-    if (this.state.location !== nextState.location) {
-      // console.log('shouldComponentUpdate: this.state.location', this.state.location, ', nextState.location', nextState.location);
-      return true;
-    }
-    if (this.state.pathname !== nextState.pathname) {
-      // console.log('shouldComponentUpdate: this.state.pathname', this.state.pathname, ', nextState.pathname', nextState.pathname);
-      return true;
-    }
-    // console.log('shouldComponentUpdate no changes');
-    return false;
-  }
+  // 2019-09-29 Dale: I'm having trouble getting the first voter guide page to display Ballot items without this commented out
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   if (this.state.activeRoute !== nextState.activeRoute) {
+  //     // console.log('shouldComponentUpdate: this.state.activeRoute', this.state.activeRoute, ', nextState.activeRoute', nextState.activeRoute);
+  //     return true;
+  //   }
+  //   if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
+  //     // console.log('shouldComponentUpdate: this.state.organizationWeVoteId', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
+  //     return true;
+  //   }
+  //   if (this.state.location !== nextState.location) {
+  //     // console.log('shouldComponentUpdate: this.state.location', this.state.location, ', nextState.location', nextState.location);
+  //     return true;
+  //   }
+  //   if (this.state.pathname !== nextState.pathname) {
+  //     // console.log('shouldComponentUpdate: this.state.pathname', this.state.pathname, ', nextState.pathname', nextState.pathname);
+  //     return true;
+  //   }
+  //   // console.log('shouldComponentUpdate no changes');
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.organizationStoreListener.remove();
