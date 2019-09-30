@@ -11,6 +11,7 @@ import LoadingWheel from './LoadingWheel';
 import { renderLog } from '../utils/logging';
 import VoterActions from '../actions/VoterActions';
 import VoterStore from '../stores/VoterStore';
+import SettingsSMSVerify from './Settings/SettingsSMSVerify';
 // import {FormHelperText} from "@material-ui/core";
 
 class VoterPhoneVerificationEntry extends Component {
@@ -22,9 +23,12 @@ class VoterPhoneVerificationEntry extends Component {
     super(props);
     this.state = {
       voterPhoneNumber: '',
+      showVerifyModal: false,
     };
 
     this.onPhoneNumberChange = this.onPhoneNumberChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.closeVerifyModal = this.closeVerifyModal.bind(this);
   }
 
   componentDidMount () {
@@ -47,6 +51,14 @@ class VoterPhoneVerificationEntry extends Component {
     this.setState({ voterPhoneNumber: e.target.value });
   }
 
+  onSubmit () {
+    this.setState({ showVerifyModal: true });
+  }
+
+  closeVerifyModal () {
+    this.setState({ showVerifyModal: false });
+  }
+
   render () {
     renderLog(__filename);
     if (this.state.loading) {
@@ -54,6 +66,7 @@ class VoterPhoneVerificationEntry extends Component {
     }
 
     const { classes } = this.props;
+    const { showVerifyModal, voterPhoneNumber } = this.state;
 
     return (
       <Wrapper>
@@ -62,7 +75,6 @@ class VoterPhoneVerificationEntry extends Component {
             Sign in with SMS phone number
           </strong>
           {' '}
-          {/* enterEmailExplanation */}
         </div>
         <form className="form-inline">
           <Paper className={classes.root} elevation={1}>
@@ -81,10 +93,18 @@ class VoterPhoneVerificationEntry extends Component {
             id="voterPhoneSendSMS"
             variant="contained"
             className={classes.button}
+            onClick={this.onSubmit}
           >
             SEND VERIFICATION CODE
           </Button>
         </form>
+        {showVerifyModal ? (
+          <SettingsSMSVerify
+            show={showVerifyModal}
+            toggleFunction={this.closeVerifyModal}
+            voterPhoneNumber={voterPhoneNumber}
+          />
+        ) : null}
       </Wrapper>
     );
   }
