@@ -20,6 +20,7 @@ import VoterActions from '../../actions/VoterActions';
 import VoterEmailAddressEntry from '../VoterEmailAddressEntry';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
+import VoterPhoneVerificationEntry from '../VoterPhoneVerificationEntry';
 
 const debugMode = false;
 
@@ -319,7 +320,7 @@ export default class SettingsAccount extends Component {
             {isWebApp() &&
               <VoterEmailAddressEntry />
             }
-
+            <VoterPhoneVerificationEntry />
             {debugMode && (
             <div className="text-center">
               is_signed_in:
