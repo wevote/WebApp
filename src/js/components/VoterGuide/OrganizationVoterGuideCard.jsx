@@ -66,15 +66,17 @@ export default class OrganizationVoterGuideCard extends Component {
         </Link>
         { organizationTwitterHandle && (
           <span>
-            @
-            {organizationTwitterHandle}
-            &nbsp;&nbsp;
-          </span>
-        )}
-        { twitterFollowersCount && (
-          <span className="twitter-followers__badge">
-            <span className="fab fa-twitter twitter-followers__icon" />
-            {numberWithCommas(twitterFollowersCount)}
+            <span>
+              @
+              {organizationTwitterHandle}
+              &nbsp;&nbsp;
+            </span>
+            { twitterFollowersCount && String(twitterFollowersCount) !== '0' && (
+              <span className="twitter-followers__badge">
+                <span className="fab fa-twitter twitter-followers__icon" />
+                {numberWithCommas(twitterFollowersCount)}
+              </span>
+            )}
           </span>
         )}
         <br />

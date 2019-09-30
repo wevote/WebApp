@@ -374,6 +374,7 @@ class ItemPositionStatementActionBar extends Component {
                   color="primary"
                   className="postsave-button"
                   classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }}
+                  id={`itemPositionStatementActionBarEdit-${ballotItemWeVoteId}-${externalUniqueId}`}
                   onClick={onSavePositionStatementClick}
                   size="small"
                 >
