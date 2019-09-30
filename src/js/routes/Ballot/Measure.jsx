@@ -39,7 +39,7 @@ export default class Measure extends Component {
   }
 
   componentDidMount () {
-    console.log('Measure componentDidMount');
+    // console.log('Measure componentDidMount');
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
