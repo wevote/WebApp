@@ -50,7 +50,7 @@ class SettingsSMSVerify extends Component {
           <Subtitle>A 6-digit code has been sent to</Subtitle>
           <PhoneSubtitle>{voterPhoneNumber}</PhoneSubtitle>
           <InputContainer>
-            <div
+            {/* <div
               style={{
                 overflow: 'hidden',
                 width: '50px',
@@ -139,7 +139,13 @@ class SettingsSMSVerify extends Component {
               }}
             >
               <OutlinedInput classes={{ root: classes.input }} />
-            </div>
+            </div> */}
+            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+            <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
           </InputContainer>
         </ModalContent>
       </Dialog>
@@ -168,11 +174,24 @@ const styles = () => ({
       margin: '0 auto',
     },
   },
+  inputBase: {
+    alignContent: 'center',
+    display: 'flex',
+    flex: '0 0 1',
+    justifyContent: 'center',
+    margin: '0 4px',
+    '@media(min-width: 569px)': {
+      margin: '0 8px',
+    },
+    // maintain aspect ratio
+    width: '10vw',
+    height: '10vw',
+    maxWidth: 60,
+    maxHeight: 60,
+    fontSize: 40,
+  },
   input: {
-    // maxHeight: 50,
-    // margin: '0 8px',
-    width: 'auto',
-    height: '100%',
+    textAlign: 'center',
   },
 });
 
@@ -207,7 +226,7 @@ const Title = styled.h3`
   color: black;
   text-align: center;
   media(min-width: 569px) {
-      font-size: 36px;
+    font-size: 36px;
   }
 `;
 
@@ -225,8 +244,10 @@ const PhoneSubtitle = styled.h4`
 
 const InputContainer = styled.div`
   display: flex;
-  flex: auto;
-  max-height: 60px;
+  // flex-wrap: wrap;
+  justify-content: space-between;
+  margin: auto;
+  width: 100%;
 `;
 
 export default withStyles(styles)(SettingsSMSVerify);
