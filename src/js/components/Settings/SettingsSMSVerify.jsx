@@ -73,11 +73,11 @@ class SettingsSMSVerify extends Component {
   }
 
   onDigit2KeyDown (e) {
-    console.log(e.key, e.keyCode);
-    if (e.keyCode === 8) {
+    if (e.keyCode === 8 && this.state.digit2 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      // e.target.disabled = true;
+    } else {
+      console.log('Digit6 is not empty');
     }
   }
 
@@ -90,11 +90,11 @@ class SettingsSMSVerify extends Component {
   }
 
   onDigit3KeyDown (e) {
-    console.log(e.key, e.keyCode);
-    if (e.keyCode === 8) {
+    if (e.keyCode === 8 && this.state.digit3 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      // e.target.disabled = true;
+    } else {
+      console.log('Digit6 is not empty');
     }
   }
 
@@ -107,11 +107,11 @@ class SettingsSMSVerify extends Component {
   }
 
   onDigit4KeyDown (e) {
-    console.log(e.key, e.keyCode);
-    if (e.keyCode === 8) {
+    if (e.keyCode === 8 && this.state.digit4 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      // e.target.disabled = true;
+    } else {
+      console.log('Digit6 is not empty');
     }
   }
 
@@ -124,26 +124,25 @@ class SettingsSMSVerify extends Component {
   }
 
   onDigit5KeyDown (e) {
-    console.log(e.key, e.keyCode);
-    if (e.keyCode === 8) {
+    if (e.keyCode === 8 && this.state.digit5 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      // e.target.disabled = true;
+    } else {
+      console.log('Digit6 is not empty');
     }
   }
 
   onDigit6Change (e) {
-    if (e.target.value !== '') {
-      e.target.parentElement.parentElement.parentElement.nextElementSibling.firstElementChild.focus();
-    }
     this.setState({ digit6: e.target.value.charAt(e.target.value.length - 1) });
     e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
   onDigit6KeyDown (e) {
-    console.log(e.key, e.keyCode);
-    if (e.keyCode === 8) {
-      // e.target.disabled = true;
+    if (e.keyCode === 8 && this.state.digit6 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
+    } else {
+      console.log('Digit6 is not empty');
     }
   }
 
@@ -152,8 +151,8 @@ class SettingsSMSVerify extends Component {
   }
 
   render () {
-    const { classes, voterPhoneNumber } = this.props;
-    // const { step } = this.state;
+    const { classes } = this.props;
+    const { voterPhoneNumber } = this.state;
 
     return (
       <Dialog
