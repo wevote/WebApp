@@ -2,6 +2,14 @@ import Dispatcher from '../dispatcher/Dispatcher';
 import { isCordova } from '../utils/cordovaUtils';
 
 export default {
+  clearEmailAddressStatus () {
+    Dispatcher.dispatch({ type: 'clearEmailAddressStatus', payload: true });
+  },
+
+  clearSecretCodeVerificationStatus () {
+    Dispatcher.dispatch({ type: 'clearSecretCodeVerificationStatus', payload: true });
+  },
+
   organizationSuggestionTasks (kindOfSuggestionTask, kindOfFollowTask) {
     Dispatcher.loadEndpoint('organizationSuggestionTasks',
       {
@@ -26,10 +34,22 @@ export default {
   },
 
   // Send the sign in link to their email address
+  // We keep this in place for historical purposes, since people who haven't
+  // updated their apps are still using this function
   sendSignInLinkEmail (voterEmailAddress) {
     Dispatcher.loadEndpoint('voterEmailAddressSave', {
       text_for_email_address: voterEmailAddress,
       send_link_to_sign_in: true,
+      make_primary_email: true,
+    });
+  },
+
+  // This is for sending a 6 digit code that the voter enters in the same
+  // interface where the code is requested
+  sendSignInCodeEmail (voterEmailAddress) {
+    Dispatcher.loadEndpoint('voterEmailAddressSave', {
+      text_for_email_address: voterEmailAddress,
+      send_sign_in_code_email: true,
       make_primary_email: true,
     });
   },
@@ -54,6 +74,11 @@ export default {
 
   twitterRetrieveIdsIfollow () {
     Dispatcher.loadEndpoint('twitterRetrieveIdsIFollow', {});
+  },
+
+  voterVerifySecretCode (secretCode) {
+    // console.log("VoterActions, voterVerifySecretCode");
+    Dispatcher.loadEndpoint('voterVerifySecretCode', { secret_code: secretCode });
   },
 
   voterAddressRetrieve (id) {

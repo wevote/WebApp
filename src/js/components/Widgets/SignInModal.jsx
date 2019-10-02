@@ -36,16 +36,23 @@ class SignInModal extends Component {
   }
 
   onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+    const voter = VoterStore.getVoter();
+    this.setState({
+      voter,
+      voterIsSignedIn: voter.is_signed_in,
+    });
   }
 
   render () {
     renderLog(__filename);
+    // console.log('SignInModal render');
     const { classes } = this.props;
-    const { voter } = this.state;
-    if (!this.state.voter) {
+    const { voter, voterIsSignedIn } = this.state;
+    if (!voter) {
+      // console.log('SignInModal render voter NOT found');
       return <div className="undefined-props" />;
     }
+    // console.log('SignInModal render voter found');
 
     // This modal is shown when the voter wants to sign in.
     return (
@@ -68,20 +75,16 @@ class SignInModal extends Component {
         <DialogContent classes={{ root: classes.dialogContent }}>
           <section>
             <div className="text-center">
-              {voter && voter.is_signed_in ? (
+              {voter && voterIsSignedIn ? (
                 <div>
                   <div className="u-f2">You are already signed in.</div>
                 </div>
               ) : (
                 <div>
-                  { !this.state.voter.is_signed_in ?
-                    (
-                      <SettingsAccount
-                        toggleSignInModal={this.props.toggleFunction}
-                        inModal
-                      />
-                    ) :
-                    null }
+                  <SettingsAccount
+                    toggleSignInModal={this.props.toggleFunction}
+                    inModal
+                  />
                 </div>
               )}
             </div>
@@ -119,5 +122,3 @@ const styles = theme => ({
 
 
 export default withTheme(withStyles(styles)(SignInModal));
-// export default withStyles(styles, withTheme(SignInModal));
-// export default withStyles(styles)(withTheme(SignInModal));

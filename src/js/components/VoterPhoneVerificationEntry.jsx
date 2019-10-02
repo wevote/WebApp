@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-bootstrap';
+// import { Alert } from 'react-bootstrap';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -75,7 +75,7 @@ class VoterPhoneVerificationEntry extends Component {
       <Wrapper>
         <div className="u-stack--sm u-tl">
           <strong>
-            Sign in with SMS phone number
+            Sign in with SMS Phone Number
           </strong>
           {' '}
         </div>

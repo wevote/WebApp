@@ -10,7 +10,7 @@ import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
-import { historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { historyPush } from '../../utils/cordovaUtils';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
 import LoadingWheel from '../LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
@@ -34,6 +34,8 @@ export default class SettingsAccount extends Component {
     super(props);
     this.state = {
       facebookAuthResponse: {},
+      inEmailCodeVerificationProcess: false,
+      inTextCodeVerificationProcess: false,
       isOnWeVoteRootUrl: true,
       isOnWeVoteSubDomainUrl: false,
       isOnFacebookSupportedDomainUrl: false,
@@ -124,13 +126,41 @@ export default class SettingsAccount extends Component {
   }
 
   onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+    const emailAddressStatus = VoterStore.getEmailAddressStatus();
+    const inEmailCodeVerificationProcess = (emailAddressStatus.sign_in_code_email_sent);
+    this.setState({
+      voter: VoterStore.getVoter(),
+      inEmailCodeVerificationProcess,
+    });
   }
 
   onFacebookChange () {
     this.setState({
       facebookAuthResponse: FacebookStore.getFacebookAuthResponse(),
     });
+  }
+
+  localToggleSignInModal = () => {
+    // console.log('SettingsAccount localToggleSignInModal');
+    if (this.props.toggleSignInModal) {
+      this.props.toggleSignInModal();
+    }
+  }
+
+  toggleInTextCodeVerificationProcess = () => {
+    const { inTextCodeVerificationProcess } = this.state;
+    this.setState({ inTextCodeVerificationProcess: !inTextCodeVerificationProcess });
+  }
+
+  toggleInEmailCodeVerificationProcess = () => {
+    const { inEmailCodeVerificationProcess } = this.state;
+    if (inEmailCodeVerificationProcess) {
+      // If already in the verification process, reset the emailAddressStatus dict, so that VoterStore is refreshed without email verification data
+      VoterActions.clearEmailAddressStatus();
+    } else {
+      // If not already in the verification process, put us in the process
+      this.setState({ inEmailCodeVerificationProcess: true });
+    }
   }
 
   componentDidCatch (error, info) {
@@ -167,14 +197,17 @@ export default class SettingsAccount extends Component {
 
   render () {
     renderLog(__filename);
+    // console.log('SettingsAccount render');
     if (!this.state.voter) {
       return LoadingWheel;
     }
 
     const { inModal } = this.props;
-
-    // console.log("SignIn.jsx this.state.facebookAuthResponse:", this.state.facebookAuthResponse);
-    if (!this.state.voter.signed_in_facebook && this.state.facebookAuthResponse && this.state.facebookAuthResponse.facebook_retrieve_attempted) {
+    const { facebookAuthResponse, inEmailCodeVerificationProcess, inTextCodeVerificationProcess, isOnWeVoteRootUrl, isOnWeVoteSubDomainUrl, isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
+    const { voterIsSignedIn, voterIsSignedInFacebook, voterIsSignedInTwitter, voterIsSignedInWithEmail } = this.state.voter;
+    // console.log("SignIn.jsx facebookAuthResponse:", facebookAuthResponse);
+    if (!voterIsSignedInFacebook && facebookAuthResponse && facebookAuthResponse.facebook_retrieve_attempted) {
+      // console.log('SignIn.jsx facebook_retrieve_attempted');
       oAuthLog('SignIn.jsx facebook_retrieve_attempted');
       historyPush('/facebook_sign_in');
 
@@ -182,16 +215,21 @@ export default class SettingsAccount extends Component {
       return LoadingWheel;
     }
 
-    const { isOnWeVoteRootUrl, isOnWeVoteSubDomainUrl, isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
+    if (inEmailCodeVerificationProcess) {
+      return <span onClick={this.toggleInEmailCodeVerificationProcess}>inEmailCodeVerificationProcess (click to go back)</span>;
+    } else if (inTextCodeVerificationProcess) {
+      return <span onClick={this.toggleInTextCodeVerificationProcess}>inTextCodeVerificationProcess (click to go back)</span>;
+    }
+
     let pageTitle = 'Sign In - We Vote';
     let yourAccountTitle = 'Security & Sign In';
     let yourAccountExplanation = '';
-    if (this.state.voter.is_signed_in) {
+    if (voterIsSignedIn) {
       pageTitle = 'Security & Sign In - We Vote';
-      if (this.state.voter.signed_in_facebook && !this.state.voter.signed_in_twitter && (isOnWeVoteRootUrl || isOnWeVoteSubDomainUrl)) {
+      if (voterIsSignedInFacebook && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubDomainUrl)) {
         yourAccountTitle = 'Have Twitter Too?';
         yourAccountExplanation = 'By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.';
-      } else if (this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook && isOnFacebookSupportedDomainUrl) {
+      } else if (voterIsSignedInTwitter && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl) {
         yourAccountTitle = 'Have Facebook Too?';
         yourAccountExplanation = 'By adding Facebook to your We Vote profile, it is easier to invite friends.';
       }
@@ -203,11 +241,11 @@ export default class SettingsAccount extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <div className={inModal ? '' : 'card'}>
           <Main inModal={inModal}>
-            {this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
+            {voterIsSignedInTwitter && voterIsSignedInFacebook ?
               null :
-              <h1 className="h3">{this.state.voter.is_signed_in ? <span>{yourAccountTitle}</span> : null}</h1>
+              <h1 className="h3">{voterIsSignedIn ? <span>{yourAccountTitle}</span> : null}</h1>
             }
-            {this.state.voter.is_signed_in ?
+            {voterIsSignedIn ?
               <div className="u-stack--sm">{yourAccountExplanation}</div> : (
                 <div>
                   <div className="u-f3">{pleaseSignInTitle}</div>
@@ -215,10 +253,10 @@ export default class SettingsAccount extends Component {
                 </div>
               )
             }
-            {!this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook ? (
+            {!voterIsSignedInTwitter || !voterIsSignedInFacebook ? (
               <>
                 <div className="u-stack--md">
-                  { !this.state.voter.signed_in_twitter && (isOnWeVoteRootUrl || isOnWeVoteSubDomainUrl) && (
+                  { !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubDomainUrl) && (
                     <span>
                       <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
                       <TwitterSignIn buttonText="Sign in with Twitter" />
@@ -227,9 +265,9 @@ export default class SettingsAccount extends Component {
                   }
                 </div>
                 <div className="u-stack--md">
-                  { !this.state.voter.signed_in_facebook && isOnFacebookSupportedDomainUrl && (
+                  { !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
                     <span>
-                      <FacebookSignIn toggleSignInModal={this.props.toggleSignInModal} buttonText="Sign in with Facebook" />
+                      <FacebookSignIn toggleSignInModal={this.localToggleSignInModal} buttonText="Sign in with Facebook" />
                     </span>
                   )
                   }
@@ -237,7 +275,7 @@ export default class SettingsAccount extends Component {
               </>
             ) : null
             }
-            {this.state.voter.is_signed_in ? (
+            {voterIsSignedIn ? (
               <div className="u-stack--md">
                 <div className="u-stack--sm">
                   <span className="h3">Currently Signed In</span>
@@ -247,7 +285,7 @@ export default class SettingsAccount extends Component {
                   </span>
                 </div>
                 <div className="u-stack--sm">
-                  {this.state.voter.signed_in_twitter ? (
+                  {voterIsSignedInTwitter ? (
                     <div>
                       <span className="btn btn-social btn-md btn-twitter" href="#">
                         <i className="fab fa-twitter" />
@@ -258,7 +296,7 @@ export default class SettingsAccount extends Component {
                     </div>
                   ) : null
                   }
-                  {this.state.voter.signed_in_twitter && (this.state.voter.signed_in_facebook || this.state.voter.signed_in_with_email) ? (
+                  {voterIsSignedInTwitter && (voterIsSignedInFacebook || voterIsSignedInWithEmail) ? (
                     <div className="u-margin-top--xs">
                       {this.state.showTwitterDisconnect ? (
                         <div>
@@ -296,7 +334,7 @@ export default class SettingsAccount extends Component {
                   ) : null
                   }
                   <div className="u-margin-top--sm">
-                    {this.state.voter.signed_in_facebook && (
+                    {voterIsSignedInFacebook && (
                     <span>
                       <span className="btn btn-social-icon btn-lg btn-facebook">
                         <span className="fab fa-facebook" />
@@ -304,7 +342,7 @@ export default class SettingsAccount extends Component {
                       <span className="u-margin-left--sm" />
                     </span>
                     )}
-                    {this.state.voter.signed_in_with_email && (
+                    {voterIsSignedInWithEmail && (
                     <span>
                       <span className="btn btn-social-icon btn-lg btn-openid">
                         <span className="fas fa-envelope" />
@@ -316,24 +354,22 @@ export default class SettingsAccount extends Component {
               </div>
             ) : null
             }
-            <br />
-            {isWebApp() &&
-              <VoterEmailAddressEntry />
-            }
             <VoterPhoneVerificationEntry />
+            <VoterEmailAddressEntry />
+
             {debugMode && (
             <div className="text-center">
               is_signed_in:
               {' '}
-              {this.state.voter.is_signed_in ? <span>True</span> : null}
+              {voterIsSignedIn ? <span>True</span> : null}
               <br />
               signed_in_facebook:
               {' '}
-              {this.state.voter.signed_in_facebook ? <span>True</span> : null}
+              {voterIsSignedInFacebook ? <span>True</span> : null}
               <br />
               signed_in_twitter:
               {' '}
-              {this.state.voter.signed_in_twitter ? <span>True</span> : null}
+              {voterIsSignedInTwitter ? <span>True</span> : null}
               <br />
               we_vote_id:
               {' '}
