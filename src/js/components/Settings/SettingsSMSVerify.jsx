@@ -17,20 +17,140 @@ class SettingsSMSVerify extends Component {
   constructor (props) {
     super(props);
     this.state = {
-
+      digit1: '',
+      digit2: '',
+      digit3: '',
+      digit4: '',
+      digit5: '',
+      digit6: '',
     };
+    this.onDigit1Change = this.onDigit1Change.bind(this);
+    this.onDigit2Change = this.onDigit2Change.bind(this);
+    this.onDigit3Change = this.onDigit3Change.bind(this);
+    this.onDigit4Change = this.onDigit4Change.bind(this);
+    this.onDigit5Change = this.onDigit5Change.bind(this);
+    this.onDigit6Change = this.onDigit6Change.bind(this);
+    this.onDigit1KeyDown = this.onDigit1KeyDown.bind(this);
+    this.onDigit2KeyDown = this.onDigit2KeyDown.bind(this);
+    this.onDigit3KeyDown = this.onDigit3KeyDown.bind(this);
+    this.onDigit4KeyDown = this.onDigit4KeyDown.bind(this);
+    this.onDigit5KeyDown = this.onDigit5KeyDown.bind(this);
+    this.onDigit6KeyDown = this.onDigit6KeyDown.bind(this);
   }
 
   componentDidMount () {
-
+    // document.onKeyDown = (e => {
+    //   if (e.keyCode === 8) {
+    //     this.setState{{ step: this.state.step - 1 }}
+    //   }
+    // });
   }
 
-  shouldComponentUpdate () {
+  shouldComponentUpdate (nextState) {
+    if (this.state.step !== nextState.step) {
+      return true;
+    }
+    return false;
+  }
 
+  onDigit1Change (e) {
+    if (e.target.value !== '') {
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    }
+    this.setState({ digit1: e.target.value.charAt(0) });
+    e.target.value = e.target.value.charAt(0);
+  }
+
+  onDigit1KeyDown (e) {
+    console.log(e.key, e.keyCode);
+  }
+
+  onDigit2Change (e) {
+    if (e.target.value !== '') {
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    }
+    this.setState({ digit2: e.target.value.charAt(0) });
+    e.target.value = e.target.value.charAt(0);
+  }
+
+  onDigit2KeyDown (e) {
+    console.log(e.key, e.keyCode);
+    if (e.keyCode === 8) {
+      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
+      // e.target.disabled = true;
+    }
+  }
+
+  onDigit3Change (e) {
+    if (e.target.value !== '') {
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    }
+    this.setState({ digit3: e.target.value.charAt(0) });
+    e.target.value = e.target.value.charAt(0);
+  }
+
+  onDigit3KeyDown (e) {
+    console.log(e.key, e.keyCode);
+    if (e.keyCode === 8) {
+      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
+      // e.target.disabled = true;
+    }
+  }
+
+  onDigit4Change (e) {
+    if (e.target.value !== '') {
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    }
+    this.setState({ digit4: e.target.value.charAt(0) });
+    e.target.value = e.target.value.charAt(0);
+  }
+
+  onDigit4KeyDown (e) {
+    console.log(e.key, e.keyCode);
+    if (e.keyCode === 8) {
+      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
+      // e.target.disabled = true;
+    }
+  }
+
+  onDigit5Change (e) {
+    if (e.target.value !== '') {
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    }
+    this.setState({ digit5: e.target.value.charAt(0) });
+    e.target.value = e.target.value.charAt(0);
+  }
+
+  onDigit5KeyDown (e) {
+    console.log(e.key, e.keyCode);
+    if (e.keyCode === 8) {
+      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
+      // e.target.disabled = true;
+    }
+  }
+
+  onDigit6Change (e) {
+    if (e.target.value !== '') {
+      e.target.parentElement.parentElement.parentElement.nextElementSibling.firstElementChild.focus();
+    }
+    this.setState({ digit6: e.target.value.charAt(0) });
+    e.target.value = e.target.value.charAt(0);
+  }
+
+  onDigit6KeyDown (e) {
+    console.log(e.key, e.keyCode);
+    if (e.keyCode === 8) {
+      // e.target.disabled = true;
+    }
   }
 
   render () {
     const { classes, voterPhoneNumber } = this.props;
+    // const { step } = this.state;
 
     return (
       <Dialog
@@ -51,18 +171,48 @@ class SettingsSMSVerify extends Component {
             <Subtitle>A 6-digit code has been sent to</Subtitle>
             <PhoneSubtitle>{voterPhoneNumber}</PhoneSubtitle>
             <InputContainer>
-              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
-              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
-              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
-              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
-              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
-              <OutlinedInput classes={{ root: classes.inputBase, input: classes.input }} />
+              <OutlinedInput
+                maxLength={1}
+                onKeyDown={this.onDigit1KeyDown}
+                onChange={this.onDigit1Change}
+                classes={{ root: classes.inputBase, input: classes.input }}
+              />
+              <OutlinedInput
+                maxLength={1}
+                onKeyDown={this.onDigit2KeyDown}
+                onChange={this.onDigit2Change}
+                classes={{ root: classes.inputBase, input: classes.input }}
+              />
+              <OutlinedInput
+                maxLength={1}
+                onKeyDown={this.onDigit3KeyDown}
+                onChange={this.onDigit3Change}
+                classes={{ root: classes.inputBase, input: classes.input }}
+              />
+              <OutlinedInput
+                maxLength={1}
+                onKeyDown={this.onDigit4KeyDown}
+                onChange={this.onDigit4Change}
+                classes={{ root: classes.inputBase, input: classes.input }}
+              />
+              <OutlinedInput
+                maxLength={1}
+                onKeyDown={this.onDigit5KeyDown}
+                onChange={this.onDigit5Change}
+                classes={{ root: classes.inputBase, input: classes.input }}
+              />
+              <OutlinedInput
+                maxLength={1}
+                onKeyDown={this.onDigit6KeyDown}
+                onChange={this.onDigit6Change}
+                classes={{ root: classes.inputBase, input: classes.input }}
+              />
             </InputContainer>
           </TextContainer>
           <ButtonsContainer>
+            <Button classes={{ root: classes.button }} color="primary">VERIFY</Button>
             <Button classes={{ root: classes.button }} color="primary">RESEND SMS</Button>
             <Button classes={{ root: classes.button }} color="primary">CHANGE PHONE NUMBER</Button>
-            <Button classes={{ root: classes.button }} color="primary">VERIFY</Button>
           </ButtonsContainer>
         </ModalContent>
       </Dialog>
@@ -113,10 +263,12 @@ const styles = () => ({
     '&:last-child': {
       marginRight: 0,
     },
+    background: '#f7f7f7',
   },
   input: {
     textAlign: 'center',
     padding: '8px 0',
+
   },
   button: {
     width: '100%',
