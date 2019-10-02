@@ -57,8 +57,8 @@ class SettingsSMSVerify extends Component {
     if (e.target.value !== '') {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     }
-    this.setState({ digit1: e.target.value.charAt(0) });
-    e.target.value = e.target.value.charAt(0);
+    this.setState({ digit1: e.target.value.charAt(e.target.value.length - 1) });
+    e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
   onDigit1KeyDown (e) {
@@ -69,8 +69,8 @@ class SettingsSMSVerify extends Component {
     if (e.target.value !== '') {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     }
-    this.setState({ digit2: e.target.value.charAt(0) });
-    e.target.value = e.target.value.charAt(0);
+    this.setState({ digit2: e.target.value.charAt(e.target.value.length - 1) });
+    e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
   onDigit2KeyDown (e) {
@@ -86,8 +86,8 @@ class SettingsSMSVerify extends Component {
     if (e.target.value !== '') {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     }
-    this.setState({ digit3: e.target.value.charAt(0) });
-    e.target.value = e.target.value.charAt(0);
+    this.setState({ digit3: e.target.value.charAt(e.target.value.length - 1) });
+    e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
   onDigit3KeyDown (e) {
@@ -103,8 +103,8 @@ class SettingsSMSVerify extends Component {
     if (e.target.value !== '') {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     }
-    this.setState({ digit4: e.target.value.charAt(0) });
-    e.target.value = e.target.value.charAt(0);
+    this.setState({ digit4: e.target.value.charAt(e.target.value.length - 1) });
+    e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
   onDigit4KeyDown (e) {
@@ -120,8 +120,8 @@ class SettingsSMSVerify extends Component {
     if (e.target.value !== '') {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     }
-    this.setState({ digit5: e.target.value.charAt(0) });
-    e.target.value = e.target.value.charAt(0);
+    this.setState({ digit5: e.target.value.charAt(e.target.value.length - 1) });
+    e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
   onDigit5KeyDown (e) {
@@ -137,8 +137,8 @@ class SettingsSMSVerify extends Component {
     if (e.target.value !== '') {
       e.target.parentElement.parentElement.parentElement.nextElementSibling.firstElementChild.focus();
     }
-    this.setState({ digit6: e.target.value.charAt(0) });
-    e.target.value = e.target.value.charAt(0);
+    this.setState({ digit6: e.target.value.charAt(e.target.value.length - 1) });
+    e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
   onDigit6KeyDown (e) {
