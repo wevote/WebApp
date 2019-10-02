@@ -39,15 +39,14 @@ class SettingsSMSVerify extends Component {
   }
 
   componentDidMount () {
-    // document.onKeyDown = (e => {
-    //   if (e.keyCode === 8) {
-    //     this.setState{{ step: this.state.step - 1 }}
-    //   }
-    // });
+    const { voterPhoneNumber } = this.props;
+    const newVoterPhoneNumber = voterPhoneNumber.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+
+    this.setState({ voterPhoneNumber: newVoterPhoneNumber });
   }
 
   shouldComponentUpdate (nextState) {
-    if (this.state.step !== nextState.step) {
+    if (this.state.voterPhoneNumber !== nextState.voterPhoneNumber) {
       return true;
     }
     return false;
@@ -148,6 +147,10 @@ class SettingsSMSVerify extends Component {
     }
   }
 
+  handleFocus (e) {
+    e.target.select();
+  }
+
   render () {
     const { classes, voterPhoneNumber } = this.props;
     // const { step } = this.state;
@@ -176,36 +179,42 @@ class SettingsSMSVerify extends Component {
                 onKeyDown={this.onDigit1KeyDown}
                 onChange={this.onDigit1Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
+                onFocus={this.handleFocus}
               />
               <OutlinedInput
                 maxLength={1}
                 onKeyDown={this.onDigit2KeyDown}
                 onChange={this.onDigit2Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
+                onFocus={this.handleFocus}
               />
               <OutlinedInput
                 maxLength={1}
                 onKeyDown={this.onDigit3KeyDown}
                 onChange={this.onDigit3Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
+                onFocus={this.handleFocus}
               />
               <OutlinedInput
                 maxLength={1}
                 onKeyDown={this.onDigit4KeyDown}
                 onChange={this.onDigit4Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
+                onFocus={this.handleFocus}
               />
               <OutlinedInput
                 maxLength={1}
                 onKeyDown={this.onDigit5KeyDown}
                 onChange={this.onDigit5Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
+                onFocus={this.handleFocus}
               />
               <OutlinedInput
                 maxLength={1}
                 onKeyDown={this.onDigit6KeyDown}
                 onChange={this.onDigit6Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
+                onFocus={this.handleFocus}
               />
             </InputContainer>
           </TextContainer>

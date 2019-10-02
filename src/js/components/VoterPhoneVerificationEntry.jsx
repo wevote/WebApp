@@ -52,7 +52,10 @@ class VoterPhoneVerificationEntry extends Component {
   }
 
   onSubmit () {
-    this.setState({ showVerifyModal: true });
+    const regex = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/;
+    if (regex.test(this.state.voterPhoneNumber)) {
+      this.setState({ showVerifyModal: true });
+    }
   }
 
   closeVerifyModal () {
