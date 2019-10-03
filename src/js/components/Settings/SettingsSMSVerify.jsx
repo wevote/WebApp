@@ -11,7 +11,7 @@ import {
   // InputBase,
   OutlinedInput,
 } from '@material-ui/core';
-import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isIOS, isCordova, isCordovaButNotATablet } from '../../utils/cordovaUtils';
 
 class SettingsSMSVerify extends Component {
   static propTypes = {
@@ -29,6 +29,7 @@ class SettingsSMSVerify extends Component {
       digit4: '',
       digit5: '',
       digit6: '',
+      condensed: false,
     };
     this.onDigit1Change = this.onDigit1Change.bind(this);
     this.onDigit2Change = this.onDigit2Change.bind(this);
@@ -42,6 +43,8 @@ class SettingsSMSVerify extends Component {
     this.onDigit4KeyDown = this.onDigit4KeyDown.bind(this);
     this.onDigit5KeyDown = this.onDigit5KeyDown.bind(this);
     this.onDigit6KeyDown = this.onDigit6KeyDown.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   componentDidMount () {
@@ -53,6 +56,9 @@ class SettingsSMSVerify extends Component {
 
   shouldComponentUpdate (nextState) {
     if (this.state.voterPhoneNumber !== nextState.voterPhoneNumber) {
+      return true;
+    }
+    if (this.state.condensed !== nextState.condensed) {
       return true;
     }
     return false;
@@ -154,11 +160,18 @@ class SettingsSMSVerify extends Component {
 
   handleFocus (e) {
     e.target.select();
+    if (isCordova()) {
+      this.setState({ condensed: true });
+    }
+  }
+
+  handleBlur () {
+    this.setState({ condensed: false });
   }
 
   render () {
     const { classes } = this.props;
-    const { voterPhoneNumber } = this.state;
+    const { voterPhoneNumber, condensed } = this.state;
 
     return (
       <Dialog
@@ -166,25 +179,26 @@ class SettingsSMSVerify extends Component {
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(); }}
       >
-        <ModalTitleArea>
+        <ModalTitleArea condensed={condensed}>
           <Button onClick={this.props.toggleFunction}>
             {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
             {' '}
             Back
           </Button>
         </ModalTitleArea>
-        <ModalContent>
-          <TextContainer>
-            <Title>SMS Verification</Title>
+        <ModalContent condensed={condensed}>
+          <TextContainer condensed={condensed}>
+            <Title condensed={condensed}>SMS Verification</Title>
             <Subtitle>A 6-digit code has been sent to</Subtitle>
             <PhoneSubtitle>{voterPhoneNumber}</PhoneSubtitle>
-            <InputContainer>
+            <InputContainer condensed={condensed}>
               <OutlinedInput
                 maxLength={1}
                 onKeyDown={this.onDigit1KeyDown}
                 onChange={this.onDigit1Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
               />
               <OutlinedInput
                 maxLength={1}
@@ -192,6 +206,7 @@ class SettingsSMSVerify extends Component {
                 onChange={this.onDigit2Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
               />
               <OutlinedInput
                 maxLength={1}
@@ -199,6 +214,7 @@ class SettingsSMSVerify extends Component {
                 onChange={this.onDigit3Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
               />
               <OutlinedInput
                 maxLength={1}
@@ -206,6 +222,7 @@ class SettingsSMSVerify extends Component {
                 onChange={this.onDigit4Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
               />
               <OutlinedInput
                 maxLength={1}
@@ -213,6 +230,7 @@ class SettingsSMSVerify extends Component {
                 onChange={this.onDigit5Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
               />
               <OutlinedInput
                 maxLength={1}
@@ -220,10 +238,11 @@ class SettingsSMSVerify extends Component {
                 onChange={this.onDigit6Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
               />
             </InputContainer>
           </TextContainer>
-          <ButtonsContainer>
+          <ButtonsContainer condensed={condensed}>
             <Button classes={{ root: classes.button }} color="primary">VERIFY</Button>
             <Button classes={{ root: classes.button }} color="primary">RESEND SMS</Button>
             <Button classes={{ root: classes.button }} color="primary">CHANGE PHONE NUMBER</Button>
@@ -294,7 +313,7 @@ const styles = () => ({
 
 const ModalTitleArea = styled.div`
   width: 100%;
-  padding: 12px;
+  padding: ${props => (props.condensed ? '8px' : '12px')};
   box-shadow: 0 20px 40px -25px #999;
   z-index: 999;
   display: flex;
@@ -306,28 +325,27 @@ const ModalTitleArea = styled.div`
 const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
-  align-content: space-evenly;
-  justify-content: center;
+  align-items: ${props => (props.condensed ? 'flex-start' : 'space-evenly')};
   height: 100%;
   width: 80%;
   max-width: 400px;
   margin: 0 auto;
   padding: 86px 0 72px 0;
+  padding: ${props => (props.condensed ? '66px 0 0 0' : '86px 0 72px 0')};
 `;
 
 const TextContainer = styled.div`
-  margin-bottom: auto;
 `;
 
 const ButtonsContainer = styled.div`
-  margin-top: auto;
+  margin-top: ${props => (props.condensed ? '16px' : 'auto')};
 `;
 
 const Title = styled.h3`
   font-weight: bold;
   font-size: 30px;
   padding: 0 10px;
-  margin-bottom: 36px;
+  margin-bottom: ${props => (props.condensed ? '16px' : '36px')};
   color: black;
   text-align: center;
   media(min-width: 569px) {
@@ -349,11 +367,10 @@ const PhoneSubtitle = styled.h4`
 
 const InputContainer = styled.div`
   display: flex;
-  // flex-wrap: wrap;
   justify-content: space-between;
   margin: auto;
   width: 100%;
-  margin-top: 32px;
+  margin-top: ${props => (props.condensed ? '16px' : '32px')};
 `;
 
 export default withStyles(styles)(SettingsSMSVerify);
