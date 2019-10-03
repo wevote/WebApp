@@ -16,10 +16,11 @@ class FacebookSignIn extends Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
-  componentWillUnmount () {
-    // Close the Sign In Modal
-    this.toggleSignInModalLocal();
-  }
+  // There are times we want to unmount this FacebookSignIn Component, without closing the sign in modal
+  // componentWillUnmount () {
+  //   // Close the Sign In Modal
+  //   this.toggleSignInModalLocal();
+  // }
 
   onKeyDown = (event) => {
     const enterAndSpaceKeyCodes = [13, 32];

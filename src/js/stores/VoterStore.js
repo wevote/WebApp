@@ -26,6 +26,12 @@ class VoterStore extends ReduceStore {
       facebookSignInStatus: {},
       facebookPhotoRetrieveLoopCount: 0,
       latestGoogleCivicElectionId: 0,
+      secretCodeVerificationStatus: {
+        numberOfTriesRemaining: 5,
+        secretCodeVerified: false,
+        voterMustRequestNewCode: false,
+        voterSecretCodeRequestsLocked: false,
+      },
       voterFound: false,
       voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
     };
@@ -142,6 +148,10 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.voter_photo_url_tiny || '';
   }
 
+  getSecretCodeVerificationStatus () {
+    return this.getState().secretCodeVerificationStatus || {};
+  }
+
   voterDeviceId () {
     return this.getState().voter.voter_device_id || cookies.getItem('voter_device_id');
   }
@@ -224,10 +234,28 @@ class VoterStore extends ReduceStore {
     let googleCivicElectionId;
     let incomingVoter;
     let membershipOrganizationWeVoteId;
+    let numberOfTriesRemaining;
+    let secretCodeVerified;
     let voterDeviceId;
     let voterExternalIdHasBeenSavedOnce;
+    let voterMustRequestNewCode;
+    let voterSecretCodeRequestsLocked;
 
     switch (action.type) {
+      case 'clearEmailAddressStatus':
+        console.log('VoterStore clearEmailAddressStatus');
+        return { ...state, emailAddressStatus: {} };
+      case 'clearSecretCodeVerificationStatus':
+        console.log('VoterStore clearSecretCodeVerificationStatus');
+        return {
+          ...state,
+          secretCodeVerificationStatus: {
+            numberOfTriesRemaining: 5,
+            secretCodeVerified: false,
+            voterMustRequestNewCode: false,
+            voterSecretCodeRequestsLocked: false,
+          },
+        };
       case 'organizationSave':
         // If an organization saves, we want to check to see if it is tied to this voter. If so,
         // refresh the voter data so we have the value linked_organization_we_vote_id in the voter object.
@@ -411,6 +439,7 @@ class VoterStore extends ReduceStore {
             email_address_deleted: action.res.email_address_deleted,
             verification_email_sent: action.res.verification_email_sent,
             link_to_sign_in_email_sent: action.res.link_to_sign_in_email_sent,
+            sign_in_code_email_sent: action.res.sign_in_code_email_sent,
           },
         };
 
@@ -584,6 +613,22 @@ class VoterStore extends ReduceStore {
             interface_status_flags: action.res.interface_status_flags || state.voter.interface_status_flags,
             notification_settings_flags: action.res.notification_settings_flags || state.voter.notification_settings_flags,
             voter_donation_history_list: action.res.voter_donation_history_list || state.voter.voter_donation_history_list,
+          },
+        };
+
+      case 'voterVerifySecretCode':
+        // console.log("VoterStore, voterVerifySecretCode, action.res:", action.res);
+        numberOfTriesRemaining = action.res.number_of_tries_remaining_for_this_code;
+        secretCodeVerified = (action.res.secret_code_verified && action.res.secret_code_verified === true);
+        voterMustRequestNewCode = (action.res.voter_must_request_new_code && action.res.voter_must_request_new_code === true);
+        voterSecretCodeRequestsLocked = (action.res.secret_code_requests_locked && action.res.secret_code_requests_locked === true);
+        return {
+          ...state,
+          secretCodeVerificationStatus: {
+            numberOfTriesRemaining,
+            secretCodeVerified,
+            voterMustRequestNewCode,
+            voterSecretCodeRequestsLocked,
           },
         };
 

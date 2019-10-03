@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -20,11 +21,12 @@ import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 
 class MeasureItemCompressed extends Component {
   static propTypes = {
+    classes: PropTypes.object,
+    externalUniqueId: PropTypes.string,
+    measureWeVoteId: PropTypes.string.isRequired,
     organization: PropTypes.object,
     organizationWeVoteId: PropTypes.string,
     showPositionStatementActionBar: PropTypes.bool,
-    measureWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
     theme: PropTypes.object,
   };
 
@@ -32,6 +34,7 @@ class MeasureItemCompressed extends Component {
     super(props);
     this.state = {
       componentDidMountFinished: false,
+      externalUniqueId: '',
       measureText: '',
       measureWeVoteId: '',
       noVoteDescription: '',
@@ -46,7 +49,7 @@ class MeasureItemCompressed extends Component {
   }
 
   componentDidMount () {
-    const { measureWeVoteId, organization } = this.props;
+    const { externalUniqueId, measureWeVoteId, organization } = this.props;
     const measure = MeasureStore.getMeasure(measureWeVoteId);
     // console.log('componentDidMount, measureWeVoteId: ', measureWeVoteId);
     if (!measure.we_vote_id) {
@@ -65,6 +68,8 @@ class MeasureItemCompressed extends Component {
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       componentDidMountFinished: true,
+      externalUniqueId,
+      localUniqueId: measureWeVoteId,
       measure,
       // measureSubtitle: measure.measure_subtitle,
       measureSupportProps: SupportStore.get(measureWeVoteId),
@@ -92,6 +97,7 @@ class MeasureItemCompressed extends Component {
     }
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
+      localUniqueId: nextProps.measureWeVoteId,
       measure,
       // measureSubtitle: measure.measure_subtitle,
       measureSupportProps: SupportStore.get(nextProps.measureWeVoteId),
@@ -212,7 +218,7 @@ class MeasureItemCompressed extends Component {
   render () {
     // console.log('MeasureItemCompressed render');
     renderLog(__filename);
-    const { noVoteDescription, yesVoteDescription } = this.state;
+    const { externalUniqueId, localUniqueId, noVoteDescription, yesVoteDescription } = this.state;
     let { ballotItemDisplayName } = this.state;
     const { measureText, measureWeVoteId } = this.state;
     if (!measureWeVoteId) {
@@ -285,10 +291,21 @@ class MeasureItemCompressed extends Component {
               <TopCommentByBallotItem
                 ballotItemWeVoteId={measureWeVoteId}
                 childChangeIndicator={yesVoteDescription}
-                learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
                 limitToYes
               >
-                <span>{shortenText(yesVoteDescription, 200)}</span>
+                <span>
+                  {shortenText(yesVoteDescription, 200)}
+                  <Button
+                    id={`measureLearnMoreYesButton-${externalUniqueId}-${localUniqueId}`}
+                    variant="outlined"
+                    color="primary"
+                    className="u-float-right"
+                    classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                  >
+                    more
+                  </Button>
+                </span>
               </TopCommentByBallotItem>
             </ChoiceInfo>
           </Choice>
@@ -305,10 +322,21 @@ class MeasureItemCompressed extends Component {
               <TopCommentByBallotItem
                 ballotItemWeVoteId={measureWeVoteId}
                 childChangeIndicator={noVoteDescription}
-                learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
                 limitToNo
               >
-                <span>{shortenText(noVoteDescription, 200)}</span>
+                <span>
+                  {shortenText(noVoteDescription, 200)}
+                  <Button
+                    id={`measureLearnMoreNoButton-${externalUniqueId}-${localUniqueId}`}
+                    variant="outlined"
+                    color="primary"
+                    className="u-float-right"
+                    classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                  >
+                    more
+                  </Button>
+                </span>
               </TopCommentByBallotItem>
             </ChoiceInfo>
           </Choice>
@@ -321,6 +349,26 @@ class MeasureItemCompressed extends Component {
 }
 
 const styles = theme => ({
+  buttonRoot: {
+    padding: 4,
+    fontSize: 12,
+    width: 60,
+    height: 30,
+    [theme.breakpoints.down('md')]: {
+      width: 60,
+      height: 30,
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: 'fit-content',
+      minWidth: 50,
+      height: 30,
+      padding: '0 8px',
+      fontSize: 10,
+    },
+  },
+  buttonOutlinedPrimary: {
+    background: 'white',
+  },
   cardRoot: {
     padding: '16px 16px 8px 16px',
     [theme.breakpoints.down('lg')]: {

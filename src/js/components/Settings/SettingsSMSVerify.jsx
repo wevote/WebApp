@@ -4,7 +4,13 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import { Dialog, IconButton, DialogContent, Button, InputBase, OutlinedInput } from '@material-ui/core';
+import {
+  Dialog,
+  // IconButton, DialogContent,
+  Button,
+  // InputBase,
+  OutlinedInput,
+} from '@material-ui/core';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
 
 class SettingsSMSVerify extends Component {

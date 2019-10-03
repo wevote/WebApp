@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -10,7 +11,6 @@ import LoadingWheel from './LoadingWheel';
 import { renderLog } from '../utils/logging';
 import VoterActions from '../actions/VoterActions';
 import VoterStore from '../stores/VoterStore';
-// import {FormHelperText} from "@material-ui/core";
 
 class VoterEmailAddressEntry extends Component {
   static propTypes = {
@@ -29,6 +29,7 @@ class VoterEmailAddressEntry extends Component {
         email_address_deleted: false,
         verification_email_sent: false,
         link_to_sign_in_email_sent: false,
+        sign_in_code_email_sent: false,
       },
       voter: VoterStore.getVoter(),
       voterEmailAddress: '',
@@ -49,10 +50,11 @@ class VoterEmailAddressEntry extends Component {
   }
 
   onVoterStoreChange () {
+    const emailAddressStatus = VoterStore.getEmailAddressStatus();
     this.setState({
       voter: VoterStore.getVoter(),
       voterEmailAddressList: VoterStore.getEmailAddressList(),
-      emailAddressStatus: VoterStore.getEmailAddressStatus(),
+      emailAddressStatus,
       loading: false,
     });
   }
@@ -78,38 +80,27 @@ class VoterEmailAddressEntry extends Component {
   }
 
   voterEmailAddressSave = (event) => {
+    console.log('VoterEmailAddressEntry this.voterEmailAddressSave');
     event.preventDefault();
     const sendLinkToSignIn = true;
     VoterActions.voterEmailAddressSave(this.state.voterEmailAddress, sendLinkToSignIn);
     this.setState({ loading: true });
   }
 
-  removeVoterEmailAddress (emailWeVoteId) {
-    VoterActions.removeVoterEmailAddress(emailWeVoteId);
-  }
-
-  resetEmailForm () {
-    this.setState({
-      emailAddressStatus: {
-        email_address_already_owned_by_other_voter: false,
-        email_address_created: false,
-        email_address_deleted: false,
-        verification_email_sent: false,
-        link_to_sign_in_email_sent: false,
-      },
-      loading: false,
-    });
-  }
-
-  sendSignInLinkEmail (event) {
+  sendSignInCodeEmail = (event) => {  // WAS sendSignInLinkEmail
     event.preventDefault();
-    VoterActions.sendSignInLinkEmail(this.state.voterEmailAddress);
+    // WAS: VoterActions.sendSignInLinkEmail(this.state.voterEmailAddress);
+    VoterActions.sendSignInCodeEmail(this.state.voterEmailAddress);
     this.setState({
       emailAddressStatus: {
         email_address_already_owned_by_other_voter: false,
       },
       loading: true,
     });
+  }
+
+  removeVoterEmailAddress (emailWeVoteId) {
+    VoterActions.removeVoterEmailAddress(emailWeVoteId);
   }
 
   sendVerificationEmail (emailWeVoteId) {
@@ -125,43 +116,48 @@ class VoterEmailAddressEntry extends Component {
 
   render () {
     renderLog(__filename);
+    // console.log('VoterEmailAddressEntry render');
     if (this.state.loading) {
       return LoadingWheel;
     }
 
     const { classes } = this.props;
+    const { emailAddressStatus } = this.state;
 
+    const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
     const emailAddressStatusHtml = (
       <span>
-        { this.state.emailAddressStatus.email_address_already_owned_by_other_voter &&
-          !this.state.emailAddressStatus.link_to_sign_in_email_sent ? (
+        { emailAddressStatus.email_address_already_owned_by_other_voter &&
+          !signInLinkOrCodeSent ? (
             <Alert variant="warning">
             That email is already being used by another account.
               <br />
               <br />
-            Please click &quot;Send Login Link in an Email&quot; below to sign into that account.
+            Please click &quot;Send Login Code in an Email&quot; below to sign into that account.
             </Alert>
           ) : null
         }
-        { this.state.emailAddressStatus.email_address_created ||
-        this.state.emailAddressStatus.email_address_deleted ||
-        this.state.emailAddressStatus.email_ownership_is_verified ||
-        this.state.emailAddressStatus.verification_email_sent ||
-        this.state.emailAddressStatus.link_to_sign_in_email_sent ? (
+        { emailAddressStatus.email_address_created ||
+        emailAddressStatus.email_address_deleted ||
+        emailAddressStatus.email_ownership_is_verified ||
+        emailAddressStatus.verification_email_sent ||
+        emailAddressStatus.link_to_sign_in_email_sent ||
+        emailAddressStatus.sign_in_code_email_sent ? (
           <Alert variant="success">
-            { this.state.emailAddressStatus.email_address_created &&
-            !this.state.emailAddressStatus.verification_email_sent ? <span>Your email address was saved. </span> : null }
-            { this.state.emailAddressStatus.email_address_deleted ? <span>Your email address was deleted. </span> : null }
-            { this.state.emailAddressStatus.email_ownership_is_verified ? <span>Your email address was verified. </span> : null }
-            { this.state.emailAddressStatus.verification_email_sent ? <span>Please check your email. A verification email was sent. </span> : null }
-            { this.state.emailAddressStatus.link_to_sign_in_email_sent ? <span>Please check your email. A sign in link was sent. </span> : null }
+            { emailAddressStatus.email_address_created &&
+            !emailAddressStatus.verification_email_sent ? <span>Your email address was saved. </span> : null }
+            { emailAddressStatus.email_address_deleted ? <span>Your email address was deleted. </span> : null }
+            { emailAddressStatus.email_ownership_is_verified ? <span>Your email address was verified. </span> : null }
+            { emailAddressStatus.verification_email_sent ? <span>Please check your email. A verification email was sent. </span> : null }
+            { emailAddressStatus.link_to_sign_in_email_sent ? <span>Please check your email. A sign in link was sent. </span> : null }
+            { emailAddressStatus.sign_in_code_email_sent ? <span>Please check your email. A sign in verification code was sent. </span> : null }
           </Alert>
           ) : null
         }
       </span>
     );
 
-    let enterEmailTitle = 'Sign in with Email Link';
+    let enterEmailTitle = 'Sign in with Email';
     // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
     //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
     if (this.state.voter && this.state.voter.is_signed_in) {
@@ -179,7 +175,7 @@ class VoterEmailAddressEntry extends Component {
           {' '}
           {/* enterEmailExplanation */}
         </div>
-        <form className="form-inline" onSubmit={this.voterEmailAddressSave.bind(this)}>
+        <form className="form-inline">
           <Paper className={classes.root} elevation={1}>
             <Mail />
             <InputBase
@@ -195,11 +191,11 @@ class VoterEmailAddressEntry extends Component {
           <Button
             color="primary"
             id="voterEmailAddressEntrySendMagicLink"
-            onClick={this.voterEmailAddressSave}
+            onClick={this.sendSignInCodeEmail}
             variant="contained"
             className={classes.button}
           >
-            SEND SIGN IN LINK
+            Email Verification Code
           </Button>
         </form>
       </div>
@@ -318,8 +314,9 @@ class VoterEmailAddressEntry extends Component {
     });
 
     return (
-      <div className="">
+      <Wrapper>
         {emailAddressStatusHtml}
+        <div className="u-stack--sm">{ enterEmailHtml }</div>
         {verifiedEmailsFound ? (
           <div>
             <span className="h3">Your Emails</span>
@@ -372,8 +369,7 @@ class VoterEmailAddressEntry extends Component {
           </div>
         ) :
           null }
-        <div className="u-stack--sm">{ enterEmailHtml }</div>
-      </div>
+      </Wrapper>
     );
   }
 }
@@ -397,5 +393,9 @@ const styles = {
     padding: '12px',
   },
 };
+
+const Wrapper = styled.div`
+  margin-top: 32px;
+`;
 
 export default withStyles(styles)(VoterEmailAddressEntry);
