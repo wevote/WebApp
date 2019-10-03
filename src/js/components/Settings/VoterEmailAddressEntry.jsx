@@ -7,10 +7,10 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Mail from '@material-ui/icons/Mail';
 import InputBase from '@material-ui/core/InputBase';
-import LoadingWheel from './LoadingWheel';
-import { renderLog } from '../utils/logging';
-import VoterActions from '../actions/VoterActions';
-import VoterStore from '../stores/VoterStore';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import VoterActions from '../../actions/VoterActions';
+import VoterStore from '../../stores/VoterStore';
 
 class VoterEmailAddressEntry extends Component {
   static propTypes = {

@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import { hasIPhoneNotch, isIOS, isCordova } from '../../utils/cordovaUtils';
 
-class SettingsSMSVerify extends Component {
+class SettingsVerifySecretCode extends Component {
   static propTypes = {
     classes: PropTypes.object,
     show: PropTypes.bool,
@@ -377,5 +377,5 @@ const InputContainer = styled.div`
   margin-top: ${props => (props.condensed ? '16px' : '32px')};
 `;
 
-export default withStyles(styles)(SettingsSMSVerify);
+export default withStyles(styles)(SettingsVerifySecretCode);
 
