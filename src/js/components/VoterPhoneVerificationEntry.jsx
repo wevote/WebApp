@@ -24,6 +24,7 @@ class VoterPhoneVerificationEntry extends Component {
     this.state = {
       voterPhoneNumber: '',
       showVerifyModal: false,
+      showError: false,
     };
 
     this.onPhoneNumberChange = this.onPhoneNumberChange.bind(this);
@@ -54,7 +55,9 @@ class VoterPhoneVerificationEntry extends Component {
   onSubmit () {
     const regex = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/;
     if (regex.test(this.state.voterPhoneNumber)) {
-      this.setState({ showVerifyModal: true });
+      this.setState({ showVerifyModal: true, showError: false });
+    } else {
+      this.setState({ showError: true });
     }
   }
 
@@ -69,7 +72,7 @@ class VoterPhoneVerificationEntry extends Component {
     }
 
     const { classes } = this.props;
-    const { showVerifyModal, voterPhoneNumber } = this.state;
+    const { showVerifyModal, voterPhoneNumber, showError } = this.state;
 
     return (
       <Wrapper>
@@ -77,6 +80,11 @@ class VoterPhoneVerificationEntry extends Component {
           <strong>
             Sign in with SMS Phone Number
           </strong>
+          {showError ? (
+            <Error>
+              Please enter a valid phone number.
+            </Error>
+          ) : null}
           {' '}
         </div>
         <form className="form-inline">
@@ -135,6 +143,11 @@ const styles = {
 
 const Wrapper = styled.div`
   margin-top: 32px;
+`;
+
+const Error = styled.div`
+  color: rgb(255, 73, 34);
+  font-size: 14px;
 `;
 
 export default withStyles(styles)(VoterPhoneVerificationEntry);

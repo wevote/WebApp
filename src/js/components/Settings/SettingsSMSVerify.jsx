@@ -172,7 +172,7 @@ class SettingsSMSVerify extends Component {
 
   render () {
     const { classes } = this.props;
-    const { voterPhoneNumber, condensed } = this.state;
+    const { voterPhoneNumber, condensed, digit1, digit2, digit3, digit4, digit5, digit6 } = this.state;
 
     return (
       <Dialog
@@ -244,7 +244,7 @@ class SettingsSMSVerify extends Component {
             </InputContainer>
           </TextContainer>
           <ButtonsContainer condensed={condensed}>
-            <Button classes={{ root: classes.button }} color="primary">VERIFY</Button>
+            <Button disabled={digit1 === '' || digit2 === '' || digit3 === '' || digit4 === '' || digit5 === '' || digit6 === ''} classes={{ root: classes.verifyButton }} fullWidth color="primary" variant="contained">VERIFY</Button>
             <Button classes={{ root: classes.button }} color="primary">RESEND SMS</Button>
             <Button classes={{ root: classes.button }} color="primary">CHANGE PHONE NUMBER</Button>
           </ButtonsContainer>
@@ -308,6 +308,9 @@ const styles = () => ({
     width: '100%',
     border: '1px solid #ddd',
     fontWeight: 'bold',
+    margin: '6px 0',
+  },
+  verifyButton: {
     margin: '6px 0',
   },
 });
