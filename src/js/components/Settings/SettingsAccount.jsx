@@ -17,10 +17,10 @@ import { oAuthLog, renderLog } from '../../utils/logging';
 import TwitterActions from '../../actions/TwitterActions';
 import TwitterSignIn from '../Twitter/TwitterSignIn';
 import VoterActions from '../../actions/VoterActions';
-import VoterEmailAddressEntry from '../VoterEmailAddressEntry';
+import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
-import VoterPhoneVerificationEntry from '../VoterPhoneVerificationEntry';
+import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
 
 const debugMode = false;
 

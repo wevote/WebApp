@@ -7,11 +7,11 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Phone from '@material-ui/icons/Phone';
 import InputBase from '@material-ui/core/InputBase';
-import LoadingWheel from './LoadingWheel';
-import { renderLog } from '../utils/logging';
-import VoterActions from '../actions/VoterActions';
-import VoterStore from '../stores/VoterStore';
-import SettingsSMSVerify from './Settings/SettingsSMSVerify';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import VoterActions from '../../actions/VoterActions';
+import VoterStore from '../../stores/VoterStore';
+import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 // import {FormHelperText} from "@material-ui/core";
 
 class VoterPhoneVerificationEntry extends Component {
@@ -110,7 +110,7 @@ class VoterPhoneVerificationEntry extends Component {
           </Button>
         </form>
         {showVerifyModal ? (
-          <SettingsSMSVerify
+          <SettingsVerifySecretCode
             show={showVerifyModal}
             toggleFunction={this.closeVerifyModal}
             voterPhoneNumber={voterPhoneNumber}

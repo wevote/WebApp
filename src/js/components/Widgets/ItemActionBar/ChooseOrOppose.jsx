@@ -10,7 +10,7 @@ import PositionPublicToggle from '../PositionPublicToggle';
 import Slides from './Slides';
 import TwitterSignIn from '../../Twitter/TwitterSignIn';
 import FacebookSignIn from '../../Facebook/FacebookSignIn';
-import VoterEmailAddressEntry from '../../VoterEmailAddressEntry';
+import VoterEmailAddressEntry from '../../Settings/VoterEmailAddressEntry';
 
 class ChooseOrOppose extends Component {
   static propTypes = {
