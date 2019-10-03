@@ -11,13 +11,14 @@ import {
   // InputBase,
   OutlinedInput,
 } from '@material-ui/core';
-import { hasIPhoneNotch, isIOS, isCordova, isCordovaButNotATablet } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isIOS, isCordova } from '../../utils/cordovaUtils';
 
 class SettingsSMSVerify extends Component {
   static propTypes = {
     classes: PropTypes.object,
     show: PropTypes.bool,
     toggleFunction: PropTypes.func,
+    voterPhoneNumber: PropTypes.string,
   };
 
   constructor (props) {
