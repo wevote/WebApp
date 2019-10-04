@@ -113,7 +113,7 @@
     "react-toastify": "^3.4.3",
     "react-toggle": "^4.0.2",
     "react-transition-group": "^2.9.0",
-    "snyk": "^1.198.0",
+    "snyk": "^1.230.5",
     "styled-components": "^4.3.2",
     "superagent": "^3.8.3"
   },
