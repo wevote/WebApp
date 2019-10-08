@@ -831,8 +831,11 @@ const VoterChoiceWrapper = styled.div`
 `;
 
 const PopoverWrapper = styled.div`
-  width: 100%;
+  width: calc(100% + 24px);
   height: 100%;
+  position: relative;
+  right: 12px;
+  bottom: 8px;
   border-radius: 3px;
 `;
 
