@@ -15,12 +15,14 @@ import VoterStore from '../../stores/VoterStore';
 class VoterEmailAddressEntry extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    inModal: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      loading: true,
+      disableEmailVerificationButton: false,
+      displayEmailVerificationButton: false,
       editEmailsToVerifyOn: false,
       editVerifiedEmailsOn: false,
       emailAddressStatus: {
@@ -31,6 +33,7 @@ class VoterEmailAddressEntry extends Component {
         link_to_sign_in_email_sent: false,
         sign_in_code_email_sent: false,
       },
+      loading: true,
       voter: VoterStore.getVoter(),
       voterEmailAddress: '',
       voterEmailAddressList: [],
@@ -80,7 +83,7 @@ class VoterEmailAddressEntry extends Component {
   }
 
   voterEmailAddressSave = (event) => {
-    console.log('VoterEmailAddressEntry this.voterEmailAddressSave');
+    // console.log('VoterEmailAddressEntry this.voterEmailAddressSave');
     event.preventDefault();
     const sendLinkToSignIn = true;
     VoterActions.voterEmailAddressSave(this.state.voterEmailAddress, sendLinkToSignIn);
@@ -97,6 +100,22 @@ class VoterEmailAddressEntry extends Component {
       },
       loading: true,
     });
+  }
+
+  displayEmailVerificationButton = () => {
+    this.setState({
+      displayEmailVerificationButton: true,
+    });
+  }
+
+  hideEmailVerificationButton = () => {
+    const { voterEmailAddress } = this.state;
+    if (!voterEmailAddress) {
+      // Only hide if no email entered
+      this.setState({
+        displayEmailVerificationButton: false,
+      });
+    }
   }
 
   removeVoterEmailAddress (emailWeVoteId) {
@@ -122,7 +141,7 @@ class VoterEmailAddressEntry extends Component {
     }
 
     const { classes } = this.props;
-    const { emailAddressStatus } = this.state;
+    const { disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus } = this.state;
 
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
     const emailAddressStatusHtml = (
@@ -184,19 +203,25 @@ class VoterEmailAddressEntry extends Component {
               name="voter_email_address"
               id="enterVoterEmailAddress"
               value={this.state.voterEmailAddress}
+              onBlur={this.hideEmailVerificationButton}
               onChange={this.updateVoterEmailAddress}
+              onFocus={this.displayEmailVerificationButton}
               placeholder="Type email here..."
             />
           </Paper>
-          <Button
-            color="primary"
-            id="voterEmailAddressEntrySendMagicLink"
-            onClick={this.sendSignInCodeEmail}
-            variant="contained"
-            className={classes.button}
-          >
-            Email Verification Code
-          </Button>
+          {displayEmailVerificationButton && (
+            <Button
+              className={classes.button}
+              color="primary"
+              disabled={disableEmailVerificationButton}
+              id="voterEmailAddressEntrySendMagicLink"
+              onClick={this.sendSignInCodeEmail}
+              variant="contained"
+            >
+              Email Verification Code
+            </Button>
+          )
+          }
         </form>
       </div>
     );
@@ -225,15 +250,14 @@ class VoterEmailAddressEntry extends Component {
             <div className="position-item card-child">
               <span><strong>{voterEmailAddressFromList.normalized_email_address}</strong></span>
 
-              {isPrimaryEmailAddress ? (
+              {isPrimaryEmailAddress && (
                 <span>
                   <span>&nbsp;&nbsp;&nbsp;</span>
                 Primary email
                 </span>
-              ) : null
-              }
+              )}
             </div>
-            {this.state.editVerifiedEmailsOn && !isPrimaryEmailAddress ? (
+            {this.state.editVerifiedEmailsOn && !isPrimaryEmailAddress && (
               <div className="position-item card-child">
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 {isPrimaryEmailAddress ?
@@ -248,17 +272,15 @@ class VoterEmailAddressEntry extends Component {
                     </span>
                   )}
                 <span>&nbsp;&nbsp;&nbsp;</span>
-                {allowRemoveEmail ? (
+                {allowRemoveEmail && (
                   <a // eslint-disable-line
                     onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
                   >
                     Remove Email
                   </a>
-                ) : null
-                }
+                )}
               </div>
-            ) : null
-            }
+            )}
           </div>
         );
       } else {
@@ -282,7 +304,7 @@ class VoterEmailAddressEntry extends Component {
               <span>&nbsp;&nbsp;&nbsp;</span>
               <span>To Be Verified</span>
             </div>
-            {this.state.editEmailsToVerifyOn ? (
+            {this.state.editEmailsToVerifyOn && (
               <div className="position-item card-child">
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 {voterEmailAddressFromList.email_ownership_is_verified ?
@@ -295,17 +317,15 @@ class VoterEmailAddressEntry extends Component {
                   )}
 
                 <span>&nbsp;&nbsp;&nbsp;</span>
-                {allowRemoveEmail ? (
+                {allowRemoveEmail && (
                   <a // eslint-disable-line
                     onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
                   >
                     Remove Email
                   </a>
-                ) : null
-                }
+                )}
               </div>
-            ) : null
-            }
+            )}
           </div>
         );
       } else {
@@ -317,7 +337,7 @@ class VoterEmailAddressEntry extends Component {
       <Wrapper>
         {emailAddressStatusHtml}
         <div className="u-stack--sm">{ enterEmailHtml }</div>
-        {verifiedEmailsFound ? (
+        {verifiedEmailsFound && !this.props.inModal && (
           <div>
             <span className="h3">Your Emails</span>
             { this.state.editVerifiedEmailsOn ? (
@@ -343,10 +363,9 @@ class VoterEmailAddressEntry extends Component {
             <br />
             {verifiedEmailListHtml}
           </div>
-        ) :
-          null }
+        )}
 
-        {unverifiedEmailsFound ? (
+        {unverifiedEmailsFound && !this.props.inModal && (
           <div>
             <span className="h3">Emails to Verify</span>
             { this.state.editEmailsToVerifyOn ? (
@@ -367,8 +386,7 @@ class VoterEmailAddressEntry extends Component {
             <br />
             {toVerifyEmailListHtml}
           </div>
-        ) :
-          null }
+        )}
       </Wrapper>
     );
   }
