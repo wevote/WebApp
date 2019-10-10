@@ -934,28 +934,48 @@ class PaidAccountUpgradeModal extends Component {
         );
         break;
       case 'paymentProcessed':
-        modalTitle = 'Payment Processed';
+        modalTitle = 'Invoice';
         modalHtmlContents = (
-          <span>
-            Thank you for choosing the
-            {' '}
-            {pricingPlanChosen}
-            {' '}
-            plan! Your payment has been processed, and features have been unlocked.
-            {' '}
-            You paid $
-            {amountPaidViaStripe / 100}
-            .
-            <ButtonsContainer>
+          <Wrapper>
+            <InvoiceItem>
+              <InvoiceTitle>Plan</InvoiceTitle>
+              <InvoiceValue>{pricingPlanChosen}</InvoiceValue>
+            </InvoiceItem>
+            <InvoiceItem>
+              <InvoiceTitle>Amount Paid</InvoiceTitle>
+              <InvoiceValue>
+                $
+                {amountPaidViaStripe / 100}
+              </InvoiceValue>
+            </InvoiceItem>
+            <InvoiceItem>
+              <InvoiceTitle>Period</InvoiceTitle>
+              <InvoiceValue>{numberOfMonthsService === 1 ? 'Monthly' : 'Annually'}</InvoiceValue>
+            </InvoiceItem>
+            <InvoiceItem>
+              <InvoiceTitle>Payment Method</InvoiceTitle>
+              <InvoiceValue>PayPal</InvoiceValue>
+            </InvoiceItem>
+            <InvoiceItem>
+              <InvoiceTitle>Next Invoice</InvoiceTitle>
+              <InvoiceValue>10/10/19</InvoiceValue>
+            </InvoiceItem>
+            <InvoiceButtonsContainer>
+              <Button
+                color="primary"
+                variant="outlined"
+              >
+                Download PDF
+              </Button>
               <Button
                 color="primary"
                 onClick={() => { this.props.toggleFunction(this.state.pathname); }}
                 variant="contained"
               >
-                Continue
+                Back To Settings
               </Button>
-            </ButtonsContainer>
-          </span>
+            </InvoiceButtonsContainer>
+          </Wrapper>
         );
         break;
       case 'activePaidPlanExists':
@@ -1026,7 +1046,7 @@ const styles = () => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     '@media (min-width: 769px)': {
-      maxWidth: '720px',
+      maxWidth: '600px',
       width: '85%',
       minHeight: '95%',
       maxHeight: '95%',
@@ -1370,6 +1390,69 @@ const PriceLabelSubText = styled.span`
   color: ${({ theme }) => theme.colors.main};
   @media (max-width: 569px) {
     font-size: 14px;
+  }
+`;
+
+const Wrapper = styled.div`
+  padding: 12px 30px;
+  @media (max-width: 500px) {
+    padding: 12px 0;
+  }
+`;
+
+const InvoiceItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+  @media (max-width: 500px) {
+    display: block;
+  }
+`;
+
+const InvoiceTitle = styled.div`
+  @media (max-width: 500px) {
+    font-size: 16px;
+  }
+  color: #aaa;
+  font-weight: bold;
+  font-size: 18px;
+`;
+
+const InvoiceValue = styled.div`
+  color: #000;
+  font-weight: bold;
+  font-size: 18px;
+`;
+
+const InvoiceButtonsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 16px;
+  @media(max-width: 500px) {
+    display: block;
+    padding: 0;
+  }
+  padding: 10px;
+  * {
+    width: 50%;
+    @media(max-width: 500px) {
+      width: 100%;
+    }
+  }
+  >:first-child {
+    margin-bottom: 8px;
+    @media(min-width: 501px) {
+      margin: 0 8px 0 0;
+    }
+  }
+  >:last-child {
+    @media(min-width: 501px) {
+      margin: 0 0 0 8px;
+    }
   }
 `;
 
