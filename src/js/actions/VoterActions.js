@@ -54,6 +54,16 @@ export default {
     });
   },
 
+  // This is for sending a 6 digit code that the voter enters in the same
+  // interface where the code is requested
+  sendSignInCodeSMS (voterSMSPhoneNumber) {
+    Dispatcher.loadEndpoint('voterSMSPhoneNumberSave', {
+      sms_phone_number: voterSMSPhoneNumber,
+      send_sign_in_code_sms: true,
+      make_primary_sms_phone_number: true,
+    });
+  },
+
   sendVerificationEmail (voterEmailWeVoteId) {
     Dispatcher.loadEndpoint('voterEmailAddressSave', {
       email_we_vote_id: voterEmailWeVoteId,

@@ -355,7 +355,9 @@ export default class SettingsAccount extends Component {
             ) : null
             }
             <VoterPhoneVerificationEntry />
-            <VoterEmailAddressEntry />
+            <VoterEmailAddressEntry
+              inModal={inModal}
+            />
 
             {debugMode && (
             <div className="text-center">

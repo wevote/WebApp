@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-// import { Alert } from 'react-bootstrap';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { isValidPhoneNumber } from 'react-phone-number-input';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -12,6 +12,7 @@ import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
+// import { Alert } from 'react-bootstrap';
 // import {FormHelperText} from "@material-ui/core";
 
 class VoterPhoneVerificationEntry extends Component {
@@ -22,9 +23,12 @@ class VoterPhoneVerificationEntry extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voterPhoneNumber: '',
+      disablePhoneVerificationButton: true,
+      displayPhoneVerificationButton: false,
       showVerifyModal: false,
       showError: false,
+      voterPhoneNumber: '',
+      voterPhoneNumberIsValid: false,
     };
 
     this.onPhoneNumberChange = this.onPhoneNumberChange.bind(this);
@@ -49,12 +53,45 @@ class VoterPhoneVerificationEntry extends Component {
   }
 
   onPhoneNumberChange (e) {
-    this.setState({ voterPhoneNumber: e.target.value });
+    const invomingVoterPhoneNumber = e.target.value;
+    const voterPhoneNumberWithPlus = `+${invomingVoterPhoneNumber}`;
+    const voterPhoneNumberWithPlusAndOne = `+1${invomingVoterPhoneNumber}`;
+
+    const voterPhoneNumberIsValidRaw = isValidPhoneNumber(invomingVoterPhoneNumber);
+    const voterPhoneNumberIsValidWithPlus = isValidPhoneNumber(voterPhoneNumberWithPlus);
+    const voterPhoneNumberIsValidWithPlusAndOne = isValidPhoneNumber(voterPhoneNumberWithPlusAndOne);
+    const voterPhoneNumberIsValid = voterPhoneNumberIsValidRaw || voterPhoneNumberIsValidWithPlus || voterPhoneNumberIsValidWithPlusAndOne;
+    // console.log('onPhoneNumberChange, invomingVoterPhoneNumber: ', invomingVoterPhoneNumber, ', voterPhoneNumberIsValid:', voterPhoneNumberIsValid);
+    // console.log('voterPhoneNumberWithPlus:', voterPhoneNumberWithPlus);
+    // console.log('voterPhoneNumberWithPlusAndOne:', voterPhoneNumberWithPlusAndOne);
+    this.setState({
+      disablePhoneVerificationButton: !voterPhoneNumberIsValid,
+      voterPhoneNumber: invomingVoterPhoneNumber,
+      voterPhoneNumberIsValid,
+    });
+  }
+
+  displayPhoneVerificationButton = () => {
+    this.setState({
+      displayPhoneVerificationButton: true,
+    });
+  }
+
+  hidePhoneVerificationButton = () => {
+    const { voterPhoneNumber } = this.state;
+    if (!voterPhoneNumber) {
+      // Only hide if no number entered
+      this.setState({
+        displayPhoneVerificationButton: false,
+      });
+    }
   }
 
   onSubmit () {
-    const regex = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/;
-    if (regex.test(this.state.voterPhoneNumber)) {
+    // console.log('onSubmit');
+    const { voterPhoneNumber, voterPhoneNumberIsValid } = this.state;
+    if (voterPhoneNumberIsValid) {
+      VoterActions.sendSignInCodeSMS(voterPhoneNumber);
       this.setState({ showVerifyModal: true, showError: false });
     } else {
       this.setState({ showError: true });
@@ -72,7 +109,7 @@ class VoterPhoneVerificationEntry extends Component {
     }
 
     const { classes } = this.props;
-    const { showVerifyModal, voterPhoneNumber, showError } = this.state;
+    const { disablePhoneVerificationButton, displayPhoneVerificationButton, showError, showVerifyModal, voterPhoneNumber } = this.state;
 
     return (
       <Wrapper>
@@ -95,27 +132,32 @@ class VoterPhoneVerificationEntry extends Component {
               type="phone"
               name="voter_phone_number"
               id="enterVoterPhone"
-              placeholder="Type phone number here..."
+              onBlur={this.hidePhoneVerificationButton}
               onChange={this.onPhoneNumberChange}
+              onFocus={this.displayPhoneVerificationButton}
+              placeholder="Type phone number here..."
             />
           </Paper>
-          <Button
-            color="primary"
-            id="voterPhoneSendSMS"
-            variant="contained"
-            className={classes.button}
-            onClick={this.onSubmit}
-          >
-            SEND VERIFICATION CODE
-          </Button>
+          {displayPhoneVerificationButton && (
+            <Button
+              className={classes.button}
+              color="primary"
+              disabled={disablePhoneVerificationButton}
+              id="voterPhoneSendSMS"
+              onClick={this.onSubmit}
+              variant="contained"
+            >
+              Send Verification Code
+            </Button>
+          )}
         </form>
-        {showVerifyModal ? (
+        {showVerifyModal && (
           <SettingsVerifySecretCode
             show={showVerifyModal}
             toggleFunction={this.closeVerifyModal}
             voterPhoneNumber={voterPhoneNumber}
           />
-        ) : null}
+        )}
       </Wrapper>
     );
   }
