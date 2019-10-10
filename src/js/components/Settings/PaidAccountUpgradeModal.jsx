@@ -68,7 +68,7 @@ class PaidAccountUpgradeModal extends Component {
         success: false,
       },
       pathname: undefined,
-      paidAccountProcessStep: 'paymentProcessed',
+      paidAccountProcessStep: 'choosePlan',
       pricingPlanChosen: undefined,
       radioGroupValue: 'annualPlanRadio',
       couponCodeInputValue: '',
