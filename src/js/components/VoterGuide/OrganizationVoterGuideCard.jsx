@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -13,7 +14,7 @@ import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDispl
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
-export default class OrganizationVoterGuideCard extends Component {
+class OrganizationVoterGuideCard extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
     is_voter_owner: PropTypes.bool,
@@ -53,11 +54,13 @@ export default class OrganizationVoterGuideCard extends Component {
     const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
 
     return (
-      <div className="card-main">
+      <CardMain>
         { organizationPhotoUrlLarge ? (
-          <Link to={voterGuideLink} className="u-no-underline">
-            <img src={organizationPhotoUrlLarge} height="180" />
-          </Link>
+          <ProfileAvatar>
+            <Link to={voterGuideLink} className="u-no-underline">
+              <img src={organizationPhotoUrlLarge} height="180" />
+            </Link>
+          </ProfileAvatar>
         ) : null
         }
         <br />
@@ -130,7 +133,23 @@ export default class OrganizationVoterGuideCard extends Component {
             </span> :
           null
         */}
-      </div>
+      </CardMain>
     );
   }
 }
+
+const ProfileAvatar = styled.div`
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  position: relative;
+`;
+
+const CardMain = styled.div`
+  border: 1px solid #fff;
+  padding: 16px 16px 8px;
+  font-size: 14px;
+  position: relative;
+`;
+
+export default OrganizationVoterGuideCard;
