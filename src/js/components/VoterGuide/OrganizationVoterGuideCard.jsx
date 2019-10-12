@@ -58,7 +58,7 @@ class OrganizationVoterGuideCard extends Component {
         { organizationPhotoUrlLarge ? (
           <ProfileAvatar>
             <Link to={voterGuideLink} className="u-no-underline">
-              <img src={organizationPhotoUrlLarge} height="180" />
+              <img src={organizationPhotoUrlLarge} height="180" alt={`${displayName}`} />
             </Link>
           </ProfileAvatar>
         ) : null
