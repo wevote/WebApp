@@ -106,7 +106,12 @@ class BallotSearch extends Component {
     const { classes, theme, isSearching, alwaysOpen } = this.props;
     const { searchValue, showCloser } = this.state;
     return (
-      <SearchWrapper searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main} isCordova={isCordova()}>
+      <SearchWrapper
+        searchOpen={isSearching || alwaysOpen}
+        brandBlue={theme.palette.primary.main}
+        isCordova={isCordova()}
+        isSearching={isSearching}
+      >
         <IconButton
           classes={{ root: classes.iconButtonRoot }}
           onClick={!alwaysOpen ? this.toggleSearch : undefined}
@@ -201,7 +206,7 @@ const SearchWrapper = styled.div`
   flex-flow: row;
   border-radius: 4px;
   height: 26px;
-  border: 1px solid rgba(0, 0, 0, .3);
+  border: 1px solid ${({ isSearching, brandBlue }) => (isSearching ? brandBlue : '#ccc')};
   padding: 0 3px 0 3px;
   margin-right: 16px;
   margin-bottom: 8px;

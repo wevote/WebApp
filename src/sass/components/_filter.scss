@@ -14,9 +14,8 @@ $text-margin: auto 0;
   user-select: none;
   display: flex;
   flex-flow: row;
-  height: 36px;
+  height: 26px;
   @include breakpoints (0 medium) {
-    height: 24px;
     margin-right: $filter-margin-right-mobile;
   }
   white-space: nowrap;
@@ -48,7 +47,8 @@ $text-margin: auto 0;
 }
 
 .listFilterSelected {
-  background: rgb(137, 237, 159);
+  background: rgb(31, 192, 111);
+  color: $white;
 }
 
 .groupedFilter {
