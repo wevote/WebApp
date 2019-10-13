@@ -298,7 +298,7 @@ const Wrapper = styled.div`
 
 const FilterTop = styled.div`
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   // overflow-x: scroll;
   padding: 0.7rem 0;
 `;

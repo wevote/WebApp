@@ -142,9 +142,6 @@ class BallotSearch extends Component {
 const styles = theme => ({
   searchRoot: {
     height: 26,
-    [theme.breakpoints.down('md')]: {
-      height: 22.5,
-    },
   },
   iconButtonRoot: {
     padding: 0,
@@ -173,7 +170,7 @@ const styles = theme => ({
       fontSize: 'inherit',
     },
     [theme.breakpoints.down('sm')]: {
-      width: '40%',
+      width: '68vw',
       fontSize: 'inherit',
     },
   },
@@ -211,8 +208,7 @@ const SearchWrapper = styled.div`
   margin-right: 16px;
   margin-bottom: 8px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    height: 22.5px;
-    margin-right: 4px;
+    margin-right: 8px;
   }
 `;
 

@@ -17,6 +17,7 @@ $text-margin: auto 0;
   height: 26px;
   @include breakpoints (0 medium) {
     margin-right: $filter-margin-right-mobile;
+    margin-bottom: $radius-md;
   }
   white-space: nowrap;
   cursor: pointer;
