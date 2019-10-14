@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { Link } from 'react-router';
 import Button from '@material-ui/core/Button';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -288,9 +289,9 @@ export default class OrganizationVoterGuide extends Component {
     }
 
     return (
-      <div>
+      <Wrapper>
         {/* Header Banner Spacing for Desktop */}
-        <div className="col-md-12 d-none d-sm-block d-print-none">
+        <BannerContainer>
           { organizationBannerUrl !== '' ? (
             <div className="organization-banner-image-div d-print-none">
               <img className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
@@ -298,7 +299,7 @@ export default class OrganizationVoterGuide extends Component {
           ) :
             <div className="organization-banner-image-non-twitter-users" />
           }
-        </div>
+        </BannerContainer>
         {/* Header Banner Spacing for Mobile */}
         <div className="d-block d-sm-none d-print-none">
           { organizationBannerUrl !== '' ? (
@@ -337,12 +338,14 @@ export default class OrganizationVoterGuide extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="d-none d-sm-block col-md-4">
-              <div className="card">
-                <div className="card-main">
-                  <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={isVoterOwner} />
+              <CardContainer>
+                <div className="card">
+                  <div className="card-main">
+                    <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={isVoterOwner} />
+                  </div>
+                  <br />
                 </div>
-                <br />
-              </div>
+              </CardContainer>
             </div>
 
             <div className="col-12 col-md-8">
@@ -356,7 +359,34 @@ export default class OrganizationVoterGuide extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </Wrapper>
     );
   }
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-flow: column;
+`;
+
+const BannerContainer = styled.div`
+  display: block;
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    align-self: flex-end;
+    width: 640px;
+    display: flex;
+    padding: 0 15px;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.md - 1}) {
+    display: none;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    display: none;
+  }
+`;
+
+const CardContainer = styled.div`
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    margin-top: -203px;
+  }
+`;

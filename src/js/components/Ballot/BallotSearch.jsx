@@ -106,7 +106,12 @@ class BallotSearch extends Component {
     const { classes, theme, isSearching, alwaysOpen } = this.props;
     const { searchValue, showCloser } = this.state;
     return (
-      <SearchWrapper searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main} isCordova={isCordova()}>
+      <SearchWrapper
+        searchOpen={isSearching || alwaysOpen}
+        brandBlue={theme.palette.primary.main}
+        isCordova={isCordova()}
+        isSearching={isSearching}
+      >
         <IconButton
           classes={{ root: classes.iconButtonRoot }}
           onClick={!alwaysOpen ? this.toggleSearch : undefined}
@@ -137,9 +142,6 @@ class BallotSearch extends Component {
 const styles = theme => ({
   searchRoot: {
     height: 26,
-    [theme.breakpoints.down('md')]: {
-      height: 22.5,
-    },
   },
   iconButtonRoot: {
     padding: 0,
@@ -161,11 +163,15 @@ const styles = theme => ({
   input: {
     padding: 0,
     marginLeft: 8,
-    width: '50vw',
+    width: 350,
     transition: 'all ease-in 150ms',
     [theme.breakpoints.down('md')]: {
-      width: '60vw',
-      fontSize: 14,
+      width: '50%',
+      fontSize: 'inherit',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '68vw',
+      fontSize: 'inherit',
     },
   },
   inputHidden: {
@@ -197,13 +203,12 @@ const SearchWrapper = styled.div`
   flex-flow: row;
   border-radius: 4px;
   height: 26px;
-  border: 1px solid rgba(0, 0, 0, .3);
+  border: 1px solid ${({ isSearching, brandBlue }) => (isSearching ? brandBlue : '#ccc')};
   padding: 0 3px 0 3px;
   margin-right: 16px;
   margin-bottom: 8px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    height: 22.5px;
-    margin-right: 4px;
+    margin-right: 8px;
   }
 `;
 
