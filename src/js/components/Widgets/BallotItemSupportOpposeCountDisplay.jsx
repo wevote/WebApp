@@ -839,7 +839,7 @@ const PopoverWrapper = styled.div`
 const PopoverHeader = styled.div`
   background: ${({ theme }) => theme.colors.brandBlue};
   padding: 4px 8px;
-  height: 35px;
+  min-height: 35px;
   color: white;
   display: flex;
   justify-content: flex-start;
@@ -852,7 +852,7 @@ const PopoverHeader = styled.div`
 const PopoverTitleText = styled.div`
   font-size: 14px;
   font-weight: bold;
-  margin-left: 8px;
+  margin-right: 20px;
 `;
 
 const PopoverBody = styled.div`
