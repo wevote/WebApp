@@ -104,6 +104,7 @@ const styles = () => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     padding: '8px 0 !important',
+    width: '100%',
     // },
   },
 });

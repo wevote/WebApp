@@ -36,7 +36,7 @@ class BallotSummaryFooterItem extends Component {
         {children.map((child) => {
           if (child && child.props && child.props.label) {
             return (
-              <Column className="col col-4">
+              <Column className="col col-12 col-md-4">
                 <Card>
                   <Title>{child.props.label}</Title>
                   <Body>{child.props.children}</Body>
@@ -61,17 +61,35 @@ class BallotSummaryFooterItem extends Component {
 }
 
 const styles = () => ({
-
+  button: {
+    position: 'absolute',
+    width: '100%',
+    left: 0,
+    bottom: 0,
+    border: '1px solid #ddd',
+    borderRadius: '3px !important',
+    borderBottom: 'none !important',
+    borderRight: 'none !important',
+    borderLeft: 'none !important',
+    borderTopRightRadius: '0 !important',
+    borderTopLeftRadius: '0 !important',
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
 });
 
 const Column = styled.div`
   padding: 0 8px !important;
+  margin-bottom: 12px;
 `;
 
 const Card = styled.div`
   border-radius: 3px;
   border: 1px solid #ddd;
   padding: 16px;
+  position: relative;
+  padding-bottom: 52px;
+  height: 100%;
 `;
 
 const Title = styled.div`
