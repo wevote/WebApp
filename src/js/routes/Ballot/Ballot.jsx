@@ -800,6 +800,10 @@ class Ballot extends Component {
     });
   }
 
+  setRaceLevelFilterType (type) {
+    this.setState({ raceLevelFilterType: type });
+  }
+
   render () {
     // console.log('Ballot render');
     renderLog(__filename);
@@ -1047,6 +1051,7 @@ class Ballot extends Component {
                         ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
                         ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
                         raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
+                        setActiveRaceItem={(type) => this.setRaceLevelFilterType(type)}
                       />
                     </div>
                   </div>

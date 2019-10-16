@@ -40,7 +40,7 @@ class BallotSummaryFooterItem extends Component {
                 <Card>
                   <Title>{child.props.label}</Title>
                   <Body>{child.props.children}</Body>
-                  <Button variant="outlined" classes={{ root: classes.button }}>
+                  <Button onClick={() => this.props.setActiveRaceItem(child.props.label)} variant="outlined" classes={{ root: classes.button }}>
                     Show all
                     {' '}
                     {child.props.label}
