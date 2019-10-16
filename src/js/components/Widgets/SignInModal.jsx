@@ -36,11 +36,17 @@ class SignInModal extends Component {
   }
 
   onVoterStoreChange () {
-    const voter = VoterStore.getVoter();
-    this.setState({
-      voter,
-      voterIsSignedIn: voter.is_signed_in,
-    });
+    const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
+    const { secretCodeVerified } = secretCodeVerificationStatus;
+    if (secretCodeVerified) {
+      this.props.toggleFunction();
+    } else {
+      const voter = VoterStore.getVoter();
+      this.setState({
+        voter,
+        voterIsSignedIn: voter.is_signed_in,
+      });
+    }
   }
 
   render () {
@@ -77,7 +83,7 @@ class SignInModal extends Component {
             <div className="text-center">
               {voter && voterIsSignedIn ? (
                 <div>
-                  <div className="u-f2">You are already signed in.</div>
+                  <div className="u-f2">You are signed in.</div>
                 </div>
               ) : (
                 <div>

@@ -20,7 +20,7 @@ import VoterActions from '../../actions/VoterActions';
 import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
-import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
+// import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
 
 const debugMode = false;
 
@@ -66,6 +66,10 @@ export default class SettingsAccount extends Component {
     cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
     const oneDayExpires = 86400;
     let pathname = '';
+
+    VoterActions.voterRetrieve();
+    VoterActions.clearEmailAddressStatus();
+    VoterActions.clearSecretCodeVerificationStatus();
 
     const getStartedMode = AppStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
@@ -129,8 +133,8 @@ export default class SettingsAccount extends Component {
     const emailAddressStatus = VoterStore.getEmailAddressStatus();
     const inEmailCodeVerificationProcess = (emailAddressStatus.sign_in_code_email_sent);
     this.setState({
-      voter: VoterStore.getVoter(),
       inEmailCodeVerificationProcess,
+      voter: VoterStore.getVoter(),
     });
   }
 
@@ -203,8 +207,8 @@ export default class SettingsAccount extends Component {
     }
 
     const { inModal } = this.props;
-    const { facebookAuthResponse, inEmailCodeVerificationProcess, inTextCodeVerificationProcess, isOnWeVoteRootUrl, isOnWeVoteSubDomainUrl, isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
-    const { voterIsSignedIn, voterIsSignedInFacebook, voterIsSignedInTwitter, voterIsSignedInWithEmail } = this.state.voter;
+    const { facebookAuthResponse, isOnWeVoteRootUrl, isOnWeVoteSubDomainUrl, isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
+    const { is_signed_in: voterIsSignedIn, signed_in_facebook: voterIsSignedInFacebook, signed_in_twitter: voterIsSignedInTwitter, signed_in_with_email: voterIsSignedInWithEmail } = this.state.voter;
     // console.log("SignIn.jsx facebookAuthResponse:", facebookAuthResponse);
     if (!voterIsSignedInFacebook && facebookAuthResponse && facebookAuthResponse.facebook_retrieve_attempted) {
       // console.log('SignIn.jsx facebook_retrieve_attempted');
@@ -213,12 +217,6 @@ export default class SettingsAccount extends Component {
 
       // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
       return LoadingWheel;
-    }
-
-    if (inEmailCodeVerificationProcess) {
-      return <span onClick={this.toggleInEmailCodeVerificationProcess}>inEmailCodeVerificationProcess (click to go back)</span>;
-    } else if (inTextCodeVerificationProcess) {
-      return <span onClick={this.toggleInTextCodeVerificationProcess}>inTextCodeVerificationProcess (click to go back)</span>;
     }
 
     let pageTitle = 'Sign In - We Vote';
@@ -354,7 +352,7 @@ export default class SettingsAccount extends Component {
               </div>
             ) : null
             }
-            <VoterPhoneVerificationEntry />
+            {/* <VoterPhoneVerificationEntry /> */}
             <VoterEmailAddressEntry
               inModal={inModal}
             />

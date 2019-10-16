@@ -86,11 +86,6 @@ export default {
     Dispatcher.loadEndpoint('twitterRetrieveIdsIFollow', {});
   },
 
-  voterVerifySecretCode (secretCode) {
-    // console.log("VoterActions, voterVerifySecretCode");
-    Dispatcher.loadEndpoint('voterVerifySecretCode', { secret_code: secretCode });
-  },
-
   voterAddressRetrieve (id) {
     // console.log("VoterActions, voterAddressRetrieve");
     Dispatcher.loadEndpoint('voterAddressRetrieve', { voter_device_id: id });
@@ -263,5 +258,10 @@ export default {
       {
         split_off_twitter: true,
       });
+  },
+
+  voterVerifySecretCode (secretCode) {
+    // console.log("VoterActions, voterVerifySecretCode");
+    Dispatcher.loadEndpoint('voterVerifySecretCode', { secret_code: secretCode });
   },
 };
