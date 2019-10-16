@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import {Button, withStyles} from '@material-ui/core';
 
 class BallotSummaryFooterItem extends Component {
   static propTypes = {
     children: PropTypes.instanceOf(Object).isRequired,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -26,7 +28,7 @@ class BallotSummaryFooterItem extends Component {
   render () {
     // console.log('BallotSummaryFooterItem render');
     const {
-      props: { children },
+      props: { children, classes },
     } = this;
 
     return (
@@ -38,6 +40,13 @@ class BallotSummaryFooterItem extends Component {
                 <Card>
                   <Title>{child.props.label}</Title>
                   <Body>{child.props.children}</Body>
+                  <Button variant="outlined" classes={{ root: classes.button }}>
+                    Show all
+                    {' '}
+                    {child.props.label}
+                    {' '}
+                    Items
+                  </Button>
                 </Card>
               </Column>
             );
@@ -50,6 +59,10 @@ class BallotSummaryFooterItem extends Component {
     );
   }
 }
+
+const styles = () => ({
+
+});
 
 const Column = styled.div`
   padding: 0 8px !important;
@@ -71,4 +84,4 @@ const Body = styled.div`
   width: 100%;
 `;
 
-export default BallotSummaryFooterItem;
+export default withStyles(styles)(BallotSummaryFooterItem);

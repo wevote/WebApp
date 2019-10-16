@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { Link } from 'react-router';
 import ListItem from '@material-ui/core/ListItem';
 import { Button } from '@material-ui/core';
@@ -35,9 +36,9 @@ class BallotSideBarLink extends Component {
       <>
         {this.props.plainTextLink ? (
           <Link id={this.props.id} to={this.props.url}>
-            <Button
-              classes={{ root: classes.button }}
-              variant="text"
+            <button
+              className={classes.button}
+              type="button"
               onClick={() => {
                 this.props.onClick.bind(this);
                 if (this.props.ballotItemLinkHasBeenClicked && this.props.url) {
@@ -48,14 +49,14 @@ class BallotSideBarLink extends Component {
                 }
               }}
             >
-              <span>{shortenText(labelInSentenceCase, 26)}</span>
+              <span>{labelInSentenceCase}</span>
               { this.props.displaySubtitles ? (
-                <span className="BallotItem__summary__item__subtitle">
+                <span>
                   {' '}
-                  {shortenText(subtitleInSentenceCase, 26)}
+                  {subtitleInSentenceCase}
                 </span>
               ) : null }
-            </Button>
+            </button>
           </Link>
         ) : (
           <Link id={this.props.id} to={this.props.url} className="BallotItem__summary__item__display-name">
@@ -95,7 +96,23 @@ const styles = () => ({
     paddingLeft: 0,
     paddingRight: 0,
     textTransform: 'capitalize',
+    border: 'none',
+    textDecoration: 'underline',
+    // '* span': {
+    maxWidth: '100%',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    padding: '8px 0 !important',
+    // },
   },
 });
+
+// const SubtitleContainer = styled.div`
+//   max-width: 100%;
+//   text-overflow: ellipsis;
+//   white-space: nowrap;
+//   overflow: hidden;
+// `;
 
 export default withStyles(styles)(BallotSideBarLink);

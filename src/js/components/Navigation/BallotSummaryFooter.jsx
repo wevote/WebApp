@@ -268,7 +268,7 @@ const styles = theme => ({
     marginBottom: 32,
   },
   cardBody: {
-    padding: '20px 32px',
+    padding: '20px',
   },
 });
 
