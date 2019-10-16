@@ -41,6 +41,7 @@ import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
 import AppActions from '../../actions/AppActions';
+import BallotSummaryFooter from '../../components/Navigation/BallotSummaryFooter';
 
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
@@ -799,6 +800,10 @@ class Ballot extends Component {
     });
   }
 
+  setRaceLevelFilterType (type) {
+    this.setState({ raceLevelFilterType: type });
+  }
+
   render () {
     // console.log('Ballot render');
     renderLog(__filename);
@@ -1038,6 +1043,16 @@ class Ballot extends Component {
                       {doubleFilteredBallotItemsLength === 0 &&
                         this.showUserEmptyOptions()
                       }
+                      <BallotSummaryFooter
+                        activeRaceItem={raceLevelFilterType}
+                        displayTitle
+                        displaySubtitles
+                        rawUrlVariablesString={this.props.location.search}
+                        ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
+                        ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
+                        raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
+                        setActiveRaceItem={(type) => this.setRaceLevelFilterType(type)}
+                      />
                     </div>
                   </div>
                   {/* Show links to this candidate in the admin tools */}
