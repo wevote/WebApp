@@ -41,6 +41,7 @@ import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
 import AppActions from '../../actions/AppActions';
+import BallotSummaryFooter from '../../components/Navigation/BallotSummaryFooter';
 
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
@@ -1039,6 +1040,15 @@ class Ballot extends Component {
                         this.showUserEmptyOptions()
                       }
                     </div>
+                    <BallotSummaryFooter
+                        activeRaceItem={raceLevelFilterType}
+                        displayTitle
+                        displaySubtitles
+                        rawUrlVariablesString={this.props.location.search}
+                        ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
+                        ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
+                        raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
+                    />
                   </div>
                   {/* Show links to this candidate in the admin tools */}
                   { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
