@@ -202,7 +202,7 @@ class BallotSummaryFooter extends Component {
     // Make the incoming raceLevelFilterItems match the standard order
     if (raceLevelFilterItemsInThisBallot) {
       for (let i = 0; i < BALLOT_ITEM_FILTER_TYPES.length; i++) {
-        if (raceLevelFilterItemsInThisBallot.findIndex(item => BALLOT_ITEM_FILTER_TYPES[i].toLowerCase() === item.toLowerCase()) !== -1) {
+        if (raceLevelFilterItemsInThisBallot.findIndex(item => BALLOT_ITEM_FILTER_TYPES[i].toLowerCase() === item.toLowerCase()) !== -1 && BALLOT_ITEM_FILTER_TYPES[i].toLowerCase() !== this.props.activeRaceItem.toLowerCase()) {
           raceLevelFilterItemsInThisBallotOrdered.push(BALLOT_ITEM_FILTER_TYPES[i]);
         }
       }
