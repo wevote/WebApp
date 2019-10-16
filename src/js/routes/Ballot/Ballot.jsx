@@ -1039,8 +1039,7 @@ class Ballot extends Component {
                       {doubleFilteredBallotItemsLength === 0 &&
                         this.showUserEmptyOptions()
                       }
-                    </div>
-                    <BallotSummaryFooter
+                      <BallotSummaryFooter
                         activeRaceItem={raceLevelFilterType}
                         displayTitle
                         displaySubtitles
@@ -1048,7 +1047,8 @@ class Ballot extends Component {
                         ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
                         ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
                         raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
-                    />
+                      />
+                    </div>
                   </div>
                   {/* Show links to this candidate in the admin tools */}
                   { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (

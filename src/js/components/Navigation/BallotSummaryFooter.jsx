@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
+import Ballot from '@material-ui/icons/Ballot';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
@@ -214,11 +214,14 @@ class BallotSummaryFooter extends Component {
       });
       // console.log('BallotSideBar, raceLevelFilterItemsInThisBallotOrdered:', raceLevelFilterItemsInThisBallotOrdered);
       return (
-        <div className="card">
+        <div className={classes.card}>
           <div className={classes.cardBody}>
             { this.props.displayTitle ? (
               <>
-                <Typography variant="h2" classes={{ root: classes.typography }}>Show More Ballot Items</Typography>
+                <Typography variant="h2" classes={{ root: classes.typography }}>
+                  <Ballot className={classes.icon} />
+                  Show More Ballot Items
+                </Typography>
               </>
             ) :
               null
@@ -228,26 +231,6 @@ class BallotSummaryFooter extends Component {
                 {raceLevelFilterItemsInThisBallotOrdered.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
               </BallotSummaryFooterItem>
             </Row>
-            <div className="h4 text-left" />
-            <SidebarFooter>
-              <span className="terms-and-privacy">
-                <Link id="ballotSideBarTermsOfService" to="/more/terms">
-                  <span className="u-no-break">Terms of Service</span>
-                </Link>
-              </span>
-            </SidebarFooter>
-            <SidebarFooter>
-              <span className="terms-and-privacy">
-                <Link id="ballotSideBarPrivacyPolicy" to="/more/privacy">
-                  <span className="u-no-break">Privacy Policy</span>
-                </Link>
-              </span>
-            </SidebarFooter>
-            <SidebarFooter>
-              <span className="terms-and-privacy">
-                <Link id="ballotSideBarAttributions" to="/more/attributions">Attributions</Link>
-              </span>
-            </SidebarFooter>
           </div>
         </div>
       );
@@ -265,10 +248,25 @@ const styles = theme => ({
     [theme.breakpoints.down('lg')]: {
       padding: '12px 0',
     },
-    marginBottom: 32,
+    marginBottom: 24,
+    display: 'flex',
+    alignItems: 'center',
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: '0px',
+    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12)',
+    marginBottom: '16px',
+    overflowY: 'none',
+    border: 'none',
   },
   cardBody: {
     padding: '20px',
+  },
+  icon: {
+    marginRight: 12,
+    color: '#2E3C5D',
+    fontSize: 32,
   },
 });
 
