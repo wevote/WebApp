@@ -53,22 +53,36 @@ class VoterPhoneVerificationEntry extends Component {
   }
 
   onPhoneNumberChange (e) {
-    const invomingVoterPhoneNumber = e.target.value;
-    const voterPhoneNumberWithPlus = `+${invomingVoterPhoneNumber}`;
-    const voterPhoneNumberWithPlusAndOne = `+1${invomingVoterPhoneNumber}`;
+    const incomingVoterPhoneNumber = e.target.value;
+    const voterPhoneNumberWithPlus = `+${incomingVoterPhoneNumber}`;
+    const voterPhoneNumberWithPlusAndOne = `+1${incomingVoterPhoneNumber}`;
 
-    const voterPhoneNumberIsValidRaw = isValidPhoneNumber(invomingVoterPhoneNumber);
+    const voterPhoneNumberIsValidRaw = isValidPhoneNumber(incomingVoterPhoneNumber);
     const voterPhoneNumberIsValidWithPlus = isValidPhoneNumber(voterPhoneNumberWithPlus);
     const voterPhoneNumberIsValidWithPlusAndOne = isValidPhoneNumber(voterPhoneNumberWithPlusAndOne);
     const voterPhoneNumberIsValid = voterPhoneNumberIsValidRaw || voterPhoneNumberIsValidWithPlus || voterPhoneNumberIsValidWithPlusAndOne;
-    // console.log('onPhoneNumberChange, invomingVoterPhoneNumber: ', invomingVoterPhoneNumber, ', voterPhoneNumberIsValid:', voterPhoneNumberIsValid);
+    // console.log('onPhoneNumberChange, incomingVoterPhoneNumber: ', incomingVoterPhoneNumber, ', voterPhoneNumberIsValid:', voterPhoneNumberIsValid);
     // console.log('voterPhoneNumberWithPlus:', voterPhoneNumberWithPlus);
     // console.log('voterPhoneNumberWithPlusAndOne:', voterPhoneNumberWithPlusAndOne);
     this.setState({
       disablePhoneVerificationButton: !voterPhoneNumberIsValid,
-      voterPhoneNumber: invomingVoterPhoneNumber,
+      voterPhoneNumber: incomingVoterPhoneNumber,
       voterPhoneNumberIsValid,
     });
+  }
+
+  onSubmit () {
+    // console.log('onSubmit');
+    const { voterPhoneNumber, voterPhoneNumberIsValid } = this.state;
+    if (voterPhoneNumberIsValid) {
+      VoterActions.sendSignInCodeSMS(voterPhoneNumber);
+      this.setState({
+        showVerifyModal: true,
+        showError: false,
+      });
+    } else {
+      this.setState({ showError: true });
+    }
   }
 
   displayPhoneVerificationButton = () => {
@@ -84,17 +98,6 @@ class VoterPhoneVerificationEntry extends Component {
       this.setState({
         displayPhoneVerificationButton: false,
       });
-    }
-  }
-
-  onSubmit () {
-    // console.log('onSubmit');
-    const { voterPhoneNumber, voterPhoneNumberIsValid } = this.state;
-    if (voterPhoneNumberIsValid) {
-      VoterActions.sendSignInCodeSMS(voterPhoneNumber);
-      this.setState({ showVerifyModal: true, showError: false });
-    } else {
-      this.setState({ showError: true });
     }
   }
 
@@ -154,7 +157,7 @@ class VoterPhoneVerificationEntry extends Component {
         {showVerifyModal && (
           <SettingsVerifySecretCode
             show={showVerifyModal}
-            toggleFunction={this.closeVerifyModal}
+            closeVerifyModal={this.closeVerifyModal}
             voterPhoneNumber={voterPhoneNumber}
           />
         )}

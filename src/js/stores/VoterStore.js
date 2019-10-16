@@ -27,6 +27,7 @@ class VoterStore extends ReduceStore {
       facebookPhotoRetrieveLoopCount: 0,
       latestGoogleCivicElectionId: 0,
       secretCodeVerificationStatus: {
+        incorrectSecretCodeEntered: false,
         numberOfTriesRemaining: 5,
         secretCodeVerified: false,
         voterMustRequestNewCode: false,
@@ -233,6 +234,7 @@ class VoterStore extends ReduceStore {
     let externalVoterId;
     let googleCivicElectionId;
     let incomingVoter;
+    let incorrectSecretCodeEntered;
     let membershipOrganizationWeVoteId;
     let numberOfTriesRemaining;
     let secretCodeVerified;
@@ -243,13 +245,14 @@ class VoterStore extends ReduceStore {
 
     switch (action.type) {
       case 'clearEmailAddressStatus':
-        console.log('VoterStore clearEmailAddressStatus');
+        // console.log('VoterStore clearEmailAddressStatus');
         return { ...state, emailAddressStatus: {} };
       case 'clearSecretCodeVerificationStatus':
-        console.log('VoterStore clearSecretCodeVerificationStatus');
+        // console.log('VoterStore clearSecretCodeVerificationStatus');
         return {
           ...state,
           secretCodeVerificationStatus: {
+            incorrectSecretCodeEntered: false,
             numberOfTriesRemaining: 5,
             secretCodeVerified: false,
             voterMustRequestNewCode: false,
@@ -435,11 +438,13 @@ class VoterStore extends ReduceStore {
           emailAddressStatus: {
             email_verify_attempted: action.res.email_verify_attempted,
             email_address_already_owned_by_other_voter: action.res.email_address_already_owned_by_other_voter,
+            email_address_already_owned_by_this_voter: action.res.email_address_already_owned_by_this_voter,
             email_address_created: action.res.email_address_created,
             email_address_deleted: action.res.email_address_deleted,
-            verification_email_sent: action.res.verification_email_sent,
             link_to_sign_in_email_sent: action.res.link_to_sign_in_email_sent,
+            make_primary_email: action.res.make_primary_email,
             sign_in_code_email_sent: action.res.sign_in_code_email_sent,
+            verification_email_sent: action.res.verification_email_sent,
           },
         };
 
@@ -618,13 +623,17 @@ class VoterStore extends ReduceStore {
 
       case 'voterVerifySecretCode':
         // console.log("VoterStore, voterVerifySecretCode, action.res:", action.res);
+        incorrectSecretCodeEntered = (action.res.incorrect_secret_code_entered && action.res.incorrect_secret_code_entered === true);
         numberOfTriesRemaining = action.res.number_of_tries_remaining_for_this_code;
         secretCodeVerified = (action.res.secret_code_verified && action.res.secret_code_verified === true);
         voterMustRequestNewCode = (action.res.voter_must_request_new_code && action.res.voter_must_request_new_code === true);
-        voterSecretCodeRequestsLocked = (action.res.secret_code_requests_locked && action.res.secret_code_requests_locked === true);
+        voterSecretCodeRequestsLocked = (action.res.secret_code_system_locked_for_this_voter_device_id && action.res.secret_code_system_locked_for_this_voter_device_id === true);
+        VoterActions.voterRetrieve();
+        VoterActions.voterEmailAddressRetrieve();
         return {
           ...state,
           secretCodeVerificationStatus: {
+            incorrectSecretCodeEntered,
             numberOfTriesRemaining,
             secretCodeVerified,
             voterMustRequestNewCode,

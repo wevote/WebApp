@@ -12,12 +12,15 @@ import {
   OutlinedInput,
 } from '@material-ui/core';
 import { hasIPhoneNotch, isIOS, isCordova } from '../../utils/cordovaUtils';
+import VoterActions from '../../actions/VoterActions';
+import VoterStore from '../../stores/VoterStore';
 
 class SettingsVerifySecretCode extends Component {
   static propTypes = {
     classes: PropTypes.object,
     show: PropTypes.bool,
-    toggleFunction: PropTypes.func,
+    closeVerifyModal: PropTypes.func,
+    voterEmailAddress: PropTypes.string,
     voterPhoneNumber: PropTypes.string,
   };
 
@@ -31,6 +34,12 @@ class SettingsVerifySecretCode extends Component {
       digit5: '',
       digit6: '',
       condensed: false,
+      errorMessageToDisplay: '',
+      incorrectSecretCodeEntered: false,
+      numberOfTriesRemaining: 5,
+      secretCodeVerified: false,
+      voterMustRequestNewCode: false,
+      voterSecretCodeRequestsLocked: false,
     };
     this.onDigit1Change = this.onDigit1Change.bind(this);
     this.onDigit2Change = this.onDigit2Change.bind(this);
@@ -49,14 +58,39 @@ class SettingsVerifySecretCode extends Component {
   }
 
   componentDidMount () {
-    const { voterPhoneNumber } = this.props;
-    const newVoterPhoneNumber = voterPhoneNumber.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-
-    this.setState({ voterPhoneNumber: newVoterPhoneNumber });
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    const { voterEmailAddress, voterPhoneNumber } = this.props;
+    // const newVoterPhoneNumber = voterPhoneNumber.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    this.setState({
+      voterEmailAddress,
+      voterPhoneNumber,
+    });
+    const delayAfterClearingVerificationStatus = 200;
+    this.timer = setTimeout(() => {
+      VoterActions.clearSecretCodeVerificationStatus();
+    }, delayAfterClearingVerificationStatus);
   }
 
   shouldComponentUpdate (nextState) {
+    if (this.state.incorrectSecretCodeEntered !== nextState.incorrectSecretCodeEntered) {
+      return true;
+    }
+    if (this.state.numberOfTriesRemaining !== nextState.numberOfTriesRemaining) {
+      return true;
+    }
+    if (this.state.secretCodeVerified !== nextState.secretCodeVerified) {
+      return true;
+    }
+    if (this.state.voterEmailAddress !== nextState.voterEmailAddress) {
+      return true;
+    }
+    if (this.state.voterMustRequestNewCode !== nextState.voterMustRequestNewCode) {
+      return true;
+    }
     if (this.state.voterPhoneNumber !== nextState.voterPhoneNumber) {
+      return true;
+    }
+    if (this.state.voterSecretCodeRequestsLocked !== nextState.voterSecretCodeRequestsLocked) {
       return true;
     }
     if (this.state.condensed !== nextState.condensed) {
@@ -65,23 +99,69 @@ class SettingsVerifySecretCode extends Component {
     return false;
   }
 
+  componentWillUnmount () {
+    this.timer = null;
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
+    const { incorrectSecretCodeEntered, numberOfTriesRemaining, secretCodeVerified, voterMustRequestNewCode, voterSecretCodeRequestsLocked } = secretCodeVerificationStatus;
+    if (secretCodeVerified) {
+      this.closeVerifyModalLocal();
+    } else {
+      let errorMessageToDisplay = '';
+      if (voterSecretCodeRequestsLocked) {
+        const { voterEmailAddress, voterPhoneNumber } = this.state;
+        if (voterEmailAddress) {
+          errorMessageToDisplay = `Please contact We Vote support regarding ${voterEmailAddress}.`;
+        } else if (voterPhoneNumber) {
+          errorMessageToDisplay = `Please contact We Vote support regarding ${voterPhoneNumber}.`;
+        } else {
+          errorMessageToDisplay = 'Please contact We Vote support. Your account is locked.';
+        }
+      } else if (voterMustRequestNewCode) {
+        errorMessageToDisplay = 'You\'ve reached the maximum number of tries.';
+      } else if (incorrectSecretCodeEntered || numberOfTriesRemaining <= 4) {
+        errorMessageToDisplay = 'Incorrect code entered.';
+      }
+      this.setState({
+        errorMessageToDisplay,
+        incorrectSecretCodeEntered,
+        numberOfTriesRemaining,
+        secretCodeVerified,
+        voterMustRequestNewCode,
+        voterSecretCodeRequestsLocked,
+      });
+    }
+  }
+
   onDigit1Change (e) {
     if (e.target.value !== '') {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     }
-    this.setState({ digit1: e.target.value.charAt(e.target.value.length - 1) });
+    this.setState({
+      digit1: e.target.value.charAt(e.target.value.length - 1),
+      errorMessageToDisplay: '',
+    });
     e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
   onDigit1KeyDown (e) {
-    console.log(e.key, e.keyCode);
+    // console.log(e.key, e.keyCode);
+    if (e.keyCode === 8 && this.state.digit1 === '') {
+      // Fine
+    }
   }
 
   onDigit2Change (e) {
     if (e.target.value !== '') {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     }
-    this.setState({ digit2: e.target.value.charAt(e.target.value.length - 1) });
+    this.setState({
+      digit2: e.target.value.charAt(e.target.value.length - 1),
+      errorMessageToDisplay: '',
+    });
     e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
@@ -90,7 +170,7 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
-      console.log('Digit6 is not empty');
+      // console.log('Digit2 is not empty');
     }
   }
 
@@ -98,7 +178,10 @@ class SettingsVerifySecretCode extends Component {
     if (e.target.value !== '') {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     }
-    this.setState({ digit3: e.target.value.charAt(e.target.value.length - 1) });
+    this.setState({
+      digit3: e.target.value.charAt(e.target.value.length - 1),
+      errorMessageToDisplay: '',
+    });
     e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
@@ -107,7 +190,7 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
-      console.log('Digit6 is not empty');
+      // console.log('Digit3 is not empty');
     }
   }
 
@@ -115,7 +198,10 @@ class SettingsVerifySecretCode extends Component {
     if (e.target.value !== '') {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     }
-    this.setState({ digit4: e.target.value.charAt(e.target.value.length - 1) });
+    this.setState({
+      digit4: e.target.value.charAt(e.target.value.length - 1),
+      errorMessageToDisplay: '',
+    });
     e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
@@ -124,7 +210,7 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
-      console.log('Digit6 is not empty');
+      // console.log('Digit4 is not empty');
     }
   }
 
@@ -132,7 +218,10 @@ class SettingsVerifySecretCode extends Component {
     if (e.target.value !== '') {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     }
-    this.setState({ digit5: e.target.value.charAt(e.target.value.length - 1) });
+    this.setState({
+      digit5: e.target.value.charAt(e.target.value.length - 1),
+      errorMessageToDisplay: '',
+    });
     e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
@@ -141,12 +230,15 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
-      console.log('Digit6 is not empty');
+      // console.log('Digit5 is not empty');
     }
   }
 
   onDigit6Change (e) {
-    this.setState({ digit6: e.target.value.charAt(e.target.value.length - 1) });
+    this.setState({
+      digit6: e.target.value.charAt(e.target.value.length - 1),
+      errorMessageToDisplay: '',
+    });
     e.target.value = e.target.value.charAt(e.target.value.length - 1);
   }
 
@@ -155,7 +247,19 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
-      console.log('Digit6 is not empty');
+      // console.log('Digit6 is not empty');
+    }
+  }
+
+  voterVerifySecretCode = () => {
+    const { digit1, digit2, digit3, digit4, digit5, digit6 } = this.state;
+    const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
+    VoterActions.voterVerifySecretCode(secretCode);
+  }
+
+  closeVerifyModalLocal = () => {
+    if (this.props.closeVerifyModal) {
+      this.props.closeVerifyModal();
     }
   }
 
@@ -172,16 +276,16 @@ class SettingsVerifySecretCode extends Component {
 
   render () {
     const { classes } = this.props;
-    const { voterPhoneNumber, condensed, digit1, digit2, digit3, digit4, digit5, digit6 } = this.state;
+    const { condensed, errorMessageToDisplay, digit1, digit2, digit3, digit4, digit5, digit6, voterEmailAddress, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked } = this.state;
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(); }}
+        onClose={this.closeVerifyModalLocal}
       >
         <ModalTitleArea condensed={condensed}>
-          <Button onClick={this.props.toggleFunction}>
+          <Button onClick={this.closeVerifyModalLocal}>
             {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
             {' '}
             Back
@@ -189,9 +293,9 @@ class SettingsVerifySecretCode extends Component {
         </ModalTitleArea>
         <ModalContent condensed={condensed}>
           <TextContainer condensed={condensed}>
-            <Title condensed={condensed}>SMS Verification</Title>
+            <Title condensed={condensed}>Code Verification</Title>
             <Subtitle>A 6-digit code has been sent to</Subtitle>
-            <PhoneSubtitle>{voterPhoneNumber}</PhoneSubtitle>
+            <PhoneSubtitle>{voterPhoneNumber || voterEmailAddress}</PhoneSubtitle>
             <InputContainer condensed={condensed}>
               <OutlinedInput
                 maxLength={1}
@@ -242,11 +346,36 @@ class SettingsVerifySecretCode extends Component {
                 onBlur={this.handleBlur}
               />
             </InputContainer>
+            {errorMessageToDisplay}
           </TextContainer>
           <ButtonsContainer condensed={condensed}>
-            <Button disabled={digit1 === '' || digit2 === '' || digit3 === '' || digit4 === '' || digit5 === '' || digit6 === ''} classes={{ root: classes.verifyButton }} fullWidth color="primary" variant="contained">VERIFY</Button>
-            <Button classes={{ root: classes.button }} color="primary">RESEND SMS</Button>
-            <Button classes={{ root: classes.button }} color="primary">CHANGE PHONE NUMBER</Button>
+            <Button
+              disabled={digit1 === '' || digit2 === '' || digit3 === '' || digit4 === '' || digit5 === '' || digit6 === '' || voterMustRequestNewCode || voterSecretCodeRequestsLocked}
+              classes={{ root: classes.verifyButton }}
+              fullWidth
+              color="primary"
+              onClick={this.voterVerifySecretCode}
+              variant="contained"
+            >
+              Verify
+            </Button>
+            {/* We will make this button work later
+            <Button
+              classes={{ root: classes.button }}
+              color="primary"
+              variant={voterMustRequestNewCode ? 'contained' : ''}
+            >
+              Resend SMS
+            </Button>
+            */}
+            <Button
+              classes={{ root: classes.button }}
+              color="primary"
+              onClick={this.closeVerifyModalLocal}
+              variant={voterMustRequestNewCode ? 'contained' : ''}
+            >
+              {voterPhoneNumber ? 'Change Phone Number' : 'Change Email Address'}
+            </Button>
           </ButtonsContainer>
         </ModalContent>
       </Dialog>
