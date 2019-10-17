@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Button, withStyles} from '@material-ui/core';
+import { Button, withStyles } from '@material-ui/core';
 
 class BallotSummaryFooterItem extends Component {
   static propTypes = {
     children: PropTypes.instanceOf(Object).isRequired,
     classes: PropTypes.object,
+    setActiveRaceItem: PropTypes.func,
   };
 
   constructor (props) {
@@ -19,24 +20,33 @@ class BallotSummaryFooterItem extends Component {
 
   componentDidMount () {
     const { children } = this.props;
+    this.setState({
+      children,
+    });
   }
 
   componentWillReceiveProps (nextProps) {
     const { children } = nextProps;
+    this.setState({
+      children,
+    });
   }
 
   render () {
     // console.log('BallotSummaryFooterItem render');
-    const {
-      props: { children, classes },
-    } = this;
+    const { classes } = this.props;
+    const { children } = this.state;
+
+    if (!children) {
+      return null;
+    }
 
     return (
       <>
         {children.map((child) => {
           if (child && child.props && child.props.label) {
             return (
-              <Column className="col col-12 col-md-4">
+              <Column className="col col-12 col-md-4" key={child.props.label}>
                 <Card>
                   <Title>{child.props.label}</Title>
                   <Body>{child.props.children}</Body>

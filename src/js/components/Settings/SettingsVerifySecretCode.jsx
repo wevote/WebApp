@@ -58,6 +58,7 @@ class SettingsVerifySecretCode extends Component {
   }
 
   componentDidMount () {
+    // console.log('SettingsVerifySecretCode componentDidMount');
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { voterEmailAddress, voterPhoneNumber } = this.props;
     // const newVoterPhoneNumber = voterPhoneNumber.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
@@ -65,10 +66,10 @@ class SettingsVerifySecretCode extends Component {
       voterEmailAddress,
       voterPhoneNumber,
     });
-    const delayAfterClearingVerificationStatus = 200;
+    const delayBeforeClearingVerificationStatus = 200;
     this.timer = setTimeout(() => {
       VoterActions.clearSecretCodeVerificationStatus();
-    }, delayAfterClearingVerificationStatus);
+    }, delayBeforeClearingVerificationStatus);
   }
 
   shouldComponentUpdate (nextState) {
@@ -96,6 +97,7 @@ class SettingsVerifySecretCode extends Component {
     if (this.state.condensed !== nextState.condensed) {
       return true;
     }
+    // console.log('shouldComponentUpdate return false');
     return false;
   }
 
@@ -258,6 +260,7 @@ class SettingsVerifySecretCode extends Component {
   }
 
   closeVerifyModalLocal = () => {
+    // console.log('SettingsVerifySecretCode closeVerifyModalLocal');
     if (this.props.closeVerifyModal) {
       this.props.closeVerifyModal();
     }
@@ -275,6 +278,7 @@ class SettingsVerifySecretCode extends Component {
   }
 
   render () {
+    // console.log('SettingsVerifySecretCode render');
     const { classes } = this.props;
     const { condensed, errorMessageToDisplay, digit1, digit2, digit3, digit4, digit5, digit6, voterEmailAddress, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked } = this.state;
 

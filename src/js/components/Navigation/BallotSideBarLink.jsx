@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Link } from 'react-router';
 import ListItem from '@material-ui/core/ListItem';
-import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { capitalizeString, sentenceCaseString, shortenText } from '../../utils/textFormat';
+import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
 class BallotSideBarLink extends Component {
@@ -13,6 +11,7 @@ class BallotSideBarLink extends Component {
     ballotItemLinkHasBeenClicked: PropTypes.func,
     url: PropTypes.string,
     id: PropTypes.string,
+    key: PropTypes.string,
     label: PropTypes.string,
     subtitle: PropTypes.string,
     displaySubtitles: PropTypes.bool,
@@ -33,7 +32,7 @@ class BallotSideBarLink extends Component {
     const subtitleInSentenceCase = sentenceCaseString(this.props.subtitle);
 
     return (
-      <>
+      <span key={this.props.key}>
         {this.props.plainTextLink ? (
           <Link id={this.props.id} to={this.props.url}>
             <button
@@ -84,7 +83,7 @@ class BallotSideBarLink extends Component {
             </ListItem>
           </Link>
         )}
-      </>
+      </span>
     );
   }
 }
@@ -108,12 +107,5 @@ const styles = () => ({
     // },
   },
 });
-
-// const SubtitleContainer = styled.div`
-//   max-width: 100%;
-//   text-overflow: ellipsis;
-//   white-space: nowrap;
-//   overflow: hidden;
-// `;
 
 export default withStyles(styles)(BallotSideBarLink);

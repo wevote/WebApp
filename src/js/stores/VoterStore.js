@@ -231,6 +231,7 @@ class VoterStore extends ReduceStore {
     let facebookPhotoRetrieveLoopCount;
     let address;
     let currentVoterDeviceId;
+    const delayBeforeApiCall = 3000;
     let externalVoterId;
     let googleCivicElectionId;
     let incomingVoter;
@@ -494,6 +495,10 @@ class VoterStore extends ReduceStore {
         // On the server we just switched linked this voterDeviceId to a new voter record, so we want to
         //  refresh a lot of data
         VoterActions.voterRetrieve();
+        // And set a timer for 3 seconds from now to refresh again
+        this.timer = setTimeout(() => {
+          VoterActions.voterRetrieve();
+        }, delayBeforeApiCall);
         VoterActions.voterEmailAddressRetrieve();
         FriendActions.currentFriends();
         FriendActions.friendInvitationsSentByMe();

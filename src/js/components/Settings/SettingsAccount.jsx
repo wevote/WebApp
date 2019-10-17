@@ -68,8 +68,6 @@ export default class SettingsAccount extends Component {
     let pathname = '';
 
     VoterActions.voterRetrieve();
-    VoterActions.clearEmailAddressStatus();
-    VoterActions.clearSecretCodeVerificationStatus();
 
     const getStartedMode = AppStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
@@ -111,6 +109,12 @@ export default class SettingsAccount extends Component {
       isOnWeVoteSubDomainUrl: AppStore.isOnWeVoteSubDomainUrl(),
       isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl(),
     });
+
+    const delayBeforeClearingStatus = 500;
+    this.timer = setTimeout(() => {
+      VoterActions.clearEmailAddressStatus();
+      VoterActions.clearSecretCodeVerificationStatus();
+    }, delayBeforeClearingStatus);
   }
 
   componentWillUnmount () {
@@ -338,13 +342,6 @@ export default class SettingsAccount extends Component {
                         <span className="fab fa-facebook" />
                       </span>
                       <span className="u-margin-left--sm" />
-                    </span>
-                    )}
-                    {voterIsSignedInWithEmail && (
-                    <span>
-                      <span className="btn btn-social-icon btn-lg btn-openid">
-                        <span className="fas fa-envelope" />
-                      </span>
                     </span>
                     )}
                   </div>

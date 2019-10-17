@@ -190,9 +190,8 @@ class HeaderBackTo extends Component {
   render () {
     // console.log('HeaderBackTo render');
     renderLog(__filename);
-    const { voter } = this.state;
     const { classes } = this.props;
-    const { backToLink, backToLinkText } = this.state;
+    const { backToLink, backToLinkText, showSignInModal, voter } = this.state;
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
@@ -302,10 +301,12 @@ class HeaderBackTo extends Component {
           </div>
           )}
         </Toolbar>
-        <SignInModal
-          show={this.state.showSignInModal}
-          toggleFunction={this.closeSignInModal}
-        />
+        {showSignInModal && (
+          <SignInModal
+            show={showSignInModal}
+            toggleFunction={this.closeSignInModal}
+          />
+        )}
       </AppBar>
     );
   }

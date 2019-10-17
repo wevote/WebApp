@@ -414,10 +414,12 @@ class WelcomeAppbar extends Component {
             </MobileTabletView>
           </Navigation>
         </Toolbar>
-        <SignInModal
-          show={showSignInModal}
-          toggleFunction={this.closeSignInModal}
-        />
+        {showSignInModal && (
+          <SignInModal
+            show={showSignInModal}
+            toggleFunction={this.closeSignInModal}
+          />
+        )}
         {showPaidAccountUpgradeModal && (
           <PaidAccountUpgradeModal
             initialPaidAccountProcessStep="payForPlan"

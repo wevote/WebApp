@@ -616,6 +616,10 @@ class Ballot extends Component {
     }
   }
 
+  setRaceLevelFilterType (type) {
+    this.setState({ raceLevelFilterType: type });
+  }
+
   memberViewedBallotHasBeenSavedOnce = (membershipOrganizationWeVoteId, googleCivicElectionId) => {
     if (!membershipOrganizationWeVoteId || !googleCivicElectionId) {
       return false;
@@ -800,10 +804,6 @@ class Ballot extends Component {
     });
   }
 
-  setRaceLevelFilterType (type) {
-    this.setState({ raceLevelFilterType: type });
-  }
-
   render () {
     // console.log('Ballot render');
     renderLog(__filename);
@@ -824,22 +824,20 @@ class Ballot extends Component {
       return (
         <div className="ballot container-fluid well u-stack--md u-inset--md">
           <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
-            <p>
-              <div style={{ textAlign: 'center' }}>
-                If your ballot does not appear momentarily,
-                {' '}
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <Link
-                  // since we use a button as the component, we can disable that es-lint rule
-                  component="button"
-                  id="ballotIfBallotDoesNotAppear"
-                  onClick={this.toggleSelectBallotModal}
-                  style={{ color: 'rgb(6, 95, 212)' }}
-                >
-                  please click here to change your address.
-                </Link>
-              </div>
-            </p>
+            <div style={{ textAlign: 'center' }}>
+              If your ballot does not appear momentarily,
+              {' '}
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <Link
+                // since we use a button as the component, we can disable that es-lint rule
+                component="button"
+                id="ballotIfBallotDoesNotAppear"
+                onClick={this.toggleSelectBallotModal}
+                style={{ color: 'rgb(6, 95, 212)' }}
+              >
+                please click here to change your address.
+              </Link>
+            </div>
           </div>
         </div>
       );
@@ -1051,7 +1049,7 @@ class Ballot extends Component {
                         ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
                         ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
                         raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
-                        setActiveRaceItem={(type) => this.setRaceLevelFilterType(type)}
+                        setActiveRaceItem={type => this.setRaceLevelFilterType(type)}
                       />
                     </div>
                   </div>

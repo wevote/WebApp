@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Ballot from '@material-ui/icons/Ballot';
 import Typography from '@material-ui/core/Typography';
@@ -10,19 +9,18 @@ import BallotSideBarLink from './BallotSideBarLink';
 import { renderLog } from '../../utils/logging';
 import BallotSummaryFooterItem from './BallotSummaryFooterItem';
 
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
-/* eslint no-restricted-syntax: 1 */
 class BallotSummaryFooter extends Component {
   static propTypes = {
+    activeRaceItem: PropTypes.string,
     ballotWithAllItemsByFilterType: PropTypes.array,
     ballotItemLinkHasBeenClicked: PropTypes.func,
+    classes: PropTypes.object,
     displayTitle: PropTypes.bool,
     displaySubtitles: PropTypes.bool,
     onClick: PropTypes.func,
     pathname: PropTypes.string,
     raceLevelFilterItemsInThisBallot: PropTypes.array,
-    classes: PropTypes.object,
-    activeRaceItem: PropTypes.string,
+    setActiveRaceItem: PropTypes.func,
   };
 
   static defaultProps = {
@@ -79,9 +77,9 @@ class BallotSummaryFooter extends Component {
     if (this.props.activeRaceItem !== nextProps.activeRaceItem) {
       return true;
     }
+    // console.log('shouldComponentUpdate return false');
     return false;
   }
-
 
   componentWillUnmount () {
     this.ballotStoreListener.remove();
@@ -110,8 +108,11 @@ class BallotSummaryFooter extends Component {
           ) - 1);
 
       const orderedArray = [];
-      for (const element of mapped) {
-        orderedArray.push(element.value);
+      // for (const element of mapped) {
+      //   orderedArray.push(element.value);
+      // }
+      for (let count = 0; count < mapped.length; count++) {
+        orderedArray.push(mapped[count].value);
       }
 
       return orderedArray;
@@ -121,19 +122,14 @@ class BallotSummaryFooter extends Component {
   }
 
   handleClick () {
-    // Fullscreen mode won't pass an onClick function, since the BallotSideBar does not go away after a click
+    // Fullscreen mode won't pass an onClick function, since the BallotSummaryFooter does not go away after a click
     if (this.props.onClick) {
       this.props.onClick();
     }
   }
 
-  // handleChange (panel) {
-  //   this.setState({ expanded: panel });
-  //   console.log('Running handle change, setting expanded to ', panel);
-  // }
-
   filteredBallotToRender (ballot, ballotWithAllItemIdsByFilterType, type, key) {
-    // console.log('BallotSideBar, filteredBallotToRender');
+    // console.log('BallotSummaryFooter, filteredBallotToRender');
     const filteredBallot = ballot.filter((item) => {
       if (item.kind_of_ballot_item === 'MEASURE') {
         return type === 'Measure';
@@ -159,14 +155,14 @@ class BallotSummaryFooter extends Component {
             ballotItemLinkHasBeenClicked={this.props.ballotItemLinkHasBeenClicked}
             label={item.ballot_item_display_name}
             subtitle={item.measure_subtitle}
-            key={`ballot-side-bar-${item.we_vote_id}`}
+            key={`ballot-summary-footer-${item.we_vote_id}`}
             displaySubtitles={this.props.displaySubtitles}
-            id={`ballotSideBarLink-${item.we_vote_id}`}
+            id={`ballotSummaryFooterLink-${item.we_vote_id}`}
             onClick={this.handleClick}
           />
         );
       } else {
-        return <span />;
+        return <span key={`ballot-summary-footer-${item.we_vote_id}`} />;
       }
     });
 
@@ -189,7 +185,7 @@ class BallotSummaryFooter extends Component {
   }
 
   render () {
-    // console.log('BallotSideBar render');
+    // console.log('BallotSummaryFooter render');
     renderLog(__filename);
 
     // let turnedOnNPSInput = false;
@@ -212,7 +208,7 @@ class BallotSummaryFooter extends Component {
       ballotWithAllItemsByFilterType.forEach((itemByFilterType) => {
         ballotWithAllItemIdsByFilterType.push(itemByFilterType.we_vote_id);
       });
-      // console.log('BallotSideBar, raceLevelFilterItemsInThisBallotOrdered:', raceLevelFilterItemsInThisBallotOrdered);
+      // console.log('BallotSummaryFooter, raceLevelFilterItemsInThisBallotOrdered:', raceLevelFilterItemsInThisBallotOrdered);
       return (
         <div className={classes.card}>
           <div className={classes.cardBody}>
@@ -244,7 +240,7 @@ const styles = theme => ({
   typography: {
     padding: '16px 0',
     fontWeight: 600,
-    fontSize: 24,
+    fontSize: 18,
     [theme.breakpoints.down('lg')]: {
       padding: '12px 0',
     },
@@ -272,18 +268,6 @@ const styles = theme => ({
 
 const Row = styled.div`
   margin: 0 -8px;
-`;
-
-const SidebarFooter = styled.div`
-  margin-bottom: 10px;
-  text-align: center;
-`;
-
-const Seperator = styled.div`
-  height: 2px;
-  width: 90%;
-  margin: 0 auto;
-  background: #2a3757;
 `;
 
 export default withStyles(styles)(BallotSummaryFooter);

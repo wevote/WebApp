@@ -251,6 +251,7 @@ class HeaderBar extends Component {
   }
 
   toggleSignInModal () {
+    // console.log('HeaderBar toggleSignInModal');
     const { showSignInModal } = this.state;
     AppActions.setShowSignInModal(!showSignInModal);
   }
@@ -290,7 +291,7 @@ class HeaderBar extends Component {
     }
     renderLog(__filename);
     const { classes, pathname, location } = this.props;
-    const { chosenSiteLogoUrl, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal, voter, voterIsSignedIn } = this.state;
+    const { chosenSiteLogoUrl, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal, showSignInModal, voter, voterIsSignedIn } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
@@ -473,10 +474,12 @@ class HeaderBar extends Component {
             }
           </Toolbar>
         </AppBar>
-        <SignInModal
-          show={this.state.showSignInModal}
-          toggleFunction={this.closeSignInModal}
-        />
+        {showSignInModal && (
+          <SignInModal
+            show={showSignInModal}
+            toggleFunction={this.closeSignInModal}
+          />
+        )}
         {showSelectBallotModal && (
           <SelectBallotModal
             ballotBaseUrl="/ballot"
