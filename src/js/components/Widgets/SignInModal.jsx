@@ -68,7 +68,9 @@ class SignInModal extends Component {
         onClose={() => { this.props.toggleFunction(); }}
       >
         <DialogTitle>
-          <Typography variant="h6" className="text-center">Sign In</Typography>
+          <Typography className="text-center">
+            <span className="h2">Sign In</span>
+          </Typography>
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}

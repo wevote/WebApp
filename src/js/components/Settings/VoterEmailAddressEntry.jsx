@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Delete from '@material-ui/icons/Delete';
 import Paper from '@material-ui/core/Paper';
 import Mail from '@material-ui/icons/Mail';
 import InputBase from '@material-ui/core/InputBase';
@@ -24,7 +25,6 @@ class VoterEmailAddressEntry extends Component {
     this.state = {
       disableEmailVerificationButton: false,
       displayEmailVerificationButton: false,
-      editEmailsToVerifyOn: false,
       emailAddressStatus: {
         email_address_already_owned_by_other_voter: false,
         email_address_already_owned_by_this_voter: false,
@@ -41,6 +41,7 @@ class VoterEmailAddressEntry extends Component {
       voterEmailAddress: '',
       voterEmailAddressIsValid: false,
       voterEmailAddressList: [],
+      voterEmailAddressListCount: 0,
     };
 
     // this.updateVoterEmailAddress = this.updateVoterEmailAddress.bind(this);
@@ -52,6 +53,39 @@ class VoterEmailAddressEntry extends Component {
     VoterActions.voterEmailAddressRetrieve();
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    if (JSON.stringify(this.state.emailAddressStatus) !== JSON.stringify(nextState.emailAddressStatus)) {
+      // console.log('this.state.emailAddressStatus', this.state.emailAddressStatus, ', nextState.emailAddressStatus', nextState.emailAddressStatus);
+      return true;
+    }
+    if (this.state.displayEmailVerificationButton !== nextState.displayEmailVerificationButton) {
+      // console.log('this.state.displayEmailVerificationButton', this.state.displayEmailVerificationButton, ', nextState.displayEmailVerificationButton', nextState.displayEmailVerificationButton);
+      return true;
+    }
+    if (this.state.loading !== nextState.loading) {
+      // console.log('this.state.loading', this.state.loading, ', nextState.loading', nextState.loading);
+      return true;
+    }
+    if (this.state.showError !== nextState.showError) {
+      // console.log('this.state.showError', this.state.showError, ', nextState.showError', nextState.showError);
+      return true;
+    }
+    if (this.state.showVerifyModal !== nextState.showVerifyModal) {
+      // console.log('this.state.showVerifyModal', this.state.showVerifyModal, ', nextState.showVerifyModal', nextState.showVerifyModal);
+      return true;
+    }
+    if (this.state.voterEmailAddress !== nextState.voterEmailAddress) {
+      // console.log('this.state.voterEmailAddress', this.state.voterEmailAddress, ', nextState.voterEmailAddress', nextState.voterEmailAddress);
+      return true;
+    }
+    if (this.state.voterEmailAddressListCount !== nextState.voterEmailAddressListCount) {
+      // console.log('this.state.voterEmailAddressListCount', this.state.voterEmailAddressListCount, ', nextState.voterEmailAddressListCount', nextState.voterEmailAddressListCount);
+      return true;
+    }
+    // console.log('shouldComponentUpdate false');
+    return false;
+  }
+
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
@@ -60,6 +94,7 @@ class VoterEmailAddressEntry extends Component {
     const emailAddressStatus = VoterStore.getEmailAddressStatus();
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
+    // console.log('onVoterStoreChange emailAddressStatus:', emailAddressStatus);
     if (secretCodeVerified) {
       this.setState({
         showVerifyModal: false,
@@ -85,19 +120,14 @@ class VoterEmailAddressEntry extends Component {
         emailAddressStatus,
       });
     }
+    const voterEmailAddressList = VoterStore.getEmailAddressList();
+    const voterEmailAddressListCount = voterEmailAddressList.length;
     this.setState({
       loading: false,
       voter: VoterStore.getVoter(),
-      voterEmailAddressList: VoterStore.getEmailAddressList(),
+      voterEmailAddressList,
+      voterEmailAddressListCount,
     });
-  }
-
-  setEditEmailsToVerifyOn () {
-    this.setState({ editEmailsToVerifyOn: true });
-  }
-
-  setEditEmailsToVerifyOff () {
-    this.setState({ editEmailsToVerifyOn: false });
   }
 
   setAsPrimaryEmailAddress (emailWeVoteId) {
@@ -128,6 +158,18 @@ class VoterEmailAddressEntry extends Component {
     }
   }
 
+  reSendSignInCodeEmail = (voterEmailAddress) => {
+    if (voterEmailAddress) {
+      VoterActions.sendSignInCodeEmail(voterEmailAddress);
+      this.setState({
+        emailAddressStatus: {
+          email_address_already_owned_by_other_voter: false,
+        },
+        loading: true,
+      });
+    }
+  }
+
   displayEmailVerificationButton = () => {
     this.setState({
       displayEmailVerificationButton: true,
@@ -145,6 +187,7 @@ class VoterEmailAddressEntry extends Component {
   }
 
   closeVerifyModal = () => {
+    // console.log('VoterEmailAddressEntry closeVerifyModal');
     this.setState({
       displayEmailVerificationButton: false,
       emailAddressStatus: {
@@ -175,18 +218,18 @@ class VoterEmailAddressEntry extends Component {
 
   render () {
     renderLog(__filename);
-    // console.log('VoterEmailAddressEntry render');
     if (this.state.loading) {
       return LoadingWheel;
     }
 
     const { classes } = this.props;
-    const { disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, showVerifyModal, voterEmailAddress } = this.state;
+    const { disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, showVerifyModal, voterEmailAddress, voterEmailAddressList } = this.state;
+    // console.log('VoterEmailAddressEntry render, showVerifyModal:', showVerifyModal);
 
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
     const emailAddressStatusHtml = (
       <span>
-        { emailAddressStatus.email_address_already_owned_by_this_voter ||
+        { (emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email) ||
         (emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent) ? (
           <Alert variant="warning">
             { emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent && (
@@ -249,7 +292,7 @@ class VoterEmailAddressEntry extends Component {
               type="email"
               name="voter_email_address"
               id="enterVoterEmailAddress"
-              value={this.state.voterEmailAddress}
+              value={voterEmailAddress}
               onBlur={this.hideEmailVerificationButton}
               onChange={this.updateVoterEmailAddress}
               onFocus={this.displayEmailVerificationButton}
@@ -280,7 +323,7 @@ class VoterEmailAddressEntry extends Component {
     // ///////////////////////////////////
     // LIST OF VERIFIED EMAILS
     let verifiedEmailsFound = false;
-    const verifiedEmailListHtml = this.state.voterEmailAddressList.map((voterEmailAddressFromList) => {
+    const verifiedEmailListHtml = voterEmailAddressList.map((voterEmailAddressFromList) => {
       emailOwnershipIsVerified = !!voterEmailAddressFromList.email_ownership_is_verified;
 
       if (emailOwnershipIsVerified) {
@@ -290,18 +333,16 @@ class VoterEmailAddressEntry extends Component {
 
         return (
           <div key={voterEmailAddressFromList.email_we_vote_id}>
-            <div>
-              <span><strong>{voterEmailAddressFromList.normalized_email_address}</strong></span>
+            <span>{voterEmailAddressFromList.normalized_email_address}</span>
 
-              {isPrimaryEmailAddress && (
-                <span>
-                  <span>&nbsp;&nbsp;&nbsp;</span>
-                Primary email
-                </span>
-              )}
-            </div>
+            {isPrimaryEmailAddress && (
+              <span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+              Primary email
+              </span>
+            )}
             {!isPrimaryEmailAddress && (
-              <div>
+              <span>
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 <span>
                   <a // eslint-disable-line
@@ -316,10 +357,10 @@ class VoterEmailAddressEntry extends Component {
                   <a // eslint-disable-line
                     onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
                   >
-                    Remove Email
+                    <Delete />
                   </a>
                 )}
-              </div>
+              </span>
             )}
           </div>
         );
@@ -331,7 +372,7 @@ class VoterEmailAddressEntry extends Component {
     // ////////////////////////////////////
     // LIST OF EMAILS TO VERIFY
     let unverifiedEmailsFound = false;
-    const toVerifyEmailListHtml = this.state.voterEmailAddressList.map((voterEmailAddressFromList) => {
+    const toVerifyEmailListHtml = voterEmailAddressList.map((voterEmailAddressFromList) => {
       emailOwnershipIsVerified = !!voterEmailAddressFromList.email_ownership_is_verified;
       if (!emailOwnershipIsVerified) {
         unverifiedEmailsFound = true;
@@ -339,33 +380,27 @@ class VoterEmailAddressEntry extends Component {
         isPrimaryEmailAddress = !!voterEmailAddressFromList.primary_email_address;
         return (
           <div key={voterEmailAddressFromList.email_we_vote_id}>
-            <div className="position-item card-child">
-              <span><strong>{voterEmailAddressFromList.normalized_email_address}</strong></span>
+            <div>
+              <span>{voterEmailAddressFromList.normalized_email_address}</span>
               <span>&nbsp;&nbsp;&nbsp;</span>
-              <span>To Be Verified</span>
-            </div>
-            {this.state.editEmailsToVerifyOn && (
-              <div className="position-item card-child">
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                {voterEmailAddressFromList.email_ownership_is_verified ?
-                  null : (
-                    <a // eslint-disable-line
-                      onClick={this.sendVerificationEmail.bind(this, voterEmailAddressFromList.email_we_vote_id)}
-                    >
-                      Send Verification Again
-                    </a>
-                  )}
-
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                {allowRemoveEmail && (
+              {voterEmailAddressFromList.email_ownership_is_verified ?
+                null : (
                   <a // eslint-disable-line
-                    onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                    onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
                   >
-                    Remove Email
+                    Send Verification Again
                   </a>
                 )}
-              </div>
-            )}
+
+              <span>&nbsp;&nbsp;&nbsp;</span>
+              {allowRemoveEmail && (
+                <a // eslint-disable-line
+                  onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                >
+                  <Delete />
+                </a>
+              )}
+            </div>
           </div>
         );
       } else {
@@ -376,11 +411,11 @@ class VoterEmailAddressEntry extends Component {
     return (
       <Wrapper>
         {verifiedEmailsFound && !this.props.inModal ? (
-          <div>
+          <EmailSection>
             <span className="h3">Your Emails</span>
             {emailAddressStatusHtml}
             {verifiedEmailListHtml}
-          </div>
+          </EmailSection>
         ) : (
           <span>
             {emailAddressStatusHtml}
@@ -388,28 +423,14 @@ class VoterEmailAddressEntry extends Component {
         )}
 
         {unverifiedEmailsFound && !this.props.inModal && (
-          <div>
+          <EmailSection>
             <span className="h3">Emails to Verify</span>
-            { this.state.editEmailsToVerifyOn ? (
-              <span>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span className="pull-right" onClick={this.setEditEmailsToVerifyOff.bind(this)}>
-                stop editing
-                </span>
-              </span>
-            ) : (
-              <span>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span className="pull-right" onClick={this.setEditEmailsToVerifyOn.bind(this)}>
-                edit
-                </span>
-              </span>
-            )}
-            <br />
             {toVerifyEmailListHtml}
-          </div>
+          </EmailSection>
         )}
-        <div className="u-stack--sm">{ enterEmailHtml }</div>
+        <EmailSection>
+          {enterEmailHtml}
+        </EmailSection>
         {showVerifyModal && (
           <SettingsVerifySecretCode
             show={showVerifyModal}
@@ -444,6 +465,10 @@ const styles = {
 
 const Wrapper = styled.div`
   margin-top: 32px;
+`;
+
+const EmailSection = styled.div`
+  margin-top: 18px;
 `;
 
 export default withStyles(styles)(VoterEmailAddressEntry);

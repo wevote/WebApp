@@ -427,7 +427,7 @@ class HeaderBackToBallot extends Component {
 
   render () {
     renderLog(__filename);
-    const { backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable, candidate, measureWeVoteId, officeName, officeWeVoteId, organization, organizationWeVoteId, scrolledDown, voter } = this.state;
+    const { backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable, candidate, measureWeVoteId, officeName, officeWeVoteId, organization, organizationWeVoteId, scrolledDown, showSignInModal, voter } = this.state;
     const { classes, pathname } = this.props;
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
@@ -571,10 +571,12 @@ class HeaderBackToBallot extends Component {
             />
           </OfficeNameWrapper>
         )}
-        <SignInModal
-          show={this.state.showSignInModal}
-          toggleFunction={this.closeSignInModal}
-        />
+        {showSignInModal && (
+          <SignInModal
+            show={showSignInModal}
+            toggleFunction={this.closeSignInModal}
+          />
+        )}
       </AppBar>
     );
   }

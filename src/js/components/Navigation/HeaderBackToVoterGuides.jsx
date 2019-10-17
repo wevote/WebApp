@@ -253,7 +253,7 @@ class HeaderBackToVoterGuides extends Component {
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const { showNewVoterGuideModal, voter } = this.state;
+    const { showNewVoterGuideModal, showSignInModal, voter } = this.state;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
     let backToLink = '/settings/voterguidelist'; // default
@@ -359,10 +359,12 @@ class HeaderBackToVoterGuides extends Component {
         <EndorsementModeSwitch className="header-toolbar">
           <EndorsementModeTabs />
         </EndorsementModeSwitch>
-        <SignInModal
-          show={this.state.showSignInModal}
-          toggleFunction={this.closeSignInModal}
-        />
+        {showSignInModal && (
+          <SignInModal
+            show={showSignInModal}
+            toggleFunction={this.closeSignInModal}
+          />
+        )}
         {showNewVoterGuideModal && (
           <VoterGuideChooseElectionModal
             show={showNewVoterGuideModal}
