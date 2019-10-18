@@ -156,48 +156,13 @@ class VoterPhoneVerificationEntry extends Component {
     this.setState({ loading: true });
   }
 
-  sendSignInCodeSMS () {
-    // console.log('sendSignInCodeSMS');
-    const { voterSMSPhoneNumber, voterSMSPhoneNumberIsValid } = this.state;
-    if (voterSMSPhoneNumberIsValid) {
-      VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
-      this.setState({
-        smsPhoneNumberStatus: {
-          sms_phone_number_already_owned_by_other_voter: false,
-        },
-        loading: true,
-      });
-    } else {
-      this.setState({ showError: true });
-    }
-  }
-
-  reSendSignInCodeSMS = (voterSMSPhoneNumber) => {
-    if (voterSMSPhoneNumber) {
-      VoterActions.sendSignInCodeEmail(voterSMSPhoneNumber);
-      this.setState({
-        smsPhoneNumberStatus: {
-          sms_phone_number_already_owned_by_other_voter: false,
-        },
-        loading: true,
-      });
-    }
-  }
-
-  displayPhoneVerificationButton = () => {
+  updateVoterSMSPhoneNumber = (e) => {
+    const voterSMSPhoneNumber = e.target.value;
+    const voterSMSPhoneNumberIsValid = true;
     this.setState({
-      displayPhoneVerificationButton: true,
+      voterSMSPhoneNumber,
+      voterSMSPhoneNumberIsValid,
     });
-  }
-
-  hidePhoneVerificationButton = () => {
-    const { voterSMSPhoneNumber } = this.state;
-    if (!voterSMSPhoneNumber) {
-      // Only hide if no number entered
-      this.setState({
-        displayPhoneVerificationButton: false,
-      });
-    }
   }
 
   closeVerifyModal = () => {
@@ -212,13 +177,48 @@ class VoterPhoneVerificationEntry extends Component {
     });
   }
 
-  updateVoterSMSPhoneNumber = (e) => {
-    const voterSMSPhoneNumber = e.target.value;
-    const voterSMSPhoneNumberIsValid = true;
+  hidePhoneVerificationButton = () => {
+    const { voterSMSPhoneNumber } = this.state;
+    if (!voterSMSPhoneNumber) {
+      // Only hide if no number entered
+      this.setState({
+        displayPhoneVerificationButton: false,
+      });
+    }
+  }
+
+  displayPhoneVerificationButton = () => {
     this.setState({
-      voterSMSPhoneNumber,
-      voterSMSPhoneNumberIsValid,
+      displayPhoneVerificationButton: true,
     });
+  }
+
+  reSendSignInCodeSMS = (voterSMSPhoneNumber) => {
+    if (voterSMSPhoneNumber) {
+      VoterActions.sendSignInCodeEmail(voterSMSPhoneNumber);
+      this.setState({
+        smsPhoneNumberStatus: {
+          sms_phone_number_already_owned_by_other_voter: false,
+        },
+        loading: true,
+      });
+    }
+  }
+
+  sendSignInCodeSMS () {
+    // console.log('sendSignInCodeSMS');
+    const { voterSMSPhoneNumber, voterSMSPhoneNumberIsValid } = this.state;
+    if (voterSMSPhoneNumberIsValid) {
+      VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
+      this.setState({
+        smsPhoneNumberStatus: {
+          sms_phone_number_already_owned_by_other_voter: false,
+        },
+        loading: true,
+      });
+    } else {
+      this.setState({ showError: true });
+    }
   }
 
   removeVoterSMSPhoneNumber (smsWeVoteId) {
