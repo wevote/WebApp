@@ -28,6 +28,7 @@ export default {
     VoterSessionActions.voterSignOut(); // This deletes the device_id cookie
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
+    VoterActions.voterSMSPhoneNumberRetrieve();
   },
 
   disconnectFromFacebook () {

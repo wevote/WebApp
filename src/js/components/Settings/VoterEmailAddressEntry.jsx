@@ -98,6 +98,7 @@ class VoterEmailAddressEntry extends Component {
     if (secretCodeVerified) {
       this.setState({
         showVerifyModal: false,
+        voterEmailAddress: '',
       });
     } else if (emailAddressStatus.sign_in_code_email_sent) {
       this.setState({
@@ -105,7 +106,6 @@ class VoterEmailAddressEntry extends Component {
         emailAddressStatus: {
           sign_in_code_email_sent: false,
         },
-        voterEmailAddress: '',
         showVerifyModal: true,
       });
     } else if (emailAddressStatus.email_address_already_owned_by_this_voter) {
@@ -113,7 +113,6 @@ class VoterEmailAddressEntry extends Component {
         displayEmailVerificationButton: false,
         emailAddressStatus,
         showVerifyModal: false,
-        voterEmailAddress: '',
       });
     } else {
       this.setState({
@@ -223,7 +222,7 @@ class VoterEmailAddressEntry extends Component {
     }
 
     const { classes } = this.props;
-    const { disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, showVerifyModal, voterEmailAddress, voterEmailAddressList } = this.state;
+    const { disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, showVerifyModal, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount } = this.state;
     // console.log('VoterEmailAddressEntry render, showVerifyModal:', showVerifyModal);
 
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
@@ -304,14 +303,13 @@ class VoterEmailAddressEntry extends Component {
               className={classes.button}
               color="primary"
               disabled={disableEmailVerificationButton}
-              id="voterEmailAddressEntrySendMagicLink"
+              id="voterEmailAddressEntrySendCode"
               onClick={this.sendSignInCodeEmail}
               variant="contained"
             >
               Email Verification Code
             </Button>
-          )
-          }
+          )}
         </form>
       </div>
     );
@@ -338,7 +336,7 @@ class VoterEmailAddressEntry extends Component {
             {isPrimaryEmailAddress && (
               <span>
                 <span>&nbsp;&nbsp;&nbsp;</span>
-              Primary email
+                Primary
               </span>
             )}
             {!isPrimaryEmailAddress && (
@@ -412,7 +410,10 @@ class VoterEmailAddressEntry extends Component {
       <Wrapper>
         {verifiedEmailsFound && !this.props.inModal ? (
           <EmailSection>
-            <span className="h3">Your Emails</span>
+            <span className="h3">
+              Your Email
+              {voterEmailAddressListCount > 1 ? 's' : ''}
+            </span>
             {emailAddressStatusHtml}
             {verifiedEmailListHtml}
           </EmailSection>
