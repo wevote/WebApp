@@ -33,6 +33,13 @@ export default {
     });
   },
 
+  removeVoterSMSPhoneNumber (smsWeVoteId) {
+    Dispatcher.loadEndpoint('voterSMSPhoneNumberSave', {
+      sms_we_vote_id: smsWeVoteId,
+      delete_sms: true,
+    });
+  },
+
   // Send the sign in link to their email address
   // We keep this in place for historical purposes, since people who haven't
   // updated their apps are still using this function
@@ -78,6 +85,13 @@ export default {
     });
   },
 
+  setAsPrimarySMSPhoneNumber (smsWeVoteId) {
+    Dispatcher.loadEndpoint('voterSMSPhoneNumberSave', {
+      sms_we_vote_id: smsWeVoteId,
+      make_primary_sms_phone_number: true,
+    });
+  },
+
   setExternalVoterId (externalVoterId) {
     Dispatcher.dispatch({ type: 'setExternalVoterId', payload: externalVoterId });
   },
@@ -91,10 +105,6 @@ export default {
     Dispatcher.loadEndpoint('voterAddressRetrieve', { voter_device_id: id });
   },
 
-  voterEmailAddressRetrieve () {
-    Dispatcher.loadEndpoint('voterEmailAddressRetrieve', {});
-  },
-
   voterAddressSave (text, simple_save = false, google_civic_election_id = 0) {
     Dispatcher.loadEndpoint('voterAddressSave', { text_for_map_search: text, simple_save, google_civic_election_id });
   },
@@ -103,6 +113,10 @@ export default {
     Dispatcher.loadEndpoint('voterAnalysisForJumpProcess', {
       incoming_voter_device_id: incomingVoterDeviceId,
     });
+  },
+
+  voterEmailAddressRetrieve () {
+    Dispatcher.loadEndpoint('voterEmailAddressRetrieve', {});
   },
 
   voterEmailAddressSave (voterEmailAddress, send_link_to_sign_in = false) {
@@ -146,9 +160,15 @@ export default {
     });
   },
 
-  voterTwitterSaveToCurrentAccount () {
-    Dispatcher.loadEndpoint('voterTwitterSaveToCurrentAccount', {
-    });
+  // Tell the server to only save this name if a name does not currently exist
+  voterFullNameSoftSave (firstName, lastName, full_name = '') {
+    Dispatcher.loadEndpoint('voterUpdate',
+      {
+        first_name: firstName,
+        last_name: lastName,
+        full_name,
+        name_save_only_if_no_existing_names: true,
+      });
   },
 
   voterMergeTwoAccountsByEmailKey (emailSecretKey) {
@@ -208,10 +228,6 @@ export default {
       });
   },
 
-  voterRetrieve () {
-    Dispatcher.loadEndpoint('voterRetrieve');
-  },
-
   voterNameSave (firstName, lastName) {
     Dispatcher.loadEndpoint('voterUpdate',
       {
@@ -220,15 +236,31 @@ export default {
       });
   },
 
-  // Tell the server to only save this name if a name does not currently exist
-  voterFullNameSoftSave (firstName, lastName, full_name = '') {
-    Dispatcher.loadEndpoint('voterUpdate',
+  voterRetrieve () {
+    Dispatcher.loadEndpoint('voterRetrieve');
+  },
+
+  voterSMSPhoneNumberRetrieve () {
+    Dispatcher.loadEndpoint('voterSMSPhoneNumberRetrieve', {});
+  },
+
+  voterSMSPhoneNumberSave (smsPhoneNumber) {
+    Dispatcher.loadEndpoint('voterSMSPhoneNumberSave', {
+      sms_phone_number: smsPhoneNumber,
+      make_primary_sms_phone_number: true,
+    });
+  },
+
+  voterSplitIntoTwoAccounts () {
+    Dispatcher.loadEndpoint('voterSplitIntoTwoAccounts',
       {
-        first_name: firstName,
-        last_name: lastName,
-        full_name,
-        name_save_only_if_no_existing_names: true,
+        split_off_twitter: true,
       });
+  },
+
+  voterTwitterSaveToCurrentAccount () {
+    Dispatcher.loadEndpoint('voterTwitterSaveToCurrentAccount', {
+    });
   },
 
   voterUpdateInterfaceStatusFlags (flagIntegerToSet) {
@@ -253,15 +285,11 @@ export default {
       });
   },
 
-  voterSplitIntoTwoAccounts () {
-    Dispatcher.loadEndpoint('voterSplitIntoTwoAccounts',
-      {
-        split_off_twitter: true,
-      });
-  },
-
-  voterVerifySecretCode (secretCode) {
-    // console.log("VoterActions, voterVerifySecretCode");
-    Dispatcher.loadEndpoint('voterVerifySecretCode', { secret_code: secretCode });
+  voterVerifySecretCode (secretCode, codeSentToSMSPhoneNumber) {
+    console.log('VoterActions, voterVerifySecretCode codeSentToSMSPhoneNumber:', codeSentToSMSPhoneNumber);
+    Dispatcher.loadEndpoint('voterVerifySecretCode', {
+      secret_code: secretCode,
+      code_sent_to_sms_phone_number: codeSentToSMSPhoneNumber,
+    });
   },
 };

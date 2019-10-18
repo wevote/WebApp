@@ -20,7 +20,7 @@ import VoterActions from '../../actions/VoterActions';
 import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
-// import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
+import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
 
 const debugMode = false;
 
@@ -349,7 +349,7 @@ export default class SettingsAccount extends Component {
               </div>
             ) : null
             }
-            {/* <VoterPhoneVerificationEntry /> */}
+            <VoterPhoneVerificationEntry />
             <VoterEmailAddressEntry
               inModal={inModal}
             />

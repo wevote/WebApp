@@ -147,6 +147,7 @@ class Application extends Component {
     if (voterDeviceId && voterDeviceId !== '') {
       if (this.state.voter_initial_retrieve_needed) {
         VoterActions.voterEmailAddressRetrieve();
+        VoterActions.voterSMSPhoneNumberRetrieve();
         FriendActions.friendInvitationsSentToMe();
         this.incomingVariableManagement();
         this.setState({

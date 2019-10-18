@@ -39,6 +39,7 @@ class SettingsVerifySecretCode extends Component {
       numberOfTriesRemaining: 5,
       secretCodeVerified: false,
       voterMustRequestNewCode: false,
+      voterPhoneNumber: '',
       voterSecretCodeRequestsLocked: false,
     };
     this.onDigit1Change = this.onDigit1Change.bind(this);
@@ -254,9 +255,11 @@ class SettingsVerifySecretCode extends Component {
   }
 
   voterVerifySecretCode = () => {
-    const { digit1, digit2, digit3, digit4, digit5, digit6 } = this.state;
+    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
+    // console.log('voterVerifySecretCode local function, voterPhoneNumber:', voterPhoneNumber);
     const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
-    VoterActions.voterVerifySecretCode(secretCode);
+    const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
+    VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
   }
 
   closeVerifyModalLocal = () => {
@@ -281,6 +284,11 @@ class SettingsVerifySecretCode extends Component {
     // console.log('SettingsVerifySecretCode render');
     const { classes } = this.props;
     const { condensed, errorMessageToDisplay, digit1, digit2, digit3, digit4, digit5, digit6, voterEmailAddress, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked } = this.state;
+
+    if (!voterEmailAddress && !voterPhoneNumber) {
+      // We get a weird extra ghost version of SettingsVerifySecretCode, and this is how we block it.
+      return null;
+    }
 
     return (
       <Dialog

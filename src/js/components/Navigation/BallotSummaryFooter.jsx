@@ -203,7 +203,7 @@ class BallotSummaryFooter extends Component {
         }
       }
     }
-    if (ballot && ballot.length && raceLevelFilterItemsInThisBallotOrdered) {
+    if (ballot && ballot.length && raceLevelFilterItemsInThisBallotOrdered && raceLevelFilterItemsInThisBallotOrdered.length > 1) {
       const ballotWithAllItemIdsByFilterType = [];
       ballotWithAllItemsByFilterType.forEach((itemByFilterType) => {
         ballotWithAllItemIdsByFilterType.push(itemByFilterType.we_vote_id);

@@ -33,6 +33,8 @@ class VoterStore extends ReduceStore {
         voterMustRequestNewCode: false,
         voterSecretCodeRequestsLocked: false,
       },
+      smsPhoneNumberStatus: {},
+      smsPhoneNumberList: [],
       voterFound: false,
       voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
     };
@@ -122,6 +124,15 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.linked_organization_we_vote_id || '';
   }
 
+  getSMSPhoneNumberStatus () {
+    return this.getState().smsPhoneNumberStatus;
+  }
+
+  getSMSPhoneNumberList () {
+    const { smsPhoneNumberList } = this.getState();
+    return smsPhoneNumberList;
+  }
+
   getStateCodeFromIPAddress () {
     return this.getState().voter.state_code_from_ip_address || '';
   }
@@ -161,7 +172,7 @@ class VoterStore extends ReduceStore {
     cookies.removeItem('voter_device_id');
     cookies.removeItem('voter_device_id', '/');
     const { hostname } = window.location;
-    console.log('setVoterDeviceIdCookie hostname:', hostname);
+    // console.log('setVoterDeviceIdCookie hostname:', hostname);
     if (hostname && stringContains('wevote.us', hostname)) {
       cookies.setItem('voter_device_id', id, Infinity, '/', 'wevote.us');
     } else {
@@ -217,10 +228,6 @@ class VoterStore extends ReduceStore {
     }
   }
 
-  // isVerificationEmailSent () {
-  //   return this.getState().emailAddressStatus.verification_email_sent;
-  // }
-
   reduce (state, action) {
     // Exit if we don't have a response. "success" is not required though -- we should deal with error conditions below.
     if (!action.res && !action.payload) {
@@ -260,6 +267,9 @@ class VoterStore extends ReduceStore {
             voterSecretCodeRequestsLocked: false,
           },
         };
+      case 'clearSMSPhoneNumberStatus':
+        // console.log('VoterStore clearSMSPhoneNumberStatus');
+        return { ...state, smsPhoneNumberStatus: {} };
       case 'organizationSave':
         // If an organization saves, we want to check to see if it is tied to this voter. If so,
         // refresh the voter data so we have the value linked_organization_we_vote_id in the voter object.
@@ -597,6 +607,30 @@ class VoterStore extends ReduceStore {
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
         return this.resetState();
+
+      case 'voterSMSPhoneNumberRetrieve':
+        // console.log('VoterStore  voterSMSPhoneNumberRetrieve: ', action.res.sms_phone_number_list);
+        return {
+          ...state,
+          smsPhoneNumberList: action.res.sms_phone_number_list,
+        };
+
+      case 'voterSMSPhoneNumberSave':
+        VoterActions.voterRetrieve();
+        return {
+          ...state,
+          smsPhoneNumberList: action.res.sms_phone_number_list,
+          smsPhoneNumberStatus: {
+            sms_verify_attempted: action.res.sms_verify_attempted,
+            sms_phone_number_already_owned_by_other_voter: action.res.sms_phone_number_already_owned_by_other_voter,
+            sms_phone_number_already_owned_by_this_voter: action.res.sms_phone_number_already_owned_by_this_voter,
+            sms_phone_number_created: action.res.sms_phone_number_created,
+            sms_phone_number_deleted: action.res.sms_phone_number_deleted,
+            make_primary_sms: action.res.make_primary_sms,
+            sign_in_code_sms_sent: action.res.sign_in_code_sms_sent,
+            verification_sms_sent: action.res.verification_sms_sent,
+          },
+        };
 
       case 'voterSplitIntoTwoAccounts':
         VoterActions.voterRetrieve();
