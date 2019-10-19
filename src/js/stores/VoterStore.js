@@ -510,6 +510,7 @@ class VoterStore extends ReduceStore {
           VoterActions.voterRetrieve();
         }, delayBeforeApiCall);
         VoterActions.voterEmailAddressRetrieve();
+        VoterActions.voterSMSPhoneNumberRetrieve();
         FriendActions.currentFriends();
         FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsSentToMe();
@@ -606,6 +607,7 @@ class VoterStore extends ReduceStore {
         // console.log("resetting voterStore");
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
+        VoterActions.voterSMSPhoneNumberRetrieve();
         return this.resetState();
 
       case 'voterSMSPhoneNumberRetrieve':
@@ -617,6 +619,7 @@ class VoterStore extends ReduceStore {
 
       case 'voterSMSPhoneNumberSave':
         VoterActions.voterRetrieve();
+        VoterActions.voterSMSPhoneNumberRetrieve();
         return {
           ...state,
           smsPhoneNumberList: action.res.sms_phone_number_list,
@@ -625,6 +628,7 @@ class VoterStore extends ReduceStore {
             sms_phone_number_already_owned_by_other_voter: action.res.sms_phone_number_already_owned_by_other_voter,
             sms_phone_number_already_owned_by_this_voter: action.res.sms_phone_number_already_owned_by_this_voter,
             sms_phone_number_created: action.res.sms_phone_number_created,
+            sms_phone_number_found: action.res.sms_phone_number_found,
             sms_phone_number_deleted: action.res.sms_phone_number_deleted,
             make_primary_sms: action.res.make_primary_sms,
             sign_in_code_sms_sent: action.res.sign_in_code_sms_sent,
@@ -669,6 +673,7 @@ class VoterStore extends ReduceStore {
         voterSecretCodeRequestsLocked = (action.res.secret_code_system_locked_for_this_voter_device_id && action.res.secret_code_system_locked_for_this_voter_device_id === true);
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
+        VoterActions.voterSMSPhoneNumberRetrieve();
         return {
           ...state,
           secretCodeVerificationStatus: {
