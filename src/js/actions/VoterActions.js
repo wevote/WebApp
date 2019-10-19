@@ -286,7 +286,7 @@ export default {
   },
 
   voterVerifySecretCode (secretCode, codeSentToSMSPhoneNumber) {
-    console.log('VoterActions, voterVerifySecretCode codeSentToSMSPhoneNumber:', codeSentToSMSPhoneNumber);
+    // console.log('VoterActions, voterVerifySecretCode codeSentToSMSPhoneNumber:', codeSentToSMSPhoneNumber);
     Dispatcher.loadEndpoint('voterVerifySecretCode', {
       secret_code: secretCode,
       code_sent_to_sms_phone_number: codeSentToSMSPhoneNumber,

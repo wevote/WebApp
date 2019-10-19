@@ -195,12 +195,14 @@ class VoterPhoneVerificationEntry extends Component {
 
   reSendSignInCodeSMS = (voterSMSPhoneNumber) => {
     if (voterSMSPhoneNumber) {
-      VoterActions.sendSignInCodeEmail(voterSMSPhoneNumber);
+      VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
+      // We need to put voterSMSPhoneNumber back in place so the verify modal can open
       this.setState({
+        loading: true,
         smsPhoneNumberStatus: {
           sms_phone_number_already_owned_by_other_voter: false,
         },
-        loading: true,
+        voterSMSPhoneNumber,
       });
     }
   }
@@ -255,7 +257,6 @@ class VoterPhoneVerificationEntry extends Component {
         { smsPhoneNumberStatus.sms_phone_number_created ||
         smsPhoneNumberStatus.sms_phone_number_deleted ||
         smsPhoneNumberStatus.sms_ownership_is_verified ||
-        smsPhoneNumberStatus.verification_sms_sent ||
         smsPhoneNumberStatus.make_primary_sms ||
         smsPhoneNumberStatus.sign_in_code_sms_sent ? (
           <Alert variant="success">
@@ -263,9 +264,8 @@ class VoterPhoneVerificationEntry extends Component {
             !smsPhoneNumberStatus.verification_sms_sent ? <span>Your phone number was saved. </span> : null }
             { smsPhoneNumberStatus.sms_phone_number_deleted ? <span>Your phone number was deleted. </span> : null }
             { smsPhoneNumberStatus.sms_ownership_is_verified ? <span>Your phone number was verified. </span> : null }
-            { smsPhoneNumberStatus.verification_sms_sent ? <span>Please check your email. A verification email was sent. </span> : null }
-            { smsPhoneNumberStatus.make_primary_sms ? <span>Your have chosen a new primary email. </span> : null }
-            { smsPhoneNumberStatus.sign_in_code_sms_sent ? <span>Please check your email. A sign in verification code was sent. </span> : null }
+            { smsPhoneNumberStatus.make_primary_sms ? <span>Your have chosen a new primary phone number. </span> : null }
+            { smsPhoneNumberStatus.sign_in_code_sms_sent ? <span>Please check your phone. A sign in verification code was sent. </span> : null }
           </Alert>
           ) : null
         }
@@ -394,7 +394,7 @@ class VoterPhoneVerificationEntry extends Component {
               {voterSMSPhoneNumberFromList.sms_ownership_is_verified ?
                 null : (
                   <a // eslint-disable-line
-                    onClick={() => this.reSendSignInCodeEmail(voterSMSPhoneNumberFromList.normalized_sms_phone_number)}
+                    onClick={() => this.reSendSignInCodeSMS(voterSMSPhoneNumberFromList.normalized_sms_phone_number)}
                   >
                     Send Verification Again
                   </a>
