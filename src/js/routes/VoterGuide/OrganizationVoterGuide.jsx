@@ -338,7 +338,7 @@ export default class OrganizationVoterGuide extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="d-none d-sm-block col-md-4">
-              <CardContainer>
+              <CardContainer bannerUrl={this.state.organization.organization_banner_url}>
                 <div className="card">
                   <div className="card-main">
                     <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={isVoterOwner} />
@@ -387,6 +387,6 @@ const BannerContainer = styled.div`
 
 const CardContainer = styled.div`
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
-    margin-top: -203px;
+    margin-top: ${({ bannerUrl }) => (bannerUrl ? '-203px' : '0')};
   }
 `;
