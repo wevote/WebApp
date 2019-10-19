@@ -252,7 +252,8 @@ class VoterPhoneVerificationEntry extends Component {
             )}
             { smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter && !smsPhoneNumberStatus.sms_phone_number_deleted && !smsPhoneNumberStatus.make_primary_sms ?
               <span>That phone number was already verified by you. </span>
-              : null }
+              :
+              null }
           </Alert>
           ) : null
         }

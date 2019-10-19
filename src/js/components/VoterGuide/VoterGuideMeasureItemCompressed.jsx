@@ -84,49 +84,51 @@ class VoterGuideMeasureItemCompressed extends Component {
     });
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      return true;
-    }
-    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-      // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
-      return true;
-    }
-    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
-      return true;
-    }
-    if (JSON.stringify(this.state.measure) !== JSON.stringify(nextState.measure)) {
-      // console.log('this.state.measure:', this.state.measure, ', nextState.measure:', nextState.measure);
-      return true;
-    }
-    if (this.state.organizationPositionForMeasureFound !== nextState.organizationPositionForMeasureFound) {
-      // console.log('this.state.organizationPositionForMeasureFound:', this.state.organizationPositionForMeasureFound, ', nextState.organizationPositionForMeasureFound:', nextState.organizationPositionForMeasureFound);
-      return true;
-    }
-    if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
-      // console.log('this.props.showPositionStatementActionBar change');
-      return true;
-    }
-    if (this.state.showPositionStatement !== nextState.showPositionStatement) {
-      // console.log('this.state.showPositionStatement change');
-      return true;
-    }
-    if (this.state.measureSupportProps !== undefined && nextState.measureSupportProps !== undefined) {
-      const currentNetworkSupportCount = parseInt(this.state.measureSupportProps.support_count) || 0;
-      const nextNetworkSupportCount = parseInt(nextState.measureSupportProps.support_count) || 0;
-      const currentNetworkOpposeCount = parseInt(this.state.measureSupportProps.oppose_count) || 0;
-      const nextNetworkOpposeCount = parseInt(nextState.measureSupportProps.oppose_count) || 0;
-      if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
-        // console.log('shouldComponentUpdate: support or oppose count change');
-        return true;
-      }
-    }
-    // console.log('shouldComponentUpdate no change');
-    return false;
-  }
+  // For some reason, when we use shouldComponentUpdate, the positions don't always get loaded on the "From Your Ballot"
+  //  tab when you come from the Ballot page
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   if (this.state.componentDidMountFinished === false) {
+  //     // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+  //     return true;
+  //   }
+  //   if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
+  //     // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
+  //     return true;
+  //   }
+  //   if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
+  //     // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
+  //     return true;
+  //   }
+  //   if (JSON.stringify(this.state.measure) !== JSON.stringify(nextState.measure)) {
+  //     // console.log('this.state.measure:', this.state.measure, ', nextState.measure:', nextState.measure);
+  //     return true;
+  //   }
+  //   if (this.state.organizationPositionForMeasureFound !== nextState.organizationPositionForMeasureFound) {
+  //     // console.log('this.state.organizationPositionForMeasureFound:', this.state.organizationPositionForMeasureFound, ', nextState.organizationPositionForMeasureFound:', nextState.organizationPositionForMeasureFound);
+  //     return true;
+  //   }
+  //   if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
+  //     // console.log('this.props.showPositionStatementActionBar change');
+  //     return true;
+  //   }
+  //   if (this.state.showPositionStatement !== nextState.showPositionStatement) {
+  //     // console.log('this.state.showPositionStatement change');
+  //     return true;
+  //   }
+  //   if (this.state.measureSupportProps !== undefined && nextState.measureSupportProps !== undefined) {
+  //     const currentNetworkSupportCount = parseInt(this.state.measureSupportProps.support_count) || 0;
+  //     const nextNetworkSupportCount = parseInt(nextState.measureSupportProps.support_count) || 0;
+  //     const currentNetworkOpposeCount = parseInt(this.state.measureSupportProps.oppose_count) || 0;
+  //     const nextNetworkOpposeCount = parseInt(nextState.measureSupportProps.oppose_count) || 0;
+  //     if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
+  //       // console.log('shouldComponentUpdate: support or oppose count change');
+  //       return true;
+  //     }
+  //   }
+  //   console.log('shouldComponentUpdate no change');
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
@@ -165,10 +167,11 @@ class VoterGuideMeasureItemCompressed extends Component {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       if (this.localDoesOrganizationHavePositionOnBallotItem(measureWeVoteId)) {
         const organizationPositionForMeasure = this.localGetOrganizationPositionOnBallotItem(measureWeVoteId);
-        // console.log('organizationPositionForMeasure:', organizationPositionForMeasure);
+        const organizationPositionForMeasureFound = organizationPositionForMeasure && organizationPositionForMeasure.position_we_vote_id;
+        // console.log('organizationPositionForMeasure:', organizationPositionForMeasure, ', organizationPositionForMeasureFound:', organizationPositionForMeasureFound);
         this.setState({
           organizationPositionForMeasure,
-          organizationPositionForMeasureFound: true,
+          organizationPositionForMeasureFound,
         });
       }
       this.setState({
@@ -203,7 +206,7 @@ class VoterGuideMeasureItemCompressed extends Component {
     renderLog(__filename);
     let { ballotItemDisplayName } = this.state;
     const { measureText, measureWeVoteId, organization, organizationPositionForMeasure } = this.state;
-    // console.log('VoterGuideMeasureItemCompressed render organizationPositionForMeasure:', organizationPositionForMeasure);
+    // console.log('VoterGuideMeasureItemCompressed render');
     if (!measureWeVoteId) {
       return null;
     }

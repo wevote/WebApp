@@ -199,7 +199,7 @@
     "stylelint-config-standard": "^18.3.0",
     "stylelint-declaration-use-variable": "^1.7.0",
     "tape": "^4.11.0",
-    "uglifyify": "^5.0.1",
+    "uglifyify": "^5.0.2",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
     "watchify": "^3.11.1",
