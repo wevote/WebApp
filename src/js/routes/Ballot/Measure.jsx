@@ -130,6 +130,10 @@ export default class Measure extends Component {
       // console.log('this.state.positionListForThisMeasureLength:', this.state.positionListForThisMeasureLength, ', nextState.positionListForThisMeasureLength:', nextState.positionListForThisMeasureLength);
       return true;
     }
+    if (this.state.scrolledDown !== nextState.scrolledDown) {
+      // console.log('this.state.scrolledDown:', this.state.scrolledDown, ', nextState.scrolledDown:', nextState.scrolledDown);
+      return true;
+    }
     return false;
   }
 
@@ -184,11 +188,11 @@ export default class Measure extends Component {
   }
 
   render () {
-    // console.log('Measure render');
     const {
       positionListForThisMeasure, measure, scrolledDown,
     } = this.state;
     renderLog(__filename);
+    // console.log('Measure render scrolledDown:', scrolledDown);
 
     if (!measure || !measure.ballot_item_display_name) {
       // TODO DALE If the measureWeVoteId is not valid, we need to update this with a notice
