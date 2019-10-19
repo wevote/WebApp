@@ -159,7 +159,7 @@ export default class Candidate extends Component {
     // const electionId = VoterStore.electionId();
     // const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
 
-    // console.log('Candidate render, this.state.allCachedPositionsForThisCandidate: ', this.state.allCachedPositionsForThisCandidate);
+    // console.log('Candidate render, scrolledDown: ', scrolledDown);
 
     if (!this.state.candidate || !this.state.candidate.ballot_item_display_name) {
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice

@@ -8,6 +8,8 @@ import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpp
 import { renderLog } from '../../utils/logging';
 import MeasureActions from '../../actions/MeasureActions';
 import MeasureStore from '../../stores/MeasureStore';
+import OrganizationPositionItem from './OrganizationPositionItem';
+import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
 
@@ -31,6 +33,8 @@ class VoterGuideMeasureItemCompressed extends Component {
       measureText: '',
       measureWeVoteId: '',
       organizationWeVoteId: '',
+      organizationPositionForMeasure: {},
+      organizationPositionForMeasureFound: false,
       showPositionStatement: false,
     };
     this.goToMeasureLink = this.goToMeasureLink.bind(this);
@@ -59,6 +63,7 @@ class VoterGuideMeasureItemCompressed extends Component {
       organizationWeVoteId,
     });
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
@@ -97,6 +102,10 @@ class VoterGuideMeasureItemCompressed extends Component {
       // console.log('this.state.measure:', this.state.measure, ', nextState.measure:', nextState.measure);
       return true;
     }
+    if (this.state.organizationPositionForMeasureFound !== nextState.organizationPositionForMeasureFound) {
+      // console.log('this.state.organizationPositionForMeasureFound:', this.state.organizationPositionForMeasureFound, ', nextState.organizationPositionForMeasureFound:', nextState.organizationPositionForMeasureFound);
+      return true;
+    }
     if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
       // console.log('this.props.showPositionStatementActionBar change');
       return true;
@@ -121,6 +130,7 @@ class VoterGuideMeasureItemCompressed extends Component {
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
+    this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
   }
 
@@ -148,6 +158,25 @@ class VoterGuideMeasureItemCompressed extends Component {
     });
   }
 
+  onOrganizationStoreChange () {
+    const { measureWeVoteId, organizationWeVoteId } = this.state;
+    // console.log('VoterGuideMeasureItemCompressed onOrganizationStoreChange, organizationWeVoteId: ', organizationWeVoteId);
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      if (this.localDoesOrganizationHavePositionOnBallotItem(measureWeVoteId)) {
+        const organizationPositionForMeasure = this.localGetOrganizationPositionOnBallotItem(measureWeVoteId);
+        // console.log('organizationPositionForMeasure:', organizationPositionForMeasure);
+        this.setState({
+          organizationPositionForMeasure,
+          organizationPositionForMeasureFound: true,
+        });
+      }
+      this.setState({
+        organization,
+      });
+    }
+  }
+
   goToMeasureLink (oneMeasureWeVoteId) {
     // We want to update this to open a measure modal
     console.log('goToMeasureLink oneMeasureWeVoteId:', oneMeasureWeVoteId);
@@ -160,11 +189,21 @@ class VoterGuideMeasureItemCompressed extends Component {
     });
   }
 
+  localDoesOrganizationHavePositionOnBallotItem (measureWeVoteId) {
+    const { organizationWeVoteId } = this.state;
+    return OrganizationStore.doesOrganizationHavePositionOnBallotItem(organizationWeVoteId, measureWeVoteId);
+  }
+
+  localGetOrganizationPositionOnBallotItem (measureWeVoteId) {
+    const { organizationWeVoteId } = this.state;
+    return OrganizationStore.getOrganizationPositionByWeVoteId(organizationWeVoteId, measureWeVoteId);
+  }
+
   render () {
-    // console.log('VoterGuideMeasureItemCompressed render');
     renderLog(__filename);
     let { ballotItemDisplayName } = this.state;
-    const { measureText, measureWeVoteId } = this.state;
+    const { measureText, measureWeVoteId, organization, organizationPositionForMeasure } = this.state;
+    // console.log('VoterGuideMeasureItemCompressed render organizationPositionForMeasure:', organizationPositionForMeasure);
     if (!measureWeVoteId) {
       return null;
     }
@@ -192,6 +231,17 @@ class VoterGuideMeasureItemCompressed extends Component {
           </MeasureInfoWrapper>
           <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
         </InfoRow>
+        {organization && organizationPositionForMeasure && organizationPositionForMeasure.position_we_vote_id && (
+          <InfoRow>
+            {/* Organization Endorsement */}
+            <OrganizationPositionItem
+              // ballotItemLink={this.getCandidateLink(candidateWeVoteId)}
+              key={organizationPositionForMeasure.position_we_vote_id}
+              position={organizationPositionForMeasure}
+              organization={organization}
+            />
+          </InfoRow>
+        )}
       </Card>
     );
   }

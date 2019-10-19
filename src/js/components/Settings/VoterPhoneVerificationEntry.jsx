@@ -250,7 +250,9 @@ class VoterPhoneVerificationEntry extends Component {
                 Please click &quot;Send Login Code in an Email&quot; below to sign into that account.
               </span>
             )}
-            { smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter && !smsPhoneNumberStatus.sms_phone_number_deleted && !smsPhoneNumberStatus.make_primary_sms ? <span>That phone number was already verified by you. </span> : null }
+            { smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter && !smsPhoneNumberStatus.sms_phone_number_deleted && !smsPhoneNumberStatus.make_primary_sms ?
+              <span>That phone number was already verified by you. </span>
+              : null }
           </Alert>
           ) : null
         }

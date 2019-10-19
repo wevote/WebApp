@@ -168,6 +168,7 @@ class OrganizationStore extends ReduceStore {
     if (organizationWeVoteId && ballotItemWeVoteId) {
       const { allCachedPositionsByOrganizationDict } = this.getState();
       if (allCachedPositionsByOrganizationDict && allCachedPositionsByOrganizationDict[organizationWeVoteId] && allCachedPositionsByOrganizationDict[organizationWeVoteId][ballotItemWeVoteId]) {
+        // console.log('FOUND doesOrganizationHavePositionOnBallotItem ballotItemWeVoteId:', ballotItemWeVoteId);
         return true;
       }
     }
