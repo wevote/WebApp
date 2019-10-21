@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ReactSVG from 'react-svg';
 import ImageHandler from '../ImageHandler';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import { renderLog } from '../../utils/logging';
@@ -13,6 +14,7 @@ import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import ReadMore from '../Widgets/ReadMore';
 import FollowToggle from '../Widgets/FollowToggle';
 import StickyPopover from './StickyPopover';
+import { cordovaDot } from '../../utils/cordovaUtils';
 
 class PositionItem extends Component {
   static propTypes = {
@@ -114,9 +116,17 @@ class PositionItem extends Component {
 
     let imagePlaceholder = '';
     if (isSpeakerTypeOrganization(position.speaker_type)) {
-      imagePlaceholder = <i className="icon-45 icon-icon-org-placeholder-6-2 icon-org-resting-color" />;
+      imagePlaceholder = (
+        <ReactSVG
+          src={cordovaDot('/img/global/svg-icons/organization-icon.svg')}
+        />
+      );
     } else if (isSpeakerTypeIndividual(position.speaker_type)) {
-      imagePlaceholder = <i className="icon-45 icon-icon-person-placeholder-6-1 icon-org-resting-color" />;
+      imagePlaceholder = (
+        <ReactSVG
+          src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')}
+        />
+      );
     }
 
     // console.log(position);
