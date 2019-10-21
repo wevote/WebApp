@@ -34,6 +34,7 @@ class SettingsVerifySecretCode extends Component {
       digit5: '',
       digit6: '',
       condensed: false,
+      error: false,
       errorMessageToDisplay: '',
       incorrectSecretCodeEntered: false,
       numberOfTriesRemaining: 5,
@@ -47,14 +48,9 @@ class SettingsVerifySecretCode extends Component {
     this.onDigit4Change = this.onDigit4Change.bind(this);
     this.onDigit5Change = this.onDigit5Change.bind(this);
     this.onDigit6Change = this.onDigit6Change.bind(this);
-    this.onDigit1KeyDown = this.onDigit1KeyDown.bind(this);
-    this.onDigit2KeyDown = this.onDigit2KeyDown.bind(this);
-    this.onDigit3KeyDown = this.onDigit3KeyDown.bind(this);
-    this.onDigit4KeyDown = this.onDigit4KeyDown.bind(this);
-    this.onDigit5KeyDown = this.onDigit5KeyDown.bind(this);
-    this.onDigit6KeyDown = this.onDigit6KeyDown.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.onPaste = this.onPaste.bind(this);
   }
 
   componentDidMount () {
@@ -70,33 +66,25 @@ class SettingsVerifySecretCode extends Component {
     this.timer = setTimeout(() => {
       VoterActions.clearSecretCodeVerificationStatus();
     }, delayBeforeClearingVerificationStatus);
+
+    window.addEventListener('paste', this.onPaste);
   }
 
   shouldComponentUpdate (nextState) {
-    if (this.state.incorrectSecretCodeEntered !== nextState.incorrectSecretCodeEntered) {
-      return true;
-    }
-    if (this.state.numberOfTriesRemaining !== nextState.numberOfTriesRemaining) {
-      return true;
-    }
-    if (this.state.secretCodeVerified !== nextState.secretCodeVerified) {
-      return true;
-    }
-    if (this.state.voterEmailAddress !== nextState.voterEmailAddress) {
-      return true;
-    }
-    if (this.state.voterMustRequestNewCode !== nextState.voterMustRequestNewCode) {
-      return true;
-    }
-    if (this.state.voterPhoneNumber !== nextState.voterPhoneNumber) {
-      return true;
-    }
-    if (this.state.voterSecretCodeRequestsLocked !== nextState.voterSecretCodeRequestsLocked) {
-      return true;
-    }
-    if (this.state.condensed !== nextState.condensed) {
-      return true;
-    }
+    if (this.state.incorrectSecretCodeEntered !== nextState.incorrectSecretCodeEntered) return true;
+    if (this.state.numberOfTriesRemaining !== nextState.numberOfTriesRemaining) return true;
+    if (this.state.secretCodeVerified !== nextState.secretCodeVerified) return true;
+    if (this.state.voterEmailAddress !== nextState.voterEmailAddress) return true;
+    if (this.state.voterMustRequestNewCode !== nextState.voterMustRequestNewCode) return true;
+    if (this.state.voterPhoneNumber !== nextState.voterPhoneNumber) return true;
+    if (this.state.voterSecretCodeRequestsLocked !== nextState.voterSecretCodeRequestsLocked) return true;
+    if (this.state.condensed !== nextState.condensed) return true;
+    if (this.state.digit1 !== nextState.digit1) return true;
+    if (this.state.digit2 !== nextState.digit2) return true;
+    if (this.state.digit3 !== nextState.digit3) return true;
+    if (this.state.digit4 !== nextState.digit4) return true;
+    if (this.state.digit5 !== nextState.digit5) return true;
+    if (this.state.digit6 !== nextState.digit6) return true;
     // console.log('shouldComponentUpdate return false');
     return false;
   }
@@ -139,117 +127,140 @@ class SettingsVerifySecretCode extends Component {
   }
 
   onDigit1Change (e) {
-    if (e.target.value !== '') {
-      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-    }
-    this.setState({
-      digit1: e.target.value.charAt(e.target.value.length - 1),
-      errorMessageToDisplay: '',
-    });
-    e.target.value = e.target.value.charAt(e.target.value.length - 1);
-  }
-
-  onDigit1KeyDown (e) {
-    // console.log(e.key, e.keyCode);
+    const regex = /^[0-9]$/;
+    const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
     if (e.keyCode === 8 && this.state.digit1 === '') {
-      // Fine
+      e.target.value = '';
+    } else if (e.keyCode !== 8 && regex.test(digit)) {
+      console.log(e.keyCode);
+      if (e.target.value !== '') {
+        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+      }
+      this.setState({
+        digit1: digit,
+        errorMessageToDisplay: '',
+      });
+      e.target.value = digit;
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    } else {
+      e.target.value = '';
+      this.setState({ digit1: '' });
     }
   }
 
   onDigit2Change (e) {
-    if (e.target.value !== '') {
-      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-    }
-    this.setState({
-      digit2: e.target.value.charAt(e.target.value.length - 1),
-      errorMessageToDisplay: '',
-    });
-    e.target.value = e.target.value.charAt(e.target.value.length - 1);
-  }
-
-  onDigit2KeyDown (e) {
+    const regex = /^[0-9]$/;
+    const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
     if (e.keyCode === 8 && this.state.digit2 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
+      this.setState({ digit1: '' });
+    } else if (e.keyCode !== 8 && regex.test(digit)) {
+      console.log(e.keyCode);
+      if (e.target.value !== '') {
+        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+      }
+      this.setState({
+        digit2: digit,
+        errorMessageToDisplay: '',
+      });
+      e.target.value = digit;
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
-      // console.log('Digit2 is not empty');
+      e.target.value = '';
+      this.setState({ digit2: '' });
     }
   }
 
   onDigit3Change (e) {
-    if (e.target.value !== '') {
-      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-    }
-    this.setState({
-      digit3: e.target.value.charAt(e.target.value.length - 1),
-      errorMessageToDisplay: '',
-    });
-    e.target.value = e.target.value.charAt(e.target.value.length - 1);
-  }
-
-  onDigit3KeyDown (e) {
+    const regex = /^[0-9]$/;
+    const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
     if (e.keyCode === 8 && this.state.digit3 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
+      this.setState({ digit2: '' });
+    } else if (e.keyCode !== 8 && regex.test(digit)) {
+      console.log(e.keyCode);
+      if (e.target.value !== '') {
+        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+      }
+      this.setState({
+        digit3: digit,
+        errorMessageToDisplay: '',
+      });
+      e.target.value = digit;
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
-      // console.log('Digit3 is not empty');
+      e.target.value = '';
+      this.setState({ digit3: '' });
     }
   }
 
   onDigit4Change (e) {
-    if (e.target.value !== '') {
-      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-    }
-    this.setState({
-      digit4: e.target.value.charAt(e.target.value.length - 1),
-      errorMessageToDisplay: '',
-    });
-    e.target.value = e.target.value.charAt(e.target.value.length - 1);
-  }
-
-  onDigit4KeyDown (e) {
+    const regex = /^[0-9]$/;
+    const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
     if (e.keyCode === 8 && this.state.digit4 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
+      this.setState({ digit3: '' });
+    } else if (e.keyCode !== 8 && regex.test(digit)) {
+      console.log(e.keyCode);
+      if (e.target.value !== '') {
+        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+      }
+      this.setState({
+        digit4: digit,
+        errorMessageToDisplay: '',
+      });
+      e.target.value = digit;
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
-      // console.log('Digit4 is not empty');
+      e.target.value = '';
+      this.setState({ digit4: '' });
     }
   }
 
   onDigit5Change (e) {
-    if (e.target.value !== '') {
-      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-    }
-    this.setState({
-      digit5: e.target.value.charAt(e.target.value.length - 1),
-      errorMessageToDisplay: '',
-    });
-    e.target.value = e.target.value.charAt(e.target.value.length - 1);
-  }
-
-  onDigit5KeyDown (e) {
+    const regex = /^[0-9]$/;
+    const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
     if (e.keyCode === 8 && this.state.digit5 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
+      this.setState({ digit4: '' });
+    } else if (e.keyCode !== 8 && regex.test(digit)) {
+      console.log(e.keyCode);
+      if (e.target.value !== '') {
+        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+      }
+      this.setState({
+        digit5: digit,
+        errorMessageToDisplay: '',
+      });
+      e.target.value = digit;
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
-      // console.log('Digit5 is not empty');
+      e.target.value = '';
+      this.setState({ digit5: '' });
     }
   }
 
   onDigit6Change (e) {
-    this.setState({
-      digit6: e.target.value.charAt(e.target.value.length - 1),
-      errorMessageToDisplay: '',
-    });
-    e.target.value = e.target.value.charAt(e.target.value.length - 1);
-  }
-
-  onDigit6KeyDown (e) {
+    const regex = /^[0-9]$/;
+    const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
     if (e.keyCode === 8 && this.state.digit6 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
+      this.setState({ digit5: '' });
+    } else if (e.keyCode !== 8 && regex.test(digit)) {
+      console.log(e.keyCode);
+      this.setState({
+        digit6: digit,
+        errorMessageToDisplay: '',
+      });
+      e.target.value = digit;
     } else {
-      // console.log('Digit6 is not empty');
+      e.target.value = '';
+      this.setState({ digit6: '' });
     }
   }
 
@@ -275,6 +286,41 @@ class SettingsVerifySecretCode extends Component {
 
   handleBlur () {
     this.setState({ condensed: false });
+  }
+
+  // eslint-disable-next-line react/sort-comp
+  onPaste (e) {
+    console.log(e.clipboardData.getData('Text'));
+
+    const pastedInputArray = e.clipboardData.getData('Text').split('');
+    console.log(pastedInputArray);
+
+    const regex = /^[0-9]$/;
+
+    const allDigits = pastedInputArray.filter(digit => regex.test(digit));
+
+    if (allDigits[5]) {
+      this.setState({
+        digit1: allDigits[0],
+        digit2: allDigits[1],
+        digit3: allDigits[2],
+        digit4: allDigits[3],
+        digit5: allDigits[4],
+        digit6: allDigits[5],
+      });
+      document.getElementById('digit6').focus();
+    } else {
+      this.setState({
+        digit1: '',
+        digit2: '',
+        digit3: '',
+        digit4: '',
+        digit5: '',
+        digit6: '',
+        error: true,
+        errorMessageToDisplay: 'Please enter a six-digit code',
+      });
+    }
   }
 
   render () {
@@ -303,54 +349,74 @@ class SettingsVerifySecretCode extends Component {
             <InputContainer condensed={condensed}>
               <OutlinedInput
                 maxLength={1}
-                onKeyDown={this.onDigit1KeyDown}
-                onChange={this.onDigit1Change}
+                onKeyDown={this.onDigit1Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
+                onPaste={this.onPaste}
+                value={this.state.digit1}
+                id="digit1"
+                error={this.state.error}
               />
               <OutlinedInput
                 maxLength={1}
-                onKeyDown={this.onDigit2KeyDown}
-                onChange={this.onDigit2Change}
+                onKeyDown={this.onDigit2Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
+                onPaste={this.onPaste}
+                value={this.state.digit2}
+                id="digit2"
+                error={this.state.error}
               />
               <OutlinedInput
                 maxLength={1}
-                onKeyDown={this.onDigit3KeyDown}
-                onChange={this.onDigit3Change}
+                onKeyDown={this.onDigit3Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
+                onPaste={this.onPaste}
+                value={this.state.digit3}
+                id="digit3"
+                error={this.state.error}
               />
               <OutlinedInput
                 maxLength={1}
-                onKeyDown={this.onDigit4KeyDown}
-                onChange={this.onDigit4Change}
+                onKeyDown={this.onDigit4Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
+                onPaste={this.onPaste}
+                value={this.state.digit4}
+                id="digit4"
+                error={this.state.error}
               />
               <OutlinedInput
                 maxLength={1}
-                onKeyDown={this.onDigit5KeyDown}
-                onChange={this.onDigit5Change}
+                onKeyDown={this.onDigit5Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
+                onPaste={this.onPaste}
+                value={this.state.digit5}
+                id="digit5"
+                error={this.state.error}
               />
               <OutlinedInput
                 maxLength={1}
-                onKeyDown={this.onDigit6KeyDown}
-                onChange={this.onDigit6Change}
+                onKeyDown={this.onDigit6Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
+                onPaste={this.onPaste}
+                value={this.state.digit6}
+                id="digit6"
+                error={this.state.error}
               />
             </InputContainer>
-            {errorMessageToDisplay}
+            {this.state.error && (
+              <ErrorMessage>{errorMessageToDisplay}</ErrorMessage>
+            )}
           </TextContainer>
           <ButtonsContainer condensed={condensed}>
             <Button
@@ -508,6 +574,13 @@ const InputContainer = styled.div`
   margin: auto;
   width: 100%;
   margin-top: ${props => (props.condensed ? '16px' : '32px')};
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  margin: 12px 0;
+  text-align: center;
+  font-size: 14px;
 `;
 
 export default withStyles(styles)(SettingsVerifySecretCode);
