@@ -122,6 +122,7 @@ class SettingsVerifySecretCode extends Component {
         secretCodeVerified,
         voterMustRequestNewCode,
         voterSecretCodeRequestsLocked,
+        error: true,
       });
     }
   }
@@ -357,6 +358,7 @@ class SettingsVerifySecretCode extends Component {
                 value={this.state.digit1}
                 id="digit1"
                 error={this.state.error}
+                disabled={this.state.numberOfTriesRemaining === 0}
               />
               <OutlinedInput
                 maxLength={1}
@@ -368,6 +370,7 @@ class SettingsVerifySecretCode extends Component {
                 value={this.state.digit2}
                 id="digit2"
                 error={this.state.error}
+                disabled={this.state.numberOfTriesRemaining === 0}
               />
               <OutlinedInput
                 maxLength={1}
@@ -379,6 +382,7 @@ class SettingsVerifySecretCode extends Component {
                 value={this.state.digit3}
                 id="digit3"
                 error={this.state.error}
+                disabled={this.state.numberOfTriesRemaining === 0}
               />
               <OutlinedInput
                 maxLength={1}
@@ -390,6 +394,7 @@ class SettingsVerifySecretCode extends Component {
                 value={this.state.digit4}
                 id="digit4"
                 error={this.state.error}
+                disabled={this.state.numberOfTriesRemaining === 0}
               />
               <OutlinedInput
                 maxLength={1}
@@ -401,6 +406,7 @@ class SettingsVerifySecretCode extends Component {
                 value={this.state.digit5}
                 id="digit5"
                 error={this.state.error}
+                disabled={this.state.numberOfTriesRemaining === 0}
               />
               <OutlinedInput
                 maxLength={1}
@@ -412,6 +418,7 @@ class SettingsVerifySecretCode extends Component {
                 value={this.state.digit6}
                 id="digit6"
                 error={this.state.error}
+                disabled={this.state.numberOfTriesRemaining === 0}
               />
             </InputContainer>
             {this.state.error && (
