@@ -1,6 +1,7 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/AppDispatcher';
 import { stringContains } from '../utils/textFormat';
+import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 import VoterActions from '../actions/VoterActions';
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
@@ -55,7 +56,7 @@ class AppStore extends ReduceStore {
   }
 
   isOnWeVoteRootUrl () {
-    return this.getState().onWeVoteRootUrl;
+    return this.getState().onWeVoteRootUrl || isCordova();
   }
 
   isOnWeVoteSubDomainUrl () {
@@ -170,7 +171,7 @@ class AppStore extends ReduceStore {
           } else {
             onChosenFullDomainUrl = true;
           }
-          if (hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost') {
+          if (hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost' || isCordova()) {
             // We should move this to the server if we can't change the Facebook sign in root url
             onFacebookSupportedDomainUrl = true;
           }
