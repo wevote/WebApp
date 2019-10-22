@@ -613,6 +613,7 @@ class VoterGuideSettingsAddPositions extends Component {
               <EmptyBallotMessageContainer>
                 <BallotIcon classes={{ root: classes.ballotIconRoot }} />
                 <EmptyBallotText>No results found. Try selecting different filters to see results.</EmptyBallotText>
+                {/*
                 <Button
                   classes={{ root: classes.ballotButtonRoot }}
                   color="primary"
@@ -622,6 +623,7 @@ class VoterGuideSettingsAddPositions extends Component {
                   <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
                   Clear Filters
                 </Button>
+                */}
               </EmptyBallotMessageContainer>
             </Card>
           )
@@ -633,7 +635,7 @@ class VoterGuideSettingsAddPositions extends Component {
 }
 
 const EmptyBallotMessageContainer = styled.div`
-  padding: 3em 2em;
+  padding: 1em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;

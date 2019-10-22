@@ -457,7 +457,7 @@ class SettingsVerifySecretCode extends Component {
               classes={{ root: classes.button }}
               color="primary"
               onClick={this.closeVerifyModalLocal}
-              variant={voterMustRequestNewCode ? 'contained' : ''}
+              variant={voterMustRequestNewCode ? 'contained' : 'outlined'}
             >
               {voterPhoneNumber ? 'Change Phone Number' : 'Change Email Address'}
             </Button>

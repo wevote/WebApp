@@ -553,7 +553,7 @@ const BallotFilterRow = styled.div`
 `;
 
 const EmptyBallotMessageContainer = styled.div`
-  padding: 3em 2em;
+  padding: 1em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
@@ -574,7 +574,7 @@ const PollingLocationContainer = styled.div`
 `;
 
 const CardGap = styled.div`
-  padding: 15px;
+  padding: 7px;
 `;
 
 const styles = theme => ({

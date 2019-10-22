@@ -56,6 +56,7 @@ export default class PositionList extends Component {
   }
 
   componentDidMount () {
+    // console.log('PositionList componentDidMount');
     const { incomingPositionList } = this.props;
     this.setState({
       positionList: incomingPositionList,
@@ -82,10 +83,11 @@ export default class PositionList extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log('PositionList componentWillReceiveProps');
     const { incomingPositionList } = nextProps;
     this.setState({
       positionList: incomingPositionList,
-      filteredPositionList: incomingPositionList,
+      // filteredPositionList: incomingPositionList, // Do not update
     });
   }
 
@@ -94,6 +96,7 @@ export default class PositionList extends Component {
   }
 
   onOrganizationStoreChange () {
+    // console.log('PositionList onOrganizationStoreChange');
     const { filteredPositionList, positionList } = this.state;
     const followed = OrganizationStore.getOrganizationsVoterIsFollowing();
     // eslint-disable-next-line arrow-body-style
