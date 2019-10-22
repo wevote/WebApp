@@ -160,7 +160,7 @@ const styles = theme => ({
 });
 
 const EmptyBallotMessageContainer = styled.div`
-  padding: 1.5em 2em;
+  padding: 1em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
