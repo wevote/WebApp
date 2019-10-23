@@ -102,7 +102,9 @@ class SettingsVerifySecretCode extends Component {
       this.closeVerifyModalLocal();
     } else {
       let errorMessageToDisplay = '';
+      let error = false;
       if (voterSecretCodeRequestsLocked) {
+        error = true;
         const { voterEmailAddress, voterPhoneNumber } = this.state;
         if (voterEmailAddress) {
           errorMessageToDisplay = `Please contact We Vote support regarding ${voterEmailAddress}.`;
@@ -123,7 +125,7 @@ class SettingsVerifySecretCode extends Component {
         secretCodeVerified,
         voterMustRequestNewCode,
         voterSecretCodeRequestsLocked,
-        error: true,
+        error,
       });
     }
   }
@@ -134,8 +136,8 @@ class SettingsVerifySecretCode extends Component {
     if (e.keyCode === 8 && this.state.digit1 === '') {
       e.target.value = '';
     } else if (e.keyCode !== 8 && regex.test(digit)) {
-      console.log(e.keyCode);
       if (e.target.value !== '') {
+        e.target.blur();
         e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
       }
       this.setState({
@@ -143,6 +145,7 @@ class SettingsVerifySecretCode extends Component {
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
+      e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
@@ -158,8 +161,8 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
       this.setState({ digit1: '' });
     } else if (e.keyCode !== 8 && regex.test(digit)) {
-      console.log(e.keyCode);
       if (e.target.value !== '') {
+        e.target.blur();
         e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
       }
       this.setState({
@@ -167,6 +170,7 @@ class SettingsVerifySecretCode extends Component {
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
+      e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
@@ -182,8 +186,8 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
       this.setState({ digit2: '' });
     } else if (e.keyCode !== 8 && regex.test(digit)) {
-      console.log(e.keyCode);
       if (e.target.value !== '') {
+        e.target.blur();
         e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
       }
       this.setState({
@@ -191,6 +195,7 @@ class SettingsVerifySecretCode extends Component {
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
+      e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
@@ -206,8 +211,8 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
       this.setState({ digit3: '' });
     } else if (e.keyCode !== 8 && regex.test(digit)) {
-      console.log(e.keyCode);
       if (e.target.value !== '') {
+        e.target.blur();
         e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
       }
       this.setState({
@@ -215,6 +220,7 @@ class SettingsVerifySecretCode extends Component {
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
+      e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
@@ -230,8 +236,8 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
       this.setState({ digit4: '' });
     } else if (e.keyCode !== 8 && regex.test(digit)) {
-      console.log(e.keyCode);
       if (e.target.value !== '') {
+        e.target.blur();
         e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
       }
       this.setState({
@@ -239,6 +245,7 @@ class SettingsVerifySecretCode extends Component {
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
+      e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
@@ -254,7 +261,6 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
       this.setState({ digit5: '' });
     } else if (e.keyCode !== 8 && regex.test(digit)) {
-      console.log(e.keyCode);
       this.setState({
         digit6: digit,
         errorMessageToDisplay: '',
