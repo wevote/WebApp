@@ -48,8 +48,8 @@ module.exports = {
     { name: 'i6s', val: '' },
     { name: 'i8', val: '' },
     { name: 'i8plus', val: '' },
-    { name: 'iX', val: '' },
-    { name: 'iXR', val: '' },
-    { name: 'iXsMax', val: '' },
+    { name: 'iX', val: '' },      // Also iPhone 11 Pro
+    { name: 'iXR', val: '' },     // Also iPhone 11
+    { name: 'iXsMax', val: '' },  // Also iPhone 11 Pro Max
   ],
 };
