@@ -10,6 +10,7 @@ import Phone from '@material-ui/icons/Phone';
 import InputBase from '@material-ui/core/InputBase';
 import { Alert } from 'react-bootstrap';
 import LoadingWheel from '../LoadingWheel';
+import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 import VoterActions from '../../actions/VoterActions';
@@ -19,6 +20,7 @@ class VoterPhoneVerificationEntry extends Component {
   static propTypes = {
     classes: PropTypes.object,
     inModal: PropTypes.bool,
+    toggleOtherSignInOptions: PropTypes.func,
   };
 
   constructor (props) {
@@ -26,6 +28,7 @@ class VoterPhoneVerificationEntry extends Component {
     this.state = {
       disablePhoneVerificationButton: true,
       displayPhoneVerificationButton: false,
+      hideExistingPhoneNumbers: false,
       showVerifyModal: false,
       showError: false,
       smsPhoneNumberList: [],
@@ -57,6 +60,10 @@ class VoterPhoneVerificationEntry extends Component {
     }
     if (this.state.displayPhoneVerificationButton !== nextState.displayPhoneVerificationButton) {
       // console.log('this.state.displayPhoneVerificationButton', this.state.displayPhoneVerificationButton, ', nextState.displayPhoneVerificationButton', nextState.displayPhoneVerificationButton);
+      return true;
+    }
+    if (this.state.hideExistingPhoneNumbers !== nextState.hideExistingPhoneNumbers) {
+      // console.log('this.state.hideExistingPhoneNumbers', this.state.hideExistingPhoneNumbers, ', nextState.hideExistingPhoneNumbers', nextState.hideExistingPhoneNumbers);
       return true;
     }
     if (this.state.loading !== nextState.loading) {
@@ -193,6 +200,16 @@ class VoterPhoneVerificationEntry extends Component {
     });
   }
 
+  localToggleOtherSignInOptions = () => {
+    if (isCordova()) {
+      const { hideExistingPhoneNumbers } = this.state;
+      this.setState({ hideExistingPhoneNumbers: !hideExistingPhoneNumbers });
+      if (this.props.toggleOtherSignInOptions) {
+        this.props.toggleOtherSignInOptions();
+      }
+    }
+  }
+
   reSendSignInCodeSMS = (voterSMSPhoneNumber) => {
     if (voterSMSPhoneNumber) {
       VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
@@ -234,7 +251,7 @@ class VoterPhoneVerificationEntry extends Component {
     }
 
     const { classes } = this.props;
-    const { disablePhoneVerificationButton, displayPhoneVerificationButton, showError, showVerifyModal, smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber } = this.state;
+    const { disablePhoneVerificationButton, displayPhoneVerificationButton, hideExistingPhoneNumbers, showError, showVerifyModal, smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber } = this.state;
 
     const signInLinkOrCodeSent = (smsPhoneNumberStatus.link_to_sign_in_sms_sent || smsPhoneNumberStatus.sign_in_code_sms_sent);
     const smsPhoneNumberStatusHtml = (
@@ -251,11 +268,12 @@ class VoterPhoneVerificationEntry extends Component {
               </span>
             )}
             { smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter && !smsPhoneNumberStatus.sms_phone_number_deleted && !smsPhoneNumberStatus.make_primary_sms ?
-              <span>That phone number was already verified by you. </span>
-              :
-              null }
+              <span>That phone number was already verified by you. </span> :
+              null
+            }
           </Alert>
-          ) : null
+          ) :
+          null
         }
         { smsPhoneNumberStatus.sms_phone_number_created ||
         smsPhoneNumberStatus.sms_phone_number_deleted ||
@@ -305,9 +323,9 @@ class VoterPhoneVerificationEntry extends Component {
               type="phone"
               name="voter_phone_number"
               id="enterVoterPhone"
-              onBlur={this.hidePhoneVerificationButton}
+              onBlur={() => { this.hidePhoneVerificationButton(); this.localToggleOtherSignInOptions(); }}
               onChange={this.onPhoneNumberChange}
-              onFocus={this.displayPhoneVerificationButton}
+              onFocus={() => { this.displayPhoneVerificationButton(); this.localToggleOtherSignInOptions(); }}
               placeholder="Type phone number here..."
             />
           </Paper>
@@ -421,26 +439,29 @@ class VoterPhoneVerificationEntry extends Component {
 
     return (
       <Wrapper>
-        {verifiedSMSFound && !this.props.inModal ? (
-          <PhoneNumberSection>
-            <span className="h3">
-              Your Phone Number
-              {smsPhoneNumberListCount > 1 ? 's' : ''}
-            </span>
-            {smsPhoneNumberStatusHtml}
-            {verifiedSMSListHtml}
-          </PhoneNumberSection>
-        ) : (
-          <span>
-            {smsPhoneNumberStatusHtml}
-          </span>
-        )}
-
-        {unverifiedSMSFound && !this.props.inModal && (
-          <PhoneNumberSection>
-            <span className="h3">Phone Numbers to Verify</span>
-            {toVerifySMSListHtml}
-          </PhoneNumberSection>
+        {!hideExistingPhoneNumbers && (
+          <div>
+            {verifiedSMSFound && !this.props.inModal ? (
+              <PhoneNumberSection>
+                <span className="h3">
+                  Your Phone Number
+                  {smsPhoneNumberListCount > 1 ? 's' : ''}
+                </span>
+                {smsPhoneNumberStatusHtml}
+                {verifiedSMSListHtml}
+              </PhoneNumberSection>
+            ) : (
+              <span>
+                {smsPhoneNumberStatusHtml}
+              </span>
+            )}
+            {unverifiedSMSFound && !this.props.inModal && (
+              <PhoneNumberSection>
+                <span className="h3">Phone Numbers to Verify</span>
+                {toVerifySMSListHtml}
+              </PhoneNumberSection>
+            )}
+          </div>
         )}
         <PhoneNumberSection>
           {enterSMSPhoneNumberHtml}

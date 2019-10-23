@@ -503,17 +503,25 @@ class Ballot extends Component {
         // Ballot is found but ballot is empty. We want to stay put.
         // console.log('onBallotStoreChange: ballotWithItemsFromCompletionFilterType is empty');
       } else {
+        const ballotWithAllItems = BallotStore.getBallotByCompletionLevelFilterType('all');
         // console.log('completionLevelFilterType: ', completionLevelFilterType);
-        const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
-        this.setState({
-          ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType('all'),
-          ballotWithItemsFromCompletionFilterType,
-        });
+        let ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
         if (ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length) {
           const raceLevelFilterItems = ballotWithItemsFromCompletionFilterType.filter(item => item.race_office_level === raceLevelFilterType ||
             item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
-          this.setState({ doubleFilteredBallotItemsLength: raceLevelFilterItems.length });
+          this.setState({
+            doubleFilteredBallotItemsLength: raceLevelFilterItems.length,
+          });
+        } else {
+          // If here, the 'completionLevelFilterType' has been made obsolete.
+          // Unfortunately we can't reset it without creating a dispatch loop
+          // BallotActions.completionLevelFilterTypeSave('all');
+          ballotWithItemsFromCompletionFilterType = ballotWithAllItems;
         }
+        this.setState({
+          ballotWithAllItems,
+          ballotWithItemsFromCompletionFilterType,
+        });
       }
     }
     if (ballotProperties) {
@@ -871,7 +879,8 @@ class Ballot extends Component {
     );
 
     // console.log('ballotWithItemsFromCompletionFilterType.length: ', ballotWithItemsFromCompletionFilterType.length);
-    const emptyBallot = ballotWithItemsFromCompletionFilterType.length === 0 ? (
+    // Was: ballotWithItemsFromCompletionFilterType
+    const emptyBallot = ballotWithAllItems.length === 0 ? (
       <div>
         <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
         {emptyBallotButton}

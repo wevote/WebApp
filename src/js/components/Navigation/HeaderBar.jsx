@@ -520,7 +520,7 @@ const styles = theme => ({
       paddingTop: 6,
       marginLeft: 2,
       paddingLeft: 0,
-      paddingRight: 0,
+      paddingRight: 10,
     },
   },
   headerButtonRoot: {

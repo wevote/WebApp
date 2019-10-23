@@ -171,6 +171,39 @@ export default class SettingsAccount extends Component {
     }
   }
 
+  toggleNonEmailSignInOptions = () => {
+    const { hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton, hideVoterPhoneEntry } = this.state;
+    this.setState({
+      hideCurrentlySignedInHeader: !hideCurrentlySignedInHeader,
+      hideFacebookSignInButton: !hideFacebookSignInButton,
+      hideTwitterSignInButton: !hideTwitterSignInButton,
+      hideVoterPhoneEntry: !hideVoterPhoneEntry,
+    });
+  }
+
+  toggleNonPhoneSignInOptions = () => {
+    const { hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton, hideVoterEmailAddressEntry } = this.state;
+    this.setState({
+      hideCurrentlySignedInHeader: !hideCurrentlySignedInHeader,
+      hideFacebookSignInButton: !hideFacebookSignInButton,
+      hideTwitterSignInButton: !hideTwitterSignInButton,
+      hideVoterEmailAddressEntry: !hideVoterEmailAddressEntry,
+    });
+  }
+
+  toggleTwitterDisconnectOpen () {
+    this.setState({ showTwitterDisconnect: true });
+  }
+
+  toggleTwitterDisconnectClose () {
+    this.setState({ showTwitterDisconnect: false });
+  }
+
+  voterSplitIntoTwoAccounts () {
+    VoterActions.voterSplitIntoTwoAccounts();
+    this.setState({ showTwitterDisconnect: false });
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('SignIn caught error: ', `${error} with info: `, info);
@@ -190,19 +223,6 @@ export default class SettingsAccount extends Component {
     }
   }
 
-  toggleTwitterDisconnectOpen () {
-    this.setState({ showTwitterDisconnect: true });
-  }
-
-  toggleTwitterDisconnectClose () {
-    this.setState({ showTwitterDisconnect: false });
-  }
-
-  voterSplitIntoTwoAccounts () {
-    VoterActions.voterSplitIntoTwoAccounts();
-    this.setState({ showTwitterDisconnect: false });
-  }
-
   render () {
     renderLog(__filename);
     // console.log('SettingsAccount render');
@@ -211,7 +231,11 @@ export default class SettingsAccount extends Component {
     }
 
     const { inModal } = this.props;
-    const { facebookAuthResponse, isOnWeVoteRootUrl, isOnWeVoteSubDomainUrl, isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
+    const {
+      facebookAuthResponse, hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton,
+      hideVoterEmailAddressEntry, hideVoterPhoneEntry, isOnWeVoteRootUrl, isOnWeVoteSubDomainUrl,
+      isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle,
+    } = this.state;
     const { is_signed_in: voterIsSignedIn, signed_in_facebook: voterIsSignedInFacebook, signed_in_twitter: voterIsSignedInTwitter, signed_in_with_email: voterIsSignedInWithEmail } = this.state.voter;
     // console.log("SignIn.jsx facebookAuthResponse:", facebookAuthResponse);
     if (!voterIsSignedInFacebook && facebookAuthResponse && facebookAuthResponse.facebook_retrieve_attempted) {
@@ -245,20 +269,24 @@ export default class SettingsAccount extends Component {
           <Main inModal={inModal}>
             {voterIsSignedInTwitter && voterIsSignedInFacebook ?
               null :
-              <h1 className="h3">{voterIsSignedIn ? <span>{yourAccountTitle}</span> : null}</h1>
+              <h1 className="h3">{!hideTwitterSignInButton && !hideFacebookSignInButton && voterIsSignedIn ? <span>{yourAccountTitle}</span> : null}</h1>
             }
-            {voterIsSignedIn ?
-              <div className="u-stack--sm">{yourAccountExplanation}</div> : (
-                <div>
-                  <div className="u-f3">{pleaseSignInTitle}</div>
-                  <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
-                </div>
-              )
-            }
+            {!hideCurrentlySignedInHeader && (
+              <div>
+                {voterIsSignedIn ?
+                  <div className="u-stack--sm">{yourAccountExplanation}</div> : (
+                    <div>
+                      <div className="u-f3">{pleaseSignInTitle}</div>
+                      <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
+                    </div>
+                  )
+                }
+              </div>
+            )}
             {!voterIsSignedInTwitter || !voterIsSignedInFacebook ? (
               <>
                 <div className="u-stack--md">
-                  { !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubDomainUrl) && (
+                  { !hideTwitterSignInButton && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubDomainUrl) && (
                     <span>
                       <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
                       <TwitterSignIn buttonText="Sign in with Twitter" />
@@ -267,7 +295,7 @@ export default class SettingsAccount extends Component {
                   }
                 </div>
                 <div className="u-stack--md">
-                  { !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
+                  { !hideFacebookSignInButton && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
                     <span>
                       <FacebookSignIn toggleSignInModal={this.localToggleSignInModal} buttonText="Sign in with Facebook" />
                     </span>
@@ -279,15 +307,17 @@ export default class SettingsAccount extends Component {
             }
             {voterIsSignedIn ? (
               <div className="u-stack--md">
+                {!hideCurrentlySignedInHeader && (
+                  <div className="u-stack--sm">
+                    <span className="h3">Currently Signed In</span>
+                    <span className="u-margin-left--sm" />
+                    <span className="account-edit-action" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
+                      <span className="pull-right" onClick={VoterSessionActions.voterSignOut}>sign out</span>
+                    </span>
+                  </div>
+                )}
                 <div className="u-stack--sm">
-                  <span className="h3">Currently Signed In</span>
-                  <span className="u-margin-left--sm" />
-                  <span className="account-edit-action" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
-                    <span className="pull-right" onClick={VoterSessionActions.voterSignOut}>sign out</span>
-                  </span>
-                </div>
-                <div className="u-stack--sm">
-                  {voterIsSignedInTwitter ? (
+                  {!hideTwitterSignInButton && voterIsSignedInTwitter && (
                     <div>
                       <span className="btn btn-social btn-md btn-twitter" href="#">
                         <i className="fab fa-twitter" />
@@ -296,9 +326,8 @@ export default class SettingsAccount extends Component {
                       </span>
                       <span className="u-margin-left--sm" />
                     </div>
-                  ) : null
-                  }
-                  {voterIsSignedInTwitter && (voterIsSignedInFacebook || voterIsSignedInWithEmail) ? (
+                  )}
+                  {!hideTwitterSignInButton && voterIsSignedInTwitter && (voterIsSignedInFacebook || voterIsSignedInWithEmail) ? (
                     <div className="u-margin-top--xs">
                       {this.state.showTwitterDisconnect ? (
                         <div>
@@ -336,7 +365,7 @@ export default class SettingsAccount extends Component {
                   ) : null
                   }
                   <div className="u-margin-top--sm">
-                    {voterIsSignedInFacebook && (
+                    {!hideFacebookSignInButton && voterIsSignedInFacebook && (
                     <span>
                       <span className="btn btn-social-icon btn-lg btn-facebook">
                         <span className="fab fa-facebook" />
@@ -349,10 +378,17 @@ export default class SettingsAccount extends Component {
               </div>
             ) : null
             }
-            <VoterPhoneVerificationEntry />
-            <VoterEmailAddressEntry
-              inModal={inModal}
-            />
+            {!hideVoterPhoneEntry && (
+              <VoterPhoneVerificationEntry
+                toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
+              />
+            )}
+            {!hideVoterEmailAddressEntry && (
+              <VoterEmailAddressEntry
+                inModal={inModal}
+                toggleOtherSignInOptions={this.toggleNonEmailSignInOptions}
+              />
+            )}
 
             {debugMode && (
             <div className="text-center">

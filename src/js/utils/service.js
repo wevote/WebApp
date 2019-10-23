@@ -59,7 +59,11 @@ export default function $ajax (options) {
   }
   // Switch between master API server and CDN
   if (options.endpoint === 'allBallotItemsRetrieve' ||
+      options.endpoint === 'candidateRetrieve' ||
       options.endpoint === 'defaultPricing' ||
+      options.endpoint === 'electionsRetrieve' ||
+      options.endpoint === 'measureRetrieve' ||
+      options.endpoint === 'organizationRetrieve' ||
       options.endpoint === 'positionListForBallotItem' ||
       options.endpoint === 'voterGuidesUpcomingRetrieve') {
     // Retrieve API data from CDN
