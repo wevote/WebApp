@@ -1,5 +1,5 @@
 import { isCordova, isIOS, isAndroid, isAndroidSimulator, isSimulator, getAndroidSize, pageEnumeration, enums,
-  isIPhone5sSE, isIPhone678, isIPhone678Plus, hasIPhoneNotch, isIPhoneXR,  isIPhoneXSMax, isIPad } from './cordovaUtils';
+  isIPhone4in, isIPhone4p7in, isIPhone5p5in, hasIPhoneNotch, isIPhone6p1in, isIPhone6p5in, isIPad } from './cordovaUtils';
 import { cordovaOffsetLog } from './logging';
 /* global $  */
 
@@ -19,8 +19,8 @@ export function cordovaScrollablePaneTopPadding () {
   const isSignedIn = $('#profileAvatarHeaderBar').length > 0;
 
   if (isIOS()) {
-    if (isIPhone5sSE()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone5sSE');
+    if (isIPhone4in()) {
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone4in');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
         case enums.measureWild:     return '42px';
@@ -39,8 +39,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.settingsWild:    return '16px';
         default:                    return '0px';
       }
-    } else if (isIPhone678()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone678');
+    } else if (isIPhone4p7in()) {
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone5p4in');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
         case enums.measureWild:     return '58px';
@@ -59,8 +59,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.settingsWild:    return '16px';
         default:                    return '0px';
       }
-    } else if (isIPhone678Plus()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone678Plus');
+    } else if (isIPhone5p5in()) {
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone5p5in');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
         case enums.measureWild:     return '58px';
@@ -79,8 +79,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.settingsWild:    return '16px';
         default:                    return '0px';
       }
-    } else if (isIPhoneXR()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhoneXR');
+    } else if (isIPhone6p1in()) {
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone6p1in');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '32px';
         case enums.measureWild:     return '58px';
@@ -100,8 +100,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.settingsWild:    return '32px';
         default:                    return '0px';
       }
-    } else if (isIPhoneXSMax()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhoneXSMax');
+    } else if (isIPhone6p5in()) {
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone6p5in');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '32px';
         case enums.measureWild:     return '56px';
@@ -120,7 +120,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.settingsWild:    return '32px';
         default:                    return '0px';
       }
-    } else if (hasIPhoneNotch()) {
+    } else if (hasIPhoneNotch()) {  // defaults to X or 11 Pro
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding: hasIPhoneNotch -- signed in: ${isSignedIn}`);
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '32px';
@@ -224,23 +224,23 @@ export function cordovaScrollablePaneTopPadding () {
 // <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
 export function cordovaBallotFilterTopMargin () {
   if (isIOS()) {
-    if (isIPhone678Plus()) {
+    if (isIPhone5p5in()) {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '55px';
       }
       return '53px';
-    } else if (isIPhone678()) {
+    } else if (isIPhone4p7in()) {
       return '65px';
     } else if (hasIPhoneNotch()) {
       if (pageEnumeration() === enums.candidateWild) {
         return '65px';
       }
       return '74px';
-    } else if (isIPhoneXR()) {
+    } else if (isIPhone6p1in()) {
       return '46px';
     } else if (isIPad()) {
       return '38px';
-    } else if (isIPhone5sSE()) {
+    } else if (isIPhone4in()) {
       return '67px';
     }
   } else if (isAndroid()) {
@@ -272,15 +272,15 @@ export function cordovaBallotFilterTopMargin () {
 
 export function cordovaNetworkNextButtonTop () {
   if (isIOS()) {
-    if (isIPhone678Plus()) {
+    if (isIPhone5p5in()) {
       return '89vh';
-    } else if (isIPhone678()) {
+    } else if (isIPhone4p7in()) {
       return '89vh';
     } else if (hasIPhoneNotch()) {
       return '88vh';
     } else if (isIPad()) {
       return '89vh';
-    } else if (isIPhone5sSE()) {
+    } else if (isIPhone4in()) {
       return '88vh';
     }
   } else if (isAndroid()) {
@@ -328,9 +328,9 @@ export function cordovaFooterHeight () {
 //   <Wrapper padTop={cordovaVoterGuideTopPadding()}>
 export function cordovaVoterGuideTopPadding () {
   if (isIOS()) {
-    if (isIPhone678Plus()) {
+    if (isIPhone5p5in()) {
       return '66px';
-    } else if (isIPhone678()) {
+    } else if (isIPhone4p7in()) {
       return '0px';
     } else if (hasIPhoneNotch()) {
       return '18px';
@@ -346,9 +346,9 @@ export function cordovaVoterGuideTopPadding () {
 // <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
 export function cordovaWelcomeAppToolbarTop () {
   if (isIOS()) {
-    if (isIPhone678Plus()) {
+    if (isIPhone5p5in()) {
       return '10px';
-    } else if (isIPhone678()) {
+    } else if (isIPhone4in()) {
       return '10px';
     } else if (hasIPhoneNotch()) {
       return '14px';
@@ -364,17 +364,17 @@ export function cordovaWelcomeAppToolbarTop () {
 // <div className="ballot__heading-vote-section " style="top: 112px; height: 90px;">
 export function cordovaVoteMiniHeader () {
   if (isIOS()) {
-    if (isIPhone5sSE()) {
+    if (isIPhone4in()) {
       return {
         top: '69px',
         height: '127px',
       };
-    } else if (isIPhone678()) {
+    } else if (isIPhone4p7in()) {
       return {
         top: '66px',
         height: '124px',
       };
-    } else if (isIPhone678Plus()) {
+    } else if (isIPhone5p5in()) {
       return {
         top: '69px',
         height: '127px',
@@ -418,7 +418,7 @@ export function cordovaTopHeaderTopMargin () {
     }
 
     if (isIOS()) {
-      if (isIPhone678Plus() || isIPhone678()) {
+      if (isIPhone5p5in() || isIPhone4p7in()) {
         switch (pageEnumeration()) {
           case enums.officeWild:      style.marginTop = '16px'; break;
           case enums.measureWild:     style.marginTop = '22px'; break;
@@ -467,9 +467,9 @@ export function cordovaTopHeaderTopMargin () {
 // <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()}>
 export function cordovaStickyHeaderPaddingTop () {
   if (isIOS()) {
-    if (isIPhone678Plus()) {
+    if (isIPhone5p5in()) {
       return '62px';
-    } else if (isIPhone678()) {
+    } else if (isIPhone4p7in()) {
       return '62px';
     } else if (hasIPhoneNotch()) {
       return '76px';
