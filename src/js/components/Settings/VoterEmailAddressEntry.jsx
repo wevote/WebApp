@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Mail from '@material-ui/icons/Mail';
 import InputBase from '@material-ui/core/InputBase';
 import LoadingWheel from '../LoadingWheel';
+import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 import VoterActions from '../../actions/VoterActions';
@@ -18,6 +19,7 @@ class VoterEmailAddressEntry extends Component {
   static propTypes = {
     classes: PropTypes.object,
     inModal: PropTypes.bool,
+    toggleOtherSignInOptions: PropTypes.func,
   };
 
   constructor (props) {
@@ -35,6 +37,7 @@ class VoterEmailAddressEntry extends Component {
         sign_in_code_email_sent: false,
         verification_email_sent: false,
       },
+      hideExistingEmailAddresses: false,
       loading: true,
       showVerifyModal: false,
       voter: VoterStore.getVoter(),
@@ -185,6 +188,16 @@ class VoterEmailAddressEntry extends Component {
     }
   }
 
+  localToggleOtherSignInOptions = () => {
+    if (isCordova()) {
+      const { hideExistingEmailAddresses } = this.state;
+      this.setState({ hideExistingEmailAddresses: !hideExistingEmailAddresses });
+      if (this.props.toggleOtherSignInOptions) {
+        this.props.toggleOtherSignInOptions();
+      }
+    }
+  }
+
   closeVerifyModal = () => {
     // console.log('VoterEmailAddressEntry closeVerifyModal');
     this.setState({
@@ -222,7 +235,10 @@ class VoterEmailAddressEntry extends Component {
     }
 
     const { classes } = this.props;
-    const { disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, showVerifyModal, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount } = this.state;
+    const {
+      disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, hideExistingEmailAddresses,
+      showVerifyModal, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
+    } = this.state;
     // console.log('VoterEmailAddressEntry render, showVerifyModal:', showVerifyModal);
 
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
@@ -292,9 +308,9 @@ class VoterEmailAddressEntry extends Component {
               name="voter_email_address"
               id="enterVoterEmailAddress"
               value={voterEmailAddress}
-              onBlur={this.hideEmailVerificationButton}
+              onBlur={() => { this.hideEmailVerificationButton(); this.localToggleOtherSignInOptions(); }}
               onChange={this.updateVoterEmailAddress}
-              onFocus={this.displayEmailVerificationButton}
+              onFocus={() => { this.displayEmailVerificationButton(); this.localToggleOtherSignInOptions(); }}
               placeholder="Type email here..."
             />
           </Paper>
@@ -408,26 +424,29 @@ class VoterEmailAddressEntry extends Component {
 
     return (
       <Wrapper>
-        {verifiedEmailsFound && !this.props.inModal ? (
-          <EmailSection>
-            <span className="h3">
-              Your Email
-              {voterEmailAddressListCount > 1 ? 's' : ''}
-            </span>
-            {emailAddressStatusHtml}
-            {verifiedEmailListHtml}
-          </EmailSection>
-        ) : (
-          <span>
-            {emailAddressStatusHtml}
-          </span>
-        )}
-
-        {unverifiedEmailsFound && !this.props.inModal && (
-          <EmailSection>
-            <span className="h3">Emails to Verify</span>
-            {toVerifyEmailListHtml}
-          </EmailSection>
+        {!hideExistingEmailAddresses && (
+          <div>
+            {verifiedEmailsFound && !this.props.inModal ? (
+              <EmailSection>
+                <span className="h3">
+                  Your Email
+                  {voterEmailAddressListCount > 1 ? 's' : ''}
+                </span>
+                {emailAddressStatusHtml}
+                {verifiedEmailListHtml}
+              </EmailSection>
+            ) : (
+              <span>
+                {emailAddressStatusHtml}
+              </span>
+            )}
+            {unverifiedEmailsFound && !this.props.inModal && (
+              <EmailSection>
+                <span className="h3">Emails to Verify</span>
+                {toVerifyEmailListHtml}
+              </EmailSection>
+            )}
+          </div>
         )}
         <EmailSection>
           {enterEmailHtml}
