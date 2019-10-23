@@ -6,7 +6,7 @@ import {
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from 'styled-components';
 import { useScroll } from 'react-router-scroll';
-import { isCordova } from './utils/cordovaUtils';
+import { isCordova, setGlobalScreenSize } from './utils/cordovaUtils';
 import routes from './Root';
 import muiTheme from './mui-theme';
 import styledTheme from './styled-theme';
@@ -65,7 +65,12 @@ if (isCordova()) {
   document.addEventListener('deviceready', (id) => {
     console.log('Received Cordova Event: ', id.type);
     navigator.splashscreen.hide();
-    startApp();
+    window.plugins.screensize.get((result) => {
+      setGlobalScreenSize(result);
+      startApp();
+    }, (result) => {
+      console.log("pbakondy/cordova-plugin-screensize FAILURE result: ", result);
+    });
   }, false);
 } else { // browser
   startApp();

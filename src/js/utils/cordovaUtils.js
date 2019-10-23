@@ -75,24 +75,6 @@ export function cordovaOpenSafariView (requestURL, onExit, timeout) {
   setTimeout(cordovaOpenSafariViewSub, timeout, requestURL, onExit);
 }
 
-export function isDeviceMatchByUUID (deviceString) {
-  const array  = webAppConfig.CORDOVA_IPHONE_UUIDS;
-  const { uuid } = window.device;
-  if (array && array.length) {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].name === deviceString) {
-        if (array[i].val === uuid) {
-          return 1;
-        }
-        return 0;
-      }
-    }
-  }
-  // alert('CORDOVA_IPHONE_UUIDS does not contain a key for this device type');
-  cordovaOffsetLog(`CORDOVA_IPHONE_UUIDS in config.js does not contain a key for the ${deviceString} device type`);
-  return 0;
-}
-
 // webapp, webapp:iOS, webapp:Android
 export function deviceTypeString () {
   let deviceString = isWebApp() ? 'webapp' : 'cordova';
@@ -107,7 +89,7 @@ export function deviceTypeString () {
 let matchedDevice = false;
 export function logMatch (device, byModel) {
   if (!matchedDevice) {
-    cordovaOffsetLog(`Matched ---- ${device} by ${byModel ? 'window.device.model' : 'uuid'}`);
+    cordovaOffsetLog(`Matched ------------ ${device} by ${byModel ? 'window.device.model' : 'pbakondyScreenSize'}`);
     matchedDevice = true;
   }
 }
@@ -132,18 +114,37 @@ export function isAndroid () {
 
 // 3.5" screen iPhones
 export function isIPhone3p5in () {
-  return !!(isIOS() && (
-    window.device.model === 'iPhone1,1' ||  // iPhone
-    window.device.model === 'iPhone1,2' ||  // iPhone 3G
-    window.device.model === 'iPhone2,1' ||  // iPhone 3GS
-    window.device.model === 'iPhone3,1' ||  // iPhone 4
-    window.device.model === 'iPhone3,2' ||  // iPhone 4
-    window.device.model === 'iPhone3,3' ||  // iPhone 4
-    window.device.model === 'iPhone4,1'));  // iPhone 4S
+  const { pbakondyScreenSize: size } = window;
+  let ret = false;
+  if (isIOS()) {
+    if (window.device.model === 'iPhone1,1' ||  // iPhone
+      window.device.model === 'iPhone1,2' ||  // iPhone 3G
+      window.device.model === 'iPhone2,1' ||  // iPhone 3GS
+      window.device.model === 'iPhone3,1' ||  // iPhone 4
+      window.device.model === 'iPhone3,2' ||  // iPhone 4
+      window.device.model === 'iPhone3,3' ||  // iPhone 4
+      window.device.model === 'iPhone4,1') {  // iPhone 4S)
+      logMatch('iPhone 5s SE (4")', true);
+      return true;
+    }
+    ret = (size.height === '480' && size.width === '320') ||  // iPhone Original, 3, 3GS
+          (size.height === '960' && size.width === '640');    // iPhone 4, 4S
+    if (ret) {
+      logMatch('iPhone Original, 3, 3GS, 4, 4S', false);
+    }
+  }
+  const { screen } = window;
+  const width = screen.width * (screen.scale || 1);
+  const height = screen.height * (screen.scale || 1);
+  return !!(isIOS() &&
+    ((height === 480 && width === 320) ||  // iPhone Original, 3, 3GS
+     (height === 960 && width === 640)));  // iPhone 4, 4S
 }
 
 // 4" screen iPhones, 326 ppi pixel density
 export function isIPhone4in () {
+  const { pbakondyScreenSize: size } = window;
+  let ret = false;
   if (isIOS()) {
     if (window.device.model === 'iPhone5,1' ||  // iPhone 5
       window.device.model === 'iPhone5,2' ||    // iPhone 5
@@ -153,17 +154,21 @@ export function isIPhone4in () {
       window.device.model === 'iPhone6,2' ||    // iPhone 5s
       window.device.model === 'iPhone8,4') {    // iPhone SE
       logMatch('iPhone 5s SE (4")', true);
-      return true;
-    } else if (isDeviceMatchByUUID('i5s')) {
-      logMatch('iPhone 5s SE (4")', false);
-      return true;
+      ret = true;
+    }
+    ret = (size.height === '1136' && size.width === '640');  // iPhone 5, 5c, 5s, SE
+    if (ret) {
+      logMatch('iPhone 6, 6s, 7, 8', false);
+      ret = true;
     }
   }
-  return false;
+  return ret;
 }
 
 // 4.7" screen iPhones, 326 ppi pixel density
 export function isIPhone4p7in () {
+  const { pbakondyScreenSize: size } = window;
+  let ret = false;
   if (isIOS()) {
     if (window.device.model === 'iPhone7,2' ||  // iPhone 6
       window.device.model === 'iPhone8,1' ||    // iPhone 6s
@@ -172,87 +177,90 @@ export function isIPhone4p7in () {
       window.device.model === 'iPhone10,1' ||   // iPhone 8
       window.device.model === 'iPhone10,4') {   // iPhone 8
       logMatch('iPhone 678 (4.7")', true);
-      return true;
-    } else if (isDeviceMatchByUUID('i6')) {
-      logMatch('iPhone 6 (4.7")', false);
-      return true;
-    } else if (isDeviceMatchByUUID('i6s')) {
-      logMatch('iPhone 6s (4.7")', false);
-      return true;
-    } else if (isDeviceMatchByUUID('i8')) {
-      logMatch('iPhone 8 (4.7")', false);
-      return true;
+      ret = true;
+    } else if (size.height === '1334' && size.width === '750') { // iPhone 6, 6s, 7, 8
+      logMatch('iPhone 6, 6s, 7, 8 (4.7")', false);
+      ret = true;
     }
   }
-  return false;
+  return ret;
 }
 
 // 5.5" screen iPhones, 401 ppi pixel density
 export function isIPhone5p5in () {
+  const { pbakondyScreenSize: size } = window;
+  let ret = false;
   if (isIOS()) {
     if (window.device.model === 'iPhone7,1'  ||  // iPhone 6Plus
-        window.device.model === 'iPhone8,2'  ||  // iPhone 6s Plus
-        window.device.model === 'iPhone9,2'  ||  // iPhone 7 Plus
-        window.device.model === 'iPhone9,4'  ||  // iPhone 7 Plus
-        window.device.model === 'iPhone10,2' ||  // iPhone 8 Plus
-        window.device.model === 'iPhone10,5') {  // iPhone 8 Plus
+      window.device.model === 'iPhone8,2'  ||  // iPhone 6s Plus
+      window.device.model === 'iPhone9,2'  ||  // iPhone 7 Plus
+      window.device.model === 'iPhone9,4'  ||  // iPhone 7 Plus
+      window.device.model === 'iPhone10,2' ||  // iPhone 8 Plus
+      window.device.model === 'iPhone10,5') {  // iPhone 8 Plus
       logMatch('iPhone 678 Plus (5.5")', true);
-      return true;
-    } else if (isDeviceMatchByUUID('i8plus')) {
-      logMatch('iPhone 8 Plus (5.5")', false);
-      return true;
+      ret = true;
+    } else if ((size.height === '1920' && size.width === '1080') ||  // iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
+          (size.height === '2208' && size.width === '1242')) {    // iPhone 8 Plus in simulator
+      logMatch('iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus (5.5" Screen)', false);
+      ret = true;
     }
   }
-  return false;
+  return ret;
 }
 
 // 5.8" screen iPhones, 458 ppi pixel density
+// TODO: October 22, 2019, the iPhone XS Max and iPhone 11 Pro Max simulators are reporting 2436x1125
 export function isIPhone5p8in () {
+  const { pbakondyScreenSize: size } = window;
+  let ret = false;
   if (isIOS()) {
     if (window.device.model === 'iPhone10,3' ||  // iPhone X
-        window.device.model === 'iPhone10,6' ||  // iPhone X
-        window.device.model === 'iPhone11,2' ||  // iPhone XS
-        window.device.model === 'iPhone12,3') {  // iPhone 11 Pro
+      window.device.model === 'iPhone10,6' ||  // iPhone X
+      window.device.model === 'iPhone11,2' ||  // iPhone XS
+      window.device.model === 'iPhone12,3') {  // iPhone 11 Pro
       logMatch('iPhone X or Xs or 11 Pro (5.8")', true);
-      return true;
-    } else if (isDeviceMatchByUUID('iX')) {
-      logMatch('iPhone X or Xs or 11 Pro (5.8")', false);
-      return true;
+      ret = true;
+    } else if (size.height === '2436' && size.width === '1125') {  // iPhone X, XS, 11 Pro;
+      logMatch('iPhone X, XS, 11 Pro (5.8" Screen)', false);
+      ret = true;
     }
   }
-  return false;
+  return ret;
 }
 
 // 6.1" screen iPhones, 326 ppi pixel density
 export function isIPhone6p1in () {
+  const { pbakondyScreenSize: size } = window;
+  let ret = false;
   if (isIOS()) {
     if (window.device.model === 'iPhone11,8' || // iPhone XR
-        window.device.model === 'iPhone12,1') { // iPhone 11
+      window.device.model === 'iPhone12,1') { // iPhone 11
       logMatch('iPhone XR or 11 (6.1")', true);
-      return true;
-    } else if (isDeviceMatchByUUID('iXR')) {
-      logMatch('iPhone XR or 11 (6.1")', false);
-      return true;
+      ret = true;
+    } else if ((size.height === '1792' && size.width === '828') ||  // iPhone XR, 11 (11 as described on apple.com)
+          (size.height === '1624' && size.width === '750')) {   // iPhone 11 in Simulator
+      logMatch('iPhone XR, 11 (6.1" Screen)', false);
+      ret = true;
     }
   }
-  return false;
+  return ret;
 }
 
-// Sometimes in the simulator, an XSMax reports X sized screen, which messes things up, so we switched to identifying simulator phones by UUID
-// There is a cordova 'window.device.model' which reports "iPhone11,6" for a physical device, but unfortunately reports "x86_64" on the simulator
-// 6.5" screen iPhones, 458ppi pixel density
+// 6.5" screen iPhones, 458 ppi pixel density
 export function isIPhone6p5in () {
+  const { pbakondyScreenSize: size } = window;
+  let ret = false;
   if (isIOS()) {
     if (window.device.model === 'iPhone11,6' || // iPhone XS Max
       window.device.model === 'iPhone12,5') {   // iPhone 11 Pro Max
       logMatch('iPhone XsMax or 11 Pro Max (6.5")', true);
-      return true;
-    } else if (isDeviceMatchByUUID('iXsMax')) {
-      logMatch('iPhone XsMax or 11 Pro Max (6.5")', false);
-      return true;
+      ret = true;
+    } else if (size.height === '2688' && size.width === '1242') {  // iPhone XS Max, 11 Pro Max
+      logMatch('iPhone XS Max, 11 Pro Max (6.5" Screen)', false);
+      ret = true;
     }
   }
-  return false;
+  return ret;
 }
 
 export function isIPad () {
@@ -499,5 +507,11 @@ export function restoreStylesAfterCordovaKeyboard (callerString) {
     $('body').css('height', '100%');
     $('.footroom-wrapper').css('display', '');
   }
+}
+
+export function setGlobalScreenSize (result) {
+  // this is the place to override detected screen size if needed.
+  console.log(`pbakondy/cordova-plugin-screensize height: ${result.height}, width:  ${result.width}, scale: ${result.scale}`);
+  window.pbakondyScreenSize = result;
 }
 
