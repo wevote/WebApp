@@ -84,18 +84,19 @@ export default class Candidate extends Component {
     }
 
     // getAllCachedPositionsByCandidateWeVoteId returns a dict with organization_we_vote_id as the key
-    // We convert to a simple list
+    // We convert to a simple list.
     const allCachedPositionsForThisCandidateDict = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(this.props.params.candidate_we_vote_id);
-    const allCachedPositionsForThisCandidate = Object.values(allCachedPositionsForThisCandidateDict);
-
+    const allCachedPositionsForThisCandidate = allCachedPositionsForThisCandidateDict.length ? Object.values(allCachedPositionsForThisCandidateDict) : [];
     // Display the candidate's name in the search box
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), this.props.params.candidate_we_vote_id);
-    this.setState({
-      allCachedPositionsForThisCandidate,
-      candidateWeVoteId: this.props.params.candidate_we_vote_id,
-      organizationWeVoteId,
-      scrolledDown: AppStore.getScrolledDown(),
-    });
+    if (allCachedPositionsForThisCandidate) {
+      this.setState({
+        allCachedPositionsForThisCandidate,
+        candidateWeVoteId: this.props.params.candidate_we_vote_id,
+        organizationWeVoteId,
+        scrolledDown: AppStore.getScrolledDown(),
+      });
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -107,9 +108,9 @@ export default class Candidate extends Component {
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.candidate_we_vote_id, 'CANDIDATE');
 
       // getAllCachedPositionsByCandidateWeVoteId returns a dict with organization_we_vote_id as the key
-      // We convert to a simple list
+      // We convert to a simple list..
       const allCachedPositionsForThisCandidateDict = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(nextProps.params.candidate_we_vote_id);
-      const allCachedPositionsForThisCandidate = Object.values(allCachedPositionsForThisCandidateDict);
+      const allCachedPositionsForThisCandidate = allCachedPositionsForThisCandidateDict.length ? Object.values(allCachedPositionsForThisCandidateDict) : [];
       this.setState({
         scrolledDown: AppStore.getScrolledDown(),
         candidateWeVoteId: nextProps.params.candidate_we_vote_id,
@@ -128,7 +129,7 @@ export default class Candidate extends Component {
   onCandidateStoreChange () {
     // console.log('Candidate onCandidateStoreChange');
     const allCachedPositionsForThisCandidateDict = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(this.state.candidateWeVoteId);
-    const allCachedPositionsForThisCandidate = Object.values(allCachedPositionsForThisCandidateDict);
+    const allCachedPositionsForThisCandidate = allCachedPositionsForThisCandidateDict.length ? Object.values(allCachedPositionsForThisCandidateDict) : [];
     const { candidateWeVoteId } = this.state;
     this.setState({
       candidate: CandidateStore.getCandidate(candidateWeVoteId),
