@@ -459,6 +459,7 @@ class ItemActionBar extends PureComponent {
     }
 
     const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    // const supportOpposeModalHasBeenShown = false; // For testing
     if (!supportOpposeModalHasBeenShown) {
       this.toggleSupportOrOpposeHelpModal();
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);

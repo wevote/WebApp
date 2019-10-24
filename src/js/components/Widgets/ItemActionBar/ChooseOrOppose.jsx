@@ -8,9 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { withStyles } from '@material-ui/core/styles';
 import PositionPublicToggle from '../PositionPublicToggle';
 import Slides from './Slides';
-import TwitterSignIn from '../../Twitter/TwitterSignIn';
-import FacebookSignIn from '../../Facebook/FacebookSignIn';
-import VoterEmailAddressEntry from '../../Settings/VoterEmailAddressEntry';
+import SettingsAccount from '../../Settings/SettingsAccount';
 
 class ChooseOrOppose extends Component {
   static propTypes = {
@@ -49,19 +47,12 @@ class ChooseOrOppose extends Component {
         </React.Fragment>
       ),
       (
-        <React.Fragment>
-          <SubTitle>Sign in to save your choices!</SubTitle>
-          <PlainText>Your choices are archived on the same browser if you don&apos;t sign in.</PlainText>
-          <BoldText>Recommended</BoldText>
-          <SignInButtonContainer>
-            <FacebookSignIn buttonText="Sign in with Facebook" />
-          </SignInButtonContainer>
-          <SignInButtonContainer>
-            <TwitterSignIn buttonText="Sign in with Twitter" />
-          </SignInButtonContainer>
-          <HorizontalLine />
-          <VoterEmailAddressEntry />
-        </React.Fragment>
+        <SettingsAccount
+          pleaseSignInTitle="Sign in to save your choices!"
+          pleaseSignInSubTitle=""
+          toggleSignInModal={this.props.onClose}
+          inModal
+        />
       ),
     ];
     return slides;
@@ -146,10 +137,6 @@ const Row = styled.div`
   display: flex;
   margin: 16px 0;
   margin-top: 20px;
-`;
-
-const SignInButtonContainer = styled.div`
-  margin-bottom: 1em;
 `;
 
 export default withStyles(styles)(ChooseOrOppose);

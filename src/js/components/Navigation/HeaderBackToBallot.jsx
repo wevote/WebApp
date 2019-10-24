@@ -24,14 +24,14 @@ import { stringContains } from '../../utils/textFormat';
 import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import VoterStore from '../../stores/VoterStore';
 
 class HeaderBackToBallot extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     location: PropTypes.object,
     params: PropTypes.object.isRequired,
     pathname: PropTypes.string,
-    voter: PropTypes.object,
-    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -69,6 +69,7 @@ class HeaderBackToBallot extends Component {
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     let candidateWeVoteId;
     let measureWeVoteId;
@@ -134,8 +135,13 @@ class HeaderBackToBallot extends Component {
 
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
+    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
-      voter: this.props.voter,
+      voter,
+      voterIsSignedIn,
+      voterPhotoUrlMedium,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -208,8 +214,13 @@ class HeaderBackToBallot extends Component {
 
     const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
+    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
-      voter: nextProps.voter,
+      voter,
+      voterIsSignedIn,
+      voterPhotoUrlMedium,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -260,28 +271,21 @@ class HeaderBackToBallot extends Component {
       // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
       return true;
     }
-    const { voter } = this.state;
-    const { nextVoter } = nextState;
-    let voterIsSignedIn = null;
-    let voterPhotoUrlMedium = null;
-    let nextVoterIsSignedIn = null;
-    let nextVoterPhotoUrlMedium = null;
-    if (voter) {
-      voterIsSignedIn = voter.is_signed_in;
-      voterPhotoUrlMedium = voter.voter_photo_url_medium;
+    const { voter, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
+    const { voter: nextVoter, voterIsSignedIn: nextVoterIsSignedIn, voterPhotoUrlMedium: nextVoterPhotoUrlMedium } = nextState;
+    if (!voter && nextVoter) {
+      // console.log('FIRST VOTER, voter: ', voter, ', nextVoter: ', nextVoter);
+      return true;
     }
-    if (nextVoter) {
-      nextVoterIsSignedIn = nextVoter.is_signed_in;
-      nextVoterPhotoUrlMedium = nextVoter.voter_photo_url_medium;
-    }
-    if (nextVoterIsSignedIn && voterIsSignedIn !== nextVoterIsSignedIn) {
+    if (voterIsSignedIn !== nextVoterIsSignedIn) {
       // console.log('voterIsSignedIn: ', voterIsSignedIn, ', nextVoterIsSignedIn: ', nextVoterIsSignedIn);
       return true;
     }
-    if (nextVoterPhotoUrlMedium && voterPhotoUrlMedium !== nextVoterPhotoUrlMedium) {
+    if (voterPhotoUrlMedium !== nextVoterPhotoUrlMedium) {
       // console.log('voterPhotoUrlMedium: ', voterPhotoUrlMedium, ', nextVoterPhotoUrlMedium: ', nextVoterPhotoUrlMedium);
       return true;
     }
+    // console.log('shouldComponentUpdate false');
     return false;
   }
 
@@ -292,6 +296,7 @@ class HeaderBackToBallot extends Component {
     this.measureStoreListener.remove();
     this.organizationStoreListener.remove();
     this.officeStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onAppStoreChange () {
@@ -355,6 +360,17 @@ class HeaderBackToBallot extends Component {
     });
   }
 
+  onVoterStoreChange () {
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
+    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
+    this.setState({
+      voter,
+      voterIsSignedIn,
+      voterPhotoUrlMedium,
+    });
+  }
+
   getOfficeLink () {
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
       return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
@@ -374,14 +390,15 @@ class HeaderBackToBallot extends Component {
   }
 
   transitionToYourVoterGuide () {
+    const { voter } = this.state;
     // Positions for this organization, for this voter / election
-    OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, true);
+    OrganizationActions.positionListForOpinionMaker(voter.linked_organization_we_vote_id, true);
 
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, false, true);
+    OrganizationActions.positionListForOpinionMaker(voter.linked_organization_we_vote_id, false, true);
     OrganizationActions.organizationsFollowedRetrieve();
-    VoterGuideActions.voterGuideFollowersRetrieve(this.state.voter.linked_organization_we_vote_id);
-    VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
+    VoterGuideActions.voterGuideFollowersRetrieve(voter.linked_organization_we_vote_id);
+    VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter.linked_organization_we_vote_id);
     this.setState({ profilePopUpOpen: false });
   }
 
@@ -405,6 +422,7 @@ class HeaderBackToBallot extends Component {
 
   toggleSignInModal () {
     const { showSignInModal } = this.state;
+    this.setState({ profilePopUpOpen: false });
     AppActions.setShowSignInModal(!showSignInModal);
   }
 
@@ -427,11 +445,14 @@ class HeaderBackToBallot extends Component {
 
   render () {
     renderLog(__filename);
-    const { backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable, candidate, measureWeVoteId, officeName, officeWeVoteId, organization, organizationWeVoteId, scrolledDown, showSignInModal, voter } = this.state;
+    const {
+      backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
+      candidate, measureWeVoteId, officeName, officeWeVoteId,
+      organization, organizationWeVoteId, profilePopUpOpen, scrolledDown, showSignInModal,
+      voter, voterIsSignedIn, voterPhotoUrlMedium,
+    } = this.state;
     const { classes, pathname } = this.props;
-    const voterIsSignedIn = voter.is_signed_in;
-    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    // console.log('HeaderBackToBallot render backToMeasureWeVoteId:', backToMeasureWeVoteId);
+    // console.log('HeaderBackToBallot render voterIsSignedIn:', voterIsSignedIn, ', profilePopUpOpen:', profilePopUpOpen);
 
     let backToLink;
     let backToLinkText;
@@ -534,16 +555,16 @@ class HeaderBackToBallot extends Component {
                   </div>
                 )
                 }
-                {this.state.profilePopUpOpen && (
+                {profilePopUpOpen && (
                 <HeaderBarProfilePopUp
                   hideProfilePopUp={this.hideProfilePopUp}
                   onClick={this.toggleProfilePopUp}
-                  profilePopUpOpen={this.state.profilePopUpOpen}
+                  profilePopUpOpen={profilePopUpOpen}
                   signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
                   toggleProfilePopUp={this.toggleProfilePopUp}
                   toggleSignInModal={this.toggleSignInModal}
                   transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                  voter={this.props.voter}
+                  voter={voter}
                   weVoteBrandingOff={this.state.we_vote_branding_off}
                 />
                 )}

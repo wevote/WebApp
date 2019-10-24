@@ -83,7 +83,7 @@ export default class Header extends Component {
               { showBackToSettingsDesktop && (
                 <span>
                   <span className="u-show-desktop-tablet">
-                    <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
+                    <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} location={location} params={params} />
                   </span>
                   { !showBackToVoterGuides && !showBackToSettingsMobile && (
                     <span className="u-show-mobile">
@@ -95,7 +95,7 @@ export default class Header extends Component {
               { showBackToSettingsMobile && (
                 <span>
                   <span className="u-show-mobile-tablet">
-                    <HeaderBackTo backToLink={backToSettingsLinkMobile} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
+                    <HeaderBackTo backToLink={backToSettingsLinkMobile} backToLinkText={backToSettingsLinkText} location={location} params={params} />
                   </span>
                   { !showBackToVoterGuides && !showBackToSettingsDesktop && (
                     <span className="u-show-desktop-tablet">
@@ -129,7 +129,7 @@ export default class Header extends Component {
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToValues ?
-                <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} location={location} params={params} voter={voter} /> :
+                <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} location={location} params={params} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
               }
             </div>
@@ -146,7 +146,7 @@ export default class Header extends Component {
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToFriends ?
-                <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} location={location} params={params} voter={voter} /> :
+                <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} location={location} params={params} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
               }
             </div>

@@ -15,17 +15,17 @@ import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
 import { isWebApp } from '../../utils/cordovaUtils';
 import EndorsementModeTabs from './EndorsementModeTabs';
+import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
-import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterSessionActions from '../../actions/VoterSessionActions';
-import HeaderBackToButton from './HeaderBackToButton';
 import SignInModal from '../Widgets/SignInModal';
+import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
+import VoterSessionActions from '../../actions/VoterSessionActions';
 
 class HeaderBackToVoterGuides extends Component {
   static propTypes = {
@@ -39,9 +39,9 @@ class HeaderBackToVoterGuides extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      profilePopUpOpen: false,
       candidateWeVoteId: '',
       organizationWeVoteId: '',
+      profilePopUpOpen: false,
       showNewVoterGuideModal: false,
       showSignInModal: false,
       voter: {},

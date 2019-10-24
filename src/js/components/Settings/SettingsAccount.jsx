@@ -27,6 +27,8 @@ const debugMode = false;
 export default class SettingsAccount extends Component {
   static propTypes = {
     inModal: PropTypes.bool,
+    pleaseSignInTitle: PropTypes.string,
+    pleaseSignInSubTitle: PropTypes.string,
     toggleSignInModal: PropTypes.func,
   };
 
@@ -73,7 +75,13 @@ export default class SettingsAccount extends Component {
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
     const { origin } = window.location;
     let signInStartFullUrl = '';
-    if (getStartedMode && getStartedMode === 'getStartedForCampaigns') {
+    if (this.props.pleaseSignInTitle || this.props.pleaseSignInSubTitle) {
+      AppActions.storeSignInStartFullUrl();
+      this.setState({
+        pleaseSignInTitle: this.props.pleaseSignInTitle || '',
+        pleaseSignInSubTitle: this.props.pleaseSignInSubTitle || '',
+      });
+    } else if (getStartedMode && getStartedMode === 'getStartedForCampaigns') {
       pathname = '/settings/profile';
       signInStartFullUrl = `${origin}${pathname}`;
       cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
