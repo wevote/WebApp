@@ -34,7 +34,7 @@ class SettingsVerifySecretCode extends Component {
       digit5: '',
       digit6: '',
       condensed: false,
-      error: false,
+      errorToDisplay: false,
       errorMessageToDisplay: '',
       incorrectSecretCodeEntered: false,
       numberOfTriesRemaining: 5,
@@ -102,9 +102,9 @@ class SettingsVerifySecretCode extends Component {
       this.closeVerifyModalLocal();
     } else {
       let errorMessageToDisplay = '';
-      let error = false;
+      let errorToDisplay = false;
       if (voterSecretCodeRequestsLocked) {
-        error = true;
+        errorToDisplay = true;
         const { voterEmailAddress, voterPhoneNumber } = this.state;
         if (voterEmailAddress) {
           errorMessageToDisplay = `Please contact We Vote support regarding ${voterEmailAddress}.`;
@@ -114,8 +114,10 @@ class SettingsVerifySecretCode extends Component {
           errorMessageToDisplay = 'Please contact We Vote support. Your account is locked.';
         }
       } else if (voterMustRequestNewCode) {
+        errorToDisplay = true;
         errorMessageToDisplay = 'You\'ve reached the maximum number of tries.';
       } else if (incorrectSecretCodeEntered || numberOfTriesRemaining <= 4) {
+        errorToDisplay = true;
         errorMessageToDisplay = 'Incorrect code entered.';
       }
       this.setState({
@@ -125,7 +127,7 @@ class SettingsVerifySecretCode extends Component {
         secretCodeVerified,
         voterMustRequestNewCode,
         voterSecretCodeRequestsLocked,
-        error,
+        errorToDisplay,
       });
     }
   }
@@ -300,10 +302,10 @@ class SettingsVerifySecretCode extends Component {
 
   // eslint-disable-next-line react/sort-comp
   onPaste (e) {
-    console.log(e.clipboardData.getData('Text'));
+    // console.log(e.clipboardData.getData('Text'));
 
     const pastedInputArray = e.clipboardData.getData('Text').split('');
-    console.log(pastedInputArray);
+    // console.log(pastedInputArray);
 
     const regex = /^[0-9]$/;
 
@@ -327,7 +329,7 @@ class SettingsVerifySecretCode extends Component {
         digit4: '',
         digit5: '',
         digit6: '',
-        error: true,
+        errorToDisplay: true,
         errorMessageToDisplay: 'Please enter a six-digit code',
       });
     }
@@ -336,7 +338,7 @@ class SettingsVerifySecretCode extends Component {
   render () {
     // console.log('SettingsVerifySecretCode render');
     const { classes } = this.props;
-    const { condensed, errorMessageToDisplay, digit1, digit2, digit3, digit4, digit5, digit6, voterEmailAddress, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked } = this.state;
+    const { condensed, errorMessageToDisplay, errorToDisplay, digit1, digit2, digit3, digit4, digit5, digit6, voterEmailAddress, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked } = this.state;
 
     if (!voterEmailAddress && !voterPhoneNumber) {
       // We get a weird extra ghost version of SettingsVerifySecretCode, and this is how we block it.
@@ -371,7 +373,7 @@ class SettingsVerifySecretCode extends Component {
                 onPaste={this.onPaste}
                 value={this.state.digit1}
                 id="digit1"
-                error={this.state.error}
+                error={errorToDisplay}
                 disabled={this.state.numberOfTriesRemaining === 0}
               />
               <OutlinedInput
@@ -383,7 +385,7 @@ class SettingsVerifySecretCode extends Component {
                 onPaste={this.onPaste}
                 value={this.state.digit2}
                 id="digit2"
-                error={this.state.error}
+                error={errorToDisplay}
                 disabled={this.state.numberOfTriesRemaining === 0}
               />
               <OutlinedInput
@@ -395,7 +397,7 @@ class SettingsVerifySecretCode extends Component {
                 onPaste={this.onPaste}
                 value={this.state.digit3}
                 id="digit3"
-                error={this.state.error}
+                error={errorToDisplay}
                 disabled={this.state.numberOfTriesRemaining === 0}
               />
               <OutlinedInput
@@ -407,7 +409,7 @@ class SettingsVerifySecretCode extends Component {
                 onPaste={this.onPaste}
                 value={this.state.digit4}
                 id="digit4"
-                error={this.state.error}
+                error={errorToDisplay}
                 disabled={this.state.numberOfTriesRemaining === 0}
               />
               <OutlinedInput
@@ -419,7 +421,7 @@ class SettingsVerifySecretCode extends Component {
                 onPaste={this.onPaste}
                 value={this.state.digit5}
                 id="digit5"
-                error={this.state.error}
+                error={errorToDisplay}
                 disabled={this.state.numberOfTriesRemaining === 0}
               />
               <OutlinedInput
@@ -431,11 +433,11 @@ class SettingsVerifySecretCode extends Component {
                 onPaste={this.onPaste}
                 value={this.state.digit6}
                 id="digit6"
-                error={this.state.error}
+                error={errorToDisplay}
                 disabled={this.state.numberOfTriesRemaining === 0}
               />
             </InputContainer>
-            {this.state.error && (
+            {errorToDisplay && (
               <ErrorMessage>{errorMessageToDisplay}</ErrorMessage>
             )}
           </TextContainer>

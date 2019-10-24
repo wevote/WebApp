@@ -320,7 +320,7 @@ class VoterPhoneVerificationEntry extends Component {
             <Phone />
             <InputBase
               className={classes.input}
-              type="phone"
+              type="tel"
               name="voter_phone_number"
               id="enterVoterPhone"
               onBlur={() => { this.hidePhoneVerificationButton(); this.localToggleOtherSignInOptions(); }}

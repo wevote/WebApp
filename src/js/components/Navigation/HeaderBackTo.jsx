@@ -10,13 +10,14 @@ import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import cookies from '../../utils/cookies';
 import { hasIPhoneNotch, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
+import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import HeaderBackToButton from './HeaderBackToButton';
-import SignInModal from '../Widgets/SignInModal';
+import VoterStore from '../../stores/VoterStore';
 
 class HeaderBackTo extends Component {
   static propTypes = {
@@ -24,7 +25,6 @@ class HeaderBackTo extends Component {
     backToLinkText: PropTypes.string,
     classes: PropTypes.object,
     location: PropTypes.object,
-    voter: PropTypes.object,
     voterWeVoteId: PropTypes.string,
   };
 
@@ -50,14 +50,21 @@ class HeaderBackTo extends Component {
   componentDidMount () {
     // console.log('HeaderBackTo componentDidMount, this.props: ', this.props);
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
+    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
+    const voterWeVoteId = voter.we_vote_id;
     this.setState({
       backToLink: this.props.backToLink,
       backToLinkText: this.props.backToLinkText,
-      voter: this.props.voter,
-      voterWeVoteId: this.props.voter.we_vote_id || this.props.voterWeVoteId,
+      voter,
+      voterIsSignedIn,
+      voterPhotoUrlMedium,
+      voterWeVoteId: voter.we_vote_id || voterWeVoteId,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -66,11 +73,16 @@ class HeaderBackTo extends Component {
     // console.log('HeaderBackTo componentWillReceiveProps, nextProps: ', nextProps);
     const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
+    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       backToLink: nextProps.backToLink,
       backToLinkText: nextProps.backToLinkText,
-      voter: nextProps.voter,
-      voterWeVoteId: nextProps.voter.we_vote_id || nextProps.voterWeVoteId,
+      voter,
+      voterIsSignedIn,
+      voterPhotoUrlMedium,
+      voterWeVoteId: voter.we_vote_id || nextProps.voterWeVoteId,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -101,38 +113,43 @@ class HeaderBackTo extends Component {
       // console.log('this.state.voterWeVoteId: ', this.state.voterWeVoteId, ', nextState.voterWeVoteId', nextState.voterWeVoteId);
       return true;
     }
-    const { voter } = this.state;
-    const { nextVoter } = nextState;
-    let voterIsSignedIn = null;
-    let voterPhotoUrlMedium = null;
-    let nextVoterIsSignedIn = null;
-    let nextVoterPhotoUrlMedium = null;
-    if (voter) {
-      voterIsSignedIn = voter.is_signed_in;
-      voterPhotoUrlMedium = voter.voter_photo_url_medium;
+    const { voter, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
+    const { voter: nextVoter, voterIsSignedIn: nextVoterIsSignedIn, voterPhotoUrlMedium: nextVoterPhotoUrlMedium } = nextState;
+    if (!voter && nextVoter) {
+      // console.log('FIRST VOTER, voter: ', voter, ', nextVoter: ', nextVoter);
+      return true;
     }
-    if (nextVoter) {
-      nextVoterIsSignedIn = nextVoter.is_signed_in;
-      nextVoterPhotoUrlMedium = nextVoter.voter_photo_url_medium;
-    }
-    if (nextVoterIsSignedIn && voterIsSignedIn !== nextVoterIsSignedIn) {
+    if (voterIsSignedIn !== nextVoterIsSignedIn) {
       // console.log('voterIsSignedIn: ', voterIsSignedIn, ', nextVoterIsSignedIn: ', nextVoterIsSignedIn);
       return true;
     }
-    if (nextVoterPhotoUrlMedium && voterPhotoUrlMedium !== nextVoterPhotoUrlMedium) {
+    if (voterPhotoUrlMedium !== nextVoterPhotoUrlMedium) {
       // console.log('voterPhotoUrlMedium: ', voterPhotoUrlMedium, ', nextVoterPhotoUrlMedium: ', nextVoterPhotoUrlMedium);
       return true;
     }
+    // console.log('shouldComponentUpdate false');
     return false;
   }
 
   componentWillUnmount () {
     this.appStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onAppStoreChange () {
     this.setState({
       showSignInModal: AppStore.showSignInModal(),
+    });
+  }
+
+  onVoterStoreChange () {
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
+    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
+    this.setState({
+      voter,
+      voterIsSignedIn,
+      voterPhotoUrlMedium,
     });
   }
 
@@ -170,6 +187,7 @@ class HeaderBackTo extends Component {
 
   toggleSignInModal () {
     const { showSignInModal } = this.state;
+    this.setState({ profilePopUpOpen: false });
     AppActions.setShowSignInModal(!showSignInModal);
   }
 
@@ -191,9 +209,10 @@ class HeaderBackTo extends Component {
     // console.log('HeaderBackTo render');
     renderLog(__filename);
     const { classes } = this.props;
-    const { backToLink, backToLinkText, showSignInModal, voter } = this.state;
-    const voterIsSignedIn = voter.is_signed_in;
-    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
+    const {
+      backToLink, backToLinkText, profilePopUpOpen, showSignInModal,
+      voter, voterIsSignedIn, voterPhotoUrlMedium,
+    } = this.state;
 
     const headerClassName = (function header () {
       if (isWebApp()) {
@@ -272,16 +291,16 @@ class HeaderBackTo extends Component {
                   </span>
                 )
                 }
-                {this.state.profilePopUpOpen && (
+                {profilePopUpOpen && (
                 <HeaderBarProfilePopUp
                   hideProfilePopUp={this.hideProfilePopUp}
                   onClick={this.toggleProfilePopUp}
-                  profilePopUpOpen={this.state.profilePopUpOpen}
+                  profilePopUpOpen={profilePopUpOpen}
                   signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
                   toggleProfilePopUp={this.toggleProfilePopUp}
                   toggleSignInModal={this.toggleSignInModal}
                   transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                  voter={this.props.voter}
+                  voter={voter}
                   weVoteBrandingOff={this.state.we_vote_branding_off}
                 />
                 )}
