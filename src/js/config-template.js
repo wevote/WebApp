@@ -36,20 +36,4 @@ module.exports = {
 
   // This is the publishable key (not secret)
   STRIPE_API_KEY: 'pk_test_bWuWGC3jrMIFH3wvRvHR6Z5H',
-
-  // Look for a log line like this "Application initCordova ------------ /js/Application.jsx uuid: AC328523-8362-4D90-9805-D5F94203B113"
-  // and put that uuid in the following table, to be able to use the XCode simulator for iPhones
-  // NOTE: Doing a "Hardware/Erase All Content and Settings" on a simulator, will reset the uuid to a new value
-  CORDOVA_IPHONE_UUIDS: [
-    { name: 'i5', val: '' },
-    { name: 'i5s', val: '' },
-    { name: 'iSE', val: '' },
-    { name: 'i6', val: '' },
-    { name: 'i6s', val: '' },
-    { name: 'i8', val: '' },
-    { name: 'i8plus', val: '' },
-    { name: 'iX', val: '' },      // Also iPhone 11 Pro
-    { name: 'iXR', val: '' },     // Also iPhone 11
-    { name: 'iXsMax', val: '' },  // Also iPhone 11 Pro Max
-  ],
 };

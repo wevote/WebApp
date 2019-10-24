@@ -86,8 +86,7 @@ class Application extends Component {
 
   initializationForCordova () { // eslint-disable-line
     if (isCordova()) {
-      const { uuid } = window.device;
-      console.log(`Application initializationForCordova ------------ ${__filename} uuid: ${uuid}`);
+      console.log('Application initializationForCordova ------------');
       window.handleOpenURL = (url) => {
         TwitterSignIn.handleTwitterOpenURL(url);
       };

@@ -120,7 +120,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.settingsWild:    return '32px';
         default:                    return '0px';
       }
-    } else if (hasIPhoneNotch()) {  // defaults to X or 11 Pro
+    } else if (hasIPhoneNotch()) {  // defaults for X or 11 Pro
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding: hasIPhoneNotch -- signed in: ${isSignedIn}`);
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '32px';
@@ -162,7 +162,7 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else {
-      cordovaOffsetLog('********* Did not find a UUID match for this simulator *********');
+      cordovaOffsetLog('********* Did not find a screen size match for this iPhone simulator *********');
     }
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
@@ -348,7 +348,7 @@ export function cordovaWelcomeAppToolbarTop () {
   if (isIOS()) {
     if (isIPhone5p5in()) {
       return '10px';
-    } else if (isIPhone4in()) {
+    } else if (isIPhone4p7in()) {
       return '10px';
     } else if (hasIPhoneNotch()) {
       return '14px';
