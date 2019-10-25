@@ -132,8 +132,7 @@ class CandidateItemForAddPositions extends Component {
   }
 
   render () {
-    // console.log('CandidateItemForAddPositions render');
-    renderLog(__filename);
+    renderLog('CandidateItemForAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     // const { classes, theme } = this.props;
     const { ballotItemSupportProps, oneCandidate, showPositionStatement } = this.state;
     if (!oneCandidate || !oneCandidate.we_vote_id) {

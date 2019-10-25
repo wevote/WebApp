@@ -35,7 +35,7 @@ export default class SuggestedFriendsPreview extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SuggestedFriendsPreview');  // Set LOG_RENDER_EVENTS to log all renders
     const { suggestedFriendList } = this.state;
     if (!suggestedFriendList || !(suggestedFriendList.length > 0)) {
       return null;

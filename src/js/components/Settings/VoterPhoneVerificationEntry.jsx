@@ -245,7 +245,7 @@ class VoterPhoneVerificationEntry extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterPhoneVerificationEntry');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.loading) {
       return LoadingWheel;
     }

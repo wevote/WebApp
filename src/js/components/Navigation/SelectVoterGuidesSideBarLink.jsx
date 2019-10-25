@@ -38,7 +38,7 @@ export default class SelectVoterGuidesSideBarLink extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SelectVoterGuidesSideBarLink');  // Set LOG_RENDER_EVENTS to log all renders
     const labelInSentenceCase = capitalizeString(this.props.label);
     const subtitleInSentenceCase = sentenceCaseString(this.props.subtitle);
 

@@ -115,7 +115,7 @@ export default class VoterGuideListDashboard extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideListDashboard');  // Set LOG_RENDER_EVENTS to log all renders
 
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {

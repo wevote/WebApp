@@ -30,10 +30,10 @@ class HeaderBarProfilePopUp extends Component {
   signInFromPopUp = () => {
     this.hideProfilePopUp();
     this.toggleSignInModal();
-  }
+  };
 
   render () {
-    renderLog(__filename);
+    renderLog('HeaderBarProfilePopUp');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, voter, profilePopUpOpen } = this.props;
     const isSignedIn = voter && voter.is_signed_in;
 

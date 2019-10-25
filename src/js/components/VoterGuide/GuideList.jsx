@@ -150,9 +150,8 @@ export default class GuideList extends Component {
   }
 
   render () {
-    // console.log('GuideList render');
+    renderLog('GuideList');  // Set LOG_RENDER_EVENTS to log all renders
     const { filteredOrganizationsWithPositions } = this.state;
-    renderLog(__filename);
     if (filteredOrganizationsWithPositions === undefined) {
       // console.log('GuideList this.state.organizations_to_follow === undefined');
       return null;

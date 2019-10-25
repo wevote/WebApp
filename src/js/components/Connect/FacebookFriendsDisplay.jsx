@@ -76,7 +76,7 @@ export default class FacebookFriendsDisplay extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FacebookFriendsDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.facebookInvitableFriendsList === undefined) {
       return null;
     }

@@ -74,7 +74,7 @@ export default class Office extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Office');  // Set LOG_RENDER_EVENTS to log all renders
     const { office } = this.state;
 
     if (!office || !office.ballot_item_display_name) {

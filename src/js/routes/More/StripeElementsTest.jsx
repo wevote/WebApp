@@ -13,7 +13,7 @@ import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 
 class StripeElementsTest extends Component {
   render () {
-    renderLog(__filename);
+    renderLog('StripeElementsTest');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <Wrapper>
         <Helmet title="Stripe Elements Test" />

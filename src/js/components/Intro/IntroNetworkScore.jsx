@@ -14,7 +14,7 @@ export default class IntroNetworkScore extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('IntroNetworkScore');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div
         className="intro-story__background background--image5"

@@ -46,7 +46,7 @@ export default class SuggestedFriendToggle extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SuggestedFriendToggle');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
     const { otherVoterWeVoteId } = this.props;
     const { isFriend } = this.state;

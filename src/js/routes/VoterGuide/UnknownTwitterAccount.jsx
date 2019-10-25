@@ -16,7 +16,7 @@ export default class UnknownTwitterAccount extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('UnknownTwitterAccount');  // Set LOG_RENDER_EVENTS to log all renders
     const { twitterHandle, twitterName } = this.props;
 
     return (

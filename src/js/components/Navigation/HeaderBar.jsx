@@ -285,11 +285,10 @@ class HeaderBar extends Component {
   }
 
   render () {
-    // console.log('HeaderBar render');
+    renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.componentDidMountFinished) {
       return null;
     }
-    renderLog(__filename);
     const { classes, pathname, location } = this.props;
     const { chosenSiteLogoUrl, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal, showSignInModal, voter, voterIsSignedIn } = this.state;
     const ballotBaseUrl = '/ballot';

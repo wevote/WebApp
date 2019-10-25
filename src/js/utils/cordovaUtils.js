@@ -37,7 +37,7 @@ export function cordovaDot (path) {
 }
 
 export function cordovaOpenSafariViewSub (requestURL, onExit) {
-  // console.log("cordovaOpenSafariView -1- requestURL: " + requestURL);
+  console.log(`cordovaOpenSafariView -1- requestURL: ${requestURL}`);
   SafariViewController.isAvailable(() => { // eslint-disable-line no-undef
     oAuthLog(`cordovaOpenSafariView requestURL: ${requestURL}`);
     SafariViewController.show({ // eslint-disable-line no-undef

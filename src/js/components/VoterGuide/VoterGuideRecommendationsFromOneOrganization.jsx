@@ -50,7 +50,7 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideRecommendationsFromOneOrganization');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.voterGuidesToFollowOrganizationRecommendationThisElection.length) {
       return (
         <div className="">

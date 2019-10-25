@@ -93,8 +93,7 @@ class OrganizationPopoverCard extends Component {
   }
 
   render () {
-    // console.log('OrganizationPopoverCard render');
-    renderLog(__filename);
+    renderLog('OrganizationPopoverCard');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.organization) {
       return <div>{LoadingWheel}</div>;
     }

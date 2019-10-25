@@ -26,7 +26,7 @@ export default class SettingsAddress extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsAddress');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         <div className="u-stack--md">

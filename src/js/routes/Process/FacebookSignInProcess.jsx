@@ -105,10 +105,9 @@ export default class FacebookSignInProcess extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FacebookSignInProcess');  // Set LOG_RENDER_EVENTS to log all renders
     const { facebookAuthResponse, yesPleaseMergeAccounts } = this.state;
 
-    // console.log("FacebookSignInProcess render, this.state.saving:", this.state.saving);
     if (this.state.saving ||
       !facebookAuthResponse ||
       !facebookAuthResponse.facebook_retrieve_attempted) {

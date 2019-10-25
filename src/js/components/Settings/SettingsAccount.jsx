@@ -232,8 +232,7 @@ export default class SettingsAccount extends Component {
   }
 
   render () {
-    renderLog(__filename);
-    // console.log('SettingsAccount render');
+    renderLog('SettingsAccount');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
       return LoadingWheel;
     }

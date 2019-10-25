@@ -70,7 +70,7 @@ export default class PublicFiguresFollowedPreview extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('PublicFiguresFollowedPreview');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log("NetworkOpinionsFollowed, this.state.organizationsFollowedList: ", this.state.organizationsFollowedList);
     return (
       <div className="opinions-followed__container">

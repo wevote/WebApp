@@ -44,7 +44,7 @@ export default class ProcessingDonation extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('ProcessingDonation');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div style={loadingScreenStyles}>
         <div>

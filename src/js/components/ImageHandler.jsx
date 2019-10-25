@@ -28,7 +28,7 @@ export default class ImageHandler extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('ImageHandler');  // Set LOG_RENDER_EVENTS to log all renders
     // debugger;
     const incomingClassName = this.props.className || '';
     const alt = this.props.alt || 'icon';

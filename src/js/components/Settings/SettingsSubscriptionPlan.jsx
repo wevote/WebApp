@@ -205,7 +205,7 @@ class SettingsSubscriptionPlan extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsSubscriptionPlan');  // Set LOG_RENDER_EVENTS to log all renders
     const { activePaidPlanChosen, activePaidPlanChosenDisplay, activePaidPlanBillingFrequencyDisplay, nextInvoice, organization, organizationWeVoteId, subscriptionJournalHistory, subscriptionJournalHistoryCount, voter, voterIsSignedIn, mobileMode } = this.state;
     const { classes } = this.props;
     if (!voter || !organizationWeVoteId) {

@@ -25,8 +25,7 @@ export default class VoterGuideBallotItemCompressed extends Component {
   }
 
   render () {
-    renderLog(__filename);
-    // console.log('VoterGuideBallotItemCompressed this.props.organizationWeVoteId:', this.props.organizationWeVoteId);
+    renderLog('VoterGuideBallotItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div className="BallotItem card" id={this.props.we_vote_id}>
         { this.isMeasure() ? (

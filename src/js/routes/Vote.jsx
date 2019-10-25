@@ -389,8 +389,7 @@ class Vote extends Component {
   }
 
   render () {
-    // console.log('Vote render');
-    renderLog(__filename);
+    renderLog('Vote');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       ballotWithItemsFromCompletionFilterType,
       ballotHeaderUnpinned, isSearching, ballotSearchResults,

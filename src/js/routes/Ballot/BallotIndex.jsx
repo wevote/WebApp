@@ -8,7 +8,7 @@ export default class BallotIndex extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('BallotIndex');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div className="ballot_index">
         { this.props.children }

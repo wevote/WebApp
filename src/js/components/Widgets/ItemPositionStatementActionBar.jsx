@@ -186,11 +186,11 @@ class ItemPositionStatementActionBar extends Component {
 
   closeEditPositionStatementInput = () => {
     this.setState({ showEditPositionStatementInput: false, commentActive: false/* ,  disabled: true */ });
-  }
+  };
 
   openEditPositionStatementInput = () => {
     this.setState({ showEditPositionStatementInput: true, commentActive: true /* , disabled: false */ });
-  }
+  };
 
   onBlurInput = () => {
     // if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
@@ -198,7 +198,7 @@ class ItemPositionStatementActionBar extends Component {
     // }
     // console.log('ItemPositionStatementActionBar, onBlurInput:', e.target);
 
-    restoreStylesAfterCordovaKeyboard(__filename);
+    restoreStylesAfterCordovaKeyboard(ItemPositionStatementActionBar);
   };
 
   onFocusInput = () => {
@@ -207,7 +207,7 @@ class ItemPositionStatementActionBar extends Component {
     this.setState({ commentActive: true });
     // }
 
-    prepareForCordovaKeyboard(__filename);
+    prepareForCordovaKeyboard('ItemPositionStatementActionBar');
   };
 
   savePositionStatement (e) {
@@ -233,7 +233,7 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('ItemPositionStatementActionBar');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.supportProps === undefined) {
       return <div />;
     }
@@ -361,8 +361,8 @@ class ItemPositionStatementActionBar extends Component {
                 classes={{ root: classes.input, disabled: classes.disabledInput }}
                 placeholder={statementPlaceholderText}
                 defaultValue={statementTextToBeSaved}
-                onFocus={() => prepareForCordovaKeyboard(__filename)}
-                onBlur={() => restoreStylesAfterCordovaKeyboard(__filename)}
+                onFocus={() => prepareForCordovaKeyboard('ItemPositionStatementActionBar')}
+                onBlur={() => restoreStylesAfterCordovaKeyboard('ItemPositionStatementActionBar')}
                 inputRef={(tag) => { this.textarea = tag; }}
                 multiline
                 disabled

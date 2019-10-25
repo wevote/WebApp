@@ -24,7 +24,7 @@ export default class SecondaryNavBarItem extends Component {
 
 
   render () {
-    renderLog(__filename);
+    renderLog('SecondaryNavBarItem');  // Set LOG_RENDER_EVENTS to log all renders
 
     let icon;
     if (this.props.iconFacebook) {

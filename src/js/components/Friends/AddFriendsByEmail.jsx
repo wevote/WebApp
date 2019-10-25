@@ -270,7 +270,7 @@ export default class AddFriendsByEmail extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
     const atLeastOneValidated = validateEmail(this.state.friend1EmailAddress) || validateEmail(this.state.friend2EmailAddress) || validateEmail(this.state.friend3EmailAddress) || validateEmail(this.state.friend4EmailAddress) || validateEmail(this.state.friend5EmailAddress);
 
     const { loading } = this.state;

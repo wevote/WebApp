@@ -30,7 +30,7 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
   }
 
   componentWillMount () {
-    prepareForCordovaKeyboard(__filename);
+    prepareForCordovaKeyboard('SettingsWidgetOrganizationWebsite');
   }
 
   componentDidMount () {
@@ -44,7 +44,7 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
     this.voterStoreListener.remove();
     this.timer = null;
     this.clearStatusTimer = null;
-    restoreStylesAfterCordovaKeyboard(__filename);
+    restoreStylesAfterCordovaKeyboard('SettingsWidgetOrganizationWebsite');
   }
 
   onOrganizationStoreChange () {
@@ -107,7 +107,7 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsWidgetOrganizationWebsite');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
       return LoadingWheel;
     }

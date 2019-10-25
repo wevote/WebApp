@@ -180,8 +180,7 @@ class OfficeItemForAddPositions extends Component {
   }
 
   render () {
-    // console.log('OfficeItemForAddPositions render');
-    renderLog(__filename);
+    renderLog('OfficeItemForAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballotItemDisplayName } = this.props;
     const { ballotItemWeVoteId, classes, theme, externalUniqueId } = this.props;
     const { candidateList, showCandidates } = this.state;

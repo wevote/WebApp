@@ -33,7 +33,7 @@ export default class FacebookPicture extends React.Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FacebookPicture');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         {this.facebookStatus}

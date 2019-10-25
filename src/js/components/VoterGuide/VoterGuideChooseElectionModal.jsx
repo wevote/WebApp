@@ -52,9 +52,8 @@ class VoterGuideChooseElectionModal extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideChooseElectionModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    // console.log('VoterGuideChooseElectionModal render');
 
     return (
       <Dialog

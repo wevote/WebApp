@@ -40,7 +40,7 @@ export default class ReadMore extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('ReadMore');  // Set LOG_RENDER_EVENTS to log all renders
     let {
       text_to_display: textToDisplay, link_text: linkText, num_of_lines: numOfLines, collapse_text: collapseText,
     } = this.props;

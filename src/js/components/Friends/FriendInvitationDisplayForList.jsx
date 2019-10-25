@@ -59,7 +59,7 @@ export default class FriendInvitationDisplayForList extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendInvitationDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       invitationsSentByMe,
       voter_twitter_followers_count: voterTwitterFollowersCount,

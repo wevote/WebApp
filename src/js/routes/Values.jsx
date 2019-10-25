@@ -48,7 +48,7 @@ export default class Values extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Values');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
       return LoadingWheel;
     }

@@ -32,7 +32,7 @@ class About extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('About');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="About We Vote" />

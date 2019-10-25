@@ -5,7 +5,7 @@ import { renderLog } from '../../utils/logging';
 
 export default class ClaimYourPage extends Component {
   render () {
-    renderLog(__filename);
+    renderLog('ClaimYourPage');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         <Helmet title="Claim Your Page - We Vote" />

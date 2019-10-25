@@ -30,7 +30,7 @@ export default class FriendList extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendList');  // Set LOG_RENDER_EVENTS to log all renders
     const { friendList } = this.state;
 
     if (!friendList) {

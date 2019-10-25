@@ -206,8 +206,7 @@ class HeaderBackTo extends Component {
   }
 
   render () {
-    // console.log('HeaderBackTo render');
-    renderLog(__filename);
+    renderLog('HeaderBackTo');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
       backToLink, backToLinkText, profilePopUpOpen, showSignInModal,

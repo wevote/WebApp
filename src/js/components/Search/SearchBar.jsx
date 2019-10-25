@@ -67,7 +67,7 @@ export default class SearchBar extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SearchBar');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div className="search-bar clearfix">
         <input

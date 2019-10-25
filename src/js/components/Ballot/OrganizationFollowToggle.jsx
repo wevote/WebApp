@@ -56,7 +56,7 @@ export default class OrganizationFollowToggle extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OrganizationFollowToggle');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
     const { isFollowing } = this.state;
 

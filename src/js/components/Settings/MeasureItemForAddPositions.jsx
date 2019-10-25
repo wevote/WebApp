@@ -161,8 +161,7 @@ class MeasureItemForAddPositions extends Component {
   }
 
   render () {
-    // console.log('MeasureItemForAddPositions render');
-    renderLog(__filename);
+    renderLog('MeasureItemForAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballotItemDisplayName } = this.state;
     const { ballotItemSupportProps, measureText, ballotItemWeVoteId, showPositionStatement } = this.state;
     if (!ballotItemWeVoteId) {

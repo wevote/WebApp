@@ -30,7 +30,7 @@ export default class Header extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
     const { friendsMode, settingsMode, valuesMode, voterGuideMode,

@@ -24,7 +24,7 @@ export default class IntroNetworkDefinition extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('IntroNetworkDefinition');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div className="intro-story__padding intro-story__margin--auto">
         <div className="intro-story__h1">

@@ -123,8 +123,7 @@ export default class IssueFollowToggleButton extends Component {
   }
 
   render () {
-    // console.log('IssueFollowToggleButton render');
-    renderLog(__filename);
+    renderLog('IssueFollowToggleButton');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
 
     if (this.state.error) {

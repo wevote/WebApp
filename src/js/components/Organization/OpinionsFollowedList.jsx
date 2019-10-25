@@ -38,7 +38,7 @@ export default class OpinionsFollowedList extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OpinionsFollowedList');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.organizationsFollowed === undefined) {
       return null;
     }

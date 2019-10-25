@@ -97,10 +97,9 @@ export default class OrganizationPositionItem extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OrganizationPositionItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { position } = this.props;
     const { organization } = this.state;
-    // console.log('OrganizationPositionItem render');
 
     if (!position.ballot_item_we_vote_id) {
       // console.log('OrganizationPositionItem cannot render yet -- missing position and organization');

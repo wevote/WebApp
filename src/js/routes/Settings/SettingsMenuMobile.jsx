@@ -111,7 +111,7 @@ export default class SettingsMenuMobile extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsMenuMobile');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
       return null;
     }

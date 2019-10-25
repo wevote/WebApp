@@ -113,7 +113,7 @@ export default class Connect extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Connect');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         <Helmet title="Build Your We Vote Network" />

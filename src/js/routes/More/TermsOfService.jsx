@@ -11,7 +11,7 @@ export default class TermsOfService extends React.Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('TermsOfService');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Terms of Service - We Vote" />

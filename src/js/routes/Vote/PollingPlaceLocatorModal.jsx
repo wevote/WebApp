@@ -34,7 +34,7 @@ class PollingPlaceLocatorModal extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('PollingPlaceLocatorModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
 
     if (isWebApp()) {

@@ -98,7 +98,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OrganizationVoterGuideCandidateItem');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       ballot_item_display_name: ballotItemDisplayName,
       party,

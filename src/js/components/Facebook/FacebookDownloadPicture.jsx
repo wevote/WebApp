@@ -23,7 +23,7 @@ class FacebookDownloadPicture extends React.Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FacebookDownloadPicture');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         <h5 className="h5">Download Picture:</h5>

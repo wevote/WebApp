@@ -5,11 +5,12 @@ import TextBox from './TextBox';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 class AddressBoxWelcome extends PureComponent {
   static propTypes = {
     inputProps: PropTypes.object,
-  }
+  };
 
   constructor (props) {
     super(props);
@@ -35,14 +36,14 @@ class AddressBoxWelcome extends PureComponent {
     } else {
       console.log('Google Maps Error: DeletedApiProjectMapError');
     }
-    restoreStylesAfterCordovaKeyboard(__filename);
+    restoreStylesAfterCordovaKeyboard('AddressBoxWelcome');  // Set LOG_RENDER_EVENTS to log all renders
   }
 
   onVoterStoreChange = () => {
     this.setState({
       textForMapSearch: VoterStore.getTextForMapSearch(),
     });
-  }
+  };
 
   _placeChanged = (addressAutocomplete) => {
     const place = addressAutocomplete.getPlace();
@@ -55,12 +56,12 @@ class AddressBoxWelcome extends PureComponent {
         textForMapSearch: place.name,
       });
     }
-  }
+  };
 
   updateVoterAddress = (event) => {
     console.log('UPDATE VOTER ADDRESS', event.target.value);
     this.setState({ textForMapSearch: event.target.value });
-  }
+  };
 
   handleKeyPress = (event) => {
     // Wait for 1/2 of a second after the last keypress to make a call to the voterAddressSave API
@@ -71,9 +72,10 @@ class AddressBoxWelcome extends PureComponent {
         VoterActions.voterAddressSave(this.state.textForMapSearch);
       }, 500);
     }
-  }
+  };
 
   render () {
+    renderLog('AddressBoxWelcome');  // Set LOG_RENDER_EVENTS to log all renders
     const { textForMapSearch } = this.state;
     return (
       <TextBox

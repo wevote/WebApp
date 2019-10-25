@@ -44,8 +44,8 @@ export default class IssuesToFollow extends Component {
   }
 
   render () {
+    renderLog('IssuesToFollow');  // Set LOG_RENDER_EVENTS to log all renders
     const { issuesToFollow, searchQuery } = this.state;
-    renderLog(__filename);
     let issueList = [];
     if (issuesToFollow) {
       issueList = issuesToFollow;

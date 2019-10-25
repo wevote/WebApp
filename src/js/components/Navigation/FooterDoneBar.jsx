@@ -45,7 +45,7 @@ export default class FooterDoneBar extends Component {
 
 
   render () {
-    renderLog(__filename);
+    renderLog('FooterDoneBar');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div className="" style={footStyle}>
         <div className="">

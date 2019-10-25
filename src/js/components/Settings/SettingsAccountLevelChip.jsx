@@ -22,18 +22,18 @@ class SettingsAccountLevelChip extends Component {
   onClickHandler = () => {
     const paidAccountUpgradeMode = this.props.requiredFeaturePackage === 'PROFESSIONAL' ? 'professional' : 'enterprise';
     this.openPaidAccountUpgradeModal(paidAccountUpgradeMode);
-  }
+  };
 
   openPaidAccountUpgradeModal = (paidAccountUpgradeMode) => {
     AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
-  }
+  };
 
   preventFocus = (e) => {
     e.preventDefault();
-  }
+  };
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsAccountLevelChip');  // Set LOG_RENDER_EVENTS to log all renders
     const { chosenFeaturePackage, requiredFeaturePackage, classes } = this.props;
     let chipLabel;
     const yourFeaturePackageExceedsOrEquals = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, requiredFeaturePackage);

@@ -91,7 +91,7 @@ class WelcomeForOrganizations extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('WelcomeForOrganizations.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
     // console.log('WelcomeForOrganizations, pathname: ', pathname);
     const { voter, animateTextArray, currentAnimateTextIndex } = this.state;

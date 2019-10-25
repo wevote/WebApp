@@ -13,7 +13,7 @@ export default class EmailBallot extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('EmailBallot');  // Set LOG_RENDER_EVENTS to log all renders
 
     return (
       <div>

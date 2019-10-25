@@ -31,7 +31,7 @@ export default class FriendInvitationList extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendInvitationList');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.friendInvitationList === undefined) {
       return null;
     }

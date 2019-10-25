@@ -36,10 +36,10 @@ class ReturnOfficialBallot extends Component {
     this.setState({
       returnOfficialBallotClosed: true,
     });
-  }
+  };
 
   render () {
-    renderLog(__filename);
+    renderLog('ReturnOfficialBallot');  // Set LOG_RENDER_EVENTS to log all renders
     const { returnOfficialBallotClosed } = this.state;
     if (returnOfficialBallotClosed) {
       return null;

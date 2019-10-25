@@ -550,8 +550,7 @@ class ItemActionBar extends PureComponent {
   }
 
   render () {
-    // console.log('ItemActionBar render');
-    renderLog(__filename);
+    renderLog('index.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     const { commentButtonHide, commentButtonHideInMobile, classes, type } = this.props;
     const { ballotItemWeVoteId } = this.state;
 

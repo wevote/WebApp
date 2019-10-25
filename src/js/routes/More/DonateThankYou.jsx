@@ -10,7 +10,7 @@ import Footer from '../../components/Welcome/Footer';
 
 class DonateThankYou extends Component {
   render () {
-    renderLog(__filename);
+    renderLog('DonateThankYou');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <Wrapper>
         <Helmet title="Donation Thanks - We Vote" />

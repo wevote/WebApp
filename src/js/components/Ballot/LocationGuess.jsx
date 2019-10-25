@@ -61,10 +61,10 @@ class LocationGuess extends Component {
     this.setState({
       locationGuessClosed: true,
     });
-  }
+  };
 
   render () {
-    renderLog(__filename);
+    renderLog('LocationGuess');  // Set LOG_RENDER_EVENTS to log all renders
     const { locationGuessClosed, textForMapSearch } = this.state;
     if (locationGuessClosed) {
       return null;

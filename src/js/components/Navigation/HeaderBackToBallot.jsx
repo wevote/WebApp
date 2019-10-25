@@ -444,7 +444,7 @@ class HeaderBackToBallot extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('HeaderBackToBallot');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
       candidate, measureWeVoteId, officeName, officeWeVoteId,
@@ -452,7 +452,6 @@ class HeaderBackToBallot extends Component {
       voter, voterIsSignedIn, voterPhotoUrlMedium,
     } = this.state;
     const { classes, pathname } = this.props;
-    // console.log('HeaderBackToBallot render voterIsSignedIn:', voterIsSignedIn, ', profilePopUpOpen:', profilePopUpOpen);
 
     let backToLink;
     let backToLinkText;

@@ -104,8 +104,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
   }
 
   render () {
-    // console.log("ItemTinyOpinionsToFollow render");
-    renderLog(__filename);
+    renderLog('ItemTinyOpinionsToFollow');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.organizationsToFollow === undefined) {
       return null;
     }

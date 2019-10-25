@@ -83,7 +83,7 @@ export default class SearchPage extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SearchPage');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <span>
         <Helmet title="Search Results - We Vote" />

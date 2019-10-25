@@ -294,6 +294,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   render () {
+    renderLog('BallotItemSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     const handleEnterHoverLocalArea = () => {
       if (this.props.handleLeaveCandidateCard) {
         this.props.handleLeaveCandidateCard();
@@ -307,8 +308,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     };
 
     if (!this.state.ballotItemWeVoteId) return null;
-    // console.log('BallotItemSupportOpposeCountDisplay render, ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
-    renderLog(__filename);
     // Issue Score
     // const voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
     // let voterIssuesScoreWithSign;

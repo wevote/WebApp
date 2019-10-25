@@ -84,7 +84,7 @@ export default class DonationForm extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('DonationForm');  // Set LOG_RENDER_EVENTS to log all renders
     let { donateButtonText } = this.props;
     if (!donateButtonText) {
       donateButtonText = 'Donate Now';

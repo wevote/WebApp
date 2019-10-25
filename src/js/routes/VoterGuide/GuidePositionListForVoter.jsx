@@ -21,7 +21,7 @@ export default class GuidePositionListForVoter extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('GuidePositionListForVoter');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }

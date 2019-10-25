@@ -113,9 +113,9 @@ export default class CodeCopier extends Component {
   }
 
   render () {
+    renderLog('CodeCopier');  // Set LOG_RENDER_EVENTS to log all renders
     let { sourceUrl } = this.props;
     const { codeCopierButtonId } = this.props;
-    renderLog(__filename);
     if (!sourceUrl) sourceUrl = `https://wevote.us/${this.state.twitterHandle}`;
 
     const sourceCode =

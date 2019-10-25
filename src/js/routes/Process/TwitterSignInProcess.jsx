@@ -112,7 +112,7 @@ export default class TwitterSignInProcess extends Component {
   // }
 
   render () {
-    renderLog(__filename);
+    renderLog('TwitterSignInProcess');  // Set LOG_RENDER_EVENTS to log all renders
     const { twitterAuthResponse, yesPleaseMergeAccounts } = this.state;
 
     oAuthLog('TwitterSignInProcess render');

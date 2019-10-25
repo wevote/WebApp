@@ -39,7 +39,7 @@ export default class IssueLinkToggle extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('IssueLinkToggle');  // Set LOG_RENDER_EVENTS to log all renders
     let supportButtonPopoverTooltip;
     if (this.props.incompatibleIssues !== undefined) {
       // Removed bsPrefix="card-popover"

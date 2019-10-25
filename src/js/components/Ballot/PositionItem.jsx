@@ -91,9 +91,8 @@ class PositionItem extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('PositionItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { position } = this.props;
-    // console.log('PositionItem render, position:', position);
     // TwitterHandle-based link
     const voterGuideWeVoteIdLink = position.organization_we_vote_id ? `/voterguide/${position.organization_we_vote_id}` : `/voterguide/${position.speaker_we_vote_id}`;
     let speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;

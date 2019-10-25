@@ -116,7 +116,7 @@ class WelcomeForVoters extends PureComponent {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('WelcomeForVoters');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
     // console.log('WelcomeForVoters, pathname: ', pathname);
     const { voter, newsletterOptInTrue } = this.state;

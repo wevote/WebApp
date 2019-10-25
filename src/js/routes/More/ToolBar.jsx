@@ -14,7 +14,7 @@ class ToolBar extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('ToolBar');  // Set LOG_RENDER_EVENTS to log all renders
     // const { classes } = this.props;
     const hideGitHub = this.props.hideGitHub ? this.props.hideGitHub : false;
 

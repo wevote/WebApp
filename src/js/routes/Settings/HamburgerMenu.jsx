@@ -91,7 +91,7 @@ export default class HamburgerMenu extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('HamburgerMenu');  // Set LOG_RENDER_EVENTS to log all renders
     const { voter } = this.state;
     if (voter === undefined) {
       return LoadingWheel;

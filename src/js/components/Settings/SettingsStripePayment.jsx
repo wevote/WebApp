@@ -192,8 +192,7 @@ class SettingsStripePayment extends Component {
   }
 
   render () {
-    // console.log('SettingsStripePayment render, this.state:', this.state);
-    renderLog(__filename);
+    renderLog('SettingsStripePayment');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
       donationWithStripeSubmitted, numberOfMonthsService, organizationWeVoteId, payByMonthCostPerMonth, payByYearCostPerYear, paymentError, pricingPlanChosen, stripeErrorMessageForVoter, voter,

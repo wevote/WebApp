@@ -61,7 +61,7 @@ export default class OpinionsFollowed extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OpinionsFollowed.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     let organizationsFollowedListForDisplay = [];
     if (this.state.searchQuery.length > 0) {
       const searchQueryLowercase = this.state.searchQuery.toLowerCase();

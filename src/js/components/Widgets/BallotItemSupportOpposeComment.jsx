@@ -146,9 +146,8 @@ class BallotItemSupportOpposeComment extends PureComponent {
   }
 
   render () {
-    // console.log('BallotItemSupportOpposeComment render, this.state.ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
+    renderLog('BallotItemSupportOpposeComment');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.ballotItemWeVoteId) return null;
-    renderLog(__filename);
     const { showPositionStatementActionBar } = this.props;
     // Voter Support or opposition
     const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = this.state.ballotItemSupportProps || {};

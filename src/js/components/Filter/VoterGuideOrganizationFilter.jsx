@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import IssueStore from '../../stores/IssueStore';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
+import { renderLog } from '../../utils/logging';
 
 const groupTypeIdentifiers = ['C', 'C3', 'C4', 'G', 'NP', 'O', 'P'];
 const privateCitizenIdentifiers = ['I', 'V'];
@@ -191,8 +192,8 @@ class VoterGuideOrganizationFilter extends Component {
   ));
 
   render () {
+    renderLog('VoterGuideOrganizationFilter');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, showAllFilters, selectedFilters } = this.props;
-    // console.log('VoterGuideOrganizationFilter render');
 
     return (
       <Wrapper showAllFilters={showAllFilters}>

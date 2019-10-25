@@ -27,21 +27,21 @@ class FacebookSignIn extends Component {
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       this.didClickFacebookSignInButton();
     }
-  }
+  };
 
   didClickFacebookSignInButton = () => {
     AppActions.unsetStoreSignInStartFullUrl();
     FacebookActions.login();
-  }
+  };
 
   toggleSignInModalLocal = () => {
     if (this.props.toggleSignInModal) {
       this.props.toggleSignInModal();
     }
-  }
+  };
 
   render () {
-    renderLog(__filename);
+    renderLog('FacebookSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     const { buttonText } = this.props;
     return (
       <SplitIconButton

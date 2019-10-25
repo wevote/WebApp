@@ -32,7 +32,7 @@ export default class CheckBox extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('CheckBox');  // Set LOG_RENDER_EVENTS to log all renders
     const { isChecked } = this.state;
     return (
       <div className={`${this.props.grid} friends-list__square u-cursor--pointer`} onClick={this.toggleCheckboxChange}>

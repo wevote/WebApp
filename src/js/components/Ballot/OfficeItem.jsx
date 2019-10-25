@@ -13,7 +13,7 @@ export default class OfficeItem extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('OfficeItem');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballotItemDisplayName } = this.props;
     const { weVoteId } = this.props;
     const officeLink = `/office/${weVoteId}`;

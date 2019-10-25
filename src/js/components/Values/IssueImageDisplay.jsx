@@ -18,7 +18,7 @@ export default class IssueImageDisplay extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('IssueImageDisplay');  // Set LOG_RENDER_EVENTS to log all renders
 
     if (!this.props.issueWeVoteId) {
       // console.log('IssueImageDisplay no props.image');

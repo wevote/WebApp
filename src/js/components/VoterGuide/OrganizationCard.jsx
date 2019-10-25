@@ -116,8 +116,7 @@ export default class OrganizationCard extends Component {
   }
 
   render () {
-    // console.log("OrganizationCard render");
-    renderLog(__filename);
+    renderLog('OrganizationCard');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.organizationWeVoteId.length) {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }

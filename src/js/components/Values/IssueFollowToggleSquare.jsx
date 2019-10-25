@@ -67,11 +67,11 @@ export default class IssueFollowToggleSquare extends Component {
   }
 
   render () {
+    renderLog('IssueFollowToggleSquare');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       grid, issueIconLocalPath, issueDescription, readOnly, editMode, issueName, sideBar,
     } = this.props;
     const { isFollowing } = this.state;
-    renderLog(__filename);
     if (!this.state) {
       return <div />;
     }

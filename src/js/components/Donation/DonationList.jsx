@@ -63,7 +63,7 @@ export default class DonationList extends Component {
   isMobile = () => $(window).width() < 1280;
 
   render () {
-    renderLog('DonationList');
+    renderLog('DonationList');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.donationJournalList) {
       console.log('donationJournalList not yet received in DonationList render');
       return LoadingWheel;

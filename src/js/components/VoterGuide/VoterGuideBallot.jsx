@@ -662,12 +662,11 @@ class VoterGuideBallot extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideBallot');  // Set LOG_RENDER_EVENTS to log all renders
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
     const {
       ballotWithAllItems, ballotWithOrganizationEndorsements, ballotWithOrganizationEndorsementsLength, organization, organizationWeVoteId, voterIsAdmin, voterIsVerifiedVolunteer,
     } = this.state;
-    // console.log('VoterGuideBallot render');
     if (!ballotWithAllItems) {
       return (
         <div className="ballot container-fluid well u-stack--md u-inset--md">

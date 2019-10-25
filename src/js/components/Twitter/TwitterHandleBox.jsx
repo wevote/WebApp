@@ -35,7 +35,7 @@ export default class TwitterHandleBox extends Component {
     this.setState({ loading: true });
     twitterHandle = extractTwitterHandleFromTextString(twitterHandle);
     historyPush(`/${twitterHandle}`);
-  }
+  };
 
   updateTwitterHandle (e) {
     this.setState({
@@ -53,7 +53,7 @@ export default class TwitterHandleBox extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('TwitterHandleBox');  // Set LOG_RENDER_EVENTS to log all renders
     const { loading } = this.state;
     if (loading) {
       return LoadingWheel;

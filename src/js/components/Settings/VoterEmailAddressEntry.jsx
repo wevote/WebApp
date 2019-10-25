@@ -142,7 +142,7 @@ class VoterEmailAddressEntry extends Component {
     const sendLinkToSignIn = true;
     VoterActions.voterEmailAddressSave(this.state.voterEmailAddress, sendLinkToSignIn);
     this.setState({ loading: true });
-  }
+  };
 
   sendSignInCodeEmail = (event) => {
     event.preventDefault();
@@ -158,7 +158,7 @@ class VoterEmailAddressEntry extends Component {
     } else {
       this.setState({ showError: true });
     }
-  }
+  };
 
   reSendSignInCodeEmail = (voterEmailAddress) => {
     if (voterEmailAddress) {
@@ -170,13 +170,13 @@ class VoterEmailAddressEntry extends Component {
         loading: true,
       });
     }
-  }
+  };
 
   displayEmailVerificationButton = () => {
     this.setState({
       displayEmailVerificationButton: true,
     });
-  }
+  };
 
   hideEmailVerificationButton = () => {
     const { voterEmailAddress } = this.state;
@@ -186,7 +186,7 @@ class VoterEmailAddressEntry extends Component {
         displayEmailVerificationButton: false,
       });
     }
-  }
+  };
 
   localToggleOtherSignInOptions = () => {
     if (isCordova()) {
@@ -196,7 +196,7 @@ class VoterEmailAddressEntry extends Component {
         this.props.toggleOtherSignInOptions();
       }
     }
-  }
+  };
 
   closeVerifyModal = () => {
     // console.log('VoterEmailAddressEntry closeVerifyModal');
@@ -208,7 +208,7 @@ class VoterEmailAddressEntry extends Component {
       showVerifyModal: false,
       voterEmailAddress: '',
     });
-  }
+  };
 
   updateVoterEmailAddress = (e) => {
     const voterEmailAddress = e.target.value;
@@ -217,7 +217,7 @@ class VoterEmailAddressEntry extends Component {
       voterEmailAddress,
       voterEmailAddressIsValid,
     });
-  }
+  };
 
   sendVerificationEmail (emailWeVoteId) {
     VoterActions.sendVerificationEmail(emailWeVoteId);
@@ -229,7 +229,7 @@ class VoterEmailAddressEntry extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterEmailAddressEntry');  // Set LOG_RENDER_EVENTS true to log all renders
     if (this.state.loading) {
       return LoadingWheel;
     }
@@ -239,7 +239,6 @@ class VoterEmailAddressEntry extends Component {
       disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, hideExistingEmailAddresses,
       showVerifyModal, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
     } = this.state;
-    // console.log('VoterEmailAddressEntry render, showVerifyModal:', showVerifyModal);
 
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
     const emailAddressStatusHtml = (

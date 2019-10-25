@@ -64,7 +64,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         message_type: 'success',
       },
     });
-  }
+  };
 
   friendInvitationByEmailVerify (invitationSecretKey) {
     FriendActions.friendInvitationByEmailVerify(invitationSecretKey);
@@ -72,7 +72,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendInvitationByEmailVerifyProcess');  // Set LOG_RENDER_EVENTS to log all renders
     const { invitation_secret_key: invitationSecretKey } = this.props.params;
 
     if (this.state.yesPleaseMergeAccounts) {

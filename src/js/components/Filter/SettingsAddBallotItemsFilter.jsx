@@ -13,6 +13,7 @@ import { arrayContains, removeValueFromArray } from '../../utils/textFormat';
 import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/address-functions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
+import { renderLog } from '../../utils/logging';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -409,22 +410,22 @@ class SettingsAddBallotItemsFilter extends Component {
     // We no longer filter for a unique we_vote_id because we sometimes pass items into this routine that don't have a we_vote_id
     // console.log('filteredItems:', filteredItems);
     return filteredItems;
-  }
+  };
 
   removeTheseFilters = (filterListToRemove) => {
     // Remove the items in filterList that are currently in selectedFilters
     // console.log('SettingsAddBallotItemsFilter, removeTheseFilters filterListToRemove:', filterListToRemove);
     const newFilteredItems = this.props.selectedFilters.filter(oneItem => !filterListToRemove.includes(oneItem));
     this.props.updateSelectedFilters(newFilteredItems);
-  }
+  };
 
   toggleFilter = (filterName) => {
     this.props.onToggleFilter(filterName);
-  }
+  };
 
   selectSortByFilter = (name) => {
     this.props.onSelectSortByFilter(name);
-  }
+  };
 
   // getStyles(name, personName, theme) {
   //   return {
@@ -465,12 +466,12 @@ class SettingsAddBallotItemsFilter extends Component {
         this.props.forceChangeTrigger('ADD-STATE');
       }
     }
-  }
+  };
 
   render () {
+    renderLog('SettingsAddBallotItemsFilter');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, showAllFilters, selectedFilters } = this.props;
     const { selectedStates } = this.state;
-    // console.log('SettingsAddBallotItemsFilter render selectedFilters:', selectedFilters);
 
     // console.log('selectedStates:', selectedStates);
     // console.log('stateCodeMap:', stateCodeMap);

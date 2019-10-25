@@ -5,7 +5,7 @@ import webAppConfig from '../../config';
 
 export default class FacebookRedirectToWeVote extends Component {
   render () {
-    renderLog(__filename);
+    renderLog('FacebookRedirectToWeVote');  // Set LOG_RENDER_EVENTS to log all renders
     const facebookRequestLink = `${webAppConfig.WE_VOTE_HOSTNAME}/more/facebooklandingprocess`;
     console.log('Redirecting to live we vote site on facebooklandingprocess page');
 

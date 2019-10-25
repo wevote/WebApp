@@ -81,7 +81,7 @@ export default class SignInJumpProcess extends Component {
   // }
 
   render () {
-    renderLog(__filename);
+    renderLog('SignInJumpProcess');  // Set LOG_RENDER_EVENTS to log all renders
     const incomingVoterDeviceId = this.props.location.query.voter_device_id;
     console.log('SignInJumpProcess, incomingVoterDeviceId:', incomingVoterDeviceId);
     if (!incomingVoterDeviceId ||

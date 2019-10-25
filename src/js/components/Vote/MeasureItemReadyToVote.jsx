@@ -41,7 +41,7 @@ class MeasureItemReadyToVote extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('MeasureItemReadyToVote');  // Set LOG_RENDER_EVENTS to log all renders
     const { supportProps } = this.state;
 
     const { measureWeVoteId, ballotItemDisplayName } = this.props;

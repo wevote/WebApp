@@ -813,8 +813,7 @@ class Ballot extends Component {
   }
 
   render () {
-    // console.log('Ballot render');
-    renderLog(__filename);
+    renderLog('Ballot');  // Set LOG_RENDER_EVENTS to log all renders
     const ballotBaseUrl = '/ballot';
     const { classes } = this.props;
     const {

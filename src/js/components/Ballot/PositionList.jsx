@@ -124,8 +124,7 @@ export default class PositionList extends Component {
   handleFilteredOrgsChange = filteredOrgs => this.setState({ filteredPositionList: filteredOrgs });
 
   render () {
-    // console.log('PositionList render');
-    renderLog(__filename);
+    renderLog('PositionList');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.positionList) {
       return null;
     }

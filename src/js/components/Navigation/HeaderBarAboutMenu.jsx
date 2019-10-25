@@ -16,8 +16,8 @@ export default class HeaderBarAboutMenu extends Component {
   }
 
   render () {
+    renderLog('HeaderBarAboutMenu');  // Set LOG_RENDER_EVENTS to log all renders
     const { toggleAboutMenu } = this.props;
-    renderLog(__filename);
     const aboutMenuOpen = this.props.aboutMenuOpen ? 'about-menu--open' : '';
 
     return (

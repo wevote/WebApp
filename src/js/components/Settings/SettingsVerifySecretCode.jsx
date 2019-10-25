@@ -11,6 +11,7 @@ import {
   // InputBase,
   OutlinedInput,
 } from '@material-ui/core';
+import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch, isIOS, isCordova } from '../../utils/cordovaUtils';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
@@ -280,14 +281,14 @@ class SettingsVerifySecretCode extends Component {
     const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
     const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
     VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
-  }
+  };
 
   closeVerifyModalLocal = () => {
     // console.log('SettingsVerifySecretCode closeVerifyModalLocal');
     if (this.props.closeVerifyModal) {
       this.props.closeVerifyModal();
     }
-  }
+  };
 
   handleFocus (e) {
     e.target.select();
@@ -336,7 +337,7 @@ class SettingsVerifySecretCode extends Component {
   }
 
   render () {
-    // console.log('SettingsVerifySecretCode render');
+    renderLog('SettingsVerifySecretCode');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { condensed, errorMessageToDisplay, errorToDisplay, digit1, digit2, digit3, digit4, digit5, digit6, voterEmailAddress, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked } = this.state;
 

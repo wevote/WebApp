@@ -22,7 +22,7 @@ export default class OfficeNameText extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OfficeNameText');  // Set LOG_RENDER_EVENTS to log all renders
     let nameText = '';
     const { contestOfficeName, officeLink, politicalParty, showOfficeName } = this.props;
     if (politicalParty === undefined) {

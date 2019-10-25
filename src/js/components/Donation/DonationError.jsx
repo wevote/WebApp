@@ -9,7 +9,7 @@ export default class DonationError extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('DonationError');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         <Badge variant="warning">{this.props.errorMessage}</Badge>

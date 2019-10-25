@@ -15,7 +15,7 @@ export default class OrganizationDisplayForListCompressed extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('OrganizationDisplayForListCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       organization_photo_url_medium: organizationPhotoUrlMedium,
       organization_twitter_handle: organizationTwitterHandle,

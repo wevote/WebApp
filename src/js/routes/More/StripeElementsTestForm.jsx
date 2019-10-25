@@ -91,7 +91,7 @@ class StripeElementsTestForm extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('StripeElementsTestForm');  // Set LOG_RENDER_EVENTS to log all renders
     const voter = VoterStore.getVoter();
     const { full_name: fullName } = voter;
     console.log(voter);

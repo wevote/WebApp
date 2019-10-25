@@ -565,7 +565,7 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('PaidAccountUpgradeModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
       activePaidPlanChosen, activePaidPlanChosenDisplay, amountPaidViaStripe, numberOfMonthsService,

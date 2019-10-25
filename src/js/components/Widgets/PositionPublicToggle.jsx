@@ -146,7 +146,7 @@ class PositionPublicToggle extends Component {
     } else {
       this.showItemToFriendsOnly();
     }
-  }
+  };
 
   showItemToFriendsOnly () {
     this.setState({
@@ -192,7 +192,7 @@ class PositionPublicToggle extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('PositionPublicToggle');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { inTestMode, isSignedIn, voterWeVoteId } = this.state;
     let { isPublicPosition } = this.state;

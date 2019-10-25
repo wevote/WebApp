@@ -19,7 +19,7 @@ export default class VoterGuideSettingsSuggestedBallotItems extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideSettingsSuggestedBallotItems');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.props.maximumSuggestedItems) {
       return LoadingWheel;
     }

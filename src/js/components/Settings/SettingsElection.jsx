@@ -74,7 +74,7 @@ export default class SettingsElection extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsElection');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         <div className="elections-list-container">

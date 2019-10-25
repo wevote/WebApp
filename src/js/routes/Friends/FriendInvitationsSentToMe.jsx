@@ -72,7 +72,7 @@ export default class FriendInvitationsSentToMe extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendInvitationsSentToMe');  // Set LOG_RENDER_EVENTS to log all renders
     let { friendInvitationsSentToMe } = this.state;
     if (this.state.searchFilterOn) {
       friendInvitationsSentToMe = this.state.friendInvitationsSentToMeFilteredBySearch;

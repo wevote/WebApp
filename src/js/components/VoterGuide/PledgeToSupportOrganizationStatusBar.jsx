@@ -44,7 +44,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('PledgeToSupportOrganizationStatusBar');  // Set LOG_RENDER_EVENTS to log all renders
 
     let numberOfSupportersGoal = 0;
     let numberOfSupporters = 0;

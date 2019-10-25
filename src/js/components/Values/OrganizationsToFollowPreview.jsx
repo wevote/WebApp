@@ -40,7 +40,7 @@ export default class OrganizationsToFollowPreview extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OrganizationsToFollowPreview');  // Set LOG_RENDER_EVENTS to log all renders
     const { voterGuidesToFollow } = this.state;
 
     return (

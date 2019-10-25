@@ -33,7 +33,7 @@ class ThisIsMeAction extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('ThisIsMeAction');  // Set LOG_RENDER_EVENTS to log all renders
     const { twitterHandleBeingViewed } = this.props;
     if (!twitterHandleBeingViewed) {
       // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization

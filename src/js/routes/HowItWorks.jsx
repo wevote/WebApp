@@ -238,7 +238,7 @@ class HowItWorks extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('HowItWorks');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { forCampaignsStepLabels, forCampaignsSteps,
       forOrganizationsStepLabels, forOrganizationsSteps,

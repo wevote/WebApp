@@ -68,7 +68,7 @@ export default class Elections extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Elections');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         <Helmet title="Elections - We Vote" />

@@ -28,7 +28,7 @@ class HeaderBackToButton extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('HeaderBackToButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, backToLink, backToLinkText } = this.props;
 
     return (

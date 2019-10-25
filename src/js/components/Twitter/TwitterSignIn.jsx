@@ -146,7 +146,7 @@ class TwitterSignIn extends Component {
 
   render () {
     const { buttonText } = this.props;
-    renderLog(__filename);
+    renderLog('TwitterSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <SplitIconButton
         backgroundColor="#55acee"

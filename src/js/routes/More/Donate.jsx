@@ -98,7 +98,7 @@ class Donate extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Donate');  // Set LOG_RENDER_EVENTS to log all renders
     const donateMailtoUrl = "mailto:donate@WeVoteEducation.org?subject=Donate to We Vote's 501(c)(3)&body=I am interested in making at tax deductible donating to We Vote's 501(c)(3).";
 
     return (

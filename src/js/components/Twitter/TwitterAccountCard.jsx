@@ -17,7 +17,7 @@ export default class TwitterAccountCard extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('TwitterAccountCard');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       twitterHandle, twitterDescription, twitterFollowersCount,
       twitterPhotoUrl, twitterUserWebsite,

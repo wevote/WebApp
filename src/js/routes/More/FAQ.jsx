@@ -11,7 +11,7 @@ export default class About extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FAQ');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         <Helmet title="FAQ - We Vote" />

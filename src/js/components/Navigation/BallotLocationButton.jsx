@@ -14,7 +14,7 @@ export default class BallotLocationButton extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('BallotLocationButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballot_location: ballotLocation } = this.props;
 
     if (ballotLocation.ballot_item_display_name !== '' || ballotLocation.text_for_map_search !== '') {

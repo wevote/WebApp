@@ -229,8 +229,7 @@ class TopCommentByBallotItem extends Component {
   // }
 
   render () {
-    // console.log('TopCommentByBallotItem render');
-    renderLog(__filename);
+    renderLog('TopCommentByBallotItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, hideMoreButton } = this.props;
     const { endorsementOrganization, endorsementText, externalUniqueId, localUniqueId } = this.state;
     if (!endorsementText) {

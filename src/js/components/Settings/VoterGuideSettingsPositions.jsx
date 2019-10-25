@@ -258,7 +258,7 @@ class VoterGuideSettingsPositions extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideSettingsPositions');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter || !this.state.voterGuide || !this.state.organization) {
       return LoadingWheel;
     }

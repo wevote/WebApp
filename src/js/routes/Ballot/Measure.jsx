@@ -188,11 +188,10 @@ export default class Measure extends Component {
   }
 
   render () {
+    renderLog('Measure');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       positionListForThisMeasure, measure, scrolledDown,
     } = this.state;
-    renderLog(__filename);
-    // console.log('Measure render scrolledDown:', scrolledDown);
 
     if (!measure || !measure.ballot_item_display_name) {
       // TODO DALE If the measureWeVoteId is not valid, we need to update this with a notice

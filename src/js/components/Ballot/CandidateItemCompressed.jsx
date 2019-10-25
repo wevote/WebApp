@@ -105,7 +105,7 @@ export default class CandidateItemCompressed extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('CandidateItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.oneCandidate || !this.state.oneCandidate.we_vote_id) {
       return null;
     }

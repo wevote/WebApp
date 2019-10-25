@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
+import { renderLog } from '../../utils/logging';
 
 
 class SettingsSeePositionsFilter extends Component {
@@ -189,19 +190,20 @@ class SettingsSeePositionsFilter extends Component {
 
     // We no longer filter for a unique we_vote_id because we sometimes pass items into this routine that don't have a we_vote_id
     return filteredItems;
-  }
+  };
 
   toggleFilter = (filterName) => {
     this.props.onToggleFilter(filterName);
-  }
+  };
 
   selectSortByFilter = (name) => {
     this.props.onSelectSortByFilter(name);
-  }
+  };
 
   render () {
+    renderLog('SettingsSeePositionsFilter');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, showAllFilters, selectedFilters } = this.props;
-    // console.log('SettingsSeePositionsFilter render selectedFilters:', selectedFilters);
+    // console.log(' render selectedFilters:', selectedFilters);
 
     return (
       <Wrapper showAllFilters={showAllFilters}>
