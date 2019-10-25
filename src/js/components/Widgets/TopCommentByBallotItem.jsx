@@ -153,13 +153,15 @@ class TopCommentByBallotItem extends Component {
       const allCachedPositionsForCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       // console.log('onCandidateStoreChange allCachedPositionsForCandidate: ', allCachedPositionsForCandidate);
       const limitToYes = true;
-      const results = extractFirstEndorsementFromPositionList(allCachedPositionsForCandidate, limitToYes);
-      // console.log('results.endorsementText: ', results.endorsementText);
+      if (allCachedPositionsForCandidate.length > 0) {
+        const results = extractFirstEndorsementFromPositionList(allCachedPositionsForCandidate, limitToYes);
+        // console.log('results.endorsementText: ', results.endorsementText);
 
-      this.setState({
-        endorsementOrganization: results.endorsementOrganization,
-        endorsementText: results.endorsementText,
-      });
+        this.setState({
+          endorsementOrganization: results.endorsementOrganization,
+          endorsementText: results.endorsementText,
+        });
+      }
     }
   }
 

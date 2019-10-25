@@ -115,12 +115,14 @@ class IssuesByBallotItemDisplayList extends Component {
     const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(ballotItemWeVoteId) || [];
     const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
     const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
-    this.setState({
-      issuesUnderThisBallotItemVoterIsFollowing,
-      issuesUnderThisBallotItemVoterIsNotFollowing,
-      issuesUnderThisBallotItemVoterIsFollowingLength,
-      issuesUnderThisBallotItemVoterIsNotFollowingLength,
-    });
+    if (issuesUnderThisBallotItemVoterIsFollowing.length) {
+      this.setState({
+        issuesUnderThisBallotItemVoterIsFollowing,
+        issuesUnderThisBallotItemVoterIsNotFollowing,
+        issuesUnderThisBallotItemVoterIsFollowingLength,
+        issuesUnderThisBallotItemVoterIsNotFollowingLength,
+      });
+    }
   }
 
   onVoterGuideStoreChange () {
@@ -148,7 +150,12 @@ class IssuesByBallotItemDisplayList extends Component {
   handleSubtractTotalRemainingWidth = (issueWeVoteId, width) => {
     const { totalWidth } = this.state;
     this.issueWidths[issueWeVoteId] = width;
-    const totalWidthOccupied = Object.values(this.issueWidths).reduce((a, b) => a + b);
+    // const totalWidthOccupied = Object.values(this.issueWidths).reduce((a, b) => a + b);  This is very elegant, but did not work in cordova
+    let totalWidthOccupied;
+    Object.keys(this.issueWidths).map((key) => {  // eslint-disable-line array-callback-return
+      totalWidthOccupied += this.issueWidths[key];
+    });
+
     this.setState({ totalRemainingWidth: totalWidth - totalWidthOccupied });
   }
 

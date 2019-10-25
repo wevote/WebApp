@@ -124,13 +124,13 @@ export function isIPhone3p5in () {
       window.device.model === 'iPhone3,2' ||  // iPhone 4
       window.device.model === 'iPhone3,3' ||  // iPhone 4
       window.device.model === 'iPhone4,1') {  // iPhone 4S)
-      logMatch('iPhone 5s SE (4")', true);
+      logMatch('iPhone 5s SE (3.5")', true);
       return true;
     }
     ret = (size.height === '480' && size.width === '320') ||  // iPhone Original, 3, 3GS
           (size.height === '960' && size.width === '640');    // iPhone 4, 4S
     if (ret) {
-      logMatch('iPhone Original, 3, 3GS, 4, 4S', false);
+      logMatch('iPhone Original, 3, 3GS, 4, 4S (3.5")', false);
     }
   }
   const { screen } = window;
@@ -158,7 +158,7 @@ export function isIPhone4in () {
     }
     ret = (size.height === '1136' && size.width === '640');  // iPhone 5, 5c, 5s, SE
     if (ret) {
-      logMatch('iPhone 6, 6s, 7, 8', false);
+      logMatch('iPhone 5, 5c, 5s, SE (4")', false);
       ret = true;
     }
   }
