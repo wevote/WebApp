@@ -448,9 +448,7 @@ class HeaderBackToBallot extends Component {
     const {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
       candidate, measureWeVoteId, officeName, officeWeVoteId,
-      // eslint-disable-next-line no-unused-vars
       organization, organizationWeVoteId, profilePopUpOpen, scrolledDown, showSignInModal,
-      // eslint-disable-next-line no-unused-vars
       voter, voterIsSignedIn, voterPhotoUrlMedium,
     } = this.state;
     const { classes, pathname } = this.props;
@@ -556,16 +554,16 @@ class HeaderBackToBallot extends Component {
                   </div>
                 )
                 }
-                {this.state.profilePopUpOpen && (
+                {profilePopUpOpen && (
                 <HeaderBarProfilePopUp
                   hideProfilePopUp={this.hideProfilePopUp}
                   onClick={this.toggleProfilePopUp}
-                  profilePopUpOpen={this.state.profilePopUpOpen}
+                  profilePopUpOpen={profilePopUpOpen}
                   signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
                   toggleProfilePopUp={this.toggleProfilePopUp}
                   toggleSignInModal={this.toggleSignInModal}
                   transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                  voter={this.props.voter}
+                  voter={voter}
                   weVoteBrandingOff={this.state.we_vote_branding_off}
                 />
                 )}
