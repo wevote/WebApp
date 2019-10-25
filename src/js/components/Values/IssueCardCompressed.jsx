@@ -80,7 +80,7 @@ class IssueCardCompressed extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('IssueCardCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     // if (!this.state.issueWeVoteId.length) {
     //   return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     // }

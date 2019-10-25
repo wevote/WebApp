@@ -84,7 +84,7 @@ class MeasureItem extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('MeasureItem');  // Set LOG_RENDER_EVENTS to log all renders
     // const { supportProps, transitioning } = this.state;
     const { classes } = this.props;
     let {

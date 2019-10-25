@@ -421,7 +421,7 @@ export default class EmailBallotToFriendsModal extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('EmailBallotToFriendsModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { loading } = this.state;
     if (loading) {
       return LoadingWheel;

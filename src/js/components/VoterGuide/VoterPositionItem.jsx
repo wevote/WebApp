@@ -59,7 +59,7 @@ export default class VoterPositionItem extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterPositionItem');  // Set LOG_RENDER_EVENTS to log all renders
 
     const {
       position, stance_display_off: stanceDisplayOff, comment_text_off: commentTextOff,

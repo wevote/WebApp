@@ -171,7 +171,7 @@ export default class SettingsDashboard extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsDashboard');  // Set LOG_RENDER_EVENTS to log all renders
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       case 'account':

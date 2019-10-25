@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TwitterSignIn from './TwitterSignIn';
+import { renderLog } from '../../utils/logging';
 
 const twitterText = 'Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides for everyone you are following on Twitter.';
 
@@ -19,6 +20,7 @@ class TwitterSignInCard extends Component {
   }
 
   render () {
+    renderLog('TwitterSignInCard');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div className="card">
         <div className="card-main">

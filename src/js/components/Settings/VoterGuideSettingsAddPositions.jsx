@@ -386,7 +386,7 @@ class VoterGuideSettingsAddPositions extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideSettingsAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { addNewPositionsMode, localGoogleCivicElectionId, stateCodeToRetrieve } = this.state;
     // console.log('VoterGuideSettingsAddPositions render, stateCodeToRetrieve:', stateCodeToRetrieve);

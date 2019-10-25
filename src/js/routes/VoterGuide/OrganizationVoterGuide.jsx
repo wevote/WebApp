@@ -249,13 +249,12 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OrganizationVoterGuide');  // Set LOG_RENDER_EVENTS to log all renders
     const { activeRoute, organizationBannerUrl, organizationId, organizationWeVoteId } = this.state;
     if (!this.state.organization || !this.state.voter || this.state.autoFollowRedirectHappening) {
       return <div>{LoadingWheel}</div>;
     }
 
-    // console.log('OrganizationVoterGuide render, activeRoute: ', activeRoute);
     const isVoterOwner = this.state.organization.organization_we_vote_id !== undefined &&
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
 

@@ -59,7 +59,7 @@ class DeviceDialog extends Component {
 
 
   render () {
-    renderLog(__filename);
+    renderLog('DeviceDialog');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
 
     if (!this.props.show) {

@@ -15,7 +15,7 @@ class ShowMoreFooter extends React.Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('ShowMoreFooter');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, showMoreId, showMoreLink } = this.props;
 
     let { showMoreText } = this.props;

@@ -51,12 +51,12 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
 
   cancelMerge = () => {
     historyPush('/settings/account');
-  }
+  };
 
   voterFacebookSignInConfirm = () => {
     FacebookActions.voterFacebookSignInConfirm();
     this.setState({ saving: true });
-  }
+  };
 
   voterEmailAddressSignInConfirm = (emailSecretKey) => {
     // console.log("voterEmailAddressSignInConfirm, emailSecretKey:", emailSecretKey);
@@ -64,10 +64,10 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
     this.setState({
       saving: true,
     });
-  }
+  };
 
   render () {
-    renderLog(__filename);
+    renderLog('WouldYouLikeToMergeAccountsOld');  // Set LOG_RENDER_EVENTS to log all renders
     const { saving } = this.state;
     if (saving || !this.state.email_sign_in_status) {
       return LoadingWheel;

@@ -107,7 +107,7 @@ export default class VerifyThisIsMe extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VerifyThisIsMe');  // Set LOG_RENDER_EVENTS to log all renders
 
     // Manage the control over this organization voter guide
     const { candidate, organization, voter } = this.state;

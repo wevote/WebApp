@@ -9,7 +9,7 @@ class FacebookDisconnect extends React.Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FacebookDisconnect');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <span>
         <a // eslint-disable-line

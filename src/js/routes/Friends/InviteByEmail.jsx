@@ -40,7 +40,7 @@ export default class InviteByEmail extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('InviteByEmail');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         <Helmet title="Build Your We Vote Network" />

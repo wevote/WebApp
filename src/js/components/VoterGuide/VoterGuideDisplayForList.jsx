@@ -37,8 +37,7 @@ export default class VoterGuideDisplayForList extends PureComponent {
   };
 
   render () {
-    renderLog(__filename);
-    // console.log('VoterGuideDisplayForList, render');
+    renderLog('VoterGuideDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.props.organization_we_vote_id === undefined) {
       // console.log("VoterGuideDisplayForList this.props.organization_we_vote_id === undefined");
       return null;

@@ -35,7 +35,7 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   componentWillMount () {
-    prepareForCordovaKeyboard(__filename);
+    prepareForCordovaKeyboard('SettingsWidgetAccountType');
   }
 
   componentDidMount () {
@@ -56,7 +56,7 @@ export default class SettingsWidgetAccountType extends Component {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
     this.clearTimer = null;
-    restoreStylesAfterCordovaKeyboard(__filename);
+    restoreStylesAfterCordovaKeyboard('SettingsWidgetAccountType');
   }
 
   onOrganizationStoreChange () {
@@ -172,8 +172,7 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   render () {
-    renderLog(__filename);
-    // console.log("render organizationType:", this.state.organizationType);
+    renderLog('SettingsWidgetAccountType');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter || !this.state.organization) {
       return LoadingWheel;
     }

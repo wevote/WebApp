@@ -135,7 +135,7 @@ export default class SettingsIssueLinks extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsIssueLinks');  // Set LOG_RENDER_EVENTS to log all renders
     let issuesToDisplay = [];
 
     const activeTab = this.props.params.active_tab || this.state.activeTab;

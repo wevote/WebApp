@@ -317,8 +317,7 @@ class SettingsDomain extends Component {
   }
 
   render () {
-    // console.log('SettingsDomain render');
-    renderLog(__filename);
+    renderLog('SettingsDomain');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       chosenFeaturePackage,
       organizationChosenDomainName, organizationChosenDomainNameAlreadyTaken, organizationChosenDomainNameChangedLocally,

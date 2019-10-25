@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BallotSummaryAccordionSection from './BallotSummaryAccordionSection';
-
+import { renderLog } from '../../utils/logging';
 
 class BallotSummaryAccordion extends Component {
   static propTypes = {
@@ -70,7 +70,7 @@ class BallotSummaryAccordion extends Component {
   };
 
   render () {
-    // console.log('BallotSummaryAccordion render');
+    renderLog('BallotSummaryAccordion');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       onClick,
       props: { children },

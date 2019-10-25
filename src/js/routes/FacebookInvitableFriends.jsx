@@ -222,7 +222,7 @@ export default class FacebookInvitableFriends extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FacebookInvitableFriends');  // Set LOG_RENDER_EVENTS to log all renders
 
     // console.log("this.state.voter", this.state.voter);
     if (!this.state.voter || this.state.saving) {

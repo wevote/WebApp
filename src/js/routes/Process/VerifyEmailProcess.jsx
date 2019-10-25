@@ -99,7 +99,7 @@ export default class VerifyEmailProcess extends Component {
   // }
 
   render () {
-    renderLog(__filename);
+    renderLog('VerifyEmailProcess');  // Set LOG_RENDER_EVENTS to log all renders
     const { email_secret_key: emailSecretKey } = this.props.params;
     console.log('VerifyEmailProcess, emailSecretKey:', emailSecretKey);
     if (!emailSecretKey ||

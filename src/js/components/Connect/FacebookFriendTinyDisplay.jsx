@@ -10,7 +10,7 @@ export default class FacebookFriendTinyDisplay extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('FacebookFriendTinyDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     let displayName = '';
     let facebookProfileImage = '';
     if (this.props.name) {

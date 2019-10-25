@@ -17,7 +17,7 @@ export default class FriendInvitationProcessedDisplayForList extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendInvitationProcessedDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       voter_twitter_followers_count: voterTwitterFollowersCount,
       voter_photo_url_medium: voterPhotoUrlMedium,

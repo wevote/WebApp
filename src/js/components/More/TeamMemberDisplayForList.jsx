@@ -46,7 +46,7 @@ class TeamMemberDisplayForList extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('TeamMemberDisplayForList.jsx');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { image: teamMemberImage, name: teamMemberName, title: teamMemberTitle } = this.props.teamMember;
     // console.log(teamMemberName, '-', teamMemberTitle[0]);

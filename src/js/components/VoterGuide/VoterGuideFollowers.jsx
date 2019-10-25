@@ -82,7 +82,7 @@ export default class VoterGuideFollowers extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideFollowers');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter || !this.state.organization) {
       return <div>{LoadingWheel}</div>;
     }

@@ -107,8 +107,7 @@ class BallotItemForAddPositions extends Component {
   }
 
   render () {
-    // console.log('BallotItemForAddPositions render');
-    renderLog(__filename);
+    renderLog('BallotItemForAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballotItemDisplayName, ballotItemWeVoteId, candidateList, kindOfBallotItem, measureText, organization, organizationWeVoteId } = this.state;
     const { externalUniqueId } = this.props;
     if (!kindOfBallotItem) {

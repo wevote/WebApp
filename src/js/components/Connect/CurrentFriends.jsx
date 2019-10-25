@@ -63,7 +63,7 @@ export default class CurrentFriends extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('CurrentFriends');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.currentFriendsList === undefined) {
       return null;
     }

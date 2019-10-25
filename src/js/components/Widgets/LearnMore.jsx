@@ -47,7 +47,7 @@ class LearnMore extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('LearnMore');  // Set LOG_RENDER_EVENTS to log all renders
     let {
       text_to_display: textToDisplay, num_of_lines: numOfLines,
       learn_more_text: learnMoreText,

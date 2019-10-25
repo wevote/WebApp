@@ -72,8 +72,7 @@ export default class EditAddressInPlace extends Component {
   }
 
   render () {
-    // console.log('EditAddressInPlace render');
-    renderLog(__filename);
+    renderLog('EditAddressInPlace');  // Set LOG_RENDER_EVENTS to log all renders
     const noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : '- no address entered -';
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);

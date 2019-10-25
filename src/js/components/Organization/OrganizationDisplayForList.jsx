@@ -51,7 +51,7 @@ export default class OrganizationDisplayForList extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OrganizationDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.organizationWeVoteId === undefined || this.state.organizationWeVoteId === '' || this.state.organization.organization_we_vote_id === undefined) {
       // console.log("OrganizationDisplayForList organizationWeVoteId === undefined");
       return null;

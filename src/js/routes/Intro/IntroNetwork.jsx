@@ -56,7 +56,7 @@ export default class IntroNetwork extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('IntroNetwork');  // Set LOG_RENDER_EVENTS to log all renders
 
     // These are settings for the react-slick slider
     const settings = {

@@ -40,7 +40,7 @@ export default class EmailBallotModal extends Component {
   }
 
   componentWillMount () {
-    prepareForCordovaKeyboard(__filename);
+    prepareForCordovaKeyboard('EmailBallotModal');
   }
 
   componentDidMount () {
@@ -51,7 +51,7 @@ export default class EmailBallotModal extends Component {
   componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
-    restoreStylesAfterCordovaKeyboard(__filename);
+    restoreStylesAfterCordovaKeyboard('EmailBallotModal');
   }
 
   onVoterStoreChange () {
@@ -185,7 +185,7 @@ export default class EmailBallotModal extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('EmailBallotModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { loading } = this.state;
     if (loading) {
       return LoadingWheel;

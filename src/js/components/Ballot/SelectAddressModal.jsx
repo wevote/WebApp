@@ -21,7 +21,7 @@ export default class SelectAddressModal extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SelectAddressModal');  // Set LOG_RENDER_EVENTS to log all renders
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
 
     return (

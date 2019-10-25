@@ -294,7 +294,7 @@ class CandidateItem extends Component {
         </span>
       </div>
     );
-  }
+  };
 
   topCommentByBallotItem = (candidateWeVoteId, candidateText) => (
     <TopCommentByBallotItem
@@ -321,7 +321,7 @@ class CandidateItem extends Component {
         null
       }
     </TopCommentByBallotItem>
-  )
+  );
 
   candidateIssuesAndCommentBlock = (candidateText, localUniqueId) => {
     const { candidateWeVoteId, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow, showPositionStatementActionBar } = this.state;
@@ -415,7 +415,7 @@ class CandidateItem extends Component {
         }
       </div>
     );
-  }
+  };
 
   goToCandidateLink () {
     // If here, we assume the voter is on the Office page
@@ -427,8 +427,7 @@ class CandidateItem extends Component {
   }
 
   render () {
-    // console.log('CandidateItem render');
-    renderLog(__filename);
+    renderLog('CandidateItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { candidateText, candidateWeVoteId } = this.state;
     if (!candidateWeVoteId) {
       return null;

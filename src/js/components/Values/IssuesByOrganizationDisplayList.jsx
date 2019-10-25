@@ -158,7 +158,7 @@ class IssuesByOrganizationDisplayList extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('IssuesByOrganizationDisplayList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       issuesUnderThisOrganization, issuesUnderThisOrganizationLength, organizationWeVoteId,
     } = this.state;
@@ -166,8 +166,6 @@ class IssuesByOrganizationDisplayList extends Component {
     if (!organizationWeVoteId) {
       return null;
     }
-
-    // console.log('IssuesByOrganizationDisplayList render');
 
     // console.log('this.state.organizationWeVoteId: ', this.state.organizationWeVoteId);
     // console.log('this.state.issuesUnderThisOrganization: ', this.state.issuesUnderThisOrganization);

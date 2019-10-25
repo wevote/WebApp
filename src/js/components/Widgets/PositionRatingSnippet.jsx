@@ -15,7 +15,7 @@ export default class PositionRatingSnippet extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('PositionRatingSnippet');  // Set LOG_RENDER_EVENTS to log all renders
     const displayName = this.props.ballot_item_display_name;
     const rating = this.props.vote_smart_rating;
     const ratingTimeSpan = this.props.vote_smart_time_span;

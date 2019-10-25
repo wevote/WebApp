@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Close from '@material-ui/icons/Close';
 import Check from '@material-ui/icons/Check';
+import { renderLog } from '../../utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 
@@ -39,7 +40,7 @@ class PricingCard extends Component {
   }
 
   render () {
-    // console.log('PricingCard render');
+    renderLog('PricingCard');  // Set LOG_RENDER_EVENTS to log all renders
     const { bullets, buttonOnClickId, buttonText, classes, description, featurePackage, fullWidth, planName, price, priceDescribe, pricingCardFeatures } = this.props;
     const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
     const isPremiumFeaturePlan = (String(featurePackage) === 'ENTERPRISE' || String(featurePackage) === 'PROFESSIONAL');

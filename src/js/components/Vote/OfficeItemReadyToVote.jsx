@@ -46,7 +46,7 @@ class OfficeItemReadyToVote extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OfficeItemReadyToVote');  // Set LOG_RENDER_EVENTS to log all renders
     const isSupportArray = [];
     let supportProps;
     let isSupport;

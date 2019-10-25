@@ -29,7 +29,7 @@ export default class FriendInvitationProcessedList extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendInvitationProcessedList');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.friendInvitationsList === undefined) {
       return null;
     }

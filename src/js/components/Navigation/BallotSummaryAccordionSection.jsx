@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+import { renderLog } from '../../utils/logging';
 
 
 class BallotSummaryAccordionSection extends Component {
@@ -21,7 +22,7 @@ class BallotSummaryAccordionSection extends Component {
   };
 
   render () {
-    // console.log('BallotSummaryAccordionSection render');
+    renderLog('BallotSummaryAccordionSection');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       onClick,
       props: { isOpen, label, classes },

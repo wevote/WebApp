@@ -21,7 +21,7 @@ export default class FriendDisplayForList extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       voter_twitter_followers_count: voterTwitterFollowersCount,
       voter_we_vote_id: voterWeVoteId,

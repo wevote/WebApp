@@ -27,7 +27,7 @@ export default class SampleBallot extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SampleBallot');  // Set LOG_RENDER_EVENTS to log all renders
 
     return (
       <div className="intro-story intro-story__background background--image3">

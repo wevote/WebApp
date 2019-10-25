@@ -50,7 +50,7 @@ export default class Opinions extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Opinions');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballotHasGuides, voterGuidesToFollowAll } = this.state;
     const floatRight = {
       float: 'right',

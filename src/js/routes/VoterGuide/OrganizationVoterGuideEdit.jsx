@@ -147,12 +147,11 @@ export default class OrganizationVoterGuideEdit extends Component {
   goToVoterGuideForDifferentElection = (voterGuideWeVoteId) => {
     const voterGuideBallotItems = `/vg/${voterGuideWeVoteId}/settings/positions`;
     historyPush(voterGuideBallotItems);
-  }
+  };
 
   render () {
-    // console.log('OrganizationVoterGuideEdit render');
+    renderLog('OrganizationVoterGuideEdit');  // Set LOG_RENDER_EVENTS to log all renders
     const { organization, organizationWeVoteId, voter } = this.state;
-    renderLog(__filename);
     if (!organization || !organizationWeVoteId || !voter) {
       return <div>{LoadingWheel}</div>;
     }

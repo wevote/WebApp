@@ -13,7 +13,7 @@ export default class CurrentFriendTinyDisplay extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('CurrentFriendTinyDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     // TODO DALE NOTE: We need to generate a popover here
     let displayName;
     if (this.props.voter_display_name) {

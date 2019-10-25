@@ -39,7 +39,7 @@ export default class Friends extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
       return LoadingWheel;
     }

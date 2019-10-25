@@ -72,7 +72,7 @@ export default class SuggestedFriends extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SuggestedFriend');  // Set LOG_RENDER_EVENTS to log all renders
     let { suggestedFriendList } = this.state;
     if (this.state.searchFilterOn) {
       suggestedFriendList = this.state.suggestedFriendListFilteredBySearch;

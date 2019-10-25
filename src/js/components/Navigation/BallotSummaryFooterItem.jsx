@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button, withStyles } from '@material-ui/core';
+import { renderLog } from '../../utils/logging';
 
 class BallotSummaryFooterItem extends Component {
   static propTypes = {
@@ -33,7 +34,7 @@ class BallotSummaryFooterItem extends Component {
   }
 
   render () {
-    // console.log('BallotSummaryFooterItem render');
+    renderLog('BallotSummaryFooterItem'); // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { children } = this.state;
 

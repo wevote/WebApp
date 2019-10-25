@@ -4,6 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
+import { renderLog } from '../../utils/logging';
 
 class CandidateStickyHeader extends Component {
   static propTypes = {
@@ -12,6 +13,7 @@ class CandidateStickyHeader extends Component {
   };
 
   render () {
+    renderLog('CandidateStickyHeader');  // Set LOG_RENDER_EVENTS to log all renders
     const { candidate } = this.props;
     const {
       ballot_item_display_name: displayName,

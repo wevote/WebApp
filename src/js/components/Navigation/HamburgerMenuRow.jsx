@@ -21,7 +21,7 @@ export default class HamburgerMenuRow extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('HamburgerMenuRow');  // Set LOG_RENDER_EVENTS to log all renders
     const indented = this.props.indented !== undefined;
 
     if (indented) {

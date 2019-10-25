@@ -26,7 +26,7 @@ class BallotSideBarLink extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('BallotSideBarLink');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const labelInSentenceCase = capitalizeString(this.props.label);
     const subtitleInSentenceCase = sentenceCaseString(this.props.subtitle);

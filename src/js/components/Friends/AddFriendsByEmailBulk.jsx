@@ -171,7 +171,7 @@ export default class AddFriendsByEmailBulk extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('AddFriendsByEmailBulk');  // Set LOG_RENDER_EVENTS to log all renders
     const { loading } = this.state;
     if (loading) {
       return LoadingWheel;

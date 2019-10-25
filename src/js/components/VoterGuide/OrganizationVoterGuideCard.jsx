@@ -33,8 +33,7 @@ class OrganizationVoterGuideCard extends Component {
   }
 
   render () {
-    // console.log("OrganizationVoterGuideCard render");
-    renderLog(__filename);
+    renderLog('OrganizationVoterGuideCard');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.props.organization) {
       return <div>{LoadingWheel}</div>;
     }

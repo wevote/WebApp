@@ -444,15 +444,16 @@ class HeaderBackToBallot extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('HeaderBackToBallot');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
       candidate, measureWeVoteId, officeName, officeWeVoteId,
+      // eslint-disable-next-line no-unused-vars
       organization, organizationWeVoteId, profilePopUpOpen, scrolledDown, showSignInModal,
+      // eslint-disable-next-line no-unused-vars
       voter, voterIsSignedIn, voterPhotoUrlMedium,
     } = this.state;
     const { classes, pathname } = this.props;
-    // console.log('HeaderBackToBallot render voterIsSignedIn:', voterIsSignedIn, ', profilePopUpOpen:', profilePopUpOpen);
 
     let backToLink;
     let backToLinkText;
@@ -555,16 +556,16 @@ class HeaderBackToBallot extends Component {
                   </div>
                 )
                 }
-                {profilePopUpOpen && (
+                {this.state.profilePopUpOpen && (
                 <HeaderBarProfilePopUp
                   hideProfilePopUp={this.hideProfilePopUp}
                   onClick={this.toggleProfilePopUp}
-                  profilePopUpOpen={profilePopUpOpen}
+                  profilePopUpOpen={this.state.profilePopUpOpen}
                   signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
                   toggleProfilePopUp={this.toggleProfilePopUp}
                   toggleSignInModal={this.toggleSignInModal}
                   transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                  voter={voter}
+                  voter={this.props.voter}
                   weVoteBrandingOff={this.state.we_vote_branding_off}
                 />
                 )}

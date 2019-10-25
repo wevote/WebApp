@@ -53,7 +53,7 @@ export default class GetStarted extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('GetStarted');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
       return LoadingWheel;
     }

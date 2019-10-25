@@ -29,7 +29,7 @@ export default class FriendListCompressed extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendListCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.friendList === undefined) {
       return null;
     }

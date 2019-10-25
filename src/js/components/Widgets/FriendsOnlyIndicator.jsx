@@ -17,7 +17,7 @@ export default class FriendsOnlyIndicator extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendsOnlyIndicator');  // Set LOG_RENDER_EVENTS to log all renders
     let { isFriendsOnly } = this.props;
     if (isFriendsOnly === undefined) {
       isFriendsOnly = true;

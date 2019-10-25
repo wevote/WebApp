@@ -24,7 +24,7 @@ export default class PositionSupportOpposeSnippet extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('PositionSupportOpposeSnippet');  // Set LOG_RENDER_EVENTS to log all renders
     let stanceIconSrc;
     let className;
     let alt;

@@ -216,8 +216,7 @@ class MeasureItemCompressed extends Component {
   }
 
   render () {
-    // console.log('MeasureItemCompressed render');
-    renderLog(__filename);
+    renderLog('MeasureItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     const { externalUniqueId, localUniqueId, noVoteDescription, yesVoteDescription } = this.state;
     let { ballotItemDisplayName } = this.state;
     const { measureText, measureWeVoteId } = this.state;

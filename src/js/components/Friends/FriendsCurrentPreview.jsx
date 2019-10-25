@@ -35,7 +35,7 @@ export default class FriendsCurrentPreview extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendsCurrentPreview');  // Set LOG_RENDER_EVENTS to log all renders
     const { currentFriendList } = this.state;
     if (!currentFriendList || !(currentFriendList.length > 0)) {
       return null;

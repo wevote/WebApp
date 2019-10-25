@@ -72,7 +72,7 @@ export default class FriendsCurrent extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendsCurrent');  // Set LOG_RENDER_EVENTS to log all renders
     let { currentFriendList } = this.state;
     if (this.state.searchFilterOn) {
       currentFriendList = this.state.currentFriendListFilteredBySearch;

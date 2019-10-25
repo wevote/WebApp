@@ -203,10 +203,9 @@ class VoterGuideMeasureItemCompressed extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideMeasureItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballotItemDisplayName } = this.state;
     const { measureText, measureWeVoteId, organization, organizationPositionForMeasure } = this.state;
-    // console.log('VoterGuideMeasureItemCompressed render');
     if (!measureWeVoteId) {
       return null;
     }

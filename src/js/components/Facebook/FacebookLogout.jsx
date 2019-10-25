@@ -8,7 +8,7 @@ class FacebookLogout extends React.Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FacebookLogout');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <button
         ref="logoutButton" // eslint-disable-line

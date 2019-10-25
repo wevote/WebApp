@@ -11,7 +11,7 @@ export default class Privacy extends React.Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Privacy');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Privacy Policy - We Vote" />

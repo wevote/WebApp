@@ -76,7 +76,7 @@ export default class SelectVoterGuidesSideBar extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SelectVoterGuidesSideBar');  // Set LOG_RENDER_EVENTS to log all renders
     const { showNewVoterGuideModal } = this.state;
     const voterGuidesOwnedByVoter = VoterGuideStore.getAllVoterGuidesOwnedByVoter();
     let voterGuideLinksHtml = <span />;

@@ -21,10 +21,8 @@ export function renderLog (filePath, suffix) {
     }
   }
 
-  const file = filePath.replace(/^.*[\\\/]/, '');  // eslint-disable-line no-useless-escape
-
   if (webAppConfig.LOG_RENDER_EVENTS || webAppConfig.LOG_ONLY_FIRST_RENDER_EVENTS) {
-    console.log('render ==== ', file, ' ==== ', suffix || '');
+    console.log(`render ==== ${filePath} ==== ${suffix || ''}`);
   }
 }
 

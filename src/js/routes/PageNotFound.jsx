@@ -19,8 +19,8 @@ class PageNotFound extends Component {
   }
 
   render () {
+    renderLog('PageNotFound');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    renderLog(__filename);
     return (
       <div className="page-content-container">
         <div className="container-fluid">

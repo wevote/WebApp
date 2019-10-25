@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton/index';
 import { withStyles } from '@material-ui/core/styles/index';
 import CloseIcon from '@material-ui/icons/Close';
 import MenuIcon from '@material-ui/icons/Menu';
+import { renderLog } from '../../utils/logging';
 import cookies from '../../utils/cookies';
 import Navigation, { LogoContainer, Divider, NavLink, MobileNavigationMenu, MobileNavDivider, NavRow } from '../Welcome/Navigation';
 import HeaderBarLogo from './HeaderBarLogo';
@@ -172,7 +173,7 @@ class WelcomeAppbar extends Component {
     VoterGuideActions.voterGuideFollowersRetrieve(linkedOrganizationWeVoteId);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(linkedOrganizationWeVoteId);
     this.setState({ profilePopUpOpen: false });
-  }
+  };
 
   closePaidAccountUpgradeModal () {
     AppActions.setShowPaidAccountUpgradeModal(false);
@@ -183,8 +184,8 @@ class WelcomeAppbar extends Component {
   }
 
   render () {
+    renderLog('WelcomeAppbar');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
-    // console.log('WelcomeAppbar render');
     const { paidAccountUpgradeMode, showMobileNavigationMenu, showPaidAccountUpgradeModal, showSignInModal, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
     let showWelcomeForVoters = false;
     let showWelcomeForOrganizations = false;

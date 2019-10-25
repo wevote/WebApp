@@ -60,8 +60,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
   }
 
   render () {
-    // console.log("OrganizationsFollowedOnTwitter render")
-    renderLog(__filename);
+    renderLog('OrganizationsFollowedOnTwitter');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.organizationsFollowedOnTwitter === undefined) {
       return null;
     }

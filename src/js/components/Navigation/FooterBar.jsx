@@ -12,6 +12,7 @@ import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import { historyPush } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
+import { renderLog } from '../../utils/logging';
 
 
 class FooterBar extends React.Component {
@@ -71,7 +72,7 @@ class FooterBar extends React.Component {
   handleNavigation = to => historyPush(to);
 
   render () {
-    // console.log('FooterBar render');
+    renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
     // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
 
     // const badgeStyle = { // DALE: FRIENDS TEMPORARILY DISABLED

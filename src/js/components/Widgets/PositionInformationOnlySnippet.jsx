@@ -22,7 +22,7 @@ export default class PositionInformationOnlySnippet extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('PositionInformationOnlySnippet');  // Set LOG_RENDER_EVENTS to log all renders
     const { is_looking_at_self: isLookingAtSelf } = this.props;
     let { more_info_url: moreInfoUrl } = this.props;
     const statementText = this.props.statement_text || '';

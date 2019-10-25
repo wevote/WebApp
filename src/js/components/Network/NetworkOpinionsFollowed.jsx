@@ -71,7 +71,7 @@ export default class NetworkOpinionsFollowed extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('NetworkOpinionsFollowed');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log("NetworkOpinionsFollowed, this.state.organizationsFollowedList: ", this.state.organizationsFollowedList);
     return (
       <div className="opinions-followed__container">

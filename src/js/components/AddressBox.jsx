@@ -43,7 +43,7 @@ class AddressBox extends Component {
   }
 
   componentWillMount () {
-    prepareForCordovaKeyboard(__filename);
+    prepareForCordovaKeyboard('AddressBox');
   }
 
   componentDidMount () {
@@ -96,7 +96,7 @@ class AddressBox extends Component {
     } else {
       console.log('Google Maps Error: DeletedApiProjectMapError');
     }
-    restoreStylesAfterCordovaKeyboard(__filename);
+    restoreStylesAfterCordovaKeyboard('AddressBox');
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -179,10 +179,9 @@ class AddressBox extends Component {
   }
 
   render () {
-    // console.log('AddressBox, render');
+    renderLog('AddressBox');  // Set LOG_RENDER_EVENTS to log all renders
     let { waitingMessage } = this.props;
     const { classes } = this.props;
-    renderLog(__filename);
     if (this.state.loading) {
       if (!waitingMessage) waitingMessage = 'Please wait a moment while we find your ballot...';
 

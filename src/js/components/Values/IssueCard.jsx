@@ -99,7 +99,7 @@ class IssueCard extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('IssueCard');  // Set LOG_RENDER_EVENTS to log all renders
     const { countOfOrganizationsUnderThisIssue } = this.state;
     if (!this.state.issueWeVoteId.length) {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;

@@ -42,7 +42,7 @@ export default class SettingsWidgetFirstLastName extends Component {
   }
 
   componentWillMount () {
-    prepareForCordovaKeyboard(__filename);
+    prepareForCordovaKeyboard('SettingsWidgetFirstLastName');
   }
 
   componentDidMount () {
@@ -59,7 +59,7 @@ export default class SettingsWidgetFirstLastName extends Component {
     this.voterStoreListener.remove();
     this.timer = null;
     this.clearStatusTimer = null;
-    restoreStylesAfterCordovaKeyboard(__filename);
+    restoreStylesAfterCordovaKeyboard('SettingsWidgetFirstLastName');
   }
 
   onOrganizationStoreChange () {
@@ -159,7 +159,7 @@ export default class SettingsWidgetFirstLastName extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsWidgetFirstLastName');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
       return LoadingWheel;
     }

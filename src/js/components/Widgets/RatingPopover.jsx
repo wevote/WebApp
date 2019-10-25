@@ -12,7 +12,7 @@ export default class RatingPopover extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('RatingPopover');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { showDescription, toggleDescription } = this.props;
 

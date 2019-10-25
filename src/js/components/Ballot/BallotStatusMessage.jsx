@@ -187,8 +187,7 @@ class BallotStatusMessage extends Component {
   }
 
   render () {
-    // console.log("BallotStatusMessage render");
-    renderLog(__filename);
+    renderLog('BallotStatusMessage');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     let messageString = '';
     const today = moment(new Date());

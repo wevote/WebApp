@@ -6,6 +6,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import BallotSearch from '../Ballot/BallotSearch';
+import { renderLog } from '../../utils/logging';
 
 const sortFilters = ['sortByNetwork', 'sortByReach'];
 
@@ -82,14 +83,14 @@ class FilterBase extends React.Component {
   toggleShowAllFilters = () => {
     const { showAllFilters } = this.state;
     this.setState({ showAllFilters: !showAllFilters });
-  }
+  };
 
   updateSelectedFilters = (freshSelectedFilters) => {
     // console.log('FilterBase updateSelectedFilters freshSelectedFilters:', freshSelectedFilters);
     this.setState({
       selectedFilters: freshSelectedFilters,
     });
-  }
+  };
 
   toggleFilter = (filterName) => {
     const { selectedFilters } = this.state;
@@ -103,7 +104,7 @@ class FilterBase extends React.Component {
         selectedFilters: [...selectedFilters, filterName],
       });
     }
-  }
+  };
 
   selectSortByFilter = (filterName) => {
     const { selectedFilters } = this.state;
@@ -117,21 +118,21 @@ class FilterBase extends React.Component {
       updatedFilters = [...updatedFilters, filterName];
     }
     this.setState({ selectedFilters: updatedFilters.filter(item => !remainingSortFiltersToRemove.includes(item)) });
-  }
+  };
 
   onFilteredItemsChange = (filteredItems, currentSelectedBallotFilters) => {
     // console.log('FilterBase currentSelectedBallotFilters:', currentSelectedBallotFilters);
     this.setState({
       filteredItems,
     }, () => this.props.onFilteredItemsChange(this.state.filteredItems, currentSelectedBallotFilters));
-  }
+  };
 
   forceChangeTrigger = (changeTrigger) => {
     // There are cases where we receive data in the Filter.jsx file (like SettingsAddBallotItemsFilter.jsx)
     // and we want to tell FilterBase to re-render, and then subsequently tell the Filter.jsx file to rerender too.
     // console.log('forceChangeTrigger:', changeTrigger);
     this.setState({ changeTrigger });
-  }
+  };
 
   getGroupedFilterCountsFromFilteredItems = () => {
     const { allItems, groupedFilters } = this.props;
@@ -147,7 +148,7 @@ class FilterBase extends React.Component {
     });
     // console.log('resultsDict:', resultsDict);
     return resultsDict;
-  }
+  };
 
   generateGroupedFilters = () => {
     const groupedFilterCounts = this.getGroupedFilterCountsFromFilteredItems();
@@ -180,7 +181,7 @@ class FilterBase extends React.Component {
         }
       </div>
     ));
-  }
+  };
 
   generateIslandFilters = () => this.props.islandFilters.map(item => (
     <div
@@ -212,15 +213,14 @@ class FilterBase extends React.Component {
     this.setState({
       filteredItems,
     }, () => this.props.onFilteredItemsChange(this.state.filteredItems, this.state.selectedFilters));
-  }
+  };
 
   render () {
+    renderLog('FilterBase');  // Set LOG_RENDER_EVENTS to log all renders
     const { isSearching, selectedFilters, showAllFilters } = this.state;
     const { allItems, classes, totalNumberOfItemsFound } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
-    // console.log('FilterBase, selectedFilters: ', selectedFilters);
-    // console.log('render filteredItems: ', filteredItems);
     return (
       <Wrapper>
         <FilterTop>

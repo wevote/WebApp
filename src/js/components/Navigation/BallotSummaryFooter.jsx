@@ -185,8 +185,7 @@ class BallotSummaryFooter extends Component {
   }
 
   render () {
-    // console.log('BallotSummaryFooter render');
-    renderLog(__filename);
+    renderLog('BallotSummaryFooter');  // Set LOG_RENDER_EVENTS to log all renders
 
     // let turnedOnNPSInput = false;
     // const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];

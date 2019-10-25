@@ -135,14 +135,13 @@ export default class BallotLocationChoices extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('BallotLocationChoices');  // Set LOG_RENDER_EVENTS to log all renders
     // Commented out for 2018 Election
     // const default_number_of_ballot_locations_mobile = 5;
     // const default_number_of_ballot_locations_desktop = 5;
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format('MMM Do, YYYY')}</span> : <span />;
-    // console.log("In BallotLocationChoices render, ballotLocationList: ", this.state.ballotLocationList);
     if (this.state.ballotLocationList && this.state.ballotLocationList.length) {
       return (
         <div className="u-stack--sm ballot-locations d-print-none">

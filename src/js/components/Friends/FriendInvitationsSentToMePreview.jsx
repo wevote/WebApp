@@ -35,7 +35,7 @@ export default class FriendInvitationsSentToMePreview extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendInvitationsSentToMePreview');  // Set LOG_RENDER_EVENTS to log all renders
     const { friendInvitationsSentToMe } = this.state;
     if (!friendInvitationsSentToMe || !(friendInvitationsSentToMe.length > 0)) {
       return null;

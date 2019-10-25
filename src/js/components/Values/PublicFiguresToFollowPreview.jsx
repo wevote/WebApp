@@ -39,7 +39,7 @@ export default class PublicFiguresToFollowPreview extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('PublicFiguresToFollowPreview');  // Set LOG_RENDER_EVENTS to log all renders
     const { voterGuidesToFollow } = this.state;
 
     return (

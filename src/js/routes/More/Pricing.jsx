@@ -464,7 +464,7 @@ class Pricing extends Component {
   }
 
   render () {
-    // console.log('Pricing render');
+    renderLog('Pricing');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { currentPricingChoice, forCampaignsPricingCards, forOrganizationsPricingCards, selectedPricingPlanIndex } = this.state;
     // console.log('render currentPricingChoice:', currentPricingChoice);
@@ -509,7 +509,6 @@ class Pricing extends Component {
       </HeaderForPricingModal>
     );
 
-    renderLog(__filename);
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Pricing - We Vote" />

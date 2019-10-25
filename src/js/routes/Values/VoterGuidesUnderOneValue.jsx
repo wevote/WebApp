@@ -84,12 +84,11 @@ class VoterGuidesUnderOneValue extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuidesUnderOneValue');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballotHasGuidesForValue, issue, voterGuidesForValue } = this.state;
 
     const { classes } = this.props;
 
-    // console.log('VoterGuidesUnderOneValue render, issue:', issue);
     let issueNameFound = false;
     let pageTitle = 'Value';
     if (issue && issue.issue_name) {

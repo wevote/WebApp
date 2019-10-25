@@ -136,7 +136,7 @@ export default class VoterGuideSettingsMenuMobile extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideSettingsMenuMobile');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div className="settings-dashboard">
         {/* Header Spacing for Desktop */}

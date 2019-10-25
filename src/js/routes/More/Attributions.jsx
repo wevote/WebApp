@@ -31,7 +31,7 @@ export default class Attributions extends React.Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Attributions');  // Set LOG_RENDER_EVENTS to log all renders
 
     return (
       <div style={{ marginBottom: 30 }}>

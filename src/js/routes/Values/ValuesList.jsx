@@ -109,9 +109,8 @@ export default class ValuesList extends Component {
   }
 
   render () {
+    renderLog('ValuesList');  // Set LOG_RENDER_EVENTS to log all renders
     const { allIssues, searchQuery, currentIssue } = this.state;
-    // console.log('ValuesList render:', currentIssue);
-    renderLog(__filename);
     let issuesList = [];
     // let issuesNotFollowedByVoterList = [];
     // let issuesNotCurrentIssue = [];

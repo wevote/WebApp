@@ -154,12 +154,10 @@ export default class Candidate extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Candidate');  // Set LOG_RENDER_EVENTS to log all renders
     const { scrolledDown } = this.state;
     // const electionId = VoterStore.electionId();
     // const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
-
-    // console.log('Candidate render, scrolledDown: ', scrolledDown);
 
     if (!this.state.candidate || !this.state.candidate.ballot_item_display_name) {
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice

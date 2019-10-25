@@ -92,10 +92,10 @@ export default class ChooseElectionForVoterGuide extends Component {
 
   saveVoterGuideForElection = (googleCivicElectionId) => {
     VoterGuideActions.voterGuideSave(googleCivicElectionId, '');
-  }
+  };
 
   render () {
-    renderLog(__filename);
+    renderLog('ChooseElectionForVoterGuide'); // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voterBallotList) {
       console.log('Elections list missing');
       return null;

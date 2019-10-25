@@ -32,10 +32,10 @@ export default class CopyLinkModal extends Component {
     this.setState({
       wasCopied: true,
     });
-  }
+  };
 
   render () {
-    renderLog(__filename);
+    renderLog('CopyLinkModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { urlBeingShared } = this.props;
     const browserSupportsCopyToClipboard = false; // latest iOS update supports CopyToClipboard, check for users version and let them copy if latest, perhaps with npm pckg "mobile-detect"
     let copyBtnClassName;

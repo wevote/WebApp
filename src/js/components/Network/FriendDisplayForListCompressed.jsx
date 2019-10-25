@@ -14,7 +14,7 @@ export default class FriendDisplayForListCompressed extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendsCurrentPreview');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       voter_photo_url_medium: voterPhotoUrlMedium,
     } = this.props;

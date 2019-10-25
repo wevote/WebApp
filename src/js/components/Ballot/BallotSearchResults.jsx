@@ -93,8 +93,8 @@ export default class BallotSearchResults extends Component {
   }
 
   render () {
+    renderLog('BallotSearchResults.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballotItemSearchResultsList, searchString, clearSearchTextNow } = this.state;
-    renderLog(__filename);
     if (!ballotItemSearchResultsList) {
       return null;
     }

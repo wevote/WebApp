@@ -256,8 +256,7 @@ class OfficeItemCompressed extends Component {
   }
 
   render () {
-    // console.log('OfficeItemCompressed render');
-    renderLog(__filename);
+    renderLog('OfficeItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballotItemDisplayName } = this.props;
     const { officeWeVoteId, classes } = this.props;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);

@@ -149,7 +149,7 @@ class SettingsSharing extends Component {
         });
       }
     }
-  }
+  };
 
   onVoterStoreChange = () => {
     const { chosenSocialShareDescriptionChangedLocally } = this.state;
@@ -182,7 +182,7 @@ class SettingsSharing extends Component {
         });
       }
     }
-  }
+  };
 
   handleToggleHideLogo = (event) => {
     const { hideLogo, organizationWeVoteId } = this.state;
@@ -192,7 +192,7 @@ class SettingsSharing extends Component {
       hideLogo: !hideLogo,
     });
     event.preventDefault();
-  }
+  };
 
   handleChosenSocialShareDescriptionChange = (event) => {
     const { chosenSocialShareDescription } = this.state;
@@ -202,7 +202,7 @@ class SettingsSharing extends Component {
         chosenSocialShareDescriptionChangedLocally: true,
       });
     }
-  }
+  };
 
   onSaveChosenSocialShareDescriptionButton = (event) => {
     const { chosenSocialShareDescription, organizationWeVoteId } = this.state;
@@ -211,7 +211,7 @@ class SettingsSharing extends Component {
       chosenSocialShareDescriptionChangedLocally: false,
     });
     event.preventDefault();
-  }
+  };
 
   onCancelChosenSocialShareDescriptionButton = () => {
     const { chosenSocialShareDescriptionSavedValue } = this.state;
@@ -219,7 +219,7 @@ class SettingsSharing extends Component {
       chosenSocialShareDescription: chosenSocialShareDescriptionSavedValue || '',
       chosenSocialShareDescriptionChangedLocally: false,
     });
-  }
+  };
 
   handleAddImage = () => {
     const { organizationWeVoteId, uploadImageType } = this.state;
@@ -247,25 +247,25 @@ class SettingsSharing extends Component {
       }
     });
     fileReader.readAsDataURL(file);
-  }
+  };
 
   handleUploadHeaderLogo = () => {
     this.fileSelector.value = null;
     this.fileSelector.click();
     this.setState({ uploadImageType: 'headerLogo' });
-  }
+  };
 
   handleUploadFavicon = () => {
     this.fileSelector.value = null;
     this.fileSelector.click();
     this.setState({ uploadImageType: 'favicon' });
-  }
+  };
 
   handleUploadShareImage = () => {
     this.fileSelector.value = null;
     this.fileSelector.click();
     this.setState({ uploadImageType: 'shareImage' });
-  }
+  };
 
   organizationChosenFaviconDelete = () => {
     const { organizationWeVoteId } = this.state;
@@ -273,7 +273,7 @@ class SettingsSharing extends Component {
     this.setState({
       chosenFaviconFromFileReader: null,
     });
-  }
+  };
 
   organizationChosenLogoDelete = () => {
     const { organizationWeVoteId } = this.state;
@@ -281,7 +281,7 @@ class SettingsSharing extends Component {
     this.setState({
       chosenLogoFromFileReader: null,
     });
-  }
+  };
 
   organizationChosenSocialShareMasterImageDelete = () => {
     const { organizationWeVoteId } = this.state;
@@ -289,7 +289,7 @@ class SettingsSharing extends Component {
     this.setState({
       chosenSocialShareMasterImageFromFileReader: null,
     });
-  }
+  };
 
   openPaidAccountUpgradeModal (paidAccountUpgradeMode) {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
@@ -297,8 +297,7 @@ class SettingsSharing extends Component {
   }
 
   render () {
-    // console.log('SettingsSharing render');
-    renderLog(__filename);
+    renderLog('SettingsSharing');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
       chosenFaviconFromFileReader,

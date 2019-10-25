@@ -64,9 +64,9 @@ class StickyPopover extends Component {
   }
 
   render () {
+    renderLog('StickyPopover');  // Set LOG_RENDER_EVENTS to log all renders
     const { popoverComponent, children, placement, popoverId } = this.props;
     const { showPopover, target } = this.state;
-    renderLog(__filename);
     return (
       <React.Fragment>
         {this.props.openOnClick ? (

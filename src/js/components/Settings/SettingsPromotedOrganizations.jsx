@@ -63,7 +63,7 @@ export default class SettingsPromotedOrganizations extends Component {
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
     });
-  }
+  };
 
   onVoterStoreChange = () => {
     const voter = VoterStore.getVoter();
@@ -75,10 +75,10 @@ export default class SettingsPromotedOrganizations extends Component {
       voter,
       voterIsSignedIn,
     });
-  }
+  };
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsPromotedOrganizations');  // Set LOG_RENDER_EVENTS to log all renders
     const { organization, organizationWeVoteId, voter, voterIsSignedIn } = this.state;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;

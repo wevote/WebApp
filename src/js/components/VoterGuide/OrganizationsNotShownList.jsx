@@ -16,7 +16,7 @@ export default class OrganizationsNotShownList extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OrganizationsNotShownList');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.props.orgs_not_shown_list) {
       return <div>{LoadingWheel}</div>;
     }

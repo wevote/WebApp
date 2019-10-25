@@ -50,8 +50,7 @@ class SignInModal extends Component {
   }
 
   render () {
-    renderLog(__filename);
-    // console.log('SignInModal render');
+    renderLog('SignInModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { voter, voterIsSignedIn } = this.state;
     if (!voter) {

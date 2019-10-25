@@ -54,7 +54,7 @@ export default class SignInEmailProcess extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SignInEmailProcess');  // Set LOG_RENDER_EVENTS to log all renders
     const { email_secret_key: emailSecretKey } = this.props.params;
     const voterIsSignedIn = this.state.voter && this.state.voter.is_signed_in;
     oAuthLog('SignInEmailProcess, emailSecretKey:', emailSecretKey);

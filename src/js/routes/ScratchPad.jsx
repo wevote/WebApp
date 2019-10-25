@@ -8,7 +8,7 @@ const updateInputValue = (event) => {
 
 export default class ScratchPad extends Component {
   render () {
-    renderLog(__filename);
+    renderLog('ScratchPad');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div className="container">
         <div className="scratch-pad row">

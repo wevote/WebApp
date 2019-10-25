@@ -96,7 +96,7 @@ export default class TwitterHandleLanding extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('TwitterHandleLanding');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.status === undefined) {
       // console.log("TwitterHandleLanding this.state.status undefined");
       // Show a loading wheel while this component's data is loading

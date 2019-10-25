@@ -55,7 +55,7 @@ export default class Intro extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Intro');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       orgCount,
       voterCount,

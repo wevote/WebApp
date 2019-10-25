@@ -52,7 +52,7 @@ export default class PositionListForFriends extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('PositionListForFriends');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.organization) {
       return <div>{LoadingWheel}</div>;
     }

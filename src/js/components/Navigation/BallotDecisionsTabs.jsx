@@ -64,8 +64,7 @@ class BallotDecisionsTabs extends Component {
   }
 
   render () {
-    // console.log('BallotDecisionsTabs render, this.props.completionLevelFilterType:', this.props.completionLevelFilterType);
-    renderLog(__filename);
+    renderLog('BallotDecisionsTabs');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, ballotLength, ballotLengthRemaining } = this.props;
     const remainingDecisionsCountIsDifferentThanAllItems = this.props.ballotLength !== this.props.ballotLengthRemaining;
     const showRemainingDecisions = (remainingDecisionsCountIsDifferentThanAllItems && this.props.ballotLengthRemaining) || false;

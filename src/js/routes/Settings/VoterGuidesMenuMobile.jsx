@@ -74,7 +74,7 @@ export default class VoterGuidesMenuMobile extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuidesMenuMobile');  // Set LOG_RENDER_EVENTS to log all renders
 
     return (
       <div className="settings-dashboard">

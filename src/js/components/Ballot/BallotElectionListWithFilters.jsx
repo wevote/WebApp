@@ -366,8 +366,7 @@ export default class BallotElectionListWithFilters extends Component {
   }
 
   render () {
-    // console.log('BallotElectionListWithFilters render');
-    renderLog(__filename);
+    renderLog('BallotElectionListWithFilters');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.loadingNewBallotItems) {
       return (
         <div>

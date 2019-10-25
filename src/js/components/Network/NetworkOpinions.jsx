@@ -53,7 +53,7 @@ export default class NetworkOpinions extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('NetworkOpinions');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballotHasGuides, voterGuidesToFollowAll } = this.state;
     const floatRight = {
       float: 'right',

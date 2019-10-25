@@ -15,7 +15,7 @@ export default class FacebookFriendCard extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FacebookFriendCard.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div className="facebook-friend card-child card-child--not-followed">
         <div className="card-child__avatar">

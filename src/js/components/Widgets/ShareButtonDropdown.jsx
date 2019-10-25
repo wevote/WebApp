@@ -63,7 +63,7 @@ export default class ShareButtonDropDown extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('ShareButtonDropDown');  // Set LOG_RENDER_EVENTS to log all renders
     const { shareIcon, shareText, urlBeingShared } = this.props;
     const onClick = this.state.open ? this.closeDropDown.bind(this) : this.openDropDown.bind(this);
     const onCopyLinkClick = this.state.showCopyLinkModal ? this.closeCopyLinkModal.bind(this) : this.openCopyLinkModal.bind(this);

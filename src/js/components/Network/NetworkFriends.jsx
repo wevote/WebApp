@@ -78,7 +78,7 @@ export default class NetworkFriends extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('NetworkFriends');  // Set LOG_RENDER_EVENTS to log all renders
     let currentFriendList = [];
     if (!this.state.searchFilter) {
       const currentFriendListComplete = this.state.currentFriendList;

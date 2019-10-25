@@ -55,7 +55,7 @@ export default class YourPositionsVisibilityMessage extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('YourPositionsVisibilityMessage');  // Set LOG_RENDER_EVENTS to log all renders
 
     let alertClass = '';
 

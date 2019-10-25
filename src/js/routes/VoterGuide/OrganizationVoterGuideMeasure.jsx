@@ -100,7 +100,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('OrganizationVoterGuideMeasure');  // Set LOG_RENDER_EVENTS to log all renders
 
     const electionId = VoterStore.electionId();
     const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this measure.';

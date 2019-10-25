@@ -45,7 +45,7 @@ export default class DonationCancelOrRefund extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('DonationCancelOrRefund');  // Set LOG_RENDER_EVENTS to log all renders
     const { item, refundDonation, active, cancelText, showOrganizationPlan } = this.props;
     const { amount, funding, brand, last4, exp_month: expMonth, exp_year: expYear } = item;
     let label = refundDonation ? 'Refund Donation' : 'Cancel Subscription';

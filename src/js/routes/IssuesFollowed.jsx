@@ -74,8 +74,8 @@ export default class IssuesFollowed extends Component {
   }
 
   render () {
+    renderLog('IssuesFollowed');  // Set LOG_RENDER_EVENTS to log all renders
     const { editMode } = this.state;
-    renderLog(__filename);
     let issueList = [];
     if (this.state.issuesFollowed) {
       issueList = this.state.issuesFollowed;

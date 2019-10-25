@@ -11,7 +11,7 @@ export default class Activity extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Activity');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         <Helmet title="Activity Feed - We Vote" />

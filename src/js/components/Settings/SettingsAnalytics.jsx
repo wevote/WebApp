@@ -141,7 +141,7 @@ class SettingsAnalytics extends Component {
         });
       }
     }
-  }
+  };
 
   onVoterStoreChange = () => {
     const { organizationChosenGoogleAnalyticsTrackerChangedLocally, organizationChosenHtmlVerificationChangedLocally } = this.state;
@@ -179,7 +179,7 @@ class SettingsAnalytics extends Component {
         });
       }
     }
-  }
+  };
 
   handleOrganizationChosenHtmlVerificationChange = (event) => {
     const { organizationChosenHtmlVerification } = this.state;
@@ -192,7 +192,7 @@ class SettingsAnalytics extends Component {
         organizationChosenHtmlVerificationChangedLocally: true,
       });
     }
-  }
+  };
 
   handleOrganizationChosenGoogleAnalyticsTrackerChange = (event) => {
     const { organizationChosenGoogleAnalyticsTracker } = this.state;
@@ -205,7 +205,7 @@ class SettingsAnalytics extends Component {
         organizationChosenGoogleAnalyticsTrackerChangedLocally: true,
       });
     }
-  }
+  };
 
   showChosenGoogleAnalyticsTrackerButtons = () => {
     const { analyticsButtonsActive } = this.state;
@@ -214,7 +214,7 @@ class SettingsAnalytics extends Component {
         analyticsButtonsActive: 'organizationChosenGoogleAnalyticsTrackerButtonsActive',
       });
     }
-  }
+  };
 
   onCancelGoogleAnalyticsTrackerButton = () => {
     // console.log('onCancelGoogleAnalyticsTrackerButton');
@@ -223,7 +223,7 @@ class SettingsAnalytics extends Component {
       organizationChosenGoogleAnalyticsTracker: organizationChosenGoogleAnalyticsTrackerSavedValue || '',
       organizationChosenGoogleAnalyticsTrackerChangedLocally: false,
     });
-  }
+  };
 
   showHtmlVerificationButtons = () => {
     const { analyticsButtonsActive } = this.state;
@@ -232,7 +232,7 @@ class SettingsAnalytics extends Component {
         analyticsButtonsActive: 'organizationChosenHtmlVerificationButtonsActive',
       });
     }
-  }
+  };
 
   onCancelHtmlVerificationButton = () => {
     // console.log('onCancelHtmlVerificationButton');
@@ -241,7 +241,7 @@ class SettingsAnalytics extends Component {
       organizationChosenHtmlVerification: organizationChosenHtmlVerificationSavedValue || '',
       organizationChosenHtmlVerificationChangedLocally: false,
     });
-  }
+  };
 
   onSaveGoogleAnalyticsTrackerButton = (event) => {
     // console.log('onSaveGoogleAnalyticsTrackerButton');
@@ -251,7 +251,7 @@ class SettingsAnalytics extends Component {
       organizationChosenGoogleAnalyticsTrackerChangedLocally: false,
     });
     event.preventDefault();
-  }
+  };
 
   onSaveHtmlVerificationButton = (event) => {
     // console.log('onSaveHtmlVerificationButton');
@@ -261,7 +261,7 @@ class SettingsAnalytics extends Component {
       organizationChosenHtmlVerificationChangedLocally: false,
     });
     event.preventDefault();
-  }
+  };
 
   openPaidAccountUpgradeModal (paidAccountUpgradeMode) {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
@@ -269,7 +269,7 @@ class SettingsAnalytics extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsAnalytics');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       chosenFeaturePackage,
       organization, organizationWeVoteId, voter, voterIsSignedIn, analyticsButtonsActive,

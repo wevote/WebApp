@@ -210,7 +210,7 @@ class VoterGuideSettingsDashboard extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideSettingsDashboard');  // Set LOG_RENDER_EVENTS to log all renders
     const { getVoterGuideSettingsDashboardEditMode, voterGuideWeVoteId } = this.state;
     // console.log('VoterGuideSettingsDashboard, getVoterGuideSettingsDashboardEditMode:', getVoterGuideSettingsDashboardEditMode, ', voterGuideWeVoteId:', voterGuideWeVoteId);
 

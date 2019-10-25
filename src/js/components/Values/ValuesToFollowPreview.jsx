@@ -42,7 +42,7 @@ class ValuesToFollowPreview extends Component {
 
   render () {
     // const width = document.documentElement.clientWidth;
-    renderLog(__filename);
+    renderLog('ValuesToFollowPreview');  // Set LOG_RENDER_EVENTS to log all renders
     let issueList = [];
     if (this.state.issuesToFollow) {
       issueList = this.state.issuesToFollow;

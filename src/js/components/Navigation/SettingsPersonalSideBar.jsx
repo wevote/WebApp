@@ -65,7 +65,7 @@ export default class SettingsPersonalSideBar extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsPersonalSideBar');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log("SettingsPersonalSideBar, isOrganization: ", this.state.isOrganization);
     const { editMode } = this.props;
     const { isOnPartnerUrl, isSignedIn, isOrganization, voterIsAdminForThisUrl } = this.state;

@@ -63,8 +63,7 @@ class EndorsementModeTabs extends Component {
   }
 
   render () {
-    console.log('EndorsementModeTabs render');
-    renderLog(__filename);
+    renderLog('EndorsementModeTabs');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props; // constants ballotLength and ballotLengthRemaining are supposed to be included
 
     return (

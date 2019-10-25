@@ -132,30 +132,28 @@ class IssuesByBallotItemDisplayList extends Component {
     if (this.props.handleLeaveCandidateCard) {
       this.props.handleLeaveCandidateCard();
     }
-  }
+  };
 
   handleExpandIssues = () => {
     const { expand } = this.state;
     this.setState({ expand: !expand });
-  }
+  };
 
   handleLeaveHoverLocalArea = () => {
     if (this.props.handleEnterCandidateCard) {
       this.props.handleEnterCandidateCard();
     }
-  }
+  };
 
   handleSubtractTotalRemainingWidth = (issueWeVoteId, width) => {
     const { totalWidth } = this.state;
     this.issueWidths[issueWeVoteId] = width;
     const totalWidthOccupied = Object.values(this.issueWidths).reduce((a, b) => a + b);
     this.setState({ totalRemainingWidth: totalWidth - totalWidthOccupied });
-  }
+  };
 
   render () {
-    // console.log('IssuesByBallotItemDisplayList, render');
-
-    renderLog(__filename);
+    renderLog('IssuesByBallotItemDisplayList.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       ballotItemWeVoteId, expand,
       issuesUnderThisBallotItemVoterIsFollowing, issuesUnderThisBallotItemVoterIsNotFollowing,

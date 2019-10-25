@@ -42,7 +42,7 @@ export default class VoterGuideSettingsSideBar extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideSettingsSideBar');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voterGuide) {
       return null;
     }

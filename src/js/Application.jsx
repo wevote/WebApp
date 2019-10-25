@@ -265,7 +265,7 @@ class Application extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Application');  // Set LOG_RENDER_EVENTS to log all renders
     const { location: { pathname } } = this.props;
     const { StripeCheckout } = window;
     const waitForStripe = (String(pathname) === '/more/donate' && StripeCheckout === undefined);

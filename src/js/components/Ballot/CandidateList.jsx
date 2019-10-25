@@ -10,7 +10,7 @@ export default class CandidateList extends Component {
   };
 
   render () {
-    renderLog(__filename);
+    renderLog('CandidateList');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <article className="card-main__list-group">
         { this.props.children.map(child => (

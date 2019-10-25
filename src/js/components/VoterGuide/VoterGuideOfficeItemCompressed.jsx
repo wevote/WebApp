@@ -191,11 +191,10 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuideOfficeItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballot_item_display_name: ballotItemDisplayName } = this.props;
     const { we_vote_id: weVoteId } = this.props;
     const { organization } = this.state;
-    // console.log('VoterGuideOfficeItemCompressed render organizationWeVoteId:', organizationWeVoteId);
 
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
 

@@ -17,8 +17,7 @@ export default class OrganizationTinyDisplay extends Component {
   };
 
   render () {
-    // console.log("OrganizationTinyDisplay render");
-    renderLog(__filename);
+    renderLog('OrganizationTinyDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     let displayName;
     if (this.props.voter_guide_display_name) {
       displayName = this.props.voter_guide_display_name;

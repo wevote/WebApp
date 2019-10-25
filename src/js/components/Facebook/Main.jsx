@@ -37,7 +37,7 @@ class Main extends React.Component {
 
   //  userId={this.state.userId} not used in FacebookDownloadPicture component
   render () {
-    renderLog(__filename);
+    renderLog('Main');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         {this.state.userId ?

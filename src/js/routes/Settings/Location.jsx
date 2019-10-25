@@ -73,7 +73,7 @@ export default class Location extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Location');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div>
         <div className="container-fluid well u-stack--md u-inset--md">

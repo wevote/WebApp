@@ -47,7 +47,7 @@ export default class FriendInvitationEmailForList extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('FriendInvitationEmailForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       invitationsSentByMe, invitation_status: invitationState, voter_email_address: voterEmailAddress,
     } = this.props;

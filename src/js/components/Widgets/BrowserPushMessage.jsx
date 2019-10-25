@@ -42,7 +42,7 @@ class BrowserPushMessage extends Component {
   handleClose = () => this.setState({ open: false });
 
   render () {
-    renderLog(__filename);
+    renderLog('BrowserPushMessage');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     let { message, type } = this.state;
     const { name } = this.state;

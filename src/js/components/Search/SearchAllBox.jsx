@@ -321,7 +321,7 @@ export default class SearchAllBox extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SearchAllBox');  // Set LOG_RENDER_EVENTS to log all renders
     const searchContainerClasses = classNames({
       'search-container__hidden': !this.state.open,
       'search-container': true,

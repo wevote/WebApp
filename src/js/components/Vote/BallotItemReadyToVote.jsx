@@ -23,7 +23,7 @@ class BallotItemReadyToVote extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('BallotItemReadyToVote');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <React.Fragment>
         { this.isMeasure() ? (

@@ -66,7 +66,7 @@ export default class YourPage extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('YourPage');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.voter === undefined) {
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;

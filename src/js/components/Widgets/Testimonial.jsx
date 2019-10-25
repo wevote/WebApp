@@ -28,7 +28,7 @@ class Testimonial extends React.Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('Testimonial');  // Set LOG_RENDER_EVENTS to log all renders
     const { testimonialAuthor, imageUrl, testimonial } = this.props;
 
     return (

@@ -304,9 +304,8 @@ export default class VoterGuidePositions extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('VoterGuidePositions');  // Set LOG_RENDER_EVENTS to log all renders
     const { organization } = this.state;
-    // console.log('VoterGuidePositions render organization:', organization);
     if (!organization) {
       // Wait until organization has been set to render
       return null;

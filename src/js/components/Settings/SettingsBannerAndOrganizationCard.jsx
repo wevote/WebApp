@@ -30,7 +30,7 @@ export default class SettingsBannerAndOrganizationCard extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('SettingsBannerAndOrganizationCard');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.organization && !this.state.organization.organization_we_vote_id) {
       return null;
     }

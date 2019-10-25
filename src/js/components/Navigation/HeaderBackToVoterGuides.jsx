@@ -251,7 +251,7 @@ class HeaderBackToVoterGuides extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('HeaderBackToVoterGuides');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { showNewVoterGuideModal, showSignInModal, voter } = this.state;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;

@@ -23,7 +23,7 @@ export default class BallotItemSearchResult extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('BallotItemSearchResult');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <div className="BallotItem card" id={this.props.we_vote_id}>
         { this.isMeasure() ? (

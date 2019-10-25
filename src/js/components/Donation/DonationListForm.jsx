@@ -69,7 +69,7 @@ export default class DonationListForm extends Component {
   }
 
   render () {
-    renderLog(__filename);
+    renderLog('DonationListForm');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state && this.state.donationJournalList && this.state.donationJournalList.length > 0) {
       return (
         <div>
