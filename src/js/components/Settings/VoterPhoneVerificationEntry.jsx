@@ -12,6 +12,7 @@ import { Alert } from 'react-bootstrap';
 import LoadingWheel from '../LoadingWheel';
 import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
@@ -29,6 +30,7 @@ class VoterPhoneVerificationEntry extends Component {
       disablePhoneVerificationButton: true,
       displayPhoneVerificationButton: false,
       hideExistingPhoneNumbers: false,
+      secretCodeSystemLocked: false,
       showVerifyModal: false,
       showError: false,
       smsPhoneNumberList: [],
@@ -70,6 +72,10 @@ class VoterPhoneVerificationEntry extends Component {
       // console.log('this.state.loading', this.state.loading, ', nextState.loading', nextState.loading);
       return true;
     }
+    if (this.state.secretCodeSystemLocked !== nextState.secretCodeSystemLocked) {
+      // console.log('this.state.secretCodeSystemLocked', this.state.secretCodeSystemLocked, ', nextState.secretCodeSystemLocked', nextState.secretCodeSystemLocked);
+      return true;
+    }
     if (this.state.showError !== nextState.showError) {
       // console.log('this.state.showError', this.state.showError, ', nextState.showError', nextState.showError);
       return true;
@@ -78,12 +84,12 @@ class VoterPhoneVerificationEntry extends Component {
       // console.log('this.state.showVerifyModal', this.state.showVerifyModal, ', nextState.showVerifyModal', nextState.showVerifyModal);
       return true;
     }
-    if (this.state.voterSMSPhoneNumber !== nextState.voterSMSPhoneNumber) {
-      // console.log('this.state.voterSMSPhoneNumber', this.state.voterSMSPhoneNumber, ', nextState.voterSMSPhoneNumber', nextState.voterSMSPhoneNumber);
-      return true;
-    }
     if (this.state.smsPhoneNumberListCount !== nextState.smsPhoneNumberListCount) {
       // console.log('this.state.smsPhoneNumberListCount', this.state.smsPhoneNumberListCount, ', nextState.smsPhoneNumberListCount', nextState.smsPhoneNumberListCount);
+      return true;
+    }
+    if (this.state.voterSMSPhoneNumber !== nextState.voterSMSPhoneNumber) {
+      // console.log('this.state.voterSMSPhoneNumber', this.state.voterSMSPhoneNumber, ', nextState.voterSMSPhoneNumber', nextState.voterSMSPhoneNumber);
       return true;
     }
     // console.log('shouldComponentUpdate false');
@@ -96,6 +102,7 @@ class VoterPhoneVerificationEntry extends Component {
 
   onVoterStoreChange () {
     const smsPhoneNumberStatus = VoterStore.getSMSPhoneNumberStatus();
+    const { secret_code_system_locked_for_this_voter_device_id: secretCodeSystemLocked } = smsPhoneNumberStatus;
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
     // console.log('onVoterStoreChange smsPhoneNumberStatus:', smsPhoneNumberStatus);
@@ -128,6 +135,7 @@ class VoterPhoneVerificationEntry extends Component {
     this.setState({
       loading: false,
       voter: VoterStore.getVoter(),
+      secretCodeSystemLocked,
       smsPhoneNumberList,
       smsPhoneNumberListCount,
     });
@@ -251,38 +259,49 @@ class VoterPhoneVerificationEntry extends Component {
     }
 
     const { classes } = this.props;
-    const { disablePhoneVerificationButton, displayPhoneVerificationButton, hideExistingPhoneNumbers, showError, showVerifyModal, smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber } = this.state;
+    const { disablePhoneVerificationButton, displayPhoneVerificationButton, hideExistingPhoneNumbers, secretCodeSystemLocked, showError, showVerifyModal, smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber } = this.state;
 
     const signInLinkOrCodeSent = (smsPhoneNumberStatus.link_to_sign_in_sms_sent || smsPhoneNumberStatus.sign_in_code_sms_sent);
     const smsPhoneNumberStatusHtml = (
       <span>
-        { (smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter && !smsPhoneNumberStatus.sms_phone_number_deleted && !smsPhoneNumberStatus.make_primary_sms) ||
-        (smsPhoneNumberStatus.sms_phone_number_already_owned_by_other_voter && !signInLinkOrCodeSent) ? (
+        { (smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter && !smsPhoneNumberStatus.sms_phone_number_deleted && !smsPhoneNumberStatus.make_primary_sms && !secretCodeSystemLocked) ||
+        (smsPhoneNumberStatus.sms_phone_number_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked) ||
+        secretCodeSystemLocked ? (
           <Alert variant="warning">
-            { smsPhoneNumberStatus.sms_phone_number_already_owned_by_other_voter && !signInLinkOrCodeSent && (
-              <span>
-                That email is already being used by another account.
+            { smsPhoneNumberStatus.sms_phone_number_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked && (
+              <div>
+                That phone is already being used by another account.
                 <br />
                 <br />
                 Please click &quot;Send Login Code in an Email&quot; below to sign into that account.
+              </div>
+            )}
+            { smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter && !smsPhoneNumberStatus.sms_phone_number_deleted && !smsPhoneNumberStatus.make_primary_sms && !secretCodeSystemLocked && (
+              <div>
+                That phone number was already verified by you.
+              </div>
+            )}
+            { secretCodeSystemLocked && (
+              <span>
+                Your account is locked. Please
+                <OpenExternalWebSite
+                  url="https://help.wevote.us/hc/en-us/requests/new"
+                  target="_blank"
+                  body={<span>contact We Vote support for help.</span>}
+                />
               </span>
             )}
-            { smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter && !smsPhoneNumberStatus.sms_phone_number_deleted && !smsPhoneNumberStatus.make_primary_sms ?
-              <span>That phone number was already verified by you. </span> :
-              null
-            }
           </Alert>
           ) :
           null
         }
-        { smsPhoneNumberStatus.sms_phone_number_created ||
+        { (smsPhoneNumberStatus.sms_phone_number_created && !smsPhoneNumberStatus.verification_sms_sent && !secretCodeSystemLocked) ||
         smsPhoneNumberStatus.sms_phone_number_deleted ||
         smsPhoneNumberStatus.sms_ownership_is_verified ||
         smsPhoneNumberStatus.make_primary_sms ||
         smsPhoneNumberStatus.sign_in_code_sms_sent ? (
           <Alert variant="success">
-            { smsPhoneNumberStatus.sms_phone_number_created &&
-            !smsPhoneNumberStatus.verification_sms_sent ? <span>Your phone number was saved. </span> : null }
+            { smsPhoneNumberStatus.sms_phone_number_created && !smsPhoneNumberStatus.verification_sms_sent && !secretCodeSystemLocked ? <span>Your phone number was saved. </span> : null }
             { smsPhoneNumberStatus.sms_phone_number_deleted ? <span>Your phone number was deleted. </span> : null }
             { smsPhoneNumberStatus.sms_ownership_is_verified ? <span>Your phone number was verified. </span> : null }
             { smsPhoneNumberStatus.make_primary_sms ? <span>Your have chosen a new primary phone number. </span> : null }

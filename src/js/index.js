@@ -69,7 +69,7 @@ if (isCordova()) {
       setGlobalScreenSize(result);
       startApp();
     }, (result) => {
-      console.log("pbakondy/cordova-plugin-screensize FAILURE result: ", result);
+      console.log('pbakondy/cordova-plugin-screensize FAILURE result: ', result);
     });
   }, false);
 } else { // browser

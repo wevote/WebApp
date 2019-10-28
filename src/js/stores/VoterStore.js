@@ -455,6 +455,7 @@ class VoterStore extends ReduceStore {
             link_to_sign_in_email_sent: action.res.link_to_sign_in_email_sent,
             make_primary_email: action.res.make_primary_email,
             sign_in_code_email_sent: action.res.sign_in_code_email_sent,
+            secret_code_system_locked_for_this_voter_device_id: action.res.secret_code_system_locked_for_this_voter_device_id,
             verification_email_sent: action.res.verification_email_sent,
           },
         };
@@ -631,6 +632,7 @@ class VoterStore extends ReduceStore {
             sms_phone_number_found: action.res.sms_phone_number_found,
             sms_phone_number_deleted: action.res.sms_phone_number_deleted,
             make_primary_sms: action.res.make_primary_sms,
+            secret_code_system_locked_for_this_voter_device_id: action.res.secret_code_system_locked_for_this_voter_device_id,
             sign_in_code_sms_sent: action.res.sign_in_code_sms_sent,
             verification_sms_sent: action.res.verification_sms_sent,
           },
