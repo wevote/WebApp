@@ -11,6 +11,7 @@ import InputBase from '@material-ui/core/InputBase';
 import LoadingWheel from '../LoadingWheel';
 import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
@@ -39,6 +40,7 @@ class VoterEmailAddressEntry extends Component {
       },
       hideExistingEmailAddresses: false,
       loading: true,
+      secretCodeSystemLocked: false,
       showVerifyModal: false,
       voter: VoterStore.getVoter(),
       voterEmailAddress: '',
@@ -69,6 +71,10 @@ class VoterEmailAddressEntry extends Component {
       // console.log('this.state.loading', this.state.loading, ', nextState.loading', nextState.loading);
       return true;
     }
+    if (this.state.secretCodeSystemLocked !== nextState.secretCodeSystemLocked) {
+      // console.log('this.state.secretCodeSystemLocked', this.state.secretCodeSystemLocked, ', nextState.secretCodeSystemLocked', nextState.secretCodeSystemLocked);
+      return true;
+    }
     if (this.state.showError !== nextState.showError) {
       // console.log('this.state.showError', this.state.showError, ', nextState.showError', nextState.showError);
       return true;
@@ -95,6 +101,7 @@ class VoterEmailAddressEntry extends Component {
 
   onVoterStoreChange () {
     const emailAddressStatus = VoterStore.getEmailAddressStatus();
+    const { secret_code_system_locked_for_this_voter_device_id: secretCodeSystemLocked } = emailAddressStatus;
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
     // console.log('onVoterStoreChange emailAddressStatus:', emailAddressStatus);
@@ -126,6 +133,7 @@ class VoterEmailAddressEntry extends Component {
     const voterEmailAddressListCount = voterEmailAddressList.length;
     this.setState({
       loading: false,
+      secretCodeSystemLocked,
       voter: VoterStore.getVoter(),
       voterEmailAddressList,
       voterEmailAddressListCount,
@@ -237,24 +245,35 @@ class VoterEmailAddressEntry extends Component {
     const { classes } = this.props;
     const {
       disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, hideExistingEmailAddresses,
-      showVerifyModal, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
+      secretCodeSystemLocked, showVerifyModal, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
     } = this.state;
 
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
     const emailAddressStatusHtml = (
       <span>
-        { (emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email) ||
-        (emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent) ? (
+        { (emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email && !secretCodeSystemLocked) ||
+        (emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked) ||
+        secretCodeSystemLocked ? (
           <Alert variant="warning">
-            { emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent && (
-              <span>
+            { emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked && (
+              <div>
                 That email is already being used by another account.
                 <br />
                 <br />
                 Please click &quot;Send Login Code in an Email&quot; below to sign into that account.
-              </span>
+              </div>
             )}
-            { emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email ? <span>That email address was already verified by you. </span> : null }
+            { emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email && !secretCodeSystemLocked ? <div>That email address was already verified by you. </div> : null }
+            { secretCodeSystemLocked && (
+              <div>
+                Your account is locked. Please
+                <OpenExternalWebSite
+                  url="https://help.wevote.us/hc/en-us/requests/new"
+                  target="_blank"
+                  body={<span>contact We Vote support for help.</span>}
+                />
+              </div>
+            )}
           </Alert>
           ) : null
         }
@@ -263,7 +282,7 @@ class VoterEmailAddressEntry extends Component {
         emailAddressStatus.email_ownership_is_verified ||
         emailAddressStatus.verification_email_sent ||
         emailAddressStatus.link_to_sign_in_email_sent ||
-        emailAddressStatus.make_primary_email ||
+        (emailAddressStatus.make_primary_email && !secretCodeSystemLocked) ||
         emailAddressStatus.sign_in_code_email_sent ? (
           <Alert variant="success">
             { emailAddressStatus.email_address_created &&
@@ -272,7 +291,7 @@ class VoterEmailAddressEntry extends Component {
             { emailAddressStatus.email_ownership_is_verified ? <span>Your email address was verified. </span> : null }
             { emailAddressStatus.verification_email_sent ? <span>Please check your email. A verification email was sent. </span> : null }
             { emailAddressStatus.link_to_sign_in_email_sent ? <span>Please check your email. A sign in link was sent. </span> : null }
-            { emailAddressStatus.make_primary_email ? <span>Your have chosen a new primary email. </span> : null }
+            { emailAddressStatus.make_primary_email && !secretCodeSystemLocked ? <span>Your have chosen a new primary email. </span> : null }
             { emailAddressStatus.sign_in_code_email_sent ? <span>Please check your email. A sign in verification code was sent. </span> : null }
           </Alert>
           ) : null
