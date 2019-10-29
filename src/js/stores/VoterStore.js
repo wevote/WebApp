@@ -141,6 +141,10 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.twitter_handle || '';
   }
 
+  getTwitterSignInStatus () {
+    return this.getState().twitterSignInStatus || {};
+  }
+
   getVoterIsSignedIn () {
     return this.getState().voter.is_signed_in || false;
   }
@@ -238,7 +242,7 @@ class VoterStore extends ReduceStore {
     let facebookPhotoRetrieveLoopCount;
     let address;
     let currentVoterDeviceId;
-    const delayBeforeApiCall = 3000;
+    // const delayBeforeApiCall = 3000;
     let externalVoterId;
     let googleCivicElectionId;
     let incomingVoter;
@@ -506,10 +510,10 @@ class VoterStore extends ReduceStore {
         // On the server we just switched linked this voterDeviceId to a new voter record, so we want to
         //  refresh a lot of data
         VoterActions.voterRetrieve();
-        // And set a timer for 3 seconds from now to refresh again
-        this.timer = setTimeout(() => {
-          VoterActions.voterRetrieve();
-        }, delayBeforeApiCall);
+        // // And set a timer for 3 seconds from now to refresh again
+        // this.timer = setTimeout(() => {
+        //   VoterActions.voterRetrieve();
+        // }, delayBeforeApiCall);
         VoterActions.voterEmailAddressRetrieve();
         VoterActions.voterSMSPhoneNumberRetrieve();
         FriendActions.currentFriends();
@@ -530,10 +534,10 @@ class VoterStore extends ReduceStore {
             voter_merge_two_accounts_attempted: true,
           },
           facebookSignInStatus: {
-            voter_merge_two_accounts_attempted: true, // TODO DALE is this needed?
+            voter_merge_two_accounts_attempted: true,
           },
-          twitter_sign_in_status: {
-            voter_merge_two_accounts_attempted: true, // TODO DALE is this needed?
+          twitterSignInStatus: {
+            voter_merge_two_accounts_attempted: true,
           },
         };
 
@@ -646,7 +650,7 @@ class VoterStore extends ReduceStore {
         VoterActions.voterRetrieve();
         return {
           ...state,
-          twitter_sign_in_status: {
+          twitterSignInStatus: {
             twitter_account_created: action.res.twitter_account_created,
           },
         };

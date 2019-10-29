@@ -93,7 +93,7 @@ class TwitterSignIn extends Component {
       endpoint: 'twitterSignInStart',
       data: { return_url: returnURL },
       success: (res) => {
-        console.log('twitterSignInWebApp success, res:', res);
+        // console.log('twitterSignInWebApp success, res:', res);
         if (res.twitter_redirect_url) {
           if (brandingOff) {
             window.open(res.twitter_redirect_url);

@@ -128,6 +128,7 @@ class VoterGuideSettingsAddPositions extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
+    // console.log('VoterGuideSettingsAddPositions componentDidUpdate');
     // Whenever a voter goes from "Add Endorsements" to "Endorsed or Opposed" we want to refresh the position list
     const { addNewPositionsMode, currentSelectedBallotFilters, currentSelectedPositionFilters } = this.state;
     const { addNewPositionsMode: previousAddNewPositionsMode, currentSelectedBallotFilters: previousSelectedBallotFilters, currentSelectedPositionFilters: previousSelectedPositionFilters } = prevState;
@@ -432,7 +433,6 @@ class VoterGuideSettingsAddPositions extends Component {
       return (
         <div className="container">
           <FilterBase
-            fullWidth
             key="currentPositionsFilterBase"
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
@@ -546,7 +546,6 @@ class VoterGuideSettingsAddPositions extends Component {
       return (
         <div className="container">
           <FilterBase
-            fullWidth
             key="addPositionsFilterBase"
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}

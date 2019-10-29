@@ -356,6 +356,7 @@ class VoterGuideBallot extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
+    // console.log('VoterGuideBallot componentDidUpdate');
     if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
       this.hashLinkScroll();
     }

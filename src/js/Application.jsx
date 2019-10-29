@@ -64,6 +64,7 @@ class Application extends Component {
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate (prevProps, prevState, nextContent) {
+    // console.log('Application componentDidUpdate');
     const { location: { pathname } } = this.props;
     const { voteMode, voterGuideMode } = getApplicationViewBooleans(pathname);
 
@@ -123,15 +124,17 @@ class Application extends Component {
 
   onAppStoreChange () {
     let signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
-    // console.log('Application onAppStoreChange, current signInStartPath: ', signInStartPath);
+    // console.log('Application onAppStoreChange, current signInStartFullUrl: ', signInStartFullUrl);
     // Do not let sign_in_start_full_url be set again. Different logic while we figure out how to call AppActions.unsetStoreSignInStartFullUrl()
     if (AppStore.storeSignInStartFullUrl() && !signInStartFullUrl) {
       const { origin, pathname } = window.location;
       // console.log('window.location:', window.location);
       const oneDayExpires = 86400;
       signInStartFullUrl = `${origin}${pathname}`;
-      // console.log('Application onAppStoreChange, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
-      if (origin && stringContains('wevote.us', origin)) {
+      // console.log('Application onAppStoreChange, new origin: ', origin, ', pathname: ', pathname, ', NEW signInStartFullUrl: ', signInStartFullUrl);
+      if (stringContains('facebook_sign_in', signInStartFullUrl)) {
+        // console.log('Do NOT set signInStartFullUrl:', signInStartFullUrl);
+      } else if (origin && stringContains('wevote.us', origin)) {
         cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
       } else {
         cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/');
@@ -256,7 +259,7 @@ class Application extends Component {
         }
 
         if (atLeastOneQueryVariableFound && this.props.location.pathname) {
-          // console.log('atLeastOneQueryVariableFound push: ', AtLeastOneQueryVariableFound);
+          // console.log('atLeastOneQueryVariableFound push: ', atLeastOneQueryVariableFound);
           // console.log('this.props.location.pathname: ', this.props.location.pathname);
           historyPush(this.props.location.pathname);
         }
@@ -267,6 +270,7 @@ class Application extends Component {
   render () {
     renderLog('Application');  // Set LOG_RENDER_EVENTS to log all renders
     const { location: { pathname } } = this.props;
+    const { lastZenDeskVisibilityPathName } = this.state;
     const { StripeCheckout } = window;
     const waitForStripe = (String(pathname) === '/more/donate' && StripeCheckout === undefined);
     // console.log('Application render, pathname:', pathname);
@@ -289,7 +293,13 @@ class Application extends Component {
     }
 
     routingLog(pathname);
-    setZenDeskHelpVisibility(pathname);
+    if (String(lastZenDeskVisibilityPathName) !== String(pathname)) {
+      // console.log('lastZenDeskVisibilityPathName:', lastZenDeskVisibilityPathName, ', pathname:', pathname);
+      setZenDeskHelpVisibility(pathname);
+      this.setState({
+        lastZenDeskVisibilityPathName: String(pathname),
+      });
+    }
 
     const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, voterGuideMode } = getApplicationViewBooleans(pathname);
 

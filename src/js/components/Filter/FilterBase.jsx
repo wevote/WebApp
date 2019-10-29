@@ -19,7 +19,6 @@ class FilterBase extends React.Component {
     islandFilters: PropTypes.array,
     onFilteredItemsChange: PropTypes.func,
     selectedFiltersDefault: PropTypes.array,
-    fullWidth: PropTypes.bool,
     totalNumberOfItemsFound: PropTypes.number,
   };
 

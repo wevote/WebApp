@@ -126,6 +126,7 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   componentDidUpdate (prevProps) {
+    // console.log('ItemPositionStatementActionBar componentDidUpdate');
     // Note: adding a focus on the textarea in componentDidUpdate can lead to an infinite loop.
     // We protect against this with shouldComponentUpdate
     if (this.textarea && prevProps.supportProps && this.state.supportProps) {

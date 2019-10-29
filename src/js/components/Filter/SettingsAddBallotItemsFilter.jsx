@@ -156,6 +156,7 @@ class SettingsAddBallotItemsFilter extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
+    // console.log('SettingsAddBallotItemsFilter componentDidUpdate');
     // console.log('prevProps.selectedFilters:', prevProps.selectedFilters, ', this.props.selectedFilters:', this.props.selectedFilters);
     // console.log('prevProps.selectedFilters-stringify:', JSON.stringify(prevProps.selectedFilters), ', this.props.selectedFilters-stringify:', JSON.stringify(this.props.selectedFilters));
     if (JSON.stringify(prevProps.selectedFilters) !== JSON.stringify(this.props.selectedFilters)) {
