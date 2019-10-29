@@ -366,76 +366,82 @@ class SettingsVerifySecretCode extends Component {
             <PhoneSubtitle>{voterPhoneNumber || voterEmailAddress}</PhoneSubtitle>
             <InputContainer condensed={condensed}>
               <OutlinedInput
-                maxLength={1}
-                onKeyDown={this.onDigit1Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
-                onFocus={this.handleFocus}
-                onBlur={this.handleBlur}
-                onPaste={this.onPaste}
-                value={this.state.digit1}
+                disabled={this.state.numberOfTriesRemaining === 0}
+                error={errorToDisplay}
                 id="digit1"
-                error={errorToDisplay}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                maxLength={1}
+                onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onKeyDown={this.onDigit1Change}
+                onPaste={this.onPaste}
+                type="tel"
+                value={this.state.digit1}
               />
               <OutlinedInput
-                maxLength={1}
-                onKeyDown={this.onDigit2Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
-                onFocus={this.handleFocus}
-                onBlur={this.handleBlur}
-                onPaste={this.onPaste}
-                value={this.state.digit2}
+                disabled={this.state.numberOfTriesRemaining === 0}
+                error={errorToDisplay}
                 id="digit2"
-                error={errorToDisplay}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                maxLength={1}
+                onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onKeyDown={this.onDigit2Change}
+                onPaste={this.onPaste}
+                type="tel"
+                value={this.state.digit2}
               />
               <OutlinedInput
-                maxLength={1}
-                onKeyDown={this.onDigit3Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
-                onFocus={this.handleFocus}
-                onBlur={this.handleBlur}
-                onPaste={this.onPaste}
-                value={this.state.digit3}
+                disabled={this.state.numberOfTriesRemaining === 0}
+                error={errorToDisplay}
                 id="digit3"
-                error={errorToDisplay}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                maxLength={1}
+                onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onKeyDown={this.onDigit3Change}
+                onPaste={this.onPaste}
+                type="tel"
+                value={this.state.digit3}
               />
               <OutlinedInput
-                maxLength={1}
-                onKeyDown={this.onDigit4Change}
                 classes={{ root: classes.inputBase, input: classes.input }}
-                onFocus={this.handleFocus}
-                onBlur={this.handleBlur}
-                onPaste={this.onPaste}
-                value={this.state.digit4}
+                disabled={this.state.numberOfTriesRemaining === 0}
+                error={errorToDisplay}
                 id="digit4"
-                error={errorToDisplay}
-                disabled={this.state.numberOfTriesRemaining === 0}
-              />
-              <OutlinedInput
                 maxLength={1}
-                onKeyDown={this.onDigit5Change}
-                classes={{ root: classes.inputBase, input: classes.input }}
-                onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onKeyDown={this.onDigit4Change}
                 onPaste={this.onPaste}
-                value={this.state.digit5}
-                id="digit5"
-                error={errorToDisplay}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                type="tel"
+                value={this.state.digit4}
               />
               <OutlinedInput
+                classes={{ root: classes.inputBase, input: classes.input }}
+                disabled={this.state.numberOfTriesRemaining === 0}
+                error={errorToDisplay}
+                id="digit5"
+                maxLength={1}
+                onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onKeyDown={this.onDigit5Change}
+                onPaste={this.onPaste}
+                type="tel"
+                value={this.state.digit5}
+              />
+              <OutlinedInput
+                classes={{ root: classes.inputBase, input: classes.input }}
+                disabled={this.state.numberOfTriesRemaining === 0}
+                error={errorToDisplay}
+                id="digit6"
                 maxLength={1}
                 onKeyDown={this.onDigit6Change}
-                classes={{ root: classes.inputBase, input: classes.input }}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
                 onPaste={this.onPaste}
+                type="tel"
                 value={this.state.digit6}
-                id="digit6"
-                error={errorToDisplay}
-                disabled={this.state.numberOfTriesRemaining === 0}
               />
             </InputContainer>
             {errorToDisplay && (
