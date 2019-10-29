@@ -52,6 +52,7 @@ export default class SettingsPersonalSideBar extends Component {
   }
 
   componentDidUpdate (prevProps) {
+    // console.log('SettingsPersonalSideBar componentDidUpdate');
     if (prevProps.organizationType !== this.props.organizationType) {
       this.setState({ isOrganization: this.isOrganization(this.props.organizationType) });
     }

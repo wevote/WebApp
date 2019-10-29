@@ -300,6 +300,7 @@ class Ballot extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
+    // console.log('Ballot componentDidUpdate');
     const { ballotWithAllItems, foundFirstRaceLevel, raceLevelFilterType } = this.state;
     if (!foundFirstRaceLevel) {
       // We only need to be here if we haven't found the first Race level we are going to show, or we don't have a raceLevelFilterType identified

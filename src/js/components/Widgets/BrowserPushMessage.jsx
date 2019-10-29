@@ -55,7 +55,7 @@ class BrowserPushMessage extends Component {
     if (!type) {
       type = 'info';
     }
-    const openSnackbar = (this.state.open && message);
+    const openSnackbar = !!(this.state.open && message);
     return (
       <Snackbar
         classes={{ anchorOriginBottomCenter: classes.anchorOriginBottomCenter }}

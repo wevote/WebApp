@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
 import AppActions from '../../actions/AppActions';
 import FacebookActions from '../../actions/FacebookActions';
+import { historyPush } from '../../utils/cordovaUtils';
 import SplitIconButton from '../Widgets/SplitIconButton';
 
 class FacebookSignIn extends Component {
@@ -16,12 +17,6 @@ class FacebookSignIn extends Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
-  // There are times we want to unmount this FacebookSignIn Component, without closing the sign in modal
-  // componentWillUnmount () {
-  //   // Close the Sign In Modal
-  //   this.toggleSignInModalLocal();
-  // }
-
   onKeyDown = (event) => {
     const enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
@@ -32,6 +27,7 @@ class FacebookSignIn extends Component {
   didClickFacebookSignInButton = () => {
     AppActions.unsetStoreSignInStartFullUrl();
     FacebookActions.login();
+    historyPush('/facebook_sign_in');
   };
 
   toggleSignInModalLocal = () => {

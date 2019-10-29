@@ -96,6 +96,7 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 
   componentDidUpdate () {
+    // console.log('IssuesByBallotItemDisplayList componentDidUpdate');
     if (this.issuesList.current && this.state.totalWidth === null && this.state.totalRemainingWidth === null) {
       this.setState({
         totalWidth: this.issuesList.current.offsetWidth,

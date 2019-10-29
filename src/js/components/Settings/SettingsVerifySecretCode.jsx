@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import {
@@ -477,24 +477,24 @@ class SettingsVerifySecretCode extends Component {
   }
 }
 
-const styles = () => ({
+const styles = theme => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
-    '@media (min-width: 769px)': {
+    [theme.breakpoints.up('sm')]: {
       maxWidth: '720px',
       width: '85%',
-      minHeight: '95%',
-      maxHeight: '95%',
-      height: '95%',
+      minHeight: '90%',
+      maxHeight: '90%',
+      height: '90%',
       margin: '0 auto',
     },
-    '@media (max-width: 768px)': {
-      minWidth: '100%',
-      maxWidth: '100%',
-      width: '100%',
-      minHeight: '100%',
-      maxHeight: '100%',
-      height: '100%',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '95%',
+      maxWidth: '95%',
+      width: '95%',
+      minHeight: '90%',
+      maxHeight: '90%',
+      height: '90%',
       margin: '0 auto',
     },
   },
@@ -607,5 +607,5 @@ const ErrorMessage = styled.div`
   font-size: 14px;
 `;
 
-export default withStyles(styles)(SettingsVerifySecretCode);
+export default withTheme(withStyles(styles)(SettingsVerifySecretCode));
 

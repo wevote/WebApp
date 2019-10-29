@@ -31,6 +31,7 @@ class VoterGuideOrganizationFilter extends Component {
   }
 
   componentDidUpdate (prevProps) {
+    // console.log('VoterGuideOrganizationFilter componentDidUpdate');
     if (prevProps.selectedFilters !== this.props.selectedFilters) {
       this.props.onFilteredItemsChange(this.getNewFilteredItems());
     }

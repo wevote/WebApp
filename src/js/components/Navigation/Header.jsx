@@ -20,14 +20,14 @@ export default class Header extends Component {
     weVoteBrandingOff: PropTypes.bool,
   };
 
-  componentDidUpdate () {
-    // console.log("React Header ---------------   componentDidMount ()");
-    // let heightA = $("#app-header").outerHeight();
-    // let heightHC = $("#header-container").outerHeight();
-    // let height2N = $("#secondary-nav-bar").outerHeight();
-    // let heightW = $("#headroom-wrapper").outerHeight();
-    // console.log("header rectangle height: " + heightA + ", " + heightHC + ", " + height2N + ", " + heightW);
-  }
+  // componentDidUpdate () {
+  //   console.log("React Header ---------------   componentDidMount ()");
+  //   let heightA = $("#app-header").outerHeight();
+  //   let heightHC = $("#header-container").outerHeight();
+  //   let height2N = $("#secondary-nav-bar").outerHeight();
+  //   let heightW = $("#headroom-wrapper").outerHeight();
+  //   console.log("header rectangle height: " + heightA + ", " + heightHC + ", " + height2N + ", " + heightW);
+  // }
 
   render () {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders

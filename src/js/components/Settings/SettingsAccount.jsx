@@ -10,10 +10,10 @@ import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
-import { historyPush } from '../../utils/cordovaUtils';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
 import LoadingWheel from '../LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
+import { stringContains } from '../../utils/textFormat';
 import TwitterActions from '../../actions/TwitterActions';
 import TwitterSignIn from '../Twitter/TwitterSignIn';
 import VoterActions from '../../actions/VoterActions';
@@ -64,8 +64,11 @@ export default class SettingsAccount extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    cookies.removeItem('sign_in_start_full_url', '/');
-    cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+    let signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+    if (stringContains('/settings/account', signInStartFullUrl)) {
+      cookies.removeItem('sign_in_start_full_url', '/');
+      cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+    }
     const oneDayExpires = 86400;
     let pathname = '';
 
@@ -74,7 +77,6 @@ export default class SettingsAccount extends Component {
     const getStartedMode = AppStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
     const { origin } = window.location;
-    let signInStartFullUrl = '';
     if (this.props.pleaseSignInTitle || this.props.pleaseSignInSubTitle) {
       AppActions.storeSignInStartFullUrl();
       this.setState({
@@ -84,6 +86,7 @@ export default class SettingsAccount extends Component {
     } else if (getStartedMode && getStartedMode === 'getStartedForCampaigns') {
       pathname = '/settings/profile';
       signInStartFullUrl = `${origin}${pathname}`;
+      // console.log('SettingsAccount getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
       cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
       this.setState({
         pleaseSignInTitle: 'Please sign in to get started.',
@@ -92,6 +95,7 @@ export default class SettingsAccount extends Component {
     } else if (getStartedMode && getStartedMode === 'getStartedForOrganizations') {
       pathname = '/settings/profile';
       signInStartFullUrl = `${origin}${pathname}`;
+      // console.log('SettingsAccount getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
       cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
       this.setState({
         pleaseSignInTitle: 'Please sign in to get started.',
@@ -100,6 +104,7 @@ export default class SettingsAccount extends Component {
     } else if (getStartedMode && getStartedMode === 'getStartedForVoters') {
       pathname = '/settings/profile';
       signInStartFullUrl = `${origin}${pathname}`;
+      // console.log('SettingsAccount getStartedForCampaigns, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
       cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
       this.setState({
         pleaseSignInTitle: 'Please sign in to get started.',
@@ -233,23 +238,25 @@ export default class SettingsAccount extends Component {
 
   render () {
     renderLog('SettingsAccount');  // Set LOG_RENDER_EVENTS to log all renders
-    if (!this.state.voter) {
-      return LoadingWheel;
-    }
-
     const { inModal } = this.props;
     const {
       facebookAuthResponse, hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton,
       hideVoterEmailAddressEntry, hideVoterPhoneEntry, isOnWeVoteRootUrl, isOnWeVoteSubDomainUrl,
-      isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle,
+      isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle, voter,
     } = this.state;
-    const { is_signed_in: voterIsSignedIn, signed_in_facebook: voterIsSignedInFacebook, signed_in_twitter: voterIsSignedInTwitter, signed_in_with_email: voterIsSignedInWithEmail } = this.state.voter;
+    if (!voter) {
+      return LoadingWheel;
+    }
+
+    const {
+      is_signed_in: voterIsSignedIn, signed_in_facebook: voterIsSignedInFacebook,
+      signed_in_twitter: voterIsSignedInTwitter, signed_in_with_email: voterIsSignedInWithEmail,
+      twitter_screen_name: twitterScreenName,
+    } = voter;
     // console.log("SignIn.jsx facebookAuthResponse:", facebookAuthResponse);
     if (!voterIsSignedInFacebook && facebookAuthResponse && facebookAuthResponse.facebook_retrieve_attempted) {
       // console.log('SignIn.jsx facebook_retrieve_attempted');
       oAuthLog('SignIn.jsx facebook_retrieve_attempted');
-      historyPush('/facebook_sign_in');
-
       // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
       return LoadingWheel;
     }
@@ -329,7 +336,7 @@ export default class SettingsAccount extends Component {
                       <span className="btn btn-social btn-md btn-twitter" href="#">
                         <i className="fab fa-twitter" />
                         @
-                        {this.state.voter.twitter_screen_name}
+                        {twitterScreenName}
                       </span>
                       <span className="u-margin-left--sm" />
                     </div>
@@ -362,7 +369,7 @@ export default class SettingsAccount extends Component {
                             onClick={this.toggleTwitterDisconnectOpen}
                           >
                             un-link @
-                            {this.state.voter.twitter_screen_name}
+                            {twitterScreenName}
                             {' '}
                             twitter account
                           </span>
@@ -413,27 +420,27 @@ export default class SettingsAccount extends Component {
               <br />
               we_vote_id:
               {' '}
-              {this.state.voter.we_vote_id ? <span>{this.state.voter.we_vote_id}</span> : null}
+              {voter.we_vote_id ? <span>{voter.we_vote_id}</span> : null}
               <br />
               email:
               {' '}
-              {this.state.voter.email ? <span>{this.state.voter.email}</span> : null}
+              {voter.email ? <span>{voter.email}</span> : null}
               <br />
               facebook_email:
               {' '}
-              {this.state.voter.facebook_email ? <span>{this.state.voter.facebook_email}</span> : null}
+              {voter.facebook_email ? <span>{voter.facebook_email}</span> : null}
               <br />
               facebook_profile_image_url_https:
               {' '}
-              {this.state.voter.facebook_profile_image_url_https ? <span>{this.state.voter.facebook_profile_image_url_https}</span> : null}
+              {voter.facebook_profile_image_url_https ? <span>{voter.facebook_profile_image_url_https}</span> : null}
               <br />
               first_name:
               {' '}
-              {this.state.voter.first_name ? <span>{this.state.voter.first_name}</span> : null}
+              {voter.first_name ? <span>{voter.first_name}</span> : null}
               <br />
               facebook_id:
               {' '}
-              {this.state.voter.facebook_id ? <span>{this.state.voter.facebook_id}</span> : null}
+              {voter.facebook_id ? <span>{voter.facebook_id}</span> : null}
               <br />
             </div>
             )}

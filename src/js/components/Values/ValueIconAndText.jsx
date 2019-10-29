@@ -19,6 +19,7 @@ class ValueIconAndText extends Component {
   }
 
   componentDidUpdate (prevProps) {
+    // console.log('ValueIconAndText componentDidUpdate');
     const { oneIssue } = this.props;
     if (!prevProps.issueWidths[oneIssue.issue_we_vote_id]) {
       const width = this.valueSpan.current.offsetWidth;

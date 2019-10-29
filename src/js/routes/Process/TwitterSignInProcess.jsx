@@ -1,16 +1,14 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
 import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
+import { stringContains } from '../../utils/textFormat';
 import TwitterActions from '../../actions/TwitterActions';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
 import VoterActions from '../../actions/VoterActions';
-
-// This will be needed in the future
-// import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
 export default class TwitterSignInProcess extends Component {
   static propTypes = {
@@ -19,22 +17,22 @@ export default class TwitterSignInProcess extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      mergingTwoAccounts: false,
+      redirectInProgress: false,
       twitterAuthResponse: {},
       yesPleaseMergeAccounts: false,
-      mergingTwoAccounts: false,
     };
-    // These will be needed in the future
-    // this.cancelMergeFunction = this.cancelMergeFunction.bind(this);
-    // this.yesPleaseMergeAccounts = this.yesPleaseMergeAccounts.bind(this);
   }
 
   componentDidMount () {
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.twitterSignInRetrieve();
   }
 
   componentWillUnmount () {
     this.twitterStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onTwitterStoreChange () {
@@ -43,59 +41,106 @@ export default class TwitterSignInProcess extends Component {
     });
   }
 
-  voterMergeTwoAccountsByTwitterKey (twitterSecretKey, voterHasDataToPreserve = true) {
-    if (this.state.mergingTwoAccounts) {
-      // console.log("In process of mergingTwoAccounts");
+  onVoterStoreChange () {
+    const { redirectInProcess } = this.state;
+    // console.log('TwitterSignInProcess onVoterStoreChange, redirectInProcess:', redirectInProcess);
+    if (!redirectInProcess) {
+      const twitterSignInStatus = VoterStore.getTwitterSignInStatus();
+      // console.log('twitterSignInStatus:', twitterSignInStatus);
+      const voter = VoterStore.getVoter();
+      const { signed_in_twitter: voterIsSignedInTwitter } = voter;
+      if (voterIsSignedInTwitter || (twitterSignInStatus && twitterSignInStatus.voter_merge_two_accounts_attempted)) {
+        // Once the Twitter merge returns successfully, redirect to starting page
+        let redirectFullUrl = '';
+        let signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+        // console.log('TwitterSignInProcess signInStartFullUrl:', signInStartFullUrl);
+        if (signInStartFullUrl && stringContains('twitter_sign_in', signInStartFullUrl)) {
+          // Do not support a redirect to facebook_sign_in
+          // console.log('TwitterSignInProcess Ignore facebook_sign_in url');
+          signInStartFullUrl = null;
+        }
+        if (signInStartFullUrl) {
+          // console.log('TwitterSignInProcess Executing Redirect');
+          AppActions.unsetStoreSignInStartFullUrl();
+          cookies.removeItem('sign_in_start_full_url', '/');
+          cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+          redirectFullUrl = signInStartFullUrl;
+          // if (!voterHasDataToPreserve) {
+          //   redirectFullUrl += '?voter_refresh_timer_on=1';
+          // }
+          let useWindowLocationAssign = true;
+          if (window && window.location && window.location.origin) {
+            if (stringContains(window.location.origin, redirectFullUrl)) {
+              // Switch to path names to reduce load on browser and API server
+              useWindowLocationAssign = false;
+              const newRedirectPathname = redirectFullUrl.replace(window.location.origin, '');
+              // console.log('newRedirectPathname:', newRedirectPathname);
+              this.setState({ redirectInProcess: true });
+              historyPush({
+                pathname: newRedirectPathname,
+                state: {
+                  message: 'You have successfully signed in with Twitter.',
+                  message_type: 'success',
+                },
+              });
+            } else {
+              // console.log('window.location.origin empty');
+            }
+          }
+          if (useWindowLocationAssign) {
+            // console.log('useWindowLocationAssign:', useWindowLocationAssign);
+            this.setState({ redirectInProcess: true });
+            window.location.assign(redirectFullUrl);
+          }
+        } else {
+          this.setState({ redirectInProcess: true });
+          const redirectPathname = '/ballot';
+          historyPush({
+            pathname: redirectPathname,
+            // query: {voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1},
+            state: {
+              message: 'You have successfully signed in with Twitter.',
+              message_type: 'success',
+            },
+          });
+        }
+      }
+    }
+  }
+
+  voterMergeTwoAccountsByTwitterKey (twitterSecretKey) {  // , voterHasDataToPreserve = true
+    const { mergingTwoAccounts } = this.state;
+    if (mergingTwoAccounts) {
+      // console.log('In process of mergingTwoAccounts');
     } else {
-      // console.log("About to make API call");
+      // console.log('About to make voterMergeTwoAccountsByTwitterKey API call');
       VoterActions.voterMergeTwoAccountsByTwitterKey(twitterSecretKey);
       // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
       this.setState({ mergingTwoAccounts: true });
-    }
-    let redirectFullUrl = '';
-    const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
-    if (signInStartFullUrl) {
-      AppActions.unsetStoreSignInStartFullUrl();
-      cookies.removeItem('sign_in_start_full_url', '/');
-      cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
-      redirectFullUrl = signInStartFullUrl;
-      if (!voterHasDataToPreserve) {
-        redirectFullUrl += '?voter_refresh_timer_on=1';
-      }
-      window.location.assign(redirectFullUrl);
-    } else {
-      const redirectPathname = '/ballot';
-      historyPush({
-        pathname: redirectPathname,
-        query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
-        state: {
-          message: 'You have successfully signed in with Twitter.',
-          message_type: 'success',
-        },
-      });
     }
   }
 
   // This creates the public.twitter_twitterlinktovoter entry, which is needed
   // to establish is_signed_in within the voter.voter
   voterTwitterSaveToCurrentAccount () {
+    // console.log('voterTwitterSaveToCurrentAccount');
     VoterActions.voterTwitterSaveToCurrentAccount();
-    const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
-    if (signInStartFullUrl) {
-      AppActions.unsetStoreSignInStartFullUrl();
-      cookies.removeItem('sign_in_start_full_url', '/');
-      cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
-      window.location.assign(signInStartFullUrl);
-    } else {
-      const redirectPathname = '/ballot';
-      historyPush({
-        pathname: redirectPathname,
-        state: {
-          message: 'You have successfully signed in with Twitter.',
-          message_type: 'success',
-        },
-      });
-    }
+    // const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+    // if (signInStartFullUrl) {
+    //   AppActions.unsetStoreSignInStartFullUrl();
+    //   cookies.removeItem('sign_in_start_full_url', '/');
+    //   cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+    //   window.location.assign(signInStartFullUrl);
+    // } else {
+    //   const redirectPathname = '/ballot';
+    //   historyPush({
+    //     pathname: redirectPathname,
+    //     state: {
+    //       message: 'You have successfully signed in with Twitter.',
+    //       message_type: 'success',
+    //     },
+    //   });
+    // }
     if (VoterStore.getVoterPhotoUrlMedium().length === 0) {
       // This only fires once, for brand new users on their very first login
       VoterActions.voterRetrieve();
@@ -106,20 +151,28 @@ export default class TwitterSignInProcess extends Component {
     TwitterActions.twitterSignInRetrieve();
   }
 
-  // This will be needed in the future
-  // yesPleaseMergeAccounts () {
-  //   this.setState({ yesPleaseMergeAccounts: true });
-  // }
-
   render () {
     renderLog('TwitterSignInProcess');  // Set LOG_RENDER_EVENTS to log all renders
-    const { twitterAuthResponse, yesPleaseMergeAccounts } = this.state;
+    const { mergingTwoAccounts, redirectInProgress, twitterAuthResponse, yesPleaseMergeAccounts } = this.state;
+    // console.log('TwitterSignInProcess render, redirectInProgress:', redirectInProgress);
+    if (redirectInProgress) {
+      return null;
+    }
 
     oAuthLog('TwitterSignInProcess render');
     if (!twitterAuthResponse ||
       !twitterAuthResponse.twitter_retrieve_attempted) {
       // console.log('STOPPED, missing twitter_retrieve_attempted: twitterAuthResponse:', twitterAuthResponse);
-      return LoadingWheel;
+      return (
+        <div>
+          <div style={{ textAlign: 'center' }}>
+            Waiting for response from Twitter...
+          </div>
+          <div className="u-loading-spinner__wrapper">
+            <div className="u-loading-spinner">Please wait...</div>
+          </div>
+        </div>
+      );
     }
     oAuthLog('=== Passed initial gate ===');
     oAuthLog('twitterAuthResponse:', twitterAuthResponse);
@@ -127,6 +180,7 @@ export default class TwitterSignInProcess extends Component {
 
     if (twitterAuthResponse.twitter_sign_in_failed) {
       oAuthLog('Twitter sign in failed - push to /settings/account');
+      this.setState({ redirectInProcess: true });
       historyPush({
         pathname: '/settings/account',
         state: {
@@ -147,6 +201,7 @@ export default class TwitterSignInProcess extends Component {
     // This process starts when we return from attempting voterTwitterSignInRetrieve
     // If twitter_sign_in_found NOT True, go back to the sign in page to try again
     if (!twitterAuthResponse.twitter_sign_in_found) {
+      this.setState({ redirectInProcess: true });
       oAuthLog('twitterAuthResponse.twitter_sign_in_found', twitterAuthResponse.twitter_sign_in_found);
       historyPush({
         pathname: '/settings/account',
@@ -161,31 +216,19 @@ export default class TwitterSignInProcess extends Component {
     // Is there a collision of two accounts?
     if (twitterAuthResponse.existing_twitter_account_found) {
       // For now are not asking to merge accounts
-      this.voterMergeTwoAccountsByTwitterKey(twitterSecretKey, twitterAuthResponse.voter_has_data_to_preserve);
-      return LoadingWheel;
-
-      // In the future we want to use the following code to ask people before we merge their current account into
-      //  their account that they previously signed into Twitter with
-
-      // // Is there anything to save from this voter account?
-      // if (twitterAuthResponse.voter_has_data_to_preserve) {
-      //   // console.log("TwitterSignInProcess voterHasDataToPreserve is TRUE");
-      //   const cancelMergeFunction = this.cancelMergeFunction;
-      //   const pleaseMergeAccountsFunction = this.yesPleaseMergeAccounts;
-      //   // Display the question of whether to merge accounts or not
-      //   return (
-      //     <WouldYouLikeToMergeAccounts
-      //       cancelMergeFunction={cancelMergeFunction}
-      //       pleaseMergeAccountsFunction={pleaseMergeAccountsFunction}
-      //     />
-      //   );
-      //   // return <span>WouldYouLikeToMergeAccounts</span>;
-      // } else {
-      //   // Go ahead and merge the accounts, which means deleting the current voter and switching to the twitter-linked account
-      //   // console.log("TwitterSignInProcess this.voterMergeTwoAccountsByTwitterKey - No data to merge");
-      //   this.voterMergeTwoAccountsByTwitterKey(twitterSecretKey, twitterAuthResponse.voter_has_data_to_preserve);
-      //   return LoadingWheel;
-      // }
+      if (!mergingTwoAccounts) {
+        this.voterMergeTwoAccountsByTwitterKey(twitterSecretKey);  // , twitterAuthResponse.voter_has_data_to_preserve
+      }
+      return (
+        <div>
+          <div style={{ textAlign: 'center' }}>
+            Loading your account...
+          </div>
+          <div className="u-loading-spinner__wrapper">
+            <div className="u-loading-spinner">Please wait...</div>
+          </div>
+        </div>
+      );
     } else {
       oAuthLog('Setting up new Twitter entry - voterTwitterSaveToCurrentAccount');
       this.voterTwitterSaveToCurrentAccount();
