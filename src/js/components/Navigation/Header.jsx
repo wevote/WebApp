@@ -34,7 +34,8 @@ export default class Header extends Component {
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
     const { friendsMode, settingsMode, valuesMode, voterGuideMode,
-      showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop, showBackToSettingsMobile, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
+      showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
+      showBackToSettingsMobile, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
     // const hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
     let iPhoneSpacer = '';
     if (isCordova() && isIOS() && hasIPhoneNotch()) {

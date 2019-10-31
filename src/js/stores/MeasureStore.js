@@ -36,16 +36,21 @@ class MeasureStore extends ReduceStore {
     return '';
   }
 
-  getAllCachedPositionsByMeasureWeVoteId (measureWeVoteId) {
+  getAllCachedPositionsDictByMeasureWeVoteId (measureWeVoteId) {
     return this.getState().allCachedPositionsAboutMeasures[measureWeVoteId] || [];
+  }
+
+  getAllCachedPositionsByMeasureWeVoteId (measureWeVoteId) {
+    const allCachedPositionsForThisMeasureDict = this.getState().allCachedPositionsAboutMeasures[measureWeVoteId] || {};
+    return Object.values(allCachedPositionsForThisMeasureDict);
   }
 
   getNumberOfPositionsByMeasureWeVoteId (measureWeVoteId) {
     let numberOfSupportPositions = 0;
     let numberOfOpposePositions = 0;
     let numberOfInfoOnlyPositions = 0;
-    if (this.getState().allCachedPositionsAboutMeasuresByOrganization[measureWeVoteId]) {
-      const results = extractNumberOfPositionsFromPositionList(this.getState().allCachedPositionsAboutMeasuresByOrganization[measureWeVoteId]);
+    if (this.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId)) {
+      const results = extractNumberOfPositionsFromPositionList(this.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId));
       ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = results);
     }
     return {
@@ -55,12 +60,8 @@ class MeasureStore extends ReduceStore {
     };
   }
 
-  getPositionList (measureWeVoteId) {
-    return this.getState().allCachedPositionsAboutMeasures[measureWeVoteId] || [];
-  }
-
   getPositionAboutMeasureFromOrganization (measureWeVoteId, organizationWeVoteId) {
-    const positionsAboutMeasure = this.getState().allCachedPositionsAboutMeasuresByOrganization[measureWeVoteId] || [];
+    const positionsAboutMeasure = this.getAllCachedPositionsDictByMeasureWeVoteId(measureWeVoteId);
     return positionsAboutMeasure[organizationWeVoteId] || [];
   }
 

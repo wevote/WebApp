@@ -206,7 +206,7 @@ $space-button-span: 10px;
     font-weight: 600 !important;
     border: 1px solid $gray-light !important;
   }
-  &__icon svg {
+  &__icon svg { // stylelint-disable-line selector-max-type
     width: 18px !important;
     height: 18px !important;
   }
@@ -317,13 +317,13 @@ $space-button-span: 10px;
   padding: $space-none !important;
   box-shadow: none !important;
   width: 100%;
-  > span {
+  > span { // stylelint-disable-line selector-max-type
     padding: $space-button-span $space-none !important;
     height: 100%;
     display: flex;
     align-items: center;
   }
-  &__left > span {
+  &__left > span { // stylelint-disable-line selector-max-type
     justify-content: flex-start;
   }
   &__seperator {

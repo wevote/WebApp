@@ -173,11 +173,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   //   historyPush(officeLink);
   // }
 
-  localDoesOrganizationHavePositionOnBallotItem (candidateWeVoteId) {
-    const { organizationWeVoteId } = this.state;
-    return OrganizationStore.doesOrganizationHavePositionOnBallotItem(organizationWeVoteId, candidateWeVoteId);
-  }
-
   closeYourNetworkSupportsPopover () {
     this.refs['supports-overlay'].hide(); // eslint-disable-line react/no-string-refs
   }
@@ -194,7 +189,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     renderLog('VoterGuideOfficeItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballot_item_display_name: ballotItemDisplayName } = this.props;
     const { we_vote_id: weVoteId } = this.props;
-    const { organization } = this.state;
+    const { organization, organizationWeVoteId } = this.state;
 
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
 
@@ -226,7 +221,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                 return null;
               }
 
-              if (this.localDoesOrganizationHavePositionOnBallotItem(oneCandidate.we_vote_id)) {
+              if (OrganizationStore.doesOrganizationHavePositionOnBallotItem(organizationWeVoteId, oneCandidate.we_vote_id)) {
                 orgPositionForCandidate = this.getOrganizationPositionForThisCandidate(oneCandidate.we_vote_id, positionList);
                 // console.log('orgPositionForCandidate:', orgPositionForCandidate);
 
@@ -237,11 +232,10 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                     <div key={candidateWeVoteId}>
                       {/* Organization Endorsement */}
                       <OrganizationPositionItem
-                        // ballotItemLink={this.getCandidateLink(candidateWeVoteId)}
-                        key={orgPositionForCandidate.position_we_vote_id}
-                        position={orgPositionForCandidate}
-                        organization={organization}
                         editMode={this.state.editMode}
+                        key={orgPositionForCandidate.position_we_vote_id}
+                        organizationWeVoteId={organizationWeVoteId}
+                        position={orgPositionForCandidate}
                       />
                     </div>
                   );

@@ -28,7 +28,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     this.state = {
       measure: {},
       measureWeVoteId: '',
-      positionListFromAdvisersFollowedByVoter: [],
+      allCachedPositionsByMeasureWeVoteId: [],
       // Eventually we could use this getVoterGuidesToFollowForBallotItemId with measureWeVoteId, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
       // guides_to_follow_list: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.measure_we_vote_id)
@@ -52,7 +52,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     // AnalyticsActions.saveActionMeasure(VoterStore.electionId(), this.props.params.measure_we_vote_id);
     this.setState({
       measureWeVoteId: this.props.params.measure_we_vote_id,
-      positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(this.props.params.measure_we_vote_id),
+      allCachedPositionsByMeasureWeVoteId: MeasureStore.getAllCachedPositionsByMeasureWeVoteId(this.props.params.measure_we_vote_id),
       voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
     });
   }
@@ -65,7 +65,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, 'MEASURE');
       this.setState({
         measureWeVoteId: nextProps.params.measure_we_vote_id,
-        positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(nextProps.params.measure_we_vote_id),
+        allCachedPositionsByMeasureWeVoteId: MeasureStore.getAllCachedPositionsByMeasureWeVoteId(nextProps.params.measure_we_vote_id),
         voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
       });
     }
@@ -81,7 +81,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     // console.log("Measure, onMeasureStoreChange");
     this.setState({
       measure: MeasureStore.getMeasure(measureWeVoteId),
-      positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(measureWeVoteId),
+      allCachedPositionsByMeasureWeVoteId: MeasureStore.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId),
     });
   }
 
@@ -129,10 +129,10 @@ export default class OrganizationVoterGuideMeasure extends Component {
         />
         <MeasureItem measureWeVoteId={this.state.measure.we_vote_id} />
         <div className="card__additional">
-          { this.state.positionListFromAdvisersFollowedByVoter ? (
+          { this.state.allCachedPositionsByMeasureWeVoteId ? (
             <div>
               <PositionList
-                incomingPositionList={this.state.positionListFromAdvisersFollowedByVoter}
+                incomingPositionList={this.state.allCachedPositionsByMeasureWeVoteId}
                 ballotItemDisplayName={this.state.measure.ballot_item_display_name}
               />
             </div>

@@ -28,11 +28,11 @@ export default class Measure extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      allCachedPositionsForThisMeasure: [],
+      allCachedPositionsForThisMeasureLength: 0,
       measure: {},
       measureBallotItemDisplayName: '',
       measureWeVoteId: '',
-      positionListForThisMeasure: [],
-      positionListForThisMeasureLength: 0,
       positionListHasBeenRetrievedOnce: {},
       scrolledDown: AppStore.getScrolledDown(),
     };
@@ -67,17 +67,17 @@ export default class Measure extends Component {
     if (measure && measure.ballot_item_display_name) {
       measureBallotItemDisplayName = measure.ballot_item_display_name;
     }
-    const positionListForThisMeasure = MeasureStore.getPositionList(measureWeVoteId);
-    let positionListForThisMeasureLength = 0;
-    if (positionListForThisMeasure) {
-      positionListForThisMeasureLength = positionListForThisMeasure.length;
+    const allCachedPositionsForThisMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId);
+    let allCachedPositionsForThisMeasureLength = 0;
+    if (allCachedPositionsForThisMeasure) {
+      allCachedPositionsForThisMeasureLength = allCachedPositionsForThisMeasure.length;
     }
     this.setState({
       measure,
       measureBallotItemDisplayName,
       measureWeVoteId,
-      positionListForThisMeasure,
-      positionListForThisMeasureLength,
+      allCachedPositionsForThisMeasure,
+      allCachedPositionsForThisMeasureLength,
     });
   }
 
@@ -101,33 +101,33 @@ export default class Measure extends Component {
       if (measure && measure.ballot_item_display_name) {
         measureBallotItemDisplayName = measure.ballot_item_display_name;
       }
-      const positionListForThisMeasure = MeasureStore.getPositionList(measureWeVoteId);
-      let positionListForThisMeasureLength = 0;
-      if (positionListForThisMeasure) {
-        positionListForThisMeasureLength = positionListForThisMeasure.length;
+      const allCachedPositionsForThisMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId);
+      let allCachedPositionsForThisMeasureLength = 0;
+      if (allCachedPositionsForThisMeasure) {
+        allCachedPositionsForThisMeasureLength = allCachedPositionsForThisMeasure.length;
       }
       this.setState({
         measure,
         measureBallotItemDisplayName,
         measureWeVoteId,
-        positionListForThisMeasure,
-        positionListForThisMeasureLength,
+        allCachedPositionsForThisMeasure,
+        allCachedPositionsForThisMeasureLength,
       });
     }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.allCachedPositionsForThisMeasureLength !== nextState.allCachedPositionsForThisMeasureLength) {
+      // console.log('this.state.allCachedPositionsForThisMeasureLength:', this.state.allCachedPositionsForThisMeasureLength, ', nextState.allCachedPositionsForThisMeasureLength:', nextState.allCachedPositionsForThisMeasureLength);
+      return true;
+    }
     if (this.state.measureWeVoteId !== nextState.measureWeVoteId) {
       // console.log('this.state.measureWeVoteId:', this.state.measureWeVoteId, ', nextState.measureWeVoteId:', nextState.measureWeVoteId);
       return true;
     }
     if (this.state.measureBallotItemDisplayName !== nextState.measureBallotItemDisplayName) {
       // console.log('this.state.measureBallotItemDisplayName:', this.state.measureBallotItemDisplayName, ', nextState.measureBallotItemDisplayName:', nextState.measureBallotItemDisplayName);
-      return true;
-    }
-    if (this.state.positionListForThisMeasureLength !== nextState.positionListForThisMeasureLength) {
-      // console.log('this.state.positionListForThisMeasureLength:', this.state.positionListForThisMeasureLength, ', nextState.positionListForThisMeasureLength:', nextState.positionListForThisMeasureLength);
       return true;
     }
     if (this.state.scrolledDown !== nextState.scrolledDown) {
@@ -157,16 +157,16 @@ export default class Measure extends Component {
     if (measure && measure.ballot_item_display_name) {
       measureBallotItemDisplayName = measure.ballot_item_display_name;
     }
-    const positionListForThisMeasure = MeasureStore.getPositionList(measureWeVoteId);
-    let positionListForThisMeasureLength = 0;
-    if (positionListForThisMeasure) {
-      positionListForThisMeasureLength = positionListForThisMeasure.length;
+    const allCachedPositionsForThisMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId);
+    let allCachedPositionsForThisMeasureLength = 0;
+    if (allCachedPositionsForThisMeasure) {
+      allCachedPositionsForThisMeasureLength = allCachedPositionsForThisMeasure.length;
     }
     this.setState({
+      allCachedPositionsForThisMeasure,
+      allCachedPositionsForThisMeasureLength,
       measure,
       measureBallotItemDisplayName,
-      positionListForThisMeasure,
-      positionListForThisMeasureLength,
     });
   }
 
@@ -189,13 +189,9 @@ export default class Measure extends Component {
 
   render () {
     renderLog('Measure');  // Set LOG_RENDER_EVENTS to log all renders
-    const {
-      positionListForThisMeasure, measure, scrolledDown,
-    } = this.state;
+    const { allCachedPositionsForThisMeasure, measure, scrolledDown } = this.state;
 
     if (!measure || !measure.ballot_item_display_name) {
-      // TODO DALE If the measureWeVoteId is not valid, we need to update this with a notice
-      // console.log('Measure missing measure object');
       return (
         <div className="container-fluid well u-stack--md u-inset--md">
           <div>{LoadingWheel}</div>
@@ -203,7 +199,6 @@ export default class Measure extends Component {
         </div>
       );
     }
-    // console.log('positionListForThisMeasure:', positionListForThisMeasure);
 
     const measureName = capitalizeString(measure.ballot_item_display_name);
     const titleText = `${measureName} - We Vote`;
@@ -213,31 +208,27 @@ export default class Measure extends Component {
 
     return (
       <span>
+        <Helmet
+          title={titleText}
+          meta={[{ name: 'description', content: descriptionText }]}
+        />
+        {
+          scrolledDown && (
+            <MeasureStickyHeader measureWeVoteId={measure.we_vote_id} />
+          )
+        }
         <section className="card">
-          <Helmet
-            title={titleText}
-            meta={[{ name: 'description', content: descriptionText }]}
-          />
-          {
-            scrolledDown && (
-              <MeasureStickyHeader measureWeVoteId={measure.we_vote_id} />
-            )
-          }
           <MeasureItem measureWeVoteId={measure.we_vote_id} />
-          <div className="card__additional">
-            { positionListForThisMeasure ? (
-              <div>
-                <PositionList
-                  incomingPositionList={positionListForThisMeasure}
-                  hideSimpleSupportOrOppose
-                  ballotItemDisplayName={measure.ballot_item_display_name}
-                  params={this.props.params}
-                />
-              </div>
-            ) : (
-              <span>Position list for this measure missing.</span>
-            )}
-          </div>
+        </section>
+        <section className="card">
+          { allCachedPositionsForThisMeasure.length ? (
+            <PositionList
+              incomingPositionList={allCachedPositionsForThisMeasure}
+              ballotItemDisplayName={measure.ballot_item_display_name}
+              params={this.props.params}
+            />
+          ) : null
+          }
         </section>
         <EndorsementCard
           bsPrefix="u-margin-top--sm u-stack--xs"
@@ -247,10 +238,11 @@ export default class Measure extends Component {
           ${measureName}
           that you expected to see?`}
         />
+        <br />
         {/* Show links to this candidate in the admin tools */}
         { (voter.is_admin || voter.is_verified_volunteer) && (
           <span className="u-wrap-links d-print-none">
-            Admin:
+            Admin only:
             <OpenExternalWebSite
               url={measureAdminEditUrl}
               target="_blank"
@@ -258,6 +250,7 @@ export default class Measure extends Component {
               body={(
                 <span>
                   edit
+                  {' '}
                   {measureName}
                 </span>
               )}

@@ -264,7 +264,7 @@ class VoterGuideSettingsPositions extends Component {
     }
 
     const { classes } = this.props;
-    const { positionListForOneElection } = this.state;
+    const { linkedOrganizationWeVoteId, positionListForOneElection } = this.state;
     // console.log('VoterGuideSettingsPositions, positionListForOneElection:', positionListForOneElection);
 
     // let lookingAtSelf = false;
@@ -307,7 +307,7 @@ class VoterGuideSettingsPositions extends Component {
                     <OrganizationPositionItem
                       key={item.position_we_vote_id}
                       position={item}
-                      organization={this.state.organization}
+                      organizationWeVoteId={linkedOrganizationWeVoteId}
                       editMode={this.state.editMode}
                     />
                   )) }

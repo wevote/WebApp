@@ -532,12 +532,14 @@ class OrganizationStore extends ReduceStore {
         return revisedState;
 
       case 'positionListForOpinionMaker': // ...and positionListForOpinionMakerForFriends
-        // console.log('OrganizationStore, positionListForOpinionMaker response');
+        // console.log('OrganizationStore, positionListForOpinionMaker response:', action.res);
         // TODO: position_list *might* include positions from multiple elections
         organizationWeVoteId = action.res.opinion_maker_we_vote_id;
         googleCivicElectionId = action.res.google_civic_election_id;
         if (action.res.friends_vs_public === 'FRIENDS_ONLY') { // positionListForOpinionMakerForFriends
+          // console.log('positionListForOpinionMaker FRIENDS_ONLY');
           if (action.res.filter_for_voter) {
+            // console.log('positionListForOpinionMaker filter_for_voter true?: ', action.res.filter_for_voter);
             const friendsPositionListForOneElection = action.res.position_list;
             organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
@@ -555,6 +557,7 @@ class OrganizationStore extends ReduceStore {
               allCachedOrganizationsDict,
             };
           } else if (action.res.filter_out_voter) {
+            // console.log('positionListForOpinionMaker filter_out_voter true?: ', action.res.filter_out_voter);
             const friendsPositionListForAllExceptOneElection = action.res.position_list;
             organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
@@ -591,6 +594,7 @@ class OrganizationStore extends ReduceStore {
           }
         } else // positionListForOpinionMaker, else for action.res.friends_vs_public === "FRIENDS_ONLY"
         if (action.res.filter_for_voter) {
+          // console.log('positionListForOpinionMaker filter_for_voter PART2 true?: ', action.res.filter_for_voter);
           const positionListForOneElection = action.res.position_list;
           organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
@@ -624,6 +628,7 @@ class OrganizationStore extends ReduceStore {
             allCachedPositionsByOrganizationDict,
           };
         } else if (action.res.filter_out_voter) {
+          // console.log('positionListForOpinionMaker filter_out_voter PART2 true?: ', action.res.filter_out_voter);
           const positionListForAllExceptOneElection = action.res.position_list;
           organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
@@ -663,6 +668,7 @@ class OrganizationStore extends ReduceStore {
             allCachedPositionsByOrganizationDict,
           };
         } else {
+          // console.log('positionListForOpinionMaker NEITHER filter_out_voter nor filter_for_voter, organizationWeVoteId:', organizationWeVoteId);
           const positionList = action.res.position_list;
           organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
@@ -684,11 +690,12 @@ class OrganizationStore extends ReduceStore {
               allCachedPositionsByOrganizationDict[organizationWeVoteId] = {};
             }
             positionList.forEach((onePosition) => {
-              // console.log('OrganizationStore, positionListForOpinionMaker, onePosition: ', onePosition);
-              if (onePosition.ballot_item_we_vote_id) {
+              // console.log('OrganizationStore, positionListForOpinionMaker,  NEITHER filter_out_voter nor filter_for_voter,  onePosition: ', onePosition);
+              if (onePosition.ballot_item_we_vote_id !== undefined) {
+                // console.log('onePosition.ballot_item_we_vote_id:', onePosition.ballot_item_we_vote_id);
                 allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.ballot_item_we_vote_id] = onePosition;
-              }
-              if (onePosition.contest_office_we_vote_id) {
+              } else if (onePosition.contest_office_we_vote_id !== undefined) {
+                // console.log('onePosition.contest_office_we_vote_id:', onePosition.ballot_item_we_vote_id);
                 allCachedPositionsByOrganizationDict[organizationWeVoteId][onePosition.contest_office_we_vote_id] = onePosition;
               }
             });

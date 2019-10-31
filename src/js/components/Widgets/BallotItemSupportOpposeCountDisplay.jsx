@@ -50,7 +50,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       componentDidMountFinished: false,
       organizationsToFollowSupport: [],
       organizationsToFollowOppose: [],
-      // positionListFromAdvisersFollowedByVoter: [],
       ballotItemSupportProps: {},
     };
     this.closeIssueScorePopover = this.closeIssueScorePopover.bind(this);
@@ -87,12 +86,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // console.log('BallotItemSupportOpposeCountDisplay positionsNeededForThisWeVoteId:', positionsNeededForThisWeVoteId);
     // console.log('isCandidate:', isCandidate, 'isMeasure:', isMeasure);
 
-    // let positionListFromAdvisersFollowedByVoter;
-    // if (isCandidate) {
-    //   positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
-    // } else if (isMeasure) {
-    //   positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
-    // }
     const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(ballotItemWeVoteId);
     const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(ballotItemWeVoteId);
     this.setState({
@@ -107,7 +100,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       numberOfInfoOnlyPositions,
       organizationsToFollowSupport,
       organizationsToFollowOppose,
-      // positionListFromAdvisersFollowedByVoter,
       voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
     });
   }
@@ -133,14 +125,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
       ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults);
     }
-    let positionListFromAdvisersFollowedByVoter;
-    if (isCandidate) {
-      // CandidateActions.positionListForBallotItemPublic(ballotItemWeVoteId);
-      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
-    } else if (isMeasure) {
-      // MeasureActions.positionListForBallotItemPublic(ballotItemWeVoteId);
-      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
-    }
     const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(ballotItemWeVoteId);
     const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(ballotItemWeVoteId);
     this.setState(() => ({
@@ -154,7 +138,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       numberOfInfoOnlyPositions,
       organizationsToFollowSupport,
       organizationsToFollowOppose,
-      positionListFromAdvisersFollowedByVoter, // eslint-disable-line react/no-unused-state
     }));
   }
 
@@ -231,7 +214,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         numberOfSupportPositions,
         numberOfOpposePositions,
         numberOfInfoOnlyPositions,
-        // positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(candidateWeVoteId),
       });
     }
   }
@@ -245,7 +227,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         numberOfSupportPositions,
         numberOfOpposePositions,
         numberOfInfoOnlyPositions,
-        // positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(measureWeVoteId),
       });
     }
   }
@@ -361,29 +342,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const organizationsToFollowSupportCount =  organizationsToFollowSupport ? organizationsToFollowSupport.length :  0;
     const organizationsToFollowOpposeCount =  organizationsToFollowOppose ? organizationsToFollowOppose.length :  0;
     const positionsCount = networkSupportCount + networkOpposeCount + organizationsToFollowSupportCount + organizationsToFollowOpposeCount;
-
-    // console.log('this.state.positionListFromAdvisersFollowedByVoter: ', this.state.positionListFromAdvisersFollowedByVoter);
-    // if (positionsCount) {
-    //   let supportPositionsListCount = 0;
-    //   let opposePositionsListCount = 0;
-    //   // let info_only_positions_list_count = 0;
-    //   this.state.positionListFromAdvisersFollowedByVoter.map((onePosition) => {
-    //     // console.log('onePosition: ', onePosition);
-    //     // Filter out the positions that we don't want to display
-    //     if (onePosition.is_support_or_positive_rating) {
-    //       supportPositionsListCount++;
-    //     } else if (onePosition.is_oppose_or_negative_rating) {
-    //       opposePositionsListCount++;
-    //     } // else if (!onePosition.is_support_or_positive_rating && !onePosition.is_oppose_or_negative_rating) {
-    //     //   info_only_positions_list_count++;
-    //     // }
-    //     return null;
-    //   });
-    //   // console.log('supportPositionsListCount:', supportPositionsListCount);
-    //
-    //   // We calculate how many organizations_to_follow based on the number of positions from advisers we follow
-    //   const offsetForMoreText = 3;
-    // }
 
     let scoreInYourNetworkPopover;
     // let advisersThatMakeVoterIssuesScoreDisplay;
