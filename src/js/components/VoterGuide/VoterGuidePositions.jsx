@@ -305,14 +305,11 @@ export default class VoterGuidePositions extends Component {
 
   render () {
     renderLog('VoterGuidePositions');  // Set LOG_RENDER_EVENTS to log all renders
-    const { organization } = this.state;
+    const { organization, organizationId, organizationWeVoteId, positionListForOneElection } = this.state;
     if (!organization) {
       // Wait until organization has been set to render
       return null;
     }
-    const {
-      organizationId, positionListForOneElection,
-    } = this.state;
     if (!organizationId) {
       return (
         <div className="card">
@@ -377,10 +374,10 @@ export default class VoterGuidePositions extends Component {
                   null }
                 { positionListForOneElection.map(item => (
                   <OrganizationPositionItem
-                    key={item.position_we_vote_id}
-                    position={item}
-                    organization={organization}
                     editMode={this.state.editMode}
+                    key={item.position_we_vote_id}
+                    organizationWeVoteId={organizationWeVoteId}
+                    position={item}
                   />
                 )) }
               </span>

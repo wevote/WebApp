@@ -24,20 +24,21 @@ class CandidateStore extends ReduceStore {
     return this.getState().numberOfCandidatesRetrievedByOffice[officeWeVoteId] || 0;
   }
 
-  getPositionList (candidateWeVoteId) {
-    return this.getState().positionListFromAdvisersFollowedByVoter[candidateWeVoteId] || [];
+  getAllCachedPositionsDictByCandidateWeVoteId (candidateWeVoteId) {
+    return this.getState().allCachedPositionsAboutCandidates[candidateWeVoteId] || {};
   }
 
   getAllCachedPositionsByCandidateWeVoteId (candidateWeVoteId) {
-    return this.getState().allCachedPositionsAboutCandidates[candidateWeVoteId] || [];
+    const allCachedPositionsForThisCandidateDict = this.getState().allCachedPositionsAboutCandidates[candidateWeVoteId] || {};
+    return Object.values(allCachedPositionsForThisCandidateDict);
   }
 
   getNumberOfPositionsByCandidateWeVoteId (candidateWeVoteId) {
     let numberOfSupportPositions = 0;
     let numberOfOpposePositions = 0;
     let numberOfInfoOnlyPositions = 0;
-    if (this.getState().allCachedPositionsAboutCandidates[candidateWeVoteId]) {
-      const results = extractNumberOfPositionsFromPositionList(this.getState().allCachedPositionsAboutCandidates[candidateWeVoteId]);
+    if (this.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId)) {
+      const results = extractNumberOfPositionsFromPositionList(this.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId));
       ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = results);
     }
     return {
@@ -47,8 +48,8 @@ class CandidateStore extends ReduceStore {
     };
   }
 
-  getPositionAboutCandidateFromOrganization (candidateId, orgWeVoteId) {
-    const positionsAboutCandidate = this.getState().allCachedPositionsAboutCandidates[candidateId] || [];
+  getPositionAboutCandidateFromOrganization (candidateWeVoteId, orgWeVoteId) {
+    const positionsAboutCandidate = this.getAllCachedPositionsDictByCandidateWeVoteId(candidateWeVoteId);
     // console.log('CandidateStore, candidateId: ', candidateId, 'organization_we_vote_id: ', organization_we_vote_id);
     // console.log('CandidateStore, getPositionAboutCandidateFromOrganization: ', positions_about_candidate[organization_we_vote_id]);
     return positionsAboutCandidate[orgWeVoteId] || [];
@@ -210,9 +211,9 @@ class CandidateStore extends ReduceStore {
           candidateId = action.res.ballot_item_we_vote_id;
           newPositionList = action.res.position_list;
           positionListFromAdvisersFollowedByVoter[candidateId] = newPositionList;
-          newPositionList.forEach((one) => {
-            ballotItemWeVoteId = one.ballot_item_we_vote_id;
-            organizationWeVoteId = one.speaker_we_vote_id;
+          newPositionList.forEach((oneIncomingPosition) => {
+            ballotItemWeVoteId = oneIncomingPosition.ballot_item_we_vote_id;
+            organizationWeVoteId = oneIncomingPosition.speaker_we_vote_id;
 
             if (!allCachedPositionsAboutCandidates[ballotItemWeVoteId]) {
               allCachedPositionsAboutCandidates[ballotItemWeVoteId] = {};
@@ -222,11 +223,11 @@ class CandidateStore extends ReduceStore {
               allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = {};
             }
 
-            // console.log('CandidateStore one_position_here: ', one_position_here);
-            allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = one;
+            // console.log('CandidateStore oneIncomingPosition: ', oneIncomingPosition);
+            allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = oneIncomingPosition;
           });
 
-          // console.log('positionListForBallotItem positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]:', positionListFromAdvisersFollowedByVoter[candidate_we_vote_id]);
+          // console.log('positionListForBallotItem positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]:', positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]);
           return {
             ...state,
             allCachedPositionsAboutCandidates,
@@ -246,15 +247,15 @@ class CandidateStore extends ReduceStore {
             });
           }
 
-          officePositionList.forEach((one) => {
-            candidateId = one.ballot_item_we_vote_id;
+          officePositionList.forEach((oneIncomingPosition) => {
+            candidateId = oneIncomingPosition.ballot_item_we_vote_id;
             if (!positionListFromAdvisersFollowedByVoter[candidateId]) {
               positionListFromAdvisersFollowedByVoter[candidateId] = [];
             }
-            positionListFromAdvisersFollowedByVoter[candidateId].push(one);
+            positionListFromAdvisersFollowedByVoter[candidateId].push(oneIncomingPosition);
 
-            ballotItemWeVoteId = one.ballot_item_we_vote_id;
-            organizationWeVoteId = one.speaker_we_vote_id;
+            ballotItemWeVoteId = oneIncomingPosition.ballot_item_we_vote_id;
+            organizationWeVoteId = oneIncomingPosition.speaker_we_vote_id;
 
             if (!allCachedPositionsAboutCandidates[ballotItemWeVoteId]) {
               allCachedPositionsAboutCandidates[ballotItemWeVoteId] = {};
@@ -264,11 +265,11 @@ class CandidateStore extends ReduceStore {
               allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = {};
             }
 
-            // console.log('CandidateStore one_position_here: ', one_position_here);
-            allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = one;
+            // console.log('CandidateStore oneIncomingPosition: ', oneIncomingPosition);
+            allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = oneIncomingPosition;
           });
 
-          // console.log('positionListForBallotItem OFFICE positionListFromAdvisersFollowedByVoter[ballot_item_we_vote_id]:', positionListFromAdvisersFollowedByVoter[candidate_we_vote_id]);
+          // console.log('positionListForBallotItem OFFICE positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]:', positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]);
           return {
             ...state,
             allCachedPositionsAboutCandidates,

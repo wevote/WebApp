@@ -25,10 +25,8 @@ export default class VerifyThisIsMe extends Component {
     super(props);
     this.state = {
       candidate: {},
-      organization: {},
-      positionListFromAdvisersFollowedByVoter: [],
-      voter: {},
       kindOfOwner: '',
+      organization: {},
       ownerWeVoteId: '',
       twitterHandle: '',
       twitterDescription: '',
@@ -37,6 +35,7 @@ export default class VerifyThisIsMe extends Component {
       twitterPhotoUrl: '',
       twitterUserWebsite: '',
       status: '',
+      voter: {},
     };
   }
 
@@ -79,7 +78,6 @@ export default class VerifyThisIsMe extends Component {
     const { owner_we_vote_id: ownerWeVoteId } = TwitterStore.get();
     this.setState({
       candidate: CandidateStore.getCandidate(ownerWeVoteId),
-      positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(ownerWeVoteId),
     });
   }
 

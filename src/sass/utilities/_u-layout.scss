@@ -87,7 +87,7 @@
 // stylelint-enable
 
 .u_margin-center { margin: $space-none $space-auto; }
-.u-margin-none { margin: 0 !important; }
+.u-margin-none { margin: $space-none !important; }
 // Stack classes
 // -------------------------------
 

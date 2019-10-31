@@ -20,7 +20,7 @@ export default class OrganizationPositionItem extends Component {
     ballotItemLink: PropTypes.string,
     comment_text_off: PropTypes.bool,
     editMode: PropTypes.bool,
-    organization: PropTypes.object.isRequired,
+    organizationWeVoteId: PropTypes.string.isRequired,
     placement: PropTypes.string,
     position: PropTypes.object.isRequired,
     popover_off: PropTypes.bool,
@@ -32,6 +32,7 @@ export default class OrganizationPositionItem extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      componentDidMountFinished: false,
       hidePositionStatement: false,
       supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
       transitioning: false,
@@ -40,100 +41,23 @@ export default class OrganizationPositionItem extends Component {
   }
 
   componentDidMount () {
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    if (this.props.organization && this.props.organization.organization_we_vote_id) {
-      this.setState({
-        organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organization.organization_we_vote_id),
-      });
-    }
-  }
-
-  componentWillReceiveProps (nextProps) {
-    // console.log('OrganizationPositionItem componentWillReceiveProps');
-    if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
-      this.setState({
-        organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
-      });
-    }
-  }
-
-  componentWillUnmount () {
-    this.organizationStoreListener.remove();
-    this.supportStoreListener.remove();
-    this.voterStoreListener.remove();
-  }
-
-  onOrganizationStoreChange () {
-    const { organization } = this.state;
-    // console.log('OrganizationPositionItem onOrganizationStoreChange, organization.organization_we_vote_id: ', organization.organization_we_vote_id);
-    if (organization && organization.organization_we_vote_id) {
-      this.setState({
-        organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
-      });
-    }
-  }
-
-  onSupportStoreChange () {
-    const { organization } = this.state;
-    if (organization && organization.organization_we_vote_id) {
-      this.setState({
-        organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
-        supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
-        transitioning: false,
-      });
-    }
-  }
-
-  onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
-  }
-
-  togglePositionStatement () {
-    const { hidePositionStatement } = this.state;
-    this.setState({ hidePositionStatement: !hidePositionStatement });
-  }
-
-  render () {
-    renderLog('OrganizationPositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { position } = this.props;
-    const { organization } = this.state;
-
-    if (!position.ballot_item_we_vote_id) {
-      // console.log('OrganizationPositionItem cannot render yet -- missing position and organization');
-      return null;
-    }
-
-    const {
-      stance_display_off: stanceDisplayOff, comment_text_off: commentTextOff,
-    } = this.props;
-    const { supportProps } = this.state;
-
-    // Manage the control over this organization voter guide
-    let organizationTwitterHandleBeingViewed = '';
-    let organizationFacebookIdBeingViewed = 0;
-    let organizationWeVoteId = '';
-    let signedInWithThisOrganization = false;
-    if (organization !== undefined) {
-      organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : '';
-      organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
-      organizationWeVoteId = organization.organization_we_vote_id;
-      signedInWithThisOrganization = this.state.voter && this.state.voter.linked_organization_we_vote_id === organizationWeVoteId;
-    }
-    // console.log('signedInWithThisOrganization: ', signedInWithThisOrganization);
-    const signedInTwitter = this.state.voter === undefined ? false : this.state.voter.signed_in_twitter;
+    const { organizationWeVoteId, position } = this.props;
+    const voter = VoterStore.getVoter();
+    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+    const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
+    const organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : '';
+    const signedInWithThisOrganization = voter && voter.linked_organization_we_vote_id === organizationWeVoteId;
+    const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
     let signedInWithThisTwitterAccount = false;
-    if (signedInTwitter && this.state.voter.twitter_screen_name !== null) {
-      signedInWithThisTwitterAccount = this.state.voter.twitter_screen_name.toLowerCase() === organizationTwitterHandleBeingViewed.toLowerCase();
+    if (signedInTwitter && voter.twitter_screen_name !== null) {
+      signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === organizationTwitterHandleBeingViewed.toLowerCase();
     }
-    const signedInFacebook = this.state.voter === undefined ? false : this.state.voter.signed_in_facebook;
+    const signedInFacebook = voter === undefined ? false : voter.signed_in_facebook;
     let signedInWithThisFacebookAccount = false;
     if (signedInFacebook) {
-      signedInWithThisFacebookAccount = this.state.voter.facebook_id === organizationFacebookIdBeingViewed;
+      signedInWithThisFacebookAccount = voter.facebook_id === organizationFacebookIdBeingViewed;
     }
-
+    const supportProps = SupportStore.get(position.ballot_item_we_vote_id);
     let statementText;
     let isPublicPosition;
     let isSupport;
@@ -153,6 +77,201 @@ export default class OrganizationPositionItem extends Component {
       isSupport = position.is_support;
       statementText = position.statement_text;
     }
+    this.setState({
+      componentDidMountFinished: true,
+      isOppose,
+      isPublicPosition,
+      isSupport,
+      organizationWeVoteId,
+      signedInWithThisFacebookAccount,
+      signedInWithThisOrganization,
+      signedInWithThisTwitterAccount,
+      statementText,
+      supportProps,
+      transitioning: false,
+      voter,
+    });
+
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // console.log('OrganizationPositionItem componentWillReceiveProps');
+    const { organizationWeVoteId, position } = nextProps;
+    const supportProps = SupportStore.get(position.ballot_item_we_vote_id);
+    this.setState({
+      organizationWeVoteId,
+      supportProps,
+    });
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.componentDidMountFinished === false) {
+      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+      return true;
+    }
+    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
+      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
+      return true;
+    }
+    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
+      // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
+      return true;
+    }
+    if (this.state.isOppose !== nextState.isOppose) {
+      // console.log('this.state.isOppose:', this.state.isOppose, ', nextState.isOppose:', nextState.isOppose);
+      return true;
+    }
+    if (this.state.isPublicPosition !== nextState.isPublicPosition) {
+      // console.log('this.state.isPublicPosition:', this.state.isPublicPosition, ', nextState.isPublicPosition:', nextState.isPublicPosition);
+      return true;
+    }
+    if (this.state.isSupport !== nextState.isSupport) {
+      // console.log('this.state.isSupport:', this.state.isSupport, ', nextState.isSupport:', nextState.isSupport);
+      return true;
+    }
+    if (this.state.organizationFacebookIdBeingViewed !== nextState.organizationFacebookIdBeingViewed) {
+      // console.log('this.state.organizationFacebookIdBeingViewed:', this.state.organizationFacebookIdBeingViewed, ', nextState.organizationFacebookIdBeingViewed:', nextState.organizationFacebookIdBeingViewed);
+      return true;
+    }
+    if (this.state.organizationTwitterHandleBeingViewed !== nextState.organizationTwitterHandleBeingViewed) {
+      // console.log('this.state.organizationTwitterHandleBeingViewed:', this.state.organizationTwitterHandleBeingViewed, ', nextState.organizationTwitterHandleBeingViewed:', nextState.organizationTwitterHandleBeingViewed);
+      return true;
+    }
+    if (this.state.signedInWithThisFacebookAccount !== nextState.signedInWithThisFacebookAccount) {
+      // console.log('this.state.signedInWithThisFacebookAccount:', this.state.signedInWithThisFacebookAccount, ', nextState.signedInWithThisFacebookAccount:', nextState.signedInWithThisFacebookAccount);
+      return true;
+    }
+    if (this.state.signedInWithThisOrganization !== nextState.signedInWithThisOrganization) {
+      // console.log('this.state.signedInWithThisOrganization:', this.state.signedInWithThisOrganization, ', nextState.signedInWithThisOrganization:', nextState.signedInWithThisOrganization);
+      return true;
+    }
+    if (this.state.signedInWithThisTwitterAccount !== nextState.signedInWithThisTwitterAccount) {
+      // console.log('this.state.signedInWithThisTwitterAccount:', this.state.signedInWithThisTwitterAccount, ', nextState.signedInWithThisTwitterAccount:', nextState.signedInWithThisTwitterAccount);
+      return true;
+    }
+    if (this.state.statementText !== nextState.statementText) {
+      // console.log('this.state.statementText:', this.state.statementText, ', nextState.statementText:', nextState.statementText);
+      return true;
+    }
+    // console.log('shouldComponentUpdate no change');
+    return false;
+  }
+
+  componentWillUnmount () {
+    this.organizationStoreListener.remove();
+    this.supportStoreListener.remove();
+    this.voterStoreListener.remove();
+  }
+
+  onOrganizationStoreChange () {
+    const { organizationWeVoteId, voter } = this.state;
+    // console.log('OrganizationPositionItem onOrganizationStoreChange, organization.organization_we_vote_id: ', organization.organization_we_vote_id);
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
+      const organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : '';
+      const signedInWithThisOrganization = voter && voter.linked_organization_we_vote_id === organizationWeVoteId;
+      this.setState({
+        organizationFacebookIdBeingViewed,
+        organizationTwitterHandleBeingViewed,
+        organizationWeVoteId,
+        signedInWithThisOrganization,
+      });
+    }
+  }
+
+  onSupportStoreChange () {
+    const { position } = this.props;
+    const { organizationWeVoteId, signedInWithThisTwitterAccount, signedInWithThisOrganization } = this.state;
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
+      const organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : '';
+      this.setState({
+        organizationFacebookIdBeingViewed,
+        organizationTwitterHandleBeingViewed,
+        organizationWeVoteId,
+      });
+    }
+    const supportProps = SupportStore.get(position.ballot_item_we_vote_id);
+    let statementText;
+    let isPublicPosition;
+    let isSupport;
+    let isOppose;
+    // If looking at your own page, update when supportProps change
+    if (signedInWithThisTwitterAccount || signedInWithThisOrganization) {
+      // console.log('OrganizationPositionItem signedInWithThisTwitterAccount');
+      // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
+      isOppose = supportProps && supportProps.is_oppose !== undefined ? supportProps.is_oppose : position.is_oppose;
+      isPublicPosition = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
+      isSupport = supportProps && supportProps.is_support !== undefined ? supportProps.is_support : position.is_support;
+      statementText = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
+    } else {
+      // console.log('OrganizationPositionItem NOT signedInWithThisTwitterAccount');
+      isOppose = position.is_oppose;
+      isPublicPosition = position.is_public_position;
+      isSupport = position.is_support;
+      statementText = position.statement_text;
+    }
+    this.setState({
+      isOppose,
+      isPublicPosition,
+      isSupport,
+      statementText,
+      supportProps,
+      transitioning: false,
+    });
+  }
+
+  onVoterStoreChange () {
+    const { organizationFacebookIdBeingViewed, organizationTwitterHandleBeingViewed, organizationWeVoteId } = this.state;
+    const voter = VoterStore.getVoter();
+    const signedInWithThisOrganization = voter && voter.linked_organization_we_vote_id === organizationWeVoteId;
+    const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
+    let signedInWithThisTwitterAccount = false;
+    if (signedInTwitter && voter.twitter_screen_name !== null) {
+      signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === organizationTwitterHandleBeingViewed.toLowerCase();
+    }
+    const signedInFacebook = voter === undefined ? false : voter.signed_in_facebook;
+    let signedInWithThisFacebookAccount = false;
+    if (signedInFacebook) {
+      signedInWithThisFacebookAccount = voter.facebook_id === organizationFacebookIdBeingViewed;
+    }
+    this.setState({
+      signedInWithThisFacebookAccount,
+      signedInWithThisOrganization,
+      signedInWithThisTwitterAccount,
+      voter,
+    });
+  }
+
+  togglePositionStatement () {
+    const { hidePositionStatement } = this.state;
+    this.setState({ hidePositionStatement: !hidePositionStatement });
+  }
+
+  render () {
+    renderLog('OrganizationPositionItem');  // Set LOG_RENDER_EVENTS to log all renders
+    const { comment_text_off: commentTextOff, position, stance_display_off: stanceDisplayOff } = this.props;
+    const {
+      isOppose,
+      isPublicPosition,
+      isSupport,
+      signedInWithThisFacebookAccount,
+      signedInWithThisOrganization,
+      signedInWithThisTwitterAccount,
+      statementText,
+      supportProps,
+    } = this.state;
+
+    if (!position.ballot_item_we_vote_id) {
+      // console.log('OrganizationPositionItem cannot render yet -- missing position.ballot_item_we_vote_id');
+      return null;
+    }
 
     let { ballotItemLink } = this.props;
     if (!ballotItemLink) {
@@ -171,14 +290,14 @@ export default class OrganizationPositionItem extends Component {
 
     const isOnBallotItemPage = false;
     if (position.vote_smart_rating) {
-      // console.log('PositionRatingSnippet');
+      // console.log('OrganizationPositionItem PositionRatingSnippet');
       positionDescription = (
         <PositionRatingSnippet
           {...position}
         />
       );
     } else if (isSupport || isOppose) {
-      // console.log('PositionSupportOpposeSnippet');
+      // console.log('OrganizationPositionItem PositionSupportOpposeSnippet');
       // We overwrite the 'statementText' passed in with position
       positionDescription = (
         <PositionSupportOpposeSnippet
@@ -192,7 +311,7 @@ export default class OrganizationPositionItem extends Component {
         />
       );
     } else {
-      // console.log('PositionInformationOnlySnippet');
+      // console.log('OrganizationPositionItem PositionInformationOnlySnippet');
       positionDescription = (
         <PositionInformationOnlySnippet
           {...position}
@@ -212,7 +331,7 @@ export default class OrganizationPositionItem extends Component {
     }
     return (
       <li className="position-item card-child">
-        { isCandidate && !this.props.turnOffLogo ? (
+        { isCandidate && !this.props.turnOffLogo && (
           <div className="card-child__media-object-anchor">
             <Link
               to={ballotItemLink}
@@ -228,8 +347,7 @@ export default class OrganizationPositionItem extends Component {
               />
             </Link>
           </div>
-        ) : null
-        }
+        )}
         <div className="card-child__media-object-content">
           <div className="card-child__content">
             {!this.props.turnOffName ? (
@@ -242,12 +360,10 @@ export default class OrganizationPositionItem extends Component {
                   {ballotItemDisplayName}
                 </Link>
                 { (signedInWithThisTwitterAccount ||
-                signedInWithThisOrganization ||
-                signedInWithThisFacebookAccount) &&
-                this.props.editMode ?
-                  <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} /> :
+                  signedInWithThisOrganization ||
+                  signedInWithThisFacebookAccount) &&
                   <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
-              }
+                }
               </div>
             ) : null
             }

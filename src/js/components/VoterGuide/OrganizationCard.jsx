@@ -45,7 +45,7 @@ export default class OrganizationCard extends Component {
   }
 
   componentDidMount () {
-    // console.log("OrganizationCard, componentDidMount, this.props:", this.props);
+    // console.log('OrganizationCard, componentDidMount, this.props:', this.props);
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     if (this.props.organization && this.props.organization.organization_we_vote_id) {
       this.setState({
@@ -55,10 +55,10 @@ export default class OrganizationCard extends Component {
     this.setState({
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
     });
-    // console.log("this.props.organization (componentDidMount): ", this.props.organization);
+    // console.log('this.props.organization (componentDidMount): ', this.props.organization);
     if (this.props.organization && this.props.organization.organization_we_vote_id && this.props.ballotItemWeVoteId) {
       const organizationPosition = OrganizationStore.getOrganizationPositionByWeVoteId(this.props.organization.organization_we_vote_id, this.props.ballotItemWeVoteId);
-      // console.log("organizationPosition (componentDidMount): ", organizationPosition);
+      // console.log('organizationPosition (componentDidMount): ', organizationPosition);
       if (organizationPosition && organizationPosition.ballot_item_we_vote_id) {
         this.setState({
           organizationPosition,
@@ -74,7 +74,7 @@ export default class OrganizationCard extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("OrganizationCard, componentWillReceiveProps, nextProps:", nextProps);
+    // console.log('OrganizationCard, componentWillReceiveProps, nextProps:', nextProps);
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
         organizationWeVoteId: nextProps.organization.organization_we_vote_id,
@@ -85,7 +85,7 @@ export default class OrganizationCard extends Component {
     });
     if (nextProps.organization && nextProps.organization.organization_we_vote_id && nextProps.ballotItemWeVoteId) {
       const organizationPosition = OrganizationStore.getOrganizationPositionByWeVoteId(nextProps.organization.organization_we_vote_id, nextProps.ballotItemWeVoteId);
-      // console.log("organizationPosition (componentWillReceiveProps): ", organizationPosition);
+      // console.log('organizationPosition (componentWillReceiveProps): ', organizationPosition);
       if (organizationPosition && organizationPosition.ballot_item_we_vote_id) {
         this.setState({
           organizationPosition,

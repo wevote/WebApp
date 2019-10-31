@@ -570,10 +570,12 @@ class VoterGuideBallot extends Component {
       alreadyPushed = false;
       oneContest = ballotWithAllItems[contestIndex];
       // console.log('oneContest:', oneContest);
+      // Measures
       if (!alreadyPushed && oneContest && oneContest.we_vote_id && this.localDoesOrganizationHavePositionOnBallotItem(oneContest.we_vote_id)) {
         ballotWithOrganizationEndorsements.push(oneContest);
         alreadyPushed = true;
       }
+      // Offices
       if (!alreadyPushed && oneContest && oneContest.candidate_list) {
         for (let candidateIndex = 0; candidateIndex < oneContest.candidate_list.length; candidateIndex++) {
           oneCandidate = oneContest.candidate_list[candidateIndex];
