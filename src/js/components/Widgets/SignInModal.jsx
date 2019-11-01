@@ -102,6 +102,13 @@ class SignInModal extends Component {
   }
 }
 
+/*
+This modal dialog floats up in the DOM, to just below the body, so no styles from the app are inherited.
+In Cordova, when you click into a text entry field, the phone OS reduces the size of the JavaScript DOM by
+the size of the keyboard, and if the DOM is overconstrained, i.e  has hard coded vertical sizes that can't
+be honored, Cordova tries to do the best it can, but sometimes it crashes and locks up the instance.
+For Cordova eliminate as many fixed vertical dimensions as needed to avoid overconstraint.
+*/
 const styles = theme => ({
   dialogRoot: isCordova() ? {
     height: '100%',
