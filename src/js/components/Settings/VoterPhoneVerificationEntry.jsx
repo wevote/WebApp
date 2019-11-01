@@ -169,7 +169,7 @@ class VoterPhoneVerificationEntry extends Component {
     event.preventDefault();
     VoterActions.voterSMSPhoneNumberSave(this.state.voterSMSPhoneNumber);
     this.setState({ loading: true });
-  }
+  };
 
   updateVoterSMSPhoneNumber = (e) => {
     const voterSMSPhoneNumber = e.target.value;
@@ -178,7 +178,7 @@ class VoterPhoneVerificationEntry extends Component {
       voterSMSPhoneNumber,
       voterSMSPhoneNumberIsValid,
     });
-  }
+  };
 
   closeVerifyModal = () => {
     // console.log('VoterPhoneVerificationEntry closeVerifyModal');
@@ -190,7 +190,7 @@ class VoterPhoneVerificationEntry extends Component {
       showVerifyModal: false,
       voterSMSPhoneNumber: '',
     });
-  }
+  };
 
   hidePhoneVerificationButton = () => {
     const { voterSMSPhoneNumber } = this.state;
@@ -200,13 +200,13 @@ class VoterPhoneVerificationEntry extends Component {
         displayPhoneVerificationButton: false,
       });
     }
-  }
+  };
 
   displayPhoneVerificationButton = () => {
     this.setState({
       displayPhoneVerificationButton: true,
     });
-  }
+  };
 
   localToggleOtherSignInOptions = () => {
     if (isCordova()) {
@@ -216,7 +216,7 @@ class VoterPhoneVerificationEntry extends Component {
         this.props.toggleOtherSignInOptions();
       }
     }
-  }
+  };
 
   reSendSignInCodeSMS = (voterSMSPhoneNumber) => {
     if (voterSMSPhoneNumber) {
@@ -230,7 +230,7 @@ class VoterPhoneVerificationEntry extends Component {
         voterSMSPhoneNumber,
       });
     }
-  }
+  };
 
   sendSignInCodeSMS () {
     // console.log('sendSignInCodeSMS');

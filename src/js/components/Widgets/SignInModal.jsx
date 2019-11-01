@@ -8,7 +8,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 
@@ -62,7 +62,7 @@ class SignInModal extends Component {
     // This modal is shown when the voter wants to sign in.
     return (
       <Dialog
-        classes={{ paper: classes.dialogPaper }}
+        classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(); }}
       >
@@ -103,8 +103,16 @@ class SignInModal extends Component {
 }
 
 const styles = theme => ({
-  dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+  dialogRoot: isCordova() ? {
+    height: '100%',
+    position: 'absolute !important',
+    top: '-15% !important',
+    left: '0% !important',
+    right: 'unset !important',
+    bottom: 'unset !important',
+    width: '100%',
+  } : {},
+  dialogPaper: isWebApp() ? {
     [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
@@ -114,6 +122,18 @@ const styles = theme => ({
       height: '90%',
       margin: '0 auto',
     },
+  } : {
+    margin: '0 !important',
+    width: '95%',
+    height: 'unset',
+    maxHeight: '90%',
+    offsetHeight: 'unset !important',
+    top: '50%',
+    left: '50%',
+    right: 'unset !important',
+    bottom: 'unset !important',
+    position: 'absolute',
+    transform: 'translate(-50%, -25%)',
   },
   dialogContent: {
     [theme.breakpoints.down('md')]: {
