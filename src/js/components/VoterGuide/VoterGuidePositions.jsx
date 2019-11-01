@@ -341,16 +341,6 @@ export default class VoterGuidePositions extends Component {
         />
         <div className="card">
           <ul className="card-child__list-group">
-            { lookingAtSelf && atLeastOnePositionFoundForThisElection && !this.state.searchIsUnderway ? (
-              <a // eslint-disable-line
-                className="fa-pull-right u-push--md"
-                onKeyDown={this.onKeyDownEditMode.bind(this)}
-                onClick={this.toggleEditMode.bind(this)}
-              >
-                {this.state.editMode ? 'Done Editing' : 'Edit Positions'}
-              </a>
-            ) : null
-            }
             <h4 className="h4 card__additional-heading">
               <span className="u-push--sm">{ electionName || 'This Election'}</span>
               {/* {this.state.ballot_election_list.length > 1 ? <img src={cordovaDot("/img/global/icons/gear-icon.png")} className="d-print-none" role="button" onClick={this.toggleSelectBallotModal}

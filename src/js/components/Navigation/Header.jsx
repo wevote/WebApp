@@ -33,10 +33,9 @@ export default class Header extends Component {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
-    const { friendsMode, settingsMode, valuesMode, voterGuideMode,
+    const { friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
       showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
-    // const hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
     let iPhoneSpacer = '';
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
@@ -48,12 +47,20 @@ export default class Header extends Component {
     // console.log(`Header href: ${window.location.href}  cordovaStyle: `, cordovaTopHeaderTopMargin());
 
 
-    if (voterGuideMode) {
+    if (voterGuideMode || voterGuideCreatorMode) {
       // console.log('Header in voterGuideMode');
+      let headroomWrapper = '';
+      if (isWebApp) {
+        if (voterGuideCreatorMode) {
+          headroomWrapper = 'headroom-wrapper-webapp__voter-guide-creator';
+        } else {
+          headroomWrapper = 'headroom-wrapper-webapp__voter-guide';
+        }
+      }
       return (
         <div id="app-header">
           {iPhoneSpacer}
-          <div className={isWebApp ? 'headroom-wrapper-webapp__voter-guide' : ''}>
+          <div className={headroomWrapper}>
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               {showBackToBallotHeader ?
                 <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> : (

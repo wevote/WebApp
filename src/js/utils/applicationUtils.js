@@ -14,7 +14,7 @@ export function getApplicationViewBooleans (pathname) {
   let voteMode = false;
   let valuesMode = false;
   let voterGuideMode = false;
-  let voterGuideShowGettingStartedNavigation = false;
+  let voterGuideCreatorMode = false;
   if (pathnameLowerCase === '/intro/story' ||
     pathnameLowerCase === '/intro/sample_ballot' ||
     pathnameLowerCase === '/intro/get_started' ||
@@ -54,6 +54,9 @@ export function getApplicationViewBooleans (pathname) {
     voteMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot')) {
     contentFullWidthMode = false;
+  } else if (stringContains('/settings/positions', pathnameLowerCase)) {
+    // contentFullWidthMode = true;
+    voterGuideCreatorMode = true;
   } else if (stringContains('/settings', pathnameLowerCase) ||
     pathnameLowerCase === '/settings/voterguidesmenu' ||
     pathnameLowerCase === '/settings/voterguidelist') {
@@ -71,7 +74,6 @@ export function getApplicationViewBooleans (pathname) {
     friendsMode = true;
   } else {
     voterGuideMode = true;
-    voterGuideShowGettingStartedNavigation = true;
   }
 
   let showBackToFriends = false;
@@ -167,8 +169,8 @@ export function getApplicationViewBooleans (pathname) {
     settingsMode,
     voteMode,
     valuesMode,
+    voterGuideCreatorMode,
     voterGuideMode,
-    voterGuideShowGettingStartedNavigation,
     showBackToFriends,
     showBackToBallotHeader,
     showBackToSettingsDesktop,

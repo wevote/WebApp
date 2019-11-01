@@ -67,15 +67,21 @@ class Application extends Component {
     // console.log('Application componentDidUpdate');
     const { location: { pathname } } = this.props;
     const { voteMode, voterGuideMode } = getApplicationViewBooleans(pathname);
-
+    const { lastZenDeskVisibilityPathName } = this.state;
     if (!voterGuideMode && AppStore.showEditAddressButton()) {
       AppActions.setShowEditAddressButton(false);
     }
-
     if (!voteMode &&
       ((voterGuideMode && !AppStore.showEditAddressButton()) ||
         stringContains('/ballot', pathname.toLowerCase().slice(0, 7)))) {
       AppActions.setShowEditAddressButton(true);
+    }
+    if (isWebApp() && String(lastZenDeskVisibilityPathName) !== String(pathname)) {
+      // console.log('lastZenDeskVisibilityPathName:', lastZenDeskVisibilityPathName, ', pathname:', pathname);
+      setZenDeskHelpVisibility(pathname);
+      this.setState({
+        lastZenDeskVisibilityPathName: String(pathname),
+      });
     }
   }
 
@@ -222,6 +228,7 @@ class Application extends Component {
         cookies.setItem('hide_intro_modal', hideIntroModalFromUrl, oneDayExpires, '/');
       }
 
+      // Support the incoming "id=" url variable. This is the client id referred to as external_voter_id in https://api.wevoteusa.org/apis/v1/docs/organizationAnalyticsByVoter/
       const { id: externalVoterId } = this.props.location.query;
       if (externalVoterId) {
         // console.log('externalVoterId: ', externalVoterId);
@@ -270,7 +277,6 @@ class Application extends Component {
   render () {
     renderLog('Application');  // Set LOG_RENDER_EVENTS to log all renders
     const { location: { pathname } } = this.props;
-    const { lastZenDeskVisibilityPathName } = this.state;
     const { StripeCheckout } = window;
     const waitForStripe = (String(pathname) === '/more/donate' && StripeCheckout === undefined);
     // console.log('Application render, pathname:', pathname);
@@ -293,15 +299,8 @@ class Application extends Component {
     }
 
     routingLog(pathname);
-    if (String(lastZenDeskVisibilityPathName) !== String(pathname)) {
-      // console.log('lastZenDeskVisibilityPathName:', lastZenDeskVisibilityPathName, ', pathname:', pathname);
-      setZenDeskHelpVisibility(pathname);
-      this.setState({
-        lastZenDeskVisibilityPathName: String(pathname),
-      });
-    }
 
-    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, voterGuideMode } = getApplicationViewBooleans(pathname);
+    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, voterGuideCreatorMode, voterGuideMode } = getApplicationViewBooleans(pathname);
 
     if (inTheaterMode) {
       // console.log('inTheaterMode', inTheaterMode);
@@ -320,7 +319,7 @@ class Application extends Component {
           </Wrapper>
         </div>
       );
-    } else if (voterGuideMode) {
+    } else if (voterGuideMode || voterGuideCreatorMode) {
       // console.log('voterGuideMode', voterGuideMode);
       return (
         <div className={this.getAppBaseClass()} id="app-base-id">
@@ -334,7 +333,7 @@ class Application extends Component {
           <SnackNotifier />
           <Wrapper padTop={cordovaVoterGuideTopPadding()}>
             <div className="page-content-container">
-              <div className="container-voter-guide">
+              <div className={voterGuideCreatorMode ? 'container-voter-guide-creator' : 'container-voter-guide'}>
                 { this.props.children }
               </div>
             </div>
