@@ -135,6 +135,10 @@ export default class Candidate extends Component {
       // console.log('this.state.allCachedPositionsForThisCandidateLength:', this.state.allCachedPositionsForThisCandidateLength, ', nextState.allCachedPositionsForThisCandidateLength:', nextState.allCachedPositionsForThisCandidateLength);
       return true;
     }
+    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
+      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
+      return true;
+    }
     if (this.state.candidateWeVoteId !== nextState.candidateWeVoteId) {
       // console.log('this.state.candidateWeVoteId:', this.state.candidateWeVoteId, ', nextState.candidateWeVoteId:', nextState.candidateWeVoteId);
       return true;
@@ -172,8 +176,11 @@ export default class Candidate extends Component {
     if (allCachedPositionsForThisCandidate) {
       allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length;
     }
+    const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+    const ballotItemDisplayName = candidate.ballot_item_display_name;
     this.setState({
-      candidate: CandidateStore.getCandidate(candidateWeVoteId),
+      ballotItemDisplayName,
+      candidate,
       allCachedPositionsForThisCandidate,
       allCachedPositionsForThisCandidateLength,
     });
@@ -202,6 +209,7 @@ export default class Candidate extends Component {
     const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown } = this.state;
 
     if (!candidate || !candidate.ballot_item_display_name) {
+      // console.log('No candidate or candidate.ballot_item_display_name, candidate:', candidate);
       return (
         <div className="container-fluid well u-stack--md u-inset--md">
           <div>{LoadingWheel}</div>

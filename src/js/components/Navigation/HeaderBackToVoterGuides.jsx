@@ -326,7 +326,6 @@ class HeaderBackToVoterGuides extends Component {
           />
           )}
 
-          {isWebApp() && (
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
             { changeElectionButtonHtml }
             {voterPhotoUrlMedium ? (
@@ -351,7 +350,6 @@ class HeaderBackToVoterGuides extends Component {
               </Button>
             )}
           </div>
-          )}
         </Toolbar>
         <VoterGuideTitle className="header-toolbar">
           {electionName}

@@ -425,6 +425,10 @@ class ItemActionBar extends PureComponent {
     }
   }
 
+  isAnyEndorsementCalculated () {
+    return this.isOpposeCalculated() || this.isSupportCalculated();
+  }
+
   toggleSupportOrOpposeHelpModal () {
     const { showSupportOrOpposeHelpModal } = this.state;
     this.setState({
@@ -659,6 +663,7 @@ class ItemActionBar extends PureComponent {
     const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.isOpposeCalculated() ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
     // console.log('ItemActionBar this.props.buttonsOnly:', this.props.buttonsOnly);
+    const showPositionPublicToggle = !this.props.buttonsOnly || this.isAnyEndorsementCalculated();
     return (
       <>
         <ItemActionBarWrapper
@@ -668,7 +673,7 @@ class ItemActionBar extends PureComponent {
           onMouseOut={handleLeaveHoverLocalArea}
           onBlur={handleLeaveHoverLocalArea}
         >
-          {this.props.buttonsOnly ? null : (
+          {showPositionPublicToggle && (
             <PositionPublicToggle
               ballotItemWeVoteId={ballotItemWeVoteId}
               className="null"
