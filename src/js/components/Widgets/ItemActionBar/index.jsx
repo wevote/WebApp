@@ -838,22 +838,20 @@ const styles = theme => ({
 // flex: none;
 const ItemActionBarWrapper = styled.div`
   display: flex;
-  flex-flow: row;
-  justify-content: space-between;
-  flex: auto;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
   border-top: ${({ displayInline }) => (displayInline ? '' : '1px solid #eee !default')};
   margin-top: ${({ displayInline }) => (displayInline ? '' : '16px')};
   margin-right: 0;
-  margin-bottom: 0;
   margin-left: 0;
   padding-top: ${({ displayInline }) => (displayInline ? '0' : '8px')};
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-bottom: 8px;
-  }
+  margin-bottom: 8px;
 `;
 
 const ButtonGroup = styled.div`
-  margin-left: auto;
+  margin-left: 0;
+  height: fit-content;
 `;
 
 const StackedButton = styled.div`

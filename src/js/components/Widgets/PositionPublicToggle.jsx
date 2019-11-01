@@ -356,7 +356,8 @@ const styles = theme => ({
 });
 
 const Wrapper = styled.div`
-  flex: 1 1 0;
+  margin-left: auto;
+  width: fit-content;
 `;
 
 const PublicToggle = styled.div`
