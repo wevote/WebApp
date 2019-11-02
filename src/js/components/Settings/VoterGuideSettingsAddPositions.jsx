@@ -494,12 +494,12 @@ class VoterGuideSettingsAddPositions extends Component {
             })
             }
           </CardChildListGroup>
-          <ShowMoreItems>
+          <ShowMoreItems onClick={() => this.increaseNumberOfPositionItemsToDisplay()}>
             Displaying
             {' '}
             {numberOfPositionItemsDisplayed}
             {' '}
-            out of
+            of
             {' '}
             {totalNumberOfPositionItems}
             {numberOfPositionItemsDisplayed !== totalNumberOfPositionItems && (
@@ -507,24 +507,21 @@ class VoterGuideSettingsAddPositions extends Component {
                 {' '}
                 ::
                 {' '}
-                <span onClick={() => this.increaseNumberOfPositionItemsToDisplay()}>Show More</span>
+                <span>Show More</span>
               </span>
             )}
           </ShowMoreItems>
 
-          {atLeastOnePositionFoundWithTheseFilters && (
-            <div className="fa-pull-right">
-              <Button
-                color="primary"
-                id="voterGuideSettingsPositionsSeeFullBallot"
-                onClick={this.goToVoterGuideDisplay}
-                variant="contained"
-              >
-                See Preview&nbsp;&nbsp;&gt;
-              </Button>
-            </div>
-          )
-          }
+          <PreviewButtonWrapper>
+            <Button
+              color="primary"
+              id="voterGuideSettingsPositionsSeeFullBallot"
+              onClick={this.goToVoterGuideDisplay}
+              variant="contained"
+            >
+              See Preview&nbsp;&nbsp;&gt;
+            </Button>
+          </PreviewButtonWrapper>
         </div>
       );
     } else {
@@ -593,7 +590,7 @@ class VoterGuideSettingsAddPositions extends Component {
                 {' '}
                 {numberOfBallotItemsDisplayed}
                 {' '}
-                out of
+                of
                 {' '}
                 {totalNumberOfBallotItems}
                 {numberOfBallotItemsDisplayed !== totalNumberOfBallotItems && (
@@ -606,23 +603,23 @@ class VoterGuideSettingsAddPositions extends Component {
                 )
                 }
               </ShowMoreItems>
+
+              <PreviewButtonWrapper>
+                <Button
+                  color="primary"
+                  id="voterGuideSettingsPositionsSeeFullBallot"
+                  onClick={this.goToVoterGuideDisplay}
+                  variant="contained"
+                >
+                  See Preview&nbsp;&nbsp;&gt;
+                </Button>
+              </PreviewButtonWrapper>
             </div>
           ) : (
             <Card>
               <EmptyBallotMessageContainer>
                 <BallotIcon classes={{ root: classes.ballotIconRoot }} />
                 <EmptyBallotText>No results found. Try selecting different filters to see results.</EmptyBallotText>
-                {/*
-                <Button
-                  classes={{ root: classes.ballotButtonRoot }}
-                  color="primary"
-                  variant="contained"
-                  onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('addpositions')}
-                >
-                  <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
-                  Clear Filters
-                </Button>
-                */}
               </EmptyBallotMessageContainer>
             </Card>
           )
@@ -647,6 +644,11 @@ const EmptyBallotText = styled.p`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin: 1em;
   }
+`;
+
+const PreviewButtonWrapper = styled.div`
+  text-align: right;
+  margin: 20px 0;
 `;
 
 const ShowMoreItems = styled.div`

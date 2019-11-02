@@ -34,7 +34,7 @@ class ItemActionBar extends PureComponent {
     // currentBallotIdInUrl: PropTypes.string,
     opposeHideInMobile: PropTypes.bool,
     shareButtonHide: PropTypes.bool,
-    toggleFunction: PropTypes.func,
+    togglePositionStatementFunction: PropTypes.func,
     type: PropTypes.string.isRequired,
     ballotItemDisplayName: PropTypes.string,
     supportOrOpposeHasBeenClicked: PropTypes.func,
@@ -54,10 +54,12 @@ class ItemActionBar extends PureComponent {
       isPublicPosition: undefined,
       isSupportAPIState: undefined,
       isSupportLocalState: undefined,
+      opposeCount: 0,
       showSupportOrOpposeHelpModal: false,
       supportCount: 0,
-      opposeCount: 0,
       transitioning: false,
+      voterStatementText: undefined,
+      voterStatementTextOpened: false,
     };
     this.isOpposeCalculated = this.isOpposeCalculated.bind(this);
     this.isSupportCalculated = this.isSupportCalculated.bind(this);
@@ -75,13 +77,16 @@ class ItemActionBar extends PureComponent {
     let isSupportAPIState = false;
     let supportCount = 0;
     let opposeCount = 0;
+    let voterStatementText = '';
     const ballotItemSupportProps = SupportStore.get(this.props.ballotItemWeVoteId);
+    // console.log('ballotItemSupportProps', ballotItemSupportProps);
     if (ballotItemSupportProps) {
       isPublicPosition = ballotItemSupportProps.is_public_position || false;
       isOpposeAPIState = ballotItemSupportProps.is_oppose || false;
       isSupportAPIState = ballotItemSupportProps.is_support || false;
       opposeCount = ballotItemSupportProps.oppose_count || 0;
       supportCount = ballotItemSupportProps.support_count || 0;
+      voterStatementText = ballotItemSupportProps.voter_statement_text || '';
     }
 
     this.setState({
@@ -91,6 +96,7 @@ class ItemActionBar extends PureComponent {
       isSupportAPIState,
       opposeCount,
       supportCount,
+      voterStatementText,
     }, this.onNewBallotItemWeVoteId);
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
@@ -117,6 +123,7 @@ class ItemActionBar extends PureComponent {
   onSupportStoreChange () {
     const ballotItemSupportProps = SupportStore.get(this.state.ballotItemWeVoteId);
     // console.log('ItemActionBar, onSupportStoreChange');
+    // console.log('ballotItemSupportProps', ballotItemSupportProps);
     // Only proceed if we have valid ballotItemSupportProps
     if (ballotItemSupportProps !== undefined && ballotItemSupportProps) {
       if (ballotItemSupportProps.support_count !== undefined && ballotItemSupportProps.support_count !== this.state.supportCount) {
@@ -181,6 +188,21 @@ class ItemActionBar extends PureComponent {
           transitioning: false,
         });
       }
+      if (ballotItemSupportProps.voter_statement_text) {
+        this.setState({
+          voterStatementText: ballotItemSupportProps.voter_statement_text,
+        });
+      }
+    }
+  }
+
+  togglePositionStatementFunction = () => {
+    const { voterStatementTextOpened } = this.state;
+    this.setState({
+      voterStatementTextOpened: !voterStatementTextOpened,
+    });
+    if (this.props.togglePositionStatementFunction) {
+      this.props.togglePositionStatementFunction();
     }
   }
 
@@ -377,7 +399,7 @@ class ItemActionBar extends PureComponent {
         id={`itemActionBarCommentButton-${externalUniqueId}-${localUniqueId}`}
         variant="contained"
         className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
-        onClick={this.props.toggleFunction}
+        onClick={this.togglePositionStatementFunction}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <CommentIcon classes={{ root: classes.buttonIcon }} />
@@ -398,7 +420,7 @@ class ItemActionBar extends PureComponent {
           id={`itemActionBarCommentButtonNoText-${externalUniqueId}-${localUniqueId}`}
           variant="contained"
           className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
-          onClick={this.props.toggleFunction}
+          onClick={this.togglePositionStatementFunction}
           classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
         >
           <CommentIcon classes={{ root: classes.buttonIcon }} />
@@ -426,7 +448,7 @@ class ItemActionBar extends PureComponent {
   }
 
   isAnyEndorsementCalculated () {
-    return this.isOpposeCalculated() || this.isSupportCalculated();
+    return this.isOpposeCalculated() || this.isSupportCalculated() || this.state.voterStatementText || this.state.voterStatementTextOpened;
   }
 
   toggleSupportOrOpposeHelpModal () {
@@ -554,7 +576,8 @@ class ItemActionBar extends PureComponent {
   }
 
   render () {
-    renderLog('index.jsx');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('ItemActionBar index.jsx');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('ItemActionBar render');
     const { commentButtonHide, commentButtonHideInMobile, classes, type } = this.props;
     const { ballotItemWeVoteId } = this.state;
 

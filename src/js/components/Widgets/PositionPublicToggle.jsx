@@ -241,7 +241,7 @@ class PositionPublicToggle extends Component {
         onClose={() => { this.togglePositionPublicHelpModal(); }}
       >
         <DialogTitle>
-          <Typography variant="h6" className="text-center">Make Your Positions Public</Typography>
+          <Typography variant="h6" className="text-center">Make Your Endorsements Public</Typography>
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}

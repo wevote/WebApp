@@ -1,21 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Alert } from 'react-bootstrap';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
+import { withStyles } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import AppActions from '../../actions/AppActions';
 import CandidateItem from '../../components/Ballot/CandidateItem';
 import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import FollowToggle from '../../components/Widgets/FollowToggle';
 import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationStore from '../../stores/OrganizationStore';
+import { renderLog } from '../../utils/logging';
 import TwitterAccountCard from '../../components/Twitter/TwitterAccountCard';
 import TwitterActions from '../../actions/TwitterActions';
 import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
 import TwitterStore from '../../stores/TwitterStore';
+import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 
-export default class VerifyThisIsMe extends Component {
+class VerifyThisIsMe extends Component {
   static propTypes = {
     params: PropTypes.object,
     twitter_handle: PropTypes.string,
@@ -41,7 +47,7 @@ export default class VerifyThisIsMe extends Component {
 
   componentDidMount () {
     // console.log("VerifyThisIsMe, Entering componentDidMount");
-
+    AppActions.storeSignInStartFullUrl(); // Store cookie so we return to this page after sign in
     this.onVoterStoreChange();
     // console.log(`VerifyThisIsMe, componentDidMount: ${this.props.params.twitter_handle}`);
     TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
@@ -89,32 +95,47 @@ export default class VerifyThisIsMe extends Component {
       status,
     } = TwitterStore.get();
 
-    // console.log(`Entering onTwitterStoreChange, owner_we_vote_id: ${ownerWeVoteId}`);
+    // console.log(`Entering onTwitterStoreChange, twitterHandle: ${twitterHandle}`);
+    // Only clear if there is a value in twitterHandle
+    if (twitterHandle) {
+      this.setState({
+        kindOfOwner,
+        ownerWeVoteId,
+        twitterHandle,
+        twitterDescription,
+        twitterFollowersCount,
+        twitterName,
+        twitterPhotoUrl,
+        twitterUserWebsite,
+        status,
+      });
+    }
+  }
 
-    this.setState({
-      kindOfOwner,
-      ownerWeVoteId,
-      twitterHandle,
-      twitterDescription,
-      twitterFollowersCount,
-      twitterName,
-      twitterPhotoUrl,
-      twitterUserWebsite,
-      status,
-    });
+  goToVoterGuideDisplay = () => {
+    let voterGuideDisplay = '/ballot';
+    if (this.state.twitterHandle) {
+      voterGuideDisplay = `/${this.state.twitterHandle}`;
+    }
+    historyPush(voterGuideDisplay);
+  }
+
+  voterSignOut = () => {
+    VoterSessionActions.voterSignOut();
+    TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
   }
 
   render () {
     renderLog('VerifyThisIsMe');  // Set LOG_RENDER_EVENTS to log all renders
 
     // Manage the control over this organization voter guide
-    const { candidate, organization, voter } = this.state;
+    const { candidate, organization, twitterHandle, voter } = this.state;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
     let signedInWithThisTwitterAccount = false;
     if (signedInTwitter) {
       // console.log("VerifyThisIsMe render, signedInTwitter: ", signedInTwitter);
-      // console.log(`VerifyThisIsMe this.state.twitterHandle: ${this.state.twitterHandle}`);
-      signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === this.state.twitterHandle.toLowerCase();
+      // console.log(`VerifyThisIsMe twitterHandle: ${twitterHandle}`);
+      signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === twitterHandle.toLowerCase();
       if (signedInWithThisTwitterAccount) {
         // If we are being asked to verify the account we are already signed into, return to the TwitterHandle page
         // console.log("VerifyThisIsMe signedInWithThisTwitterAccount is True");
@@ -132,6 +153,37 @@ export default class VerifyThisIsMe extends Component {
       return (
         <span>
           <Helmet title="Claim This Page - We Vote" />
+          <div className="card">
+            <div className="card-main">
+              <div>
+                <br />
+                <h1 className="h1">
+                  Please verify that you have the right to manage statements by this politician
+                  by signing into this Twitter account:
+                </h1>
+                <h2 className="h2">
+                  @
+                  {twitterHandle}
+                </h2>
+                <br />
+              </div>
+              { signedInTwitter ? (
+                <div>
+                  Sign out from the Twitter account @
+                  {voter.twitter_screen_name}
+                  , and then Sign in with
+                  {' '}
+                  @
+                  {twitterHandle}
+                </div>
+              ) : (
+                <TwitterSignIn
+                  buttonText={`Sign in to @${twitterHandle}`}
+                  id="signInToVerifyAccess"
+                />
+              )}
+            </div>
+          </div>
           <section className="card">
             <CandidateItem
               candidateWeVoteId={candidate.we_vote_id}
@@ -139,33 +191,6 @@ export default class VerifyThisIsMe extends Component {
               showOfficeName
             />
           </section>
-          <div>
-            <br />
-            <h1 className="h1">
-              Please verify that you have the right to manage statements by this politician
-              by signing into this Twitter account:
-            </h1>
-            <h2 className="h2">
-              @
-              {this.state.twitterHandle}
-            </h2>
-            <br />
-          </div>
-          { signedInTwitter ? (
-            <div>
-              Sign out from the Twitter account @
-              {voter.twitter_screen_name}
-              , and then Sign in with
-              {' '}
-              @
-              {this.state.twitterHandle}
-            </div>
-          ) : (
-            <TwitterSignIn
-              buttonText={`Sign in to @${this.state.twitterHandle}`}
-              id="signInToVerifyAccess"
-            />
-          )}
         </span>
       );
     } else if (this.state.kindOfOwner === 'ORGANIZATION') {
@@ -179,35 +204,69 @@ export default class VerifyThisIsMe extends Component {
 
       return (
         <span>
-          <Helmet title="Claim This Page - We Vote" />
+          <Helmet title={`Claim @${twitterHandle} - We Vote`} />
           <div className="card">
             <div className="card-main">
-              <OrganizationCard organization={organization} />
-              <FollowToggle organizationWeVoteId={this.props.params.we_vote_id} />
+              { signedInTwitter ? (
+                <div>
+                  <Alert variant="danger">
+                    You are signed into We Vote with @
+                    {voter.twitter_screen_name}
+                    .
+                    To claim
+                    {' '}
+                    @
+                    {twitterHandle}
+                    ,
+                    {' '}
+                    <FakeLink onClick={this.voterSignOut}>
+                      sign out
+                    </FakeLink>
+                    {' '}
+                    of We Vote, and then sign in again with your
+                    {' '}
+                    @
+                    {twitterHandle}
+                    {' '}
+                    Twitter account.
+                  </Alert>
+                </div>
+              ) : (
+                <div>
+                  <Alert variant="danger">
+                    Verify that you represent @
+                    {twitterHandle}
+                    {' '}
+                    by clicking this Twitter sign in button.
+                  </Alert>
+                  <TwitterSignIn
+                    buttonText={`Sign in to @${twitterHandle}`}
+                    id="signInToVerifyAccess"
+                  />
+                </div>
+              )}
+              <BackToVoterGuideWrapper>
+                <Button
+                  color="primary"
+                  id="voterGuideSettingsPositionsSeeFullBallot"
+                  onClick={this.goToVoterGuideDisplay}
+                  variant="contained"
+                >
+                  &lt;&nbsp;&nbsp;Back to
+                  {' '}
+                  @
+                  {twitterHandle}
+                </Button>
+              </BackToVoterGuideWrapper>
             </div>
           </div>
-          <div>
-            <p className="h4">
-              Verify that you represent @
-              {this.state.twitterHandle}
-              {' '}
-              by signing into this Twitter account.
-            </p>
-          </div>
-          { signedInTwitter ? (
-            <div>
-              Sign out from the Twitter account @
-              {voter.twitter_screen_name}
-              , and then Sign in with
-              {' '}
-              @
-              {this.state.twitterHandle}
+          {this.props.params.we_vote_id && (
+            <div className="card">
+              <div className="card-main">
+                <OrganizationCard organization={organization} />
+                <FollowToggle organizationWeVoteId={this.props.params.we_vote_id} />
+              </div>
             </div>
-          ) : (
-            <TwitterSignIn
-              buttonText={`Sign in to @${this.state.twitterHandle}`}
-              id="signInToVerifyAccess"
-            />
           )}
         </span>
       );
@@ -215,29 +274,36 @@ export default class VerifyThisIsMe extends Component {
       // console.log("VerifyThisIsMe this.state.kindOfOwner === TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE");
       return (
         <div>
-          <Helmet title="Claim This Page - We Vote" />
+          <Helmet title={`Claim @${twitterHandle} - We Vote`} />
           <TwitterAccountCard {...this.state} />
           <div>
             <br />
             <h1 className="h1">Please verify that this is you by signing into this Twitter account:</h1>
             <h2 className="h2">
               @
-              {this.state.twitterHandle}
+              {twitterHandle}
             </h2>
             <br />
           </div>
           { signedInTwitter ? (
             <div>
-              Sign out from the Twitter account @
+              You are signed into We Vote with @
               {voter.twitter_screen_name}
-              , and then Sign in with
+              .
+              To claim
               {' '}
               @
-              {this.state.twitterHandle}
+              {twitterHandle}
+              , sign out of We Vote, and then sign in again with your
+              {' '}
+              @
+              {twitterHandle}
+              {' '}
+              Twitter account.
             </div>
           ) : (
             <TwitterSignIn
-              buttonText={`Sign in to @${this.state.twitterHandle}`}
+              buttonText={`Sign in to @${twitterHandle}`}
               id="signInToVerifyAccess"
             />
           )}
@@ -246,15 +312,15 @@ export default class VerifyThisIsMe extends Component {
     } else {
       return (
         <div className="container-fluid well u-stack--md u-inset--md">
-          <Helmet title="Could Not Confirm - We Vote" />
+          <Helmet title={`Claim @${twitterHandle} - We Vote`} />
           <h3 className="h3">Could Not Confirm</h3>
           <div className="small">
             We were not able to find an account for this Twitter Handle
-            { this.state.twitterHandle ? (
+            { twitterHandle ? (
               <span>
                 {' '}
                 &quot;
-                {this.state.twitterHandle}
+                {twitterHandle}
                 &quot;
               </span>
             ) :
@@ -268,3 +334,22 @@ export default class VerifyThisIsMe extends Component {
     }
   }
 }
+
+const BackToVoterGuideWrapper = styled.div`
+  text-align: left;
+  margin: 20px 0;
+`;
+
+const FakeLink = styled.span`
+  text-decoration: underline;
+`;
+
+const styles = () => ({
+  ballotIconRoot: {
+    width: 150,
+    height: 150,
+    color: 'rgb(171, 177, 191)',
+  },
+});
+
+export default withStyles(styles)(VerifyThisIsMe);

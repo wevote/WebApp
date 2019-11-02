@@ -386,7 +386,7 @@ export default class OrganizationPositionItem extends Component {
                   shareButtonHide
                   transitioning={this.state.transitioning}
                   type={position.kind_of_ballot_item}
-                  toggleFunction={this.togglePositionStatement}
+                  togglePositionStatementFunction={this.togglePositionStatement}
                 />
                 { this.state.hidePositionStatement ?
                   null : (

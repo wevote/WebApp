@@ -277,7 +277,7 @@ class VoterGuideSettingsPositions extends Component {
 
     return (
       <div className="">
-        <Helmet title="Your Positions - We Vote" />
+        <Helmet title="Your Endorsements - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         { this.state.voter.is_signed_in ?
           null :

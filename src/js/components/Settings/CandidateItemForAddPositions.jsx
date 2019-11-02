@@ -156,7 +156,7 @@ class CandidateItemForAddPositions extends Component {
     ) :
       null;
 
-    const commentDisplayMobile = isVoterSupport || isVoterOppose || voterStatementText ? (
+    const commentDisplayMobile = isVoterSupport || isVoterOppose || voterStatementText || showPositionStatement ? (
       <div className="d-block d-sm-none u-min-50 u-push--xs">
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
@@ -202,7 +202,7 @@ class CandidateItemForAddPositions extends Component {
             externalUniqueId={`candidateItemForAddPositions-${oneCandidate.we_vote_id}`}
             shareButtonHide
             // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-            toggleFunction={this.togglePositionStatement}
+            togglePositionStatementFunction={this.togglePositionStatement}
             // transitioning={this.state.transitioning}
             type="CANDIDATE"
           />
