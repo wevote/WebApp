@@ -54,7 +54,7 @@ class Pricing extends Component {
           pricingCardFeatures: [
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Enter Your Own Positions',
+              featureDescription: 'Enter Your Own Endorsements',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
@@ -113,7 +113,7 @@ class Pricing extends Component {
           pricingCardFeatures: [
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Enter Your Own Positions',
+              featureDescription: 'Enter Your Own Endorsements',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
@@ -172,7 +172,7 @@ class Pricing extends Component {
           pricingCardFeatures: [
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Enter Your Own Positions',
+              featureDescription: 'Enter Your Own Endorsements',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'

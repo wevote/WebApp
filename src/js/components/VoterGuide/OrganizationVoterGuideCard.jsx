@@ -89,7 +89,7 @@ class OrganizationVoterGuideCard extends Component {
             onClick={this.onEdit}
             variant="contained"
           >
-            <span>Edit Your Voter Guide</span>
+            <span>Edit Your Endorsements</span>
           </Button>
         ) :
           <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />

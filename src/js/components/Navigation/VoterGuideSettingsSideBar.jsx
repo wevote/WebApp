@@ -93,7 +93,7 @@ export default class VoterGuideSettingsSideBar extends Component {
                 'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                 'SettingsItem__summary__item__display-name'}
               >
-              Your Positions
+              Your Endorsements
               </span>
             </Link>
           </div>

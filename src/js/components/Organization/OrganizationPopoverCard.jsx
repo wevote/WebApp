@@ -142,7 +142,7 @@ class OrganizationPopoverCard extends Component {
             )}
             { this.state.isVoterOwner ? (
               <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
-                <span>Edit Your Voter Guide</span>
+                <span>Edit Your Endorsements</span>
               </Button>
             ) : (
               <div>

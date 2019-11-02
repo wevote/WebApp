@@ -166,7 +166,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
         externalUniqueId={`${this.props.externalUniqueId}-ballotItemSupportOpposeComment-${this.state.ballotItemWeVoteId}`}
         shareButtonHide
         supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-        toggleFunction={this.togglePositionStatement}
+        togglePositionStatementFunction={this.togglePositionStatement}
         transitioning={this.state.transitioning}
         type={this.state.ballotItemType}
         urlWithoutHash={this.props.urlWithoutHash}

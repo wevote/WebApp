@@ -323,7 +323,7 @@ export default class OrganizationVoterGuide extends Component {
                       size="small"
                       variant="outlined"
                     >
-                      <span>Edit</span>
+                      <span>Edit Your Endorsements</span>
                     </Button>
                   </div>
                 ) :

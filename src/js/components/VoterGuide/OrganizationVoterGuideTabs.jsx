@@ -197,7 +197,6 @@ export default class OrganizationVoterGuideTabs extends Component {
     if (this.state.voter) {
       lookingAtSelf = this.state.voter.linked_organization_we_vote_id === organizationWeVoteId;
     }
-    let positionsTitle = '';
     let followingTitleLong = '';
     let followingTitleShort = '';
     let followersTitle = '';
@@ -207,14 +206,12 @@ export default class OrganizationVoterGuideTabs extends Component {
       voterGuideFollowersList = voterGuideFollowersList.filter(oneVoterGuide => (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id ? oneVoterGuide : null));
     }
     if (lookingAtSelf) {
-      positionsTitle = 'Your Positions';
       followingTitleLong = this.state.voterGuideFollowedList.length === 0 ?
-        'You Are Following' : `You Are Following ${this.state.voterGuideFollowedList.length}`;
+        'Following' : `Following ${this.state.voterGuideFollowedList.length}`;
       followingTitleShort = 'Following';
       followersTitle = voterGuideFollowersList.length === 0 ?
         'Followers' : `${voterGuideFollowersList.length} Followers`;
     } else {
-      positionsTitle = 'All Positions';
       followingTitleLong = this.state.voterGuideFollowedList.length === 0 ?
         'Following' : `Following ${this.state.voterGuideFollowedList.length}`;
       followingTitleShort = 'Following';
@@ -270,7 +267,8 @@ export default class OrganizationVoterGuideTabs extends Component {
                   onClick={() => this.switchTab('ballot')}
                   className={activeRoute === 'ballot' ? 'tab tab-active' : 'tab tab-default'}
                 >
-                  <span>From Your Ballot</span>
+                  <span className="u-show-mobile">Your Ballot</span>
+                  <span className="u-show-desktop-tablet">From Your Ballot</span>
                 </a>
               </li>
 
@@ -279,7 +277,8 @@ export default class OrganizationVoterGuideTabs extends Component {
                   onClick={() => this.switchTab('positions')}
                   className={activeRoute === 'positions' ? 'tab tab-active' : 'tab tab-default'}
                 >
-                  <span>{positionsTitle}</span>
+                  <span className="u-show-mobile">All</span>
+                  <span className="u-show-desktop-tablet">All Endorsements</span>
                 </a>
               </li>
 
