@@ -366,10 +366,10 @@ class SettingsSharing extends Component {
                       overflow: 'hidden',
                       width: '132px',
                       minWidth: '132px',
-                      // minHeight: '42px',
-                      // height: '42px',
+                      minHeight: '42px',
+                      height: '42px',
                       maxWidth: '132px !important',
-                      // maxHeight: '42px !important',
+                      maxHeight: '42px !important',
                       marginRight: 'auto',
                       textAlign: 'left',
                     }}
