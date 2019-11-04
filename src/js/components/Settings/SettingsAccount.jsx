@@ -39,7 +39,7 @@ export default class SettingsAccount extends Component {
       inEmailCodeVerificationProcess: false,
       inTextCodeVerificationProcess: false,
       isOnWeVoteRootUrl: true,
-      isOnWeVoteSubDomainUrl: false,
+      isOnWeVoteSubdomainUrl: false,
       isOnFacebookSupportedDomainUrl: false,
       pleaseSignInTitle: '',
       pleaseSignInSubTitle: '',
@@ -119,7 +119,7 @@ export default class SettingsAccount extends Component {
     }
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
-      isOnWeVoteSubDomainUrl: AppStore.isOnWeVoteSubDomainUrl(),
+      isOnWeVoteSubdomainUrl: AppStore.isOnWeVoteSubdomainUrl(),
       isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl(),
     });
 
@@ -141,7 +141,7 @@ export default class SettingsAccount extends Component {
   onAppStoreChange () {
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
-      isOnWeVoteSubDomainUrl: AppStore.isOnWeVoteSubDomainUrl(),
+      isOnWeVoteSubdomainUrl: AppStore.isOnWeVoteSubdomainUrl(),
       isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl(),
     });
   }
@@ -241,7 +241,7 @@ export default class SettingsAccount extends Component {
     const { inModal } = this.props;
     const {
       facebookAuthResponse, hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton,
-      hideVoterEmailAddressEntry, hideVoterPhoneEntry, isOnWeVoteRootUrl, isOnWeVoteSubDomainUrl,
+      hideVoterEmailAddressEntry, hideVoterPhoneEntry, isOnWeVoteRootUrl, isOnWeVoteSubdomainUrl,
       isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle, voter,
     } = this.state;
     if (!voter) {
@@ -266,7 +266,7 @@ export default class SettingsAccount extends Component {
     let yourAccountExplanation = '';
     if (voterIsSignedIn) {
       pageTitle = 'Security & Sign In - We Vote';
-      if (voterIsSignedInFacebook && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubDomainUrl)) {
+      if (voterIsSignedInFacebook && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl)) {
         yourAccountTitle = 'Have Twitter Too?';
         yourAccountExplanation = 'By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.';
       } else if (voterIsSignedInTwitter && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl) {
@@ -300,7 +300,7 @@ export default class SettingsAccount extends Component {
             {!voterIsSignedInTwitter || !voterIsSignedInFacebook ? (
               <>
                 <div className="u-stack--md">
-                  { !hideTwitterSignInButton && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubDomainUrl) && (
+                  { !hideTwitterSignInButton && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl) && (
                     <span>
                       <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
                       <TwitterSignIn buttonText="Sign in with Twitter" />

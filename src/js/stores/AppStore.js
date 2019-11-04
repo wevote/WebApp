@@ -59,12 +59,12 @@ class AppStore extends ReduceStore {
     return this.getState().onWeVoteRootUrl || isCordova();
   }
 
-  isOnWeVoteSubDomainUrl () {
-    return this.getState().onWeVoteSubDomainUrl;
+  isOnWeVoteSubdomainUrl () {
+    return this.getState().onWeVoteSubdomainUrl;
   }
 
   isOnPartnerUrl () {
-    return this.getState().onWeVoteSubDomainUrl || this.getState().onChosenFullDomainUrl;
+    return this.getState().onWeVoteSubdomainUrl || this.getState().onChosenFullDomainUrl;
   }
 
   voterIsAdminForThisUrl () {
@@ -160,14 +160,14 @@ class AppStore extends ReduceStore {
         } = action.res);
         if (apiSuccess) {
           let onWeVoteRootUrl = false;
-          let onWeVoteSubDomainUrl = false;
+          let onWeVoteSubdomainUrl = false;
           let onFacebookSupportedDomainUrl = false;
           let onChosenFullDomainUrl = false;
           // console.log('siteConfigurationRetrieve hostname:', hostname);
           if (hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost') {
             onWeVoteRootUrl = true;
           } else if (stringContains('wevote.us', hostname)) {
-            onWeVoteSubDomainUrl = true;
+            onWeVoteSubdomainUrl = true;
           } else {
             onChosenFullDomainUrl = true;
           }
@@ -200,7 +200,7 @@ class AppStore extends ReduceStore {
             hostname,
             onChosenFullDomainUrl,
             onFacebookSupportedDomainUrl,
-            onWeVoteSubDomainUrl,
+            onWeVoteSubdomainUrl,
             onWeVoteRootUrl,
             siteConfigurationHasBeenRetrieved: true,
             siteOwnerOrganizationWeVoteId,
