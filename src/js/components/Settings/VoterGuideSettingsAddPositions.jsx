@@ -422,7 +422,7 @@ class VoterGuideSettingsAddPositions extends Component {
       this.setState({
         numberOfBallotItemsToDisplay,
       });
-    }, 750);
+    }, 500);
   }
 
   increaseNumberOfPositionItemsToDisplay = () => {
@@ -433,7 +433,7 @@ class VoterGuideSettingsAddPositions extends Component {
       this.setState({
         numberOfPositionItemsToDisplay,
       });
-    }, 750);
+    }, 500);
   }
 
   goToDifferentVoterGuideSettingsDashboardTab (dashboardEditMode = '') {
