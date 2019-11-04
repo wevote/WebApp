@@ -5,8 +5,9 @@ $iphone-x-notch-height: 22px;
 $space-header-x-height: 40px;
 $space-search-right:   10%;
 $back-button-font-size: .8rem;
-$iphone-x-padding-left: env(safe-area-inset-left);
-$iphone-x-padding-right: env(safe-area-inset-right);
+//$iphone-x-padding-left: env(safe-area-inset-left);
+//$iphone-x-padding-right: env(safe-area-inset-right);
+$page-header-cordova-padding-right: 5px;
 $header-height: 48px;
 $header-height-back-to-ballot: 96px;
 $header-height-back-to-ballot-cordova: 71px;
@@ -67,8 +68,8 @@ $header-height-voter-guide-creator: 108px;
   &__cordova {
     margin: $space-none;
     padding-bottom: $space-xs;
-    padding-left: $iphone-x-padding-left;
-    padding-right: $iphone-x-padding-right;
+    padding-left: $space-none;
+    padding-right: $page-header-cordova-padding-right;
   }
 
   &__cordova-iphonex {

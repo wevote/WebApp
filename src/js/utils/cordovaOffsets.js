@@ -1,12 +1,13 @@
 import { isCordova, isIOS, isAndroid, isAndroidSimulator, isSimulator, getAndroidSize, pageEnumeration, enums,
   isIPhone4in, isIPhone4p7in, isIPhone5p5in, hasIPhoneNotch, isIPhone6p1in, isIPhone6p5in, isIPad } from './cordovaUtils';
 import { cordovaOffsetLog } from './logging';
-/* global $  */
+import VoterStore from '../stores/VoterStore';
 
 // <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
 // renders approximately as ...  <div className="Ballot__Wrapper-sc-11u8kf3-0 dYbfmq">
 //                               <div className="Application__Wrapper-sc-1ek38e7-0 bYNRzy">
 // <VoteContainer padTop={cordovaScrollablePaneTopPadding()}>   /index.html#/ballot/vote
+// This function controls the padding above the content that makes room for the header for a particular section
 export function cordovaScrollablePaneTopPadding () {
   if (isSimulator()) {
     if (isAndroidSimulator()) {
@@ -16,7 +17,9 @@ export function cordovaScrollablePaneTopPadding () {
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(window.location.href.indexOf('WeVoteCordova.app') - 1)}`);
     }
   }
-  const isSignedIn = $('#profileAvatarHeaderBar').length > 0;
+  const voter = VoterStore.getVoter();
+  const { is_signed_in: isSignedIn } = voter;
+  // const isSignedIn = $('#profileAvatarHeaderBar').length > 0;
 
   if (isIOS()) {
     if (isIPhone4in()) {
@@ -27,7 +30,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '42px';
         case enums.candidateWild:   return '42px';
         case enums.ballotVote:      return '157px';
-        case enums.officeWild:      return isSignedIn ? '71px' : '62px';
+        case enums.officeWild:      return '84px';
         case enums.ballotSmHdrWild: return '161px';  // $body-padding-top-no-decision-tabs
         case enums.ballotLgHdrWild: return '32px';
         case enums.moreAbout:       return '22px';
@@ -40,14 +43,14 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else if (isIPhone4p7in()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone5p4in');
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone4p7in');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
         case enums.measureWild:     return '58px';
         case enums.candidate:       return '42px';
         case enums.candidateWild:   return '57px';
         case enums.ballotVote:      return isSignedIn ? '149px' : '148px';
-        case enums.officeWild:      return '62px';
+        case enums.officeWild:      return '84px';
         case enums.ballotSmHdrWild: return isSignedIn ? '161px' : '160px';
         case enums.ballotLgHdrWild: return '36px';
         case enums.moreAbout:       return '22px';
@@ -67,7 +70,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '40px';
         case enums.candidateWild:   return '59px';
         case enums.ballotVote:      return '157px';
-        case enums.officeWild:      return '64px';
+        case enums.officeWild:      return '84px';
         case enums.ballotSmHdrWild: return '148px';
         case enums.ballotLgHdrWild: return '19px';
         case enums.moreAbout:       return '22px';
@@ -193,7 +196,7 @@ export function cordovaScrollablePaneTopPadding () {
       }
     } if (sizeString === '--md') {
       switch (pageEnumeration()) {
-        case enums.officeWild:      return '77px';
+        case enums.officeWild:      return '84px';
         case enums.measureWild:     return '53px';
         case enums.candidate:       return '53px';
         case enums.candidateWild:   return '51px';
@@ -423,7 +426,7 @@ export function cordovaTopHeaderTopMargin () {
           case enums.officeWild:      style.marginTop = '16px'; break;
           case enums.measureWild:     style.marginTop = '22px'; break;
           case enums.values:          style.marginTop = '16px'; break;
-          case enums.valueWild:       style.marginTop = '32px'; break;
+          case enums.valueWild:       style.marginTop = '22px'; break;
           case enums.friends:         style.marginTop = '16px'; break;
           case enums.ballot:          style.marginTop = '19px'; break;
           case enums.ballotVote:      style.marginTop = '19px'; break;

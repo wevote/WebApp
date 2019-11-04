@@ -63,7 +63,7 @@ export default function $ajax (options) {
       options.endpoint === 'defaultPricing' ||
       options.endpoint === 'electionsRetrieve' ||
       options.endpoint === 'measureRetrieve' ||
-      options.endpoint === 'organizationRetrieve' ||
+      // options.endpoint === 'organizationRetrieve' || // Includes data a client can update, and needs to be fresh
       options.endpoint === 'positionListForBallotItem' ||
       options.endpoint === 'voterGuidesUpcomingRetrieve') {
     // Retrieve API data from CDN
