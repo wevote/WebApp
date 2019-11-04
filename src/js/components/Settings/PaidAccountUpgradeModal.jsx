@@ -20,6 +20,7 @@ import extractNumber from '../../utils/extractNumber';
 import { numberWithCommas, stringContains } from '../../utils/textFormat';
 import DonateStore from '../../stores/DonateStore';
 import DonateActions from '../../actions/DonateActions';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import Pricing from '../../routes/More/Pricing'; // eslint-disable-line import/no-cycle
 import SettingsStripePayment from './SettingsStripePayment';
 import webAppConfig from '../../config';
@@ -638,7 +639,12 @@ class PaidAccountUpgradeModal extends Component {
                 </div>
               )}
               {contactSalesRequired ? (
-                <div>Contact Sales for Enterprise Coupon Code</div>
+                <OpenExternalWebSite
+                  className="open-web-site"
+                  url="https://help.wevote.us/hc/en-us/requests/new"
+                  target="_blank"
+                  body={<div>Contact Sales for Enterprise Coupon Code</div>}
+                />
               ) : (
                 <>
                   <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
@@ -660,7 +666,7 @@ class PaidAccountUpgradeModal extends Component {
                               <MobilePricingPlanName>Billed Yearly</MobilePricingPlanName>
                             </>
                           )}
-                          onClick={this.handleRadioGroupChoiceSubDomain}
+                          onClick={this.handleRadioGroupChoiceSubdomain}
                           checked={radioGroupValue === 'annualPlanRadio'}
                         />
                       </RadioGroup>
@@ -685,7 +691,7 @@ class PaidAccountUpgradeModal extends Component {
                               <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
                             </>
                           )}
-                          onClick={this.handleRadioGroupChoiceSubDomain}
+                          onClick={this.handleRadioGroupChoiceSubdomain}
                           checked={radioGroupValue === 'monthlyPlanRadio'}
                         />
                       </RadioGroup>
@@ -812,7 +818,12 @@ class PaidAccountUpgradeModal extends Component {
                   </div>
                 )}
                 {contactSalesRequired ? (
-                  <div>Contact Sales for Enterprise Coupon Code</div>
+                  <OpenExternalWebSite
+                    className="open-web-site"
+                    url="https://help.wevote.us/hc/en-us/requests/new"
+                    target="_blank"
+                    body={<div>Contact Sales for Enterprise Coupon Code</div>}
+                  />
                 ) : (
                   <>
                     <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
@@ -836,7 +847,7 @@ class PaidAccountUpgradeModal extends Component {
                                 <PriceLabelSubText> /month</PriceLabelSubText>
                               </>
                             )}
-                            onClick={this.handleRadioGroupChoiceSubDomain}
+                            onClick={this.handleRadioGroupChoiceSubdomain}
                             checked={radioGroupValue === 'annualPlanRadio'}
                           />
                         </RadioGroup>
@@ -863,7 +874,7 @@ class PaidAccountUpgradeModal extends Component {
                                 <PriceLabelSubText> /month</PriceLabelSubText>
                               </>
                             )}
-                            onClick={this.handleRadioGroupChoiceSubDomain}
+                            onClick={this.handleRadioGroupChoiceSubdomain}
                             checked={radioGroupValue === 'monthlyPlanRadio'}
                           />
                         </RadioGroup>

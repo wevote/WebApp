@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Close from '@material-ui/icons/Close';
 import Check from '@material-ui/icons/Check';
 import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 
@@ -106,7 +107,11 @@ class PricingCard extends Component {
                     fontSize: '20px',
                   }}
                   >
-                  Contact
+                    <OpenExternalWebSite
+                      url="https://help.wevote.us/hc/en-us/requests/new"
+                      target="_blank"
+                      body={<span>Contact</span>}
+                    />
                   </h6>
                   <p style={{
                     fontSize: '10px',

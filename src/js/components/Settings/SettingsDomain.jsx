@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import PremiumableButton from '../Widgets/PremiumableButton';
 import AppActions from '../../actions/AppActions';
 import LoadingWheel from '../LoadingWheel';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
@@ -35,10 +36,10 @@ class SettingsDomain extends Component {
       organizationChosenDomainNameAlreadyTaken: false,
       organizationChosenDomainNameSavedValue: '',
       organizationChosenDomainNameChangedLocally: false,
-      organizationChosenSubDomain: '',
-      organizationChosenSubDomainAlreadyTaken: false,
-      organizationChosenSubDomainSavedValue: '',
-      organizationChosenSubDomainChangedLocally: false,
+      organizationChosenSubdomain: '',
+      organizationChosenSubdomainAlreadyTaken: false,
+      organizationChosenSubdomainSavedValue: '',
+      organizationChosenSubdomainChangedLocally: false,
       voter: {},
       voterIsSignedIn: false,
       voterFeaturePackageExceedsOrEqualsProfessional: false,
@@ -79,20 +80,20 @@ class SettingsDomain extends Component {
       // console.log('this.state.organizationChosenDomainNameSavedValue', this.state.organizationChosenDomainNameSavedValue, ', nextState.organizationChosenDomainNameSavedValue', nextState.organizationChosenDomainNameSavedValue);
       return true;
     }
-    if (this.state.organizationChosenSubDomain !== nextState.organizationChosenSubDomain) {
-      // console.log('this.state.organizationChosenSubDomain', this.state.organizationChosenSubDomain, ', nextState.organizationChosenSubDomain', nextState.organizationChosenSubDomain);
+    if (this.state.organizationChosenSubdomain !== nextState.organizationChosenSubdomain) {
+      // console.log('this.state.organizationChosenSubdomain', this.state.organizationChosenSubdomain, ', nextState.organizationChosenSubdomain', nextState.organizationChosenSubdomain);
       return true;
     }
-    if (this.state.organizationChosenSubDomainAlreadyTaken !== nextState.organizationChosenSubDomainAlreadyTaken) {
-      // console.log('this.state.organizationChosenSubDomainAlreadyTaken', this.state.organizationChosenSubDomainAlreadyTaken, ', nextState.organizationChosenSubDomainAlreadyTaken', nextState.organizationChosenSubDomainAlreadyTaken);
+    if (this.state.organizationChosenSubdomainAlreadyTaken !== nextState.organizationChosenSubdomainAlreadyTaken) {
+      // console.log('this.state.organizationChosenSubdomainAlreadyTaken', this.state.organizationChosenSubdomainAlreadyTaken, ', nextState.organizationChosenSubdomainAlreadyTaken', nextState.organizationChosenSubdomainAlreadyTaken);
       return true;
     }
-    if (this.state.organizationChosenSubDomainChangedLocally !== nextState.organizationChosenSubDomainChangedLocally) {
-      // console.log('this.state.organizationChosenSubDomainChangedLocally', this.state.organizationChosenSubDomainChangedLocally, ', nextState.organizationChosenSubDomainChangedLocally', nextState.organizationChosenSubDomainChangedLocally);
+    if (this.state.organizationChosenSubdomainChangedLocally !== nextState.organizationChosenSubdomainChangedLocally) {
+      // console.log('this.state.organizationChosenSubdomainChangedLocally', this.state.organizationChosenSubdomainChangedLocally, ', nextState.organizationChosenSubdomainChangedLocally', nextState.organizationChosenSubdomainChangedLocally);
       return true;
     }
-    if (this.state.organizationChosenSubDomainSavedValue !== nextState.organizationChosenSubDomainSavedValue) {
-      // console.log('this.state.organizationChosenSubDomainSavedValue', this.state.organizationChosenSubDomainSavedValue, ', nextState.organizationChosenSubDomainSavedValue', nextState.organizationChosenSubDomainSavedValue);
+    if (this.state.organizationChosenSubdomainSavedValue !== nextState.organizationChosenSubdomainSavedValue) {
+      // console.log('this.state.organizationChosenSubdomainSavedValue', this.state.organizationChosenSubdomainSavedValue, ', nextState.organizationChosenSubdomainSavedValue', nextState.organizationChosenSubdomainSavedValue);
       return true;
     }
     if (this.state.voterFeaturePackageExceedsOrEqualsProfessional !== nextState.voterFeaturePackageExceedsOrEqualsProfessional) {
@@ -108,15 +109,15 @@ class SettingsDomain extends Component {
 
     const priorWeVoteChosenDomainNameString = priorOrganization.chosen_domain_string || '';
     const nextWeVoteChosenDomainNameString = nextOrganization.chosen_domain_string || '';
-    const priorWeVoteChosenSubDomainString = priorOrganization.chosen_sub_domain_string || '';
-    const nextWeVoteChosenSubDomainString = nextOrganization.chosen_sub_domain_string || '';
+    const priorWeVoteChosenSubdomainString = priorOrganization.chosen_subdomain_string || '';
+    const nextWeVoteChosenSubdomainString = nextOrganization.chosen_subdomain_string || '';
 
     if (priorWeVoteChosenDomainNameString !== nextWeVoteChosenDomainNameString) {
       // console.log('priorWeVoteChosenDomainNameString', priorWeVoteChosenDomainNameString, ', nextWeVoteChosenDomainNameString', nextWeVoteChosenDomainNameString);
       return true;
     }
-    if (priorWeVoteChosenSubDomainString !== nextWeVoteChosenSubDomainString) {
-      // console.log('priorWeVoteChosenSubDomainString', priorWeVoteChosenSubDomainString, ', nextWeVoteChosenSubDomainString', nextWeVoteChosenSubDomainString);
+    if (priorWeVoteChosenSubdomainString !== nextWeVoteChosenSubdomainString) {
+      // console.log('priorWeVoteChosenSubdomainString', priorWeVoteChosenSubdomainString, ', nextWeVoteChosenSubdomainString', nextWeVoteChosenSubdomainString);
       return true;
     }
     // console.log('shouldComponentUpdate false');
@@ -129,29 +130,29 @@ class SettingsDomain extends Component {
   }
 
   onOrganizationStoreChange () {
-    const { organizationChosenDomainNameChangedLocally, organizationChosenSubDomainChangedLocally, organizationWeVoteId } = this.state;
-    let { organizationChosenDomainNameAlreadyTaken, organizationChosenSubDomainAlreadyTaken } = this.state;
+    const { organizationChosenDomainNameChangedLocally, organizationChosenSubdomainChangedLocally, organizationWeVoteId } = this.state;
+    let { organizationChosenDomainNameAlreadyTaken, organizationChosenSubdomainAlreadyTaken } = this.state;
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-    if (!organizationChosenSubDomainAlreadyTaken) {
-      organizationChosenSubDomainAlreadyTaken = organization.sub_domain_string_already_taken || false;
+    if (!organizationChosenSubdomainAlreadyTaken) {
+      organizationChosenSubdomainAlreadyTaken = organization.subdomain_string_already_taken || false;
     }
     if (!organizationChosenDomainNameAlreadyTaken) {
       organizationChosenDomainNameAlreadyTaken = organization.full_domain_string_already_taken || false;
     }
     const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
-    const organizationChosenSubDomainSavedValue = organization.chosen_sub_domain_string || '';
+    const organizationChosenSubdomainSavedValue = organization.chosen_subdomain_string || '';
     const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
     const voterFeaturePackageExceedsOrEqualsProfessional = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'PROFESSIONAL');
     // console.log('onOrganizationStoreChange organization: ', organization);
     // console.log('onOrganizationStoreChange organizationChosenDomainNameChangedLocally: ', organizationChosenDomainNameChangedLocally);
-    // console.log('onOrganizationStoreChange organizationChosenSubDomainChangedLocally: ', organizationChosenSubDomainChangedLocally);
+    // console.log('onOrganizationStoreChange organizationChosenSubdomainChangedLocally: ', organizationChosenSubdomainChangedLocally);
     this.setState({
       chosenFeaturePackage,
       organization,
       organizationChosenDomainNameAlreadyTaken,
       organizationChosenDomainNameSavedValue,
-      organizationChosenSubDomainAlreadyTaken,
-      organizationChosenSubDomainSavedValue,
+      organizationChosenSubdomainAlreadyTaken,
+      organizationChosenSubdomainSavedValue,
       voterFeaturePackageExceedsOrEqualsProfessional,
     });
     // If it hasn't been changed locally, then use the one saved in the API server
@@ -161,12 +162,12 @@ class SettingsDomain extends Component {
       });
     }
     // If it hasn't been changed locally, then use the one saved in the API server
-    if (!organizationChosenSubDomainChangedLocally) {
+    if (!organizationChosenSubdomainChangedLocally) {
       this.setState({
-        organizationChosenSubDomain: organizationChosenSubDomainSavedValue || '',
+        organizationChosenSubdomain: organizationChosenSubdomainSavedValue || '',
       });
     }
-    if (!organizationChosenDomainNameChangedLocally && !organizationChosenSubDomainChangedLocally) {
+    if (!organizationChosenDomainNameChangedLocally && !organizationChosenSubdomainChangedLocally) {
       // If neither name has been changed, switch to the Domain Name input box
       if (organizationChosenDomainNameSavedValue && organizationChosenDomainNameSavedValue !== '') {
         this.setState({
@@ -174,19 +175,19 @@ class SettingsDomain extends Component {
         });
       } else {
         this.setState({
-          radioGroupValue: 'subDomainRadioButtonSelected',
+          radioGroupValue: 'subdomainRadioButtonSelected',
         });
       }
     }
   }
 
   onVoterStoreChange () {
-    const { organizationChosenDomainNameChangedLocally, organizationChosenSubDomainChangedLocally } = this.state;
+    const { organizationChosenDomainNameChangedLocally, organizationChosenSubdomainChangedLocally } = this.state;
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
     const organizationWeVoteId = voter.linked_organization_we_vote_id;
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-    const organizationChosenSubDomainSavedValue = organization.chosen_sub_domain_string || '';
+    const organizationChosenSubdomainSavedValue = organization.chosen_subdomain_string || '';
     const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
     const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
     const voterFeaturePackageExceedsOrEqualsProfessional = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'PROFESSIONAL');
@@ -195,7 +196,7 @@ class SettingsDomain extends Component {
       chosenFeaturePackage,
       organization,
       organizationChosenDomainNameSavedValue,
-      organizationChosenSubDomainSavedValue,
+      organizationChosenSubdomainSavedValue,
       organizationWeVoteId,
       voter,
       voterIsSignedIn,
@@ -208,22 +209,22 @@ class SettingsDomain extends Component {
       });
     }
     // If it hasn't been changed locally, then use the one saved in the API server
-    if (!organizationChosenSubDomainChangedLocally) {
+    if (!organizationChosenSubdomainChangedLocally) {
       this.setState({
-        organizationChosenSubDomain: organizationChosenSubDomainSavedValue || '',
+        organizationChosenSubdomain: organizationChosenSubdomainSavedValue || '',
       });
     }
   }
 
-  handleOrganizationChosenSubDomainChange = (event) => {
-    const { organizationChosenSubDomain } = this.state;
-    // console.log('handleOrganizationChosenSubDomainChange, organizationChosenSubDomain: ', organizationChosenSubDomain);
-    // console.log('handleOrganizationChosenSubDomainChange, event.target.value: ', event.target.value);
-    if (event.target.value !== organizationChosenSubDomain) {
+  handleOrganizationChosenSubdomainChange = (event) => {
+    const { organizationChosenSubdomain } = this.state;
+    // console.log('handleOrganizationChosenSubdomainChange, organizationChosenSubdomain: ', organizationChosenSubdomain);
+    // console.log('handleOrganizationChosenSubdomainChange, event.target.value: ', event.target.value);
+    if (event.target.value !== organizationChosenSubdomain) {
       this.setState({
-        organizationChosenSubDomain: event.target.value || '',
-        organizationChosenSubDomainAlreadyTaken: false,
-        organizationChosenSubDomainChangedLocally: true,
+        organizationChosenSubdomain: event.target.value || '',
+        organizationChosenSubdomainAlreadyTaken: false,
+        organizationChosenSubdomainChangedLocally: true,
       });
     }
   }
@@ -251,12 +252,12 @@ class SettingsDomain extends Component {
     }
   }
 
-  handleRadioGroupChoiceSubDomain = () => {
-    // console.log('handleRadioGroupChoiceSubDomain');
+  handleRadioGroupChoiceSubdomain = () => {
+    // console.log('handleRadioGroupChoiceSubdomain');
     const { radioGroupValue } = this.state;
-    if (radioGroupValue !== 'subDomainRadioButtonSelected') {
+    if (radioGroupValue !== 'subdomainRadioButtonSelected') {
       this.setState({
-        radioGroupValue: 'subDomainRadioButtonSelected',
+        radioGroupValue: 'subdomainRadioButtonSelected',
       });
     }
   }
@@ -280,12 +281,12 @@ class SettingsDomain extends Component {
     });
   }
 
-  onCancelSubDomainButton = () => {
-    // console.log('onCancelSubDomainButton');
-    const { organizationChosenSubDomainSavedValue } = this.state;
+  onCancelSubdomainButton = () => {
+    // console.log('onCancelSubdomainButton');
+    const { organizationChosenSubdomainSavedValue } = this.state;
     this.setState({
-      organizationChosenSubDomain: organizationChosenSubDomainSavedValue || '',
-      organizationChosenSubDomainChangedLocally: false,
+      organizationChosenSubdomain: organizationChosenSubdomainSavedValue || '',
+      organizationChosenSubdomainChangedLocally: false,
     });
   }
 
@@ -300,13 +301,13 @@ class SettingsDomain extends Component {
     event.preventDefault();
   }
 
-  onSaveSubDomainButton = (event) => {
-    // console.log('onSaveSubDomainButton');
-    const { organizationChosenSubDomain, organizationWeVoteId } = this.state;
-    OrganizationActions.organizationChosenSubDomainSave(organizationWeVoteId, organizationChosenSubDomain);
+  onSaveSubdomainButton = (event) => {
+    // console.log('onSaveSubdomainButton');
+    const { organizationChosenSubdomain, organizationWeVoteId } = this.state;
+    OrganizationActions.organizationChosenSubdomainSave(organizationWeVoteId, organizationChosenSubdomain);
     this.setState({
-      organizationChosenSubDomainChangedLocally: false,
-      chosenSubDomainBeforeErrorCheck: organizationChosenSubDomain,
+      organizationChosenSubdomainChangedLocally: false,
+      chosenSubdomainBeforeErrorCheck: organizationChosenSubdomain,
     });
     event.preventDefault();
   }
@@ -321,8 +322,8 @@ class SettingsDomain extends Component {
     const {
       chosenFeaturePackage,
       organizationChosenDomainName, organizationChosenDomainNameAlreadyTaken, organizationChosenDomainNameChangedLocally,
-      organizationChosenSubDomain, organizationChosenSubDomainAlreadyTaken, organizationChosenSubDomainChangedLocally,
-      organizationWeVoteId, voter, voterFeaturePackageExceedsOrEqualsProfessional, voterIsSignedIn, radioGroupValue, chosenDomainNameBeforeErrorCheck, chosenSubDomainBeforeErrorCheck,
+      organizationChosenSubdomain, organizationChosenSubdomainAlreadyTaken, organizationChosenSubdomainChangedLocally,
+      organizationWeVoteId, voter, voterFeaturePackageExceedsOrEqualsProfessional, voterIsSignedIn, radioGroupValue, chosenDomainNameBeforeErrorCheck, chosenSubdomainBeforeErrorCheck,
     } = this.state;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
@@ -347,60 +348,67 @@ class SettingsDomain extends Component {
                 value={radioGroupValue}
                 onChange={this.handleRadioGroupChange}
               >
-                <InputBoxLabel error={organizationChosenSubDomainAlreadyTaken}>
-                  We Vote Sub Domain
+                <InputBoxLabel error={organizationChosenSubdomainAlreadyTaken}>
+                  We Vote Subdomain
                 </InputBoxLabel>
                 <FormControlLabel
-                  classes={!organizationChosenSubDomainAlreadyTaken ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelError, label: classes.label }}
-                  value="subDomainRadioButtonSelected"
+                  classes={!organizationChosenSubdomainAlreadyTaken ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelError, label: classes.label }}
+                  value="subdomainRadioButtonSelected"
                   control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
                   label={(
-                    <IconInputContainer error={organizationChosenSubDomainAlreadyTaken}>
+                    <IconInputContainer error={organizationChosenSubdomainAlreadyTaken}>
                       <i className="fas fa-globe-americas" />
                       <InputBase
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
-                        onChange={this.handleOrganizationChosenSubDomainChange}
-                        placeholder="Sub Domain..."
-                        value={organizationChosenSubDomainAlreadyTaken ? chosenSubDomainBeforeErrorCheck : organizationChosenSubDomain || ''}
+                        onChange={this.handleOrganizationChosenSubdomainChange}
+                        placeholder="Subdomain..."
+                        value={organizationChosenSubdomainAlreadyTaken ? chosenSubdomainBeforeErrorCheck : organizationChosenSubdomain || ''}
                       />
-                      <SubDomainExtensionText error={organizationChosenSubDomainAlreadyTaken}>
+                      <SubdomainExtensionText error={organizationChosenSubdomainAlreadyTaken}>
                         .WeVote.US
-                      </SubDomainExtensionText>
+                      </SubdomainExtensionText>
                     </IconInputContainer>
                   )}
-                  onClick={this.handleRadioGroupChoiceSubDomain}
-                  checked={radioGroupValue === 'subDomainRadioButtonSelected'}
+                  onClick={this.handleRadioGroupChoiceSubdomain}
+                  checked={radioGroupValue === 'subdomainRadioButtonSelected'}
                 />
-                {organizationChosenSubDomainAlreadyTaken ? (
+                {organizationChosenSubdomainAlreadyTaken ? (
                   <InputBoxHelperLabel error>
                     &quot;
-                    {chosenSubDomainBeforeErrorCheck}
+                    {chosenSubdomainBeforeErrorCheck}
                     .WeVote.US
                     &quot;
                     {' '}
                     domain is already taken
                   </InputBoxHelperLabel>
                 ) : null}
-                {radioGroupValue === 'subDomainRadioButtonSelected' && (
-                  <ButtonsContainer>
-                    <Button
-                      classes={{ root: classes.button }}
-                      color="primary"
-                      disabled={!organizationChosenSubDomainChangedLocally}
-                      onClick={this.onCancelSubDomainButton}
-                      variant="outlined"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      color="primary"
-                      disabled={!organizationChosenSubDomainChangedLocally}
-                      onClick={this.onSaveSubDomainButton}
-                      variant="contained"
-                    >
-                      Save
-                    </Button>
-                  </ButtonsContainer>
+                {radioGroupValue === 'subdomainRadioButtonSelected' && (
+                  <div>
+                    {!organizationChosenSubdomainAlreadyTaken && (
+                      <InputBoxDescriptionUnder>
+                        After saving a new subdomain, please allow 10 minutes for your domain to be ready.
+                      </InputBoxDescriptionUnder>
+                    )}
+                    <ButtonsContainer>
+                      <Button
+                        classes={{ root: classes.button }}
+                        color="primary"
+                        disabled={!organizationChosenSubdomainChangedLocally}
+                        onClick={this.onCancelSubdomainButton}
+                        variant="outlined"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        color="primary"
+                        disabled={!organizationChosenSubdomainChangedLocally}
+                        onClick={this.onSaveSubdomainButton}
+                        variant="contained"
+                      >
+                        Save
+                      </Button>
+                    </ButtonsContainer>
+                  </div>
                 )}
                 <Separator />
               </RadioGroup>
@@ -446,32 +454,45 @@ class SettingsDomain extends Component {
                   </InputBoxHelperLabel>
                 ) : null}
                 {radioGroupValue === 'domainNameRadioButtonSelected' && (
-                  <ButtonsContainer>
-                    <Button
-                      classes={{ root: classes.button }}
-                      color="primary"
-                      disabled={!organizationChosenDomainNameChangedLocally}
-                      onClick={this.onCancelDomainNameButton}
-                      variant="outlined"
-                    >
-                      Cancel
-                    </Button>
-                    <PremiumableButton
-                      premium={voterFeaturePackageExceedsOrEqualsProfessional ? 1 : 0}
-                      onClick={voterFeaturePackageExceedsOrEqualsProfessional ? this.onSaveDomainNameButton : () => this.openPaidAccountUpgradeModal('professional')}
-                    >
-                      {voterFeaturePackageExceedsOrEqualsProfessional ? 'Save' : (
-                        <span>
-                          <span className="u-show-desktop-tablet">
-                            Upgrade to Professional
+                  <div>
+                    {!organizationChosenSubdomainAlreadyTaken && (
+                      <InputBoxDescriptionUnder>
+                        After saving a new domain, please
+                        <OpenExternalWebSite
+                          url="https://help.wevote.us/hc/en-us/requests/new"
+                          target="_blank"
+                          body={<span>contact support to complete the installation</span>}
+                        />
+                        .
+                      </InputBoxDescriptionUnder>
+                    )}
+                    <ButtonsContainer>
+                      <Button
+                        classes={{ root: classes.button }}
+                        color="primary"
+                        disabled={!organizationChosenDomainNameChangedLocally}
+                        onClick={this.onCancelDomainNameButton}
+                        variant="outlined"
+                      >
+                        Cancel
+                      </Button>
+                      <PremiumableButton
+                        premium={voterFeaturePackageExceedsOrEqualsProfessional ? 1 : 0}
+                        onClick={voterFeaturePackageExceedsOrEqualsProfessional ? this.onSaveDomainNameButton : () => this.openPaidAccountUpgradeModal('professional')}
+                      >
+                        {voterFeaturePackageExceedsOrEqualsProfessional ? 'Save' : (
+                          <span>
+                            <span className="u-show-desktop-tablet">
+                              Upgrade to Professional
+                            </span>
+                            <span className="u-show-mobile">
+                              Upgrade to Pro
+                            </span>
                           </span>
-                          <span className="u-show-mobile">
-                            Upgrade to Pro
-                          </span>
-                        </span>
-                      )}
-                    </PremiumableButton>
-                  </ButtonsContainer>
+                        )}
+                      </PremiumableButton>
+                    </ButtonsContainer>
+                  </div>
                 )}
               </RadioGroup>
             </FormControl>
@@ -556,7 +577,14 @@ const InputBoxHelperLabel = styled.p`
   color: ${props => (props.error ? 'rgb(255, 73, 34)' : 'black')};
 `;
 
-const SubDomainExtensionText = styled.h5`
+const InputBoxDescriptionUnder = styled.div`
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 14px;
+  margin-bottom:  4px;
+  margin-top:  4px;
+`;
+
+const SubdomainExtensionText = styled.h5`
   margin: 0;
   height: ${props => (props.error ? '52.4px' : '53.4px')};
   border-left: ${props => (props.error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)')};

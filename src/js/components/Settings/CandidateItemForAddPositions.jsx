@@ -9,8 +9,6 @@ import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActi
 import { renderLog } from '../../utils/logging';
 import SupportStore from '../../stores/SupportStore';
 
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
-/* eslint no-param-reassign: 0 */
 
 class CandidateItemForAddPositions extends Component {
   static propTypes = {
@@ -141,7 +139,7 @@ class CandidateItemForAddPositions extends Component {
     const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
 
     const commentDisplayDesktop = isVoterSupport || isVoterOppose || voterStatementText || showPositionStatement ? (
-      <div className="d-none d-sm-block u-min-50 u-stack--sm u-push--xs">
+      <ItemPositionStatementActionBarDesktopWrapper className="d-none d-sm-block u-min-50">
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
@@ -152,12 +150,12 @@ class CandidateItemForAddPositions extends Component {
           type="CANDIDATE"
           shownInList
         />
-      </div>
+      </ItemPositionStatementActionBarDesktopWrapper>
     ) :
       null;
 
     const commentDisplayMobile = isVoterSupport || isVoterOppose || voterStatementText || showPositionStatement ? (
-      <div className="d-block d-sm-none u-min-50 u-push--xs">
+      <ItemPositionStatementActionBarMobileWrapper className="d-block d-sm-none u-min-50">
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
@@ -168,7 +166,7 @@ class CandidateItemForAddPositions extends Component {
           shownInList
           mobile
         />
-      </div>
+      </ItemPositionStatementActionBarMobileWrapper>
     ) :
       null;
 
@@ -241,6 +239,14 @@ const CandidateTopRow = styled.div`
 const Candidate = styled.div`
   display: flex;
   cursor: pointer;
+`;
+
+const ItemPositionStatementActionBarDesktopWrapper = styled.div`
+  margin-bottom: 8px;
+`;
+
+const ItemPositionStatementActionBarMobileWrapper = styled.div`
+  margin-bottom: 4px;
 `;
 
 export default withTheme(withStyles(styles)(CandidateItemForAddPositions));

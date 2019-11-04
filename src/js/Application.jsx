@@ -288,7 +288,7 @@ class Application extends Component {
       return (
         <LoadingScreen>
           <div style={{ padding: 30 }}>
-            <h1 className="h1">Loading We Vote...</h1>
+            <h1 className="h1">Loading...</h1>
             { isCordova() &&
               <h2 className="h1">Does your phone have access to the internet?</h2>
             }

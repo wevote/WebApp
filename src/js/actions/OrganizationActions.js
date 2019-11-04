@@ -122,10 +122,10 @@ export default {
       });
   },
 
-  organizationChosenSubDomainSave (organizationWeVoteId, organizationChosenSubDomainName) {
+  organizationChosenSubdomainSave (organizationWeVoteId, organizationChosenSubdomainName) {
     Dispatcher.loadEndpoint('organizationSave',
       {
-        chosen_sub_domain_string: organizationChosenSubDomainName,
+        chosen_subdomain_string: organizationChosenSubdomainName,
         organization_we_vote_id: organizationWeVoteId,
       });
   },
