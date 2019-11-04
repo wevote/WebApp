@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
 import Button from '@material-ui/core/Button';
@@ -78,7 +79,9 @@ class VoterGuideSettingsAddPositions extends Component {
       stateCodeFromIpAddress: '',
       stateCodeFromVoterGuide: '',
       stateCodeToRetrieve: '',
+      loadingMoreItems: false,
     };
+    this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
@@ -104,7 +107,35 @@ class VoterGuideSettingsAddPositions extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+
+    window.addEventListener('scroll', this.onScroll);
   }
+
+  // getPosition = (el) => {
+  //   let xPos = 0;
+  //   let yPos = 0;
+
+  //   while (el) {
+  //     if (el.tagName === 'BODY') {
+  //       // deal with browser quirks with body/window/document and page scroll
+  //       const xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+  //       const yScroll = el.scrollTop || document.documentElement.scrollTop;
+
+  //       xPos += (el.offsetLeft - xScroll + el.clientLeft);
+  //       yPos += (el.offsetTop - yScroll + el.clientTop);
+  //     } else {
+  //       // for all other non-BODY elements
+  //       xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+  //       yPos += (el.offsetTop - el.scrollTop + el.clientTop);
+  //     }
+
+  //     el = el.offsetParent;
+  //   }
+  //   return {
+  //     x: xPos,
+  //     y: yPos,
+  //   };
+  // }
 
   componentWillReceiveProps (nextProps) {
     // console.log('componentWillReceiveProps addNewPositionsMode:', nextProps.addNewPositionsMode, ', nextProps.voterGuideWeVoteId:', nextProps.voterGuideWeVoteId);
@@ -348,6 +379,23 @@ class VoterGuideSettingsAddPositions extends Component {
     // console.log('onVoterStoreChange, linkedOrganizationWeVoteId: ', linkedOrganizationWeVoteId);
   }
 
+  onScroll () {
+    let yPosition = 0;
+
+    const element =  document.querySelector('#show_more_indicator');
+
+    yPosition = element.offsetTop - element.scrollTop + element.clientTop;
+
+    console.log('Window Scroll: ', window.scrollY);
+    console.log('Element Scroll: ', yPosition);
+
+    if (window.scrollY > yPosition - 500) {
+      this.setState({ loadingMoreItems: true });
+      this.increaseNumberOfBallotItemsToDisplay();
+      this.increaseNumberOfPositionItemsToDisplay();
+    }
+  }
+
   goToVoterGuideDisplay = () => {
     let voterGuideDisplay = '/ballot';
     if (this.state.voterGuide) {
@@ -369,17 +417,23 @@ class VoterGuideSettingsAddPositions extends Component {
   increaseNumberOfBallotItemsToDisplay = () => {
     let { numberOfBallotItemsToDisplay } = this.state;
     numberOfBallotItemsToDisplay += 5;
-    this.setState({
-      numberOfBallotItemsToDisplay,
-    });
+
+    setTimeout(() => {
+      this.setState({
+        numberOfBallotItemsToDisplay,
+      });
+    }, 750);
   }
 
   increaseNumberOfPositionItemsToDisplay = () => {
     let { numberOfPositionItemsToDisplay } = this.state;
     numberOfPositionItemsToDisplay += 5;
-    this.setState({
-      numberOfPositionItemsToDisplay,
-    });
+
+    setTimeout(() => {
+      this.setState({
+        numberOfPositionItemsToDisplay,
+      });
+    }, 750);
   }
 
   goToDifferentVoterGuideSettingsDashboardTab (dashboardEditMode = '') {
@@ -389,7 +443,7 @@ class VoterGuideSettingsAddPositions extends Component {
   render () {
     renderLog('VoterGuideSettingsAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { addNewPositionsMode, localGoogleCivicElectionId, stateCodeToRetrieve } = this.state;
+    const { addNewPositionsMode, localGoogleCivicElectionId, stateCodeToRetrieve, loadingMoreItems } = this.state;
     // console.log('VoterGuideSettingsAddPositions render, stateCodeToRetrieve:', stateCodeToRetrieve);
     if (!addNewPositionsMode) {
       // ////////////////////////
@@ -494,7 +548,7 @@ class VoterGuideSettingsAddPositions extends Component {
             })
             }
           </CardChildListGroup>
-          <ShowMoreItems onClick={() => this.increaseNumberOfPositionItemsToDisplay()}>
+          <ShowMoreItems id="show_more_indicator">
             Displaying
             {' '}
             {numberOfPositionItemsDisplayed}
@@ -502,16 +556,12 @@ class VoterGuideSettingsAddPositions extends Component {
             of
             {' '}
             {totalNumberOfPositionItems}
-            {numberOfPositionItemsDisplayed !== totalNumberOfPositionItems && (
-              <span>
-                {' '}
-                ::
-                {' '}
-                <span>Show More</span>
-              </span>
-            )}
           </ShowMoreItems>
-
+          <LoadingItemsWheel>
+            {loadingMoreItems ? (
+              <CircularProgress />
+            ) : null}
+          </LoadingItemsWheel>
           <PreviewButtonWrapper>
             <Button
               color="primary"
@@ -585,7 +635,7 @@ class VoterGuideSettingsAddPositions extends Component {
                 })
                 }
               </CardChildListGroup>
-              <ShowMoreItems>
+              <ShowMoreItems id="show_more_indicator">
                 Displaying
                 {' '}
                 {numberOfBallotItemsDisplayed}
@@ -593,17 +643,12 @@ class VoterGuideSettingsAddPositions extends Component {
                 of
                 {' '}
                 {totalNumberOfBallotItems}
-                {numberOfBallotItemsDisplayed !== totalNumberOfBallotItems && (
-                  <span>
-                    {' '}
-                    ::
-                    {' '}
-                    <span onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>Show More</span>
-                  </span>
-                )
-                }
               </ShowMoreItems>
-
+              <LoadingItemsWheel>
+                {loadingMoreItems ? (
+                  <CircularProgress />
+                ) : null}
+              </LoadingItemsWheel>
               <PreviewButtonWrapper>
                 <Button
                   color="primary"
@@ -651,20 +696,20 @@ const PreviewButtonWrapper = styled.div`
   margin: 20px 0;
 `;
 
+const LoadingItemsWheel = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const ShowMoreItems = styled.div`
   font-size: 18px;
-  text-align: center;
+  text-align: right;
   user-select: none;
-  cursor: pointer;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     padding-top: 5px;
     padding-bottom: 3px;
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    border-color: #f8f8f8;
-  }
-  &:hover {
-    background-color: #f8f8f8;
   }
   @media print{
     display: none;
