@@ -8,11 +8,11 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import SearchGuidesToFollowBox from '../../components/Search/SearchGuidesToFollowBox';
 import GuideList from '../../components/VoterGuide/GuideList';
 import IssueStore from '../../stores/IssueStore';
 import IssueCard from '../../components/Values/IssueCard';
 import ValuesList from './ValuesList';
+// import SearchGuidesToFollowBox from '../../components/Search/SearchGuidesToFollowBox';
 
 class VoterGuidesUnderOneValue extends Component {
   static propTypes = {
@@ -77,9 +77,11 @@ class VoterGuidesUnderOneValue extends Component {
 
   onVoterGuideStoreChange () {
     const { issueWeVoteId } = this.state;
+    const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issueWeVoteId);
+    console.log('onVoterGuideStoreChange, voterGuidesForValue: ', voterGuidesForValue);
     this.setState({
       ballotHasGuidesForValue: VoterGuideStore.ballotHasGuidesForValue(issueWeVoteId),
-      voterGuidesForValue: VoterGuideStore.getVoterGuidesForValue(issueWeVoteId),
+      voterGuidesForValue,
     });
   }
 
@@ -106,7 +108,8 @@ class VoterGuidesUnderOneValue extends Component {
             issueImageSize="MEDIUM"
             key={`issue-list-key-${issue.issue_we_vote_id}`}
           />
-          <SearchGuidesToFollowBox />
+          {/* This is not currently working and probably doesn't make sense to allow search on a single value page.
+          <SearchGuidesToFollowBox /> */}
           { ballotHasGuidesForValue || !issueNameFound ?
             <p /> : (
               <>

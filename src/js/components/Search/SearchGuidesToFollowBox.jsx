@@ -30,6 +30,10 @@ export default class SearchGuidesToFollowBox extends Component {
     this.searchFunction('');
   }
 
+  componentWillUnmount () {
+    this.clearFunction();
+  }
+
   render () {
     renderLog('SearchGuidesToFollowBox');  // Set LOG_RENDER_EVENTS to log all renders
     return (
