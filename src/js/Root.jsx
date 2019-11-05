@@ -85,7 +85,8 @@ import { isWebApp } from './utils/cordovaUtils';
 const ballotHasBeenVisited = cookies.getItem('ballot_has_been_visited');
 const firstVisit = !cookies.getItem('voter_device_id');
 const { hostname } = window.location;
-const isWeVoteMarketingSite = (String(hostname) === 'wevote.us' || String(hostname) === 'quality.wevote.us'); //  || String(hostname) === 'localhost'
+const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', ''];   // localhost on Cordova is a ''
+const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
 const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
 
 const routes = () => (
