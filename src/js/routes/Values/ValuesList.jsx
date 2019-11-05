@@ -68,21 +68,22 @@ export default class ValuesList extends Component {
     });
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.allIssuesCount !== nextState.allIssuesCount) {
-      // console.log("shouldComponentUpdate: this.state.allIssuesCount", this.state.allIssuesCount, ", nextState.allIssuesCount", nextState.allIssuesCount);
-      return true;
-    }
-    if (this.state.currentIssueWeVoteId !== nextState.currentIssueWeVoteId) {
-      // console.log("shouldComponentUpdate: this.state.currentIssueWeVoteId", this.state.currentIssueWeVoteId, ", nextState.currentIssueWeVoteId", nextState.currentIssueWeVoteId);
-      return true;
-    }
-    if (this.props.displayOnlyIssuesNotFollowedByVoter !== nextProps.displayOnlyIssuesNotFollowedByVoter) {
-      // console.log("shouldComponentUpdate: this.props.displayOnlyIssuesNotFollowedByVoter", this.props.displayOnlyIssuesNotFollowedByVoter, ", nextProps.displayOnlyIssuesNotFollowedByVoter", nextProps.displayOnlyIssuesNotFollowedByVoter);
-      return true;
-    }
-    return false;
-  }
+  // This was preventing the page from updating on search. Commenting out and not fixing because this isn't a CPU intensive page.
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   if (this.state.allIssuesCount !== nextState.allIssuesCount) {
+  //     // console.log("shouldComponentUpdate: this.state.allIssuesCount", this.state.allIssuesCount, ", nextState.allIssuesCount", nextState.allIssuesCount);
+  //     return true;
+  //   }
+  //   if (this.state.currentIssueWeVoteId !== nextState.currentIssueWeVoteId) {
+  //     // console.log("shouldComponentUpdate: this.state.currentIssueWeVoteId", this.state.currentIssueWeVoteId, ", nextState.currentIssueWeVoteId", nextState.currentIssueWeVoteId);
+  //     return true;
+  //   }
+  //   if (this.props.displayOnlyIssuesNotFollowedByVoter !== nextProps.displayOnlyIssuesNotFollowedByVoter) {
+  //     // console.log("shouldComponentUpdate: this.props.displayOnlyIssuesNotFollowedByVoter", this.props.displayOnlyIssuesNotFollowedByVoter, ", nextProps.displayOnlyIssuesNotFollowedByVoter", nextProps.displayOnlyIssuesNotFollowedByVoter);
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
