@@ -14,12 +14,12 @@ Copy `WebApp/tests/browserstack/browserstack.config-template.js` into `WebApp/te
     (WebAppEnv) $ cd WebApp
     (WebAppEnv) $ cp tests/browserstack/browserstack.config-template.js tests/browserstack/browserstack.config.js
 
-You'll need to add your credentials to `browserstack.config.js`. Sign into Browserstack and navigate to the [BrowserStack Automate dashboard](https://automate.browserstack.com/). Press "show" next to where it says "Username and Access Keys" on the left panel. You should see your username and access key.
+You'll need to add your credentials to `browserstack.config.js`. Sign into Browserstack and navigate to the [BrowserStack Automate dashboard](https://automate.browserstack.com/). Press the down arrow next to where it says "Access Key" in the header. You should see your username ("YOUR-USERNAME" below) and access key ("ACCESS-KEY-HERE" below). You will need both of these values to upload the compiled App.
 
 You will also need the URL for the android app .apk file. You can get this by asking someone else or by uploading the file with Browserstack's REST API as described [here](https://www.browserstack.com/app-automate/rest-api?framework=appium).
 Visit this page when you are signed into Browserstack, and they will customize the command that you need to run from your terminal window:
 
-    curl -u "dalemcgrew1:GENERATED-STRING-HERE" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@/path/to/app/file/Application-debug.apk" -F 'data={"custom_id": "MyApp"}'
+    curl -u "YOUR-USERNAME:ACCESS-KEY-HERE" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@/path/to/app/file/Application-debug.apk" -F 'data={"custom_id": "MyApp"}'
 
 You can find the latest We Vote APK (for Android) and IPA (for iOS) in [this Google Drive folder](https://drive.google.com/drive/u/0/folders/10tK7oqY7FKWhe0ilHDcli-DWpT9ldTFs).
 Please download it to your Download folder. For example, to find this path on a Mac:
@@ -34,7 +34,7 @@ In this example, the Android APK downloaded file is `app-debug-5-29-19.apk`. The
 
 So the terminal command to upload the file would look like this:
 
-    curl -u "dalemcgrew1:GENERATED-STRING-HERE" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@/Users/dalemcgrew/Downloads/app-debug-5-29-19.apk" -F 'data={"custom_id": "MyApp"}'
+    curl -u "YOUR-USERNAME:ACCESS-KEY-HERE" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@/Users/dalemcgrew/Downloads/app-debug-5-29-19.apk" -F 'data={"custom_id": "MyApp"}'
 
 It will typically take 30-60 seconds to upload (without any feedback), and then return a path like this:
 
