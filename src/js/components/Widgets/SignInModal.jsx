@@ -113,7 +113,7 @@ const styles = theme => ({
   dialogRoot: isCordova() ? {
     height: '100%',
     position: 'absolute !important',
-    top: '-15% !important',
+    top: '-15%',
     left: '0% !important',
     right: 'unset !important',
     bottom: 'unset !important',
