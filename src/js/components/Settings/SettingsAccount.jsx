@@ -8,6 +8,8 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import { cordovaSignInModalTopPosition } from '../../utils/cordovaOffsets';
+import { isCordova } from '../../utils/cordovaUtils';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
@@ -21,6 +23,8 @@ import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
+
+/* global $ */
 
 const debugMode = false;
 
@@ -166,12 +170,12 @@ export default class SettingsAccount extends Component {
     if (this.props.toggleSignInModal) {
       this.props.toggleSignInModal();
     }
-  }
+  };
 
   toggleInTextCodeVerificationProcess = () => {
     const { inTextCodeVerificationProcess } = this.state;
     this.setState({ inTextCodeVerificationProcess: !inTextCodeVerificationProcess });
-  }
+  };
 
   toggleInEmailCodeVerificationProcess = () => {
     const { inEmailCodeVerificationProcess } = this.state;
@@ -182,7 +186,7 @@ export default class SettingsAccount extends Component {
       // If not already in the verification process, put us in the process
       this.setState({ inEmailCodeVerificationProcess: true });
     }
-  }
+  };
 
   toggleNonEmailSignInOptions = () => {
     const { hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton, hideVoterPhoneEntry } = this.state;
@@ -192,7 +196,7 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: !hideTwitterSignInButton,
       hideVoterPhoneEntry: !hideVoterPhoneEntry,
     });
-  }
+  };
 
   toggleNonPhoneSignInOptions = () => {
     const { hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton, hideVoterEmailAddressEntry } = this.state;
@@ -202,7 +206,7 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: !hideTwitterSignInButton,
       hideVoterEmailAddressEntry: !hideVoterEmailAddressEntry,
     });
-  }
+  };
 
   toggleTwitterDisconnectOpen () {
     this.setState({ showTwitterDisconnect: true });
@@ -272,6 +276,15 @@ export default class SettingsAccount extends Component {
       } else if (voterIsSignedInTwitter && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl) {
         yourAccountTitle = 'Have Facebook Too?';
         yourAccountExplanation = 'By adding Facebook to your We Vote profile, it is easier to invite friends.';
+      }
+    }
+
+    if (isCordova()) {
+      // The dialog fades in, so it will not be there on the initial passes through this render() function
+      const dlg = $('[class*="SignInModal-dialogRoot-"]');
+      if (dlg.length) {
+        const topStyle = `z-index: 1300; top: ${cordovaSignInModalTopPosition(hideVoterEmailAddressEntry === true)}`;
+        $(dlg).attr('style', topStyle);
       }
     }
 

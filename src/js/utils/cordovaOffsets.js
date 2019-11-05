@@ -1,7 +1,8 @@
 import { isCordova, isIOS, isAndroid, isAndroidSimulator, isSimulator, getAndroidSize, pageEnumeration, enums,
-  isIPhone4in, isIPhone4p7in, isIPhone5p5in, hasIPhoneNotch, isIPhone6p1in, isIPhone6p5in, isIPad } from './cordovaUtils';
+  isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, hasIPhoneNotch, isIPhone6p1in, isIPhone6p5in, isIPad } from './cordovaUtils';
 import { cordovaOffsetLog } from './logging';
 import VoterStore from '../stores/VoterStore';
+
 
 // <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
 // renders approximately as ...  <div className="Ballot__Wrapper-sc-11u8kf3-0 dYbfmq">
@@ -497,3 +498,23 @@ export function cordovaStickyHeaderPaddingTop () {
   return '';
 }
 
+export function cordovaSignInModalTopPosition (collapsed) {
+  if (isIOS()) {
+    if (isIPhone6p1in() || isIPhone5p8in()) {  //  11 Max Pro
+      return collapsed ? '-30%' : '-15%';
+    } else if (isIPhone5p5in()) {
+      return collapsed ? '-30%' : '-170px';
+    } else if (isIPhone4p7in()) {
+      return collapsed ? '-30%' : '-15%';
+    } else if (isIPhone4in()) {
+      return collapsed ? '-26%' : '-18%';
+    } else if (isIPad()) {
+      return collapsed ? '-40%' : '-22%';
+    } else {
+      return collapsed ? '-30%' : '-15%';
+    }
+  } else if (isAndroid()) {
+    return collapsed ? '-30%' : '-25%';
+  }
+  return '';
+}
