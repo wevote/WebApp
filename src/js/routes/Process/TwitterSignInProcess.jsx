@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
 import cookies from '../../utils/cookies';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
@@ -73,9 +73,11 @@ export default class TwitterSignInProcess extends Component {
             if (stringContains(window.location.origin, redirectFullUrl)) {
               // Switch to path names to reduce load on browser and API server
               useWindowLocationAssign = false;
-              const newRedirectPathname = redirectFullUrl.replace(window.location.origin, '');
+              const newRedirectPathname = isWebApp() ? redirectFullUrl.replace(window.location.origin, '') : '/ballot';
               // console.log('newRedirectPathname:', newRedirectPathname);
               this.setState({ redirectInProcess: true });
+              oAuthLog(`Twitter sign in (1), onVoterStoreChange - push to ${newRedirectPathname}`);
+
               historyPush({
                 pathname: newRedirectPathname,
                 state: {
@@ -95,6 +97,7 @@ export default class TwitterSignInProcess extends Component {
         } else {
           this.setState({ redirectInProcess: true });
           const redirectPathname = '/ballot';
+          oAuthLog(`Twitter sign in (2), onVoterStoreChange - push to ${redirectPathname}`);
           historyPush({
             pathname: redirectPathname,
             // query: {voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1},
@@ -162,7 +165,7 @@ export default class TwitterSignInProcess extends Component {
     oAuthLog('TwitterSignInProcess render');
     if (!twitterAuthResponse ||
       !twitterAuthResponse.twitter_retrieve_attempted) {
-      // console.log('STOPPED, missing twitter_retrieve_attempted: twitterAuthResponse:', twitterAuthResponse);
+      oAuthLog('STOPPED, missing twitter_retrieve_attempted: twitterAuthResponse:', twitterAuthResponse);
       return (
         <div>
           <div style={{ textAlign: 'center' }}>
@@ -174,8 +177,7 @@ export default class TwitterSignInProcess extends Component {
         </div>
       );
     }
-    oAuthLog('=== Passed initial gate ===');
-    oAuthLog('twitterAuthResponse:', twitterAuthResponse);
+    oAuthLog('=== Passed initial gate === with twitterAuthResponse: ', twitterAuthResponse);
     const { twitter_secret_key: twitterSecretKey } = twitterAuthResponse;
 
     if (twitterAuthResponse.twitter_sign_in_failed) {
@@ -217,7 +219,10 @@ export default class TwitterSignInProcess extends Component {
     if (twitterAuthResponse.existing_twitter_account_found) {
       // For now are not asking to merge accounts
       if (!mergingTwoAccounts) {
+        oAuthLog('twitterAuthResponse voterMergeTwoAccountsByTwitterKey');
         this.voterMergeTwoAccountsByTwitterKey(twitterSecretKey);  // , twitterAuthResponse.voter_has_data_to_preserve
+      } else {
+        oAuthLog('twitterAuthResponse NOT CALLING voterMergeTwoAccountsByTwitterKey');
       }
       return (
         <div>

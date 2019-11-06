@@ -59,6 +59,10 @@ class SignInModal extends Component {
     }
     // console.log('SignInModal render voter found');
 
+    if (voter && voterIsSignedIn && isCordova()) {
+      return false;
+    }
+
     // This modal is shown when the voter wants to sign in.
     return (
       <Dialog
