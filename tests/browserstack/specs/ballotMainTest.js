@@ -9,6 +9,7 @@ const PAUSE_DURATION_REVIEW_RESULTS = 3000;
 
 describe('Basic cross-platform We Vote test',  () => {
   it('can visit the different pages in the app', async () => {
+    const { twitterUserName, twitterPassword } = driver.config;
     const { isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
 
@@ -36,22 +37,24 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // // //////////////////////
     // // Sign in using Twitter
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('signInHeaderBar'); // Clicks on Sign in
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleTextInput('username_or_email', 'ashwini.testing11@gmail.com'); // Enter Username or Email id
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleTextInput('password', 'testing02'); // Enter Password
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('allow'); // Clicks on Authorize App
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting 
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('profilePopUpSignOut'); // Clicks on Sign Out
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    if (twitterUserName && twitterPassword) {
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleTextInput('password', twitterPassword); // Enter Password
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('allow'); // Clicks on Authorize App
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('profilePopUpSignOut'); // Clicks on Sign Out
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    }
 
     // //////////////////////
     // Change Address
@@ -59,7 +62,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('profileCloseSelectBallotModal');
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    
+
     // //////////////////////
     // We want to start by setting the location, which will automatically choose the next upcoming election for that address
     if (isCordovaFromAppStore) {
@@ -69,8 +72,8 @@ describe('Basic cross-platform We Vote test',  () => {
     }
 
     if (isIOS) {
-       // await setNewAddressIOS('addressBoxText', 'Oakland, CA 94602'); // Sets the text for the address box and hits enter
-       await setNewAddressIOS('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
+      // await setNewAddressIOS('addressBoxText', 'Oakland, CA 94602'); // Sets the text for the address box and hits enter
+      await setNewAddressIOS('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
     } else {
       // await setNewAddress('addressBoxText', 'Oakland, CA 94602'); // Sets the text for the address box and hits enter
       await setNewAddressIOS('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
@@ -99,7 +102,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     const voteYesButtonId = 'itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
     browser.execute((id) => {
-    document.getElementById(id).click();
+      document.getElementById(id).click();
     }, voteYesButtonId); // Click on Voting Yes
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('profileCloseItemActionBar'); // Click on Close Pop Up of Voting Yes
@@ -114,7 +117,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     const voteNoButtonId = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
     browser.execute((id) => {
-    document.getElementById(id).click();
+      document.getElementById(id).click();
     }, voteNoButtonId); // Click on Voting No
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('itemPositionStatementActionBarEdit-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Clicks on Edit Button
@@ -125,7 +128,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     const voteNoButton = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
     browser.execute((id) => {
-    document.getElementById(id).click();
+      document.getElementById(id).click();
     }, voteNoButton); // Click on Voting No again (to unset)
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('filterBaseFilters');
@@ -133,7 +136,7 @@ describe('Basic cross-platform We Vote test',  () => {
     scrollThroughPage();
     const stickyYesButton = 'itemActionBarYesButton-measureStickyHeader-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
     browser.execute((id) => {
-    document.getElementById(id).click();
+      document.getElementById(id).click();
     }, stickyYesButton); // Click on Sticky Header Yes
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await simpleClick('itemPositionStatementActionBarTextArea-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on TextArea
@@ -180,12 +183,12 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('valueIconAndText-wv02issue66'); // Clicks to OPEN issue icon
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('valueIconAndText-wv02issue66'); // Clicks to CLOSE the issue icon
-        
+
     // //////////////////////
     // Test Following an organization endorsing this candidate
-    // await simpleClick('positionItemFollowToggleFollow-wv02org21454');	
-    // await simpleClick('positionItemFollowToggleFollowDropdown-wv02org21454');	
-    // await simpleClick('positionItemFollowToggleDropdown-wv02org21454');	
+    // await simpleClick('positionItemFollowToggleFollow-wv02org21454');
+    // await simpleClick('positionItemFollowToggleFollowDropdown-wv02org21454');
+    // await simpleClick('positionItemFollowToggleDropdown-wv02org21454');
     // await simpleClick('positionItemFollowToggleUnfollow-wv02org21454');
     // await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -193,47 +196,46 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Visit the candidate Maria Cantwell for choose, oppose, comment and save
     if (isDesktopScreenSize) {
-    await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate Maria Cantwell
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const chooseButtonId = 'itemActionBarSupportButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
-    browser.execute((id) => {
-    document.getElementById(id).click();
-    }, chooseButtonId); // Choose the candidate
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('profileCloseItemActionBar');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const opposeButtonId = 'itemActionBarOpposeButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
-    browser.execute((id) => {
-    document.getElementById(id).click();
-    }, opposeButtonId); // oppose the candidate
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const choosButtonId = 'itemActionBarSupportButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
-    browser.execute((id) => {
-    document.getElementById(id).click();
-    }, choosButtonId); // Choose the candidate
-    await simpleClick('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902','I am tring to comment');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902','Successed in deleting nad rewriting the test');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('itemPositionStatementActionBarSave-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902'); // save the text
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('positionItemFollowToggleFollow-wv02org1360');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('positionItemFollowToggleFollowDropdown-wv02org1360');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('positionItemFollowToggleDropdown-wv02org1360');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('positionItemFollowToggleUnfollow-wv02org1360');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('backToLinkTabHeader');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-
+      await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate Maria Cantwell
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      const chooseButtonId = 'itemActionBarSupportButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
+      browser.execute((id) => {
+        document.getElementById(id).click();
+      }, chooseButtonId); // Choose the candidate
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('profileCloseItemActionBar');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      const opposeButtonId = 'itemActionBarOpposeButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
+      browser.execute((id) => {
+        document.getElementById(id).click();
+      }, opposeButtonId); // oppose the candidate
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      const choosButtonId = 'itemActionBarSupportButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
+      browser.execute((id) => {
+        document.getElementById(id).click();
+      }, choosButtonId); // Choose the candidate
+      await simpleClick('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902','I am tring to comment');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902','Successed in deleting nad rewriting the test');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('itemPositionStatementActionBarSave-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902'); // save the text
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('positionItemFollowToggleFollow-wv02org1360');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('positionItemFollowToggleFollowDropdown-wv02org1360');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('positionItemFollowToggleDropdown-wv02org1360');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('positionItemFollowToggleUnfollow-wv02org1360');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('backToLinkTabHeader');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
     } else {
       await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate Maria Cantwell
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -257,7 +259,7 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       const saveButtonId = 'itemPositionStatementActionBarSave-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902';
       browser.execute((id) => {
-      document.getElementById(id).click();
+        document.getElementById(id).click();
       }, saveButtonId); // save the candidate
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -273,9 +275,8 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('backToLinkTabHeader');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    
     }
- 
+
     // //////////////////////
     // Visit the office page
     // await simpleClick('officeItemCompressedShowMoreFooter-wv02off19922'); // Clicks Show More link

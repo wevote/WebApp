@@ -4,7 +4,6 @@ const date = new Date();
 const dateForDisplay = date.toDateString();
 const buildNameForDisplay = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
 
-
 exports.config = {
   user: browserStackConfig.BROWSERSTACK_USER,
   key: browserStackConfig.BROWSERSTACK_KEY,
@@ -14,6 +13,8 @@ exports.config = {
   ],
   exclude: [],
   logLevel: 'trace',
+  twitterUserName: browserStackConfig.TWITTER_USER_NAME,
+  twitterPassword: browserStackConfig.TWITTER_PASSWORD,
   capabilities: [
     {
       // Testing with a Windows Desktop Chrome browser
@@ -113,6 +114,5 @@ exports.config = {
     ui: 'bdd',
     // timeout: 180000, // 3 minutes
     timeout: 360000, // 6 minutes
-
   },
 };

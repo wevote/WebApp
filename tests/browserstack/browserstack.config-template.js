@@ -5,4 +5,6 @@ module.exports = {
   BROWSERSTACK_KEY: '',
   BROWSERSTACK_APK_URL: '',
   BROWSERSTACK_IPA_URL: '',
+  TWITTER_USER_NAME: '',
+  TWITTER_PASSWORD: '',
 };
