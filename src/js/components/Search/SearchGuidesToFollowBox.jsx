@@ -16,6 +16,10 @@ export default class SearchGuidesToFollowBox extends Component {
     this.clearFunction = this.clearFunction.bind(this);
   }
 
+  componentWillUnmount () {
+    this.clearFunction();
+  }
+
   searchFunction (searchQuery) {
     if (this.state.searchPending && this.state.searchPending.state() === 'pending') {
       this.state.searchPending.abort();
@@ -28,10 +32,6 @@ export default class SearchGuidesToFollowBox extends Component {
 
   clearFunction () {
     this.searchFunction('');
-  }
-
-  componentWillUnmount () {
-    this.clearFunction();
   }
 
   render () {

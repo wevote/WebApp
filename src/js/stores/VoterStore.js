@@ -456,6 +456,7 @@ class VoterStore extends ReduceStore {
             email_address_already_owned_by_this_voter: action.res.email_address_already_owned_by_this_voter,
             email_address_created: action.res.email_address_created,
             email_address_deleted: action.res.email_address_deleted,
+            email_address_not_valid: action.res.email_address_not_valid,
             link_to_sign_in_email_sent: action.res.link_to_sign_in_email_sent,
             make_primary_email: action.res.make_primary_email,
             sign_in_code_email_sent: action.res.sign_in_code_email_sent,

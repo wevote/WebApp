@@ -218,6 +218,17 @@ class VoterPhoneVerificationEntry extends Component {
     }
   };
 
+  onPhoneInputBlur = (event) => {
+    const { voterSMSPhoneNumber } = this.state;
+    // console.log('VoterPhoneVerificationEntry onPhoneInputBlur, voterSMSPhoneNumber:', voterSMSPhoneNumber);
+    this.hidePhoneVerificationButton();
+    this.localToggleOtherSignInOptions();
+    if (voterSMSPhoneNumber && isCordova()) {
+      // When there is a voterSMSPhoneNumber value and the keyboard closes, submit
+      this.sendSignInCodeSMS(event);
+    }
+  }
+
   reSendSignInCodeSMS = (voterSMSPhoneNumber) => {
     if (voterSMSPhoneNumber) {
       VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
@@ -232,8 +243,9 @@ class VoterPhoneVerificationEntry extends Component {
     }
   };
 
-  sendSignInCodeSMS () {
+  sendSignInCodeSMS (event) {
     // console.log('sendSignInCodeSMS');
+    event.preventDefault();
     const { voterSMSPhoneNumber, voterSMSPhoneNumberIsValid } = this.state;
     if (voterSMSPhoneNumberIsValid) {
       VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
@@ -342,7 +354,7 @@ class VoterPhoneVerificationEntry extends Component {
               type="tel"
               name="voter_phone_number"
               id="enterVoterPhone"
-              onBlur={() => { this.hidePhoneVerificationButton(); this.localToggleOtherSignInOptions(); }}
+              onBlur={this.onPhoneInputBlur}
               onChange={this.onPhoneNumberChange}
               onFocus={() => { this.displayPhoneVerificationButton(); this.localToggleOtherSignInOptions(); }}
               placeholder="Type phone number here..."
