@@ -11,6 +11,8 @@ exports.config = {
     './tests/browserstack/specs/ballotMainTest.js',
   ],
   exclude: [],
+  twitterUserName: browserStackConfig.TWITTER_USER_NAME,
+  twitterPassword: browserStackConfig.TWITTER_PASSWORD,
   capabilities: [
     {
       // capabilities for a cordova android test

@@ -11,6 +11,9 @@ exports.config = {
     './tests/browserstack/specs/ballotMainTest.js',
   ],
   exclude: [],
+  logLevel: 'trace',
+  twitterUserName: browserStackConfig.TWITTER_USER_NAME,
+  twitterPassword: browserStackConfig.TWITTER_PASSWORD,
   capabilities: [
     {
       // capabilities for a cordova iOS test
@@ -65,7 +68,6 @@ exports.config = {
       isIOS: true,
       isMobileScreenSize: true,
     },
-
   ],
   coloredLogs: true,
   baseUrl: '',
@@ -76,6 +78,7 @@ exports.config = {
   framework: 'mocha',
   mochaOpts: {
     ui: 'bdd',
-    timeout: 180000, // 3 minutes
+    // timeout: 180000, // 3 minutes
+    timeout: 360000, // 6 minutes
   },
 };
