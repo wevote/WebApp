@@ -40,6 +40,11 @@ export default class SettingsAccount extends Component {
     super(props);
     this.state = {
       facebookAuthResponse: {},
+      hideCurrentlySignedInHeader: false,
+      hideFacebookSignInButton: false,
+      hideTwitterSignInButton: false,
+      hideVoterEmailAddressEntry: false,
+      hideVoterPhoneEntry: false,
       inEmailCodeVerificationProcess: false,
       inTextCodeVerificationProcess: false,
       isOnWeVoteRootUrl: true,

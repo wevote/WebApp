@@ -33,6 +33,7 @@ class VoterEmailAddressEntry extends Component {
         email_address_already_owned_by_this_voter: false,
         email_address_created: false,
         email_address_deleted: false,
+        email_address_not_valid: false,
         link_to_sign_in_email_sent: false,
         make_primary_email: false,
         sign_in_code_email_sent: false,
@@ -48,8 +49,6 @@ class VoterEmailAddressEntry extends Component {
       voterEmailAddressList: [],
       voterEmailAddressListCount: 0,
     };
-
-    // this.updateVoterEmailAddress = this.updateVoterEmailAddress.bind(this);
   }
 
   componentDidMount () {
@@ -206,6 +205,16 @@ class VoterEmailAddressEntry extends Component {
     }
   };
 
+  onEmailInputBlur = (event) => {
+    const { voterEmailAddress } = this.state;
+    this.hideEmailVerificationButton();
+    this.localToggleOtherSignInOptions();
+    if (voterEmailAddress && isCordova()) {
+      // When there is a voterEmailAddress value and the keyboard closes, submit
+      this.sendSignInCodeEmail(event);
+    }
+  }
+
   closeVerifyModal = () => {
     // console.log('VoterEmailAddressEntry closeVerifyModal');
     this.setState({
@@ -251,10 +260,14 @@ class VoterEmailAddressEntry extends Component {
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
     const emailAddressStatusHtml = (
       <span>
-        { (emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email && !secretCodeSystemLocked) ||
+        { emailAddressStatus.email_address_not_valid ||
+        (emailAddressStatus.email_address_already_owned_by_this_voter && !emailAddressStatus.email_address_deleted && !emailAddressStatus.make_primary_email && !secretCodeSystemLocked) ||
         (emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked) ||
         secretCodeSystemLocked ? (
           <Alert variant="warning">
+            { emailAddressStatus.email_address_not_valid && (
+              <div>Please enter a valid email address.</div>
+            )}
             { emailAddressStatus.email_address_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked && (
               <div>
                 That email is already being used by another account.
@@ -282,7 +295,7 @@ class VoterEmailAddressEntry extends Component {
         emailAddressStatus.email_ownership_is_verified ||
         emailAddressStatus.verification_email_sent ||
         emailAddressStatus.link_to_sign_in_email_sent ||
-        (emailAddressStatus.make_primary_email && !secretCodeSystemLocked) ||
+        (emailAddressStatus.make_primary_email && (emailAddressStatus.email_address_created || emailAddressStatus.email_address_found || emailAddressStatus.sign_in_code_email_sent) && !secretCodeSystemLocked) ||
         emailAddressStatus.sign_in_code_email_sent ? (
           <Alert variant="success">
             { emailAddressStatus.email_address_created &&
@@ -291,7 +304,7 @@ class VoterEmailAddressEntry extends Component {
             { emailAddressStatus.email_ownership_is_verified ? <span>Your email address was verified. </span> : null }
             { emailAddressStatus.verification_email_sent ? <span>Please check your email. A verification email was sent. </span> : null }
             { emailAddressStatus.link_to_sign_in_email_sent ? <span>Please check your email. A sign in link was sent. </span> : null }
-            { emailAddressStatus.make_primary_email && !secretCodeSystemLocked ? <span>Your have chosen a new primary email. </span> : null }
+            { emailAddressStatus.make_primary_email && (emailAddressStatus.email_address_created || emailAddressStatus.email_address_found || emailAddressStatus.sign_in_code_email_sent) && !secretCodeSystemLocked ? <span>Your have chosen a new primary email. </span> : null }
             { emailAddressStatus.sign_in_code_email_sent ? <span>Please check your email. A sign in verification code was sent. </span> : null }
           </Alert>
           ) : null
@@ -326,7 +339,7 @@ class VoterEmailAddressEntry extends Component {
               name="voter_email_address"
               id="enterVoterEmailAddress"
               value={voterEmailAddress}
-              onBlur={() => { this.hideEmailVerificationButton(); this.localToggleOtherSignInOptions(); }}
+              onBlur={this.onEmailInputBlur}
               onChange={this.updateVoterEmailAddress}
               onFocus={() => { this.displayEmailVerificationButton(); this.localToggleOtherSignInOptions(); }}
               placeholder="Type email here..."

@@ -301,6 +301,17 @@ class SettingsVerifySecretCode extends Component {
     this.setState({ condensed: false });
   }
 
+  handleDigit6Blur = () => {
+    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
+    this.setState({ condensed: false });
+    if (digit6 && isCordova()) {
+      // When their is a voterEmailAddress value and the keyboard closes, submit
+      const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
+      const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
+      VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
+    }
+  }
+
   // eslint-disable-next-line react/sort-comp
   onPaste (e) {
     // console.log(e.clipboardData.getData('Text'));
@@ -438,7 +449,7 @@ class SettingsVerifySecretCode extends Component {
                 maxLength={1}
                 onKeyDown={this.onDigit6Change}
                 onFocus={this.handleFocus}
-                onBlur={this.handleBlur}
+                onBlur={this.handleDigit6Blur}
                 onPaste={this.onPaste}
                 type="tel"
                 value={this.state.digit6}

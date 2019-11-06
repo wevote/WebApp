@@ -32,39 +32,39 @@ export default class ValuesList extends Component {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
 
     const { currentIssue } = this.props;
-    let currentIssueWeVoteId = '';
-    if (currentIssue) {
-      currentIssueWeVoteId = currentIssue.issue_we_vote_id;
-    }
+    // let currentIssueWeVoteId = '';
+    // if (currentIssue) {
+    //   currentIssueWeVoteId = currentIssue.issue_we_vote_id;
+    // }
     const allIssues = IssueStore.getAllIssues();
-    let allIssuesCount = 0;
-    if (allIssues) {
-      allIssuesCount = allIssues.length;
-    }
+    // let allIssuesCount = 0;
+    // if (allIssues) {
+    //   allIssuesCount = allIssues.length;
+    // }
     this.setState({
       allIssues,
-      allIssuesCount,
+      // allIssuesCount,
       currentIssue,
-      currentIssueWeVoteId,
+      // currentIssueWeVoteId,
     });
   }
 
   componentWillReceiveProps (nextProps) {
     const { currentIssue } = nextProps;
-    let currentIssueWeVoteId = '';
-    if (currentIssue) {
-      currentIssueWeVoteId = currentIssue.issue_we_vote_id;
-    }
+    // let currentIssueWeVoteId = '';
+    // if (currentIssue) {
+    //   currentIssueWeVoteId = currentIssue.issue_we_vote_id;
+    // }
     const allIssues = IssueStore.getAllIssues();
-    let allIssuesCount = 0;
-    if (allIssues) {
-      allIssuesCount = allIssues.length;
-    }
+    // let allIssuesCount = 0;
+    // if (allIssues) {
+    //   allIssuesCount = allIssues.length;
+    // }
     this.setState({
       allIssues,
-      allIssuesCount,
+      // allIssuesCount,
       currentIssue,
-      currentIssueWeVoteId,
+      // currentIssueWeVoteId,
     });
   }
 
@@ -91,13 +91,13 @@ export default class ValuesList extends Component {
 
   onIssueStoreChange () {
     const allIssues = IssueStore.getAllIssues();
-    let allIssuesCount = 0;
-    if (allIssues) {
-      allIssuesCount = allIssues.length;
-    }
+    // let allIssuesCount = 0;
+    // if (allIssues) {
+    //   allIssuesCount = allIssues.length;
+    // }
     this.setState({
       allIssues,
-      allIssuesCount,
+      // allIssuesCount,
     });
   }
 
