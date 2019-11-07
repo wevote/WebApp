@@ -289,6 +289,7 @@ export default class SettingsAccount extends Component {
       const dlg = $('[class*="SignInModal-dialogRoot-"]');
       if (dlg.length) {
         const collapse = hideVoterEmailAddressEntry === true;
+        // console.log("cordovaSignInModalTopPosition(collapse): ", cordovaSignInModalTopPosition(collapse));
         const topStyle = `z-index: 1300; top: ${cordovaSignInModalTopPosition(collapse)}`;
         $(dlg).attr('style', topStyle);
         if (collapse && isIOS()) {
