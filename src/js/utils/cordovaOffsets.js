@@ -416,8 +416,8 @@ export function cordovaTopHeaderTopMargin () {
       if (isAndroidSimulator()) {
         cordovaOffsetLog(`cordovaTopHeaderTopMargin android: ${window.location.href}`);
       } else {
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS: ${window.location.href.slice(0, 40)}`);
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS: ${window.location.href.slice(window.location.href.indexOf('WeVoteCordova.app') - 1)}`);
+        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS (first 60): ${window.location.href.slice(0, 60)}`);
+        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS (last 60): ${window.location.href.slice(window.location.href.length - 60)}`);
       }
     }
 
@@ -513,7 +513,7 @@ export function cordovaSignInModalTopPosition (collapsed) {
     } else if (isIPhone4in()) {               // SE
       return collapsed ? '-6%' : '-18%';
     } else if (isIPad()) {
-      return collapsed ? '-40%' : '-22%';
+      return collapsed ? '-5%' : '-22%';
     } else {
       return collapsed ? '-30%' : '-15%';
     }
