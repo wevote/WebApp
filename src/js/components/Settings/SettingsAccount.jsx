@@ -9,7 +9,7 @@ import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import { cordovaSignInModalTopPosition } from '../../utils/cordovaOffsets';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isCordova, isIOS } from '../../utils/cordovaUtils';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
@@ -288,8 +288,13 @@ export default class SettingsAccount extends Component {
       // The dialog fades in, so it will not be there on the initial passes through this render() function
       const dlg = $('[class*="SignInModal-dialogRoot-"]');
       if (dlg.length) {
-        const topStyle = `z-index: 1300; top: ${cordovaSignInModalTopPosition(hideVoterEmailAddressEntry === true)}`;
+        const collapse = hideVoterEmailAddressEntry === true;
+        const topStyle = `z-index: 1300; top: ${cordovaSignInModalTopPosition(collapse)}`;
         $(dlg).attr('style', topStyle);
+        if (collapse && isIOS()) {
+          const container = $('.MuiDialog-container');
+          $(container).attr('style', `${$(container).attr('style')}; height: 240px; transform: translateY(2%);`);
+        }
       }
     }
 

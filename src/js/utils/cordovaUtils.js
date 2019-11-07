@@ -114,151 +114,84 @@ export function isAndroid () {
 
 // 3.5" screen iPhones
 export function isIPhone3p5in () {
-  const { pbakondyScreenSize: size } = window;
   let ret = false;
   if (isIOS()) {
-    if (window.device.model === 'iPhone1,1' ||  // iPhone
-      window.device.model === 'iPhone1,2' ||  // iPhone 3G
-      window.device.model === 'iPhone2,1' ||  // iPhone 3GS
-      window.device.model === 'iPhone3,1' ||  // iPhone 4
-      window.device.model === 'iPhone3,2' ||  // iPhone 4
-      window.device.model === 'iPhone3,3' ||  // iPhone 4
-      window.device.model === 'iPhone4,1') {  // iPhone 4S)
-      logMatch('iPhone 5s SE (3.5")', true);
-      return true;
-    }
-    ret = (size.height === '480' && size.width === '320') ||  // iPhone Original, 3, 3GS
-          (size.height === '960' && size.width === '640');    // iPhone 4, 4S
-    if (ret) {
-      logMatch('iPhone Original, 3, 3GS, 4, 4S (3.5")', false);
-    }
+    //    iPhone:    iPhone       3G           3GS          4            4            4            4S
+    const phones = ['iPhone1,1', 'iPhone1,2', 'iPhone2,1', 'iPhone3,1', 'iPhone3,2', 'iPhone3,3', 'iPhone4,1'];
+    ret = phones.includes(window.device.model);
+    if (ret) logMatch('iPhone 5s SE (3.5")', true);
   }
-  const { screen } = window;
-  const width = screen.width * (screen.scale || 1);
-  const height = screen.height * (screen.scale || 1);
-  return !!(isIOS() &&
-    ((height === 480 && width === 320) ||  // iPhone Original, 3, 3GS
-     (height === 960 && width === 640)));  // iPhone 4, 4S
+  return ret;
 }
 
 // 4" screen iPhones, 326 ppi pixel density
 export function isIPhone4in () {
-  const { pbakondyScreenSize: size } = window;
   let ret = false;
   if (isIOS()) {
-    if (window.device.model === 'iPhone5,1' ||  // iPhone 5
-      window.device.model === 'iPhone5,2' ||    // iPhone 5
-      window.device.model === 'iPhone5,3' ||    // iPhone 5c
-      window.device.model === 'iPhone5,4' ||    // iPhone 5c
-      window.device.model === 'iPhone6,1' ||    // iPhone 5s
-      window.device.model === 'iPhone6,2' ||    // iPhone 5s
-      window.device.model === 'iPhone8,4') {    // iPhone SE
-      logMatch('iPhone 5s SE (4")', true);
-      ret = true;
-    }
-    ret = (size.height === '1136' && size.width === '640');  // iPhone 5, 5c, 5s, SE
-    if (ret) {
-      logMatch('iPhone 5, 5c, 5s, SE (4")', false);
-      ret = true;
-    }
+    //    iPhone:    5            5            5C           5C           5S           5S           SE
+    const phones = ['iPhone5,1', 'iPhone5,2', 'iPhone5,3', 'iPhone5,4', 'iPhone6,1', 'iPhone6,2', 'iPhone8,4'];
+    ret = phones.includes(window.device.model);
+    if (ret) logMatch('iPhone 5s SE (4")', true);
   }
   return ret;
 }
 
 // 4.7" screen iPhones, 326 ppi pixel density
 export function isIPhone4p7in () {
-  const { pbakondyScreenSize: size } = window;
   let ret = false;
   if (isIOS()) {
-    if (window.device.model === 'iPhone7,2' ||  // iPhone 6
-      window.device.model === 'iPhone8,1' ||    // iPhone 6s
-      window.device.model === 'iPhone9,1' ||    // iPhone 7
-      window.device.model === 'iPhone9,3' ||    // iPhone 7
-      window.device.model === 'iPhone10,1' ||   // iPhone 8
-      window.device.model === 'iPhone10,4') {   // iPhone 8
-      logMatch('iPhone 678 (4.7")', true);
-      ret = true;
-    } else if (size.height === '1334' && size.width === '750') { // iPhone 6, 6s, 7, 8
-      logMatch('iPhone 6, 6s, 7, 8 (4.7")', false);
-      ret = true;
-    }
+    //    iPhone:    6            6S           7            7            8             8
+    const phones = ['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4'];
+    ret = phones.includes(window.device.model);
+    if (ret) logMatch('iPhone 678 (4.7")', true);
   }
   return ret;
 }
 
 // 5.5" screen iPhones, 401 ppi pixel density
 export function isIPhone5p5in () {
-  const { pbakondyScreenSize: size } = window;
   let ret = false;
   if (isIOS()) {
-    if (window.device.model === 'iPhone7,1'  ||  // iPhone 6Plus
-      window.device.model === 'iPhone8,2'  ||  // iPhone 6s Plus
-      window.device.model === 'iPhone9,2'  ||  // iPhone 7 Plus
-      window.device.model === 'iPhone9,4'  ||  // iPhone 7 Plus
-      window.device.model === 'iPhone10,2' ||  // iPhone 8 Plus
-      window.device.model === 'iPhone10,5') {  // iPhone 8 Plus
-      logMatch('iPhone 678 Plus (5.5")', true);
-      ret = true;
-    } else if ((size.height === '1920' && size.width === '1080') ||  // iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
-          (size.height === '2208' && size.width === '1242')) {    // iPhone 8 Plus in simulator
-      logMatch('iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus (5.5" Screen)', false);
-      ret = true;
-    }
+    //    iPhone:    6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus
+    const phones = ['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4', 'iPhone10,2', 'iPhone10,5'];
+    ret = phones.includes(window.device.model);
+    if (ret) logMatch('iPhone 678 Plus (5.5")', true);
   }
   return ret;
 }
 
 // 5.8" screen iPhones, 458 ppi pixel density
-// TODO: October 22, 2019, the iPhone XS Max and iPhone 11 Pro Max simulators are reporting 2436x1125
 export function isIPhone5p8in () {
-  const { pbakondyScreenSize: size } = window;
   let ret = false;
   if (isIOS()) {
-    if (window.device.model === 'iPhone10,3' ||  // iPhone X
-      window.device.model === 'iPhone10,6' ||  // iPhone X
-      window.device.model === 'iPhone11,2' ||  // iPhone XS
-      window.device.model === 'iPhone12,3') {  // iPhone 11 Pro
-      logMatch('iPhone X or Xs or 11 Pro (5.8")', true);
-      ret = true;
-    } else if (size.height === '2436' && size.width === '1125') {  // iPhone X, XS, 11 Pro;
-      logMatch('iPhone X, XS, 11 Pro (5.8" Screen)', false);
-      ret = true;
-    }
+    //    iPhone:    X             X             XS            11 Pro
+    const phones = ['iPhone10,3', 'iPhone10,6', 'iPhone11,2', 'iPhone12,3'];
+    ret = phones.includes(window.device.model);
+    if (ret) logMatch('iPhone X or Xs or 11 Pro (5.8")', true);
   }
   return ret;
 }
 
 // 6.1" screen iPhones, 326 ppi pixel density
 export function isIPhone6p1in () {
-  const { pbakondyScreenSize: size } = window;
   let ret = false;
   if (isIOS()) {
-    if (window.device.model === 'iPhone11,8' || // iPhone XR
-      window.device.model === 'iPhone12,1') { // iPhone 11
-      logMatch('iPhone XR or 11 (6.1")', true);
-      ret = true;
-    } else if ((size.height === '1792' && size.width === '828') ||  // iPhone XR, 11 (11 as described on apple.com)
-          (size.height === '1624' && size.width === '750')) {   // iPhone 11 in Simulator
-      logMatch('iPhone XR, 11 (6.1" Screen)', false);
-      ret = true;
-    }
+    //    iPhone:    XR            11
+    const phones = ['iPhone11,8', 'iPhone12,1'];
+    ret = phones.includes(window.device.model);
+    if (ret) logMatch('iPhone XR or 11 (6.1")', true);
   }
   return ret;
 }
 
 // 6.5" screen iPhones, 458 ppi pixel density
 export function isIPhone6p5in () {
-  const { pbakondyScreenSize: size } = window;
   let ret = false;
   if (isIOS()) {
-    if (window.device.model === 'iPhone11,6' || // iPhone XS Max
-      window.device.model === 'iPhone12,5') {   // iPhone 11 Pro Max
-      logMatch('iPhone XsMax or 11 Pro Max (6.5")', true);
-      ret = true;
-    } else if (size.height === '2688' && size.width === '1242') {  // iPhone XS Max, 11 Pro Max
-      logMatch('iPhone XS Max, 11 Pro Max (6.5" Screen)', false);
-      ret = true;
-    }
+    //    iPhone:    XS Max        XS Max        11 Pro Max
+    const phones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5'];
+    ret = phones.includes(window.device.model);
+    if (ret) logMatch('iPhone XsMax or 11 Pro Max (6.5")', true);
   }
   return ret;
 }
@@ -266,60 +199,61 @@ export function isIPhone6p5in () {
 export function isIPad () {
   if (isIOS()) {
     if (window.device.model.substring(0, 4) === 'iPad') {
-    // June 2019, save this, we will need it, if we need to distinguish between types of iPads
-    // window.device.model === 'iPad4,1'  ||  // iPad Air
-    // window.device.model === 'iPad4,2'  ||  // iPad Air
-    // window.device.model === 'iPad4,3'  ||  // iPad Air
-    // window.device.model === 'iPad5,3'  ||  // iPad Air 2
-    // window.device.model === 'iPad5,4'  ||  // iPad Air 2
-    // window.device.model === 'iPad6,7'  ||  // iPad Pro (12.9-inch)
-    // window.device.model === 'iPad6,8'  ||  // iPad Pro (12.9-inch)
-    // window.device.model === 'iPad6,3'  ||  // iPad Pro (9.7-inch)
-    // window.device.model === 'iPad6,4'  ||  // iPad Pro (9.7-inch)
-    // window.device.model === 'iPad6,11' ||  // iPad (5th generation)
-    // window.device.model === 'iPad6,12' ||  // iPad (5th generation)
-    // window.device.model === 'iPad7,1'  ||  // iPad Pro (12.9-inch) (2nd generation)
-    // window.device.model === 'iPad7,2'  ||  // iPad Pro (12.9-inch) (2nd generation)
-    // window.device.model === 'iPad7,3'  ||  // iPad Pro (10.5-inch)
-    // window.device.model === 'iPad7,4'  ||  // iPad Pro (10.5-inch)
-    // window.device.model === 'iPad7,5 ' ||  // iPad (6th generation)
-    // window.device.model === 'iPad7,6 ' ||  // iPad (6th generation)
-    // window.device.model === 'iPad8,1'  ||  // iPad Pro (11-inch)
-    // window.device.model === 'iPad8,2'  ||  // iPad Pro (11-inch)
-    // window.device.model === 'iPad8,3'  ||  // iPad Pro (11-inch)
-    // window.device.model === 'iPad8,4'  ||  // iPad Pro (11-inch)
-    // window.device.model === 'iPad8,5'  ||  // iPad Pro (11-inch)
-    // window.device.model === 'iPad8,6'  ||  // iPad Pro (11-inch)
-    // window.device.model === 'iPad8,5'  ||  // iPad Pro (12.9-inch) (3rd generation)
-    // window.device.model === 'iPad8,7'  ||  // iPad Pro (12.9-inch) (3rd generation)
-    // window.device.model === 'iPad8,8'  ||  // iPad Pro (12.9-inch) (3rd generation)
-    // window.device.model === 'iPad11,3' ||  // iPad Air (3rd generation)
-    // window.device.model === 'iPad11,4' ||  // iPad Air (3rd generation)
-    // window.device.model === 'iPad4,7'  ||  // iPad mini 3
-    // window.device.model === 'iPad4,8'  ||  // iPad mini 3
-    // window.device.model === 'iPad4,9'  ||  // iPad mini 3
-    // window.device.model === 'iPad5,1'  ||  // iPad mini 4
-    // window.device.model === 'iPad5,2'  ||  // iPad mini 4
-    // window.device.model === 'iPad11,1' ||  // iPad mini (5th generation)
-    // window.device.model === 'iPad11,2')) { // iPad mini (5th generation)
+      // June 2019, save this, we will need it, if we need to distinguish between types of iPads
+      // window.device.model === 'iPad4,1'  ||  // iPad Air
+      // window.device.model === 'iPad4,2'  ||  // iPad Air
+      // window.device.model === 'iPad4,3'  ||  // iPad Air
+      // window.device.model === 'iPad5,3'  ||  // iPad Air 2
+      // window.device.model === 'iPad5,4'  ||  // iPad Air 2
+      // window.device.model === 'iPad6,7'  ||  // iPad Pro (12.9-inch)
+      // window.device.model === 'iPad6,8'  ||  // iPad Pro (12.9-inch)
+      // window.device.model === 'iPad6,3'  ||  // iPad Pro (9.7-inch)
+      // window.device.model === 'iPad6,4'  ||  // iPad Pro (9.7-inch)
+      // window.device.model === 'iPad6,11' ||  // iPad (5th generation)
+      // window.device.model === 'iPad6,12' ||  // iPad (5th generation)
+      // window.device.model === 'iPad7,1'  ||  // iPad Pro (12.9-inch) (2nd generation)
+      // window.device.model === 'iPad7,2'  ||  // iPad Pro (12.9-inch) (2nd generation)
+      // window.device.model === 'iPad7,3'  ||  // iPad Pro (10.5-inch)
+      // window.device.model === 'iPad7,4'  ||  // iPad Pro (10.5-inch)
+      // window.device.model === 'iPad7,5 ' ||  // iPad (6th generation)
+      // window.device.model === 'iPad7,6 ' ||  // iPad (6th generation)
+      // window.device.model === 'iPad8,1'  ||  // iPad Pro (11-inch)
+      // window.device.model === 'iPad8,2'  ||  // iPad Pro (11-inch)
+      // window.device.model === 'iPad8,3'  ||  // iPad Pro (11-inch)
+      // window.device.model === 'iPad8,4'  ||  // iPad Pro (11-inch)
+      // window.device.model === 'iPad8,5'  ||  // iPad Pro (11-inch)
+      // window.device.model === 'iPad8,6'  ||  // iPad Pro (11-inch)
+      // window.device.model === 'iPad8,5'  ||  // iPad Pro (12.9-inch) (3rd generation)
+      // window.device.model === 'iPad8,7'  ||  // iPad Pro (12.9-inch) (3rd generation)
+      // window.device.model === 'iPad8,8'  ||  // iPad Pro (12.9-inch) (3rd generation)
+      // window.device.model === 'iPad11,3' ||  // iPad Air (3rd generation)
+      // window.device.model === 'iPad11,4' ||  // iPad Air (3rd generation)
+      // window.device.model === 'iPad4,7'  ||  // iPad mini 3
+      // window.device.model === 'iPad4,8'  ||  // iPad mini 3
+      // window.device.model === 'iPad4,9'  ||  // iPad mini 3
+      // window.device.model === 'iPad5,1'  ||  // iPad mini 4
+      // window.device.model === 'iPad5,2'  ||  // iPad mini 4
+      // window.device.model === 'iPad11,1' ||  // iPad mini (5th generation)
+      // window.device.model === 'iPad11,2')) { // iPad mini (5th generation)
       logMatch('iPad', true);
       return true;
-    } else {
-      const ratio = window.devicePixelRatio || 1;
-      const screen = {
-        width: window.screen.width * ratio,
-        height: window.screen.height * ratio,
-      };
-      /* eslint-disable no-extra-parens */
-      if ((screen.width === 768 && screen.height === 1024) ||  // iPad, 9.7" 2010 and Gen 2, 2011 and Mini 2012
-          (screen.width === 1536 && screen.height === 2048) || // iPad, 9.7" Gen 3 2012, Gen 4 2013, 2018 iPad, iPad Pro 2016, iPad Air 2013, and Mini Retina 2013
-          (screen.width === 1668 && screen.height === 2224) || // iPad Pro 10.5" Gen 2  2017
-          (screen.width === 1668 && screen.height === 2388) || // iPad Pro 11", iPad Pro 12.9" October 2018
-          (screen.width === 2048 && screen.height === 2732)) { // iPad Pro 12.9" Gen 2, 2018
-        logMatch('iPad', false);
-        return true;
-      }
     }
+    // } else {
+    //   const ratio = window.devicePixelRatio || 1;
+    //   const screen = {
+    //     width: window.screen.width * ratio,
+    //     height: window.screen.height * ratio,
+    //   };
+    //   /* eslint-disable no-extra-parens */
+    //   if ((screen.width === 768 && screen.height === 1024) ||  // iPad, 9.7" 2010 and Gen 2, 2011 and Mini 2012
+    //       (screen.width === 1536 && screen.height === 2048) || // iPad, 9.7" Gen 3 2012, Gen 4 2013, 2018 iPad, iPad Pro 2016, iPad Air 2013, and Mini Retina 2013
+    //       (screen.width === 1668 && screen.height === 2224) || // iPad Pro 10.5" Gen 2  2017
+    //       (screen.width === 1668 && screen.height === 2388) || // iPad Pro 11", iPad Pro 12.9" October 2018
+    //       (screen.width === 2048 && screen.height === 2732)) { // iPad Pro 12.9" Gen 2, 2018
+    //     logMatch('iPad', false);
+    //     return true;
+    //   }
+    // }
   }
   return false;
 }
