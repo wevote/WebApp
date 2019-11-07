@@ -12,7 +12,7 @@ import {
   OutlinedInput,
 } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
-import { hasIPhoneNotch, isIOS, isCordova } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isIPhone4in, isIOS, isCordova } from '../../utils/cordovaUtils';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 
@@ -310,7 +310,7 @@ class SettingsVerifySecretCode extends Component {
       const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
       VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
     }
-  }
+  };
 
   // eslint-disable-next-line react/sort-comp
   onPaste (e) {
@@ -372,7 +372,7 @@ class SettingsVerifySecretCode extends Component {
         </ModalTitleArea>
         <ModalContent condensed={condensed}>
           <TextContainer condensed={condensed}>
-            <Title condensed={condensed}>Code Verification</Title>
+            <Title condensed={condensed} style={{ fontSize: `${isIPhone4in() ? '26px' : ''}` }}>Code Verification</Title>
             <Subtitle>A 6-digit code has been sent to</Subtitle>
             <PhoneSubtitle>{voterPhoneNumber || voterEmailAddress}</PhoneSubtitle>
             <InputContainer condensed={condensed}>
