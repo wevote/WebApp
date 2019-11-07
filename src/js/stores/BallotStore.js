@@ -2,8 +2,8 @@ import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
 import Dispatcher from '../dispatcher/Dispatcher';
 import BallotActions from '../actions/BallotActions';
-import SupportStore from './SupportStore';
-import VoterStore from './VoterStore';
+import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
+import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */

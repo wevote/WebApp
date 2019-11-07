@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+// import Button from '@material-ui/core/Button';
 
 /*
 The problem with urls in css for Apache Cordova
@@ -55,6 +56,16 @@ export default class IntroNetworkSafety extends Component {
         >
           Next&nbsp;&nbsp;&gt;
         </button>
+        {/* <Button
+          className="intro-story__btn--bottom"
+          color="primary"
+          id="voterGuideSettingsPositionsSeeFullBallot"
+          onClick={this.props.next}
+          style={{ top: `${cordovaNetworkNextButtonTop()}` }}
+          variant="contained"
+        >
+          Next&nbsp;&nbsp;&gt;
+        </Button> */}
       </div>
     );
   }

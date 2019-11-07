@@ -275,43 +275,6 @@ class SettingsVerifySecretCode extends Component {
     }
   }
 
-  voterVerifySecretCode = () => {
-    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
-    // console.log('voterVerifySecretCode local function, voterPhoneNumber:', voterPhoneNumber);
-    const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
-    const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
-    VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
-  };
-
-  closeVerifyModalLocal = () => {
-    // console.log('SettingsVerifySecretCode closeVerifyModalLocal');
-    if (this.props.closeVerifyModal) {
-      this.props.closeVerifyModal();
-    }
-  };
-
-  handleFocus (e) {
-    e.target.select();
-    if (isCordova()) {
-      this.setState({ condensed: true });
-    }
-  }
-
-  handleBlur () {
-    this.setState({ condensed: false });
-  }
-
-  handleDigit6Blur = () => {
-    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
-    this.setState({ condensed: false });
-    if (digit6 && isCordova()) {
-      // When their is a voterEmailAddress value and the keyboard closes, submit
-      const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
-      const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
-      VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
-    }
-  };
-
   // eslint-disable-next-line react/sort-comp
   onPaste (e) {
     // console.log(e.clipboardData.getData('Text'));
@@ -344,6 +307,43 @@ class SettingsVerifySecretCode extends Component {
         errorToDisplay: true,
         errorMessageToDisplay: 'Please enter a six-digit code',
       });
+    }
+  }
+
+  voterVerifySecretCode = () => {
+    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
+    // console.log('voterVerifySecretCode local function, voterPhoneNumber:', voterPhoneNumber);
+    const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
+    const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
+    VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
+  };
+
+  closeVerifyModalLocal = () => {
+    // console.log('SettingsVerifySecretCode closeVerifyModalLocal');
+    if (this.props.closeVerifyModal) {
+      this.props.closeVerifyModal();
+    }
+  };
+
+  handleDigit6Blur = () => {
+    const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
+    this.setState({ condensed: false });
+    if (digit6 && isCordova()) {
+      // When their is a voterEmailAddress value and the keyboard closes, submit
+      const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
+      const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
+      VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
+    }
+  };
+
+  handleBlur () {
+    this.setState({ condensed: false });
+  }
+
+  handleFocus (e) {
+    e.target.select();
+    if (isCordova()) {
+      this.setState({ condensed: true });
     }
   }
 

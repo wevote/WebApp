@@ -3,7 +3,7 @@ import assign from 'object-assign';
 import Dispatcher from '../dispatcher/Dispatcher';
 import { mergeTwoObjectLists } from '../utils/textFormat';
 import SupportActions from '../actions/SupportActions';
-import VoterStore from './VoterStore';
+import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
 class SupportStore extends ReduceStore {
   getInitialState () {

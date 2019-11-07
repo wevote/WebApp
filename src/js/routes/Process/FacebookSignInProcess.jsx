@@ -3,6 +3,7 @@ import AppActions from '../../actions/AppActions';
 import cookies from '../../utils/cookies';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
+import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
@@ -169,12 +170,14 @@ export default class FacebookSignInProcess extends Component {
       !facebookAuthResponse.facebook_retrieve_attempted) {
       // console.log('facebookAuthResponse:', facebookAuthResponse);
       return (
-        <div>
-          <div style={{ textAlign: 'center' }}>
-            Waiting for response from Facebook...
-          </div>
-          <div className="u-loading-spinner__wrapper">
-            <div className="u-loading-spinner">Please wait...</div>
+        <div className="facebook_sign_in_root">
+          <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+            <div style={{ textAlign: 'center' }}>
+              Waiting for response from Facebook...
+            </div>
+            <div className="u-loading-spinner__wrapper">
+              <div className="u-loading-spinner">Please wait...</div>
+            </div>
           </div>
         </div>
       );
@@ -227,12 +230,14 @@ export default class FacebookSignInProcess extends Component {
         this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey); // , facebookAuthResponse.voter_has_data_to_preserve
       }
       return (
-        <div>
-          <div style={{ textAlign: 'center' }}>
-            Loading your account...
-          </div>
-          <div className="u-loading-spinner__wrapper">
-            <div className="u-loading-spinner">Please wait...</div>
+        <div className="facebook_sign_in_root">
+          <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+            <div style={{ textAlign: 'center' }}>
+              Loading your account...
+            </div>
+            <div className="u-loading-spinner__wrapper">
+              <div className="u-loading-spinner">Please wait...</div>
+            </div>
           </div>
         </div>
       );

@@ -1,5 +1,7 @@
 import { browserHistory, hashHistory } from 'react-router';
+import BallotStore from '../stores/BallotStore'; // eslint-disable-line import/no-cycle
 import { cordovaOffsetLog, oAuthLog } from './logging';
+import { stringContains } from './textFormat';
 import webAppConfig from '../config';
 
 /* global $  */
@@ -111,89 +113,135 @@ export function isAndroid () {
 // https://gist.github.com/adamawolf/3048717
 // http://socialcompare.com/en/comparison/apple-iphone-product-line-comparison
 
+export function getIOSSizeString () {
+  //    iPhone:               iPhone       3G           3GS          4            4            4            4S
+  const iPhone3p5inPhones = ['iPhone1,1', 'iPhone1,2', 'iPhone2,1', 'iPhone3,1', 'iPhone3,2', 'iPhone3,3', 'iPhone4,1'];
+  //    iPhone:             5            5            5C           5C           5S           5S           SE
+  const iPhone4inPhones = ['iPhone5,1', 'iPhone5,2', 'iPhone5,3', 'iPhone5,4', 'iPhone6,1', 'iPhone6,2', 'iPhone8,4'];
+  //    iPhone:               6            6S           7            7            8             8
+  const iPhone4p7inPhones = ['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4'];
+  //    iPhone:                 6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus
+  const isIPhone5p5inPhones = ['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4', 'iPhone10,2', 'iPhone10,5'];
+  //    iPhone:               X             X             XS            11 Pro
+  const iPhone5p8inPhones = ['iPhone10,3', 'iPhone10,6', 'iPhone11,2', 'iPhone12,3'];
+  //    iPhone:               XR            11
+  const iPhone6p1inPhones = ['iPhone11,8', 'iPhone12,1'];
+  //    iPhone:               XS Max        XS Max        11 Pro Max
+  const iPhone6p5inPhones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5'];
+  if (iPhone3p5inPhones.includes(window.device.model)) {
+    return 'isIPhone3p5in';
+  } else if (iPhone4inPhones.includes(window.device.model)) {
+    return 'isIPhone4in';
+  } else if (iPhone4p7inPhones.includes(window.device.model)) {
+    return 'isIPhone4p7in';
+  } else if (isIPhone5p5inPhones.includes(window.device.model)) {
+    return 'isIPhone5p5in';
+  } else if (iPhone5p8inPhones.includes(window.device.model)) {
+    return 'isIPhone5p8in';
+  } else if (iPhone6p1inPhones.includes(window.device.model)) {
+    return 'isIPhone6p1in';
+  } else if (iPhone6p5inPhones.includes(window.device.model)) {
+    return 'isIPhone6p5in';
+  }
+  // If we are here, we know that the window.device.model was not matched to any phones we recognize.
+  // So now we calculate based on screen size
+  const { pbakondyScreenSize: size } = window;
+  if ((size.height === '480' && size.width === '320') ||  // iPhone Original, 3, 3GS
+      (size.height === '960' && size.width === '640')) {  // iPhone 4, 4S
+    return 'isIPhone3p5in';
+  } else if (size.height === '1136' && size.width === '640') {  // iPhone 5, 5c, 5s, SE
+    return 'isIPhone4in';
+  } else if (size.height === '1334' && size.width === '750') {  // iPhone 6, 6s, 7, 8
+    return 'isIPhone4p7in';
+  } else if ((size.height === '1920' && size.width === '1080') ||  // iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
+            (size.height === '2208' && size.width === '1242')) {   // iPhone 8 Plus in simulator
+    return 'isIPhone5p5in';
+  } else if (size.height === '2436' && size.width === '1125') {  // iPhone X, XS, 11 Pro
+    return 'isIPhone5p8in';
+  } else if ((size.height === '1792' && size.width === '828') ||  // iPhone XR, 11 (11 as described on apple.com)
+            (size.height === '1624' && size.width === '750')) {   // iPhone 11 in Simulator
+    return 'isIPhone6p1in';
+  } else if (size.height === '2688' && size.width === '1242') {  // iPhone XS Max, 11 Pro Max
+    return 'isIPhone6p5in';
+  }
+  return '';
+}
 
 // 3.5" screen iPhones
 export function isIPhone3p5in () {
-  let ret = false;
   if (isIOS()) {
-    //    iPhone:    iPhone       3G           3GS          4            4            4            4S
-    const phones = ['iPhone1,1', 'iPhone1,2', 'iPhone2,1', 'iPhone3,1', 'iPhone3,2', 'iPhone3,3', 'iPhone4,1'];
-    ret = phones.includes(window.device.model);
-    if (ret) logMatch('iPhone 5s SE (3.5")', true);
+    if (getIOSSizeString() === 'isIPhone3p5in') {
+      logMatch('isIPhone3p5in: iPhone 5s SE (3.5")', true);
+      return true;
+    }
   }
-  return ret;
+  return false;
 }
 
 // 4" screen iPhones, 326 ppi pixel density
 export function isIPhone4in () {
-  let ret = false;
   if (isIOS()) {
-    //    iPhone:    5            5            5C           5C           5S           5S           SE
-    const phones = ['iPhone5,1', 'iPhone5,2', 'iPhone5,3', 'iPhone5,4', 'iPhone6,1', 'iPhone6,2', 'iPhone8,4'];
-    ret = phones.includes(window.device.model);
-    if (ret) logMatch('iPhone 5s SE (4")', true);
+    if (getIOSSizeString() === 'isIPhone4in') {
+      logMatch('isIPhone4in: iPhone 5s SE (4")', true);
+      return true;
+    }
   }
-  return ret;
+  return false;
 }
 
 // 4.7" screen iPhones, 326 ppi pixel density
 export function isIPhone4p7in () {
-  let ret = false;
   if (isIOS()) {
-    //    iPhone:    6            6S           7            7            8             8
-    const phones = ['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4'];
-    ret = phones.includes(window.device.model);
-    if (ret) logMatch('iPhone 678 (4.7")', true);
+    if (getIOSSizeString() === 'isIPhone4p7in') {
+      logMatch('isIPhone4p7in: iPhone 678 (4.7")', true);
+      return true;
+    }
   }
-  return ret;
+  return false;
 }
 
 // 5.5" screen iPhones, 401 ppi pixel density
 export function isIPhone5p5in () {
-  let ret = false;
   if (isIOS()) {
-    //    iPhone:    6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus
-    const phones = ['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4', 'iPhone10,2', 'iPhone10,5'];
-    ret = phones.includes(window.device.model);
-    if (ret) logMatch('iPhone 678 Plus (5.5")', true);
+    if (getIOSSizeString() === 'isIPhone5p5in') {
+      logMatch('isIPhone5p5in: iPhone 678 Plus (5.5")', true);
+      return true;
+    }
   }
-  return ret;
+  return false;
 }
 
 // 5.8" screen iPhones, 458 ppi pixel density
 export function isIPhone5p8in () {
-  let ret = false;
   if (isIOS()) {
-    //    iPhone:    X             X             XS            11 Pro
-    const phones = ['iPhone10,3', 'iPhone10,6', 'iPhone11,2', 'iPhone12,3'];
-    ret = phones.includes(window.device.model);
-    if (ret) logMatch('iPhone X or Xs or 11 Pro (5.8")', true);
+    if (getIOSSizeString() === 'isIPhone5p8in') {
+      logMatch('isIPhone5p8in: iPhone X or Xs or 11 Pro (5.8")', true);
+      return true;
+    }
   }
-  return ret;
+  return false;
 }
 
 // 6.1" screen iPhones, 326 ppi pixel density
 export function isIPhone6p1in () {
-  let ret = false;
   if (isIOS()) {
-    //    iPhone:    XR            11
-    const phones = ['iPhone11,8', 'iPhone12,1'];
-    ret = phones.includes(window.device.model);
-    if (ret) logMatch('iPhone XR or 11 (6.1")', true);
+    if (getIOSSizeString() === 'isIPhone6p1in') {
+      logMatch('isIPhone6p1in: iPhone XR or 11 (6.1")', true);
+      return true;
+    }
   }
-  return ret;
+  return false;
 }
 
 // 6.5" screen iPhones, 458 ppi pixel density
 export function isIPhone6p5in () {
-  let ret = false;
   if (isIOS()) {
-    //    iPhone:    XS Max        XS Max        11 Pro Max
-    const phones = ['iPhone11,4', 'iPhone11,6', 'iPhone12,5'];
-    ret = phones.includes(window.device.model);
-    if (ret) logMatch('iPhone XsMax or 11 Pro Max (6.5")', true);
+    if (getIOSSizeString() === 'isIPhone6p5in') {
+      logMatch('isIPhone6p5in: iPhone XsMax or 11 Pro Max (6.5")', true);
+      return true;
+    }
   }
-  return ret;
+  return false;
 }
 
 export function isIPad () {
@@ -237,23 +285,22 @@ export function isIPad () {
       // window.device.model === 'iPad11,2')) { // iPad mini (5th generation)
       logMatch('iPad', true);
       return true;
+    } else {
+      const ratio = window.devicePixelRatio || 1;
+      const screen = {
+        width: window.screen.width * ratio,
+        height: window.screen.height * ratio,
+      };
+      /* eslint-disable no-extra-parens */
+      if ((screen.width === 768 && screen.height === 1024) ||  // iPad, 9.7" 2010 and Gen 2, 2011 and Mini 2012
+          (screen.width === 1536 && screen.height === 2048) || // iPad, 9.7" Gen 3 2012, Gen 4 2013, 2018 iPad, iPad Pro 2016, iPad Air 2013, and Mini Retina 2013
+          (screen.width === 1668 && screen.height === 2224) || // iPad Pro 10.5" Gen 2  2017
+          (screen.width === 1668 && screen.height === 2388) || // iPad Pro 11", iPad Pro 12.9" October 2018
+          (screen.width === 2048 && screen.height === 2732)) { // iPad Pro 12.9" Gen 2, 2018
+        logMatch('iPad', false);
+        return true;
+      }
     }
-    // } else {
-    //   const ratio = window.devicePixelRatio || 1;
-    //   const screen = {
-    //     width: window.screen.width * ratio,
-    //     height: window.screen.height * ratio,
-    //   };
-    //   /* eslint-disable no-extra-parens */
-    //   if ((screen.width === 768 && screen.height === 1024) ||  // iPad, 9.7" 2010 and Gen 2, 2011 and Mini 2012
-    //       (screen.width === 1536 && screen.height === 2048) || // iPad, 9.7" Gen 3 2012, Gen 4 2013, 2018 iPad, iPad Pro 2016, iPad Air 2013, and Mini Retina 2013
-    //       (screen.width === 1668 && screen.height === 2224) || // iPad Pro 10.5" Gen 2  2017
-    //       (screen.width === 1668 && screen.height === 2388) || // iPad Pro 11", iPad Pro 12.9" October 2018
-    //       (screen.width === 2048 && screen.height === 2732)) { // iPad Pro 12.9" Gen 2, 2018
-    //     logMatch('iPad', false);
-    //     return true;
-    //   }
-    // }
   }
   return false;
 }
@@ -347,11 +394,13 @@ export const enums = {
   friends: 201,
   opinions: 202,
   values: 203,
+  voterGuideWild: 204,
   defaultVal: 1000,
 };
 
 export function pageEnumeration () {
   const { href } = window.location;
+  const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
 
   // second level paths must be tried first
   if (href.indexOf('/index.html#/ballot/vote') > 0) {
@@ -379,10 +428,13 @@ export function pageEnumeration () {
     return enums.valueWild;
   } else if (href.indexOf('/index.html#/vg/') > 0) {
     return enums.voterGuideCreatorWild;
+  } else if (stringContains('btcand', href) ||
+             stringContains('btmeas', href)) {
+    return enums.voterGuideWild;
   } else if (href.indexOf('/index.html#/wevoteintro/') > 0) {
     return enums.wevoteintroWild;
   } else if (href.indexOf('/index.html#/ballot') > 0) {
-    if ($('#allItemsCompletionLevelTab').length > 0) {
+    if (showBallotDecisionTabs) {
       return enums.ballotLgHdrWild;
     } else {
       return enums.ballotSmHdrWild;

@@ -3,12 +3,12 @@ import AppStore from './AppStore'; // eslint-disable-line import/no-cycle
 import BallotActions from '../actions/BallotActions';
 import cookies from '../utils/cookies';
 import Dispatcher from '../dispatcher/Dispatcher';
-import FacebookActions from '../actions/FacebookActions';
+import FacebookActions from '../actions/FacebookActions'; // eslint-disable-line import/no-cycle
 import FriendActions from '../actions/FriendActions';
 import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import { stringContains } from '../utils/textFormat';
-import VoterActions from '../actions/VoterActions';
+import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterGuideActions from '../actions/VoterGuideActions';
 
 class VoterStore extends ReduceStore {
