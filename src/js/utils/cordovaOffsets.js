@@ -20,7 +20,7 @@ export function cordovaScrollablePaneTopPadding () {
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding android: ${window.location.href}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionTabs: ${showBallotDecisionTabs}`);
     } else {
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(0, 40)}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionTabs: ${showBallotDecisionTabs}`);
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(window.location.href.indexOf('WeVoteCordova.app') - 1)}`);
+      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(window.location.length - 60)}`);
     }
   }
 

@@ -4,7 +4,7 @@ import cookies from '../../utils/cookies';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
 import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
@@ -79,8 +79,8 @@ export default class FacebookSignInProcess extends Component {
             if (stringContains(window.location.origin, redirectFullUrl)) {
               // Switch to path names to reduce load on browser and API server
               useWindowLocationAssign = false;
-              const newRedirectPathname = redirectFullUrl.replace(window.location.origin, '');
-              // console.log('newRedirectPathname:', newRedirectPathname);
+              const newRedirectPathname = isWebApp() ? redirectFullUrl.replace(window.location.origin, '') : '/ballot';
+              oAuthLog('Redirecting to newRedirectPathname:', newRedirectPathname);
               this.setState({ redirectInProcess: true });
               historyPush({
                 pathname: newRedirectPathname,
@@ -101,6 +101,7 @@ export default class FacebookSignInProcess extends Component {
         } else {
           this.setState({ redirectInProcess: true });
           const redirectPathname = '/ballot';
+          oAuthLog('Redirecting to redirectPathname:', redirectPathname);
           historyPush({
             pathname: redirectPathname,
             // The Facebook sign in delay isn't as great as Twitter, so this might not needed.
@@ -187,8 +188,8 @@ export default class FacebookSignInProcess extends Component {
     const { facebook_secret_key: facebookSecretKey } = facebookAuthResponse;
 
     if (facebookAuthResponse.facebook_sign_in_failed) {
-      // console.log('Facebook sign in failed - push to /settings/account');
       this.setState({ redirectInProcess: true });
+      oAuthLog('facebookAuthResponse.facebook_sign_in_failed redirecting to: /settings/account');
       historyPush({
         pathname: '/settings/account',
         state: {
@@ -211,7 +212,7 @@ export default class FacebookSignInProcess extends Component {
     if (!facebookAuthResponse.facebook_sign_in_found) {
       // console.log('facebookAuthResponse.facebook_sign_in_found', facebookAuthResponse.facebook_sign_in_found);
       this.setState({ redirectInProcess: true });
-      oAuthLog('facebookAuthResponse.facebook_sign_in_found', facebookAuthResponse.facebook_sign_in_found);
+      oAuthLog('facebookAuthResponse.facebook_sign_in_found redirecting to /settings/account');
       historyPush({
         pathname: '/settings/account',
         state: {
