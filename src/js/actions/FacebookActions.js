@@ -1,9 +1,9 @@
-import { isWebApp, isCordova } from '../utils/cordovaUtils';
+import { isWebApp, isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 import Dispatcher from '../dispatcher/Dispatcher';
 import FacebookConstants from '../constants/FacebookConstants';
 import FriendActions from './FriendActions';
 import { oAuthLog } from '../utils/logging';
-import VoterActions from './VoterActions';
+import VoterActions from './VoterActions'; // eslint-disable-line import/no-cycle
 import VoterSessionActions from './VoterSessionActions';
 import webAppConfig from '../config';
 

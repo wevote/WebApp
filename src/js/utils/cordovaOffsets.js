@@ -1,3 +1,4 @@
+import BallotStore from '../stores/BallotStore';
 import { isCordova, isIOS, isAndroid, isAndroidSimulator, isSimulator, getAndroidSize, pageEnumeration, enums,
   isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, hasIPhoneNotch, isIPhone6p1in, isIPhone6p5in, isIPad } from './cordovaUtils';
 import { cordovaOffsetLog } from './logging';
@@ -10,17 +11,18 @@ import VoterStore from '../stores/VoterStore';
 // <VoteContainer padTop={cordovaScrollablePaneTopPadding()}>   /index.html#/ballot/vote
 // This function controls the padding above the content that makes room for the header for a particular section
 export function cordovaScrollablePaneTopPadding () {
+  const voter = VoterStore.getVoter();
+  const { is_signed_in: isSignedIn } = voter;
+  const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
+
   if (isSimulator()) {
     if (isAndroidSimulator()) {
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding android: ${window.location.href}`);
+      cordovaOffsetLog(`cordovaScrollablePaneTopPadding android: ${window.location.href}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionTabs: ${showBallotDecisionTabs}`);
     } else {
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(0, 40)}`);
+      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(0, 40)}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionTabs: ${showBallotDecisionTabs}`);
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(window.location.href.indexOf('WeVoteCordova.app') - 1)}`);
     }
   }
-  const voter = VoterStore.getVoter();
-  const { is_signed_in: isSignedIn } = voter;
-  // const isSignedIn = $('#profileAvatarHeaderBar').length > 0;
 
   if (isIOS()) {
     if (isIPhone4in()) {
@@ -37,6 +39,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '40px';
         case enums.welcomeWild:     return '10px';
+        // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.moreHamburger:   return '10px';
         case enums.moreTools:       return '44px';
@@ -57,6 +60,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '40px';
         case enums.welcomeWild:     return '10px';
+        // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.moreHamburger:   return '10px';
         case enums.moreTools:       return '44px';
@@ -77,6 +81,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '44px';
         case enums.welcomeWild:     return '22px';
+        // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.moreHamburger:   return '10px';
         case enums.moreTools:       return '44px';
@@ -97,6 +102,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotLgHdrWild: return '41px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
+        // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
@@ -117,6 +123,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotLgHdrWild: return '42px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
+        // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
@@ -132,12 +139,13 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '66px';
         case enums.candidateWild:   return '69px';
         case enums.opinions:        return '10px';
-        case enums.officeWild:      return '76px';
+        case enums.officeWild:      return '96px';
         case enums.ballotVote:      return isSignedIn ? '162px' : '162px';
         case enums.ballotSmHdrWild: return '167px';
-        case enums.ballotLgHdrWild: return '42px';
+        case enums.ballotLgHdrWild: return showBallotDecisionTabs ? '58px' : '42px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
+        // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
@@ -158,6 +166,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotLgHdrWild: return '12px';
         case enums.moreAbout:       return '0px';
         case enums.moreTerms:       return '44px';
+        // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '0px';
         case enums.moreHamburger:   return '15px';
@@ -180,6 +189,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '131px';
         case enums.ballotVote:      return isSignedIn ? '149px' : '145px';
         case enums.moreTerms:       return '32px';
+        // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         default:                    return '0px';
       }
@@ -192,6 +202,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '126px';
         case enums.ballotVote:      return isSignedIn ? '128px' : '135px';
         case enums.moreTerms:       return '32px';
+        // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         default:                    return '0px';
       }
@@ -204,6 +215,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '124px';
         case enums.ballotVote:      return isSignedIn ? '132px' : '131px';
         case enums.moreTerms:       return '32px';
+        // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         default:                    return '0px';
       }
@@ -216,6 +228,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '138px';
         case enums.ballotVote:      return isSignedIn ? '131px' : '128px';
         case enums.moreTerms:       return '32px';
+        // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.valuesList:
         default:                    return '0px';
@@ -226,6 +239,7 @@ export function cordovaScrollablePaneTopPadding () {
 }
 
 // <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
+// This determines where the top of the "All", "Choices" and "Decided" tabs should start.
 export function cordovaBallotFilterTopMargin () {
   if (isIOS()) {
     if (isIPhone5p5in()) {
@@ -330,6 +344,7 @@ export function cordovaFooterHeight () {
 // URLs that end with a twitter handle...
 // <div id="the styled div that follows is the wrapper for voter guide mode">
 //   <Wrapper padTop={cordovaVoterGuideTopPadding()}>
+// This pushes down the voter guide organization Twitter banner - parallel to voterGuideWild
 export function cordovaVoterGuideTopPadding () {
   if (isIOS()) {
     if (isIPhone5p5in()) {
@@ -337,7 +352,7 @@ export function cordovaVoterGuideTopPadding () {
     } else if (isIPhone4p7in()) {
       return '0px';
     } else if (hasIPhoneNotch()) {
-      return '18px';
+      return '28px';
     } else if (isIPad()) {
       return '8px';
     }
@@ -404,6 +419,7 @@ export function cordovaVoteMiniHeader () {
 }
 
 // <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
+// This is the margin above the "Back to" bars across the very top of the screen
 export function cordovaTopHeaderTopMargin () {
   const style = {
     marginRight: 'auto',
@@ -414,9 +430,9 @@ export function cordovaTopHeaderTopMargin () {
   if (isCordova()) {
     if (isSimulator()) {
       if (isAndroidSimulator()) {
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin android: ${window.location.href}`);
+        cordovaOffsetLog(`cordovaTopHeaderTopMargin android: ${window.location.href}, pageEnumeration(): ${pageEnumeration()}`);
       } else {
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS (first 60): ${window.location.href.slice(0, 60)}`);
+        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS (first 60): ${window.location.href.slice(0, 60)}, pageEnumeration(): ${pageEnumeration()}`);
         cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS (last 60): ${window.location.href.slice(window.location.href.length - 60)}`);
       }
     }
@@ -429,7 +445,8 @@ export function cordovaTopHeaderTopMargin () {
           case enums.values:          style.marginTop = '16px'; break;
           case enums.valueWild:       style.marginTop = '22px'; break;
           case enums.friends:         style.marginTop = '16px'; break;
-          case enums.ballot:          style.marginTop = '19px'; break;
+          case enums.ballotSmHdrWild: style.marginTop = '19px'; break;
+          case enums.ballotLgHdrWild: style.marginTop = '19px'; break;
           case enums.ballotVote:      style.marginTop = '19px'; break;
           case enums.settingsWild:    style.marginTop = '22px'; break;
           case enums.voterGuideCreatorWild: style.marginTop = '10px'; break; // $headroom-wrapper-webapp-voter-guide
@@ -446,10 +463,12 @@ export function cordovaTopHeaderTopMargin () {
           case enums.valueWild:       style.marginTop = '32px'; break;
           case enums.opinions:        style.marginTop = '36px'; break;
           case enums.friends:         style.marginTop = '16px'; break;
-          case enums.ballot:          style.marginTop = '16px'; break;
+          case enums.ballotSmHdrWild: style.marginTop = '16px'; break;
+          case enums.ballotLgHdrWild: style.marginTop = '16px'; break;
           case enums.ballotVote:      style.marginTop = '16px'; break;
           case enums.settingsWild:    style.marginTop = '38px'; break;
           case enums.voterGuideCreatorWild: style.marginTop = '10px'; break; // $headroom-wrapper-webapp-voter-guide
+          case enums.voterGuideWild: style.marginTop = '38px'; break; // Any page with btcand or btmeas
           default:                    style.marginTop = '16px'; break;
         }
       } else if (isIPad()) {

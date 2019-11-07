@@ -1,5 +1,5 @@
 import Dispatcher from '../dispatcher/Dispatcher';
-import { isCordova } from '../utils/cordovaUtils';
+import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 
 export default {
   clearEmailAddressStatus () {

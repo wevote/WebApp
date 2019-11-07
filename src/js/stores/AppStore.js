@@ -2,7 +2,7 @@ import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/AppDispatcher';
 import { stringContains } from '../utils/textFormat';
 import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
-import VoterActions from '../actions/VoterActions';
+import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
 class AppStore extends ReduceStore {

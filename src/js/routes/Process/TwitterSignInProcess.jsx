@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
 import cookies from '../../utils/cookies';
+import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
@@ -167,12 +168,14 @@ export default class TwitterSignInProcess extends Component {
       !twitterAuthResponse.twitter_retrieve_attempted) {
       oAuthLog('STOPPED, missing twitter_retrieve_attempted: twitterAuthResponse:', twitterAuthResponse);
       return (
-        <div>
-          <div style={{ textAlign: 'center' }}>
-            Waiting for response from Twitter...
-          </div>
-          <div className="u-loading-spinner__wrapper">
-            <div className="u-loading-spinner">Please wait...</div>
+        <div className="twitter_sign_in_root">
+          <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+            <div style={{ textAlign: 'center' }}>
+              Waiting for response from Twitter...
+            </div>
+            <div className="u-loading-spinner__wrapper">
+              <div className="u-loading-spinner">Please wait...</div>
+            </div>
           </div>
         </div>
       );
@@ -225,12 +228,14 @@ export default class TwitterSignInProcess extends Component {
         oAuthLog('twitterAuthResponse NOT CALLING voterMergeTwoAccountsByTwitterKey');
       }
       return (
-        <div>
-          <div style={{ textAlign: 'center' }}>
-            Loading your account...
-          </div>
-          <div className="u-loading-spinner__wrapper">
-            <div className="u-loading-spinner">Please wait...</div>
+        <div className="twitter_sign_in_root">
+          <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+            <div style={{ textAlign: 'center' }}>
+              Loading your account...
+            </div>
+            <div className="u-loading-spinner__wrapper">
+              <div className="u-loading-spinner">Please wait...</div>
+            </div>
           </div>
         </div>
       );
