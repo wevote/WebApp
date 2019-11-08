@@ -16,6 +16,8 @@ const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HO
 class TwitterSignIn extends Component {
   static propTypes = {
     buttonText: PropTypes.string,
+    inModal: PropTypes.bool,
+    toggleSignInModal: PropTypes.func,
   };
 
   // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
@@ -86,6 +88,42 @@ class TwitterSignIn extends Component {
     };
   }
 
+  twitterSignInWebAppCordova = () => {
+    const requestURL = `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}twitterSignInStart` +
+      `?cordova=true&voter_device_id=${cookies.getItem('voter_device_id')}&return_url=http://nonsense.com`;
+    oAuthLog(`twitterSignInWebAppCordova requestURL: ${requestURL}`);
+    const { inModal } = this.props;
+    if (isIOS()) {
+      cordovaOpenSafariView(requestURL, null, 50);
+      if (inModal) {
+        if (this.props.toggleSignInModal) {
+          this.props.toggleSignInModal();
+        }
+      }
+    } else if (isAndroid()) {
+      // April 6, 2018: Needs Steve's PR to handle customscheme
+      // https://github.com/apache/cordova-plugin-inappbrowser/pull/263
+      /* global cordova */
+      /* eslint no-undef: ["error", { "typeof": true }] */
+      const inAppBrowserRef = cordova.InAppBrowser.open(requestURL, '_blank', 'toolbar=no,location=yes,hardwareback=no');
+      inAppBrowserRef.addEventListener('exit', () => {
+        oAuthLog('inAppBrowserRef on exit: ', requestURL);
+      });
+
+      inAppBrowserRef.addEventListener('customscheme', (event) => {
+        oAuthLog('customscheme: ', event.url);
+        TwitterSignIn.handleTwitterOpenURL(event.url);
+
+        // inAppBrowserRef.close();
+        if (inModal) {
+          if (this.props.toggleSignInModal) {
+            this.props.toggleSignInModal();
+          }
+        }
+      });
+    }
+  }
+
   twitterSignInWebApp () {
     const brandingOff = cookies.getItem('we_vote_branding_off') || 0;
     oAuthLog(`twitterSignInWebApp isWebApp(): ${isWebApp()},  returnURL: ${returnURL}`);
@@ -117,31 +155,6 @@ class TwitterSignIn extends Component {
         window.location.assign('');
       },
     });
-  }
-
-  twitterSignInWebAppCordova () {
-    const requestURL = `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}twitterSignInStart` +
-      `?cordova=true&voter_device_id=${cookies.getItem('voter_device_id')}&return_url=http://nonsense.com`;
-    oAuthLog(`twitterSignInWebAppCordova requestURL: ${requestURL}`);
-    if (isIOS()) {
-      cordovaOpenSafariView(requestURL, null, 50);
-    } else if (isAndroid()) {
-      // April 6, 2018: Needs Steve's PR to handle customscheme
-      // https://github.com/apache/cordova-plugin-inappbrowser/pull/263
-      /* global cordova */
-      /* eslint no-undef: ["error", { "typeof": true }] */
-      const inAppBrowserRef = cordova.InAppBrowser.open(requestURL, '_blank', 'toolbar=no,location=yes,hardwareback=no');
-      inAppBrowserRef.addEventListener('exit', () => {
-        oAuthLog('inAppBrowserRef on exit: ', requestURL);
-      });
-
-      inAppBrowserRef.addEventListener('customscheme', (event) => {
-        oAuthLog('customscheme: ', event.url);
-        TwitterSignIn.handleTwitterOpenURL(event.url);
-
-        // inAppBrowserRef.close();
-      });
-    }
   }
 
   render () {

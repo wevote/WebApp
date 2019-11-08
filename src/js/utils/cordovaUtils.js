@@ -422,7 +422,9 @@ export function pageEnumeration () {
     return enums.candidateWild;
   } else if (href.indexOf('/index.html#/office/') > 0) {
     return enums.officeWild;
-  } else if (href.indexOf('/index.html#/settings/') > 0) {
+  } else if (href.indexOf('/index.html#/settings/') > 0 ||
+             stringContains('twitter_sign_in', href) ||
+             stringContains('facebook_sign_in', href)) {
     return enums.settingsWild;
   } else if (href.indexOf('/index.html#/value/') > 0) {
     return enums.valueWild;

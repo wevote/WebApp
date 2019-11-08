@@ -375,10 +375,10 @@ class HeaderBar extends Component {
                     >
                       <img
                         className="header-nav__avatar"
+                        src={voterPhotoUrlMedium}
                         style={{
                           marginLeft: 16,
                         }}
-                        src={voterPhotoUrlMedium}
                         height={34}
                         width={34}
                         alt="Your Settings"
@@ -515,11 +515,11 @@ const styles = theme => ({
     },
     color: 'rgba(17, 17, 17, .5)',
     outline: 'none !important',
+    paddingRight: 20,
     [theme.breakpoints.down('sm')]: {
       paddingTop: 6,
       marginLeft: 2,
       paddingLeft: 0,
-      paddingRight: 10,
     },
   },
   headerButtonRoot: {
