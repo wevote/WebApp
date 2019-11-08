@@ -21,6 +21,7 @@ $space-hamburger: 5px;
 $hamburger-table-menu-margin: 2em;
 $transparent-background: transparent;
 $container-margin: -15px;
+$pop-up-menu-cordova-padding: 10px;
 
 // Header Nav
 // ================================
@@ -55,9 +56,9 @@ $container-margin: -15px;
   width: 90%;
   overflow: auto; /* Enable scroll if needed */
   background-color: $white;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
+  padding-top: $pop-up-menu-cordova-padding;
+  padding-bottom: $pop-up-menu-cordova-padding;
+  padding-left: $pop-up-menu-cordova-padding;
   pointer-events: none;
   transition: 10s ease-in-out;
 }
