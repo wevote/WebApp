@@ -183,8 +183,7 @@ export default class FacebookSignInProcess extends Component {
         </div>
       );
     }
-    // console.log('=== Passed initial gate ===');
-    // console.log('facebookAuthResponse:', facebookAuthResponse);
+    oAuthLog('FacebookSignInProcess === Passed initial gate ===,  facebookAuthResponse:', facebookAuthResponse);
     const { facebook_secret_key: facebookSecretKey } = facebookAuthResponse;
 
     if (facebookAuthResponse.facebook_sign_in_failed) {

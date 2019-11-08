@@ -262,11 +262,12 @@ export default class SettingsAccount extends Component {
       signed_in_twitter: voterIsSignedInTwitter, signed_in_with_email: voterIsSignedInWithEmail,
       twitter_screen_name: twitterScreenName,
     } = voter;
-    // console.log("SignIn.jsx facebookAuthResponse:", facebookAuthResponse);
-    if (!voterIsSignedInFacebook && facebookAuthResponse && facebookAuthResponse.facebook_retrieve_attempted) {
-      // console.log('SignIn.jsx facebook_retrieve_attempted');
-      oAuthLog('SignIn.jsx facebook_retrieve_attempted');
-      // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
+    // console.log("SettingsAccount.jsx facebookAuthResponse:", facebookAuthResponse);
+    // console.log("SettingsAccount.jsx voter:", voter);
+    if (!voterIsSignedInFacebook && facebookAuthResponse && facebookAuthResponse.length && facebookAuthResponse.facebook_retrieve_attempted) {
+      // console.log('SettingsAccount.jsx facebook_retrieve_attempted');
+      oAuthLog('SettingsAccount facebook_retrieve_attempted');
+      // return <span>SettingsAccount.jsx facebook_retrieve_attempted</span>;
       return LoadingWheel;
     }
 
@@ -290,11 +291,16 @@ export default class SettingsAccount extends Component {
       if (dlg.length) {
         const collapse = hideVoterEmailAddressEntry === true;
         // console.log("cordovaSignInModalTopPosition(collapse): ", cordovaSignInModalTopPosition(collapse));
+        // console.log("cordovaSignInModalTopPosition -- collapse: ", collapse);
         const topStyle = `z-index: 1300; top: ${cordovaSignInModalTopPosition(collapse)}`;
         $(dlg).attr('style', topStyle);
-        if (collapse && isIOS()) {
+        if (isIOS()) {
           const container = $('.MuiDialog-container');
-          $(container).attr('style', `${$(container).attr('style')}; height: 240px; transform: translateY(2%);`);
+          if (collapse) {
+            $(container).attr('style', `${$(container).attr('style')}; height: 240px; transform: translateY(2%);`);
+          } else {
+            $(container).attr('style', $(container).attr('style').replace('height: 240px; transform: translateY(2%);', ''));
+          }
         }
       }
     }
