@@ -380,19 +380,18 @@ class VoterGuideSettingsAddPositions extends Component {
   }
 
   onScroll () {
-    let yPosition = 0;
-
     const element =  document.querySelector('#show_more_indicator');
+    if (element) {
+      const yPosition = element.offsetTop - element.scrollTop + element.clientTop;
 
-    yPosition = element.offsetTop - element.scrollTop + element.clientTop;
+      // console.log('Window Scroll: ', window.scrollY);
+      // console.log('Element Scroll: ', yPosition);
 
-    console.log('Window Scroll: ', window.scrollY);
-    console.log('Element Scroll: ', yPosition);
-
-    if (window.scrollY > yPosition - 500) {
-      this.setState({ loadingMoreItems: true });
-      this.increaseNumberOfBallotItemsToDisplay();
-      this.increaseNumberOfPositionItemsToDisplay();
+      if (window.scrollY > yPosition - 500) {
+        this.setState({ loadingMoreItems: true });
+        this.increaseNumberOfBallotItemsToDisplay();
+        this.increaseNumberOfPositionItemsToDisplay();
+      }
     }
   }
 
