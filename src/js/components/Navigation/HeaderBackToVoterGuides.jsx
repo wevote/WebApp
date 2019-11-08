@@ -259,7 +259,7 @@ class HeaderBackToVoterGuides extends Component {
           >
             <span className="u-show-desktop-tablet">Change Election</span>
             <span className="u-show-mobile-bigger-than-iphone5">Change Election</span>
-            <span className="u-show-mobile-iphone5-or-smaller">Change</span>
+            <span className="u-show-mobile-iphone5-or-smaller">Election</span>
           </Button>
         </span>
       </Tooltip>
