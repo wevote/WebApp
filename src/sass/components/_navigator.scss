@@ -48,13 +48,16 @@ $container-margin: -15px;
   }
 }
 
-.profile-foot-menu {  /* May 2019, only cordova uses this */
+.profile-pop-up-menu-cordova {
   position: fixed; /* Stay in place */
   z-index: 10; /* Sit on top */
   right: 10px; /* move to right */
-  width: 100%; /* Full width */
+  width: 90%;
   overflow: auto; /* Enable scroll if needed */
   background-color: $white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
   pointer-events: none;
   transition: 10s ease-in-out;
 }
@@ -104,14 +107,14 @@ $container-margin: -15px;
 }
 
 .profile-menu--open .page-overlay,
-.profile-foot-menu--open .page-overlay,
+.profile-pop-up-menu-cordova--open .page-overlay,
 .about-menu--open .page-overlay {
   opacity: 1;
   pointer-events: all;
 }
 
 .profile-menu--open .profile-menu,
-.profile-foot-menu--open .profile-foot-menu,
+.profile-pop-up-menu-cordova--open .profile-pop-up-menu-cordova,
 .about-menu--open .about-menu {
   opacity: 1;
   pointer-events: all;
