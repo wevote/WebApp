@@ -113,7 +113,7 @@ class VoterPhoneVerificationEntry extends Component {
       });
     } else if (smsPhoneNumberStatus.sign_in_code_sms_sent) {
       this.setState({
-        displayPhoneVerificationButton: false,
+        displayPhoneVerificationButton: true,  // if we need to go back to the SignInModal, we want to see all of it (and have all of it on screen)
         smsPhoneNumberStatus: {
           sign_in_code_sms_sent: false,
         },
@@ -121,7 +121,6 @@ class VoterPhoneVerificationEntry extends Component {
       });
     } else if (smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter) {
       this.setState({
-        displayPhoneVerificationButton: false,
         smsPhoneNumberStatus,
         showVerifyModal: false,
       });
@@ -183,7 +182,6 @@ class VoterPhoneVerificationEntry extends Component {
   closeVerifyModal = () => {
     // console.log('VoterPhoneVerificationEntry closeVerifyModal');
     this.setState({
-      displayPhoneVerificationButton: false,
       smsPhoneNumberStatus: {
         sign_in_code_sms_sent: false,
       },
@@ -227,7 +225,7 @@ class VoterPhoneVerificationEntry extends Component {
       // When there is a voterSMSPhoneNumber value and the keyboard closes, submit
       this.sendSignInCodeSMS(event);
     }
-  }
+  };
 
   reSendSignInCodeSMS = (voterSMSPhoneNumber) => {
     if (voterSMSPhoneNumber) {
@@ -235,6 +233,7 @@ class VoterPhoneVerificationEntry extends Component {
       // We need to put voterSMSPhoneNumber back in place so the verify modal can open
       this.setState({
         loading: true,
+        displayPhoneVerificationButton: true,
         smsPhoneNumberStatus: {
           sms_phone_number_already_owned_by_other_voter: false,
         },
@@ -250,6 +249,7 @@ class VoterPhoneVerificationEntry extends Component {
     if (voterSMSPhoneNumberIsValid) {
       VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
       this.setState({
+        displayPhoneVerificationButton: true,
         smsPhoneNumberStatus: {
           sms_phone_number_already_owned_by_other_voter: false,
         },
