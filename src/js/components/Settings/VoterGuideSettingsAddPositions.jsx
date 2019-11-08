@@ -397,7 +397,7 @@ class VoterGuideSettingsAddPositions extends Component {
       }
 
       if(this.state.numberOfPositionItemsToDisplay < this.state.totalNumberOfPositionItems) {
-        if (window.scrollY > y_0sition - 500) {
+        if (window.scrollY > yPosition - 500) {
           this.setState({ loadingMoreItems: true });
           this.increaseNumberOfPositionItemsToDisplay();
         }
