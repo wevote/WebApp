@@ -333,7 +333,11 @@ export default class SettingsAccount extends Component {
                   { !hideTwitterSignInButton && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl) && (
                     <span>
                       <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
-                      <TwitterSignIn buttonText="Sign in with Twitter" />
+                      <TwitterSignIn
+                        buttonText="Sign in with Twitter"
+                        inModal={inModal}
+                        toggleSignInModal={this.localToggleSignInModal}
+                      />
                     </span>
                   )
                   }

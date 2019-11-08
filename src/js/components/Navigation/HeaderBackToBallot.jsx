@@ -524,7 +524,6 @@ class HeaderBackToBallot extends Component {
             id="backToLinkTabHeader"
           />
 
-          {isWebApp() && (
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
             {voterIsSignedIn ? (
               <span>
@@ -581,7 +580,6 @@ class HeaderBackToBallot extends Component {
               </Button>
             )}
           </div>
-          )}
         </Toolbar>
         {stringContains('/office', pathname.toLowerCase())  && officeName && (
           <OfficeNameWrapper className="header-toolbar">

@@ -449,7 +449,7 @@ export function cordovaTopHeaderTopMargin () {
           case enums.ballotLgHdrWild: style.marginTop = '19px'; break;
           case enums.ballotVote:      style.marginTop = '19px'; break;
           case enums.settingsWild:    style.marginTop = '22px'; break;
-          case enums.voterGuideCreatorWild: style.marginTop = '10px'; break; // $headroom-wrapper-webapp-voter-guide
+          case enums.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp-voter-guide-creator
           default:                    style.marginTop = '19px'; break;
         }
       } else if (hasIPhoneNotch()) {
@@ -467,7 +467,7 @@ export function cordovaTopHeaderTopMargin () {
           case enums.ballotLgHdrWild: style.marginTop = '16px'; break;
           case enums.ballotVote:      style.marginTop = '16px'; break;
           case enums.settingsWild:    style.marginTop = '38px'; break;
-          case enums.voterGuideCreatorWild: style.marginTop = '10px'; break; // $headroom-wrapper-webapp-voter-guide
+          case enums.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp-voter-guide-creator
           case enums.voterGuideWild: style.marginTop = '38px'; break; // Any page with btcand or btmeas
           default:                    style.marginTop = '16px'; break;
         }
