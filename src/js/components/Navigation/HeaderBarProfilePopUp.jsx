@@ -40,7 +40,7 @@ class HeaderBarProfilePopUp extends Component {
     /* eslint-disable no-extra-parens */
     const popUpOpen = (function opener () {
       if (profilePopUpOpen) {
-        return (isWebApp() ? 'profile-menu--open' : 'profile-foot-menu--open');
+        return (isWebApp() ? 'profile-menu--open' : 'profile-pop-up-menu-cordova--open');
       }
       return '';
     }());
@@ -48,7 +48,7 @@ class HeaderBarProfilePopUp extends Component {
     return (
       <div className={popUpOpen}>
         <div className="page-overlay" onClick={this.hideProfilePopUp} />
-        <div className={isWebApp() ? 'profile-menu' : 'profile-foot-menu'}>
+        <div className={isWebApp() ? 'profile-menu' : 'profile-pop-up-menu-cordova'}>
           <span className="we-vote-promise">Our Promise: We&apos;ll never sell your email.</span>
           <ul className="nav flex-column">
             {/* Desktop only */}
@@ -137,11 +137,13 @@ class HeaderBarProfilePopUp extends Component {
               </Link>
             </span>
           </div>
+          {/* Commented out since this pop-up is so small. We still show attributions on Settings page
           <div>
             <span className="terms-and-privacy">
               <Link id="profilePopUpAttributions" onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
             </span>
           </div>
+          */}
         </div>
       </div>
     );
@@ -155,6 +157,7 @@ const styles = {
     },
     color: 'rgb(6, 95, 212)',
     outline: 'none !important',
+    textAlign: 'left',
   },
 };
 

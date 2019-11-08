@@ -315,15 +315,15 @@ class ItemActionBar extends PureComponent {
         <ThumbsUpIcon classes={{ root: classes.buttonIcon }} />
         { this.isSupportCalculated() ? (
           <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
-              'item-actionbar__position-btn-label--at-state'}
+            className={`u-no-break ${this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
+              'item-actionbar__position-btn-label--at-state'}`}
           >
             Voting Yes
           </span>
         ) : (
           <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
-              'item-actionbar__position-btn-label'}
+            className={`u-no-break ${this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
+              'item-actionbar__position-btn-label'}`}
           >
             Vote Yes
           </span>
@@ -360,15 +360,15 @@ class ItemActionBar extends PureComponent {
         <ThumbsDownIcon classes={{ root: classes.buttonIcon }} />
         { this.isOpposeCalculated() ? (
           <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
-              'item-actionbar__position-btn-label--at-state'}
+            className={`u-no-break ${this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
+              'item-actionbar__position-btn-label--at-state'}`}
           >
             Voting No
           </span>
         ) : (
           <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
-              'item-actionbar__position-btn-label'}
+            className={`u-no-break ${this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
+              'item-actionbar__position-btn-label'}`}
           >
             Vote No
           </span>

@@ -257,7 +257,9 @@ class HeaderBackToVoterGuides extends Component {
             id="changeVoterGuideElectionHeaderBarText"
             onClick={this.toggleVoterGuideModal}
           >
-            Change Election
+            <span className="u-show-desktop-tablet">Change Election</span>
+            <span className="u-show-mobile-bigger-than-iphone5">Change Election</span>
+            <span className="u-show-mobile-iphone5-or-smaller">Change</span>
           </Button>
         </span>
       </Tooltip>
