@@ -40,7 +40,8 @@ export default class Friends extends Component {
 
   render () {
     renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
-    if (!this.state.voter) {
+    const { voter } = this.state;
+    if (!voter) {
       return LoadingWheel;
     }
 
@@ -61,10 +62,13 @@ export default class Friends extends Component {
               </div>
             </section>
             <FriendsCurrentPreview />
+            {voter.signed_in_twitter ? null : (
+              <TwitterSignInCard />
+            )}
             <FriendInvitationsSentByMePreview />
           </div>
           <div className="col-md-4 d-none d-md-block">
-            {this.state.voter.signed_in_twitter ? null : (
+            {voter.signed_in_twitter ? null : (
               <TwitterSignInCard />
             )}
           </div>

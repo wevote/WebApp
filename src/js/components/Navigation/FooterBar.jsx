@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-// import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
+import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import BallotIcon from '@material-ui/icons/Ballot';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
-// import PeopleIcon from '@material-ui/icons/People'; // DALE: FRIENDS TEMPORARILY DISABLED
+import PeopleIcon from '@material-ui/icons/People'; // DALE: FRIENDS TEMPORARILY DISABLED
 import styled from 'styled-components';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -51,9 +51,9 @@ class FooterBar extends React.Component {
         return historyPush('/ballot');
       case 1:
         return historyPush('/values');
-      // case 2:
-      //   return historyPush('/friends'); // DALE: FRIENDS TEMPORARILY DISABLED
-      case 2: // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
+      case 2:
+        return historyPush('/friends'); // DALE: FRIENDS TEMPORARILY DISABLED
+      case 3: // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
         return historyPush('/ballot/vote');
       default:
         return null;
@@ -64,7 +64,7 @@ class FooterBar extends React.Component {
     const { pathname } = this.props;
     if (stringContains('/ballot/vote', pathname.toLowerCase())) return 2; // // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
     if (stringContains('/ballot', pathname.toLowerCase())) return 0;
-    // if (stringContains('/friends', pathname.toLowerCase())) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
+    if (stringContains('/friends', pathname.toLowerCase())) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
     if (stringContains('/value', pathname.toLowerCase())) return 1; // '/values'
     return -1;
   };
@@ -73,11 +73,11 @@ class FooterBar extends React.Component {
 
   render () {
     renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
-    // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
+    const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
 
-    // const badgeStyle = { // DALE: FRIENDS TEMPORARILY DISABLED
-    //   display: 'inline-block',
-    // };
+    const badgeStyle = { // DALE: FRIENDS TEMPORARILY DISABLED
+      display: 'inline-block',
+    };
 
     return (
       <FooterBarWrapper>
@@ -85,7 +85,8 @@ class FooterBar extends React.Component {
           <BottomNavigation value={this.getSelectedTab()} onChange={this.handleChange} showLabels>
             <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<BallotIcon />} />
             <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />
-            {/* <BottomNavigationAction
+            {/* // DALE: FRIENDS TEMPORARILY DISABLED */}
+            <BottomNavigationAction
               className="no-outline"
               id="friendsTabFooterBar"
               label="Friends"
@@ -95,7 +96,7 @@ class FooterBar extends React.Component {
                   <PeopleIcon />
                 </Badge>
               )}
-            /> */}
+            />
             <BottomNavigationAction className="no-outline" id="voteTabFooterBar" label="Vote" showLabel icon={<HowToVoteIcon />} />
           </BottomNavigation>
         </div>
