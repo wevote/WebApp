@@ -11,6 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import PlaceIcon from '@material-ui/icons/Place';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
 import { historyPush, isWebApp, isCordova, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
@@ -29,7 +30,6 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
-// import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
 
 class HeaderBar extends Component {
   static propTypes = {
@@ -210,10 +210,10 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot/vote', pathname.toLowerCase())) return 2; // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
+    if (stringContains('/ballot/vote', pathname.toLowerCase())) return 3; // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
     if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 0;
     if (stringContains('/value', pathname.toLowerCase())) return 1; // '/values'
-    // if (stringContains('/friends', pathname.toLowerCase())) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
+    if (stringContains('/friends', pathname.toLowerCase())) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
 
     return false;
   };
@@ -290,10 +290,14 @@ class HeaderBar extends Component {
       return null;
     }
     const { classes, pathname, location } = this.props;
-    const { chosenSiteLogoUrl, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal, showSignInModal, voter, voterIsSignedIn } = this.state;
+    const {
+      chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown,
+      showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal,
+      showSignInModal, voter, voterIsSignedIn,
+    } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
+    const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
     const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     const showingBallot = stringContains(ballotBaseUrl, pathname.toLowerCase().slice(0, 7));
@@ -346,20 +350,17 @@ class HeaderBar extends Component {
               >
                 {showFullNavigation && (
                   <Tab classes={{ root: classes.tabRoot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
-                )
-                }
+                )}
                 {showFullNavigation && (
                   <Tab classes={{ root: classes.tabRoot }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
-                )
-                }
-                {/* showFullNavigation && (
+                )}
+                {/* // DALE: FRIENDS TEMPORARILY DISABLED */}
+                { showFullNavigation && (
                   <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} onClick={() => this.handleNavigation('/friends')} />
-                )
-                */}
+                )}
                 {showFullNavigation && (
                   <Tab classes={{ root: classes.tabRoot }} id="voteTabHeaderBar" label="Vote" onClick={() => this.handleNavigation('/ballot/vote')} />
-                )
-                }
+                )}
               </Tabs>
             </div>
             {
