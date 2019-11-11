@@ -367,11 +367,11 @@ export default class SettingsAccount extends Component {
                 <div className="u-stack--sm">
                   {!hideTwitterSignInButton && voterIsSignedInTwitter && (
                     <div>
-                      <span className="btn btn-social btn-md btn-twitter" href="#">
+                      <TwitterContainer className="btn btn-social btn-md btn-twitter" href="#">
                         <i className="fab fa-twitter" />
                         @
                         {twitterScreenName}
-                      </span>
+                      </TwitterContainer>
                       <span className="u-margin-left--sm" />
                     </div>
                   )}
@@ -415,9 +415,9 @@ export default class SettingsAccount extends Component {
                   <div className="u-margin-top--sm">
                     {!hideFacebookSignInButton && voterIsSignedInFacebook && (
                     <span>
-                      <span className="btn btn-social-icon btn-lg btn-facebook">
+                      <FacebookContainer className="btn btn-social-icon btn-lg btn-facebook">
                         <span className="fab fa-facebook" />
-                      </span>
+                      </FacebookContainer>
                       <span className="u-margin-left--sm" />
                     </span>
                     )}
@@ -503,4 +503,25 @@ const RecommendedText = styled.p`
   color: #333;
   font-weight: bold;
   font-size: 16px;
+`;
+
+const TwitterContainer = styled.span`
+  color: #fff !important;
+  background-color: #55acee !important;
+  border-color: rgba(0,0,0,0.2);
+  position: relative;
+  padding-left: 44px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const FacebookContainer = styled.span`
+  color: #fff;
+  background-color: #3b5998 !important;
+  borderColor: rgba(0,0,0,0.2);
+  font-size: 1.25rem;
+  line-height: 1.5;
+  border-radius: 0.3rem;
 `;

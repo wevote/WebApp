@@ -32,6 +32,7 @@ module.exports = {
       { from: 'src/img/welcome/partners/', to: 'img/welcome/partners/' },
       { from: 'src/img/endorsement-extension/', to: 'img/endorsement-extension/' },
       { from: 'src/vip.html', to: '.' },
+      { from: 'src/css/', to: 'css/' },
     ]),
   ],
   module: {
