@@ -55,7 +55,7 @@ export default class Friends extends Component {
             <SuggestedFriendsPreview />
             <section className="card">
               <div className="card-main">
-                <h1 className="h4">
+                <h1 className="h3 mb-4">
                   Add Friends by Email
                 </h1>
                 <AddFriendsByEmail />
