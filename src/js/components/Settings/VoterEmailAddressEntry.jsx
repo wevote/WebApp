@@ -48,6 +48,7 @@ class VoterEmailAddressEntry extends Component {
       voterEmailAddressIsValid: false,
       voterEmailAddressList: [],
       voterEmailAddressListCount: 0,
+      voterEmailAddressesVerifiedCount: 0,
     };
   }
 
@@ -90,6 +91,10 @@ class VoterEmailAddressEntry extends Component {
       // console.log('this.state.voterEmailAddressListCount', this.state.voterEmailAddressListCount, ', nextState.voterEmailAddressListCount', nextState.voterEmailAddressListCount);
       return true;
     }
+    if (this.state.voterEmailAddressesVerifiedCount !== nextState.voterEmailAddressesVerifiedCount) {
+      // console.log('this.state.voterEmailAddressesVerifiedCount', this.state.voterEmailAddressesVerifiedCount, ', nextState.voterEmailAddressesVerifiedCount', nextState.voterEmailAddressesVerifiedCount);
+      return true;
+    }
     // console.log('shouldComponentUpdate false');
     return false;
   }
@@ -130,12 +135,14 @@ class VoterEmailAddressEntry extends Component {
     }
     const voterEmailAddressList = VoterStore.getEmailAddressList();
     const voterEmailAddressListCount = voterEmailAddressList.length;
+    const voterEmailAddressesVerifiedCount = VoterStore.getEmailAddressesVerifiedCount();
     this.setState({
       loading: false,
       secretCodeSystemLocked,
       voter: VoterStore.getVoter(),
       voterEmailAddressList,
       voterEmailAddressListCount,
+      voterEmailAddressesVerifiedCount,
     });
   }
 

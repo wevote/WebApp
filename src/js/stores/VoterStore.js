@@ -88,6 +88,19 @@ class VoterStore extends ReduceStore {
     return emailAddressList;
   }
 
+  getEmailAddressesVerifiedCount () {
+    const { emailAddressList } = this.getState();
+    let oneEmail = {};
+    let verifiedCount = 0;
+    for (let i = 0; i < emailAddressList.length; ++i) {
+      oneEmail = emailAddressList[i];
+      if (oneEmail.email_ownership_is_verified === true) {
+        verifiedCount += 1;
+      }
+    }
+    return verifiedCount;
+  }
+
   getEmailAddressStatus () {
     return this.getState().emailAddressStatus;
   }
@@ -131,6 +144,19 @@ class VoterStore extends ReduceStore {
   getSMSPhoneNumberList () {
     const { smsPhoneNumberList } = this.getState();
     return smsPhoneNumberList;
+  }
+
+  getSMSPhoneNumbersVerifiedCount () {
+    const { smsPhoneNumberList } = this.getState();
+    let onePhoneNumber = {};
+    let verifiedCount = 0;
+    for (let i = 0; i < smsPhoneNumberList.length; ++i) {
+      onePhoneNumber = smsPhoneNumberList[i];
+      if (onePhoneNumber.sms_ownership_is_verified === true) {
+        verifiedCount += 1;
+      }
+    }
+    return verifiedCount;
   }
 
   getStateCodeFromIPAddress () {

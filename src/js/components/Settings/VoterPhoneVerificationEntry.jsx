@@ -37,6 +37,7 @@ class VoterPhoneVerificationEntry extends Component {
       smsPhoneNumberListCount: 0,
       smsPhoneNumberStatus: {},
       voterSMSPhoneNumber: '',
+      voterSMSPhoneNumbersVerifiedCount: 0,
       voterSMSPhoneNumberIsValid: false,
     };
 
@@ -92,6 +93,10 @@ class VoterPhoneVerificationEntry extends Component {
       // console.log('this.state.voterSMSPhoneNumber', this.state.voterSMSPhoneNumber, ', nextState.voterSMSPhoneNumber', nextState.voterSMSPhoneNumber);
       return true;
     }
+    if (this.state.voterSMSPhoneNumbersVerifiedCount !== nextState.voterSMSPhoneNumbersVerifiedCount) {
+      // console.log('this.state.voterSMSPhoneNumbersVerifiedCount', this.state.voterSMSPhoneNumbersVerifiedCount, ', nextState.voterSMSPhoneNumbersVerifiedCount', nextState.voterSMSPhoneNumbersVerifiedCount);
+      return true;
+    }
     // console.log('shouldComponentUpdate false');
     return false;
   }
@@ -131,9 +136,11 @@ class VoterPhoneVerificationEntry extends Component {
     }
     const smsPhoneNumberList = VoterStore.getSMSPhoneNumberList();
     const smsPhoneNumberListCount = smsPhoneNumberList.length;
+    const voterSMSPhoneNumbersVerifiedCount = VoterStore.getSMSPhoneNumbersVerifiedCount();
     this.setState({
       loading: false,
       voter: VoterStore.getVoter(),
+      voterSMSPhoneNumbersVerifiedCount,
       secretCodeSystemLocked,
       smsPhoneNumberList,
       smsPhoneNumberListCount,
