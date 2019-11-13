@@ -16,6 +16,7 @@ import FacebookSignIn from '../Facebook/FacebookSignIn';
 import LoadingWheel from '../LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
+import SignInModalGlobalState from '../Widgets/signInModalGlobalState';
 import TwitterActions from '../../actions/TwitterActions';
 import TwitterSignIn from '../Twitter/TwitterSignIn';
 import VoterActions from '../../actions/VoterActions';
@@ -305,6 +306,8 @@ export default class SettingsAccount extends Component {
       }
     }
 
+    const fbAuthMsg = SignInModalGlobalState.get('facebookAuthMessage');
+
     return (
       <div className="">
         <Helmet title={pageTitle} />
@@ -346,6 +349,7 @@ export default class SettingsAccount extends Component {
                   { !hideFacebookSignInButton && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
                     <span>
                       <FacebookSignIn toggleSignInModal={this.localToggleSignInModal} buttonText="Sign in with Facebook" />
+                      { fbAuthMsg && fbAuthMsg.length ? <FacebookErrorContainer>{SignInModalGlobalState.get('facebookAuthMessage')}</FacebookErrorContainer> : '' }
                     </span>
                   )
                   }
@@ -524,4 +528,10 @@ const FacebookContainer = styled.span`
   font-size: 1.25rem;
   line-height: 1.5;
   border-radius: 0.3rem;
+`;
+
+const FacebookErrorContainer  = styled.h3`
+  margin-top: 8px;
+  background-color: palegoldenrod;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
 `;

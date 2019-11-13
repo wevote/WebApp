@@ -137,7 +137,11 @@ export default {
       if (isCordova()) {
         this.facebookApi().getLoginStatus(function response (responseReallyLoggedIn) {
           if (responseReallyLoggedIn.status === 'connected') {
-            this.getPicture();
+            if (this && this.getPicture) {
+              this.getPicture();
+            } else {
+              console.log('FacebookActions getPicture() not invoked, this or getPicture() undefined or null');
+            }
           }
         });
       } else {
@@ -268,9 +272,6 @@ export default {
     }
   },
 
-  // November 2018: To debug login from Cordova, you may have to switch from our main facebook id,
-  // to the test environment id, which allows http connections.
-
   login () {
     if (!webAppConfig.FACEBOOK_APP_ID) {
       console.log('ERROR: Missing FACEBOOK_APP_ID from src/js/config.js'); // DO NOT REMOVE THIS!
@@ -284,12 +285,13 @@ export default {
     // FB.getLoginStatus does an ajax call and when you call FB.login on it's response, the popup that would open
     // as a result of this call is blocked. A solution to this problem would be to to specify status: true in the
     // options object of FB.init and you need to be confident that login status has already loaded.
-    oAuthLog(`${'FacebookActions'} this.facebookApi().login`);
+    oAuthLog('FacebookActions this.facebookApi().login');
 
     if (this.facebookApi()) {
       const innerThis = this;
       this.facebookApi().getLoginStatus(
         (response) => {
+          oAuthLog('FacebookActions this.facebookApi().getLoginStatus response: ', response);
           if (response.status === 'connected') {
             Dispatcher.dispatch({
               type: FacebookConstants.FACEBOOK_LOGGED_IN,
