@@ -36,14 +36,13 @@ export default class IntroNetworkBallotIsNext extends Component {
         </div>
         <div className="intro-story__seperator" />
         <div>
-          {<img
+          <img
             className="center-block intro-story__img-height intro-story__placeholder"
             src={cordovaDot('/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif')
             }
             alt="Decide your ballot with We Vote"
           />
-            // <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: Decide.GIF</div>
-          }
+          {/* <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: Decide.GIF</div> */}
         </div>
         <div className="intro-story__h2 intro-story__h2--highlight">
           Get Started Now

@@ -36,13 +36,12 @@ export default class IntroNetworkDefinition extends Component {
         </div>
         <div className="intro-story__seperator" />
         <div>
-          {<img
+          <img
             className="center-block intro-story__img-height intro-story__placeholder"
             src={cordovaDot('/img/how-it-works/HowItWorksForVoters-Review-20190401.gif')}
             alt="View candidate endorsements from friends"
           />
-            // <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div>
-          }
+          {/* <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div> */}
         </div>
         <div className="intro-story__h2 intro-story__h2--highlight">
           See who endorsed each choice on your ballot
