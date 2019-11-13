@@ -56,12 +56,10 @@ export default class InviteByEmail extends Component {
               <h4 className="text-left">Your Current Friends</h4>
             </Link>
             <div className="card-child__list-group">
-              {
-                <CurrentFriends
-                  currentFriendsList={this.state.currentFriendsList}
-                  maximumFriendDisplay={this.state.maximumFriendDisplay}
-                />
-              }
+              <CurrentFriends
+                currentFriendsList={this.state.currentFriendsList}
+                maximumFriendDisplay={this.state.maximumFriendDisplay}
+              />
               <Link className="pull-right" to="/friends/current">See Full Friend List</Link>
             </div>
           </div>

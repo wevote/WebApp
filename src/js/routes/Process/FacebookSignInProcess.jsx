@@ -152,7 +152,7 @@ export default class FacebookSignInProcess extends Component {
   }
 
   voterFacebookSignInRetrieve () {
-    // console.log('FacebookSignInProcess voterFacebookSignInRetrieve');
+    oAuthLog('FacebookSignInProcess voterFacebookSignInRetrieve');
     if (!this.state.saving) {
       FacebookActions.voterFacebookSignInRetrieve();
       this.setState({ saving: true });

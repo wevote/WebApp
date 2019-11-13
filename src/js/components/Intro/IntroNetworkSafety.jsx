@@ -37,13 +37,12 @@ export default class IntroNetworkSafety extends Component {
         </div>
         <div className="intro-story__seperator" />
         <div>
-          {<img
+          <img
             className="center-block intro-story__img-height intro-story__placeholder"
             src={cordovaDot('/img/how-it-works/HowItWorksForVoters-Choose-20190507.gif')}
             alt="Create your ballot with ease with We Vote"
           />
-            // <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div>
-          }
+          {/* <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div> */}
         </div>
         <div className="intro-story__h2 intro-story__h2--highlight">
           Choose your interests

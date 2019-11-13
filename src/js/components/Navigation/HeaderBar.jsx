@@ -11,7 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import PlaceIcon from '@material-ui/icons/Place';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
-import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
+import Badge from '@material-ui/core/Badge';
 import { historyPush, isWebApp, isCordova, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
@@ -32,17 +32,17 @@ import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 
 class HeaderBar extends Component {
+  static goToGetStarted () {
+    const getStartedNow = '/ballot';
+    historyPush(getStartedNow);
+  }
+
   static propTypes = {
     location: PropTypes.object,
     voter: PropTypes.object,
     pathname: PropTypes.string,
     classes: PropTypes.object,
   };
-
-  static goToGetStarted () {
-    const getStartedNow = '/ballot';
-    historyPush(getStartedNow);
-  }
 
   constructor (props) {
     super(props);
@@ -210,10 +210,10 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot/vote', pathname.toLowerCase())) return 3; // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
+    if (stringContains('/ballot/vote', pathname.toLowerCase())) return 3;
     if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 0;
     if (stringContains('/value', pathname.toLowerCase())) return 1; // '/values'
-    if (stringContains('/friends', pathname.toLowerCase())) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
+    if (stringContains('/friends', pathname.toLowerCase())) return 2;
 
     return false;
   };
@@ -330,6 +330,8 @@ class HeaderBar extends Component {
 
     const doNotShowWeVoteLogo = weVoteBrandingOff || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
+    const enableFriends = true;   // DALE: FRIENDS TEMPORARILY DISABLED
+
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
         <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
@@ -354,8 +356,7 @@ class HeaderBar extends Component {
                 {showFullNavigation && (
                   <Tab classes={{ root: classes.tabRoot }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
                 )}
-                {/* // DALE: FRIENDS TEMPORARILY DISABLED */}
-                { showFullNavigation && (
+                { enableFriends && showFullNavigation && (
                   <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} onClick={() => this.handleNavigation('/friends')} />
                 )}
                 {showFullNavigation && (
