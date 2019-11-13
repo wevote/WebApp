@@ -63,7 +63,9 @@ export default class Friends extends Component {
             </section>
             <FriendsCurrentPreview />
             {voter.signed_in_twitter ? null : (
-              <TwitterSignInCard />
+              <div className="u-show-mobile">
+                <TwitterSignInCard />
+              </div>
             )}
             <FriendInvitationsSentByMePreview />
           </div>

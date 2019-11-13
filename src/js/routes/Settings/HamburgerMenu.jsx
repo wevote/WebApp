@@ -143,6 +143,14 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
+            <HamburgerMenuRow
+              onClickAction={null}
+              to="/settings/voterguidesmenu"
+              icon="fa fa-list"
+              iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+              linkText="Your Endorsements"
+            />
+
             {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
@@ -153,7 +161,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && isWebApp() && (
+            {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/domain"
@@ -163,7 +171,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && isWebApp() && (
+            {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/sharing"
@@ -173,7 +181,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && isWebApp() && (
+            {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/subscription"
@@ -183,7 +191,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && isWebApp() && (
+            {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/analytics"
@@ -193,7 +201,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && showSettingsInDevelopment && isWebApp() && (
+            {isSignedIn && showSettingsInDevelopment && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/promoted"
@@ -212,14 +220,6 @@ export default class HamburgerMenu extends Component {
                 linkText="Tools for Your Website"
               />
             )}
-
-            <HamburgerMenuRow
-              onClickAction={null}
-              to="/settings/voterguidesmenu"
-              icon="fa fa-list"
-              iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
-              linkText="Your Endorsements"
-            />
 
             <HamburgerMenuRow
               onClickAction={null}
