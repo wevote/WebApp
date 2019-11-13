@@ -4,9 +4,10 @@ import cookies from '../../utils/cookies';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
 import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
-import { historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
+import signInModalGlobalState from '../../components/Widgets/signInModalGlobalState';
 import { stringContains } from '../../utils/textFormat';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
@@ -189,6 +190,9 @@ export default class FacebookSignInProcess extends Component {
     if (facebookAuthResponse.facebook_sign_in_failed) {
       this.setState({ redirectInProcess: true });
       oAuthLog('facebookAuthResponse.facebook_sign_in_failed redirecting to: /settings/account');
+      if (isCordova()) {
+        signInModalGlobalState.set('facebookAuthMessage', 'Facebook sign in failed. Please try again.');
+      }
       historyPush({
         pathname: '/settings/account',
         state: {
@@ -197,6 +201,10 @@ export default class FacebookSignInProcess extends Component {
         },
       });
       return LoadingWheel;
+    }
+
+    if (isCordova()) {
+      signInModalGlobalState.remove('facebookAuthMessage');
     }
 
     if (yesPleaseMergeAccounts) {
