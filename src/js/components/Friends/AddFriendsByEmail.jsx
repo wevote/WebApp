@@ -17,26 +17,10 @@ class AddFriendsByEmail extends Component {
     super(props);
     this.state = {
       add_friends_message: 'Please join me in preparing for the upcoming election.',
-      row2Open: false,
-      row3Open: false,
-      row4Open: false,
-      row5Open: false,
-      friendTotal: 5,
-      friend1FirstName: '',
-      friend1LastName: '',
-      friend1EmailAddress: '',
-      friend2FirstName: '',
-      friend2LastName: '',
-      friend2EmailAddress: '',
-      friend3FirstName: '',
-      friend3LastName: '',
-      friend3EmailAddress: '',
-      friend4FirstName: '',
-      friend4LastName: '',
-      friend4EmailAddress: '',
-      friend5FirstName: '',
-      friend5LastName: '',
-      friend5EmailAddress: '',
+      friendsToInvite: [],
+      friendFirstName: '',
+      friendLastName: '',
+      friendEmailAddress: '',
       emailAddressesError: false,
       senderEmailAddress: '',
       senderEmailAddressError: false,
@@ -47,6 +31,7 @@ class AddFriendsByEmail extends Component {
       voter: {},
     };
     this.allRowsOpen.bind(this);
+    this.addFriend = this.addFriend.bind(this);
   }
 
   componentDidMount () {
@@ -58,6 +43,11 @@ class AddFriendsByEmail extends Component {
   componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+  
+  shouldComponentUpdate (nextState) {
+    if (this.state.friendsToInvite !== nextState.friendsToInvite) return true;
+    return false;
   }
 
   onKeyDown = (event) => {
@@ -118,7 +108,7 @@ class AddFriendsByEmail extends Component {
 
       // Error message logic on submit disabled in favor of disabling buttons
 
-      // if (!this.state.friend1EmailAddress ) {
+      // if (!this.state.friendEmailAddress ) {
       //   // console.log("addFriendsByEmailStepsManager: this.state.email_add is ");
       //   emailAddressesError = true;
       //   errorMessage += "Please enter at least one valid email address.";
@@ -167,14 +157,6 @@ class AddFriendsByEmail extends Component {
     }
   }
 
-  addAnotherInvitation = () => {
-    const _state = this.state;
-    if (!_state.row2Open) this.setState({ row2Open: true });
-    else if (!_state.row3Open) this.setState({ row3Open: true });
-    else if (!_state.row4Open) this.setState({ row4Open: true });
-    else if (!_state.row5Open) this.setState({ row5Open: true });
-  }
-
   hasValidEmail () {
     const { voter } = this.state;
     return voter !== undefined ? voter.has_valid_email : false;
@@ -186,7 +168,6 @@ class AddFriendsByEmail extends Component {
 
   cacheFriendData (event) {
     this.setState({ [event.target.name]: event.target.value });
-    // console.log(`New State => ${event.target.name}: ${event.target.value}`);
   }
 
   allEnteredEmailsVerified () {
@@ -207,14 +188,14 @@ class AddFriendsByEmail extends Component {
     return true;
   }
 
-  closeRow (rowNumber) {
-    this.setState({
-      [`friend${rowNumber}EmailAddress`]: '',
-      [`friend${rowNumber}FirstName`]: '',
-      [`friend${rowNumber}LastName`]: '',
-      [`row${rowNumber}Open`]: false,
-    });
-  }
+  // closeRow (rowNumber) {
+  //   this.setState({
+  //     [`friend${rowNumber}EmailAddress`]: '',
+  //     [`friend${rowNumber}FirstName`]: '',
+  //     [`friend${rowNumber}LastName`]: '',
+  //     [`row${rowNumber}Open`]: false,
+  //   });
+  // }
 
   friendInvitationByEmailSend (e) {
     e.preventDefault();
@@ -244,21 +225,9 @@ class AddFriendsByEmail extends Component {
       row3Open: false,
       row4Open: false,
       row5Open: false,
-      friend1FirstName: '',
-      friend1LastName: '',
-      friend1EmailAddress: '',
-      friend2FirstName: '',
-      friend2LastName: '',
-      friend2EmailAddress: '',
-      friend3FirstName: '',
-      friend3LastName: '',
-      friend3EmailAddress: '',
-      friend4FirstName: '',
-      friend4LastName: '',
-      friend4EmailAddress: '',
-      friend5FirstName: '',
-      friend5LastName: '',
-      friend5EmailAddress: '',
+      friendFirstName: '',
+      friendLastName: '',
+      friendEmailAddress: '',
       emailAddressesError: false,
       senderEmailAddress: '',
       onEnterEmailAddressesStep: true,
@@ -271,9 +240,28 @@ class AddFriendsByEmail extends Component {
     return this.state.row2Open && this.state.row3Open && this.state.row4Open && this.state.row5Open;
   }
 
+  addFriend () {
+    const { friendFirstName, friendEmailAddress, friendLastName, friendsToInvite } = this.state;
+
+    if (validateEmail(friendEmailAddress)) {
+      const newArray = [...friendsToInvite];
+
+      const newFriendObject = {
+        firstName: friendFirstName,
+        lastName: friendLastName,
+        email: friendEmailAddress,
+      };
+
+      newArray.push(newFriendObject);
+
+      this.setState({ friendsToInvite: [...newArray]});
+    }
+  }
+
   render () {
+    console.log(this.state.friendsToInvite);
     renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
-    const atLeastOneValidated = validateEmail(this.state.friend1EmailAddress) || validateEmail(this.state.friend2EmailAddress) || validateEmail(this.state.friend3EmailAddress) || validateEmail(this.state.friend4EmailAddress) || validateEmail(this.state.friend5EmailAddress);
+    const atLeastOneValidated = validateEmail(this.state.friendEmailAddress);
 
     const { loading } = this.state;
     const { classes } = this.props;
@@ -299,6 +287,19 @@ class AddFriendsByEmail extends Component {
           </div>
         ) : null
         }
+        {this.state.friendsToInvite !== [] ? (
+          <div>
+            {this.state.friendsToInvite.map(friend => (
+              <div>
+                NAME:
+                {' '}
+                {friend.firstName}
+              </div>
+            ))}
+          </div>
+        ) : (
+          null
+        )}
         {this.state.onEnterEmailAddressesStep ? (
           <div>
             <div>
@@ -309,10 +310,10 @@ class AddFriendsByEmail extends Component {
                   margin="dense"
                   classes={{ root: classes.textField }}
                   type="text"
-                  id="friend1EmailAddress"
-                  name="friend1EmailAddress"
+                  id="EmailAddress"
+                  name="friendEmailAddress"
                   className="form-control"
-                  value={this.state.friend1EmailAddress}
+                  value={this.state.friendEmailAddress}
                   onChange={this.cacheFriendData.bind(this)}
                   placeholder="For example: name@domain.com"
                 />
@@ -327,9 +328,9 @@ class AddFriendsByEmail extends Component {
                       margin="dense"
                       classes={{ root: classes.textField }}
                       type="text"
-                      id="friend1FirstName"
-                      name="friend1FirstName"
-                      value={this.state.friend1FirstName}
+                      id="friendFirstName"
+                      name="friendFirstName"
+                      value={this.state.friendFirstName}
                       onChange={this.cacheFriendData.bind(this)}
                       placeholder="Optional"
                     />
@@ -344,252 +345,37 @@ class AddFriendsByEmail extends Component {
                       margin="dense"
                       classes={{ root: classes.textField }}
                       type="text"
-                      id="friend1LastName"
-                      name="friend1LastName"
-                      value={this.state.friend1LastName}
+                      id="friendLastName"
+                      name="friendLastName"
+                      value={this.state.friendLastName}
                       onChange={this.cacheFriendData.bind(this)}
                       placeholder="Optional"
                     />
                   </div>
                 </div>
-                {this.state.row2Open ? (
-                  <>
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend2EmailAddress"
-                      name="friend2EmailAddress"
-                      value={this.state.friend2EmailAddress}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="For example: name@domain.com"
-                    />
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend2FirstName"
-                      name="friend2FirstName"
-                      value={this.state.friend2FirstName}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="Optional"
-                    />
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend2LastName"
-                      name="friend2LastName"
-                      value={this.state.friend2LastName}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="Optional"
-                    />
-                    <span
-                      aria-label="Close"
-                      className="close close-on-right"
-                      id="addFriendsByEmailClosingX1"
-                      name="row2Open"
-                      onClick={this.closeRow.bind(this, 2)}
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </span>
-                  </>
-                ) : null
-                }
-                {this.state.row3Open ? (
-                  <>
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend3EmailAddress"
-                      name="friend3EmailAddress"
-                      value={this.state.friend3EmailAddress}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="For example: name@domain.com"
-                    />
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend3FirstName"
-                      name="friend3FirstName"
-                      value={this.state.friend3FirstName}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="Optional"
-                    />
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend3LastName"
-                      name="friend3LastName"
-                      value={this.state.friend3LastName}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="Optional"
-                    />
-                    <span
-                      aria-label="Close"
-                      className="close close-on-right"
-                      id="addFriendsByEmailClosingX2"
-                      onClick={this.closeRow.bind(this, 3)}
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </span>
-                  </>
-                ) : null
-                }
-                {this.state.row4Open ? (
-                  <>
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend4EmailAddress"
-                      name="friend4EmailAddress"
-                      value={this.state.friend4EmailAddress}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="For example: name@domain.com"
-                    />
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend4FirstName"
-                      name="friend4FirstName"
-                      value={this.state.friend4FirstName}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="Optional"
-                    />
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend4LastName"
-                      name="friend4LastName"
-                      value={this.state.friend4LastName}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="Optional"
-                    />
-                    <span
-                      aria-label="Close"
-                      className="close close-on-right"
-                      id="addFriendsByEmailClosingX3"
-                      onClick={this.closeRow.bind(this, 4)}
-                    >
-                      <span aria-hidden="true">
-                        &times;
-                      </span>
-                    </span>
-                  </>
-                ) : null
-                }
-                {this.state.row5Open ? (
-                  <>
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend5EmailAddress"
-                      name="friend5EmailAddress"
-                      value={this.state.friend5EmailAddress}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="For example: name@domain.com"
-                    />
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend5FirstName"
-                      name="friend5FirstName"
-                      value={this.state.friend5FirstName}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="Optional"
-                    />
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="friend5LastName"
-                      name="friend5LastName"
-                      value={this.state.friend5LastName}
-                      onChange={this.cacheFriendData.bind(this)}
-                      placeholder="Optional"
-                    />
-                    <span
-                      aria-label="Close"
-                      className="close close-on-right"
-                      id="addFriendsByEmailClosingX4"
-                      onClick={this.closeRow.bind(this, 5)}
-                    >
-                      <span aria-hidden="true">
-                        &times;
-                      </span>
-                    </span>
-                  </>
-                ) : null
-                }
-                <div className="row invite-inputs">
-                  {!this.state.friend1EmailAddress || this.allRowsOpen() ?
-                    null : (
-                      <Button
-                        color="primary"
-                        id="friendsAddAnotherInvitation"
-                        onClick={this.addAnotherInvitation}
-                        tabIndex="0"
-                        variant="contained"
-                      >
-                        <span>+ Add another invitation</span>
-                      </Button>
-                    )}
-                </div>
+                <Button onClick={this.addFriend} color="primary" variant="contained">
+                  + Friend
+                </Button>
               </form>
             </div>
 
             <form className="u-stack--md">
               {atLeastOneValidated ? (
-                <span>
-                  <label htmlFor="addFriendsMessage">
-                    Include a Message
-                    {' '}
-                    <span className="small">(Optional)</span>
-                    <Label>Email Address</Label>
-                    <TextField
-                      variant="outlined"
-                      margin="dense"
-                      classes={{ root: classes.textField }}
-                      type="text"
-                      id="addFriendsMessage"
-                      name="addFriendsMessage"
-                      onChange={this.cacheAddFriendsByEmailMessage}
-                      placeholder="Please join me in preparing for the upcoming election."
-                    />
-                  </label>
-                </span>
+                <>
+                  <Label>Include a Message</Label>
+                  <span className="small">(Optional)</span>
+                  <TextField
+                    variant="outlined"
+                    margin="dense"
+                    classes={{ root: classes.textField }}
+                    type="text"
+                    id="addFriendsMessage"
+                    name="addFriendsMessage"
+                    onChange={this.cacheAddFriendsByEmailMessage}
+                    fullWidth
+                    placeholder="Please join me in preparing for the upcoming election."
+                  />
+                </>
               ) : null
               }
             </form>
@@ -598,7 +384,7 @@ class AddFriendsByEmail extends Component {
               <span style={floatRight}>
                 <Button
                   color="primary"
-                  disabled={!this.state.friend1EmailAddress || !this.allEnteredEmailsVerified()}
+                  disabled={!this.state.friendEmailAddress || !this.allEnteredEmailsVerified()}
                   id="friendsNextButton"
                   onClick={this.addFriendsByEmailStepsManager}
                   onKeyDown={this.onKeyDown}
