@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { TextField, withStyles } from '@material-ui/core';
+import Close from '@material-ui/icons/Close';
 import LoadingWheel from '../LoadingWheel';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -17,7 +18,18 @@ class AddFriendsByEmail extends Component {
     super(props);
     this.state = {
       add_friends_message: 'Please join me in preparing for the upcoming election.',
-      friendsToInvite: [],
+      friendsToInvite: [
+        {
+          firstName: 'Mike',
+          lastName: '',
+          email: 'mail@test.com',
+        },
+        {
+          firstName: 'Mike',
+          lastName: '',
+          email: 'mail@testTWO.com',
+        },
+      ],
       friendFirstName: '',
       friendLastName: '',
       friendEmailAddress: '',
@@ -30,8 +42,8 @@ class AddFriendsByEmail extends Component {
       onFriendInvitationsSentStep: false,
       voter: {},
     };
-    this.allRowsOpen.bind(this);
     this.addFriend = this.addFriend.bind(this);
+    this.deleteFriendFromList = this.deleteFriendFromList.bind(this);
   }
 
   componentDidMount () {
@@ -99,7 +111,7 @@ class AddFriendsByEmail extends Component {
   addFriendsByEmailStepsManager = (event) => {
     // This function is called when the next button is  submitted;
     // this funtion is called twice per cycle
-    // console.log("Entering function addFriendsByEmailStepsManager");
+    console.log("Entering function addFriendsByEmailStepsManager");
     const errorMessage = '';
 
     if (this.state.onEnterEmailAddressesStep) {
@@ -123,21 +135,21 @@ class AddFriendsByEmail extends Component {
       // }
 
       if (emailAddressesError) {
-        // console.log("addFriendsByEmailStepsManager, emailAddressesError");
+        console.log("addFriendsByEmailStepsManager, emailAddressesError");
         this.setState({
           loading: false,
           emailAddressesError: true,
-          errorMessage,
+          errorMessage: 'Error in sending invites.',
         });
       } else if (!this.hasValidEmail()) {
-        // console.log("addFriendsByEmailStepsManager, NOT hasValidEmail");
+        console.log("addFriendsByEmailStepsManager, NOT hasValidEmail");
         this.setState({
           loading: false,
           onEnterEmailAddressesStep: false,
           onCollectEmailStep: true,
         });
       } else {
-        // console.log("addFriendsByEmailStepsManager, calling friendInvitationByEmailSend");
+        console.log("addFriendsByEmailStepsManager, calling friendInvitationByEmailSend");
         this.friendInvitationByEmailSend(event);
       }
     } else if (this.state.onCollectEmailStep) {
@@ -172,59 +184,56 @@ class AddFriendsByEmail extends Component {
 
   allEnteredEmailsVerified () {
     const _state = this.state;
-    let result;
 
-    for (let friendIdx = 1; friendIdx <= this.state.friendTotal; friendIdx++) {
-      if (_state[`friend${friendIdx}_email_address`]) {
-        result = validateEmail(_state[`friend${friendIdx}_email_address`]);
-        if (result) {
-          // console.log(`allEnteredEmailsVerified: validated email for friend${friendIdx}`, _state[`friend${friendIdx}_email_address`]);
-        } else {
-          // console.log(`allEnteredEmailsVerified: invalid email address for friend${friendIdx}`, _state[`friend${friendIdx}_email_address`]);
-          return false;
-        }
+    _state.friendsToInvite.forEach((friend) => {
+      if (!validateEmail(friend.email)) {
+        return false;
+      } else {
+        return true;
       }
+    });
+
+    if (_state.friendEmailAddress ? !validateEmail(_state.friendEmailAddress) : null) {
+      return false;
     }
+
     return true;
   }
-
-  // closeRow (rowNumber) {
-  //   this.setState({
-  //     [`friend${rowNumber}EmailAddress`]: '',
-  //     [`friend${rowNumber}FirstName`]: '',
-  //     [`friend${rowNumber}LastName`]: '',
-  //     [`row${rowNumber}Open`]: false,
-  //   });
-  // }
 
   friendInvitationByEmailSend (e) {
     e.preventDefault();
     // console.log("friendInvitationByEmailSend);
-    const _state = this.state;
+    const { friendsToInvite,friendEmailAddress, friendFirstName, friendLastName } = this.state;
+
+    console.log("FriendsToInvite: ", friendsToInvite);
     const emailAddressArray = [];
     const firstNameArray = [];
     const lastNameArray = [];
-    // create temporary arrays so friendInvitationByEmailSend can work
-    for (let friendIdx = 1; friendIdx <= this.state.friendTotal; friendIdx++) {
-      if (validateEmail(_state[`friend${friendIdx}_email_address`])) {
-        emailAddressArray.push(_state[`friend${friendIdx}_email_address`]);
-        firstNameArray.push(_state[`friend${friendIdx}_first_name`]);
-        lastNameArray.push(_state[`friend${friendIdx}_last_name`]);
+    
+    if (friendsToInvite.length !== 0) {
+      for (let i = 0; i <= friendsToInvite.length; i++) {
+        emailAddressArray.push(friendsToInvite[i].email);
+        firstNameArray.push(friendsToInvite[i].firstName);
+        lastNameArray.push(friendsToInvite[i].lastName);
       }
     }
-    // console.log("emailAddressArray: ", emailAddressArray);
-    // console.log("firstNameArray: ", firstNameArray);
-    // console.log("lastNameArray: ", lastNameArray);
+
+    if (friendEmailAddress && validateEmail(friendEmailAddress)) {
+      emailAddressArray.push(friendEmailAddress);
+      firstNameArray.push(friendFirstName);
+      lastNameArray.push(friendLastName);
+    }
+
+
+    console.log("emailAddressArray: ", emailAddressArray);
+    console.log("firstNameArray: ", firstNameArray);
+    console.log("lastNameArray: ", lastNameArray);
     FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
       lastNameArray, '', this.state.add_friends_message,
       this.state.senderEmailAddress);
     // After calling the API, reset the form
     this.setState({
       loading: true,
-      row2Open: false,
-      row3Open: false,
-      row4Open: false,
-      row5Open: false,
       friendFirstName: '',
       friendLastName: '',
       friendEmailAddress: '',
@@ -234,10 +243,6 @@ class AddFriendsByEmail extends Component {
       onCollectEmailStep: false,
       onFriendInvitationsSentStep: true,
     });
-  }
-
-  allRowsOpen () {
-    return this.state.row2Open && this.state.row3Open && this.state.row4Open && this.state.row5Open;
   }
 
   addFriend () {
@@ -258,10 +263,23 @@ class AddFriendsByEmail extends Component {
     }
   }
 
+  deleteFriendFromList (friend) {
+    const { friendsToInvite } = this.state;
+
+    const newArray = [...friendsToInvite].filter((item) => {
+      return item.email !== friend.email;
+    });
+
+    console.log("New array: ", newArray);
+    console.log("Email: ", friend.email);
+
+    this.setState({ friendsToInvite: [...newArray]});
+  }
+
   render () {
     console.log(this.state.friendsToInvite);
     renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
-    const atLeastOneValidated = validateEmail(this.state.friendEmailAddress);
+    const atLeastOneValidated = this.state.friendsToInvite.length !== 0 || validateEmail(this.state.friendEmailAddress);
 
     const { loading } = this.state;
     const { classes } = this.props;
@@ -269,9 +287,6 @@ class AddFriendsByEmail extends Component {
     if (loading) {
       return LoadingWheel;
     }
-    const floatRight = {
-      float: 'right',
-    };
 
     return (
       <div>
@@ -287,16 +302,19 @@ class AddFriendsByEmail extends Component {
           </div>
         ) : null
         }
-        {this.state.friendsToInvite !== [] ? (
-          <div>
+        {this.state.friendsToInvite.length !== 0 ? (
+          <FriendsDisplay>
+            <h3>Invite List</h3>
             {this.state.friendsToInvite.map(friend => (
-              <div>
-                NAME:
-                {' '}
-                {friend.firstName}
-              </div>
+              <FriendBadge>
+                {friend.email}
+                <Close
+                  onClick={this.deleteFriendFromList.bind(this, friend)}
+                  className={classes.closeIcon}
+                />
+              </FriendBadge>
             ))}
-          </div>
+          </FriendsDisplay>
         ) : (
           null
         )}
@@ -353,91 +371,84 @@ class AddFriendsByEmail extends Component {
                     />
                   </div>
                 </div>
-                <Button onClick={this.addFriend} color="primary" variant="contained">
-                  + Friend
-                </Button>
+                {atLeastOneValidated ? (
+                  <>
+                    <Label>Include a Message</Label>
+                    <span className="small">(Optional)</span>
+                    <TextField
+                      variant="outlined"
+                      margin="dense"
+                      classes={{ root: classes.textField }}
+                      type="text"
+                      id="addFriendsMessage"
+                      name="addFriendsMessage"
+                      onChange={this.cacheAddFriendsByEmailMessage}
+                      fullWidth
+                      placeholder="Please join me in preparing for the upcoming election."
+                    />
+                  </>
+                ) : null
+                }
+                <ButtonContainer>
+                  <Button disabled={!this.state.friendEmailAddress} onClick={this.addFriend} color="primary" variant="contained">
+                    Save and Add Friend
+                  </Button>
+                  <Button
+                    color="primary"
+                    classes={{ root: classes.sendButton }}
+                    disabled={
+                      // this.state.friendsToInvite.length === 0 ? !this.state.friendEmailAddress || !this.allEnteredEmailsVerified ? true : false : false
+                      !this.allEnteredEmailsVerified()
+                    }
+                    id="friendsNextButton"
+                    onClick={this.addFriendsByEmailStepsManager}
+                    onKeyDown={this.onKeyDown}
+                    variant="contained"
+                  >
+                    { this.hasValidEmail() ?
+                      <span>Send &gt;</span> :
+                      <span>Next &gt;</span>
+                      }
+                  </Button>
+                </ButtonContainer>
               </form>
             </div>
-
-            <form className="u-stack--md">
-              {atLeastOneValidated ? (
-                <>
-                  <Label>Include a Message</Label>
-                  <span className="small">(Optional)</span>
-                  <TextField
-                    variant="outlined"
-                    margin="dense"
-                    classes={{ root: classes.textField }}
-                    type="text"
-                    id="addFriendsMessage"
-                    name="addFriendsMessage"
-                    onChange={this.cacheAddFriendsByEmailMessage}
-                    fullWidth
-                    placeholder="Please join me in preparing for the upcoming election."
-                  />
-                </>
-              ) : null
-              }
-            </form>
-
-            <div className="u-gutter__top--small">
-              <span style={floatRight}>
-                <Button
-                  color="primary"
-                  disabled={!this.state.friendEmailAddress || !this.allEnteredEmailsVerified()}
-                  id="friendsNextButton"
-                  onClick={this.addFriendsByEmailStepsManager}
-                  onKeyDown={this.onKeyDown}
-                  variant="contained"
-                >
-                  { this.hasValidEmail() ?
-                    <span>Send &gt;</span> :
-                    <span>Next &gt;</span>
-                    }
-                </Button>
-              </span>
-              <span>
-                These friends will see what you support, oppose, and which opinions you follow.
-                We will never sell your email.
-              </span>
-            </div>
+            <FriendsAlert>
+              These friends will see what you support, oppose, and which opinions you follow.
+              We will never sell your email.
+            </FriendsAlert>
           </div>
         ) : null
         }
 
         {this.state.onCollectEmailStep ? (
           <div>
-            <form className="u-stack--md">
-              <Label>Email Address</Label>
-              <TextField
-                variant="outlined"
-                margin="dense"
-                classes={{ root: classes.textField }}
-                label="Email"
-                type="text"
-                name="senderEmailAddress"
-                className="form-control"
-                onChange={this.cacheSenderEmailAddress}
-                placeholder="Enter your email address"
-              />
-            </form>
+            <Label>Email Address</Label>
+            <TextField
+              variant="outlined"
+              margin="dense"
+              classes={{ root: classes.textField }}
+              label="Email"
+              type="text"
+              name="senderEmailAddress"
+              className="form-control"
+              onChange={this.cacheSenderEmailAddress}
+              placeholder="Enter your email address"
+            />
 
-            <div>
-              <span style={floatRight}>
-                <Button
-                  color="primary"
-                  disabled={!this.state.senderEmailAddress || !this.senderEmailAddressVerified()}
-                  id="friendsSendButton"
-                  onClick={this.addFriendsByEmailStepsManager}
-                  onKeyDown={this.onKeyDown}
-                  tabIndex="0"
-                  variant="contained"
-                >
-                  <span>Send</span>
-                </Button>
-              </span>
-              <p>In order to send your message, you will need to verify your email address. We will never sell your email.</p>
-            </div>
+            <Button
+              color="primary"
+              classes={{ root: classes.sendButton }}
+              disabled={!this.state.senderEmailAddress || !this.senderEmailAddressVerified()}
+              id="friendsSendButton"
+              onClick={this.addFriendsByEmailStepsManager}
+              onKeyDown={this.onKeyDown}
+              tabIndex="0"
+              variant="contained"
+            >
+              <span>Send</span>
+            </Button>
+            <p>In order to send your message, you will need to verify your email address. We will never sell your email.</p>
           </div>
         ) : null
         }
@@ -451,10 +462,42 @@ const styles = () => ({
     marginBottom: 16,
     width: '100%',
   },
+  closeIcon: {
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
+  sendButton: {
+    marginLeft: 'auto !important',
+    display: 'block',
+  },
 });
+
+const FriendsDisplay = styled.div`
+  background: #fff;
+  padding: 12px 0;
+  margin-bottom: 8px;
+`;
+
+const FriendBadge = styled.div`
+  background: #eee;
+  margin: 0 10px 0 0;
+  display: inline-block;
+  padding: 6px 8px;
+`;
 
 const Label = styled.div`
   margin-bottom: -4px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const FriendsAlert = styled.p`
+  margin-top: 16px;
 `;
 
 export default withStyles(styles)(AddFriendsByEmail);
