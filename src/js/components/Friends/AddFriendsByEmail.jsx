@@ -116,9 +116,9 @@ class AddFriendsByEmail extends Component {
       // } else {
       //   //custom error message for each invalid email
       //   for (let friendIdx = 1; friendIdx <= this.state.friendTotal; friendIdx++) {
-      //     if (this.state[`friend${friendIdx}_email_address`] && !validateEmail(this.state[`friend${friendIdx}_email_address`])) {
+      //     if (this.state[`friend${friendIdx}EmailAddress`] && !validateEmail(this.state[`friend${friendIdx}EmailAddress`])) {
       //       emailAddressesError = true;
-      //       errorMessage += `Please enter a valid email address for ${this.state[`friend${friendIdx}_email_address`]}`;
+      //       errorMessage += `Please enter a valid email address for ${this.state[`friend${friendIdx}EmailAddress`]}`;
       //     }
       //   }
       // }
@@ -249,7 +249,12 @@ class AddFriendsByEmail extends Component {
 
       newArray.push(newFriendObject);
 
-      this.setState({ friendsToInvite: [...newArray]});
+      this.setState({ 
+        friendsToInvite: [...newArray],
+        friendEmailAddress: '',
+        friendFirstName: '',
+        friendLastName: '',
+      });
     }
   }
 
@@ -297,6 +302,8 @@ class AddFriendsByEmail extends Component {
             <SectionTitle>Invite List</SectionTitle>
             {this.state.friendsToInvite.map(friend => (
               <FriendBadge>
+                <strong>{friend.firstName}</strong>
+                {' '}
                 {friend.email}
                 <Close
                   onClick={this.deleteFriendFromList.bind(this, friend)}
@@ -310,7 +317,9 @@ class AddFriendsByEmail extends Component {
         )}
         {this.state.onEnterEmailAddressesStep ? (
           <>
-            <SectionTitle>Add Friend</SectionTitle>
+            {this.state.friendsToInvite.length !== 0 ? (
+              <SectionTitle>Add Friend</SectionTitle>
+            ) : null}
             <FormWrapper>
               <div>
                 <form>
