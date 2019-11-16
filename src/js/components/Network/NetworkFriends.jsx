@@ -117,7 +117,7 @@ export default class NetworkFriends extends Component {
 }
 
 const SectionTitle = styled.h2`
-  font-weight: bolder;
+  width: fit-content;  font-weight: bolder;
   font-size: 20px;
   margin-bottom: 16px;
 `;

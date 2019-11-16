@@ -416,8 +416,7 @@ class AddFriendsByEmail extends Component {
                 </form>
               </div>
               <FriendsAlert>
-                These friends will see what you support, oppose, and which opinions you follow.
-                We will never sell your email.
+
               </FriendsAlert>
             </FormWrapper>
           </>
@@ -501,14 +500,13 @@ const FriendBadge = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-weight: bold;
+  width: fit-content;  font-weight: bold;
   font-size: 16px;
   margin-bottom: 16px;
 `;
 
 const FormWrapper = styled.div`
   margin-bottom: 8px;
-  padding-top: 16px;
 `;
 
 const Label = styled.div`
