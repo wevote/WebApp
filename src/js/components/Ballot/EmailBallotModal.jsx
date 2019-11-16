@@ -6,7 +6,7 @@ import { renderLog } from '../../utils/logging';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import LoadingWheel from '../LoadingWheel';
-import validateEmail from '../../utils/email-functions';
+import { validateEmail } from '../../utils/regex-checks';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 

@@ -7,7 +7,7 @@ import LoadingWheel from '../LoadingWheel';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import validateEmail from '../../utils/email-functions';
+import { validatePhoneOrEmail } from '../../utils/regex-checks';
 import { renderLog } from '../../utils/logging';
 
 class AddFriendsByEmail extends Component {
@@ -21,7 +21,7 @@ class AddFriendsByEmail extends Component {
       friendsToInvite: [],
       friendFirstName: '',
       friendLastName: '',
-      friendEmailAddress: '',
+      friendContactInfo: '',
       emailAddressesError: false,
       senderEmailAddress: '',
       senderEmailAddressError: false,
@@ -109,14 +109,14 @@ class AddFriendsByEmail extends Component {
 
       // Error message logic on submit disabled in favor of disabling buttons
 
-      // if (!this.state.friendEmailAddress ) {
+      // if (!this.state.friendContactInfo ) {
       //   // console.log("addFriendsByEmailStepsManager: this.state.email_add is ");
       //   emailAddressesError = true;
       //   errorMessage += "Please enter at least one valid email address.";
       // } else {
       //   //custom error message for each invalid email
       //   for (let friendIdx = 1; friendIdx <= this.state.friendTotal; friendIdx++) {
-      //     if (this.state[`friend${friendIdx}EmailAddress`] && !validateEmail(this.state[`friend${friendIdx}EmailAddress`])) {
+      //     if (this.state[`friend${friendIdx}EmailAddress`] && !validatePhoneOrEmail(this.state[`friend${friendIdx}EmailAddress`])) {
       //       emailAddressesError = true;
       //       errorMessage += `Please enter a valid email address for ${this.state[`friend${friendIdx}EmailAddress`]}`;
       //     }
@@ -164,35 +164,37 @@ class AddFriendsByEmail extends Component {
   }
 
   senderEmailAddressVerified () {
-    return validateEmail(this.state.senderEmailAddress);
+    return validatePhoneOrEmail(this.state.senderEmailAddress);
   }
 
   cacheFriendData (event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+  allEnteredPhoneNumbersVerified () {
+    const _state = this.state;
+
+    if (_state.friendsToInvite.length !== 0) {
+      return true;
+    }
+
+    return validatePhoneOrEmail(_state.friendContactInfo);
+  }
+
   allEnteredEmailsVerified () {
     const _state = this.state;
 
-    _state.friendsToInvite.forEach((friend) => {
-      if (!validateEmail(friend.email)) {
-        return false;
-      } else {
-        return true;
-      }
-    });
-
-    if (_state.friendEmailAddress ? !validateEmail(_state.friendEmailAddress) : null) {
-      return false;
+    if (_state.friendsToInvite.length !== 0) {
+      return true;
     }
 
-    return true;
+    return validatePhoneOrEmail(_state.friendContactInfo);
   }
 
   friendInvitationByEmailSend (e) {
     e.preventDefault();
     // console.log("friendInvitationByEmailSend);
-    const { friendsToInvite,friendEmailAddress, friendFirstName, friendLastName } = this.state;
+    const { friendsToInvite,friendContactInfo, friendFirstName, friendLastName } = this.state;
 
     console.log("FriendsToInvite: ", friendsToInvite);
     const emailAddressArray = [];
@@ -207,8 +209,8 @@ class AddFriendsByEmail extends Component {
       }
     }
 
-    if (friendEmailAddress && validateEmail(friendEmailAddress)) {
-      emailAddressArray.push(friendEmailAddress);
+    if (friendContactInfo && validatePhoneOrEmail(friendContactInfo)) {
+      emailAddressArray.push(friendContactInfo);
       firstNameArray.push(friendFirstName);
       lastNameArray.push(friendLastName);
     }
@@ -226,7 +228,7 @@ class AddFriendsByEmail extends Component {
       loading: true,
       friendFirstName: '',
       friendLastName: '',
-      friendEmailAddress: '',
+      friendContactInfo: '',
       emailAddressesError: false,
       senderEmailAddress: '',
       onEnterEmailAddressesStep: true,
@@ -236,22 +238,22 @@ class AddFriendsByEmail extends Component {
   }
 
   addFriend () {
-    const { friendFirstName, friendEmailAddress, friendLastName, friendsToInvite } = this.state;
+    const { friendFirstName, friendContactInfo, friendLastName, friendsToInvite } = this.state;
 
-    if (validateEmail(friendEmailAddress)) {
+    if (validatePhoneOrEmail(friendContactInfo)) {
       const newArray = [...friendsToInvite];
 
       const newFriendObject = {
         firstName: friendFirstName,
         lastName: friendLastName,
-        email: friendEmailAddress,
+        email: friendContactInfo,
       };
 
       newArray.push(newFriendObject);
 
       this.setState({ 
         friendsToInvite: [...newArray],
-        friendEmailAddress: '',
+        friendContactInfo: '',
         friendFirstName: '',
         friendLastName: '',
       });
@@ -274,7 +276,7 @@ class AddFriendsByEmail extends Component {
   render () {
     console.log(this.state.friendsToInvite);
     renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
-    const atLeastOneValidated = this.state.friendsToInvite.length !== 0 || validateEmail(this.state.friendEmailAddress);
+    const atLeastOneValidated = this.state.friendsToInvite.length !== 0 || validatePhoneOrEmail(this.state.friendContactInfo);
 
     const { loading } = this.state;
     const { classes } = this.props;
@@ -323,15 +325,15 @@ class AddFriendsByEmail extends Component {
             <FormWrapper>
               <div>
                 <form>
-                  <Label>Email Address</Label>
+                  <Label>Email or Phone Number</Label>
                   <TextField
                     variant="outlined"
                     margin="dense"
                     classes={{ root: classes.textField }}
                     type="text"
                     id="EmailAddress"
-                    name="friendEmailAddress"
-                    value={this.state.friendEmailAddress}
+                    name="friendContactInfo"
+                    value={this.state.friendContactInfo}
                     onChange={this.cacheFriendData.bind(this)}
                     placeholder="For example: name@domain.com"
                   />
@@ -373,7 +375,7 @@ class AddFriendsByEmail extends Component {
                   </div>
                   {atLeastOneValidated ? (
                     <>
-                      <Label>Include a Message</Label>
+                      <Label>Add Personal Message</Label>
                       <span className="small">(Optional)</span>
                       <TextField
                         variant="outlined"
@@ -390,14 +392,14 @@ class AddFriendsByEmail extends Component {
                   ) : null
                   }
                   <ButtonContainer>
-                    <Button disabled={!this.state.friendEmailAddress} onClick={this.addFriend} color="primary" variant="contained">
+                    <Button classes={{ root: classes.addButton }} disabled={!this.allEnteredEmailsVerified()} onClick={this.addFriend} color="primary" variant="outlined">
                       Add Another
                     </Button>
                     <Button
                       color="primary"
                       classes={{ root: classes.sendButton }}
                       disabled={
-                        // this.state.friendsToInvite.length === 0 ? !this.state.friendEmailAddress || !this.allEnteredEmailsVerified ? true : false : false
+                        // this.state.friendsToInvite.length === 0 ? !this.state.friendContactInfo || !this.allEnteredEmailsVerified ? true : false : false
                         !this.allEnteredEmailsVerified()
                       }
                       id="friendsNextButton"
@@ -469,9 +471,19 @@ const styles = () => ({
       cursor: 'pointer',
     },
   },
-  sendButton: {
-    marginLeft: 'auto !important',
+  addButton: {
     display: 'block',
+    marginRight: '12px',
+    background: 'white',
+    '@media (max-width: 520px)': {
+      width: 'calc(50% - 15px)',
+    },
+  },
+  sendButton: {
+    display: 'block',
+    '@media (max-width: 520px)': {
+      width: 'calc(50% - 15px)',
+    },
   },
 });
 
@@ -489,14 +501,14 @@ const FriendBadge = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-weight: bolder;
-  font-size: 20px;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 16px;
 `;
 
 const FormWrapper = styled.div`
-  padding: 16px;
-  background: #eee;
   margin-bottom: 8px;
+  padding-top: 16px;
 `;
 
 const Label = styled.div`
@@ -506,7 +518,10 @@ const Label = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  @media (max-width: 520px) {
+    justify-content: space-between;
+  }
 `;
 
 const FriendsAlert = styled.p`

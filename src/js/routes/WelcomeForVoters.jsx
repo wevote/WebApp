@@ -20,7 +20,7 @@ import Footer from '../components/Welcome/Footer';
 import { renderLog } from '../utils/logging';
 import TextBox from '../components/Welcome/TextBox';
 import Testimonial from '../components/Widgets/Testimonial';
-import validateEmail from '../utils/email-functions';
+import{ validateEmail }from '../utils/regex-checks';
 import VoterActions from '../actions/VoterActions';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';

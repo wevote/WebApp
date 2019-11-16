@@ -7,7 +7,7 @@ import FriendStore from '../../stores/FriendStore';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import validateEmail from '../../utils/email-functions';
+import{ validateEmail }from '../../utils/regex-checks';
 
 const webAppConfig = require('../../config');
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import LoadingWheel from '../components/LoadingWheel';
@@ -55,9 +56,12 @@ export default class Friends extends Component {
             <SuggestedFriendsPreview />
             <section className="card">
               <div className="card-main">
-                <h1 className="h3 mb-4">
-                  Add Friends by Email
-                </h1>
+                <SectionTitle>
+                  Add Friends
+                </SectionTitle>
+                <SectionSubtitle>
+                  Invite Friends by email or phone
+                </SectionSubtitle>
                 <AddFriendsByEmail />
               </div>
             </section>
@@ -77,3 +81,15 @@ export default class Friends extends Component {
     );
   }
 }
+
+const SectionTitle = styled.h2`
+  font-weight: bolder;
+  font-size: 20px;
+  margin-bottom: 4px;
+`;
+
+const SectionSubtitle = styled.div`
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 16px;
+`;
