@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import styled from 'styled-components';
 import _ from 'lodash';
 import FriendListCompressed from './FriendListCompressed';
 import FriendActions from '../../actions/FriendActions';
@@ -92,7 +93,7 @@ export default class NetworkFriends extends Component {
       <div className="opinion-view">
         <section className="card">
           <div className="card-main">
-            <h1 className="h4">Your Friends</h1>
+            <SectionTitle>Your Friends</SectionTitle>
             <div>
               { this.state.currentFriendList && this.state.currentFriendList.length > 0 ? (
                 <span>
@@ -114,3 +115,9 @@ export default class NetworkFriends extends Component {
     );
   }
 }
+
+const SectionTitle = styled.h2`
+  width: fit-content;  font-weight: bolder;
+  font-size: 20px;
+  margin-bottom: 16px;
+`;

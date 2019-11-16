@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
+import Info from '@material-ui/icons/Info';
+import { Tooltip } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import LoadingWheel from '../components/LoadingWheel';
@@ -14,8 +19,9 @@ import VoterStore from '../stores/VoterStore';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
-export default class Friends extends Component {
+class Friends extends Component {
   static propTypes = {
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -41,6 +47,8 @@ export default class Friends extends Component {
   render () {
     renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
     const { voter } = this.state;
+    const { classes } = this.props;
+
     if (!voter) {
       return LoadingWheel;
     }
@@ -55,9 +63,22 @@ export default class Friends extends Component {
             <SuggestedFriendsPreview />
             <section className="card">
               <div className="card-main">
-                <h1 className="h4">
-                  Add Friends by Email
-                </h1>
+                <SectionTitle>
+                  Add Friends
+                </SectionTitle>
+                <Icon>
+                  <Tooltip
+                    classes={{ root: classes.tooltip }}
+                    title="These friends will see what you support, oppose, and which opinions you follow.
+                    We will never sell your email."
+                  >
+                    <Info />
+                  </Tooltip>
+                </Icon>
+
+                <SectionSubtitle>
+                  Invite Friends by email or phone
+                </SectionSubtitle>
                 <AddFriendsByEmail />
               </div>
             </section>
@@ -79,3 +100,33 @@ export default class Friends extends Component {
     );
   }
 }
+
+const styles = () => ({
+  tooltip: {
+    display: 'inline !important',
+  },
+});
+
+const SectionTitle = styled.h2`
+  width: fit-content;
+  font-weight: bolder;
+  font-size: 20px;
+  margin-bottom: 4px;
+`;
+
+const Icon = styled.span`
+  position: absolute;
+  left: 136px;
+  top: 16px;
+  * {
+    color: #777;
+  }
+`;
+
+const SectionSubtitle = styled.div`
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 16px;
+`;
+
+export default withStyles(styles)(Friends);

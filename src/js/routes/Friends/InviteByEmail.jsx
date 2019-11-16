@@ -44,7 +44,7 @@ export default class InviteByEmail extends Component {
     return (
       <div>
         <Helmet title="Build Your We Vote Network" />
-        <h1 className="h1">Add Friends by Email</h1>
+        <h1>Add Friends by Email</h1>
 
         <div className="container-fluid well u-stack--md u-inset--md">
           <AddFriendsByEmail />

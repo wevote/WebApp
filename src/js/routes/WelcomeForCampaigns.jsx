@@ -14,7 +14,7 @@ import Footer from '../components/Welcome/Footer';
 import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import Testimonial from '../components/Widgets/Testimonial';
-import validateEmail from '../utils/email-functions';
+import{ validateEmail }from '../utils/regex-checks';
 import VoterActions from '../actions/VoterActions';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';

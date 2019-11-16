@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
+import { TextField, withStyles } from '@material-ui/core';
+import Close from '@material-ui/icons/Close';
 import LoadingWheel from '../LoadingWheel';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
-import validateEmail from '../../utils/email-functions';
+import { validatePhoneOrEmail } from '../../utils/regex-checks';
 import { renderLog } from '../../utils/logging';
 
-export default class AddFriendsByEmail extends Component {
+class AddFriendsByEmail extends Component {
   static propTypes = {
   };
 
@@ -15,26 +18,10 @@ export default class AddFriendsByEmail extends Component {
     super(props);
     this.state = {
       add_friends_message: 'Please join me in preparing for the upcoming election.',
-      row2Open: false,
-      row3Open: false,
-      row4Open: false,
-      row5Open: false,
-      friendTotal: 5,
-      friend1FirstName: '',
-      friend1LastName: '',
-      friend1EmailAddress: '',
-      friend2FirstName: '',
-      friend2LastName: '',
-      friend2EmailAddress: '',
-      friend3FirstName: '',
-      friend3LastName: '',
-      friend3EmailAddress: '',
-      friend4FirstName: '',
-      friend4LastName: '',
-      friend4EmailAddress: '',
-      friend5FirstName: '',
-      friend5LastName: '',
-      friend5EmailAddress: '',
+      friendsToInvite: [],
+      friendFirstName: '',
+      friendLastName: '',
+      friendContactInfo: '',
       emailAddressesError: false,
       senderEmailAddress: '',
       senderEmailAddressError: false,
@@ -44,7 +31,8 @@ export default class AddFriendsByEmail extends Component {
       onFriendInvitationsSentStep: false,
       voter: {},
     };
-    this.allRowsOpen.bind(this);
+    this.addFriend = this.addFriend.bind(this);
+    this.deleteFriendFromList = this.deleteFriendFromList.bind(this);
   }
 
   componentDidMount () {
@@ -56,6 +44,11 @@ export default class AddFriendsByEmail extends Component {
   componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+  
+  shouldComponentUpdate (nextState) {
+    if (this.state.friendsToInvite !== nextState.friendsToInvite) return true;
+    return false;
   }
 
   onKeyDown = (event) => {
@@ -107,7 +100,7 @@ export default class AddFriendsByEmail extends Component {
   addFriendsByEmailStepsManager = (event) => {
     // This function is called when the next button is  submitted;
     // this funtion is called twice per cycle
-    // console.log("Entering function addFriendsByEmailStepsManager");
+    console.log("Entering function addFriendsByEmailStepsManager");
     const errorMessage = '';
 
     if (this.state.onEnterEmailAddressesStep) {
@@ -116,36 +109,36 @@ export default class AddFriendsByEmail extends Component {
 
       // Error message logic on submit disabled in favor of disabling buttons
 
-      // if (!this.state.friend1EmailAddress ) {
+      // if (!this.state.friendContactInfo ) {
       //   // console.log("addFriendsByEmailStepsManager: this.state.email_add is ");
       //   emailAddressesError = true;
       //   errorMessage += "Please enter at least one valid email address.";
       // } else {
       //   //custom error message for each invalid email
       //   for (let friendIdx = 1; friendIdx <= this.state.friendTotal; friendIdx++) {
-      //     if (this.state[`friend${friendIdx}_email_address`] && !validateEmail(this.state[`friend${friendIdx}_email_address`])) {
+      //     if (this.state[`friend${friendIdx}EmailAddress`] && !validatePhoneOrEmail(this.state[`friend${friendIdx}EmailAddress`])) {
       //       emailAddressesError = true;
-      //       errorMessage += `Please enter a valid email address for ${this.state[`friend${friendIdx}_email_address`]}`;
+      //       errorMessage += `Please enter a valid email address for ${this.state[`friend${friendIdx}EmailAddress`]}`;
       //     }
       //   }
       // }
 
       if (emailAddressesError) {
-        // console.log("addFriendsByEmailStepsManager, emailAddressesError");
+        console.log("addFriendsByEmailStepsManager, emailAddressesError");
         this.setState({
           loading: false,
           emailAddressesError: true,
-          errorMessage,
+          errorMessage: 'Error in sending invites.',
         });
       } else if (!this.hasValidEmail()) {
-        // console.log("addFriendsByEmailStepsManager, NOT hasValidEmail");
+        console.log("addFriendsByEmailStepsManager, NOT hasValidEmail");
         this.setState({
           loading: false,
           onEnterEmailAddressesStep: false,
           onCollectEmailStep: true,
         });
       } else {
-        // console.log("addFriendsByEmailStepsManager, calling friendInvitationByEmailSend");
+        console.log("addFriendsByEmailStepsManager, calling friendInvitationByEmailSend");
         this.friendInvitationByEmailSend(event);
       }
     } else if (this.state.onCollectEmailStep) {
@@ -165,98 +158,77 @@ export default class AddFriendsByEmail extends Component {
     }
   }
 
-  addAnotherInvitation = () => {
-    const _state = this.state;
-    if (!_state.row2Open) this.setState({ row2Open: true });
-    else if (!_state.row3Open) this.setState({ row3Open: true });
-    else if (!_state.row4Open) this.setState({ row4Open: true });
-    else if (!_state.row5Open) this.setState({ row5Open: true });
-  }
-
   hasValidEmail () {
     const { voter } = this.state;
     return voter !== undefined ? voter.has_valid_email : false;
   }
 
   senderEmailAddressVerified () {
-    return validateEmail(this.state.senderEmailAddress);
+    return validatePhoneOrEmail(this.state.senderEmailAddress);
   }
 
   cacheFriendData (event) {
     this.setState({ [event.target.name]: event.target.value });
-    // console.log(`New State => ${event.target.name}: ${event.target.value}`);
+  }
+
+  allEnteredPhoneNumbersVerified () {
+    const _state = this.state;
+
+    if (_state.friendsToInvite.length !== 0) {
+      return true;
+    }
+
+    return validatePhoneOrEmail(_state.friendContactInfo);
   }
 
   allEnteredEmailsVerified () {
     const _state = this.state;
-    let result;
 
-    for (let friendIdx = 1; friendIdx <= this.state.friendTotal; friendIdx++) {
-      if (_state[`friend${friendIdx}_email_address`]) {
-        result = validateEmail(_state[`friend${friendIdx}_email_address`]);
-        if (result) {
-          // console.log(`allEnteredEmailsVerified: validated email for friend${friendIdx}`, _state[`friend${friendIdx}_email_address`]);
-        } else {
-          // console.log(`allEnteredEmailsVerified: invalid email address for friend${friendIdx}`, _state[`friend${friendIdx}_email_address`]);
-          return false;
-        }
-      }
+    if (_state.friendsToInvite.length !== 0) {
+      return true;
     }
-    return true;
-  }
 
-  closeRow (rowNumber) {
-    this.setState({
-      [`friend${rowNumber}EmailAddress`]: '',
-      [`friend${rowNumber}FirstName`]: '',
-      [`friend${rowNumber}LastName`]: '',
-      [`row${rowNumber}Open`]: false,
-    });
+    return validatePhoneOrEmail(_state.friendContactInfo);
   }
 
   friendInvitationByEmailSend (e) {
     e.preventDefault();
     // console.log("friendInvitationByEmailSend);
-    const _state = this.state;
+    const { friendsToInvite,friendContactInfo, friendFirstName, friendLastName } = this.state;
+
+    console.log("FriendsToInvite: ", friendsToInvite);
     const emailAddressArray = [];
     const firstNameArray = [];
     const lastNameArray = [];
-    // create temporary arrays so friendInvitationByEmailSend can work
-    for (let friendIdx = 1; friendIdx <= this.state.friendTotal; friendIdx++) {
-      if (validateEmail(_state[`friend${friendIdx}_email_address`])) {
-        emailAddressArray.push(_state[`friend${friendIdx}_email_address`]);
-        firstNameArray.push(_state[`friend${friendIdx}_first_name`]);
-        lastNameArray.push(_state[`friend${friendIdx}_last_name`]);
+
+    if (friendsToInvite.length !== 0) {
+      for (let i = 0; i < friendsToInvite.length; i++) {
+        emailAddressArray.push(friendsToInvite[i].email);
+        firstNameArray.push(friendsToInvite[i].firstName);
+        lastNameArray.push(friendsToInvite[i].lastName);
       }
     }
-    // console.log("emailAddressArray: ", emailAddressArray);
-    // console.log("firstNameArray: ", firstNameArray);
-    // console.log("lastNameArray: ", lastNameArray);
-    FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
+
+    if (friendContactInfo && validatePhoneOrEmail(friendContactInfo)) {
+      emailAddressArray.push(friendContactInfo);
+      firstNameArray.push(friendFirstName);
+      lastNameArray.push(friendLastName);
+    }
+
+    console.log("emailAddressArray: ", emailAddressArray);
+    console.log("firstNameArray: ", firstNameArray);
+    console.log("lastNameArray: ", lastNameArray);
+    const response = FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
       lastNameArray, '', this.state.add_friends_message,
       this.state.senderEmailAddress);
+
+    console.log(response);
     // After calling the API, reset the form
     this.setState({
       loading: true,
-      row2Open: false,
-      row3Open: false,
-      row4Open: false,
-      row5Open: false,
-      friend1FirstName: '',
-      friend1LastName: '',
-      friend1EmailAddress: '',
-      friend2FirstName: '',
-      friend2LastName: '',
-      friend2EmailAddress: '',
-      friend3FirstName: '',
-      friend3LastName: '',
-      friend3EmailAddress: '',
-      friend4FirstName: '',
-      friend4LastName: '',
-      friend4EmailAddress: '',
-      friend5FirstName: '',
-      friend5LastName: '',
-      friend5EmailAddress: '',
+      friendFirstName: '',
+      friendLastName: '',
+      friendContactInfo: '',
       emailAddressesError: false,
       senderEmailAddress: '',
       onEnterEmailAddressesStep: true,
@@ -265,21 +237,53 @@ export default class AddFriendsByEmail extends Component {
     });
   }
 
-  allRowsOpen () {
-    return this.state.row2Open && this.state.row3Open && this.state.row4Open && this.state.row5Open;
+  addFriend () {
+    const { friendFirstName, friendContactInfo, friendLastName, friendsToInvite } = this.state;
+
+    if (validatePhoneOrEmail(friendContactInfo)) {
+      const newArray = [...friendsToInvite];
+
+      const newFriendObject = {
+        firstName: friendFirstName,
+        lastName: friendLastName,
+        email: friendContactInfo,
+      };
+
+      newArray.push(newFriendObject);
+
+      this.setState({ 
+        friendsToInvite: [...newArray],
+        friendContactInfo: '',
+        friendFirstName: '',
+        friendLastName: '',
+      });
+    }
+  }
+
+  deleteFriendFromList (friend) {
+    const { friendsToInvite } = this.state;
+
+    const newArray = [...friendsToInvite].filter((item) => {
+      return item.email !== friend.email;
+    });
+
+    console.log("New array: ", newArray);
+    console.log("Email: ", friend.email);
+
+    this.setState({ friendsToInvite: [...newArray]});
   }
 
   render () {
+    console.log(this.state.friendsToInvite);
     renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
-    const atLeastOneValidated = validateEmail(this.state.friend1EmailAddress) || validateEmail(this.state.friend2EmailAddress) || validateEmail(this.state.friend3EmailAddress) || validateEmail(this.state.friend4EmailAddress) || validateEmail(this.state.friend5EmailAddress);
+    const atLeastOneValidated = this.state.friendsToInvite.length !== 0 || validatePhoneOrEmail(this.state.friendContactInfo);
 
     const { loading } = this.state;
+    const { classes } = this.props;
+
     if (loading) {
       return LoadingWheel;
     }
-    const floatRight = {
-      float: 'right',
-    };
 
     return (
       <div>
@@ -295,403 +299,158 @@ export default class AddFriendsByEmail extends Component {
           </div>
         ) : null
         }
+        {this.state.friendsToInvite.length !== 0 ? (
+          <FriendsDisplay>
+            <SectionTitle>Invite List</SectionTitle>
+            {this.state.friendsToInvite.map(friend => (
+              <FriendBadge>
+                <strong>{friend.firstName}</strong>
+                {' '}
+                {friend.email}
+                <Close
+                  onClick={this.deleteFriendFromList.bind(this, friend)}
+                  className={classes.closeIcon}
+                />
+              </FriendBadge>
+            ))}
+          </FriendsDisplay>
+        ) : (
+          null
+        )}
         {this.state.onEnterEmailAddressesStep ? (
-          <div>
-            <div>
-              <form>
-                <div className="container-fluid">
-                  <div className="row invite-inputs">
-                    <div className="form-group col-12 col-sm-12 col-md-6">
-                      <div className="input-group">
-                        <label htmlFor="friend1EmailAddress">
-                          <span className="u-no-break">Email Address</span>
-                          <input
-                            type="text"
-                            id="friend1EmailAddress"
-                            name="friend1EmailAddress"
-                            className="form-control"
-                            value={this.state.friend1EmailAddress}
-                            onChange={this.cacheFriendData.bind(this)}
-                            placeholder="For example: name@domain.com"
-                          />
-                        </label>
-                      </div>
+          <>
+            {this.state.friendsToInvite.length !== 0 ? (
+              <SectionTitle>Add Friend</SectionTitle>
+            ) : null}
+            <FormWrapper>
+              <div>
+                <form>
+                  <Label>Email or Phone Number</Label>
+                  <TextField
+                    variant="outlined"
+                    margin="dense"
+                    classes={{ root: classes.textField }}
+                    type="text"
+                    id="EmailAddress"
+                    name="friendContactInfo"
+                    value={this.state.friendContactInfo}
+                    onChange={this.cacheFriendData.bind(this)}
+                    placeholder="For example: name@domain.com"
+                  />
+                  <div className="row">
+                    <div className="col col-6">
+                      <Label>
+                        First Name
+                        {' (optional)'}
+                      </Label>
+                      <TextField
+                        variant="outlined"
+                        margin="dense"
+                        classes={{ root: classes.textField }}
+                        type="text"
+                        id="friendFirstName"
+                        name="friendFirstName"
+                        value={this.state.friendFirstName}
+                        onChange={this.cacheFriendData.bind(this)}
+                        placeholder="Optional"
+                      />
                     </div>
-                    <div className="form-group col-6 col-sm-6 col-md-3">
-                      <div className="input-group">
-                        <label htmlFor="friend1FirstName">
-                          <span className="u-no-break">First Name</span>
-                          <input
-                            type="text"
-                            id="friend1FirstName"
-                            name="friend1FirstName"
-                            className="form-control"
-                            value={this.state.friend1FirstName}
-                            onChange={this.cacheFriendData.bind(this)}
-                            placeholder="Optional"
-                          />
-                        </label>
-                      </div>
-                    </div>
-                    <div className="form-group col-6 col-sm-6 col-md-3">
-                      <div className="input-group">
-                        <label htmlFor="friend1LastName">
-                          <span className="u-no-break">Last Name</span>
-                          <input
-                            type="text"
-                            id="friend1LastName"
-                            name="friend1LastName"
-                            className="form-control"
-                            value={this.state.friend1LastName}
-                            onChange={this.cacheFriendData.bind(this)}
-                            placeholder="Optional"
-                          />
-                        </label>
-                      </div>
+                    <div className="col col-6">
+                      <Label>
+                        Last Name
+                        {' (optional)'}
+                      </Label>
+                      <TextField
+                        variant="outlined"
+                        margin="dense"
+                        classes={{ root: classes.textField }}
+                        type="text"
+                        id="friendLastName"
+                        name="friendLastName"
+                        value={this.state.friendLastName}
+                        onChange={this.cacheFriendData.bind(this)}
+                        placeholder="Optional"
+                      />
                     </div>
                   </div>
-                  {this.state.row2Open ? (
-                    <div className="row invite-inputs">
-                      <div className="form-group col-12 col-sm-12 col-md-6">
-                        <div className="input-group">
-                          <label htmlFor="friend2EmailAddress">
-                            <span className="u-no-break">Email Address</span>
-                            <input
-                              type="text"
-                              id="friend2EmailAddress"
-                              name="friend2EmailAddress"
-                              className="form-control"
-                              value={this.state.friend2EmailAddress}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="For example: name@domain.com"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <div className="form-group col-6 col-sm-6 col-md-3">
-                        <div className="input-group">
-                          <label htmlFor="friend2FirstName">
-                            <span className="u-no-break">First Name</span>
-                            <input
-                              type="text"
-                              id="friend2FirstName"
-                              name="friend2FirstName"
-                              className="form-control"
-                              value={this.state.friend2FirstName}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="Optional"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <div className="form-group col-6 col-sm-6 col-md-3">
-                        <div className="input-group">
-                          <label htmlFor="friend2LastName">
-                            <span className="u-no-break">Last Name</span>
-                            <input
-                              type="text"
-                              id="friend2LastName"
-                              name="friend2LastName"
-                              className="form-control"
-                              value={this.state.friend2LastName}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="Optional"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <span
-                        aria-label="Close"
-                        className="close close-on-right"
-                        id="addFriendsByEmailClosingX1"
-                        name="row2Open"
-                        onClick={this.closeRow.bind(this, 2)}
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </span>
-                    </div>
+                  {atLeastOneValidated ? (
+                    <>
+                      <Label>Add Personal Message</Label>
+                      <span className="small">(Optional)</span>
+                      <TextField
+                        variant="outlined"
+                        margin="dense"
+                        classes={{ root: classes.textField }}
+                        type="text"
+                        id="addFriendsMessage"
+                        name="addFriendsMessage"
+                        onChange={this.cacheAddFriendsByEmailMessage}
+                        fullWidth
+                        placeholder="Please join me in preparing for the upcoming election."
+                      />
+                    </>
                   ) : null
                   }
-                  {this.state.row3Open ? (
-                    <div className="row invite-inputs">
-                      <div className="form-group col-12 col-sm-12 col-md-6">
-                        <div className="input-group">
-                          <label htmlFor="friend3EmailAddress">
-                            <span className="u-no-break">Email Address</span>
-                            <input
-                              type="text"
-                              id="friend3EmailAddress"
-                              name="friend3EmailAddress"
-                              className="form-control"
-                              value={this.state.friend3EmailAddress}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="For example: name@domain.com"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <div className="form-group col-6 col-sm-6 col-md-3">
-                        <div className="input-group">
-                          <label htmlFor="friend3FirstName">
-                            <span className="u-no-break">First Name</span>
-                            <input
-                              type="text"
-                              id="friend3FirstName"
-                              name="friend3FirstName"
-                              className="form-control"
-                              value={this.state.friend3FirstName}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="Optional"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <div className="form-group col-6 col-sm-6 col-md-3">
-                        <div className="input-group">
-                          <label htmlFor="friend3LastName">
-                            <span className="u-no-break">Last Name</span>
-                            <input
-                              type="text"
-                              id="friend3LastName"
-                              name="friend3LastName"
-                              className="form-control"
-                              value={this.state.friend3LastName}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="Optional"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <span
-                        aria-label="Close"
-                        className="close close-on-right"
-                        id="addFriendsByEmailClosingX2"
-                        onClick={this.closeRow.bind(this, 3)}
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </span>
-                    </div>
-                  ) : null
-                  }
-                  {this.state.row4Open ? (
-                    <div className="row invite-inputs">
-                      <div className="form-group col-12 col-sm-12 col-md-6">
-                        <div className="input-group">
-                          <label htmlFor="friend4EmailAddress">
-                            <span className="u-no-break">Email Address</span>
-                            <input
-                              type="text"
-                              id="friend4EmailAddress"
-                              name="friend4EmailAddress"
-                              className="form-control"
-                              value={this.state.friend4EmailAddress}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="For example: name@domain.com"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <div className="form-group col-6 col-sm-6 col-md-3">
-                        <div className="input-group">
-                          <label htmlFor="friend4FirstName">
-                            <span className="u-no-break">First Name</span>
-                            <input
-                              type="text"
-                              id="friend4FirstName"
-                              name="friend4FirstName"
-                              className="form-control"
-                              value={this.state.friend4FirstName}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="Optional"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <div className="form-group col-6 col-sm-6 col-md-3">
-                        <div className="input-group">
-                          <label htmlFor="friend4LastName">
-                            <span className="u-no-break">Last Name</span>
-                            <input
-                              type="text"
-                              id="friend4LastName"
-                              name="friend4LastName"
-                              className="form-control"
-                              value={this.state.friend4LastName}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="Optional"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <span
-                        aria-label="Close"
-                        className="close close-on-right"
-                        id="addFriendsByEmailClosingX3"
-                        onClick={this.closeRow.bind(this, 4)}
-                      >
-                        <span aria-hidden="true">
-                          &times;
-                        </span>
-                      </span>
-                    </div>
-                  ) : null
-                  }
-                  {this.state.row5Open ? (
-                    <div className="row invite-inputs">
-                      <div className="form-group col-12 col-sm-12 col-md-6">
-                        <div className="input-group">
-                          <label htmlFor="friend5EmailAddress">
-                            <span className="u-no-break">Email Address</span>
-                            <input
-                              type="text"
-                              id="friend5EmailAddress"
-                              name="friend5EmailAddress"
-                              className="form-control"
-                              value={this.state.friend5EmailAddress}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="For example: name@domain.com"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <div className="form-group col-6 col-sm-6 col-md-3">
-                        <div className="input-group">
-                          <label htmlFor="friend5FirstName">
-                            <span className="u-no-break">First Name</span>
-                            <input
-                              type="text"
-                              id="friend5FirstName"
-                              name="friend5FirstName"
-                              className="form-control"
-                              value={this.state.friend5FirstName}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="Optional"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <div className="form-group col-6 col-sm-6 col-md-3">
-                        <div className="input-group">
-                          <label htmlFor="friend5LastName">
-                            <span className="u-no-break">Last Name</span>
-                            <input
-                              type="text"
-                              id="friend5LastName"
-                              name="friend5LastName"
-                              className="form-control"
-                              value={this.state.friend5LastName}
-                              onChange={this.cacheFriendData.bind(this)}
-                              placeholder="Optional"
-                            />
-                          </label>
-                        </div>
-                      </div>
-                      <span
-                        aria-label="Close"
-                        className="close close-on-right"
-                        id="addFriendsByEmailClosingX4"
-                        onClick={this.closeRow.bind(this, 5)}
-                      >
-                        <span aria-hidden="true">
-                          &times;
-                        </span>
-                      </span>
-                    </div>
-                  ) : null
-                  }
-                  <div className="row invite-inputs">
-                    {!this.state.friend1EmailAddress || this.allRowsOpen() ?
-                      null : (
-                        <Button
-                          color="primary"
-                          id="friendsAddAnotherInvitation"
-                          onClick={this.addAnotherInvitation}
-                          tabIndex="0"
-                          variant="contained"
-                        >
-                          <span>+ Add another invitation</span>
-                        </Button>
-                      )}
-                  </div>
-                </div>
+                  <ButtonContainer>
+                    <Button classes={{ root: classes.addButton }} disabled={!this.allEnteredEmailsVerified()} onClick={this.addFriend} color="primary" variant="outlined">
+                      Add Another
+                    </Button>
+                    <Button
+                      color="primary"
+                      classes={{ root: classes.sendButton }}
+                      disabled={
+                        // this.state.friendsToInvite.length === 0 ? !this.state.friendContactInfo || !this.allEnteredEmailsVerified ? true : false : false
+                        !this.allEnteredEmailsVerified()
+                      }
+                      id="friendsNextButton"
+                      onClick={this.addFriendsByEmailStepsManager}
+                      onKeyDown={this.onKeyDown}
+                      variant="contained"
+                    >
+                      { this.hasValidEmail() ?
+                        <span>Send &gt;</span> :
+                        <span>Next &gt;</span>
+                        }
+                    </Button>
+                  </ButtonContainer>
+                </form>
+              </div>
+              <FriendsAlert>
 
-              </form>
-            </div>
-
-            <form className="u-stack--md">
-              {atLeastOneValidated ? (
-                <span>
-                  <label htmlFor="addFriendsMessage">
-                    Include a Message
-                    {' '}
-                    <span className="small">(Optional)</span>
-                    <input
-                      type="text"
-                      id="addFriendsMessage"
-                      name="addFriendsMessage"
-                      className="form-control"
-                      onChange={this.cacheAddFriendsByEmailMessage}
-                      placeholder="Please join me in preparing for the upcoming election."
-                    />
-                  </label>
-                </span>
-              ) : null
-              }
-            </form>
-
-            <div className="u-gutter__top--small">
-              <span style={floatRight}>
-                <Button
-                  color="primary"
-                  disabled={!this.state.friend1EmailAddress || !this.allEnteredEmailsVerified()}
-                  id="friendsNextButton"
-                  onClick={this.addFriendsByEmailStepsManager}
-                  onKeyDown={this.onKeyDown}
-                  variant="contained"
-                >
-                  { this.hasValidEmail() ?
-                    <span>Send &gt;</span> :
-                    <span>Next &gt;</span>
-                    }
-                </Button>
-              </span>
-              <span>
-                These friends will see what you support, oppose, and which opinions you follow.
-                We will never sell your email.
-              </span>
-            </div>
-          </div>
+              </FriendsAlert>
+            </FormWrapper>
+          </>
         ) : null
         }
 
         {this.state.onCollectEmailStep ? (
           <div>
-            <form className="u-stack--md">
-              <input
-                type="text"
-                name="senderEmailAddress"
-                className="form-control"
-                onChange={this.cacheSenderEmailAddress}
-                placeholder="Enter your email address"
-              />
-            </form>
+            <Label>Email Address</Label>
+            <TextField
+              variant="outlined"
+              margin="dense"
+              classes={{ root: classes.textField }}
+              label="Email"
+              type="text"
+              name="senderEmailAddress"
+              className="form-control"
+              onChange={this.cacheSenderEmailAddress}
+              placeholder="Enter your email address"
+            />
 
-            <div>
-              <span style={floatRight}>
-                <Button
-                  color="primary"
-                  disabled={!this.state.senderEmailAddress || !this.senderEmailAddressVerified()}
-                  id="friendsSendButton"
-                  onClick={this.addFriendsByEmailStepsManager}
-                  onKeyDown={this.onKeyDown}
-                  tabIndex="0"
-                  variant="contained"
-                >
-                  <span>Send</span>
-                </Button>
-              </span>
-              <p>In order to send your message, you will need to verify your email address. We will never sell your email.</p>
-            </div>
+            <Button
+              color="primary"
+              classes={{ root: classes.sendButton }}
+              disabled={!this.state.senderEmailAddress || !this.senderEmailAddressVerified()}
+              id="friendsSendButton"
+              onClick={this.addFriendsByEmailStepsManager}
+              onKeyDown={this.onKeyDown}
+              tabIndex="0"
+              variant="contained"
+            >
+              <span>Send</span>
+            </Button>
+            <p>In order to send your message, you will need to verify your email address. We will never sell your email.</p>
           </div>
         ) : null
         }
@@ -699,3 +458,72 @@ export default class AddFriendsByEmail extends Component {
     );
   }
 }
+
+const styles = () => ({
+  textField: {
+    marginBottom: 16,
+    width: '100%',
+    background: 'white',
+  },
+  closeIcon: {
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
+  addButton: {
+    display: 'block',
+    marginRight: '12px',
+    background: 'white',
+    '@media (max-width: 520px)': {
+      width: 'calc(50% - 15px)',
+    },
+  },
+  sendButton: {
+    display: 'block',
+    '@media (max-width: 520px)': {
+      width: 'calc(50% - 15px)',
+    },
+  },
+});
+
+const FriendsDisplay = styled.div`
+  background: #fff;
+  padding: 12px 0;
+  margin-bottom: 8px;
+`;
+
+const FriendBadge = styled.div`
+  background: #eee;
+  margin: 0 10px 0 0;
+  display: inline-block;
+  padding: 6px 8px;
+`;
+
+const SectionTitle = styled.h2`
+  width: fit-content;  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 16px;
+`;
+
+const FormWrapper = styled.div`
+  margin-bottom: 8px;
+`;
+
+const Label = styled.div`
+  margin-bottom: -4px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  @media (max-width: 520px) {
+    justify-content: space-between;
+  }
+`;
+
+const FriendsAlert = styled.p`
+  margin-top: 16px;
+`;
+
+export default withStyles(styles)(AddFriendsByEmail);
