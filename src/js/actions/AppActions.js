@@ -34,10 +34,6 @@ export default {
     Dispatcher.dispatch({ type: 'showSignInModal', payload: show });
   },
 
-  setIsShowingSignInModal (showing) {
-    Dispatcher.dispatch({ type: 'isShowingSignInModal', payload: showing });
-  },
-
   setSignInErrorMessage (showing) {
     Dispatcher.dispatch({ type: 'signInErrorMessage', payload: showing });
   },

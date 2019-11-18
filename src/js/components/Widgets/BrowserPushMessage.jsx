@@ -4,7 +4,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
-import AppStore from '../../stores/AppStore';
+import signInModalGlobalState from './signInModalGlobalState';
 import { renderLog } from '../../utils/logging';
 
 const styles = theme => ({
@@ -42,7 +42,7 @@ class BrowserPushMessage extends Component {
 
   // eslint-disable-next-line no-unused-vars
   shouldComponentUpdate (nextProps, nextState) {
-    if (AppStore.isShowingSignInModal()) {
+    if (signInModalGlobalState.getBool('isShowingSignInModal')) {
       renderLog('DO NOT RENDER BrowserPushMessage');
       return false;
     }

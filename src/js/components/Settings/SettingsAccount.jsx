@@ -23,6 +23,7 @@ import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 /* global $ */
 
@@ -81,7 +82,7 @@ export default class SettingsAccount extends Component {
     const oneDayExpires = 86400;
     let pathname = '';
 
-    if (!AppStore.isShowingSignInModal()) {
+    if (!signInModalGlobalState.getBool('isShowingSignInModal')) {
       VoterActions.voterRetrieve();
     }
 
