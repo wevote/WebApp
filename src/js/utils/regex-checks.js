@@ -4,7 +4,7 @@
 export function validateEmail (email) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(email);
-};
+}
 
 export function validatePhoneOrEmail (contactInfo) {
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -12,9 +12,5 @@ export function validatePhoneOrEmail (contactInfo) {
 
   if (emailRegex.test(contactInfo)) {
     return true;
-  } else if (phoneRegex.test(contactInfo)) {
-    return true;
-  } else {
-    return false;
-  }
-};
+  } else return phoneRegex.test(contactInfo);
+}

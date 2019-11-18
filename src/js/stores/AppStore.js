@@ -5,13 +5,15 @@ import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
+/**
+ * AppStore allows you to store state information, in situations where there is no API call needed
+ */
 class AppStore extends ReduceStore {
   getInitialState () {
     return {
       chosenSiteLogoUrl: '',
       getVoterGuideSettingsDashboardEditMode: '',
       getStartedMode: '',
-      headroomUnpinned: false,
       hideWeVoteLogo: false,
       hostname: '',
       scrolledDown: false,
@@ -20,6 +22,8 @@ class AppStore extends ReduceStore {
       showPaidAccountUpgradeModal: false,
       showSelectBallotModal: false,
       showSignInModal: false,
+      isShowingSignInModal: false,
+      signInErrorMessage: '',
       siteConfigurationHasBeenRetrieved: false,
       siteOwnerOrganizationWeVoteId: '',
       storeSignInStartFullUrl: false,
@@ -80,10 +84,6 @@ class AppStore extends ReduceStore {
     return this.getState().onChosenFullDomainUrl;
   }
 
-  headroomIsUnpinned () {
-    return this.getState().headroomUnpinned;
-  }
-
   showEditAddressButton () {
     return this.getState().showEditAddressButton;
   }
@@ -103,6 +103,14 @@ class AppStore extends ReduceStore {
 
   showSignInModal () {
     return this.getState().showSignInModal;
+  }
+
+  isShowingSignInModal () {
+    return this.getState().isShowingSignInModal;
+  }
+
+  getSignInErrorMessage () {
+    return this.getState().signInErrorMessage;
   }
 
   siteConfigurationHasBeenRetrieved () {
@@ -135,8 +143,6 @@ class AppStore extends ReduceStore {
         return { ...state, getStartedMode: action.payload };
       case 'getVoterGuideSettingsDashboardEditMode':
         return { ...state, getVoterGuideSettingsDashboardEditMode: action.payload };
-      case 'headroomUnpinned':
-        return { ...state, headroomUnpinned: action.payload };
       case 'scrolledDown':
         return { ...state, scrolledDown: action.payload };
       case 'showEditAddressButton':
@@ -149,6 +155,10 @@ class AppStore extends ReduceStore {
         return { ...state, showSelectBallotModal: action.payload };
       case 'showSignInModal':
         return { ...state, showSignInModal: action.payload };
+      case 'isShowingSignInModal':
+        return { ...state, isShowingSignInModal: action.payload };
+      case 'signInErrorMessage':
+        return { ...state, signInErrorMessage: action.payload };
       case 'siteConfigurationRetrieve':
         ({
           status: apiStatus,

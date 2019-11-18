@@ -41,14 +41,14 @@ class AddFriendsByEmail extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount () {
-    this.friendStoreListener.remove();
-    this.voterStoreListener.remove();
-  }
-  
   shouldComponentUpdate (nextState) {
     if (this.state.friendsToInvite !== nextState.friendsToInvite) return true;
     return false;
+  }
+
+  componentWillUnmount () {
+    this.friendStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onKeyDown = (event) => {
@@ -100,7 +100,7 @@ class AddFriendsByEmail extends Component {
   addFriendsByEmailStepsManager = (event) => {
     // This function is called when the next button is  submitted;
     // this funtion is called twice per cycle
-    console.log("Entering function addFriendsByEmailStepsManager");
+    console.log('Entering function addFriendsByEmailStepsManager');
     const errorMessage = '';
 
     if (this.state.onEnterEmailAddressesStep) {
@@ -124,21 +124,21 @@ class AddFriendsByEmail extends Component {
       // }
 
       if (emailAddressesError) {
-        console.log("addFriendsByEmailStepsManager, emailAddressesError");
+        console.log('addFriendsByEmailStepsManager, emailAddressesError');
         this.setState({
           loading: false,
           emailAddressesError: true,
           errorMessage: 'Error in sending invites.',
         });
       } else if (!this.hasValidEmail()) {
-        console.log("addFriendsByEmailStepsManager, NOT hasValidEmail");
+        console.log('addFriendsByEmailStepsManager, NOT hasValidEmail');
         this.setState({
           loading: false,
           onEnterEmailAddressesStep: false,
           onCollectEmailStep: true,
         });
       } else {
-        console.log("addFriendsByEmailStepsManager, calling friendInvitationByEmailSend");
+        console.log('addFriendsByEmailStepsManager, calling friendInvitationByEmailSend');
         this.friendInvitationByEmailSend(event);
       }
     } else if (this.state.onCollectEmailStep) {
@@ -194,9 +194,9 @@ class AddFriendsByEmail extends Component {
   friendInvitationByEmailSend (e) {
     e.preventDefault();
     // console.log("friendInvitationByEmailSend);
-    const { friendsToInvite,friendContactInfo, friendFirstName, friendLastName } = this.state;
+    const { friendsToInvite, friendContactInfo, friendFirstName, friendLastName } = this.state;
 
-    console.log("FriendsToInvite: ", friendsToInvite);
+    console.log('FriendsToInvite: ', friendsToInvite);
     const emailAddressArray = [];
     const firstNameArray = [];
     const lastNameArray = [];
@@ -215,9 +215,9 @@ class AddFriendsByEmail extends Component {
       lastNameArray.push(friendLastName);
     }
 
-    console.log("emailAddressArray: ", emailAddressArray);
-    console.log("firstNameArray: ", firstNameArray);
-    console.log("lastNameArray: ", lastNameArray);
+    console.log('emailAddressArray: ', emailAddressArray);
+    console.log('firstNameArray: ', firstNameArray);
+    console.log('lastNameArray: ', lastNameArray);
     const response = FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
       lastNameArray, '', this.state.add_friends_message,
       this.state.senderEmailAddress);
@@ -251,7 +251,7 @@ class AddFriendsByEmail extends Component {
 
       newArray.push(newFriendObject);
 
-      this.setState({ 
+      this.setState({
         friendsToInvite: [...newArray],
         friendContactInfo: '',
         friendFirstName: '',
@@ -263,12 +263,10 @@ class AddFriendsByEmail extends Component {
   deleteFriendFromList (friend) {
     const { friendsToInvite } = this.state;
 
-    const newArray = [...friendsToInvite].filter((item) => {
-      return item.email !== friend.email;
-    });
+    const newArray = [...friendsToInvite].filter(item => item.email !== friend.email);
 
-    console.log("New array: ", newArray);
-    console.log("Email: ", friend.email);
+    console.log('New array: ', newArray);
+    console.log('Email: ', friend.email);
 
     this.setState({ friendsToInvite: [...newArray]});
   }
@@ -341,7 +339,7 @@ class AddFriendsByEmail extends Component {
                     <div className="col col-6">
                       <Label>
                         First Name
-                        {' (optional)'}
+                         (optional)
                       </Label>
                       <TextField
                         variant="outlined"
@@ -358,7 +356,7 @@ class AddFriendsByEmail extends Component {
                     <div className="col col-6">
                       <Label>
                         Last Name
-                        {' (optional)'}
+                         (optional)
                       </Label>
                       <TextField
                         variant="outlined"
@@ -415,9 +413,7 @@ class AddFriendsByEmail extends Component {
                   </ButtonContainer>
                 </form>
               </div>
-              <FriendsAlert>
-
-              </FriendsAlert>
+              <FriendsAlert />
             </FormWrapper>
           </>
         ) : null

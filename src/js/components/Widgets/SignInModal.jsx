@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import AppActions from '../../actions/AppActions';
 import { renderLog } from '../../utils/logging';
 import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import SettingsAccount from '../Settings/SettingsAccount';
@@ -16,7 +17,7 @@ class SignInModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
     show: PropTypes.bool,
-    toggleFunction: PropTypes.func.isRequired,
+    closeFunction: PropTypes.func.isRequired,
   };
 
   constructor (props) {
@@ -29,17 +30,20 @@ class SignInModal extends Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // When this modal is opened, set a cookie with the current path (done in Application.js)
+    AppActions.setIsShowingSignInModal(true);
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    // console.log('SignInModal componentWillUnmount: AppActions.setIsShowingSignInModal(false)');
+    AppActions.setIsShowingSignInModal(false);
   }
 
   onVoterStoreChange () {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
     if (secretCodeVerified) {
-      this.props.toggleFunction();
+      this.props.closeFunction();
     } else {
       const voter = VoterStore.getVoter();
       this.setState({
@@ -68,7 +72,10 @@ class SignInModal extends Component {
       <Dialog
         classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(); }}
+        onClose={() => {
+          this.props.closeFunction();
+          AppActions.setIsShowingSignInModal(false);
+        }}
       >
         <DialogTitle>
           <Typography className="text-center">
@@ -77,7 +84,10 @@ class SignInModal extends Component {
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}
-            onClick={() => { this.props.toggleFunction(); }}
+            onClick={() => {
+              this.props.closeFunction();
+              AppActions.setIsShowingSignInModal(false);
+            }}
             id="profileCloseSignInModal"
           >
             <CloseIcon />
@@ -93,7 +103,7 @@ class SignInModal extends Component {
               ) : (
                 <div>
                   <SettingsAccount
-                    toggleSignInModal={this.props.toggleFunction}
+                    closeSignInModal={this.props.closeFunction}
                     inModal
                   />
                 </div>

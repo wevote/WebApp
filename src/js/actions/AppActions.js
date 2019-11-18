@@ -9,10 +9,6 @@ export default {
     Dispatcher.dispatch({ type: 'getVoterGuideSettingsDashboardEditMode', payload: getVoterGuideSettingsDashboardEditMode });
   },
 
-  setHeadroomUnpinned (unpinned) {
-    Dispatcher.dispatch({ type: 'headroomUnpinned', payload: unpinned });
-  },
-
   setScrolled (scrolledDown) {
     Dispatcher.dispatch({ type: 'scrolledDown', payload: scrolledDown });
   },
@@ -36,6 +32,14 @@ export default {
 
   setShowSignInModal (show) {
     Dispatcher.dispatch({ type: 'showSignInModal', payload: show });
+  },
+
+  setIsShowingSignInModal (showing) {
+    Dispatcher.dispatch({ type: 'isShowingSignInModal', payload: showing });
+  },
+
+  setSignInErrorMessage (showing) {
+    Dispatcher.dispatch({ type: 'signInErrorMessage', payload: showing });
   },
 
   siteConfigurationRetrieve (hostname, refresh_string = '') {

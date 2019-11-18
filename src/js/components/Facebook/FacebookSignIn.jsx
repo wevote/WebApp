@@ -8,7 +8,7 @@ import SplitIconButton from '../Widgets/SplitIconButton';
 
 class FacebookSignIn extends Component {
   static propTypes = {
-    toggleSignInModal: PropTypes.func,
+    closeSignInModal: PropTypes.func,
     buttonText: PropTypes.string,
   };
 
@@ -30,9 +30,9 @@ class FacebookSignIn extends Component {
     historyPush('/facebook_sign_in');
   };
 
-  toggleSignInModalLocal = () => {
-    if (this.props.toggleSignInModal) {
-      this.props.toggleSignInModal();
+  closeSignInModalLocal = () => {
+    if (this.props.closeSignInModal) {
+      this.props.closeSignInModal();
     }
   };
 

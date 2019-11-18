@@ -9,7 +9,7 @@ import FriendStore from '../../stores/FriendStore';
 import LoadingWheel from '../LoadingWheel';
 import { oAuthLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import{ validateEmail }from '../../utils/regex-checks';
+import { validateEmail } from '../../utils/regex-checks';
 import webAppConfig from '../../config';
 import { shortenText } from '../../utils/textFormat';
 import SplitIconButton from '../Widgets/SplitIconButton';
