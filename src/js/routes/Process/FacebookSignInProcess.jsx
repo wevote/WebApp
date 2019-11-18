@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
 import cookies from '../../utils/cookies';
+import AppStore from '../../stores/AppStore';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
 import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
@@ -22,6 +23,8 @@ export default class FacebookSignInProcess extends Component {
       facebookAuthResponse: {},
       mergingTwoAccounts: false,
       redirectInProgress: false,
+      retrievingSignIn: false,
+      deferredFacebookSignInRetrieve: false,
       saving: false,
       yesPleaseMergeAccounts: false,
     };
@@ -30,19 +33,35 @@ export default class FacebookSignInProcess extends Component {
   componentDidMount () {
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.appStoreListener = AppStore.addListener(this.onVoterStoreChange.bind(this));
     // console.log('FacebookSignInProcess, componentDidMount');
-    this.voterFacebookSignInRetrieve();
+    if (!signInModalGlobalState.getBool('waitingForFacebookApiCompletion')) {
+      signInModalGlobalState.set('waitingForFacebookApiCompletion', true);
+    } else {
+      this.voterFacebookSignInRetrieve();
+    }
   }
 
   componentWillUnmount () {
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
+    this.appStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    if (this.state.deferredFacebookSignInRetrieve) {
+      this.setState({
+        deferredFacebookSignInRetrieve: false,
+      });
+      this.voterFacebookSignInRetrieve();
+    }
   }
 
   onFacebookStoreChange () {
     // console.log('FacebookSignInProcess onFacebookStoreChange');
     this.setState({
       facebookAuthResponse: FacebookStore.getFacebookAuthResponse(),
+      retrievingSignIn: false,
       saving: false,
     });
   }
@@ -67,7 +86,8 @@ export default class FacebookSignInProcess extends Component {
         }
         if (signInStartFullUrl) {
           // console.log('FacebookSignInProcess Executing Redirect');
-          AppActions.unsetStoreSignInStartFullUrl();
+          // Removed the following line 11/18/19 to avoid: Uncaught Error: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.
+          // AppActions.unsetStoreSignInStartFullUrl();
           cookies.removeItem('sign_in_start_full_url', '/');
           cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
           redirectFullUrl = signInStartFullUrl;
@@ -83,6 +103,8 @@ export default class FacebookSignInProcess extends Component {
               const newRedirectPathname = isWebApp() ? redirectFullUrl.replace(window.location.origin, '') : '/ballot';
               oAuthLog('Redirecting to newRedirectPathname:', newRedirectPathname);
               this.setState({ redirectInProcess: true });
+              AppActions.setSignInErrorMessage('');
+              AppActions.setIsShowingSignInModal(false);
               historyPush({
                 pathname: newRedirectPathname,
                 state: {
@@ -155,7 +177,10 @@ export default class FacebookSignInProcess extends Component {
     oAuthLog('FacebookSignInProcess voterFacebookSignInRetrieve');
     if (!this.state.saving) {
       FacebookActions.voterFacebookSignInRetrieve();
-      this.setState({ saving: true });
+      this.setState({
+        saving: true,
+        retrievingSignIn: true,
+      });
     }
   }
 
@@ -167,13 +192,20 @@ export default class FacebookSignInProcess extends Component {
       return null;
     }
 
-    if (this.state.saving ||
+    if (signInModalGlobalState.getBool('waitingForFacebookApiCompletion')) {
+      // console.log('waiting for waitingForFacebookApiCompletion in FacebookSignInProcess');
+      return LoadingWheel;
+    }
+
+    if (this.state.saving || this.state.retrievingSignIn ||
       !facebookAuthResponse ||
       !facebookAuthResponse.facebook_retrieve_attempted) {
       // console.log('facebookAuthResponse:', facebookAuthResponse);
       return (
         <div className="facebook_sign_in_root">
-          <div className="page-content-container" style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}>
+          <div className="page-content-container"
+               style={{ paddingTop: `${cordovaScrollablePaneTopPadding()}` }}
+          >
             <div style={{ textAlign: 'center' }}>
               Waiting for response from Facebook...
             </div>
@@ -189,9 +221,11 @@ export default class FacebookSignInProcess extends Component {
 
     if (facebookAuthResponse.facebook_sign_in_failed) {
       this.setState({ redirectInProcess: true });
-      oAuthLog('facebookAuthResponse.facebook_sign_in_failed redirecting to: /settings/account');
       if (isCordova()) {
-        signInModalGlobalState.set('facebookAuthMessage', 'Facebook sign in failed. Please try again.');
+        AppActions.setSignInErrorMessage('Facebook sign in failed. Please try again.');
+        oAuthLog('facebookAuthResponse.facebook_sign_in_failed , setting "Facebook sign in failed. Please try again." message.');
+      } else {
+        oAuthLog('facebookAuthResponse.facebook_sign_in_failed redirecting to: /settings/account');
       }
       historyPush({
         pathname: '/settings/account',
@@ -201,10 +235,6 @@ export default class FacebookSignInProcess extends Component {
         },
       });
       return LoadingWheel;
-    }
-
-    if (isCordova()) {
-      signInModalGlobalState.remove('facebookAuthMessage');
     }
 
     if (yesPleaseMergeAccounts) {

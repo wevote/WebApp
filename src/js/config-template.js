@@ -9,6 +9,8 @@ module.exports = {
   WE_VOTE_SERVER_API_ROOT_URL: 'https://api.wevoteusa.org/apis/v1/',
   WE_VOTE_SERVER_API_CDN_ROOT_URL: 'https://cdn.wevoteusa.org/apis/v1/',
 
+  ENABLE_NEXT_RELEASE_FEATURES: true,
+
   DEBUG_MODE: false,
   SHOW_TEST_OPTIONS: false,    // On the DeviceDialog and elsewhere
 

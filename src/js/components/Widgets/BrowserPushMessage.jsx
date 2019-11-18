@@ -4,6 +4,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
+import AppStore from '../../stores/AppStore';
 import { renderLog } from '../../utils/logging';
 
 const styles = theme => ({
@@ -37,6 +38,15 @@ class BrowserPushMessage extends Component {
         type: nextProps.incomingProps.location.state.message_type,
       });
     }
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  shouldComponentUpdate (nextProps, nextState) {
+    if (AppStore.isShowingSignInModal()) {
+      renderLog('DO NOT RENDER BrowserPushMessage');
+      return false;
+    }
+    return true;
   }
 
   handleClose = () => this.setState({ open: false });

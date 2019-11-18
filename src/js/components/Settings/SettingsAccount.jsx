@@ -16,7 +16,6 @@ import FacebookSignIn from '../Facebook/FacebookSignIn';
 import LoadingWheel from '../LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
-import SignInModalGlobalState from '../Widgets/signInModalGlobalState';
 import TwitterActions from '../../actions/TwitterActions';
 import TwitterSignIn from '../Twitter/TwitterSignIn';
 import VoterActions from '../../actions/VoterActions';
@@ -34,7 +33,7 @@ export default class SettingsAccount extends Component {
     inModal: PropTypes.bool,
     pleaseSignInTitle: PropTypes.string,
     pleaseSignInSubTitle: PropTypes.string,
-    toggleSignInModal: PropTypes.func,
+    closeSignInModal: PropTypes.func,
   };
 
   constructor (props) {
@@ -82,7 +81,9 @@ export default class SettingsAccount extends Component {
     const oneDayExpires = 86400;
     let pathname = '';
 
-    VoterActions.voterRetrieve();
+    if (!AppStore.isShowingSignInModal()) {
+      VoterActions.voterRetrieve();
+    }
 
     const getStartedMode = AppStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
@@ -171,10 +172,10 @@ export default class SettingsAccount extends Component {
     });
   }
 
-  localToggleSignInModal = () => {
-    // console.log('SettingsAccount localToggleSignInModal');
-    if (this.props.toggleSignInModal) {
-      this.props.toggleSignInModal();
+  localCloseSignInModal = () => {
+    // console.log('SettingsAccount localCloseSignInModal');
+    if (this.props.closeSignInModal) {
+      this.props.closeSignInModal();
     }
   };
 
@@ -306,7 +307,8 @@ export default class SettingsAccount extends Component {
       }
     }
 
-    const fbAuthMsg = SignInModalGlobalState.get('facebookAuthMessage');
+    const fbAuthMsg = AppStore.getSignInErrorMessage();
+    // console.log('In settingsAccount, facebookAuthMessage: ' + fbAuthMsg);
 
     return (
       <div className="">
@@ -339,7 +341,7 @@ export default class SettingsAccount extends Component {
                       <TwitterSignIn
                         buttonText="Sign in with Twitter"
                         inModal={inModal}
-                        toggleSignInModal={this.localToggleSignInModal}
+                        closeSignInModal={this.localCloseSignInModal}
                       />
                     </span>
                   )
@@ -348,8 +350,8 @@ export default class SettingsAccount extends Component {
                 <div className="u-stack--md">
                   { !hideFacebookSignInButton && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
                     <span>
-                      <FacebookSignIn toggleSignInModal={this.localToggleSignInModal} buttonText="Sign in with Facebook" />
-                      { fbAuthMsg && fbAuthMsg.length ? <FacebookErrorContainer>{SignInModalGlobalState.get('facebookAuthMessage')}</FacebookErrorContainer> : '' }
+                      <FacebookSignIn closeSignInModal={this.localCloseSignInModal} buttonText="Sign in with Facebook" />
+                      { fbAuthMsg && fbAuthMsg.length ? <FacebookErrorContainer>{fbAuthMsg}</FacebookErrorContainer> : '' }
                     </span>
                   )
                   }

@@ -259,11 +259,13 @@ class VoterStore extends ReduceStore {
   }
 
   reduce (state, action) {
-    // Exit if we don't have a response. "success" is not required though -- we should deal with error conditions below.
-    if (!action.res && !action.payload) {
-      console.log('VoterStore, no action.res or action.payload received. action: ', action);
-      return state;
-    }
+    // 11/14/19, removed by Steve, not sure what this was trying to catch, but this is a bit of a red herring, since calls to the FaceBook api will not have these fields
+    // // Exit if we don't have a response. "success" is not required though -- we should deal with error conditions below.
+    // if (!action.res && !action.payload) {
+    //   // Note that
+    //   console.log('VoterStore, no action.res or action.payload received. (Check to see that this is even meant for VoterStore). action: ', action);
+    //   return state;
+    // }
 
     let facebookPhotoRetrieveLoopCount;
     let address;

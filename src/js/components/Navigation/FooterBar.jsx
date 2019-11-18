@@ -8,11 +8,14 @@ import BallotIcon from '@material-ui/icons/Ballot';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import PeopleIcon from '@material-ui/icons/People';
 import styled from 'styled-components';
+import AppStore from '../../stores/AppStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import { historyPush } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
+
+const webAppConfig = require('../../config');
 
 
 class FooterBar extends React.Component {
@@ -33,6 +36,15 @@ class FooterBar extends React.Component {
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
     });
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  shouldComponentUpdate (nextProps, nextState) {
+    if (AppStore.isShowingSignInModal()) {
+      renderLog('DO NOT RENDER FooterBar');
+      return false;
+    }
+    return true;
   }
 
   componentWillUnmount () {
@@ -79,7 +91,7 @@ class FooterBar extends React.Component {
       display: 'inline-block',
     };
 
-    const enableFriends = true;   // DALE: FRIENDS TEMPORARILY DISABLED
+    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;   // DALE: FRIENDS TEMPORARILY DISABLED
 
     return (
       <FooterBarWrapper>

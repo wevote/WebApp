@@ -16,8 +16,8 @@ import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import thumbsUpColorIcon from '../../../img/global/icons/thumbs-up-color-icon.svg';
-import thumbsDownColorIcon from '../../../img/global/icons/thumbs-down-color-icon.svg';
+import thumbsUpColorIcon from '../../../img/global/icons/thumbs-up-color-icon.svg';      // 11/17/19, I don't think this is going to work in Cordova without the cordovaDot()
+import thumbsDownColorIcon from '../../../img/global/icons/thumbs-down-color-icon.svg';  // 11/17/19, I don't think this is going to work in Cordova without the cordovaDot()
 // import { findDOMNode } from 'react-dom';
 import StickyPopover from '../Ballot/StickyPopover';
 

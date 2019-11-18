@@ -3,6 +3,7 @@ import Dispatcher from '../dispatcher/Dispatcher';
 import FacebookActions from '../actions/FacebookActions';
 import FacebookConstants from '../constants/FacebookConstants';
 import FriendActions from '../actions/FriendActions';
+import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import VoterActions from '../actions/VoterActions';
 
 class FacebookStore extends ReduceStore {
@@ -111,10 +112,12 @@ class FacebookStore extends ReduceStore {
 
     switch (action.type) {
       case FacebookConstants.FACEBOOK_LOGGED_IN:
+        signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
 
         // console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
-        FacebookActions.voterFacebookSignInAuth(action.data.authResponse);
-        FacebookActions.getFacebookData();
+        FacebookActions.saveFacebookSignInAuth(action.data.authResponse);
+        // FacebookActions.getFacebookData();  // 11/14/19, Removed
+        FacebookActions.getFacebookData();     // Includes a save
         return {
           ...state,
           authData: action.data,
@@ -124,7 +127,7 @@ class FacebookStore extends ReduceStore {
 
         // Cache the data in the API server
         // console.log("FACEBOOK_RECEIVED_DATA action.data:", action.data);
-        FacebookActions.voterFacebookSignInData(action.data);
+        FacebookActions.voterFacebookSignInData(action.data);  // Steve this calls a save to the server
         FacebookActions.getFacebookProfilePicture();
         return {
           ...state,
@@ -175,13 +178,9 @@ class FacebookStore extends ReduceStore {
         };
 
       case 'voterFacebookSignInRetrieve':
-
         // console.log("FacebookStore voterFacebookSignInRetrieve, facebook_sign_in_verified: ", action.res.facebook_sign_in_verified);
         if (action.res.facebook_sign_in_verified) {
           VoterActions.voterRetrieve();
-          /* Sept 6, 2017, has been replaced by facebook Game API friends list
-          FacebookActions.facebookFriendsAction();
-          */
         }
 
         return {

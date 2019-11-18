@@ -54,7 +54,8 @@ class VoterEmailAddressEntry extends Component {
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    VoterActions.voterRetrieve();
+    // Steve 11/14/19: commenting out the next line: it is expensive and causes trouble in SignInModal, and is almost certainly not needed
+    // VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
   }
 

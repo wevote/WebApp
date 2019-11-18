@@ -7,7 +7,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { oAuthLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
-import{ validateEmail }from '../../utils/regex-checks';
+import { validateEmail } from '../../utils/regex-checks';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import SplitIconButton from '../Widgets/SplitIconButton';

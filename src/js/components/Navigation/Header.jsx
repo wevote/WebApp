@@ -9,6 +9,7 @@ import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
 import HeaderBar from './HeaderBar';
 import { stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
+import AppStore from '../../stores/AppStore';
 
 
 export default class Header extends Component {
@@ -20,14 +21,14 @@ export default class Header extends Component {
     weVoteBrandingOff: PropTypes.bool,
   };
 
-  // componentDidUpdate () {
-  //   console.log("React Header ---------------   componentDidMount ()");
-  //   let heightA = $("#app-header").outerHeight();
-  //   let heightHC = $("#header-container").outerHeight();
-  //   let height2N = $("#secondary-nav-bar").outerHeight();
-  //   let heightW = $("#headroom-wrapper").outerHeight();
-  //   console.log("header rectangle height: " + heightA + ", " + heightHC + ", " + height2N + ", " + heightW);
-  // }
+  // eslint-disable-next-line no-unused-vars
+  shouldComponentUpdate (nextProps, nextState) {
+    if (AppStore.isShowingSignInModal()) {
+      renderLog('DO NOT RENDER Header');
+      return false;
+    }
+    return true;
+  }
 
   render () {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
