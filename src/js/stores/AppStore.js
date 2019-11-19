@@ -22,7 +22,6 @@ class AppStore extends ReduceStore {
       showPaidAccountUpgradeModal: false,
       showSelectBallotModal: false,
       showSignInModal: false,
-      isShowingSignInModal: false,
       signInErrorMessage: '',
       siteConfigurationHasBeenRetrieved: false,
       siteOwnerOrganizationWeVoteId: '',
@@ -105,10 +104,6 @@ class AppStore extends ReduceStore {
     return this.getState().showSignInModal;
   }
 
-  isShowingSignInModal () {
-    return this.getState().isShowingSignInModal;
-  }
-
   getSignInErrorMessage () {
     return this.getState().signInErrorMessage;
   }
@@ -155,8 +150,6 @@ class AppStore extends ReduceStore {
         return { ...state, showSelectBallotModal: action.payload };
       case 'showSignInModal':
         return { ...state, showSignInModal: action.payload };
-      case 'isShowingSignInModal':
-        return { ...state, isShowingSignInModal: action.payload };
       case 'signInErrorMessage':
         return { ...state, signInErrorMessage: action.payload };
       case 'siteConfigurationRetrieve':

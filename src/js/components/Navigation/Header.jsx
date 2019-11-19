@@ -9,7 +9,7 @@ import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
 import HeaderBar from './HeaderBar';
 import { stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
-import AppStore from '../../stores/AppStore';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 
 export default class Header extends Component {
@@ -23,7 +23,7 @@ export default class Header extends Component {
 
   // eslint-disable-next-line no-unused-vars
   shouldComponentUpdate (nextProps, nextState) {
-    if (AppStore.isShowingSignInModal()) {
+    if (!signInModalGlobalState.getBool('isShowingSignInModal')) {
       renderLog('DO NOT RENDER Header');
       return false;
     }

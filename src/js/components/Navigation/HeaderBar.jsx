@@ -30,6 +30,7 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 const webAppConfig = require('../../config');
 
@@ -102,7 +103,7 @@ class HeaderBar extends Component {
   // 11/17/19, this became unworkable with the additon of SignInModal.  It is a realtively light weight component, and will have to be re-rendered each time.
   // shouldComponentUpdate (nextProps, nextState) {
   //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-  //   if (AppStore.isShowingSignInModal()) {
+  //      if (signInModalGlobalState.getBool('isShowingSignInModal')) {
   //     return true;
   //   }
   //   if (this.state.renderAfterSignInModal === true) {
@@ -264,13 +265,13 @@ class HeaderBar extends Component {
   closeNewVoterGuideModal () {
     // console.log('HeaderBar closeNewVoterGuideModal');
     AppActions.setShowNewVoterGuideModal(false);
-    AppActions.setIsShowingSignInModal(false);
+    signInModalGlobalState.set('isShowingSignInModal', false);
     HeaderBar.goToGetStarted();
   }
 
   closeSignInModal () {
     AppActions.setShowSignInModal(false);
-    AppActions.setIsShowingSignInModal(false);
+    signInModalGlobalState.set('isShowingSignInModal', false);
     HeaderBar.goToGetStarted();
   }
 

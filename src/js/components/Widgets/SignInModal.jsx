@@ -7,11 +7,11 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import AppActions from '../../actions/AppActions';
 import { renderLog } from '../../utils/logging';
 import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
+import signInModalGlobalState from './signInModalGlobalState';
 
 class SignInModal extends Component {
   static propTypes = {
@@ -30,13 +30,13 @@ class SignInModal extends Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // When this modal is opened, set a cookie with the current path (done in Application.js)
-    AppActions.setIsShowingSignInModal(true);
+    signInModalGlobalState.set('isShowingSignInModal', true);
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
-    // console.log('SignInModal componentWillUnmount: AppActions.setIsShowingSignInModal(false)');
-    AppActions.setIsShowingSignInModal(false);
+    // console.log('SignInModal componentWillUnmount:  signInModalGlobalState.set(isShowingSignInModal, false))');
+    signInModalGlobalState.set('isShowingSignInModal', false);
   }
 
   onVoterStoreChange () {
@@ -74,7 +74,7 @@ class SignInModal extends Component {
         open={this.props.show}
         onClose={() => {
           this.props.closeFunction();
-          AppActions.setIsShowingSignInModal(false);
+          signInModalGlobalState.set('isShowingSignInModal', false);
         }}
       >
         <DialogTitle>
@@ -86,7 +86,7 @@ class SignInModal extends Component {
             classes={{ root: classes.closeButton }}
             onClick={() => {
               this.props.closeFunction();
-              AppActions.setIsShowingSignInModal(false);
+              signInModalGlobalState.set('isShowingSignInModal', false);
             }}
             id="profileCloseSignInModal"
           >

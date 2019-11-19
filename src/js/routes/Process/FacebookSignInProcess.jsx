@@ -104,7 +104,7 @@ export default class FacebookSignInProcess extends Component {
               oAuthLog('Redirecting to newRedirectPathname:', newRedirectPathname);
               this.setState({ redirectInProcess: true });
               AppActions.setSignInErrorMessage('');
-              AppActions.setIsShowingSignInModal(false);
+              signInModalGlobalState.set('isShowingSignInModal', false);
               historyPush({
                 pathname: newRedirectPathname,
                 state: {

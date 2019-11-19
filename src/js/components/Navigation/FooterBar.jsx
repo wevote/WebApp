@@ -8,12 +8,12 @@ import BallotIcon from '@material-ui/icons/Ballot';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import PeopleIcon from '@material-ui/icons/People';
 import styled from 'styled-components';
-import AppStore from '../../stores/AppStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import { historyPush } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 const webAppConfig = require('../../config');
 
@@ -40,7 +40,7 @@ class FooterBar extends React.Component {
 
   // eslint-disable-next-line no-unused-vars
   shouldComponentUpdate (nextProps, nextState) {
-    if (AppStore.isShowingSignInModal()) {
+    if (!signInModalGlobalState.getBool('isShowingSignInModal')) {
       renderLog('DO NOT RENDER FooterBar');
       return false;
     }
