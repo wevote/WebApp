@@ -16,8 +16,8 @@ import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import thumbsUpColorIcon from '../../../img/global/icons/thumbs-up-color-icon.svg';      // 11/17/19, I don't think this is going to work in Cordova without the cordovaDot()
-import thumbsDownColorIcon from '../../../img/global/icons/thumbs-down-color-icon.svg';  // 11/17/19, I don't think this is going to work in Cordova without the cordovaDot()
+import thumbsUpColorIcon from '../../../img/global/svg-icons/thumbs-up-color-icon.svg';      // 11/17/19, I don't think this is going to work in Cordova without the cordovaDot()
+import thumbsDownColorIcon from '../../../img/global/svg-icons/thumbs-down-color-icon.svg';  // 11/17/19, I don't think this is going to work in Cordova without the cordovaDot()
 // import { findDOMNode } from 'react-dom';
 import StickyPopover from '../Ballot/StickyPopover';
 
@@ -25,6 +25,10 @@ import StickyPopover from '../Ballot/StickyPopover';
 /* eslint react/no-find-dom-node: 1 */
 /* eslint array-callback-return: 1 */
 class BallotItemSupportOpposeCountDisplay extends Component {
+  static closePositionsPopover () {
+    document.body.click();
+  }
+
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
@@ -32,10 +36,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
   };
-
-  static closePositionsPopover () {
-    document.body.click();
-  }
 
   constructor (props) {
     super(props);
@@ -351,7 +351,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     //   const organizationNameIssueSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
     //   const organizationNameIssueSupportListDisplay = organizationNameIssueSupportList.map(organizationName => (
     //     <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-    //       <img src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')} alt="Thumbs Up" width="20" height="20" />
+    //       <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')} alt="Thumbs Up" width="20" height="20" />
     //       <span>&nbsp;</span>
     //       <span>
     //         {organizationName}
@@ -363,7 +363,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     //   const organizationNameIssueOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
     //   const organizationNameIssueOpposeListDisplay = organizationNameIssueOpposeList.map(organizationName => (
     //     <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-    //       <img src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')} alt="Thumbs Down" width="20" height="20" />
+    //       <img src={cordovaDot('/img/global/svg-icons/thumbs-down-color-icon.svg')} alt="Thumbs Down" width="20" height="20" />
     //       <span>&nbsp;</span>
     //       <span>
     //         {organizationName}

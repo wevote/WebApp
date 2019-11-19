@@ -9,6 +9,10 @@ import ValueIconAndText from './ValueIconAndText';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByBallotItemDisplayList extends Component {
+  static closePopover () {
+    document.body.click();
+  }
+
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     children: PropTypes.object,
@@ -16,10 +20,6 @@ class IssuesByBallotItemDisplayList extends Component {
     handleEnterCandidateCard: PropTypes.func,
     disableMoreWrapper: PropTypes.bool,
   };
-
-  static closePopover () {
-    document.body.click();
-  }
 
   constructor (props) {
     super(props);

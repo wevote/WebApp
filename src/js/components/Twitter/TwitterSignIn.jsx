@@ -14,12 +14,6 @@ import SplitIconButton from '../Widgets/SplitIconButton';
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 
 class TwitterSignIn extends Component {
-  static propTypes = {
-    buttonText: PropTypes.string,
-    inModal: PropTypes.bool,
-    closeSignInModal: PropTypes.func,
-  };
-
   // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
   static handleTwitterOpenURL (url) {
     oAuthLog(`---------------xxxxxx-------- Application handleTwitterOpenUrl: ${url}`);
@@ -81,6 +75,12 @@ class TwitterSignIn extends Component {
       console.log(`ERROR: window.handleOpenURL received invalid url: ${url}`);
     }
   }
+
+  static propTypes = {
+    buttonText: PropTypes.string,
+    inModal: PropTypes.bool,
+    closeSignInModal: PropTypes.func,
+  };
 
   constructor (props) {
     super(props);

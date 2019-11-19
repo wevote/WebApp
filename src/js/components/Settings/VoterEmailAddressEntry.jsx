@@ -176,6 +176,7 @@ class VoterEmailAddressEntry extends Component {
   };
 
   reSendSignInCodeEmail = (voterEmailAddress) => {
+    // console.log('VoterEmailAddressEntry voterEmailAddress:', voterEmailAddress);
     if (voterEmailAddress) {
       VoterActions.sendSignInCodeEmail(voterEmailAddress);
       this.setState({
@@ -183,6 +184,7 @@ class VoterEmailAddressEntry extends Component {
           email_address_already_owned_by_other_voter: false,
         },
         loading: true,
+        voterEmailAddress,
       });
     }
   };
@@ -256,6 +258,7 @@ class VoterEmailAddressEntry extends Component {
   render () {
     renderLog('VoterEmailAddressEntry');  // Set LOG_RENDER_EVENTS true to log all renders
     if (this.state.loading) {
+      // console.log('VoterEmailAddressEntry loading: ', this.state.loading);
       return LoadingWheel;
     }
 
@@ -266,6 +269,7 @@ class VoterEmailAddressEntry extends Component {
     } = this.state;
 
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
+    // console.log('showVerifyModal:', showVerifyModal, ', signInLinkOrCodeSent:', signInLinkOrCodeSent);
     const emailAddressStatusHtml = (
       <span>
         { emailAddressStatus.email_address_not_valid ||
