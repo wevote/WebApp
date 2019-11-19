@@ -10,6 +10,7 @@ import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
+import FirstAndLastNameRequiredAlert from '../components/Widgets/FirstAndLastNameRequiredAlert';
 import FriendsCurrentPreview from '../components/Friends/FriendsCurrentPreview';
 import FriendInvitationsSentByMePreview from '../components/Friends/FriendInvitationsSentByMePreview';
 import FriendInvitationsSentToMePreview from '../components/Friends/FriendInvitationsSentToMePreview';
@@ -61,24 +62,22 @@ class Friends extends Component {
           <div className="col-sm-12 col-md-8">
             <FriendInvitationsSentToMePreview />
             <SuggestedFriendsPreview />
+            {voter.is_signed_in && (
+              <FirstAndLastNameRequiredAlert />
+            )}
             <section className="card">
               <div className="card-main">
                 <SectionTitle>
-                  Add Friends
+                  Invite Friends
                 </SectionTitle>
                 <Icon>
                   <Tooltip
                     classes={{ root: classes.tooltip }}
-                    title="These friends will see what you support, oppose, and which opinions you follow.
-                    We will never sell your email."
+                    title="These friends will see what you support, oppose, and which opinions you follow."
                   >
                     <Info />
                   </Tooltip>
                 </Icon>
-
-                <SectionSubtitle>
-                  Invite Friends by email or phone
-                </SectionSubtitle>
                 <AddFriendsByEmail />
               </div>
             </section>
@@ -116,17 +115,11 @@ const SectionTitle = styled.h2`
 
 const Icon = styled.span`
   position: absolute;
-  left: 136px;
+  left: 158px;
   top: 16px;
   * {
     color: #777;
   }
-`;
-
-const SectionSubtitle = styled.div`
-  font-size: 14px;
-  color: #aaa;
-  margin-bottom: 16px;
 `;
 
 export default withStyles(styles)(Friends);

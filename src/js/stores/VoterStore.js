@@ -129,6 +129,22 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.last_name || '';
   }
 
+  getFirstPlusLastName () {
+    const storedFirstName = this.getFirstName();
+    const storedLastName = this.getLastName();
+    let displayName = '';
+    if (storedFirstName && String(storedFirstName) !== '') {
+      displayName = storedFirstName;
+      if (storedLastName && String(storedLastName) !== '') {
+        displayName += ' ';
+      }
+    }
+    if (storedLastName && String(storedLastName) !== '') {
+      displayName += storedLastName;
+    }
+    return displayName;
+  }
+
   getFullName () {
     return this.getState().voter.full_name || '';
   }
@@ -685,19 +701,25 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterUpdate':
-        return {
-          ...state,
-          voter: {
-            ...state.voter,
-            // With this we are only updating the values we change with a voterUpdate call.
-            first_name: action.res.first_name || state.voter.first_name,
-            last_name: action.res.last_name || state.voter.last_name,
-            facebook_email: action.res.email || state.voter.email,
-            interface_status_flags: action.res.interface_status_flags || state.voter.interface_status_flags,
-            notification_settings_flags: action.res.notification_settings_flags || state.voter.notification_settings_flags,
-            voter_donation_history_list: action.res.voter_donation_history_list || state.voter.voter_donation_history_list,
-          },
-        };
+        if (action.res.success) {
+          return {
+            ...state,
+            voter: {
+              ...state.voter,
+              // With this we are only updating the values we change with a voterUpdate call.
+              first_name: action.res.first_name,
+              last_name: action.res.last_name,
+              facebook_email: action.res.email || state.voter.email,
+              interface_status_flags: action.res.interface_status_flags || state.voter.interface_status_flags,
+              notification_settings_flags: action.res.notification_settings_flags || state.voter.notification_settings_flags,
+              voter_donation_history_list: action.res.voter_donation_history_list || state.voter.voter_donation_history_list,
+            },
+          };
+        } else {
+          return {
+            ...state,
+          };
+        }
 
       case 'voterVerifySecretCode':
         // console.log("VoterStore, voterVerifySecretCode, action.res:", action.res);

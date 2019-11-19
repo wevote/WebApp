@@ -10,6 +10,10 @@ import StickyPopover from '../Ballot/StickyPopover';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByOrganizationDisplayList extends Component {
+  static closePopover () {
+    document.body.click();
+  }
+
   static propTypes = {
     organizationWeVoteId: PropTypes.string.isRequired,
     children: PropTypes.object,
@@ -17,10 +21,6 @@ class IssuesByOrganizationDisplayList extends Component {
     handleEnterCandidateCard: PropTypes.func,
     fullWidth: PropTypes.bool,
   };
-
-  static closePopover () {
-    document.body.click();
-  }
 
   constructor (props) {
     super(props);

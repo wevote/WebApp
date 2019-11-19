@@ -60,6 +60,7 @@ class SettingsVerifySecretCode extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { voterEmailAddress, voterPhoneNumber } = this.props;
     // const newVoterPhoneNumber = voterPhoneNumber.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    // console.log('voterEmailAddress:', voterEmailAddress);
     this.setState({
       voterEmailAddress,
       voterPhoneNumber,
@@ -92,6 +93,7 @@ class SettingsVerifySecretCode extends Component {
   }
 
   componentWillUnmount () {
+    // console.log('SettingsVerifySecretCode componentWillUnmount');
     this.timer = null;
     this.voterStoreListener.remove();
   }
