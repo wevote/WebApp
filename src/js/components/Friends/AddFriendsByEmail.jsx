@@ -110,7 +110,7 @@ class AddFriendsByEmail extends Component {
     // This function is called when the next button is  submitted;
     // this function is called twice per cycle
     // console.log('Entering function addFriendsByEmailStepsManager');
-    const { onCollectEmailStep, onEnterEmailAddressesStep, voterIsSignIn } = this.state;
+    const { onCollectEmailStep, onEnterEmailAddressesStep, voterIsSignedIn } = this.state;
 
     if (onEnterEmailAddressesStep) {
       // Validate friends' email addresses
@@ -153,8 +153,8 @@ class AddFriendsByEmail extends Component {
       //   console.log('addFriendsByEmailStepsManager, calling friendInvitationByEmailSend');
       //   this.friendInvitationByEmailSend(event);
       // }
-      if (voterIsSignIn) {
-        console.log('addFriendsByEmailStepsManager, calling friendInvitationByEmailSend');
+      if (voterIsSignedIn) {
+        // console.log('addFriendsByEmailStepsManager, calling friendInvitationByEmailSend');
         this.friendInvitationByEmailSend(event);
       }
     }
@@ -209,14 +209,15 @@ class AddFriendsByEmail extends Component {
       lastNameArray.push(friendLastName);
     }
 
-    console.log('emailAddressArray: ', emailAddressArray);
-    console.log('firstNameArray: ', firstNameArray);
-    console.log('lastNameArray: ', lastNameArray);
-    const response = FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
+    // console.log('emailAddressArray: ', emailAddressArray);
+    // console.log('firstNameArray: ', firstNameArray);
+    // console.log('lastNameArray: ', lastNameArray);
+    // const response =
+    FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
       lastNameArray, '', this.state.add_friends_message,
       this.state.senderEmailAddress);
 
-    console.log(response);
+    // console.log(response);
     // After calling the API, reset the form
     this.setState({
       loading: true,
