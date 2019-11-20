@@ -23,7 +23,7 @@ export default class Header extends Component {
 
   // eslint-disable-next-line no-unused-vars
   shouldComponentUpdate (nextProps, nextState) {
-    if (!signInModalGlobalState.getBool('isShowingSignInModal')) {
+    if (signInModalGlobalState.getBool('isShowingSignInModal')) {
       renderLog('DO NOT RENDER Header');
       return false;
     }
