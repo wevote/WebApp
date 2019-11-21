@@ -39,6 +39,11 @@ class FriendStore extends ReduceStore {
     return friendInvitationsProcessed || {};
   }
 
+  friendInvitationsWaitingForVerification () {
+    const { friendInvitationsWaitingForVerification } = this.getState();
+    return friendInvitationsWaitingForVerification || [];
+  }
+
   getErrorMessageToShowVoter () {
     const { errorMessageToShowVoter } = this.getState();
     return errorMessageToShowVoter;
@@ -143,6 +148,7 @@ class FriendStore extends ReduceStore {
           // Reset the invitation form
         }
         FriendActions.friendInvitationsSentByMe();
+        FriendActions.friendInvitationsWaitingForVerification();
         return {
           ...state,
         };
@@ -209,41 +215,48 @@ class FriendStore extends ReduceStore {
         };
 
       case 'friendList':
-        if (action.res.kind_of_list === 'CURRENT_FRIENDS') {
-          // console.log("FriendStore incoming data CURRENT_FRIENDS, action.res:", action.res);
-          return {
-            ...state,
-            currentFriends: action.res.friend_list,
-          };
-        } else if (action.res.kind_of_list === 'FRIEND_INVITATIONS_SENT_BY_ME') {
-          // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_BY_ME, action.res:", action.res);
-          return {
-            ...state,
-            friendInvitationsSentByMe: action.res.friend_list,
-          };
-        } else if (action.res.kind_of_list === 'FRIEND_INVITATIONS_SENT_TO_ME') {
-          // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_TO_ME, action.res:", action.res);
-          return {
-            ...state,
-            friendInvitationsSentToMe: action.res.friend_list,
-          };
-        } else if (action.res.kind_of_list === 'FRIEND_INVITATIONS_PROCESSED') {
-          // console.log("FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:", action.res);
-          return {
-            ...state,
-            friendInvitationsProcessed: action.res.friend_list,
-          };
-        } else if (action.res.kind_of_list === 'SUGGESTED_FRIEND_LIST') {
-          // console.log("FriendStore incoming data suggestedFriendList, action.res:", action.res);
-          return {
-            ...state,
-            suggestedFriendList: action.res.friend_list,
-          };
+        switch (action.res.kind_of_list) {
+          case 'CURRENT_FRIENDS':
+            // console.log("FriendStore incoming data CURRENT_FRIENDS, action.res:", action.res);
+            return {
+              ...state,
+              currentFriends: action.res.friend_list,
+            };
+          case 'FRIEND_INVITATIONS_SENT_BY_ME':
+            // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_BY_ME, action.res:", action.res);
+            return {
+              ...state,
+              friendInvitationsSentByMe: action.res.friend_list,
+            };
+          case 'FRIEND_INVITATIONS_SENT_TO_ME':
+            // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_TO_ME, action.res:", action.res);
+            return {
+              ...state,
+              friendInvitationsSentToMe: action.res.friend_list,
+            };
+          case 'FRIEND_INVITATIONS_PROCESSED':
+            // console.log("FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:", action.res);
+            return {
+              ...state,
+              friendInvitationsProcessed: action.res.friend_list,
+            };
+          case 'FRIEND_INVITATIONS_WAITING_FOR_VERIFICATION':
+            // console.log("FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:", action.res);
+            return {
+              ...state,
+              friendInvitationsWaitingForVerification: action.res.friend_list,
+            };
+          case 'SUGGESTED_FRIEND_LIST':
+            // console.log("FriendStore incoming data suggestedFriendList, action.res:", action.res);
+            return {
+              ...state,
+              suggestedFriendList: action.res.friend_list,
+            };
+          default:
+            return {
+              ...state,
+            };
         }
-
-        return {
-          ...state,
-        };
 
       case 'voterSignOut':
         // console.log("resetting FriendStore");

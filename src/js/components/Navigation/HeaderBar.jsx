@@ -32,7 +32,7 @@ import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
-const webAppConfig = require('../../config');
+// const webAppConfig = require('../../config');
 
 
 class HeaderBar extends Component {
@@ -355,7 +355,7 @@ class HeaderBar extends Component {
 
     const doNotShowWeVoteLogo = weVoteBrandingOff || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
-    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;   // DALE: FRIENDS TEMPORARILY DISABLED
+    const enableFriends = true; // webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;   // Need to update QA site and don't have access to the config file
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
@@ -585,7 +585,7 @@ const styles = theme => ({
     },
   },
   tabRoot: {
-    minWidth: 130,
+    minWidth: 110,
   },
   indicator: {
     height: 4,
