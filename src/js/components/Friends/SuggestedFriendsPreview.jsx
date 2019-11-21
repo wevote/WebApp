@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import styled from 'styled-components';
 import SuggestedFriendList from './SuggestedFriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -48,7 +49,7 @@ export default class SuggestedFriendsPreview extends Component {
       <div className="opinion-view">
         <section className="card">
           <div className="card-main">
-            <h1 className="h4">Suggested Friends</h1>
+            <SectionTitle>Suggested Friends</SectionTitle>
             <div>
               <SuggestedFriendList
                 friendList={suggestedFriendListLimited}
@@ -64,3 +65,9 @@ export default class SuggestedFriendsPreview extends Component {
     );
   }
 }
+
+const SectionTitle = styled.h2`
+  width: fit-content;  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 16px;
+`;

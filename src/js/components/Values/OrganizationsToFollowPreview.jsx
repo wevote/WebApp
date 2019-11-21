@@ -1,4 +1,5 @@
 import React, { Component, Suspense } from 'react';
+import styled from 'styled-components';
 import GuideList from '../VoterGuide/GuideList';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { renderLog } from '../../utils/logging';
@@ -47,7 +48,7 @@ export default class OrganizationsToFollowPreview extends Component {
       <div className="opinions-followed__container">
         <section className="card">
           <div className="card-main">
-            <h1 className="h4">Organizations to Follow</h1>
+            <SectionTitle>Organizations to Follow</SectionTitle>
             <Suspense fallback={<span>Loading...</span>}>
               <GuideList incomingVoterGuideList={voterGuidesToFollow} instantRefreshOn />
             </Suspense>
@@ -58,3 +59,9 @@ export default class OrganizationsToFollowPreview extends Component {
     );
   }
 }
+
+const SectionTitle = styled.h2`
+  width: fit-content;  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 16px;
+`;
