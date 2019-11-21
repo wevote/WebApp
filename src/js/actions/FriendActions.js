@@ -90,6 +90,13 @@ export default {
       });
   },
 
+  friendInvitationsWaitingForVerification () {
+    Dispatcher.loadEndpoint('friendList',
+      {
+        kind_of_list: 'FRIEND_INVITATIONS_WAITING_FOR_VERIFICATION',
+      });
+  },
+
   friendInvitationsSentByMe () {
     Dispatcher.loadEndpoint('friendList',
       {

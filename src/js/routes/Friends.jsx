@@ -53,6 +53,7 @@ class Friends extends Component {
     if (!voter) {
       return LoadingWheel;
     }
+    const { is_signed_in: voterIsSignedIn } = voter;
 
     return (
       <span>
@@ -62,7 +63,7 @@ class Friends extends Component {
           <div className="col-sm-12 col-md-8">
             <FriendInvitationsSentToMePreview />
             <SuggestedFriendsPreview />
-            {voter.is_signed_in && (
+            {voterIsSignedIn && (
               <FirstAndLastNameRequiredAlert />
             )}
             <section className="card">
@@ -72,8 +73,8 @@ class Friends extends Component {
                 </SectionTitle>
                 <Icon>
                   <Tooltip
-                    classes={{ root: classes.tooltip }}
-                    title="These friends will see what you support, oppose, and which opinions you follow."
+                    classes={{ tooltip: classes.tooltip }}
+                    title="These friends will see what you support and oppose."
                   >
                     <Info />
                   </Tooltip>
@@ -87,7 +88,9 @@ class Friends extends Component {
                 <TwitterSignInCard />
               </div>
             )}
-            <FriendInvitationsSentByMePreview />
+            {voterIsSignedIn && (
+              <FriendInvitationsSentByMePreview />
+            )}
           </div>
           <div className="col-md-4 d-none d-md-block">
             {voter.signed_in_twitter ? null : (

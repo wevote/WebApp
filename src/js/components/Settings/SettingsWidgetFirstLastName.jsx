@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import LoadingWheel from '../LoadingWheel';
+import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterActions from '../../actions/VoterActions';
@@ -59,6 +60,7 @@ export default class SettingsWidgetFirstLastName extends Component {
     this.voterStoreListener.remove();
     this.timer = null;
     this.clearStatusTimer = null;
+    FriendActions.friendInvitationsWaitingForVerification();
     restoreStylesAfterCordovaKeyboard('SettingsWidgetFirstLastName');
   }
 
@@ -204,7 +206,9 @@ export default class SettingsWidgetFirstLastName extends Component {
                     {' '}
                     {lastName}
                   </div>
-                  <div>{organizationName}</div>
+                  {!this.props.hideNameShownWithEndorsements && (
+                    <div>{organizationName}</div>
+                  )}
                 </div>
               ) : (
                 <form onSubmit={(e) => { e.preventDefault(); }}>

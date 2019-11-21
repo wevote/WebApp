@@ -15,7 +15,7 @@ import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
-const webAppConfig = require('../../config');
+// const webAppConfig = require('../../config');
 
 
 class FooterBar extends React.Component {
@@ -91,7 +91,7 @@ class FooterBar extends React.Component {
       display: 'inline-block',
     };
 
-    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;   // DALE: FRIENDS TEMPORARILY DISABLED
+    const enableFriends = true; // webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;   // Need to update QA site and don't have access to the config file
 
     return (
       <FooterBarWrapper>
