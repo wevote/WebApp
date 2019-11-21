@@ -112,7 +112,7 @@ const styles = () => ({
 const SectionTitle = styled.h2`
   width: fit-content;
   font-weight: bolder;
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 4px;
 `;
 
