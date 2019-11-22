@@ -147,6 +147,7 @@ class SettingsVerifySecretCode extends Component {
       }
       this.setState({
         digit1: digit,
+        errorToDisplay: false,
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
@@ -154,7 +155,11 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
-      this.setState({ digit1: '' });
+      this.setState({
+        digit1: '',
+        errorToDisplay: false,
+        errorMessageToDisplay: '',
+      });
     }
   }
 
@@ -172,6 +177,7 @@ class SettingsVerifySecretCode extends Component {
       }
       this.setState({
         digit2: digit,
+        errorToDisplay: false,
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
@@ -179,7 +185,11 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
-      this.setState({ digit2: '' });
+      this.setState({
+        digit2: '',
+        errorToDisplay: false,
+        errorMessageToDisplay: '',
+      });
     }
   }
 
@@ -197,6 +207,7 @@ class SettingsVerifySecretCode extends Component {
       }
       this.setState({
         digit3: digit,
+        errorToDisplay: false,
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
@@ -204,7 +215,11 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
-      this.setState({ digit3: '' });
+      this.setState({
+        digit3: '',
+        errorToDisplay: false,
+        errorMessageToDisplay: '',
+      });
     }
   }
 
@@ -222,6 +237,7 @@ class SettingsVerifySecretCode extends Component {
       }
       this.setState({
         digit4: digit,
+        errorToDisplay: false,
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
@@ -229,7 +245,11 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
-      this.setState({ digit4: '' });
+      this.setState({
+        digit4: '',
+        errorToDisplay: false,
+        errorMessageToDisplay: '',
+      });
     }
   }
 
@@ -247,6 +267,7 @@ class SettingsVerifySecretCode extends Component {
       }
       this.setState({
         digit5: digit,
+        errorToDisplay: false,
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
@@ -254,7 +275,11 @@ class SettingsVerifySecretCode extends Component {
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
-      this.setState({ digit5: '' });
+      this.setState({
+        digit5: '',
+        errorToDisplay: false,
+        errorMessageToDisplay: '',
+      });
     }
   }
 
@@ -268,12 +293,17 @@ class SettingsVerifySecretCode extends Component {
     } else if (e.keyCode !== 8 && regex.test(digit)) {
       this.setState({
         digit6: digit,
+        errorToDisplay: false,
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
     } else {
       e.target.value = '';
-      this.setState({ digit6: '' });
+      this.setState({
+        digit6: '',
+        errorToDisplay: false,
+        errorMessageToDisplay: '',
+      });
     }
   }
 
@@ -298,6 +328,10 @@ class SettingsVerifySecretCode extends Component {
         digit6: allDigits[5],
       });
       document.getElementById('digit6').focus();
+      this.setState({
+        errorToDisplay: false,
+        errorMessageToDisplay: '',
+      });
     } else {
       this.setState({
         digit1: '',

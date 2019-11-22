@@ -85,8 +85,8 @@ class FriendStore extends ReduceStore {
   }
 
   reduce (state, action) {
-    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success) return state;
+    // Exit if we don't receive a response
+    if (!action.res) return state;  //  || !action.res.success // We deal with failures below
 
     switch (action.type) {
       case 'friendInviteResponse':
@@ -137,20 +137,12 @@ class FriendStore extends ReduceStore {
         };
 
       case 'friendInvitationByEmailSend':
-        if (action.res.sender_voter_email_address_missing) {
-          // Return the person to the form where they can fill in their email address
-          return {
-            ...state,
-            addFriendsByEmailStep: 'on_collect_email_step',
-            errorMessageToShowVoter: action.res.error_message_to_show_voter,
-          };
-        } else {
-          // Reset the invitation form
-        }
+        // console.log('FriendStore friendInvitationByEmailSend, action.res:', action.res);
         FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsWaitingForVerification();
         return {
           ...state,
+          errorMessageToShowVoter: action.res.error_message_to_show_voter,
         };
 
       case 'emailBallotData':
