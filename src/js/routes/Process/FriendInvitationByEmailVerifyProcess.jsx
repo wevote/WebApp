@@ -85,12 +85,25 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     // console.log('FriendInvitationByEmailVerifyProcess, invitation_secret_key:', invitationSecretKey);
     // console.log('FriendInvitationByEmailVerifyProcess, invitationStatus:', invitationStatus);
-    if (!invitationSecretKey || saving || !invitationStatus || !invitationStatus.voterDeviceId) {
+    if (saving || !invitationStatus) {
+      // console.log('FriendInvitationByEmailVerifyProcess, saving:', saving, ', or waiting for invitationStatus:', invitationStatus);
+      return LoadingWheel;
+    } else if (!invitationSecretKey) {
+      historyPush({
+        pathname: '/friends',
+        state: {
+          message: 'Invitation secret key not found. Invitation not accepted.',
+          message_type: 'warning',
+        },
+      });
       return LoadingWheel;
     }
 
     // This process starts when we return from attempting friendInvitationByEmailVerify
-    if (!invitationStatus.invitationFound) {
+    if (!invitationStatus.voterDeviceId) {
+      console.log('voterDeviceId Missing');
+      return LoadingWheel;
+    } else if (!invitationStatus.invitationFound) {
       historyPush({
         pathname: '/friends',
         state: {
@@ -99,9 +112,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         },
       });
       return LoadingWheel;
-    }
-
-    if (invitationStatus.attemptedToApproveOwnInvitation) {
+    } else if (invitationStatus.attemptedToApproveOwnInvitation) {
       historyPush({
         pathname: '/friends',
         state: {
@@ -110,9 +121,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         },
       });
       return LoadingWheel;
-    }
-
-    if (invitationStatus.invitationSecretKeyBelongsToThisVoter) {
+    } else if (invitationStatus.invitationSecretKeyBelongsToThisVoter) {
       // We don't need to do anything more except redirect to the email management page
       historyPush({
         pathname: '/friends',

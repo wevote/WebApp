@@ -376,16 +376,30 @@ class HeaderBar extends Component {
                 classes={{ indicator: classes.indicator }}
               >
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
+                  <Tab classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                 )}
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
+                  <Tab classes={{ root: classes.tabRootDefault }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
                 )}
                 { enableFriends && showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} onClick={() => this.handleNavigation('/friends')} />
+                  <Tab
+                    classes={(numberOfIncomingFriendRequests > 0) ? { root: classes.tabRootIncomingFriendRequests } : { root: classes.tabRootDefault }}
+                    id="friendsTabHeaderBar"
+                    label={(
+                      <Badge
+                        classes={{ badge: classes.headerBadge }}
+                        badgeContent={numberOfIncomingFriendRequests}
+                        color="primary"
+                        max={9}
+                      >
+                        My Friends
+                      </Badge>
+                    )}
+                    onClick={() => this.handleNavigation('/friends')}
+                  />
                 )}
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} id="voteTabHeaderBar" label="Vote" onClick={() => this.handleNavigation('/ballot/vote')} />
+                  <Tab classes={{ root: classes.tabRootVote }} id="voteTabHeaderBar" label="Vote" onClick={() => this.handleNavigation('/ballot/vote')} />
                 )}
               </Tabs>
             </div>
@@ -584,8 +598,17 @@ const styles = theme => ({
       padding: 2,
     },
   },
-  tabRoot: {
+  tabRootBallot: {
+    minWidth: 90,
+  },
+  tabRootDefault: {
     minWidth: 110,
+  },
+  tabRootIncomingFriendRequests: {
+    minWidth: 130,
+  },
+  tabRootVote: {
+    minWidth: 70,
   },
   indicator: {
     height: 4,
