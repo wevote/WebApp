@@ -34,10 +34,6 @@ export default {
     Dispatcher.dispatch({ type: 'showSignInModal', payload: show });
   },
 
-  setSignInErrorMessage (showing) {
-    Dispatcher.dispatch({ type: 'signInErrorMessage', payload: showing });
-  },
-
   siteConfigurationRetrieve (hostname, refresh_string = '') {
     Dispatcher.loadEndpoint('siteConfigurationRetrieve',
       {

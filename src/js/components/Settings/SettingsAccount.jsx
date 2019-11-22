@@ -23,7 +23,6 @@ import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 /* global $ */
 
@@ -81,10 +80,6 @@ export default class SettingsAccount extends Component {
     }
     const oneDayExpires = 86400;
     let pathname = '';
-
-    if (!signInModalGlobalState.getBool('isShowingSignInModal')) {
-      VoterActions.voterRetrieve();
-    }
 
     const getStartedMode = AppStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
@@ -308,9 +303,6 @@ export default class SettingsAccount extends Component {
       }
     }
 
-    const fbAuthMsg = AppStore.getSignInErrorMessage();
-    // console.log('In settingsAccount, facebookAuthMessage: ' + fbAuthMsg);
-
     return (
       <div className="">
         <Helmet title={pageTitle} />
@@ -352,7 +344,6 @@ export default class SettingsAccount extends Component {
                   { !hideFacebookSignInButton && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
                     <span>
                       <FacebookSignIn closeSignInModal={this.localCloseSignInModal} buttonText="Sign in with Facebook" />
-                      { fbAuthMsg && fbAuthMsg.length ? <FacebookErrorContainer>{fbAuthMsg}</FacebookErrorContainer> : '' }
                     </span>
                   )
                   }
@@ -531,10 +522,4 @@ const FacebookContainer = styled.span`
   font-size: 1.25rem;
   line-height: 1.5;
   border-radius: 0.3rem;
-`;
-
-const FacebookErrorContainer  = styled.h3`
-  margin-top: 8px;
-  background-color: palegoldenrod;
-  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
 `;

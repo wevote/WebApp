@@ -116,7 +116,6 @@ class FacebookStore extends ReduceStore {
 
         // console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
         FacebookActions.saveFacebookSignInAuth(action.data.authResponse);
-        // FacebookActions.getFacebookData();  // 11/14/19, Removed
         FacebookActions.getFacebookData();     // Includes a save
         return {
           ...state,
@@ -179,6 +178,7 @@ class FacebookStore extends ReduceStore {
 
       case 'voterFacebookSignInRetrieve':
         // console.log("FacebookStore voterFacebookSignInRetrieve, facebook_sign_in_verified: ", action.res.facebook_sign_in_verified);
+        signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
         if (action.res.facebook_sign_in_verified) {
           VoterActions.voterRetrieve();
         }

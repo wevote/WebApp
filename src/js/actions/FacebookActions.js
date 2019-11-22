@@ -26,6 +26,7 @@ export default {
   },
 
   appLogout () {
+    signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
     VoterSessionActions.voterSignOut(); // This deletes the device_id cookie
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();

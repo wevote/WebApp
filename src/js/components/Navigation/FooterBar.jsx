@@ -13,9 +13,8 @@ import { historyPush } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
-// const webAppConfig = require('../../config');
+const webAppConfig = require('../../config');
 
 
 class FooterBar extends React.Component {
@@ -36,15 +35,6 @@ class FooterBar extends React.Component {
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
     });
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  shouldComponentUpdate (nextProps, nextState) {
-    if (signInModalGlobalState.getBool('isShowingSignInModal')) {
-      renderLog('DO NOT RENDER FooterBar');
-      return false;
-    }
-    return true;
   }
 
   componentWillUnmount () {
@@ -91,7 +81,7 @@ class FooterBar extends React.Component {
       display: 'inline-block',
     };
 
-    const enableFriends = true; // webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;   // Need to update QA site and don't have access to the config file
+    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;   // DALE: FRIENDS TEMPORARILY DISABLED
 
     return (
       <FooterBarWrapper>
