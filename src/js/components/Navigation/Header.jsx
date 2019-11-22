@@ -9,7 +9,6 @@ import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
 import HeaderBar from './HeaderBar';
 import { stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 
 export default class Header extends Component {
@@ -21,13 +20,9 @@ export default class Header extends Component {
     weVoteBrandingOff: PropTypes.bool,
   };
 
-  // eslint-disable-next-line no-unused-vars
-  shouldComponentUpdate (nextProps, nextState) {
-    if (signInModalGlobalState.getBool('isShowingSignInModal')) {
-      renderLog('DO NOT RENDER Header');
-      return false;
-    }
-    return true;
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('Header caught error: ', `${error} with info: `, info);
   }
 
   render () {

@@ -13,7 +13,6 @@ import { historyPush } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 // const webAppConfig = require('../../config');
 
@@ -36,15 +35,6 @@ class FooterBar extends React.Component {
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
     });
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  shouldComponentUpdate (nextProps, nextState) {
-    if (signInModalGlobalState.getBool('isShowingSignInModal')) {
-      renderLog('DO NOT RENDER FooterBar');
-      return false;
-    }
-    return true;
   }
 
   componentWillUnmount () {

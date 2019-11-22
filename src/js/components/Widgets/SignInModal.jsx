@@ -11,7 +11,6 @@ import { renderLog } from '../../utils/logging';
 import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
-import signInModalGlobalState from './signInModalGlobalState';
 
 class SignInModal extends Component {
   static propTypes = {
@@ -29,14 +28,10 @@ class SignInModal extends Component {
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // When this modal is opened, set a cookie with the current path (done in Application.js)
-    signInModalGlobalState.set('isShowingSignInModal', true);
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
-    // console.log('SignInModal componentWillUnmount:  signInModalGlobalState.set(isShowingSignInModal, false))');
-    signInModalGlobalState.set('isShowingSignInModal', false);
   }
 
   onVoterStoreChange () {
@@ -72,10 +67,7 @@ class SignInModal extends Component {
       <Dialog
         classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}
         open={this.props.show}
-        onClose={() => {
-          this.props.closeFunction();
-          signInModalGlobalState.set('isShowingSignInModal', false);
-        }}
+        onClose={() => { this.props.closeFunction(); }}
       >
         <DialogTitle>
           <Typography className="text-center">
@@ -84,10 +76,7 @@ class SignInModal extends Component {
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}
-            onClick={() => {
-              this.props.closeFunction();
-              signInModalGlobalState.set('isShowingSignInModal', false);
-            }}
+            onClick={() => { this.props.closeFunction(); }}
             id="profileCloseSignInModal"
           >
             <CloseIcon />

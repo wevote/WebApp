@@ -19,7 +19,6 @@ import StripeElementsTest from './routes/More/StripeElementsTest';
 import ElectionReminder from './routes/More/ElectionReminder';
 import Elections from './routes/More/Elections';
 import EmailBallot from './routes/More/EmailBallot';
-import FacebookSignInProcess from './routes/Process/FacebookSignInProcess';
 import FAQ from './routes/More/FAQ';
 import FacebookInvitableFriends from './routes/FacebookInvitableFriends';
 import Friends from './routes/Friends';
@@ -235,8 +234,6 @@ const routes = () => (
     <Route path="/vg/:voter_guide_we_vote_id/settings/positions" component={VoterGuideSettingsDashboard} />
 
     <Route path="/yourpage" component={YourPage} />
-
-    <Route path="/facebook_sign_in" component={FacebookSignInProcess} />
 
     <Route path="/twitter_sign_in" component={TwitterSignInProcess} />
 
