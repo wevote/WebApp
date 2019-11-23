@@ -15,9 +15,6 @@ module.exports = [
   'LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, ' +
   'OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN ' +
   'THE SOFTWARE.',
-  // Jan 2019, https://github.com/mui-org/material-ui/blob/master/LICENSE
-  'mui-org/material-ui is licensed under the MIT License (MIT)\n' +
-  'Copyright (c) 2014 Call-Em-All\n',
   // Jan 2019, https://github.com/twbs/bootstrap/blob/v4-dev/LICENSE
   'twbs/bootstrap is licensed under the MIT License (MIT)\n' +
   '\n' +
@@ -86,9 +83,9 @@ module.exports = [
   '\n' +
   'Based on Underscore.js, copyright Jeremy Ashkenas, ' +
   'DocumentCloud and Investigative Reporters & Editors <http://underscorejs.org/>\n',
-  // Nov 2019, https://github.com/mui-org/material-ui/blob/master/LICENSE
-  'The MIT License (MIT)\n' +
-  'Copyright (c) 2014 Call-Em-All',
+  // Jan 2019, https://github.com/mui-org/material-ui/blob/master/LICENSE
+  'mui-org/material-ui is licensed under the MIT License (MIT)\n' +
+  'Copyright (c) 2014 Call-Em-All\n',
   // Jan 2019, https://github.com/moment/moment/blob/develop/LICENSE
   'moment/moment is licensed under the MIT License (MIT)\n' +
   'Copyright (c) JS Foundation and other contributors\n',
@@ -120,13 +117,11 @@ module.exports = [
   'nfl/react-helmet is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2015 NFL\n',
   // https://github.com/zeroasterisk/react-iframe-resizer-super/blob/master/LICENSE
-  'The MIT License (MIT)\n' +
-  'Copyright (c) 2016 Your Name. <name@emailprovider.io>\n' +
-  'zeroasterisk/react-iframe-resizer-super is licensed under the\n' +
-  'MIT License',
+  'zeroasterisk/react-iframe-resizer-super is licensed under the MIT License (MIT)\n' +
+  'Copyright (c) 2016 Your Name. <name@emailprovider.io>',
   // Jan 2019, https://github.com/yahoo/react-intl/blob/master/LICENSE.md
   'formatjs/react-intl\n' +
-  'Copyright 2014 Yahoo Inc. All rights reserved.\n' +
+  'Copyright 2019 Oath Inc. All rights reserved.\n' +
   '\n' +
   'Redistribution and use in source and binary forms, with or without modification, ' +
   'are permitted provided that the following conditions are met:\n' +
@@ -136,14 +131,14 @@ module.exports = [
   '* Redistributions in binary form must reproduce the above copyright ' +
   'notice, this list of conditions and the following disclaimer in the ' +
   'documentation and/or other materials provided with the distribution.\n' +
-  '* Neither the name of the Yahoo Inc. nor the ' +
+  '* Neither the name of the Oauth Inc. nor the ' +
   'names of its contributors may be used to endorse or promote products ' +
   'derived from this software without specific prior written permission.\n',
   // Jan 2019, https://github.com/brigand/react-mixin/blob/master/LICENSE
   'brigand/react-mixin is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2015 Frankie Bagnardi <f.bagnardi@gmail.com>\n',
   // https://github.com/catamphetamine/react-phone-number-input/blob/master/LICENSE
-  '(The MIT License)\n' +
+  'catamphetamine/react-phone-number-input is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2016 @catamphetamine <purecatamphetamine@gmail.com>',
   // Jan 2019, https://github.com/CookPete/react-player/blob/master/LICENSE.md
   'CookPete/react-player is licensed under the  MIT License (MIT)\n' +
@@ -164,7 +159,7 @@ module.exports = [
   'tanem/react-svg is licensed under the  MIT License (MIT)\n' +
   'Copyright (c) 2014-present Tane Morgan <tane.morgan@gmail.com>\n',
   // https://github.com/stripe/react-stripe-elements/blob/master/LICENSE
-  'MIT License\n' +
+  'stripe/react-stripe-elements is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2017 Stripe',
   // Jan 2019, https://github.com/ShinyChang/React-Text-Truncate/blob/master/LICENSE
   'ShinyChang/React-Text-Truncate is licensed under the MIT License (MIT)\n' +
