@@ -31,7 +31,7 @@ import VoterStore from '../../stores/VoterStore';
 import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 
-// const webAppConfig = require('../../config');
+const webAppConfig = require('../../config');
 
 
 class HeaderBar extends Component {
@@ -134,39 +134,46 @@ class HeaderBar extends Component {
     if (this.state.showSignInModal !== nextState.showSignInModal) {
       return true;
     }
-    if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
+    if (this.state.voter && nextState.voter && this.state.voter.is_signed_in !== nextState.voter.is_signed_in) {
+      // console.log('HeaderBar voter.isSignedIn shouldComponentUpdate true');
       return true;
     }
-    if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
+    if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
       return true;
     }
     const currentPathnameExists = this.props.location && this.props.location.pathname;
     const nextPathnameExists = nextProps.location && nextProps.location.pathname;
     // One exists, and the other doesn't
     if ((currentPathnameExists && !nextPathnameExists) || (!currentPathnameExists && nextPathnameExists)) {
-      // console.log("shouldComponentUpdate: PathnameExistsDifference");
+      // console.log("HeaderBar shouldComponentUpdate: PathnameExistsDifference");
       return true;
     }
     if (currentPathnameExists && nextPathnameExists && this.props.location.pathname !== nextProps.location.pathname) {
-      // console.log("shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
+      // console.log("HeaderBar shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
       return true;
     }
     const thisVoterExists = this.state.voter !== undefined;
     const nextVoterExists = nextState.voter !== undefined;
     if (nextVoterExists && !thisVoterExists) {
-      // console.log("shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
+      // console.log("HeaderBar shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
       return true;
     }
-    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_twitter !== nextState.voter.signed_in_twitter) {
-      // console.log("shouldComponentUpdate: this.state.voter.signed_in_twitter", this.state.voter.signed_in_twitter, ", nextState.voter.signed_in_twitter", nextState.voter.signed_in_twitter);
-      return true;
-    }
-    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_facebook !== nextState.voter.signed_in_facebook) {
-      // console.log("shouldComponentUpdate: this.state.voter.signed_in_facebook", this.state.voter.signed_in_facebook, ", nextState.voter.signed_in_facebook", nextState.voter.signed_in_facebook);
-      return true;
-    }
-    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
-      return true;
+    if (thisVoterExists && nextVoterExists) {
+      if (this.state.voter.voter_photo_url_medium !== nextState.voter.voter_photo_url_medium) {
+        // console.log('HeaderBar shouldComponentUpdate: this.state.voter.voter_photo_url_medium', this.state.voter.voter_photo_url_medium, ', nextState.voter.voter_photo_url_medium', nextState.voter.voter_photo_url_medium);
+        return true;
+      }
+      if (this.state.voter.signed_in_twitter !== nextState.voter.signed_in_twitter) {
+        // console.log("HeaderBar shouldComponentUpdate: this.state.voter.signed_in_twitter", this.state.voter.signed_in_twitter, ", nextState.voter.signed_in_twitter", nextState.voter.signed_in_twitter);
+        return true;
+      }
+      if (this.state.voter.signed_in_facebook !== nextState.voter.signed_in_facebook) {
+        // console.log("HeaderBar shouldComponentUpdate: this.state.voter.signed_in_facebook", this.state.voter.signed_in_facebook, ", nextState.voter.signed_in_facebook", nextState.voter.signed_in_facebook);
+        return true;
+      }
+      if (this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
+        return true;
+      }
     }
     // console.log('HeaderBar shouldComponentUpdate false');
     return false;
@@ -207,6 +214,7 @@ class HeaderBar extends Component {
     this.setState({
       voter,
       voterIsSignedIn,
+      showSignInModal: AppStore.showSignInModal(),
     });
   }
 
@@ -301,6 +309,7 @@ class HeaderBar extends Component {
       showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal,
       showSignInModal, voter, voterIsSignedIn,
     } = this.state;
+    // console.log('Header Bar, showSignInModal ', showSignInModal);
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
@@ -336,7 +345,7 @@ class HeaderBar extends Component {
 
     const doNotShowWeVoteLogo = weVoteBrandingOff || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
-    const enableFriends = true; // webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;   // Need to update QA site and don't have access to the config file
+    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? true : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>

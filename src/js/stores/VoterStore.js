@@ -319,6 +319,7 @@ class VoterStore extends ReduceStore {
         // console.log('VoterStore clearSMSPhoneNumberStatus');
         return { ...state, smsPhoneNumberStatus: {} };
       case 'organizationSave':
+        // console.log('VoterStore organizationSave');
         // If an organization saves, we want to check to see if it is tied to this voter. If so,
         // refresh the voter data so we have the value linked_organization_we_vote_id in the voter object.
         if (action.res.success) {
@@ -335,6 +336,7 @@ class VoterStore extends ReduceStore {
         return state;
 
       case 'organizationSuggestionTasks':
+        // console.log('VoterStore organizationSuggestionTasks');
         if (action.res.success) {
           if (action.res.kind_of_follow_task === 'FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW') {
             // console.log("organizationSuggestionTasks FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
@@ -350,6 +352,7 @@ class VoterStore extends ReduceStore {
         return state;
 
       case 'positionListForVoter':
+        // console.log('VoterStore positionListForVoter');
         if (action.res.show_only_this_election) {
           const positionListForOneElection = action.res.position_list;
           return {
@@ -404,7 +407,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'twitterRetrieveIdsIFollow':
-        // console.log("twitterRetrieveIdsIFollow")
+        // console.log('VoterStore twitterRetrieveIdsIFollow');
         if (action.res.success) {
           VoterActions.organizationSuggestionTasks('UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW',
             'FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW');
@@ -413,6 +416,7 @@ class VoterStore extends ReduceStore {
         return state;
 
       case 'voterAnalysisForJumpProcess':
+        // console.log('VoterStore, voterAnalysisForJumpProcess');
         VoterActions.voterRetrieve();
         return {
           ...state,
@@ -431,7 +435,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterAddressRetrieve':
-        // console.log("VoterStore, voterAddressRetrieve, address:", action.res);
+        // console.log('VoterStore, voterAddressRetrieve, address:', action.res);
         address = action.res || {};
         return {
           ...state,
@@ -439,7 +443,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterAddressSave':
-        // console.log("VoterStore, voterAddressSave, action.res:", action.res);
+        // console.log('VoterStore, voterAddressSave, action.res:', action.res);
         if (action.res.status === 'SIMPLE_ADDRESS_SAVE') {
           // Don't do any other refreshing
         } else {
@@ -490,6 +494,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterEmailAddressSave':
+        // console.log('VoterStore, voterEmailAddressSave');
         VoterActions.voterRetrieve();
         return {
           ...state,
@@ -510,6 +515,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterEmailAddressSignIn':
+        // console.log('VoterStore, voterEmailAddressSignIn');
         VoterActions.voterRetrieve();
         return {
           ...state,
@@ -525,6 +531,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterEmailAddressVerify':
+        // console.log('VoterStore, voterEmailAddressVerify');
         VoterActions.voterRetrieve();
         return {
           ...state,
@@ -543,6 +550,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterFacebookSaveToCurrentAccount':
+        // console.log('VoterStore, voterFacebookSaveToCurrentAccount');
         VoterActions.voterRetrieve();
         return {
           ...state,
@@ -552,6 +560,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterMergeTwoAccounts':
+        // console.log('VoterStore, voterMergeTwoAccounts');
         // On the server we just switched linked this voterDeviceId to a new voter record, so we want to
         //  refresh a lot of data
         VoterActions.voterRetrieve();
@@ -587,6 +596,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterPhotoSave':
+        // console.log('VoterStore, voterPhotoSave');
         return {
           ...state,
           voter: { ...state.voter, facebook_profile_image_url_https: action.res.facebook_profile_image_url_https },
@@ -654,7 +664,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterSignOut':
-        // console.log("resetting voterStore");
+        // console.log("VoterStore resetting voterStore via voterSignOut");
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
         VoterActions.voterSMSPhoneNumberRetrieve();
@@ -668,6 +678,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterSMSPhoneNumberSave':
+        // console.log('VoterStore  voterSMSPhoneNumberSave ');
         VoterActions.voterRetrieve();
         VoterActions.voterSMSPhoneNumberRetrieve();
         return {
@@ -688,10 +699,12 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterSplitIntoTwoAccounts':
+        // console.log('VoterStore  voterSplitIntoTwoAccounts ');
         VoterActions.voterRetrieve();
         return state;
 
       case 'voterTwitterSaveToCurrentAccount':
+        // console.log('VoterStore  voterTwitterSaveToCurrentAccount ');
         VoterActions.voterRetrieve();
         return {
           ...state,
@@ -701,6 +714,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterUpdate':
+        // console.log('VoterStore  voterUpdate ');
         if (action.res.success) {
           return {
             ...state,
@@ -743,7 +757,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'error-voterRetrieve' || 'error-voterAddressRetrieve' || 'error-voterAddressSave':
-        console.log(action);
+        // console.log('VoterStore action', action);
         return state;
 
       default:
