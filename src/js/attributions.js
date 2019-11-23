@@ -1,21 +1,19 @@
 module.exports = [
   'The text of the MIT License (MIT):\n' +
-  'Permission is hereby granted, free of charge, to any person obtaining a copy\n' +
-  'of this software and associated documentation files (the "Software"), to deal\n' +
-  'in the Software without restriction, including without limitation the rights\n' +
-  'to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n' +
-  'copies of the Software, and to permit persons to whom the Software is\n' +
+  'Permission is hereby granted, free of charge, to any person obtaining a copy ' +
+  'of this software and associated documentation files (the "Software"), to deal ' +
+  'in the Software without restriction, including without limitation the rights ' +
+  'to use, copy, modify, merge, publish, distribute, sublicense, and/or sell ' +
+  'copies of the Software, and to permit persons to whom the Software is ' +
   'furnished to do so, subject to the following conditions:\n' +
-  '\n' +
-  'The above copyright notice and this permission notice shall be included in\n' +
+  'The above copyright notice and this permission notice shall be included in ' +
   'all copies or substantial portions of the Software.\n' +
-  '\n' +
-  'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n' +
-  'IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n' +
-  'FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n' +
-  'AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n' +
-  'LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n' +
-  'OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n' +
+  'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR ' +
+  'IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, ' +
+  'FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE ' +
+  'AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER ' +
+  'LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, ' +
+  'OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN ' +
   'THE SOFTWARE.',
   // Jan 2019, https://github.com/mui-org/material-ui/blob/master/LICENSE
   'mui-org/material-ui is licensed under the MIT License (MIT)\n' +
@@ -33,44 +31,39 @@ module.exports = [
   'Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors\n',
   // Jan 2019, https://github.com/facebook/flux/blob/master/LICENSE
   'BSD License for Flux software\n' +
-  'Copyright (c) 2014-present, Facebook, Inc. All rights reserved.\n\n' +
-  'Redistribution and use in source and binary forms, with or without modification,\n' +
+  'Copyright (c) 2014-present, Facebook, Inc. All rights reserved.\n' +
+  'Redistribution and use in source and binary forms, with or without modification, ' +
   'are permitted provided that the following conditions are met:\n' +
-  '\n' +
-  ' * Redistributions of source code must retain the above copyright notice, this\n' +
-  '   list of conditions and the following disclaimer.\n' +
-  '\n' +
-  ' * Redistributions in binary form must reproduce the above copyright notice,\n' +
-  '   this list of conditions and the following disclaimer in the\n' +
-  '   documentation and/or other materials provided with the distribution.\n' +
-  '\n' +
-  ' * Neither the name Facebook nor the names of its contributors may be used to\n' +
-  '   endorse or promote products derived from this software without specific\n' +
-  '   prior written permission.',
+  ' * Redistributions of source code must retain the above copyright notice, this ' +
+  'list of conditions and the following disclaimer.\n' +
+  ' * Redistributions in binary form must reproduce the above copyright notice, ' +
+  'this list of conditions and the following disclaimer in the ' +
+  'documentation and/or other materials provided with the distribution.\n' +
+  ' * Neither the name Facebook nor the names of its contributors may be used to ' +
+  'endorse or promote products derived from this software without specific ' +
+  'prior written permission.',
   // Jan 2019, https://github.com/FortAwesome/Font-Awesome
   'Font Awesome Free License\n' +
-  '-------------------------\n' +
-  '\n' +
-  'Font Awesome Free is free, open source, and GPL friendly. You can use it for\n' +
+  'Font Awesome Free is free, open source, and GPL friendly. You can use it for ' +
   'commercial projects, open source projects, or really almost whatever you want.\n' +
   'Full Font Awesome Free license: https://fontawesome.com/license/free.\n' +
   '\n' +
   '# Icons: CC BY 4.0 License (https://creativecommons.org/licenses/by/4.0/)\n' +
-  'In the Font Awesome Free download, the CC BY 4.0 license applies to all icons\n' +
+  'In the Font Awesome Free download, the CC BY 4.0 license applies to all icons ' +
   'packaged as SVG and JS file types.\n' +
   '\n' +
   '# Fonts: SIL OFL 1.1 License (https://scripts.sil.org/OFL)\n' +
-  'In the Font Awesome Free download, the SIL OFL license applies to all icons\n' +
+  'In the Font Awesome Free download, the SIL OFL license applies to all icons ' +
   'packaged as web and desktop font files.\n' +
   '\n' +
   '# Code: MIT License (https://opensource.org/licenses/MIT)\n' +
-  'In the Font Awesome Free download, the MIT license applies to all non-font and\n' +
+  'In the Font Awesome Free download, the MIT license applies to all non-font and ' +
   'non-icon files.\n' +
   '\n' +
   '# Attribution\n' +
-  'Attribution is required by MIT, SIL OFL, and CC BY licenses. Downloaded Font\n' +
-  'Awesome Free files already contain embedded comments with sufficient\n' +
-  "attribution, so you shouldn't need to do anything additional when using these\n" +
+  'Attribution is required by MIT, SIL OFL, and CC BY licenses. Downloaded Font ' +
+  'Awesome Free files already contain embedded comments with sufficient ' +
+  "attribution, so you shouldn't need to do anything additional when using these " +
   'files normally.',
   // Jan 2019, https://github.com/ReactTraining/history/blob/master/LICENSE
   'ReactTraining/history is licensed under MIT License (MIT)\n' +
@@ -91,8 +84,11 @@ module.exports = [
   '\n' +
   'Copyright JS Foundation and other contributors <https://js.foundation/>\n' +
   '\n' +
-  'Based on Underscore.js, copyright Jeremy Ashkenas,\n' +
+  'Based on Underscore.js, copyright Jeremy Ashkenas, ' +
   'DocumentCloud and Investigative Reporters & Editors <http://underscorejs.org/>\n',
+  // Nov 2019, https://github.com/mui-org/material-ui/blob/master/LICENSE
+  'The MIT License (MIT)\n' +
+  'Copyright (c) 2014 Call-Em-All',
   // Jan 2019, https://github.com/moment/moment/blob/develop/LICENSE
   'moment/moment is licensed under the MIT License (MIT)\n' +
   'Copyright (c) JS Foundation and other contributors\n',
@@ -123,25 +119,32 @@ module.exports = [
   // Jan 2019, https://github.com/nfl/react-helmet/blob/master/LICENSE
   'nfl/react-helmet is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2015 NFL\n',
+  // https://github.com/zeroasterisk/react-iframe-resizer-super/blob/master/LICENSE
+  'The MIT License (MIT)\n' +
+  'Copyright (c) 2016 Your Name. <name@emailprovider.io>\n' +
+  'zeroasterisk/react-iframe-resizer-super is licensed under the\n' +
+  'MIT License',
   // Jan 2019, https://github.com/yahoo/react-intl/blob/master/LICENSE.md
   'formatjs/react-intl\n' +
   'Copyright 2014 Yahoo Inc. All rights reserved.\n' +
   '\n' +
-  'Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n' +
+  'Redistribution and use in source and binary forms, with or without modification, ' +
+  'are permitted provided that the following conditions are met:\n' +
   '\n' +
-  '* Redistributions of source code must retain the above copyright\n' +
-  '  notice, this list of conditions and the following disclaimer.\n' +
-  '\n' +
-  '* Redistributions in binary form must reproduce the above copyright\n' +
-  '  notice, this list of conditions and the following disclaimer in the\n' +
-  '  documentation and/or other materials provided with the distribution.\n' +
-  '\n' +
-  '* Neither the name of the Yahoo Inc. nor the\n' +
-  '  names of its contributors may be used to endorse or promote products\n' +
-  '  derived from this software without specific prior written permission.\n',
+  '* Redistributions of source code must retain the above copyright ' +
+  'notice, this list of conditions and the following disclaimer.\n' +
+  '* Redistributions in binary form must reproduce the above copyright ' +
+  'notice, this list of conditions and the following disclaimer in the ' +
+  'documentation and/or other materials provided with the distribution.\n' +
+  '* Neither the name of the Yahoo Inc. nor the ' +
+  'names of its contributors may be used to endorse or promote products ' +
+  'derived from this software without specific prior written permission.\n',
   // Jan 2019, https://github.com/brigand/react-mixin/blob/master/LICENSE
   'brigand/react-mixin is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2015 Frankie Bagnardi <f.bagnardi@gmail.com>\n',
+  // https://github.com/catamphetamine/react-phone-number-input/blob/master/LICENSE
+  '(The MIT License)\n' +
+  'Copyright (c) 2016 @catamphetamine <purecatamphetamine@gmail.com>',
   // Jan 2019, https://github.com/CookPete/react-player/blob/master/LICENSE.md
   'CookPete/react-player is licensed under the  MIT License (MIT)\n' +
   'Copyright (c) 2017 Pete Cook http://cookpete.com\n',
@@ -160,6 +163,9 @@ module.exports = [
   // Jan 2019, https://github.com/tanem/react-svg/blob/master/LICENSE
   'tanem/react-svg is licensed under the  MIT License (MIT)\n' +
   'Copyright (c) 2014-present Tane Morgan <tane.morgan@gmail.com>\n',
+  // https://github.com/stripe/react-stripe-elements/blob/master/LICENSE
+  'MIT License\n' +
+  'Copyright (c) 2017 Stripe',
   // Jan 2019, https://github.com/ShinyChang/React-Text-Truncate/blob/master/LICENSE
   'ShinyChang/React-Text-Truncate is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2015 Shiny Chang\n',
@@ -178,32 +184,27 @@ module.exports = [
   'Forked from React (https://github.com/facebook/react) Copyright 2013-present, Facebook, Inc.\n' +
   'All rights reserved.\n' +
   '\n' +
-  'Redistribution and use in source and binary forms, with or without\n' +
+  'Redistribution and use in source and binary forms, with or without ' +
   'modification, are permitted provided that the following conditions are met:\n' +
+  '* Redistributions of source code must retain the above copyright notice, this ' +
+  'list of conditions and the following disclaimer.\n' +
   '\n' +
-  '* Redistributions of source code must retain the above copyright notice, this\n' +
-  '  list of conditions and the following disclaimer.\n' +
-  '\n' +
-  '* Redistributions in binary form must reproduce the above copyright notice,\n' +
-  '  this list of conditions and the following disclaimer in the documentation\n' +
-  '  and/or other materials provided with the distribution.\n' +
-  '\n' +
-  '* Neither the name of the copyright holder nor the names of its\n' +
-  '  contributors may be used to endorse or promote products derived from\n' +
-  '  this software without specific prior written permission.\n',
+  '* Redistributions in binary form must reproduce the above copyright notice, ' +
+  'this list of conditions and the following disclaimer in the documentation ' +
+  'and/or other materials provided with the distribution.\n' +
+  '* Neither the name of the copyright holder nor the names of its ' +
+  'contributors may be used to endorse or promote products derived from ' +
+  'this software without specific prior written permission.',
   // July 2019, https://github.com/snyk/snyk/blob/master/LICENSE
   'snyk/snyk Copyright 2015 Snyk Ltd.\n' +
   '\n' +
   'Licensed under the Apache License, Version 2.0 (the "License");\n' +
   'you may not use this file except in compliance with the License.\n' +
-  'You may obtain a copy of the License at\n' +
-  '\n' +
-  '    http://www.apache.org/licenses/LICENSE-2.0\n' +
-  '\n' +
-  'Unless required by applicable law or agreed to in writing, software\n' +
-  'distributed under the License is distributed on an "AS IS" BASIS,\n' +
+  'You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0\n' +
+  'Unless required by applicable law or agreed to in writing, software ' +
+  'distributed under the License is distributed on an "AS IS" BASIS, ' +
   'WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n' +
-  'See the License for the specific language governing permissions and\n' +
+  'See the License for the specific language governing permissions and ' +
   'limitations under the License.\n',
   // Jan 2019, https://github.com/styled-components/styled-components/blob/master/LICENSE
   'styled-components/styled-components is licensed under the MIT License (MIT)\n' +

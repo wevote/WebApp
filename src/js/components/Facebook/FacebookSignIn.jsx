@@ -48,6 +48,8 @@ class FacebookSignIn extends Component {
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
     this.appStoreListener.remove();
+    signInModalGlobalState.set('startFacebookSignInSequence', false);
+    signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
   }
 
   onAppStoreChange () {
@@ -81,8 +83,8 @@ class FacebookSignIn extends Component {
   }
 
   onVoterStoreChange () {
+    // console.log('FacebookSignIn onVoterStoreChange');
     const { redirectInProcess, waitingForMergeTwoAccounts } = this.state;
-    console.log('FacebookSignIn onVoterStoreChange, redirectInProcess:', redirectInProcess);
     const voter = VoterStore.getVoter();
     const { signed_in_facebook: voterIsSignedInFacebook } = voter;
     if (voterIsSignedInFacebook) {
@@ -151,23 +153,21 @@ class FacebookSignIn extends Component {
     let showWheel = true;
 
     if (!signInModalGlobalState.getBool('startFacebookSignInSequence')) {
-      console.log('FacebookSignIn top of checks, no action yet');
+      // console.log('FacebookSignIn top of checks, no action yet, facebookAuthResponse', (facebookAuthResponse || 'no auth obj'));
     } else if (signInModalGlobalState.getBool('waitingForFacebookApiCompletion') ||
         this.state.saving ||
         this.state.retrievingSignIn ||
         !facebookAuthResponse) {
-      console.log('Waiting for a response from Facebook this.state.saving: ', this.state.saving, 'this.state.retrievingSignIn', this.state.retrievingSignIn,
-        '!facebookAuthResponse', !facebookAuthResponse, 'signInModalGlobalState.getBool(waitingForFacebookApiCompletion)', signInModalGlobalState.getBool('waitingForFacebookApiCompletion'));
+      // console.log('Waiting for a response from Facebook this.state.saving: ', this.state.saving, 'this.state.retrievingSignIn', this.state.retrievingSignIn,
+      //   '!facebookAuthResponse', !facebookAuthResponse, 'signInModalGlobalState.getBool(waitingForFacebookApiCompletion)', signInModalGlobalState.getBool('waitingForFacebookApiCompletion'));
       statusMessage = 'Waiting for a response from Facebook...';
     } else if (facebookAuthResponse.facebook_sign_in_failed) {
-      // this.setState({ redirectInProcess: true });
       oAuthLog('facebookAuthResponse.facebook_sign_in_failed , setting "Facebook sign in process." message.');
       statusMessage = 'Facebook sign in process.';
     } else if (waitingForMergeTwoAccounts) {
       statusMessage = 'Merging your choices...';
     } else if (!facebookAuthResponse.facebook_sign_in_found) {
       // This process starts when we return from attempting voterFacebookSignInRetrieve.  If facebook_sign_in_found NOT True, try again
-      this.setState({ redirectInProcess: true });
       oAuthLog('facebookAuthResponse.facebook_sign_in_found with no authentication');
       statusMessage = 'Facebook authentication not found. Please try again.';
       showWheel = false;
