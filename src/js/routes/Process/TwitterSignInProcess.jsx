@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import cookies from '../../utils/cookies';
 import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
@@ -18,6 +19,7 @@ export default class TwitterSignInProcess extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      hostname: '',
       mergingTwoAccounts: false,
       redirectInProgress: false,
       twitterAuthResponse: {},
@@ -26,14 +28,27 @@ export default class TwitterSignInProcess extends Component {
   }
 
   componentDidMount () {
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.twitterSignInRetrieve();
+    const hostname = AppStore.getHostname();
+    this.setState({
+      hostname,
+    });
   }
 
   componentWillUnmount () {
+    this.appStoreListener.remove();
     this.twitterStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    const hostname = AppStore.getHostname();
+    this.setState({
+      hostname,
+    });
   }
 
   onTwitterStoreChange () {
@@ -157,9 +172,9 @@ export default class TwitterSignInProcess extends Component {
 
   render () {
     renderLog('TwitterSignInProcess');  // Set LOG_RENDER_EVENTS to log all renders
-    const { mergingTwoAccounts, redirectInProgress, twitterAuthResponse, yesPleaseMergeAccounts } = this.state;
+    const { hostname, mergingTwoAccounts, redirectInProgress, twitterAuthResponse, yesPleaseMergeAccounts } = this.state;
     // console.log('TwitterSignInProcess render, redirectInProgress:', redirectInProgress);
-    if (redirectInProgress) {
+    if (redirectInProgress || !hostname || hostname === '') {
       return null;
     }
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import AppStore from '../../stores/AppStore';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -16,20 +17,45 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      friendInvitationByEmailVerifyCalled: false,
+      hostname: '',
       saving: false,
       yesPleaseMergeAccounts: false,
     };
   }
 
   componentDidMount () {
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     const { invitation_secret_key: invitationSecretKey } = this.props.params;
     // console.log('FriendInvitationByEmailVerifyProcess, componentDidMount, this.props.params.invitation_secret_key: ', invitationSecretKey);
-    this.friendInvitationByEmailVerify(invitationSecretKey);
+    const hostname = AppStore.getHostname();
+    if (hostname && hostname !== '') {
+      this.friendInvitationByEmailVerify(invitationSecretKey);
+      this.setState({
+        friendInvitationByEmailVerifyCalled: true,
+        hostname,
+      });
+    }
   }
 
   componentWillUnmount () {
+    this.appStoreListener.remove();
     this.friendStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    const { friendInvitationByEmailVerifyCalled } = this.state;
+    const hostname = AppStore.getHostname();
+    if (!friendInvitationByEmailVerifyCalled && hostname && hostname !== '') {
+      const { invitation_secret_key: invitationSecretKey } = this.props.params;
+      // console.log('FriendInvitationByEmailVerifyProcess, onAppStoreChange, this.props.params.invitation_secret_key: ', invitationSecretKey);
+      this.friendInvitationByEmailVerify(invitationSecretKey);
+      this.setState({
+        friendInvitationByEmailVerifyCalled: true,
+        hostname,
+      });
+    }
   }
 
   onFriendStoreChange () {
@@ -72,7 +98,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   render () {
     renderLog('FriendInvitationByEmailVerifyProcess');  // Set LOG_RENDER_EVENTS to log all renders
     const { invitation_secret_key: invitationSecretKey } = this.props.params;
-    const { invitationStatus, saving, yesPleaseMergeAccounts } = this.state;
+    const { hostname, invitationStatus, saving, yesPleaseMergeAccounts } = this.state;
 
     if (yesPleaseMergeAccounts) {
       // If yesPleaseMergeAccounts is true, it doesn't matter what is happening with invitationStatus
@@ -85,7 +111,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     // console.log('FriendInvitationByEmailVerifyProcess, invitation_secret_key:', invitationSecretKey);
     // console.log('FriendInvitationByEmailVerifyProcess, invitationStatus:', invitationStatus);
-    if (saving || !invitationStatus) {
+    if (saving || !invitationStatus || !hostname || hostname === '') {
       // console.log('FriendInvitationByEmailVerifyProcess, saving:', saving, ', or waiting for invitationStatus:', invitationStatus);
       return LoadingWheel;
     } else if (!invitationSecretKey) {
