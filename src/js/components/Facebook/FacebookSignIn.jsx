@@ -36,7 +36,7 @@ class FacebookSignIn extends Component {
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.appStoreListener = AppStore.addListener(this.onVoterStoreChange.bind(this));
-    console.log('FacebookSignIn, componentDidMount');
+    // console.log('FacebookSignIn, componentDidMount');
 
     if (!signInModalGlobalState.getBool('waitingForFacebookApiCompletion')) {
       signInModalGlobalState.set('waitingForFacebookApiCompletion', true);
@@ -62,7 +62,7 @@ class FacebookSignIn extends Component {
   }
 
   onFacebookStoreChange () {
-    console.log('FacebookSignIn onFacebookStoreChange');
+    // console.log('FacebookSignIn onFacebookStoreChange');
 
     this.setState({
       facebookAuthResponse: FacebookStore.getFacebookAuthResponse(),
@@ -76,7 +76,7 @@ class FacebookSignIn extends Component {
 
     if (facebookIsLoggedIn && !facebookSignInFailed && facebookSignInFound && facebookSignInVerified) {
       this.setState({ redirectInProcess: false });
-      console.log('FacebookSignIn calling voterMergeTwoAccountsByFacebookKey, since the voter is authenticated with facebook');
+      // console.log('FacebookSignIn calling voterMergeTwoAccountsByFacebookKey, since the voter is authenticated with facebook');
       VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
       this.setState({ waitingForMergeTwoAccounts: true });
     }
@@ -94,7 +94,7 @@ class FacebookSignIn extends Component {
     if (!redirectInProcess && !waitingForMergeTwoAccounts) {
       const facebookSignInStatus = VoterStore.getFacebookSignInStatus();
       // console.log('facebookSignInStatus:', facebookSignInStatus);
-      console.log('FacebookSignIn onVoterStoreChange, voterIsSignedInFacebook:', voterIsSignedInFacebook);
+      // console.log('FacebookSignIn onVoterStoreChange, voterIsSignedInFacebook:', voterIsSignedInFacebook);
       if (voterIsSignedInFacebook || (facebookSignInStatus && facebookSignInStatus.voter_merge_two_accounts_attempted)) {
         const newRedirectPathname = '/ballot';
         oAuthLog('Redirecting to newRedirectPathname:', newRedirectPathname);
@@ -165,7 +165,7 @@ class FacebookSignIn extends Component {
       oAuthLog('facebookAuthResponse.facebook_sign_in_failed , setting "Facebook sign in process." message.');
       statusMessage = 'Facebook sign in process.';
     } else if (waitingForMergeTwoAccounts) {
-      statusMessage = 'Merging your choices...';
+      statusMessage = 'Loading your account information...';
     } else if (!facebookAuthResponse.facebook_sign_in_found) {
       // This process starts when we return from attempting voterFacebookSignInRetrieve.  If facebook_sign_in_found NOT True, try again
       oAuthLog('facebookAuthResponse.facebook_sign_in_found with no authentication');

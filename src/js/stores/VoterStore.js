@@ -4,7 +4,7 @@ import BallotActions from '../actions/BallotActions';
 import cookies from '../utils/cookies';
 import Dispatcher from '../dispatcher/Dispatcher';
 import FacebookActions from '../actions/FacebookActions'; // eslint-disable-line import/no-cycle
-import FriendActions from '../actions/FriendActions';
+import FriendActions from '../actions/FriendActions'; // eslint-disable-line import/no-cycle
 import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import { stringContains } from '../utils/textFormat';
