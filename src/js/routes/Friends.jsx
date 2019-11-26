@@ -19,6 +19,11 @@ import FriendInvitationsSentToMePreview from '../components/Friends/FriendInvita
 import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import VoterStore from '../stores/VoterStore';
+import FriendInvitationsSentToMe from './Friends/FriendInvitationsSentToMe';
+import SuggestedFriends from './Friends/SuggestedFriends';
+import InviteByEmail from './Friends/InviteByEmail';
+import FriendsCurrent from './Friends/FriendsCurrent';
+import FriendInvitationsSentByMe from './Friends/FriendInvitationsSentByMe';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
@@ -83,43 +88,79 @@ class Friends extends Component {
     }
     const { is_signed_in: voterIsSignedIn } = voter;
 
+    let contentToDisplay;
+
+    switch (value) {
+      case 'requests':
+        contentToDisplay = (
+          <FriendInvitationsSentToMe />
+        );
+        break;
+      case 'suggested':
+        contentToDisplay = (
+          <SuggestedFriends />
+        );
+        break;
+      case 'invite':
+        contentToDisplay = (
+          <AddFriendsByEmail />
+        );
+        break;
+      case 'current':
+        contentToDisplay = (
+          <FriendsCurrent />
+        );
+        break;
+      case 'sent-requests':
+        contentToDisplay = (
+          <FriendInvitationsSentByMe />
+        );
+        break;
+      default:
+        contentToDisplay = (
+          'ALL'
+        );
+    }
+
     return (
       <span>
         {this.state.mobileMode ? (
           <>
             <Helmet title="Friends - We Vote" />
-              <Paper elevation={1}>
-                <Tabs
-                  value={value}
-                  // onChange={handleChange}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  variant="scrollable"
-                  scrollButtons="auto"
-                  aria-label="scrollable auto tabs example"
-                >
-                  <Tab value="requests" label="Requests" onClick={() => {
-                    this.setState({ value: 'requests' });
-                    window.history.pushState({ tabItem: 'requests' }, '', '/friends/requests');
-                  }} />
-                  <Tab value="suggested" label="Suggested" onClick={() => {
-                    this.setState({ value: 'suggested' });
-                    window.history.pushState({ tabItem: 'suggested' }, '', '/friends/suggested');
-                  }} />
-                  <Tab value="invite" label="Add Contacts" onClick={() => {
-                    this.setState({ value: 'invite' });
-                    window.history.pushState({ tabItem: 'invite' }, '', '/friends/invite');
-                  }} />
-                  <Tab value="current" label="Friends" onClick={() => {
-                    this.setState({ value: 'current' });
-                    window.history.pushState({ tabItem: 'current' }, '', '/friends/current');
-                  }} />
-                  <Tab value="sent-requests" label="Sent Requests" onClick={() => {
-                    this.setState({ value: 'sent-requests' });
-                    window.history.pushState({ tabItem: 'sent-requests' }, '', '/friends/sent-requests');
-                  }} />
-                </Tabs>         
-              </Paper>
+            <Paper elevation={1}>
+              <Tabs
+                value={value}
+                // onChange={handleChange}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
+              >
+                <Tab value="requests" label="Requests" onClick={() => {
+                  this.setState({ value: 'requests' });
+                  window.history.pushState({ tabItem: 'requests' }, '', '/friends/requests');
+                }} />
+                <Tab value="suggested" label="Suggested" onClick={() => {
+                  this.setState({ value: 'suggested' });
+                  window.history.pushState({ tabItem: 'suggested' }, '', '/friends/suggested');
+                }} />
+                <Tab value="invite" label="Add Contacts" onClick={() => {
+                  this.setState({ value: 'invite' });
+                  window.history.pushState({ tabItem: 'invite' }, '', '/friends/invite');
+                }} />
+                <Tab value="current" label="Friends" onClick={() => {
+                  this.setState({ value: 'current' });
+                  window.history.pushState({ tabItem: 'current' }, '', '/friends/current');
+                }} />
+                <Tab value="sent-requests" label="Sent Requests" onClick={() => {
+                  this.setState({ value: 'sent-requests' });
+                  window.history.pushState({ tabItem: 'sent-requests' }, '', '/friends/sent-requests');
+                }} />
+              </Tabs>
+            </Paper>
+            <br />
+            {contentToDisplay}
           </>
         ) : (
           <>
