@@ -11,6 +11,8 @@ import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
+import FriendActions from '../actions/FriendActions';
+import FriendStore from '../stores/FriendStore';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import FirstAndLastNameRequiredAlert from '../components/Widgets/FirstAndLastNameRequiredAlert';
 import FriendsCurrentPreview from '../components/Friends/FriendsCurrentPreview';
@@ -21,7 +23,6 @@ import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import VoterStore from '../stores/VoterStore';
 import FriendInvitationsSentToMe from './Friends/FriendInvitationsSentToMe';
 import SuggestedFriends from './Friends/SuggestedFriends';
-import InviteByEmail from './Friends/InviteByEmail';
 import FriendsCurrent from './Friends/FriendsCurrent';
 import FriendInvitationsSentByMe from './Friends/FriendInvitationsSentByMe';
 
@@ -46,6 +47,19 @@ class Friends extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
 
+    FriendActions.suggestedFriendList();
+    FriendActions.currentFriends();
+    FriendActions.friendInvitationsSentToMe();
+    FriendActions.friendInvitationsSentByMe();
+    this.setState({
+      suggestedFriendList: FriendStore.suggestedFriendList(),
+      currentFriendList: FriendStore.currentFriends(),
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
+    });
+
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+
     this.handleResize();
     window.addEventListener('resize', this.handleResize);
 
@@ -59,6 +73,7 @@ class Friends extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    this.friendStoreListener.remove();
     window.removeEventListener('resize', this.handleResize);
   }
 
@@ -66,14 +81,22 @@ class Friends extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-    handleResize () {
+  onFriendStoreChange () {
+    this.setState({
+      suggestedFriendList: FriendStore.suggestedFriendList(),
+    });
+  }
+
+  handleResize () {
     this.setState({
       windowWidth: window.innerWidth,
     });
 
     if (window.innerWidth < 769) {
       this.setState({ mobileMode: true });
+      window.history.pushState({ tabItem: this.state.value }, '', `/friends/${this.state.value}`);
     } else {
+      window.history.pushState({ tabItem: '' }, '', '/friends');
       this.setState({ mobileMode: false });
     }
   }
@@ -89,6 +112,8 @@ class Friends extends Component {
     const { is_signed_in: voterIsSignedIn } = voter;
 
     let contentToDisplay;
+
+    console.log("Friends list: ", this.state.suggestedFriendList);
 
     switch (value) {
       case 'requests':
@@ -137,26 +162,50 @@ class Friends extends Component {
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs example"
               >
-                <Tab value="requests" label="Requests" onClick={() => {
-                  this.setState({ value: 'requests' });
-                  window.history.pushState({ tabItem: 'requests' }, '', '/friends/requests');
-                }} />
-                <Tab value="suggested" label="Suggested" onClick={() => {
-                  this.setState({ value: 'suggested' });
-                  window.history.pushState({ tabItem: 'suggested' }, '', '/friends/suggested');
-                }} />
-                <Tab value="invite" label="Add Contacts" onClick={() => {
-                  this.setState({ value: 'invite' });
-                  window.history.pushState({ tabItem: 'invite' }, '', '/friends/invite');
-                }} />
-                <Tab value="current" label="Friends" onClick={() => {
-                  this.setState({ value: 'current' });
-                  window.history.pushState({ tabItem: 'current' }, '', '/friends/current');
-                }} />
-                <Tab value="sent-requests" label="Sent Requests" onClick={() => {
-                  this.setState({ value: 'sent-requests' });
-                  window.history.pushState({ tabItem: 'sent-requests' }, '', '/friends/sent-requests');
-                }} />
+                <Tab
+                  value="requests"
+                  label="Requests"
+                  onClick={() => {
+                    this.setState({ value: 'requests' });
+                    window.history.pushState({ tabItem: 'requests' }, '', '/friends/requests');
+                  }}
+                />
+                {this.state.suggestedFriendList.length > 0 || value === 'suggested' ? (
+                  <Tab
+                    value="suggested"
+                    label="Suggested"
+                    onClick={() => {
+                      this.setState({ value: 'suggested' });
+                      window.history.pushState({ tabItem: 'suggested' }, '', '/friends/suggested');
+                    }}
+                  />
+                ) : (
+                  null
+                )}
+                <Tab
+                  value="invite"
+                  label="Add Contacts"
+                  onClick={() => {
+                    this.setState({ value: 'invite' });
+                    window.history.pushState({ tabItem: 'invite' }, '', '/friends/invite');
+                  }}
+                />
+                <Tab
+                  value="current"
+                  label="Friends"
+                  onClick={() => {
+                    this.setState({ value: 'current' });
+                    window.history.pushState({ tabItem: 'current' }, '', '/friends/current');
+                  }}
+                />
+                <Tab
+                  value="sent-requests"
+                  label="Sent Requests"
+                  onClick={() => {
+                    this.setState({ value: 'sent-requests' });
+                    window.history.pushState({ tabItem: 'sent-requests' }, '', '/friends/sent-requests');
+                  }}
+                />
               </Tabs>
             </Paper>
             <br />
