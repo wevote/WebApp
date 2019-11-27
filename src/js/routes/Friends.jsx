@@ -31,8 +31,6 @@ import FriendInvitationsSentByMe from './Friends/FriendInvitationsSentByMe';
 class Friends extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    params: PropTypes.object,
-    tabItem: PropTypes.string,
   };
 
   constructor (props) {
@@ -90,9 +88,9 @@ class Friends extends Component {
   }
 
   handleResize () {
-    // this.setState({
-    //   windowWidth: window.innerWidth,
-    // });
+    this.setState({
+      windowWidth: window.innerWidth,
+    });
 
     if (window.innerWidth < 769) {
       this.setState({ mobileMode: true });
@@ -114,6 +112,8 @@ class Friends extends Component {
     const { is_signed_in: voterIsSignedIn } = voter;
 
     let contentToDisplay;
+
+    console.log("Friends list: ", this.state.suggestedFriendList);
 
     switch (value) {
       case 'requests':
@@ -162,18 +162,14 @@ class Friends extends Component {
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs example"
               >
-                {this.state.friendInvitationsSentToMe.length > 0 || value === 'requests' ? (
-                  <Tab
-                    value="requests"
-                    label="Requests"
-                    onClick={() => {
-                      this.setState({ value: 'requests' });
-                      window.history.pushState({ tabItem: 'requests' }, '', '/friends/requests');
-                    }}
-                  />
-                ) : (
-                  null
-                )}
+                <Tab
+                  value="requests"
+                  label="Requests"
+                  onClick={() => {
+                    this.setState({ value: 'requests' });
+                    window.history.pushState({ tabItem: 'requests' }, '', '/friends/requests');
+                  }}
+                />
                 {this.state.suggestedFriendList.length > 0 || value === 'suggested' ? (
                   <Tab
                     value="suggested"
@@ -194,30 +190,22 @@ class Friends extends Component {
                     window.history.pushState({ tabItem: 'invite' }, '', '/friends/invite');
                   }}
                 />
-                {this.state.currentFriendList.length > 0 || value === 'current' ? (
-                  <Tab
-                    value="current"
-                    label="Friends"
-                    onClick={() => {
-                      this.setState({ value: 'current' });
-                      window.history.pushState({ tabItem: 'current' }, '', '/friends/current');
-                    }}
-                  />
-                ) : (
-                  null
-                )}
-                {this.state.friendInvitationsSentByMe.length > 0 || value === 'sent-requests' ? (
-                  <Tab
-                    value="sent-requests"
-                    label="Sent Requests"
-                    onClick={() => {
-                      this.setState({ value: 'sent-requests' });
-                      window.history.pushState({ tabItem: 'sent-requests' }, '', '/friends/sent-requests');
-                    }}
-                  />
-                ) : (
-                  null
-                )}
+                <Tab
+                  value="current"
+                  label="Friends"
+                  onClick={() => {
+                    this.setState({ value: 'current' });
+                    window.history.pushState({ tabItem: 'current' }, '', '/friends/current');
+                  }}
+                />
+                <Tab
+                  value="sent-requests"
+                  label="Sent Requests"
+                  onClick={() => {
+                    this.setState({ value: 'sent-requests' });
+                    window.history.pushState({ tabItem: 'sent-requests' }, '', '/friends/sent-requests');
+                  }}
+                />
               </Tabs>
             </Paper>
             <br />
