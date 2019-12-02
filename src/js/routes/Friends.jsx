@@ -65,7 +65,7 @@ class Friends extends Component {
     if (window.innerWidth < 769) {
       this.setState({ mobileMode: true, mobileValue: this.props.params.tabItem || 'requests' });
     } else {
-      this.setState({ mobileMode: false, desktopValue: this.props.params.tabItem || '' });
+      this.setState({ mobileMode: false, desktopValue: this.props.params.tabItem === undefined ? 'all' : this.props.params.tabItem });
     }
 
     window.addEventListener('resize', this.handleResize);
@@ -75,6 +75,15 @@ class Friends extends Component {
   //   if (this.state.mobileMode !== nextState.mobileMode) return true;
   //   return false;
   // }
+
+  componentDidUpdate () {
+    if (window.innerWidth >= 770 && this.props.params.tabItem !== this.state.desktopValue) {
+      this.setState({ desktopValue: this.props.params.tabItem });
+    }
+    // if (window.innerWidth < 769 && this.props.params.tabItem !== this.state.mobileValue) {
+    //   this.setState({ mobileValue: this.props.params.tabItem });
+    // }
+  }
 
   // shouldComponentUpdate (nextProps) {
   //   if (this.props.params.tabItem !== nextProps.params.tabItem) return true;
@@ -98,12 +107,18 @@ class Friends extends Component {
   }
 
   handleResize () {
+    const previousValue = this.state.mobileValue;
+
     if (window.innerWidth < 769) {
-      this.setState({ mobileMode: true });
+      this.setState({ mobileMode: true, mobileValue: previousValue || 'requests' });
       window.history.pushState({ tabItem: this.state.mobileValue }, '', `/friends/${this.state.mobileValue}`);
     } else {
       this.setState({ mobileMode: false });
-      window.history.pushState({ tabItem: this.state.desktopValue }, '', `/friends/${this.state.desktopValue}`);
+      if (this.state.desktopValue) {
+        window.history.pushState({ tabItem: this.state.desktopValue }, '', `/friends/${this.state.desktopValue}`);
+      } else {
+        window.history.pushState({ tabItem: '' }, '', '/friends');
+      }
     }
   }
 
@@ -112,6 +127,9 @@ class Friends extends Component {
     const { voter, mobileValue, desktopValue } = this.state;
     const { classes } = this.props;
 
+    console.log("Desktop value: ", desktopValue);
+    console.log("Mobile value: ", mobileValue);
+
     if (!voter) {
       return LoadingWheel;
     }
@@ -119,8 +137,6 @@ class Friends extends Component {
 
     let mobileContentToDisplay;
     let desktopContentToDisplay;
-
-    console.log("Friends list: ", this.state.suggestedFriendList);
 
     switch (mobileValue) {
       case 'requests':
