@@ -4,12 +4,13 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Badge from '@material-ui/core/Badge';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import HelpOutline from '@material-ui/icons/HelpOutline';
 import BallotIcon from '@material-ui/icons/Ballot';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import PeopleIcon from '@material-ui/icons/People';
 import styled from 'styled-components';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isCordova, cordovaOpenSafariView } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
@@ -104,6 +105,16 @@ class FooterBar extends React.Component {
                 />
               ) : '' }
             <BottomNavigationAction className="no-outline" id="voteTabFooterBar" label="Vote" showLabel icon={<HowToVoteIcon />} />
+            {isCordova() && (
+              <BottomNavigationAction
+                className="no-outline"
+                id="helpTabFooterBar"
+                label=""
+                showLabel
+                icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />}
+                onClick={() => cordovaOpenSafariView('https://help.wevote.us', null, 50)}
+              />
+            )}
           </BottomNavigation>
         </div>
       </FooterBarWrapper>
