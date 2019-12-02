@@ -6,7 +6,6 @@ import Testimonial from '../Widgets/Testimonial';
 import cookies from '../../utils/cookies';
 
 class FriendsPromoBox extends React.Component {
-
   static propTypes = {
     classes: PropTypes.object,
     testimonialAuthor: PropTypes.string,
@@ -49,6 +48,7 @@ class FriendsPromoBox extends React.Component {
                   imageUrl={imageUrl}
                   testimonialAuthor={testimonialAuthor}
                   testimonial={testimonial}
+                  textStyle={{ paddingRight: 15 }}
                 />
               </div>
               <div
