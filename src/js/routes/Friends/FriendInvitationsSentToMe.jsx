@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import _ from 'lodash';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
 import FriendActions from '../../actions/FriendActions';
@@ -81,7 +82,7 @@ export default class FriendInvitationsSentToMe extends Component {
     return (
       <div className="opinion-view">
         <Helmet title="Your Friends - We Vote" />
-        <h1 className="h1">Friend Requests</h1>
+        <SectionTitle>Friend Requests</SectionTitle>
         <div>
           { friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
             <span>
@@ -115,3 +116,9 @@ export default class FriendInvitationsSentToMe extends Component {
     );
   }
 }
+
+const SectionTitle = styled.h2`
+  width: fit-content;  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 16px;
+`;

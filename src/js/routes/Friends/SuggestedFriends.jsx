@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import _ from 'lodash';
 import SuggestedFriendList from '../../components/Friends/SuggestedFriendList';
 import FriendActions from '../../actions/FriendActions';
@@ -81,7 +82,7 @@ export default class SuggestedFriends extends Component {
     return (
       <div className="opinion-view">
         <Helmet title="Your Friends - We Vote" />
-        <h1 className="h1">Suggested Friends</h1>
+        <SectionTitle>Suggested Friends</SectionTitle>
         <div>
           { suggestedFriendList && suggestedFriendList.length > 0 ? (
             <span>
@@ -115,3 +116,9 @@ export default class SuggestedFriends extends Component {
     );
   }
 }
+
+const SectionTitle = styled.h2`
+  width: fit-content;  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 16px;
+`;

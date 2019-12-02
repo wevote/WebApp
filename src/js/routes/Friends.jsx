@@ -24,6 +24,7 @@ import VoterStore from '../stores/VoterStore';
 import FriendInvitationsSentToMe from './Friends/FriendInvitationsSentToMe';
 import SuggestedFriends from './Friends/SuggestedFriends';
 import FriendsCurrent from './Friends/FriendsCurrent';
+import InviteByEmail from './Friends/InviteByEmail';
 import FriendInvitationsSentByMe from './Friends/FriendInvitationsSentByMe';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
@@ -36,7 +37,8 @@ class Friends extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      value: '',
+      mobileValue: '',
+      desktopValue: '',
     };
 
     this.handleResize = this.handleResize.bind(this);
@@ -60,14 +62,22 @@ class Friends extends Component {
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
 
-    this.handleResize();
-    window.addEventListener('resize', this.handleResize);
+    if (window.innerWidth < 769) {
+      this.setState({ mobileMode: true, mobileValue: this.props.params.tabItem || 'requests' });
+    } else {
+      this.setState({ mobileMode: false, desktopValue: this.props.params.tabItem || '' });
+    }
 
-    this.setState({ value: this.props.params.tabItem || 'requests' });
+    window.addEventListener('resize', this.handleResize);
   }
 
   // shouldComponentUpdate (nextState) {
   //   if (this.state.mobileMode !== nextState.mobileMode) return true;
+  //   return false;
+  // }
+
+  // shouldComponentUpdate (nextProps) {
+  //   if (this.props.params.tabItem !== nextProps.params.tabItem) return true;
   //   return false;
   // }
 
@@ -88,22 +98,18 @@ class Friends extends Component {
   }
 
   handleResize () {
-    this.setState({
-      windowWidth: window.innerWidth,
-    });
-
     if (window.innerWidth < 769) {
       this.setState({ mobileMode: true });
-      window.history.pushState({ tabItem: this.state.value }, '', `/friends/${this.state.value}`);
+      window.history.pushState({ tabItem: this.state.mobileValue }, '', `/friends/${this.state.mobileValue}`);
     } else {
-      window.history.pushState({ tabItem: '' }, '', '/friends');
       this.setState({ mobileMode: false });
+      window.history.pushState({ tabItem: this.state.desktopValue }, '', `/friends/${this.state.desktopValue}`);
     }
   }
 
   render () {
     renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
-    const { voter, value } = this.state;
+    const { voter, mobileValue, desktopValue } = this.state;
     const { classes } = this.props;
 
     if (!voter) {
@@ -111,107 +117,71 @@ class Friends extends Component {
     }
     const { is_signed_in: voterIsSignedIn } = voter;
 
-    let contentToDisplay;
+    let mobileContentToDisplay;
+    let desktopContentToDisplay;
 
     console.log("Friends list: ", this.state.suggestedFriendList);
 
-    switch (value) {
+    switch (mobileValue) {
       case 'requests':
-        contentToDisplay = (
+        mobileContentToDisplay = (
           <FriendInvitationsSentToMe />
         );
         break;
       case 'suggested':
-        contentToDisplay = (
+        mobileContentToDisplay = (
           <SuggestedFriends />
         );
         break;
       case 'invite':
-        contentToDisplay = (
-          <AddFriendsByEmail />
+        mobileContentToDisplay = (
+          <InviteByEmail />
         );
         break;
       case 'current':
-        contentToDisplay = (
+        mobileContentToDisplay = (
           <FriendsCurrent />
         );
         break;
       case 'sent-requests':
-        contentToDisplay = (
+        mobileContentToDisplay = (
           <FriendInvitationsSentByMe />
         );
         break;
       default:
-        contentToDisplay = (
-          'ALL'
+        mobileContentToDisplay = (
+          <FriendInvitationsSentToMe />
         );
     }
 
-    return (
-      <span>
-        {this.state.mobileMode ? (
-          <>
-            <Helmet title="Friends - We Vote" />
-            <Paper elevation={1}>
-              <Tabs
-                value={value}
-                // onChange={handleChange}
-                indicatorColor="primary"
-                textColor="primary"
-                variant="scrollable"
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
-              >
-                <Tab
-                  value="requests"
-                  label="Requests"
-                  onClick={() => {
-                    this.setState({ value: 'requests' });
-                    window.history.pushState({ tabItem: 'requests' }, '', '/friends/requests');
-                  }}
-                />
-                {this.state.suggestedFriendList.length > 0 || value === 'suggested' ? (
-                  <Tab
-                    value="suggested"
-                    label="Suggested"
-                    onClick={() => {
-                      this.setState({ value: 'suggested' });
-                      window.history.pushState({ tabItem: 'suggested' }, '', '/friends/suggested');
-                    }}
-                  />
-                ) : (
-                  null
-                )}
-                <Tab
-                  value="invite"
-                  label="Add Contacts"
-                  onClick={() => {
-                    this.setState({ value: 'invite' });
-                    window.history.pushState({ tabItem: 'invite' }, '', '/friends/invite');
-                  }}
-                />
-                <Tab
-                  value="current"
-                  label="Friends"
-                  onClick={() => {
-                    this.setState({ value: 'current' });
-                    window.history.pushState({ tabItem: 'current' }, '', '/friends/current');
-                  }}
-                />
-                <Tab
-                  value="sent-requests"
-                  label="Sent Requests"
-                  onClick={() => {
-                    this.setState({ value: 'sent-requests' });
-                    window.history.pushState({ tabItem: 'sent-requests' }, '', '/friends/sent-requests');
-                  }}
-                />
-              </Tabs>
-            </Paper>
-            <br />
-            {contentToDisplay}
-          </>
-        ) : (
+    switch (this.props.params.tabItem) {
+      case 'requests':
+        desktopContentToDisplay = (
+          <FriendInvitationsSentToMe />
+        );
+        break;
+      case 'suggested':
+        desktopContentToDisplay = (
+          <SuggestedFriends />
+        );
+        break;
+      case 'invite':
+        desktopContentToDisplay = (
+          <InviteByEmail />
+        );
+        break;
+      case 'current':
+        desktopContentToDisplay = (
+          <FriendsCurrent />
+        );
+        break;
+      case 'sent-requests':
+        desktopContentToDisplay = (
+          <FriendInvitationsSentByMe />
+        );
+        break;
+      default:
+        desktopContentToDisplay = (
           <>
             <Helmet title="Friends - We Vote" />
             <BrowserPushMessage incomingProps={this.props} />
@@ -253,6 +223,77 @@ class Friends extends Component {
                 ) : null}
               </div>
             </div>
+          </>
+        );
+    }
+
+    return (
+      <span>
+        {this.state.mobileMode ? (
+          <>
+            <Helmet title="Friends - We Vote" />
+            <Paper elevation={1}>
+              <Tabs
+                value={mobileValue}
+                // onChange={handleChange}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
+              >
+                <Tab
+                  value="requests"
+                  label="Requests"
+                  onClick={() => {
+                    this.setState({ mobileValue: 'requests' });
+                    window.history.pushState({ tabItem: 'requests' }, '', '/friends/requests');
+                  }}
+                />
+                {this.state.suggestedFriendList.length > 0 || mobileValue === 'suggested' ? (
+                  <Tab
+                    value="suggested"
+                    label="Suggested"
+                    onClick={() => {
+                      this.setState({ mobileValue: 'suggested' });
+                      window.history.pushState({ tabItem: 'suggested' }, '', '/friends/suggested');
+                    }}
+                  />
+                ) : (
+                  null
+                )}
+                <Tab
+                  value="invite"
+                  label="Add Contacts"
+                  onClick={() => {
+                    this.setState({ mobileValue: 'invite' });
+                    window.history.pushState({ tabItem: 'invite' }, '', '/friends/invite');
+                  }}
+                />
+                <Tab
+                  value="current"
+                  label="Friends"
+                  onClick={() => {
+                    this.setState({ mobileValue: 'current' });
+                    window.history.pushState({ tabItem: 'current' }, '', '/friends/current');
+                  }}
+                />
+                <Tab
+                  value="sent-requests"
+                  label="Sent Requests"
+                  onClick={() => {
+                    this.setState({ mobileValue: 'sent-requests' });
+                    window.history.pushState({ tabItem: 'sent-requests' }, '', '/friends/sent-requests');
+                  }}
+                />
+              </Tabs>
+            </Paper>
+            <br />
+            {mobileContentToDisplay}
+          </>
+        ) : (
+          <>
+            {desktopContentToDisplay}
           </>
         )}
       </span>
