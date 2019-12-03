@@ -20,9 +20,30 @@ export default class Header extends Component {
     weVoteBrandingOff: PropTypes.bool,
   };
 
+  constructor (props) {
+    super(props);
+    this.state = {};
+
+    this.handleResize = this.handleResize.bind(this);
+  }
+
+  componentDidMount () {
+    this.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  shouldComponentUpdate (nextState) {
+    if (this.state.windowWidth !== nextState.windowWidth) return true;
+    return false;
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('Header caught error: ', `${error} with info: `, info);
+  }
+
+  handleResize () {
+    this.setState({ windowWidth: window.innerWidth });
   }
 
   render () {
@@ -140,7 +161,7 @@ export default class Header extends Component {
           </div>
         </div>
       );
-    } else if (friendsMode) {
+    } else if (friendsMode && this.state.windowWidth >= 769) {
       const backToFriendsLink = '/friends';
       const backToFriendsLinkText = 'Back';
 

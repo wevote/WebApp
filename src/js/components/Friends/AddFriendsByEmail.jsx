@@ -439,7 +439,7 @@ const FriendBadge = styled.div`
 
 const SectionTitle = styled.h2`
   width: fit-content;  font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 16px;
 `;
 
