@@ -19,12 +19,6 @@ import VoterStore from '../../stores/VoterStore';
 const webAppConfig = require('../../config');
 
 class DeviceDialog extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    show: PropTypes.bool,
-    visibilityOffFunction: PropTypes.func.isRequired,
-  };
-
   // This can only be called by a developer running Cordova in an Simulator.  Voters will never see it.
   static clearAllCookies () {
     const cookies = document.cookie.split(';');
@@ -46,6 +40,12 @@ class DeviceDialog extends Component {
     d.setDate(d.getDate() - 1);
     document.cookie = `location_guess_closed=; expires=${d}; path=/;`;
   }
+
+  static propTypes = {
+    classes: PropTypes.object,
+    show: PropTypes.bool,
+    visibilityOffFunction: PropTypes.func.isRequired,
+  };
 
   constructor (props) {
     super(props);

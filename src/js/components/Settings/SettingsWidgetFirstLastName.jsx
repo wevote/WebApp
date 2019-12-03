@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import LoadingWheel from '../LoadingWheel';
+import FriendActions from '../../actions/FriendActions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterActions from '../../actions/VoterActions';
@@ -18,6 +18,7 @@ export default class SettingsWidgetFirstLastName extends Component {
   static propTypes = {
     displayOnly: PropTypes.bool,
     hideFirstLastName: PropTypes.bool,
+    hideNameShownWithEndorsements: PropTypes.bool,
     voterHasMadeChangesFunction: PropTypes.func,
   };
 
@@ -59,6 +60,7 @@ export default class SettingsWidgetFirstLastName extends Component {
     this.voterStoreListener.remove();
     this.timer = null;
     this.clearStatusTimer = null;
+    FriendActions.friendInvitationsWaitingForVerification();
     restoreStylesAfterCordovaKeyboard('SettingsWidgetFirstLastName');
   }
 
@@ -164,106 +166,109 @@ export default class SettingsWidgetFirstLastName extends Component {
       return LoadingWheel;
     }
 
+    const { displayOnly, firstName, isOrganization, lastName, organizationName, organizationNameSavedStatus, voterNameSavedStatus } = this.state;
+
     return (
       <div className="">
-        {this.state.voter ? (
-          <span>
-            {this.state.isOrganization ? (
-              <span>
-                {this.state.displayOnly ? (
+        <span>
+          {isOrganization ? (
+            <span>
+              {displayOnly ? (
+                <div>
+                  <div>{organizationName}</div>
+                </div>
+              ) : (
+                <form onSubmit={(e) => { e.preventDefault(); }}>
+                  <label htmlFor="organization-name">
+                    Organization Name as Shown on Your Voter Guides
+                    <input
+                      type="text"
+                      autoComplete="organization"
+                      className="form-control"
+                      id="organization-name"
+                      name="organizationName"
+                      placeholder="How would you like your organization name displayed publicly?"
+                      onKeyDown={this.handleKeyPressOrganizationName}
+                      onChange={this.updateOrganizationName}
+                      value={organizationName}
+                    />
+                  </label>
+                  <div className="u-gray-mid">{organizationNameSavedStatus}</div>
+                </form>
+              )}
+            </span>
+          ) : (
+            <span>
+              {displayOnly ? (
+                <div>
                   <div>
-                    <div>{this.state.organizationName}</div>
+                    {firstName}
+                    {' '}
+                    {lastName}
                   </div>
-                ) : (
-                  <form onSubmit={(e) => { e.preventDefault(); }}>
-                    <label htmlFor="organization-name">
-                      Organization Name as Shown on Your Voter Guides
-                      <input
-                        type="text"
-                        autoComplete="organization"
-                        className="form-control"
-                        id="organization-name"
-                        name="organizationName"
-                        placeholder="How would you like your organization name displayed publicly?"
-                        onKeyDown={this.handleKeyPressOrganizationName}
-                        onChange={this.updateOrganizationName}
-                        value={this.state.organizationName}
-                      />
-                    </label>
-                    <div className="u-gray-mid">{this.state.organizationNameSavedStatus}</div>
-                  </form>
-                )}
-              </span>
-            ) : (
-              <span>
-                {this.state.displayOnly ? (
-                  <div>
-                    <div>
-                      {this.state.firstName}
-                      {' '}
-                      {this.state.lastName}
-                    </div>
-                    <div>{this.state.organizationName}</div>
-                  </div>
-                ) : (
-                  <form onSubmit={(e) => { e.preventDefault(); }}>
-                    {!this.props.hideFirstLastName ? (
-                      <span>
-                        <label htmlFor="first-name">
-                          First Name
-                          <input
-                            type="text"
-                            autoComplete="given-name"
-                            className="form-control"
-                            id="first-name"
-                            name="firstName"
-                            placeholder="First Name"
-                            onKeyDown={this.handleKeyPressVoterName}
-                            onChange={this.updateVoterName}
-                            value={this.state.firstName}
-                          />
-                        </label>
-                        <label htmlFor="last-name">
-                          Last Name
-                          <input
-                            type="text"
-                            autoComplete="family-name"
-                            className="form-control"
-                            id="last-name"
-                            name="lastName"
-                            placeholder="Last Name"
-                            onKeyDown={this.handleKeyPressVoterName}
-                            onChange={this.updateVoterName}
-                            value={this.state.lastName}
-                          />
-                        </label>
-                        <div className="u-gray-mid">{this.state.voterNameSavedStatus}</div>
-                      </span>
-                    ) : null
-                    }
-                    <label htmlFor="organization-name">
-                      Name Shown with Endorsements
-                      <input
-                        type="text"
-                        autoComplete="organization"
-                        className="form-control"
-                        id="organization-name"
-                        name="organizationName"
-                        placeholder="How would you like your name displayed publicly?"
-                        onKeyDown={this.handleKeyPressOrganizationName}
-                        onChange={this.updateOrganizationName}
-                        value={this.state.organizationName}
-                      />
-                    </label>
-                    <div className="u-gray-mid">{this.state.organizationNameSavedStatus}</div>
-                  </form>
-                )}
-              </span>
-            )}
-          </span>
-        ) :
-          <div><Link to="/settings/account">Please Sign In</Link></div>
-        }
+                  {!this.props.hideNameShownWithEndorsements && (
+                    <div>{organizationName}</div>
+                  )}
+                </div>
+              ) : (
+                <form onSubmit={(e) => { e.preventDefault(); }}>
+                  {!this.props.hideFirstLastName && (
+                    <span>
+                      <label htmlFor="first-name">
+                        First Name
+                        <input
+                          type="text"
+                          autoComplete="given-name"
+                          className="form-control"
+                          id="first-name"
+                          name="firstName"
+                          placeholder="First Name"
+                          onKeyDown={this.handleKeyPressVoterName}
+                          onChange={this.updateVoterName}
+                          value={firstName}
+                        />
+                      </label>
+                      <label htmlFor="last-name">
+                        Last Name
+                        <input
+                          type="text"
+                          autoComplete="family-name"
+                          className="form-control"
+                          id="last-name"
+                          name="lastName"
+                          placeholder="Last Name"
+                          onKeyDown={this.handleKeyPressVoterName}
+                          onChange={this.updateVoterName}
+                          value={lastName}
+                        />
+                      </label>
+                      <div className="u-gray-mid">{voterNameSavedStatus}</div>
+                    </span>
+                  )}
+                  {!this.props.hideNameShownWithEndorsements && (
+                    <>
+                      <label htmlFor="organization-name">
+                        Name Shown with Endorsements
+                        <input
+                          type="text"
+                          autoComplete="organization"
+                          className="form-control"
+                          id="organization-name"
+                          name="organizationName"
+                          placeholder="How would you like your name displayed publicly?"
+                          onKeyDown={this.handleKeyPressOrganizationName}
+                          onChange={this.updateOrganizationName}
+                          value={organizationName}
+                        />
+                      </label>
+                      <div className="u-gray-mid">{organizationNameSavedStatus}</div>
+                    </>
+                  )}
+                </form>
+              )}
+            </span>
+          )}
+        </span>
       </div>
     );
   }

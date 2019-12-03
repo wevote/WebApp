@@ -592,7 +592,7 @@ class HeaderBackToBallot extends Component {
         {showSignInModal && (
           <SignInModal
             show={showSignInModal}
-            toggleFunction={this.closeSignInModal}
+            closeFunction={this.closeSignInModal}
           />
         )}
       </AppBar>

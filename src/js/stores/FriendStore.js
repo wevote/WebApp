@@ -39,6 +39,11 @@ class FriendStore extends ReduceStore {
     return friendInvitationsProcessed || {};
   }
 
+  friendInvitationsWaitingForVerification () {
+    const { friendInvitationsWaitingForVerification } = this.getState();
+    return friendInvitationsWaitingForVerification || [];
+  }
+
   getErrorMessageToShowVoter () {
     const { errorMessageToShowVoter } = this.getState();
     return errorMessageToShowVoter;
@@ -80,8 +85,8 @@ class FriendStore extends ReduceStore {
   }
 
   reduce (state, action) {
-    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success) return state;
+    // Exit if we don't receive a response
+    if (!action.res) return state;  //  || !action.res.success // We deal with failures below
 
     switch (action.type) {
       case 'friendInviteResponse':
@@ -132,19 +137,12 @@ class FriendStore extends ReduceStore {
         };
 
       case 'friendInvitationByEmailSend':
-        if (action.res.sender_voter_email_address_missing) {
-          // Return the person to the form where they can fill in their email address
-          return {
-            ...state,
-            addFriendsByEmailStep: 'on_collect_email_step',
-            errorMessageToShowVoter: action.res.error_message_to_show_voter,
-          };
-        } else {
-          // Reset the invitation form
-        }
+        // console.log('FriendStore friendInvitationByEmailSend, action.res:', action.res);
         FriendActions.friendInvitationsSentByMe();
+        FriendActions.friendInvitationsWaitingForVerification();
         return {
           ...state,
+          errorMessageToShowVoter: action.res.error_message_to_show_voter,
         };
 
       case 'emailBallotData':
@@ -209,41 +207,48 @@ class FriendStore extends ReduceStore {
         };
 
       case 'friendList':
-        if (action.res.kind_of_list === 'CURRENT_FRIENDS') {
-          // console.log("FriendStore incoming data CURRENT_FRIENDS, action.res:", action.res);
-          return {
-            ...state,
-            currentFriends: action.res.friend_list,
-          };
-        } else if (action.res.kind_of_list === 'FRIEND_INVITATIONS_SENT_BY_ME') {
-          // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_BY_ME, action.res:", action.res);
-          return {
-            ...state,
-            friendInvitationsSentByMe: action.res.friend_list,
-          };
-        } else if (action.res.kind_of_list === 'FRIEND_INVITATIONS_SENT_TO_ME') {
-          // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_TO_ME, action.res:", action.res);
-          return {
-            ...state,
-            friendInvitationsSentToMe: action.res.friend_list,
-          };
-        } else if (action.res.kind_of_list === 'FRIEND_INVITATIONS_PROCESSED') {
-          // console.log("FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:", action.res);
-          return {
-            ...state,
-            friendInvitationsProcessed: action.res.friend_list,
-          };
-        } else if (action.res.kind_of_list === 'SUGGESTED_FRIEND_LIST') {
-          // console.log("FriendStore incoming data suggestedFriendList, action.res:", action.res);
-          return {
-            ...state,
-            suggestedFriendList: action.res.friend_list,
-          };
+        switch (action.res.kind_of_list) {
+          case 'CURRENT_FRIENDS':
+            // console.log("FriendStore incoming data CURRENT_FRIENDS, action.res:", action.res);
+            return {
+              ...state,
+              currentFriends: action.res.friend_list,
+            };
+          case 'FRIEND_INVITATIONS_SENT_BY_ME':
+            // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_BY_ME, action.res:", action.res);
+            return {
+              ...state,
+              friendInvitationsSentByMe: action.res.friend_list,
+            };
+          case 'FRIEND_INVITATIONS_SENT_TO_ME':
+            // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_TO_ME, action.res:", action.res);
+            return {
+              ...state,
+              friendInvitationsSentToMe: action.res.friend_list,
+            };
+          case 'FRIEND_INVITATIONS_PROCESSED':
+            // console.log("FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:", action.res);
+            return {
+              ...state,
+              friendInvitationsProcessed: action.res.friend_list,
+            };
+          case 'FRIEND_INVITATIONS_WAITING_FOR_VERIFICATION':
+            // console.log("FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:", action.res);
+            return {
+              ...state,
+              friendInvitationsWaitingForVerification: action.res.friend_list,
+            };
+          case 'SUGGESTED_FRIEND_LIST':
+            // console.log("FriendStore incoming data suggestedFriendList, action.res:", action.res);
+            return {
+              ...state,
+              suggestedFriendList: action.res.friend_list,
+            };
+          default:
+            return {
+              ...state,
+            };
         }
-
-        return {
-          ...state,
-        };
 
       case 'voterSignOut':
         // console.log("resetting FriendStore");

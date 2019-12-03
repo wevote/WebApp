@@ -20,14 +20,31 @@ export default class Header extends Component {
     weVoteBrandingOff: PropTypes.bool,
   };
 
-  // componentDidUpdate () {
-  //   console.log("React Header ---------------   componentDidMount ()");
-  //   let heightA = $("#app-header").outerHeight();
-  //   let heightHC = $("#header-container").outerHeight();
-  //   let height2N = $("#secondary-nav-bar").outerHeight();
-  //   let heightW = $("#headroom-wrapper").outerHeight();
-  //   console.log("header rectangle height: " + heightA + ", " + heightHC + ", " + height2N + ", " + heightW);
-  // }
+  constructor (props) {
+    super(props);
+    this.state = {};
+
+    this.handleResize = this.handleResize.bind(this);
+  }
+
+  componentDidMount () {
+    this.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  shouldComponentUpdate (nextState) {
+    if (this.state.windowWidth !== nextState.windowWidth) return true;
+    return false;
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('Header caught error: ', `${error} with info: `, info);
+  }
+
+  handleResize () {
+    this.setState({ windowWidth: window.innerWidth });
+  }
 
   render () {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
@@ -144,7 +161,7 @@ export default class Header extends Component {
           </div>
         </div>
       );
-    } else if (friendsMode) {
+    } else if (friendsMode && this.state.windowWidth >= 769) {
       const backToFriendsLink = '/friends';
       const backToFriendsLinkText = 'Back';
 

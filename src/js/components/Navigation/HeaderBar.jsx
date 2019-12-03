@@ -31,6 +31,9 @@ import VoterStore from '../../stores/VoterStore';
 import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 
+const webAppConfig = require('../../config');
+
+
 class HeaderBar extends Component {
   static goToGetStarted () {
     const getStartedNow = '/ballot';
@@ -47,7 +50,7 @@ class HeaderBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      aboutMenuOpen: false,
+      // aboutMenuOpen: false,
       chosenSiteLogoUrl: '',
       componentDidMountFinished: false,
       friendInvitationsSentToMe: 0,
@@ -95,7 +98,6 @@ class HeaderBar extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
       // console.log("shouldComponentUpdate: componentDidMountFinished === false");
       return true;
@@ -132,39 +134,46 @@ class HeaderBar extends Component {
     if (this.state.showSignInModal !== nextState.showSignInModal) {
       return true;
     }
-    if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
+    if (this.state.voter && nextState.voter && this.state.voter.is_signed_in !== nextState.voter.is_signed_in) {
+      // console.log('HeaderBar voter.isSignedIn shouldComponentUpdate true');
       return true;
     }
-    if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
+    if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
       return true;
     }
     const currentPathnameExists = this.props.location && this.props.location.pathname;
     const nextPathnameExists = nextProps.location && nextProps.location.pathname;
     // One exists, and the other doesn't
     if ((currentPathnameExists && !nextPathnameExists) || (!currentPathnameExists && nextPathnameExists)) {
-      // console.log("shouldComponentUpdate: PathnameExistsDifference");
+      // console.log("HeaderBar shouldComponentUpdate: PathnameExistsDifference");
       return true;
     }
     if (currentPathnameExists && nextPathnameExists && this.props.location.pathname !== nextProps.location.pathname) {
-      // console.log("shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
+      // console.log("HeaderBar shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
       return true;
     }
     const thisVoterExists = this.state.voter !== undefined;
     const nextVoterExists = nextState.voter !== undefined;
     if (nextVoterExists && !thisVoterExists) {
-      // console.log("shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
+      // console.log("HeaderBar shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
       return true;
     }
-    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_twitter !== nextState.voter.signed_in_twitter) {
-      // console.log("shouldComponentUpdate: this.state.voter.signed_in_twitter", this.state.voter.signed_in_twitter, ", nextState.voter.signed_in_twitter", nextState.voter.signed_in_twitter);
-      return true;
-    }
-    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_facebook !== nextState.voter.signed_in_facebook) {
-      // console.log("shouldComponentUpdate: this.state.voter.signed_in_facebook", this.state.voter.signed_in_facebook, ", nextState.voter.signed_in_facebook", nextState.voter.signed_in_facebook);
-      return true;
-    }
-    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
-      return true;
+    if (thisVoterExists && nextVoterExists) {
+      if (this.state.voter.voter_photo_url_medium !== nextState.voter.voter_photo_url_medium) {
+        // console.log('HeaderBar shouldComponentUpdate: this.state.voter.voter_photo_url_medium', this.state.voter.voter_photo_url_medium, ', nextState.voter.voter_photo_url_medium', nextState.voter.voter_photo_url_medium);
+        return true;
+      }
+      if (this.state.voter.signed_in_twitter !== nextState.voter.signed_in_twitter) {
+        // console.log("HeaderBar shouldComponentUpdate: this.state.voter.signed_in_twitter", this.state.voter.signed_in_twitter, ", nextState.voter.signed_in_twitter", nextState.voter.signed_in_twitter);
+        return true;
+      }
+      if (this.state.voter.signed_in_facebook !== nextState.voter.signed_in_facebook) {
+        // console.log("HeaderBar shouldComponentUpdate: this.state.voter.signed_in_facebook", this.state.voter.signed_in_facebook, ", nextState.voter.signed_in_facebook", nextState.voter.signed_in_facebook);
+        return true;
+      }
+      if (this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
+        return true;
+      }
     }
     // console.log('HeaderBar shouldComponentUpdate false');
     return false;
@@ -205,6 +214,7 @@ class HeaderBar extends Component {
     this.setState({
       voter,
       voterIsSignedIn,
+      showSignInModal: AppStore.showSignInModal(),
     });
   }
 
@@ -244,10 +254,14 @@ class HeaderBar extends Component {
   closeNewVoterGuideModal () {
     // console.log('HeaderBar closeNewVoterGuideModal');
     AppActions.setShowNewVoterGuideModal(false);
+    // signInModalGlobalState.set('isShowingSignInModal', false);
+    HeaderBar.goToGetStarted();
   }
 
   closeSignInModal () {
     AppActions.setShowSignInModal(false);
+    // signInModalGlobalState.set('isShowingSignInModal', false);
+    HeaderBar.goToGetStarted();
   }
 
   toggleSignInModal () {
@@ -295,6 +309,7 @@ class HeaderBar extends Component {
       showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal,
       showSignInModal, voter, voterIsSignedIn,
     } = this.state;
+    // console.log('Header Bar, showSignInModal ', showSignInModal);
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
@@ -330,7 +345,7 @@ class HeaderBar extends Component {
 
     const doNotShowWeVoteLogo = weVoteBrandingOff || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
-    const enableFriends = true;   // DALE: FRIENDS TEMPORARILY DISABLED
+    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? true : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
@@ -351,16 +366,30 @@ class HeaderBar extends Component {
                 classes={{ indicator: classes.indicator }}
               >
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
+                  <Tab classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                 )}
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
+                  <Tab classes={{ root: classes.tabRootDefault }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
                 )}
                 { enableFriends && showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} onClick={() => this.handleNavigation('/friends')} />
+                  <Tab
+                    classes={(numberOfIncomingFriendRequests > 0) ? { root: classes.tabRootIncomingFriendRequests } : { root: classes.tabRootDefault }}
+                    id="friendsTabHeaderBar"
+                    label={(
+                      <Badge
+                        classes={{ badge: classes.headerBadge }}
+                        badgeContent={numberOfIncomingFriendRequests}
+                        color="primary"
+                        max={9}
+                      >
+                        My Friends
+                      </Badge>
+                    )}
+                    onClick={() => this.handleNavigation('/friends')}
+                  />
                 )}
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} id="voteTabHeaderBar" label="Vote" onClick={() => this.handleNavigation('/ballot/vote')} />
+                  <Tab classes={{ root: classes.tabRootVote }} id="voteTabHeaderBar" label="Vote" onClick={() => this.handleNavigation('/ballot/vote')} />
                 )}
               </Tabs>
             </div>
@@ -478,7 +507,7 @@ class HeaderBar extends Component {
         {showSignInModal && (
           <SignInModal
             show={showSignInModal}
-            toggleFunction={this.closeSignInModal}
+            closeFunction={this.closeSignInModal}
           />
         )}
         {showSelectBallotModal && (
@@ -559,8 +588,17 @@ const styles = theme => ({
       padding: 2,
     },
   },
-  tabRoot: {
+  tabRootBallot: {
+    minWidth: 90,
+  },
+  tabRootDefault: {
+    minWidth: 110,
+  },
+  tabRootIncomingFriendRequests: {
     minWidth: 130,
+  },
+  tabRootVote: {
+    minWidth: 70,
   },
   indicator: {
     height: 4,

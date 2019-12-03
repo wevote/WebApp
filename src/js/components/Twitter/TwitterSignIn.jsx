@@ -14,12 +14,6 @@ import SplitIconButton from '../Widgets/SplitIconButton';
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 
 class TwitterSignIn extends Component {
-  static propTypes = {
-    buttonText: PropTypes.string,
-    inModal: PropTypes.bool,
-    toggleSignInModal: PropTypes.func,
-  };
-
   // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
   static handleTwitterOpenURL (url) {
     oAuthLog(`---------------xxxxxx-------- Application handleTwitterOpenUrl: ${url}`);
@@ -82,6 +76,12 @@ class TwitterSignIn extends Component {
     }
   }
 
+  static propTypes = {
+    buttonText: PropTypes.string,
+    inModal: PropTypes.bool,
+    closeSignInModal: PropTypes.func,
+  };
+
   constructor (props) {
     super(props);
     this.state = {
@@ -96,8 +96,8 @@ class TwitterSignIn extends Component {
     if (isIOS()) {
       cordovaOpenSafariView(requestURL, null, 50);
       if (inModal) {
-        if (this.props.toggleSignInModal) {
-          this.props.toggleSignInModal();
+        if (this.props.closeSignInModal) {
+          this.props.closeSignInModal();
         }
       }
     } else if (isAndroid()) {
@@ -116,13 +116,13 @@ class TwitterSignIn extends Component {
 
         // inAppBrowserRef.close();
         if (inModal) {
-          if (this.props.toggleSignInModal) {
-            this.props.toggleSignInModal();
+          if (this.props.closeSignInModal) {
+            this.props.closeSignInModal();
           }
         }
       });
     }
-  }
+  };
 
   twitterSignInWebApp () {
     const brandingOff = cookies.getItem('we_vote_branding_off') || 0;

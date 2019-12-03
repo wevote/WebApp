@@ -11,6 +11,9 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import { renderLog } from '../../utils/logging';
 import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
 
+const webAppConfig = require('../../config');
+
+
 export default class HamburgerMenu extends Component {
   // This can only be called by a developer running Cordova in an Simulator.  Voters will never see it.
   static clearAllCookies () {
@@ -101,6 +104,7 @@ export default class HamburgerMenu extends Component {
     const { voter_photo_url_medium: photoUrl } = voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
     const showSettingsInDevelopment = false; // If developing any of the new settings, change this to true
+    const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? true : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
 
@@ -161,7 +165,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && (
+            {isSignedIn && enableNextRelease && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/domain"
@@ -171,7 +175,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && (
+            {isSignedIn && enableNextRelease && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/sharing"
@@ -181,7 +185,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && (
+            {isSignedIn && enableNextRelease && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/subscription"
@@ -191,7 +195,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && (
+            {isSignedIn && enableNextRelease && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/analytics"

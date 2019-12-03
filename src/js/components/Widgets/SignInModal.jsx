@@ -16,7 +16,7 @@ class SignInModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
     show: PropTypes.bool,
-    toggleFunction: PropTypes.func.isRequired,
+    closeFunction: PropTypes.func.isRequired,
   };
 
   constructor (props) {
@@ -28,7 +28,6 @@ class SignInModal extends Component {
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // When this modal is opened, set a cookie with the current path (done in Application.js)
   }
 
   componentWillUnmount () {
@@ -39,7 +38,7 @@ class SignInModal extends Component {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
     if (secretCodeVerified) {
-      this.props.toggleFunction();
+      this.props.closeFunction();
     } else {
       const voter = VoterStore.getVoter();
       this.setState({
@@ -68,7 +67,7 @@ class SignInModal extends Component {
       <Dialog
         classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(); }}
+        onClose={() => { this.props.closeFunction(); }}
       >
         <DialogTitle>
           <Typography className="text-center">
@@ -77,7 +76,7 @@ class SignInModal extends Component {
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}
-            onClick={() => { this.props.toggleFunction(); }}
+            onClick={() => { this.props.closeFunction(); }}
             id="profileCloseSignInModal"
           >
             <CloseIcon />
@@ -93,7 +92,7 @@ class SignInModal extends Component {
               ) : (
                 <div>
                   <SettingsAccount
-                    toggleSignInModal={this.props.toggleFunction}
+                    closeSignInModal={this.props.closeFunction}
                     inModal
                   />
                 </div>

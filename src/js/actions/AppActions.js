@@ -9,10 +9,6 @@ export default {
     Dispatcher.dispatch({ type: 'getVoterGuideSettingsDashboardEditMode', payload: getVoterGuideSettingsDashboardEditMode });
   },
 
-  setHeadroomUnpinned (unpinned) {
-    Dispatcher.dispatch({ type: 'headroomUnpinned', payload: unpinned });
-  },
-
   setScrolled (scrolledDown) {
     Dispatcher.dispatch({ type: 'scrolledDown', payload: scrolledDown });
   },

@@ -1,8 +1,9 @@
-import { isWebApp, isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
+import { isWebApp } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 import Dispatcher from '../dispatcher/Dispatcher';
 import FacebookConstants from '../constants/FacebookConstants';
-import FriendActions from './FriendActions';
+import FriendActions from './FriendActions'; // eslint-disable-line import/no-cycle
 import { oAuthLog } from '../utils/logging';
+import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 import VoterActions from './VoterActions'; // eslint-disable-line import/no-cycle
 import VoterSessionActions from './VoterSessionActions';
 import webAppConfig from '../config';
@@ -25,6 +26,7 @@ export default {
   },
 
   appLogout () {
+    signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
     VoterSessionActions.voterSignOut(); // This deletes the device_id cookie
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
@@ -109,7 +111,7 @@ export default {
 
   getPicture () {
     this.facebookApi().api(
-      '/me?fields=picture.type(large)', ['public_profile', 'email'],
+      '/me?fields=picture.type(large)&redirect=false', ['public_profile', 'email'],
       (response) => {
         oAuthLog('getFacebookProfilePicture response', response);
         Dispatcher.dispatch({
@@ -134,19 +136,7 @@ export default {
     // logged into facebook in Cordova, and your're not, you get a distracting login dialog that comes from the facebook native
     // package everytime we refresh the avatar in the header in this function -- so first check if the voter is really logged in.
     if (this.facebookApi()) {
-      if (isCordova()) {
-        this.facebookApi().getLoginStatus(function response (responseReallyLoggedIn) {
-          if (responseReallyLoggedIn.status === 'connected') {
-            if (this && this.getPicture) {
-              this.getPicture();
-            } else {
-              console.log('FacebookActions getPicture() not invoked, this or getPicture() undefined or null');
-            }
-          }
-        });
-      } else {
-        this.getPicture();
-      }
+      this.getPicture();
     } else {
       console.log('FacebookActions.getFacebookProfilePicture was not invoked, this.facebookApi() undefined');
     }
@@ -246,6 +236,7 @@ export default {
   },
 
   loginSuccess (successResponse) {
+    signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
     if (successResponse.authResponse) {
       oAuthLog('FacebookActions loginSuccess userData: ', successResponse);
       Dispatcher.dispatch({
@@ -259,6 +250,7 @@ export default {
   },
 
   loginFailure (errorResponse) {
+    signInModalGlobalState.set('waitingForFacebookApiCompletion', false);
     oAuthLog('FacebookActions loginFailure error response: ', errorResponse);
   },
 
@@ -317,8 +309,8 @@ export default {
   },
 
   // Save incoming auth data from Facebook
-  voterFacebookSignInAuth (data) {
-    // console.log("FacebookActions voterFacebookSignInAuth");
+  saveFacebookSignInAuth (data) {
+    // console.log('saveFacebookSignInAuth (result of incoming data from the FB API) kicking off an api server voterFacebookSignInSave');
     Dispatcher.loadEndpoint('voterFacebookSignInSave', {
       facebook_access_token: data.accessToken || false,
       facebook_user_id: data.userID || false,

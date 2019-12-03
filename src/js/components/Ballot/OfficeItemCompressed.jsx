@@ -328,7 +328,7 @@ class OfficeItemCompressed extends Component {
       //   const organizationNameIssueSupportListDisplay =
       //     organizationNameIssueSupportList.map(organizationName => (
       //       <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-      //         <img src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')} width="20" height="20" />
+      //         <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')} width="20" height="20" />
       //         <span>&nbsp;</span>
       //         <span>
       //           {organizationName}
@@ -341,7 +341,7 @@ class OfficeItemCompressed extends Component {
       //   const organizationNameIssueOpposeListDisplay =
       //     organizationNameIssueOpposeList.map(organizationName => (
       //       <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-      //         <img src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')} width="20" height="20" />
+      //         <img src={cordovaDot('/img/global/svg-icons/thumbs-down-color-icon.svg')} width="20" height="20" />
       //         <span>&nbsp;</span>
       //         <span>
       //           {organizationName}
@@ -364,7 +364,7 @@ class OfficeItemCompressed extends Component {
       //   const nameNetworkSupportListDisplay =
       //     nameNetworkSupportList.map(speakerDisplayName => (
       //       <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-      //         <img src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')} width="20" height="20" alt="thumbs up" />
+      //         <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')} width="20" height="20" alt="thumbs up" />
       //         <span>&nbsp;</span>
       //         <span>
       //           {speakerDisplayName}
@@ -377,7 +377,7 @@ class OfficeItemCompressed extends Component {
       //   const nameNetworkOpposeListDisplay =
       //     nameNetworkOpposeList.map(speakerDisplayName => (
       //       <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-      //         <img src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')} width="20" height="20" alt="thumbs down" />
+      //         <img src={cordovaDot('/img/global/svg-icons/thumbs-down-color-icon.svg')} width="20" height="20" alt="thumbs down" />
       //         <span>&nbsp;</span>
       //         <span>
       //           {speakerDisplayName}

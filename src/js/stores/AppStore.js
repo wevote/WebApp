@@ -5,13 +5,15 @@ import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
+/**
+ * AppStore allows you to store state information, in situations where there is no API call needed
+ */
 class AppStore extends ReduceStore {
   getInitialState () {
     return {
       chosenSiteLogoUrl: '',
       getVoterGuideSettingsDashboardEditMode: '',
       getStartedMode: '',
-      headroomUnpinned: false,
       hideWeVoteLogo: false,
       hostname: '',
       scrolledDown: false,
@@ -36,7 +38,7 @@ class AppStore extends ReduceStore {
   }
 
   getHostname () {
-    return this.getState().hostname;
+    return this.getState().hostname || '';
   }
 
   getScrolledDown () {
@@ -78,10 +80,6 @@ class AppStore extends ReduceStore {
 
   isOnChosenFullDomainUrl () {
     return this.getState().onChosenFullDomainUrl;
-  }
-
-  headroomIsUnpinned () {
-    return this.getState().headroomUnpinned;
   }
 
   showEditAddressButton () {
@@ -135,8 +133,6 @@ class AppStore extends ReduceStore {
         return { ...state, getStartedMode: action.payload };
       case 'getVoterGuideSettingsDashboardEditMode':
         return { ...state, getVoterGuideSettingsDashboardEditMode: action.payload };
-      case 'headroomUnpinned':
-        return { ...state, headroomUnpinned: action.payload };
       case 'scrolledDown':
         return { ...state, scrolledDown: action.payload };
       case 'showEditAddressButton':

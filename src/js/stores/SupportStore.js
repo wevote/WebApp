@@ -3,7 +3,7 @@ import assign from 'object-assign';
 import Dispatcher from '../dispatcher/Dispatcher';
 import { mergeTwoObjectLists } from '../utils/textFormat';
 import SupportActions from '../actions/SupportActions';
-import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
+import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
 
 class SupportStore extends ReduceStore {
   getInitialState () {
@@ -152,6 +152,7 @@ class SupportStore extends ReduceStore {
 
     switch (action.type) {
       case 'voterAddressRetrieve':
+        // We should really avoid overly broad cascading API calls like this, they can cause problems
         SupportActions.voterAllPositionsRetrieve();
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return state;

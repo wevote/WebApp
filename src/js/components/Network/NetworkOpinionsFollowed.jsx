@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import { Button } from 'react-bootstrap';
 import { Link } from 'react-router';
+import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -77,7 +78,7 @@ export default class NetworkOpinionsFollowed extends Component {
       <div className="opinions-followed__container">
         <section className="card">
           <div className="card-main">
-            <h1 className="h4">Who You Are Following</h1>
+            <SectionTitle>Who You Are Following</SectionTitle>
             <div className="voter-guide-list card">
               <div className="card-child__list-group">
                 {
@@ -119,3 +120,9 @@ export default class NetworkOpinionsFollowed extends Component {
     );
   }
 }
+
+const SectionTitle = styled.h2`
+  width: fit-content;  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 16px;
+`;

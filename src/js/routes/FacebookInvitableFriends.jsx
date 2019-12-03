@@ -250,7 +250,7 @@ export default class FacebookInvitableFriends extends Component {
     }
 
     // console.log("SignIn.jsx this.state.facebookAuthResponse:", this.state.facebookAuthResponse);
-    if (!this.state.voter.signed_in_facebook && this.state.facebookAuthResponse && this.state.facebookAuthResponse.facebook_retrieve_attempted) {
+    if (!this.state.voter.signed_in_facebook && this.state.facebookAuthResponse) {
       const { facebook_secret_key: facebookSecretKey } = this.state.facebookAuthResponse;
 
       if (this.state.yes_please_merge_accounts) {
@@ -263,7 +263,6 @@ export default class FacebookInvitableFriends extends Component {
       if (this.state.facebookAuthResponse.existing_facebook_account_found) {
         // Is there anything to save from this voter account?
         if (this.state.facebookAuthResponse.voter_has_data_to_preserve) {
-          // console.log("FacebookSignInProcess voter_has_data_to_preserve is TRUE");
           // Display the question of whether to merge accounts or not
           return (
             <WouldYouLikeToMergeAccounts
@@ -273,7 +272,6 @@ export default class FacebookInvitableFriends extends Component {
           );
         } else {
           // Go ahead and merge the accounts, which means deleting the current voter and switching to the facebook-linked account
-          // console.log("FacebookSignInProcess this.voterMergeTwoAccountsByFacebookKey - No data to merge");
           this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey, this.state.facebookAuthResponse.voter_has_data_to_preserve);
           return LoadingWheel;
         }
