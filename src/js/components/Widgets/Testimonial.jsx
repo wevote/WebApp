@@ -11,6 +11,7 @@ class Testimonial extends React.Component {
     testimonialAuthor: PropTypes.string,
     testimonial: PropTypes.string,
     imageUrl: PropTypes.string,
+    textStyle: PropTypes.object,
   };
 
   shouldComponentUpdate (nextProps) {
@@ -29,8 +30,7 @@ class Testimonial extends React.Component {
 
   render () {
     renderLog('Testimonial');  // Set LOG_RENDER_EVENTS to log all renders
-    const { testimonialAuthor, imageUrl, testimonial } = this.props;
-
+    const { testimonialAuthor, imageUrl, testimonial, textStyle } = this.props;
     return (
       <TestimonialContainer>
         <ImageHandler
@@ -42,7 +42,9 @@ class Testimonial extends React.Component {
         <TestimonialAuthor>
           {testimonialAuthor}
         </TestimonialAuthor>
-        <TextStyled>
+        <TextStyled
+          style={textStyle}
+        >
           <FormatQuote style={{
             transform: 'rotate(180deg)',
             verticalAlign: 'text-bottom',

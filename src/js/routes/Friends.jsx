@@ -18,9 +18,12 @@ import FirstAndLastNameRequiredAlert from '../components/Widgets/FirstAndLastNam
 import FriendsCurrentPreview from '../components/Friends/FriendsCurrentPreview';
 import FriendInvitationsSentByMePreview from '../components/Friends/FriendInvitationsSentByMePreview';
 import FriendInvitationsSentToMePreview from '../components/Friends/FriendInvitationsSentToMePreview';
+import FriendsPromoBox from '../components/Friends/FriendsPromoBox';
 import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import VoterStore from '../stores/VoterStore';
+import daleMcGrewJpm from '../../img/global/photos/Dale_McGrew-200x200.jpg';
+import { cordovaDot } from '../utils/cordovaUtils';
 import FriendInvitationsSentToMe from './Friends/FriendInvitationsSentToMe';
 import SuggestedFriends from './Friends/SuggestedFriends';
 import FriendsCurrent from './Friends/FriendsCurrent';
@@ -28,6 +31,10 @@ import InviteByEmail from './Friends/InviteByEmail';
 import FriendInvitationsSentByMe from './Friends/FriendInvitationsSentByMe';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
+
+const testimonialAuthor = 'Dale M., Oakland, California';
+const imageUrl = cordovaDot(daleMcGrewJpm);
+const testimonial = 'Following values that are important to me lets me see the opinions of other people who share my values.';
 
 class Friends extends Component {
   static propTypes = {
@@ -203,6 +210,14 @@ class Friends extends Component {
             <BrowserPushMessage incomingProps={this.props} />
             <div className="row">
               <div className="col-sm-12 col-lg-8">
+                <div className="u-show-mobile">
+                  <FriendsPromoBox
+                    imageUrl={imageUrl}
+                    testimonialAuthor={testimonialAuthor}
+                    testimonial={testimonial}
+                    isMobile
+                  />
+                </div>
                 <FriendInvitationsSentToMePreview />
                 <SuggestedFriendsPreview />
                 {voterIsSignedIn && (
@@ -237,6 +252,14 @@ class Friends extends Component {
                     </div>
                   </section>
                 ) : null}
+                {voter.signed_in_twitter ? null : (
+                  <TwitterSignInCard />
+                )}
+                <FriendsPromoBox
+                  imageUrl={imageUrl}
+                  testimonialAuthor={testimonialAuthor}
+                  testimonial={testimonial}
+                />
               </div>
             </div>
           </>
