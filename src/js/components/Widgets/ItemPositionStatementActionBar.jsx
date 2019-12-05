@@ -240,15 +240,24 @@ class ItemPositionStatementActionBar extends Component {
     }
 
     const { classes, ballotItemWeVoteId, externalUniqueId } = this.props;
+    const { commentActive } = this.state;
 
     let rows = 1;
 
-    if (this.state.commentActive && this.props.mobile) {
-      rows = 4;
-    } else if (this.state.commentActive && !this.props.mobile) {
+    if (this.props.mobile) {
+      if (commentActive) {
+        // If voter has clicked in comment box, mobile
+        rows = 4;
+      } else {
+        // Size of comment box prior to comment, mobile
+        rows = 2;
+      }
+    } else if (commentActive) {
+      // If voter has clicked in comment box, desktop
       rows = 5;
-    } else if (!this.state.commentActive && !this.props.mobile) {
-      rows = 3;
+    } else {
+      // Size of comment box prior to comment, desktop
+      rows = 1;
     }
 
     let { statementTextToBeSaved } = this.state;

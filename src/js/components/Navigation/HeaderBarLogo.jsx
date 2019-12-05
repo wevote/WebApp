@@ -38,8 +38,7 @@ const BetaMarkerInner = styled.span`
   font-size: 10px;
   right: 0;
   top: 18px;
-  color: ${({ light }) => (light ? 'white' : '#2e3c5d')}
-  text-transform:
+  color: ${({ light }) => (light ? 'white' : '#2e3c5d')};
 `;
 
 const HeaderBarWrapper = styled.div`

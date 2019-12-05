@@ -7,6 +7,7 @@ import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { historyPush } from '../../utils/cordovaUtils';
+import { shortenText } from '../../utils/textFormat';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
 
@@ -18,6 +19,8 @@ export default class IssueFollowToggleButton extends Component {
     issueName: PropTypes.string.isRequired,
     onIssueFollowFunction: PropTypes.func,
     onIssueStopFollowingFunction: PropTypes.func,
+    showFollowingButtonText: PropTypes.bool,
+    showIssueNameOnFollowButton: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
   };
 
@@ -130,8 +133,12 @@ export default class IssueFollowToggleButton extends Component {
       // console.log('error');
       return <div>{this.state.errorInfo}</div>;
     }
-
+    const { issueName, showFollowingButtonText, showIssueNameOnFollowButton } = this.props;
     const { isFollowing } = this.state;
+    let followButtonText = 'Follow';
+    if (showIssueNameOnFollowButton) {
+      followButtonText = shortenText(`Follow ${issueName}`, 27);
+    }
     return (
       <div className="issues-follow-container">
         {isFollowing ? (
@@ -141,6 +148,9 @@ export default class IssueFollowToggleButton extends Component {
               className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled"
               disabled
             >
+              {showFollowingButtonText && (
+                <span>Following&nbsp;</span>
+              )}
               <span>
                 <CheckCircle className="following-icon" />
               </span>
@@ -175,7 +185,7 @@ export default class IssueFollowToggleButton extends Component {
             className="issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--blue"
             onClick={this.onIssueFollow}
           >
-            Follow
+            {followButtonText}
           </Button>
         )}
       </div>

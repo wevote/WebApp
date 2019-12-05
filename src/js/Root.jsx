@@ -22,16 +22,16 @@ import EmailBallot from './routes/More/EmailBallot';
 import FAQ from './routes/More/FAQ';
 import FacebookInvitableFriends from './routes/FacebookInvitableFriends';
 import Friends from './routes/Friends';
-import FriendsCurrent from './routes/Friends/FriendsCurrent';
-import FriendInvitationsSentByMe from './routes/Friends/FriendInvitationsSentByMe';
-import FriendInvitationsSentToMe from './routes/Friends/FriendInvitationsSentToMe';
-import SuggestedFriends from './routes/Friends/SuggestedFriends';
+// import FriendsCurrent from './routes/Friends/FriendsCurrent';
+// import FriendInvitationsSentByMe from './routes/Friends/FriendInvitationsSentByMe';
+// import FriendInvitationsSentToMe from './routes/Friends/FriendInvitationsSentToMe';
+// import SuggestedFriends from './routes/Friends/SuggestedFriends';
 import GetStarted from './routes/Intro/GetStarted';
 import HamburgerMenu from './routes/Settings/HamburgerMenu';
 import HowItWorks from './routes/HowItWorks';
 import Intro from './routes/Intro/Intro';
 import IntroNetwork from './routes/Intro/IntroNetwork';
-import InviteByEmail from './routes/Friends/InviteByEmail';
+// import InviteByEmail from './routes/Friends/InviteByEmail';
 import Location from './routes/Settings/Location';
 import Measure from './routes/Ballot/Measure';
 import Office from './routes/Ballot/Office';
@@ -277,6 +277,6 @@ const routes = () => {
       <Route path="*" component={PageNotFound} />
     </Route>
   );
-} 
+};
 
 export default routes;

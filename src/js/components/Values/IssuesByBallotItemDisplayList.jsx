@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 import ValueIconAndText from './ValueIconAndText';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByBallotItemDisplayList extends Component {
@@ -15,6 +15,7 @@ class IssuesByBallotItemDisplayList extends Component {
 
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
+    ballotItemDisplayName: PropTypes.string,
     children: PropTypes.object,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
@@ -45,8 +46,10 @@ class IssuesByBallotItemDisplayList extends Component {
     const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(this.props.ballotItemWeVoteId) || [];
     const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
     const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
+    const { ballotItemDisplayName, ballotItemWeVoteId } = this.props;
     this.setState({
-      ballotItemWeVoteId: this.props.ballotItemWeVoteId,
+      ballotItemDisplayName,
+      ballotItemWeVoteId,
       issuesUnderThisBallotItemVoterIsFollowing,
       issuesUnderThisBallotItemVoterIsNotFollowing,
       issuesUnderThisBallotItemVoterIsFollowingLength,
@@ -59,8 +62,10 @@ class IssuesByBallotItemDisplayList extends Component {
     const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(nextProps.ballotItemWeVoteId) || [];
     const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
     const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
+    const { ballotItemDisplayName, ballotItemWeVoteId } = nextProps;
     this.setState({
-      ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
+      ballotItemDisplayName,
+      ballotItemWeVoteId,
       issuesUnderThisBallotItemVoterIsFollowing,
       issuesUnderThisBallotItemVoterIsNotFollowing,
       issuesUnderThisBallotItemVoterIsFollowingLength,
@@ -70,6 +75,10 @@ class IssuesByBallotItemDisplayList extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if not needed
+    if (this.state.allCachedPositionsForThisCandidateLength !== nextState.allCachedPositionsForThisCandidateLength) {
+      // console.log('this.state.allCachedPositionsForThisCandidateLength: ', this.state.allCachedPositionsForThisCandidateLength, ', nextState.allCachedPositionsForThisCandidateLength', nextState.allCachedPositionsForThisCandidateLength);
+      return true;
+    }
     if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
       // console.log('this.state.ballotItemWeVoteId: ', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId', nextState.ballotItemWeVoteId);
       return true;
@@ -162,8 +171,9 @@ class IssuesByBallotItemDisplayList extends Component {
 
   render () {
     renderLog('IssuesByBallotItemDisplayList.jsx');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('IssuesByBallotItemDisplayList render');
     const {
-      ballotItemWeVoteId, expand,
+      ballotItemDisplayName, ballotItemWeVoteId, expand,
       issuesUnderThisBallotItemVoterIsFollowing, issuesUnderThisBallotItemVoterIsNotFollowing,
       issuesUnderThisBallotItemVoterIsFollowingLength, issuesUnderThisBallotItemVoterIsNotFollowingLength,
       maximumNumberOfIssuesToDisplay,
@@ -193,10 +203,12 @@ class IssuesByBallotItemDisplayList extends Component {
           return (
             <ValueIconAndText
               key={oneIssue.issue_we_vote_id}
-              oneIssue={oneIssue}
-              ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-              subtractTotalWidth={this.handleSubtractTotalRemainingWidth}
+              ballotItemDisplayName={ballotItemDisplayName}
+              ballotItemWeVoteId={ballotItemWeVoteId}
+              issueFollowedByVoter
               issueWidths={this.issueWidths}
+              oneIssue={oneIssue}
+              subtractTotalWidth={this.handleSubtractTotalRemainingWidth}
             />
           );
         } else {
@@ -215,10 +227,11 @@ class IssuesByBallotItemDisplayList extends Component {
           return (
             <ValueIconAndText
               key={oneIssue.issue_we_vote_id}
-              oneIssue={oneIssue}
-              ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-              subtractTotalWidth={this.handleSubtractTotalRemainingWidth}
+              ballotItemDisplayName={ballotItemDisplayName}
+              ballotItemWeVoteId={ballotItemWeVoteId}
               issueWidths={this.issueWidths}
+              oneIssue={oneIssue}
+              subtractTotalWidth={this.handleSubtractTotalRemainingWidth}
             />
           );
         } else {
@@ -293,11 +306,5 @@ const MoreWrapper = styled.p`
   cursor: pointer;
   padding-left: 4px;
 `;
-
-// const ValueIconAndTextListItem = styled.li`
-//   display: flex;
-//   flex: 1 0 auto;
-//   align-items: start;
-// `;
 
 export default IssuesByBallotItemDisplayList;

@@ -72,19 +72,6 @@ class ThisIsMeAction extends Component {
               <Container>
                 <div className="endorsement-card">
                   <Link to={`/verifythisisme/${twitterHandleBeingViewed}`} className="u-no-underline">
-                    {/* <Button
-                      className="split-button split-button__left"
-                      color="primary"
-                      variant="contained"
-                    >
-                      <span className="split-button__icon">
-                        <i className="fab fa-twitter-square" />
-                      </span>
-                      <div className="split-button__seperator split-button__seperator--left" />
-                      <span className="split-button__text">
-                        {`Claim @${this.props.twitterHandleBeingViewed}`}
-                      </span>
-                    </Button> */}
                     <SplitIconButton
                       title={`Claim @${this.props.twitterHandleBeingViewed}`}
                       id="candidateVerifyThisIsMeAction"

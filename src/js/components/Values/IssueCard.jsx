@@ -180,7 +180,7 @@ class IssueCard extends Component {
             }
           </>
           {followToggleOn && issueWeVoteId ? (
-            <FollowToggleContainer>
+            <FollowIssueToggleContainer>
               <IssueFollowToggleButton
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 classNameOverride="pull-left"
@@ -189,7 +189,7 @@ class IssueCard extends Component {
                 issueWeVoteId={issueWeVoteId}
                 urlWithoutHash={urlWithoutHash}
               />
-            </FollowToggleContainer>
+            </FollowIssueToggleContainer>
           ) : null
           }
         </Flex>
@@ -232,7 +232,7 @@ const IssueName = styled.h3`
   margin-bottom: 0;
 `;
 
-const FollowToggleContainer = styled.div`
+const FollowIssueToggleContainer = styled.div`
   margin-left: auto;
 `;
 

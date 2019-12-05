@@ -4,7 +4,7 @@
   &__position-bar {
     display: flex;
     align-items: center;
-    margin-bottom: $space-sm;
+    // margin-bottom: $space-sm;
 
     &--mobile {
       @include breakpoints (max small-bootstrap) {

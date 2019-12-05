@@ -185,6 +185,18 @@ class IssueStore extends ReduceStore {
     return issue;
   }
 
+  getOrganizationWeVoteIdsLinkedToOneIssue (issueWeVoteId) {
+    // We want a list of all organizations tagged with this issue, so we can offer organizations to follow
+    // These are issues that an organization has linked itself to, to help Voters find the organization
+    const organizationWeVoteIdsLinkedToIssue = this.getState().organizationWeVoteIdsLinkedToIssueDict[issueWeVoteId];
+    // console.log('getOrganizationsForOneIssue: ', organizationWeVoteIdsLinkedToIssue);
+    if (organizationWeVoteIdsLinkedToIssue === undefined) {
+      return [];
+    }
+    // List of issue objects that an organization is linked to
+    return organizationWeVoteIdsLinkedToIssue;
+  }
+
   getOrganizationsForOneIssue (issueWeVoteId) {
     // We want a list of all organizations tagged with this issue, so we can offer organizations to follow
     // These are issues that an organization has linked itself to, to help Voters find the organization

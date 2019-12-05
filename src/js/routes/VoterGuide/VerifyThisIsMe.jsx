@@ -240,7 +240,7 @@ class VerifyThisIsMe extends Component {
                     by clicking this Twitter sign in button.
                   </Alert>
                   <TwitterSignIn
-                    buttonText={`Sign in to @${twitterHandle}`}
+                    buttonText={`Sign into @${twitterHandle}`}
                     id="signInToVerifyAccess"
                   />
                 </div>

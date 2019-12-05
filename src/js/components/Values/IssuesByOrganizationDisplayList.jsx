@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
+import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -17,9 +18,9 @@ class IssuesByOrganizationDisplayList extends Component {
   static propTypes = {
     organizationWeVoteId: PropTypes.string.isRequired,
     children: PropTypes.object,
+    fullWidth: PropTypes.bool,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
-    fullWidth: PropTypes.bool,
   };
 
   constructor (props) {
@@ -64,6 +65,10 @@ class IssuesByOrganizationDisplayList extends Component {
       // console.log('this.state.issuesUnderThisOrganizationLength: ', this.state.issuesUnderThisOrganizationLength, ', nextState.issuesUnderThisOrganizationLength', nextState.issuesUnderThisOrganizationLength);
       return true;
     }
+    if (this.state.issuesVoterIsFollowingLength !== nextState.issuesVoterIsFollowingLength) {
+      // console.log('this.state.issuesVoterIsFollowingLength: ', this.state.issuesVoterIsFollowingLength, ', nextState.issuesVoterIsFollowingLength', nextState.issuesVoterIsFollowingLength);
+      return true;
+    }
     return false;
   }
 
@@ -76,9 +81,12 @@ class IssuesByOrganizationDisplayList extends Component {
     const { organizationWeVoteId } = this.state;
     const issuesUnderThisOrganization = IssueStore.getIssuesLinkedToByOrganization(organizationWeVoteId) || [];
     const issuesUnderThisOrganizationLength = issuesUnderThisOrganization.length;
+    const issuesVoterIsFollowing = IssueStore.getIssueWeVoteIdsVoterIsFollowing() || [];
+    const issuesVoterIsFollowingLength = issuesVoterIsFollowing.length;
     this.setState({
       issuesUnderThisOrganization,
       issuesUnderThisOrganizationLength,
+      issuesVoterIsFollowingLength,
     });
   }
 
@@ -88,11 +96,13 @@ class IssuesByOrganizationDisplayList extends Component {
   }
 
   generateValueListItem = (oneIssue) => {
+    const issueFollowedByVoter = IssueStore.isVoterFollowingThisIssue(oneIssue.issue_we_vote_id);
     const valuePopover = (
       <PopoverWrapper>
         <PopoverHeader>
           <PopoverTitleIcon>
-            <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
+            <ReactSVG
+              src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
               svgStyle={{ fill: '#fff', padding: '1px 1px 1px 0px' }}
             />
           </PopoverTitleIcon>
@@ -102,20 +112,33 @@ class IssuesByOrganizationDisplayList extends Component {
         </PopoverHeader>
         <PopoverDescriptionText>
           {oneIssue.issue_description}
+          {oneIssue.issue_we_vote_id && (
+            <FollowIssueToggleContainer>
+              <IssueFollowToggleButton
+                classNameOverride="pull-left"
+                issueName={oneIssue.issue_name}
+                issueWeVoteId={oneIssue.issue_we_vote_id}
+                showFollowingButtonText
+              />
+            </FollowIssueToggleContainer>
+          )}
         </PopoverDescriptionText>
       </PopoverWrapper>
     );
 
     // Tried to make the issues icons accessible via tabbing, caused too many side affects
+    const svgFill = issueFollowedByVoter ? '#555' : '#999';
     const valueIconAndText = (
       <ValueIconAndTextOrganization
-        id={`valueIconAndText-${oneIssue.issue_we_vote_id}`}
-        className="u-no-break u-cursor--pointer issue-icon-list__issue-block"
+        id={`valueIconAndTextOrganization-${oneIssue.issue_we_vote_id}`}
+        className="u-no-break u-cursor--pointer"
+        issueFollowedByVoter={issueFollowedByVoter}
       >
         {oneIssue.issue_icon_local_path ? (
           <div className="issue-icon-list__issue-icon">
-            <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                      svgStyle={{ fill: '#999', padding: '1px 1px 1px 0px' }}
+            <ReactSVG
+              src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
+              svgStyle={{ fill: svgFill, padding: '1px 1px 1px 0px' }}
             />
           </div>
         ) : null
@@ -137,10 +160,6 @@ class IssuesByOrganizationDisplayList extends Component {
         showCloseIcon
       >
         {valueIconAndText}
-        {/* <ValueIconAndTextListItem
-          className="u-push--sm"
-          key={`issue-icon-${oneIssue.issue_we_vote_id}`}
-        /> */}
       </StickyPopover>
     );
   }
@@ -207,6 +226,10 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
+const FollowIssueToggleContainer = styled.div`
+  margin: 10px 0;
+`;
+
 const IssuesByOrganization = styled.div`
   width: ${props => (props.fullWidth ? '100%' : '85%')};
   padding: 8px 0;
@@ -224,10 +247,13 @@ const IssueByOrganizationList = styled.ul`
 `;
 
 const ValueIconAndTextOrganization = styled.span`
+  align-items: start;
+  display: flex;
+  flex: none;
+  ${({ issueFollowedByVoter }) => (issueFollowedByVoter ? 'font-weight: 800;' : '')}
+  padding: 2px 4px 2px 0;
   position: relative;
   width: fit-content;
-  flex: none;
-  padding: 2px 4px 2px 0;
 `;
 
 const PopoverWrapper = styled.div`

@@ -399,9 +399,9 @@ export default class VoterGuidePositions extends Component {
         ) : null
         }
         <EndorsementCard
-          bsPrefix="u-stack--xs"
           variant="primary"
           buttonText="ENDORSEMENTS MISSING?"
+          organizationWeVoteId={organizationWeVoteId}
           text={`Are there endorsements from ${organizationName} that you expected to see?`}
           title="Endorsements Missing?"
         />

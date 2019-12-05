@@ -324,13 +324,14 @@ class CandidateItem extends Component {
   );
 
   candidateIssuesAndCommentBlock = (candidateText, localUniqueId) => {
-    const { candidateWeVoteId, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow, showPositionStatementActionBar } = this.state;
+    const { ballotItemDisplayName, candidateWeVoteId, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow, showPositionStatementActionBar } = this.state;
     return (
       <div>
         <div className="card-main__actions">
           <div>
             {/* Issues related to this Candidate */}
             <IssuesByBallotItemDisplayList
+              ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={candidateWeVoteId}
               placement="bottom"
             />
@@ -387,7 +388,7 @@ class CandidateItem extends Component {
                     <div className="card-main__description">
                       <ReadMore
                         text_to_display={candidateText}
-                        num_of_lines={4}
+                        num_of_lines={2}
                       />
                     </div>
                   </div>
