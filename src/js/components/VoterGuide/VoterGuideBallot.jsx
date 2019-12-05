@@ -809,9 +809,9 @@ class VoterGuideBallot extends Component {
                   )}
                 </div>
                 <EndorsementCard
-                  bsPrefix="u-stack--xs"
                   variant="primary"
                   buttonText="ENDORSEMENTS MISSING?"
+                  organizationWeVoteId={organizationWeVoteId}
                   text={`Are there endorsements from ${organization.organization_name} that you expected to see?`}
                   title="Endorsements Missing?"
                 />

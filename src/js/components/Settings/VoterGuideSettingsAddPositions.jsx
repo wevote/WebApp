@@ -65,7 +65,7 @@ class VoterGuideSettingsAddPositions extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      addNewPositionsMode: false,
+      addNewPositionsMode: true,
       allBallotItems: [],
       currentSelectedBallotFilters: [], // So we know when the ballot filters change
       currentSelectedPositionFilters: [], // So we know when the position filters change
@@ -456,7 +456,7 @@ class VoterGuideSettingsAddPositions extends Component {
     renderLog('VoterGuideSettingsAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { addNewPositionsMode, localGoogleCivicElectionId, stateCodeToRetrieve, loadingMoreItems } = this.state;
-    // console.log('VoterGuideSettingsAddPositions render, stateCodeToRetrieve:', stateCodeToRetrieve);
+    // console.log('VoterGuideSettingsAddPositions render, addNewPositionsMode:', addNewPositionsMode);
     if (!addNewPositionsMode) {
       // ////////////////////////
       // Current Positions - First Tab

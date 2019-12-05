@@ -223,14 +223,9 @@ class VoterGuideSettingsDashboard extends Component {
         <EndorsementListBody>
           {/* Body of page "/vg/wvYYvgYY/settings/positions" */}
           <VoterGuideSettingsAddPositions
-            addNewPositionsMode={getVoterGuideSettingsDashboardEditMode === 'addpositions'}
+            addNewPositionsMode={getVoterGuideSettingsDashboardEditMode !== 'positions'}
             voterGuideWeVoteId={voterGuideWeVoteId}
           />
-          {/* getVoterGuideSettingsDashboardEditMode === 'addpositions' ? (
-            <VoterGuideSettingsAddPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />
-          ) : (
-            <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />
-          ) */}
         </EndorsementListBody>
       </Wrapper>
     );

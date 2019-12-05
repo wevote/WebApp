@@ -503,7 +503,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           </PopoverTitleText>
         </PopoverHeader>
         <PopoverBody>
-          These organizations
+          See below for details about who
           {' '}
           <span className="u-no-break">
             <img
@@ -513,7 +513,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               height="20"
             />
             {' '}
-            support
+            supports
           </span>
           {' '}
           or&nbsp;
@@ -525,7 +525,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               height="20"
             />
             {' '}
-            oppose
+            opposes
           </span>
           {this.state.ballotItemDisplayName ? ` ${this.state.ballotItemDisplayName}` : ''}
           .

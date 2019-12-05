@@ -50,9 +50,9 @@ class EndorsementModeTabs extends Component {
   getSelectedTab = () => {
     const { getVoterGuideSettingsDashboardEditMode } = this.state;
     switch (getVoterGuideSettingsDashboardEditMode) {
-      default:
       case 'positions':
         return 0;
+      default:
       case 'addpositions':
         return 1;
     }

@@ -163,7 +163,7 @@ class TwitterSignIn extends Component {
     return (
       <SplitIconButton
         backgroundColor="#55acee"
-        buttonText={shortenText(buttonText, 22)}
+        buttonText={shortenText(buttonText, 32)}
         externalUniqueId="twitterSignIn"
         icon={<i className="fab fa-twitter" />}
         onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}

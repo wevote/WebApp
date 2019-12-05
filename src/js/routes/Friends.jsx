@@ -22,7 +22,7 @@ import FriendsPromoBox from '../components/Friends/FriendsPromoBox';
 import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import VoterStore from '../stores/VoterStore';
-import daleMcGrewJpm from '../../img/global/photos/Dale_McGrew-200x200.jpg';
+import testimonialImage from '../../img/global/photos/Dale_McGrew-200x200.jpg';
 import { cordovaDot } from '../utils/cordovaUtils';
 import FriendInvitationsSentToMe from './Friends/FriendInvitationsSentToMe';
 import SuggestedFriends from './Friends/SuggestedFriends';
@@ -33,12 +33,13 @@ import FriendInvitationsSentByMe from './Friends/FriendInvitationsSentByMe';
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
 const testimonialAuthor = 'Dale M., Oakland, California';
-const imageUrl = cordovaDot(daleMcGrewJpm);
-const testimonial = 'Following values that are important to me lets me see the opinions of other people who share my values.';
+const imageUrl = cordovaDot(testimonialImage);
+const testimonial = 'Instead of sending my friends a list of who they should vote for, I can add them as friends on We Vote.';
 
 class Friends extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    params: PropTypes.object,
   };
 
   constructor (props) {
@@ -62,9 +63,9 @@ class Friends extends Component {
     FriendActions.friendInvitationsSentByMe();
     this.setState({
       suggestedFriendList: FriendStore.suggestedFriendList(),
-      currentFriendList: FriendStore.currentFriends(),
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
-      friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
+      // currentFriendList: FriendStore.currentFriends(),
+      // friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      // friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
     });
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -131,11 +132,11 @@ class Friends extends Component {
 
   render () {
     renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
-    const { voter, mobileValue, desktopValue } = this.state;
+    const { voter, mobileValue } = this.state;  // , desktopValue
     const { classes } = this.props;
 
-    console.log("Desktop value: ", desktopValue);
-    console.log("Mobile value: ", mobileValue);
+    // console.log('Desktop value: ', desktopValue);
+    // console.log('Mobile value: ', mobileValue);
 
     if (!voter) {
       return LoadingWheel;
@@ -158,7 +159,15 @@ class Friends extends Component {
         break;
       case 'invite':
         mobileContentToDisplay = (
-          <InviteByEmail />
+          <>
+            <InviteByEmail />
+            <FriendsPromoBox
+              imageUrl={imageUrl}
+              testimonialAuthor={testimonialAuthor}
+              testimonial={testimonial}
+              isMobile
+            />
+          </>
         );
         break;
       case 'current':
@@ -210,14 +219,6 @@ class Friends extends Component {
             <BrowserPushMessage incomingProps={this.props} />
             <div className="row">
               <div className="col-sm-12 col-lg-8">
-                <div className="u-show-mobile">
-                  <FriendsPromoBox
-                    imageUrl={imageUrl}
-                    testimonialAuthor={testimonialAuthor}
-                    testimonial={testimonial}
-                    isMobile
-                  />
-                </div>
                 <FriendInvitationsSentToMePreview />
                 <SuggestedFriendsPreview />
                 {voterIsSignedIn && (

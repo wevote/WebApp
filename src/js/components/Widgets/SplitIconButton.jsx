@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import { shortenText } from '../../utils/textFormat';
 import { getTextColorFromBackground } from '../../utils/color';
 
 class SplitIconButton extends PureComponent {
@@ -60,7 +59,7 @@ class SplitIconButton extends PureComponent {
           />
         )}
         <SplitButtonText>
-          {shortenText(buttonText, 22)}
+          {buttonText}
         </SplitButtonText>
       </Button>
     );

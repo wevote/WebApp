@@ -42,6 +42,12 @@ export default class InviteByEmail extends Component {
 
   render () {
     renderLog('InviteByEmail');  // Set LOG_RENDER_EVENTS to log all renders
+    const { currentFriendsList } = this.state;
+    let currentFriendListLength = 0;
+    if (currentFriendsList) {
+      currentFriendListLength = currentFriendsList.length;
+    }
+    // console.log('currentFriendListLength:', currentFriendListLength);
     return (
       <div>
         <Helmet title="Build Your We Vote Network" />
@@ -51,26 +57,24 @@ export default class InviteByEmail extends Component {
             <AddFriendsByEmail />
           </div>
         </section>
-        <section className="card">
-          <div className="card-main">
-            {
-              this.state.currentFriendsList && this.state.currentFriendsList.length ? (
-                <div className="container-fluid well u-stack--md u-inset--md">
-                  <Link className="u-cursor--pointer u-no-underline" to="/friends/current">
-                    <h4 className="text-left">Your Current Friends</h4>
-                  </Link>
-                  <div className="card-child__list-group">
-                    <CurrentFriends
-                      currentFriendsList={this.state.currentFriendsList}
-                      maximumFriendDisplay={this.state.maximumFriendDisplay}
-                    />
-                    <Link className="pull-right" to="/friends/current">See Full Friend List</Link>
-                  </div>
+        {currentFriendListLength !== 0 && (
+          <section className="card">
+            <div className="card-main">
+              <div className="container-fluid well u-stack--md u-inset--md">
+                <Link className="u-cursor--pointer u-no-underline" to="/friends/current">
+                  <h4 className="text-left">Your Current Friends</h4>
+                </Link>
+                <div className="card-child__list-group">
+                  <CurrentFriends
+                    currentFriendsList={this.state.currentFriendsList}
+                    maximumFriendDisplay={this.state.maximumFriendDisplay}
+                  />
+                  <Link className="pull-right" to="/friends/current">See Full Friend List</Link>
                 </div>
-              ) : null
-            }
-          </div>
-        </section>
+              </div>
+            </div>
+          </section>
+        )}
       </div>
     );
   }
