@@ -78,6 +78,7 @@ class ValueIconAndText extends Component {
       let positionSummary = {};
       const issueSpecificPositionList = [];
       const organizationWeVoteIdsLinkedToThisIssue = IssueStore.getOrganizationWeVoteIdsLinkedToOneIssue(oneIssue.issue_we_vote_id);
+      // console.log('organizationWeVoteIdsLinkedToThisIssue: ', organizationWeVoteIdsLinkedToThisIssue);
       for (let i = 0; i < allCachedPositionsForThisCandidateLength; i++) {
         // Cycle through the positions for this candidate, and see if the organization endorsing is linked to this issue
         organizationWeVoteId = allCachedPositionsForThisCandidate[i].speaker_we_vote_id;
@@ -170,33 +171,38 @@ class ValueIconAndText extends Component {
 
   renderOrganizationsForThisIssueList (issueSpecificPositionList) {
     const { classes, issueFollowedByVoter } = this.props;
-    const renderedList = issueSpecificPositionList.map(positionSummary => (
-      <PositionSummaryWrapper key={`onePositionForIssue--${positionSummary.organizationWeVoteId}`}>
-        {positionSummary.organizationSupports && !issueFollowedByVoter && (
-          <Support>
-            <ThumbUpIcon classes={{ root: classes.endorsementIcon }} />
-          </Support>
-        )}
-        {positionSummary.organizationSupports && issueFollowedByVoter && (
-          <SupportFollow>
-            +1
-          </SupportFollow>
-        )}
-        {positionSummary.organizationOpposes && !issueFollowedByVoter && (
-          <Oppose>
-            <ThumbDownIcon classes={{ root: classes.endorsementIcon }} />
-          </Oppose>
-        )}
-        {positionSummary.organizationOpposes && issueFollowedByVoter && (
-          <OpposeFollow>
-            -1
-          </OpposeFollow>
-        )}
-        <div>
-          {positionSummary.organizationName}
-        </div>
-      </PositionSummaryWrapper>
-    ));
+    const renderedList = issueSpecificPositionList.map((positionSummary) => {
+      if (!issueFollowedByVoter) {
+        // Should we label this organization as a "+1"? Check to see if the organization is linked to any of the other issues the voter is following, or being followed directly
+      }
+      return (
+        <PositionSummaryWrapper key={`onePositionForIssue--${positionSummary.organizationWeVoteId}`}>
+          {positionSummary.organizationSupports && !issueFollowedByVoter && (
+            <Support>
+              <ThumbUpIcon classes={{ root: classes.endorsementIcon }} />
+            </Support>
+          )}
+          {positionSummary.organizationSupports && issueFollowedByVoter && (
+            <SupportFollow>
+              +1
+            </SupportFollow>
+          )}
+          {positionSummary.organizationOpposes && !issueFollowedByVoter && (
+            <Oppose>
+              <ThumbDownIcon classes={{ root: classes.endorsementIcon }} />
+            </Oppose>
+          )}
+          {positionSummary.organizationOpposes && issueFollowedByVoter && (
+            <OpposeFollow>
+              -1
+            </OpposeFollow>
+          )}
+          <div>
+            {positionSummary.organizationName}
+          </div>
+        </PositionSummaryWrapper>
+      );
+    });
     return cleanArray(renderedList);
   }
 

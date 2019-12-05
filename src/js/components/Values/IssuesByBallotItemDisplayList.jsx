@@ -40,6 +40,7 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 
   componentDidMount () {
+    // console.log('IssuesByBallotItemDisplayList componentDidMount, this.props.ballotItemWeVoteId:', this.props.ballotItemWeVoteId);
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(this.props.ballotItemWeVoteId) || [];
@@ -58,6 +59,7 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log('IssuesByBallotItemDisplayList componentWillReceiveProps, nextProps.ballotItemWeVoteId:', nextProps.ballotItemWeVoteId);
     const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(nextProps.ballotItemWeVoteId) || [];
     const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(nextProps.ballotItemWeVoteId) || [];
     const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
@@ -75,10 +77,6 @@ class IssuesByBallotItemDisplayList extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if not needed
-    if (this.state.allCachedPositionsForThisCandidateLength !== nextState.allCachedPositionsForThisCandidateLength) {
-      // console.log('this.state.allCachedPositionsForThisCandidateLength: ', this.state.allCachedPositionsForThisCandidateLength, ', nextState.allCachedPositionsForThisCandidateLength', nextState.allCachedPositionsForThisCandidateLength);
-      return true;
-    }
     if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
       // console.log('this.state.ballotItemWeVoteId: ', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId', nextState.ballotItemWeVoteId);
       return true;
@@ -125,14 +123,12 @@ class IssuesByBallotItemDisplayList extends Component {
     const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(ballotItemWeVoteId) || [];
     const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
     const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
-    if (issuesUnderThisBallotItemVoterIsFollowing.length) {
-      this.setState({
-        issuesUnderThisBallotItemVoterIsFollowing,
-        issuesUnderThisBallotItemVoterIsNotFollowing,
-        issuesUnderThisBallotItemVoterIsFollowingLength,
-        issuesUnderThisBallotItemVoterIsNotFollowingLength,
-      });
-    }
+    this.setState({
+      issuesUnderThisBallotItemVoterIsFollowing,
+      issuesUnderThisBallotItemVoterIsNotFollowing,
+      issuesUnderThisBallotItemVoterIsFollowingLength,
+      issuesUnderThisBallotItemVoterIsNotFollowingLength,
+    });
   }
 
   onVoterGuideStoreChange () {
