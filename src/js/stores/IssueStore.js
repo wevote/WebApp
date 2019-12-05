@@ -433,8 +433,8 @@ class IssueStore extends ReduceStore {
             issueScoreList.forEach((issueScoreBlock) => {
               issueSupportScoreForEachBallotItem[issueScoreBlock.ballot_item_we_vote_id] = issueScoreBlock.issue_support_score;
               issueOpposeScoreForEachBallotItem[issueScoreBlock.ballot_item_we_vote_id] = issueScoreBlock.issue_oppose_score;
-              organizationWeVoteIdSupportListForEachBallotItem[issueScoreBlock.ballot_item_we_vote_id] = issueScoreBlock.organizationWeVoteId_support_list;
-              organizationWeVoteIdOpposeListForEachBallotItem[issueScoreBlock.ballot_item_we_vote_id] = issueScoreBlock.organizationWeVoteId_oppose_list;
+              organizationWeVoteIdSupportListForEachBallotItem[issueScoreBlock.ballot_item_we_vote_id] = issueScoreBlock.organization_we_vote_id_support_list;
+              organizationWeVoteIdOpposeListForEachBallotItem[issueScoreBlock.ballot_item_we_vote_id] = issueScoreBlock.organization_we_vote_id_oppose_list;
               organizationNameSupportListForEachBallotItem[issueScoreBlock.ballot_item_we_vote_id] = issueScoreBlock.organization_name_support_list;
               organizationNameOpposeListForEachBallotItem[issueScoreBlock.ballot_item_we_vote_id] = issueScoreBlock.organization_name_oppose_list;
               issueScoreForEachBallotItem[issueScoreBlock.ballot_item_we_vote_id] = issueScoreBlock.issue_support_score - issueScoreBlock.issue_oppose_score;

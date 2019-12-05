@@ -9,6 +9,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
+import IssueStore from '../../stores/IssueStore';
 import ItemActionBar from '../Widgets/ItemActionBar';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
@@ -38,11 +39,14 @@ class CandidateItem extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      allCachedPositionsForThisCandidateLength: 0,
       ballotItemDisplayName: '',
       // ballotpediaCandidateUrl: '',
       candidatePhotoUrl: '',
       candidateWeVoteId: '',
       contestOfficeName: '',
+      issuesUnderThisBallotItemVoterIsFollowingLength: 0,
+      issuesUnderThisBallotItemVoterIsNotFollowingLength: 0,
       largeAreaHoverColorOnNow: null,
       largeAreaHoverLinkOnNow: false,
       officeWeVoteId: '',
@@ -61,6 +65,7 @@ class CandidateItem extends Component {
     // console.log('CandidateItem componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.onVoterGuideStoreChange();
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     // console.log('CandidateItem, this.props:', this.props);
@@ -107,6 +112,9 @@ class CandidateItem extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.allCachedPositionsForThisCandidateLength !== nextState.allCachedPositionsForThisCandidateLength) {
+      return true;
+    }
     if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
       return true;
     }
@@ -122,6 +130,12 @@ class CandidateItem extends Component {
     if (this.state.candidateWeVoteId !== nextState.candidateWeVoteId) {
       return true;
     }
+    if (this.state.issuesUnderThisBallotItemVoterIsFollowingLength !== nextState.issuesUnderThisBallotItemVoterIsFollowingLength) {
+      return true;
+    }
+    if (this.state.issuesUnderThisBallotItemVoterIsNotFollowingLength !== nextState.issuesUnderThisBallotItemVoterIsNotFollowingLength) {
+      return true;
+    }
     if (this.state.largeAreaHoverColorOnNow !== nextState.largeAreaHoverColorOnNow) {
       return true;
     }
@@ -133,6 +147,7 @@ class CandidateItem extends Component {
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
+    this.issueStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.supportStoreListener.remove();
   }
@@ -155,7 +170,10 @@ class CandidateItem extends Component {
     let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
     ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
     const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
+    const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
+    const allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length || 0;
     this.setState({
+      allCachedPositionsForThisCandidateLength,
       ballotItemDisplayName: candidate.ballot_item_display_name,
       // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
       candidatePhotoUrl,
@@ -164,6 +182,18 @@ class CandidateItem extends Component {
       officeWeVoteId: candidate.contest_office_we_vote_id,
       politicalParty: candidate.party,
       twitterFollowersCount: candidate.twitter_followers_count,
+    });
+  }
+
+  onIssueStoreChange () {
+    const { candidateWeVoteId } = this.state;
+    const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(candidateWeVoteId) || [];
+    const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(candidateWeVoteId) || [];
+    const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
+    const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
+    this.setState({
+      issuesUnderThisBallotItemVoterIsFollowingLength,
+      issuesUnderThisBallotItemVoterIsNotFollowingLength,
     });
   }
 
@@ -213,12 +243,14 @@ class CandidateItem extends Component {
   }
 
   candidateRenderBlock = (candidateWeVoteId) => {
+    const { linkToBallotItemPage, linkToOfficePage, showHover, showOfficeName } = this.props;
     const {
       ballotItemDisplayName,
       politicalParty,
       twitterFollowersCount,
       contestOfficeName,
       candidatePhotoUrl,
+      largeAreaHoverColorOnNow,
     } = this.state;
     // console.log('candidateRenderBlock candidatePhotoUrl: ', candidatePhotoUrl);
     return (
@@ -235,13 +267,13 @@ class CandidateItem extends Component {
               />
             </div>
             <Candidate>
-              <h2 className={`card-main__display-name ${this.props.linkToBallotItemPage && this.state.largeAreaHoverColorOnNow && this.props.showHover ? 'card__blue' : ''}`}>
+              <h2 className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
                 {ballotItemDisplayName}
               </h2>
               {twitterFollowersCount ? (
                 <span
-                  className={`u-show-desktop twitter-followers__badge ${this.props.linkToBallotItemPage ? 'u-cursor--pointer' : ''}`}
-                  onClick={this.props.linkToBallotItemPage ? this.goToCandidateLink : null}
+                  className={`u-show-desktop twitter-followers__badge ${linkToBallotItemPage ? 'u-cursor--pointer' : ''}`}
+                  onClick={linkToBallotItemPage ? this.goToCandidateLink : null}
                 >
                   <span className="fab fa-twitter fa-sm" />
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
@@ -251,12 +283,12 @@ class CandidateItem extends Component {
               }
               <span className="u-show-desktop">
                 { contestOfficeName ? (
-                  <p className={this.props.linkToBallotItemPage && this.state.largeAreaHoverColorOnNow && this.props.showHover ? 'card__blue' : ''}>
+                  <p className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}>
                     <OfficeNameText
                       contestOfficeName={contestOfficeName}
-                      officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
+                      officeLink={linkToOfficePage ? this.getOfficeLink() : ''}
                       politicalParty={politicalParty}
-                      showOfficeName={this.props.showOfficeName}
+                      showOfficeName={showOfficeName}
                     />
                   </p>
                 ) :
@@ -283,9 +315,9 @@ class CandidateItem extends Component {
             <p>
               <OfficeNameText
                 contestOfficeName={contestOfficeName}
-                officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
+                officeLink={linkToOfficePage ? this.getOfficeLink() : ''}
                 politicalParty={politicalParty}
-                showOfficeName={this.props.showOfficeName}
+                showOfficeName={showOfficeName}
               />
             </p>
           ) :
@@ -324,6 +356,7 @@ class CandidateItem extends Component {
   );
 
   candidateIssuesAndCommentBlock = (candidateText, localUniqueId) => {
+    const { hideBallotItemSupportOpposeComment, hideShowMoreFooter, linkToBallotItemPage, showHover, showTopCommentByBallotItem } = this.props;
     const { ballotItemDisplayName, candidateWeVoteId, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow, showPositionStatementActionBar } = this.state;
     return (
       <div>
@@ -336,10 +369,10 @@ class CandidateItem extends Component {
               placement="bottom"
             />
             {/* If there is a quote about the candidate, show that too. */}
-            {this.props.showTopCommentByBallotItem ? (
+            {showTopCommentByBallotItem ? (
               <div>
                 <div className="u-show-desktop">
-                  {this.props.linkToBallotItemPage && largeAreaHoverLinkOnNow && this.props.showHover ?
+                  {linkToBallotItemPage && largeAreaHoverLinkOnNow && showHover ?
                     (
                       <div className="row">
                         <div className="col col-9 card__blue">
@@ -362,7 +395,7 @@ class CandidateItem extends Component {
                     ) :
                     (
                       <div
-                        className={this.props.linkToBallotItemPage && largeAreaHoverColorOnNow && this.props.showHover ? (
+                        className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? (
                           'card__blue'
                         ) : (
                           ''
@@ -383,7 +416,7 @@ class CandidateItem extends Component {
               <span>
                 {candidateText.length ? (
                   <div
-                    className={`u-stack--sm ${this.props.linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
+                    className={`u-stack--sm ${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
                   >
                     <div className="card-main__description">
                       <ReadMore
@@ -398,7 +431,7 @@ class CandidateItem extends Component {
               </span>
             )}
             <div>
-              {this.props.hideBallotItemSupportOpposeComment ?
+              {hideBallotItemSupportOpposeComment ?
                 null : (
                   <BallotItemSupportOpposeComment
                     ballotItemWeVoteId={candidateWeVoteId}
@@ -410,7 +443,7 @@ class CandidateItem extends Component {
             </div>
           </div>
         </div>
-        {this.props.hideShowMoreFooter ?
+        {hideShowMoreFooter ?
           null :
           <ShowMoreFooter showMoreId="candidateItemShowMoreFooter" showMoreLink={this.goToCandidateLink} />
         }
