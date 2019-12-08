@@ -5,7 +5,7 @@ import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import VoterConstants from '../constants/VoterConstants';
 import VoterGuideActions from '../actions/VoterGuideActions';
-import VoterStore from './VoterStore';
+import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
 import { arrayContains } from '../utils/textFormat';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
@@ -74,6 +74,14 @@ class OrganizationStore extends ReduceStore {
       requestedPosition = allCachedPositionsByOrganizationDict[organizationWeVoteId][ballotItemWeVoteId];
     }
     return requestedPosition;
+  }
+
+  getOrganizationWeVoteIdsVoterIsFollowingLength () {
+    // console.log('OrganizationStore.getOrganizationsVoterIsFollowing, organizationWeVoteIdsVoterIsFollowing: ', this.getState().organizationWeVoteIdsVoterIsFollowing);
+    if (this.getState().organizationWeVoteIdsVoterIsFollowing) {
+      return this.getState().organizationWeVoteIdsVoterIsFollowing.length;
+    }
+    return 0;
   }
 
   getOrganizationsVoterIsFollowing () {

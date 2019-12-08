@@ -1,10 +1,10 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
-import BallotStore from './BallotStore';
+import BallotStore from './BallotStore';  // eslint-disable-line import/no-cycle
 import IssueActions from '../actions/IssueActions';
-import OrganizationStore from './OrganizationStore';
-import VoterStore from './VoterStore';
-import VoterGuideStore from './VoterGuideStore';
+import OrganizationStore from './OrganizationStore';  // eslint-disable-line import/no-cycle
+import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
+import VoterGuideStore from './VoterGuideStore';  // eslint-disable-line import/no-cycle
 import VoterGuideActions from '../actions/VoterGuideActions';
 import { arrayContains, convertNameToSlug, removeValueFromArray } from '../utils/textFormat';
 
@@ -67,6 +67,14 @@ class IssueStore extends ReduceStore {
     return this.getIssuesFromListOfWeVoteIds(this.getState().issueWeVoteIdsVoterIsFollowing);
   }
 
+  getIssuesVoterIsFollowingLength () {
+    // console.log('IssueStore.getIssuesVoterIsFollowingLength, issueWeVoteIdsVoterIsFollowing: ', this.getState().issueWeVoteIdsVoterIsFollowing);
+    if (this.getState().issueWeVoteIdsVoterIsFollowing) {
+      return this.getState().issueWeVoteIdsVoterIsFollowing.length;
+    }
+    return 0;
+  }
+
   getIssuesVoterCanFollow () {
     // List of issue objects the voter can follow
     return this.getIssuesFromListOfWeVoteIds(this.getState().issueWeVoteIdsVoterCanFollow);
@@ -81,6 +89,23 @@ class IssueStore extends ReduceStore {
       return false;
     }
     return arrayContains(issueWeVoteId, this.getState().issueWeVoteIdsVoterIsFollowing);
+  }
+
+  isOrganizationLinkedToIssueVoterIsFollowing (organizationWeVoteId) {
+    const issueWeVoteIdsLinkedToByOrganizationDict = this.getState().issueWeVoteIdsLinkedToByOrganizationDict[organizationWeVoteId];
+    // console.log('issueWeVoteIdsLinkedToByOrganizationDict:', issueWeVoteIdsLinkedToByOrganizationDict);
+    if (issueWeVoteIdsLinkedToByOrganizationDict === undefined) {
+      // The organization is not linked to any Issues, so no, the organization is not linked to any Issues the voter is following
+      return false;
+    }
+    let organizationIsLinkedToIssueVoterIsFollowing = false;
+    issueWeVoteIdsLinkedToByOrganizationDict.forEach((issueWeVoteId) => {
+      if (this.isVoterFollowingThisIssue(issueWeVoteId)) {
+        organizationIsLinkedToIssueVoterIsFollowing = true;
+        // console.log('organizationIsLinkedToIssueVoterIsFollowing:', organizationIsLinkedToIssueVoterIsFollowing);
+      }
+    });
+    return organizationIsLinkedToIssueVoterIsFollowing;
   }
 
   getIssuesToLinkToByOrganization (organizationWeVoteId) {
@@ -105,6 +130,14 @@ class IssueStore extends ReduceStore {
     }
     // List of issue objects that an organization is linked to
     return issueWeVoteIdsLinkedToOrganization;
+  }
+
+  getIssueWeVoteIdsLinkedToByOrganizationDictLength () {
+    // console.log('IssueStore.getIssueWeVoteIdsLinkedToByOrganizationDictLength, issueWeVoteIdsLinkedToByOrganizationDict: ', this.getState().issueWeVoteIdsLinkedToByOrganizationDict);
+    if (this.getState().issueWeVoteIdsLinkedToByOrganizationDict) {
+      return Object.keys(this.getState().issueWeVoteIdsLinkedToByOrganizationDict).length;
+    }
+    return 0;
   }
 
   getIssuesLinkedToByOrganization (organizationWeVoteId) {

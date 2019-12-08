@@ -1,9 +1,9 @@
 import { ReduceStore } from 'flux/utils';
-import BallotStore from './BallotStore';
+import BallotStore from './BallotStore';  // eslint-disable-line import/no-cycle
 import Dispatcher from '../dispatcher/Dispatcher';
 import OfficeActions from '../actions/OfficeActions';
 import OfficeStore from './OfficeStore';
-import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions';
+import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions';  // eslint-disable-line import/no-cycle
 import { stringContains } from '../utils/textFormat';
 
 class CandidateStore extends ReduceStore {
@@ -34,17 +34,17 @@ class CandidateStore extends ReduceStore {
   }
 
   getNumberOfPositionsByCandidateWeVoteId (candidateWeVoteId) {
-    let numberOfSupportPositions = 0;
-    let numberOfOpposePositions = 0;
-    let numberOfInfoOnlyPositions = 0;
+    let numberOfAllSupportPositions = 0;
+    let numberOfAllOpposePositions = 0;
+    let numberOfAllInfoOnlyPositions = 0;
     if (this.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId)) {
       const results = extractNumberOfPositionsFromPositionList(this.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId));
-      ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = results);
+      ({ numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = results);
     }
     return {
-      numberOfSupportPositions,
-      numberOfOpposePositions,
-      numberOfInfoOnlyPositions,
+      numberOfAllSupportPositions,
+      numberOfAllOpposePositions,
+      numberOfAllInfoOnlyPositions,
     };
   }
 

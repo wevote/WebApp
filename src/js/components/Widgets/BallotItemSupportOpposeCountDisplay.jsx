@@ -18,11 +18,11 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import thumbsUpColorIcon from '../../../img/global/svg-icons/thumbs-up-color-icon.svg';      // 11/17/19, I don't think this is going to work in Cordova without the cordovaDot()
 import thumbsDownColorIcon from '../../../img/global/svg-icons/thumbs-down-color-icon.svg';  // 11/17/19, I don't think this is going to work in Cordova without the cordovaDot()
-// import { findDOMNode } from 'react-dom';
 import StickyPopover from '../Ballot/StickyPopover';
+import { getPositionSummaryListForBallotItem, getPositionListSummaryIncomingDataStats } from '../../utils/positionFunctions';
+import PositionSummaryListForPopover from './PositionSummaryListForPopover';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
-/* eslint react/no-find-dom-node: 1 */
 /* eslint array-callback-return: 1 */
 class BallotItemSupportOpposeCountDisplay extends Component {
   static closePositionsPopover () {
@@ -50,7 +50,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       componentDidMountFinished: false,
       organizationsToFollowSupport: [],
       organizationsToFollowOppose: [],
-      ballotItemSupportProps: {},
+      ballotItemStatSheet: {},
     };
     this.closeIssueScorePopover = this.closeIssueScorePopover.bind(this);
     this.closeNetworkScorePopover = this.closeNetworkScorePopover.bind(this);
@@ -66,22 +66,22 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.voterGuideStoreListener = SupportStore.addListener(this.onVoterGuideStoreChange.bind(this));
     let ballotItemDisplayName = '';
     const { ballotItemWeVoteId } = this.props;
-    const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
-    let numberOfSupportPositions = 0;
-    let numberOfOpposePositions = 0;
-    let numberOfInfoOnlyPositions = 0;
+    let numberOfAllSupportPositions = 0;
+    let numberOfAllOpposePositions = 0;
+    let numberOfAllInfoOnlyPositions = 0;
     if (isCandidate) {
       const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
       const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-      ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults);
+      ({ numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults);
     } else if (isMeasure) {
       const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
       ballotItemDisplayName = measure.ballot_item_display_name || '';
       const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
-      ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults);
+      ({ numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults);
     }
     // console.log('BallotItemSupportOpposeCountDisplay positionsNeededForThisWeVoteId:', positionsNeededForThisWeVoteId);
     // console.log('isCandidate:', isCandidate, 'isMeasure:', isMeasure);
@@ -90,14 +90,14 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(ballotItemWeVoteId);
     this.setState({
       ballotItemDisplayName,
-      ballotItemSupportProps,
+      ballotItemStatSheet,
       ballotItemWeVoteId,
       componentDidMountFinished: true,
       isCandidate,
       isMeasure,
-      numberOfSupportPositions,
-      numberOfOpposePositions,
-      numberOfInfoOnlyPositions,
+      numberOfAllSupportPositions,
+      numberOfAllOpposePositions,
+      numberOfAllInfoOnlyPositions,
       organizationsToFollowSupport,
       organizationsToFollowOppose,
       voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
@@ -108,88 +108,89 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // console.log('componentWillReceiveProps, nextProps: ', nextProps);
     let ballotItemDisplayName;
     const { ballotItemWeVoteId } = nextProps;
-    const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
-    let numberOfSupportPositions = 0;
-    let numberOfOpposePositions = 0;
-    let numberOfInfoOnlyPositions = 0;
+    let numberOfAllSupportPositions = 0;
+    let numberOfAllOpposePositions = 0;
+    let numberOfAllInfoOnlyPositions = 0;
     if (isCandidate) {
       const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
       const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-      ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults);
+      ({ numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults);
     } else if (isMeasure) {
       const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
       ballotItemDisplayName = measure.ballot_item_display_name || '';
       const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
-      ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults);
+      ({ numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults);
     }
     const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(ballotItemWeVoteId);
     const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(ballotItemWeVoteId);
     this.setState(() => ({
       ballotItemDisplayName,
-      ballotItemSupportProps,
+      ballotItemStatSheet,
       ballotItemWeVoteId,
       isCandidate,
       isMeasure,
-      numberOfSupportPositions,
-      numberOfOpposePositions,
-      numberOfInfoOnlyPositions,
+      numberOfAllSupportPositions,
+      numberOfAllOpposePositions,
+      numberOfAllInfoOnlyPositions,
       organizationsToFollowSupport,
       organizationsToFollowOppose,
     }));
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      return true;
-    }
-    if (this.state.forceReRender === true) {
-      if (this.state.voterIssuesScore !== nextState.voterIssuesScore) {
-        // console.log('shouldComponentUpdate: forceReRender === true and voterIssuesScore change');
-        return true;
-      }
-    }
-    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
-      return true;
-    }
-    if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
-      // console.log('this.state.ballotItemWeVoteId:', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId:', nextState.ballotItemWeVoteId);
-      return true;
-    }
-    if (this.state.numberOfSupportPositions !== nextState.numberOfSupportPositions) {
-      return true;
-    }
-    if (this.state.numberOfOpposePositions !== nextState.numberOfOpposePositions) {
-      return true;
-    }
-    if (this.state.numberOfInfoOnlyPositions !== nextState.numberOfInfoOnlyPositions) {
-      return true;
-    }
-    if ((!this.state.organizationsToFollowSupport) || (!nextState.organizationsToFollowSupport) || (this.state.organizationsToFollowSupport.length !== nextState.organizationsToFollowSupport.length)) {
-      // console.log('this.state.organizationsToFollowSupport.length:', this.state.organizationsToFollowSupport.length, ', nextState.organizationsToFollowSupport.length:', nextState.organizationsToFollowSupport.length);
-      return true;
-    }
-    if ((!this.state.organizationsToFollowOppose) || (!nextState.organizationsToFollowOppose) || (this.state.organizationsToFollowOppose.length !== nextState.organizationsToFollowOppose.length)) {
-      // console.log('this.state.organizationsToFollowOppose.length:', this.state.organizationsToFollowOppose.length, ', nextState.organizationsToFollowOppose.length:', nextState.organizationsToFollowOppose.length);
-      return true;
-    }
-    if (this.state.ballotItemSupportProps !== undefined && nextState.ballotItemSupportProps !== undefined) {
-      const currentNetworkSupportCount = parseInt(this.state.ballotItemSupportProps.support_count) || 0;
-      const nextNetworkSupportCount = parseInt(nextState.ballotItemSupportProps.support_count) || 0;
-      const currentNetworkOpposeCount = parseInt(this.state.ballotItemSupportProps.oppose_count) || 0;
-      const nextNetworkOpposeCount = parseInt(nextState.ballotItemSupportProps.oppose_count) || 0;
-      if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
-        // console.log('shouldComponentUpdate: support or oppose count change');
-        return true;
-      }
-    }
-    return false;
-  }
+  // Turning off while working on modifications 2019-12-06
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   if (this.state.componentDidMountFinished === false) {
+  //     // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+  //     return true;
+  //   }
+  //   if (this.state.forceReRender === true) {
+  //     if (this.state.voterIssuesScore !== nextState.voterIssuesScore) {
+  //       // console.log('shouldComponentUpdate: forceReRender === true and voterIssuesScore change');
+  //       return true;
+  //     }
+  //   }
+  //   if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
+  //     // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
+  //     return true;
+  //   }
+  //   if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
+  //     // console.log('this.state.ballotItemWeVoteId:', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId:', nextState.ballotItemWeVoteId);
+  //     return true;
+  //   }
+  //   if (this.state.numberOfAllSupportPositions !== nextState.numberOfAllSupportPositions) {
+  //     return true;
+  //   }
+  //   if (this.state.numberOfAllOpposePositions !== nextState.numberOfAllOpposePositions) {
+  //     return true;
+  //   }
+  //   if (this.state.numberOfAllInfoOnlyPositions !== nextState.numberOfAllInfoOnlyPositions) {
+  //     return true;
+  //   }
+  //   if ((!this.state.organizationsToFollowSupport) || (!nextState.organizationsToFollowSupport) || (this.state.organizationsToFollowSupport.length !== nextState.organizationsToFollowSupport.length)) {
+  //     // console.log('this.state.organizationsToFollowSupport.length:', this.state.organizationsToFollowSupport.length, ', nextState.organizationsToFollowSupport.length:', nextState.organizationsToFollowSupport.length);
+  //     return true;
+  //   }
+  //   if ((!this.state.organizationsToFollowOppose) || (!nextState.organizationsToFollowOppose) || (this.state.organizationsToFollowOppose.length !== nextState.organizationsToFollowOppose.length)) {
+  //     // console.log('this.state.organizationsToFollowOppose.length:', this.state.organizationsToFollowOppose.length, ', nextState.organizationsToFollowOppose.length:', nextState.organizationsToFollowOppose.length);
+  //     return true;
+  //   }
+  //   if (this.state.ballotItemStatSheet !== undefined && nextState.ballotItemStatSheet !== undefined) {
+  //     const currentNetworkSupportCount = parseInt(this.state.ballotItemStatSheet.support_count) || 0;
+  //     const nextNetworkSupportCount = parseInt(nextState.ballotItemStatSheet.support_count) || 0;
+  //     const currentNetworkOpposeCount = parseInt(this.state.ballotItemStatSheet.oppose_count) || 0;
+  //     const nextNetworkOpposeCount = parseInt(nextState.ballotItemStatSheet.oppose_count) || 0;
+  //     if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
+  //       // console.log('shouldComponentUpdate: support or oppose count change');
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
@@ -205,44 +206,158 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     return { hasError: true };
   }
 
-  onCandidateStoreChange () {
-    if (this.state.isCandidate) {
-      const { ballotItemWeVoteId: candidateWeVoteId } = this.state;
-      const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(candidateWeVoteId);
-      const { numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults;
+  onCachedPositionsOrIssueStoreChange () {
+    const { ballotItemWeVoteId } = this.props;
+    const {
+      allCachedPositionsLength: priorAllCachedPositionsLength,
+      allIssuesVoterIsFollowingLength: priorAllIssuesVoterIsFollowingLength,
+      issueWeVoteIdsLinkedToByOrganizationDictLength: priorIssueWeVoteIdsLinkedToByOrganizationDictLength,
+      organizationWeVoteIdsVoterIsFollowingLength: priorOrganizationWeVoteIdsVoterIsFollowingLength,
+    } = this.state;
+
+    // Before we try to update the PositionSummaryList, make sure we have minimum data and that there has been a change
+    const results = getPositionListSummaryIncomingDataStats(ballotItemWeVoteId);
+    const { allCachedPositionsLength, allIssuesVoterIsFollowingLength, issueWeVoteIdsLinkedToByOrganizationDictLength, organizationWeVoteIdsVoterIsFollowingLength } = results;
+    // console.log('allCachedPositionsLength:', allCachedPositionsLength, ', priorAllCachedPositionsLength:', priorAllCachedPositionsLength);
+    // console.log('allIssuesVoterIsFollowingLength:', allIssuesVoterIsFollowingLength, ', priorAllIssuesVoterIsFollowingLength:', priorAllIssuesVoterIsFollowingLength);
+    // console.log('issueWeVoteIdsLinkedToByOrganizationDictLength:', issueWeVoteIdsLinkedToByOrganizationDictLength, ', priorIssueWeVoteIdsLinkedToByOrganizationDictLength:', priorIssueWeVoteIdsLinkedToByOrganizationDictLength);
+    // console.log('organizationWeVoteIdsVoterIsFollowingLength:', organizationWeVoteIdsVoterIsFollowingLength, ', priorOrganizationWeVoteIdsVoterIsFollowingLength:', priorOrganizationWeVoteIdsVoterIsFollowingLength);
+
+    const minimumPositionSummaryListVariablesFound = allCachedPositionsLength > 0 && (issueWeVoteIdsLinkedToByOrganizationDictLength || organizationWeVoteIdsVoterIsFollowingLength);
+    const changedPositionSummaryListVariablesFound = !!((allCachedPositionsLength !== priorAllCachedPositionsLength) || (allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) || (issueWeVoteIdsLinkedToByOrganizationDictLength !== priorIssueWeVoteIdsLinkedToByOrganizationDictLength) || (organizationWeVoteIdsVoterIsFollowingLength !== priorOrganizationWeVoteIdsVoterIsFollowingLength));
+
+    const refreshPositionSummaryList = !!(minimumPositionSummaryListVariablesFound && changedPositionSummaryListVariablesFound);
+    // console.log('refreshPositionSummaryList: ', refreshPositionSummaryList, ballotItemWeVoteId);
+    if (refreshPositionSummaryList) {
+      const limitToThisIssue = false;
+      const limitToVoterNetwork = true;
+      const positionSummaryList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, limitToVoterNetwork);
+      const positionSummaryListLength = positionSummaryList.length;
       this.setState({
-        numberOfSupportPositions,
-        numberOfOpposePositions,
-        numberOfInfoOnlyPositions,
+        allCachedPositionsLength,
+        allIssuesVoterIsFollowingLength,
+        issueWeVoteIdsLinkedToByOrganizationDictLength,
+        organizationWeVoteIdsVoterIsFollowingLength,
+        positionSummaryList,
+        positionSummaryListLength,
+      });
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+      // Network Score
+      let numberOfSupportPositionsForScore = 0;
+      let numberOfOpposePositionsForScore = 0;
+      let totalNetworkScore = 0;
+      let totalNetworkScoreWithSign;
+      let totalNetworkScoreIsNegative = false;
+      let totalNetworkScoreIsPositive = false;
+      numberOfSupportPositionsForScore = parseInt(ballotItemStatSheet.numberOfSupportPositionsForScore) || 0;
+      numberOfOpposePositionsForScore = parseInt(ballotItemStatSheet.numberOfOpposePositionsForScore) || 0;
+      // console.log('numberOfSupportPositionsForScore:', numberOfSupportPositionsForScore);
+      // console.log('numberOfOpposePositionsForScore:', numberOfOpposePositionsForScore);
+      totalNetworkScore = numberOfSupportPositionsForScore - numberOfOpposePositionsForScore;
+      if (totalNetworkScore > 0) {
+        totalNetworkScoreWithSign = `+${totalNetworkScore}`;
+        totalNetworkScoreIsPositive = true;
+      } else if (totalNetworkScore < 0) {
+        totalNetworkScoreWithSign = totalNetworkScore;
+        totalNetworkScoreIsNegative = true;
+      } else {
+        totalNetworkScoreWithSign = totalNetworkScore;
+      }
+
+      let showNetworkScore = true;
+      if (numberOfSupportPositionsForScore === 0 && numberOfOpposePositionsForScore === 0) {
+        // There is NOT an issue score, and BOTH network_support and network_oppose must be zero to hide Network Score
+        showNetworkScore = false;
+      }
+      this.setState({
+        ballotItemStatSheet,
+        numberOfSupportPositionsForScore,
+        numberOfOpposePositionsForScore,
+        showNetworkScore,
+        totalNetworkScore,
+        totalNetworkScoreIsNegative,
+        totalNetworkScoreIsPositive,
+        totalNetworkScoreWithSign,
       });
     }
   }
 
+  onCandidateStoreChange () {
+    const { isCandidate } = this.state;
+    if (isCandidate) {
+      const { ballotItemWeVoteId: candidateWeVoteId } = this.state;
+      const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(candidateWeVoteId);
+      const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
+      this.setState({
+        numberOfAllSupportPositions,
+        numberOfAllOpposePositions,
+        numberOfAllInfoOnlyPositions,
+      });
+      this.onCachedPositionsOrIssueStoreChange();
+    }
+  }
+
   onMeasureStoreChange () {
-    if (this.state.isMeasure) {
+    const { isMeasure } = this.state;
+    if (isMeasure) {
       const { ballotItemWeVoteId: measureWeVoteId } = this.state;
       const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(measureWeVoteId);
-      const { numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults;
+      const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
-        numberOfSupportPositions,
-        numberOfOpposePositions,
-        numberOfInfoOnlyPositions,
+        numberOfAllSupportPositions,
+        numberOfAllOpposePositions,
+        numberOfAllInfoOnlyPositions,
       });
+      this.onCachedPositionsOrIssueStoreChange();
     }
   }
 
   onIssueStoreChange () {
     // We want to re-render so issue data can update
-    this.setState(state => ({
-      forceReRender: true,
-      voterIssuesScore: IssueStore.getIssuesScoreByBallotItemWeVoteId(state.ballotItemWeVoteId),
-    }));
+    this.onCachedPositionsOrIssueStoreChange();
   }
 
   onSupportStoreChange () {
-    this.setState(state => ({
-      ballotItemSupportProps: SupportStore.get(state.ballotItemWeVoteId),
-    }));
+    // const { ballotItemWeVoteId } = this.state;
+    // const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    // // Network Score
+    // let numberOfSupportPositionsForScore = 0;
+    // let numberOfOpposePositionsForScore = 0;
+    // let totalNetworkScore = 0;
+    // let totalNetworkScoreWithSign;
+    // let totalNetworkScoreIsNegative = false;
+    // let totalNetworkScoreIsPositive = false;
+    // numberOfSupportPositionsForScore = parseInt(ballotItemStatSheet.numberOfSupportPositionsForScore) || 0;
+    // numberOfOpposePositionsForScore = parseInt(ballotItemStatSheet.numberOfOpposePositionsForScore) || 0;
+    // // console.log('numberOfSupportPositionsForScore:', numberOfSupportPositionsForScore);
+    // // console.log('numberOfOpposePositionsForScore:', numberOfOpposePositionsForScore);
+    // totalNetworkScore = numberOfSupportPositionsForScore - numberOfOpposePositionsForScore;
+    // if (totalNetworkScore > 0) {
+    //   totalNetworkScoreWithSign = `+${totalNetworkScore}`;
+    //   totalNetworkScoreIsPositive = true;
+    // } else if (totalNetworkScore < 0) {
+    //   totalNetworkScoreWithSign = totalNetworkScore;
+    //   totalNetworkScoreIsNegative = true;
+    // } else {
+    //   totalNetworkScoreWithSign = totalNetworkScore;
+    // }
+    //
+    // let showNetworkScore = true;
+    // if (numberOfSupportPositionsForScore === 0 && numberOfOpposePositionsForScore === 0) {
+    //   // There is NOT an issue score, and BOTH network_support and network_oppose must be zero to hide Network Score
+    //   showNetworkScore = false;
+    // }
+    // this.setState({
+    //   ballotItemStatSheet,
+    //   numberOfSupportPositionsForScore,
+    //   numberOfOpposePositionsForScore,
+    //   showNetworkScore,
+    //   totalNetworkScore,
+    //   totalNetworkScoreIsNegative,
+    //   totalNetworkScoreIsPositive,
+    //   totalNetworkScoreWithSign,
+    // });
+    this.onCachedPositionsOrIssueStoreChange();
   }
 
   onVoterGuideStoreChange () {
@@ -253,6 +368,18 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       organizationsToFollowOppose,
     }));
   }
+
+  handleEnterHoverLocalArea = () => {
+    if (this.props.handleLeaveCandidateCard) {
+      this.props.handleLeaveCandidateCard();
+    }
+  };
+
+  handleLeaveHoverLocalArea = () => {
+    if (this.props.handleEnterCandidateCard) {
+      this.props.handleEnterCandidateCard();
+    }
+  };
 
   closeNetworkScorePopover () {
     this.networkScoreRef.hide();
@@ -276,157 +403,51 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
   render () {
     renderLog('BallotItemSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
-    const handleEnterHoverLocalArea = () => {
-      if (this.props.handleLeaveCandidateCard) {
-        this.props.handleLeaveCandidateCard();
-      }
-    };
-
-    const handleLeaveHoverLocalArea = () => {
-      if (this.props.handleEnterCandidateCard) {
-        this.props.handleEnterCandidateCard();
-      }
-    };
-
-    if (!this.state.ballotItemWeVoteId) return null;
-    // Issue Score
-    // const voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
-    // let voterIssuesScoreWithSign;
-    // if (voterIssuesScore > 0) {
-    //   voterIssuesScoreWithSign = `+${voterIssuesScore}`;
-    // } else if (voterIssuesScore < 0) {
-    //   voterIssuesScoreWithSign = voterIssuesScore;
-    // } else {
-    //   voterIssuesScoreWithSign = voterIssuesScore;
-    // }
-    // // console.log('BallotItemSupportOpposeCountDisplay, voterIssuesScore: ', voterIssuesScore, ', ballotItemWeVoteId: ', this.state.ballotItemWeVoteId);
-    // const issueCountUnderThisBallotItem = IssueStore.getIssuesCountUnderThisBallotItem(this.state.ballotItemWeVoteId);
-    // const issueCountUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesCountUnderThisBallotItemVoterIsFollowing(this.state.ballotItemWeVoteId);
+    // console.log('BallotItemSupportOpposeCountDisplay render');
     const { classes } = this.props;
+    const {
+      ballotItemDisplayName, ballotItemWeVoteId, ballotItemStatSheet,
+      numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions,
+      organizationsToFollowSupport, organizationsToFollowOppose,
+      numberOfSupportPositionsForScore,
+      numberOfOpposePositionsForScore,
+      positionSummaryList, positionSummaryListLength,
+      showNetworkScore,
+      totalNetworkScore,
+      totalNetworkScoreIsNegative,
+      totalNetworkScoreIsPositive,
+      totalNetworkScoreWithSign,
+      voter,
+    } = this.state;
 
-    // Network Score
-    let networkSupportCount = 0;
-    let networkOpposeCount = 0;
-    let totalNetworkScore = 0;
-    let totalNetworkScoreWithSign;
-    let totalNetworkScoreIsNegative = false;
-    let totalNetworkScoreIsPositive = false;
-    if (this.state.ballotItemSupportProps !== undefined) {
-      networkSupportCount = parseInt(this.state.ballotItemSupportProps.support_count) || 0;
-      networkOpposeCount = parseInt(this.state.ballotItemSupportProps.oppose_count) || 0;
-      totalNetworkScore = parseInt(networkSupportCount - networkOpposeCount);
-      if (totalNetworkScore > 0) {
-        totalNetworkScoreWithSign = `+${totalNetworkScore}`;
-        totalNetworkScoreIsPositive = true;
-      } else if (totalNetworkScore < 0) {
-        totalNetworkScoreWithSign = totalNetworkScore;
-        totalNetworkScoreIsNegative = true;
-      } else {
-        totalNetworkScoreWithSign = totalNetworkScore;
-      }
-    }
-
-    let showNetworkScore = true;
-    if (networkSupportCount === 0 && networkOpposeCount === 0) {
-      // There is NOT an issue score, and BOTH network_support and network_oppose must be zero to hide Network Score
-      showNetworkScore = false;
-    }
-
-    // Voter Support or opposition
-    const isVoterOppose = SupportStore.getIsOpposeByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
-    const isVoterSupport = SupportStore.getIsSupportByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
-
-    const { organizationsToFollowSupport, organizationsToFollowOppose } = this.state;
-    const { numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = this.state;
+    if (!ballotItemWeVoteId || !ballotItemStatSheet) return null;
 
     const organizationsToFollowSupportCount =  organizationsToFollowSupport ? organizationsToFollowSupport.length :  0;
     const organizationsToFollowOpposeCount =  organizationsToFollowOppose ? organizationsToFollowOppose.length :  0;
-    const positionsCount = networkSupportCount + networkOpposeCount + organizationsToFollowSupportCount + organizationsToFollowOpposeCount;
+    const positionsCount = numberOfSupportPositionsForScore + numberOfOpposePositionsForScore + organizationsToFollowSupportCount + organizationsToFollowOpposeCount;
 
     let scoreInYourNetworkPopover;
-    // let advisersThatMakeVoterIssuesScoreDisplay;
-    // let advisersThatMakeVoterIssuesScoreCount = 0;
-    // if (issueCountUnderThisBallotItemVoterIsFollowing) {
-    //   // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
-    //   const organizationNameIssueSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-    //   const organizationNameIssueSupportListDisplay = organizationNameIssueSupportList.map(organizationName => (
-    //     <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-    //       <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')} alt="Thumbs Up" width="20" height="20" />
-    //       <span>&nbsp;</span>
-    //       <span>
-    //         {organizationName}
-    //         {' '}
-    //         <strong>+1</strong>
-    //       </span>
-    //     </span>
-    //   ));
-    //   const organizationNameIssueOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-    //   const organizationNameIssueOpposeListDisplay = organizationNameIssueOpposeList.map(organizationName => (
-    //     <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-    //       <img src={cordovaDot('/img/global/svg-icons/thumbs-down-color-icon.svg')} alt="Thumbs Down" width="20" height="20" />
-    //       <span>&nbsp;</span>
-    //       <span>
-    //         {organizationName}
-    //         {' '}
-    //         <strong>-1</strong>
-    //       </span>
-    //     </span>
-    //   ));
-    //   advisersThatMakeVoterIssuesScoreDisplay = (
-    //     <span>
-    //       { organizationNameIssueSupportList.length ? <span>{organizationNameIssueSupportListDisplay}</span> : null}
-    //       { organizationNameIssueOpposeList.length ? <span>{organizationNameIssueOpposeListDisplay}</span> : null}
-    //     </span>
-    //   );
-    //   advisersThatMakeVoterIssuesScoreCount = organizationNameIssueSupportList.length + organizationNameIssueOpposeList.length;
-    // }
 
-    // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
-    const nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-    const nameNetworkSupportListDisplay = nameNetworkSupportList.map(speakerDisplayName => (
-      <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-        <img src={cordovaDot(thumbsUpColorIcon)} alt="Thumbs Up" width="20" height="20" />
-        <span>&nbsp;</span>
-        <span>
-          {speakerDisplayName}
-          {' '}
-          <strong>+1</strong>
-        </span>
-      </span>
-    ));
-    const nameNetworkOpposeList = SupportStore.getNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-    const nameNetworkOpposeListDisplay = nameNetworkOpposeList.map(speakerDisplayName => (
-      <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-        <img src={cordovaDot(thumbsDownColorIcon)} alt="Thumbs Down" width="20" height="20" />
-        <span>&nbsp;</span>
-        <span>
-          {speakerDisplayName}
-          {' '}
-          <strong>-1</strong>
-        </span>
-      </span>
-    ));
-    const advisersThatMakeVoterNetworkScoreDisplay = (
-      <span>
-        { nameNetworkSupportList.length ? <span>{nameNetworkSupportListDisplay}</span> : null}
-        { nameNetworkOpposeList.length ? <span>{nameNetworkOpposeListDisplay}</span> : null}
-      </span>
-    );
-    const advisersThatMakeVoterNetworkScoreCount = nameNetworkSupportList.length + nameNetworkOpposeList.length;
-
-    if (advisersThatMakeVoterNetworkScoreCount > 0) {
+    if (positionSummaryListLength > 0) {
       scoreInYourNetworkPopover = (
         <PopoverWrapper>
           <PopoverHeader>
-            <PopoverTitleText>Score in Your Network</PopoverTitleText>
+            <PopoverTitleText>About this Score</PopoverTitleText>
           </PopoverHeader>
           <PopoverBody>
-            These friends or organizations support or oppose
+            Opinions about
             {' '}
-            <strong>{this.state.ballotItemDisplayName}</strong>
-            :
+            <strong>{ballotItemDisplayName}</strong>
+            {' '}
+            which make up this score:
             <br />
-            {advisersThatMakeVoterNetworkScoreDisplay}
+            {positionSummaryList && (
+              <RenderedOrganizationsWrapper>
+                <PositionSummaryListForPopover
+                  positionSummaryList={positionSummaryList}
+                />
+              </RenderedOrganizationsWrapper>
+            )}
           </PopoverBody>
         </PopoverWrapper>
       );
@@ -434,71 +455,28 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       scoreInYourNetworkPopover = (
         <PopoverWrapper>
           <PopoverHeader>
-            <PopoverTitleText>Score in Your Network</PopoverTitleText>
+            <PopoverTitleText>About this Score</PopoverTitleText>
           </PopoverHeader>
           <PopoverBody>
-            Your friends, and the organizations you follow, are
+            This personal scoring of
             {' '}
-            <strong>Your Network</strong>
-            .
-            Everyone in your network that
+            <strong>{ballotItemDisplayName}</strong>
             {' '}
-            <span className="u-no-break">
-              {' '}
-              <img
-                src={cordovaDot(thumbsUpColorIcon)}
-                alt="Thumbs Up"
-                width="20"
-                height="20"
-              />
-              {' '}
-              supports
-            </span>
-            {' '}
-            {this.state.ballotItemDisplayName}
-            adds
-            +1 to this
-            {' '}
-            <strong>Score</strong>
-            .
-            Each one that
-            {' '}
-            <span className="u-no-break">
-              <img
-                src={cordovaDot(thumbsDownColorIcon)}
-                alt="Thumbs Down"
-                width="20"
-                height="20"
-              />
-              {' '}
-              opposes
-            </span>
-            {' '}
-            subtracts 1 from this
-            {' '}
-            <strong>Score</strong>
-            .
-            {' '}
-            <strong>Listen</strong>
-            {' '}
-            to an organization to add their opinion to your personalized
-            {' '}
-            <strong>Score</strong>
-            .
+            is calculated from the Values you follow, the opinions of your friends, and the public opinions you follow.
           </PopoverBody>
         </PopoverWrapper>
       );
     }
 
-    const voterDecidedItem = this.state.ballotItemSupportProps && this.state.voter &&
-      (this.state.ballotItemSupportProps.is_support || this.state.ballotItemSupportProps.is_oppose);
+    const voterDecidedItem = ballotItemStatSheet && voter &&
+      (ballotItemStatSheet.is_support || ballotItemStatSheet.is_oppose);
 
     const positionsPopover = positionsCount > 1 || (positionsCount && !voterDecidedItem) ? (     // eslint-disable-line no-nested-ternary
       <PopoverWrapper>
         <PopoverHeader>
           <PopoverTitleText>
             Opinions
-            {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
+            {ballotItemDisplayName ? ` about ${ballotItemDisplayName}` : ''}
             {' '}
           </PopoverTitleText>
         </PopoverHeader>
@@ -527,7 +505,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             {' '}
             opposes
           </span>
-          {this.state.ballotItemDisplayName ? ` ${this.state.ballotItemDisplayName}` : ''}
+          {ballotItemDisplayName ? ` ${ballotItemDisplayName}` : ''}
           .
         </PopoverBody>
       </PopoverWrapper>
@@ -537,13 +515,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           <PopoverHeader>
             <PopoverTitleText>
               Opinions
-              {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
+              {ballotItemDisplayName ? ` about ${ballotItemDisplayName}` : ''}
               {' '}
             </PopoverTitleText>
           </PopoverHeader>
           <PopoverBody>
             You have the only opinion
-            {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
+            {ballotItemDisplayName ? ` about ${ballotItemDisplayName}` : ''}
             {' '}
             so far.
           </PopoverBody>
@@ -553,21 +531,21 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           <PopoverHeader>
             <PopoverTitleText>
               Opinions
-              {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
+              {ballotItemDisplayName ? ` about ${ballotItemDisplayName}` : ''}
               {' '}
             </PopoverTitleText>
           </PopoverHeader>
           <PopoverBody>
             There are no opinions
-            {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
+            {ballotItemDisplayName ? ` about ${ballotItemDisplayName}` : ''}
             {' '}
             yet.
           </PopoverBody>
         </PopoverWrapper>
       );
 
-    const commentCountExists = numberOfInfoOnlyPositions > 0;
-    const opposeCountExists = numberOfOpposePositions > 0;
+    const commentCountExists = numberOfAllInfoOnlyPositions > 0;
+    const opposeCountExists = numberOfAllOpposePositions > 0;
     // Default settings
     let showCommentCount = false;
     let showOpposeCount = true;
@@ -576,13 +554,14 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       showCommentCount = true;
       showOpposeCount = false;
     }
+    // console.log('showNetworkScore:', showNetworkScore, ', ballotItemStatSheet:', ballotItemStatSheet);
 
     return (
       <Wrapper
-        onMouseEnter={handleEnterHoverLocalArea}
-        onMouseLeave={handleLeaveHoverLocalArea}
+        onMouseEnter={this.handleEnterHoverLocalArea}
+        onMouseLeave={this.handleLeaveHoverLocalArea}
       >
-        { isVoterSupport ? (
+        { ballotItemStatSheet.voterSupportsBallotItem ? (
           <NetworkScore className={classes.voterSupports} totalNetworkScoreIsNegative={totalNetworkScoreIsNegative} totalNetworkScoreIsPositive={totalNetworkScoreIsPositive}>
             <VoterChoiceWrapper>
               <DoneIcon classes={{ root: classes.buttonIcon }} />
@@ -592,7 +571,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           null
         }
 
-        { isVoterOppose ? (
+        { ballotItemStatSheet.voterOpposesBallotItem ? (
           <NetworkScore className={classes.voterOpposes} totalNetworkScoreIsNegative={totalNetworkScoreIsNegative} totalNetworkScoreIsPositive={totalNetworkScoreIsPositive}>
             <VoterChoiceWrapper>
               <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
@@ -603,12 +582,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         }
 
         {/* Total counts of all support, opposition and info only comments for this ballot item */}
-        { showNetworkScore || isVoterSupport || isVoterOppose ?
+        { showNetworkScore || ballotItemStatSheet.voterSupportsBallotItem || ballotItemStatSheet.voterOpposesBallotItem ?
           null : (
             <StickyPopover
               delay={{ show: 100000, hide: 100 }}
               popoverComponent={positionsPopover}
-              placement="auto"
+              placement="bottom"
               id="ballot-support-oppose-count-trigger-click-root-close"
               openOnClick
               showCloseIcon
@@ -622,14 +601,14 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                     <Endorsement>
                       <ThumbUpIcon classes={{ root: classes.endorsementIconRoot }} />
                       <EndorsementCount>
-                        {numberOfSupportPositions}
+                        {numberOfAllSupportPositions}
                       </EndorsementCount>
                     </Endorsement>
                     { showOpposeCount ? (
                       <Endorsement>
                         <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
                         <EndorsementCount>
-                          {numberOfOpposePositions}
+                          {numberOfAllOpposePositions}
                         </EndorsementCount>
                       </Endorsement>
                     ) :
@@ -638,7 +617,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                       <Endorsement>
                         <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
                         <EndorsementCount>
-                          {numberOfInfoOnlyPositions}
+                          {numberOfAllInfoOnlyPositions}
                         </EndorsementCount>
                       </Endorsement>
                     ) :
@@ -651,11 +630,11 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         }
 
         {/* Network Score for this ballot item here */}
-        { showNetworkScore && !isVoterSupport && !isVoterOppose ? (
+        { showNetworkScore && !ballotItemStatSheet.voterSupportsBallotItem && !ballotItemStatSheet.voterOpposesBallotItem ? (
           <StickyPopover
             delay={{ show: 100000, hide: 100 }}
             popoverComponent={scoreInYourNetworkPopover}
-            placement="auto"
+            placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
             openOnClick
             showCloseIcon
@@ -814,6 +793,10 @@ const PopoverTitleText = styled.div`
 
 const PopoverBody = styled.div`
   padding: 8px;
+`;
+
+const RenderedOrganizationsWrapper = styled.div`
+  margin-top: 6px;
 `;
 
 export default withTheme(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

@@ -1,7 +1,10 @@
 import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
 import Dispatcher from '../dispatcher/Dispatcher';
-import { mergeTwoObjectLists } from '../utils/textFormat';
+import CandidateStore from './CandidateStore';  // eslint-disable-line import/no-cycle
+import MeasureStore from './MeasureStore';  // eslint-disable-line import/no-cycle
+import { extractScoreFromNetworkFromPositionList } from '../utils/positionFunctions';  // eslint-disable-line import/no-cycle
+import { mergeTwoObjectLists, stringContains } from '../utils/textFormat';
 import SupportActions from '../actions/SupportActions';
 import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
 
@@ -31,6 +34,31 @@ class SupportStore extends ReduceStore {
       voter_statement_text: this.statementList[ballotItemWeVoteId] || '',
       support_count: this.supportCounts[ballotItemWeVoteId] || 0,
       oppose_count: this.opposeCounts[ballotItemWeVoteId] || 0,
+    };
+  }
+
+  getBallotItemStatSheet (ballotItemWeVoteId) {
+    if (!(this.supportList && this.opposeList && this.supportCounts && this.opposeCounts)) {
+      return undefined;
+    }
+    const isCandidate = stringContains('cand', ballotItemWeVoteId);
+    const isMeasure = stringContains('meas', ballotItemWeVoteId);
+    let allCachedPositions = [];
+    if (isCandidate) {
+      allCachedPositions = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+    } else if (isMeasure) {
+      allCachedPositions = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+    }
+    const results = extractScoreFromNetworkFromPositionList(allCachedPositions);
+    const { numberOfSupportPositionsForScore, numberOfOpposePositionsForScore, numberOfInfoOnlyPositionsForScore } = results;
+    return {
+      voterSupportsBallotItem: this.supportList[ballotItemWeVoteId] || false,
+      voterOpposesBallotItem: this.opposeList[ballotItemWeVoteId] || false,
+      voterPositionIsPublic: this.isForPublicList[ballotItemWeVoteId] || false, // Default to friends only
+      voterTextStatement: this.statementList[ballotItemWeVoteId] || '',
+      numberOfSupportPositionsForScore: numberOfSupportPositionsForScore || 0,
+      numberOfOpposePositionsForScore: numberOfOpposePositionsForScore || 0,
+      numberOfInfoOnlyPositionsForScore: numberOfInfoOnlyPositionsForScore || 0,
     };
   }
 
