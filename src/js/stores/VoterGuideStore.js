@@ -1,10 +1,10 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import OrganizationActions from '../actions/OrganizationActions';
-import OrganizationStore from './OrganizationStore';
+import OrganizationStore from './OrganizationStore';  // eslint-disable-line import/no-cycle
 import SupportActions from '../actions/SupportActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
-import VoterStore from './VoterStore';
+import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
 import { arrayContains } from '../utils/textFormat';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../utils/organization-functions';
 

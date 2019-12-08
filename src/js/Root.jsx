@@ -89,7 +89,7 @@ const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
 const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
 
 const routes = () => {
-  console.log(window.innerWidth);
+  console.log('window.innerWidth:', window.innerWidth);
 
   return (
     <Route path="/" component={Application}>

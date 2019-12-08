@@ -3,20 +3,18 @@ import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import ReactSVG from 'react-svg';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import CandidateStore from '../../stores/CandidateStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueStore from '../../stores/IssueStore';
+import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
+import PositionSummaryListForPopover from '../Widgets/PositionSummaryListForPopover';
 import StickyPopover from '../Ballot/StickyPopover';
-import { arrayContains, cleanArray } from '../../utils/textFormat';
 
 class ValueIconAndText extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     ballotItemDisplayName: PropTypes.string,
-    classes: PropTypes.object,
     issueFollowedByVoter: PropTypes.bool,
     issueWidths: PropTypes.object,
     oneIssue: PropTypes.object,
@@ -32,14 +30,19 @@ class ValueIconAndText extends Component {
   }
 
   componentDidMount () {
-    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    this.onCandidateStoreChange();
+    this.candidateStoreListener = CandidateStore.addListener(this.onCachedPositionsOrIssueStoreChange.bind(this));
+    this.issueStoreListener = IssueStore.addListener(this.onCachedPositionsOrIssueStoreChange.bind(this));
+    this.onCachedPositionsOrIssueStoreChange();
   }
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if not needed
     if (this.state.allCachedPositionsForThisCandidateLength !== nextState.allCachedPositionsForThisCandidateLength) {
       // console.log('this.state.allCachedPositionsForThisCandidateLength: ', this.state.allCachedPositionsForThisCandidateLength, ', nextState.allCachedPositionsForThisCandidateLength', nextState.allCachedPositionsForThisCandidateLength);
+      return true;
+    }
+    if (this.state.allIssuesVoterIsFollowingLength !== nextState.allIssuesVoterIsFollowingLength) {
+      // console.log('this.state.allIssuesVoterIsFollowingLength: ', this.state.allIssuesVoterIsFollowingLength, ', nextState.allIssuesVoterIsFollowingLength', nextState.allIssuesVoterIsFollowingLength);
       return true;
     }
     return false;
@@ -58,62 +61,39 @@ class ValueIconAndText extends Component {
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
+    this.issueStoreListener.remove();
   }
 
-  onCandidateStoreChange () {
-    const { ballotItemWeVoteId } = this.props;
-    const { allCachedPositionsForThisCandidateLength: priorAllCachedPositionsForThisCandidateLength } = this.state;
+  onCachedPositionsOrIssueStoreChange () {
+    const { ballotItemWeVoteId, oneIssue } = this.props;
+    const {
+      allCachedPositionsForThisCandidateLength: priorAllCachedPositionsForThisCandidateLength,
+      allIssuesVoterIsFollowingLength: priorAllIssuesVoterIsFollowingLength,
+    } = this.state;
     const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
     const allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length;
+    const allIssuesVoterIsFollowing = IssueStore.getIssuesVoterIsFollowing();
+    const allIssuesVoterIsFollowingLength = allIssuesVoterIsFollowing.length;
     // console.log('allCachedPositionsForThisCandidate: ', allCachedPositionsForThisCandidate);
-    if (allCachedPositionsForThisCandidateLength !== priorAllCachedPositionsForThisCandidateLength) {
-      // Update the listing of organizations under this issue
-      const { oneIssue } = this.props;
-      let organizationName = '';
-      let organizationOpposes = false;
-      let organizationSupports = false;
-      let organizationsUnderThisIssueCount = 0;
-      let organizationWeVoteId = '';
-      let speakerType = '';
-      let positionSummary = {};
-      const issueSpecificPositionList = [];
-      const organizationWeVoteIdsLinkedToThisIssue = IssueStore.getOrganizationWeVoteIdsLinkedToOneIssue(oneIssue.issue_we_vote_id);
-      // console.log('organizationWeVoteIdsLinkedToThisIssue: ', organizationWeVoteIdsLinkedToThisIssue);
-      for (let i = 0; i < allCachedPositionsForThisCandidateLength; i++) {
-        // Cycle through the positions for this candidate, and see if the organization endorsing is linked to this issue
-        organizationWeVoteId = allCachedPositionsForThisCandidate[i].speaker_we_vote_id;
-        if (arrayContains(organizationWeVoteId, organizationWeVoteIdsLinkedToThisIssue)) {
-          organizationName = allCachedPositionsForThisCandidate[i].speaker_display_name;
-          organizationOpposes = allCachedPositionsForThisCandidate[i].is_oppose_or_negative_rating;
-          organizationSupports = allCachedPositionsForThisCandidate[i].is_support_or_positive_rating;
-          speakerType = allCachedPositionsForThisCandidate[i].speaker_type;
-          if (organizationSupports || organizationOpposes) {
-            positionSummary = {
-              organizationName,
-              organizationOpposes,
-              organizationSupports,
-              organizationWeVoteId,
-              speakerType,
-            };
-            issueSpecificPositionList.push(positionSummary);
-            organizationsUnderThisIssueCount += 1;
-          }
-        }
-      }
-      const renderedOrganizationsForThisIssueList = this.renderOrganizationsForThisIssueList(issueSpecificPositionList);
+    if (allCachedPositionsForThisCandidateLength !== priorAllCachedPositionsForThisCandidateLength || allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) {
+      const limitToThisIssue = oneIssue.issue_we_vote_id;
+      const limitToVoterNetwork = false;
+      const issueSpecificPositionList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, limitToVoterNetwork);
+      const organizationsUnderThisIssueCount = issueSpecificPositionList.length;
       this.setState({
+        issueSpecificPositionList,
         organizationsUnderThisIssueCount,
-        renderedOrganizationsForThisIssueList,
       });
     }
     this.setState({
       allCachedPositionsForThisCandidateLength,
+      allIssuesVoterIsFollowingLength,
     });
   }
 
   valuePopover = () => {
     const { ballotItemDisplayName, oneIssue } = this.props;
-    const { organizationsUnderThisIssueCount, renderedOrganizationsForThisIssueList } = this.state;
+    const { issueSpecificPositionList, organizationsUnderThisIssueCount } = this.state;
     return (
       <PopoverWrapper>
         <PopoverHeader>
@@ -146,9 +126,11 @@ class ValueIconAndText extends Component {
                 {oneIssue.issue_name}
                 :
               </OpinionsRelatedToText>
-              {renderedOrganizationsForThisIssueList && (
+              {issueSpecificPositionList && (
                 <RenderedOrganizationsWrapper>
-                  {renderedOrganizationsForThisIssueList}
+                  <PositionSummaryListForPopover
+                    positionSummaryList={issueSpecificPositionList}
+                  />
                 </RenderedOrganizationsWrapper>
               )}
             </>
@@ -167,43 +149,6 @@ class ValueIconAndText extends Component {
         </PopoverDescriptionText>
       </PopoverWrapper>
     );
-  }
-
-  renderOrganizationsForThisIssueList (issueSpecificPositionList) {
-    const { classes, issueFollowedByVoter } = this.props;
-    const renderedList = issueSpecificPositionList.map((positionSummary) => {
-      if (!issueFollowedByVoter) {
-        // Should we label this organization as a "+1"? Check to see if the organization is linked to any of the other issues the voter is following, or being followed directly
-      }
-      return (
-        <PositionSummaryWrapper key={`onePositionForIssue--${positionSummary.organizationWeVoteId}`}>
-          {positionSummary.organizationSupports && !issueFollowedByVoter && (
-            <Support>
-              <ThumbUpIcon classes={{ root: classes.endorsementIcon }} />
-            </Support>
-          )}
-          {positionSummary.organizationSupports && issueFollowedByVoter && (
-            <SupportFollow>
-              +1
-            </SupportFollow>
-          )}
-          {positionSummary.organizationOpposes && !issueFollowedByVoter && (
-            <Oppose>
-              <ThumbDownIcon classes={{ root: classes.endorsementIcon }} />
-            </Oppose>
-          )}
-          {positionSummary.organizationOpposes && issueFollowedByVoter && (
-            <OpposeFollow>
-              -1
-            </OpposeFollow>
-          )}
-          <div>
-            {positionSummary.organizationName}
-          </div>
-        </PositionSummaryWrapper>
-      );
-    });
-    return cleanArray(renderedList);
   }
 
   render () {
@@ -283,12 +228,6 @@ const OpinionsRelatedToText = styled.div`
   margin-top: 4px;
 `;
 
-const PositionSummaryWrapper = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-`;
-
 const PopoverHeader = styled.div`
   background: ${({ theme }) => theme.colors.brandBlue};
   padding: 4px 8px;
@@ -319,74 +258,6 @@ const PopoverDescriptionText = styled.div`
 
 const RenderedOrganizationsWrapper = styled.div`
   margin-top: 6px;
-`;
-
-const SupportFollow = styled.div`
-  color: white;
-  background: ${({ theme }) => theme.colors.supportGreenRgb};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  float: right;
-  font-size: 10px;
-  font-weight: bold;
-  margin-right: 6px;
-  @media print{
-    border: 2px solid grey;
-  }
-`;
-
-const OpposeFollow = styled.div`
-  color: white;
-  background: ${({ theme }) => theme.colors.opposeRedRgb};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  float: right;
-  font-size: 10px;
-  font-weight: bold;
-  margin-right: 6px;
-  @media print{
-    border: 2px solid grey;
-  }
-`;
-
-const Support = styled.div`
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  border: 2px solid ${({ theme }) => theme.colors.supportGreenRgb};
-  float: left;
-  font-size: 10px;
-  font-weight: bold;
-  margin-right: 6px;
-`;
-
-const Oppose = styled.div`
-  color: ${({ theme }) => theme.colors.opposeRedRgb};
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  float: left;
-  border: 2px solid ${({ theme }) => theme.colors.opposeRedRgb};
-  font-size: 10px;
-  font-weight: bold;
-  margin-right: 6px;
 `;
 
 export default withTheme(withStyles(styles)(ValueIconAndText));

@@ -1,7 +1,7 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import { stringContains } from '../utils/textFormat';
-import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions';
+import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions';  // eslint-disable-line import/no-cycle
 
 class MeasureStore extends ReduceStore {
   getInitialState () {
@@ -46,17 +46,17 @@ class MeasureStore extends ReduceStore {
   }
 
   getNumberOfPositionsByMeasureWeVoteId (measureWeVoteId) {
-    let numberOfSupportPositions = 0;
-    let numberOfOpposePositions = 0;
-    let numberOfInfoOnlyPositions = 0;
+    let numberOfAllSupportPositions = 0;
+    let numberOfAllOpposePositions = 0;
+    let numberOfAllInfoOnlyPositions = 0;
     if (this.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId)) {
       const results = extractNumberOfPositionsFromPositionList(this.getAllCachedPositionsByMeasureWeVoteId(measureWeVoteId));
-      ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = results);
+      ({ numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = results);
     }
     return {
-      numberOfSupportPositions,
-      numberOfOpposePositions,
-      numberOfInfoOnlyPositions,
+      numberOfAllSupportPositions,
+      numberOfAllOpposePositions,
+      numberOfAllInfoOnlyPositions,
     };
   }
 
