@@ -29,7 +29,7 @@ class BallotStore extends ReduceStore {
 
   isLoaded () {
     const civicId = VoterStore.electionId();
-    return !!(this.getState().ballots && this.getState().ballots[civicId] && SupportStore.supportList);
+    return !!(this.getState().ballots && this.getState().ballots[civicId] && SupportStore.voterSupportsList);
   }
 
   allBallotItemsRetrieveCalled () {
@@ -134,9 +134,9 @@ class BallotStore extends ReduceStore {
       const { kind_of_ballot_item: kindOfBallot, we_vote_id: weVoteId, candidate_list: candidateList } = item;
       // console.log('BallotStore ballotRemainingChoices, kindOfBallot: ', kindOfBallot);
       if (kindOfBallot === 'OFFICE') { // OFFICE - you are undecided if you haven't supported anyone
-        return candidateList.filter(candidate => SupportStore.supportList[candidate.we_vote_id]).length === 0;
+        return candidateList.filter(candidate => SupportStore.voterSupportsList[candidate.we_vote_id]).length === 0;
       } else { // MEASURES - you haven't decided if you neither support nor oppose
-        return !SupportStore.supportList[weVoteId] && !SupportStore.opposeList[weVoteId];
+        return !SupportStore.voterSupportsList[weVoteId] && !SupportStore.voterOpposesList[weVoteId];
       }
     });
   }
@@ -154,7 +154,7 @@ class BallotStore extends ReduceStore {
       if (item.kind_of_ballot_item === 'OFFICE') { // Offices
         return item.candidate_list.length > 0;
       } else { // MEASURES
-        return SupportStore.supportList[item.we_vote_id] || SupportStore.opposeList[item.we_vote_id];
+        return SupportStore.voterSupportsList[item.we_vote_id] || SupportStore.voterOpposesList[item.we_vote_id];
       }
     });
   }
@@ -187,7 +187,7 @@ class BallotStore extends ReduceStore {
     for (let i = 0; i < ballotItem.candidate_list.length; i++) {
       const candidate = ballotItem.candidate_list[i];
       // If the user supports one candidate in the ballotItem then return all ballotItem candidates
-      if (SupportStore.supportList[candidate.we_vote_id]) {
+      if (SupportStore.voterSupportsList[candidate.we_vote_id]) {
         return ballotItem;
       }
     }
