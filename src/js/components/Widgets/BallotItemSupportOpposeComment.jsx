@@ -6,7 +6,6 @@ import ItemActionBar from './ItemActionBar';
 import ItemPositionStatementActionBar from './ItemPositionStatementActionBar';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
-import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 
 class BallotItemSupportOpposeComment extends PureComponent {
@@ -30,7 +29,6 @@ class BallotItemSupportOpposeComment extends PureComponent {
       // componentDidMountFinished: false,
       showPositionStatement: false,
       shouldFocusCommentArea: false,
-      ballotItemSupportProps: {},
     };
     this.passDataBetweenItemActionToItemPosition = this.passDataBetweenItemActionToItemPosition.bind(this);
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
@@ -41,7 +39,6 @@ class BallotItemSupportOpposeComment extends PureComponent {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     let ballotItemDisplayName = '';
-    const ballotItemSupportProps = SupportStore.get(this.props.ballotItemWeVoteId);
     let ballotItemType;
     let isCandidate = false;
     let isMeasure = false;
@@ -58,20 +55,17 @@ class BallotItemSupportOpposeComment extends PureComponent {
     }
     this.setState({
       ballotItemDisplayName,
-      ballotItemSupportProps,
       ballotItemType,
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
       // componentDidMountFinished: true,
       isCandidate,
       isMeasure,
-      // voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
     });
   }
 
   componentWillReceiveProps (nextProps) {
     // console.log('BallotItemSupportOpposeComment, componentWillReceiveProps');
     let ballotItemDisplayName = '';
-    const ballotItemSupportProps = SupportStore.get(nextProps.ballotItemWeVoteId);
     let ballotItemType;
     let isCandidate = false;
     let isMeasure = false;
@@ -88,7 +82,6 @@ class BallotItemSupportOpposeComment extends PureComponent {
     }
     this.setState({
       ballotItemDisplayName,
-      ballotItemSupportProps,
       ballotItemType,
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
       isCandidate,
@@ -147,59 +140,57 @@ class BallotItemSupportOpposeComment extends PureComponent {
 
   render () {
     renderLog('BallotItemSupportOpposeComment');  // Set LOG_RENDER_EVENTS to log all renders
-    if (!this.state.ballotItemWeVoteId) return null;
-    const { showPositionStatementActionBar } = this.props;
-    // Voter Support or opposition
-    const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = this.state.ballotItemSupportProps || {};
+    const { currentBallotIdInUrl, externalUniqueId, showPositionStatementActionBar } = this.props;
+    const { ballotItemDisplayName, ballotItemType, ballotItemWeVoteId, showPositionStatement, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement } = this.state;
+
+    if (!ballotItemWeVoteId) return null;
 
     let commentBoxIsVisible = false;
-    if (showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement) {
+    if (showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement) {
       commentBoxIsVisible = true;
     }
     const itemActionBar = (
       <ItemActionBar
-        ballotItemDisplayName={this.state.ballotItemDisplayName}
-        ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+        ballotItemDisplayName={ballotItemDisplayName}
+        ballotItemWeVoteId={ballotItemWeVoteId}
         commentButtonHide={commentBoxIsVisible}
         commentButtonHideInMobile
-        currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-        externalUniqueId={`${this.props.externalUniqueId}-ballotItemSupportOpposeComment-${this.state.ballotItemWeVoteId}`}
+        currentBallotIdInUrl={currentBallotIdInUrl}
+        externalUniqueId={`${externalUniqueId}-ballotItemSupportOpposeComment-${ballotItemWeVoteId}`}
         shareButtonHide
         supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
         togglePositionStatementFunction={this.togglePositionStatement}
         transitioning={this.state.transitioning}
-        type={this.state.ballotItemType}
+        type={ballotItemType}
         urlWithoutHash={this.props.urlWithoutHash}
       />
     );
 
-    const commentDisplayDesktop = showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement ? (
+    const commentDisplayDesktop = showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
       <div className="d-none d-sm-block u-min-50 u-stack--sm u-push--xs">
         <ItemPositionStatementActionBar
-          ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-          ballotItemDisplayName={this.state.ballotItemDisplayName}
-          commentEditModeOn={this.state.showPositionStatement}
-          externalUniqueId={`${this.props.externalUniqueId}-desktop-fromBallotItemSupportOpposeComment-${this.state.ballotItemWeVoteId}`}
-          supportProps={this.state.ballotItemSupportProps}
+          ballotItemWeVoteId={ballotItemWeVoteId}
+          ballotItemDisplayName={ballotItemDisplayName}
+          commentEditModeOn={showPositionStatement}
+          externalUniqueId={`${externalUniqueId}-desktop-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
-          type={this.state.ballotItemType}
+          type={ballotItemType}
           shownInList
         />
       </div>
     ) :
       null;
 
-    const commentDisplayMobile = showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText ? (
+    const commentDisplayMobile = showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement ? (
       <div className="d-block d-sm-none u-min-50 u-push--xs u-stack--xs">
         <ItemPositionStatementActionBar
-          ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-          ballotItemDisplayName={this.state.ballotItemDisplayName}
-          supportProps={this.state.ballotItemSupportProps}
+          ballotItemWeVoteId={ballotItemWeVoteId}
+          ballotItemDisplayName={ballotItemDisplayName}
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
-          type={this.state.ballotItemType}
-          externalUniqueId={`${this.props.externalUniqueId}-mobile-fromBallotItemSupportOpposeComment-${this.state.ballotItemWeVoteId}`}
+          type={ballotItemType}
+          externalUniqueId={`${externalUniqueId}-mobile-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}
           shownInList
           mobile
         />

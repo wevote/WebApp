@@ -182,7 +182,6 @@ class MeasureItemForAddPositions extends Component {
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
           commentEditModeOn={showPositionStatement}
-          supportProps={ballotItemSupportProps}
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="MEASURE"
@@ -197,7 +196,6 @@ class MeasureItemForAddPositions extends Component {
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
-          supportProps={ballotItemSupportProps}
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="MEASURE"

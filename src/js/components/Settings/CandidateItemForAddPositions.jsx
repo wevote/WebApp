@@ -20,13 +20,12 @@ class CandidateItemForAddPositions extends Component {
     super(props);
     this.state = {
       ballotItemDisplayName: '',
-      ballotItemSupportProps: {},
       ballotItemWeVoteId: '',
       changeFound: false,
       componentDidMount: false,
-      isVoterOppose: false,
-      isVoterSupport: false,
-      voterStatementText: '',
+      voterOpposesBallotItem: false,
+      voterSupportsBallotItem: false,
+      voterTextStatement: '',
       oneCandidate: {},
       shouldFocusCommentArea: false,
       showPositionStatement: false,
@@ -41,16 +40,23 @@ class CandidateItemForAddPositions extends Component {
     // console.log('CandidateItemForAddPositions componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     const { oneCandidate } = this.props;
     if (oneCandidate) {
-      const ballotItemSupportProps = SupportStore.get(oneCandidate.we_vote_id);
-      const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
       this.setState({
         ballotItemDisplayName: oneCandidate.ballot_item_display_name,
-        ballotItemSupportProps,
         ballotItemWeVoteId: oneCandidate.we_vote_id,
-        isVoterOppose,
-        isVoterSupport,
-        voterStatementText,
       });
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(oneCandidate.we_vote_id);
+      if (ballotItemStatSheet) {
+        const {
+          voterOpposesBallotItem,
+          voterSupportsBallotItem,
+          voterTextStatement,
+        } = ballotItemStatSheet;
+        this.setState({
+          voterOpposesBallotItem,
+          voterSupportsBallotItem,
+          voterTextStatement,
+        });
+      }
     }
     this.setState({
       componentDidMount: true,
@@ -67,20 +73,20 @@ class CandidateItemForAddPositions extends Component {
       // console.log('this.state.changeFound: ', this.state.changeFound, ', nextState.changeFound: ', nextState.changeFound);
       return true;
     }
-    if (this.state.isVoterOppose !== nextState.isVoterOppose) {
-      // console.log('this.state.isVoterOppose: ', this.state.isVoterOppose, ', nextState.isVoterOppose: ', nextState.isVoterOppose);
+    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
+      // console.log('this.state.voterOpposesBallotItem: ', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem: ', nextState.voterOpposesBallotItem);
       return true;
     }
-    if (this.state.isVoterSupport !== nextState.isVoterSupport) {
-      // console.log('this.state.isVoterSupport: ', this.state.isVoterSupport, ', nextState.isVoterSupport: ', nextState.isVoterSupport);
+    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
+      // console.log('this.state.voterSupportsBallotItem: ', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem: ', nextState.voterSupportsBallotItem);
       return true;
     }
     if (this.state.showPositionStatement !== nextState.showPositionStatement) {
       // console.log('this.state.showPositionStatement: ', this.state.showPositionStatement, ', nextState.showPositionStatement: ', nextState.showPositionStatement);
       return true;
     }
-    if (this.state.voterStatementText !== nextState.voterStatementText) {
-      // console.log('this.state.voterStatementText: ', this.state.voterStatementText, ', nextState.voterStatementText: ', nextState.voterStatementText);
+    if (this.state.voterTextStatement !== nextState.voterTextStatement) {
+      // console.log('this.state.voterTextStatement: ', this.state.voterTextStatement, ', nextState.voterTextStatement: ', nextState.voterTextStatement);
       return true;
     }
     return false;
@@ -106,14 +112,19 @@ class CandidateItemForAddPositions extends Component {
 
   onSupportStoreChange () {
     const { ballotItemWeVoteId } = this.state;
-    const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
-    const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
-    this.setState({
-      ballotItemSupportProps,
-      isVoterOppose,
-      isVoterSupport,
-      voterStatementText,
-    });
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    if (ballotItemStatSheet) {
+      const {
+        voterOpposesBallotItem,
+        voterSupportsBallotItem,
+        voterTextStatement,
+      } = ballotItemStatSheet;
+      this.setState({
+        voterOpposesBallotItem,
+        voterSupportsBallotItem,
+        voterTextStatement,
+      });
+    }
   }
 
   componentDidCatch (error, info) {
@@ -132,19 +143,17 @@ class CandidateItemForAddPositions extends Component {
   render () {
     renderLog('CandidateItemForAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     // const { classes, theme } = this.props;
-    const { ballotItemSupportProps, oneCandidate, showPositionStatement } = this.state;
+    const { oneCandidate, showPositionStatement, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement } = this.state;
     if (!oneCandidate || !oneCandidate.we_vote_id) {
       return null;
     }
-    const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
 
-    const commentDisplayDesktop = isVoterSupport || isVoterOppose || voterStatementText || showPositionStatement ? (
+    const commentDisplayDesktop = voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
       <ItemPositionStatementActionBarDesktopWrapper className="d-none d-sm-block u-min-50">
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
           commentEditModeOn={this.state.showPositionStatement}
-          supportProps={this.state.ballotItemSupportProps}
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="CANDIDATE"
@@ -154,12 +163,11 @@ class CandidateItemForAddPositions extends Component {
     ) :
       null;
 
-    const commentDisplayMobile = isVoterSupport || isVoterOppose || voterStatementText || showPositionStatement ? (
+    const commentDisplayMobile = voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
       <ItemPositionStatementActionBarMobileWrapper className="d-block d-sm-none u-min-50">
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
-          supportProps={this.state.ballotItemSupportProps}
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="CANDIDATE"

@@ -1,5 +1,3 @@
-// This file is flooded with non-camel case, so don't flag for now, in order to find more important issues
-// jscs:disable requireCamelCaseOrUpperCaseIdentifiers
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
@@ -20,7 +18,6 @@ class ItemPositionStatementActionBar extends Component {
     type: PropTypes.string.isRequired,
     commentEditModeOn: PropTypes.bool,
     externalUniqueId: PropTypes.string,
-    supportProps: PropTypes.object,
     shownInList: PropTypes.bool,
     shouldFocus: PropTypes.bool,
     classes: PropTypes.object,
@@ -30,10 +27,11 @@ class ItemPositionStatementActionBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      isPublicPosition: undefined,
+      voterPositionIsPublic: undefined,
       showEditPositionStatementInput: undefined,
-      supportProps: undefined,
-      statementTextToBeSaved: undefined,
+      voterOpposesBallotItem: false,
+      voterSupportsBallotItem: false,
+      voterTextStatement: '',
       // disabled: undefined,
       commentActive: false,
     };
@@ -43,19 +41,23 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   componentDidMount () {
-    if (this.props.supportProps) {
+    const { ballotItemWeVoteId, commentEditModeOn, shouldFocus } = this.props;
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    if (ballotItemStatSheet) {
+      const { voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
       this.setState({
-        isPublicPosition: this.props.supportProps.is_public_position,
-        statementTextToBeSaved: this.props.supportProps.voter_statement_text,
-        supportProps: this.props.supportProps,
+        voterOpposesBallotItem,
+        voterPositionIsPublic,
+        voterSupportsBallotItem,
+        voterTextStatement,
       });
     }
-    if (this.props.shouldFocus && this.textarea) {
+    if (shouldFocus && this.textarea) {
       this.textarea.focus();
     }
 
     this.setState({
-      showEditPositionStatementInput: this.props.commentEditModeOn,
+      showEditPositionStatementInput: commentEditModeOn,
       // disabled: !this.props.commentEditModeOn,
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
     });
@@ -64,23 +66,30 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.supportProps !== undefined) {
+    const { ballotItemWeVoteId } = this.props;
+    const { showEditPositionStatementInput } = this.state;
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    let voterTextStatement = '';
+    if (ballotItemStatSheet) {
+      const { voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem } = ballotItemStatSheet;
+      ({ voterTextStatement } = ballotItemStatSheet);
       this.setState({
-        isPublicPosition: nextProps.supportProps.is_public_position,
+        voterOpposesBallotItem,
+        voterPositionIsPublic,
+        voterSupportsBallotItem,
       });
     }
-    if (this.state.showEditPositionStatementInput) {
+    if (showEditPositionStatementInput) {
       // we don't want to do anything
-    } else if (nextProps.supportProps && nextProps.supportProps.voter_statement_text) {
+    } else if (voterTextStatement) {
       this.setState({
-        statementTextToBeSaved: nextProps.supportProps.voter_statement_text,
+        voterTextStatement,
         showEditPositionStatementInput: false,
         // disabled: true,
       });
     } else {
-      const voterStatementText = (nextProps.supportProps && nextProps.supportProps.voter_statement_text) || '';
       this.setState({
-        statementTextToBeSaved: voterStatementText,
+        voterTextStatement: '',
         showEditPositionStatementInput: nextProps.commentEditModeOn,
         // disabled: !nextProps.commentEditModeOn,
       });
@@ -91,52 +100,37 @@ class ItemPositionStatementActionBar extends Component {
     if (this.state.commentActive !== nextState.commentActive) {
       return true;
     }
-    if (this.state.isPublicPosition !== nextState.isPublicPosition) {
+    if (this.state.voterPositionIsPublic !== nextState.voterPositionIsPublic) {
       return true;
     }
-    if (this.state.statementTextToBeSaved !== nextState.statementTextToBeSaved) {
+    if (this.state.voterTextStatement !== nextState.voterTextStatement) {
       return true;
     }
     if (this.state.showEditPositionStatementInput !== nextState.showEditPositionStatementInput) {
       return true;
     }
-    let currentIsSupport = null;
-    if (this.state.supportProps) {
-      currentIsSupport = this.state.supportProps.is_support;
-    }
-    let currentIsOppose = null;
-    if (this.state.supportProps) {
-      currentIsOppose = this.state.supportProps.is_oppose;
-    }
-    let nextIsSupport = null;
-    if (nextState.supportProps) {
-      nextIsSupport = nextState.supportProps.is_support;
-    }
-    let nextIsOppose = null;
-    if (nextState.supportProps) {
-      nextIsOppose = nextState.supportProps.is_oppose;
-    }
-    if (currentIsSupport !== nextIsSupport) {
+    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
       return true;
     }
-    if (currentIsOppose !== nextIsOppose) {
+    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
       return true;
     }
     return false;
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate (prevProps, prevState) {
     // console.log('ItemPositionStatementActionBar componentDidUpdate');
     // Note: adding a focus on the textarea in componentDidUpdate can lead to an infinite loop.
     // We protect against this with shouldComponentUpdate
-    if (this.textarea && prevProps.supportProps && this.state.supportProps) {
-      if (prevProps.supportProps.is_oppose === true && this.state.supportProps.is_support === true) { // oppose to support
+    const { voterOpposesBallotItem, voterSupportsBallotItem } = this.state;
+    if (this.textarea) {
+      if (prevState.voterOpposesBallotItem === true && voterSupportsBallotItem === true) { // oppose to support
         this.textarea.focus();
-      } else if (prevProps.supportProps.is_support === true && this.state.supportProps.is_oppose === true) { // support to oppose
+      } else if (prevState.voterSupportsBallotItem === true && voterOpposesBallotItem === true) { // support to oppose
         this.textarea.focus();
-      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.state.supportProps.is_support === true) { // comment to support
+      } else if (prevState.voterOpposesBallotItem === false && prevState.voterSupportsBallotItem === false && voterSupportsBallotItem === true) { // comment to support
         this.textarea.focus();
-      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.state.supportProps.is_oppose === true) { // comment to oppose
+      } else if (prevState.voterOpposesBallotItem === false && prevState.voterSupportsBallotItem === false && voterOpposesBallotItem === true) { // comment to oppose
         this.textarea.focus();
       }
     }
@@ -154,27 +148,35 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   onSupportStoreChange () {
-    const supportProps = SupportStore.get(this.props.ballotItemWeVoteId);
-    let statementTextToBeSaved = '';
-    let isPublicPosition = '';
+    const { ballotItemWeVoteId } = this.props;
+    const { showEditPositionStatementInput } = this.state;
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    let voterOpposesBallotItem = '';
+    let voterSupportsBallotItem = '';
+    let voterTextStatement = '';
+    let voterPositionIsPublic = '';
+    if (ballotItemStatSheet) {
+      ({ voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet);
+    }
+    this.setState({
+      voterOpposesBallotItem,
+      voterSupportsBallotItem,
+    });
 
-    if (this.state.showEditPositionStatementInput) {
-      if (supportProps) {
-        isPublicPosition = supportProps.is_public_position;
+    if (showEditPositionStatementInput) {
+      if (ballotItemStatSheet) {
+        ({ voterPositionIsPublic } = ballotItemStatSheet);
       }
       this.setState({
-        supportProps,
-        isPublicPosition,
+        voterPositionIsPublic,
       });
     } else {
-      if (supportProps) {
-        statementTextToBeSaved = supportProps.voter_statement_text;
-        isPublicPosition = supportProps.is_public_position;
+      if (ballotItemStatSheet) {
+        ({ voterPositionIsPublic, voterTextStatement } = ballotItemStatSheet);
       }
       this.setState({
-        statementTextToBeSaved,
-        supportProps,
-        isPublicPosition,
+        voterTextStatement,
+        voterPositionIsPublic,
       });
     }
   }
@@ -212,17 +214,19 @@ class ItemPositionStatementActionBar extends Component {
   };
 
   savePositionStatement (e) {
-    // console.log('ItemPositionStatementActionBar this.props.ballotItemWeVoteId:', this.props.ballotItemWeVoteId, 'this.props.type: ', this.props.type, 'this.state.statementTextToBeSaved: ', this.state.statementTextToBeSaved);
     e.preventDefault();
-    SupportActions.voterPositionCommentSave(this.props.ballotItemWeVoteId, this.props.type, this.state.statementTextToBeSaved);
-    if (this.state.statementTextToBeSaved.length) {
+    const { ballotItemWeVoteId, type } = this.props;
+    const { voterTextStatement } = this.state;
+    // console.log('ItemPositionStatementActionBar ballotItemWeVoteId:', ballotItemWeVoteId, 'type: ', type, 'voterTextStatement: ', voterTextStatement);
+    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, type, voterTextStatement);
+    if (voterTextStatement.length) {
       this.closeEditPositionStatementInput();
     }
   }
 
   updateStatementTextToBeSaved (e) {
     this.setState({
-      statementTextToBeSaved: e.target.value,
+      voterTextStatement: e.target.value,
       showEditPositionStatementInput: true,
       // disabled: false,
     });
@@ -235,16 +239,12 @@ class ItemPositionStatementActionBar extends Component {
 
   render () {
     renderLog('ItemPositionStatementActionBar');  // Set LOG_RENDER_EVENTS to log all renders
-    if (this.state.supportProps === undefined) {
-      return <div />;
-    }
-
-    const { classes, ballotItemWeVoteId, externalUniqueId } = this.props;
-    const { commentActive } = this.state;
+    const { classes, ballotItemDisplayName, ballotItemWeVoteId, externalUniqueId, mobile } = this.props;
+    const { commentActive, showEditPositionStatementInput, voterIsSignedIn, voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = this.state;
 
     let rows = 1;
 
-    if (this.props.mobile) {
+    if (mobile) {
       if (commentActive) {
         // If voter has clicked in comment box, mobile
         rows = 4;
@@ -260,25 +260,23 @@ class ItemPositionStatementActionBar extends Component {
       rows = 1;
     }
 
-    let { statementTextToBeSaved } = this.state;
-    statementTextToBeSaved = statementTextToBeSaved.length === 0 ? null : statementTextToBeSaved;
     const horizontalEllipsis = '\u2026';
     let statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
 
-    if (this.state.supportProps.is_support) {
-      if (this.props.ballotItemDisplayName) {
-        statementPlaceholderText = `Why you chose ${this.props.ballotItemDisplayName}${horizontalEllipsis}`;
+    if (voterSupportsBallotItem) {
+      if (ballotItemDisplayName) {
+        statementPlaceholderText = `Why you chose ${ballotItemDisplayName}${horizontalEllipsis}`;
       } else {
         statementPlaceholderText = `Why you support${horizontalEllipsis}`;
       }
-    } else if (this.state.supportProps.is_oppose) {
-      if (this.props.ballotItemDisplayName) {
-        statementPlaceholderText = `Why you oppose ${this.props.ballotItemDisplayName}${horizontalEllipsis}`;
+    } else if (voterOpposesBallotItem) {
+      if (ballotItemDisplayName) {
+        statementPlaceholderText = `Why you oppose ${ballotItemDisplayName}${horizontalEllipsis}`;
       } else {
         statementPlaceholderText = `Why you oppose${horizontalEllipsis}`;
       }
-    } else if (this.props.ballotItemDisplayName) {
-      statementPlaceholderText = `Your thoughts about ${this.props.ballotItemDisplayName}${horizontalEllipsis}`;
+    } else if (ballotItemDisplayName) {
+      statementPlaceholderText = `Your thoughts about ${ballotItemDisplayName}${horizontalEllipsis}`;
     } else {
       statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
     }
@@ -286,17 +284,17 @@ class ItemPositionStatementActionBar extends Component {
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
     //  here if the near by visibility setting text changes
     let postButtonText = 'Save';
-    if (this.state.voterIsSignedIn) {
-      if (this.state.isPublicPosition) {
+    if (voterIsSignedIn) {
+      if (voterPositionIsPublic) {
         postButtonText = 'Post';
       }
     }
 
-    const noStatementText = !(statementTextToBeSaved !== null && statementTextToBeSaved.length);
-    const editMode = this.state.showEditPositionStatementInput || noStatementText;
+    const noStatementText = !(voterTextStatement.length);
+    const editMode = showEditPositionStatementInput || noStatementText;
 
-    // console.log('ItemPositionStatementActionBar: this.state.showEditPositionStatementInput: ', this.state.showEditPositionStatementInput);
-    const onSavePositionStatementClick = this.state.showEditPositionStatementInput ? this.closeEditPositionStatementInput : this.openEditPositionStatementInput;
+    // console.log('ItemPositionStatementActionBar: showEditPositionStatementInput: ', showEditPositionStatementInput);
+    const onSavePositionStatementClick = showEditPositionStatementInput ? this.closeEditPositionStatementInput : this.openEditPositionStatementInput;
     const onKeyDown = (e) => {
       const enterAndSpaceKeyCodes = [13, 32];
       if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
@@ -309,19 +307,19 @@ class ItemPositionStatementActionBar extends Component {
     // let youTubeUrl;
     // let vimeoUrl;
     //
-    // if (statementTextToBeSaved) {
-    //   youTubeUrl = statementTextToBeSaved.match(youTubeRegX);
-    //   vimeoUrl = statementTextToBeSaved.match(vimeoRegX);
+    // if (voterTextStatement) {
+    //   youTubeUrl = voterTextStatement.match(youTubeRegX);
+    //   vimeoUrl = voterTextStatement.match(vimeoRegX);
     // }
     //
     // if (youTubeUrl) {
     //   [videoUrl] = youTubeUrl;
-    //   statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, '');
+    //   statementTextNoUrl = voterTextStatement.replace(videoUrl, '');
     // }
     //
     // if (vimeoUrl) {
     //   [videoUrl] = vimeoUrl;
-    //   statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, '');
+    //   statementTextNoUrl = voterTextStatement.replace(videoUrl, '');
     // }
 
     // console.log('ItemPositionStatementActionBar, editMode: ', editMode);
@@ -337,10 +335,10 @@ class ItemPositionStatementActionBar extends Component {
               <form className={classes.flex} onSubmit={this.savePositionStatement.bind(this)} onFocus={this.onFocusInput} onBlur={this.onBlurInput}>
                 <InputBase onChange={this.updateStatementTextToBeSaved}
                   id={`itemPositionStatementActionBarTextArea-${ballotItemWeVoteId}-${externalUniqueId}`}
-                  name="statementTextToBeSaved"
+                  name="voterTextStatement"
                   classes={{ root: classes.input }}
                   placeholder={statementPlaceholderText}
-                  defaultValue={statementTextToBeSaved}
+                  defaultValue={voterTextStatement}
                   inputRef={(tag) => { this.textarea = tag; }}
                   multiline
                   rows={rows}
@@ -367,10 +365,10 @@ class ItemPositionStatementActionBar extends Component {
             >
               <InputBase
                 onKeyDown={onKeyDown}
-                name="statementTextToBeSaved"
+                name="voterTextStatement"
                 classes={{ root: classes.input, disabled: classes.disabledInput }}
                 placeholder={statementPlaceholderText}
-                defaultValue={statementTextToBeSaved}
+                defaultValue={voterTextStatement}
                 onFocus={() => prepareForCordovaKeyboard('ItemPositionStatementActionBar')}
                 onBlur={() => restoreStylesAfterCordovaKeyboard('ItemPositionStatementActionBar')}
                 inputRef={(tag) => { this.textarea = tag; }}

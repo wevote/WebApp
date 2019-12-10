@@ -111,10 +111,6 @@ export default class CandidateItemCompressed extends Component {
     }
 
     const oneCandidateWeVoteId = this.state.oneCandidate.we_vote_id;
-    // const candidateSupportStore = SupportStore.get(oneCandidateWeVoteId);
-    // const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(oneCandidateWeVoteId);
-    // const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(oneCandidateWeVoteId);
-    // console.log("OfficeItemCompressed, just retrieved getVoterGuidesToFollowForBallotItemIdSupports");
     const candidatePartyText = this.state.oneCandidate.party && this.state.oneCandidate.party.length ? `${this.state.oneCandidate.party}. ` : '';
     const candidateDescriptionText = this.state.oneCandidate.twitter_description && this.state.oneCandidate.twitter_description.length ? this.state.oneCandidate.twitter_description : '';
     const candidateText = candidatePartyText + candidateDescriptionText;

@@ -28,7 +28,6 @@ class PositionPublicToggle extends Component {
     className: PropTypes.string.isRequired,
     externalUniqueId: PropTypes.string,
     inTestMode: PropTypes.bool,
-    supportProps: PropTypes.object,
     type: PropTypes.string.isRequired,
   };
 
@@ -37,7 +36,7 @@ class PositionPublicToggle extends Component {
     this.state = {
       ballotItemWeVoteId: '',
       componentDidMount: false,
-      isPublicPosition: null,
+      voterPositionIsPublic: null,
       inTestMode: false,
       isSignedIn: null,
       showPositionPublicHelpModal: false,
@@ -50,38 +49,31 @@ class PositionPublicToggle extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { ballotItemWeVoteId, inTestMode } = this.props;
-    let { supportProps } = this.props;
-    if (this.props.ballotItemWeVoteId) {
-      supportProps = SupportStore.get(this.props.ballotItemWeVoteId);
-    }
-    let isPublicPosition = false;
-    if (supportProps && supportProps.is_public_position !== undefined) {
-      isPublicPosition = supportProps.is_public_position;
-    }
 
+    let voterPositionIsPublic = false;
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    if (ballotItemStatSheet) {
+      ({ voterPositionIsPublic } = ballotItemStatSheet);
+    }
     this.setState({
       ballotItemWeVoteId,
       componentDidMount: true,
       inTestMode,
-      isPublicPosition,
+      voterPositionIsPublic,
     });
   }
 
   componentWillReceiveProps (nextProps) {
     this.onVoterStoreChange();
     const { ballotItemWeVoteId } = nextProps;
-    let { supportProps } = nextProps;
-    if (nextProps.ballotItemWeVoteId) {
-      supportProps = SupportStore.get(nextProps.ballotItemWeVoteId);
+    let voterPositionIsPublic = false;
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    if (ballotItemStatSheet) {
+      ({ voterPositionIsPublic } = ballotItemStatSheet);
     }
-    let isPublicPosition = false;
-    if (supportProps && supportProps.is_public_position !== undefined) {
-      isPublicPosition = supportProps.is_public_position;
-    }
-
     this.setState({
       ballotItemWeVoteId,
-      isPublicPosition,
+      voterPositionIsPublic,
     });
   }
 
@@ -94,8 +86,8 @@ class PositionPublicToggle extends Component {
       // console.log('this.state.componentDidMount:', this.state.componentDidMount, ', nextState.componentDidMount: ', nextState.componentDidMount);
       return true;
     }
-    if (this.state.isPublicPosition !== nextState.isPublicPosition) {
-      // console.log('this.state.isPublicPosition:', this.state.isPublicPosition, ', nextState.isPublicPosition: ', nextState.isPublicPosition);
+    if (this.state.voterPositionIsPublic !== nextState.voterPositionIsPublic) {
+      // console.log('this.state.voterPositionIsPublic:', this.state.voterPositionIsPublic, ', nextState.voterPositionIsPublic: ', nextState.voterPositionIsPublic);
       return true;
     }
     if (this.state.isSignedIn !== nextState.isSignedIn) {
@@ -120,13 +112,14 @@ class PositionPublicToggle extends Component {
   }
 
   onSupportStoreChange () {
-    const supportProps = SupportStore.get(this.state.ballotItemWeVoteId);
-    let isPublicPosition = false;
-    if (supportProps && supportProps.is_public_position !== undefined) {
-      isPublicPosition = supportProps.is_public_position;
+    const { ballotItemWeVoteId } = this.state;
+    let voterPositionIsPublic = false;
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    if (ballotItemStatSheet) {
+      ({ voterPositionIsPublic } = ballotItemStatSheet);
     }
     this.setState({
-      isPublicPosition,
+      voterPositionIsPublic,
     });
   }
 
@@ -150,7 +143,7 @@ class PositionPublicToggle extends Component {
 
   showItemToFriendsOnly () {
     this.setState({
-      isPublicPosition: false,
+      voterPositionIsPublic: false,
     });
 
     // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.type:", this.props.type);
@@ -164,12 +157,12 @@ class PositionPublicToggle extends Component {
     // console.log("PositionPublicToggle-showItemToPublic, this.props.type:", this.props.type);
     if (inTestMode) {
       this.setState({
-        isPublicPosition: true,
+        voterPositionIsPublic: true,
       });
       openSnackbar({ message: 'This position now visible to anyone on We Vote!' });
     } else if (isSignedIn) {
       this.setState({
-        isPublicPosition: true,
+        voterPositionIsPublic: true,
       });
       SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.type, 'SHOW_PUBLIC');
       const positionPublicToggleModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
@@ -195,16 +188,16 @@ class PositionPublicToggle extends Component {
     renderLog('PositionPublicToggle');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { inTestMode, isSignedIn, voterWeVoteId } = this.state;
-    let { isPublicPosition } = this.state;
+    let { voterPositionIsPublic } = this.state;
     if (!voterWeVoteId) {
       return <div className="undefined-props" />;
     }
 
     let onChange;
     const _this = this;
-    if (isPublicPosition) {
+    if (voterPositionIsPublic) {
       onChange = () => {
-        isPublicPosition = false;
+        voterPositionIsPublic = false;
 
         // TODO Somehow cause the tooltip to update if inTestMode
         if (!inTestMode) {
@@ -213,7 +206,7 @@ class PositionPublicToggle extends Component {
       };
     } else {
       onChange = () => {
-        isPublicPosition = true;
+        voterPositionIsPublic = true;
 
         // TODO Somehow cause the tooltip to update if inTestMode
         if (!inTestMode) {
@@ -294,7 +287,7 @@ class PositionPublicToggle extends Component {
                       <Radio
                         classes={{ colorPrimary: classes.radioPrimary }}
                         color="primary"
-                        checked={isPublicPosition === false}
+                        checked={voterPositionIsPublic === false}
                       />
                     )
                   }
@@ -312,7 +305,7 @@ class PositionPublicToggle extends Component {
                       <Radio
                         classes={{ colorPrimary: classes.radioPrimary }}
                         color="primary"
-                        checked={isPublicPosition === true}
+                        checked={voterPositionIsPublic === true}
                       />
                     )
                   }
