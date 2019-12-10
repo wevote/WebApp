@@ -23,13 +23,13 @@ class SupportStore extends ReduceStore {
   }
 
   get (ballotItemWeVoteId) {
-    if (!(this.supportList && this.opposeList && this.supportCounts && this.opposeCounts)) {
+    if (!(this.voterSupportsList && this.voterOpposesList && this.supportCounts && this.opposeCounts)) {
       return undefined;
     }
 
     return {
-      is_support: this.supportList[ballotItemWeVoteId] || false,
-      is_oppose: this.opposeList[ballotItemWeVoteId] || false,
+      is_support: this.voterSupportsList[ballotItemWeVoteId] || false,
+      is_oppose: this.voterOpposesList[ballotItemWeVoteId] || false,
       is_public_position: this.isForPublicList[ballotItemWeVoteId] || false, // Default to friends only
       voter_statement_text: this.statementList[ballotItemWeVoteId] || '',
       support_count: this.supportCounts[ballotItemWeVoteId] || 0,
@@ -38,7 +38,8 @@ class SupportStore extends ReduceStore {
   }
 
   getBallotItemStatSheet (ballotItemWeVoteId) {
-    if (!(this.supportList && this.opposeList && this.supportCounts && this.opposeCounts)) {
+    if (!(this.voterSupportsList && this.voterOpposesList)) { //  && this.supportCounts && this.opposeCounts
+      // console.log('getBallotItemStatSheet undefined');
       return undefined;
     }
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
@@ -51,9 +52,10 @@ class SupportStore extends ReduceStore {
     }
     const results = extractScoreFromNetworkFromPositionList(allCachedPositions);
     const { numberOfSupportPositionsForScore, numberOfOpposePositionsForScore, numberOfInfoOnlyPositionsForScore } = results;
+    // console.log('getBallotItemStatSheet ballotItemWeVoteId:', ballotItemWeVoteId, ', this.voterSupportsList:', this.voterSupportsList);
     return {
-      voterSupportsBallotItem: this.supportList[ballotItemWeVoteId] || false,
-      voterOpposesBallotItem: this.opposeList[ballotItemWeVoteId] || false,
+      voterSupportsBallotItem: this.voterSupportsList[ballotItemWeVoteId] || false,
+      voterOpposesBallotItem: this.voterOpposesList[ballotItemWeVoteId] || false,
       voterPositionIsPublic: this.isForPublicList[ballotItemWeVoteId] || false, // Default to friends only
       voterTextStatement: this.statementList[ballotItemWeVoteId] || '',
       numberOfSupportPositionsForScore: numberOfSupportPositionsForScore || 0,
@@ -63,27 +65,41 @@ class SupportStore extends ReduceStore {
   }
 
   getIsOpposeByBallotItemWeVoteId (ballotItemWeVoteId) {
-    if (!(this.opposeList)) {
+    if (!(this.voterOpposesList)) {
       return false;
     }
 
-    return this.opposeList[ballotItemWeVoteId] || false;
+    return this.voterOpposesList[ballotItemWeVoteId] || false;
   }
 
   getIsSupportByBallotItemWeVoteId (ballotItemWeVoteId) {
-    if (!(this.supportList)) {
+    if (!(this.voterSupportsList)) {
       return false;
     }
 
-    return this.supportList[ballotItemWeVoteId] || false;
+    return this.voterSupportsList[ballotItemWeVoteId] || false;
   }
 
-  get supportList () {
+  get voterSupportsList () {
     return this.getState().voter_supports;
   }
 
-  get opposeList () {
+  getVoterSupportsListLength () {
+    if (this.getState().voter_supports) {
+      return Object.keys(this.getState().voter_supports).length;
+    }
+    return 0;
+  }
+
+  get voterOpposesList () {
     return this.getState().voter_opposes;
+  }
+
+  getVoterOpposesListLength () {
+    if (this.getState().voter_opposes) {
+      return Object.keys(this.getState().voter_opposes).length;
+    }
+    return 0;
   }
 
   get isForPublicList () {
@@ -147,9 +163,11 @@ class SupportStore extends ReduceStore {
   // Turn action into a dictionary/object format with we_vote_id as key for fast lookup
   parseListToHash (property, list) { // eslint-disable-line
     const hashMap = {};
-    if (list !== undefined) {
+    if (list !== undefined && property) {
       list.forEach((el) => {
-        hashMap[el.ballot_item_we_vote_id] = el[property];
+        if (el.ballot_item_we_vote_id && el[property]) {
+          hashMap[el.ballot_item_we_vote_id] = el[property];
+        }
       });
     }
     return hashMap;
@@ -177,6 +195,8 @@ class SupportStore extends ReduceStore {
     const newOneSupportCount = this.parseListToHash('support_count', action.res.position_counts_list);
     const existingOpposeCounts2 = state.oppose_counts !== undefined ? state.oppose_counts : [];
     const existingSupportCounts2 = state.support_counts !== undefined ? state.support_counts : [];
+    let voterOpposes = {};
+    let voterSupports = {};
 
     switch (action.type) {
       case 'voterAddressRetrieve':
@@ -187,7 +207,7 @@ class SupportStore extends ReduceStore {
 
       case 'voterAllPositionsRetrieve':
         // is_support is a property coming from 'position_list' in the incoming response
-        // this.state.voter_supports is an updated hash with the contents of position list['is_support']
+        // state.voter_supports is an updated hash with the contents of position list['is_support']
         return {
           ...state,
           voter_supports: this.parseListToHash('is_support', action.res.position_list),
@@ -231,9 +251,13 @@ class SupportStore extends ReduceStore {
 
       case 'voterOpposingSave':
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
+        ({ voter_supports: voterSupports } = state);
+        if (voterSupports && voterSupports[ballotItemWeVoteId] !== undefined) {
+          delete voterSupports[ballotItemWeVoteId];
+        }
         return {
           ...state,
-          voter_supports: assign({}, state.voter_supports, { [ballotItemWeVoteId]: false }),
+          voter_supports: voterSupports,
           voter_opposes: assign({}, state.voter_opposes, { [ballotItemWeVoteId]: true }),
           support_counts: state.voter_supports[ballotItemWeVoteId] ?
             this.listWithChangedCount(state.support_counts, ballotItemWeVoteId, -1) :
@@ -243,18 +267,26 @@ class SupportStore extends ReduceStore {
 
       case 'voterStopOpposingSave':
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
+        ({ voter_opposes: voterOpposes } = state);
+        if (voterOpposes && voterOpposes[ballotItemWeVoteId] !== undefined) {
+          delete voterOpposes[ballotItemWeVoteId];
+        }
         return {
           ...state,
-          voter_opposes: assign({}, state.voter_opposes, { [ballotItemWeVoteId]: false }),
+          voter_opposes: voterOpposes,
           oppose_counts: this.listWithChangedCount(state.oppose_counts, ballotItemWeVoteId, -1),
         };
 
       case 'voterSupportingSave':
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
+        ({ voter_opposes: voterOpposes } = state);
+        if (voterOpposes && voterOpposes[ballotItemWeVoteId] !== undefined) {
+          delete voterOpposes[ballotItemWeVoteId];
+        }
         return {
           ...state,
           voter_supports: assign({}, state.voter_supports, { [ballotItemWeVoteId]: true }),
-          voter_opposes: assign({}, state.voter_opposes, { [ballotItemWeVoteId]: false }),
+          voter_opposes: voterOpposes,
           support_counts: this.listWithChangedCount(state.support_counts, ballotItemWeVoteId, 1),
           oppose_counts: state.voter_opposes[ballotItemWeVoteId] ?
             this.listWithChangedCount(state.oppose_counts, ballotItemWeVoteId, -1) :
@@ -263,9 +295,13 @@ class SupportStore extends ReduceStore {
 
       case 'voterStopSupportingSave':
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
+        ({ voter_supports: voterSupports } = state);
+        if (voterSupports && voterSupports[ballotItemWeVoteId] !== undefined) {
+          delete voterSupports[ballotItemWeVoteId];
+        }
         return {
           ...state,
-          voter_supports: assign({}, state.voter_supports, { [ballotItemWeVoteId]: false }),
+          voter_supports: voterSupports,
           support_counts: this.listWithChangedCount(state.support_counts, ballotItemWeVoteId, -1),
         };
 

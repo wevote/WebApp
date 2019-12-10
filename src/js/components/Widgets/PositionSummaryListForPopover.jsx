@@ -15,17 +15,40 @@ class PositionSummaryListForPopover extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      positionSummaryListLength: 0,
     };
   }
 
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   // This lifecycle method tells the component to NOT render if not needed
-  //   if (this.state.allCachedPositionsForThisCandidateLength !== nextState.allCachedPositionsForThisCandidateLength) {
-  //     // console.log('this.state.allCachedPositionsForThisCandidateLength: ', this.state.allCachedPositionsForThisCandidateLength, ', nextState.allCachedPositionsForThisCandidateLength', nextState.allCachedPositionsForThisCandidateLength);
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  componentDidMount () {
+    // console.log('BallotItemSupportOpposeCountDisplay componentDidMount');
+    let positionSummaryListLength = 0;
+    if (this.props.positionSummaryList) {
+      positionSummaryListLength = this.props.positionSummaryList.length;
+    }
+    this.setState({
+      positionSummaryListLength,
+    });
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // console.log('componentWillReceiveProps, nextProps: ', nextProps);
+    let positionSummaryListLength = 0;
+    if (nextProps.positionSummaryList) {
+      positionSummaryListLength = nextProps.positionSummaryList.length;
+    }
+    this.setState({
+      positionSummaryListLength,
+    });
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.state.positionSummaryListLength !== nextState.positionSummaryListLength) {
+      // console.log('this.state.positionSummaryListLength: ', this.state.positionSummaryListLength, ', nextState.positionSummaryListLength', nextState.positionSummaryListLength);
+      return true;
+    }
+    return false;
+  }
 
   render () {
     const { classes, positionSummaryList } = this.props;

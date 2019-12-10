@@ -14,13 +14,12 @@ class ChooseOrOppose extends Component {
   static propTypes = {
     classes: PropTypes.object,
     type: PropTypes.string.isRequired,
-    modalSupportProps: PropTypes.object,
     externalUniqueId: PropTypes.string,
     onClose: PropTypes.func,
   }
 
   getSlides = () => {
-    const { type, modalSupportProps } = this.props;
+    const { type } = this.props;
     const slides = [
       (
         <React.Fragment>
@@ -33,7 +32,6 @@ class ChooseOrOppose extends Component {
                 className="null"
                 externalUniqueId={`practiceToggle-${this.props.externalUniqueId}`}
                 type={type}
-                supportProps={modalSupportProps}
                 inTestMode
             />
           </Row>

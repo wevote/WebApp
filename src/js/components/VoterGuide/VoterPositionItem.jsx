@@ -24,15 +24,14 @@ export default class VoterPositionItem extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      supportProps: {},
+      voterOpposesBallotItem: false,
+      voterSupportsBallotItem: false,
+      voterTextStatement: '',
     };
   }
 
   componentWillMount () {
-    this.setState({
-      // showEditPositionModal: false,
-      supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
-    });
+    this.onSupportStoreChange();
   }
 
   componentDidMount () {
@@ -48,9 +47,28 @@ export default class VoterPositionItem extends Component {
 
   onSupportStoreChange () {
     const { position } = this.props;
-    // console.log("position:", position);
+    let voterSupportsBallotItem = false;
+    let voterOpposesBallotItem = false;
+    let voterTextStatement = '';
+
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(position.ballot_item_we_vote_id);
+    if (ballotItemStatSheet) {
+      ({
+        voterOpposesBallotItem,
+        voterSupportsBallotItem,
+        voterTextStatement,
+      } = ballotItemStatSheet);
+    }
+
+    // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
+    const voterTextStatement2 = voterTextStatement || position.statement_text;
+    const voterSupportsBallotItem2 = voterSupportsBallotItem || position.is_support;
+    const voterOpposesBallotItem2 = voterOpposesBallotItem || position.is_oppose;
+
     this.setState({
-      supportProps: SupportStore.get(position.ballot_item_we_vote_id),
+      voterOpposesBallotItem: voterOpposesBallotItem2,
+      voterSupportsBallotItem: voterSupportsBallotItem2,
+      voterTextStatement: voterTextStatement2,
     });
   }
 
@@ -64,13 +82,8 @@ export default class VoterPositionItem extends Component {
     const {
       position, stance_display_off: stanceDisplayOff, comment_text_off: commentTextOff,
     } = this.props;
-    const { supportProps } = this.state;
-
+    const { voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement } = this.state;
     const isLookingAtSelf = true;
-    // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
-    const statementText = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
-    const isSupport = supportProps && supportProps.is_support ? supportProps.is_support : position.is_support;
-    const isOppose = supportProps && supportProps.is_oppose ? supportProps.is_oppose : position.is_oppose;
 
     // TwitterHandle-based link
     const ballotItemUrl = position.kind_of_ballot_item === 'MEASURE' ? '/measure/' : '/candidate/';
@@ -83,18 +96,18 @@ export default class VoterPositionItem extends Component {
     }
 
     const isOnBallotItemPage = false;
-    if (isSupport || isOppose) {
-      // We overwrite the "statementText" passed in with position
+    if (voterSupportsBallotItem || voterOpposesBallotItem) {
+      // We overwrite the "voterTextStatement" passed in with position
       positionDescription = (
         <PositionSupportOpposeSnippet
           {...position}
           comment_text_off={commentTextOff}
-          is_support={isSupport}
-          is_oppose={isOppose}
+          is_support={voterSupportsBallotItem}
+          is_oppose={voterOpposesBallotItem}
           is_on_ballot_item_page={isOnBallotItemPage}
           is_looking_at_self={isLookingAtSelf}
           stance_display_off={stanceDisplayOff}
-          statement_text={statementText}
+          statement_text={voterTextStatement}
         />
       );
     } else {
@@ -157,7 +170,6 @@ export default class VoterPositionItem extends Component {
               ballotItemWeVoteId={position.ballot_item_we_vote_id}
               className="organization-position-item-toggle"
               externalUniqueId={`voterPositionItem-${this.props.externalUniqueId}`}
-              supportProps={supportProps}
               type={position.kind_of_ballot_item}
             />
           </div>

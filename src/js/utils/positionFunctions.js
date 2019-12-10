@@ -3,6 +3,7 @@ import IssueStore from '../stores/IssueStore';  // eslint-disable-line import/no
 import CandidateStore from '../stores/CandidateStore';  // eslint-disable-line import/no-cycle
 import MeasureStore from '../stores/MeasureStore';  // eslint-disable-line import/no-cycle
 import OrganizationStore from '../stores/OrganizationStore';  // eslint-disable-line import/no-cycle
+import SupportStore from '../stores/SupportStore';  // eslint-disable-line import/no-cycle
 import { arrayContains, stringContains } from './textFormat';
 
 export function extractFirstEndorsementFromPositionList (positionListAsArray, limitToYes, limitToNo) {
@@ -101,12 +102,16 @@ export function getPositionListSummaryIncomingDataStats (ballotItemWeVoteId) {
   const allIssuesVoterIsFollowingLength = IssueStore.getIssuesVoterIsFollowingLength();
   const issueWeVoteIdsLinkedToByOrganizationDictLength = IssueStore.getIssueWeVoteIdsLinkedToByOrganizationDictLength();
   const organizationWeVoteIdsVoterIsFollowingLength = OrganizationStore.getOrganizationWeVoteIdsVoterIsFollowingLength();
+  const voterOpposesListLength = SupportStore.getVoterOpposesListLength();
+  const voterSupportsListLength = SupportStore.getVoterSupportsListLength();
 
   return {
     allCachedPositionsLength,
     allIssuesVoterIsFollowingLength,
     issueWeVoteIdsLinkedToByOrganizationDictLength,
     organizationWeVoteIdsVoterIsFollowingLength,
+    voterOpposesListLength,
+    voterSupportsListLength,
   };
 }
 

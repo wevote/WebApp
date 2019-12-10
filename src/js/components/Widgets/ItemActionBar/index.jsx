@@ -51,15 +51,15 @@ class ItemActionBar extends PureComponent {
       ballotItemWeVoteId: '',
       isOpposeAPIState: undefined,
       isOpposeLocalState: undefined,
-      isPublicPosition: undefined,
+      voterPositionIsPublic: undefined,
       isSupportAPIState: undefined,
       isSupportLocalState: undefined,
-      opposeCount: 0,
+      numberOfOpposePositionsForScore: 0,
       showSupportOrOpposeHelpModal: false,
-      supportCount: 0,
+      numberOfSupportPositionsForScore: 0,
       transitioning: false,
-      voterStatementText: undefined,
-      voterStatementTextOpened: false,
+      voterTextStatement: undefined,
+      voterTextStatementOpened: false,
     };
     this.isOpposeCalculated = this.isOpposeCalculated.bind(this);
     this.isSupportCalculated = this.isSupportCalculated.bind(this);
@@ -72,31 +72,29 @@ class ItemActionBar extends PureComponent {
 
   componentDidMount () {
     // console.log('itemActionBar, NEW componentDidMount');
+    const { ballotItemWeVoteId } = this.props;
     let isOpposeAPIState = false;
-    let isPublicPosition = false;
+    let voterPositionIsPublic = false;
     let isSupportAPIState = false;
-    let supportCount = 0;
-    let opposeCount = 0;
-    let voterStatementText = '';
-    const ballotItemSupportProps = SupportStore.get(this.props.ballotItemWeVoteId);
-    // console.log('ballotItemSupportProps', ballotItemSupportProps);
-    if (ballotItemSupportProps) {
-      isPublicPosition = ballotItemSupportProps.is_public_position || false;
-      isOpposeAPIState = ballotItemSupportProps.is_oppose || false;
-      isSupportAPIState = ballotItemSupportProps.is_support || false;
-      opposeCount = ballotItemSupportProps.oppose_count || 0;
-      supportCount = ballotItemSupportProps.support_count || 0;
-      voterStatementText = ballotItemSupportProps.voter_statement_text || '';
+    let numberOfSupportPositionsForScore = 0;
+    let numberOfOpposePositionsForScore = 0;
+    let voterTextStatement = '';
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    if (ballotItemStatSheet) {
+      const { voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet;
+      ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, voterPositionIsPublic, voterTextStatement } = ballotItemStatSheet);
+      isOpposeAPIState = voterOpposesBallotItem || false;
+      isSupportAPIState = voterSupportsBallotItem || false;
     }
 
     this.setState({
-      ballotItemWeVoteId: this.props.ballotItemWeVoteId,
+      ballotItemWeVoteId,
       isOpposeAPIState,
-      isPublicPosition,
+      voterPositionIsPublic,
       isSupportAPIState,
-      opposeCount,
-      supportCount,
-      voterStatementText,
+      numberOfOpposePositionsForScore,
+      numberOfSupportPositionsForScore,
+      voterTextStatement,
     }, this.onNewBallotItemWeVoteId);
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
@@ -121,21 +119,21 @@ class ItemActionBar extends PureComponent {
   }
 
   onSupportStoreChange () {
-    const ballotItemSupportProps = SupportStore.get(this.state.ballotItemWeVoteId);
-    // console.log('ItemActionBar, onSupportStoreChange');
-    // console.log('ballotItemSupportProps', ballotItemSupportProps);
-    // Only proceed if we have valid ballotItemSupportProps
-    if (ballotItemSupportProps !== undefined && ballotItemSupportProps) {
-      if (ballotItemSupportProps.support_count !== undefined && ballotItemSupportProps.support_count !== this.state.supportCount) {
+    const { ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState, isOpposeLocalState, isSupportLocalState } = this.state;
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+    if (ballotItemStatSheet) {
+      const { numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
+
+      if (numberOfOpposePositionsForScore !== undefined && numberOfOpposePositionsForScore !== this.state.numberOfSupportPositionsForScore) {
         // console.log('itemActionBar, support_count setState');
         this.setState({
-          supportCount: ballotItemSupportProps.support_count,
+          numberOfSupportPositionsForScore,
         });
       }
-      if (ballotItemSupportProps.oppose_count !== undefined && ballotItemSupportProps.oppose_count !== this.state.opposeCount) {
+      if (numberOfOpposePositionsForScore !== undefined && numberOfOpposePositionsForScore !== this.state.numberOfOpposePositionsForScore) {
         // console.log('itemActionBar, oppose_count setState');
         this.setState({
-          opposeCount: ballotItemSupportProps.oppose_count,
+          numberOfOpposePositionsForScore,
         });
       }
       // We only want to update the state when the API is_support and is_oppose 'catches up' with the local state
@@ -143,63 +141,66 @@ class ItemActionBar extends PureComponent {
       // Are we 'locking' the isSupport or isOppose state currently?
       let localOpposeStateLocked = false;
       let localSupportStateLocked = false;
-      if (this.state.isOpposeLocalState !== undefined) {
+      if (isOpposeLocalState !== undefined) {
         localOpposeStateLocked = true;
       }
-      if (this.state.isSupportLocalState !== undefined) {
+      if (isSupportLocalState !== undefined) {
         localSupportStateLocked = true;
       }
       // console.log('localOpposeStateLocked: ', localOpposeStateLocked, ', localSupportStateLocked: ', localSupportStateLocked);
       if (localOpposeStateLocked) {
         // Don't make a change until the API state matches the local state
-        if (ballotItemSupportProps.is_oppose !== undefined && ballotItemSupportProps.is_oppose === this.state.isOpposeLocalState) {
+        if (voterOpposesBallotItem !== undefined && voterOpposesBallotItem === isOpposeLocalState) {
           // console.log('itemActionBar, isOpposeAPIState CATCHUP setState');
           this.setState({
-            isOpposeAPIState: ballotItemSupportProps.is_oppose,
+            isOpposeAPIState: voterOpposesBallotItem,
             isOpposeLocalState: undefined,
             transitioning: false,
           });
         }
-      } else if (ballotItemSupportProps.is_oppose !== undefined && ballotItemSupportProps.is_oppose !== this.state.isOpposeAPIState) {
+      } else if (voterOpposesBallotItem !== undefined && voterOpposesBallotItem !== isOpposeAPIState) {
         // Don't make a change if the value from the API server already matches isOpposeAPIState
         // console.log('itemActionBar, isOpposeAPIState FRESH setState');
         this.setState({
-          isOpposeAPIState: ballotItemSupportProps.is_oppose,
+          isOpposeAPIState: voterOpposesBallotItem,
           isOpposeLocalState: undefined,
           transitioning: false,
         });
       }
       if (localSupportStateLocked) {
         // Don't make a change until the API state matches the local state
-        if (ballotItemSupportProps.is_support !== undefined && ballotItemSupportProps.is_support === this.state.isSupportLocalState) {
+        if (voterSupportsBallotItem !== undefined && voterSupportsBallotItem === isSupportLocalState) {
           // console.log('itemActionBar, isSupportLocalState CATCHUP setState');
           this.setState({
-            isSupportAPIState: ballotItemSupportProps.is_support,
+            isSupportAPIState: voterSupportsBallotItem,
             isSupportLocalState: undefined,
             transitioning: false,
           });
         }
-      } else if (ballotItemSupportProps.is_support !== undefined && ballotItemSupportProps.is_support !== this.state.isSupportAPIState) {
+      } else if (voterSupportsBallotItem !== undefined && voterSupportsBallotItem !== isSupportAPIState) {
         // Don't make a change if the value from the API server already matches isSupportAPIState
         // console.log('itemActionBar, isSupportAPIState FRESH setState');
         this.setState({
-          isSupportAPIState: ballotItemSupportProps.is_support,
+          isSupportAPIState: voterSupportsBallotItem,
           isSupportLocalState: undefined,
           transitioning: false,
         });
       }
-      if (ballotItemSupportProps.voter_statement_text) {
+      if (voterTextStatement) {
         this.setState({
-          voterStatementText: ballotItemSupportProps.voter_statement_text,
+          voterTextStatement,
         });
       }
+      this.setState({
+        voterPositionIsPublic,
+      });
     }
   }
 
   togglePositionStatementFunction = () => {
-    const { voterStatementTextOpened } = this.state;
+    const { voterTextStatementOpened } = this.state;
     this.setState({
-      voterStatementTextOpened: !voterStatementTextOpened,
+      voterTextStatementOpened: !voterTextStatementOpened,
     });
     if (this.props.togglePositionStatementFunction) {
       this.props.togglePositionStatementFunction();
@@ -238,13 +239,13 @@ class ItemActionBar extends PureComponent {
   };
 
   opposeButtonNoText = (localUniqueId) => {
-    const { classes, externalUniqueId } = this.props;
+    const { classes, externalUniqueId, opposeHideInMobile } = this.props;
     return (
       <Button
         id={`itemActionBarOpposeButtonNoText-${externalUniqueId}-${localUniqueId}`}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         color="primary"
-        className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
+        className={`${opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
@@ -254,7 +255,7 @@ class ItemActionBar extends PureComponent {
   };
 
   supportButton = (localUniqueId) => {
-    const { classes, externalUniqueId } = this.props;
+    const { classes, externalUniqueId, shareButtonHide } = this.props;
     return (
       <Button
        id={`itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`}
@@ -268,14 +269,14 @@ class ItemActionBar extends PureComponent {
         />
         {this.isSupportCalculated() ? (
           <span
-             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label--at-state' :
+             className={shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label--at-state' :
                'item-actionbar__position-choose-btn-label--at-state'}
           >
               Chosen
           </span>
         ) : (
           <span
-             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label' :
+             className={shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label' :
                'item-actionbar__position-choose-btn-label'}
           >
               Choose
@@ -303,7 +304,7 @@ class ItemActionBar extends PureComponent {
   };
 
   measureYesButton = (localUniqueId) => {
-    const { classes, externalUniqueId } = this.props;
+    const { classes, externalUniqueId, shareButtonHide } = this.props;
     return (
       <Button
         id={`itemActionBarYesButton-${externalUniqueId}-${localUniqueId}`}
@@ -315,14 +316,14 @@ class ItemActionBar extends PureComponent {
         <ThumbsUpIcon classes={{ root: classes.buttonIcon }} />
         { this.isSupportCalculated() ? (
           <span
-            className={`u-no-break ${this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
+            className={`u-no-break ${shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
               'item-actionbar__position-btn-label--at-state'}`}
           >
             Voting Yes
           </span>
         ) : (
           <span
-            className={`u-no-break ${this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
+            className={`u-no-break ${shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
               'item-actionbar__position-btn-label'}`}
           >
             Vote Yes
@@ -348,7 +349,7 @@ class ItemActionBar extends PureComponent {
   };
 
   measureNoButton = (localUniqueId) => {
-    const { classes, externalUniqueId } = this.props;
+    const { classes, externalUniqueId, shareButtonHide } = this.props;
     return (
       <Button
         id={`itemActionBarNoButton-${externalUniqueId}-${localUniqueId}`}
@@ -360,14 +361,14 @@ class ItemActionBar extends PureComponent {
         <ThumbsDownIcon classes={{ root: classes.buttonIcon }} />
         { this.isOpposeCalculated() ? (
           <span
-            className={`u-no-break ${this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
+            className={`u-no-break ${shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
               'item-actionbar__position-btn-label--at-state'}`}
           >
             Voting No
           </span>
         ) : (
           <span
-            className={`u-no-break ${this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
+            className={`u-no-break ${shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
               'item-actionbar__position-btn-label'}`}
           >
             Vote No
@@ -393,17 +394,17 @@ class ItemActionBar extends PureComponent {
   };
 
   commentButton = (localUniqueId) => {
-    const { classes, externalUniqueId } = this.props;
+    const { classes, commentButtonHideInMobile, externalUniqueId, shareButtonHide } = this.props;
     return (
       <Button
         id={`itemActionBarCommentButton-${externalUniqueId}-${localUniqueId}`}
         variant="contained"
-        className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
+        className={`${commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
         onClick={this.togglePositionStatementFunction}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <CommentIcon classes={{ root: classes.buttonIcon }} />
-        <span className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
+        <span className={shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
           'item-actionbar__position-btn-label'}
         >
           Comment
@@ -413,13 +414,13 @@ class ItemActionBar extends PureComponent {
   };
 
   commentButtonNoText = (localUniqueId) => {
-    const { classes, externalUniqueId } = this.props;
+    const { classes, commentButtonHideInMobile, externalUniqueId } = this.props;
     return (
       <StackedButton>
         <Button
           id={`itemActionBarCommentButtonNoText-${externalUniqueId}-${localUniqueId}`}
           variant="contained"
-          className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
+          className={`${commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
           onClick={this.togglePositionStatementFunction}
           classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
         >
@@ -448,7 +449,7 @@ class ItemActionBar extends PureComponent {
   }
 
   isAnyEndorsementCalculated () {
-    return this.isOpposeCalculated() || this.isSupportCalculated() || this.state.voterStatementText || this.state.voterStatementTextOpened;
+    return this.isOpposeCalculated() || this.isSupportCalculated() || this.state.voterTextStatement || this.state.voterTextStatementOpened;
   }
 
   toggleSupportOrOpposeHelpModal () {
@@ -579,13 +580,13 @@ class ItemActionBar extends PureComponent {
     renderLog('ItemActionBar index.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ItemActionBar render');
     const { commentButtonHide, commentButtonHideInMobile, classes, type } = this.props;
-    const { ballotItemWeVoteId } = this.state;
+    const { ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState, numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, showSupportOrOpposeHelpModal, voterPositionIsPublic } = this.state;
 
-    if (this.state.supportCount === undefined ||
-      this.state.opposeCount === undefined ||
-      this.state.isOpposeAPIState === undefined ||
-      this.state.isPublicPosition === undefined ||
-      this.state.isSupportAPIState === undefined) {
+    if (numberOfSupportPositionsForScore === undefined ||
+      numberOfOpposePositionsForScore === undefined ||
+      isOpposeAPIState === undefined ||
+      voterPositionIsPublic === undefined ||
+      isSupportAPIState === undefined) {
       // Do not render until componentDidMount has set the initial states
       return null;
     }
@@ -608,9 +609,9 @@ class ItemActionBar extends PureComponent {
 
     let urlBeingShared;
     if (this.props.type === 'CANDIDATE') {
-      urlBeingShared = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/candidate/${this.state.ballotItemWeVoteId}`;
+      urlBeingShared = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/candidate/${ballotItemWeVoteId}`;
     } else {
-      urlBeingShared = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/measure/${this.state.ballotItemWeVoteId}`;
+      urlBeingShared = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/measure/${ballotItemWeVoteId}`;
     }
 
     const shareIcon = (
@@ -625,7 +626,6 @@ class ItemActionBar extends PureComponent {
     );
 
     // This modal is shown when user clicks on support or oppose button for the first time only.
-    const modalSupportProps = { is_public_position: false };
     const SupportOrOpposeHelpModal = (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
@@ -634,7 +634,6 @@ class ItemActionBar extends PureComponent {
       >
         <ChooseOrOppose
           type={type}
-          modalSupportProps={modalSupportProps}
           externalUniqueId={this.props.externalUniqueId}
           onClose={this.toggleSupportOrOpposeHelpModal}
         />
@@ -649,7 +648,7 @@ class ItemActionBar extends PureComponent {
       supportButtonSelectedPopOverText += '.';
     }
 
-    if (this.state.isPublicPosition) {
+    if (voterPositionIsPublic) {
       supportButtonSelectedPopOverText += ' Your choice will be visible to the public.';
     } else {
       supportButtonSelectedPopOverText += ' Only your We Vote friends will see your choice.';
@@ -669,7 +668,7 @@ class ItemActionBar extends PureComponent {
       opposeButtonSelectedPopOverText += '.';
     }
 
-    if (this.state.isPublicPosition) {
+    if (voterPositionIsPublic) {
       opposeButtonSelectedPopOverText += ' Your opposition will be visible to the public.';
     } else {
       opposeButtonSelectedPopOverText += ' Only your We Vote friends will see your opposition.';
@@ -778,7 +777,7 @@ class ItemActionBar extends PureComponent {
             { this.props.shareButtonHide ?
               null :
               <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
-            { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
+            { showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null }
           </ButtonGroup>
         </ItemActionBarWrapper>
       </>
