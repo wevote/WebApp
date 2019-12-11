@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import styled from 'styled-components';
 import ImageHandler from '../ImageHandler';
 import FriendActions from '../../actions/FriendActions';
 import FriendInvitationToggle from './FriendInvitationToggle';
@@ -82,72 +83,82 @@ export default class FriendInvitationDisplayForList extends Component {
     const deleteInvitationHtml = '';
 
     const friendInvitationHtml = (
-      <div>
-        <div className="position-item card-child card-child--not-followed">
-          <div className="card-child__avatar">
-            { voterGuideLink ? (
-              <Link to={voterGuideLink} className="u-no-underline">
-                {voterImage}
-              </Link>
-            ) :
-              <span>{voterImage}</span> }
-          </div>
-          <div className="card-child__media-object-content">
-            <div className="card-child__content">
-              { voterGuideLink ? (
-                <Link to={voterGuideLink} className="u-no-underline">
-                  {voterDisplayNameFormatted}
-                </Link>
-              ) :
-                <span>{voterDisplayNameFormatted}</span> }
-              { invitationsSentByMe ?
-                <span> has an open invitation from you.</span> :
-                <span> invited you.</span>}
-              { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
+      <Wrapper>
+        <Avatar>
+          { voterGuideLink ? (
+            <Link to={voterGuideLink} className="u-no-underline">
+              {voterImage}
+            </Link>
+          ) :
+            <span>{voterImage}</span> }
+        </Avatar>
+        <Details>
+          { voterGuideLink ? (
+            <Link to={voterGuideLink} className="u-no-underline">
+              {voterDisplayNameFormatted}
+            </Link>
+          ) :
+            <span>{voterDisplayNameFormatted}</span> }
+          { invitationsSentByMe ?
+            null :
+            <span> invited you.</span>}
+          { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
+          {/* {voterTwitterFollowersCount ? (
+            <span className="twitter-followers__badge">
+              <span className="fab fa-twitter" />
+              {numberWithCommas(voterTwitterFollowersCount)}
+            </span>
+          ) : null
+            } */}
+        </Details>
+        <ButtonWrapper>
+          {this.state.isFriend ? <span>Is Friend</span> : (
+            <div className="card-child__follow-buttons">
+              { this.props.invitationsSentByMe ?
+                <span>{deleteInvitationHtml}</span> : (
+                  <span>
+                    <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
+                    <button
+                      className="btn btn-default btn-sm"
+                      onClick={this.handleIgnore.bind(this, otherVoterWeVoteId)}
+                      type="button"
+                    >
+                    Ignore
+                    </button>
+                  </span>
+                )}
             </div>
-            <div className="card-child__additional">
-              {this.state.isFriend ? <span>Is Friend</span> :
-                (
-                  <div className="card-child__follow-buttons">
-                    { this.props.invitationsSentByMe ?
-                      <span>{deleteInvitationHtml}</span> : (
-                        <span>
-                          <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
-                          <button
-                            className="btn btn-default btn-sm"
-                            onClick={this.handleIgnore.bind(this, otherVoterWeVoteId)}
-                            type="button"
-                          >
-                        Ignore
-                          </button>
-                        </span>
-                      )}
-                  </div>
-                )
-              }
-              {voterTwitterFollowersCount ? (
-                <span className="twitter-followers__badge">
-                  <span className="fab fa-twitter" />
-                  {numberWithCommas(voterTwitterFollowersCount)}
-                </span>
-              ) : null
-              }
-            </div>
-          </div>
-        </div>
-      </div>
+          )}
+        </ButtonWrapper>
+      </Wrapper>
     );
 
     if (this.props.previewMode) {
       return <span>{friendInvitationHtml}</span>;
     } else {
       return (
-        <section className="card">
-          <div className="card-main">
-            {friendInvitationHtml}
-          </div>
-        </section>
+        <div>
+          {friendInvitationHtml}
+        </div>
       );
     }
   }
 }
+
+const Wrapper = styled.div`
+  margin: 12px 0;
+  display: flex;
+  align-items: flex-start;
+`;
+
+const Avatar = styled.div`
+  
+`;
+
+const Details = styled.div`
+
+`;
+
+const ButtonWrapper = styled.div`
+  margin-left: auto;
+`;
