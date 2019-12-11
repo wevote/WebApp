@@ -52,6 +52,18 @@ since we only use it for finding voter/poll locations.)
 All those log is supposed to be suppressed on production builds, and could be turned off in debug
 builds with `workbox.setConfig({debug: false})`
 
+## Safari
+
+In Safari go to Develop/Service Workers/localhost to see the Service Worker log.  Safari does not have an offline mode, but you can
+fake it by killing the Webpac Server (Ctrl+c in the terminal window).
+
+![ScreenShot](../images/SafariServiceWorkerDebug.png)
+
+
+## Firefox
+Firefox has a File/Work Offline option that is useful for testing.  The built in Firefox debugger (right-click and Inspect Element)
+shows Service Domain logging mixed in with App Domain logging like Chrome.
+
 ## Clearing ALL Caches
 
 There is probably a better way of doing this, but if you are adding a new route
