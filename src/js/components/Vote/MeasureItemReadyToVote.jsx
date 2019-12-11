@@ -23,7 +23,17 @@ class MeasureItemReadyToVote extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    this.setState({ supportProps: SupportStore.get(this.props.measureWeVoteId) });
+    const { measureWeVoteId } = this.props;
+    if (measureWeVoteId) {
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
+      if (ballotItemStatSheet) {
+        const { voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet;
+        this.setState({
+          voterOpposesBallotItem,
+          voterSupportsBallotItem,
+        });
+      }
+    }
   }
 
   componentWillUnmount () {
@@ -37,19 +47,28 @@ class MeasureItemReadyToVote extends Component {
   }
 
   onSupportStoreChange () {
-    this.setState({ supportProps: SupportStore.get(this.props.measureWeVoteId) });
+    const { measureWeVoteId } = this.props;
+    if (measureWeVoteId) {
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
+      if (ballotItemStatSheet) {
+        const { voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet;
+        this.setState({
+          voterOpposesBallotItem,
+          voterSupportsBallotItem,
+        });
+      }
+    }
   }
 
   render () {
     renderLog('MeasureItemReadyToVote');  // Set LOG_RENDER_EVENTS to log all renders
-    const { supportProps } = this.state;
-
     const { measureWeVoteId, ballotItemDisplayName } = this.props;
+    const { voterOpposesBallotItem, voterSupportsBallotItem } = this.state;
 
     return (
       <React.Fragment>
         <Wrapper>
-          { supportProps && (supportProps.is_support || supportProps.is_oppose) && (  // eslint-disable-line no-nested-ternary
+          { (voterOpposesBallotItem || voterSupportsBallotItem) && (  // eslint-disable-line no-nested-ternary
             <InnerWrapper>
               <BioColumn>
                 <BioInformation>

@@ -130,7 +130,6 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     } else {
       candidatePhotoUrlHtml = <i className="card-main__avatar icon-office-child icon-main icon-icon-person-placeholder-6-1" />;
     }
-    // let positions_in_your_network = SupportStore.get(we_vote_id) && ( SupportStore.get(we_vote_id).oppose_count || SupportStore.get(we_vote_id).support_count);
 
     return (
       <div className="card-main candidate-card">

@@ -34,8 +34,16 @@ export default class OrganizationPositionItem extends Component {
     this.state = {
       componentDidMountFinished: false,
       hidePositionStatement: false,
-      supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
+      voterOpposesBallotItem: false,
+      voterPositionIsPublic: false,
+      voterSupportsBallotItem: false,
+      organizationWeVoteId: '',
+      signedInWithThisFacebookAccount: false,
+      signedInWithThisOrganization: false,
+      signedInWithThisTwitterAccount: false,
+      voterTextStatement: '',
       transitioning: false,
+      voter: {},
     };
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
   }
@@ -57,37 +65,40 @@ export default class OrganizationPositionItem extends Component {
     if (signedInFacebook) {
       signedInWithThisFacebookAccount = voter.facebook_id === organizationFacebookIdBeingViewed;
     }
-    const supportProps = SupportStore.get(position.ballot_item_we_vote_id);
-    let statementText;
-    let isPublicPosition;
-    let isSupport;
-    let isOppose;
+    let voterTextStatement = '';
+    let voterPositionIsPublic;
+    let voterSupportsBallotItem;
+    let voterOpposesBallotItem;
     // If looking at your own page, update when supportProps change
     if (signedInWithThisTwitterAccount || signedInWithThisOrganization) {
       // console.log('OrganizationPositionItem signedInWithThisTwitterAccount');
       // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
-      isOppose = supportProps && supportProps.is_oppose !== undefined ? supportProps.is_oppose : position.is_oppose;
-      isPublicPosition = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
-      isSupport = supportProps && supportProps.is_support !== undefined ? supportProps.is_support : position.is_support;
-      statementText = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(position.ballot_item_we_vote_id);
+      if (ballotItemStatSheet) {
+        ({ voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet);
+      } else {
+        voterOpposesBallotItem = position.is_oppose;
+        voterPositionIsPublic = position.is_public_position;
+        voterSupportsBallotItem = position.is_support;
+        voterTextStatement = position.statement_text;
+      }
     } else {
       // console.log('OrganizationPositionItem NOT signedInWithThisTwitterAccount');
-      isOppose = position.is_oppose;
-      isPublicPosition = position.is_public_position;
-      isSupport = position.is_support;
-      statementText = position.statement_text;
+      voterOpposesBallotItem = position.is_oppose;
+      voterPositionIsPublic = position.is_public_position;
+      voterSupportsBallotItem = position.is_support;
+      voterTextStatement = position.statement_text;
     }
     this.setState({
       componentDidMountFinished: true,
-      isOppose,
-      isPublicPosition,
-      isSupport,
+      voterOpposesBallotItem,
+      voterPositionIsPublic,
+      voterSupportsBallotItem,
       organizationWeVoteId,
       signedInWithThisFacebookAccount,
       signedInWithThisOrganization,
       signedInWithThisTwitterAccount,
-      statementText,
-      supportProps,
+      voterTextStatement,
       transitioning: false,
       voter,
     });
@@ -100,11 +111,19 @@ export default class OrganizationPositionItem extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log('OrganizationPositionItem componentWillReceiveProps');
     const { organizationWeVoteId, position } = nextProps;
-    const supportProps = SupportStore.get(position.ballot_item_we_vote_id);
     this.setState({
       organizationWeVoteId,
-      supportProps,
     });
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(position.ballot_item_we_vote_id);
+    if (ballotItemStatSheet) {
+      const { voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
+      this.setState({
+        voterOpposesBallotItem,
+        voterPositionIsPublic,
+        voterSupportsBallotItem,
+        voterTextStatement,
+      });
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -121,16 +140,16 @@ export default class OrganizationPositionItem extends Component {
       // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
       return true;
     }
-    if (this.state.isOppose !== nextState.isOppose) {
-      // console.log('this.state.isOppose:', this.state.isOppose, ', nextState.isOppose:', nextState.isOppose);
+    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
+      // console.log('this.state.voterOpposesBallotItem:', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem:', nextState.voterOpposesBallotItem);
       return true;
     }
-    if (this.state.isPublicPosition !== nextState.isPublicPosition) {
-      // console.log('this.state.isPublicPosition:', this.state.isPublicPosition, ', nextState.isPublicPosition:', nextState.isPublicPosition);
+    if (this.state.voterPositionIsPublic !== nextState.voterPositionIsPublic) {
+      // console.log('this.state.voterPositionIsPublic:', this.state.voterPositionIsPublic, ', nextState.voterPositionIsPublic:', nextState.voterPositionIsPublic);
       return true;
     }
-    if (this.state.isSupport !== nextState.isSupport) {
-      // console.log('this.state.isSupport:', this.state.isSupport, ', nextState.isSupport:', nextState.isSupport);
+    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
+      // console.log('this.state.voterSupportsBallotItem:', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem:', nextState.voterSupportsBallotItem);
       return true;
     }
     if (this.state.organizationFacebookIdBeingViewed !== nextState.organizationFacebookIdBeingViewed) {
@@ -153,8 +172,8 @@ export default class OrganizationPositionItem extends Component {
       // console.log('this.state.signedInWithThisTwitterAccount:', this.state.signedInWithThisTwitterAccount, ', nextState.signedInWithThisTwitterAccount:', nextState.signedInWithThisTwitterAccount);
       return true;
     }
-    if (this.state.statementText !== nextState.statementText) {
-      // console.log('this.state.statementText:', this.state.statementText, ', nextState.statementText:', nextState.statementText);
+    if (this.state.voterTextStatement !== nextState.voterTextStatement) {
+      // console.log('this.state.voterTextStatement:', this.state.voterTextStatement, ', nextState.voterTextStatement:', nextState.voterTextStatement);
       return true;
     }
     // console.log('shouldComponentUpdate no change');
@@ -197,32 +216,35 @@ export default class OrganizationPositionItem extends Component {
         organizationWeVoteId,
       });
     }
-    const supportProps = SupportStore.get(position.ballot_item_we_vote_id);
-    let statementText;
-    let isPublicPosition;
-    let isSupport;
-    let isOppose;
+    let voterTextStatement;
+    let voterPositionIsPublic;
+    let voterSupportsBallotItem;
+    let voterOpposesBallotItem;
     // If looking at your own page, update when supportProps change
     if (signedInWithThisTwitterAccount || signedInWithThisOrganization) {
       // console.log('OrganizationPositionItem signedInWithThisTwitterAccount');
       // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
-      isOppose = supportProps && supportProps.is_oppose !== undefined ? supportProps.is_oppose : position.is_oppose;
-      isPublicPosition = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
-      isSupport = supportProps && supportProps.is_support !== undefined ? supportProps.is_support : position.is_support;
-      statementText = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(position.ballot_item_we_vote_id);
+      if (ballotItemStatSheet) {
+        ({ voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet);
+      } else {
+        voterOpposesBallotItem = position.is_oppose;
+        voterPositionIsPublic = position.is_public_position;
+        voterSupportsBallotItem = position.is_support;
+        voterTextStatement = position.statement_text;
+      }
     } else {
       // console.log('OrganizationPositionItem NOT signedInWithThisTwitterAccount');
-      isOppose = position.is_oppose;
-      isPublicPosition = position.is_public_position;
-      isSupport = position.is_support;
-      statementText = position.statement_text;
+      voterOpposesBallotItem = position.is_oppose;
+      voterPositionIsPublic = position.is_public_position;
+      voterSupportsBallotItem = position.is_support;
+      voterTextStatement = position.statement_text;
     }
     this.setState({
-      isOppose,
-      isPublicPosition,
-      isSupport,
-      statementText,
-      supportProps,
+      voterOpposesBallotItem,
+      voterPositionIsPublic,
+      voterSupportsBallotItem,
+      voterTextStatement,
       transitioning: false,
     });
   }
@@ -258,14 +280,13 @@ export default class OrganizationPositionItem extends Component {
     renderLog('OrganizationPositionItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { comment_text_off: commentTextOff, position, stance_display_off: stanceDisplayOff } = this.props;
     const {
-      isOppose,
-      isPublicPosition,
-      isSupport,
+      voterOpposesBallotItem,
+      voterPositionIsPublic,
+      voterSupportsBallotItem,
       signedInWithThisFacebookAccount,
       signedInWithThisOrganization,
       signedInWithThisTwitterAccount,
-      statementText,
-      supportProps,
+      voterTextStatement,
     } = this.state;
 
     if (!position.ballot_item_we_vote_id) {
@@ -296,15 +317,15 @@ export default class OrganizationPositionItem extends Component {
           {...position}
         />
       );
-    } else if (isSupport || isOppose) {
+    } else if (voterSupportsBallotItem || voterOpposesBallotItem) {
       // console.log('OrganizationPositionItem PositionSupportOpposeSnippet');
-      // We overwrite the 'statementText' passed in with position
+      // We overwrite the 'voterTextStatement' passed in with position
       positionDescription = (
         <PositionSupportOpposeSnippet
           {...position}
-          statement_text={statementText}
-          is_support={isSupport}
-          is_oppose={isOppose}
+          statement_text={voterTextStatement}
+          is_support={voterSupportsBallotItem}
+          is_oppose={voterOpposesBallotItem}
           is_on_ballot_item_page={isOnBallotItemPage}
           stance_display_off={stanceDisplayOff}
           comment_text_off={commentTextOff}
@@ -362,7 +383,7 @@ export default class OrganizationPositionItem extends Component {
                 { (signedInWithThisTwitterAccount ||
                   signedInWithThisOrganization ||
                   signedInWithThisFacebookAccount) &&
-                  <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
+                  <FriendsOnlyIndicator isFriendsOnly={!voterPositionIsPublic} />
                 }
               </div>
             ) : null
@@ -394,7 +415,6 @@ export default class OrganizationPositionItem extends Component {
                       ballotItemWeVoteId={position.ballot_item_we_vote_id}
                       ballotItemDisplayName={position.ballot_item_display_name}
                       commentEditModeOn
-                      supportProps={supportProps}
                       transitioning={this.state.transitioning}
                       type={position.kind_of_ballot_item}
                     />

@@ -41,6 +41,8 @@ class MeasureItemCompressed extends Component {
       organizationWeVoteId: '',
       positionListHasBeenRetrievedOnce: {},
       showPositionStatement: false,
+      numberOfOpposePositionsForScore: 0,
+      numberOfSupportPositionsForScore: 0,
       yesVoteDescription: '',
     };
     this.getMeasureLink = this.getMeasureLink.bind(this);
@@ -72,13 +74,20 @@ class MeasureItemCompressed extends Component {
       localUniqueId: measureWeVoteId,
       measure,
       // measureSubtitle: measure.measure_subtitle,
-      measureSupportProps: SupportStore.get(measureWeVoteId),
       measureText: measure.measure_text,
       measureWeVoteId,
       noVoteDescription: measure.no_vote_description,
       yesVoteDescription: measure.yes_vote_description,
       organizationWeVoteId,
     });
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
+    if (ballotItemStatSheet) {
+      const { numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet;
+      this.setState({
+        numberOfOpposePositionsForScore,
+        numberOfSupportPositionsForScore,
+      });
+    }
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
@@ -100,13 +109,20 @@ class MeasureItemCompressed extends Component {
       localUniqueId: nextProps.measureWeVoteId,
       measure,
       // measureSubtitle: measure.measure_subtitle,
-      measureSupportProps: SupportStore.get(nextProps.measureWeVoteId),
       measureText: measure.measure_text,
       measureWeVoteId: nextProps.measureWeVoteId,
       noVoteDescription: measure.no_vote_description,
       yesVoteDescription: measure.yes_vote_description,
       organizationWeVoteId,
     });
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(nextProps.measureWeVoteId);
+    if (ballotItemStatSheet) {
+      const { numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet;
+      this.setState({
+        numberOfOpposePositionsForScore,
+        numberOfSupportPositionsForScore,
+      });
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -135,15 +151,13 @@ class MeasureItemCompressed extends Component {
       // console.log('this.state.showPositionStatement change');
       return true;
     }
-    if (this.state.measureSupportProps !== undefined && nextState.measureSupportProps !== undefined) {
-      const currentNetworkSupportCount = parseInt(this.state.measureSupportProps.support_count) || 0;
-      const nextNetworkSupportCount = parseInt(nextState.measureSupportProps.support_count) || 0;
-      const currentNetworkOpposeCount = parseInt(this.state.measureSupportProps.oppose_count) || 0;
-      const nextNetworkOpposeCount = parseInt(nextState.measureSupportProps.oppose_count) || 0;
-      if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
-        // console.log('shouldComponentUpdate: support or oppose count change');
-        return true;
-      }
+    if (this.state.numberOfOpposePositionsForScore !== nextState.numberOfOpposePositionsForScore) {
+      // console.log('this.state.showPositionStatement change');
+      return true;
+    }
+    if (this.state.numberOfSupportPositionsForScore !== nextState.numberOfSupportPositionsForScore) {
+      // console.log('this.state.showPositionStatement change');
+      return true;
     }
     // console.log('shouldComponentUpdate no change');
     return false;
@@ -180,9 +194,14 @@ class MeasureItemCompressed extends Component {
     const { measureWeVoteId } = this.state;
     // Whenever positions change, we want to make sure to get the latest organization, because it has
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
-    this.setState({
-      measureSupportProps: SupportStore.get(measureWeVoteId),
-    });
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
+    if (ballotItemStatSheet) {
+      const { numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet;
+      this.setState({
+        numberOfOpposePositionsForScore,
+        numberOfSupportPositionsForScore,
+      });
+    }
   }
 
   getMeasureLink (oneMeasureWeVoteId) {
@@ -230,35 +249,6 @@ class MeasureItemCompressed extends Component {
     }
     // measureSubtitle = capitalizeString(measureSubtitle);
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
-
-    // let measureGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(measureWeVoteId);
-
-    // let measure_for_modal = {
-    //   ballotItemDisplayName: ballotItemDisplayName,
-    //   voter_guides_to_follow_for_ballot_item_id: measureGuidesList,
-    //   kind_of_ballot_item: this.props.kind_of_ballot_item,
-    //   measureSubtitle: measureSubtitle,
-    //   measure_text: this.props.measure_text,
-    //   measure_url: this.props.measure_url,
-    //   measureWeVoteId,
-    //   position_list: this.props.position_list,
-    // };
-
-    // let measureSupportStore = SupportStore.get(measureWeVoteId);
-    // let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(measureWeVoteId);
-    // let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(measureWeVoteId);
-
-    // // Voter Support or opposition
-    // let isVoterSupport = false;
-    // let isVoterOppose = false;
-    // let voterStatementText = false;
-    // const ballotItemSupportStore = SupportStore.get(this.state.ballotItemWeVoteId);
-    // if (ballotItemSupportStore !== undefined) {
-    //   // console.log('ballotItemSupportStore: ', ballotItemSupportStore);
-    //   isVoterSupport = ballotItemSupportStore.is_support;
-    //   isVoterOppose = ballotItemSupportStore.is_oppose;
-    //   voterStatementText = ballotItemSupportStore.voter_statement_text;
-    // }
 
     return (
       <Card classes={{ root: classes.cardRoot }}>
@@ -471,16 +461,5 @@ const Info = styled.p`
   color: #777;
   width: 135%;
 `;
-
-// const CardFooter = styled.div`
-//   font-size: 12px;
-//   padding-top: 8px;
-//   text-align: center;
-//   user-select: none;
-//   cursor: pointer;
-//   @media (max-width: 960px) {
-//     padding-bottom: 8px;
-//   }
-// `;
 
 export default withTheme(withStyles(styles)(MeasureItemCompressed));
