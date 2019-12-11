@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
+const { InjectManifest } = require('workbox-webpack-plugin');
 
 const port = process.env.PORT || 3000;
 
@@ -34,6 +35,10 @@ module.exports = {
       { from: 'src/vip.html', to: '.' },
       { from: 'src/css/', to: 'css/' },
     ]),
+    new InjectManifest({
+      swSrc: './src/ServiceWorker.js',
+      swDest: 'sw.js',
+    }),
   ],
   module: {
     rules: [
