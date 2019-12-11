@@ -56,8 +56,6 @@ export default class Measure extends Component {
 
     // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(measureWeVoteId, 'MEASURE');
 
-    // Make sure supportProps exist for this Measure when browser comes straight to measure page
-    SupportActions.retrievePositionsCountsForOneBallotItem(measureWeVoteId);
     OrganizationActions.organizationsFollowedRetrieve();
 
     // TODO CREATE THIS
@@ -174,9 +172,6 @@ export default class Measure extends Component {
     // console.log('Measure onVoterGuideStoreChange');
     // MeasureActions.measureRetrieve(this.state.measureWeVoteId);
     // MeasureActions.positionListForBallotItemPublic(this.state.measureWeVoteId);
-    // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
-
-    SupportActions.retrievePositionsCountsForOneBallotItem(this.state.measureWeVoteId);
   }
 
   localPositionListHasBeenRetrievedOnce (measureWeVoteId) {

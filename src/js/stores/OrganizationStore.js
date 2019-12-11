@@ -296,8 +296,6 @@ class OrganizationStore extends ReduceStore {
 
     switch (action.type) {
       case 'organizationFollow':
-        // Following one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         // We also listen to 'organizationFollow' in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all and organizationWeVoteIds_to_follow_for_latest_ballot_item
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
         voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
@@ -351,8 +349,6 @@ class OrganizationStore extends ReduceStore {
       case 'organizationStopFollowing':
         // We also listen to "organizationStopFollowing" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all
 
-        // Un-Following one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
         voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
         // organizationWeVoteId is the organization that was just followed
@@ -384,8 +380,6 @@ class OrganizationStore extends ReduceStore {
       case 'organizationFollowIgnore':
         // We also listen to "organizationFollowIgnore" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all and organizationWeVoteIds_to_follow_for_latest_ballot_item
 
-        // Ignoring one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
         voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
         // organizationWeVoteId is the organization that was just followed

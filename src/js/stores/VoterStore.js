@@ -340,7 +340,6 @@ class VoterStore extends ReduceStore {
         if (action.res.success) {
           if (action.res.kind_of_follow_task === 'FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW') {
             // console.log("organizationSuggestionTasks FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
-            SupportActions.positionsCountForAllBallotItems(this.electionId());
             // VoterGuideActions.voterGuidesToFollowRetrieve(this.electionId());
             VoterGuideActions.voterGuidesFollowedRetrieve(this.electionId());
           } else if (action.res.kind_of_suggestion_task === 'UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW') {
@@ -448,7 +447,6 @@ class VoterStore extends ReduceStore {
           // Don't do any other refreshing
         } else {
           BallotActions.voterBallotItemsRetrieve();
-          SupportActions.positionsCountForAllBallotItems(action.res.google_civic_election_id);
         }
         ({ address } = action.res);
         if (!address) {
@@ -575,7 +573,6 @@ class VoterStore extends ReduceStore {
         FriendActions.friendInvitationsSentToMe();
         FriendActions.friendInvitationsProcessed();
         BallotActions.voterBallotItemsRetrieve();
-        SupportActions.positionsCountForAllBallotItems();
         return {
           ...state,
           emailSignInStatus: {
