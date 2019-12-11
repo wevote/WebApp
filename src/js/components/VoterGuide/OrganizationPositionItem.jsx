@@ -32,7 +32,7 @@ export default class OrganizationPositionItem extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      componentDidMountFinished: true,
+      componentDidMountFinished: false,
       hidePositionStatement: false,
       voterOpposesBallotItem: false,
       voterPositionIsPublic: false,
