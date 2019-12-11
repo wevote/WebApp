@@ -184,7 +184,7 @@ class OfficeItemCompressed extends Component {
     const { classes, externalUniqueId, theme } = this.props;
     const { candidateList } = this.state;
     const candidatePreviewLimit = this.state.maximumNumberOrganizationsToDisplay;
-    const supportedCandidatesList = candidateList.filter(candidate => SupportStore.get(candidate.we_vote_id) && SupportStore.get(candidate.we_vote_id).is_support);
+    const supportedCandidatesList = candidateList.filter(candidate => SupportStore.getVoterSupportByBallotItemWeVoteId(candidate.we_vote_id));
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
     return (
       <Container candidateLength={candidatesToRender.length}>
@@ -270,20 +270,22 @@ class OfficeItemCompressed extends Component {
     // let candidateWeVoteWithMostSupportFromNetwork = null;
     // let candidateWeVoteIdWithHighestIssueScore = null;
     // let voterSupportsAtLeastOneCandidate = false;
-    let supportProps;
-    let candidateHasVoterSupport;
+    let ballotItemStatSheet;
+    let numberOfOpposePositionsForScore = 0;
+    let numberOfSupportPositionsForScore = 0;
+    let voterSupportsBallotItem;
     let voterIssuesScoreForCandidate;
 
     // Prepare an array of candidate names that are supported by voter
     unsortedCandidateList.forEach((candidate) => {
-      supportProps = SupportStore.get(candidate.we_vote_id);
-      if (supportProps) {
-        candidateHasVoterSupport = supportProps.is_support;
+      ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id);
+      if (ballotItemStatSheet) {
+        ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, voterSupportsBallotItem } = ballotItemStatSheet);
         voterIssuesScoreForCandidate = IssueStore.getIssuesScoreByBallotItemWeVoteId(candidate.we_vote_id);
-        candidate.voterNetworkScoreForCandidate = Math.abs(supportProps.support_count - supportProps.oppose_count);
+        candidate.voterNetworkScoreForCandidate = Math.abs(numberOfSupportPositionsForScore - numberOfOpposePositionsForScore);
         candidate.voterIssuesScoreForCandidate = Math.abs(voterIssuesScoreForCandidate);
-        candidate.is_support = supportProps.is_support;
-        if (candidateHasVoterSupport) {
+        candidate.is_support = voterSupportsBallotItem;
+        if (voterSupportsBallotItem) {
           arrayOfCandidatesVoterSupports.push(candidate.ballot_item_display_name);
           // voterSupportsAtLeastOneCandidate = true;
         }
@@ -300,19 +302,15 @@ class OfficeItemCompressed extends Component {
       // This function finds the highest support count for each office but does not handle ties. If two candidates have
       // the same network support count, only the first candidate will be displayed.
       let largestNetworkSupportCount = 0;
-      let networkSupportCount;
-      let networkOpposeCount;
       let largestIssueScore = 0;
       sortedCandidateList.forEach((candidate) => {
         // Support in voter's network
-        supportProps = SupportStore.get(candidate.we_vote_id);
-        if (supportProps) {
-          networkSupportCount = supportProps.support_count;
-          networkOpposeCount = supportProps.oppose_count;
-
-          if (networkSupportCount > networkOpposeCount) {
-            if (networkSupportCount > largestNetworkSupportCount) {
-              largestNetworkSupportCount = networkSupportCount;
+        ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id);
+        if (ballotItemStatSheet) {
+          ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet);
+          if (numberOfSupportPositionsForScore > numberOfOpposePositionsForScore) {
+            if (numberOfSupportPositionsForScore > largestNetworkSupportCount) {
+              largestNetworkSupportCount = numberOfSupportPositionsForScore;
             }
           }
         }

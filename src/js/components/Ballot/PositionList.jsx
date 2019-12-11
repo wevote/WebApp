@@ -34,7 +34,7 @@ const islandFilters = [
   {
     filterName: 'showCommentFilter',
     icon: <CommentIcon />,
-    filterDisplayName: 'Commented',
+    filterDisplayName: 'Has Comment',
     filterId: 'islandFilterCommented',
   },
 ];

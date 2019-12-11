@@ -31,6 +31,8 @@ class VoterGuideMeasureItemCompressed extends Component {
       componentDidMountFinished: false,
       measureText: '',
       measureWeVoteId: '',
+      numberOfOpposePositionsForScore: 0,
+      numberOfSupportPositionsForScore: 0,
       organizationWeVoteId: '',
       organizationPositionForMeasure: {},
       organizationPositionForMeasureFound: false,
@@ -73,11 +75,18 @@ class VoterGuideMeasureItemCompressed extends Component {
       componentDidMountFinished: true,
       measure,
       // measureSubtitle: measure.measure_subtitle,
-      measureSupportProps: SupportStore.get(measureWeVoteId),
       measureText: measure.measure_text,
       measureWeVoteId,
       organizationWeVoteId,
     });
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
+    if (ballotItemStatSheet) {
+      const { numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet;
+      this.setState({
+        numberOfOpposePositionsForScore,
+        numberOfSupportPositionsForScore,
+      });
+    }
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
@@ -97,12 +106,19 @@ class VoterGuideMeasureItemCompressed extends Component {
       ballotItemDisplayName: measure.ballot_item_display_name,
       measure,
       // measureSubtitle: measure.measure_subtitle,
-      measureSupportProps: SupportStore.get(measureWeVoteId),
       measureText: measure.measure_text,
       measureWeVoteId,
       organization,
       organizationWeVoteId,
     });
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
+    if (ballotItemStatSheet) {
+      const { numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet;
+      this.setState({
+        numberOfOpposePositionsForScore,
+        numberOfSupportPositionsForScore,
+      });
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -135,15 +151,13 @@ class VoterGuideMeasureItemCompressed extends Component {
       // console.log('this.state.showPositionStatement change');
       return true;
     }
-    if (this.state.measureSupportProps !== undefined && nextState.measureSupportProps !== undefined) {
-      const currentNetworkSupportCount = parseInt(this.state.measureSupportProps.support_count) || 0;
-      const nextNetworkSupportCount = parseInt(nextState.measureSupportProps.support_count) || 0;
-      const currentNetworkOpposeCount = parseInt(this.state.measureSupportProps.oppose_count) || 0;
-      const nextNetworkOpposeCount = parseInt(nextState.measureSupportProps.oppose_count) || 0;
-      if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
-        // console.log('shouldComponentUpdate: support or oppose count change');
-        return true;
-      }
+    if (this.state.numberOfOpposePositionsForScore !== nextState.numberOfOpposePositionsForScore) {
+      // console.log('this.state.numberOfOpposePositionsForScore change');
+      return true;
+    }
+    if (this.state.numberOfSupportPositionsForScore !== nextState.numberOfSupportPositionsForScore) {
+      // console.log('this.state.numberOfSupportPositionsForScore change');
+      return true;
     }
     // console.log('shouldComponentUpdate no change');
     return false;
@@ -174,9 +188,14 @@ class VoterGuideMeasureItemCompressed extends Component {
     const { measureWeVoteId } = this.state;
     // Whenever positions change, we want to make sure to get the latest organization, because it has
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
-    this.setState({
-      measureSupportProps: SupportStore.get(measureWeVoteId),
-    });
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
+    if (ballotItemStatSheet) {
+      const { numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet;
+      this.setState({
+        numberOfOpposePositionsForScore,
+        numberOfSupportPositionsForScore,
+      });
+    }
   }
 
   onOrganizationStoreChange () {

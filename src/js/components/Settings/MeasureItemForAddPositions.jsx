@@ -27,8 +27,11 @@ class MeasureItemForAddPositions extends Component {
       componentDidMountFinished: false,
       measureText: '',
       ballotItemWeVoteId: '',
+      voterOpposesBallotItem: false,
+      voterSupportsBallotItem: false,
       organizationWeVoteId: '',
       showPositionStatement: false,
+      voterTextStatement: '',
     };
     // this.getMeasureLink = this.getMeasureLink.bind(this);
     this.openMeasureLinkModal = this.openMeasureLinkModal.bind(this);
@@ -36,42 +39,41 @@ class MeasureItemForAddPositions extends Component {
   }
 
   componentDidMount () {
-    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-
+    const { ballotItemWeVoteId, ballotItemDisplayName, measureText } = this.props;
     const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organization_we_vote_id;
-    if (this.props.ballotItemWeVoteId) {
-      const ballotItemSupportProps = SupportStore.get(this.props.ballotItemWeVoteId);
-      const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
-      this.setState({
-        ballotItemSupportProps,
-        ballotItemWeVoteId: this.props.ballotItemWeVoteId,
-        isVoterOppose,
-        isVoterSupport,
-        voterStatementText,
-      });
+    if (ballotItemWeVoteId) {
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+      if (ballotItemStatSheet) {
+        const { voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
+        this.setState({
+          voterOpposesBallotItem,
+          voterSupportsBallotItem,
+          voterTextStatement,
+        });
+      }
     }
     this.setState({
-      ballotItemDisplayName: this.props.ballotItemDisplayName,
-      ballotItemWeVoteId: this.props.ballotItemWeVoteId,
+      ballotItemDisplayName,
+      ballotItemWeVoteId,
       componentDidMountFinished: true,
-      measureText: this.props.measureText,
+      measureText,
       organizationWeVoteId,
     });
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
     const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organization_we_vote_id;
     if (nextProps.ballotItemWeVoteId) {
-      const ballotItemSupportProps = SupportStore.get(nextProps.ballotItemWeVoteId);
-      const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
-      this.setState({
-        ballotItemDisplayName: nextProps.ballotItemDisplayName,
-        ballotItemSupportProps,
-        ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
-        isVoterOppose,
-        isVoterSupport,
-        voterStatementText,
-      });
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(nextProps.ballotItemWeVoteId);
+      if (ballotItemStatSheet) {
+        const { voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
+        this.setState({
+          voterOpposesBallotItem,
+          voterSupportsBallotItem,
+          voterTextStatement,
+        });
+      }
     }
     this.setState({
       ballotItemDisplayName: nextProps.ballotItemDisplayName,
@@ -103,20 +105,20 @@ class MeasureItemForAddPositions extends Component {
       // console.log('this.props.showPositionStatementActionBar change');
       return true;
     }
-    if (this.state.isVoterOppose !== nextState.isVoterOppose) {
-      // console.log('this.state.isVoterOppose: ', this.state.isVoterOppose, ', nextState.isVoterOppose: ', nextState.isVoterOppose);
+    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
+      // console.log('this.state.voterOpposesBallotItem: ', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem: ', nextState.voterOpposesBallotItem);
       return true;
     }
-    if (this.state.isVoterSupport !== nextState.isVoterSupport) {
-      // console.log('this.state.isVoterSupport: ', this.state.isVoterSupport, ', nextState.isVoterSupport: ', nextState.isVoterSupport);
+    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
+      // console.log('this.state.voterSupportsBallotItem: ', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem: ', nextState.voterSupportsBallotItem);
       return true;
     }
     if (this.state.showPositionStatement !== nextState.showPositionStatement) {
       // console.log('this.state.showPositionStatement: ', this.state.showPositionStatement, ', nextState.showPositionStatement: ', nextState.showPositionStatement);
       return true;
     }
-    if (this.state.voterStatementText !== nextState.voterStatementText) {
-      // console.log('this.state.voterStatementText: ', this.state.voterStatementText, ', nextState.voterStatementText: ', nextState.voterStatementText);
+    if (this.state.voterTextStatement !== nextState.voterTextStatement) {
+      // console.log('this.state.voterTextStatement: ', this.state.voterTextStatement, ', nextState.voterTextStatement: ', nextState.voterTextStatement);
       return true;
     }
     return false;
@@ -128,14 +130,17 @@ class MeasureItemForAddPositions extends Component {
 
   onSupportStoreChange () {
     const { ballotItemWeVoteId } = this.state;
-    const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
-    const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
-    this.setState({
-      ballotItemSupportProps,
-      isVoterOppose,
-      isVoterSupport,
-      voterStatementText,
-    });
+    if (ballotItemWeVoteId) {
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
+      if (ballotItemStatSheet) {
+        const { voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
+        this.setState({
+          voterOpposesBallotItem,
+          voterSupportsBallotItem,
+          voterTextStatement,
+        });
+      }
+    }
   }
 
   // getMeasureLink (oneMeasureWeVoteId) {
@@ -163,7 +168,7 @@ class MeasureItemForAddPositions extends Component {
   render () {
     renderLog('MeasureItemForAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballotItemDisplayName } = this.state;
-    const { ballotItemSupportProps, measureText, ballotItemWeVoteId, showPositionStatement } = this.state;
+    const { measureText, ballotItemWeVoteId, showPositionStatement, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement } = this.state;
     if (!ballotItemWeVoteId) {
       return null;
     }
@@ -174,9 +179,8 @@ class MeasureItemForAddPositions extends Component {
     }
     // measureSubtitle = capitalizeString(measureSubtitle);
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
-    const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
 
-    const commentDisplayDesktop = isVoterSupport || isVoterOppose || voterStatementText || showPositionStatement ? (
+    const commentDisplayDesktop = voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
       <div className="d-none d-sm-block u-min-50 u-stack--sm u-push--xs">
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={ballotItemWeVoteId}
@@ -191,7 +195,7 @@ class MeasureItemForAddPositions extends Component {
     ) :
       null;
 
-    const commentDisplayMobile = isVoterSupport || isVoterOppose || voterStatementText ? (
+    const commentDisplayMobile = voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement ? (
       <div className="d-block d-sm-none u-min-50 u-push--xs">
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={ballotItemWeVoteId}

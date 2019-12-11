@@ -22,20 +22,20 @@ class SupportStore extends ReduceStore {
     return this.getInitialState();
   }
 
-  get (ballotItemWeVoteId) {
-    if (!(this.voterSupportsList && this.voterOpposesList && this.supportCounts && this.opposeCounts)) {
-      return undefined;
-    }
-
-    return {
-      is_support: this.voterSupportsList[ballotItemWeVoteId] || false,
-      is_oppose: this.voterOpposesList[ballotItemWeVoteId] || false,
-      is_public_position: this.isForPublicList[ballotItemWeVoteId] || false, // Default to friends only
-      voter_statement_text: this.statementList[ballotItemWeVoteId] || '',
-      support_count: this.supportCounts[ballotItemWeVoteId] || 0,
-      oppose_count: this.opposeCounts[ballotItemWeVoteId] || 0,
-    };
-  }
+  // get (ballotItemWeVoteId) {
+  //   if (!(this.voterSupportsList && this.voterOpposesList && this.supportCounts && this.opposeCounts)) {
+  //     return undefined;
+  //   }
+  //
+  //   return {
+  //     is_support: this.voterSupportsList[ballotItemWeVoteId] || false,
+  //     is_oppose: this.voterOpposesList[ballotItemWeVoteId] || false,
+  //     is_public_position: this.isForPublicList[ballotItemWeVoteId] || false, // Default to friends only
+  //     voter_statement_text: this.statementList[ballotItemWeVoteId] || '',
+  //     support_count: this.supportCounts[ballotItemWeVoteId] || 0,
+  //     oppose_count: this.opposeCounts[ballotItemWeVoteId] || 0,
+  //   };
+  // }
 
   getBallotItemStatSheet (ballotItemWeVoteId) {
     if (!(this.voterSupportsList && this.voterOpposesList)) { //  && this.supportCounts && this.opposeCounts
@@ -72,7 +72,7 @@ class SupportStore extends ReduceStore {
     return this.voterOpposesList[ballotItemWeVoteId] || false;
   }
 
-  getIsSupportByBallotItemWeVoteId (ballotItemWeVoteId) {
+  getVoterSupportByBallotItemWeVoteId (ballotItemWeVoteId) {
     if (!(this.voterSupportsList)) {
       return false;
     }

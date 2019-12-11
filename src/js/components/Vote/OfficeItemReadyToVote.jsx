@@ -48,18 +48,17 @@ class OfficeItemReadyToVote extends Component {
   render () {
     renderLog('OfficeItemReadyToVote');  // Set LOG_RENDER_EVENTS to log all renders
     const isSupportArray = [];
-    let supportProps;
-    let isSupport;
-
-    // ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
+    let ballotItemStatSheet;
+    let voterSupportsBallotItem;
 
     this.props.candidateList.forEach((candidate) => {
-      supportProps = SupportStore.get(candidate.we_vote_id);
-      if (supportProps) {
-        isSupport = supportProps.is_support;
-
-        if (isSupport) {
-          isSupportArray.push(candidate.ballot_item_display_name);
+      if (candidate.we_vote_id) {
+        (ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id));
+        if (ballotItemStatSheet) {
+          ({ voterSupportsBallotItem } = ballotItemStatSheet);
+          if (voterSupportsBallotItem) {
+            isSupportArray.push(candidate.ballot_item_display_name);
+          }
         }
       }
     });
@@ -69,18 +68,18 @@ class OfficeItemReadyToVote extends Component {
     let largestSupportCount = 0;
 
     if (isSupportArray.length === 0) {
-      let networkSupportCount;
-      let networkOpposeCount;
+      let numberOfOpposePositionsForScore = 0;
+      let numberOfSupportPositionsForScore = 0;
 
       this.props.candidateList.forEach((candidate) => {
-        supportProps = SupportStore.get(candidate.we_vote_id);
-        if (supportProps) {
-          networkSupportCount = supportProps.support_count;
-          networkOpposeCount = supportProps.oppose_count;
-
-          if (networkSupportCount > networkOpposeCount) {
-            if (networkSupportCount > largestSupportCount) {
-              largestSupportCount = networkSupportCount;
+        if (candidate.we_vote_id) {
+          (ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id));
+          if (ballotItemStatSheet) {
+            ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet);
+            if (numberOfSupportPositionsForScore > numberOfOpposePositionsForScore) {
+              if (numberOfSupportPositionsForScore > largestSupportCount) {
+                largestSupportCount = numberOfSupportPositionsForScore;
+              }
             }
           }
         }
@@ -108,7 +107,7 @@ class OfficeItemReadyToVote extends Component {
             );
             return (
               <React.Fragment key={oneCandidate.we_vote_id}>
-                { SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support && (  // eslint-disable-line no-nested-ternary
+                { SupportStore.getVoterSupportByBallotItemWeVoteId(oneCandidate.we_vote_id) && (
                   <InnerWrapper>
                     <BioColumn>
                       {isCordova() ? candidatePhotoUrlHtml : <Avatar src={candidatePhotoUrl} /> }
@@ -129,8 +128,7 @@ class OfficeItemReadyToVote extends Component {
                       <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
                     </OfficeColumn>
                   </InnerWrapper>
-                )
-                }
+                )}
               </React.Fragment>
             );
           })
@@ -200,7 +198,7 @@ const DescriptionText = styled.p`
   margin: 0;
   @media print {
     font-size: 1.5rem;
-  } 
+  }
 `;
 
 const HR = styled.hr`
