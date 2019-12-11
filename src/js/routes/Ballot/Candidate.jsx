@@ -71,8 +71,6 @@ export default class Candidate extends Component {
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateWeVoteId, 'CANDIDATE');
     }
 
-    // Make sure supportProps exist for this Candidate when browser comes straight to candidate page
-    SupportActions.retrievePositionsCountsForOneBallotItem(candidateWeVoteId);
     OrganizationActions.organizationsFollowedRetrieve();
 
     // We want to make sure we have all of the position information so that comments show up
@@ -191,9 +189,6 @@ export default class Candidate extends Component {
     // Trigger an update of the candidate so we can get an updated position_list
     // CandidateActions.candidateRetrieve(this.state.candidateWeVoteId);
     // CandidateActions.positionListForBallotItemPublic(this.state.candidateWeVoteId);
-
-    // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
-    SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidateWeVoteId);
   }
 
   localPositionListHasBeenRetrievedOnce (candidateWeVoteId) {

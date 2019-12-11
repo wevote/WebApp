@@ -203,14 +203,9 @@ class Ballot extends Component {
     }
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
+    // NOTE: voterAllPositionsRetrieve is also called in SupportStore when voterAddressRetrieve is received,
     // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
     SupportActions.voterAllPositionsRetrieve();
-
-    // June 2018: Avoid hitting this same api multiple times, if we already have the data
-    if (!SupportStore.isSupportAlreadyInCache()) {
-      SupportActions.positionsCountForAllBallotItems(googleCivicElectionId);
-    }
 
     BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));

@@ -5,15 +5,6 @@ export default {
     Dispatcher.loadEndpoint('voterAllPositionsRetrieve');
   },
 
-  positionsCountForAllBallotItems (electionId) {
-    // console.log("SupportActions, positionsCountForAllBallotItems, electionId: ", electionId);
-    Dispatcher.loadEndpoint('positionsCountForAllBallotItems', { google_civic_election_id: electionId });
-  },
-
-  retrievePositionsCountsForOneBallotItem (ballotItemWeVoteId) {
-    Dispatcher.loadEndpoint('positionsCountForOneBallotItem', { ballot_item_we_vote_id: ballotItemWeVoteId });
-  },
-
   voterOpposingSave (weVoteId, type) {
     Dispatcher.loadEndpoint('voterOpposingSave', { ballot_item_we_vote_id: weVoteId, kind_of_ballot_item: type });
   },

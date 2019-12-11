@@ -4,9 +4,8 @@ import Dispatcher from '../dispatcher/Dispatcher';
 import CandidateStore from './CandidateStore';  // eslint-disable-line import/no-cycle
 import MeasureStore from './MeasureStore';  // eslint-disable-line import/no-cycle
 import { extractScoreFromNetworkFromPositionList } from '../utils/positionFunctions';  // eslint-disable-line import/no-cycle
-import { mergeTwoObjectLists, stringContains } from '../utils/textFormat';
+import { stringContains } from '../utils/textFormat';
 import SupportActions from '../actions/SupportActions';
-import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
 
 class SupportStore extends ReduceStore {
   getInitialState () {
@@ -21,21 +20,6 @@ class SupportStore extends ReduceStore {
   resetState () {
     return this.getInitialState();
   }
-
-  // get (ballotItemWeVoteId) {
-  //   if (!(this.voterSupportsList && this.voterOpposesList && this.supportCounts && this.opposeCounts)) {
-  //     return undefined;
-  //   }
-  //
-  //   return {
-  //     is_support: this.voterSupportsList[ballotItemWeVoteId] || false,
-  //     is_oppose: this.voterOpposesList[ballotItemWeVoteId] || false,
-  //     is_public_position: this.isForPublicList[ballotItemWeVoteId] || false, // Default to friends only
-  //     voter_statement_text: this.statementList[ballotItemWeVoteId] || '',
-  //     support_count: this.supportCounts[ballotItemWeVoteId] || 0,
-  //     oppose_count: this.opposeCounts[ballotItemWeVoteId] || 0,
-  //   };
-  // }
 
   getBallotItemStatSheet (ballotItemWeVoteId) {
     if (!(this.voterSupportsList && this.voterOpposesList)) { //  && this.supportCounts && this.opposeCounts
@@ -64,7 +48,7 @@ class SupportStore extends ReduceStore {
     };
   }
 
-  getIsOpposeByBallotItemWeVoteId (ballotItemWeVoteId) {
+  getVoterOpposesByBallotItemWeVoteId (ballotItemWeVoteId) {
     if (!(this.voterOpposesList)) {
       return false;
     }
@@ -110,54 +94,12 @@ class SupportStore extends ReduceStore {
     return this.getState().voter_statement_text;
   }
 
-  get supportCounts () {
-    return this.getState().support_counts;
-  }
-
-  get opposeCounts () {
-    return this.getState().oppose_counts;
-  }
-
-  isSupportAlreadyInCache () {
-    return this.getState().support_counts && Object.keys(this.getState().support_counts).length > 0;
-  }
-
-  listWithChangedCount (list, ballotItemWeVoteId, amount) { // eslint-disable-line
-    return assign({}, list, { [ballotItemWeVoteId]: list[ballotItemWeVoteId] + amount });
-  }
-
   statementListWithChanges (statement_list, ballotItemWeVoteId, new_voter_statement_text) { // eslint-disable-line
     return assign({}, statement_list, { [ballotItemWeVoteId]: new_voter_statement_text });
   }
 
   isForPublicListWithChanges (is_public_position_list, ballotItemWeVoteId, is_public_position) { // eslint-disable-line
     return assign({}, is_public_position_list, { [ballotItemWeVoteId]: is_public_position });
-  }
-
-  getWeVoteIdSupportListUnderThisBallotItem (ballotItemWeVoteId) {
-    // What are the issues that have positions for this election under this ballot item?
-    // console.log("getIssuesUnderThisBallotItem, ballotItemWeVoteId:", ballotItemWeVoteId);
-    if (ballotItemWeVoteId && this.getState().weVoteIdSupportListForEachBallotItem) {
-      return this.getState().weVoteIdSupportListForEachBallotItem[ballotItemWeVoteId] || [];
-    } else {
-      return [];
-    }
-  }
-
-  getNameSupportListUnderThisBallotItem (ballotItemWeVoteId) {
-    if (ballotItemWeVoteId && this.getState().nameSupportListForEachBallotItem) {
-      return this.getState().nameSupportListForEachBallotItem[ballotItemWeVoteId] || [];
-    } else {
-      return [];
-    }
-  }
-
-  getNameOpposeListUnderThisBallotItem (ballotItemWeVoteId) {
-    if (ballotItemWeVoteId && this.getState().nameOpposeListForEachBallotItem) {
-      return this.getState().nameOpposeListForEachBallotItem[ballotItemWeVoteId] || [];
-    } else {
-      return [];
-    }
   }
 
   // Turn action into a dictionary/object format with we_vote_id as key for fast lookup
@@ -176,25 +118,12 @@ class SupportStore extends ReduceStore {
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
-    const {
-      weVoteIdSupportListForEachBallotItem, weVoteIdOpposeListForEachBallotItem, nameSupportListForEachBallotItem,
-      nameOpposeListForEachBallotItem,
-    } = state;
 
     let ballotItemWeVoteId = '';
     if (action.res.ballot_item_we_vote_id) {
       ballotItemWeVoteId = action.res.ballot_item_we_vote_id;
     }
 
-    let positionCountsList;
-    const newOpposeCounts = this.parseListToHash('oppose_count', action.res.position_counts_list);
-    const newSupportCounts = this.parseListToHash('support_count', action.res.position_counts_list);
-    const existingOpposeCounts = state.oppose_counts !== undefined ? state.oppose_counts : [];
-    const existingSupportCounts = state.support_counts !== undefined ? state.support_counts : [];
-    const newOneOpposeCount = this.parseListToHash('oppose_count', action.res.position_counts_list);
-    const newOneSupportCount = this.parseListToHash('support_count', action.res.position_counts_list);
-    const existingOpposeCounts2 = state.oppose_counts !== undefined ? state.oppose_counts : [];
-    const existingSupportCounts2 = state.support_counts !== undefined ? state.support_counts : [];
     let voterOpposes = {};
     let voterSupports = {};
 
@@ -202,7 +131,6 @@ class SupportStore extends ReduceStore {
       case 'voterAddressRetrieve':
         // We should really avoid overly broad cascading API calls like this, they can cause problems
         SupportActions.voterAllPositionsRetrieve();
-        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return state;
 
       case 'voterAllPositionsRetrieve':
@@ -216,41 +144,7 @@ class SupportStore extends ReduceStore {
           is_public_position: this.parseListToHash('is_public_position', action.res.position_list),
         };
 
-      case 'positionsCountForAllBallotItems':
-        if (action.res.position_counts_list) {
-          positionCountsList = action.res.position_counts_list;
-          if (positionCountsList.length) {
-            positionCountsList.forEach((positionsCountBlock) => {
-              weVoteIdSupportListForEachBallotItem[positionsCountBlock.ballot_item_we_vote_id] = positionsCountBlock.support_we_vote_id_list;
-              weVoteIdOpposeListForEachBallotItem[positionsCountBlock.ballot_item_we_vote_id] = positionsCountBlock.oppose_we_vote_id_list;
-              nameSupportListForEachBallotItem[positionsCountBlock.ballot_item_we_vote_id] = positionsCountBlock.support_name_list;
-              nameOpposeListForEachBallotItem[positionsCountBlock.ballot_item_we_vote_id] = positionsCountBlock.oppose_name_list;
-            });
-          }
-        }
-
-        // Duplicate values in the second array will overwrite those in the first
-        return {
-          ...state,
-          oppose_counts: mergeTwoObjectLists(existingOpposeCounts, newOpposeCounts),
-          support_counts: mergeTwoObjectLists(existingSupportCounts, newSupportCounts),
-          weVoteIdSupportListForEachBallotItem,
-          weVoteIdOpposeListForEachBallotItem,
-          nameSupportListForEachBallotItem,
-          nameOpposeListForEachBallotItem,
-        };
-
-      case 'positionsCountForOneBallotItem':
-
-        // Duplicate values in the second array will overwrite those in the first
-        return {
-          ...state,
-          oppose_counts: mergeTwoObjectLists(existingOpposeCounts2, newOneOpposeCount),
-          support_counts: mergeTwoObjectLists(existingSupportCounts2, newOneSupportCount),
-        };
-
       case 'voterOpposingSave':
-        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         ({ voter_supports: voterSupports } = state);
         if (voterSupports && voterSupports[ballotItemWeVoteId] !== undefined) {
           delete voterSupports[ballotItemWeVoteId];
@@ -259,14 +153,9 @@ class SupportStore extends ReduceStore {
           ...state,
           voter_supports: voterSupports,
           voter_opposes: assign({}, state.voter_opposes, { [ballotItemWeVoteId]: true }),
-          support_counts: state.voter_supports[ballotItemWeVoteId] ?
-            this.listWithChangedCount(state.support_counts, ballotItemWeVoteId, -1) :
-            state.support_counts,
-          oppose_counts: this.listWithChangedCount(state.oppose_counts, ballotItemWeVoteId, 1),
         };
 
       case 'voterStopOpposingSave':
-        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         ({ voter_opposes: voterOpposes } = state);
         if (voterOpposes && voterOpposes[ballotItemWeVoteId] !== undefined) {
           delete voterOpposes[ballotItemWeVoteId];
@@ -274,11 +163,9 @@ class SupportStore extends ReduceStore {
         return {
           ...state,
           voter_opposes: voterOpposes,
-          oppose_counts: this.listWithChangedCount(state.oppose_counts, ballotItemWeVoteId, -1),
         };
 
       case 'voterSupportingSave':
-        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         ({ voter_opposes: voterOpposes } = state);
         if (voterOpposes && voterOpposes[ballotItemWeVoteId] !== undefined) {
           delete voterOpposes[ballotItemWeVoteId];
@@ -287,14 +174,9 @@ class SupportStore extends ReduceStore {
           ...state,
           voter_supports: assign({}, state.voter_supports, { [ballotItemWeVoteId]: true }),
           voter_opposes: voterOpposes,
-          support_counts: this.listWithChangedCount(state.support_counts, ballotItemWeVoteId, 1),
-          oppose_counts: state.voter_opposes[ballotItemWeVoteId] ?
-            this.listWithChangedCount(state.oppose_counts, ballotItemWeVoteId, -1) :
-            state.oppose_counts,
         };
 
       case 'voterStopSupportingSave':
-        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         ({ voter_supports: voterSupports } = state);
         if (voterSupports && voterSupports[ballotItemWeVoteId] !== undefined) {
           delete voterSupports[ballotItemWeVoteId];
@@ -302,7 +184,6 @@ class SupportStore extends ReduceStore {
         return {
           ...state,
           voter_supports: voterSupports,
-          support_counts: this.listWithChangedCount(state.support_counts, ballotItemWeVoteId, -1),
         };
 
       case 'voterPositionCommentSave':

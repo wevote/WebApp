@@ -44,8 +44,6 @@ export default class OrganizationVoterGuideMeasure extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.params.measure_we_vote_id, 'MEASURE');
 
-    // Make sure supportProps exist for this Measure when browser comes straight to measure page
-    SupportActions.retrievePositionsCountsForOneBallotItem(this.props.params.measure_we_vote_id);
     OrganizationActions.organizationsFollowedRetrieve();
 
     // TODO CREATE THIS
@@ -89,9 +87,6 @@ export default class OrganizationVoterGuideMeasure extends Component {
     const { measureWeVoteId } = this.state;
     // MeasureActions.measureRetrieve(measureWeVoteId);
     MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
-    // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
-
-    SupportActions.retrievePositionsCountsForOneBallotItem(measureWeVoteId);
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({

@@ -51,8 +51,6 @@ export default class OrganizationVoterGuideCandidate extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateWeVoteId, 'CANDIDATE');
 
-    // Make sure supportProps exist for this Candidate when browser comes straight to candidate page
-    SupportActions.retrievePositionsCountsForOneBallotItem(candidateWeVoteId);
     OrganizationActions.organizationsFollowedRetrieve();
 
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
@@ -103,8 +101,6 @@ export default class OrganizationVoterGuideCandidate extends Component {
     // When the voterGuidesToFollowForLatestBallotItem changes, trigger an update of the candidate so we can get an updated position_list
     // CandidateActions.candidateRetrieve(candidateWeVoteId);
     CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
-    // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
-    SupportActions.retrievePositionsCountsForOneBallotItem(candidateWeVoteId);
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidateWeVoteId, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({

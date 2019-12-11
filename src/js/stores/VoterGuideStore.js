@@ -274,7 +274,6 @@ class VoterGuideStore extends ReduceStore {
       case 'pledgeToVoteWithVoterGuide':
         if (action.res.pledge_statistics_found) {
           // console.log("VoterGuideStore pledgeToVoteWithVoterGuide, action.res: ", action.res);
-          SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
           voterGuideWithPledgeInfo = allCachedVoterGuides[action.res.organization_we_vote_id] || {};
           voterGuideWithPledgeInfo.pledge_goal = action.res.pledge_goal;
           voterGuideWithPledgeInfo.pledge_count = action.res.pledge_count;
@@ -360,7 +359,6 @@ class VoterGuideStore extends ReduceStore {
 
       case 'voterFollowAllOrganizationsFollowedByOrganization':
         // Following one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         voterLinkedOrganizationWeVoteId = VoterStore.getVoter().linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organizationWeVoteId = action.res.organization_we_vote_id;
