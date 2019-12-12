@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
+import { Button } from '@material-ui/core';
 import ImageHandler from '../ImageHandler';
 import FriendActions from '../../actions/FriendActions';
 import FriendInvitationToggle from './FriendInvitationToggle';
@@ -93,12 +94,23 @@ export default class FriendInvitationDisplayForList extends Component {
             <span>{voterImage}</span> }
         </Avatar>
         <Details>
-          { voterGuideLink ? (
-            <Link to={voterGuideLink} className="u-no-underline">
-              {voterDisplayNameFormatted}
-            </Link>
-          ) :
-            <span>{voterDisplayNameFormatted}</span> }
+          {voterGuideLink ? (
+            <Name>
+              <Link to={voterGuideLink} className="u-no-underline">
+                {voterDisplayNameFormatted}
+              </Link>
+            </Name>
+          ) : (
+            <Name>{voterDisplayNameFormatted}</Name>
+          )}
+          <Info>
+            Positions:
+            <strong>7</strong>
+          </Info>
+          <Info>
+            Mutual Friends:
+            <strong>23</strong>
+          </Info>
           { invitationsSentByMe ?
             null :
             <span> invited you.</span>}
@@ -113,21 +125,24 @@ export default class FriendInvitationDisplayForList extends Component {
         </Details>
         <ButtonWrapper>
           {this.state.isFriend ? <span>Is Friend</span> : (
-            <div className="card-child__follow-buttons">
-              { this.props.invitationsSentByMe ?
-                <span>{deleteInvitationHtml}</span> : (
-                  <span>
-                    <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
-                    <button
-                      className="btn btn-default btn-sm"
-                      onClick={this.handleIgnore.bind(this, otherVoterWeVoteId)}
-                      type="button"
-                    >
-                    Ignore
-                    </button>
-                  </span>
-                )}
-            </div>
+            <>
+              { this.props.invitationsSentByMe ? (
+                <Button variant="outlined" color="primary">
+                  Cancel
+                </Button>
+              ) : (
+                <span>
+                  <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
+                  <button
+                    className="btn btn-default btn-sm"
+                    onClick={this.handleIgnore.bind(this, otherVoterWeVoteId)}
+                    type="button"
+                  >
+                  Ignore
+                  </button>
+                </span>
+              )}
+            </>
           )}
         </ButtonWrapper>
       </Wrapper>
@@ -146,17 +161,42 @@ export default class FriendInvitationDisplayForList extends Component {
 }
 
 const Wrapper = styled.div`
-  margin: 12px 0;
+  margin: 24px 0;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  padding-left: 85px;
+  height: 68px;
 `;
 
 const Avatar = styled.div`
-  
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  position: absolute !important;
+  left: 0;
+  top: 0;
+  & img {
+    height: 100%;
+    width: auto;
+    border-radius: 6px;
+  }
 `;
 
 const Details = styled.div`
 
+`;
+
+const Name = styled.h3`
+  font-weight: bold;
+  color: black !important;
+  font-size: 22px;
+  margin-bottom: 4px;
+`;
+
+const Info = styled.div`
+  display: block;
 `;
 
 const ButtonWrapper = styled.div`

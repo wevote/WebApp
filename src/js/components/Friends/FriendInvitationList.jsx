@@ -42,8 +42,10 @@ export default class FriendInvitationList extends Component {
     return (
       <div className="card">
         <div className="card-main">
-          {this.state.friendInvitationList.map((friend) => {
+          {this.state.friendInvitationList.map((friend, index) => {
             if (friend.voter_we_vote_id && friend.voter_we_vote_id !== '') {
+              console.log(index);
+              console.log(this.state.friendInvitationList.length);
               return (
                 <FriendInvitationDisplayForList
                   key={`invite-key-${friend.voter_we_vote_id}`}
