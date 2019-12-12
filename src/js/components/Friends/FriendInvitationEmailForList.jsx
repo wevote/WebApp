@@ -142,10 +142,11 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
-    padding-left: 85px;
+    padding-left: 100px;
   }
   @media (min-width: 520px) {
     height: 68px;
+    padding-left: 85px;
   }
 `;
 
