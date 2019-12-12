@@ -109,9 +109,11 @@ export default class FriendInvitationEmailForList extends Component {
             </Link>
           ) : null
           }
-          <Button variant="outlined" color="primary">
-            Cancel
-          </Button>
+          <CancelButtonContainer>
+            <Button variant="outlined" color="primary" fullWidth>
+              Cancel
+            </Button>
+          </CancelButtonContainer>
         </ButtonWrapper>
       </Wrapper>
     );
@@ -129,44 +131,119 @@ export default class FriendInvitationEmailForList extends Component {
 }
 
 const Wrapper = styled.div`
-  margin: 24px 0;
+  margin: 24px 0 32px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   position: relative;
-  padding-left: 85px;
-  height: 68px;
+  flex-wrap: wrap;
+  @media(min-width: 360px) {
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    padding-left: 85px;
+  }
+  @media (min-width: 520px) {
+    height: 68px;
+  }
 `;
 
 const Avatar = styled.div`
-  height: 100% !important;
-  min-height: 100% !important;
-  max-height: 100% !important;
-  position: absolute !important;
-  left: 0;
-  top: 0;
+  width: 50%;
+  margin: 0 auto;
   & img {
-    height: 100%;
-    width: auto;
-    border-radius: 6px;
+    width: 100%;
+  }
+  @media (min-width: 360px) {
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    position: absolute !important;
+    left: 0;
+    top: 0;
+    & img {
+      height: 100%;
+      width: auto;
+      border-radius: 6px;
+    }
   }
 `;
 
 const Details = styled.div`
-
+  width: 50%;
+  margin: 0 auto;
+  @media(min-width: 360px) {
+    width: fit-content;
+    margin: 0;
+  }
 `;
 
 const Name = styled.h3`
   font-weight: bold;
   color: black !important;
-  font-size: 22px;
+  font-size: 26px;
   margin-bottom: 4px;
+  text-align: center;
+  width: 100%;
+  @media(min-width: 360px) {
+    text-align: left;
+    font-size: 22px;
+    width: fit-content;
+  }
 `;
 
 const Info = styled.div`
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  @media (min-width: 360px){
+    display: block;
+    width: fit-content;
+  }
 `;
 
 const ButtonWrapper = styled.div`
-  margin-left: auto;
+  width: 100%;
+  margin: 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @media(min-width: 360px) {
+    margin: 0;
+    margin-left: auto;
+    width: fit-content;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  @media (min-width: 520px) {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  margin-right: 12px;
+  @media(min-width: 360px) {
+    width: 100%;
+    margin: 0;
+    margin-bottom: 8px;
+  }
+  @media(min-width: 520px) {
+    margin: 0;
+    margin-right: 8px;
+  }
+`;
+
+const CancelButtonContainer = styled.div`
+  width: 100%;
+  margin-right: 12px;
+  @media(min-width: 520px) {
+    margin: 0;
+    margin-right: 8px;
+  }
 `;

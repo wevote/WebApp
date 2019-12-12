@@ -130,9 +130,11 @@ class FriendInvitationDisplayForList extends Component {
           <>
             { this.props.invitationsSentByMe ? (
               <ButtonWrapper>
-                <Button variant="outlined" color="primary">
-                  Cancel
-                </Button>
+                <CancelButtonContainer>
+                  <Button fullWidth variant="outlined" color="primary">
+                    Cancel
+                  </Button>
+                </CancelButtonContainer>
               </ButtonWrapper>
             ) : (
               <ButtonWrapper>
@@ -148,7 +150,6 @@ class FriendInvitationDisplayForList extends Component {
                     {window.innerWidth > 620 ? 'Delete Request' : 'Delete'}
                   </Button>
                 </ButtonContainer>
-
                 <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
               </ButtonWrapper>
             )}
@@ -190,10 +191,11 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
-    padding-left: 85px;
+    padding-left: 100px;
   }
   @media (min-width: 520px) {
     height: 68px;
+    padding-left: 85px;
   }
 `;
 
@@ -281,6 +283,15 @@ const ButtonContainer = styled.div`
     margin: 0;
     margin-bottom: 8px;
   }
+  @media(min-width: 520px) {
+    margin: 0;
+    margin-right: 8px;
+  }
+`;
+
+const CancelButtonContainer = styled.div`
+  width: 100%;
+  margin-right: 12px;
   @media(min-width: 520px) {
     margin: 0;
     margin-right: 8px;
