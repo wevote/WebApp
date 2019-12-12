@@ -40,36 +40,69 @@ export default class FriendInvitationList extends Component {
     let simpleKeyCounter = 0;
 
     return (
-      <div className="card">
-        <div className="card-main">
-          {this.state.friendInvitationList.map((friend, index) => {
-            if (friend.voter_we_vote_id && friend.voter_we_vote_id !== '') {
-              console.log(index);
-              console.log(this.state.friendInvitationList.length);
-              return (
-                <FriendInvitationDisplayForList
-                  key={`invite-key-${friend.voter_we_vote_id}`}
-                  id={`invite-id-${friend.voter_we_vote_id}`}
-                  {...friend}
-                  invitationsSentByMe={invitationsSentByMe}
-                  previewMode={this.props.previewMode}
-                />
-              );
-            } else {
-              simpleKeyCounter++;
-              return (
-                <FriendInvitationEmailForList
-                  key={`invite-key-${simpleKeyCounter}`}
-                  id={`invite-id-${simpleKeyCounter}`}
-                  {...friend}
-                  invitationsSentByMe={invitationsSentByMe}
-                  previewMode={this.props.previewMode}
-                />
-              );
-            }
-          })}
-        </div>
-      </div>
+      <>
+        {this.props.previewMode ? (
+          <>
+            {this.state.friendInvitationList.map((friend, index) => {
+              if (friend.voter_we_vote_id && friend.voter_we_vote_id !== '') {
+                console.log(index);
+                console.log(this.state.friendInvitationList.length);
+                return (
+                  <FriendInvitationDisplayForList
+                    key={`invite-key-${friend.voter_we_vote_id}`}
+                    id={`invite-id-${friend.voter_we_vote_id}`}
+                    {...friend}
+                    invitationsSentByMe={invitationsSentByMe}
+                    previewMode={this.props.previewMode}
+                  />
+                );
+              } else {
+                simpleKeyCounter++;
+                return (
+                  <FriendInvitationEmailForList
+                    key={`invite-key-${simpleKeyCounter}`}
+                    id={`invite-id-${simpleKeyCounter}`}
+                    {...friend}
+                    invitationsSentByMe={invitationsSentByMe}
+                    previewMode={this.props.previewMode}
+                  />
+                );
+              }
+            })}
+          </>
+        ) : (
+          <div className="card">
+            <div className="card-main">
+              {this.state.friendInvitationList.map((friend, index) => {
+                if (friend.voter_we_vote_id && friend.voter_we_vote_id !== '') {
+                  console.log(index);
+                  console.log(this.state.friendInvitationList.length);
+                  return (
+                    <FriendInvitationDisplayForList
+                      key={`invite-key-${friend.voter_we_vote_id}`}
+                      id={`invite-id-${friend.voter_we_vote_id}`}
+                      {...friend}
+                      invitationsSentByMe={invitationsSentByMe}
+                      previewMode={this.props.previewMode}
+                    />
+                  );
+                } else {
+                  simpleKeyCounter++;
+                  return (
+                    <FriendInvitationEmailForList
+                      key={`invite-key-${simpleKeyCounter}`}
+                      id={`invite-id-${simpleKeyCounter}`}
+                      {...friend}
+                      invitationsSentByMe={invitationsSentByMe}
+                      previewMode={this.props.previewMode}
+                    />
+                  );
+                }
+              })}
+            </div>
+          </div>
+        )}
+      </>
     );
   }
 }

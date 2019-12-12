@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Button } from '@material-ui/core';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -59,14 +60,35 @@ export default class FriendInvitationToggle extends Component {
       return <div />;
     }
 
-    const floatRight = { float: 'right' };
-
     return (
-      <span className="u-margin-left-right--xs" style={floatRight}>
-        {isFriend ? null :
-        <Button variant="info" size="small" onClick={this.acceptFriendInvite}><span>Add Friend</span></Button>
-      }
-      </span>
+      <>
+        {isFriend ? null : (
+          <ButtonContainer>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.acceptFriendInvite}
+              fullWidth
+            >
+              {window.innerWidth > 620 ? 'Accept Request' : 'Accept'}
+            </Button>
+          </ButtonContainer>
+        )}
+      </>
     );
   }
 }
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  margin-left: 12px;
+  @media(min-width: 360px) {
+    width: fit-content;
+    margin: 0;
+    margin-top: 8px;
+  }
+  @media(min-width: 520px) {
+    margin: 0;
+    margin-left: 8px;
+  }
+`;
