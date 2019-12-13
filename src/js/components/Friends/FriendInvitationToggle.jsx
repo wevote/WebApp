@@ -81,11 +81,11 @@ export default class FriendInvitationToggle extends Component {
 
 const ButtonContainer = styled.div`
   width: 100%;
-  margin-left: 12px;
-  @media(min-width: 360px) {
+  margin-right: 12px;
+  @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
-    margin-top: 8px;
+    margin-bottom: 6px;
   }
   @media(min-width: 520px) {
     margin: 0;

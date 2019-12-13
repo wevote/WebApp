@@ -122,7 +122,7 @@ export function getApplicationViewBooleans (pathname) {
   } else if (pathnameLowerCase === '/friends/add' ||
     pathnameLowerCase === '/friends/current' ||
     pathnameLowerCase === '/friends/requests' ||
-    pathnameLowerCase === '/friends/invitationsbyme' ||
+    pathnameLowerCase === '/friends/sent-requests' ||
     pathnameLowerCase === '/friends/suggested' ||
     pathnameLowerCase === '/friends/invitebyemail' ||
     pathnameLowerCase === '/facebook_invitable_friends') {

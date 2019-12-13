@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
 import ImageHandler from '../ImageHandler';
 import FriendActions from '../../actions/FriendActions';
 import FriendInvitationToggle from './FriendInvitationToggle';
@@ -22,7 +21,6 @@ class FriendInvitationDisplayForList extends Component {
     voter_twitter_followers_count: PropTypes.number,
     voter_email_address: PropTypes.string,
     previewMode: PropTypes.bool,
-    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -71,7 +69,6 @@ class FriendInvitationDisplayForList extends Component {
       voter_twitter_handle: voterTwitterHandle,
       voter_we_vote_id: otherVoterWeVoteId,
       voter_photo_url_medium: voterPhotoUrlMedium,
-      classes,
     } = this.props;
 
     const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
@@ -86,7 +83,7 @@ class FriendInvitationDisplayForList extends Component {
     // console.log("FriendInvitationDisplayForList, otherVoterWeVoteId:", otherVoterWeVoteId);
 
     const friendInvitationHtml = (
-      <Wrapper>
+      <Wrapper previewMode={this.props.previewMode}>
         <Avatar>
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">
@@ -137,6 +134,7 @@ class FriendInvitationDisplayForList extends Component {
               </ButtonWrapper>
             ) : (
               <ButtonWrapper>
+                <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
                 <ButtonContainer>
                   <Button
                     fullWidth
@@ -144,12 +142,10 @@ class FriendInvitationDisplayForList extends Component {
                     color="primary"
                     onClick={() => this.handleIgnore(otherVoterWeVoteId)}
                     type="button"
-                    className={classes.deleteButton}
                   >
                     {window.innerWidth > 620 ? 'Delete Request' : 'Delete'}
                   </Button>
                 </ButtonContainer>
-                <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
               </ButtonWrapper>
             )}
           </>
@@ -169,24 +165,15 @@ class FriendInvitationDisplayForList extends Component {
   }
 }
 
-const styles = () => ({
-  // buttonContainer: {
-  //   ['@media(min-width: 569px)']: {
-  //     height: '2px !important',
-  //   },
-  //   height: '40px !important',
-  // },
-});
-
 const Wrapper = styled.div`
-  margin: 24px 0 32px;
+  margin: 24px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   position: relative;
   flex-wrap: wrap;
-  @media(min-width: 360px) {
+  @media(min-width: 400px) {
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
@@ -200,12 +187,14 @@ const Wrapper = styled.div`
 
 const Avatar = styled.div`
   width: 50%;
+  max-width: 120px;
   margin: 0 auto;
   & img {
     width: 100%;
   }
-  @media (min-width: 360px) {
+  @media (min-width: 400px) {
     height: 100% !important;
+    max-width: 100%;
     min-height: 100% !important;
     max-height: 100% !important;
     position: absolute !important;
@@ -215,6 +204,8 @@ const Avatar = styled.div`
       height: 100%;
       width: auto;
       border-radius: 6px;
+      max-width: 68.8px;
+      max-height: 68.8px;
     }
   }
 `;
@@ -222,7 +213,7 @@ const Avatar = styled.div`
 const Details = styled.div`
   width: 50%;
   margin: 0 auto;
-  @media(min-width: 360px) {
+  @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
   }
@@ -235,7 +226,7 @@ const Name = styled.h3`
   margin-bottom: 4px;
   text-align: center;
   width: 100%;
-  @media(min-width: 360px) {
+  @media(min-width: 400px) {
     text-align: left;
     font-size: 22px;
     width: fit-content;
@@ -247,7 +238,7 @@ const Info = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  @media (min-width: 360px){
+  @media (min-width: 400px){
     display: block;
     width: fit-content;
   }
@@ -259,7 +250,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  @media(min-width: 360px) {
+  @media(min-width: 400px) {
     margin: 0;
     margin-left: auto;
     width: fit-content;
@@ -268,7 +259,7 @@ const ButtonWrapper = styled.div`
     justify-content: flex-end;
   }
   @media (min-width: 520px) {
-    flex-direction: row;
+    flex-direction: row-reverse;
     justify-content: flex-end;
     align-items: center;
   }
@@ -276,11 +267,11 @@ const ButtonWrapper = styled.div`
 
 const ButtonContainer = styled.div`
   width: 100%;
-  margin-right: 12px;
-  @media(min-width: 360px) {
+  margin-left: 12px;
+  @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
-    margin-bottom: 8px;
+    margin-top: 6px;
   }
   @media(min-width: 520px) {
     margin: 0;
@@ -297,4 +288,4 @@ const CancelButtonContainer = styled.div`
   }
 `;
 
-export default withStyles(styles)(FriendInvitationDisplayForList);
+export default FriendInvitationDisplayForList;
