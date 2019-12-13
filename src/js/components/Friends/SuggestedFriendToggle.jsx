@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Button } from '@material-ui/core';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -80,14 +80,14 @@ export default class SuggestedFriendToggle extends Component {
 
 const ButtonContainer = styled.div`
   width: 100%;
-  margin-left: 12px;
-  @media(min-width: 360px) {
+  margin-right: 12px;
+  @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
-    margin-top: 8px;
+    margin-bottom: 6px;
   }
   @media(min-width: 520px) {
     margin: 0;
-    margin-left: 8px;
+    margin-right: 8px;
   }
 `;

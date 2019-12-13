@@ -134,6 +134,7 @@ class FriendInvitationDisplayForList extends Component {
               </ButtonWrapper>
             ) : (
               <ButtonWrapper>
+                <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
                 <ButtonContainer>
                   <Button
                     fullWidth
@@ -145,7 +146,6 @@ class FriendInvitationDisplayForList extends Component {
                     {window.innerWidth > 620 ? 'Delete Request' : 'Delete'}
                   </Button>
                 </ButtonContainer>
-                <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
               </ButtonWrapper>
             )}
           </>
@@ -173,7 +173,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   position: relative;
   flex-wrap: wrap;
-  @media(min-width: 360px) {
+  @media(min-width: 400px) {
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
@@ -192,7 +192,7 @@ const Avatar = styled.div`
   & img {
     width: 100%;
   }
-  @media (min-width: 360px) {
+  @media (min-width: 400px) {
     height: 100% !important;
     max-width: 100%;
     min-height: 100% !important;
@@ -213,7 +213,7 @@ const Avatar = styled.div`
 const Details = styled.div`
   width: 50%;
   margin: 0 auto;
-  @media(min-width: 360px) {
+  @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
   }
@@ -226,7 +226,7 @@ const Name = styled.h3`
   margin-bottom: 4px;
   text-align: center;
   width: 100%;
-  @media(min-width: 360px) {
+  @media(min-width: 400px) {
     text-align: left;
     font-size: 22px;
     width: fit-content;
@@ -238,7 +238,7 @@ const Info = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  @media (min-width: 360px){
+  @media (min-width: 400px){
     display: block;
     width: fit-content;
   }
@@ -250,7 +250,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  @media(min-width: 360px) {
+  @media(min-width: 400px) {
     margin: 0;
     margin-left: auto;
     width: fit-content;
@@ -259,7 +259,7 @@ const ButtonWrapper = styled.div`
     justify-content: flex-end;
   }
   @media (min-width: 520px) {
-    flex-direction: row;
+    flex-direction: row-reverse;
     justify-content: flex-end;
     align-items: center;
   }
@@ -267,11 +267,11 @@ const ButtonWrapper = styled.div`
 
 const ButtonContainer = styled.div`
   width: 100%;
-  margin-right: 12px;
-  @media(min-width: 360px) {
+  margin-left: 12px;
+  @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
-    margin-bottom: 8px;
+    margin-top: 6px;
   }
   @media(min-width: 520px) {
     margin: 0;
