@@ -8,7 +8,7 @@ import ImageHandler from '../ImageHandler';
 import FriendActions from '../../actions/FriendActions';
 import FriendInvitationToggle from './FriendInvitationToggle';
 import FriendStore from '../../stores/FriendStore';
-import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
 class FriendInvitationDisplayForList extends Component {
@@ -29,6 +29,7 @@ class FriendInvitationDisplayForList extends Component {
     super(props);
     this.state = {
     };
+    this.handleIgnore = this.handleIgnore.bind(this);
   }
 
   componentDidMount () {
@@ -65,8 +66,8 @@ class FriendInvitationDisplayForList extends Component {
   render () {
     renderLog('FriendInvitationDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      invitationsSentByMe,
-      voter_twitter_followers_count: voterTwitterFollowersCount,
+      // invitationsSentByMe,
+      // voter_twitter_followers_count: voterTwitterFollowersCount,
       voter_twitter_handle: voterTwitterHandle,
       voter_we_vote_id: otherVoterWeVoteId,
       voter_photo_url_medium: voterPhotoUrlMedium,
@@ -83,8 +84,6 @@ class FriendInvitationDisplayForList extends Component {
     const voterImage = <ImageHandler sizeClassName="image-lg " imageUrl={voterPhotoUrlMedium} kind_of_ballot_item="CANDIDATE" />;
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
     // console.log("FriendInvitationDisplayForList, otherVoterWeVoteId:", otherVoterWeVoteId);
-
-    const deleteInvitationHtml = '';
 
     const friendInvitationHtml = (
       <Wrapper>
@@ -143,7 +142,7 @@ class FriendInvitationDisplayForList extends Component {
                     fullWidth
                     variant="outlined"
                     color="primary"
-                    onClick={this.handleIgnore.bind(this, otherVoterWeVoteId)}
+                    onClick={() => this.handleIgnore(otherVoterWeVoteId)}
                     type="button"
                     className={classes.deleteButton}
                   >
