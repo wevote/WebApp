@@ -94,7 +94,7 @@ class SuggestedFriendDisplayForList extends Component {
               fullWidth
               variant="outlined"
               color="primary"
-              onClick={() => this.handleIgnore(otherVoterWeVoteId)}
+              onClick={() => this.ignoreSuggestedFriend(voterWeVoteId)}
               type="button"
             >
               {window.innerWidth > 620 ? 'Delete Request' : 'Delete'}
@@ -233,7 +233,7 @@ const ButtonContainer = styled.div`
   }
   @media(min-width: 520px) {
     margin: 0;
-    margin-left: 8px;
+    margin-right: 8px;
   }
 `;
 

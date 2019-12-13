@@ -88,6 +88,6 @@ const ButtonContainer = styled.div`
   }
   @media(min-width: 520px) {
     margin: 0;
-    margin-right: 8px;
+    margin-left: 8px;
   }
 `;
