@@ -1,7 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
 import Dispatcher from '../dispatcher/Dispatcher';
-import OfficeActions from '../actions/OfficeActions';
 
 class OfficeStore extends ReduceStore {
   getInitialState () {
@@ -26,7 +25,7 @@ class OfficeStore extends ReduceStore {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
 
-    let arrayOfOfficeWeVoteIds;
+    // let arrayOfOfficeWeVoteIds;
     let googleCivicElectionId;
     let office;
     const newOffices = {};
@@ -41,38 +40,41 @@ class OfficeStore extends ReduceStore {
         };
 
       case 'organizationFollow':
-        // Go through all of the offices currently on this voter's ballot and update their positions
-        if (state.offices && state.offices.length) {
-          // console.log("OfficeStore organizationFollow, state.offices.length:", state.offices.length);
-          arrayOfOfficeWeVoteIds = Object.keys(state.offices);
-          for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
-            OfficeActions.positionListForBallotItemPublic(arrayOfOfficeWeVoteIds[i]);  // Use positionListForBallotItemForVoter?
-          }
-        }
+        // DALE 2019-12-11 I don't think this is necessary any more
+        // // Go through all of the offices currently on this voter's ballot and update their positions
+        // if (state.offices && state.offices.length) {
+        //   // console.log("OfficeStore organizationFollow, state.offices.length:", state.offices.length);
+        //   arrayOfOfficeWeVoteIds = Object.keys(state.offices);
+        //   for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
+        //     OfficeActions.positionListForBallotItemPublic(arrayOfOfficeWeVoteIds[i]);  // Use positionListForBallotItemForVoter?
+        //   }
+        // }
         return state;
 
       case 'organizationStopFollowing':
-        // Go through all of the offices currently on this voter's ballot and update their positions
-        if (state.offices) {
-          // console.log('OfficeStore organizationStopFollowing, state.offices.length:', state.offices.length);
-          arrayOfOfficeWeVoteIds = Object.keys(state.offices);
-          for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
-            // DALE 2019-05-08 It seems like we should just remove the follow data locally instead of hitting API server again
-            OfficeActions.positionListForBallotItemPublic(arrayOfOfficeWeVoteIds[i]);  // Use positionListForBallotItemForVoter?
-          }
-        }
+        // DALE 2019-12-11 I don't think this is necessary any more
+        // // Go through all of the offices currently on this voter's ballot and update their positions
+        // if (state.offices) {
+        //   // console.log('OfficeStore organizationStopFollowing, state.offices.length:', state.offices.length);
+        //   arrayOfOfficeWeVoteIds = Object.keys(state.offices);
+        //   for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
+        //     // DALE 2019-05-08 It seems like we should just remove the follow data locally instead of hitting API server again
+        //     OfficeActions.positionListForBallotItemPublic(arrayOfOfficeWeVoteIds[i]);  // Use positionListForBallotItemForVoter?
+        //   }
+        // }
         return state;
 
       case 'organizationFollowIgnore':
-        // Go through all of the offices currently on this voter's ballot and update their positions
-        if (state.offices) {
-          // console.log('OfficeStore organizationFollowIgnore, state.offices.length:', state.offices.length);
-          arrayOfOfficeWeVoteIds = Object.keys(state.offices);
-          for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
-            // DALE 2019-05-08 It seems like we should just set the ignore data locally instead of hitting API server again
-            OfficeActions.positionListForBallotItemPublic(arrayOfOfficeWeVoteIds[i]);  // Use positionListForBallotItemForVoter?
-          }
-        }
+        // DALE 2019-12-11 I don't think this is necessary any more
+        // // Go through all of the offices currently on this voter's ballot and update their positions
+        // if (state.offices) {
+        //   // console.log('OfficeStore organizationFollowIgnore, state.offices.length:', state.offices.length);
+        //   arrayOfOfficeWeVoteIds = Object.keys(state.offices);
+        //   for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
+        //     // DALE 2019-05-08 It seems like we should just set the ignore data locally instead of hitting API server again
+        //     OfficeActions.positionListForBallotItemPublic(arrayOfOfficeWeVoteIds[i]);  // Use positionListForBallotItemForVoter?
+        //   }
+        // }
         return state;
 
       case 'voterBallotItemsRetrieve':

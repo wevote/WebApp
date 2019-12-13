@@ -92,6 +92,7 @@ class IssueStore extends ReduceStore {
   }
 
   isOrganizationLinkedToIssueVoterIsFollowing (organizationWeVoteId) {
+    // See also getIssuesInCommonBetweenOrganizationAndVoter
     const issueWeVoteIdsLinkedToByOrganizationDict = this.getState().issueWeVoteIdsLinkedToByOrganizationDict[organizationWeVoteId];
     // console.log('issueWeVoteIdsLinkedToByOrganizationDict:', issueWeVoteIdsLinkedToByOrganizationDict);
     if (issueWeVoteIdsLinkedToByOrganizationDict === undefined) {
@@ -165,6 +166,29 @@ class IssueStore extends ReduceStore {
     } else {
       return issueWeVoteIdsLinkedToOrganization.length;
     }
+  }
+
+  getIssuesInCommonBetweenOrganizationAndVoter (organizationWeVoteId) {
+    // See also isOrganizationLinkedToIssueVoterIsFollowing
+    if (!organizationWeVoteId) {
+      return [];
+    }
+    // These are issues that an organization has linked itself to, to help Voters find the organization
+    const issueWeVoteIdsLinkedToByOrganizationDict = this.getState().issueWeVoteIdsLinkedToByOrganizationDict[organizationWeVoteId];
+    // console.log('getIssuesInCommonBetweenOrganizationAndVoter issueWeVoteIdsLinkedToByOrganizationDict:', issueWeVoteIdsLinkedToByOrganizationDict);
+    if (issueWeVoteIdsLinkedToByOrganizationDict === undefined) {
+      return [];
+    }
+    const issueWeVoteIdsInCommonBetweenOrganizationAndVoter = [];
+    issueWeVoteIdsLinkedToByOrganizationDict.forEach((issueWeVoteId) => {
+      if (this.isVoterFollowingThisIssue(issueWeVoteId)) {
+        issueWeVoteIdsInCommonBetweenOrganizationAndVoter.push(issueWeVoteId);
+        // console.log('issueWeVoteId shared:', issueWeVoteId);
+      }
+    });
+
+    // List of issue objects that an organization is linked to
+    return this.getIssuesFromListOfWeVoteIds(issueWeVoteIdsInCommonBetweenOrganizationAndVoter);
   }
 
   getIssuesFromListOfWeVoteIds (listOfIssueWeVoteIds) {

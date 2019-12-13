@@ -224,7 +224,7 @@ class OfficeItemForAddPositions extends Component {
                   <CandidateInfo
                     brandBlue={theme.palette.primary.main}
                     candidateLength={candidateList.length}
-                    id={`officeItemCompressedCandidateInfo-${oneCandidate.we_vote_id}`}
+                    id={`officeItemCompressedAddPositions-${oneCandidate.we_vote_id}`}
                     key={`${externalUniqueId}-candidatePreview-${oneCandidate.we_vote_id}`}
                   >
                     <CandidateItemForAddPositions

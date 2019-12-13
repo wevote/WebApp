@@ -64,24 +64,24 @@ class PositionSummaryListForPopover extends Component {
           key={`onePositionForIssue--${positionSummary.organizationWeVoteId}`}
         >
           {positionSummary.organizationSupports && !positionSummary.organizationInVotersNetwork && (
-            <Support>
+            <SupportButNotPartOfScore>
               <ThumbUpIcon classes={{ root: classes.endorsementIcon }} />
-            </Support>
+            </SupportButNotPartOfScore>
           )}
           {positionSummary.organizationSupports && positionSummary.organizationInVotersNetwork && (
-            <SupportFollow>
+            <SupportAndPartOfScore>
               +1
-            </SupportFollow>
+            </SupportAndPartOfScore>
           )}
           {positionSummary.organizationOpposes && !positionSummary.organizationInVotersNetwork && (
-            <Oppose>
+            <OpposeButNotPartOfScore>
               <ThumbDownIcon classes={{ root: classes.endorsementIcon }} />
-            </Oppose>
+            </OpposeButNotPartOfScore>
           )}
           {positionSummary.organizationOpposes && positionSummary.organizationInVotersNetwork && (
-            <OpposeFollow>
+            <OpposeAndPartOfScore>
               -1
-            </OpposeFollow>
+            </OpposeAndPartOfScore>
           )}
           <div>
             {positionSummary.organizationName}
@@ -106,7 +106,7 @@ const PositionSummaryWrapper = styled.div`
   justify-content: flex-start;
 `;
 
-const SupportFollow = styled.div`
+const SupportAndPartOfScore = styled.div`
   color: white;
   background: ${({ theme }) => theme.colors.supportGreenRgb};
   display: flex;
@@ -125,7 +125,7 @@ const SupportFollow = styled.div`
   }
 `;
 
-const OpposeFollow = styled.div`
+const OpposeAndPartOfScore = styled.div`
   color: white;
   background: ${({ theme }) => theme.colors.opposeRedRgb};
   display: flex;
@@ -144,7 +144,7 @@ const OpposeFollow = styled.div`
   }
 `;
 
-const Support = styled.div`
+const SupportButNotPartOfScore = styled.div`
   color: ${({ theme }) => theme.colors.supportGreenRgb};
   background: white;
   display: flex;
@@ -161,7 +161,7 @@ const Support = styled.div`
   margin-right: 6px;
 `;
 
-const Oppose = styled.div`
+const OpposeButNotPartOfScore = styled.div`
   color: ${({ theme }) => theme.colors.opposeRedRgb};
   background: white;
   display: flex;

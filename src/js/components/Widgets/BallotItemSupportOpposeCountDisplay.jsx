@@ -11,6 +11,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
+import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
@@ -65,6 +66,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     let ballotItemDisplayName = '';
     const { ballotItemWeVoteId } = this.props;
@@ -184,6 +186,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.candidateStoreListener.remove();
     this.issueStoreListener.remove();
     this.measureStoreListener.remove();
+    this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
   }
 
@@ -313,6 +316,11 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   onIssueStoreChange () {
+    // We want to re-render so issue data can update
+    this.onCachedPositionsOrIssueStoreChange();
+  }
+
+  onOrganizationStoreChange () {
     // We want to re-render so issue data can update
     this.onCachedPositionsOrIssueStoreChange();
   }
@@ -460,10 +468,11 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               <PopoverTitleText>About this Score</PopoverTitleText>
             </PopoverHeader>
             <PopoverBody>
-              This score is calculated from opinions in your personal network about
+              This score about
               {' '}
               <strong>{ballotItemDisplayName}</strong>
-              :
+              {' '}
+              is calculated from opinions in your personal network:
               <br />
               {positionSummaryList && (
                 <RenderedOrganizationsWrapper>
@@ -483,7 +492,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             <PopoverTitleText>About this Score</PopoverTitleText>
           </PopoverHeader>
           <PopoverBody>
-            This personal scoring of
+            This score about
             {' '}
             <strong>{ballotItemDisplayName}</strong>
             {' '}

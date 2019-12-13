@@ -9,6 +9,7 @@ import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueStore from '../../stores/IssueStore';
 import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctions';
 import PositionSummaryListForPopover from '../Widgets/PositionSummaryListForPopover';
+import ReadMore from '../Widgets/ReadMore';
 import StickyPopover from '../Ballot/StickyPopover';
 
 class ValueIconAndText extends Component {
@@ -107,8 +108,11 @@ class ValueIconAndText extends Component {
           </PopoverTitleText>
         </PopoverHeader>
         <PopoverDescriptionText>
-          {oneIssue.issue_description}
-          {organizationsUnderThisIssueCount && (
+          <ReadMore
+            text_to_display={oneIssue.issue_description}
+            num_of_lines={2}
+          />
+          {!!(organizationsUnderThisIssueCount) && (
             <>
               <OpinionsRelatedToText>
                 Opinions
@@ -143,6 +147,7 @@ class ValueIconAndText extends Component {
                 issueWeVoteId={oneIssue.issue_we_vote_id}
                 showFollowingButtonText
                 showIssueNameOnFollowButton
+                lightModeOn
               />
             </FollowIssueToggleContainer>
           )}
@@ -231,7 +236,7 @@ const OpinionsRelatedToText = styled.div`
 const PopoverHeader = styled.div`
   background: ${({ theme }) => theme.colors.brandBlue};
   padding: 4px 8px;
-  height: 35px;
+  min-height: 35px;
   color: white;
   display: flex;
   justify-content: flex-start;

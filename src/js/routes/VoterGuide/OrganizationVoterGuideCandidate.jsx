@@ -11,7 +11,6 @@ import LoadingWheel from '../../components/LoadingWheel';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import PositionList from '../../components/Ballot/PositionList';
-import SupportActions from '../../actions/SupportActions';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';

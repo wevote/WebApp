@@ -6,6 +6,11 @@ import OrganizationStore from '../stores/OrganizationStore';  // eslint-disable-
 import SupportStore from '../stores/SupportStore';  // eslint-disable-line import/no-cycle
 import { arrayContains, stringContains } from './textFormat';
 
+export function isOrganizationInVotersNetwork (organizationWeVoteId) {
+  // TODO Deal with voter Friends
+  return OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId) || IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(organizationWeVoteId);
+}
+
 export function extractFirstEndorsementFromPositionList (positionListAsArray, limitToYes, limitToNo) {
   let onePosition = {};
   let endorsementOrganization = '';
@@ -68,7 +73,7 @@ export function extractScoreFromNetworkFromPositionList (positionListAsArray) {
   for (let i = 0; i < positionListAsArray.length; i++) {
     onePosition = positionListAsArray[i];
     organizationWeVoteId = onePosition.speaker_we_vote_id;
-    organizationInVotersNetwork = OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId) || IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(organizationWeVoteId);
+    organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
     if (!organizationInVotersNetwork) {
       // Skip this position if the organization is not part of the organizations being followed
     } else if (onePosition.is_support_or_positive_rating) {
@@ -158,12 +163,7 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
       // console.log('getPositionSummaryListForBallotItem skipThisOrganization limitToThisIssue:', limitToThisIssue);
       skipThisOrganization = true;
     } else {
-      // TODO Deal with voter Friends
-      // if (limitToVoterNetwork) {
-      //   console.log('OrganizationStore.isVoterFollowingThisOrganization', OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId));
-      //   console.log('IssueStore.isOrganizationLinkedToIssueVoterIsFollowing', IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(organizationWeVoteId));
-      // }
-      organizationInVotersNetwork = OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId) || IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(organizationWeVoteId);
+      organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
       if (limitToVoterNetwork && !organizationInVotersNetwork) {
         // console.log('getPositionSummaryListForBallotItem skipThisOrganization limitToVoterNetwork');
         skipThisOrganization = true;

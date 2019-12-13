@@ -140,7 +140,7 @@ export default class PositionList extends Component {
         { showTitle ?
           <span>{this.props.positionListExistsTitle}</span> :
           null
-      }
+        }
         <FilterBase
           groupedFilters={groupedFilters}
           islandFilters={islandFilters}
@@ -160,7 +160,7 @@ export default class PositionList extends Component {
               params={this.props.params}
             />
           ))
-        }
+          }
         </ul>
       </div>
     );
