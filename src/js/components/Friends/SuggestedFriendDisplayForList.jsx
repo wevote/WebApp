@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import SuggestedFriendToggle from './SuggestedFriendToggle';
+import styled from 'styled-components';
+import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import ImageHandler from '../ImageHandler';
 import FriendActions from '../../actions/FriendActions';
-import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import SuggestedFriendToggle from './SuggestedFriendToggle';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
-export default class SuggestedFriendDisplayForList extends Component {
+class SuggestedFriendDisplayForList extends Component {
   static propTypes = {
     voter_we_vote_id: PropTypes.string,
     voter_photo_url_medium: PropTypes.string,
@@ -38,7 +41,6 @@ export default class SuggestedFriendDisplayForList extends Component {
   render () {
     renderLog('SuggestedFriendDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      voter_twitter_followers_count: voterTwitterFollowersCount,
       voter_we_vote_id: voterWeVoteId,
       voter_photo_url_medium: voterPhotoUrlMedium,
     } = this.props;
@@ -54,58 +56,187 @@ export default class SuggestedFriendDisplayForList extends Component {
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
 
     const suggestedFriendHtml = (
-      <div className="position-item card-child card-child--not-followed">
-        <div className="card-child__avatar">
+      <Wrapper previewMode={this.props.previewMode}>
+        <Avatar>
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">
               {voterImage}
             </Link>
           ) :
             <span>{voterImage}</span> }
-        </div>
-        <div className="card-child__media-object-content">
-          <div className="card-child__content">
-            { voterGuideLink ? (
+        </Avatar>
+        <Details>
+          { voterGuideLink ? (
+            <Name>
               <Link to={voterGuideLink} className="u-no-underline">
                 {voterDisplayNameFormatted}
               </Link>
-            ) : (
-              <span>
-                &nbsp;
-                {voterDisplayNameFormatted}
-              </span>
-            )}
-            { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
-          </div>
-          <div className="card-child__additional">
-            <div className="card-child__follow-buttons">
-              <span>
-              &nbsp;
-                <SuggestedFriendToggle otherVoterWeVoteId={voterWeVoteId} />
-              </span>
-            </div>
-            {voterTwitterFollowersCount ? (
-              <span className="twitter-followers__badge">
-                <span className="fab fa-twitter" />
-                {numberWithCommas(voterTwitterFollowersCount)}
-              </span>
-            ) : null
-            }
-          </div>
-        </div>
-      </div>
+            </Name>
+          ) : (
+            <Name>
+              {voterDisplayNameFormatted}
+            </Name>
+          )}
+          <Info>
+            Positions:
+            <strong>7</strong>
+          </Info>
+          <Info>
+            Mutual Friends:
+            <strong>23</strong>
+          </Info>
+          { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
+        </Details>
+        <ButtonWrapper>
+          <ButtonContainer>
+            <Button
+              fullWidth
+              variant="outlined"
+              color="primary"
+              onClick={() => this.handleIgnore(otherVoterWeVoteId)}
+              type="button"
+            >
+              {window.innerWidth > 620 ? 'Delete Request' : 'Delete'}
+            </Button>
+          </ButtonContainer>
+          <SuggestedFriendToggle otherVoterWeVoteId={voterWeVoteId} />
+        </ButtonWrapper>
+      </Wrapper>
     );
 
     if (this.props.previewMode) {
       return <span>{suggestedFriendHtml}</span>;
     } else {
       return (
-        <section className="card">
-          <div className="card-main">
-            {suggestedFriendHtml}
-          </div>
-        </section>
+        <div>
+          {suggestedFriendHtml}
+        </div>
       );
     }
   }
 }
+
+const Wrapper = styled.div`
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  flex-wrap: wrap;
+  @media(min-width: 360px) {
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    padding-left: 100px;
+  }
+  @media (min-width: 520px) {
+    height: 68px;
+    padding-left: 85px;
+  }
+`;
+
+const Avatar = styled.div`
+  width: 50%;
+  max-width: 120px;
+  margin: 0 auto;
+  & img {
+    width: 100%;
+  }
+  @media (min-width: 360px) {
+    height: 100% !important;
+    max-width: 100%;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    position: absolute !important;
+    left: 0;
+    top: 0;
+    & img {
+      height: 100%;
+      width: auto;
+      border-radius: 6px;
+      max-width: 68.8px;
+      max-height: 68.8px;
+    }
+  }
+`;
+
+const Details = styled.div`
+  width: 50%;
+  margin: 0 auto;
+  @media(min-width: 360px) {
+    width: fit-content;
+    margin: 0;
+  }
+`;
+
+const Name = styled.h3`
+  font-weight: bold;
+  color: black !important;
+  font-size: 26px;
+  margin-bottom: 4px;
+  text-align: center;
+  width: 100%;
+  @media(min-width: 360px) {
+    text-align: left;
+    font-size: 22px;
+    width: fit-content;
+  }
+`;
+
+const Info = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  @media (min-width: 360px){
+    display: block;
+    width: fit-content;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  margin: 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @media(min-width: 360px) {
+    margin: 0;
+    margin-left: auto;
+    width: fit-content;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  @media (min-width: 520px) {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  margin-right: 12px;
+  @media(min-width: 360px) {
+    width: fit-content;
+    margin: 0;
+    margin-bottom: 8px;
+  }
+  @media(min-width: 520px) {
+    margin: 0;
+    margin-right: 8px;
+  }
+`;
+
+const CancelButtonContainer = styled.div`
+  width: 100%;
+  margin-right: 12px;
+  @media(min-width: 520px) {
+    margin: 0;
+    margin-right: 8px;
+  }
+`;
+
+export default SuggestedFriendDisplayForList;

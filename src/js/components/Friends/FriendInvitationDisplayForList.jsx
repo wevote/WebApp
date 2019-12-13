@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
 import ImageHandler from '../ImageHandler';
 import FriendActions from '../../actions/FriendActions';
 import FriendInvitationToggle from './FriendInvitationToggle';
@@ -22,7 +21,6 @@ class FriendInvitationDisplayForList extends Component {
     voter_twitter_followers_count: PropTypes.number,
     voter_email_address: PropTypes.string,
     previewMode: PropTypes.bool,
-    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -71,7 +69,6 @@ class FriendInvitationDisplayForList extends Component {
       voter_twitter_handle: voterTwitterHandle,
       voter_we_vote_id: otherVoterWeVoteId,
       voter_photo_url_medium: voterPhotoUrlMedium,
-      classes,
     } = this.props;
 
     const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
@@ -144,7 +141,6 @@ class FriendInvitationDisplayForList extends Component {
                     color="primary"
                     onClick={() => this.handleIgnore(otherVoterWeVoteId)}
                     type="button"
-                    className={classes.deleteButton}
                   >
                     {window.innerWidth > 620 ? 'Delete Request' : 'Delete'}
                   </Button>
@@ -169,15 +165,6 @@ class FriendInvitationDisplayForList extends Component {
   }
 }
 
-const styles = () => ({
-  // buttonContainer: {
-  //   ['@media(min-width: 569px)']: {
-  //     height: '2px !important',
-  //   },
-  //   height: '40px !important',
-  // },
-});
-
 const Wrapper = styled.div`
   margin: 24px 0;
   display: flex;
@@ -200,12 +187,14 @@ const Wrapper = styled.div`
 
 const Avatar = styled.div`
   width: 50%;
+  max-width: 120px;
   margin: 0 auto;
   & img {
     width: 100%;
   }
   @media (min-width: 360px) {
     height: 100% !important;
+    max-width: 100%;
     min-height: 100% !important;
     max-height: 100% !important;
     position: absolute !important;
@@ -215,6 +204,8 @@ const Avatar = styled.div`
       height: 100%;
       width: auto;
       border-radius: 6px;
+      max-width: 68.8px;
+      max-height: 68.8px;
     }
   }
 `;
@@ -297,4 +288,4 @@ const CancelButtonContainer = styled.div`
   }
 `;
 
-export default withStyles(styles)(FriendInvitationDisplayForList);
+export default FriendInvitationDisplayForList;

@@ -152,12 +152,14 @@ const Wrapper = styled.div`
 
 const Avatar = styled.div`
   width: 50%;
+  max-width: 120px;
   margin: 0 auto;
   & img {
     width: 100%;
   }
   @media (min-width: 360px) {
     height: 100% !important;
+    max-width: 100%;
     min-height: 100% !important;
     max-height: 100% !important;
     position: absolute !important;
@@ -167,6 +169,8 @@ const Avatar = styled.div`
       height: 100%;
       width: auto;
       border-radius: 6px;
+      max-width: 68.8px;
+      max-height: 68.8px;
     }
   }
 `;
