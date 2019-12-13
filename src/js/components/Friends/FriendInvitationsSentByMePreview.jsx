@@ -56,7 +56,7 @@ export default class FriendInvitationsSentByMePreview extends Component {
                 invitationsSentByMe
                 previewMode
               />
-              <Link to="/friends/invitationsbyme">See All</Link>
+              <Link to="/friends/sent-requests">See All</Link>
             </div>
           </div>
         </section>

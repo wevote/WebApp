@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
 import { Link } from 'react-router';
+import { Button } from '@material-ui/core';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import ImageHandler from '../ImageHandler';
 import VoterStore from '../../stores/VoterStore';
@@ -19,6 +20,7 @@ export default class FriendInvitationEmailForList extends Component {
     voter_twitter_handle: PropTypes.string, // Comes friend data object from API server
     // voter_we_vote_id: PropTypes.string, // Comes friend data object from API server
     previewMode: PropTypes.bool,
+    voter_photo_url_medium: PropTypes.string,
   };
 
   constructor (props) {
@@ -49,7 +51,7 @@ export default class FriendInvitationEmailForList extends Component {
   render () {
     renderLog('FriendInvitationEmailForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      invitationsSentByMe, invitation_status: invitationState, voter_email_address: voterEmailAddress,
+      invitationsSentByMe, invitation_status: invitationState, voter_email_address: voterEmailAddress, voter_photo_url_medium: voterPhotoUrlMedium,
     } = this.props;
 
     const { voter } = this.state;
@@ -61,60 +63,188 @@ export default class FriendInvitationEmailForList extends Component {
     }
 
     const voterGuideLink = this.props.voter_twitter_handle ? `/${this.props.voter_twitter_handle}` : null;
-    const voterImage = <ImageHandler sizeClassName="image-lg " imageUrl="" kind_of_ballot_item="CANDIDATE" />;
-    const voterDisplayNameFormatted = <h4 className="card-child__display-name">{voterEmailAddress}</h4>;
+    const voterImage = <ImageHandler sizeClassName="image-lg " imageUrl={voterPhotoUrlMedium || 'https://wevote-images.s3.amazonaws.com/wv02voter171306/twitter_profile_image-20190619_1_48x48.png'} kind_of_ballot_item="CANDIDATE" />;
+    const voterDisplayNameFormatted = <span className="card-child__display-name">{voterEmailAddress}</span>;
 
     const friendInvitationHtml = (
-      <div className="position-item card-child card-child--not-followed">
-        <div className="card-child__avatar">
+      <Wrapper>
+        <Avatar>
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">
               {voterImage}
             </Link>
           ) :
-            <span>{voterImage}</span> }
-        </div>
-        <div className="card-child__media-object-content">
-          <div className="card-child__content">
-            { voterGuideLink ? (
+            <>{voterImage}</> }
+        </Avatar>
+        <Details>
+          { voterGuideLink ? (
+            <Name>
               <Link to={voterGuideLink} className="u-no-underline">
                 {voterDisplayNameFormatted}
               </Link>
-            ) :
-              <span>{voterDisplayNameFormatted}</span> }
-            { invitationsSentByMe ?
-              <span> has an open invitation from you.</span> :
-              <span> invited you.</span>}
-            <h5>
-              {invitationStateText}
-            </h5>
-          </div>
-          <div className="card-child__additional">
-            <div className="card-child__follow-buttons">
-              {invitationState === 'PENDING_EMAIL_VERIFICATION' && !voter.signed_in_with_email ? (
-                <Link to="/settings/account">
-                  <Button size="small" variant="warning">
-                  Verify Your Email
-                  </Button>
-                </Link>
-              ) : null
-              }
-            </div>
-          </div>
-        </div>
-      </div>
+            </Name>
+          ) : (
+            <Name>{voterDisplayNameFormatted}</Name>
+          )}
+          <Info>
+            Positions:
+            <strong>7</strong>
+          </Info>
+          <Info>
+            Mutual Friends:
+            <strong>23</strong>
+          </Info>
+          { invitationsSentByMe ? null :
+          <span> invited you.</span>}
+          <h5>
+            {invitationStateText}
+          </h5>
+        </Details>
+        <ButtonWrapper>
+          {invitationState === 'PENDING_EMAIL_VERIFICATION' && !voter.signed_in_with_email ? (
+            <Link to="/settings/account">
+              <Button variant="outlined" color="primary">
+                Verify Your Email
+              </Button>
+            </Link>
+          ) : null
+          }
+          <CancelButtonContainer>
+            <Button variant="outlined" color="primary" fullWidth>
+              Cancel
+            </Button>
+          </CancelButtonContainer>
+        </ButtonWrapper>
+      </Wrapper>
     );
 
     if (this.props.previewMode) {
       return <span>{friendInvitationHtml}</span>;
     } else {
       return (
-        <section className="card">
-          <div className="card-main">
-            {friendInvitationHtml}
-          </div>
-        </section>
+        <div>
+          {friendInvitationHtml}
+        </div>
       );
     }
   }
 }
+
+const Wrapper = styled.div`
+  margin: 24px 0 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  flex-wrap: wrap;
+  @media(min-width: 360px) {
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    padding-left: 100px;
+  }
+  @media (min-width: 520px) {
+    height: 68px;
+    padding-left: 85px;
+  }
+`;
+
+const Avatar = styled.div`
+  width: 50%;
+  margin: 0 auto;
+  & img {
+    width: 100%;
+  }
+  @media (min-width: 360px) {
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    position: absolute !important;
+    left: 0;
+    top: 0;
+    & img {
+      height: 100%;
+      width: auto;
+      border-radius: 6px;
+    }
+  }
+`;
+
+const Details = styled.div`
+  width: 50%;
+  margin: 0 auto;
+  @media(min-width: 360px) {
+    width: fit-content;
+    margin: 0;
+  }
+`;
+
+const Name = styled.h3`
+  font-weight: bold;
+  color: black !important;
+  font-size: 26px;
+  margin-bottom: 4px;
+  text-align: center;
+  width: 100%;
+  @media(min-width: 360px) {
+    text-align: left;
+    font-size: 22px;
+    width: fit-content;
+  }
+`;
+
+const Info = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  @media (min-width: 360px){
+    display: block;
+    width: fit-content;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  margin: 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @media(min-width: 360px) {
+    margin: 0;
+    margin-left: auto;
+    width: fit-content;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  @media (min-width: 520px) {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  margin-right: 12px;
+  @media(min-width: 360px) {
+    width: 100%;
+    margin: 0;
+    margin-bottom: 8px;
+  }
+  @media(min-width: 520px) {
+    margin: 0;
+    margin-right: 8px;
+  }
+`;
+
+const CancelButtonContainer = styled.div`
+  width: 100%;
+  margin-right: 12px;
+  @media(min-width: 520px) {
+    margin: 0;
+    margin-right: 8px;
+  }
+`;
