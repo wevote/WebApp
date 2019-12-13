@@ -86,7 +86,7 @@ class FriendInvitationDisplayForList extends Component {
     // console.log("FriendInvitationDisplayForList, otherVoterWeVoteId:", otherVoterWeVoteId);
 
     const friendInvitationHtml = (
-      <Wrapper>
+      <Wrapper previewMode={this.props.previewMode}>
         <Avatar>
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">
@@ -179,7 +179,7 @@ const styles = () => ({
 });
 
 const Wrapper = styled.div`
-  margin: 24px 0 32px;
+  margin: 24px 0;
   display: flex;
   flex-direction: column;
   align-items: center;

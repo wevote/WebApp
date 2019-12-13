@@ -67,7 +67,7 @@ export default class FriendInvitationEmailForList extends Component {
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterEmailAddress}</span>;
 
     const friendInvitationHtml = (
-      <Wrapper>
+      <Wrapper previewMode={this.props.previewMode}>
         <Avatar>
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">
@@ -131,7 +131,7 @@ export default class FriendInvitationEmailForList extends Component {
 }
 
 const Wrapper = styled.div`
-  margin: 24px 0 32px;
+  margin: 24px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
