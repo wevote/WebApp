@@ -12,7 +12,6 @@ import MeasureStore from '../../stores/MeasureStore';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import PositionList from '../../components/Ballot/PositionList';
-import SupportActions from '../../actions/SupportActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import AppStore from '../../stores/AppStore';

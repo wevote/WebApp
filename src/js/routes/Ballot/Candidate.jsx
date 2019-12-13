@@ -19,7 +19,6 @@ import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import PositionList from '../../components/Ballot/PositionList';
-import SupportActions from '../../actions/SupportActions';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';

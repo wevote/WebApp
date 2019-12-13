@@ -5,9 +5,10 @@ import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueStore from '../../stores/IssueStore';
+import ReadMore from '../Widgets/ReadMore';
 import { renderLog } from '../../utils/logging';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 import StickyPopover from '../Ballot/StickyPopover';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByOrganizationDisplayList extends Component {
@@ -111,7 +112,10 @@ class IssuesByOrganizationDisplayList extends Component {
           </PopoverTitleText>
         </PopoverHeader>
         <PopoverDescriptionText>
-          {oneIssue.issue_description}
+          <ReadMore
+            text_to_display={oneIssue.issue_description}
+            num_of_lines={2}
+          />
           {oneIssue.issue_we_vote_id && (
             <FollowIssueToggleContainer>
               <IssueFollowToggleButton
@@ -119,6 +123,7 @@ class IssuesByOrganizationDisplayList extends Component {
                 issueName={oneIssue.issue_name}
                 issueWeVoteId={oneIssue.issue_we_vote_id}
                 showFollowingButtonText
+                lightModeOn
               />
             </FollowIssueToggleContainer>
           )}

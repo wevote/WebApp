@@ -22,6 +22,7 @@ export default class IssueFollowToggleButton extends Component {
     showFollowingButtonText: PropTypes.bool,
     showIssueNameOnFollowButton: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
+    lightModeOn: PropTypes.bool,
   };
 
   constructor (props) {
@@ -133,7 +134,7 @@ export default class IssueFollowToggleButton extends Component {
       // console.log('error');
       return <div>{this.state.errorInfo}</div>;
     }
-    const { issueName, showFollowingButtonText, showIssueNameOnFollowButton } = this.props;
+    const { issueName, showFollowingButtonText, showIssueNameOnFollowButton, lightModeOn } = this.props;
     const { isFollowing } = this.state;
     let followButtonText = 'Follow';
     if (showIssueNameOnFollowButton) {
@@ -182,7 +183,7 @@ export default class IssueFollowToggleButton extends Component {
         ) : (
           <Button
             type="button"
-            className="issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--blue"
+            className={`issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius${lightModeOn ? '' : ' issues-follow-btn--blue'}`}
             onClick={this.onIssueFollow}
           >
             {followButtonText}

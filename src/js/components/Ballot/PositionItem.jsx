@@ -7,14 +7,18 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ReactSVG from 'react-svg';
 import ImageHandler from '../ImageHandler';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
+import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
+import OrganizationStore from '../../stores/OrganizationStore';
+import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
 import ReadMore from '../Widgets/ReadMore';
 import FollowToggle from '../Widgets/FollowToggle';
 import StickyPopover from './StickyPopover';
 import { cordovaDot } from '../../utils/cordovaUtils';
+import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 
 class PositionItem extends Component {
   static propTypes = {
@@ -27,10 +31,13 @@ class PositionItem extends Component {
     super(props);
     this.state = {
       componentDidMount: false,
+      organizationInVotersNetwork: false,
     };
   }
 
   componentDidMount () {
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.setState({
       componentDidMount: true,
     });
@@ -43,6 +50,10 @@ class PositionItem extends Component {
     }
     if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
       // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName', nextProps.ballotItemDisplayName);
+      return true;
+    }
+    if (this.state.organizationInVotersNetwork !== nextState.organizationInVotersNetwork) {
+      // console.log('this.state.organizationInVotersNetwork: ', this.state.organizationInVotersNetwork, ', nextState.organizationInVotersNetwork', nextState.organizationInVotersNetwork);
       return true;
     }
     const { position: priorPosition } = this.props;
@@ -90,11 +101,43 @@ class PositionItem extends Component {
     return false;
   }
 
+  componentWillUnmount () {
+    this.issueStoreListener.remove();
+    this.organizationStoreListener.remove();
+  }
+
+  onIssueStoreChange () {
+    // We want to re-render so issue data can update
+    this.onOrganizationInVotersNetworkChange();
+  }
+
+  onOrganizationStoreChange () {
+    // We want to re-render so issue data can update
+    this.onOrganizationInVotersNetworkChange();
+  }
+
+  onOrganizationInVotersNetworkChange () {
+    const { position } = this.props;
+    if (position) {
+      const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
+      const organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
+      this.setState({
+        organizationInVotersNetwork,
+      });
+    }
+  }
+
   render () {
     renderLog('PositionItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { position } = this.props;
+    if (!position) {
+      return null;
+    }
+    const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
+    const { organizationInVotersNetwork } = this.state;
+
     // TwitterHandle-based link
-    const voterGuideWeVoteIdLink = position.organization_we_vote_id ? `/voterguide/${position.organization_we_vote_id}` : `/voterguide/${position.speaker_we_vote_id}`;
+    const voterGuideWeVoteIdLink = `/voterguide/${organizationWeVoteId}`;
     let speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
     let backToCandidateFound = false;
     let backToMeasureFound = false;
@@ -129,17 +172,17 @@ class PositionItem extends Component {
     }
 
     // console.log(position);
-    let supportOpposeInfo = 'info';
+    let supportOpposeInfo = 'InfoButNotPartOfScore';
     if (position.is_information_only) {
-      supportOpposeInfo = 'info';
-    } else if (position.followed && position.is_support) {
-      supportOpposeInfo = 'supportFollow';
-    } else if (!position.followed && position.is_support) {
-      supportOpposeInfo = 'support';
-    } else if (position.followed && position.is_oppose) {
-      supportOpposeInfo = 'opposeFollow';
+      supportOpposeInfo = 'InfoButNotPartOfScore';
+    } else if (organizationInVotersNetwork && position.is_support) {
+      supportOpposeInfo = 'SupportAndPartOfScore';
+    } else if (!organizationInVotersNetwork && position.is_support) {
+      supportOpposeInfo = 'SupportButNotPartOfScore';
+    } else if (organizationInVotersNetwork && position.is_oppose) {
+      supportOpposeInfo = 'OpposeAndPartOfScore';
     } else if (!position.support) {
-      supportOpposeInfo = 'oppose';
+      supportOpposeInfo = 'OpposeButNotPartOfScore';
     }
 
     // console.log('PositionItem supportOpposeInfo: ', supportOpposeInfo);
@@ -152,7 +195,6 @@ class PositionItem extends Component {
 
     const showPosition = true;
     const nothingToDisplay = null;
-    const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
 
     if (showPosition) {
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
@@ -162,6 +204,12 @@ class PositionItem extends Component {
           moreInfoUrl = `http://${moreInfoUrl}`;
         }
       }
+      const positionsPopover = (
+        <PositionItemScorePopover
+          positionItem={position}
+        />
+      );
+
       return (
         <>
           <div className="u-show-desktop-tablet">
@@ -214,35 +262,45 @@ class PositionItem extends Component {
                     </DesktopItemIssues>
                   </DesktopItemNameIssueContainer>
                   <DesktopItemEndorsementDisplay>
-                    {supportOpposeInfo === 'supportFollow' ? (
-                      <SupportFollow>
-                        +1
-                      </SupportFollow>
-                    ) : (
-                      <span>
-                        {supportOpposeInfo === 'opposeFollow' ? (
-                          <OpposeFollow>
-                            -1
-                          </OpposeFollow>
-                        ) : (
-                          <span>
-                            {supportOpposeInfo === 'support' ? (
-                              <Support>
-                                <ThumbUpIcon />
-                              </Support>
-                            ) : (
-                              <span>
-                                {supportOpposeInfo === 'oppose' && (
-                                  <Oppose>
-                                    <ThumbDownIcon />
-                                  </Oppose>
-                                )}
-                              </span>
-                            )}
-                          </span>
-                        )}
-                      </span>
-                    )}
+                    <StickyPopover
+                      delay={{ show: 1000000, hide: 100 }}
+                      popoverComponent={positionsPopover}
+                      placement="auto"
+                      id="position-item-score-desktop-popover-trigger-click-root-close"
+                      key={`positionItemScoreDesktopPopover-${organizationWeVoteId}`}
+                      openOnClick
+                      showCloseIcon
+                    >
+                      {supportOpposeInfo === 'SupportAndPartOfScore' ? (
+                        <SupportAndPartOfScore>
+                          +1
+                        </SupportAndPartOfScore>
+                      ) : (
+                        <span>
+                          {supportOpposeInfo === 'OpposeAndPartOfScore' ? (
+                            <OpposeAndPartOfScore>
+                              -1
+                            </OpposeAndPartOfScore>
+                          ) : (
+                            <span>
+                              {supportOpposeInfo === 'SupportButNotPartOfScore' ? (
+                                <SupportButNotPartOfScore>
+                                  <ThumbUpIcon />
+                                </SupportButNotPartOfScore>
+                              ) : (
+                                <span>
+                                  {supportOpposeInfo === 'OpposeButNotPartOfScore' && (
+                                    <OpposeButNotPartOfScore>
+                                      <ThumbDownIcon />
+                                    </OpposeButNotPartOfScore>
+                                  )}
+                                </span>
+                              )}
+                            </span>
+                          )}
+                        </span>
+                      )}
+                    </StickyPopover>
                   </DesktopItemEndorsementDisplay>
                 </DesktopItemHeader>
                 <DesktopItemBody>
@@ -317,37 +375,45 @@ class PositionItem extends Component {
                 </MobileSmallItemNameContainer>
                 <MobileItemEndorsementContainer>
                   <MobileItemEndorsementDisplay>
-                    {supportOpposeInfo === 'supportFollow' ? (
-                      <SupportFollow>
-                        +1
-                      </SupportFollow>
-                    ) : (
-                      <span>
-                        {supportOpposeInfo === 'opposeFollow' ? (
-                          <OpposeFollow>
-                            -1
-                          </OpposeFollow>
-                        ) : (
-                          <span>
-                            {supportOpposeInfo === 'support' ? (
-                              <Support>
-                                <ThumbUpIcon />
-                              </Support>
-                            ) : (
-                              <span>
-                                {supportOpposeInfo === 'oppose' ? (
-                                  <Oppose>
-                                    <ThumbDownIcon />
-                                  </Oppose>
-                                ) : (
-                                  null
-                                )}
-                              </span>
-                            )}
-                          </span>
-                        )}
-                      </span>
-                    )}
+                    <StickyPopover
+                      delay={{ show: 1000000, hide: 100 }}
+                      popoverComponent={positionsPopover}
+                      placement="auto"
+                      id="position-item-score-mobile-popover-trigger-click-root-close"
+                      key={`positionItemScoreMobilePopover-${organizationWeVoteId}`}
+                      openOnClick
+                      showCloseIcon
+                    >
+                      {supportOpposeInfo === 'SupportAndPartOfScore' ? (
+                        <SupportAndPartOfScore>
+                          +1
+                        </SupportAndPartOfScore>
+                      ) : (
+                        <span>
+                          {supportOpposeInfo === 'OpposeAndPartOfScore' ? (
+                            <OpposeAndPartOfScore>
+                              -1
+                            </OpposeAndPartOfScore>
+                          ) : (
+                            <span>
+                              {supportOpposeInfo === 'SupportButNotPartOfScore' ? (
+                                <SupportButNotPartOfScore>
+                                  <ThumbUpIcon />
+                                </SupportButNotPartOfScore>
+                              ) : (
+                                <span>
+                                  {supportOpposeInfo === 'OpposeButNotPartOfScore' && (
+                                    <OpposeButNotPartOfScore>
+                                      <ThumbDownIcon />
+                                    </OpposeButNotPartOfScore>
+                                  )}
+                                </span>
+                              )}
+                            </span>
+                          )}
+                        </span>
+                      )}
+                    </StickyPopover>
                   </MobileItemEndorsementDisplay>
                 </MobileItemEndorsementContainer>
               </MobileItemHeader>
@@ -596,7 +662,7 @@ const DesktopItemFooter = styled.div`
   margin-top: 2px;
 `;
 
-const SupportFollow = styled.div`
+const SupportAndPartOfScore = styled.div`
   color: white;
   background: ${({ theme }) => theme.colors.supportGreenRgb};
   display: flex;
@@ -613,7 +679,7 @@ const SupportFollow = styled.div`
   }
 `;
 
-const OpposeFollow = styled.div`
+const OpposeAndPartOfScore = styled.div`
   color: white;
   background: ${({ theme }) => theme.colors.opposeRedRgb};
   display: flex;
@@ -630,7 +696,7 @@ const OpposeFollow = styled.div`
   }
 `;
 
-const Support = styled.div`
+const SupportButNotPartOfScore = styled.div`
   color: ${({ theme }) => theme.colors.supportGreenRgb};
   background: white;
   display: flex;
@@ -645,7 +711,7 @@ const Support = styled.div`
   font-weight: bold;
 `;
 
-const Oppose = styled.div`
+const OpposeButNotPartOfScore = styled.div`
   color: ${({ theme }) => theme.colors.opposeRedRgb};
   background: white;
   display: flex;

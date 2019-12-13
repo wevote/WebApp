@@ -201,11 +201,10 @@ class OfficeItemCompressed extends Component {
                 candidateLength={candidatesToRender.length}
                 id={`officeItemCompressedCandidateInfo-${oneCandidate.we_vote_id}`}
                 key={`candidate_preview-${oneCandidate.we_vote_id}`}
-                onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
               >
                 <CandidateTopRow>
-                  {/* Candidate Image */}
-                  <Candidate>
+                  <Candidate onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
+                    {/* Candidate Image */}
                     <ImageHandler
                       className="card-main__avatar-compressed"
                       sizeClassName="icon-candidate-small u-push--sm "
@@ -225,29 +224,32 @@ class OfficeItemCompressed extends Component {
                   {/* Show check mark or score */}
                   <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
                 </CandidateTopRow>
-                <div className="u-stack--md">
+                <CandidateBottomRow>
                   {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
                   <TopCommentByBallotItem
                     ballotItemWeVoteId={oneCandidate.we_vote_id}
                     // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
+                    onClickFunction={this.goToCandidateLink}
                   >
                     <span>
                       <IssuesByBallotItemDisplayList
+                        ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                         ballotItemWeVoteId={oneCandidate.we_vote_id}
                         disableMoreWrapper
                       />
-                      <Button
-                        id={`topCommentButton-${externalUniqueId}-${localUniqueId}`}
-                        variant="outlined"
-                        color="primary"
-                        className="u-float-right"
-                        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-                      >
-                        More
-                      </Button>
+                      <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
+                        <Button
+                          id={`topCommentButton-${externalUniqueId}-${localUniqueId}`}
+                          variant="outlined"
+                          color="primary"
+                          classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                        >
+                          More
+                        </Button>
+                      </MoreButtonWrapper>
                     </span>
                   </TopCommentByBallotItem>
-                </div>
+                </CandidateBottomRow>
               </CandidateInfo>
             );
           })}
@@ -319,79 +321,6 @@ class OfficeItemCompressed extends Component {
           largestIssueScore = voterIssuesScoreForCandidate;
         }
       });
-      // Candidate chosen by issue score
-      // if (atLeastOneCandidateChosenByIssueScore) {
-      //   // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
-      //   const organizationNameIssueSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(candidateWeVoteIdWithHighestIssueScore);
-      //   const organizationNameIssueSupportListDisplay =
-      //     organizationNameIssueSupportList.map(organizationName => (
-      //       <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-      //         <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')} width="20" height="20" />
-      //         <span>&nbsp;</span>
-      //         <span>
-      //           {organizationName}
-      //           {' '}
-      //           <strong>+1</strong>
-      //         </span>
-      //       </span>
-      //     ));
-      //   const organizationNameIssueOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(candidateWeVoteIdWithHighestIssueScore);
-      //   const organizationNameIssueOpposeListDisplay =
-      //     organizationNameIssueOpposeList.map(organizationName => (
-      //       <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-      //         <img src={cordovaDot('/img/global/svg-icons/thumbs-down-color-icon.svg')} width="20" height="20" />
-      //         <span>&nbsp;</span>
-      //         <span>
-      //           {organizationName}
-      //           <strong>-1</strong>
-      //         </span>
-      //       </span>
-      //     ));
-      //   advisersThatMakeVoterIssuesScoreDisplay = (
-      //     <span>
-      //       { organizationNameIssueSupportList.length ? <span>{organizationNameIssueSupportListDisplay}</span> : null}
-      //       { organizationNameIssueOpposeList.length ? <span>{organizationNameIssueOpposeListDisplay}</span> : null}
-      //     </span>
-      //   );
-      //   advisersThatMakeVoterIssuesScoreCount = organizationNameIssueSupportList.length + organizationNameIssueOpposeList.length;
-      // }
-
-      // if (candidateWeVoteWithMostSupportFromNetwork) {
-      //   // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
-      //   const nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(candidateWeVoteWithMostSupportFromNetwork);
-      //   const nameNetworkSupportListDisplay =
-      //     nameNetworkSupportList.map(speakerDisplayName => (
-      //       <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-      //         <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')} width="20" height="20" alt="thumbs up" />
-      //         <span>&nbsp;</span>
-      //         <span>
-      //           {speakerDisplayName}
-      //           {' '}
-      //           <strong>+1</strong>
-      //         </span>
-      //       </span>
-      //     ));
-      //   const nameNetworkOpposeList = SupportStore.getNameOpposeListUnderThisBallotItem(candidateWeVoteWithMostSupportFromNetwork);
-      //   const nameNetworkOpposeListDisplay =
-      //     nameNetworkOpposeList.map(speakerDisplayName => (
-      //       <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-      //         <img src={cordovaDot('/img/global/svg-icons/thumbs-down-color-icon.svg')} width="20" height="20" alt="thumbs down" />
-      //         <span>&nbsp;</span>
-      //         <span>
-      //           {speakerDisplayName}
-      //           {' '}
-      //           <strong>-1</strong>
-      //         </span>
-      //       </span>
-      //     ));
-      //   advisersThatMakeVoterNetworkScoreDisplay = (
-      //     <span>
-      //       { nameNetworkSupportList.length ? <span>{nameNetworkSupportListDisplay}</span> : null}
-      //       { nameNetworkOpposeList.length ? <span>{nameNetworkOpposeListDisplay}</span> : null}
-      //     </span>
-      //   );
-      //   advisersThatMakeVoterNetworkScoreCount = nameNetworkSupportList.length + nameNetworkOpposeList.length;
-      // }
     }
 
     return (
@@ -427,8 +356,8 @@ class OfficeItemCompressed extends Component {
 
 const styles = theme => ({
   buttonRoot: {
-    padding: 4,
     fontSize: 12,
+    padding: 4,
     width: 60,
     height: 30,
     [theme.breakpoints.down('md')]: {
@@ -460,26 +389,6 @@ const styles = theme => ({
   },
 });
 
-const Container = styled.div`
-  display: flex;
-  flex-flow: ${({ candidateLength }) => (candidateLength > 2 ? 'row wrap' : 'row')};
-  justify-content: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex-flow: row wrap;
-  }
-`;
-
-const Title = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 12px;
-  cursor: pointer;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: 16px;
-    margin-bottom: 8px;
-  }
-`;
-
 const CandidateInfo = styled.div`
   display: flex;
   flex-flow: column;
@@ -491,7 +400,6 @@ const CandidateInfo = styled.div`
   width: ${({ candidateLength }) => (candidateLength > 1 ? '48%' : '100%')};
   margin-right: 8px;
   border-radius: 4px;
-  cursor: pointer;
   &:hover {
     border: 1px solid ${({ theme }) => theme.colors.linkHoverBorder};
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
@@ -515,15 +423,48 @@ const CandidateInfo = styled.div`
   }
 `;
 
+const Candidate = styled.div`
+  display: flex;
+  flex-grow: 8;
+`;
+
 const CandidateTopRow = styled.div`
+  cursor: pointer;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
 `;
 
-const Candidate = styled.div`
+const CandidateBottomRow = styled.div`
+  padding-bottom: 10px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-flow: ${({ candidateLength }) => (candidateLength > 2 ? 'row wrap' : 'row')};
+  justify-content: center;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex-flow: row wrap;
+  }
+`;
+
+const MoreButtonWrapper = styled.div`
   display: flex;
   cursor: pointer;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+`;
+
+const Title = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  cursor: pointer;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
 `;
 
 export default withTheme(withStyles(styles)(OfficeItemCompressed));

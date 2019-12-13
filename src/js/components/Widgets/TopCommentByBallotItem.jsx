@@ -23,6 +23,7 @@ class TopCommentByBallotItem extends Component {
     learnMoreUrl: PropTypes.string,
     limitToNo: PropTypes.bool,
     limitToYes: PropTypes.bool,
+    onClickFunction: PropTypes.func,
   };
 
   constructor (props) {
@@ -186,47 +187,12 @@ class TopCommentByBallotItem extends Component {
     this.onMeasureStoreChange();
   }
 
-  // getOrganizationsWithPositions = () => this.state.organizationsToFollow.map((organization) => {
-  //   let organizationPositionForThisBallotItem;
-  //   if (stringContains('cand', this.state.ballotItemWeVoteId)) {
-  //     organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
-  //     // console.log({ ...organizationPositionForThisBallotItem, ...organization });
-  //   } else if (stringContains('meas', this.state.ballotItemWeVoteId)) {
-  //     organizationPositionForThisBallotItem = MeasureStore.getPositionAboutMeasureFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
-  //   }
-  //   return { ...organizationPositionForThisBallotItem, ...organization };
-  // });
-  //
-  // sortOrganizations (organizationsList, ballotItemWeVoteId) {
-  //   // console.log('sortOrganizations: ', organizationsList, 'ballotItemWeVoteId: ', ballotItemWeVoteId);
-  //   if (organizationsList && ballotItemWeVoteId) {
-  //     // console.log('Checking for resort');
-  //     const arrayLength = organizationsList.length;
-  //     let organization;
-  //     let organizationPositionForThisBallotItem;
-  //     const sortedOrganizations = [];
-  //     for (let i = 0; i < arrayLength; i++) {
-  //       organization = organizationsList[i];
-  //       organizationPositionForThisBallotItem = null;
-  //       if (ballotItemWeVoteId && organization.organization_we_vote_id) {
-  //         if (stringContains('cand', ballotItemWeVoteId)) {
-  //           organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(ballotItemWeVoteId, organization.organization_we_vote_id);
-  //         } else if (stringContains('meas', ballotItemWeVoteId)) {
-  //           organizationPositionForThisBallotItem = MeasureStore.getPositionAboutMeasureFromOrganization(ballotItemWeVoteId, organization.organization_we_vote_id);
-  //         }
-  //       }
-  //       if (organizationPositionForThisBallotItem && organizationPositionForThisBallotItem.statement_text) {
-  //         // console.log('sortOrganizations unshift');
-  //         sortedOrganizations.unshift(organization);
-  //       } else {
-  //         // console.log('sortOrganizations push');
-  //         sortedOrganizations.push(organization);
-  //       }
-  //     }
-  //     return sortedOrganizations;
-  //   }
-  //   return organizationsList;
-  // }
+  onClickFunction = () => {
+    const { ballotItemWeVoteId } = this.props;
+    if (this.props.onClickFunction && ballotItemWeVoteId) {
+      this.props.onClickFunction(ballotItemWeVoteId);
+    }
+  }
 
   render () {
     renderLog('TopCommentByBallotItem');  // Set LOG_RENDER_EVENTS to log all renders
@@ -245,7 +211,7 @@ class TopCommentByBallotItem extends Component {
     // console.log('GuideList organizationsToFollow: ', this.state.organizationsToFollow);
     //       on_click={this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
     return (
-      <Wrapper>
+      <Wrapper onClick={() => this.onClickFunction()}>
         <BallotItemEndorserName>
           {endorsementOrganization}
           .
@@ -316,7 +282,8 @@ const styles = theme => ({
   },
 });
 
-const Wrapper = styled.span`
+const Wrapper = styled.div`
+  cursor: pointer;
   font-size: 14px;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 16px;
