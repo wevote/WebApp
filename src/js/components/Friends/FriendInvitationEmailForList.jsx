@@ -226,20 +226,6 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const ButtonContainer = styled.div`
-  width: 100%;
-  margin-right: 12px;
-  @media(min-width: 360px) {
-    width: 100%;
-    margin: 0;
-    margin-bottom: 8px;
-  }
-  @media(min-width: 520px) {
-    margin: 0;
-    margin-right: 8px;
-  }
-`;
-
 const CancelButtonContainer = styled.div`
   width: 100%;
   margin-right: 12px;

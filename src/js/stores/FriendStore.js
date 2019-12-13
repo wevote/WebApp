@@ -92,7 +92,7 @@ class FriendStore extends ReduceStore {
       case 'friendInviteResponse':
         if (!action.res.success) {
           // There was a problem
-          FriendActions.friendInvitationsSentToMe();
+          // FriendActions.friendInvitationsSentToMe();
           // console.log("FriendStore friendInviteResponse incoming data NO SUCCESS, action.res:", action.res);
           return {
             ...state,
@@ -106,7 +106,7 @@ class FriendStore extends ReduceStore {
             currentFriends: assign({}, state.currentFriends, { [action.res.voter_we_vote_id]: action.res.friend_voter }),
           };
         } else if (action.res.kind_of_invite_response === 'IGNORE_INVITATION') {
-          FriendActions.friendInvitationsSentToMe();
+          // FriendActions.friendInvitationsSentToMe();
           // console.log("FriendStore friendInviteResponse incoming data IGNORE_INVITATION, action.res:", action.res);
           return {
             ...state,
