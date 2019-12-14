@@ -43,6 +43,10 @@ import { formatVoterBallotList, checkShouldUpdate } from './utils';
 import AppActions from '../../actions/AppActions';
 import BallotSummaryFooter from '../../components/Navigation/BallotSummaryFooter';
 
+const TYPES = require('keymirror')({
+  OFFICE: null,
+  MEASURE: null,
+});
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
 const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
@@ -1023,18 +1027,20 @@ class Ballot extends Component {
                           raceLevelFilterType === item.race_office_level)) {
                           // console.log('Ballot item for BallotItemCompressed:', item);
                           // {...item}
+                          const key = item.we_vote_id + ballotWithItemsFromCompletionFilterType.length + ballotWithItemsFromCompletionFilterType.length;
                           return (
                             <BallotItemCompressed
-                              currentBallotIdInUrl={this.props.location.hash.slice(1)}
-                              key={item.we_vote_id}
-                              updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
-                              allBallotItemsCount={ballotWithItemsFromCompletionFilterType.length}
-                              urlWithoutHash={this.props.location.pathname + this.props.location.search}
-                              ref={(ref) => { this.ballotItems[item.we_vote_id] = ref; }}
-                              ballot_item_display_name={item.ballot_item_display_name}
-                              candidate_list={item.candidate_list}
-                              kind_of_ballot_item={item.kind_of_ballot_item}
-                              we_vote_id={item.we_vote_id}
+                              // currentBallotIdInUrl={this.props.location.hash.slice(1)}
+                              key={key}
+                              isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
+                              // updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
+                              // allBallotItemsCount={ballotWithItemsFromCompletionFilterType.length}
+                              // urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                              // ref={(ref) => { this.ballotItems[item.we_vote_id] = ref; }}  There is something like this in BallotItemCompressed, but it is broken
+                              ballotItemDisplayName={item.ballot_item_display_name}
+                              candidateList={item.candidate_list}
+                              // kind_of_ballot_item={item.kind_of_ballot_item}
+                              weVoteId={item.we_vote_id}
                             />
                           );
                         } else {
