@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import SuggestedFriendToggle from './SuggestedFriendToggle';
 import ImageHandler from '../ImageHandler';
-import FriendActions from '../../actions/FriendActions';
+// import FriendActions from '../../actions/FriendActions';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
@@ -19,21 +19,21 @@ export default class SuggestedFriendDisplayForList extends Component {
     previewMode: PropTypes.bool,
   };
 
-  deleteFriendInviteEmail (voterEmailAddress) {
-    // TODO DALE We have a problem with how we are deleting friend invitations.
-    // It has to do with retrieve_friend_invitations_sent_by_me on the API server
-    // console.log("deleteFriendInviteEmail");
-    FriendActions.deleteFriendInviteEmail(voterEmailAddress);
-  }
+  // deleteFriendInviteEmail (voterEmailAddress) {
+  //   // TODO DALE We have a problem with how we are deleting friend invitations.
+  //   // It has to do with retrieve_friend_invitations_sent_by_me on the API server
+  //   // console.log("deleteFriendInviteEmail");
+  //   FriendActions.deleteFriendInviteEmail(voterEmailAddress);
+  // }
 
-  deleteFriendInviteVoter (otherVoterWeVoteId) {
-    // console.log("deleteFriendInviteVoter");
-    FriendActions.deleteFriendInviteVoter(otherVoterWeVoteId);
-  }
+  // deleteFriendInviteVoter (otherVoterWeVoteId) {
+  //   // console.log("deleteFriendInviteVoter");
+  //   FriendActions.deleteFriendInviteVoter(otherVoterWeVoteId);
+  // }
 
-  ignoreSuggestedFriend (voterWeVoteId) {
-    FriendActions.ignoreSuggestedFriend(voterWeVoteId);
-  }
+  // ignoreSuggestedFriend (voterWeVoteId) {
+  //   FriendActions.ignoreSuggestedFriend(voterWeVoteId);
+  // }
 
   render () {
     renderLog('SuggestedFriendDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
@@ -57,7 +57,7 @@ export default class SuggestedFriendDisplayForList extends Component {
       <div className="position-item card-child card-child--not-followed">
         <div className="card-child__avatar">
           { voterGuideLink ? (
-            <Link to={voterGuideLink} className="u-no-underline">
+            <Link to={voterGuideLink} className="u-no-underline" onlyActiveOnIndex>
               {voterImage}
             </Link>
           ) :
@@ -66,7 +66,7 @@ export default class SuggestedFriendDisplayForList extends Component {
         <div className="card-child__media-object-content">
           <div className="card-child__content">
             { voterGuideLink ? (
-              <Link to={voterGuideLink} className="u-no-underline">
+              <Link to={voterGuideLink} className="u-no-underline" onlyActiveOnIndex>
                 {voterDisplayNameFormatted}
               </Link>
             ) : (

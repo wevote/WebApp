@@ -23,8 +23,8 @@ export default class FriendsOnlyIndicator extends Component {
       isFriendsOnly = true;
     }
 
-    let labelText = '';
-    let visibilityIcon = '';
+    let labelText;
+    let visibilityIcon;
     if (isFriendsOnly) {
       labelText = 'This position is only visible to We Vote friends.';
       visibilityIcon = <img src={cordovaDot(groupIcon)} width="18" height="18" color="#999" alt="Visible to Friends Only" />;

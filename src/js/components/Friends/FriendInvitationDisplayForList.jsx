@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+// import { withStyles } from '@material-ui/core/styles';
 import ImageHandler from '../ImageHandler';
 import FriendActions from '../../actions/FriendActions';
 import FriendInvitationToggle from './FriendInvitationToggle';
@@ -19,7 +19,7 @@ class FriendInvitationDisplayForList extends Component {
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
     voter_twitter_description: PropTypes.string,
-    voter_twitter_followers_count: PropTypes.number,
+    // voter_twitter_followers_count: PropTypes.number,
     voter_email_address: PropTypes.string,
     previewMode: PropTypes.bool,
     classes: PropTypes.object,
@@ -169,14 +169,14 @@ class FriendInvitationDisplayForList extends Component {
   }
 }
 
-const styles = () => ({
-  // buttonContainer: {
-  //   ['@media(min-width: 569px)']: {
-  //     height: '2px !important',
-  //   },
-  //   height: '40px !important',
-  // },
-});
+// const styles = () => ({
+// buttonContainer: {
+//   ['@media(min-width: 569px)']: {
+//     height: '2px !important',
+//   },
+//   height: '40px !important',
+// },
+// });
 
 const Wrapper = styled.div`
   margin: 24px 0 32px;
@@ -285,7 +285,7 @@ const ButtonContainer = styled.div`
   @media(min-width: 520px) {
     margin: 0;
     margin-right: 8px;
-  }
+
 `;
 
 const CancelButtonContainer = styled.div`
@@ -297,4 +297,4 @@ const CancelButtonContainer = styled.div`
   }
 `;
 
-export default withStyles(styles)(FriendInvitationDisplayForList);
+export default /* withStyles(styles) */(FriendInvitationDisplayForList);
