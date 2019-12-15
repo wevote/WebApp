@@ -18,7 +18,7 @@ class FriendInvitationDisplayForList extends Component {
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
     voter_twitter_description: PropTypes.string,
-    voter_twitter_followers_count: PropTypes.number,
+    // voter_twitter_followers_count: PropTypes.number,
     voter_email_address: PropTypes.string,
     previewMode: PropTypes.bool,
   };
