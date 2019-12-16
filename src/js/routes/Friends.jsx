@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import { Link } from 'react-router';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Info from '@material-ui/icons/Info';
@@ -23,7 +24,7 @@ import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPrevi
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import VoterStore from '../stores/VoterStore';
 import testimonialImage from '../../img/global/photos/Dale_McGrew-200x200.jpg';
-import { cordovaDot } from '../utils/cordovaUtils';
+import { cordovaDot, historyPush } from '../utils/cordovaUtils';
 import FriendInvitationsSentToMe from './Friends/FriendInvitationsSentToMe';
 import SuggestedFriends from './Friends/SuggestedFriends';
 import FriendsCurrent from './Friends/FriendsCurrent';
@@ -71,9 +72,9 @@ class Friends extends Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
 
     if (window.innerWidth < 769) {
-      this.setState({ mobileMode: true, mobileValue: this.props.params.tabItem || 'requests' });
+      this.setState({ mobileMode: true });
     } else {
-      this.setState({ mobileMode: false, desktopValue: this.props.params.tabItem === undefined ? 'all' : this.props.params.tabItem });
+      this.setState({ mobileMode: false });
     }
 
     window.addEventListener('resize', this.handleResize);
@@ -88,13 +89,18 @@ class Friends extends Component {
     if (window.innerWidth >= 770 && this.props.params.tabItem !== this.state.desktopValue) {
       this.setState({ desktopValue: this.props.params.tabItem });
     }
-    // if (window.innerWidth < 769 && this.props.params.tabItem !== this.state.mobileValue) {
+    // if (window.innerWidth <= 769 && this.props.params.tabItem !== this.state.mobileValue) {
     //   this.setState({ mobileValue: this.props.params.tabItem });
     // }
   }
 
-  // shouldComponentUpdate (nextProps) {
-  //   if (this.props.params.tabItem !== nextProps.params.tabItem) return true;
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   if (window.location.pathname !== this.state.mobileValue) {
+  //     console.log("Logging");
+  //     return true;
+  //   }
+  //   if (this.state.desktopValue !== nextState.desktopValue) return true;
+  //   if (this.state.mobileValue !== nextState.mobileValue) return true;
   //   return false;
   // }
 
@@ -114,20 +120,26 @@ class Friends extends Component {
     });
   }
 
-  handleResize () {
-    const previousValue = this.state.mobileValue;
+  // handleResize () {
+  //   const previousValue = this.state.mobileValue;
 
-    if (window.innerWidth < 769) {
-      this.setState({ mobileMode: true, mobileValue: previousValue || 'requests' });
-      window.history.pushState({ tabItem: this.state.mobileValue }, '', `/friends/${this.state.mobileValue}`);
-    } else {
-      this.setState({ mobileMode: false });
-      if (this.state.desktopValue) {
-        window.history.pushState({ tabItem: this.state.desktopValue }, '', `/friends/${this.state.desktopValue}`);
-      } else {
-        window.history.pushState({ tabItem: '' }, '', '/friends');
-      }
-    }
+  //   if (window.innerWidth < 769) {
+  //     this.setState({ mobileMode: true, mobileValue: previousValue || 'requests' });
+  //     window.history.toState({ tabItem: this.state.mobileValue }, '', `/friends/${this.state.mobileValue}`);
+  //   } else {
+  //     this.setState({ mobileMode: false });
+  //     if (this.state.desktopValue) {
+  //       window.history.toState({ tabItem: this.state.desktopValue }, '', `/friends/${this.state.desktopValue}`);
+  //     } else {
+  //       window.history.toState({ tabItem: '' }, '', '/friends');
+  //     }
+  //   }
+  // }
+
+  handleNavigation = to => historyPush(to);
+
+  getSelectedTab () {
+    return this.props.params.tabItem || 'requests';
   }
 
   render () {
@@ -146,7 +158,7 @@ class Friends extends Component {
     let mobileContentToDisplay;
     let desktopContentToDisplay;
 
-    switch (mobileValue) {
+    switch (this.props.params.tabItem) {
       case 'requests':
         mobileContentToDisplay = (
           <FriendInvitationsSentToMe />
@@ -274,7 +286,7 @@ class Friends extends Component {
             <Helmet title="Friends - We Vote" />
             <Paper elevation={1}>
               <Tabs
-                value={mobileValue}
+                value={this.getSelectedTab()}
                 // onChange={handleChange}
                 indicatorColor="primary"
                 textColor="primary"
@@ -286,8 +298,7 @@ class Friends extends Component {
                   value="requests"
                   label="Requests"
                   onClick={() => {
-                    this.setState({ mobileValue: 'requests' });
-                    window.history.pushState({ tabItem: 'requests' }, '', '/friends/requests');
+                    this.handleNavigation('/friends/requests');
                   }}
                 />
                 {this.state.suggestedFriendList.length > 0 || mobileValue === 'suggested' ? (
@@ -295,8 +306,7 @@ class Friends extends Component {
                     value="suggested"
                     label="Suggested"
                     onClick={() => {
-                      this.setState({ mobileValue: 'suggested' });
-                      window.history.pushState({ tabItem: 'suggested' }, '', '/friends/suggested');
+                      this.handleNavigation('/friends/suggested');
                     }}
                   />
                 ) : (
@@ -306,24 +316,21 @@ class Friends extends Component {
                   value="invite"
                   label="Add Contacts"
                   onClick={() => {
-                    this.setState({ mobileValue: 'invite' });
-                    window.history.pushState({ tabItem: 'invite' }, '', '/friends/invite');
+                    this.handleNavigation('/friends/invite');
                   }}
                 />
                 <Tab
                   value="current"
                   label="Friends"
                   onClick={() => {
-                    this.setState({ mobileValue: 'current' });
-                    window.history.pushState({ tabItem: 'current' }, '', '/friends/current');
+                    this.handleNavigation('/friends/current');
                   }}
                 />
                 <Tab
                   value="sent-requests"
                   label="Sent Requests"
                   onClick={() => {
-                    this.setState({ mobileValue: 'sent-requests' });
-                    window.history.pushState({ tabItem: 'sent-requests' }, '', '/friends/sent-requests');
+                    this.handleNavigation('/friends/sent-requests');
                   }}
                 />
               </Tabs>
