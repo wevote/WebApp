@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Button from '@material-ui/core/Button';
 import Info from '@material-ui/icons/Info';
 import { Tooltip, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -55,12 +56,12 @@ class Friends extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
 
-    FriendActions.suggestedFriendsList();
+    FriendActions.suggestedFriendList();
     FriendActions.currentFriends();
     FriendActions.friendInvitationsSentToMe();
     FriendActions.friendInvitationsSentByMe();
     this.setState({
-      suggestedFriendsList: FriendStore.suggestedFriendsList(),
+      suggestedFriendList: FriendStore.suggestedFriendList(),
       currentFriends: FriendStore.currentFriends(),
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
@@ -68,15 +69,15 @@ class Friends extends Component {
 
     const defaultTabItem = 'requests';
 
-    if (this.state.friendInvitationsSentToMe.length > 0) {
-      defaultTabItem = 'requests';
-    } else if (this.state.friendInvitationsSentByMe.length > 0) {
-      defaultTabItem = 'sent-requests';
-    } else if (this.state.suggestedFriendsList.length > 0) {
-      defaultTabItem = 'suggested';
-    } else {
-      defaultTabItem = "invite";
-    }
+    // if (FriendStore.friendInvitationsSentToMe().length > 0) {
+    //   defaultTabItem = 'requests';
+    // } else if (FriendStore.friendInvitationsSentByMe().length > 0) {
+    //   defaultTabItem = 'sent-requests';
+    // } else if (FriendStore.suggestedFriendList().length > 0) {
+    //   defaultTabItem = 'suggested';
+    // } else {
+    //   defaultTabItem = "invite";
+    // }
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
 
@@ -101,7 +102,7 @@ class Friends extends Component {
 
   onFriendStoreChange () {
     this.setState({
-      suggestedFriendsList: FriendStore.suggestedFriendsList(),
+      suggestedFriendList: FriendStore.suggestedFriendList(),
       currentFriends: FriendStore.currentFriends(),
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
@@ -141,7 +142,35 @@ class Friends extends Component {
     switch (this.props.params.tabItem) {
       case 'requests':
         mobileContentToDisplay = (
-          <FriendInvitationsSentToMe />
+          <>
+            {this.state.friendInvitationsSentToMe.length > 0 ? (
+              <FriendInvitationsSentToMe />
+            ) : (
+              <>
+                <SectionTitle>No invitations.</SectionTitle>
+                {this.state.suggestedFriendList.length > 0 ? (
+                  <>
+                    <p>You currently have no incoming requests. Check out your suggested friends.</p>
+                    <div className="full-width center-text">
+                      <Button variant="contained" color="primary" onClick={() => historyPush('/friends/suggested')}>
+                        View Suggested Friends
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p>You currently have no incoming requests. Send some invites to connect with your friends!</p>
+                    <SectionTitle>Invite Friends</SectionTitle>
+                    <div className="card">
+                      <div className="card-main">
+                        <AddFriendsByEmail />
+                      </div>
+                    </div>
+                  </>
+                )}              
+              </>
+            )}
+          </>
         );
         break;
       case 'suggested':
@@ -276,6 +305,7 @@ class Friends extends Component {
               >
                 {this.state.friendInvitationsSentToMe.length > 0 || mobileValue === 'requests' ? (
                   <Tab
+                    classes={{ root: classes.navigationTab }}
                     value="requests"
                     label="Requests"
                     onClick={() => {
@@ -285,8 +315,9 @@ class Friends extends Component {
                 ) : (
                   null
                 )}
-                {this.state.suggestedFriendsList.length > 0 || mobileValue === 'suggested' ? (
+                {this.state.suggestedFriendList.length > 0 || mobileValue === 'suggested' ? (
                   <Tab
+                    classes={{ root: classes.navigationTab }}
                     value="suggested"
                     label="Suggested"
                     onClick={() => {
@@ -297,14 +328,16 @@ class Friends extends Component {
                   null
                 )}
                 <Tab
+                  classes={{ root: classes.navigationTab }}
                   value="invite"
-                  label="Add Friends"
+                  label={window.innerWidth > 500 ? "Add Friends" : "Invite"}
                   onClick={() => {
                     this.handleNavigation('/friends/invite');
                   }}
                 />
                 {this.state.currentFriends.length > 0 || mobileValue === 'current' ? (
                   <Tab
+                    classes={{ root: classes.navigationTab }}
                     value="current"
                     label="Friends"
                     onClick={() => {
@@ -316,6 +349,7 @@ class Friends extends Component {
                 )}
                 {this.state.friendInvitationsSentByMe.length > 0 || mobileValue === 'sent-requests' ? (
                   <Tab
+                    classes={{ root: classes.navigationTab }}
                     value="sent-requests"
                     label="Sent Requests"
                     onClick={() => {
@@ -343,6 +377,12 @@ class Friends extends Component {
 const styles = () => ({
   tooltip: {
     display: 'inline !important',
+  },
+  navigationTab: {
+    minWidth: '0px !important',
+    width: 'fit-content !important',
+    height: '40px !important',
+    maxHeight: '40px !important',
   },
 });
 

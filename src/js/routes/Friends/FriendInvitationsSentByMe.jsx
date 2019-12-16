@@ -82,10 +82,10 @@ export default class FriendInvitationsSentByMe extends Component {
     return (
       <div className="opinion-view">
         <Helmet title="Your Friends - We Vote" />
-        <SectionTitle>Your Invitations</SectionTitle>
         <div>
           { friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0 ? (
             <span>
+              <SectionTitle>Your Invitations</SectionTitle>
               <SearchBar
                 clearButton
                 searchButton
@@ -109,9 +109,17 @@ export default class FriendInvitationsSentByMe extends Component {
                 invitationsSentByMe
               />
             </span>
-          ) :
-            <p>Your friends will be shown here.</p>
-          }
+          ) : (
+            <>
+              <SectionTitle>No invitations.</SectionTitle>
+              <p>You currently have no outgoing suggestions. Send some invites to connect with your friends!</p>
+              <div className="card">
+                <div className="card-main">
+                  <AddFriendsByEmail />
+                </div>
+              </div>
+            </>            
+          )}
         </div>
       </div>
     );

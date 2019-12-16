@@ -152,7 +152,7 @@ export default {
     });
   },
 
-  suggestedFriendsList () {
+  suggestedFriendList () {
     Dispatcher.loadEndpoint('friendList',
       {
         kind_of_list: 'SUGGESTED_FRIEND_LIST',

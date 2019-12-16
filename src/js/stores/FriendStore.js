@@ -62,9 +62,9 @@ class FriendStore extends ReduceStore {
     return currentFriendsIndex[voterId] !== undefined;
   }
 
-  suggestedFriendsList () {
-    const { suggestedFriendsList } = this.getState();
-    return suggestedFriendsList || {};
+  suggestedFriendList () {
+    const { suggestedFriendList } = this.getState();
+    return suggestedFriendList || {};
   }
 
   switchToAddFriendsByEmailStep () {
@@ -167,7 +167,7 @@ class FriendStore extends ReduceStore {
         };
 
       case 'friendInvitationByWeVoteIdSend':
-        FriendActions.suggestedFriendsList();
+        FriendActions.suggestedFriendList();
         FriendActions.friendInvitationsSentByMe();
         return {
           ...state,
@@ -239,10 +239,10 @@ class FriendStore extends ReduceStore {
               friendInvitationsWaitingForVerification: action.res.friend_list,
             };
           case 'SUGGESTED_FRIEND_LIST':
-            // console.log("FriendStore incoming data suggestedFriendsList, action.res:", action.res);
+            // console.log("FriendStore incoming data suggestedFriendList, action.res:", action.res);
             return {
               ...state,
-              suggestedFriendsList: action.res.friend_list,
+              suggestedFriendList: action.res.friend_list,
             };
           default:
             return {

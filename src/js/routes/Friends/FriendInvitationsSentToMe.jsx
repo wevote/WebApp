@@ -7,6 +7,8 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
+import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
+import { historyPush } from '../../utils/cordovaUtils';
 
 export default class FriendInvitationsSentToMe extends Component {
   static propTypes = {
@@ -26,8 +28,10 @@ export default class FriendInvitationsSentToMe extends Component {
 
   componentDidMount () {
     FriendActions.friendInvitationsSentToMe();
+    FriendActions.suggestedFriendList();
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      suggestedFriends: FriendStore.suggestedFriendList(),
     });
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -40,6 +44,7 @@ export default class FriendInvitationsSentToMe extends Component {
   onFriendStoreChange () {
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      suggestedFriendList: FriendStore.suggestedFriendList(),
     });
   }
 
@@ -79,13 +84,15 @@ export default class FriendInvitationsSentToMe extends Component {
       friendInvitationsSentToMe = this.state.friendInvitationsSentToMeFilteredBySearch;
     }
 
+    console.log(this.state.suggestedFriends);
+
     return (
       <div className="opinion-view">
         <Helmet title="Your Friends - We Vote" />
-        <SectionTitle>Friend Requests</SectionTitle>
         <div>
           { friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
             <span>
+              <SectionTitle>Friend Requests</SectionTitle>
               <SearchBar
                 clearButton
                 searchButton
@@ -108,9 +115,18 @@ export default class FriendInvitationsSentToMe extends Component {
                 friendList={friendInvitationsSentToMe}
               />
             </span>
-          ) :
-            <p>You currently have no invitations.</p>
-          }
+          ) : (
+            <>
+              <div className="card">
+                <div className="card-main">
+                  <p>You currently have no incoming requests. Send some invites to connect with your friends!</p>
+                  <Button variant="contained" color="primary" onClick={() => historyPush('/friends/invite')}>
+                    Invite Friends
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     );
