@@ -120,21 +120,13 @@ class Friends extends Component {
     });
   }
 
-  // handleResize () {
-  //   const previousValue = this.state.mobileValue;
-
-  //   if (window.innerWidth < 769) {
-  //     this.setState({ mobileMode: true, mobileValue: previousValue || 'requests' });
-  //     window.history.toState({ tabItem: this.state.mobileValue }, '', `/friends/${this.state.mobileValue}`);
-  //   } else {
-  //     this.setState({ mobileMode: false });
-  //     if (this.state.desktopValue) {
-  //       window.history.toState({ tabItem: this.state.desktopValue }, '', `/friends/${this.state.desktopValue}`);
-  //     } else {
-  //       window.history.toState({ tabItem: '' }, '', '/friends');
-  //     }
-  //   }
-  // }
+  handleResize () {
+    if (window.innerWidth < 769) {
+      this.setState({ mobileMode: true });
+    } else {
+      this.setState({ mobileMode: false });
+    }
+  }
 
   handleNavigation = to => historyPush(to);
 
