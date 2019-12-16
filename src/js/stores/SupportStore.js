@@ -56,7 +56,7 @@ class SupportStore extends ReduceStore {
     return this.voterOpposesList[ballotItemWeVoteId] || false;
   }
 
-  getVoterSupportByBallotItemWeVoteId (ballotItemWeVoteId) {
+  getVoterSupportsByBallotItemWeVoteId (ballotItemWeVoteId) {
     if (!(this.voterSupportsList)) {
       return false;
     }

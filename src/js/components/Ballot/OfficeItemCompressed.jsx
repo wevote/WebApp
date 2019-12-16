@@ -184,7 +184,7 @@ class OfficeItemCompressed extends Component {
     const { classes, externalUniqueId, theme } = this.props;
     const { candidateList } = this.state;
     const candidatePreviewLimit = this.state.maximumNumberOrganizationsToDisplay;
-    const supportedCandidatesList = candidateList.filter(candidate => SupportStore.getVoterSupportByBallotItemWeVoteId(candidate.we_vote_id));
+    const supportedCandidatesList = candidateList.filter(candidate => SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id));
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
     return (
       <Container candidateLength={candidatesToRender.length}>

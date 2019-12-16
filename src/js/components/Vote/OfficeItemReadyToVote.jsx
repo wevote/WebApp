@@ -107,7 +107,7 @@ class OfficeItemReadyToVote extends Component {
             );
             return (
               <React.Fragment key={oneCandidate.we_vote_id}>
-                { SupportStore.getVoterSupportByBallotItemWeVoteId(oneCandidate.we_vote_id) && (
+                { SupportStore.getVoterSupportsByBallotItemWeVoteId(oneCandidate.we_vote_id) && (
                   <InnerWrapper>
                     <BioColumn>
                       {isCordova() ? candidatePhotoUrlHtml : <Avatar src={candidatePhotoUrl} /> }
