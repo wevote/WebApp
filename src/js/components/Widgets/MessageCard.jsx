@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
-import PropTypes from 'prop-types'
 
 export default class MessageCard extends Component {
   static propTypes = {

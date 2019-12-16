@@ -104,7 +104,13 @@ const Menu = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  margin-left: auto;
+  width: 100%;
+  margin-top: 18px;
+  @media(min-width: 400px) {
+    width: fit-content;
+    margin-top: 0;
+    margin-left: auto;
+  }
 `;
 
 const InnerButtonContainer = styled.div`

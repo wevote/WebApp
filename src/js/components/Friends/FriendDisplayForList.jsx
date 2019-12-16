@@ -44,35 +44,37 @@ class FriendDisplayForList extends Component {
 
     const friendDisplayHtml = (
       <Wrapper previewMode={this.props.previewMode}>
-        <Avatar>
-          { voterGuideLink ? (
-            <Link to={voterGuideLink} className="u-no-underline">
-              {voterImage}
-            </Link>
-          ) :
-            <span>{voterImage}</span> }
-        </Avatar>
-        <Details>
-          { voterGuideLink ? (
-            <Name>
+        <Flex>
+          <Avatar>
+            { voterGuideLink ? (
               <Link to={voterGuideLink} className="u-no-underline">
+                {voterImage}
+              </Link>
+            ) :
+              <span>{voterImage}</span> }
+          </Avatar>
+          <Details>
+            { voterGuideLink ? (
+              <Name>
+                <Link to={voterGuideLink} className="u-no-underline">
+                  {voterDisplayNameFormatted}
+                </Link>
+              </Name>
+            ) : (
+              <Name>
                 {voterDisplayNameFormatted}
-              </Link>                
-            </Name>
-          ) : (
-            <Name>
-              {voterDisplayNameFormatted}
-            </Name>
-          )}
-          <Info>
-            Positions:
-            <strong>7</strong>
-          </Info>
-          <Info>
-            Mutual Friends:
-            <strong>23</strong>
-          </Info>
-        </Details>
+              </Name>
+            )}
+            <Info>
+              Positions:
+              <strong>7</strong>
+            </Info>
+            <Info>
+              Mutual Friends:
+              <strong>23</strong>
+            </Info>
+          </Details>
+        </Flex>
         <>
           { this.props.editMode ? <FriendToggle otherVoterWeVoteId={voterWeVoteId} /> : null }
         </>
@@ -113,10 +115,17 @@ const Wrapper = styled.div`
   }
 `;
 
+const Flex = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
 const Avatar = styled.div`
-  width: 50%;
-  max-width: 120px;
-  margin: 0 auto;
+  width: 25%;
+  max-width: 100px;
+  margin-right: 8px;
   & img {
     width: 100%;
   }
@@ -128,6 +137,7 @@ const Avatar = styled.div`
     position: absolute !important;
     left: 0;
     top: 0;
+    margin: 0 auto;
     & img {
       height: 100%;
       width: auto;

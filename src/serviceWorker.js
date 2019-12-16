@@ -140,6 +140,3 @@ workbox.routing.registerRoute(
 // );
 //
 //
-
-// Uncomment this setting to disable the workbox console.log()
-workbox.setConfig({ debug: false });
