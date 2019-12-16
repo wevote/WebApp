@@ -108,8 +108,13 @@ export default class FriendsCurrent extends Component {
                 editMode
               />
             </span>
-          ) :
-            <p>Your friends will be shown here.</p>
+          ) : (
+            <MessageCard 
+              mainText="You currently have no friends on We Vote. Send some invites to connect with your friends!"
+              buttonText="Invite Friends"
+              buttonURL="/friends/invite"
+            />
+          )
           }
         </div>
       </div>

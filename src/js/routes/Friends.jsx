@@ -144,7 +144,7 @@ class Friends extends Component {
       case 'requests':
         mobileContentToDisplay = (
           <>
-            {this.state.friendInvitationsSentToMe.length === 0 ? (
+            {this.state.friendInvitationsSentToMe.length > 0 ? (
               <FriendInvitationsSentToMe />
             ) : (
               <>
@@ -168,7 +168,27 @@ class Friends extends Component {
         break;
       case 'suggested':
         mobileContentToDisplay = (
-          <SuggestedFriends />
+          <>
+            {this.state.suggestedFriendList.length > 0 ? (
+              <SuggestedFriends />
+            ) : (
+              <>
+                {this.state.friendInvitationsSentToMe.length > 0 ? (
+                  <MessageCard
+                    mainText="You currently have no suggested friends. Check out your incoming friend requests!"
+                    buttonText="View Requests"
+                    buttonURL="/friends/requests"
+                  />
+                ) : (
+                  <MessageCard
+                    mainText="You currently have no suggested friends. Send some invites to connect with your friends!"
+                    buttonText="Invite Friends"
+                    buttonURL="/friends/invite"
+                  />
+                )}              
+              </>
+            )}
+          </>
         );
         break;
       case 'invite':
@@ -186,17 +206,67 @@ class Friends extends Component {
         break;
       case 'current':
         mobileContentToDisplay = (
-          <FriendsCurrent />
+          <>
+            {this.state.currentFriends.length > 0 ? (
+              <CurrentFriends />
+            ) : (
+              <>
+                {this.state.friendInvitationsSentToMe.length > 0 ? (
+                  <MessageCard
+                    mainText="You currently have no friends on We Vote, but you do have friend requests. Check them out!"
+                    buttonText="View Requests"
+                    buttonURL="/friends/requests"
+                  />
+                ) : (
+                  <MessageCard
+                    mainText="You currently have no friends on We Vote. Send some invites to connect with your friends!"
+                    buttonText="Invite Friends"
+                    buttonURL="/friends/invite"
+                  />
+                )}              
+              </>
+            )}
+          </>
         );
         break;
       case 'sent-requests':
         mobileContentToDisplay = (
-          <FriendInvitationsSentByMe />
+          <>
+            {this.state.friendInvitationsSentByMe.length > 0 ? (
+              <FriendInvitationsSentToMe />
+            ) : (
+              <MessageCard
+                mainText="You currently have no sent requests. Send some now!"
+                buttonText="Invite Friends"
+                buttonURL="/friends/invite"
+              />             
+            )}
+          </>
         );
         break;
       default:
         mobileContentToDisplay = (
-          <FriendInvitationsSentToMe />
+          <>
+            {this.state.friendInvitationsSentToMe.length > 0 ? (
+              <FriendInvitationsSentToMe />
+            ) : (
+              <>
+                {this.state.suggestedFriendList.length > 0 ? (
+                  <MessageCard
+                    mainText="You currently have no incoming requests. Check out your suggested friends."
+                    buttonText="View Suggestions"
+                    buttonURL="/friends/suggested"
+                  />
+                ) : (
+                  <MessageCard
+                    mainText="You currently have no incoming requests. Send some invites to connect with your friends!"
+                    buttonText="Invite Friends"
+                    buttonURL="/friends/invite"
+                  />
+                )}              
+              </>
+            )}
+          </>
         );
     }
 

@@ -110,15 +110,11 @@ export default class FriendInvitationsSentByMe extends Component {
               />
             </span>
           ) : (
-            <>
-              <SectionTitle>No invitations.</SectionTitle>
-              <p>You currently have no outgoing suggestions. Send some invites to connect with your friends!</p>
-              <div className="card">
-                <div className="card-main">
-                  <AddFriendsByEmail />
-                </div>
-              </div>
-            </>            
+            <MessageCard 
+              mainText="You currently have no sent requests. Send some invites to connect with your friends!"
+              buttonText="Invite Friends"
+              buttonURL="/friends/invite"
+            />         
           )}
         </div>
       </div>
