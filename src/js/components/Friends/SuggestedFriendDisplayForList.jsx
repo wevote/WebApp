@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
 import ImageHandler from '../ImageHandler';
 import FriendActions from '../../actions/FriendActions';
 import SuggestedFriendToggle from './SuggestedFriendToggle';
@@ -17,7 +16,7 @@ class SuggestedFriendDisplayForList extends Component {
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
     voter_twitter_description: PropTypes.string,
-    voter_twitter_followers_count: PropTypes.number,
+    // voter_twitter_followers_count: PropTypes.number,
     voter_email_address: PropTypes.string,
     previewMode: PropTypes.bool,
   };

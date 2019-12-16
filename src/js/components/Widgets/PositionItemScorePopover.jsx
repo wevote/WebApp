@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import CheckCircle from '@material-ui/icons/CheckCircle';
+import InfoIcon from '@material-ui/icons/Info';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import { withStyles, withTheme } from '@material-ui/core/styles';
@@ -40,6 +41,7 @@ class PositionItemScorePopover extends Component {
     if (positionItem) {
       const {
         ballot_item_display_name: ballotItemDisplayName,
+        is_information_only: organizationProvidingInformationOnly,
         is_oppose_or_negative_rating: organizationOpposes,
         is_support_or_positive_rating: organizationSupports,
         speaker_display_name: speakerDisplayName,
@@ -55,6 +57,7 @@ class PositionItemScorePopover extends Component {
         issuesInCommonBetweenOrganizationAndVoter,
         issuesInCommonBetweenOrganizationAndVoterLength,
         organizationInVotersNetwork,
+        organizationProvidingInformationOnly,
         organizationOpposes,
         organizationSupports,
         organizationWeVoteId,
@@ -162,7 +165,7 @@ class PositionItemScorePopover extends Component {
     }
     const {
       ballotItemDisplayName, issuesInCommonBetweenOrganizationAndVoter, organizationInVotersNetwork,
-      organizationOpposes, organizationSupports, organizationWeVoteId,
+      organizationProvidingInformationOnly, organizationOpposes, organizationSupports, organizationWeVoteId,
       speakerDisplayName, voterFollowingThisOrganization,
     } = this.state;
     return (
@@ -195,6 +198,11 @@ class PositionItemScorePopover extends Component {
                 -1
               </OpposeAndPartOfScore>
             )}
+            {organizationProvidingInformationOnly && (
+              <InformationOnly>
+                <InfoIcon classes={{ root: classes.informationOnlyIcon }} />
+              </InformationOnly>
+            )}
             <OrganizationSupportsOrOpposesText>
               {speakerDisplayName}
               {' '}
@@ -202,17 +210,23 @@ class PositionItemScorePopover extends Component {
                 <span>
                   supports
                   {' '}
+                  {ballotItemDisplayName}
+                  .
                 </span>
               )}
               {organizationOpposes && (
                 <span>
                   opposes
                   {' '}
+                  {ballotItemDisplayName}
+                  .
                 </span>
               )}
-              {' '}
-              {ballotItemDisplayName}
-              .
+              {organizationProvidingInformationOnly && (
+                <span>
+                  has this commentary, but no endorsement.
+                </span>
+              )}
             </OrganizationSupportsOrOpposesText>
           </PositionSummaryWrapper>
           {organizationInVotersNetwork ? (
@@ -222,17 +236,14 @@ class PositionItemScorePopover extends Component {
                 {' '}
                 {organizationSupports && (
                   <span>
-                    adds +1 to
-                    {' '}
+                    adds +1 to your personal score because:
                   </span>
                 )}
                 {organizationOpposes && (
                   <span>
-                    subtracts -1 from
-                    {' '}
+                    subtracts -1 from your personal score because:
                   </span>
                 )}
-                your personal score because:
               </OrganizationAddsToYourPersonalScoreExplanation>
               {voterFollowingThisOrganization && (
                 <ScoreExplanationWrapper>
@@ -272,22 +283,21 @@ class PositionItemScorePopover extends Component {
                   {speakerDisplayName}
                 </strong>
                 {' '}
-                to
-                {' '}
                 {organizationSupports && (
                   <span>
-                    add +1 to
-                    {' '}
+                    to add +1 to your personal score.
                   </span>
                 )}
                 {organizationOpposes && (
                   <span>
-                    subtract -1 from
-                    {' '}
+                    to subtract -1 from your personal score.
                   </span>
                 )}
-                {' '}
-                your personal score.
+                {organizationProvidingInformationOnly && (
+                  <span>
+                    to see more of their opinions.
+                  </span>
+                )}
               </FollowOrganizationText>
               <FollowOrganizationToggleContainer>
                 <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
@@ -304,6 +314,10 @@ const styles = () => ({
   endorsementIcon: {
     width: 12,
     height: 12,
+  },
+  informationOnlyIcon: {
+    width: 16,
+    height: 16,
   },
 });
 
@@ -449,6 +463,23 @@ const OpposeButNotPartOfScore = styled.div`
   border-radius: 5px;
   float: left;
   border: 2px solid ${({ theme }) => theme.colors.opposeRedRgb};
+  font-size: 10px;
+  font-weight: bold;
+  margin-right: 6px;
+`;
+
+const InformationOnly = styled.div`
+  color: ${({ theme }) => theme.colors.grayMid};
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  float: left;
+  border: 2px solid ${({ theme }) => theme.colors.grayMid};
   font-size: 10px;
   font-weight: bold;
   margin-right: 6px;

@@ -18,8 +18,6 @@ import StickyPopover from '../Ballot/StickyPopover';
 import { getPositionSummaryListForBallotItem, getPositionListSummaryIncomingDataStats } from '../../utils/positionFunctions';
 import PositionSummaryListForPopover from './PositionSummaryListForPopover';
 
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
-/* eslint array-callback-return: 1 */
 class BallotItemSupportOpposeCountDisplay extends Component {
   static closePositionsPopover () {
     document.body.click();
@@ -573,18 +571,18 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             </div>
             <div>
               <span className="u-no-break">
-                <Support>
+                <SupportButNotPartOfScore>
                   <ThumbUpIcon classes={{ root: classes.endorsementIcon }} />
-                </Support>
+                </SupportButNotPartOfScore>
                 {' '}
                 supports
               </span>
             </div>
             <div>
               <span className="u-no-break">
-                <Oppose>
+                <OpposeButNotPartOfScore>
                   <ThumbDownIcon classes={{ root: classes.endorsementIcon }} />
-                </Oppose>
+                </OpposeButNotPartOfScore>
                 or opposes
               </span>
               <strong>{ballotItemDisplayName ? ` ${ballotItemDisplayName}` : ''}</strong>
@@ -899,7 +897,7 @@ const RenderedOrganizationsWrapper = styled.div`
   margin-top: 6px;
 `;
 
-const Support = styled.div`
+const SupportButNotPartOfScore = styled.div`
   color: ${({ theme }) => theme.colors.supportGreenRgb};
   background: white;
   display: flex;
@@ -916,7 +914,7 @@ const Support = styled.div`
   margin-right: 6px;
 `;
 
-const Oppose = styled.div`
+const OpposeButNotPartOfScore = styled.div`
   color: ${({ theme }) => theme.colors.opposeRedRgb};
   background: white;
   display: flex;

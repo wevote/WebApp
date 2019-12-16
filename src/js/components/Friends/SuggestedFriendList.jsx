@@ -37,20 +37,18 @@ export default class SuggestedFriendList extends Component {
     return (
       <div className={!this.props.previewMode ? 'card' : null}>
         <div className={!this.props.previewMode ? 'card-main' : null}>
-          {this.state.suggestedFriendList.map((friend, index) => {
-            return (
-              <>
-                <SuggestedFriendDisplayForList
-                  key={friend.voter_we_vote_id}
-                  {...friend}
-                  previewMode={this.props.previewMode}
-                />
-                {index !== this.state.suggestedFriendList.length - 1 ? (
-                  <hr />
-                ) : null}
-              </>
-            );
-          })
+          {this.state.suggestedFriendList.map((friend, index) => (
+            <>
+              <SuggestedFriendDisplayForList
+                key={friend.voter_we_vote_id}
+                {...friend}
+                previewMode={this.props.previewMode}
+              />
+              {index !== this.state.suggestedFriendList.length - 1 ? (
+                <hr />
+              ) : null}
+            </>
+          ))
           }
         </div>
       </div>

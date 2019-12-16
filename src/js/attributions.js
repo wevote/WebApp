@@ -70,9 +70,9 @@ module.exports = [
   '\n' +
   'Copyright (c) 2013-2018 David J. Bradshaw',
   // Jan 2019, https://github.com/facebook/immutable-js
-  'facebook/immutable-js is licensed under the MIT License (MIT)\n' +
-  '\n' +
-  'Copyright (c) 2014-present, Facebook, Inc.',
+  // 'facebook/immutable-js is licensed under the MIT License (MIT)\n' +
+  // '\n' +
+  // 'Copyright (c) 2014-present, Facebook, Inc.',
   // Jan 2019, https://github.com/jquery/jquery/blob/master/LICENSE.txt
   'jquery/jquery is licensed under the MIT License (MIT)\n' +
   'Copyright JS Foundation and other contributors, https://js.foundation/\n',
@@ -97,8 +97,8 @@ module.exports = [
   '\n' +
   'Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)\n',
   // Jan 2019, https://github.com/FezVrasta/popper.js/blob/master/LICENSE.md
-  'FezVrasta/popper.js is licensed under the MIT License (MIT)\n' +
-  'Copyright (c) 2016 Federico Zivolo and contributors\n',
+  // 'FezVrasta/popper.js is licensed under the MIT License (MIT)\n' +
+  // 'Copyright (c) 2016 Federico Zivolo and contributors\n',
   // Jan 2019, https://github.com/facebook/prop-types/blob/master/LICENSE
   ' facebook/prop-types is licensed under the MIT License (MIT)\n' +
   '\n' +
@@ -120,20 +120,20 @@ module.exports = [
   'zeroasterisk/react-iframe-resizer-super is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2016 Your Name. <name@emailprovider.io>',
   // Jan 2019, https://github.com/yahoo/react-intl/blob/master/LICENSE.md
-  'formatjs/react-intl\n' +
-  'Copyright 2019 Oath Inc. All rights reserved.\n' +
-  '\n' +
-  'Redistribution and use in source and binary forms, with or without modification, ' +
-  'are permitted provided that the following conditions are met:\n' +
-  '\n' +
-  '* Redistributions of source code must retain the above copyright ' +
-  'notice, this list of conditions and the following disclaimer.\n' +
-  '* Redistributions in binary form must reproduce the above copyright ' +
-  'notice, this list of conditions and the following disclaimer in the ' +
-  'documentation and/or other materials provided with the distribution.\n' +
-  '* Neither the name of the Oauth Inc. nor the ' +
-  'names of its contributors may be used to endorse or promote products ' +
-  'derived from this software without specific prior written permission.\n',
+  // 'formatjs/react-intl\n' +
+  // 'Copyright 2019 Oath Inc. All rights reserved.\n' +
+  // '\n' +
+  // 'Redistribution and use in source and binary forms, with or without modification, ' +
+  // 'are permitted provided that the following conditions are met:\n' +
+  // '\n' +
+  // '* Redistributions of source code must retain the above copyright ' +
+  // 'notice, this list of conditions and the following disclaimer.\n' +
+  // '* Redistributions in binary form must reproduce the above copyright ' +
+  // 'notice, this list of conditions and the following disclaimer in the ' +
+  // 'documentation and/or other materials provided with the distribution.\n' +
+  // '* Neither the name of the Oauth Inc. nor the ' +
+  // 'names of its contributors may be used to endorse or promote products ' +
+  // 'derived from this software without specific prior written permission.\n',
   // Jan 2019, https://github.com/brigand/react-mixin/blob/master/LICENSE
   'brigand/react-mixin is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2015 Frankie Bagnardi <f.bagnardi@gmail.com>\n',
