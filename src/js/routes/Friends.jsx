@@ -45,10 +45,7 @@ class Friends extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {
-      mobileValue: '',
-      desktopValue: '',
-    };
+    this.state = {};
 
     this.handleResize = this.handleResize.bind(this);
   }
@@ -58,16 +55,28 @@ class Friends extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
 
-    FriendActions.suggestedFriendList();
+    FriendActions.suggestedFriendsList();
     FriendActions.currentFriends();
     FriendActions.friendInvitationsSentToMe();
     FriendActions.friendInvitationsSentByMe();
     this.setState({
-      suggestedFriendList: FriendStore.suggestedFriendList(),
-      // currentFriendList: FriendStore.currentFriends(),
-      // friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
-      // friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
+      suggestedFriendsList: FriendStore.suggestedFriendsList(),
+      currentFriends: FriendStore.currentFriends(),
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
     });
+
+    const defaultTabItem = 'requests';
+
+    if (this.state.friendInvitationsSentToMe.length > 0) {
+      defaultTabItem = 'requests';
+    } else if (this.state.friendInvitationsSentByMe.length > 0) {
+      defaultTabItem = 'sent-requests';
+    } else if (this.state.suggestedFriendsList.length > 0) {
+      defaultTabItem = 'suggested';
+    } else {
+      defaultTabItem = "invite";
+    }
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
 
@@ -79,30 +88,6 @@ class Friends extends Component {
 
     window.addEventListener('resize', this.handleResize);
   }
-
-  // shouldComponentUpdate (nextState) {
-  //   if (this.state.mobileMode !== nextState.mobileMode) return true;
-  //   return false;
-  // }
-
-  componentDidUpdate () {
-    if (window.innerWidth >= 770 && this.props.params.tabItem !== this.state.desktopValue) {
-      this.setState({ desktopValue: this.props.params.tabItem });
-    }
-    // if (window.innerWidth <= 769 && this.props.params.tabItem !== this.state.mobileValue) {
-    //   this.setState({ mobileValue: this.props.params.tabItem });
-    // }
-  }
-
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   if (window.location.pathname !== this.state.mobileValue) {
-  //     console.log("Logging");
-  //     return true;
-  //   }
-  //   if (this.state.desktopValue !== nextState.desktopValue) return true;
-  //   if (this.state.mobileValue !== nextState.mobileValue) return true;
-  //   return false;
-  // }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
@@ -116,7 +101,10 @@ class Friends extends Component {
 
   onFriendStoreChange () {
     this.setState({
-      suggestedFriendList: FriendStore.suggestedFriendList(),
+      suggestedFriendsList: FriendStore.suggestedFriendsList(),
+      currentFriends: FriendStore.currentFriends(),
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
     });
   }
 
@@ -131,7 +119,7 @@ class Friends extends Component {
   handleNavigation = to => historyPush(to);
 
   getSelectedTab () {
-    return this.props.params.tabItem || 'requests';
+    return this.props.params.tabItem || this.state.defaultTabItem;
   }
 
   render () {
@@ -286,14 +274,18 @@ class Friends extends Component {
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs example"
               >
-                <Tab
-                  value="requests"
-                  label="Requests"
-                  onClick={() => {
-                    this.handleNavigation('/friends/requests');
-                  }}
-                />
-                {this.state.suggestedFriendList.length > 0 || mobileValue === 'suggested' ? (
+                {this.state.friendInvitationsSentToMe.length > 0 || mobileValue === 'requests' ? (
+                  <Tab
+                    value="requests"
+                    label="Requests"
+                    onClick={() => {
+                      this.handleNavigation('/friends/requests');
+                    }}
+                  />
+                ) : (
+                  null
+                )}
+                {this.state.suggestedFriendsList.length > 0 || mobileValue === 'suggested' ? (
                   <Tab
                     value="suggested"
                     label="Suggested"
@@ -306,25 +298,33 @@ class Friends extends Component {
                 )}
                 <Tab
                   value="invite"
-                  label="Add Contacts"
+                  label="Add Friends"
                   onClick={() => {
                     this.handleNavigation('/friends/invite');
                   }}
                 />
-                <Tab
-                  value="current"
-                  label="Friends"
-                  onClick={() => {
-                    this.handleNavigation('/friends/current');
-                  }}
-                />
-                <Tab
-                  value="sent-requests"
-                  label="Sent Requests"
-                  onClick={() => {
-                    this.handleNavigation('/friends/sent-requests');
-                  }}
-                />
+                {this.state.currentFriends.length > 0 || mobileValue === 'current' ? (
+                  <Tab
+                    value="current"
+                    label="Friends"
+                    onClick={() => {
+                      this.handleNavigation('/friends/current');
+                    }}
+                  />
+                ) : (
+                  null
+                )}
+                {this.state.friendInvitationsSentByMe.length > 0 || mobileValue === 'sent-requests' ? (
+                  <Tab
+                    value="sent-requests"
+                    label="Sent Requests"
+                    onClick={() => {
+                      this.handleNavigation('/friends/sent-requests');
+                    }}
+                  />
+                ) : (
+                  null
+                )}
               </Tabs>
             </Paper>
             <br />

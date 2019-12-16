@@ -49,7 +49,7 @@ export default {
   // We use the more limited "friends" api call from the server to find Facebook profiles of friends already using We Vote.
   facebookFriendsAction () {
     Dispatcher.loadEndpoint('facebookFriendsAction', {});
-    FriendActions.suggestedFriendList();
+    FriendActions.suggestedFriendsList();
   },
 
   // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
