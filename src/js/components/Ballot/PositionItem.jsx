@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import InfoIcon from '@material-ui/icons/Info';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ReactSVG from 'react-svg';
@@ -289,10 +290,18 @@ class PositionItem extends Component {
                                 </SupportButNotPartOfScore>
                               ) : (
                                 <span>
-                                  {supportOpposeInfo === 'OpposeButNotPartOfScore' && (
+                                  {supportOpposeInfo === 'OpposeButNotPartOfScore' ? (
                                     <OpposeButNotPartOfScore>
                                       <ThumbDownIcon />
                                     </OpposeButNotPartOfScore>
+                                  ) : (
+                                    <span>
+                                      {supportOpposeInfo === 'InfoButNotPartOfScore' && (
+                                        <InformationOnly>
+                                          <InfoIcon />
+                                        </InformationOnly>
+                                      )}
+                                    </span>
                                   )}
                                 </span>
                               )}
@@ -402,10 +411,18 @@ class PositionItem extends Component {
                                 </SupportButNotPartOfScore>
                               ) : (
                                 <span>
-                                  {supportOpposeInfo === 'OpposeButNotPartOfScore' && (
+                                  {supportOpposeInfo === 'OpposeButNotPartOfScore' ? (
                                     <OpposeButNotPartOfScore>
                                       <ThumbDownIcon />
                                     </OpposeButNotPartOfScore>
+                                  ) : (
+                                    <span>
+                                      {supportOpposeInfo === 'InfoButNotPartOfScore' && (
+                                        <InformationOnly>
+                                          <InfoIcon />
+                                        </InformationOnly>
+                                      )}
+                                    </span>
                                   )}
                                 </span>
                               )}
@@ -722,6 +739,21 @@ const OpposeButNotPartOfScore = styled.div`
   border-radius: 5px;
   float: right;
   border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const InformationOnly = styled.div`
+  color: ${({ theme }) => theme.colors.grayMid};
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  float: right;
+  border: 3px solid ${({ theme }) => theme.colors.grayMid};
   font-size: 20px;
   font-weight: bold;
 `;

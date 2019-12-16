@@ -43,17 +43,14 @@ class CandidateItem extends Component {
       ballotItemDisplayName: '',
       // ballotpediaCandidateUrl: '',
       candidatePhotoUrl: '',
-      candidateWeVoteId: '',
       contestOfficeName: '',
       issuesUnderThisBallotItemVoterIsFollowingLength: 0,
       issuesUnderThisBallotItemVoterIsNotFollowingLength: 0,
       largeAreaHoverColorOnNow: null,
       largeAreaHoverLinkOnNow: false,
       officeWeVoteId: '',
-      organizationWeVoteId: '',
       politicalParty: '',
       twitterFollowersCount: '',
-      showPositionStatementActionBar: false,
     };
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
@@ -69,13 +66,14 @@ class CandidateItem extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     // console.log('CandidateItem, this.props:', this.props);
-    if (this.props.candidateWeVoteId) {
+    const { candidateWeVoteId, showLargeImage } = this.props;
+    if (candidateWeVoteId) {
       // If here we want to get the candidate so we can get the officeWeVoteId
-      const candidate = CandidateStore.getCandidate(this.props.candidateWeVoteId);
+      const candidate = CandidateStore.getCandidate(candidateWeVoteId);
       // console.log('CandidateItem, componentDidMount, candidate:', candidate);
 
       let candidatePhotoUrl;
-      if (this.props.showLargeImage && candidate.candidate_photo_url_large) {
+      if (showLargeImage && candidate.candidate_photo_url_large) {
         candidatePhotoUrl = candidate.candidate_photo_url_large;
       } else if (candidate.candidate_photo_url_medium) {
         candidatePhotoUrl = candidate.candidate_photo_url_medium;
@@ -88,27 +86,21 @@ class CandidateItem extends Component {
       let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
       ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
       const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
+      const voterOpposesBallotItem = SupportStore.getVoterOpposesByBallotItemWeVoteId(candidateWeVoteId);
+      const voterSupportsBallotItem = SupportStore.getVoterSupportsByBallotItemWeVoteId(candidateWeVoteId);
       this.setState({
         ballotItemDisplayName: candidate.ballot_item_display_name,
         // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
         candidatePhotoUrl,
         candidateText,
-        candidateWeVoteId: this.props.candidateWeVoteId,
         contestOfficeName: candidate.contest_office_name,
         officeWeVoteId: candidate.contest_office_we_vote_id,
         politicalParty: candidate.party,
         twitterFollowersCount: candidate.twitter_followers_count,
+        voterOpposesBallotItem,
+        voterSupportsBallotItem,
       });
     }
-
-    if (this.props.organizationWeVoteId) {
-      this.setState({
-        organizationWeVoteId: this.props.organizationWeVoteId,
-      });
-    }
-    this.setState({
-      showPositionStatementActionBar: this.props.showPositionStatementActionBar,
-    });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -127,7 +119,7 @@ class CandidateItem extends Component {
     if (this.state.candidateText !== nextState.candidateText) {
       return true;
     }
-    if (this.state.candidateWeVoteId !== nextState.candidateWeVoteId) {
+    if (this.props.candidateWeVoteId !== nextProps.candidateWeVoteId) {
       return true;
     }
     if (this.state.issuesUnderThisBallotItemVoterIsFollowingLength !== nextState.issuesUnderThisBallotItemVoterIsFollowingLength) {
@@ -139,7 +131,16 @@ class CandidateItem extends Component {
     if (this.state.largeAreaHoverColorOnNow !== nextState.largeAreaHoverColorOnNow) {
       return true;
     }
-    if (this.state.showPositionStatementActionBar !== nextState.showPositionStatementActionBar) {
+    if (this.props.organizationWeVoteId !== nextProps.organizationWeVoteId) {
+      return true;
+    }
+    if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
+      return true;
+    }
+    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
+      return true;
+    }
+    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
       return true;
     }
     return false;
@@ -153,48 +154,52 @@ class CandidateItem extends Component {
   }
 
   onCandidateStoreChange () {
-    const { candidateWeVoteId } = this.state;
+    const { candidateWeVoteId } = this.props;
     // console.log('CandidateItem onCandidateStoreChange, candidateWeVoteId:', candidateWeVoteId);
-    const candidate = CandidateStore.getCandidate(candidateWeVoteId);
-    let candidatePhotoUrl;
-    if (this.props.showLargeImage && candidate.candidate_photo_url_large) {
-      candidatePhotoUrl = candidate.candidate_photo_url_large;
-    } else if (candidate.candidate_photo_url_medium) {
-      candidatePhotoUrl = candidate.candidate_photo_url_medium;
-    } else if (candidate.candidate_photo_url_tiny) {
-      candidatePhotoUrl = candidate.candidate_photo_url_tiny;
+    if (candidateWeVoteId) {
+      const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+      let candidatePhotoUrl;
+      if (this.props.showLargeImage && candidate.candidate_photo_url_large) {
+        candidatePhotoUrl = candidate.candidate_photo_url_large;
+      } else if (candidate.candidate_photo_url_medium) {
+        candidatePhotoUrl = candidate.candidate_photo_url_medium;
+      } else if (candidate.candidate_photo_url_tiny) {
+        candidatePhotoUrl = candidate.candidate_photo_url_tiny;
+      }
+      const twitterDescription = candidate.twitter_description;
+      const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
+      const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
+      let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
+      ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
+      const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
+      const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
+      const allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length || 0;
+      this.setState({
+        allCachedPositionsForThisCandidateLength,
+        ballotItemDisplayName: candidate.ballot_item_display_name,
+        // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
+        candidatePhotoUrl,
+        candidateText,
+        contestOfficeName: candidate.contest_office_name,
+        officeWeVoteId: candidate.contest_office_we_vote_id,
+        politicalParty: candidate.party,
+        twitterFollowersCount: candidate.twitter_followers_count,
+      });
     }
-    const twitterDescription = candidate.twitter_description;
-    const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
-    const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
-    let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
-    ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
-    const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
-    const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
-    const allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length || 0;
-    this.setState({
-      allCachedPositionsForThisCandidateLength,
-      ballotItemDisplayName: candidate.ballot_item_display_name,
-      // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
-      candidatePhotoUrl,
-      candidateText,
-      contestOfficeName: candidate.contest_office_name,
-      officeWeVoteId: candidate.contest_office_we_vote_id,
-      politicalParty: candidate.party,
-      twitterFollowersCount: candidate.twitter_followers_count,
-    });
   }
 
   onIssueStoreChange () {
-    const { candidateWeVoteId } = this.state;
-    const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(candidateWeVoteId) || [];
-    const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(candidateWeVoteId) || [];
-    const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
-    const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
-    this.setState({
-      issuesUnderThisBallotItemVoterIsFollowingLength,
-      issuesUnderThisBallotItemVoterIsNotFollowingLength,
-    });
+    const { candidateWeVoteId } = this.props;
+    if (candidateWeVoteId) {
+      const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(candidateWeVoteId) || [];
+      const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(candidateWeVoteId) || [];
+      const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
+      const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
+      this.setState({
+        issuesUnderThisBallotItemVoterIsFollowingLength,
+        issuesUnderThisBallotItemVoterIsNotFollowingLength,
+      });
+    }
   }
 
   onVoterGuideStoreChange () {
@@ -203,13 +208,20 @@ class CandidateItem extends Component {
   }
 
   onSupportStoreChange () {
-    // DALE 2019-02-26 Is this needed?
-    this.setState();
+    const { candidateWeVoteId } = this.props;
+    if (candidateWeVoteId) {
+      const voterOpposesBallotItem = SupportStore.getVoterOpposesByBallotItemWeVoteId(candidateWeVoteId);
+      const voterSupportsBallotItem = SupportStore.getVoterSupportsByBallotItemWeVoteId(candidateWeVoteId);
+      this.setState({
+        voterOpposesBallotItem,
+        voterSupportsBallotItem,
+      });
+    }
   }
 
   getCandidateLink () {
     // If here, we assume the voter is on the Office page
-    const { candidateWeVoteId, organizationWeVoteId } = this.state;
+    const { candidateWeVoteId, organizationWeVoteId } = this.props;
     if (candidateWeVoteId) {
       if (organizationWeVoteId) {
         return `/candidate/${candidateWeVoteId}/bto/${organizationWeVoteId}`; // back-to-office
@@ -221,10 +233,12 @@ class CandidateItem extends Component {
   }
 
   getOfficeLink () {
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
-      return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`; // back-to-voter-guide
-    } else if (this.state.officeWeVoteId) {
-      return `/office/${this.state.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
+    const { organizationWeVoteId } = this.props;
+    const { officeWeVoteId } = this.state;
+    if (organizationWeVoteId && organizationWeVoteId !== '') {
+      return `/office/${officeWeVoteId}/btvg/${organizationWeVoteId}`; // back-to-voter-guide
+    } else if (officeWeVoteId) {
+      return `/office/${officeWeVoteId}/b/btdb/`; // back-to-default-ballot
     } else return '';
   }
 
@@ -242,7 +256,7 @@ class CandidateItem extends Component {
     }
   }
 
-  candidateRenderBlock = (candidateWeVoteId) => {
+  candidateRenderBlock = (candidateWeVoteId, useLinkToCandidatePage = false) => {
     const { linkToBallotItemPage, linkToOfficePage, showHover, showOfficeName } = this.props;
     const {
       ballotItemDisplayName,
@@ -256,7 +270,10 @@ class CandidateItem extends Component {
     return (
       <div>
         <CandidateWrapper className="card-main__media-object">
-          <CandidateInfo>
+          <CandidateInfo
+            isClickable={useLinkToCandidatePage === true}
+            onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
+          >
             <div className="card-main__media-object-anchor">
               <ImageHandler
                 className="card-main__avatar"
@@ -297,16 +314,16 @@ class CandidateItem extends Component {
               </span>
             </Candidate>
           </CandidateInfo>
-          <div className="u-show-desktop">
+          <BallotItemSupportOpposeCountDisplayWrapper className="u-show-desktop">
             <BallotItemSupportOpposeCountDisplay
               handleLeaveCandidateCard={this.handleLeave}
               handleEnterCandidateCard={this.handleEnter}
               ballotItemWeVoteId={candidateWeVoteId}
             />
-          </div>
-          <div className="u-show-mobile-tablet">
+          </BallotItemSupportOpposeCountDisplayWrapper>
+          <BallotItemSupportOpposeCountDisplayWrapper className="u-show-mobile-tablet">
             <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
-          </div>
+          </BallotItemSupportOpposeCountDisplayWrapper>
           {' '}
         </CandidateWrapper>
         {' '}
@@ -334,7 +351,7 @@ class CandidateItem extends Component {
       hideMoreButton
     >
       {/* If there aren't any comments about the candidate, show the text description of the candidate */}
-      { candidateText.length ? (
+      { (candidateText && candidateText.length) ? (
         <div className={`u-stack--sm${this.props.linkToBallotItemPage ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
           <div className="card-main__description">
             <TextTruncate
@@ -349,15 +366,19 @@ class CandidateItem extends Component {
             &nbsp;more
           </span>
         </div>
-      ) :
-        null
-      }
+      ) : null }
     </TopCommentByBallotItem>
   );
 
   candidateIssuesAndCommentBlock = (candidateText, localUniqueId) => {
-    const { hideBallotItemSupportOpposeComment, hideShowMoreFooter, linkToBallotItemPage, showHover, showTopCommentByBallotItem } = this.props;
-    const { ballotItemDisplayName, candidateWeVoteId, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow, showPositionStatementActionBar } = this.state;
+    const {
+      candidateWeVoteId, hideBallotItemSupportOpposeComment, hideShowMoreFooter,
+      linkToBallotItemPage, showHover, showPositionStatementActionBar, showTopCommentByBallotItem,
+    } = this.props;
+    const {
+      ballotItemDisplayName, largeAreaHoverColorOnNow,
+      largeAreaHoverLinkOnNow, voterOpposesBallotItem, voterSupportsBallotItem,
+    } = this.state;
     return (
       <div>
         <div className="card-main__actions">
@@ -375,12 +396,12 @@ class CandidateItem extends Component {
                   {linkToBallotItemPage && largeAreaHoverLinkOnNow && showHover ?
                     (
                       <div className="row">
-                        <div className="col col-9 card__blue">
+                        <div className={`card__blue ${(voterSupportsBallotItem || voterOpposesBallotItem) ? 'col col-6' : 'col col-9'}`}>
                           <Link to={this.getCandidateLink()} className="card-main__no-underline">
                             {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
                           </Link>
                         </div>
-                        <div className="col col-3">
+                        <div className={`${(voterSupportsBallotItem || voterOpposesBallotItem) ? 'col col-6' : 'col col-3'}`}>
                           <ItemActionBar
                             ballotItemWeVoteId={candidateWeVoteId}
                             buttonsOnly
@@ -414,7 +435,7 @@ class CandidateItem extends Component {
               </div>
             ) : (
               <span>
-                {candidateText.length ? (
+                {(candidateText && candidateText.length) && (
                   <div
                     className={`u-stack--sm ${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
                   >
@@ -425,9 +446,7 @@ class CandidateItem extends Component {
                       />
                     </div>
                   </div>
-                ) :
-                  null
-                }
+                )}
               </span>
             )}
             <div>
@@ -462,22 +481,23 @@ class CandidateItem extends Component {
 
   render () {
     renderLog('CandidateItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { candidateText, candidateWeVoteId } = this.state;
+    const { candidateWeVoteId, linkToBallotItemPage, showHover } = this.props;
+    const { candidateText, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow } = this.state;
     if (!candidateWeVoteId) {
       return null;
     }
 
     return (
-      <div>
-        <div
-          className={`u-show-desktop card-main u-overflow-hidden candidate-card ${this.props.linkToBallotItemPage && this.state.largeAreaHoverColorOnNow && this.props.showHover ? ' card-main--outline' : ''}`}
+      <CandidateItemWrapper>
+        <DesktopWrapper
+          className={`u-show-desktop card-main u-overflow-hidden candidate-card ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? ' card-main--outline' : ''}`}
           onMouseEnter={this.handleEnter}
           onMouseLeave={this.handleLeave}
         >
-          {this.props.linkToBallotItemPage && this.state.largeAreaHoverLinkOnNow && this.props.showHover ? (
-            <Link to={this.getCandidateLink()} className="card-main__no-underline">
-              {this.candidateRenderBlock(candidateWeVoteId)}
-            </Link>
+          {linkToBallotItemPage && largeAreaHoverLinkOnNow && showHover ? (
+            <div className="card-main__no-underline">
+              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage)}
+            </div>
           ) : (
             <div>
               {this.candidateRenderBlock(candidateWeVoteId)}
@@ -486,12 +506,12 @@ class CandidateItem extends Component {
           <div>
             {this.candidateIssuesAndCommentBlock(candidateText, 'desktopIssuesComment')}
           </div>
-        </div>
-        <div className="u-show-mobile-tablet card-main candidate-card u-no-scroll">
-          {this.props.linkToBallotItemPage ? (
-            <Link to={this.getCandidateLink()} className="card-main__no-underline">
-              {this.candidateRenderBlock(candidateWeVoteId)}
-            </Link>
+        </DesktopWrapper>
+        <MobileTabletWrapper className="u-show-mobile-tablet card-main candidate-card u-no-scroll">
+          {linkToBallotItemPage ? (
+            <div className="card-main__no-underline">
+              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage)}
+            </div>
           ) : (
             <span>
               {this.candidateRenderBlock(candidateWeVoteId)}
@@ -500,18 +520,26 @@ class CandidateItem extends Component {
           <div>
             {this.candidateIssuesAndCommentBlock(candidateText, 'mobileIssuesComment')}
           </div>
-        </div>
-      </div>
+        </MobileTabletWrapper>
+      </CandidateItemWrapper>
     );
   }
 }
 
+const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+  cursor: pointer;
+`;
+
 const CandidateInfo = styled.div`
+  ${({ isClickable }) => ((isClickable) ? 'cursor: pointer;' : '')}
   display: flex;
   flex-flow: row wrap;
 `;
 
 const Candidate = styled.div`
+`;
+
+const CandidateItemWrapper = styled.div`
 `;
 
 const CandidateWrapper = styled.div`
@@ -522,6 +550,12 @@ const CandidateWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 100%;
   }
+`;
+
+const DesktopWrapper = styled.div`
+`;
+
+const MobileTabletWrapper = styled.div`
 `;
 
 export default CandidateItem;
