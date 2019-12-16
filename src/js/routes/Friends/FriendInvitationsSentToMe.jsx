@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import _ from 'lodash';
+import Button from '@material-ui/core/Button';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -9,6 +10,7 @@ import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import { historyPush } from '../../utils/cordovaUtils';
+import MessageCard from '../../components/Widgets/MessageCard';
 
 export default class FriendInvitationsSentToMe extends Component {
   static propTypes = {
@@ -116,16 +118,11 @@ export default class FriendInvitationsSentToMe extends Component {
               />
             </span>
           ) : (
-            <>
-              <div className="card">
-                <div className="card-main">
-                  <p>You currently have no incoming requests. Send some invites to connect with your friends!</p>
-                  <Button variant="contained" color="primary" onClick={() => historyPush('/friends/invite')}>
-                    Invite Friends
-                  </Button>
-                </div>
-              </div>
-            </>
+            <MessageCard 
+              mainText="You currently have no incoming requests. Send some invites to connect with your friends!"
+              buttonText="Invite Friends"
+              buttonURL="/friends/invite"
+            />
           )}
         </div>
       </div>

@@ -31,6 +31,7 @@ import SuggestedFriends from './Friends/SuggestedFriends';
 import FriendsCurrent from './Friends/FriendsCurrent';
 import InviteByEmail from './Friends/InviteByEmail';
 import FriendInvitationsSentByMe from './Friends/FriendInvitationsSentByMe';
+import MessageCard from '../components/Widgets/MessageCard';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
@@ -143,30 +144,22 @@ class Friends extends Component {
       case 'requests':
         mobileContentToDisplay = (
           <>
-            {this.state.friendInvitationsSentToMe.length > 0 ? (
+            {this.state.friendInvitationsSentToMe.length === 0 ? (
               <FriendInvitationsSentToMe />
             ) : (
               <>
-                <SectionTitle>No invitations.</SectionTitle>
                 {this.state.suggestedFriendList.length > 0 ? (
-                  <>
-                    <p>You currently have no incoming requests. Check out your suggested friends.</p>
-                    <div className="full-width center-text">
-                      <Button variant="contained" color="primary" onClick={() => historyPush('/friends/suggested')}>
-                        View Suggested Friends
-                      </Button>
-                    </div>
-                  </>
+                  <MessageCard
+                    mainText="You currently have no incoming requests. Check out your suggested friends."
+                    buttonText="View Suggestions"
+                    buttonURL="/friends/suggested"
+                  />
                 ) : (
-                  <>
-                    <p>You currently have no incoming requests. Send some invites to connect with your friends!</p>
-                    <SectionTitle>Invite Friends</SectionTitle>
-                    <div className="card">
-                      <div className="card-main">
-                        <AddFriendsByEmail />
-                      </div>
-                    </div>
-                  </>
+                  <MessageCard
+                    mainText="You currently have no incoming requests. Send some invites to connect with your friends!"
+                    buttonText="Invite Friends"
+                    buttonURL="/friends/invite"
+                  />
                 )}              
               </>
             )}
