@@ -7,6 +7,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
+import MessageCard from '../../components/Widgets/MessageCard';
 
 export default class FriendInvitationsSentByMe extends Component {
   static propTypes = {
@@ -110,7 +111,7 @@ export default class FriendInvitationsSentByMe extends Component {
               />
             </span>
           ) : (
-            <MessageCard 
+            <MessageCard
               mainText="You currently have no sent requests. Send some invites to connect with your friends!"
               buttonText="Invite Friends"
               buttonURL="/friends/invite"

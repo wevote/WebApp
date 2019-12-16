@@ -57,6 +57,7 @@ export default class InviteByEmail extends Component {
             <AddFriendsByEmail />
           </div>
         </section>
+        <br />
         {currentFriendListLength !== 0 && (
           <>
             <Link className="u-cursor--pointer u-no-underline" to="/friends/current">
@@ -88,5 +89,5 @@ const SectionTitle = styled.h2`
 
 const FriendsLink = styled.div`
   width: 100%;
-  align-text: right;
+  margin-top: 12px;
 `;

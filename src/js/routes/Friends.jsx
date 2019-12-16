@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { Link } from 'react-router';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Button from '@material-ui/core/Button';
 import Info from '@material-ui/icons/Info';
 import { Tooltip, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -84,6 +82,9 @@ class Friends extends Component {
 
     if (window.innerWidth < 769) {
       this.setState({ mobileMode: true });
+      if (!this.props.params.tabItem) {
+        historyPush('/friends/requests');
+      }
     } else {
       this.setState({ mobileMode: false });
     }
@@ -208,7 +209,7 @@ class Friends extends Component {
         mobileContentToDisplay = (
           <>
             {this.state.currentFriends.length > 0 ? (
-              <CurrentFriends />
+              <FriendsCurrent />
             ) : (
               <>
                 {this.state.friendInvitationsSentToMe.length > 0 ? (
@@ -239,7 +240,7 @@ class Friends extends Component {
                 mainText="You currently have no sent requests. Send some now!"
                 buttonText="Invite Friends"
                 buttonURL="/friends/invite"
-              />             
+              />
             )}
           </>
         );

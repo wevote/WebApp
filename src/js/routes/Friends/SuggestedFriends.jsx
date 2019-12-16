@@ -7,6 +7,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
+import MessageCard from '../../components/Widgets/MessageCard';
 
 export default class SuggestedFriends extends Component {
   static propTypes = {
