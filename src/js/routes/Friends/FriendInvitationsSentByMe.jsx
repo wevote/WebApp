@@ -115,7 +115,7 @@ export default class FriendInvitationsSentByMe extends Component {
               mainText="You currently have no sent requests. Send some invites to connect with your friends!"
               buttonText="Invite Friends"
               buttonURL="/friends/invite"
-            />         
+            />
           )}
         </div>
       </div>

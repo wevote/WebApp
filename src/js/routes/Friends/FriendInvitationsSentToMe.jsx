@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import _ from 'lodash';
-import Button from '@material-ui/core/Button';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
-import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
-import { historyPush } from '../../utils/cordovaUtils';
 import MessageCard from '../../components/Widgets/MessageCard';
 
 export default class FriendInvitationsSentToMe extends Component {
@@ -30,10 +27,8 @@ export default class FriendInvitationsSentToMe extends Component {
 
   componentDidMount () {
     FriendActions.friendInvitationsSentToMe();
-    FriendActions.suggestedFriendList();
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
-      suggestedFriends: FriendStore.suggestedFriendList(),
     });
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -46,7 +41,6 @@ export default class FriendInvitationsSentToMe extends Component {
   onFriendStoreChange () {
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
-      suggestedFriendList: FriendStore.suggestedFriendList(),
     });
   }
 

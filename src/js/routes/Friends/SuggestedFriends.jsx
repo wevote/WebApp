@@ -110,7 +110,7 @@ export default class SuggestedFriends extends Component {
               />
             </span>
           ) : (
-            <MessageCard 
+            <MessageCard
               mainText="You currently have no suggested friends. Send some invites to connect with your friends!"
               buttonText="Invite Friends"
               buttonURL="/friends/invite"

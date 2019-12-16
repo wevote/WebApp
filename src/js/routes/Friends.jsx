@@ -66,7 +66,7 @@ class Friends extends Component {
       friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
     });
 
-    const defaultTabItem = 'requests';
+    // const defaultTabItem = 'requests';
 
     // if (FriendStore.friendInvitationsSentToMe().length > 0) {
     //   defaultTabItem = 'requests';
@@ -111,18 +111,18 @@ class Friends extends Component {
     });
   }
 
+  getSelectedTab () {
+    return this.props.params.tabItem || this.state.defaultTabItem;
+  }
+
+  handleNavigation = to => historyPush(to);
+
   handleResize () {
     if (window.innerWidth < 769) {
       this.setState({ mobileMode: true });
     } else {
       this.setState({ mobileMode: false });
     }
-  }
-
-  handleNavigation = to => historyPush(to);
-
-  getSelectedTab () {
-    return this.props.params.tabItem || this.state.defaultTabItem;
   }
 
   render () {
@@ -161,7 +161,7 @@ class Friends extends Component {
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />
-                )}              
+                )}
               </>
             )}
           </>
@@ -186,7 +186,7 @@ class Friends extends Component {
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />
-                )}              
+                )}
               </>
             )}
           </>
@@ -224,7 +224,7 @@ class Friends extends Component {
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />
-                )}              
+                )}
               </>
             )}
           </>
@@ -264,7 +264,7 @@ class Friends extends Component {
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />
-                )}              
+                )}
               </>
             )}
           </>
@@ -394,7 +394,7 @@ class Friends extends Component {
                 <Tab
                   classes={{ root: classes.navigationTab }}
                   value="invite"
-                  label={window.innerWidth > 500 ? "Add Friends" : "Invite"}
+                  label={window.innerWidth > 500 ? 'Add Friends' : 'Invite'}
                   onClick={() => {
                     this.handleNavigation('/friends/invite');
                   }}
