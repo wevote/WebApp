@@ -36,7 +36,7 @@ module.exports = {
       { from: 'src/css/', to: 'css/' },
     ]),
     new InjectManifest({
-      swSrc: './src/ServiceWorker.js',
+      swSrc: './src/serviceWorker.js',
       swDest: 'sw.js',
     }),
   ],
