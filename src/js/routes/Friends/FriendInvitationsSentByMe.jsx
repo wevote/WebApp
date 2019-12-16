@@ -7,6 +7,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
+import MessageCard from '../../components/Widgets/MessageCard';
 
 export default class FriendInvitationsSentByMe extends Component {
   static propTypes = {
@@ -82,10 +83,10 @@ export default class FriendInvitationsSentByMe extends Component {
     return (
       <div className="opinion-view">
         <Helmet title="Your Friends - We Vote" />
-        <SectionTitle>Your Invitations</SectionTitle>
         <div>
           { friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0 ? (
             <span>
+              <SectionTitle>Your Invitations</SectionTitle>
               <SearchBar
                 clearButton
                 searchButton
@@ -109,9 +110,13 @@ export default class FriendInvitationsSentByMe extends Component {
                 invitationsSentByMe
               />
             </span>
-          ) :
-            <p>Your friends will be shown here.</p>
-          }
+          ) : (
+            <MessageCard
+              mainText="You currently have no sent requests. Send some invites to connect with your friends!"
+              buttonText="Invite Friends"
+              buttonURL="/friends/invite"
+            />
+          )}
         </div>
       </div>
     );

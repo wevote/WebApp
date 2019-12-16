@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import styled from 'styled-components';
 import FriendToggle from './FriendToggle';
 import ImageHandler from '../ImageHandler';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
-export default class FriendDisplayForList extends Component {
+class FriendDisplayForList extends Component {
   static propTypes = {
     voter_we_vote_id: PropTypes.string,
     voter_photo_url_medium: PropTypes.string,
@@ -42,54 +43,42 @@ export default class FriendDisplayForList extends Component {
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
 
     const friendDisplayHtml = (
-      <div>
-        <div className="card-child__avatar">
-          { voterGuideLink ? (
-            <Link to={voterGuideLink} className="u-no-underline">
-              {voterImage}
-            </Link>
-          ) :
-            <span>{voterImage}</span> }
-        </div>
-        <div className="card-child__media-object-content">
-          <div className="card-child__content">
+      <Wrapper previewMode={this.props.previewMode}>
+        <Flex>
+          <Avatar>
             { voterGuideLink ? (
               <Link to={voterGuideLink} className="u-no-underline">
-                {voterDisplayNameFormatted}
+                {voterImage}
               </Link>
-            ) : (
-              <span>
-                &nbsp;
-                {' '}
-                {voterDisplayNameFormatted}
-              </span>
-            )}
-            {' '}
-            is your Friend
-            { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
-              null}
+            ) :
+              <span>{voterImage}</span> }
+          </Avatar>
+          <Details>
             { voterGuideLink ? (
-              <span>
-                <br />
-                <Link to={voterGuideLink} className="u-no-underline">See your friend&apos;s voter guide.</Link>
-              </span>
-            ) : null
-            }
-          </div>
-          <div className="card-child__additional">
-            <div className="card-child__follow-buttons">
-              { this.props.editMode ? <FriendToggle otherVoterWeVoteId={voterWeVoteId} /> : null }
-            </div>
-            {voterTwitterFollowersCount ? (
-              <span className="twitter-followers__badge">
-                <span className="fab fa-twitter" />
-                {numberWithCommas(voterTwitterFollowersCount)}
-              </span>
-            ) : null
-            }
-          </div>
-        </div>
-      </div>
+              <Name>
+                <Link to={voterGuideLink} className="u-no-underline">
+                  {voterDisplayNameFormatted}
+                </Link>
+              </Name>
+            ) : (
+              <Name>
+                {voterDisplayNameFormatted}
+              </Name>
+            )}
+            <Info>
+              Positions:
+              <strong>7</strong>
+            </Info>
+            <Info>
+              Mutual Friends:
+              <strong>23</strong>
+            </Info>
+          </Details>
+        </Flex>
+        <>
+          { this.props.editMode ? <FriendToggle otherVoterWeVoteId={voterWeVoteId} /> : null }
+        </>
+      </Wrapper>
     );
 
     if (this.props.previewMode) {
@@ -105,3 +94,92 @@ export default class FriendDisplayForList extends Component {
     }
   }
 }
+
+const Wrapper = styled.div`
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  flex-wrap: wrap;
+  @media(min-width: 400px) {
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    padding-left: 100px;
+  }
+  @media (min-width: 520px) {
+    height: 68px;
+    padding-left: 85px;
+  }
+`;
+
+const Flex = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
+const Avatar = styled.div`
+  width: 25%;
+  max-width: 100px;
+  margin-right: 8px;
+  & img {
+    width: 100%;
+  }
+  @media (min-width: 400px) {
+    height: 100% !important;
+    max-width: 100%;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    position: absolute !important;
+    left: 0;
+    top: 0;
+    margin: 0 auto;
+    & img {
+      height: 100%;
+      width: auto;
+      border-radius: 6px;
+      max-width: 68.8px;
+      max-height: 68.8px;
+    }
+  }
+`;
+
+const Details = styled.div`
+  width: 50%;
+  margin: 0 auto;
+  @media(min-width: 400px) {
+    width: fit-content;
+    margin: 0;
+  }
+`;
+
+const Name = styled.h3`
+  font-weight: bold;
+  color: black !important;
+  font-size: 26px;
+  margin-bottom: 4px;
+  text-align: center;
+  width: 100%;
+  @media(min-width: 400px) {
+    text-align: left;
+    font-size: 22px;
+    width: fit-content;
+  }
+`;
+
+const Info = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  @media (min-width: 400px){
+    display: block;
+    width: fit-content;
+  }
+`;
+
+export default FriendDisplayForList;

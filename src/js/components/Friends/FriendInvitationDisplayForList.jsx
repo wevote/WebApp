@@ -84,44 +84,46 @@ class FriendInvitationDisplayForList extends Component {
 
     const friendInvitationHtml = (
       <Wrapper previewMode={this.props.previewMode}>
-        <Avatar>
-          { voterGuideLink ? (
-            <Link to={voterGuideLink} className="u-no-underline">
-              {voterImage}
-            </Link>
-          ) :
-            <span>{voterImage}</span> }
-        </Avatar>
-        <Details>
-          {voterGuideLink ? (
-            <Name>
+        <Flex>
+          <Avatar>
+            { voterGuideLink ? (
               <Link to={voterGuideLink} className="u-no-underline">
-                {voterDisplayNameFormatted}
+                {voterImage}
               </Link>
-            </Name>
-          ) : (
-            <Name>{voterDisplayNameFormatted}</Name>
-          )}
-          <Info>
-            Positions:
-            <strong>7</strong>
-          </Info>
-          <Info>
-            Mutual Friends:
-            <strong>23</strong>
-          </Info>
-          {/* { invitationsSentByMe ?
-            null :
-            <span> invited you.</span>} */}
-          { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
-          {/* {voterTwitterFollowersCount ? (
-            <span className="twitter-followers__badge">
-              <span className="fab fa-twitter" />
-              {numberWithCommas(voterTwitterFollowersCount)}
-            </span>
-          ) : null
-            } */}
-        </Details>
+            ) :
+              <span>{voterImage}</span> }
+          </Avatar>
+          <Details>
+            {voterGuideLink ? (
+              <Name>
+                <Link to={voterGuideLink} className="u-no-underline">
+                  {voterDisplayNameFormatted}
+                </Link>
+              </Name>
+            ) : (
+              <Name>{voterDisplayNameFormatted}</Name>
+            )}
+            <Info>
+              Positions:
+              <strong>7</strong>
+            </Info>
+            <Info>
+              Mutual Friends:
+              <strong>23</strong>
+            </Info>
+            {/* { invitationsSentByMe ?
+              null :
+              <span> invited you.</span>} */}
+            { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
+            {/* {voterTwitterFollowersCount ? (
+              <span className="twitter-followers__badge">
+                <span className="fab fa-twitter" />
+                {numberWithCommas(voterTwitterFollowersCount)}
+              </span>
+            ) : null
+              } */}
+          </Details>
+        </Flex>
         {this.state.isFriend ? null : (
           <>
             { this.props.invitationsSentByMe ? (
@@ -185,10 +187,17 @@ const Wrapper = styled.div`
   }
 `;
 
+const Flex = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
 const Avatar = styled.div`
-  width: 50%;
-  max-width: 120px;
-  margin: 0 auto;
+  width: 25%;
+  max-width: 100px;
+  margin-right: 8px;
   & img {
     width: 100%;
   }
@@ -200,6 +209,7 @@ const Avatar = styled.div`
     position: absolute !important;
     left: 0;
     top: 0;
+    margin: 0 auto;
     & img {
       height: 100%;
       width: auto;

@@ -23,12 +23,13 @@ import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPrevi
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import VoterStore from '../stores/VoterStore';
 import testimonialImage from '../../img/global/photos/Dale_McGrew-200x200.jpg';
-import { cordovaDot } from '../utils/cordovaUtils';
+import { cordovaDot, historyPush } from '../utils/cordovaUtils';
 import FriendInvitationsSentToMe from './Friends/FriendInvitationsSentToMe';
 import SuggestedFriends from './Friends/SuggestedFriends';
 import FriendsCurrent from './Friends/FriendsCurrent';
 import InviteByEmail from './Friends/InviteByEmail';
 import FriendInvitationsSentByMe from './Friends/FriendInvitationsSentByMe';
+import MessageCard from '../components/Widgets/MessageCard';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
@@ -44,10 +45,7 @@ class Friends extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {
-      mobileValue: '',
-      desktopValue: '',
-    };
+    this.state = {};
 
     this.handleResize = this.handleResize.bind(this);
   }
@@ -63,40 +61,36 @@ class Friends extends Component {
     FriendActions.friendInvitationsSentByMe();
     this.setState({
       suggestedFriendList: FriendStore.suggestedFriendList(),
-      // currentFriendList: FriendStore.currentFriends(),
-      // friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
-      // friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
+      currentFriends: FriendStore.currentFriends(),
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
     });
+
+    // const defaultTabItem = 'requests';
+
+    // if (FriendStore.friendInvitationsSentToMe().length > 0) {
+    //   defaultTabItem = 'requests';
+    // } else if (FriendStore.friendInvitationsSentByMe().length > 0) {
+    //   defaultTabItem = 'sent-requests';
+    // } else if (FriendStore.suggestedFriendList().length > 0) {
+    //   defaultTabItem = 'suggested';
+    // } else {
+    //   defaultTabItem = "invite";
+    // }
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
 
     if (window.innerWidth < 769) {
-      this.setState({ mobileMode: true, mobileValue: this.props.params.tabItem || 'requests' });
+      this.setState({ mobileMode: true });
+      if (!this.props.params.tabItem) {
+        historyPush('/friends/requests');
+      }
     } else {
-      this.setState({ mobileMode: false, desktopValue: this.props.params.tabItem === undefined ? 'all' : this.props.params.tabItem });
+      this.setState({ mobileMode: false });
     }
 
     window.addEventListener('resize', this.handleResize);
   }
-
-  // shouldComponentUpdate (nextState) {
-  //   if (this.state.mobileMode !== nextState.mobileMode) return true;
-  //   return false;
-  // }
-
-  componentDidUpdate () {
-    if (window.innerWidth >= 770 && this.props.params.tabItem !== this.state.desktopValue) {
-      this.setState({ desktopValue: this.props.params.tabItem });
-    }
-    // if (window.innerWidth < 769 && this.props.params.tabItem !== this.state.mobileValue) {
-    //   this.setState({ mobileValue: this.props.params.tabItem });
-    // }
-  }
-
-  // shouldComponentUpdate (nextProps) {
-  //   if (this.props.params.tabItem !== nextProps.params.tabItem) return true;
-  //   return false;
-  // }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
@@ -111,22 +105,23 @@ class Friends extends Component {
   onFriendStoreChange () {
     this.setState({
       suggestedFriendList: FriendStore.suggestedFriendList(),
+      currentFriends: FriendStore.currentFriends(),
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
     });
   }
 
-  handleResize () {
-    const previousValue = this.state.mobileValue;
+  getSelectedTab () {
+    return this.props.params.tabItem || this.state.defaultTabItem;
+  }
 
+  handleNavigation = to => historyPush(to);
+
+  handleResize () {
     if (window.innerWidth < 769) {
-      this.setState({ mobileMode: true, mobileValue: previousValue || 'requests' });
-      window.history.pushState({ tabItem: this.state.mobileValue }, '', `/friends/${this.state.mobileValue}`);
+      this.setState({ mobileMode: true });
     } else {
       this.setState({ mobileMode: false });
-      if (this.state.desktopValue) {
-        window.history.pushState({ tabItem: this.state.desktopValue }, '', `/friends/${this.state.desktopValue}`);
-      } else {
-        window.history.pushState({ tabItem: '' }, '', '/friends');
-      }
     }
   }
 
@@ -146,15 +141,55 @@ class Friends extends Component {
     let mobileContentToDisplay;
     let desktopContentToDisplay;
 
-    switch (mobileValue) {
+    switch (this.props.params.tabItem) {
       case 'requests':
         mobileContentToDisplay = (
-          <FriendInvitationsSentToMe />
+          <>
+            {this.state.friendInvitationsSentToMe.length > 0 ? (
+              <FriendInvitationsSentToMe />
+            ) : (
+              <>
+                {this.state.suggestedFriendList.length > 0 ? (
+                  <MessageCard
+                    mainText="You currently have no incoming requests. Check out your suggested friends."
+                    buttonText="View Suggestions"
+                    buttonURL="/friends/suggested"
+                  />
+                ) : (
+                  <MessageCard
+                    mainText="You currently have no incoming requests. Send some invites to connect with your friends!"
+                    buttonText="Invite Friends"
+                    buttonURL="/friends/invite"
+                  />
+                )}
+              </>
+            )}
+          </>
         );
         break;
       case 'suggested':
         mobileContentToDisplay = (
-          <SuggestedFriends />
+          <>
+            {this.state.suggestedFriendList.length > 0 ? (
+              <SuggestedFriends />
+            ) : (
+              <>
+                {this.state.friendInvitationsSentToMe.length > 0 ? (
+                  <MessageCard
+                    mainText="You currently have no suggested friends. Check out your incoming friend requests!"
+                    buttonText="View Requests"
+                    buttonURL="/friends/requests"
+                  />
+                ) : (
+                  <MessageCard
+                    mainText="You currently have no suggested friends. Send some invites to connect with your friends!"
+                    buttonText="Invite Friends"
+                    buttonURL="/friends/invite"
+                  />
+                )}
+              </>
+            )}
+          </>
         );
         break;
       case 'invite':
@@ -172,17 +207,67 @@ class Friends extends Component {
         break;
       case 'current':
         mobileContentToDisplay = (
-          <FriendsCurrent />
+          <>
+            {this.state.currentFriends.length > 0 ? (
+              <FriendsCurrent />
+            ) : (
+              <>
+                {this.state.friendInvitationsSentToMe.length > 0 ? (
+                  <MessageCard
+                    mainText="You currently have no friends on We Vote, but you do have friend requests. Check them out!"
+                    buttonText="View Requests"
+                    buttonURL="/friends/requests"
+                  />
+                ) : (
+                  <MessageCard
+                    mainText="You currently have no friends on We Vote. Send some invites to connect with your friends!"
+                    buttonText="Invite Friends"
+                    buttonURL="/friends/invite"
+                  />
+                )}
+              </>
+            )}
+          </>
         );
         break;
       case 'sent-requests':
         mobileContentToDisplay = (
-          <FriendInvitationsSentByMe />
+          <>
+            {this.state.friendInvitationsSentByMe.length > 0 ? (
+              <FriendInvitationsSentToMe />
+            ) : (
+              <MessageCard
+                mainText="You currently have no sent requests. Send some now!"
+                buttonText="Invite Friends"
+                buttonURL="/friends/invite"
+              />
+            )}
+          </>
         );
         break;
       default:
         mobileContentToDisplay = (
-          <FriendInvitationsSentToMe />
+          <>
+            {this.state.friendInvitationsSentToMe.length > 0 ? (
+              <FriendInvitationsSentToMe />
+            ) : (
+              <>
+                {this.state.suggestedFriendList.length > 0 ? (
+                  <MessageCard
+                    mainText="You currently have no incoming requests. Check out your suggested friends."
+                    buttonText="View Suggestions"
+                    buttonURL="/friends/suggested"
+                  />
+                ) : (
+                  <MessageCard
+                    mainText="You currently have no incoming requests. Send some invites to connect with your friends!"
+                    buttonText="Invite Friends"
+                    buttonURL="/friends/invite"
+                  />
+                )}
+              </>
+            )}
+          </>
         );
     }
 
@@ -274,7 +359,7 @@ class Friends extends Component {
             <Helmet title="Friends - We Vote" />
             <Paper elevation={1}>
               <Tabs
-                value={mobileValue}
+                value={this.getSelectedTab()}
                 // onChange={handleChange}
                 indicatorColor="primary"
                 textColor="primary"
@@ -282,50 +367,62 @@ class Friends extends Component {
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs example"
               >
-                <Tab
-                  value="requests"
-                  label="Requests"
-                  onClick={() => {
-                    this.setState({ mobileValue: 'requests' });
-                    window.history.pushState({ tabItem: 'requests' }, '', '/friends/requests');
-                  }}
-                />
+                {this.state.friendInvitationsSentToMe.length > 0 || mobileValue === 'requests' ? (
+                  <Tab
+                    classes={{ root: classes.navigationTab }}
+                    value="requests"
+                    label="Requests"
+                    onClick={() => {
+                      this.handleNavigation('/friends/requests');
+                    }}
+                  />
+                ) : (
+                  null
+                )}
                 {this.state.suggestedFriendList.length > 0 || mobileValue === 'suggested' ? (
                   <Tab
+                    classes={{ root: classes.navigationTab }}
                     value="suggested"
                     label="Suggested"
                     onClick={() => {
-                      this.setState({ mobileValue: 'suggested' });
-                      window.history.pushState({ tabItem: 'suggested' }, '', '/friends/suggested');
+                      this.handleNavigation('/friends/suggested');
                     }}
                   />
                 ) : (
                   null
                 )}
                 <Tab
+                  classes={{ root: classes.navigationTab }}
                   value="invite"
-                  label="Add Contacts"
+                  label={window.innerWidth > 500 ? 'Add Friends' : 'Invite'}
                   onClick={() => {
-                    this.setState({ mobileValue: 'invite' });
-                    window.history.pushState({ tabItem: 'invite' }, '', '/friends/invite');
+                    this.handleNavigation('/friends/invite');
                   }}
                 />
-                <Tab
-                  value="current"
-                  label="Friends"
-                  onClick={() => {
-                    this.setState({ mobileValue: 'current' });
-                    window.history.pushState({ tabItem: 'current' }, '', '/friends/current');
-                  }}
-                />
-                <Tab
-                  value="sent-requests"
-                  label="Sent Requests"
-                  onClick={() => {
-                    this.setState({ mobileValue: 'sent-requests' });
-                    window.history.pushState({ tabItem: 'sent-requests' }, '', '/friends/sent-requests');
-                  }}
-                />
+                {this.state.currentFriends.length > 0 || mobileValue === 'current' ? (
+                  <Tab
+                    classes={{ root: classes.navigationTab }}
+                    value="current"
+                    label="Friends"
+                    onClick={() => {
+                      this.handleNavigation('/friends/current');
+                    }}
+                  />
+                ) : (
+                  null
+                )}
+                {this.state.friendInvitationsSentByMe.length > 0 || mobileValue === 'sent-requests' ? (
+                  <Tab
+                    classes={{ root: classes.navigationTab }}
+                    value="sent-requests"
+                    label="Sent Requests"
+                    onClick={() => {
+                      this.handleNavigation('/friends/sent-requests');
+                    }}
+                  />
+                ) : (
+                  null
+                )}
               </Tabs>
             </Paper>
             <br />
@@ -344,6 +441,12 @@ class Friends extends Component {
 const styles = () => ({
   tooltip: {
     display: 'inline !important',
+  },
+  navigationTab: {
+    minWidth: '0px !important',
+    width: 'fit-content !important',
+    height: '40px !important',
+    maxHeight: '40px !important',
   },
 });
 

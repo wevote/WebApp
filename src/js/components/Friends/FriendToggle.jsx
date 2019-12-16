@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Button } from '@material-ui/core';
+import styled from 'styled-components';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -56,22 +58,65 @@ export default class FriendToggle extends Component {
     // You should not be able to friend yourself
     if (isLookingAtSelf) { return <div />; }
 
-    const floatRight = { float: 'right' };
-
     return (
-      <span style={floatRight}>
-        {isFriend ? (
+      <ButtonContainer>
+        <InnerButtonContainer>
           <Button
-            variant="warning"
-            size="small"
-            onClick={this.unFriend}
+            className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--white"
+            disabled
           >
-            <span>Remove Friend</span>
+            <span>
+              <CheckCircle className="following-icon" />
+            </span>
           </Button>
-        ) :
-          <Button variant="info" size="small" onClick={this.acceptFriendInvite}><span>Add Friend</span></Button>
-        }
-      </span>
+          <div className="issues-follow-btn__seperator" />
+          <Button
+            type="button"
+            id="dropdown-toggle-id"
+            className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            data-reference="parent"
+          >
+            <span className="sr-only">Toggle Dropdown</span>
+          </Button>
+          <Menu id="issues-follow-btn__menu" className="dropdown-menu issues-follow-btn__menu" aria-labelledby="dropdown-toggle-id">
+            <Button
+              type="button"
+              id="dropdown-item-id"
+              className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+              // data-toggle="dropdown"
+              onClick={this.unFriend}
+            >
+              Remove Friend
+            </Button>
+          </Menu>
+        </InnerButtonContainer>
+      </ButtonContainer>
     );
   }
 }
+
+const Menu = styled.div`
+  position: absolute !important;
+  right: 0 !important;
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  margin-top: 18px;
+  @media(min-width: 400px) {
+    width: fit-content;
+    margin-top: 0;
+    margin-left: auto;
+  }
+`;
+
+const InnerButtonContainer = styled.div`
+  margin-left: auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 32px !important;
+`;

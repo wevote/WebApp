@@ -7,6 +7,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
+import MessageCard from '../../components/Widgets/MessageCard';
 
 export default class FriendInvitationsSentToMe extends Component {
   static propTypes = {
@@ -79,13 +80,15 @@ export default class FriendInvitationsSentToMe extends Component {
       friendInvitationsSentToMe = this.state.friendInvitationsSentToMeFilteredBySearch;
     }
 
+    console.log(this.state.suggestedFriends);
+
     return (
       <div className="opinion-view">
         <Helmet title="Your Friends - We Vote" />
-        <SectionTitle>Friend Requests</SectionTitle>
         <div>
           { friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
             <span>
+              <SectionTitle>Friend Requests</SectionTitle>
               <SearchBar
                 clearButton
                 searchButton
@@ -108,9 +111,13 @@ export default class FriendInvitationsSentToMe extends Component {
                 friendList={friendInvitationsSentToMe}
               />
             </span>
-          ) :
-            <p>You currently have no invitations.</p>
-          }
+          ) : (
+            <MessageCard
+              mainText="You currently have no incoming requests. Send some invites to connect with your friends!"
+              buttonText="Invite Friends"
+              buttonURL="/friends/invite"
+            />
+          )}
         </div>
       </div>
     );
