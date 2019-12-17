@@ -383,7 +383,7 @@ class BallotStore extends ReduceStore {
 
       case 'voterAddressRetrieve':
         // console.log('BallotStore, voterAddressRetrieve response received, calling voterBallotItemsRetrieve now.');
-        BallotActions.voterBallotItemsRetrieve();  // Calling actions from Stores is a bad practice, it often results in lots of useless API queries. There is always a way to avoid doing this, and this is very hard to untangle later.
+        BallotActions.voterBallotItemsRetrieve();  // Avoid calling actions from Stores, it often results in unintended useless API queries
         return state;
 
       case 'voterBallotItemsRetrieve':
@@ -510,7 +510,7 @@ class BallotStore extends ReduceStore {
 
       case 'voterSignOut':
         // console.log('resetting BallotStore');
-        BallotActions.voterBallotItemsRetrieve();   // Calling actions from Stores is a bad practice
+        BallotActions.voterBallotItemsRetrieve();
         return this.resetState();
 
       case 'error-voterBallotItemsRetrieve':
