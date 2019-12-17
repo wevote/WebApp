@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import FollowToggle from './FollowToggle';
 import { cleanArray } from '../../utils/textFormat';
 
 class PositionSummaryListForPopover extends Component {
@@ -61,7 +63,7 @@ class PositionSummaryListForPopover extends Component {
       }
       return (
         <PositionSummaryWrapper
-          key={`onePositionForIssue--${positionSummary.organizationWeVoteId}`}
+          key={`onePositionForPopover-${positionSummary.ballotItemWeVoteId}-${positionSummary.organizationWeVoteId}-${positionSummary.organizationName}`}
         >
           {positionSummary.organizationSupports && !positionSummary.organizationInVotersNetwork && (
             <SupportButNotPartOfScore>
@@ -83,9 +85,19 @@ class PositionSummaryListForPopover extends Component {
               -1
             </OpposeAndPartOfScore>
           )}
-          <div>
+          <OrganizationNameWrapper>
             {positionSummary.organizationName}
-          </div>
+          </OrganizationNameWrapper>
+          {(positionSummary.voterCanFollowOrganization && !positionSummary.organizationInVotersNetwork) && (
+            <FollowToggleWrapper>
+              <FollowToggle organizationWeVoteId={positionSummary.organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+            </FollowToggleWrapper>
+          )}
+          {positionSummary.voterIsFollowingOrganization && (
+            <FollowingWrapper>
+              <CheckCircle className="following-icon" />
+            </FollowingWrapper>
+          )}
         </PositionSummaryWrapper>
       );
     });
@@ -176,6 +188,16 @@ const OpposeButNotPartOfScore = styled.div`
   font-size: 10px;
   font-weight: bold;
   margin-right: 6px;
+`;
+
+const OrganizationNameWrapper = styled.div`
+  flex-grow: 8;
+`;
+
+const FollowToggleWrapper = styled.div`
+`;
+
+const FollowingWrapper = styled.div`
 `;
 
 export default withTheme(withStyles(styles)(PositionSummaryListForPopover));

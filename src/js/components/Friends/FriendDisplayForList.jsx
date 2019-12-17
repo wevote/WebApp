@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import FriendToggle from './FriendToggle';
 import ImageHandler from '../ImageHandler';
-import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
 class FriendDisplayForList extends Component {
@@ -15,7 +14,7 @@ class FriendDisplayForList extends Component {
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
     voter_twitter_description: PropTypes.string,
-    voter_twitter_followers_count: PropTypes.number,
+    // voter_twitter_followers_count: PropTypes.number,
     linked_organization_we_vote_id: PropTypes.string,
     editMode: PropTypes.bool,
     previewMode: PropTypes.bool,
@@ -24,16 +23,12 @@ class FriendDisplayForList extends Component {
   render () {
     renderLog('FriendDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      voter_twitter_followers_count: voterTwitterFollowersCount,
       voter_we_vote_id: voterWeVoteId,
       voter_photo_url_medium: voterPhotoUrlMedium,
     } = this.props;
 
     const alternateVoterDisplayName = this.props.voter_email_address ? this.props.voter_email_address : this.props.voter_twitter_handle;
     const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : alternateVoterDisplayName;
-    const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : '';
-    // If the voterDisplayName is in the voter_twitter_description, remove it
-    const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterDisplayName, twitterDescription);
 
     // Link to their voter guide
     const twitterVoterGuideLink = this.props.voter_twitter_handle ? `/${this.props.voter_twitter_handle}` : null;

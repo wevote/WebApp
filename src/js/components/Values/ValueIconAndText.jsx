@@ -78,8 +78,8 @@ class ValueIconAndText extends Component {
     // console.log('allCachedPositionsForThisCandidate: ', allCachedPositionsForThisCandidate);
     if (allCachedPositionsForThisCandidateLength !== priorAllCachedPositionsForThisCandidateLength || allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) {
       const limitToThisIssue = oneIssue.issue_we_vote_id;
-      const limitToVoterNetwork = false;
-      const issueSpecificPositionList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, limitToVoterNetwork);
+      const showPositionsInVotersNetwork = false;
+      const issueSpecificPositionList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, showPositionsInVotersNetwork);
       const organizationsUnderThisIssueCount = issueSpecificPositionList.length;
       this.setState({
         issueSpecificPositionList,

@@ -120,7 +120,8 @@ export function getPositionListSummaryIncomingDataStats (ballotItemWeVoteId) {
   };
 }
 
-export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitToThisIssue = '', limitToVoterNetwork = false) {
+export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitToThisIssue = '', showPositionsInVotersNetwork = false, showPositionsOutOfVotersNetwork = false) {
+  // If limitToThisIssue is true, ignore showPositionsInVotersNetwork and showPositionsOutOfVotersNetwork
   const positionSummaryList = [];
   let allCachedPositions = [];
   let allCachedPositionsLength = 0;
@@ -130,13 +131,13 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
   let organizationWeVoteId = '';
   let skipThisOrganization = false;
   let speakerType = '';
+  let voterCanFollowOrganization = false;
   let positionSummary = {};
+  let voterIsFollowingOrganization = false;
   let organizationInVotersNetwork = false;
   let organizationWeVoteIdsLinkedToThisIssue = [];
   if (limitToThisIssue) {
     organizationWeVoteIdsLinkedToThisIssue = IssueStore.getOrganizationWeVoteIdsLinkedToOneIssue(limitToThisIssue);
-  } else if (limitToVoterNetwork) {
-    //
   }
   const isCandidate = stringContains('cand', ballotItemWeVoteId);
   const isMeasure = stringContains('meas', ballotItemWeVoteId);
@@ -151,23 +152,51 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
   }
   // console.log('getPositionSummaryListForBallotItem allCachedPositions: ', allCachedPositions);
   // console.log('organizationWeVoteIdsLinkedToThisIssue: ', organizationWeVoteIdsLinkedToThisIssue);
+  // console.log('showPositionsInVotersNetwork: ', showPositionsInVotersNetwork);
+  // console.log('showPositionsOutOfVotersNetwork: ', showPositionsOutOfVotersNetwork);
   for (let i = 0; i < allCachedPositionsLength; i++) {
     // Cycle through the positions for this candidate, and see if the organization endorsing is linked to this issue
+    organizationInVotersNetwork = false;
     skipThisOrganization = false;
+    voterIsFollowingOrganization = false;
+    voterCanFollowOrganization = false;
     organizationWeVoteId = allCachedPositions[i].speaker_we_vote_id;
-    // if (limitToVoterNetwork) {
+    // if (showPositionsInVotersNetwork) {
     //   console.log('organizationWeVoteId:', organizationWeVoteId);
     // }
     if (limitToThisIssue && !arrayContains(organizationWeVoteId, organizationWeVoteIdsLinkedToThisIssue)) {
       // We want to limit to one issue, and this organization is not linked to this issue, so skip
       // console.log('getPositionSummaryListForBallotItem skipThisOrganization limitToThisIssue:', limitToThisIssue);
       skipThisOrganization = true;
-    } else {
+    }
+    if (!skipThisOrganization || showPositionsInVotersNetwork || showPositionsOutOfVotersNetwork) {
       organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
-      if (limitToVoterNetwork && !organizationInVotersNetwork) {
-        // console.log('getPositionSummaryListForBallotItem skipThisOrganization limitToVoterNetwork');
-        skipThisOrganization = true;
+      voterIsFollowingOrganization = OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId);
+      voterCanFollowOrganization = !voterIsFollowingOrganization && !limitToThisIssue;  // Only let voter follow if not looking at Issues
+    }
+    if (showPositionsInVotersNetwork || showPositionsOutOfVotersNetwork) {
+      // console.log('organizationInVotersNetwork:', organizationInVotersNetwork);
+      if (showPositionsInVotersNetwork) {
+        // Skip if NOT in voter's network
+        if (!organizationInVotersNetwork) {
+          // console.log('getPositionSummaryListForBallotItem skipThisOrganization showPositionsInVotersNetwork');
+          skipThisOrganization = true;
+        } else {
+          // console.log('SHOW ONE');
+        }
       }
+      if (showPositionsOutOfVotersNetwork) {
+        // Skip if IN voter's network
+        if (organizationInVotersNetwork) {
+          // console.log('getPositionSummaryListForBallotItem showPositionsOutOfVotersNetwork: ', showPositionsOutOfVotersNetwork, ', organizationInVotersNetwork:', organizationInVotersNetwork);
+          skipThisOrganization = true;
+        } else {
+          // console.log('SHOW TWO');
+        }
+      }
+    }
+    if (allCachedPositions[i].speaker_display_name && stringContains('Voter-', allCachedPositions[i].speaker_display_name)) {
+      skipThisOrganization = true;
     }
     if (!skipThisOrganization) {
       organizationName = allCachedPositions[i].speaker_display_name;
@@ -176,16 +205,20 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
       speakerType = allCachedPositions[i].speaker_type;
       if (organizationSupports || organizationOpposes) {
         positionSummary = {
+          ballotItemWeVoteId,
           organizationInVotersNetwork,
           organizationName,
           organizationOpposes,
           organizationSupports,
           organizationWeVoteId,
           speakerType,
+          voterCanFollowOrganization,
+          voterIsFollowingOrganization,
         };
         positionSummaryList.push(positionSummary);
       }
     }
   }
+  // console.log('getPositionSummaryListForBallotItem positionSummaryList: ', positionSummaryList);
   return positionSummaryList;
 }
