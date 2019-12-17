@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
 import MeasureItemCompressed from './MeasureItemCompressed';
 import OfficeItemCompressed from './OfficeItemCompressed';
 
-export default class BallotItemCompressed extends Component {
+export default class BallotItemCompressed extends PureComponent {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string.isRequired,
     candidateList: PropTypes.array,
