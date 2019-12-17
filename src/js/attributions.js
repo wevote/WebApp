@@ -69,10 +69,6 @@ module.exports = [
   'davidjbradshaw/iframe-resizer is licensed under the MIT License (MIT)\n' +
   '\n' +
   'Copyright (c) 2013-2018 David J. Bradshaw',
-  // Jan 2019, https://github.com/facebook/immutable-js
-  // 'facebook/immutable-js is licensed under the MIT License (MIT)\n' +
-  // '\n' +
-  // 'Copyright (c) 2014-present, Facebook, Inc.',
   // Jan 2019, https://github.com/jquery/jquery/blob/master/LICENSE.txt
   'jquery/jquery is licensed under the MIT License (MIT)\n' +
   'Copyright JS Foundation and other contributors, https://js.foundation/\n',
@@ -97,8 +93,8 @@ module.exports = [
   '\n' +
   'Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)\n',
   // Jan 2019, https://github.com/FezVrasta/popper.js/blob/master/LICENSE.md
-  // 'FezVrasta/popper.js is licensed under the MIT License (MIT)\n' +
-  // 'Copyright (c) 2016 Federico Zivolo and contributors\n',
+  'FezVrasta/popper.js is licensed under the MIT License (MIT)\n' +
+  'Copyright (c) 2016 Federico Zivolo and contributors\n',
   // Jan 2019, https://github.com/facebook/prop-types/blob/master/LICENSE
   ' facebook/prop-types is licensed under the MIT License (MIT)\n' +
   '\n' +
