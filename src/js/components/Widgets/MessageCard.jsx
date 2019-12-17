@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import _ from 'lodash';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -42,7 +41,7 @@ export default class MessageCard extends Component {
 }
 
 const Card = styled.div`
-  padding: 64px 32px; 
+  padding: 64px 32px;
 `;
 
 const InnerWrapper = styled.div`

@@ -46,8 +46,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       componentDidMountFinished: false,
       issueWeVoteIdsLinkedToByOrganizationDictLength: 0,
       organizationWeVoteIdsVoterIsFollowingLength: 0,
-      positionSummaryList: [],
-      positionSummaryListLength: 0,
+      positionsInNetworkSummaryList: [],
+      positionsInNetworkSummaryListLength: 0,
+      positionsOutOfNetworkSummaryList: [],
+      positionsOutOfNetworkSummaryListLength: 0,
       voterOpposesListLength: 0,
       voterSupportsListLength: 0,
       voterPersonalNetworkScore: 0,
@@ -165,6 +167,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     if (this.state.numberOfAllInfoOnlyPositions !== nextState.numberOfAllInfoOnlyPositions) {
       return true;
     }
+    if (this.state.positionsInNetworkSummaryListLength !== nextState.positionsInNetworkSummaryListLength) {
+      return true;
+    }
+    if (this.state.positionsOutOfNetworkSummaryListLength !== nextState.positionsOutOfNetworkSummaryListLength) {
+      return true;
+    }
     if (this.state.voterPersonalNetworkScore !== nextState.voterPersonalNetworkScore) {
       // console.log('this.state.voterPersonalNetworkScore:', this.state.voterPersonalNetworkScore, ', nextState.voterPersonalNetworkScore:', nextState.voterPersonalNetworkScore);
       return true;
@@ -225,16 +233,22 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // console.log('refreshPositionSummaryList: ', refreshPositionSummaryList, ballotItemWeVoteId);
     if (refreshPositionSummaryList) {
       const limitToThisIssue = false;
-      const limitToVoterNetwork = true;
-      const positionSummaryList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, limitToVoterNetwork);
-      const positionSummaryListLength = positionSummaryList.length;
+      const showPositionsInVotersNetwork = true;
+      const doNotShowPositionsInVotersNetwork = false;
+      const showPositionsOutOfVotersNetwork = true;
+      const positionsInNetworkSummaryList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, showPositionsInVotersNetwork);
+      const positionsInNetworkSummaryListLength = positionsInNetworkSummaryList.length;
+      const positionsOutOfNetworkSummaryList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, doNotShowPositionsInVotersNetwork, showPositionsOutOfVotersNetwork);
+      const positionsOutOfNetworkSummaryListLength = positionsOutOfNetworkSummaryList.length;
       this.setState({
         allCachedPositionsLength,
         allIssuesVoterIsFollowingLength,
         issueWeVoteIdsLinkedToByOrganizationDictLength,
         organizationWeVoteIdsVoterIsFollowingLength,
-        positionSummaryList,
-        positionSummaryListLength,
+        positionsInNetworkSummaryList,
+        positionsInNetworkSummaryListLength,
+        positionsOutOfNetworkSummaryList,
+        positionsOutOfNetworkSummaryListLength,
         voterOpposesListLength,
         voterSupportsListLength,
       });
@@ -365,7 +379,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const {
       ballotItemDisplayName, ballotItemWeVoteId,
       numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions,
-      positionSummaryList, positionSummaryListLength,
+      positionsInNetworkSummaryList, positionsInNetworkSummaryListLength,
+      positionsOutOfNetworkSummaryList,
       showVoterPersonalScore,
       voterPersonalNetworkScore,
       voterPersonalNetworkScoreIsNegative,
@@ -380,7 +395,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
     const numberOfAllPositions = numberOfAllSupportPositions + numberOfAllOpposePositions + numberOfAllInfoOnlyPositions;
     const voterDecidedItem = voterSupportsBallotItem || voterOpposesBallotItem;
-    const positionSummaryListExists = positionSummaryListLength && positionSummaryListLength > 0;
+    const positionsInNetworkSummaryListExists = positionsInNetworkSummaryListLength && positionsInNetworkSummaryListLength > 0;
     const youHaveTheOnlyOpinion = !!(!numberOfAllPositions && voterDecidedItem);
     const noOpinionsExist = !voterDecidedItem && !numberOfAllPositions;
 
@@ -404,7 +419,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           </PopoverBody>
         </PopoverWrapper>
       );
-    } else if (positionSummaryListExists) {
+    } else if (positionsInNetworkSummaryListExists) {
       if (voterDecidedItem) {
         positionsPopover = (
           <PopoverWrapper>
@@ -443,16 +458,16 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               <span>
                 Your personal network also has
                 {' '}
-                {positionSummaryListLength > 1 ? (
+                {positionsInNetworkSummaryListLength > 1 ? (
                   <span> these opinions:</span>
                 ) : (
                   <span> this opinion:</span>
                 )}
               </span>
-              {positionSummaryList && (
+              {positionsInNetworkSummaryList && (
                 <RenderedOrganizationsWrapper>
                   <PositionSummaryListForPopover
-                    positionSummaryList={positionSummaryList}
+                    positionSummaryList={positionsInNetworkSummaryList}
                   />
                 </RenderedOrganizationsWrapper>
               )}
@@ -472,10 +487,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               {' '}
               is calculated from opinions in your personal network:
               <br />
-              {positionSummaryList && (
+              {positionsInNetworkSummaryList && (
                 <RenderedOrganizationsWrapper>
                   <PositionSummaryListForPopover
-                    positionSummaryList={positionSummaryList}
+                    positionSummaryList={positionsInNetworkSummaryList}
                   />
                 </RenderedOrganizationsWrapper>
               )}
@@ -483,7 +498,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           </PopoverWrapper>
         );
       }
-    } else if (voterPersonalNetworkScore) { // We have a voterPersonalNetworkScore, but don't have positionSummaryList, so this is generic explanation
+    } else if (voterPersonalNetworkScore) { // We have a voterPersonalNetworkScore, but don't have positionsInNetworkSummaryList, so this is generic explanation
       positionsPopover = (
         <PopoverWrapper>
           <PopoverHeader>
@@ -567,32 +582,19 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           </PopoverHeader>
           <PopoverBody>
             <div>
-              Learn more details about who
-            </div>
-            <div>
-              <span className="u-no-break">
-                <SupportButNotPartOfScore>
-                  <ThumbUpIcon classes={{ root: classes.endorsementIcon }} />
-                </SupportButNotPartOfScore>
-                {' '}
-                supports
-              </span>
-            </div>
-            <div>
-              <span className="u-no-break">
-                <OpposeButNotPartOfScore>
-                  <ThumbDownIcon classes={{ root: classes.endorsementIcon }} />
-                </OpposeButNotPartOfScore>
-                or opposes
-              </span>
+              Follow opinions to build your score about
+              {' '}
               <strong>{ballotItemDisplayName ? ` ${ballotItemDisplayName}` : ''}</strong>
               .
             </div>
             <div>
-              To see your own personal score, follow public figures you trust or organizations that share your values.
-              Follow issues/values you care about.
-              Add friends to see their opinions.
-              To see the opinions of private citizens, adjust your filters.
+              {positionsOutOfNetworkSummaryList && (
+                <RenderedOrganizationsWrapper>
+                  <PositionSummaryListForPopover
+                    positionSummaryList={positionsOutOfNetworkSummaryList}
+                  />
+                </RenderedOrganizationsWrapper>
+              )}
             </div>
           </PopoverBody>
         </PopoverWrapper>
@@ -895,40 +897,6 @@ const PopoverBody = styled.div`
 
 const RenderedOrganizationsWrapper = styled.div`
   margin-top: 6px;
-`;
-
-const SupportButNotPartOfScore = styled.div`
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  min-width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  border: 2px solid ${({ theme }) => theme.colors.supportGreenRgb};
-  float: left;
-  font-size: 10px;
-  font-weight: bold;
-  margin-right: 6px;
-`;
-
-const OpposeButNotPartOfScore = styled.div`
-  color: ${({ theme }) => theme.colors.opposeRedRgb};
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  min-width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  float: left;
-  border: 2px solid ${({ theme }) => theme.colors.opposeRedRgb};
-  font-size: 10px;
-  font-weight: bold;
-  margin-right: 6px;
 `;
 
 export default withTheme(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

@@ -51,7 +51,7 @@ export default class FriendToggle extends Component {
 
   render () {
     renderLog('FriendToggle');  // Set LOG_RENDER_EVENTS to log all renders
-    const { isFriend } = this.state;
+    // const { isFriend } = this.state;
     if (!this.state) { return <div />; }
     const { otherVoterWeVoteId } = this.props;
     const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
