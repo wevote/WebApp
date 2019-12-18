@@ -10,7 +10,7 @@ module.exports = {
   WE_VOTE_SERVER_API_CDN_ROOT_URL: 'https://cdn.wevoteusa.org/apis/v1/',
 
   ENABLE_NEXT_RELEASE_FEATURES: true,
-  ENABLE_WORKBOX_SERVICE_WORKER: false,  // After setting this false, recompile, then in Chrome DevTools go to Application Tab, Application/Service Worker and for the sw.js click the "unregister" button to the right
+  ENABLE_WORKBOX_SERVICE_WORKER: true,  // After setting this false, recompile, then in Chrome DevTools go to Application Tab, Application/Service Worker and for the sw.js click the "unregister" button to the right
 
   DEBUG_MODE: false,
   SHOW_TEST_OPTIONS: false,    // On the DeviceDialog and elsewhere
