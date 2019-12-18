@@ -131,6 +131,7 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
   let organizationWeVoteId = '';
   let skipThisOrganization = false;
   let speakerType = '';
+  let issuesInCommonBetweenOrganizationAndVoter = [];
   let voterCanFollowOrganization = false;
   let positionSummary = {};
   let voterIsFollowingOrganization = false;
@@ -158,6 +159,7 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
     // Cycle through the positions for this candidate, and see if the organization endorsing is linked to this issue
     organizationInVotersNetwork = false;
     skipThisOrganization = false;
+    issuesInCommonBetweenOrganizationAndVoter = [];
     voterIsFollowingOrganization = false;
     voterCanFollowOrganization = false;
     organizationWeVoteId = allCachedPositions[i].speaker_we_vote_id;
@@ -203,6 +205,7 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
       organizationOpposes = allCachedPositions[i].is_oppose_or_negative_rating;
       organizationSupports = allCachedPositions[i].is_support_or_positive_rating;
       speakerType = allCachedPositions[i].speaker_type;
+      issuesInCommonBetweenOrganizationAndVoter = IssueStore.getIssuesInCommonBetweenOrganizationAndVoter(organizationWeVoteId);
       if (organizationSupports || organizationOpposes) {
         positionSummary = {
           ballotItemWeVoteId,
@@ -211,7 +214,9 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
           organizationOpposes,
           organizationSupports,
           organizationWeVoteId,
+          positionObject: allCachedPositions[i],
           speakerType,
+          issuesInCommonBetweenOrganizationAndVoter,
           voterCanFollowOrganization,
           voterIsFollowingOrganization,
         };

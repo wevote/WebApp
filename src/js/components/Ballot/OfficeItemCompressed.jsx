@@ -222,7 +222,10 @@ class OfficeItemCompressed extends Component {
                     </div>
                   </Candidate>
                   {/* Show check mark or score */}
-                  <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                  <BallotItemSupportOpposeCountDisplay
+                    ballotItemWeVoteId={oneCandidate.we_vote_id}
+                    goToBallotItem={this.goToCandidateLink}
+                  />
                 </CandidateTopRow>
                 <CandidateBottomRow>
                   {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
@@ -239,7 +242,7 @@ class OfficeItemCompressed extends Component {
                       />
                       <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
                         <Button
-                          id={`topCommentButton-${externalUniqueId}-${localUniqueId}`}
+                          id={`topCommentButtonOffice-${externalUniqueId}-${localUniqueId}`}
                           variant="outlined"
                           color="primary"
                           classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}

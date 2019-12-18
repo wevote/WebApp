@@ -93,7 +93,7 @@ class ValueIconAndText extends Component {
   }
 
   valuePopover = () => {
-    const { ballotItemDisplayName, oneIssue } = this.props;
+    const { ballotItemWeVoteId, ballotItemDisplayName, oneIssue } = this.props;
     const { issueSpecificPositionList, organizationsUnderThisIssueCount } = this.state;
     return (
       <PopoverWrapper>
@@ -133,6 +133,7 @@ class ValueIconAndText extends Component {
               {issueSpecificPositionList && (
                 <RenderedOrganizationsWrapper>
                   <PositionSummaryListForPopover
+                    ballotItemWeVoteId={ballotItemWeVoteId}
                     positionSummaryList={issueSpecificPositionList}
                   />
                 </RenderedOrganizationsWrapper>

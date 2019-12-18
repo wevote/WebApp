@@ -25,7 +25,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
-    goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
+    goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     classes: PropTypes.object,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
@@ -58,7 +58,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     };
     this.closeIssueScorePopover = this.closeIssueScorePopover.bind(this);
     this.closeNetworkScorePopover = this.closeNetworkScorePopover.bind(this);
-    this.goToCandidateLinkLocal = this.goToCandidateLinkLocal.bind(this);
+    this.goToBallotItemLinkLocal = this.goToBallotItemLinkLocal.bind(this);
   }
 
   componentDidMount () {
@@ -273,10 +273,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           voterPersonalNetworkScoreWithSign = `+${voterPersonalNetworkScore}`;
           voterPersonalNetworkScoreIsPositive = true;
         } else if (voterPersonalNetworkScore < 0) {
-          voterPersonalNetworkScoreWithSign = voterPersonalNetworkScore;
+          voterPersonalNetworkScoreWithSign = `${voterPersonalNetworkScore}`; // Minus sign '-' is already built into the number
           voterPersonalNetworkScoreIsNegative = true;
         } else {
-          voterPersonalNetworkScoreWithSign = voterPersonalNetworkScore;
+          voterPersonalNetworkScoreWithSign = `${voterPersonalNetworkScore}`;
         }
       }
 
@@ -366,18 +366,18 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     console.error('BallotItemSupportOpposeCountDisplay caught error: ', `${error} with info: `, info);
   }
 
-  goToCandidateLinkLocal () {
-    // console.log("BallotItemSupportOpposeCountDisplay goToCandidateLinkLocal");
-    if (this.props.goToCandidate) {
-      this.props.goToCandidate();
+  goToBallotItemLinkLocal () {
+    // console.log("BallotItemSupportOpposeCountDisplay goToBallotItemLinkLocal");
+    if (this.props.goToBallotItem) {
+      this.props.goToBallotItem();
     }
   }
 
   render () {
     renderLog('BallotItemSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    const { ballotItemWeVoteId, classes } = this.props;
     const {
-      ballotItemDisplayName, ballotItemWeVoteId,
+      ballotItemDisplayName,
       numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions,
       positionsInNetworkSummaryList, positionsInNetworkSummaryListLength,
       positionsOutOfNetworkSummaryList,
@@ -467,7 +467,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               {positionsInNetworkSummaryList && (
                 <RenderedOrganizationsWrapper>
                   <PositionSummaryListForPopover
+                    ballotItemWeVoteId={ballotItemWeVoteId}
                     positionSummaryList={positionsInNetworkSummaryList}
+                    showAllPositions={this.props.goToBallotItem}
+                    voterPersonalNetworkScore={voterPersonalNetworkScore}
+                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                    voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
                   />
                 </RenderedOrganizationsWrapper>
               )}
@@ -490,7 +496,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               {positionsInNetworkSummaryList && (
                 <RenderedOrganizationsWrapper>
                   <PositionSummaryListForPopover
+                    ballotItemWeVoteId={ballotItemWeVoteId}
                     positionSummaryList={positionsInNetworkSummaryList}
+                    showAllPositions={this.props.goToBallotItem}
+                    voterPersonalNetworkScore={voterPersonalNetworkScore}
+                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                    voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
                   />
                 </RenderedOrganizationsWrapper>
               )}
@@ -591,7 +603,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               {positionsOutOfNetworkSummaryList && (
                 <RenderedOrganizationsWrapper>
                   <PositionSummaryListForPopover
+                    ballotItemWeVoteId={ballotItemWeVoteId}
                     positionSummaryList={positionsOutOfNetworkSummaryList}
+                    showAllPositions={this.props.goToBallotItem}
+                    voterPersonalNetworkScore={voterPersonalNetworkScore}
+                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                    voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
                   />
                 </RenderedOrganizationsWrapper>
               )}
@@ -818,7 +836,6 @@ const EndorsementCount = styled.div`
 `;
 
 const NetworkScore = styled.div`
-  font-size: 16px;
   background: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
@@ -839,7 +856,6 @@ const NetworkScore = styled.div`
 `;
 
 const NetworkScoreSmall = styled.div`
-  font-size: 16px;
   background: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);

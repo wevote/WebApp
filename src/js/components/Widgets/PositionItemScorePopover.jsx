@@ -255,24 +255,21 @@ class PositionItemScorePopover extends Component {
                   </ScoreExplanationText>
                 </ScoreExplanationWrapper>
               )}
-              {issuesInCommonBetweenOrganizationAndVoter.map((issue) => {
-                console.log('issue:', issue);
-                return (
-                  <ScoreExplanationWrapper key={`issueInScore-${issue.issue_we_vote_id}`}>
-                    <PopoverTitleIcon>
-                      <ReactSVG
-                        src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
-                        svgStyle={{ fill: '#555', padding: '1px 1px 1px 0px' }}
-                      />
-                    </PopoverTitleIcon>
-                    <ScoreExplanationText>
-                      You both care about
-                      {' '}
-                      {issue.issue_name}
-                    </ScoreExplanationText>
-                  </ScoreExplanationWrapper>
-                );
-              })}
+              {issuesInCommonBetweenOrganizationAndVoter.map(issue => (
+                <ScoreExplanationWrapper key={`issueInScore-${issue.issue_we_vote_id}`}>
+                  <PopoverTitleIcon>
+                    <ReactSVG
+                      src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
+                      svgStyle={{ fill: '#555', padding: '1px 1px 1px 0px' }}
+                    />
+                  </PopoverTitleIcon>
+                  <ScoreExplanationText>
+                    You both care about
+                    {' '}
+                    {issue.issue_name}
+                  </ScoreExplanationText>
+                </ScoreExplanationWrapper>
+              ))}
             </>
           ) : (
             <>
