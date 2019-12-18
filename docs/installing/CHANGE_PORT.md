@@ -1,5 +1,9 @@
 # How to run WebApp on a different port
 
+
+## December 2019: We no longer use gulp, so these instructions are obsolete, and need to be updated
+
+
 In src/js/config.js, change ```WE_VOTE_HOSTNAME```'s port:
 
 ```
