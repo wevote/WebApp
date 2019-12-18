@@ -11,6 +11,8 @@ import routes from './Root';
 import muiTheme from './mui-theme';
 import styledTheme from './styled-theme';
 import { numberOfNeedlesFoundInString } from './utils/search-functions';
+import webAppConfig from './config';
+
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint global-require: 1 */
@@ -61,19 +63,20 @@ function startApp () {
 }
 
 // ServiceWorker setup for Workbox Progressive Web App (PWA)
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    // Preload /ballot/vote so that it will be in cache even if the first visit is while offline
-    caches.open('WeVoteSVGCache').then((cache) => {
-      cache.match('/ballot/vote').then((response) => {
-        if (!response) {
-          cache.add('/ballot/vote');
-        }
+if (webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER) {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      // Preload /ballot/vote so that it will be in cache even if the first visit is while offline
+      caches.open('WeVoteSVGCache').then((cache) => {
+        cache.match('/ballot/vote').then((response) => {
+          if (!response) {
+            cache.add('/ballot/vote');
+          }
+        });
       });
+      navigator.serviceWorker.register('/sw.js');
     });
-
-    navigator.serviceWorker.register('/sw.js');
-  });
+  }
 }
 
 // If Apache Cordova is available, wait for it to be ready, otherwise start the WebApp
