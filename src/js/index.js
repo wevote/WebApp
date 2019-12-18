@@ -63,20 +63,20 @@ function startApp () {
 }
 
 // ServiceWorker setup for Workbox Progressive Web App (PWA)
-if (webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER) {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      // Preload /ballot/vote so that it will be in cache even if the first visit is while offline
-      caches.open('WeVoteSVGCache').then((cache) => {
-        cache.match('/ballot/vote').then((response) => {
-          if (!response) {
-            cache.add('/ballot/vote');
-          }
-        });
+if ('ENABLE_WORKBOX_SERVICE_WORKER' in webAppConfig &&
+    webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER &&
+    'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    // Preload /ballot/vote so that it will be in cache even if the first visit is while offline
+    caches.open('WeVoteSVGCache').then((cache) => {
+      cache.match('/ballot/vote').then((response) => {
+        if (!response) {
+          cache.add('/ballot/vote');
+        }
       });
-      navigator.serviceWorker.register('/sw.js');
     });
-  }
+    navigator.serviceWorker.register('/sw.js');
+  });
 }
 
 // If Apache Cordova is available, wait for it to be ready, otherwise start the WebApp

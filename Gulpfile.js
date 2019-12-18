@@ -12,7 +12,9 @@ const babelify = require("babelify");
 const source = require("vinyl-source-stream");
 const buffer = require("vinyl-buffer");
 const notifier = require('node-notifier');
-const cssmin = require("gulp-cssnano");
+// const cssmin = require("gulp-cssnano");
+// Dec 2019: "gulp-cssnano" has not been updated for two years and is lightly used compared to gulp-clean-css -- not worth migrating since
+// gulp is not used for production bundles, so it doesn't matter if css is minified.
 const del = require("del");
 const server = require("./server");
 
@@ -65,7 +67,7 @@ gulp.task("browserify", function () {
       .pipe(gulp.dest("./build/js"))
       .pipe(browserSync.stream());
 
-      
+
   }
   return bundle();
 });
@@ -100,7 +102,7 @@ gulp.task("compile-bootstrap", function () {
         "./node_modules/bootstrap/sccs/mixins",
       ], }))
     .pipe(autoprefixer("last 2 version"))
-    .pipe(cssmin())
+    // .pipe(cssmin())
     .pipe(sourcemaps.write(".")) // --> working directory is /build/css
     .pipe(gulp.dest("./build/css"))
     .pipe(browserSync.stream());
@@ -115,7 +117,7 @@ gulp.task("sass", function () {
     .on("error", function (err) { console.error(err); })
     .pipe(sass({ style: "expanded" }))
     .pipe(autoprefixer("last 2 version"))
-    .pipe(cssmin())
+    // .pipe(cssmin())
     .pipe(sourcemaps.write(".")) // --> working directory is /build/css
     .pipe(gulp.dest("./build/css"))
     .pipe(browserSync.stream());
