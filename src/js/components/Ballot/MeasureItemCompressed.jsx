@@ -264,7 +264,10 @@ class MeasureItemCompressed extends Component {
             <SubTitle>{ballotDisplay[1]}</SubTitle>
             <Info>{shortenText(measureText, 200)}</Info>
           </MeasureInfoWrapper>
-          <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+          <BallotItemSupportOpposeCountDisplay
+            ballotItemWeVoteId={measureWeVoteId}
+            goToBallotItem={this.goToMeasureLink}
+          />
         </InfoRow>
         <ChoicesRow>
           <Choice

@@ -237,7 +237,7 @@ class TopCommentByBallotItem extends Component {
               </span>
             ) : (
               <Button
-                id={`topCommentButton-${externalUniqueId}-${localUniqueId}`}
+                id={`topCommentButtonByBallotItem-${externalUniqueId}-${localUniqueId}`}
                 variant="outlined"
                 color="primary"
                 className="u-float-right"
@@ -260,6 +260,7 @@ const styles = theme => ({
     fontSize: 12,
     width: 60,
     height: 30,
+    marginTop: 5,
     [theme.breakpoints.down('md')]: {
       width: 60,
       height: 30,
