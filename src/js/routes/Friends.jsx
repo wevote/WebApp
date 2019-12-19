@@ -437,7 +437,7 @@ class Friends extends Component {
       <span>
         {this.state.mobileMode ? (
           <>
-            <div className={`ballot__heading ${friendsHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}>
+            <div className={`friends__heading ${friendsHeaderUnpinned && isWebApp() ? 'friends__heading__unpinned' : ''}`}>
               <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
                 <div className="container-fluid">
                   <div className="row">
@@ -458,9 +458,13 @@ class Friends extends Component {
             </div>
           </>
         ) : (
-          <>
-            {desktopContentToDisplay}
-          </>
+          <div className="page-content-container">
+            <div className="container-fluid">
+              <div className="container-main">
+                {desktopContentToDisplay}
+              </div>
+            </div>
+          </div>
         )}
       </span>
     );
@@ -480,7 +484,7 @@ const styles = () => ({
 });
 
 const Wrapper = styled.div`
-  padding-top: 64px;
+  padding-top: 80px;
 `;
 
 const StickyTabs = styled.div`
