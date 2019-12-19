@@ -1,5 +1,6 @@
 import { stringContains } from './textFormat';
 import { isCordova, isWebApp } from './cordovaUtils';
+import displayFriendsTabs from './displayFriendsTabs';
 
 
 // We have to do all this, because we allow urls like https://wevote.us/aclu where "aclu" is a twitter account.
@@ -139,7 +140,8 @@ export function getApplicationViewBooleans (pathname) {
   if (!pathnameLowerCase) {
     showFooterBar = false;
   } else if (!pathnameLowerCase.startsWith('/candidate') &&
-      !pathnameLowerCase.startsWith('/friends/') &&
+      // !pathnameLowerCase.startsWith('/friends/') &&
+      !((pathnameLowerCase.startsWith('/friends/requests') || pathnameLowerCase.startsWith('/friends/suggested') || pathnameLowerCase.startsWith('/friends/current') || pathnameLowerCase.startsWith('/friends/sent-requests')) && !displayFriendsTabs()) &&
       !pathnameLowerCase.startsWith('/measure') &&
       !pathnameLowerCase.startsWith('/office') &&
       !pathnameLowerCase.startsWith('/value/') &&
