@@ -20,6 +20,7 @@ import VoterStore from './stores/VoterStore';
 import webAppConfig from './config';
 import { stringContains } from './utils/textFormat';
 import SnackNotifier from './components/Widgets/SnackNotifier';
+import displayFriendsTabs from './utils/displayFriendsTabs';
 
 class Application extends Component {
   static propTypes = {
@@ -390,7 +391,7 @@ class Application extends Component {
           pathname.startsWith('/more/donate') ||
           pathname.startsWith('/more/pricing') ||
           String(pathname) === '/welcome' ||
-          !contentFullWidthMode ?
+          !contentFullWidthMode || displayFriendsTabs() ?
           (
             <div className="welcome-or-not-full-width">
               { this.props.children }

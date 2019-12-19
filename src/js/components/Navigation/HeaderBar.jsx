@@ -30,6 +30,7 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
+import displayFriendsTabs from '../../utils/displayFriendsTabs';
 
 const webAppConfig = require('../../config');
 
@@ -316,6 +317,7 @@ class HeaderBar extends Component {
     const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     const showingBallot = stringContains(ballotBaseUrl, pathname.toLowerCase().slice(0, 7));
+    const showingFriendsTabs = displayFriendsTabs();
     const editAddressButtonHtml = (
       <Tooltip title="Change my location or election" aria-label="Change Address or Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
         <span>
@@ -349,7 +351,7 @@ class HeaderBar extends Component {
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
-        <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
+        <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`}>
           <Toolbar className="header-toolbar" disableGutters>
             {(showWeVoteLogo || chosenSiteLogoUrl) && (
               <HeaderBarLogo
