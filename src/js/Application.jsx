@@ -390,7 +390,7 @@ class Application extends Component {
           pathname.startsWith('/more/donate') ||
           pathname.startsWith('/more/pricing') ||
           String(pathname) === '/welcome' ||
-          !contentFullWidthMode ?
+          !contentFullWidthMode || pathname.startsWith('/friends') ?
           (
             <div className="welcome-or-not-full-width">
               { this.props.children }

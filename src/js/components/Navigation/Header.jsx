@@ -195,6 +195,8 @@ export default class Header extends Component {
           classNameHeadroom = 'headroom-wrapper-webapp__ballot';
         } else if (stringContains('/office', pathname.toLowerCase())) {
           classNameHeadroom = 'headroom-wrapper-webapp__office';
+        } else if (stringContains('/friends', pathname.toLowerCase())) {
+          classNameHeadroom = 'headroom-wrapper-webapp__ballot';
         } else {
           classNameHeadroom = 'headroom-wrapper-webapp__default';
         }
