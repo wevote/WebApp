@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Info from '@material-ui/icons/Info';
-import { Tooltip, Paper } from '@material-ui/core';
+import { Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
@@ -487,29 +487,29 @@ const Wrapper = styled.div`
   padding-top: 80px;
 `;
 
-const StickyTabs = styled.div`
-  width: 100%;
-  background-color: #fff;
-  border-bottom: 1px solid #aaa;
-  overflow: hidden;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  padding-top: 58px;
-  transform: translate3d(0, -53px, 0);
-  transition: all 100ms ease-in-out 0s;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12); 
-`;
+// const StickyTabs = styled.div`
+//   width: 100%;
+//   background-color: #fff;
+//   border-bottom: 1px solid #aaa;
+//   overflow: hidden;
+//   position: fixed;
+//   z-index: 1;
+//   left: 0;
+//   padding-top: 58px;
+//   transform: translate3d(0, -53px, 0);
+//   transition: all 100ms ease-in-out 0s;
+//   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+// `;
 
-const StickyTabsUnpinned = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 6 !important;
-  transform: translate3d(0, -58px, 0);
-  transition: all 100ms ease-in-out 0s; 
-`;
+// const StickyTabsUnpinned = styled.div`
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   z-index: 6 !important;
+//   transform: translate3d(0, -58px, 0);
+//   transition: all 100ms ease-in-out 0s;
+// `;
 
 const SectionTitle = styled.h2`
   width: fit-content;

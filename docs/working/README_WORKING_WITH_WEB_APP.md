@@ -79,6 +79,26 @@ Restart web application
 
 We have created <a href="https://docs.google.com/drawings/d/1ED4X3Gpy_UruGDSiO8FjjxQeGOmQqIApguodHDo6-ok/edit">this diagram</a> to show the typical flow when preparing a pull request.
 
+# Eliminating the deprecated `componentWillMount() and the not-advised componentWillReceiveProps() 
+
+1) [componentWillMount()](https://reactjs.org/docs/react-component.html) has been deprecated, and will be eliminated, please don't add more of them.  Also
+see [React Unsafe Component Lifecycles](https://fb.me/react-unsafe-component-lifecycles) for instructions about how to
+replace componentWillMount().
+[shouldComponentUpdate()](https://reactjs.org/docs/react-component.html) is invoked before rendering when new props or state are being received. Defaults to true. 
+
+   This method is not called for the initial render or when forceUpdate() is used.
+
+   This method only exists as a performance optimization. Do not rely on it to “prevent” a rendering, as this can lead to bugs. Consider using the built-in PureComponent instead of writing shouldComponentUpdate() by hand. PureComponent performs a shallow comparison of props and state, and reduces the chance that you’ll skip a necessary update"
+
+2) "...**In the future React may treat shouldComponentUpdate() as a hint** rather than a strict directive, and returning false may still result in a re-rendering of the component."
+
+3) Don't unconditionally copy props to state, it is inefficent and causes subtle bugs, see [Anti-pattern: Unconditionally copying props to state](https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#anti-pattern-unconditionally-copying-props-to-state).
+
+4) See [You Probably Don't Need Derived State](https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key) in the React.js Blog
+
+
+
+
 ---
 
 Next: [Debugging Tools and Tips](DEBUGGING_TOOLS.md)

@@ -65,21 +65,6 @@ class OfficeItemCompressed extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
-    // 2018-05-10 I don't think we need to trigger a new render because the incoming candidateList should be the same
-    // if (nextProps.candidateList && nextProps.candidateList.length) {
-    //   this.setState({
-    //     candidateList: nextProps.candidateList,
-    //   });
-    // }
-
-    const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organizationWeVoteId;
-    // console.log('officeItemCompressed componentWillReceiveProps, organizationWeVoteId:', organizationWeVoteId);
-    this.setState({
-      organizationWeVoteId,
-    });
-  }
-
   shouldComponentUpdate (nextProps, nextState) {
     if (this.state.componentDidMount !== nextState.componentDidMount) {
       // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount: ', nextState.componentDidMount);
