@@ -45,30 +45,34 @@ export default class FriendsCurrentPreview extends Component {
     const FRIENDS_TO_SHOW = 3;
     const currentFriendListLimited = currentFriendList.slice(0, FRIENDS_TO_SHOW);
 
-    return (currentFriendListLimited && currentFriendListLimited.length > 0 ? (
+    return ((currentFriendListLimited && currentFriendListLimited.length > 0) && (
       <div className="opinion-view">
         <section className="card">
           <div className="card-main">
-            <SectionTitle>Your Friends</SectionTitle>
+            <SectionTitle>
+              Your Friends
+              {' '}
+              (
+              {currentFriendList.length}
+              )
+            </SectionTitle>
             <div>
               <FriendList
                 editMode
                 friendList={currentFriendListLimited}
                 previewMode
               />
-              <Link to="/friends/current">See All</Link>
+              {currentFriendList.length > FRIENDS_TO_SHOW && <Link to="/friends/current">See All</Link>}
             </div>
           </div>
         </section>
       </div>
-    ) :
-      null
-    );
+    ));
   }
 }
 
 const SectionTitle = styled.h2`
   width: fit-content;  font-weight: bolder;
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 16px;
 `;

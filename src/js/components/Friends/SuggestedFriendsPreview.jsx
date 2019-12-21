@@ -45,24 +45,28 @@ export default class SuggestedFriendsPreview extends Component {
     const FRIENDS_TO_SHOW = 3;
     const suggestedFriendListLimited = suggestedFriendList.slice(0, FRIENDS_TO_SHOW);
 
-    return (suggestedFriendListLimited && suggestedFriendListLimited.length > 0 ? (
+    return (!!(suggestedFriendListLimited && suggestedFriendListLimited.length > 0) && (
       <div className="opinion-view">
         <section className="card">
           <div className="card-main">
-            <SectionTitle>Suggested Friends</SectionTitle>
+            <SectionTitle>
+              People You May Know
+              {' '}
+              (
+              {suggestedFriendList.length}
+              )
+            </SectionTitle>
             <div>
               <SuggestedFriendList
                 friendList={suggestedFriendListLimited}
                 previewMode
               />
-              <Link to="/friends/suggested">See All</Link>
+              {suggestedFriendList.length > FRIENDS_TO_SHOW && <Link to="/friends/suggested">See All</Link>}
             </div>
           </div>
         </section>
       </div>
-    ) :
-      null
-    );
+    ));
   }
 }
 

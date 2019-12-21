@@ -294,7 +294,7 @@ const Wrapper = styled.div`
 const BallotItemEndorserName = styled.span`
   color: #999;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 15px;
   }
@@ -304,14 +304,14 @@ const BallotItemEndorsementTextDesktop = styled.span`
   color: #555;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
 `;
 
 const BallotItemEndorsementTextMobile = styled.span`
   color: #555;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
 `;
 
 export default withStyles(styles)(TopCommentByBallotItem);

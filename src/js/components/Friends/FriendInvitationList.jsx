@@ -11,71 +11,50 @@ export default class FriendInvitationList extends Component {
     previewMode: PropTypes.bool,
   };
 
-  constructor (props) {
-    super(props);
-    this.state = {
-      friendInvitationList: this.props.friendList || [],
-    };
-  }
-
-  componentDidMount () {
-    this.setState({
-      friendInvitationList: this.props.friendList || [],
-    });
-  }
-
-  componentWillReceiveProps (nextProps) {
-    this.setState({
-      friendInvitationList: nextProps.friendList || [],
-    });
-  }
-
   render () {
     renderLog('FriendInvitationList');  // Set LOG_RENDER_EVENTS to log all renders
-    if (this.state.friendInvitationList === undefined) {
+    const { friendList, invitationsSentByMe, previewMode } = this.props;
+    if (friendList === undefined) {
       return null;
     }
 
-    const { invitationsSentByMe } = this.props;
     let simpleKeyCounter = 0;
 
     return (
       <>
-        <div className={!this.props.previewMode ? 'card' : null}>
-          <div className={!this.props.previewMode ? 'card-main' : null}>
-            {this.state.friendInvitationList.map((friend, index) => {
+        <div className={!previewMode ? 'card' : null}>
+          <div className={!previewMode ? 'card-main' : null}>
+            {friendList.map((friend, index) => {
               if (friend.voter_we_vote_id && friend.voter_we_vote_id !== '') {
-                console.log('Index: ', index);
-                console.log('Length: ', this.state.friendInvitationList.length - 1);
+                // console.log('Index: ', index);
+                // console.log('Length: ', friendList.length - 1);
                 return (
-                  <>
+                  <div key={`invite-key-${friend.voter_we_vote_id}`}>
                     <FriendInvitationDisplayForList
-                      key={`invite-key-${friend.voter_we_vote_id}`}
                       id={`invite-id-${friend.voter_we_vote_id}`}
                       {...friend}
                       invitationsSentByMe={invitationsSentByMe}
-                      previewMode={this.props.previewMode}
+                      previewMode={previewMode}
                     />
-                    {index !== this.state.friendInvitationList.length - 1 ? (
+                    {index !== friendList.length - 1 ? (
                       <hr />
                     ) : null}
-                  </>
+                  </div>
                 );
               } else {
                 simpleKeyCounter++;
                 return (
-                  <>
+                  <div key={`invite-key-${simpleKeyCounter}`}>
                     <FriendInvitationEmailForList
-                      key={`invite-key-${simpleKeyCounter}`}
                       id={`invite-id-${simpleKeyCounter}`}
                       {...friend}
                       invitationsSentByMe={invitationsSentByMe}
-                      previewMode={this.props.previewMode}
+                      previewMode={previewMode}
                     />
-                    {index !== this.state.friendInvitationList.length - 1 ? (
+                    {index !== friendList.length - 1 ? (
                       <hr />
                     ) : null}
-                  </>
+                  </div>
                 );
               }
             })}

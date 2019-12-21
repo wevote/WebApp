@@ -143,7 +143,7 @@ class Friends extends Component {
     const { classes } = this.props;
 
     // console.log('Desktop value: ', desktopValue);
-    console.log('friendsHeaderUnpinned', friendsHeaderUnpinned);
+    // console.log('friendsHeaderUnpinned', friendsHeaderUnpinned);
 
     if (!voter) {
       return LoadingWheel;
@@ -401,7 +401,7 @@ class Friends extends Component {
         <Tab
           classes={{ root: classes.navigationTab }}
           value="invite"
-          label={window.innerWidth > 500 ? 'Add Friends' : 'Invite'}
+          label={window.innerWidth > 500 ? 'Invite Friends' : 'Invite'}
           onClick={() => {
             this.handleNavigation('/friends/invite');
           }}
@@ -422,7 +422,7 @@ class Friends extends Component {
           <Tab
             classes={{ root: classes.navigationTab }}
             value="sent-requests"
-            label="Sent Requests"
+            label="Requests Sent"
             onClick={() => {
               this.handleNavigation('/friends/sent-requests');
             }}

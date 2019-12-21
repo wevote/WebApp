@@ -8,21 +8,25 @@ import { renderLog } from '../../utils/logging';
 
 class FriendDisplayForList extends Component {
   static propTypes = {
+    editMode: PropTypes.bool,
+    linked_organization_we_vote_id: PropTypes.string,
+    mutual_friends: PropTypes.number,
+    positions_taken: PropTypes.number,
+    previewMode: PropTypes.bool,
     voter_we_vote_id: PropTypes.string,
     voter_photo_url_medium: PropTypes.string,
     voter_email_address: PropTypes.string,
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
-    voter_twitter_description: PropTypes.string,
+    // voter_twitter_description: PropTypes.string,
     // voter_twitter_followers_count: PropTypes.number,
-    linked_organization_we_vote_id: PropTypes.string,
-    editMode: PropTypes.bool,
-    previewMode: PropTypes.bool,
   };
 
   render () {
     renderLog('FriendDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
+      mutual_friends: mutualFriends,
+      positions_taken: positionsTaken,
       voter_we_vote_id: voterWeVoteId,
       voter_photo_url_medium: voterPhotoUrlMedium,
     } = this.props;
@@ -60,13 +64,17 @@ class FriendDisplayForList extends Component {
                 {voterDisplayNameFormatted}
               </Name>
             )}
-            <Info>
-              Positions:
-              <strong>7</strong>
-            </Info>
+            {positionsTaken && (
+              <Info>
+                Positions:
+                {' '}
+                <strong>{positionsTaken}</strong>
+              </Info>
+            )}
             <Info>
               Mutual Friends:
-              <strong>23</strong>
+              {' '}
+              <strong>{mutualFriends || 0}</strong>
             </Info>
           </Details>
         </Flex>

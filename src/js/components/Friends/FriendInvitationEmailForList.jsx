@@ -89,10 +89,12 @@ export default class FriendInvitationEmailForList extends Component {
             )}
             <Info>
               Positions:
+              {' '}
               <strong>7</strong>
             </Info>
             <Info>
               Mutual Friends:
+              {' '}
               <strong>23</strong>
             </Info>
             { invitationsSentByMe ? null :

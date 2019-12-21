@@ -69,7 +69,7 @@ export default class SuggestedFriendToggle extends Component {
               onClick={this.sendFriendInvite}
               fullWidth
             >
-              {window.innerWidth > 620 ? 'Add Friend' : 'Add'}
+              {window.innerWidth > 620 ? 'Add Friend' : 'Add Friend'}
             </Button>
           </ButtonContainer>
         )}

@@ -82,11 +82,21 @@ export default class FriendInvitationsSentByMe extends Component {
 
     return (
       <div className="opinion-view">
-        <Helmet title="Your Friends - We Vote" />
+        <Helmet title="Friend Requests Sent - We Vote" />
         <div>
           { friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0 ? (
             <span>
-              <SectionTitle>Your Invitations</SectionTitle>
+              <SectionTitle>
+                Friend Requests Sent
+                { friendInvitationsSentByMe && friendInvitationsSentByMe.length > 0 && (
+                  <>
+                    {' '}
+                    (
+                    {friendInvitationsSentByMe.length}
+                    )
+                  </>
+                )}
+              </SectionTitle>
               <SearchBar
                 clearButton
                 searchButton
@@ -124,7 +134,8 @@ export default class FriendInvitationsSentByMe extends Component {
 }
 
 const SectionTitle = styled.h2`
-  width: fit-content;  font-weight: bold;
+  width: fit-content;
+  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;
 `;

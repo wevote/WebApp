@@ -51,7 +51,7 @@ export default class InviteByEmail extends Component {
     return (
       <div>
         <Helmet title="Build Your We Vote Network" />
-        <SectionTitle>Add Friends by Email</SectionTitle>
+        <SectionTitle>Invite Friends by Email</SectionTitle>
         <section className="card">
           <div className="card-main">
             <AddFriendsByEmail />

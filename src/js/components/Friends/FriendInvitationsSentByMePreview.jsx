@@ -45,30 +45,35 @@ export default class FriendInvitationsSentByMePreview extends Component {
     const FRIENDS_TO_SHOW = 3;
     const friendInvitationsSentByMeLimited = friendInvitationsSentByMe.slice(0, FRIENDS_TO_SHOW);
 
-    return (friendInvitationsSentByMeLimited && friendInvitationsSentByMeLimited.length > 0 ? (
+    return (!!(friendInvitationsSentByMeLimited && friendInvitationsSentByMeLimited.length > 0) && (
       <div className="opinion-view">
         <section className="card">
           <div className="card-main">
-            <SectionTitle>Your Invitations</SectionTitle>
+            <SectionTitle>
+              Friend Requests Sent
+              {' '}
+              (
+              {friendInvitationsSentByMe.length}
+              )
+            </SectionTitle>
             <div>
               <FriendInvitationList
                 friendList={friendInvitationsSentByMeLimited}
                 invitationsSentByMe
                 previewMode
               />
-              <Link to="/friends/sent-requests">See All</Link>
+              {friendInvitationsSentByMe.length > FRIENDS_TO_SHOW && <Link to="/friends/sent-requests">See All</Link>}
             </div>
           </div>
         </section>
       </div>
-    ) :
-      null
-    );
+    ));
   }
 }
 
 const SectionTitle = styled.h2`
-  width: fit-content;  font-weight: bold;
+  width: fit-content;
+  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;
 `;
