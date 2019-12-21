@@ -82,8 +82,18 @@ export default class SuggestedFriends extends Component {
 
     return (
       <div className="opinion-view">
-        <Helmet title="Your Friends - We Vote" />
-        <SectionTitle>Suggested Friends</SectionTitle>
+        <Helmet title="People You May Know - We Vote" />
+        <SectionTitle>
+          People You May Know
+          { suggestedFriendList && suggestedFriendList.length > 0 && (
+            <>
+              {' '}
+              (
+              {suggestedFriendList.length}
+              )
+            </>
+          )}
+        </SectionTitle>
         <div>
           { suggestedFriendList && suggestedFriendList.length > 0 ? (
             <span>

@@ -83,7 +83,17 @@ export default class FriendsCurrent extends Component {
     return (
       <div className="opinion-view">
         <Helmet title="Your Friends - We Vote" />
-        <SectionTitle>Your Friends</SectionTitle>
+        <SectionTitle>
+          Your Friends
+          { currentFriendList && currentFriendList.length > 0 && (
+            <>
+              {' '}
+              (
+              {currentFriendList.length}
+              )
+            </>
+          )}
+        </SectionTitle>
         <div>
           { currentFriendList && currentFriendList.length > 0 ? (
             <span>

@@ -70,7 +70,7 @@ export default class FriendInvitationToggle extends Component {
               onClick={this.acceptFriendInvite}
               fullWidth
             >
-              {window.innerWidth > 620 ? 'Accept Request' : 'Accept'}
+              {window.innerWidth > 620 ? 'Confirm' : 'Confirm'}
             </Button>
           </ButtonContainer>
         )}

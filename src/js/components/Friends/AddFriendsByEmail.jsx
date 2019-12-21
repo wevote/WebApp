@@ -282,7 +282,7 @@ class AddFriendsByEmail extends Component {
             </Alert>
 
             <SettingsAccount
-              pleaseSignInTitle="Sign in to Send Your Invitations"
+              pleaseSignInTitle="Sign in to Send Your Friend Requests"
               pleaseSignInSubTitle=""
             />
           </div>
@@ -296,7 +296,7 @@ class AddFriendsByEmail extends Component {
                 <FormWrapper>
                   <div>
                     <form>
-                      <Label>Email or Phone Number of One Friend</Label>
+                      <Label>Email of One Friend</Label>
                       <TextField
                         variant="outlined"
                         margin="dense"

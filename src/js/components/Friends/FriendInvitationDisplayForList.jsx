@@ -13,6 +13,8 @@ import { renderLog } from '../../utils/logging';
 class FriendInvitationDisplayForList extends Component {
   static propTypes = {
     invitationsSentByMe: PropTypes.bool,
+    mutual_friends: PropTypes.number,
+    positions_taken: PropTypes.number,
     voter_we_vote_id: PropTypes.string,
     voter_photo_url_medium: PropTypes.string,
     voter_display_name: PropTypes.string,
@@ -26,8 +28,9 @@ class FriendInvitationDisplayForList extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      isFriend: false,
     };
-    this.handleIgnore = this.handleIgnore.bind(this);
+    this.ignoreFriendInvite = this.ignoreFriendInvite.bind(this);
   }
 
   componentDidMount () {
@@ -57,14 +60,24 @@ class FriendInvitationDisplayForList extends Component {
     FriendActions.deleteFriendInviteVoter(otherVoterWeVoteId);
   }
 
-  handleIgnore (otherVoterWeVoteId) {
+  ignoreFriendInvite (otherVoterWeVoteId) {
     FriendActions.ignoreFriendInvite(otherVoterWeVoteId);
   }
 
   render () {
     renderLog('FriendInvitationDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
+
+    // Do not render if already a friend
+    const { isFriend } = this.state;
+    if (isFriend) {
+      return null;
+    }
+
     const {
-      // invitationsSentByMe,
+      invitationsSentByMe,
+      mutual_friends: mutualFriends,
+      positions_taken: positionsTaken,
+      previewMode,
       // voter_twitter_followers_count: voterTwitterFollowersCount,
       voter_twitter_handle: voterTwitterHandle,
       voter_we_vote_id: otherVoterWeVoteId,
@@ -83,7 +96,7 @@ class FriendInvitationDisplayForList extends Component {
     // console.log("FriendInvitationDisplayForList, otherVoterWeVoteId:", otherVoterWeVoteId);
 
     const friendInvitationHtml = (
-      <Wrapper previewMode={this.props.previewMode}>
+      <Wrapper previewMode={previewMode}>
         <Flex>
           <Avatar>
             { voterGuideLink ? (
@@ -103,13 +116,17 @@ class FriendInvitationDisplayForList extends Component {
             ) : (
               <Name>{voterDisplayNameFormatted}</Name>
             )}
-            <Info>
-              Positions:
-              <strong>7</strong>
-            </Info>
+            {positionsTaken && (
+              <Info>
+                Positions:
+                {' '}
+                <strong>{positionsTaken}</strong>
+              </Info>
+            )}
             <Info>
               Mutual Friends:
-              <strong>23</strong>
+              {' '}
+              <strong>{mutualFriends || 0}</strong>
             </Info>
             {/* { invitationsSentByMe ?
               null :
@@ -124,38 +141,39 @@ class FriendInvitationDisplayForList extends Component {
               } */}
           </Details>
         </Flex>
-        {this.state.isFriend ? null : (
-          <>
-            { this.props.invitationsSentByMe ? (
-              <ButtonWrapper>
-                <CancelButtonContainer>
-                  <Button fullWidth variant="outlined" color="primary">
-                    Cancel
-                  </Button>
-                </CancelButtonContainer>
-              </ButtonWrapper>
-            ) : (
-              <ButtonWrapper>
-                <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
-                <ButtonContainer>
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => this.handleIgnore(otherVoterWeVoteId)}
-                    type="button"
-                  >
-                    {window.innerWidth > 620 ? 'Delete Request' : 'Delete'}
-                  </Button>
-                </ButtonContainer>
-              </ButtonWrapper>
-            )}
-          </>
+        { invitationsSentByMe ? (
+          <ButtonWrapper>
+            <CancelButtonContainer>
+              <Button
+                color="primary"
+                fullWidth
+                onClick={() => this.deleteFriendInviteVoter(otherVoterWeVoteId)}
+                variant="outlined"
+              >
+                Cancel Invite
+              </Button>
+            </CancelButtonContainer>
+          </ButtonWrapper>
+        ) : (
+          <ButtonWrapper>
+            <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
+            <ButtonContainer>
+              <Button
+                color="primary"
+                fullWidth
+                onClick={() => this.ignoreFriendInvite(otherVoterWeVoteId)}
+                type="button"
+                variant="outlined"
+              >
+                {window.innerWidth > 620 ? 'Delete' : 'Delete'}
+              </Button>
+            </ButtonContainer>
+          </ButtonWrapper>
         )}
       </Wrapper>
     );
 
-    if (this.props.previewMode) {
+    if (previewMode) {
       return <span>{friendInvitationHtml}</span>;
     } else {
       return (

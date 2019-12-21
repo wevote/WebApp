@@ -11,6 +11,8 @@ import { renderLog } from '../../utils/logging';
 
 class SuggestedFriendDisplayForList extends Component {
   static propTypes = {
+    mutual_friends: PropTypes.number,
+    positions_taken: PropTypes.number,
     voter_we_vote_id: PropTypes.string,
     voter_photo_url_medium: PropTypes.string,
     voter_display_name: PropTypes.string,
@@ -40,6 +42,8 @@ class SuggestedFriendDisplayForList extends Component {
   render () {
     renderLog('SuggestedFriendDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
+      mutual_friends: mutualFriends,
+      positions_taken: positionsTaken,
       voter_we_vote_id: voterWeVoteId,
       voter_photo_url_medium: voterPhotoUrlMedium,
     } = this.props;
@@ -77,13 +81,17 @@ class SuggestedFriendDisplayForList extends Component {
                 {voterDisplayNameFormatted}
               </Name>
             )}
-            <Info>
-              Positions:
-              <strong>7</strong>
-            </Info>
+            {positionsTaken && (
+              <Info>
+                Positions:
+                {' '}
+                <strong>{positionsTaken}</strong>
+              </Info>
+            )}
             <Info>
               Mutual Friends:
-              <strong>23</strong>
+              {' '}
+              <strong>{mutualFriends || 0}</strong>
             </Info>
             { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
           </Details>
@@ -98,7 +106,7 @@ class SuggestedFriendDisplayForList extends Component {
               onClick={() => this.ignoreSuggestedFriend(voterWeVoteId)}
               type="button"
             >
-              {window.innerWidth > 620 ? 'Delete Request' : 'Delete'}
+              {window.innerWidth > 620 ? 'Remove' : 'Remove'}
             </Button>
           </ButtonContainer>
         </ButtonWrapper>

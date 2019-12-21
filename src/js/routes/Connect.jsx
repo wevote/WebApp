@@ -158,7 +158,7 @@ export default class Connect extends Component {
         ) : null
         }
         <div className="container-fluid well u-stack--md u-inset--md">
-          <h4 className="text-left">Add Friends by Email</h4>
+          <h4 className="text-left">Invite Friends by Email</h4>
           <AddFriendsByEmail />
         </div>
 

@@ -80,15 +80,25 @@ export default class FriendInvitationsSentToMe extends Component {
       friendInvitationsSentToMe = this.state.friendInvitationsSentToMeFilteredBySearch;
     }
 
-    console.log(this.state.suggestedFriends);
+    // console.log(this.state.suggestedFriends);
 
     return (
       <div className="opinion-view">
-        <Helmet title="Your Friends - We Vote" />
+        <Helmet title="Friend Requests - We Vote" />
         <div>
           { friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
             <span>
-              <SectionTitle>Friend Requests</SectionTitle>
+              <SectionTitle>
+                Friend Requests
+                { friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 && (
+                  <>
+                    {' '}
+                    (
+                    {friendInvitationsSentToMe.length}
+                    )
+                  </>
+                )}
+              </SectionTitle>
               <SearchBar
                 clearButton
                 searchButton

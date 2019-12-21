@@ -38,9 +38,9 @@ export default class FriendToggle extends Component {
   }
 
   onFriendStoreChange () {
-    this.setState({
-      isFriend: FriendStore.isFriend(this.props.otherVoterWeVoteId),
-    });
+    // this.setState({
+    //   isFriend: FriendStore.isFriend(this.props.otherVoterWeVoteId),
+    // });
   }
 
   onVoterStoreChange () {
