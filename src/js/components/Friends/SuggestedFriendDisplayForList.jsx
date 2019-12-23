@@ -81,7 +81,7 @@ class SuggestedFriendDisplayForList extends Component {
                 {voterDisplayNameFormatted}
               </Name>
             )}
-            {positionsTaken && (
+            {!!(positionsTaken) && (
               <Info>
                 Positions:
                 {' '}

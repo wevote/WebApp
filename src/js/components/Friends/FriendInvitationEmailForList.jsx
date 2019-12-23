@@ -12,6 +12,8 @@ export default class FriendInvitationEmailForList extends Component {
   static propTypes = {
     invitationsSentByMe: PropTypes.bool,
     invitation_status: PropTypes.string, // Comes friend data object from API server
+    mutual_friends: PropTypes.number,
+    positions_taken: PropTypes.number,
     // voter_display_name: PropTypes.string, // Comes friend data object from API server
     voter_email_address: PropTypes.string, // Comes friend data object from API server
     // voter_photo_url_medium: PropTypes.string, // Comes friend data object from API server
@@ -51,7 +53,12 @@ export default class FriendInvitationEmailForList extends Component {
   render () {
     renderLog('FriendInvitationEmailForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      invitationsSentByMe, invitation_status: invitationState, voter_email_address: voterEmailAddress, voter_photo_url_medium: voterPhotoUrlMedium,
+      invitationsSentByMe,
+      invitation_status: invitationState,
+      mutual_friends: mutualFriends,
+      positions_taken: positionsTaken,
+      voter_email_address: voterEmailAddress,
+      voter_photo_url_medium: voterPhotoUrlMedium,
     } = this.props;
 
     const { voter } = this.state;
@@ -87,15 +94,17 @@ export default class FriendInvitationEmailForList extends Component {
             ) : (
               <Name>{voterDisplayNameFormatted}</Name>
             )}
-            <Info>
-              Positions:
-              {' '}
-              <strong>7</strong>
-            </Info>
+            {!!(positionsTaken) && (
+              <Info>
+                Positions:
+                {' '}
+                <strong>{positionsTaken}</strong>
+              </Info>
+            )}
             <Info>
               Mutual Friends:
               {' '}
-              <strong>23</strong>
+              <strong>{mutualFriends || 0}</strong>
             </Info>
             { invitationsSentByMe ? null :
             <span> invited you.</span>}
