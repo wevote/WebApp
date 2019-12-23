@@ -116,7 +116,7 @@ class FriendInvitationDisplayForList extends Component {
             ) : (
               <Name>{voterDisplayNameFormatted}</Name>
             )}
-            {positionsTaken && (
+            {!!(positionsTaken) && (
               <Info>
                 Positions:
                 {' '}

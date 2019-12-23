@@ -64,18 +64,20 @@ class FriendDisplayForList extends Component {
                 {voterDisplayNameFormatted}
               </Name>
             )}
-            {positionsTaken && (
+            {!!(positionsTaken) && (
               <Info>
                 Positions:
                 {' '}
                 <strong>{positionsTaken}</strong>
               </Info>
             )}
-            <Info>
-              Mutual Friends:
-              {' '}
-              <strong>{mutualFriends || 0}</strong>
-            </Info>
+            {!!(mutualFriends) && (
+              <Info>
+                Mutual Friends:
+                {' '}
+                <strong>{mutualFriends || 0}</strong>
+              </Info>
+            )}
           </Details>
         </Flex>
         <>
