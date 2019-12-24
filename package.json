@@ -75,6 +75,7 @@
   "dependencies": {
     "@material-ui/core": "^4.8.0",
     "@material-ui/icons": "^4.5.1",
+    "@babel/runtime": "^7.7.7",
     "bootstrap": "^4.4.1",
     "classnames": "^2.2.6",
     "es6-promise": "^4.2.8",
@@ -138,7 +139,6 @@
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-react": "^7.7.4",
     "@babel/register": "^7.7.4",
-    "@babel/runtime": "^7.7.6",
     "@babel/types": "^7.7.4",
     "@wdio/cli": "^5.17.0",
     "@wdio/local-runner": "^5.17.0",

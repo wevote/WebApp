@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const { InjectManifest } = require('workbox-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer');   // Don't delete this!
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');   // Don't delete this!
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 const port = process.env.PORT || 3000;
@@ -43,7 +43,7 @@ module.exports = {
       swSrc: './src/serviceWorker.js',
       swDest: 'sw.js',
     }),
-    // new  BundleAnalyzerPlugin(),  // Enable this to start an (amazing) bundle size analyzer tool
+    new  BundleAnalyzerPlugin(),  // Enable this to start an (amazing) bundle size analyzer tool
   ],
   module: {
     rules: [
