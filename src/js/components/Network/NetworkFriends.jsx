@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import _ from 'lodash';
+import filter from 'lodash-es/filter';
 import FriendListCompressed from './FriendListCompressed';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -63,7 +63,7 @@ export default class NetworkFriends extends Component {
     } else {
       const { currentFriendList } = this.state;
       const searchTermLowerCase = searchTerm.toLowerCase();
-      const searchedFriendList = _.filter(currentFriendList,
+      const searchedFriendList = filter(currentFriendList,
         user => user.voter_display_name.toLowerCase().includes(searchTermLowerCase));
 
       this.setState({

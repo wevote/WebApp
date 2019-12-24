@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
+import Popover from 'react-bootstrap/esm/Popover';
 import FollowToggle from '../Widgets/FollowToggle';
 import { renderLog } from '../../utils/logging';
 import OrganizationCard from '../VoterGuide/OrganizationCard';

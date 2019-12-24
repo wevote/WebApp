@@ -72,6 +72,29 @@ will also start working (and sounds very valuable).
 An interactive UI, as shown below, will start up in a server and will be displayed in your browser.
 
   ![ScreenPrint](../images/WebpackBundleAnalyzer.png)
+  
+### Do Cherypick from Libraries!
+
+importing Button with decompostion from  '@material-ui/core' adds the entire '@material-ui/core' library to the bundle, which 
+bloats the size of the bundle and makes startup over slow internet connections very slow.
+
+```
+import { Button } from '@material-ui/core';   /DO NOT DO THIS!!!!!
+```
+
+ instead, cherry pick the component, and only that component will be added to the bundle.  
+
+ ```
+import Button from '@material-ui/core/esm/Button';
+ ```
+
+Making these changes for material-ui saved about 300 MB in bundle size!
+
+Note that you can't load third level components this way, so you need to decompose second level components like this...
+```
+import { withStyles } from '@material-ui/core/esm/styles';
+```
+
 
 ### Code Splitting
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Button } from 'react-bootstrap';
+import Alert from 'react-bootstrap/esm/Alert';
+import Button from 'react-bootstrap/esm/Button';
 import { renderLog } from '../utils/logging';
 
 export default class WouldYouLikeToMergeAccounts extends Component {

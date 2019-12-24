@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
-import { Table, Card } from 'react-bootstrap';
+import Table from 'react-bootstrap/esm/Table';
+import Card from 'react-bootstrap/esm/Card';
+
 import moment from 'moment';
 import { renderLog } from '../../utils/logging';
 import DonateStore from '../../stores/DonateStore';

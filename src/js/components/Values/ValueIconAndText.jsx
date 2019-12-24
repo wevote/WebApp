@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@material-ui/core/esm/styles';
 import styled from 'styled-components';
 import ReactSVG from 'react-svg';
 import CandidateStore from '../../stores/CandidateStore';

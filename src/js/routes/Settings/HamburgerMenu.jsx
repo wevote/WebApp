@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
-import { Table } from 'react-bootstrap';
+import Table from 'react-bootstrap/esm/Table';
 import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';

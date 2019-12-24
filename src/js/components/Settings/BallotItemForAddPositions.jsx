@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core';
+import { withStyles, withTheme } from '@material-ui/core/esm/styles';
 import { renderLog } from '../../utils/logging';
 import MeasureItemForAddPositions from './MeasureItemForAddPositions';
 import OfficeItemForAddPositions from './OfficeItemForAddPositions';

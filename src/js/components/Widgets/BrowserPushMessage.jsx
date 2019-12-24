@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import { withStyles } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/esm/Snackbar';
+import IconButton from '@material-ui/core/esm/IconButton';
+import { withStyles } from '@material-ui/core/esm/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { renderLog } from '../../utils/logging';
 

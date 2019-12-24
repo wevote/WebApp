@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
+import Popover from 'react-bootstrap/esm/Popover';
+
 import CurrentFriendTinyDisplay from './CurrentFriendTinyDisplay';
 import FriendDisplayForList from '../Friends/FriendDisplayForList';
 import { renderLog } from '../../utils/logging';

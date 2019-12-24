@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/esm/styles';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';

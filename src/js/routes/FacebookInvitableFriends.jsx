@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { Button } from 'react-bootstrap';
-import _ from 'lodash';
+import Button from 'react-bootstrap/esm/Button';
+import filter from 'lodash-es/filter';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import CheckBox from '../components/Connect/CheckBox';
 import webAppConfig from '../config';
@@ -162,7 +162,7 @@ export default class FacebookInvitableFriends extends Component {
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
       const { facebookInvitableFriends } = this.state;
-      const searchedFriendsList = _.filter(facebookInvitableFriends.facebook_invitable_friends_list,
+      const searchedFriendsList = filter(facebookInvitableFriends.facebook_invitable_friends_list,
         user => user.name.toLowerCase().includes(searchTermLowercase));
 
       this.setState({

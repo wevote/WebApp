@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import filter from 'lodash-es/filter';
 import Helmet from 'react-helmet';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -70,7 +70,7 @@ export default class VoterGuideFollowers extends Component {
     } else {
       const searchTermLowerCase = searchTerm.toLowerCase();
       const { voterGuideFollowersList } = this.state;
-      const searchedFollowersList = _.filter(voterGuideFollowersList,
+      const searchedFollowersList = filter(voterGuideFollowersList,
         oneVoterGuide => oneVoterGuide.voter_guide_display_name.toLowerCase().includes(searchTermLowerCase));
 
       this.setState({

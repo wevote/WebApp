@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import { Button } from 'react-bootstrap';
-import _ from 'lodash';
+import Button from 'react-bootstrap/esm/Button';
+import filter from 'lodash-es/filter';
 import GuideList from './GuideList';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -93,7 +93,7 @@ export default class VoterGuideFollowing extends Component {
     } else {
       const searchTermLowerCase = searchTerm.toLowerCase();
       const { voterGuideFollowedList } = this.state;
-      const searchedFollowedList = _.filter(voterGuideFollowedList,
+      const searchedFollowedList = filter(voterGuideFollowedList,
         user => user.voter_guide_display_name.toLowerCase().includes(searchTermLowerCase));
 
       this.setState({

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/esm/styles';
 import styled from 'styled-components';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@material-ui/core/esm/IconButton';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import { renderLog } from '../../utils/logging';

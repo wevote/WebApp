@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import _ from 'lodash';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { withStyles } from '@material-ui/core/styles';
-import Radio from '@material-ui/core/Radio';
-import Select from '@material-ui/core/Select';
-import Chip from '@material-ui/core/Chip';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
+import isEqual from 'lodash-es/isEqual';
+import FormControlLabel from '@material-ui/core/esm/FormControlLabel';
+import { withStyles } from '@material-ui/core/esm/styles';
+import Radio from '@material-ui/core/esm/Radio';
+import Select from '@material-ui/core/esm/Select';
+import Chip from '@material-ui/core/esm/Chip';
+import Input from '@material-ui/core/esm/Input';
+import MenuItem from '@material-ui/core/esm/MenuItem';
 import { arrayContains, removeValueFromArray } from '../../utils/textFormat';
 import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/address-functions';
 import BallotActions from '../../actions/BallotActions';
@@ -286,7 +286,7 @@ class SettingsAddBallotItemsFilter extends Component {
       switch (filter) {
         case 'showFederalRaceFilter':
           containsAtLeastOneRaceFilter = true;
-          if (lastFilterAdded && !_.isEqual(lastFilterAdded, 'showFederalRaceFilter')) {
+          if (lastFilterAdded && !isEqual(lastFilterAdded, 'showFederalRaceFilter')) {
             // Only add to filtersToRemove if it wasn't the last race filter selected
             raceFilterCount += 1;
             filtersToRemove.push('showFederalRaceFilter');
@@ -295,7 +295,7 @@ class SettingsAddBallotItemsFilter extends Component {
         case 'showStateRaceFilter':
           containsAtLeastOneRaceFilter = true;
           raceFilterCount += 1;
-          if (lastFilterAdded && !_.isEqual(lastFilterAdded, 'showStateRaceFilter')) {
+          if (lastFilterAdded && !isEqual(lastFilterAdded, 'showStateRaceFilter')) {
             raceFilterCount += 1;
             filtersToRemove.push('showStateRaceFilter');
           }
@@ -303,7 +303,7 @@ class SettingsAddBallotItemsFilter extends Component {
         case 'showMeasureRaceFilter':
           containsAtLeastOneRaceFilter = true;
           raceFilterCount += 1;
-          if (lastFilterAdded && !_.isEqual(lastFilterAdded, 'showMeasureRaceFilter')) {
+          if (lastFilterAdded && !isEqual(lastFilterAdded, 'showMeasureRaceFilter')) {
             raceFilterCount += 1;
             filtersToRemove.push('showMeasureRaceFilter');
           }
@@ -311,7 +311,7 @@ class SettingsAddBallotItemsFilter extends Component {
         case 'showLocalRaceFilter':
           containsAtLeastOneRaceFilter = true;
           raceFilterCount += 1;
-          if (lastFilterAdded && !_.isEqual(lastFilterAdded, 'showLocalRaceFilter')) {
+          if (lastFilterAdded && !isEqual(lastFilterAdded, 'showLocalRaceFilter')) {
             raceFilterCount += 1;
             filtersToRemove.push('showLocalRaceFilter');
           }
@@ -406,7 +406,7 @@ class SettingsAddBallotItemsFilter extends Component {
     // });
 
     // TURNED OFF: Make sure each item in the filteredItems is unique (by we_vote_id)
-    // return _.uniqBy(filteredItems, x => x.we_vote_id);
+    // return uniqBy(filteredItems, x => x.we_vote_id);
 
     // We no longer filter for a unique we_vote_id because we sometimes pass items into this routine that don't have a we_vote_id
     // console.log('filteredItems:', filteredItems);

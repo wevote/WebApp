@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '@material-ui/core/esm/Tooltip';
 import ReactSVG from 'react-svg';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';

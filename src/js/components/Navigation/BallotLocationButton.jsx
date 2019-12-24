@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/esm/Button';
 import BallotStore from '../../stores/BallotStore';
 import { shortenText } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';

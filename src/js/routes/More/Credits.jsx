@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/esm/styles';
 import Helmet from 'react-helmet';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -184,7 +184,7 @@ const CreditsDescriptionContainer = styled.div`
   @media (min-width: 960px) and (max-width: 991px) {
     > * {
       width: 90%;
-      margin: 0 auto;   
+      margin: 0 auto;
     }
     max-width: 100%;
     min-width: 100%;

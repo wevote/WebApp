@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/esm/Button';
 import { deviceTypeString, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import FriendActions from '../../actions/FriendActions';

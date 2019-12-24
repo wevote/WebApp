@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/styles';
+import { withTheme, withStyles } from '@material-ui/core/esm/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { renderLog } from '../../utils/logging';
 

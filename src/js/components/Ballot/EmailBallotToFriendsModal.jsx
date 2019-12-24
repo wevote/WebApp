@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/esm/Button';
 import { deviceTypeString } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';

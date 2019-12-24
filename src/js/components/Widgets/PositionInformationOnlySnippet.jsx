@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
-import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import Tooltip from 'react-bootstrap/esm/Tooltip';
+import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from './OpenExternalWebSite';

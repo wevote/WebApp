@@ -5,8 +5,13 @@ import styled from 'styled-components';
 // import Edit from '@material-ui/icons/Edit';
 // import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import CheckCircle from '@material-ui/icons/CheckCircle';
-// IconButton,
-import { withStyles, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@material-ui/core';
+import Button from '@material-ui/core/esm/Button';
+import TableRow from '@material-ui/core/esm/TableRow';
+import TableHead from '@material-ui/core/esm/TableHead';
+import TableCell from '@material-ui/core/esm/TableCell';
+import TableBody from '@material-ui/core/esm/TableBody';
+import Table from '@material-ui/core/esm/Table';
+import { withStyles } from '@material-ui/core/esm/styles';
 import DonateStore from '../../stores/DonateStore';
 import DonateActions from '../../actions/DonateActions';
 import LoadingWheel from '../LoadingWheel';
@@ -828,7 +833,7 @@ const SectionParagraph = styled.span`
   margin-bottom: 4px;
   @media (min-width: 569px) {
     font-size: 14px;
-  } 
+  }
 `;
 
 const StaticColumn = styled.div`

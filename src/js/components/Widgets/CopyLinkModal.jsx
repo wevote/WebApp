@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
+import Modal from 'react-bootstrap/esm/Modal';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { renderLog } from '../../utils/logging';
 

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
+import Popover from 'react-bootstrap/esm/Popover';
 import FacebookFriendTinyDisplay from './FacebookFriendTinyDisplay';
 import FacebookFriendCard from './FacebookFriendCard';
 import FacebookStore from '../../stores/FacebookStore';

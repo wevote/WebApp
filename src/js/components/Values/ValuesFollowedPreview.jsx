@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/esm/styles';
 import IssueActions from '../../actions/IssueActions';
 import IssueCardCompressed from './IssueCardCompressed';
 import IssueStore from '../../stores/IssueStore';

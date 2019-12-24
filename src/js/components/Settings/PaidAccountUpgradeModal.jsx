@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import { Elements, StripeProvider } from 'react-stripe-elements';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/esm/Button';
 import CloseIcon from '@material-ui/icons/Close';
-import DialogContent from '@material-ui/core/DialogContent';
-import FormControl from '@material-ui/core/FormControl';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
-import { withStyles, withTheme, OutlinedInput } from '@material-ui/core';
+import Dialog from '@material-ui/core/esm/Dialog';
+import DialogContent from '@material-ui/core/esm/DialogContent';
+import FormControl from '@material-ui/core/esm/FormControl';
+import FormControlLabel from '@material-ui/core/esm/FormControlLabel';
+import IconButton from '@material-ui/core/esm/IconButton';
+import OutlinedInput from '@material-ui/core/esm/OutlinedInput';
+import Radio from '@material-ui/core/esm/Radio';
+import RadioGroup from '@material-ui/core/esm/RadioGroup';
+import { withStyles, withTheme } from '@material-ui/core/esm/styles';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
 import extractNumber from '../../utils/extractNumber';
@@ -1331,7 +1332,7 @@ const MobileWrapper = styled.div`
 `;
 
 const FlexSectionOne = styled.div`
-  margin: 0;  
+  margin: 0;
 `;
 
 const FlexSectionTwo = styled.div`

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import moment from 'moment';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/esm/styles';
 import AddressBox from '../AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';

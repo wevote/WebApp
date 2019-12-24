@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
-import Checkbox from '@material-ui/core/Checkbox';
-import { Button } from 'react-bootstrap';
+import Checkbox from '@material-ui/core/esm/Checkbox';
+import Button from 'react-bootstrap/esm/Button';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';

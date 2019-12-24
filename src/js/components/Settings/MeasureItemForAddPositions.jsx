@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Card from '@material-ui/core/Card';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import Card from '@material-ui/core/esm/Card';
+import { withStyles, withTheme } from '@material-ui/core/esm/styles';
 import { renderLog } from '../../utils/logging';
 import ItemActionBar from '../Widgets/ItemActionBar';
 import SupportStore from '../../stores/SupportStore';

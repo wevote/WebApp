@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/esm/Button';
 import { deviceTypeString, isWebApp } from '../../utils/cordovaUtils';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/esm/Button';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';

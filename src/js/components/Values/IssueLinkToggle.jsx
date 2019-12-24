@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import Button from 'react-bootstrap/esm/Button';
+import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
+import Popover from 'react-bootstrap/esm/Popover';
 import IssueActions from '../../actions/IssueActions';
 import IssueImageDisplay from './IssueImageDisplay';
 import { renderLog } from '../../utils/logging';

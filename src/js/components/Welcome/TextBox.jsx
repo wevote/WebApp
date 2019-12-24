@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import InputBase from '@material-ui/core/InputBase';
-import { withStyles } from '@material-ui/core/styles';
+import InputBase from '@material-ui/core/esm/InputBase';
+import { withStyles } from '@material-ui/core/esm/styles';
 
 class TextBox extends Component {
   static propTypes = {

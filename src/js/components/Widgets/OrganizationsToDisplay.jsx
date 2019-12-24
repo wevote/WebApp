@@ -1,7 +1,8 @@
 // This is used for organizations to Follow (not currently followed by the voter)
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
+import Popover from 'react-bootstrap/esm/Popover';
 import { isCordova } from '../../utils/cordovaUtils';
 import OrganizationCard from '../VoterGuide/OrganizationCard';
 import OrganizationTinyDisplay from '../VoterGuide/OrganizationTinyDisplay';
