@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/esm/styles';
 import DonationListForm from '../../components/Donation/DonationListForm';
 import { renderLog } from '../../utils/logging';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
@@ -92,7 +92,7 @@ const DonateCaveat = styled.p`
   font-size: 17px;
   text-align: center;
   margin-top: 1em;
-  font-style: italic; 
+  font-style: italic;
 `;
 
 export default withStyles(styles)(DonateThankYou);

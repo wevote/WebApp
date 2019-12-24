@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Card from '@material-ui/core/Card';
+import Card from '@material-ui/core/esm/Card';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@material-ui/core/esm/styles';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { renderLog } from '../../utils/logging';
 import MeasureActions from '../../actions/MeasureActions';

@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import {
   browserHistory, hashHistory, Router, applyRouterMiddleware,
 } from 'react-router';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import { MuiThemeProvider } from '@material-ui/core/esm/styles';
 import { ThemeProvider } from 'styled-components';
 import { useScroll } from 'react-router-scroll';
 import { isCordova, setGlobalScreenSize } from './utils/cordovaUtils';

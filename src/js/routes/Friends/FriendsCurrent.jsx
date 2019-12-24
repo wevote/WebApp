@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import _ from 'lodash';
+import filter from 'lodash-es/filter';
 import FriendList from '../../components/Friends/FriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -54,7 +54,7 @@ export default class FriendsCurrent extends Component {
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
       const { currentFriendList } = this.state;
-      const searchedFriendList = _.filter(currentFriendList,
+      const searchedFriendList = filter(currentFriendList,
         voter => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
 
       this.setState({

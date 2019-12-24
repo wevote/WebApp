@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
+import filter from 'lodash-es/filter';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
@@ -127,7 +127,7 @@ export default class ValuesList extends Component {
 
     if (searchQuery.length > 0) {
       const searchQueryLowercase = searchQuery.toLowerCase();
-      issuesList = _.filter(issuesList,
+      issuesList = filter(issuesList,
         oneIssue => oneIssue.issue_name.toLowerCase().includes(searchQueryLowercase) ||
             oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase));
     }

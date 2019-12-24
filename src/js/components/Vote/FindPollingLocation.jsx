@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/esm/Button';
 import PlaceIcon from '@material-ui/icons/Place';
-import { withStyles } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/esm/styles';
 import { historyPush } from '../../utils/cordovaUtils';
 
 class FindPollingLocation extends Component {
@@ -75,7 +75,6 @@ const InformationTextWrapper = styled.div`
   text-align: left;
   color: #555;
   font-size: 14px;
-  
 `;
 
 export default withStyles(styles)(FindPollingLocation);

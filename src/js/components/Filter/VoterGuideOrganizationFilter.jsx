@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import _ from 'lodash';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { withStyles } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
+import uniqBy from 'lodash-es/uniqBy';
+import FormControlLabel from '@material-ui/core/esm/FormControlLabel';
+import { withStyles } from '@material-ui/core/esm/styles';
+import Checkbox from '@material-ui/core/esm/Checkbox';
 import IssueStore from '../../stores/IssueStore';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import { renderLog } from '../../utils/logging';
@@ -157,7 +157,7 @@ class VoterGuideOrganizationFilter extends Component {
           break;
       }
     });
-    return _.uniqBy(filteredItems, x => x.position_we_vote_id);
+    return uniqBy(filteredItems, x => x.position_we_vote_id);
   }
 
   toggleFilter = (name) => {

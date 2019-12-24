@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/esm/Button';
 import BallotStore from '../../stores/BallotStore';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';

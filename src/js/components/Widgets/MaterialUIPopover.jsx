@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import Popover from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
+import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import Popover from '@material-ui/core/esm/Popover';
+import Typography from '@material-ui/core/esm/Typography';
 
 class MaterialUIPopover extends Component {
   static propTypes = {

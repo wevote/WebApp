@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Button } from 'react-bootstrap';
+import Alert from 'react-bootstrap/esm/Alert';
+import Button from 'react-bootstrap/esm/Button';
 import FacebookActions from '../actions/FacebookActions';
 import FacebookStore from '../stores/FacebookStore';
 import { historyPush } from '../utils/cordovaUtils';

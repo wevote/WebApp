@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/esm/styles';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import { convertNameToSlug, shortenText } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';

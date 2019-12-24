@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router';
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/esm/Button';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { historyPush } from '../../utils/cordovaUtils';
 import FollowToggle from '../../components/Widgets/FollowToggle';

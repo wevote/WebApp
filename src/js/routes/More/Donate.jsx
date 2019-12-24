@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import {
-  Form, InputGroup, FormControl,
-} from 'react-bootstrap';
-import Button from '@material-ui/core/Button';
+import Form from 'react-bootstrap/esm/Form';
+import FormControl from 'react-bootstrap/esm/FormControl';
+import InputGroup from 'react-bootstrap/esm/InputGroup';
+import Button from '@material-ui/core/esm/Button';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/esm/styles';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonationForm from '../../components/Donation/DonationForm';

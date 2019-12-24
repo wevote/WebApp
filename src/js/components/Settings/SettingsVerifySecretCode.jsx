@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@material-ui/core/esm/styles';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import {
-  Dialog,
-  // IconButton, DialogContent,
-  Button,
-  // InputBase,
-  OutlinedInput,
-} from '@material-ui/core';
+import Button from '@material-ui/core/esm/Button';
+import Dialog from '@material-ui/core/esm/Dialog';
+import OutlinedInput from '@material-ui/core/esm/OutlinedInput';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch, isIPhone4in, isIOS, isCordova } from '../../utils/cordovaUtils';
 import VoterActions from '../../actions/VoterActions';

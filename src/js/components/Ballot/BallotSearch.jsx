@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, withTheme } from '@material-ui/core/styles';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
+import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import InputBase from '@material-ui/core/esm/InputBase';
+import IconButton from '@material-ui/core/esm/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
-import _ from 'lodash';
+import sortBy from 'lodash-es/sortBy';
 import { isCordova } from '../../utils/cordovaUtils';
 import addVoterGuideSearchPriority from '../../utils/addVoterGuideSearchPriority';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
@@ -97,7 +97,7 @@ class BallotSearch extends Component {
     this.searchInputTimer = setTimeout(() => {
       // Filter out items without the search terms, and put the most likely search result at the top
       // Only return results if they get past the filter
-      const sortedFiltered = _.sortBy(this.filterItems(value), ['priority']).reverse().filter(item => item.priority > 0);
+      const sortedFiltered = sortBy(this.filterItems(value), ['priority']).reverse().filter(item => item.priority > 0);
       return this.props.onBallotSearch(sortedFiltered.length ? sortedFiltered : []);
     }, delayBeforeSearchExecution);
   }

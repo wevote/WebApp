@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/esm/Button';
 import styled from 'styled-components';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import FriendActions from '../../actions/FriendActions';

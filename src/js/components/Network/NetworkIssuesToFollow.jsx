@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
-import _ from 'lodash';
+import filter from 'lodash-es/filter';
 import IssueActions from '../../actions/IssueActions';
 import IssueFollowToggleSquare from '../Values/IssueFollowToggleSquare';
 import IssueStore from '../../stores/IssueStore';
@@ -57,7 +57,7 @@ export default class NetworkIssuesToFollow extends Component {
     if (this.state.searchQuery.length > 0) {
       const searchQueryLower = this.state.searchQuery.toLowerCase();
       issuesToFollow = issuesToFollow.concat(this.state.issuesFollowed);
-      issuesToFollow = _.filter(issuesToFollow,
+      issuesToFollow = filter(issuesToFollow,
         oneIssue => oneIssue.issue_name.toLowerCase().includes(searchQueryLower) ||
           oneIssue.issue_description.toLowerCase().includes(searchQueryLower));
     }

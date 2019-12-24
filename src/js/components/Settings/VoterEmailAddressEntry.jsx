@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-bootstrap';
+import Alert from 'react-bootstrap/esm/Alert';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/esm/styles';
+import Button from '@material-ui/core/esm/Button';
 import Delete from '@material-ui/icons/Delete';
-import Paper from '@material-ui/core/Paper';
+import Paper from '@material-ui/core/esm/Paper';
 import Mail from '@material-ui/icons/Mail';
-import InputBase from '@material-ui/core/InputBase';
+import InputBase from '@material-ui/core/esm/InputBase';
 import LoadingWheel from '../LoadingWheel';
 import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';

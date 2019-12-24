@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { withStyles } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/esm/FormControlLabel';
+import { withStyles } from '@material-ui/core/esm/styles';
+import Checkbox from '@material-ui/core/esm/Checkbox';
 import { renderLog } from '../../utils/logging';
 
 
@@ -187,7 +187,7 @@ class SettingsSeePositionsFilter extends Component {
     // });
 
     // TURNED OFF: Make sure each item in the filteredItems is unique (by we_vote_id)
-    // return _.uniqBy(filteredItems, x => x.we_vote_id);
+    // return uniqBy(filteredItems, x => x.we_vote_id);
 
     // We no longer filter for a unique we_vote_id because we sometimes pass items into this routine that don't have a we_vote_id
     return filteredItems;

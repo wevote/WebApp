@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
+import Modal from 'react-bootstrap/esm/Modal';
 import AddressBox from '../AddressBox';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';

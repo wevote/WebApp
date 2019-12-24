@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/esm/Button';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { renderLog } from '../../utils/logging';

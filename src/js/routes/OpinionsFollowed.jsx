@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
-import _ from 'lodash';
+import filter from 'lodash-es/filter';
 import { renderLog } from '../utils/logging';
 import OrganizationActions from '../actions/OrganizationActions';
 import OrganizationStore from '../stores/OrganizationStore';
@@ -65,7 +65,7 @@ export default class OpinionsFollowed extends Component {
     let organizationsFollowedListForDisplay = [];
     if (this.state.searchQuery.length > 0) {
       const searchQueryLowercase = this.state.searchQuery.toLowerCase();
-      organizationsFollowedListForDisplay = _.filter(this.state.organizationsFollowedList,
+      organizationsFollowedListForDisplay = filter(this.state.organizationsFollowedList,
         oneOrganization => oneOrganization.organization_name.toLowerCase().includes(searchQueryLowercase) ||
             oneOrganization.organization_twitter_handle.toLowerCase().includes(searchQueryLowercase));
     } else {

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Badge from '@material-ui/core/Badge';
+import Badge from '@material-ui/core/esm/Badge';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/esm/styles';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import BallotSearch from '../Ballot/BallotSearch';
 import { renderLog } from '../../utils/logging';
@@ -305,7 +305,7 @@ const FilterTop = styled.div`
 `;
 
 const NumberFound = styled.div`
-  font-size: 16px; 
+  font-size: 16px;
   font-weight: bold;
   padding-top: 8px;
 `;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { withStyles } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/esm/styles';
+import Button from '@material-ui/core/esm/Button';
 import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
