@@ -415,6 +415,7 @@ export default class OrganizationPositionItem extends Component {
                       ballotItemWeVoteId={position.ballot_item_we_vote_id}
                       ballotItemDisplayName={position.ballot_item_display_name}
                       commentEditModeOn
+                      externalUniqueId="organizationPositionItem"
                       transitioning={this.state.transitioning}
                       type={position.kind_of_ballot_item}
                     />

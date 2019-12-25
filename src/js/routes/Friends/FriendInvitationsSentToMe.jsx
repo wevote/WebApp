@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import filter from 'lodash-es/filter';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
-import SearchBar from '../../components/Search/SearchBar';
 import MessageCard from '../../components/Widgets/MessageCard';
 
 export default class FriendInvitationsSentToMe extends Component {
@@ -17,12 +15,7 @@ export default class FriendInvitationsSentToMe extends Component {
     super(props);
     this.state = {
       friendInvitationsSentToMe: [],
-      friendInvitationsSentToMeFilteredBySearch: [],
-      searchFilterOn: false,
-      searchTerm: '',
     };
-    this.clearSearch = this.clearSearch.bind(this);
-    this.searchFriends = this.searchFriends.bind(this);
   }
 
   componentDidMount () {
@@ -44,42 +37,9 @@ export default class FriendInvitationsSentToMe extends Component {
     });
   }
 
-  searchFriends (searchTerm) {
-    if (searchTerm.length === 0) {
-      this.setState({
-        friendInvitationsSentToMeFilteredBySearch: [],
-        searchFilterOn: false,
-        searchTerm: '',
-      });
-    } else {
-      const searchTermLowercase = searchTerm.toLowerCase();
-      const { friendInvitationsSentToMe } = this.state;
-      const searchedFriendList = filter(friendInvitationsSentToMe,
-        voter => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
-
-      this.setState({
-        friendInvitationsSentToMeFilteredBySearch: searchedFriendList,
-        searchFilterOn: true,
-        searchTerm,
-      });
-    }
-  }
-
-  clearSearch () {
-    this.setState({
-      searchFilterOn: false,
-      searchTerm: '',
-      friendInvitationsSentToMeFilteredBySearch: [],
-    });
-  }
-
   render () {
     renderLog('FriendInvitationsSentToMe');  // Set LOG_RENDER_EVENTS to log all renders
-    let { friendInvitationsSentToMe } = this.state;
-    if (this.state.searchFilterOn) {
-      friendInvitationsSentToMe = this.state.friendInvitationsSentToMeFilteredBySearch;
-    }
-
+    const { friendInvitationsSentToMe } = this.state;
     // console.log(this.state.suggestedFriends);
 
     return (
@@ -99,23 +59,6 @@ export default class FriendInvitationsSentToMe extends Component {
                   </>
                 )}
               </SectionTitle>
-              <SearchBar
-                clearButton
-                searchButton
-                placeholder="Search by name"
-                searchFunction={this.searchFriends}
-                clearFunction={this.clearSearch}
-                searchUpdateDelayTime={0}
-              />
-              <br />
-              { this.state.searchFilterOn && friendInvitationsSentToMe.length === 0 ? (
-                <p>
-                  &quot;
-                  {this.state.searchTerm}
-                  &quot; not found
-                </p>
-              ) : null
-              }
               <FriendInvitationList
                 editMode
                 friendList={friendInvitationsSentToMe}

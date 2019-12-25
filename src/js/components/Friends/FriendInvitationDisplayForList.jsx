@@ -13,10 +13,11 @@ import { renderLog } from '../../utils/logging';
 class FriendInvitationDisplayForList extends Component {
   static propTypes = {
     invitationsSentByMe: PropTypes.bool,
+    linked_organization_we_vote_id: PropTypes.string,
     mutual_friends: PropTypes.number,
     positions_taken: PropTypes.number,
     voter_we_vote_id: PropTypes.string,
-    voter_photo_url_medium: PropTypes.string,
+    voter_photo_url_large: PropTypes.string,
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
     voter_twitter_description: PropTypes.string,
@@ -81,7 +82,7 @@ class FriendInvitationDisplayForList extends Component {
       // voter_twitter_followers_count: voterTwitterFollowersCount,
       voter_twitter_handle: voterTwitterHandle,
       voter_we_vote_id: otherVoterWeVoteId,
-      voter_photo_url_medium: voterPhotoUrlMedium,
+      voter_photo_url_large: voterPhotoUrlLarge,
     } = this.props;
 
     const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
@@ -89,11 +90,34 @@ class FriendInvitationDisplayForList extends Component {
     // If the voterDisplayName is in the voter_twitter_description, remove it
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterDisplayName, twitterDescription);
 
-    // TwitterHandle-based link
-    const voterGuideLink = voterTwitterHandle ? `/${voterTwitterHandle}` : null;
-    const voterImage = <ImageHandler sizeClassName="image-lg " imageUrl={voterPhotoUrlMedium} kind_of_ballot_item="CANDIDATE" />;
+    // Link to their voter guide
+    const twitterVoterGuideLink = voterTwitterHandle ? `/${voterTwitterHandle}` : null;
+    const weVoteIdVoterGuideLink = this.props.linked_organization_we_vote_id ? `/voterguide/${this.props.linked_organization_we_vote_id}` : null;
+    const voterGuideLink = twitterVoterGuideLink || weVoteIdVoterGuideLink;
+    const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
-    // console.log("FriendInvitationDisplayForList, otherVoterWeVoteId:", otherVoterWeVoteId);
+    const detailsHTML = (
+      <Details>
+        <Name>
+          {voterDisplayNameFormatted}
+        </Name>
+        {!!(positionsTaken) && (
+          <Info>
+            Positions:
+            {' '}
+            <strong>{positionsTaken}</strong>
+          </Info>
+        )}
+        {!!(mutualFriends) && (
+          <Info>
+            Mutual Friends:
+            {' '}
+            <strong>{mutualFriends || 0}</strong>
+          </Info>
+        )}
+        { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
+      </Details>
+    );
 
     const friendInvitationHtml = (
       <Wrapper previewMode={previewMode}>
@@ -106,40 +130,15 @@ class FriendInvitationDisplayForList extends Component {
             ) :
               <span>{voterImage}</span> }
           </Avatar>
-          <Details>
-            {voterGuideLink ? (
-              <Name>
-                <Link to={voterGuideLink} className="u-no-underline">
-                  {voterDisplayNameFormatted}
-                </Link>
-              </Name>
-            ) : (
-              <Name>{voterDisplayNameFormatted}</Name>
-            )}
-            {!!(positionsTaken) && (
-              <Info>
-                Positions:
-                {' '}
-                <strong>{positionsTaken}</strong>
-              </Info>
-            )}
-            <Info>
-              Mutual Friends:
-              {' '}
-              <strong>{mutualFriends || 0}</strong>
-            </Info>
-            {/* { invitationsSentByMe ?
-              null :
-              <span> invited you.</span>} */}
-            { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
-            {/* {voterTwitterFollowersCount ? (
-              <span className="twitter-followers__badge">
-                <span className="fab fa-twitter" />
-                {numberWithCommas(voterTwitterFollowersCount)}
-              </span>
-            ) : null
-              } */}
-          </Details>
+          { voterGuideLink ? (
+            <Link to={voterGuideLink} className="u-no-underline">
+              {detailsHTML}
+            </Link>
+          ) : (
+            <>
+              {detailsHTML}
+            </>
+          )}
         </Flex>
         { invitationsSentByMe ? (
           <ButtonWrapper>
@@ -189,8 +188,7 @@ const Wrapper = styled.div`
   margin: 24px 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   position: relative;
   flex-wrap: wrap;
   @media(min-width: 400px) {
@@ -209,16 +207,12 @@ const Flex = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
 `;
 
 const Avatar = styled.div`
-  width: 25%;
-  max-width: 100px;
+  max-width: 68.8px;
   margin-right: 8px;
-  & img {
-    width: 100%;
-  }
   @media (min-width: 400px) {
     height: 100% !important;
     max-width: 100%;
@@ -229,17 +223,14 @@ const Avatar = styled.div`
     top: 0;
     margin: 0 auto;
     & img {
-      height: 100%;
-      width: auto;
       border-radius: 6px;
-      max-width: 68.8px;
-      max-height: 68.8px;
+      width: 68.8px;
+      height: 68.8px;
     }
   }
 `;
 
 const Details = styled.div`
-  width: 50%;
   margin: 0 auto;
   @media(min-width: 400px) {
     width: fit-content;

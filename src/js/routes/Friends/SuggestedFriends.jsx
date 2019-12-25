@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import filter from 'lodash-es/filter';
 import SuggestedFriendList from '../../components/Friends/SuggestedFriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
-import SearchBar from '../../components/Search/SearchBar';
 import MessageCard from '../../components/Widgets/MessageCard';
 
 export default class SuggestedFriends extends Component {
@@ -17,12 +15,7 @@ export default class SuggestedFriends extends Component {
     super(props);
     this.state = {
       suggestedFriendList: [],
-      suggestedFriendListFilteredBySearch: [],
-      searchFilterOn: false,
-      searchTerm: '',
     };
-    this.clearSearch = this.clearSearch.bind(this);
-    this.searchFriends = this.searchFriends.bind(this);
   }
 
   componentDidMount () {
@@ -44,41 +37,9 @@ export default class SuggestedFriends extends Component {
     });
   }
 
-  searchFriends (searchTerm) {
-    if (searchTerm.length === 0) {
-      this.setState({
-        suggestedFriendListFilteredBySearch: [],
-        searchFilterOn: false,
-        searchTerm: '',
-      });
-    } else {
-      const searchTermLowercase = searchTerm.toLowerCase();
-      const { suggestedFriendList } = this.state;
-      const searchedFriendList = filter(suggestedFriendList,
-        voter => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
-
-      this.setState({
-        suggestedFriendListFilteredBySearch: searchedFriendList,
-        searchFilterOn: true,
-        searchTerm,
-      });
-    }
-  }
-
-  clearSearch () {
-    this.setState({
-      searchFilterOn: false,
-      searchTerm: '',
-      suggestedFriendListFilteredBySearch: [],
-    });
-  }
-
   render () {
     renderLog('SuggestedFriend');  // Set LOG_RENDER_EVENTS to log all renders
-    let { suggestedFriendList } = this.state;
-    if (this.state.searchFilterOn) {
-      suggestedFriendList = this.state.suggestedFriendListFilteredBySearch;
-    }
+    const { suggestedFriendList } = this.state;
 
     return (
       <div className="opinion-view">
@@ -97,23 +58,6 @@ export default class SuggestedFriends extends Component {
         <div>
           { suggestedFriendList && suggestedFriendList.length > 0 ? (
             <span>
-              <SearchBar
-                clearButton
-                searchButton
-                placeholder="Search by name"
-                searchFunction={this.searchFriends}
-                clearFunction={this.clearSearch}
-                searchUpdateDelayTime={0}
-              />
-              <br />
-              { this.state.searchFilterOn && suggestedFriendList.length === 0 ? (
-                <p>
-                  &quot;
-                  {this.state.searchTerm}
-                  &quot; not found
-                </p>
-              ) : null
-              }
               <SuggestedFriendList
                 friendList={suggestedFriendList}
                 editMode

@@ -13,7 +13,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 
-
 class OrganizationPopoverCard extends Component {
   static propTypes = {
     organizationWeVoteId: PropTypes.string.isRequired,
@@ -94,11 +93,10 @@ class OrganizationPopoverCard extends Component {
 
   render () {
     renderLog('OrganizationPopoverCard');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('OrganizationPopoverCard, organization: ', this.state.organization);
     if (!this.state.organization) {
       return <div>{LoadingWheel}</div>;
     }
-
-    // console.log('OrganizationPopoverCard, organization: ', this.state.organization);
 
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,

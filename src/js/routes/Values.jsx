@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import AddEndorsements from '../components/Widgets/AddEndorsements';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
+import { cordovaDot } from '../utils/cordovaUtils';
+import IssueStore from '../stores/IssueStore';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
+import NetworkOpinionsFollowed from '../components/Network/NetworkOpinionsFollowed';
 import OrganizationsToFollowPreview from '../components/Values/OrganizationsToFollowPreview';
 import PublicFiguresFollowedPreview from '../components/Values/PublicFiguresFollowedPreview';
 import PublicFiguresToFollowPreview from '../components/Values/PublicFiguresToFollowPreview';
+import Testimonial from '../components/Widgets/Testimonial';
+import TestimonialPhoto from '../../img/global/photos/Dale_McGrew-200x200.jpg';
+import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import ValuesFollowedPreview from '../components/Values/ValuesFollowedPreview';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
-import NetworkOpinionsFollowed from '../components/Network/NetworkOpinionsFollowed';
 import VoterStore from '../stores/VoterStore';
-import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
-import Testimonial from '../components/Widgets/Testimonial';
-import { cordovaDot } from '../utils/cordovaUtils';
-import AddEndorsements from '../components/Widgets/AddEndorsements';
-import daleMcGrewJpm from '../../img/global/photos/Dale_McGrew-200x200.jpg';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
 const testimonialAuthor = 'Dale M., Oakland, California';
-const imageUrl = cordovaDot(daleMcGrewJpm);
+const imageUrl = cordovaDot(TestimonialPhoto);
 const testimonial = 'Following values that are important to me lets me see the opinions of other people who share my values.';
 
 export default class Values extends Component {
@@ -28,19 +29,28 @@ export default class Values extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      issuesFollowedCount: 0,
+    };
   }
 
   componentDidMount () {
+    this.onIssueStoreChange();
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(
-      this.onVoterStoreChange.bind(this),
-    );
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 
   componentWillUnmount () {
+    this.issueStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onIssueStoreChange () {
+    this.setState({
+      issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
+    });
   }
 
   onVoterStoreChange () {
@@ -52,14 +62,7 @@ export default class Values extends Component {
     if (!this.state.voter) {
       return LoadingWheel;
     }
-
-    let valuesBlockToDisplay = null;
-    const valuesFollowedCount = 0;
-    if (valuesFollowedCount > 0) {
-      valuesBlockToDisplay = <ValuesFollowedPreview />;
-    } else {
-      valuesBlockToDisplay = <ValuesToFollowPreview />;
-    }
+    const { issuesFollowedCount } = this.state;
 
     let publicFiguresBlockToDisplay = null;
     const publicFiguresFollowedCount = 0;
@@ -83,20 +86,24 @@ export default class Values extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <div className="row">
           <div className="col-sm-12 col-md-8">
-            {valuesBlockToDisplay}
-            {publicFiguresBlockToDisplay}
-            {organizationsBlockToDisplay}
-            <div className="d-md-none d-block">
-              <div className="card">
-                <div className="card-main">
-                  <Testimonial
-                    imageUrl={imageUrl}
-                    testimonialAuthor={testimonialAuthor}
-                    testimonial={testimonial}
-                  />
+            {issuesFollowedCount ? (
+              <ValuesFollowedPreview />
+            ) : (
+              <div className="d-md-none d-block">
+                <div className="card">
+                  <div className="card-main">
+                    <Testimonial
+                      imageUrl={imageUrl}
+                      testimonialAuthor={testimonialAuthor}
+                      testimonial={testimonial}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
+            <ValuesToFollowPreview />
+            {publicFiguresBlockToDisplay}
+            {organizationsBlockToDisplay}
           </div>
           <div className="col-md-4 d-none d-md-block">
             <div className="card">

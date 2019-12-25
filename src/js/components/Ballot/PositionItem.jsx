@@ -221,7 +221,7 @@ class PositionItem extends Component {
                     delay={{ show: 700, hide: 100 }}
                     popoverComponent={organizationPopoverCard}
                     placement="auto"
-                    id="positions-popover-trigger-click-root-close"
+                    id="positions-organization-popover-trigger-click-root-close"
                   >
                     <Link
                       to={speakerLink}
@@ -264,7 +264,7 @@ class PositionItem extends Component {
                   </DesktopItemNameIssueContainer>
                   <DesktopItemEndorsementDisplay>
                     <StickyPopover
-                      delay={{ show: 1000000, hide: 100 }}
+                      delay={{ show: 700, hide: 100 }}
                       popoverComponent={positionsPopover}
                       placement="auto"
                       id="position-item-score-desktop-popover-trigger-click-root-close"
@@ -680,8 +680,9 @@ const DesktopItemFooter = styled.div`
 `;
 
 const SupportAndPartOfScore = styled.div`
-  color: white;
   background: ${({ theme }) => theme.colors.supportGreenRgb};
+  color: white;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -697,8 +698,9 @@ const SupportAndPartOfScore = styled.div`
 `;
 
 const OpposeAndPartOfScore = styled.div`
-  color: white;
   background: ${({ theme }) => theme.colors.opposeRedRgb};
+  color: white;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -714,23 +716,26 @@ const OpposeAndPartOfScore = styled.div`
 `;
 
 const SupportButNotPartOfScore = styled.div`
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
   background: white;
+  border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
+  color: ${({ theme }) => theme.colors.supportGreenRgb};
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
   border-radius: 5px;
-  border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
   float: right;
   font-size: 20px;
   font-weight: bold;
 `;
 
 const OpposeButNotPartOfScore = styled.div`
-  color: ${({ theme }) => theme.colors.opposeRedRgb};
   background: white;
+  border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
+  color: ${({ theme }) => theme.colors.opposeRedRgb};
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -738,7 +743,6 @@ const OpposeButNotPartOfScore = styled.div`
   height: 40px;
   border-radius: 5px;
   float: right;
-  border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
   font-size: 20px;
   font-weight: bold;
 `;
@@ -746,6 +750,7 @@ const OpposeButNotPartOfScore = styled.div`
 const InformationOnly = styled.div`
   color: ${({ theme }) => theme.colors.grayMid};
   background: white;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
