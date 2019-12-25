@@ -10,7 +10,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const port = process.env.PORT || 3000;
 
 // Set isProduction to false, to enable the interactive bundle analyser and the Unused component analyzer
-const isProduction = false;   // Developers can set this to be true, but in git it should always be false
+const isProduction = true;   // Developers can set this to be true, but in git it should always be false
 
 module.exports = {
   mode: 'development',
@@ -51,6 +51,7 @@ module.exports = {
       // Source directories
         directories: [path.join(__dirname, 'src')],
         exclude: [
+          '**/cert/',
           '**/DO-NOT-BUNDLE/',
           '**/endorsement-extension/',
           '**/global/photos/',
