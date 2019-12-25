@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+// Dec 2019 TODO: This is the last icon from the svg-icons package used in the Web App, all the other have been removed from git
 import removeCircleIcon from '../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle.svg';
 
 export default class SearchBar extends Component {
