@@ -58,16 +58,14 @@ will also start working (and sounds very valuable).
 ### Analyzing and Improving Bundle Size
  
   The [WebpackBundleAnalyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer)
-  has been installed, and provides amazing insight into the bundle.  To enable it, in webpack.config.js, uncomment the line (at about line 7)
+  has been installed, and provides amazing insight into the bundle.  To enable it, in webpack.config.js, set `isProduction to false` to enable the 
+  BundleAnalyzerPlugin and the UnusedWebpackPlugin which scans for unused image and js files.
+  UnusedWebpackPlugin sends its output to the build output in the terminal window 
   
-  `
-  // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');   // Don't delete this!
-  `
-  
-  and then uncomment the line (at about line 43) and recompile
-  
-  `
-  // new BundleAnalyzerPlugin(),  // Enable this to start an (amazing) bundle size analyzer tool
+  ```
+  // Set isProduction to false, to enable the interactive bundle analyser and the Unused component analyzer
+  const isProduction = true;   // Developers can set this to be true, but in git it should always be false
+  ```
   `
 An interactive UI, as shown below, will start up in a server and will be displayed in your browser.
 

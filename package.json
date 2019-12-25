@@ -113,7 +113,8 @@
     "react-transition-group": "^2.9.0",
     "snyk": "^1.265.0",
     "styled-components": "^4.4.1",
-    "superagent": "^3.8.3"
+    "superagent": "^3.8.3",
+    "unused-webpack-plugin": "^2.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
