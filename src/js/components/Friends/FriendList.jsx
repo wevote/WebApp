@@ -13,25 +13,12 @@ export default class FriendList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      friendList: this.props.friendList,
     };
-  }
-
-  componentDidMount () {
-    this.setState({
-      friendList: this.props.friendList,
-    });
-  }
-
-  componentWillReceiveProps (nextProps) {
-    this.setState({
-      friendList: nextProps.friendList,
-    });
   }
 
   render () {
     renderLog('FriendList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { friendList } = this.state;
+    const { friendList } = this.props;
 
     if (!friendList) {
       return null;

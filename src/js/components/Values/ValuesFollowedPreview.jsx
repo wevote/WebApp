@@ -8,19 +8,15 @@ import { renderLog } from '../../utils/logging';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import { historyPush } from '../../utils/cordovaUtils';
 
-// To be updated to show values followed instead of values to follow
 class ValuesFollowedPreview extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      issuesToFollow: [],
+      issuesFollowed: [],
     };
   }
 
   componentDidMount () {
-    // if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-    //   IssueActions.issuesRetrieve();
-    // }
     IssueActions.retrieveIssuesToFollow();
 
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
@@ -33,7 +29,7 @@ class ValuesFollowedPreview extends Component {
 
   onIssueStoreChange () {
     this.setState({
-      issuesToFollow: IssueStore.getIssuesVoterCanFollow(),
+      issuesFollowed: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
 
@@ -44,26 +40,18 @@ class ValuesFollowedPreview extends Component {
   render () {
     // const width = document.documentElement.clientWidth;
     renderLog('ValuesFollowedPreview');  // Set LOG_RENDER_EVENTS to log all renders
-    let issueList = [];
-    if (this.state.issuesToFollow) {
-      issueList = this.state.issuesToFollow;
+    const { issuesFollowed: issueList } = this.state;
+    if (!issueList) {
+      return null;
     }
 
-    const ISSUES_TO_SHOW = 4;
+    let ISSUES_TO_SHOW = 4;
 
-    // if (width < 768) {
-    //   ISSUES_TO_SHOW = 3;
-    // } else {
-    //   ISSUES_TO_SHOW = 4;
-    // }
-
-    // window.onresize = () => {
-    //   if (width < 768) {
-    //     ISSUES_TO_SHOW = 3;
-    //   } else {
-    //     ISSUES_TO_SHOW = 4;
-    //   }
-    // };
+    if (window.innerWidth < 768) {
+      ISSUES_TO_SHOW = 2;
+    } else {
+      ISSUES_TO_SHOW = 4;
+    }
 
     let issueCount = 0;
     const issueListForDisplay = issueList.map((issue) => {
@@ -86,11 +74,27 @@ class ValuesFollowedPreview extends Component {
       <div className="opinions-followed__container">
         <section className="card">
           <div className="card-main">
-            <SectionTitle>Values to Follow</SectionTitle>
+            <SectionTitle>
+              Values You Are Following
+              {!!(issueList && issueList.length) && (
+                <>
+                  {' '}
+                  (
+                  {issueList.length}
+                  )
+                </>
+              )}
+            </SectionTitle>
             <Row className="row">
               { issueListForDisplay }
             </Row>
-            <ShowMoreFooter showMoreId="valuesToFollowPreviewShowMoreId" showMoreLink={() => this.goToValuesLink()} showMoreText="Explore all 30 values" />
+            {!!(issueList && issueList.length) && (
+              <ShowMoreFooter
+                showMoreId="valuesFollowedPreviewShowMoreId"
+                showMoreLink={() => this.goToValuesLink()}
+                showMoreText="Explore all values"
+              />
+            )}
           </div>
         </section>
       </div>

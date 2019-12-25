@@ -13,6 +13,7 @@ import SupportStore from '../../stores/SupportStore';
 class CandidateItemForAddPositions extends Component {
   static propTypes = {
     oneCandidate: PropTypes.object,
+    numberOfCandidatesInList: PropTypes.number,
     // togglePositionStatement: PropTypes.func,
   };
 
@@ -154,6 +155,7 @@ class CandidateItemForAddPositions extends Component {
           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
           commentEditModeOn={this.state.showPositionStatement}
+          externalUniqueId="desktopPositionStatement"
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="CANDIDATE"
@@ -168,6 +170,7 @@ class CandidateItemForAddPositions extends Component {
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
+          externalUniqueId="mobilePositionStatement"
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="CANDIDATE"
@@ -206,6 +209,7 @@ class CandidateItemForAddPositions extends Component {
             ballotItemWeVoteId={oneCandidate.we_vote_id}
             buttonsOnly
             externalUniqueId={`candidateItemForAddPositions-${oneCandidate.we_vote_id}`}
+            positionPublicToggleWrapAllowed={this.props.numberOfCandidatesInList > 1}
             shareButtonHide
             // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
             togglePositionStatementFunction={this.togglePositionStatement}

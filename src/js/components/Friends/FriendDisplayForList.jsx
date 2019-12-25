@@ -14,7 +14,7 @@ class FriendDisplayForList extends Component {
     positions_taken: PropTypes.number,
     previewMode: PropTypes.bool,
     voter_we_vote_id: PropTypes.string,
-    voter_photo_url_medium: PropTypes.string,
+    voter_photo_url_large: PropTypes.string,
     voter_email_address: PropTypes.string,
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
@@ -28,7 +28,7 @@ class FriendDisplayForList extends Component {
       mutual_friends: mutualFriends,
       positions_taken: positionsTaken,
       voter_we_vote_id: voterWeVoteId,
-      voter_photo_url_medium: voterPhotoUrlMedium,
+      voter_photo_url_large: voterPhotoUrlLarge,
     } = this.props;
 
     const alternateVoterDisplayName = this.props.voter_email_address ? this.props.voter_email_address : this.props.voter_twitter_handle;
@@ -38,8 +38,29 @@ class FriendDisplayForList extends Component {
     const twitterVoterGuideLink = this.props.voter_twitter_handle ? `/${this.props.voter_twitter_handle}` : null;
     const weVoteIdVoterGuideLink = this.props.linked_organization_we_vote_id ? `/voterguide/${this.props.linked_organization_we_vote_id}` : null;
     const voterGuideLink = twitterVoterGuideLink || weVoteIdVoterGuideLink;
-    const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlMedium} kind_of_ballot_item="CANDIDATE" />;
+    const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
+    const detailsHTML = (
+      <Details>
+        <Name>
+          {voterDisplayNameFormatted}
+        </Name>
+        {!!(positionsTaken) && (
+          <Info>
+            Positions:
+            {' '}
+            <strong>{positionsTaken}</strong>
+          </Info>
+        )}
+        {!!(mutualFriends) && (
+          <Info>
+            Mutual Friends:
+            {' '}
+            <strong>{mutualFriends || 0}</strong>
+          </Info>
+        )}
+      </Details>
+    );
 
     const friendDisplayHtml = (
       <Wrapper previewMode={this.props.previewMode}>
@@ -52,33 +73,15 @@ class FriendDisplayForList extends Component {
             ) :
               <span>{voterImage}</span> }
           </Avatar>
-          <Details>
-            { voterGuideLink ? (
-              <Name>
-                <Link to={voterGuideLink} className="u-no-underline">
-                  {voterDisplayNameFormatted}
-                </Link>
-              </Name>
-            ) : (
-              <Name>
-                {voterDisplayNameFormatted}
-              </Name>
-            )}
-            {!!(positionsTaken) && (
-              <Info>
-                Positions:
-                {' '}
-                <strong>{positionsTaken}</strong>
-              </Info>
-            )}
-            {!!(mutualFriends) && (
-              <Info>
-                Mutual Friends:
-                {' '}
-                <strong>{mutualFriends || 0}</strong>
-              </Info>
-            )}
-          </Details>
+          { voterGuideLink ? (
+            <Link to={voterGuideLink} className="u-no-underline">
+              {detailsHTML}
+            </Link>
+          ) : (
+            <>
+              {detailsHTML}
+            </>
+          )}
         </Flex>
         <>
           { this.props.editMode ? <FriendToggle otherVoterWeVoteId={voterWeVoteId} /> : null }
@@ -104,8 +107,7 @@ const Wrapper = styled.div`
   margin: 24px 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   position: relative;
   flex-wrap: wrap;
   @media(min-width: 400px) {
@@ -124,16 +126,12 @@ const Flex = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
 `;
 
 const Avatar = styled.div`
-  width: 25%;
-  max-width: 100px;
+  max-width: 68.8px;
   margin-right: 8px;
-  & img {
-    width: 100%;
-  }
   @media (min-width: 400px) {
     height: 100% !important;
     max-width: 100%;
@@ -144,17 +142,14 @@ const Avatar = styled.div`
     top: 0;
     margin: 0 auto;
     & img {
-      height: 100%;
-      width: auto;
       border-radius: 6px;
-      max-width: 68.8px;
-      max-height: 68.8px;
+      width: 68.8px;
+      height: 68.8px;
     }
   }
 `;
 
 const Details = styled.div`
-  width: 50%;
   margin: 0 auto;
   @media(min-width: 400px) {
     width: fit-content;

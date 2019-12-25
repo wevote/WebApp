@@ -638,7 +638,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       >
         { voterSupportsBallotItem && (
           <StickyPopover
-            delay={{ show: 100000, hide: 100 }}
+            delay={{ show: 700, hide: 100 }}
             popoverComponent={positionsPopover}
             placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
@@ -655,7 +655,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
         { voterOpposesBallotItem && (
           <StickyPopover
-            delay={{ show: 100000, hide: 100 }}
+            delay={{ show: 700, hide: 100 }}
             popoverComponent={positionsPopover}
             placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
@@ -673,7 +673,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         {/* Gray overview display. Show if no personal score, or voter position */}
         {(!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem) && (
           <StickyPopover
-            delay={{ show: 100000, hide: 100 }}
+            delay={{ show: 700, hide: 100 }}
             popoverComponent={positionsPopover}
             placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
@@ -717,7 +717,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         {/* Show green or red score square. A personal score exists, and the voter hasn't chosen to support or oppose yet. */}
         { showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem ? (
           <StickyPopover
-            delay={{ show: 100000, hide: 100 }}
+            delay={{ show: 700, hide: 100 }}
             popoverComponent={positionsPopover}
             placement="bottom"
             id="ballot-support-oppose-count-trigger-click-root-close"
@@ -839,6 +839,7 @@ const NetworkScore = styled.div`
   background: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;

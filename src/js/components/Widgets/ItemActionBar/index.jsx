@@ -28,21 +28,22 @@ import ChooseOrOppose from './ChooseOrOppose';
 
 class ItemActionBar extends PureComponent {
   static propTypes = {
+    ballotItemDisplayName: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string.isRequired,
+    buttonsOnly: PropTypes.bool,
+    classes: PropTypes.object,
     commentButtonHide: PropTypes.bool,
     commentButtonHideInMobile: PropTypes.bool,
-    externalUniqueId: PropTypes.string,
     // currentBallotIdInUrl: PropTypes.string,
-    opposeHideInMobile: PropTypes.bool,
-    shareButtonHide: PropTypes.bool,
-    togglePositionStatementFunction: PropTypes.func,
-    type: PropTypes.string.isRequired,
-    ballotItemDisplayName: PropTypes.string,
-    supportOrOpposeHasBeenClicked: PropTypes.func,
-    classes: PropTypes.object,
-    buttonsOnly: PropTypes.bool,
+    externalUniqueId: PropTypes.string,
     handleDisableLink: PropTypes.func,
     handleEnableLink: PropTypes.func,
+    opposeHideInMobile: PropTypes.bool,
+    positionPublicToggleWrapAllowed: PropTypes.bool,
+    shareButtonHide: PropTypes.bool,
+    supportOrOpposeHasBeenClicked: PropTypes.func,
+    togglePositionStatementFunction: PropTypes.func,
+    type: PropTypes.string.isRequired,
     // urlWithoutHash: PropTypes.string,
   };
 
@@ -695,6 +696,7 @@ class ItemActionBar extends PureComponent {
           onFocus={handleEnterHoverLocalArea}
           onMouseOut={handleLeaveHoverLocalArea}
           onBlur={handleLeaveHoverLocalArea}
+          positionPublicToggleWrapAllowed={this.props.positionPublicToggleWrapAllowed}
         >
           {showPositionPublicToggle && (
             <PositionPublicToggle
@@ -857,12 +859,10 @@ const styles = theme => ({
   },
 });
 
-// width: fit-content;
-// flex: none;
 const ItemActionBarWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
+  ${({ positionPublicToggleWrapAllowed }) => (positionPublicToggleWrapAllowed ? '' : 'display: flex;')}
+  ${({ positionPublicToggleWrapAllowed }) => (positionPublicToggleWrapAllowed ? '' : 'justify-content: flex-end;')}
+  ${({ positionPublicToggleWrapAllowed }) => (positionPublicToggleWrapAllowed ? '' : 'width: 100%;')}
   align-items: center;
   border-top: ${({ displayInline }) => (displayInline ? '' : '1px solid #eee !default')};
   margin-top: ${({ displayInline }) => (displayInline ? '' : '16px')};

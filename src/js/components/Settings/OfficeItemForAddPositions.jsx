@@ -10,9 +10,6 @@ import CandidateItemForAddPositions from './CandidateItemForAddPositions';
 import CandidateStore from '../../stores/CandidateStore';
 import { renderLog } from '../../utils/logging';
 
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
-/* eslint no-param-reassign: 0 */
-
 class OfficeItemForAddPositions extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
@@ -108,19 +105,21 @@ class OfficeItemForAddPositions extends Component {
     if (candidateList && candidateList.length && ballotItemWeVoteId) {
       const newCandidateList = [];
       let newCandidate = {};
+      let candidateModified = {};
       candidateList.forEach((candidate) => {
         if (candidate && candidate.we_vote_id) {
+          candidateModified = candidate;
           newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
           if (newCandidate.ballot_item_display_name && candidate.ballot_item_display_name !== newCandidate.ballot_item_display_name) {
-            candidate.ballot_item_display_name = newCandidate.ballot_item_display_name;
+            candidateModified.ballot_item_display_name = newCandidate.ballot_item_display_name;
             changeFound = true;
           }
           if (newCandidate.candidate_photo_url_medium && candidate.candidate_photo_url_medium !== newCandidate.candidate_photo_url_medium) {
-            candidate.candidate_photo_url_medium = newCandidate.candidate_photo_url_medium;
+            candidateModified.candidate_photo_url_medium = newCandidate.candidate_photo_url_medium;
             changeFound = true;
           }
           if (newCandidate.party && candidate.party !== newCandidate.party) {
-            candidate.party = newCandidate.party;
+            candidateModified.party = newCandidate.party;
             changeFound = true;
           }
           newCandidateList.push(candidate);
@@ -200,6 +199,15 @@ class OfficeItemForAddPositions extends Component {
           >
             <Title>
               {ballotItemDisplayName}
+              {!!(candidateList && candidateList.length) && (
+                <>
+                  {' '}
+                  (
+                  {candidateList.length}
+                  )
+                  {' '}
+                </>
+              )}
               {showCandidates ? (
                 <ArrowDropUp
                   classes={{ root: classes.cardHeaderIconRoot }}
@@ -223,12 +231,13 @@ class OfficeItemForAddPositions extends Component {
                 return (
                   <CandidateInfo
                     brandBlue={theme.palette.primary.main}
-                    candidateLength={candidateList.length}
+                    numberOfCandidatesInList={candidateList.length}
                     id={`officeItemCompressedAddPositions-${oneCandidate.we_vote_id}`}
                     key={`${externalUniqueId}-candidatePreview-${oneCandidate.we_vote_id}`}
                   >
                     <CandidateItemForAddPositions
                       oneCandidate={oneCandidate}
+                      numberOfCandidatesInList={candidateList.length}
                     />
                   </CandidateInfo>
                 );
@@ -284,7 +293,7 @@ const CandidateInfo = styled.div`
   overflow-x: hidden;
   transition: all 200ms ease-in;
   border: 1px solid ${({ theme }) => theme.colors.grayBorder};
-  width: ${({ candidateLength }) => (candidateLength > 1 ? '48%' : '100%')};
+  width: ${({ numberOfCandidatesInList }) => (numberOfCandidatesInList > 1 ? '48%' : '100%')};
   margin-right: 8px;
   border-radius: 4px;
   cursor: pointer;

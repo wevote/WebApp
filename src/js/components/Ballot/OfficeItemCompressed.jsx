@@ -183,7 +183,7 @@ class OfficeItemCompressed extends Component {
             return (
               <CandidateInfo
                 brandBlue={theme.palette.primary.main}
-                candidateLength={candidatesToRender.length}
+                numberOfCandidatesInList={candidatesToRender.length}
                 id={`officeItemCompressedCandidateInfo-${oneCandidate.we_vote_id}`}
                 key={`candidate_preview-${oneCandidate.we_vote_id}`}
               >
@@ -385,7 +385,7 @@ const CandidateInfo = styled.div`
   overflow-x: hidden;
   transition: all 200ms ease-in;
   border: 1px solid ${({ theme }) => theme.colors.grayBorder};
-  width: ${({ candidateLength }) => (candidateLength > 1 ? '48%' : '100%')};
+  width: ${({ numberOfCandidatesInList }) => (numberOfCandidatesInList > 1 ? '48%' : '100%')};
   margin-right: 8px;
   border-radius: 4px;
   &:hover {

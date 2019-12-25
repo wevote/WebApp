@@ -249,7 +249,7 @@ class PositionPublicToggle extends Component {
             <div className="text-center">
               {isSignedIn ? (
                 <div>
-                  <div className="u-f2">You have just made your position visible to anyone on We Vote.</div>
+                  <div className="u-f2">Your position is now visible to anyone.</div>
                   <div className="u-f4">If you do NOT want to share your position publicly, click the toggle again to restrict visibility to We Vote friends only.</div>
                 </div>
               ) : (
