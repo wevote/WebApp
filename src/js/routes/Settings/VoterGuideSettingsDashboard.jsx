@@ -13,8 +13,6 @@ import VoterGuideSettingsAddPositions from '../../components/Settings/VoterGuide
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
-// import VoterGuideSettingsPositions from '../../components/Settings/VoterGuideSettingsPositions';
-// import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 
 class VoterGuideSettingsDashboard extends Component {
   static propTypes = {

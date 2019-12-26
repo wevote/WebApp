@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-// import Button from 'react-bootstrap/esm/Button';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationActions from '../../actions/OrganizationActions';
-// import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
 import EndorsementCard from '../Widgets/EndorsementCard';
 
@@ -42,33 +40,8 @@ export default class NetworkOpinionsFollowed extends Component {
     }
   }
 
-  onKeyDownEditMode (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    const scope = this;
-    const { editMode } = this.state;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.setState({ editMode: !editMode });
-    }
-  }
-
   getCurrentRoute () {
-    const currentRoute = '/opinions_followed';
-    return currentRoute;
-  }
-
-  getFollowingType () {
-    switch (this.getCurrentRoute()) {
-      case '/opinions':
-        return 'WHO_YOU_CAN_FOLLOW';
-      case '/opinions_followed':
-      default:
-        return 'WHO_YOU_FOLLOW';
-    }
-  }
-
-  toggleEditMode () {
-    const { editMode } = this.state;
-    this.setState({ editMode: !editMode });
+    return '/opinions_followed';
   }
 
   render () {
@@ -96,13 +69,6 @@ export default class NetworkOpinionsFollowed extends Component {
                 }
               </div>
             </div>
-            {/* <OpenExternalWebSite
-              url="https://api.wevoteusa.org/vg/create/"
-              className="opinions-followed__missing-org-link"
-              target="_blank"
-              title="Suggest Organization"
-              body={<Button className="btn btn-success btn-sm" bsPrefix="u-stack--xs" variant="primary">Suggest Organization</Button>}
-            /> */}
             <EndorsementCard
               bsPrefix="u-stack--xs"
               variant="primary"
@@ -110,9 +76,6 @@ export default class NetworkOpinionsFollowed extends Component {
               text="Don’t see your favorite organization?"
               title="Suggest Organization"
             />
-            {/* <div className="opinions-followed__missing-org-text u-no-break">
-              Don’t see your favorite organization?
-            </div> */}
             <br />
           </div>
         </section>

@@ -324,7 +324,7 @@ class VoterGuideSettingsAddPositions extends Component {
   }
 
   onVoterGuideStoreChange () {
-    // console.log('VoterGuideSettingsPositions onVoterGuideStoreChange');
+    // console.log('VoterGuideSettingsAddPositions onVoterGuideStoreChange');
     if (this.state.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
       const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
