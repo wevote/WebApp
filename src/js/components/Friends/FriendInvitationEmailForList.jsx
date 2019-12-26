@@ -44,9 +44,9 @@ class FriendInvitationEmailForList extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  deleteFriendInviteEmail (voterEmailAddress) {
-    // console.log("deleteFriendInviteEmail");
-    FriendActions.deleteFriendInviteEmail(voterEmailAddress);
+  cancelFriendInviteEmail (voterEmailAddress) {
+    // console.log("cancelFriendInviteEmail");
+    FriendActions.cancelFriendInviteEmail(voterEmailAddress);
   }
 
   render () {

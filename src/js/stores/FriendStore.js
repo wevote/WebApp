@@ -111,6 +111,12 @@ class FriendStore extends ReduceStore {
           return {
             ...state,
           };
+        } else if (action.res.kind_of_invite_response === 'IGNORE_SUGGESTION') {
+          FriendActions.suggestedFriendList();
+          // console.log("FriendStore friendInviteResponse incoming data IGNORE_SUGGESTION, action.res:", action.res);
+          return {
+            ...state,
+          };
         } else if (action.res.kind_of_invite_response === 'DELETE_INVITATION_VOTER_SENT_BY_ME') {
           FriendActions.friendInvitationsSentByMe();
           // console.log("FriendStore friendInviteResponse incoming data DELETE_INVITATION_VOTER_SENT_BY_ME, action.res:", action.res);

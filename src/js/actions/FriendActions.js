@@ -17,7 +17,7 @@ export default {
       });
   },
 
-  deleteFriendInviteVoter (otherVoterWeVoteId) {
+  cancelFriendInviteVoter (otherVoterWeVoteId) {
     Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
       kind_of_invite_response: 'DELETE_INVITATION_VOTER_SENT_BY_ME',
@@ -25,7 +25,7 @@ export default {
     });
   },
 
-  deleteFriendInviteEmail (otherVoterEmailAddress) {
+  cancelFriendInviteEmail (otherVoterEmailAddress) {
     Dispatcher.loadEndpoint('friendInviteResponse', {
       recipient_voter_email: otherVoterEmailAddress,
       kind_of_invite_response: 'DELETE_INVITATION_EMAIL_SENT_BY_ME',
@@ -134,7 +134,6 @@ export default {
     });
   },
 
-  // TODO DALE 2016-9-20 To be built
   ignoreFriendInvite (otherVoterWeVoteId) {
     Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
@@ -143,7 +142,6 @@ export default {
     });
   },
 
-  // TODO DALE 2016-11-3 To be built
   ignoreSuggestedFriend (otherVoterWeVoteId) {
     Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,

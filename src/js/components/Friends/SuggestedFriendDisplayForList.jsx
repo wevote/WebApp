@@ -24,20 +24,18 @@ class SuggestedFriendDisplayForList extends Component {
     previewMode: PropTypes.bool,
   };
 
-  deleteFriendInviteEmail (voterEmailAddress) {
-    // TODO DALE We have a problem with how we are deleting friend invitations.
-    // It has to do with retrieve_friend_invitations_sent_by_me on the API server
-    // console.log("deleteFriendInviteEmail");
-    FriendActions.deleteFriendInviteEmail(voterEmailAddress);
-  }
-
-  deleteFriendInviteVoter (otherVoterWeVoteId) {
-    // console.log("deleteFriendInviteVoter");
-    FriendActions.deleteFriendInviteVoter(otherVoterWeVoteId);
+  constructor (props) {
+    super(props);
+    this.state = {
+      ignoreSuggestedFriendSent: false,
+    };
   }
 
   ignoreSuggestedFriend (voterWeVoteId) {
     FriendActions.ignoreSuggestedFriend(voterWeVoteId);
+    this.setState({
+      ignoreSuggestedFriendSent: true,
+    });
   }
 
   render () {
@@ -45,9 +43,10 @@ class SuggestedFriendDisplayForList extends Component {
     const {
       mutual_friends: mutualFriends,
       positions_taken: positionsTaken,
-      voter_we_vote_id: voterWeVoteId,
+      voter_we_vote_id: otherVoterWeVoteId,
       voter_photo_url_large: voterPhotoUrlLarge,
     } = this.props;
+    const { ignoreSuggestedFriendSent } = this.state;
 
     const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
     const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : '';
@@ -103,17 +102,29 @@ class SuggestedFriendDisplayForList extends Component {
           )}
         </Flex>
         <ButtonWrapper>
-          <SuggestedFriendToggle otherVoterWeVoteId={voterWeVoteId} />
+          <SuggestedFriendToggle otherVoterWeVoteId={otherVoterWeVoteId} />
           <ButtonContainer>
-            <Button
-              fullWidth
-              variant="outlined"
-              color="primary"
-              onClick={() => this.ignoreSuggestedFriend(voterWeVoteId)}
-              type="button"
-            >
-              {window.innerWidth > 620 ? 'Remove' : 'Remove'}
-            </Button>
+            {ignoreSuggestedFriendSent ? (
+              <Button
+                color="primary"
+                disabled
+                fullWidth
+                type="button"
+                variant="outlined"
+              >
+                Removing
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                fullWidth
+                onClick={() => this.ignoreSuggestedFriend(otherVoterWeVoteId)}
+                type="button"
+                variant="outlined"
+              >
+                {window.innerWidth > 620 ? 'Remove' : 'Remove'}
+              </Button>
+            )}
           </ButtonContainer>
         </ButtonWrapper>
       </Wrapper>

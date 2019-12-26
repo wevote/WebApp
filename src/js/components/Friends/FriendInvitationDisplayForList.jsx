@@ -49,16 +49,16 @@ class FriendInvitationDisplayForList extends Component {
     });
   }
 
-  deleteFriendInviteEmail (voterEmailAddress) {
+  cancelFriendInviteEmail (voterEmailAddress) {
     // TODO DALE We have a problem with how we are deleting friend invitations.
     // It has to do with retrieve_friend_invitations_sent_by_me on the API server
-    // console.log("deleteFriendInviteEmail");
-    FriendActions.deleteFriendInviteEmail(voterEmailAddress);
+    // console.log("cancelFriendInviteEmail");
+    FriendActions.cancelFriendInviteEmail(voterEmailAddress);
   }
 
-  deleteFriendInviteVoter (otherVoterWeVoteId) {
-    // console.log("deleteFriendInviteVoter");
-    FriendActions.deleteFriendInviteVoter(otherVoterWeVoteId);
+  cancelFriendInviteVoter (otherVoterWeVoteId) {
+    // console.log("cancelFriendInviteVoter");
+    FriendActions.cancelFriendInviteVoter(otherVoterWeVoteId);
   }
 
   ignoreFriendInvite (otherVoterWeVoteId) {
@@ -146,7 +146,7 @@ class FriendInvitationDisplayForList extends Component {
               <Button
                 color="primary"
                 fullWidth
-                onClick={() => this.deleteFriendInviteVoter(otherVoterWeVoteId)}
+                onClick={() => this.cancelFriendInviteVoter(otherVoterWeVoteId)}
                 variant="outlined"
               >
                 Cancel Invite
