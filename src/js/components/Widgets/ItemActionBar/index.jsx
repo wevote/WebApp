@@ -499,7 +499,6 @@ class ItemActionBar extends PureComponent {
       transitioning: true,
     });
     openSnackbar({ message: 'Support added!' });
-    // showToastSuccess('Support added!');
   }
 
   stopSupportingItem () {
@@ -516,7 +515,6 @@ class ItemActionBar extends PureComponent {
       transitioning: true,
     });
     openSnackbar({ message: 'Support removed!' });
-    // showToastSuccess('Support removed!');
   }
 
   opposeItem () {

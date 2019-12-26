@@ -7,7 +7,7 @@ import { cordovaDot } from '../utils/cordovaUtils';
 import IssueStore from '../stores/IssueStore';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
-import NetworkOpinionsFollowed from '../components/Network/NetworkOpinionsFollowed';
+import NetworkOpinionsFollowed from '../components/Values/NetworkOpinionsFollowed';
 import OrganizationsToFollowPreview from '../components/Values/OrganizationsToFollowPreview';
 import PublicFiguresFollowedPreview from '../components/Values/PublicFiguresFollowedPreview';
 import PublicFiguresToFollowPreview from '../components/Values/PublicFiguresToFollowPreview';
