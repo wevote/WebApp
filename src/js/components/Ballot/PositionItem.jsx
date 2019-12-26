@@ -642,7 +642,7 @@ const PositionItemDesktop = styled.div`
 
 const DesktopItemHeader = styled.div`
   display: flex;
-  align-items: center;
+  align-items: top;
   justify-content: flex-start;
 `;
 

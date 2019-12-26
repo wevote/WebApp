@@ -121,7 +121,7 @@ class IssueCardCompressed extends Component {
       );
     }
 
-    const issueDisplayNameShortened = shortenText(issueDisplayName, 18);
+    const issueDisplayNameShortened = shortenText(issueDisplayName, 23);
 
     return (
       <Item>
@@ -210,7 +210,7 @@ const IssueName = styled.h3`
   font-weight: bold;
   margin-bottom: 0;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 12px;
+    font-size: 16px;
     position: relative;
     right: 10px;
   }

@@ -316,11 +316,11 @@ class Friends extends Component {
             <BrowserPushMessage incomingProps={this.props} />
             <div className="row">
               <div className="col-sm-12 col-lg-8">
-                <FriendInvitationsSentToMePreview />
-                <SuggestedFriendsPreview />
                 {voterIsSignedIn && (
                   <FirstAndLastNameRequiredAlert />
                 )}
+                <FriendInvitationsSentToMePreview />
+                <SuggestedFriendsPreview />
                 <FriendsCurrentPreview />
                 {voter.signed_in_twitter ? null : (
                   <div className="u-show-mobile">

@@ -18,8 +18,8 @@ module.exports = [
   // Jan 2019, https://github.com/twbs/bootstrap/blob/v4-dev/LICENSE
   'twbs/bootstrap is licensed under the MIT License (MIT)\n' +
   '\n' +
-  'Copyright (c) 2011-2019 Twitter, Inc.\n' +
-  'Copyright (c) 2011-2019 The Bootstrap Authors\n',
+  'Copyright (c) 2011-2020 Twitter, Inc.\n' +
+  'Copyright (c) 2011-2020 The Bootstrap Authors\n',
   // Jan 2019, https://github.com/JedWatson/classnames/blob/master/LICENSE
   'JedWatson/classnames is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2018 Jed Watson\n',
