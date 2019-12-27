@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import Tabs from '@material-ui/core/esm/Tabs';
-import Tab from '@material-ui/core/esm/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import Info from '@material-ui/icons/Info';
-import Tooltip from '@material-ui/core/esm/Tooltip';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { Tooltip, Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import LoadingWheel from '../components/LoadingWheel';
@@ -32,6 +32,7 @@ import FriendInvitationsSentByMe from './Friends/FriendInvitationsSentByMe';
 import MessageCard from '../components/Widgets/MessageCard';
 import AppStore from '../stores/AppStore';
 import { cordovaBallotFilterTopMargin } from '../utils/cordovaOffsets';
+import displayFriendsTabs from '../utils/displayFriendsTabs';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
@@ -50,8 +51,6 @@ class Friends extends Component {
     this.state = {
       friendsHeaderUnpinned: false,
     };
-
-    this.handleResize = this.handleResize.bind(this);
   }
 
   componentDidMount () {
@@ -59,6 +58,7 @@ class Friends extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
 
     FriendActions.suggestedFriendList();
     FriendActions.currentFriends();
@@ -71,37 +71,13 @@ class Friends extends Component {
       friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
     });
 
-    // const defaultTabItem = 'requests';
-
-    // if (FriendStore.friendInvitationsSentToMe().length > 0) {
-    //   defaultTabItem = 'requests';
-    // } else if (FriendStore.friendInvitationsSentByMe().length > 0) {
-    //   defaultTabItem = 'sent-requests';
-    // } else if (FriendStore.suggestedFriendList().length > 0) {
-    //   defaultTabItem = 'suggested';
-    // } else {
-    //   defaultTabItem = "invite";
-    // }
-
-    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-
-    if (window.innerWidth < 769) {
-      this.setState({ mobileMode: true });
-      if (!this.props.params.tabItem) {
-        historyPush('/friends/requests');
-      }
-    } else {
-      this.setState({ mobileMode: false });
-    }
-
-    window.addEventListener('resize', this.handleResize);
+    this.checkListContents();
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.friendStoreListener.remove();
     this.appStoreListener.remove();
-    window.removeEventListener('resize', this.handleResize);
   }
 
   onVoterStoreChange () {
@@ -109,12 +85,26 @@ class Friends extends Component {
   }
 
   onFriendStoreChange () {
-    this.setState({
-      suggestedFriendList: FriendStore.suggestedFriendList(),
-      currentFriends: FriendStore.currentFriends(),
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
-      friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe(),
-    });
+    if (this.state.suggestedFriendList.length !== FriendStore.suggestedFriendList().length) {
+      this.setState({ suggestedFriendList: FriendStore.suggestedFriendList() });
+      console.log('suggestedFriends has changed');
+      this.checkListContents();
+    }
+    if (this.state.currentFriends.length !== FriendStore.currentFriends().length) {
+      this.setState({ currentFriends: FriendStore.currentFriends() });
+      console.log('currentFriends has changed');
+      this.checkListContents();
+    }
+    if (this.state.friendInvitationsSentToMe.length !== FriendStore.friendInvitationsSentToMe().length) {
+      this.setState({ friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe() });
+      console.log('friendInvitationsSentToMe has changed');
+      this.checkListContents();
+    }
+    if (this.state.friendInvitationsSentByMe.length !== FriendStore.friendInvitationsSentByMe().length) {
+      this.setState({ friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe() });
+      console.log('friendInvitationsSentByMe has changed');
+      this.checkListContents();
+    }
   }
 
   onAppStoreChange () {
@@ -129,12 +119,30 @@ class Friends extends Component {
 
   handleNavigation = to => historyPush(to);
 
-  handleResize () {
-    if (window.innerWidth < 769) {
-      this.setState({ mobileMode: true });
+  checkListContents () {
+    let defaultTabItem = 'requests';
+
+    if (this.state.friendInvitationsSentToMe && this.state.friendInvitationsSentToMe.length > 0) {
+      defaultTabItem = 'requests';
+      this.setState({ desktopDisplayInviteInMainSection: false });
+    } else if (this.state.suggestedFriendList && this.state.suggestedFriendList.length > 0) {
+      defaultTabItem = 'suggested';
+      this.setState({ desktopDisplayInviteInMainSection: false });
+    } else if (this.state.friendInvitationsSentByMe && this.state.friendInvitationsSentByMe.length > 0) {
+      defaultTabItem = 'sent-requests';
+      this.setState({ desktopDisplayInviteInMainSection: false });
     } else {
-      this.setState({ mobileMode: false });
+      defaultTabItem = 'invite';
+      this.setState({ desktopDisplayInviteInMainSection: true });
     }
+
+    console.log(defaultTabItem);
+
+    if (defaultTabItem !== this.props.params.tabItem && displayFriendsTabs()) {
+      this.handleNavigation(`/friends/${defaultTabItem}`);
+    }
+
+    console.log('Default tab item:', defaultTabItem);
   }
 
   render () {
@@ -143,7 +151,7 @@ class Friends extends Component {
     const { classes } = this.props;
 
     // console.log('Desktop value: ', desktopValue);
-    // console.log('friendsHeaderUnpinned', friendsHeaderUnpinned);
+    console.log('friendsHeaderUnpinned', friendsHeaderUnpinned);
 
     if (!voter) {
       return LoadingWheel;
@@ -246,7 +254,7 @@ class Friends extends Component {
         mobileContentToDisplay = (
           <>
             {this.state.friendInvitationsSentByMe.length > 0 ? (
-              <FriendInvitationsSentToMe />
+              <FriendInvitationsSentByMe />
             ) : (
               <MessageCard
                 mainText="You currently have no sent requests. Send some now!"
@@ -316,23 +324,29 @@ class Friends extends Component {
             <BrowserPushMessage incomingProps={this.props} />
             <div className="row">
               <div className="col-sm-12 col-lg-8">
-                {voterIsSignedIn && (
-                  <FirstAndLastNameRequiredAlert />
-                )}
-                <FriendInvitationsSentToMePreview />
-                <SuggestedFriendsPreview />
-                <FriendsCurrentPreview />
-                {voter.signed_in_twitter ? null : (
-                  <div className="u-show-mobile">
-                    <TwitterSignInCard />
-                  </div>
-                )}
-                {voterIsSignedIn && (
-                  <FriendInvitationsSentByMePreview />
+                {this.state.desktopDisplayInviteInMainSection ? (
+                  <InviteByEmail />
+                ) : (
+                  <>
+                    <FriendInvitationsSentToMePreview />
+                    <SuggestedFriendsPreview />
+                    {voterIsSignedIn && (
+                      <FirstAndLastNameRequiredAlert />
+                    )}
+                    <FriendsCurrentPreview />
+                    {voter.signed_in_twitter ? null : (
+                      <div className="u-show-mobile">
+                        <TwitterSignInCard />
+                      </div>
+                    )}
+                    {voterIsSignedIn && (
+                      <FriendInvitationsSentByMePreview />
+                    )}
+                  </>
                 )}
               </div>
               <div className="col-md-12 col-lg-4 d-none d-md-block">
-                {voterIsSignedIn ? (
+                {voterIsSignedIn && !this.state.desktopDisplayInviteInMainSection ? (
                   <section className="card">
                     <div className="card-main">
                       <SectionTitle>
@@ -401,7 +415,7 @@ class Friends extends Component {
         <Tab
           classes={{ root: classes.navigationTab }}
           value="invite"
-          label={window.innerWidth > 500 ? 'Invite Friends' : 'Invite'}
+          label={window.innerWidth > 500 ? 'Add Friends' : 'Invite'}
           onClick={() => {
             this.handleNavigation('/friends/invite');
           }}
@@ -422,7 +436,7 @@ class Friends extends Component {
           <Tab
             classes={{ root: classes.navigationTab }}
             value="sent-requests"
-            label="Requests Sent"
+            label="Sent Requests"
             onClick={() => {
               this.handleNavigation('/friends/sent-requests');
             }}
@@ -435,7 +449,7 @@ class Friends extends Component {
 
     return (
       <span>
-        {this.state.mobileMode ? (
+        {displayFriendsTabs() ? (
           <>
             <div className={`friends__heading ${friendsHeaderUnpinned && isWebApp() ? 'friends__heading__unpinned' : ''}`}>
               <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
@@ -487,29 +501,29 @@ const Wrapper = styled.div`
   padding-top: 80px;
 `;
 
-// const StickyTabs = styled.div`
-//   width: 100%;
-//   background-color: #fff;
-//   border-bottom: 1px solid #aaa;
-//   overflow: hidden;
-//   position: fixed;
-//   z-index: 1;
-//   left: 0;
-//   padding-top: 58px;
-//   transform: translate3d(0, -53px, 0);
-//   transition: all 100ms ease-in-out 0s;
-//   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
-// `;
+const StickyTabs = styled.div`
+  width: 100%;
+  background-color: #fff;
+  border-bottom: 1px solid #aaa;
+  overflow: hidden;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  padding-top: 58px;
+  transform: translate3d(0, -53px, 0);
+  transition: all 100ms ease-in-out 0s;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12); 
+`;
 
-// const StickyTabsUnpinned = styled.div`
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   z-index: 6 !important;
-//   transform: translate3d(0, -58px, 0);
-//   transition: all 100ms ease-in-out 0s;
-// `;
+const StickyTabsUnpinned = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 6 !important;
+  transform: translate3d(0, -58px, 0);
+  transition: all 100ms ease-in-out 0s; 
+`;
 
 const SectionTitle = styled.h2`
   width: fit-content;
