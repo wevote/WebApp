@@ -483,7 +483,8 @@ class CandidateStore extends ReduceStore {
           allCachedPositionsAboutCandidates,
         };
 
-      case 'voterGuidesUpcomingRetrieve':
+      case 'voterGuidesUpcomingRetrieve': // List of all public voter guides from CDN
+      case 'voterGuidesFromFriendsUpcomingRetrieve': // List of all friends-only voter guides
         // This code harvests the support/oppose positions that are passed in along with voter guides
 
         // console.log('CandidateStore voterGuidesUpcomingRetrieve');

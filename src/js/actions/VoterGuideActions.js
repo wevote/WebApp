@@ -35,6 +35,7 @@ export default {
   },
 
   voterGuidesToFollowRetrieveByIssuesFollowed () {
+    // DALE 2019-12-26 Testing without this
     Dispatcher.loadEndpoint('voterGuidesToFollowRetrieve', {
       filter_voter_guides_by_issue: true,
     });
@@ -91,6 +92,18 @@ export default {
     // For now, just pass one googleCivicElectionId into list. If we want multiple, we will need to dispatch
     // with multiple "google_civic_election_id_list" entries
     Dispatcher.loadEndpoint('voterGuidesUpcomingRetrieve', {
+      google_civic_election_id_list: [googleCivicElectionId],
+      // maximum_number_to_retrieve: maximumNumberToRetrieve,
+    });
+  },
+
+  voterGuidesFromFriendsUpcomingRetrieve (googleCivicElectionId = 0) {
+    // This API is always retrieved from our CDN per: WebApp/src/js/utils/service.js
+
+    // let maximumNumberToRetrieve = 500;
+    // For now, just pass one googleCivicElectionId into list. If we want multiple, we will need to dispatch
+    // with multiple "google_civic_election_id_list" entries
+    Dispatcher.loadEndpoint('voterGuidesFromFriendsUpcomingRetrieve', {
       google_civic_election_id_list: [googleCivicElectionId],
       // maximum_number_to_retrieve: maximumNumberToRetrieve,
     });

@@ -310,6 +310,7 @@ class VoterGuideStore extends ReduceStore {
           googleCivicElectionId = action.res.google_civic_election_id;
           if (!this.voterGuidesUpcomingStopped(googleCivicElectionId)) {
             VoterGuideActions.voterGuidesUpcomingRetrieve(googleCivicElectionId);
+            VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
             voterGuidesUpcomingStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingStoppedByGoogleCivicElectionId || [];
             voterGuidesUpcomingStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
             revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingStoppedByGoogleCivicElectionId });
@@ -325,6 +326,7 @@ class VoterGuideStore extends ReduceStore {
         // This is to prevent the same call from going out multiple times
         if (!this.voterGuidesUpcomingStopped(googleCivicElectionId)) {
           VoterGuideActions.voterGuidesUpcomingRetrieve(googleCivicElectionId);
+          VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
           voterGuidesUpcomingStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingStoppedByGoogleCivicElectionId || [];
           voterGuidesUpcomingStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
           revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingStoppedByGoogleCivicElectionId });
@@ -345,6 +347,7 @@ class VoterGuideStore extends ReduceStore {
         if (googleCivicElectionId !== 0) {
           if (!this.voterGuidesUpcomingStopped(googleCivicElectionId)) {
             VoterGuideActions.voterGuidesUpcomingRetrieve(googleCivicElectionId);
+            VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
             voterGuidesUpcomingStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingStoppedByGoogleCivicElectionId || [];
             voterGuidesUpcomingStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
             revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingStoppedByGoogleCivicElectionId });
@@ -519,7 +522,8 @@ class VoterGuideStore extends ReduceStore {
           }
         }
 
-      case 'voterGuidesUpcomingRetrieve': // New, static list of all public voter guides
+      case 'voterGuidesUpcomingRetrieve': // List of all public voter guides from CDN
+      case 'voterGuidesFromFriendsUpcomingRetrieve': // List of all friends-only voter guides
         voterGuides = action.res.voter_guides;
         // is_empty = voter_guides.length === 0;
         organizationWeVoteIdListFromVoterGuidesReturned = [];

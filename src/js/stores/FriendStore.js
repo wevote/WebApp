@@ -2,11 +2,14 @@ import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
 import Dispatcher from '../dispatcher/Dispatcher';
 import FriendActions from '../actions/FriendActions';
+import { arrayContains } from '../utils/textFormat';
 import VoterActions from '../actions/VoterActions';
 
 class FriendStore extends ReduceStore {
   getInitialState () {
     return {
+      currentFriends: [],
+      currentFriendsOrganizationWeVoteIds: [],
     };
   }
 
@@ -17,6 +20,22 @@ class FriendStore extends ReduceStore {
   currentFriends () {
     const { currentFriends } = this.getState();
     return currentFriends || [];
+  }
+
+  currentFriendsOrganizationWeVoteIDList () {
+    // We track friendships through voter_we_vote_id (as opposed to organization_we_vote_id)
+    const { currentFriendsOrganizationWeVoteIds } = this.getState();
+    return currentFriendsOrganizationWeVoteIds || [];
+  }
+
+  currentFriendsWeVoteIDList () {
+    // We track friendships through voter_we_vote_id (as opposed to organization_we_vote_id)
+    const { currentFriends } = this.getState();
+    if (currentFriends) {
+      return Object.keys(currentFriends) || [];
+    } else {
+      return [];
+    }
   }
 
   currentFriendsIndexed () {
@@ -87,18 +106,20 @@ class FriendStore extends ReduceStore {
   reduce (state, action) {
     // Exit if we don't receive a response
     if (!action.res) return state;  //  || !action.res.success // We deal with failures below
+    let count = 0;
+    let currentFriendsOrganizationWeVoteIds = [];
 
     switch (action.type) {
       case 'friendInviteResponse':
         if (!action.res.success) {
           // There was a problem
           // FriendActions.friendInvitationsSentToMe();
-          // console.log("FriendStore friendInviteResponse incoming data NO SUCCESS, action.res:", action.res);
+          // console.log('FriendStore friendInviteResponse incoming data NO SUCCESS, action.res:', action.res);
           return {
             ...state,
           };
         } else if (action.res.kind_of_invite_response === 'ACCEPT_INVITATION') {
-          // console.log("FriendStore friendInviteResponse incoming data ACCEPT_INVITATION, action.res:", action.res);
+          // console.log('FriendStore friendInviteResponse incoming data ACCEPT_INVITATION, action.res:', action.res);
           FriendActions.friendInvitationsSentToMe();
           // We update the currentFriends locally because it could be a heavy API call we don't want to call too often
           return {
@@ -107,25 +128,25 @@ class FriendStore extends ReduceStore {
           };
         } else if (action.res.kind_of_invite_response === 'IGNORE_INVITATION') {
           FriendActions.friendInvitationsSentToMe();
-          // console.log("FriendStore friendInviteResponse incoming data IGNORE_INVITATION, action.res:", action.res);
+          // console.log('FriendStore friendInviteResponse incoming data IGNORE_INVITATION, action.res:', action.res);
           return {
             ...state,
           };
         } else if (action.res.kind_of_invite_response === 'IGNORE_SUGGESTION') {
           FriendActions.suggestedFriendList();
-          // console.log("FriendStore friendInviteResponse incoming data IGNORE_SUGGESTION, action.res:", action.res);
+          // console.log('FriendStore friendInviteResponse incoming data IGNORE_SUGGESTION, action.res:', action.res);
           return {
             ...state,
           };
         } else if (action.res.kind_of_invite_response === 'DELETE_INVITATION_VOTER_SENT_BY_ME') {
           FriendActions.friendInvitationsSentByMe();
-          // console.log("FriendStore friendInviteResponse incoming data DELETE_INVITATION_VOTER_SENT_BY_ME, action.res:", action.res);
+          // console.log('FriendStore friendInviteResponse incoming data DELETE_INVITATION_VOTER_SENT_BY_ME, action.res:', action.res);
           return {
             ...state,
           };
         } else if (action.res.kind_of_invite_response === 'DELETE_INVITATION_EMAIL_SENT_BY_ME') {
           FriendActions.friendInvitationsSentByMe();
-          // console.log("FriendStore friendInviteResponse incoming data DELETE_INVITATION_EMAIL_SENT_BY_ME, action.res:", action.res);
+          // console.log('FriendStore friendInviteResponse incoming data DELETE_INVITATION_EMAIL_SENT_BY_ME, action.res:', action.res);
           return {
             ...state,
           };
@@ -133,7 +154,7 @@ class FriendStore extends ReduceStore {
           // Because of the potential size of the friend list, it would be better NOT to request the entire list
           // after un-friending, but we do it for now until we can refactor this
           FriendActions.currentFriends();
-          // console.log("FriendStore friendInviteResponse incoming data UNFRIEND_CURRENT_FRIEND, action.res:", action.res);
+          // console.log('FriendStore friendInviteResponse incoming data UNFRIEND_CURRENT_FRIEND, action.res:', action.res);
           return {
             ...state,
           };
@@ -182,10 +203,10 @@ class FriendStore extends ReduceStore {
       case 'friendInvitationByEmailVerify':
         if (action.res.voter_device_id === '') {
           // The first time it was called there was no voter_device_id, so we want to call it again
-          // console.log("FriendStore, friendInvitationByEmailVerify, voter_device_id missing, invitation_secret_key:", action.res.invitation_secret_key);
+          // console.log('FriendStore, friendInvitationByEmailVerify, voter_device_id missing, invitation_secret_key:', action.res.invitation_secret_key);
           FriendActions.friendInvitationByEmailVerify(action.res.invitation_secret_key);
         } else {
-          // console.log("FriendStore, voterDeviceId present");
+          // console.log('FriendStore, voterDeviceId present');
           FriendActions.friendInvitationsSentToMe();
           VoterActions.voterRetrieve(); // We need to update the indicator that the person has a verified email
         }
@@ -215,37 +236,45 @@ class FriendStore extends ReduceStore {
       case 'friendList':
         switch (action.res.kind_of_list) {
           case 'CURRENT_FRIENDS':
-            // console.log("FriendStore incoming data CURRENT_FRIENDS, action.res:", action.res);
+            // console.log('FriendStore incoming data CURRENT_FRIENDS, action.res:', action.res);
+            currentFriendsOrganizationWeVoteIds = [];
+            if (action.res.friend_list) {
+              for (count = 0; count < action.res.friend_list.length; count++) {
+                currentFriendsOrganizationWeVoteIds.push(action.res.friend_list[count].linked_organization_we_vote_id);
+              }
+            }
+
             return {
               ...state,
               currentFriends: action.res.friend_list,
+              currentFriendsOrganizationWeVoteIds,
             };
           case 'FRIEND_INVITATIONS_SENT_BY_ME':
-            // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_BY_ME, action.res:", action.res);
+            // console.log('FriendStore incoming data FRIEND_INVITATIONS_SENT_BY_ME, action.res:', action.res);
             return {
               ...state,
               friendInvitationsSentByMe: action.res.friend_list,
             };
           case 'FRIEND_INVITATIONS_SENT_TO_ME':
-            // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_TO_ME, action.res:", action.res);
+            // console.log('FriendStore incoming data FRIEND_INVITATIONS_SENT_TO_ME, action.res:', action.res);
             return {
               ...state,
               friendInvitationsSentToMe: action.res.friend_list,
             };
           case 'FRIEND_INVITATIONS_PROCESSED':
-            // console.log("FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:", action.res);
+            // console.log('FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:', action.res);
             return {
               ...state,
               friendInvitationsProcessed: action.res.friend_list,
             };
           case 'FRIEND_INVITATIONS_WAITING_FOR_VERIFICATION':
-            // console.log("FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:", action.res);
+            // console.log('FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:', action.res);
             return {
               ...state,
               friendInvitationsWaitingForVerification: action.res.friend_list,
             };
           case 'SUGGESTED_FRIEND_LIST':
-            // console.log("FriendStore incoming data suggestedFriendList, action.res:", action.res);
+            // console.log('FriendStore incoming data suggestedFriendList, action.res:', action.res);
             return {
               ...state,
               suggestedFriendList: action.res.friend_list,
@@ -256,8 +285,25 @@ class FriendStore extends ReduceStore {
             };
         }
 
+      case 'voterGuidesFromFriendsUpcomingRetrieve':
+        // console.log('FriendStore voterGuidesFromFriendsUpcomingRetrieve, action.res:', action.res);
+        if (action.res.voter_guides) {
+          for (count = 0; count < action.res.voter_guides.length; count++) {
+            if (!arrayContains(action.res.voter_guides[count].organization_we_vote_id, currentFriendsOrganizationWeVoteIds)) {
+              // console.log('NOT arrayContains');
+              currentFriendsOrganizationWeVoteIds.push(action.res.voter_guides[count].organization_we_vote_id);
+            }
+          }
+        }
+        // console.log('currentFriendsOrganizationWeVoteIds:', currentFriendsOrganizationWeVoteIds);
+
+        return {
+          ...state,
+          currentFriendsOrganizationWeVoteIds,
+        };
+
       case 'voterSignOut':
-        // console.log("resetting FriendStore");
+        // console.log('resetting FriendStore');
         FriendActions.currentFriends();
         FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsSentToMe();

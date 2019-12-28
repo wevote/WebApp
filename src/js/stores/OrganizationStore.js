@@ -301,7 +301,8 @@ class OrganizationStore extends ReduceStore {
         // organizationWeVoteId is the organization that was just followed
         organizationWeVoteId = action.res.organization_we_vote_id;
         if (action.res.organization_follow_based_on_issue) {
-          VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed(); // Whenever a voter follows a new org, update list
+          // DALE 2019-12-26 Testing without this
+          // VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed(); // Whenever a voter follows a new org, update list
         } else {
           // search_string = "";
           // add_voterGuides_not_from_election = false;
