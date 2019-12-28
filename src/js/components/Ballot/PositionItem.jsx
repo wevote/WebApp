@@ -260,7 +260,7 @@ class PositionItem extends Component {
                       <DesktopItemTwitterContainer>
                         { !!(position.twitter_followers_count && String(position.twitter_followers_count) !== '0') && (
                           <DesktopItemTwitter>
-                            <TwitterIcon className="fab fa-twitter twitter-followers__icon" />
+                            <TwitterIcon className="fab fa-twitter" />
                             {numberWithCommas(position.twitter_followers_count)}
                           </DesktopItemTwitter>
                         )}
