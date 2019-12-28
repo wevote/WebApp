@@ -1,4 +1,3 @@
-$friends-padding-top: 50px;
 
 .friends {
   // ===========================================
@@ -14,7 +13,7 @@ $friends-padding-top: 50px;
     position: fixed;
     z-index: 1;
     left: $space-none;
-    padding-top: $friends-padding-top;
+    padding-top: 50px;
     transform: $pinned-transform;
     transition: all 100ms ease-in-out 0s;
     box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
