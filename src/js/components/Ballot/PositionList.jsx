@@ -5,11 +5,12 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
 import InfoIcon from '@material-ui/icons/Info';
 import { renderLog } from '../../utils/logging';
-import PositionItem from './PositionItem';
 import FilterBase from '../Filter/FilterBase';
-import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter';
+import FriendStore from '../../stores/FriendStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
+import PositionItem from './PositionItem';
+import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter';
 
 
 const groupedFilters = [
@@ -62,6 +63,7 @@ export default class PositionList extends Component {
       positionList: incomingPositionList,
       filteredPositionList: incomingPositionList,
     });
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
 
     // Replicate in componentWillReceiveProps
@@ -92,19 +94,46 @@ export default class PositionList extends Component {
   }
 
   componentWillUnmount () {
+    this.friendStoreListener.remove();
     this.organizationStoreListener.remove();
+  }
+
+  onFriendStoreChange () {
+    // console.log('PositionList onOrganizationStoreChange');
+    const { filteredPositionList, positionList } = this.state;
+    const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
+    // eslint-disable-next-line arrow-body-style
+    const positionListWithFriendData = positionList.map((position) => {
+      // console.log('PositionList onOrganizationStoreChange, position: ', position);
+      return ({
+        ...position,
+        currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
+      });
+    });
+    // eslint-disable-next-line arrow-body-style
+    const filteredPositionListWithFriendData = filteredPositionList.map((position) => {
+      // console.log('PositionList onOrganizationStoreChange, position: ', position);
+      return ({
+        ...position,
+        currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
+      });
+    });
+    this.setState({
+      positionList: positionListWithFriendData,
+      filteredPositionList: filteredPositionListWithFriendData,
+    });
   }
 
   onOrganizationStoreChange () {
     // console.log('PositionList onOrganizationStoreChange');
     const { filteredPositionList, positionList } = this.state;
-    const followed = OrganizationStore.getOrganizationsVoterIsFollowing();
+    const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
     // eslint-disable-next-line arrow-body-style
     const positionListWithFollowedData = positionList.map((position) => {
       // console.log('PositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
-        followed: followed.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+        followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
       });
     });
     // eslint-disable-next-line arrow-body-style
@@ -112,7 +141,7 @@ export default class PositionList extends Component {
       // console.log('PositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
-        followed: followed.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+        followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
       });
     });
     this.setState({
@@ -121,20 +150,23 @@ export default class PositionList extends Component {
     });
   }
 
-  handleFilteredOrgsChange = filteredOrgs => this.setState({ filteredPositionList: filteredOrgs });
+  onFilteredItemsChange = (filteredOrganizations) => {
+    // console.log('PositionList onFilteredItemsChange, filteredOrganizations:', filteredOrganizations);
+    this.setState({ filteredPositionList: filteredOrganizations });
+  }
 
   render () {
     renderLog('PositionList');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.positionList) {
       return null;
     }
-    // console.log('PositionList with positionList: ', this.state.positionList);
+    // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     let showTitle = false;
     let count;
     for (count = 0; count < this.state.positionList.length; count++) {
       showTitle = true;
     }
-    const selectedFiltersDefault = ['endorsingGroup', 'newsOrganization', 'publicFigure', 'sortByReach'];
+    const selectedFiltersDefault = ['endorsingGroup', 'newsOrganization', 'publicFigure', 'sortByMagic', 'yourFriends'];
     return (
       <div>
         { showTitle ?
@@ -145,7 +177,7 @@ export default class PositionList extends Component {
           groupedFilters={groupedFilters}
           islandFilters={islandFilters}
           allItems={this.state.positionList}
-          onFilteredItemsChange={this.handleFilteredOrgsChange}
+          onFilteredItemsChange={this.onFilteredItemsChange}
           selectedFiltersDefault={selectedFiltersDefault}
         >
           {/* props get added to this component in FilterBase */}

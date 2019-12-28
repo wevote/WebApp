@@ -6,6 +6,8 @@ import InfoIcon from '@material-ui/icons/Info';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ReactSVG from 'react-svg';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import FollowToggle from '../Widgets/FollowToggle';
 import ImageHandler from '../ImageHandler';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import IssueStore from '../../stores/IssueStore';
@@ -14,12 +16,11 @@ import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import OrganizationStore from '../../stores/OrganizationStore';
+import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
 import ReadMore from '../Widgets/ReadMore';
-import FollowToggle from '../Widgets/FollowToggle';
 import StickyPopover from './StickyPopover';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
+import { numberWithCommas } from '../../utils/textFormat';
 
 class PositionItem extends Component {
   static propTypes = {
@@ -243,18 +244,28 @@ class PositionItem extends Component {
               <PositionItemDesktop className={`position-item--${supportOpposeInfo} position-item`}>
                 <DesktopItemHeader>
                   <DesktopItemNameIssueContainer>
-                    <DesktopItemName>
-                      <StickyPopover
-                        delay={{ show: 700, hide: 100 }}
-                        popoverComponent={organizationPopoverCard}
-                        placement="auto"
-                        id="positions-popover-trigger-click-root-close"
-                      >
-                        <Link to={speakerLink}>
-                          { position.speaker_display_name }
-                        </Link>
-                      </StickyPopover>
-                    </DesktopItemName>
+                    <DesktopItemNameContainer>
+                      <DesktopItemName>
+                        <StickyPopover
+                          delay={{ show: 700, hide: 100 }}
+                          popoverComponent={organizationPopoverCard}
+                          placement="auto"
+                          id="positions-popover-trigger-click-root-close"
+                        >
+                          <Link to={speakerLink}>
+                            { position.speaker_display_name }
+                          </Link>
+                        </StickyPopover>
+                      </DesktopItemName>
+                      <DesktopItemTwitterContainer>
+                        { !!(position.twitter_followers_count && String(position.twitter_followers_count) !== '0') && (
+                          <DesktopItemTwitter>
+                            <TwitterIcon className="fab fa-twitter" />
+                            {numberWithCommas(position.twitter_followers_count)}
+                          </DesktopItemTwitter>
+                        )}
+                      </DesktopItemTwitterContainer>
+                    </DesktopItemNameContainer>
                     <DesktopItemIssues>
                       <IssuesByOrganizationDisplayList
                         organizationWeVoteId={organizationWeVoteId}
@@ -650,6 +661,11 @@ const DesktopItemNameIssueContainer = styled.div`
   padding: 0px;
 `;
 
+const DesktopItemNameContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
 const DesktopItemName = styled.h4`
   font-size: 18px;
   font-weight: bold;
@@ -677,6 +693,17 @@ const DesktopItemDescription = styled.div`
 const DesktopItemFooter = styled.div`
   font-size: 12px;
   margin-top: 2px;
+`;
+
+const DesktopItemTwitterContainer = styled.div`
+`;
+
+const DesktopItemTwitter = styled.div`
+  color: #999;
+  display: inline-block;
+  font-size: 12px;
+  padding-left: 10px;
+  white-space: nowrap;
 `;
 
 const SupportAndPartOfScore = styled.div`
@@ -766,6 +793,13 @@ const InformationOnly = styled.div`
 const SourceLink = styled.div`
   float: right;
   margin-bottom: -4px;
+`;
+
+const TwitterIcon = styled.span`
+  font-size: 16px;
+  color: #ccc;
+  margin-right: 2px;
+  vertical-align: bottom;
 `;
 
 export default PositionItem;

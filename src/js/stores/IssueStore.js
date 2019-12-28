@@ -5,8 +5,8 @@ import IssueActions from '../actions/IssueActions';
 import OrganizationStore from './OrganizationStore';  // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
 import VoterGuideStore from './VoterGuideStore';  // eslint-disable-line import/no-cycle
-import VoterGuideActions from '../actions/VoterGuideActions';
 import { arrayContains, convertNameToSlug, removeValueFromArray } from '../utils/textFormat';
+// import VoterGuideActions from '../actions/VoterGuideActions';
 
 class IssueStore extends ReduceStore {
   getInitialState () {
@@ -443,8 +443,8 @@ class IssueStore extends ReduceStore {
 
     switch (action.type) {
       case 'issueFollow':
-        // When a voter follows or unfollows an issue on the ballot intro modal screen, update the voter guide list
-        VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();
+        // // When a voter follows or unfollows an issue on the ballot intro modal screen, update the voter guide list
+        // VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed(); // DALE 2019-12-26 Testing without this
         if (action.res.google_civic_election_id && action.res.google_civic_election_id > 0) {
           IssueActions.issuesRetrieveForElection(action.res.google_civic_election_id);
         } else {
@@ -847,7 +847,7 @@ class IssueStore extends ReduceStore {
           organizationWeVoteIdsLinkedToIssueDict,
         };
 
-      case 'voterGuidesUpcomingRetrieve':
+      case 'voterGuidesUpcomingRetrieve': // List of all public voter guides from CDN
         // Collect all of the issues an organization is tagged with
         // console.log('IssueStore, case voterGuidesToFollowRetrieve');
         voterGuides = action.res.voter_guides;
