@@ -8,7 +8,7 @@ import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import BallotSearch from '../Ballot/BallotSearch';
 import { renderLog } from '../../utils/logging';
 
-const sortFilters = ['sortByNetwork', 'sortByReach'];
+const sortFilters = ['sortByMagic', 'sortByNetwork', 'sortByReach'];
 
 class FilterBase extends React.Component {
   static propTypes = {

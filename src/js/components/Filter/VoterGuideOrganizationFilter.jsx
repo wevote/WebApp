@@ -8,6 +8,7 @@ import Checkbox from '@material-ui/core/esm/Checkbox';
 import IssueStore from '../../stores/IssueStore';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import { renderLog } from '../../utils/logging';
+import FriendStore from '../../stores/FriendStore';
 
 const groupTypeIdentifiers = ['C', 'C3', 'C4', 'G', 'NP', 'O', 'P'];
 const privateCitizenIdentifiers = ['I', 'V'];
@@ -27,20 +28,53 @@ class VoterGuideOrganizationFilter extends Component {
     super(props);
     this.state = {
       issues: IssueStore.getAllIssues(),
+      currentFriendsOrganizationWeVoteIds: [],
+      currentFriendsOrganizationWeVoteIdsLength: 0,
+      sortedBy: '',
     };
   }
 
-  componentDidUpdate (prevProps) {
-    // console.log('VoterGuideOrganizationFilter componentDidUpdate');
-    if (prevProps.selectedFilters !== this.props.selectedFilters) {
+  componentDidMount () {
+    const currentFriendsOrganizationWeVoteIds = FriendStore.currentFriendsOrganizationWeVoteIDList();
+    this.setState({
+      currentFriendsOrganizationWeVoteIds,
+      currentFriendsOrganizationWeVoteIdsLength: currentFriendsOrganizationWeVoteIds.length,
+    });
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    // console.log('VoterGuideOrganizationFilter componentDidUpdate:', prevProps.selectedFilters, this.props.selectedFilters);
+    if ((JSON.stringify(prevProps.selectedFilters) !== JSON.stringify(this.props.selectedFilters)) ||
+      (prevState.currentFriendsOrganizationWeVoteIdsLength !== this.state.currentFriendsOrganizationWeVoteIdsLength) ||
+      (prevState.sortedBy !== this.state.sortedBy)
+    ) {
       this.props.onFilteredItemsChange(this.getNewFilteredItems());
     }
     // console.log(this.state.issues);
   }
 
+  componentWillUnmount () {
+    this.friendStoreListener.remove();
+  }
+
+  onFriendStoreChange () {
+    const currentFriendsOrganizationWeVoteIds = FriendStore.currentFriendsOrganizationWeVoteIDList();
+    this.setState({
+      currentFriendsOrganizationWeVoteIds,
+      currentFriendsOrganizationWeVoteIdsLength: currentFriendsOrganizationWeVoteIds.length,
+    });
+  }
+
   getFilteredItemsByLinkedIssue = (issueFilter) => {
     const { allItems } = this.props;
     return allItems.filter(item => item.issue_we_vote_ids_linked === issueFilter.issue_we_vote_id);
+  };
+
+  orderByCurrentFriendsFirst = (firstGuide, secondGuide) => {
+    const secondGuideIsFromFriend = secondGuide && secondGuide.currentFriend === true ? 1 : 0;
+    const firstGuideIsFromFriend = firstGuide && firstGuide.currentFriend === true ? 1 : 0;
+    return secondGuideIsFromFriend - firstGuideIsFromFriend;
   };
 
   orderByFollowedOrgsFirst = (firstGuide, secondGuide) => secondGuide.followed - firstGuide.followed;
@@ -55,22 +89,28 @@ class VoterGuideOrganizationFilter extends Component {
 
   getNewFilteredItems = () => {
     const { allItems, selectedFilters } = this.props;
+    // console.log('allItems:', allItems);
+    const { currentFriendsOrganizationWeVoteIds } = this.state;
+    // console.log('currentFriendsOrganizationWeVoteIds:', currentFriendsOrganizationWeVoteIds);
     let filteredItems = [];
     if (!selectedFilters || !selectedFilters.length) return allItems;
     // First, bring in only the kinds of organizations with checkmark
     selectedFilters.forEach((filter) => {
       switch (filter) {
-        case 'newsOrganization':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'NW')];
-          break;
         case 'endorsingGroup':
           filteredItems = [...filteredItems, ...allItems.filter(item => groupTypeIdentifiers.includes(item.speaker_type))];
+          break;
+        case 'individualVoter':
+          filteredItems = [...filteredItems, ...allItems.filter(item => privateCitizenIdentifiers.includes(item.speaker_type))];
+          break;
+        case 'newsOrganization':
+          filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'NW')];
           break;
         case 'publicFigure':
           filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'PF')];
           break;
-        case 'individualVoter':
-          filteredItems = [...filteredItems, ...allItems.filter(item => privateCitizenIdentifiers.includes(item.speaker_type))];
+        case 'yourFriends':
+          filteredItems = [...filteredItems, ...allItems.filter(item => currentFriendsOrganizationWeVoteIds.includes(item.speaker_we_vote_id))];
           break;
         default:
           break;
@@ -140,20 +180,44 @@ class VoterGuideOrganizationFilter extends Component {
     // Sort Order
     selectedFilters.forEach((filter) => {
       switch (filter) {
+        case 'sortByMagic':
+          // Put written comments on top, and then within those two separations, move Twitter followers to the top
+          // console.log('sortByMagic');
+          filteredItems = filteredItems.sort(this.orderByTwitterFollowers);
+          filteredItems = filteredItems.sort(this.orderByFollowedOrgsFirst);
+          filteredItems = filteredItems.sort(this.orderByCurrentFriendsFirst);
+          filteredItems = filteredItems.sort(this.orderByWrittenComment);
+          this.setState({
+            sortedBy: 'sortByMagic',
+          });
+          break;
         case 'sortByReach':
           // Put written comments on top, and then within those two separations, move Twitter followers to the top
+          // console.log('sortByReach');
+          // filteredItems = filteredItems.sort(this.orderByWrittenComment);
+          // filteredItems = filteredItems.sort(this.orderByCurrentFriendsFirst);
           filteredItems = filteredItems.sort(this.orderByTwitterFollowers);
-          filteredItems = filteredItems.sort(this.orderByWrittenComment);
+          this.setState({
+            sortedBy: 'sortByReach',
+          });
           break;
         case 'sortByNetwork':
-          filteredItems = filteredItems.sort(this.orderByTwitterFollowers);
-          filteredItems = filteredItems.sort(this.orderByWrittenComment);
+          // console.log('sortByNetwork');
+          // filteredItems = filteredItems.sort(this.orderByTwitterFollowers);
+          // filteredItems = filteredItems.sort(this.orderByWrittenComment);
           filteredItems = filteredItems.sort(this.orderByFollowedOrgsFirst);
+          filteredItems = filteredItems.sort(this.orderByCurrentFriendsFirst);
+          this.setState({
+            sortedBy: 'sortByNetwork',
+          });
           break;
         default:
-          if (typeof filter === 'object') {
-            filteredItems = [...filteredItems, ...this.getFilteredItemsByLinkedIssue(filter)];
-          }
+          // Skip over all other filters
+          // console.log('sort by default, filter:', filter);
+          // if (typeof filter === 'object') {
+          //   // console.log('sort by object');
+          //   filteredItems = [...filteredItems, ...this.getFilteredItemsByLinkedIssue(filter)];
+          // }
           break;
       }
     });
@@ -195,12 +259,16 @@ class VoterGuideOrganizationFilter extends Component {
   render () {
     renderLog('VoterGuideOrganizationFilter');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, showAllFilters, selectedFilters } = this.props;
+    // console.log('VoterGuideOrganizationFilter render');
 
     return (
       <Wrapper showAllFilters={showAllFilters}>
         <FilterRow>
           <FilterColumn>
             <b>Sort By</b>
+            <SortByContainer>
+              <SortBy selected={selectedFilters.indexOf('sortByMagic') > -1} onClick={() => this.selectSortByFilter('sortByMagic')}>Magic</SortBy>
+            </SortByContainer>
             <SortByContainer>
               <SortBy selected={selectedFilters.indexOf('sortByReach') > -1} onClick={() => this.selectSortByFilter('sortByReach')}>Reach</SortBy>
             </SortByContainer>
@@ -214,12 +282,24 @@ class VoterGuideOrganizationFilter extends Component {
             </SortByContainer>
           </FilterColumn>
           <FilterColumn>
-            <b>Organization</b>
+            <b>Endorsements From...</b>
             <FormControlLabel
               classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
-                  checked={this.props.selectedFilters.indexOf('newsOrganization') > -1}
+                  checked={selectedFilters.indexOf('yourFriends') > -1}
+                  onChange={() => this.toggleFilter('yourFriends')}
+                  value="yourFriends"
+                  color="primary"
+                />
+              )}
+              label="Your Friends"
+            />
+            <FormControlLabel
+              classes={{ label: classes.formControlLabel }}
+              control={(
+                <Checkbox
+                  checked={selectedFilters.indexOf('newsOrganization') > -1}
                   onChange={() => this.toggleFilter('newsOrganization')}
                   value="newsOrganization"
                   color="primary"
@@ -231,7 +311,7 @@ class VoterGuideOrganizationFilter extends Component {
               classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
-                  checked={this.props.selectedFilters.indexOf('endorsingGroup') > -1}
+                  checked={selectedFilters.indexOf('endorsingGroup') > -1}
                   onChange={() => this.toggleFilter('endorsingGroup')}
                   value="endorsingGroup"
                   color="primary"
@@ -243,7 +323,7 @@ class VoterGuideOrganizationFilter extends Component {
               classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
-                  checked={this.props.selectedFilters.indexOf('publicFigure') > -1}
+                  checked={selectedFilters.indexOf('publicFigure') > -1}
                   onChange={() => this.toggleFilter('publicFigure')}
                   value="publicFigure"
                   color="primary"
@@ -255,7 +335,7 @@ class VoterGuideOrganizationFilter extends Component {
               classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
-                  checked={this.props.selectedFilters.indexOf('individualVoter') > -1}
+                  checked={selectedFilters.indexOf('individualVoter') > -1}
                   onChange={() => this.toggleFilter('individualVoter')}
                   value="individualVoter"
                   color="primary"
@@ -302,11 +382,11 @@ const SortByContainer = styled.div`
 `;
 
 const SortBy = styled.p`
-  font-size: .875rem;
+  font-size: ${({ selected }) => (selected ? '.95rem' : '.875rem')};
   margin: 8px 0 0 0;
   cursor: pointer;
-  color: ${({ selected, theme }) => (selected ? theme.colors.brandBlue : '#333')};
-  font-weight: ${({ selected }) => (selected ? 'bold' : 'normal')};
+  color: ${({ selected, theme }) => (selected ? theme.colors.brandBlue : '#555')};
+  font-weight: ${({ selected }) => (selected ? '800' : '400')};
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 14px;
   }

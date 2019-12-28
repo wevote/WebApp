@@ -203,9 +203,18 @@ export function setZenDeskHelpVisibility (pathname) {
   if (isWebApp()) {
     if (['/ballot', '/ballot/vote', '/friends', '/more/network', '/office', '/opinions', '/settings',
       '/value'].some(match => pathname.toLowerCase().startsWith(match))) { // '/values'
-      global.zE('webWidget', 'show');
+      try {
+        global.zE('webWidget', 'show');
+      } catch {
+        console.log('setZenDeskHelpVisibility global.zE failure show');
+      }
+      // eslint-disable-next-line no-undef
     } else {
-      global.zE('webWidget', 'hide');
+      try {
+        global.zE('webWidget', 'hide');
+      } catch {
+        console.log('setZenDeskHelpVisibility global.zE failure hide');
+      }
     }
   }
 }
