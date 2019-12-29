@@ -553,7 +553,7 @@ const EmptyBallotMessageContainer = styled.div`
   align-items: center;
 `;
 
-const EmptyBallotText = styled.p`
+const EmptyBallotText = styled.span`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;

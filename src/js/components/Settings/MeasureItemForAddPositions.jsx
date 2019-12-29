@@ -220,7 +220,7 @@ class MeasureItemForAddPositions extends Component {
               {ballotDisplay[0]}
             </Title>
             <SubTitle>{ballotDisplay[1]}</SubTitle>
-            <Info>{shortenText(measureText, 200)}</Info>
+            <MeasureText>{shortenText(measureText, 200)}</MeasureText>
           </MeasureInfoWrapper>
           {/* Action Buttons: Support/Oppose/Comment */}
           <ItemActionBar
@@ -301,7 +301,7 @@ const SubTitle = styled.h3`
   }
 `;
 
-const Info = styled.p`
+const MeasureText = styled.div`
   font-size: 13px;
   font-weight: 300;
   color: #777;

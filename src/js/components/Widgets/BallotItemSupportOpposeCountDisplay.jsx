@@ -8,6 +8,7 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CandidateStore from '../../stores/CandidateStore';
+import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
@@ -64,6 +65,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   componentDidMount () {
     // console.log('BallotItemSupportOpposeCountDisplay componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -106,7 +108,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log('componentWillReceiveProps, nextProps: ', nextProps);
+    // console.log('BallotItemSupportOpposeCountDisplay componentWillReceiveProps, nextProps: ', nextProps);
     let ballotItemDisplayName;
     const { ballotItemWeVoteId } = nextProps;
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
@@ -158,6 +160,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       // console.log('this.state.ballotItemWeVoteId:', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId:', nextState.ballotItemWeVoteId);
       return true;
     }
+    if (this.state.issueWeVoteIdsLinkedToByOrganizationDictLength !== nextState.issueWeVoteIdsLinkedToByOrganizationDictLength) {
+      // console.log('this.state.issueWeVoteIdsLinkedToByOrganizationDictLength:', this.state.issueWeVoteIdsLinkedToByOrganizationDictLength, ', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength:', nextState.issueWeVoteIdsLinkedToByOrganizationDictLength);
+      return true;
+    }
     if (this.state.numberOfAllSupportPositions !== nextState.numberOfAllSupportPositions) {
       return true;
     }
@@ -165,6 +171,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       return true;
     }
     if (this.state.numberOfAllInfoOnlyPositions !== nextState.numberOfAllInfoOnlyPositions) {
+      return true;
+    }
+    if (this.state.organizationWeVoteIdsVoterIsFollowingLength !== nextState.organizationWeVoteIdsVoterIsFollowingLength) {
+      // console.log('this.state.organizationWeVoteIdsVoterIsFollowingLength:', this.state.organizationWeVoteIdsVoterIsFollowingLength, ', nextState.organizationWeVoteIdsVoterIsFollowingLength:', nextState.organizationWeVoteIdsVoterIsFollowingLength);
       return true;
     }
     if (this.state.positionsInNetworkSummaryListLength !== nextState.positionsInNetworkSummaryListLength) {
@@ -190,6 +200,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
+    this.friendStoreListener.remove();
     this.issueStoreListener.remove();
     this.measureStoreListener.remove();
     this.organizationStoreListener.remove();
@@ -207,6 +218,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const {
       allCachedPositionsLength: priorAllCachedPositionsLength,
       allIssuesVoterIsFollowingLength: priorAllIssuesVoterIsFollowingLength,
+      currentFriendsOrganizationWeVoteIdsLength: priorCurrentFriendsOrganizationWeVoteIdsLength,
       issueWeVoteIdsLinkedToByOrganizationDictLength: priorIssueWeVoteIdsLinkedToByOrganizationDictLength,
       organizationWeVoteIdsVoterIsFollowingLength: priorOrganizationWeVoteIdsVoterIsFollowingLength,
       voterOpposesListLength: priorVoterOpposesListLength,
@@ -216,7 +228,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // Before we try to update the PositionSummaryList, make sure we have minimum data and that there has been a change
     const results = getPositionListSummaryIncomingDataStats(ballotItemWeVoteId);
     const {
-      allCachedPositionsLength, allIssuesVoterIsFollowingLength, issueWeVoteIdsLinkedToByOrganizationDictLength, organizationWeVoteIdsVoterIsFollowingLength,
+      allCachedPositionsLength, allIssuesVoterIsFollowingLength,
+      currentFriendsOrganizationWeVoteIdsLength, issueWeVoteIdsLinkedToByOrganizationDictLength, organizationWeVoteIdsVoterIsFollowingLength,
       voterOpposesListLength, voterSupportsListLength,
     } = results;
     // console.log('allCachedPositionsLength:', allCachedPositionsLength, ', priorAllCachedPositionsLength:', priorAllCachedPositionsLength);
@@ -226,8 +239,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // console.log('voterOpposesListLength:', voterOpposesListLength, ', priorVoterOpposesListLength:', priorVoterOpposesListLength);
     // console.log('voterSupportsListLength:', voterSupportsListLength, ', priorVoterSupportsListLength:', priorVoterSupportsListLength);
 
-    const minimumPositionSummaryListVariablesFound = allCachedPositionsLength !== undefined && (issueWeVoteIdsLinkedToByOrganizationDictLength || organizationWeVoteIdsVoterIsFollowingLength);
-    const changedPositionSummaryListVariablesFound = !!((allCachedPositionsLength !== priorAllCachedPositionsLength) || (allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) || (issueWeVoteIdsLinkedToByOrganizationDictLength !== priorIssueWeVoteIdsLinkedToByOrganizationDictLength) || (organizationWeVoteIdsVoterIsFollowingLength !== priorOrganizationWeVoteIdsVoterIsFollowingLength) || (voterOpposesListLength !== priorVoterOpposesListLength) || (voterSupportsListLength !== priorVoterSupportsListLength));
+    const minimumPositionSummaryListVariablesFound = allCachedPositionsLength !== undefined && (currentFriendsOrganizationWeVoteIdsLength || issueWeVoteIdsLinkedToByOrganizationDictLength || organizationWeVoteIdsVoterIsFollowingLength);
+    const changedPositionSummaryListVariablesFound = !!((allCachedPositionsLength !== priorAllCachedPositionsLength) || (allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) || (currentFriendsOrganizationWeVoteIdsLength !== priorCurrentFriendsOrganizationWeVoteIdsLength) || (issueWeVoteIdsLinkedToByOrganizationDictLength !== priorIssueWeVoteIdsLinkedToByOrganizationDictLength) || (organizationWeVoteIdsVoterIsFollowingLength !== priorOrganizationWeVoteIdsVoterIsFollowingLength) || (voterOpposesListLength !== priorVoterOpposesListLength) || (voterSupportsListLength !== priorVoterSupportsListLength));
 
     const refreshPositionSummaryList = !!(minimumPositionSummaryListVariablesFound && changedPositionSummaryListVariablesFound);
     // console.log('refreshPositionSummaryList: ', refreshPositionSummaryList, ballotItemWeVoteId);
@@ -243,6 +256,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       this.setState({
         allCachedPositionsLength,
         allIssuesVoterIsFollowingLength,
+        currentFriendsOrganizationWeVoteIdsLength,
         issueWeVoteIdsLinkedToByOrganizationDictLength,
         organizationWeVoteIdsVoterIsFollowingLength,
         positionsInNetworkSummaryList,
@@ -327,14 +341,27 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     }
   }
 
-  onIssueStoreChange () {
-    // We want to re-render so issue data can update
+  onFriendStoreChange () {
+    // We want to re-render so friend data can update
     this.onCachedPositionsOrIssueStoreChange();
   }
 
-  onOrganizationStoreChange () {
+  onIssueStoreChange () {
     // We want to re-render so issue data can update
     this.onCachedPositionsOrIssueStoreChange();
+    const issueWeVoteIdsLinkedToByOrganizationDictLength = IssueStore.getIssueWeVoteIdsLinkedToByOrganizationDictLength();
+    this.setState({
+      issueWeVoteIdsLinkedToByOrganizationDictLength,
+    });
+  }
+
+  onOrganizationStoreChange () {
+    // We want to re-render so organization data can update
+    this.onCachedPositionsOrIssueStoreChange();
+    const organizationWeVoteIdsVoterIsFollowingLength = OrganizationStore.getOrganizationWeVoteIdsVoterIsFollowingLength();
+    this.setState({
+      organizationWeVoteIdsVoterIsFollowingLength,
+    });
   }
 
   onSupportStoreChange () {

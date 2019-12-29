@@ -34,8 +34,6 @@ import AppStore from '../stores/AppStore';
 import { cordovaBallotFilterTopMargin } from '../utils/cordovaOffsets';
 import displayFriendsTabs from '../utils/displayFriendsTabs';
 
-// const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
-
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = cordovaDot(testimonialImage);
 const testimonial = 'Instead of sending my friends a list of who they should vote for, I can add them as friends on We Vote.';
@@ -87,22 +85,22 @@ class Friends extends Component {
   onFriendStoreChange () {
     if (this.state.suggestedFriendList.length !== FriendStore.suggestedFriendList().length) {
       this.setState({ suggestedFriendList: FriendStore.suggestedFriendList() });
-      console.log('suggestedFriends has changed');
+      // console.log('suggestedFriends has changed');
       this.checkListContents();
     }
     if (this.state.currentFriends.length !== FriendStore.currentFriends().length) {
       this.setState({ currentFriends: FriendStore.currentFriends() });
-      console.log('currentFriends has changed');
+      // console.log('currentFriends has changed');
       this.checkListContents();
     }
     if (this.state.friendInvitationsSentToMe.length !== FriendStore.friendInvitationsSentToMe().length) {
       this.setState({ friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe() });
-      console.log('friendInvitationsSentToMe has changed');
+      // console.log('friendInvitationsSentToMe has changed');
       this.checkListContents();
     }
     if (this.state.friendInvitationsSentByMe.length !== FriendStore.friendInvitationsSentByMe().length) {
       this.setState({ friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe() });
-      console.log('friendInvitationsSentByMe has changed');
+      // console.log('friendInvitationsSentByMe has changed');
       this.checkListContents();
     }
   }
@@ -136,13 +134,13 @@ class Friends extends Component {
       this.setState({ desktopDisplayInviteInMainSection: true });
     }
 
-    console.log(defaultTabItem);
+    // console.log(defaultTabItem);
 
     if (defaultTabItem !== this.props.params.tabItem && displayFriendsTabs()) {
       this.handleNavigation(`/friends/${defaultTabItem}`);
     }
 
-    console.log('Default tab item:', defaultTabItem);
+    // console.log('Default tab item:', defaultTabItem);
   }
 
   render () {
@@ -151,7 +149,7 @@ class Friends extends Component {
     const { classes } = this.props;
 
     // console.log('Desktop value: ', desktopValue);
-    console.log('friendsHeaderUnpinned', friendsHeaderUnpinned);
+    // console.log('friendsHeaderUnpinned', friendsHeaderUnpinned);
 
     if (!voter) {
       return LoadingWheel;
@@ -388,7 +386,7 @@ class Friends extends Component {
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
       >
-        {this.state.friendInvitationsSentToMe.length > 0 || mobileValue === 'requests' ? (
+        {!!(this.state.friendInvitationsSentToMe.length > 0 || mobileValue === 'requests') && (
           <Tab
             classes={{ root: classes.navigationTab }}
             value="requests"
@@ -397,10 +395,8 @@ class Friends extends Component {
               this.handleNavigation('/friends/requests');
             }}
           />
-        ) : (
-          null
         )}
-        {this.state.suggestedFriendList.length > 0 || mobileValue === 'suggested' ? (
+        {!!(this.state.suggestedFriendList.length > 0 || mobileValue === 'suggested') && (
           <Tab
             classes={{ root: classes.navigationTab }}
             value="suggested"
@@ -409,8 +405,6 @@ class Friends extends Component {
               this.handleNavigation('/friends/suggested');
             }}
           />
-        ) : (
-          null
         )}
         <Tab
           classes={{ root: classes.navigationTab }}
@@ -420,7 +414,7 @@ class Friends extends Component {
             this.handleNavigation('/friends/invite');
           }}
         />
-        {this.state.currentFriends.length > 0 || mobileValue === 'current' ? (
+        {!!(this.state.currentFriends.length > 0 || mobileValue === 'current') && (
           <Tab
             classes={{ root: classes.navigationTab }}
             value="current"
@@ -429,10 +423,8 @@ class Friends extends Component {
               this.handleNavigation('/friends/current');
             }}
           />
-        ) : (
-          null
         )}
-        {this.state.friendInvitationsSentByMe.length > 0 || mobileValue === 'sent-requests' ? (
+        {!!(this.state.friendInvitationsSentByMe.length > 0 || mobileValue === 'sent-requests') && (
           <Tab
             classes={{ root: classes.navigationTab }}
             value="sent-requests"
@@ -441,8 +433,6 @@ class Friends extends Component {
               this.handleNavigation('/friends/sent-requests');
             }}
           />
-        ) : (
-          null
         )}
       </Tabs>
     );
@@ -499,30 +489,6 @@ const styles = () => ({
 
 const Wrapper = styled.div`
   padding-top: 80px;
-`;
-
-const StickyTabs = styled.div`
-  width: 100%;
-  background-color: #fff;
-  border-bottom: 1px solid #aaa;
-  overflow: hidden;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  padding-top: 58px;
-  transform: translate3d(0, -53px, 0);
-  transition: all 100ms ease-in-out 0s;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12); 
-`;
-
-const StickyTabsUnpinned = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 6 !important;
-  transform: translate3d(0, -58px, 0);
-  transition: all 100ms ease-in-out 0s; 
 `;
 
 const SectionTitle = styled.h2`

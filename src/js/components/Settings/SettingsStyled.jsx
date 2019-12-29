@@ -12,7 +12,7 @@ const PreviewImage = styled.img`
   margin-right: 8px;
 `;
 
-const DescriptionText = styled.p`
+const DescriptionText = styled.span`
   font-size: 14px;
   margin: .5em auto;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {

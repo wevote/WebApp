@@ -287,7 +287,7 @@ const IssueList = styled.ul`
   padding-inline-start: 0;
 `;
 
-const MoreWrapper = styled.p`
+const MoreWrapper = styled.span`
   display: flex;
   flex-flow: row;
   display: inline;

@@ -1,9 +1,9 @@
 import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
 import Dispatcher from '../dispatcher/Dispatcher';
-import FriendActions from '../actions/FriendActions';
+import FriendActions from '../actions/FriendActions';  // eslint-disable-line import/no-cycle
 import { arrayContains } from '../utils/textFormat';
-import VoterActions from '../actions/VoterActions';
+import VoterActions from '../actions/VoterActions';  // eslint-disable-line import/no-cycle
 
 class FriendStore extends ReduceStore {
   getInitialState () {
@@ -63,6 +63,14 @@ class FriendStore extends ReduceStore {
     return friendInvitationsWaitingForVerification || [];
   }
 
+  getCurrentFriendsOrganizationWeVoteIdsLength () {
+    // console.log('OrganizationStore.getCurrentFriendsOrganizationWeVoteIdsLength, currentFriendsOrganizationWeVoteIds: ', this.getState().currentFriendsOrganizationWeVoteIds);
+    if (this.getState().currentFriendsOrganizationWeVoteIds) {
+      return this.getState().currentFriendsOrganizationWeVoteIds.length;
+    }
+    return 0;
+  }
+
   getErrorMessageToShowVoter () {
     const { errorMessageToShowVoter } = this.getState();
     return errorMessageToShowVoter;
@@ -79,6 +87,19 @@ class FriendStore extends ReduceStore {
   isFriend (voterId) {
     const currentFriendsIndex = this.currentFriendsIndexed(); // TODO DALE THIS NEEDS TO BE TESTED
     return currentFriendsIndex[voterId] !== undefined;
+  }
+
+  isVoterFriendsWithThisOrganization (organizationWeVoteId) {
+    const { currentFriendsOrganizationWeVoteIds } = this.getState();
+    // console.log('FriendStore, isVoterFriendsWithThisOrganization, currentFriendsOrganizationWeVoteIds: ', currentFriendsOrganizationWeVoteIds);
+    if (currentFriendsOrganizationWeVoteIds.length) {
+      const isFriend = arrayContains(organizationWeVoteId, currentFriendsOrganizationWeVoteIds);
+      // console.log('FriendStore, isVoterFriendsWithThisOrganization:', isFriend, ', organizationWeVoteId:', organizationWeVoteId);
+      return isFriend;
+    } else {
+      // console.log('FriendStore, isVoterFriendsWithThisOrganization: NO currentFriendsOrganizationWeVoteIds, organizationWeVoteId: ', organizationWeVoteId);
+      return false;
+    }
   }
 
   suggestedFriendList () {

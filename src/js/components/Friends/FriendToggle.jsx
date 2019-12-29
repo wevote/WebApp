@@ -66,7 +66,7 @@ export default class FriendToggle extends Component {
             disabled
           >
             <span>
-              <CheckCircle className="following-icon" />
+              <CheckCircle className="friends-icon" />
             </span>
           </Button>
           <div className="issues-follow-btn__seperator" />
