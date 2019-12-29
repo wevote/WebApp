@@ -8,6 +8,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import { withStyles, withTheme } from '@material-ui/core/esm/styles';
 import styled from 'styled-components';
 import FollowToggle from './FollowToggle';
+import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -31,10 +32,12 @@ class PositionItemScorePopover extends Component {
       organizationWeVoteId: '',
       speakerDisplayName: '',
       voterFollowingThisOrganization: false,
+      voterIsFriendsWithThisOrganization: false,
     };
   }
 
   componentDidMount () {
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     const { positionItem } = this.props;
@@ -52,6 +55,7 @@ class PositionItemScorePopover extends Component {
       const issuesInCommonBetweenOrganizationAndVoterLength = issuesInCommonBetweenOrganizationAndVoter.length;
       const organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
       const voterFollowingThisOrganization = OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId);
+      const voterIsFriendsWithThisOrganization = FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId);
       this.setState({
         ballotItemDisplayName,
         issuesInCommonBetweenOrganizationAndVoter,
@@ -63,12 +67,13 @@ class PositionItemScorePopover extends Component {
         organizationWeVoteId,
         speakerDisplayName,
         voterFollowingThisOrganization,
+        voterIsFriendsWithThisOrganization,
       });
     }
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log('componentWillReceiveProps, nextProps: ', nextProps);
+    console.log('componentWillReceiveProps, nextProps: ', nextProps);
     const { positionItem } = nextProps;
     if (positionItem) {
       const {
@@ -83,6 +88,7 @@ class PositionItemScorePopover extends Component {
       const issuesInCommonBetweenOrganizationAndVoterLength = issuesInCommonBetweenOrganizationAndVoter.length;
       const organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
       const voterFollowingThisOrganization = OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId);
+      const voterIsFriendsWithThisOrganization = FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId);
       this.setState({
         ballotItemDisplayName,
         issuesInCommonBetweenOrganizationAndVoter,
@@ -93,6 +99,7 @@ class PositionItemScorePopover extends Component {
         organizationWeVoteId,
         speakerDisplayName,
         voterFollowingThisOrganization,
+        voterIsFriendsWithThisOrganization,
       });
     }
   }
@@ -127,12 +134,27 @@ class PositionItemScorePopover extends Component {
       // console.log('this.state.voterFollowingThisOrganization: ', this.state.voterFollowingThisOrganization, ', nextState.voterFollowingThisOrganization', nextState.voterFollowingThisOrganization);
       return true;
     }
+    if (this.state.voterIsFriendsWithThisOrganization !== nextState.voterIsFriendsWithThisOrganization) {
+      // console.log('this.state.voterIsFriendsWithThisOrganization: ', this.state.voterIsFriendsWithThisOrganization, ', nextState.voterIsFriendsWithThisOrganization', nextState.voterIsFriendsWithThisOrganization);
+      return true;
+    }
     return false;
   }
 
   componentWillUnmount () {
+    this.friendStoreListener.remove();
     this.issueStoreListener.remove();
     this.organizationStoreListener.remove();
+  }
+
+  onFriendStoreChange () {
+    const { organizationWeVoteId } = this.state;
+    const organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
+    const voterIsFriendsWithThisOrganization = FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId);
+    this.setState({
+      organizationInVotersNetwork,
+      voterIsFriendsWithThisOrganization,
+    });
   }
 
   onIssueStoreChange () {
@@ -166,7 +188,7 @@ class PositionItemScorePopover extends Component {
     const {
       ballotItemDisplayName, issuesInCommonBetweenOrganizationAndVoter, organizationInVotersNetwork,
       organizationProvidingInformationOnly, organizationOpposes, organizationSupports, organizationWeVoteId,
-      speakerDisplayName, voterFollowingThisOrganization,
+      speakerDisplayName, voterFollowingThisOrganization, voterIsFriendsWithThisOrganization,
     } = this.state;
     return (
       <PopoverWrapper>
@@ -252,6 +274,16 @@ class PositionItemScorePopover extends Component {
                     You follow
                     {' '}
                     {speakerDisplayName}
+                  </ScoreExplanationText>
+                </ScoreExplanationWrapper>
+              )}
+              {voterIsFriendsWithThisOrganization && (
+                <ScoreExplanationWrapper>
+                  <CheckCircle className="friends-icon" />
+                  <ScoreExplanationText>
+                    {speakerDisplayName}
+                    {' '}
+                    is your friend
                   </ScoreExplanationText>
                 </ScoreExplanationWrapper>
               )}

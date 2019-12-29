@@ -1,14 +1,16 @@
 // Position related functions
 import IssueStore from '../stores/IssueStore';  // eslint-disable-line import/no-cycle
 import CandidateStore from '../stores/CandidateStore';  // eslint-disable-line import/no-cycle
+import FriendStore from '../stores/FriendStore';  // eslint-disable-line import/no-cycle
 import MeasureStore from '../stores/MeasureStore';  // eslint-disable-line import/no-cycle
 import OrganizationStore from '../stores/OrganizationStore';  // eslint-disable-line import/no-cycle
 import SupportStore from '../stores/SupportStore';  // eslint-disable-line import/no-cycle
 import { arrayContains, stringContains } from './textFormat';
 
 export function isOrganizationInVotersNetwork (organizationWeVoteId) {
-  // TODO Deal with voter Friends
-  return OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId) || IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(organizationWeVoteId);
+  return OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId) ||
+    FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId) ||
+    IssueStore.isOrganizationLinkedToIssueVoterIsFollowing(organizationWeVoteId);
 }
 
 export function extractFirstEndorsementFromPositionList (positionListAsArray, limitToYes, limitToNo) {
@@ -105,6 +107,7 @@ export function getPositionListSummaryIncomingDataStats (ballotItemWeVoteId) {
     allCachedPositionsLength = allCachedPositions.length;
   }
   const allIssuesVoterIsFollowingLength = IssueStore.getIssuesVoterIsFollowingLength();
+  const currentFriendsOrganizationWeVoteIdsLength = FriendStore.getCurrentFriendsOrganizationWeVoteIdsLength();
   const issueWeVoteIdsLinkedToByOrganizationDictLength = IssueStore.getIssueWeVoteIdsLinkedToByOrganizationDictLength();
   const organizationWeVoteIdsVoterIsFollowingLength = OrganizationStore.getOrganizationWeVoteIdsVoterIsFollowingLength();
   const voterOpposesListLength = SupportStore.getVoterOpposesListLength();
@@ -113,6 +116,7 @@ export function getPositionListSummaryIncomingDataStats (ballotItemWeVoteId) {
   return {
     allCachedPositionsLength,
     allIssuesVoterIsFollowingLength,
+    currentFriendsOrganizationWeVoteIdsLength,
     issueWeVoteIdsLinkedToByOrganizationDictLength,
     organizationWeVoteIdsVoterIsFollowingLength,
     voterOpposesListLength,
@@ -135,6 +139,7 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
   let voterCanFollowOrganization = false;
   let positionSummary = {};
   let voterIsFollowingOrganization = false;
+  let voterIsFriendsWithThisOrganization = false;
   let organizationInVotersNetwork = false;
   let organizationWeVoteIdsLinkedToThisIssue = [];
   if (limitToThisIssue) {
@@ -162,6 +167,7 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
     issuesInCommonBetweenOrganizationAndVoter = [];
     voterIsFollowingOrganization = false;
     voterCanFollowOrganization = false;
+    voterIsFriendsWithThisOrganization = false;
     organizationWeVoteId = allCachedPositions[i].speaker_we_vote_id;
     // if (showPositionsInVotersNetwork) {
     //   console.log('organizationWeVoteId:', organizationWeVoteId);
@@ -175,6 +181,7 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
       organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
       voterIsFollowingOrganization = OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId);
       voterCanFollowOrganization = !voterIsFollowingOrganization && !limitToThisIssue;  // Only let voter follow if not looking at Issues
+      voterIsFriendsWithThisOrganization = FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId);
     }
     if (showPositionsInVotersNetwork || showPositionsOutOfVotersNetwork) {
       // console.log('organizationInVotersNetwork:', organizationInVotersNetwork);
@@ -219,6 +226,7 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
           issuesInCommonBetweenOrganizationAndVoter,
           voterCanFollowOrganization,
           voterIsFollowingOrganization,
+          voterIsFriendsWithThisOrganization,
         };
         positionSummaryList.push(positionSummary);
       }

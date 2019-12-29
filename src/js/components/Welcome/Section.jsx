@@ -121,7 +121,7 @@ const DescriptionImageColumn = styled.div`
   }
 `;
 
-const Description = styled.p`
+const Description = styled.span`
   color: #333;
   font-size: 18px;
 `;

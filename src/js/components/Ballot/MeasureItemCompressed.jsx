@@ -262,7 +262,7 @@ class MeasureItemCompressed extends Component {
               />
             </Title>
             <SubTitle>{ballotDisplay[1]}</SubTitle>
-            <Info>{shortenText(measureText, 200)}</Info>
+            <MeasureText>{shortenText(measureText, 200)}</MeasureText>
           </MeasureInfoWrapper>
           <BallotItemSupportOpposeCountDisplay
             ballotItemWeVoteId={measureWeVoteId}
@@ -418,7 +418,7 @@ const ChoiceTitle = styled.h1`
   color: #4371cc;
 `;
 
-const ChoiceInfo = styled.p`
+const ChoiceInfo = styled.span`
   font-size: 12px;
   color: #777;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -458,7 +458,7 @@ const SubTitle = styled.h3`
   }
 `;
 
-const Info = styled.p`
+const MeasureText = styled.div`
   font-size: 13px;
   font-weight: 300;
   color: #777;

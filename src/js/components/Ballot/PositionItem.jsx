@@ -8,6 +8,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ReactSVG from 'react-svg';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import FollowToggle from '../Widgets/FollowToggle';
+import FriendStore from '../../stores/FriendStore';
 import ImageHandler from '../ImageHandler';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import IssueStore from '../../stores/IssueStore';
@@ -38,6 +39,7 @@ class PositionItem extends Component {
   }
 
   componentDidMount () {
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.setState({
@@ -104,8 +106,14 @@ class PositionItem extends Component {
   }
 
   componentWillUnmount () {
+    this.friendStoreListener.remove();
     this.issueStoreListener.remove();
     this.organizationStoreListener.remove();
+  }
+
+  onFriendStoreChange () {
+    // We want to re-render so issue data can update
+    this.onOrganizationInVotersNetworkChange();
   }
 
   onIssueStoreChange () {
@@ -123,8 +131,16 @@ class PositionItem extends Component {
     if (position) {
       const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
       const organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
+      const voterIsFriendsWithThisOrganization = FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId);
+      // let voterWeVoteIdForThisOrganization = '';
+      // if (voterIsFriendsWithThisOrganization && position.voter_we_vote_id) {
+      //   voterWeVoteIdForThisOrganization = position.voter_we_vote_id;
+      // }
+      // console.log('voterIsFriendsWithThisOrganization:', voterIsFriendsWithThisOrganization);
+      // console.log('voterWeVoteIdForThisOrganization:', voterWeVoteIdForThisOrganization);
       this.setState({
         organizationInVotersNetwork,
+        voterIsFriendsWithThisOrganization,
       });
     }
   }
@@ -135,8 +151,9 @@ class PositionItem extends Component {
     if (!position) {
       return null;
     }
+    // console.log('PositionItem position:', position);
     const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
-    const { organizationInVotersNetwork } = this.state;
+    const { organizationInVotersNetwork, voterIsFriendsWithThisOrganization } = this.state;
 
     // TwitterHandle-based link
     const voterGuideWeVoteIdLink = `/voterguide/${organizationWeVoteId}`;
@@ -239,7 +256,15 @@ class PositionItem extends Component {
                     </Link>
                   </StickyPopover>
                 </DesktopItemImage>
-                <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft />
+                {voterIsFriendsWithThisOrganization  ? (
+                  <>
+                    Friend
+                    {/* We don't want to make it too easy to remove friend
+                    voterWeVoteIdForThisOrganization && <FriendToggle otherVoterWeVoteId={voterWeVoteIdForThisOrganization} /> */}
+                  </>
+                ) : (
+                  <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft />
+                )}
               </DesktopItemLeft>
               <PositionItemDesktop className={`position-item--${supportOpposeInfo} position-item`}>
                 <DesktopItemHeader>
@@ -460,7 +485,15 @@ class PositionItem extends Component {
                     {positionDescription}
                   </MobileItemDescription>
                   <MobileItemFollowToggleDisplay>
-                    <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                    {voterIsFriendsWithThisOrganization  ? (
+                      <>
+                        Friend
+                        {/* We don't want to make it too easy to remove friend
+                        voterWeVoteIdForThisOrganization && <FriendToggle otherVoterWeVoteId={voterWeVoteIdForThisOrganization} /> */}
+                      </>
+                    ) : (
+                      <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                    )}
                   </MobileItemFollowToggleDisplay>
                 </MobileItemDescriptionFollowToggleContainer>
                 <MobileItemFooter>

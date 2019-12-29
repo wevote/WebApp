@@ -67,7 +67,7 @@ class MaterialUIPopover extends Component {
             horizontal: 'center',
           }}
         >
-          <Typography className={classes.popoverTypography}>
+          <Typography className={classes.popoverTypography} component="div">
             {popoverDisplayObject}
           </Typography>
         </Popover>

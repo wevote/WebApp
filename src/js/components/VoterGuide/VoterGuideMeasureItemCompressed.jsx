@@ -253,7 +253,7 @@ class VoterGuideMeasureItemCompressed extends Component {
               />
             </Title>
             <SubTitle>{ballotDisplay[1]}</SubTitle>
-            <Info>{shortenText(measureText, 200)}</Info>
+            <MeasureText>{shortenText(measureText, 200)}</MeasureText>
           </MeasureInfoWrapper>
           <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
         </InfoRow>
@@ -332,7 +332,7 @@ const SubTitle = styled.h3`
   }
 `;
 
-const Info = styled.p`
+const MeasureText = styled.div`
   font-size: 13px;
   font-weight: 300;
   color: #777;

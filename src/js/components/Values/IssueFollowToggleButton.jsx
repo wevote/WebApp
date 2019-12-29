@@ -153,7 +153,7 @@ export default class IssueFollowToggleButton extends Component {
                 <span>Following&nbsp;</span>
               )}
               <span>
-                <CheckCircle className="following-icon" />
+                <CheckCircle className="issue-following-icon" />
               </span>
             </Button>
             <div className="issues-follow-btn__seperator" />
