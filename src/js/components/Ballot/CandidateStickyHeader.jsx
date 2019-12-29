@@ -152,6 +152,7 @@ const CandidateDescriptionMobile = styled.h2`
     font-size: 12px;
     display: block;
     font-weight: 100;
+    margin-top: 6px;
   }
 `;
 

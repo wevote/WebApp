@@ -870,6 +870,7 @@ const ItemActionBarWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     margin-bottom: 8px;
   }
+  margin-bottom: 16px;
 `;
 
 const ButtonGroup = styled.div`
