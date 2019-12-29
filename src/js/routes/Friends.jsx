@@ -328,11 +328,11 @@ class Friends extends Component {
                   <InviteByEmail />
                 ) : (
                   <>
-                    <FriendInvitationsSentToMePreview />
-                    <SuggestedFriendsPreview />
                     {voterIsSignedIn && (
                       <FirstAndLastNameRequiredAlert />
                     )}
+                    <FriendInvitationsSentToMePreview />
+                    <SuggestedFriendsPreview />
                     <FriendsCurrentPreview />
                     {voter.signed_in_twitter ? null : (
                       <div className="u-show-mobile">
@@ -415,7 +415,7 @@ class Friends extends Component {
         <Tab
           classes={{ root: classes.navigationTab }}
           value="invite"
-          label={window.innerWidth > 500 ? 'Add Friends' : 'Invite'}
+          label={window.innerWidth > 500 ? 'Invite Friends' : 'Invite'}
           onClick={() => {
             this.handleNavigation('/friends/invite');
           }}
@@ -436,7 +436,7 @@ class Friends extends Component {
           <Tab
             classes={{ root: classes.navigationTab }}
             value="sent-requests"
-            label="Sent Requests"
+            label="Requests Sent"
             onClick={() => {
               this.handleNavigation('/friends/sent-requests');
             }}
