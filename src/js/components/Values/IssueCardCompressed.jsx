@@ -126,6 +126,7 @@ class IssueCardCompressed extends Component {
     return (
       <Item>
         <Wrapper
+          className="card-child"
           key={`issue-card-${this.state.issueWeVoteId}`}
         >
           <Flex>
@@ -185,23 +186,20 @@ class IssueCardCompressed extends Component {
 
 const Item = styled.div`
   width: 100%;
-  margin: 4px 0px;
   padding: 0px;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 50%;
-    padding: 0px 4px;
   }
 `;
 
 const Wrapper = styled.div`
-  padding: 15px 0 15px 0;
-  border: none;
-  border-bottom: 2px solid #e3e3e3;
+  display: block !important;
+  padding: 12px !important;
+  margin: 8px 6px !important;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    border: 1px solid #e3e3e3;
-    padding: 6px 0px 6px 4px;
-    border-radius: 4px;
+    padding: 6px 0 6px 4px !important;
     position: relative;
+    height: 46px !important;
   }
 `;
 

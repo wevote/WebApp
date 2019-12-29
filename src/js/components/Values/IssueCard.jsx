@@ -146,7 +146,7 @@ class IssueCard extends Component {
     return (
       <Wrapper
         key={`issue-card-${issueWeVoteId}`}
-        className={this.props.condensed ? "card u-full-height" : "card u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"}
+        className={this.props.condensed ? "card-child u-full-height" : "card-child u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"}
         condensed={!!this.props.condensed}
       >
         <Flex condensed={!!this.props.condensed}>
@@ -218,12 +218,13 @@ class IssueCard extends Component {
 }
 
 const Wrapper = styled.div`
+  display: block !important;
   background: white;
   border: ${props => (props.condensed ? '1px solid #888' : 'none')};
   box-shadow: ${props => (props.condensed ? 'none !important' : null)};
   padding: ${props => (props.condensed ? '16px 12px' : null)};
   height: ${props => (props.condensed ? 'fit-content' : null)};
-  margin: ${props => (props.condensed ? '4px 0' : null)};
+  margin: 0px 16px;
 `;
 
 const IssueName = styled.h3`

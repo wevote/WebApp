@@ -133,8 +133,8 @@ export default class ValuesList extends Component {
     }
 
     const issuesListForDisplay = issuesList.map(issue => (
-      <div
-        className="col col-12 col-md-6 u-stack--md"
+      <Column
+        className="col col-12 col-md-6 u-stack--lg"
         key={`div-issue-list-key-${issue.issue_we_vote_id}`}
 
       >
@@ -145,13 +145,13 @@ export default class ValuesList extends Component {
           issueImageSize="SMALL"
           key={`issue-list-key-${issue.issue_we_vote_id}`}
         />
-      </div>
+      </Column>
     ));
 
     return (
       <>
         {this.props.displayOnlyIssuesNotFollowedByVoter ? (
-          <Row className="row" noMargin>
+          <Row className="row">
             {issuesListForDisplay}
           </Row>
         ) : (
@@ -172,7 +172,7 @@ export default class ValuesList extends Component {
                   searchUpdateDelayTime={0}
                 />
                 <br />
-                <div className="network-issues-list voter-guide-list">
+                <>
                   { this.state.allIssues && this.state.allIssues.length ? (
                     <Row className="row">
                       {issuesListForDisplay}
@@ -180,7 +180,7 @@ export default class ValuesList extends Component {
                   ) :
                     null
                   }
-                </div>
+                </>
               </div>
             </section>
           </div>
@@ -192,7 +192,13 @@ export default class ValuesList extends Component {
 }
 
 const Row = styled.div`
-  margin-left: -16px;
-  margin-right: -16px;
-  width: ${props => (props.noMargin ? 'calc(100% + 32px)' : '100%')}
+  // margin-left: -16px;
+  // margin-right: -16px;
+  // width: calc(100% + 32px);
+`;
+
+const Column = styled.div`
+  @media (max-width: 768px) {
+    margin-bottom: 24px !important;
+  }
 `;

@@ -101,7 +101,7 @@ class ValuesToFollowPreview extends Component {
 }
 
 const Row = styled.div`
-  margin: 0px -4px;
+  margin: 0px -6px;
 `;
 
 const SectionTitle = styled.h2`
