@@ -142,13 +142,13 @@ class IssueCardCompressed extends Component {
                 )
               }
             </div>
-            <div className="">
+            <IssueName>
               <Link to={this.getIssueLink}
                 className="u-no-underline"
               >
-                <IssueName>{issueDisplayNameShortened}</IssueName>
+                {issueDisplayName}
               </Link>
-            </div>
+            </IssueName>
             {this.props.followToggleOn && this.state.issueWeVoteId ? (
               <div className="follow-toggle__values">
                 <IssueFollowToggleButton
@@ -197,7 +197,7 @@ const Wrapper = styled.div`
   padding: 12px !important;
   margin: 8px 6px !important;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    padding: 6px 0 6px 4px !important;
+    padding: 6px 72px 6px 4px !important;
     position: relative;
     height: 46px !important;
   }
@@ -207,6 +207,11 @@ const IssueName = styled.h3`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 0;
+  width: 100%;
+  display: block !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 16px;
     position: relative;
