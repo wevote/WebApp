@@ -64,7 +64,7 @@ const ShowMoreFooterStyled = styled.div`
     font-size: 18px;
   }
   &:hover {
-    background-color: rgba(46, 60, 93, 0.2) !important;
+    background-color: rgba(46, 60, 93, 0.15) !important;
     transition-duration: .2s;
   }
   @media print{
