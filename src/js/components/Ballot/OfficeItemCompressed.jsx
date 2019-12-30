@@ -181,12 +181,14 @@ class OfficeItemCompressed extends Component {
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
             const localUniqueId = oneCandidate.we_vote_id;
             return (
-              <Column candidateLength={candidatesToRender.length}>
+              <Column
+                candidateLength={candidatesToRender.length}
+                key={`candidate_preview-${oneCandidate.we_vote_id}`}
+              >
                 <CandidateInfo
                   brandBlue={theme.palette.primary.main}
                   numberOfCandidatesInList={candidatesToRender.length}
                   id={`officeItemCompressedCandidateInfo-${oneCandidate.we_vote_id}`}
-                  key={`candidate_preview-${oneCandidate.we_vote_id}`}
                 >
                   <CandidateTopRow>
                     <Candidate onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
