@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/esm/styles';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
-import { convertNameToSlug, shortenText } from '../../utils/textFormat';
+import { convertNameToSlug } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 import IssueImageDisplay from './IssueImageDisplay';
 import ReadMore from '../Widgets/ReadMore';
@@ -121,11 +121,10 @@ class IssueCardCompressed extends Component {
       );
     }
 
-    const issueDisplayNameShortened = shortenText(issueDisplayName, 23);
-
     return (
       <Item>
         <Wrapper
+          className="card-child"
           key={`issue-card-${this.state.issueWeVoteId}`}
         >
           <Flex>
@@ -141,13 +140,13 @@ class IssueCardCompressed extends Component {
                 )
               }
             </div>
-            <div className="">
+            <IssueName>
               <Link to={this.getIssueLink}
                 className="u-no-underline"
               >
-                <IssueName>{issueDisplayNameShortened}</IssueName>
+                {issueDisplayName}
               </Link>
-            </div>
+            </IssueName>
             {this.props.followToggleOn && this.state.issueWeVoteId ? (
               <div className="follow-toggle__values">
                 <IssueFollowToggleButton
@@ -185,23 +184,20 @@ class IssueCardCompressed extends Component {
 
 const Item = styled.div`
   width: 100%;
-  margin: 4px 0px;
   padding: 0px;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 50%;
-    padding: 0px 4px;
   }
 `;
 
 const Wrapper = styled.div`
-  padding: 15px 0 15px 0;
-  border: none;
-  border-bottom: 2px solid #e3e3e3;
+  display: block !important;
+  padding: 12px !important;
+  margin: 8px 6px !important;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    border: 1px solid #e3e3e3;
-    padding: 6px 0px 6px 4px;
-    border-radius: 4px;
+    padding: 6px 72px 6px 4px !important;
     position: relative;
+    height: 46px !important;
   }
 `;
 
@@ -209,6 +205,11 @@ const IssueName = styled.h3`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 0;
+  width: 100%;
+  display: block !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 16px;
     position: relative;

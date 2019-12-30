@@ -347,8 +347,8 @@ $outline-radius: 3px;
     padding: $item-padding;
     margin-top: -1px; // stylelint-disable-line sh-waqar/declaration-use-variable
     background-color: $gray-pale;
-    border-top: 1px solid $gray-lighter;
-    border-bottom: 1px solid $gray-lighter;
+    border: 1px solid #e7e7e7;
+    margin: 12px 0;
     @include breakpoints(max mid-small) {
       margin-left: -($item-padding); // stylelint-disable-line sh-waqar/declaration-use-variable
       margin-right: -($item-padding); // stylelint-disable-line sh-waqar/declaration-use-variable

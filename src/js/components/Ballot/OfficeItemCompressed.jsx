@@ -181,64 +181,68 @@ class OfficeItemCompressed extends Component {
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
             const localUniqueId = oneCandidate.we_vote_id;
             return (
-              <CandidateInfo
-                brandBlue={theme.palette.primary.main}
-                numberOfCandidatesInList={candidatesToRender.length}
-                id={`officeItemCompressedCandidateInfo-${oneCandidate.we_vote_id}`}
+              <Column
+                candidateLength={candidatesToRender.length}
                 key={`candidate_preview-${oneCandidate.we_vote_id}`}
               >
-                <CandidateTopRow>
-                  <Candidate onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
-                    {/* Candidate Image */}
-                    <ImageHandler
-                      className="card-main__avatar-compressed"
-                      sizeClassName="icon-candidate-small u-push--sm "
-                      imageUrl={oneCandidate.candidate_photo_url_medium}
-                      alt="candidate-photo"
-                      kind_of_ballot_item="CANDIDATE"
-                    />
-                    {/* Candidate Name */}
-                    <div>
-                      <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
-                        {oneCandidate.ballot_item_display_name}
-                        <br />
-                        <span className="card-main__candidate-party-description">{candidatePartyText}</span>
-                      </h4>
-                    </div>
-                  </Candidate>
-                  {/* Show check mark or score */}
-                  <BallotItemSupportOpposeCountDisplay
-                    ballotItemWeVoteId={oneCandidate.we_vote_id}
-                    goToBallotItem={this.goToCandidateLink}
-                  />
-                </CandidateTopRow>
-                <CandidateBottomRow>
-                  {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
-                  <TopCommentByBallotItem
-                    ballotItemWeVoteId={oneCandidate.we_vote_id}
-                    // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
-                    onClickFunction={this.goToCandidateLink}
-                  >
-                    <span>
-                      <IssuesByBallotItemDisplayList
-                        ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                        ballotItemWeVoteId={oneCandidate.we_vote_id}
-                        disableMoreWrapper
+                <CandidateInfo
+                  brandBlue={theme.palette.primary.main}
+                  numberOfCandidatesInList={candidatesToRender.length}
+                  id={`officeItemCompressedCandidateInfo-${oneCandidate.we_vote_id}`}
+                >
+                  <CandidateTopRow>
+                    <Candidate onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
+                      {/* Candidate Image */}
+                      <ImageHandler
+                        className="card-main__avatar-compressed"
+                        sizeClassName="icon-candidate-small u-push--sm "
+                        imageUrl={oneCandidate.candidate_photo_url_medium}
+                        alt="candidate-photo"
+                        kind_of_ballot_item="CANDIDATE"
                       />
-                      <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
-                        <Button
-                          id={`topCommentButtonOffice-${externalUniqueId}-${localUniqueId}`}
-                          variant="outlined"
-                          color="primary"
-                          classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-                        >
-                          More
-                        </Button>
-                      </MoreButtonWrapper>
-                    </span>
-                  </TopCommentByBallotItem>
-                </CandidateBottomRow>
-              </CandidateInfo>
+                      {/* Candidate Name */}
+                      <div>
+                        <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
+                          {oneCandidate.ballot_item_display_name}
+                          <br />
+                          <span className="card-main__candidate-party-description">{candidatePartyText}</span>
+                        </h4>
+                      </div>
+                    </Candidate>
+                    {/* Show check mark or score */}
+                    <BallotItemSupportOpposeCountDisplay
+                      ballotItemWeVoteId={oneCandidate.we_vote_id}
+                      goToBallotItem={this.goToCandidateLink}
+                    />
+                  </CandidateTopRow>
+                  <CandidateBottomRow>
+                    {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
+                    <TopCommentByBallotItem
+                      ballotItemWeVoteId={oneCandidate.we_vote_id}
+                      // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
+                      onClickFunction={this.goToCandidateLink}
+                    >
+                      <span>
+                        <IssuesByBallotItemDisplayList
+                          ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+                          ballotItemWeVoteId={oneCandidate.we_vote_id}
+                          disableMoreWrapper
+                        />
+                        <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
+                          <Button
+                            id={`topCommentButtonOffice-${externalUniqueId}-${localUniqueId}`}
+                            variant="outlined"
+                            color="primary"
+                            classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                          >
+                            More
+                          </Button>
+                        </MoreButtonWrapper>
+                      </span>
+                    </TopCommentByBallotItem>
+                  </CandidateBottomRow>
+                </CandidateInfo>
+              </Column>
             );
           })}
       </Container>
@@ -377,16 +381,23 @@ const styles = theme => ({
   },
 });
 
+const Column = styled.div`
+  padding: 12px;
+  width: 100%;
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: ${({ candidateLength }) => (candidateLength > 1 ? '50%' : '100%')};
+  }
+`;
+
 const CandidateInfo = styled.div`
+  width: 100% !important;
   display: flex;
   flex-flow: column;
   padding: 16px 16px 0 16px;
-  margin-bottom: 8px;
   overflow-x: hidden;
   transition: all 200ms ease-in;
   border: 1px solid ${({ theme }) => theme.colors.grayBorder};
   width: ${({ numberOfCandidatesInList }) => (numberOfCandidatesInList > 1 ? '48%' : '100%')};
-  margin-right: 8px;
   border-radius: 4px;
   &:hover {
     border: 1px solid ${({ theme }) => theme.colors.linkHoverBorder};
@@ -401,7 +412,6 @@ const CandidateInfo = styled.div`
     border: none;
     border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
     padding: 16px 0 0 0;
-    margin-bottom: 8px;
     width: 100%;
     &:hover {
       border: none;
@@ -434,6 +444,9 @@ const Container = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: row wrap;
   }
+  margin-left: -12px;
+  margin-right: -12px;
+  width: calc(100% + 24px);
 `;
 
 const MoreButtonWrapper = styled.div`

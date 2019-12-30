@@ -24,7 +24,7 @@ class ShowMoreFooter extends React.Component {
     }
 
     return (
-      <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink}>
+      <ShowMoreFooterStyled className="card-child" id={showMoreId} onClick={showMoreLink}>
         <ShowMoreFooterText>
           { showMoreText }
           {' '}
@@ -49,23 +49,23 @@ const styles = theme => ({
 });
 
 const ShowMoreFooterStyled = styled.div`
+  margin-top: 8px !important;
   color: #4371cc;
   font-size: 16px;
-  text-align: center;
+  display: block !important;
+  text-align: right !important;
   user-select: none;
   cursor: pointer;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding-top: 5px;
-    padding-bottom: 3px;
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    border-color: #f8f8f8;
-  }
+  background: #fff !important;
+  color: #2e3c5d;
+  font-weight: bold;
+  padding: 0px !important;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 18px;
   }
   &:hover {
-    background-color: #eee;
+    background-color: rgba(46, 60, 93, 0.15) !important;
+    transition-duration: .2s;
   }
   @media print{
     display: none;
@@ -73,6 +73,8 @@ const ShowMoreFooterStyled = styled.div`
 `;
 
 const ShowMoreFooterText = styled.div`
+  padding: 8px !important;
+  text-align: right !important;
   &:hover {
     text-decoration: underline;
   }
