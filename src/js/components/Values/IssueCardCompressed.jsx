@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/esm/styles';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
-import { convertNameToSlug, shortenText } from '../../utils/textFormat';
+import { convertNameToSlug } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 import IssueImageDisplay from './IssueImageDisplay';
 import ReadMore from '../Widgets/ReadMore';
@@ -120,8 +120,6 @@ class IssueCardCompressed extends Component {
         />
       );
     }
-
-    const issueDisplayNameShortened = shortenText(issueDisplayName, 23);
 
     return (
       <Item>

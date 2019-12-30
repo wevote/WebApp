@@ -167,7 +167,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
     );
 
     const commentDisplayDesktop = showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
-      <div className="d-none d-sm-block u-min-50 u-stack--sm u-push--xs">
+      <div className="d-none d-sm-block u-min-50 u-stack--sm">
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
@@ -215,7 +215,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
 const Wrapper = styled.div`
   width: 100%;
   background-color: ${({ showPositionStatementActionBar }) => (showPositionStatementActionBar ? '#F5F5F5' : 'white')};
-  padding: 4px;
+  padding: 12px;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;
