@@ -10,6 +10,7 @@ import BallotStore from '../../stores/BallotStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { toTitleCase } from '../../utils/textFormat';
 import CandidateStore from '../../stores/CandidateStore';
+import DelayedLoad from '../Widgets/DelayedLoad';
 import ImageHandler from '../ImageHandler';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import IssueStore from '../../stores/IssueStore';
@@ -18,9 +19,6 @@ import OfficeActions from '../../actions/OfficeActions';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
-
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
-/* eslint no-param-reassign: 0 */
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 4;
 
@@ -45,6 +43,7 @@ class OfficeItemCompressed extends Component {
       componentDidMount: false,
       maximumNumberOrganizationsToDisplay: NUMBER_OF_CANDIDATES_TO_DISPLAY,
       organizationWeVoteId: '',
+      positionListHasBeenRetrievedOnce: {},
     };
 
     this.getCandidateLink = this.getCandidateLink.bind(this);
@@ -97,10 +96,16 @@ class OfficeItemCompressed extends Component {
 
   onCandidateStoreChange () {
     const { candidateList, officeWeVoteId } = this.props;
+    // console.log('OfficeItemCompressed onCandidateStoreChange', officeWeVoteId);
     let changeFound = false;
     if (candidateList && candidateList.length && officeWeVoteId) {
-      if (!BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
+      if (officeWeVoteId && !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
         OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
+        const { positionListHasBeenRetrievedOnce } = this.state;
+        positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
+        this.setState({
+          positionListHasBeenRetrievedOnce,
+        });
       }
       const newCandidateList = [];
       let newCandidate = {};
@@ -217,29 +222,31 @@ class OfficeItemCompressed extends Component {
                   </CandidateTopRow>
                   <CandidateBottomRow>
                     {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
-                    <TopCommentByBallotItem
-                      ballotItemWeVoteId={oneCandidate.we_vote_id}
-                      // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
-                      onClickFunction={this.goToCandidateLink}
-                    >
-                      <span>
-                        <IssuesByBallotItemDisplayList
-                          ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                          ballotItemWeVoteId={oneCandidate.we_vote_id}
-                          disableMoreWrapper
-                        />
-                        <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
-                          <Button
-                            id={`topCommentButtonOffice-${externalUniqueId}-${localUniqueId}`}
-                            variant="outlined"
-                            color="primary"
-                            classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-                          >
-                            More
-                          </Button>
-                        </MoreButtonWrapper>
-                      </span>
-                    </TopCommentByBallotItem>
+                    <DelayedLoad showLoadingText waitBeforeShow={500}>
+                      <TopCommentByBallotItem
+                        ballotItemWeVoteId={oneCandidate.we_vote_id}
+                        // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
+                        onClickFunction={this.goToCandidateLink}
+                      >
+                        <span>
+                          <IssuesByBallotItemDisplayList
+                            ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+                            ballotItemWeVoteId={oneCandidate.we_vote_id}
+                            disableMoreWrapper
+                          />
+                          <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
+                            <Button
+                              id={`topCommentButtonOffice-${externalUniqueId}-${localUniqueId}`}
+                              variant="outlined"
+                              color="primary"
+                              classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                            >
+                              More
+                            </Button>
+                          </MoreButtonWrapper>
+                        </span>
+                      </TopCommentByBallotItem>
+                    </DelayedLoad>
                   </CandidateBottomRow>
                 </CandidateInfo>
               </Column>
@@ -249,22 +256,25 @@ class OfficeItemCompressed extends Component {
     );
   }
 
+  localPositionListHasBeenRetrievedOnce (officeWeVoteId) {
+    if (officeWeVoteId) {
+      const { positionListHasBeenRetrievedOnce } = this.state;
+      return positionListHasBeenRetrievedOnce[officeWeVoteId];
+    }
+    return false;
+  }
+
   render () {
     renderLog('OfficeItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballotItemDisplayName } = this.props;
     const { officeWeVoteId, classes } = this.props;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
+    const unsortedCandidateListModified = [];
     const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
     const arrayOfCandidatesVoterSupports = [];
-    // let advisersThatMakeVoterIssuesScoreDisplay;
-    // let advisersThatMakeVoterNetworkScoreCount = 0;
-    // let advisersThatMakeVoterNetworkScoreDisplay = null;
-    // let atLeastOneCandidateChosenByIssueScore = false;
-    // let candidateWeVoteWithMostSupportFromNetwork = null;
-    // let candidateWeVoteIdWithHighestIssueScore = null;
-    // let voterSupportsAtLeastOneCandidate = false;
     let ballotItemStatSheet;
+    let candidateModified;
     let numberOfOpposePositionsForScore = 0;
     let numberOfSupportPositionsForScore = 0;
     let voterSupportsBallotItem;
@@ -276,9 +286,11 @@ class OfficeItemCompressed extends Component {
       if (ballotItemStatSheet) {
         ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, voterSupportsBallotItem } = ballotItemStatSheet);
         voterIssuesScoreForCandidate = IssueStore.getIssuesScoreByBallotItemWeVoteId(candidate.we_vote_id);
-        candidate.voterNetworkScoreForCandidate = Math.abs(numberOfSupportPositionsForScore - numberOfOpposePositionsForScore);
-        candidate.voterIssuesScoreForCandidate = Math.abs(voterIssuesScoreForCandidate);
-        candidate.is_support = voterSupportsBallotItem;
+        candidateModified = { ...candidate };
+        candidateModified.voterNetworkScoreForCandidate = Math.abs(numberOfSupportPositionsForScore - numberOfOpposePositionsForScore);
+        candidateModified.voterIssuesScoreForCandidate = Math.abs(voterIssuesScoreForCandidate);
+        candidateModified.is_support = voterSupportsBallotItem;
+        unsortedCandidateListModified.push(candidateModified);
         if (voterSupportsBallotItem) {
           arrayOfCandidatesVoterSupports.push(candidate.ballot_item_display_name);
           // voterSupportsAtLeastOneCandidate = true;
@@ -286,7 +298,7 @@ class OfficeItemCompressed extends Component {
       }
     });
 
-    const sortedCandidateList = unsortedCandidateList;
+    const sortedCandidateList = unsortedCandidateListModified;
     sortedCandidateList.sort((optionA, optionB) => optionB.voterNetworkScoreForCandidate - optionA.voterNetworkScoreForCandidate ||
                                                    (optionA.is_support === optionB.is_support ? 0 : optionA.is_support ? -1 : 1) ||  // eslint-disable-line no-nested-ternary
                                                    optionB.voterIssuesScoreForCandidate - optionA.voterIssuesScoreForCandidate);

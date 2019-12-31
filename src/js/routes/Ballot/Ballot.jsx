@@ -9,6 +9,8 @@ import Link from '@material-ui/core/esm/Link';
 import { withStyles } from '@material-ui/core/esm/styles';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
 import BallotElectionListWithFilters from '../../components/Ballot/BallotElectionListWithFilters';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
@@ -18,10 +20,12 @@ import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import BallotSearch from '../../components/Ballot/BallotSearch';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
 import BallotStore from '../../stores/BallotStore';
+import BallotSummaryFooter from '../../components/Navigation/BallotSummaryFooter';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import { cordovaBallotFilterTopMargin, cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import isMobile from '../../utils/isMobile';
@@ -36,12 +40,9 @@ import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
-import AppActions from '../../actions/AppActions';
-import BallotSummaryFooter from '../../components/Navigation/BallotSummaryFooter';
 
 const TYPES = require('keymirror')({
   OFFICE: null,
@@ -831,7 +832,7 @@ class Ballot extends Component {
       return (
         <div className="ballot container-fluid well u-stack--md u-inset--md">
           <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
-            <div style={{ textAlign: 'center' }}>
+            <BallotLoadingWrapper>
               If your ballot does not appear momentarily,
               {' '}
               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -844,7 +845,7 @@ class Ballot extends Component {
               >
                 please click here to change your address.
               </Link>
-            </div>
+            </BallotLoadingWrapper>
           </div>
         </div>
       );
@@ -904,6 +905,8 @@ class Ballot extends Component {
     const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) &&
       (BallotStore.ballotRemainingChoicesLength > 0);
 
+    let ballotItemNumber = 0;
+    let showLoadingText = true;
     return (
       <div className="ballot_root">
         <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}>
@@ -1028,14 +1031,21 @@ class Ballot extends Component {
                           // console.log('Ballot item for BallotItemCompressed:', item);
                           // {...item}
                           const key = item.we_vote_id;
+                          ballotItemNumber += 1;
+                          showLoadingText = ballotItemNumber === 1;
                           return (
-                            <BallotItemCompressed
+                            <DelayedLoad
                               key={key}
-                              isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
-                              ballotItemDisplayName={item.ballot_item_display_name}
-                              candidateList={item.candidate_list}
-                              weVoteId={item.we_vote_id}
-                            />
+                              showLoadingText={showLoadingText}
+                              waitBeforeShow={500}
+                            >
+                              <BallotItemCompressed
+                                isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
+                                ballotItemDisplayName={item.ballot_item_display_name}
+                                candidateList={item.candidate_list}
+                                weVoteId={item.we_vote_id}
+                              />
+                            </DelayedLoad>
                           );
                         } else {
                           return null;
@@ -1100,6 +1110,10 @@ class Ballot extends Component {
     );
   }
 }
+
+const BallotLoadingWrapper = styled.div`
+  text-align: center;
+`;
 
 const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};

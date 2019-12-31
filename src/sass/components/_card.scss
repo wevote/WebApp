@@ -345,10 +345,9 @@ $outline-radius: 3px;
 
   .card-child {
     padding: $item-padding;
-    margin-top: -1px; // stylelint-disable-line sh-waqar/declaration-use-variable
     background-color: $gray-pale;
     border: 1px solid #e7e7e7;
-    margin: 12px 0;
+    margin: -1px 0 12px 0; // stylelint-disable-line sh-waqar/declaration-use-variable
     @include breakpoints(max mid-small) {
       margin-left: -($item-padding); // stylelint-disable-line sh-waqar/declaration-use-variable
       margin-right: -($item-padding); // stylelint-disable-line sh-waqar/declaration-use-variable

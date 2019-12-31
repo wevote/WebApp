@@ -13,6 +13,7 @@ import IssueStore from '../../stores/IssueStore';
 import ItemActionBar from '../Widgets/ItemActionBar';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import ReadMore from '../Widgets/ReadMore';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
@@ -43,6 +44,7 @@ class CandidateItem extends Component {
       ballotItemDisplayName: '',
       // ballotpediaCandidateUrl: '',
       candidatePhotoUrl: '',
+      candidateUrl: '',
       contestOfficeName: '',
       issuesUnderThisBallotItemVoterIsFollowingLength: 0,
       issuesUnderThisBallotItemVoterIsNotFollowingLength: 0,
@@ -80,6 +82,7 @@ class CandidateItem extends Component {
       } else if (candidate.candidate_photo_url_tiny) {
         candidatePhotoUrl = candidate.candidate_photo_url_tiny;
       }
+      const candidateUrl = candidate.candidate_url;
       const twitterDescription = candidate.twitter_description;
       const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
       const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
@@ -93,6 +96,7 @@ class CandidateItem extends Component {
         // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
         candidatePhotoUrl,
         candidateText,
+        candidateUrl,
         contestOfficeName: candidate.contest_office_name,
         officeWeVoteId: candidate.contest_office_we_vote_id,
         politicalParty: candidate.party,
@@ -119,6 +123,9 @@ class CandidateItem extends Component {
     if (this.state.candidateText !== nextState.candidateText) {
       return true;
     }
+    if (this.state.candidateUrl !== nextState.candidateUrl) {
+      return true;
+    }
     if (this.props.candidateWeVoteId !== nextProps.candidateWeVoteId) {
       return true;
     }
@@ -143,6 +150,7 @@ class CandidateItem extends Component {
     if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
       return true;
     }
+    // console.log('CandidateItem shouldComponentUpdate FALSE');
     return false;
   }
 
@@ -158,6 +166,7 @@ class CandidateItem extends Component {
     // console.log('CandidateItem onCandidateStoreChange, candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+      // console.log('CandidateItem onCandidateStoreChange, candidate:', candidate);
       let candidatePhotoUrl;
       if (this.props.showLargeImage && candidate.candidate_photo_url_large) {
         candidatePhotoUrl = candidate.candidate_photo_url_large;
@@ -166,6 +175,7 @@ class CandidateItem extends Component {
       } else if (candidate.candidate_photo_url_tiny) {
         candidatePhotoUrl = candidate.candidate_photo_url_tiny;
       }
+      const candidateUrl = candidate.candidate_url;
       const twitterDescription = candidate.twitter_description;
       const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
       const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
@@ -180,6 +190,7 @@ class CandidateItem extends Component {
         // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
         candidatePhotoUrl,
         candidateText,
+        candidateUrl,
         contestOfficeName: candidate.contest_office_name,
         officeWeVoteId: candidate.contest_office_we_vote_id,
         politicalParty: candidate.party,
@@ -260,11 +271,12 @@ class CandidateItem extends Component {
     const { linkToBallotItemPage, linkToOfficePage, showHover, showOfficeName } = this.props;
     const {
       ballotItemDisplayName,
+      candidatePhotoUrl,
+      candidateUrl,
+      contestOfficeName,
+      largeAreaHoverColorOnNow,
       politicalParty,
       twitterFollowersCount,
-      contestOfficeName,
-      candidatePhotoUrl,
-      largeAreaHoverColorOnNow,
     } = this.state;
     // console.log('candidateRenderBlock candidatePhotoUrl: ', candidatePhotoUrl);
     return (
@@ -287,7 +299,7 @@ class CandidateItem extends Component {
               <h2 className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
                 {ballotItemDisplayName}
               </h2>
-              {twitterFollowersCount ? (
+              {!!(twitterFollowersCount) && (
                 <span
                   className={`u-show-desktop twitter-followers__badge ${linkToBallotItemPage ? 'u-cursor--pointer' : ''}`}
                   onClick={linkToBallotItemPage ? this.goToCandidateLink : null}
@@ -295,11 +307,25 @@ class CandidateItem extends Component {
                   <span className="fab fa-twitter fa-sm" />
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
-              ) :
-                null
-              }
+              )}
+              {candidateUrl && (
+                <ExternalWebSiteWrapper className="u-show-desktop">
+                  <OpenExternalWebSite
+                    url={candidateUrl}
+                    target="_blank"
+                    className="u-gray-mid"
+                    body={(
+                      <span>
+                        candidate website
+                        {' '}
+                        <i className="fas fa-external-link-alt" aria-hidden="true" />
+                      </span>
+                    )}
+                  />
+                </ExternalWebSiteWrapper>
+              )}
               <span className="u-show-desktop">
-                { contestOfficeName ? (
+                { !!(contestOfficeName) && (
                   <p className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}>
                     <OfficeNameText
                       contestOfficeName={contestOfficeName}
@@ -308,9 +334,7 @@ class CandidateItem extends Component {
                       showOfficeName={showOfficeName}
                     />
                   </p>
-                ) :
-                  null
-                }
+                )}
               </span>
             </Candidate>
           </CandidateInfo>
@@ -484,8 +508,10 @@ class CandidateItem extends Component {
     const { candidateWeVoteId, linkToBallotItemPage, showHover } = this.props;
     const { candidateText, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow } = this.state;
     if (!candidateWeVoteId) {
+      // console.log('CandidateItem waiting for candidateWeVoteId');
       return null;
     }
+    // console.log('CandidateItem render');
 
     return (
       <CandidateItemWrapper>
@@ -553,6 +579,11 @@ const CandidateWrapper = styled.div`
 `;
 
 const DesktopWrapper = styled.div`
+`;
+
+const ExternalWebSiteWrapper = styled.span`
+  padding-left: 15px;
+  white-space: nowrap;
 `;
 
 const MobileTabletWrapper = styled.div`

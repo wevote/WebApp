@@ -4,6 +4,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
 import InfoIcon from '@material-ui/icons/Info';
+import DelayedLoad from '../Widgets/DelayedLoad';
 import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import FriendStore from '../../stores/FriendStore';
@@ -158,8 +159,10 @@ export default class PositionList extends Component {
   render () {
     renderLog('PositionList');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.positionList) {
-      return null;
+      // console.log('PositionList Loading...');
+      return <div>Loading...</div>;
     }
+    // console.log('PositionList render');
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     let showTitle = false;
     let count;
@@ -167,6 +170,7 @@ export default class PositionList extends Component {
       showTitle = true;
     }
     const selectedFiltersDefault = ['endorsingGroup', 'newsOrganization', 'publicFigure', 'sortByMagic', 'yourFriends'];
+    let positionNumber = 0;
     return (
       <div>
         { showTitle ?
@@ -184,14 +188,32 @@ export default class PositionList extends Component {
           <VoterGuideOrganizationFilter />
         </FilterBase>
         <ul className="card-child__list-group">
-          { this.state.filteredPositionList.map(onePosition => (
-            <PositionItem
-              key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}
-              ballotItemDisplayName={this.props.ballotItemDisplayName}
-              position={onePosition}
-              params={this.props.params}
-            />
-          ))
+          { this.state.filteredPositionList.map((onePosition) => {
+            positionNumber += 1;
+            if (positionNumber < 5) {
+              return (
+                <PositionItem
+                  ballotItemDisplayName={this.props.ballotItemDisplayName}
+                  key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}
+                  position={onePosition}
+                  params={this.props.params}
+                />
+              );
+            } else {
+              return (
+                <DelayedLoad
+                  key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}
+                  waitBeforeShow={1000}
+                >
+                  <PositionItem
+                    ballotItemDisplayName={this.props.ballotItemDisplayName}
+                    position={onePosition}
+                    params={this.props.params}
+                  />
+                </DelayedLoad>
+              );
+            }
+          })
           }
         </ul>
       </div>

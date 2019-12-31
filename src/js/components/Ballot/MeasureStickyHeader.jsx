@@ -5,6 +5,7 @@ import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeCo
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 import MeasureStore from '../../stores/MeasureStore';
+import ReadMore from '../Widgets/ReadMore';
 
 class MeasureStickyHeader extends Component {
   static propTypes = {
@@ -25,20 +26,12 @@ class MeasureStickyHeader extends Component {
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
-    // this.supportStoreListener.remove();
   }
 
   onMeasureStoreChange () {
     const measure = MeasureStore.getMeasure(this.props.measureWeVoteId);
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
-      // measureSubtitle: measure.measure_subtitle,
-      // measureText: measure.measure_text,
-      // measureWeVoteId: measure.we_vote_id,
-      // electionDisplayName: measure.election_display_name,
-      // regionalDisplayName: measure.regional_display_name,
-      // stateCode: measure.state_code,
-      // stateDisplayName: measure.state_display_name,
     });
   }
 
@@ -47,18 +40,6 @@ class MeasureStickyHeader extends Component {
     const { ballotItemDisplayName } = this.state;
     const ballotItemDisplay = ballotItemDisplayName ? ballotItemDisplayName.split(':') : [];
     return (
-      // <Wrapper>
-      //   <MeasureInfo>
-      //     <Title>{ballotItemDisplay[0]}</Title>
-      //     <SubTitle>{ballotItemDisplay[1]}</SubTitle>
-      //     <ActionContainer>
-      //       <BallotItemSupportOpposeComment
-      //         ballotItemWeVoteId={measureWeVoteId}
-      //         showPositionStatementActionBar={false}
-      //       />
-      //     </ActionContainer>
-      //   </MeasureInfo>
-      // </Wrapper>
       <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()}>
         <Container>
           <Flex>
@@ -70,7 +51,12 @@ class MeasureStickyHeader extends Component {
                 </div>
               </Profile>
               <MobileSubtitle className="u-show-mobile-tablet">
-                {ballotItemDisplay[1]}
+                {!!(ballotItemDisplay[1]) && (
+                  <ReadMore
+                    text_to_display={ballotItemDisplay[1]}
+                    num_of_lines={2}
+                  />
+                )}
               </MobileSubtitle>
             </ColumnOne>
             <ColumnTwo>
@@ -138,9 +124,8 @@ const ColumnTwo = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 2px;
-  font-size: 26px;
   margin-top: 8px;
   font-weight: bold;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -160,7 +145,7 @@ const SubTitle = styled.p`
 const MobileSubtitle = styled.h2`
   display: none;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 18px;
+    font-size: 14px;
     display: block;
     font-weight: 400;
   }

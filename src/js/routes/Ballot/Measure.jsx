@@ -4,7 +4,10 @@ import Helmet from 'react-helmet';
 import { capitalizeString } from '../../utils/textFormat';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
+import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import MeasureItem from '../../components/Ballot/MeasureItem';
 import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
 import MeasureActions from '../../actions/MeasureActions';
@@ -14,9 +17,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import PositionList from '../../components/Ballot/PositionList';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import AppStore from '../../stores/AppStore';
 import webAppConfig from '../../config';
-import EndorsementCard from '../../components/Widgets/EndorsementCard';
 
 // The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
 export default class Measure extends Component {
@@ -214,16 +215,17 @@ export default class Measure extends Component {
         <section className="card">
           <MeasureItem measureWeVoteId={measure.we_vote_id} />
         </section>
-        <section className="card">
-          { allCachedPositionsForThisMeasure.length ? (
-            <PositionList
-              incomingPositionList={allCachedPositionsForThisMeasure}
-              ballotItemDisplayName={measure.ballot_item_display_name}
-              params={this.props.params}
-            />
-          ) : null
-          }
-        </section>
+        { !!(allCachedPositionsForThisMeasure.length) && (
+          <section className="card">
+            <DelayedLoad showLoadingText waitBeforeShow={500}>
+              <PositionList
+                incomingPositionList={allCachedPositionsForThisMeasure}
+                ballotItemDisplayName={measure.ballot_item_display_name}
+                params={this.props.params}
+              />
+            </DelayedLoad>
+          </section>
+        )}
         <EndorsementCard
           bsPrefix="u-margin-top--sm u-stack--xs"
           variant="primary"
