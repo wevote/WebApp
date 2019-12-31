@@ -13,9 +13,9 @@ import CandidateStore from '../../stores/CandidateStore';
 import DelayedLoad from '../Widgets/DelayedLoad';
 import ImageHandler from '../ImageHandler';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
-import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import OfficeActions from '../../actions/OfficeActions';
+import { sortCandidateList } from '../../utils/positionFunctions';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
@@ -56,33 +56,44 @@ class OfficeItemCompressed extends Component {
   componentDidMount () {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.onCandidateStoreChange();
+    const { candidateList, officeWeVoteId } = this.props;
     const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organizationWeVoteId;
     // console.log('OfficeItemCompressed componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     this.setState({
       organizationWeVoteId,
       componentDidMount: true,
     });
+    if (candidateList && candidateList.length && officeWeVoteId) {
+      if (officeWeVoteId && !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
+        OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
+        const { positionListHasBeenRetrievedOnce } = this.state;
+        positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
+        this.setState({
+          positionListHasBeenRetrievedOnce,
+        });
+      }
+    }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.componentDidMount !== nextState.componentDidMount) {
-      // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount: ', nextState.componentDidMount);
-      return true;
-    }
-    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-      // console.log('this.state.organizationWeVoteId: ', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId: ', nextState.organizationWeVoteId);
-      return true;
-    }
-    if (this.state.changeFound !== nextState.changeFound) {
-      // console.log('this.state.changeFound: ', this.state.changeFound, ', nextState.changeFound: ', nextState.changeFound);
-      return true;
-    }
-    if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
-      // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName: ', nextProps.ballotItemDisplayName);
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   if (this.state.componentDidMount !== nextState.componentDidMount) {
+  //     // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount: ', nextState.componentDidMount);
+  //     return true;
+  //   }
+  //   if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
+  //     // console.log('this.state.organizationWeVoteId: ', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId: ', nextState.organizationWeVoteId);
+  //     return true;
+  //   }
+  //   if (this.state.changeFound !== nextState.changeFound) {
+  //     // console.log('this.state.changeFound: ', this.state.changeFound, ', nextState.changeFound: ', nextState.changeFound);
+  //     return true;
+  //   }
+  //   if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
+  //     // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName: ', nextProps.ballotItemDisplayName);
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
@@ -113,7 +124,11 @@ class OfficeItemCompressed extends Component {
         candidateList.forEach((candidate) => {
           if (candidate && candidate.we_vote_id) {
             newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
-            newCandidateList.push(newCandidate);
+            if (newCandidate && newCandidate.we_vote_id) {
+              newCandidateList.push(newCandidate);
+            } else {
+              newCandidateList.push(candidate);
+            }
             if (!changeFound) {
               if (candidate.ballot_item_display_name !== newCandidate.ballot_item_display_name) {
                 changeFound = true;
@@ -125,11 +140,17 @@ class OfficeItemCompressed extends Component {
                 changeFound = true;
               }
             }
+          } else {
+            newCandidateList.push(candidate);
           }
         });
       }
+      let sortedCandidateList = {};
+      if (newCandidateList && newCandidateList.length) {
+        sortedCandidateList = sortCandidateList(newCandidateList);
+      }
       this.setState({
-        candidateList: newCandidateList,
+        candidateList: sortedCandidateList,
         changeFound,
       });
     }
@@ -174,6 +195,7 @@ class OfficeItemCompressed extends Component {
     const { classes, externalUniqueId, theme } = this.props;
     const { candidateList } = this.state;
     const candidatePreviewLimit = this.state.maximumNumberOrganizationsToDisplay;
+    // If voter has chosen 1+ candidates, only show those
     const supportedCandidatesList = candidateList.filter(candidate => SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id));
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
     return (
@@ -266,66 +288,11 @@ class OfficeItemCompressed extends Component {
 
   render () {
     renderLog('OfficeItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('OfficeItemCompressed render');
     let { ballotItemDisplayName } = this.props;
     const { officeWeVoteId, classes } = this.props;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
-    const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
-    const unsortedCandidateListModified = [];
     const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
-    const arrayOfCandidatesVoterSupports = [];
-    let ballotItemStatSheet;
-    let candidateModified;
-    let numberOfOpposePositionsForScore = 0;
-    let numberOfSupportPositionsForScore = 0;
-    let voterSupportsBallotItem;
-    let voterIssuesScoreForCandidate;
-
-    // Prepare an array of candidate names that are supported by voter
-    unsortedCandidateList.forEach((candidate) => {
-      ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id);
-      if (ballotItemStatSheet) {
-        ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, voterSupportsBallotItem } = ballotItemStatSheet);
-        voterIssuesScoreForCandidate = IssueStore.getIssuesScoreByBallotItemWeVoteId(candidate.we_vote_id);
-        candidateModified = { ...candidate };
-        candidateModified.voterNetworkScoreForCandidate = Math.abs(numberOfSupportPositionsForScore - numberOfOpposePositionsForScore);
-        candidateModified.voterIssuesScoreForCandidate = Math.abs(voterIssuesScoreForCandidate);
-        candidateModified.is_support = voterSupportsBallotItem;
-        unsortedCandidateListModified.push(candidateModified);
-        if (voterSupportsBallotItem) {
-          arrayOfCandidatesVoterSupports.push(candidate.ballot_item_display_name);
-          // voterSupportsAtLeastOneCandidate = true;
-        }
-      }
-    });
-
-    const sortedCandidateList = unsortedCandidateListModified;
-    sortedCandidateList.sort((optionA, optionB) => optionB.voterNetworkScoreForCandidate - optionA.voterNetworkScoreForCandidate ||
-                                                   (optionA.is_support === optionB.is_support ? 0 : optionA.is_support ? -1 : 1) ||  // eslint-disable-line no-nested-ternary
-                                                   optionB.voterIssuesScoreForCandidate - optionA.voterIssuesScoreForCandidate);
-
-    // If the voter isn't supporting any candidates, then figure out which candidate the voter's network likes the best
-    if (arrayOfCandidatesVoterSupports.length === 0) {
-      // This function finds the highest support count for each office but does not handle ties. If two candidates have
-      // the same network support count, only the first candidate will be displayed.
-      let largestNetworkSupportCount = 0;
-      let largestIssueScore = 0;
-      sortedCandidateList.forEach((candidate) => {
-        // Support in voter's network
-        ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id);
-        if (ballotItemStatSheet) {
-          ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet);
-          if (numberOfSupportPositionsForScore > numberOfOpposePositionsForScore) {
-            if (numberOfSupportPositionsForScore > largestNetworkSupportCount) {
-              largestNetworkSupportCount = numberOfSupportPositionsForScore;
-            }
-          }
-        }
-        // Support based on Issue score
-        if (voterIssuesScoreForCandidate > largestIssueScore) {
-          largestIssueScore = voterIssuesScoreForCandidate;
-        }
-      });
-    }
 
     return (
       <div className="card-main office-item">
