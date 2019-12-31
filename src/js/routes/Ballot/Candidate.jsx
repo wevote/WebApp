@@ -9,21 +9,21 @@ import CandidateItem from '../../components/Ballot/CandidateItem';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import CandidateStore from '../../stores/CandidateStore';
 import { capitalizeString } from '../../utils/textFormat';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import LoadingWheel from '../../components/LoadingWheel';
-import MeasureActions from '../../actions/MeasureActions';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import PositionList from '../../components/Ballot/PositionList';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
-import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
+// import VoterGuideActions from '../../actions/VoterGuideActions';
 
 
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
@@ -40,6 +40,7 @@ export default class Candidate extends Component {
       candidate: {},
       candidateWeVoteId: '',
       organizationWeVoteId: '',
+      positionListHasBeenRetrievedOnce: {},
       scrolledDown: false,
     };
   }
@@ -50,9 +51,28 @@ export default class Candidate extends Component {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     const { candidate_we_vote_id: candidateWeVoteId, organization_we_vote_id: organizationWeVoteId } = this.props.params;
+    // console.log('candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
+      const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+      const { ballot_item_display_name: ballotItemDisplayName, contest_office_we_vote_id: officeWeVoteId } = candidate;
+      // console.log('candidate:', candidate);
+      this.setState({
+        ballotItemDisplayName,
+        candidate,
+      });
       CandidateActions.candidateRetrieve(candidateWeVoteId);
-      CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
+      if (candidateWeVoteId &&
+        !this.localPositionListHasBeenRetrievedOnce(candidateWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(candidateWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
+        const { positionListHasBeenRetrievedOnce } = this.state;
+        positionListHasBeenRetrievedOnce[candidateWeVoteId] = true;
+        this.setState({
+          positionListHasBeenRetrievedOnce,
+        });
+      }
     }
 
     if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
@@ -62,13 +82,13 @@ export default class Candidate extends Component {
     // Get the latest guides to follow for this candidate
 
     // June 2018: Avoid hitting this same api multiple times, if we already have the data
-    const voterGuidesForId = VoterGuideStore.getVoterGuideForOrganizationId(organizationWeVoteId);
-    // console.log('voterGuidesForId:', voterGuidesForId);
-    if (voterGuidesForId && Object.keys(voterGuidesForId).length > 0) {
-      // Do not request them again
-    } else {
-      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateWeVoteId, 'CANDIDATE');
-    }
+    // const voterGuidesForId = VoterGuideStore.getVoterGuideForOrganizationId(organizationWeVoteId);
+    // // console.log('voterGuidesForId:', voterGuidesForId);
+    // if (voterGuidesForId && Object.keys(voterGuidesForId).length > 0) {
+    //   // Do not request them again
+    // } else {
+    //   VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateWeVoteId, 'CANDIDATE');
+    // }
 
     OrganizationActions.organizationsFollowedRetrieve();
 
@@ -95,34 +115,38 @@ export default class Candidate extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // DALE 2019-12-30 I suspect this isn't used. Commented out now, but we can delete as soon as 100% sure.
     // console.log('Candidate componentWillReceiveProps');
     // When a new candidate is passed in, update this component to show the new data
     if (nextProps.params.candidate_we_vote_id !== this.state.candidateWeVoteId) {
-      const { candidate_we_vote_id: candidateWeVoteId } = nextProps.params;
-      CandidateActions.candidateRetrieve(candidateWeVoteId);
-      if (candidateWeVoteId && !this.localPositionListHasBeenRetrievedOnce(candidateWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(candidateWeVoteId)) {
-        MeasureActions.positionListForBallotItemPublic(candidateWeVoteId);
-        const { positionListHasBeenRetrievedOnce } = this.state;
-        positionListHasBeenRetrievedOnce[candidateWeVoteId] = true;
-        this.setState({
-          positionListHasBeenRetrievedOnce,
-        });
-      }
-      CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
-      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateWeVoteId, 'CANDIDATE');
-
-      // getAllCachedPositionsByCandidateWeVoteId returns a dict with organization_we_vote_id as the key
-      // We convert to a simple list..
-      const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
-      let allCachedPositionsForThisCandidateLength = 0;
-      if (allCachedPositionsForThisCandidate) {
-        allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length;
-      }
-      this.setState({
-        candidateWeVoteId,
-        allCachedPositionsForThisCandidate,
-        allCachedPositionsForThisCandidateLength,
-      });
+      console.log('Candidate componentWillReceiveProps candidate_we_vote_id CHANGED');
+      // const { candidate_we_vote_id: candidateWeVoteId } = nextProps.params;
+      // CandidateActions.candidateRetrieve(candidateWeVoteId);
+      // if (candidateWeVoteId &&
+      //   !this.localPositionListHasBeenRetrievedOnce(candidateWeVoteId) &&
+      //   !BallotStore.positionListHasBeenRetrievedOnce(candidateWeVoteId)
+      // ) {
+      //   CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
+      //   const { positionListHasBeenRetrievedOnce } = this.state;
+      //   positionListHasBeenRetrievedOnce[candidateWeVoteId] = true;
+      //   this.setState({
+      //     positionListHasBeenRetrievedOnce,
+      //   });
+      // }
+      // // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateWeVoteId, 'CANDIDATE');
+      //
+      // // getAllCachedPositionsByCandidateWeVoteId returns a dict with organization_we_vote_id as the key
+      // // We convert to a simple list..
+      // const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
+      // let allCachedPositionsForThisCandidateLength = 0;
+      // if (allCachedPositionsForThisCandidate) {
+      //   allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length;
+      // }
+      // this.setState({
+      //   candidateWeVoteId,
+      //   allCachedPositionsForThisCandidate,
+      //   allCachedPositionsForThisCandidateLength,
+      // });
     }
   }
 
@@ -148,6 +172,7 @@ export default class Candidate extends Component {
       // console.log('this.state.scrolledDown:', this.state.scrolledDown, ', nextState.scrolledDown:', nextState.scrolledDown);
       return true;
     }
+    // console.log('Candidate shouldComponentUpdate FALSE');
     return false;
   }
 
@@ -211,6 +236,7 @@ export default class Candidate extends Component {
         </div>
       );
     }
+    // console.log('Candidate render');
 
     const candidateName = capitalizeString(candidate.ballot_item_display_name);
     const titleText = `${candidateName} - We Vote`;
@@ -240,16 +266,17 @@ export default class Candidate extends Component {
             showPositionStatementActionBar
           />
         </section>
-        <section className="card">
-          { allCachedPositionsForThisCandidate.length ? (
-            <PositionList
-              incomingPositionList={allCachedPositionsForThisCandidate}
-              ballotItemDisplayName={candidate.ballot_item_display_name}
-              params={this.props.params}
-            />
-          ) : null
-          }
-        </section>
+        { !!(allCachedPositionsForThisCandidate.length) && (
+          <section className="card">
+            <DelayedLoad showLoadingText waitBeforeShow={500}>
+              <PositionList
+                incomingPositionList={allCachedPositionsForThisCandidate}
+                ballotItemDisplayName={candidate.ballot_item_display_name}
+                params={this.props.params}
+              />
+            </DelayedLoad>
+          </section>
+        )}
         <EndorsementCard
           bsPrefix="u-margin-top--sm u-stack--xs"
           variant="primary"

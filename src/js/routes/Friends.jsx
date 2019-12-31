@@ -488,7 +488,8 @@ const styles = () => ({
 });
 
 const Wrapper = styled.div`
-  padding-top: 80px;
+  padding-top: 60px;
+  padding-bottom: 90px;
 `;
 
 const SectionTitle = styled.h2`

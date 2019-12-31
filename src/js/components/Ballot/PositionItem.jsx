@@ -39,6 +39,8 @@ class PositionItem extends Component {
   }
 
   componentDidMount () {
+    // console.log('PositionItem componentDidMount');
+    this.onOrganizationInVotersNetworkChange();
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -58,6 +60,10 @@ class PositionItem extends Component {
     }
     if (this.state.organizationInVotersNetwork !== nextState.organizationInVotersNetwork) {
       // console.log('this.state.organizationInVotersNetwork: ', this.state.organizationInVotersNetwork, ', nextState.organizationInVotersNetwork', nextState.organizationInVotersNetwork);
+      return true;
+    }
+    if (this.state.voterIsFriendsWithThisOrganization !== nextState.voterIsFriendsWithThisOrganization) {
+      // console.log('this.state.voterIsFriendsWithThisOrganization: ', this.state.voterIsFriendsWithThisOrganization, ', nextState.voterIsFriendsWithThisOrganization', nextState.voterIsFriendsWithThisOrganization);
       return true;
     }
     const { position: priorPosition } = this.props;
@@ -102,6 +108,7 @@ class PositionItem extends Component {
       // console.log('priorPositionFollowed: ', priorPositionFollowed, ', nextPositionFollowed:', nextPositionFollowed);
       return true;
     }
+    // console.log('PositionItem shouldComponentUpdate return FALSE');
     return false;
   }
 
@@ -151,7 +158,7 @@ class PositionItem extends Component {
     if (!position) {
       return null;
     }
-    // console.log('PositionItem position:', position);
+    // console.log('PositionItem position render');
     const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
     const { organizationInVotersNetwork, voterIsFriendsWithThisOrganization } = this.state;
 
