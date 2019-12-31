@@ -4,12 +4,15 @@ import Helmet from 'react-helmet';
 import CandidateList from '../../components/Ballot/CandidateList';
 import { capitalizeString } from '../../utils/textFormat';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import BallotStore from '../../stores/BallotStore';
+import CandidateStore from '../../stores/CandidateStore';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import OfficeActions from '../../actions/OfficeActions';
 import OfficeStore from '../../stores/OfficeStore';
+import { sortCandidateList } from '../../utils/positionFunctions';
 import Testimonial from '../../components/Widgets/Testimonial';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -25,8 +28,10 @@ export default class Office extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      candidateList: [],
       office: {},
       officeWeVoteId: '',
+      positionListHasBeenRetrievedOnce: {},
     };
   }
 
@@ -35,47 +40,143 @@ export default class Office extends Component {
       IssueActions.issuesRetrieveForElection(VoterStore.electionId());
     }
 
+    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
-    const office = OfficeStore.getOffice(this.props.params.office_we_vote_id);
-
+    const officeWeVoteId = this.props.params.office_we_vote_id;
+    const office = OfficeStore.getOffice(officeWeVoteId);
     if (!office || !office.ballot_item_display_name) {
-      OfficeActions.officeRetrieve(this.props.params.office_we_vote_id);
+      OfficeActions.officeRetrieve(officeWeVoteId);
     } else {
-      this.setState({ office });
+      let { candidate_list: candidateList } = office;
+      if (candidateList && candidateList.length && officeWeVoteId) {
+        candidateList = sortCandidateList(candidateList);
+        if (officeWeVoteId &&
+          !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
+          !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
+        ) {
+          OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
+          const { positionListHasBeenRetrievedOnce } = this.state;
+          positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
+          this.setState({
+            positionListHasBeenRetrievedOnce,
+          });
+        }
+      }
+      this.setState({
+        candidateList,
+        office,
+      });
     }
 
     this.setState({
-      officeWeVoteId: this.props.params.office_we_vote_id,
+      officeWeVoteId,
     });
 
     AnalyticsActions.saveActionOffice(VoterStore.electionId(), this.props.params.office_we_vote_id);
   }
 
-  componentWillReceiveProps (nextProps) {
-    // When a new office is passed in, update this component to show the new data
-    const office = OfficeStore.getOffice(nextProps.params.office_we_vote_id);
-
-    if (!office || !office.ballot_item_display_name) {
-      this.setState({ officeWeVoteId: nextProps.params.office_we_vote_id });
-      OfficeActions.officeRetrieve(nextProps.params.office_we_vote_id);
-    } else {
-      this.setState({ office, officeWeVoteId: nextProps.params.office_we_vote_id });
-    }
-  }
+  // componentWillReceiveProps (nextProps) {
+  //   // When a new office is passed in, update this component to show the new data
+  //   const office = OfficeStore.getOffice(nextProps.params.office_we_vote_id);
+  //
+  //   if (!office || !office.ballot_item_display_name) {
+  //     this.setState({ officeWeVoteId: nextProps.params.office_we_vote_id });
+  //     OfficeActions.officeRetrieve(nextProps.params.office_we_vote_id);
+  //   } else {
+  //     this.setState({ office, officeWeVoteId: nextProps.params.office_we_vote_id });
+  //   }
+  // }
 
   componentWillUnmount () {
+    this.candidateStoreListener.remove();
     this.officeStoreListener.remove();
+  }
+
+  onCandidateStoreChange () {
+    let { candidateList } = this.state;
+    const { officeWeVoteId } = this.state;
+    let newCandidate;
+    const newCandidateList = [];
+    if (candidateList && candidateList.length && officeWeVoteId) {
+      candidateList.forEach((candidate) => {
+        if (candidate && candidate.we_vote_id) {
+          newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
+          if (newCandidate && newCandidate.we_vote_id) {
+            newCandidateList.push(newCandidate);
+          } else {
+            newCandidateList.push(candidate);
+          }
+        }
+      });
+      candidateList = sortCandidateList(newCandidateList);
+      this.setState({
+        candidateList,
+      });
+      if (officeWeVoteId &&
+        !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
+        const { positionListHasBeenRetrievedOnce } = this.state;
+        positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
+        this.setState({
+          positionListHasBeenRetrievedOnce,
+        });
+      }
+    }
   }
 
   onOfficeStoreChange () {
     const { officeWeVoteId } = this.state;
     const office = OfficeStore.getOffice(officeWeVoteId);
-    this.setState({ office });
+    let newCandidate;
+    const newCandidateList = [];
+    if (office && office.ballot_item_display_name) {
+      let { candidate_list: candidateList } = office;
+      if (candidateList && candidateList.length && officeWeVoteId) {
+        candidateList.forEach((candidate) => {
+          if (candidate && candidate.we_vote_id) {
+            newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
+            if (newCandidate && newCandidate.we_vote_id) {
+              newCandidateList.push(newCandidate);
+            } else {
+              newCandidateList.push(candidate);
+            }
+          }
+        });
+        candidateList = sortCandidateList(newCandidateList);
+        if (officeWeVoteId &&
+          !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
+          !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
+        ) {
+          OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
+          const { positionListHasBeenRetrievedOnce } = this.state;
+          positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
+          this.setState({
+            positionListHasBeenRetrievedOnce,
+          });
+        }
+      }
+      this.setState({
+        candidateList,
+        office,
+        officeWeVoteId,
+      });
+
+    }
+  }
+
+  localPositionListHasBeenRetrievedOnce (officeWeVoteId) {
+    if (officeWeVoteId) {
+      const { positionListHasBeenRetrievedOnce } = this.state;
+      return positionListHasBeenRetrievedOnce[officeWeVoteId];
+    }
+    return false;
   }
 
   render () {
     renderLog('Office');  // Set LOG_RENDER_EVENTS to log all renders
-    const { office } = this.state;
+    const { candidateList, office } = this.state;
 
     if (!office || !office.ballot_item_display_name) {
       // TODO DALE If the officeWeVoteId is not valid, we need to update this with a notice
@@ -107,12 +208,12 @@ export default class Office extends Component {
           meta={[{ name: 'description', content: descriptionText }]}
         />
         <div className="col-sm-12 col-lg-9">
-          { office.candidate_list ? (
+          { candidateList && candidateList.length ? (
             <div>
               <CandidateList
                 contest_office_name={office.ballot_item_display_name}
               >
-                {office.candidate_list}
+                {candidateList}
               </CandidateList>
             </div>
           ) :

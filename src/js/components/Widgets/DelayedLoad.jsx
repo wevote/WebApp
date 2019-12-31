@@ -15,9 +15,13 @@ class DelayedLoad extends Component {
   }
 
   componentDidMount () {
-    setTimeout(() => {
+    this.timer = setTimeout(() => {
       this.setState({ hidden: false });
     }, this.props.waitBeforeShow);
+  }
+
+  componentWillUnmount () {
+    this.timer = null;
   }
 
   render () {

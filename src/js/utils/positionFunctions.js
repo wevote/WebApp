@@ -235,3 +235,43 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
   // console.log('getPositionSummaryListForBallotItem positionSummaryList: ', positionSummaryList);
   return positionSummaryList;
 }
+
+export function sortCandidateList (newCandidateList) {
+  let sortedCandidateList = {};
+  const unsortedCandidateList = newCandidateList ? newCandidateList.slice(0) : {};
+  const unsortedCandidateListModified = [];
+  let ballotItemStatSheet;
+  let candidateModified;
+  let numberOfOpposePositionsForScore = 0;
+  let numberOfSupportPositionsForScore = 0;
+  let voterSupportsBallotItem;
+
+  // Prepare an array of candidate names that are supported by voter
+  unsortedCandidateList.forEach((candidate) => {
+    ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id);
+    // console.log('ballotItemStatSheet:', ballotItemStatSheet);
+    if (ballotItemStatSheet) {
+      ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, voterSupportsBallotItem } = ballotItemStatSheet);
+      // voterIssuesScoreForCandidate = IssueStore.getIssuesScoreByBallotItemWeVoteId(candidate.we_vote_id);
+      candidateModified = { ...candidate };
+      candidateModified.voterNetworkScoreForCandidate = Math.abs(numberOfSupportPositionsForScore - numberOfOpposePositionsForScore);
+      candidateModified.voterSupportsBallotItem = voterSupportsBallotItem;
+      // console.log('candidateModified:', candidateModified);
+      unsortedCandidateListModified.push(candidateModified);
+    } else {
+      unsortedCandidateListModified.push(candidate);
+    }
+  });
+
+  sortedCandidateList = unsortedCandidateListModified;
+  // Start by ordering by twitter_followers_count
+  sortedCandidateList.sort((optionA, optionB) => optionB.twitter_followers_count - optionA.twitter_followers_count);
+  // Move candidates with the highest personal score to the top of the list
+  sortedCandidateList.sort((optionA, optionB) => optionB.voterNetworkScoreForCandidate - optionA.voterNetworkScoreForCandidate);
+  // Move candidates supported by the voter to the top of list
+  sortedCandidateList.sort((optionA, optionB) => (optionB.voterSupportsBallotItem ? 1 : 0) - (optionA.voterSupportsBallotItem ? 1 : 0));
+  // Move withdrawn candidates to the bottom of list
+  sortedCandidateList.sort((optionA, optionB) => (optionB.withdrawn_from_election ? 0 : 1) - (optionA.withdrawn_from_election ? 0 : 1));
+  // console.log('sortedCandidateList:', sortedCandidateList);
+  return sortedCandidateList;
+}
