@@ -49,9 +49,10 @@ class BallotShareButton extends Component {
         </Button>
         <Menu
           id="share-menu"
+          classes={{ paper: classes.paper }}
           open={this.state.open}
           onClose={this.handleClose}
-          elevation={1}
+          elevation={2}
           getContentAnchorEl={null}
           anchorEl={anchorEl}
           anchorOrigin={{
@@ -62,6 +63,7 @@ class BallotShareButton extends Component {
             horizontal: 'right',
           }}
         >
+          <MenuArrow />
           <MenuItem className={classes.menuItem}>
             <MenuFlex>
               <MenuIcon>
@@ -90,11 +92,27 @@ class BallotShareButton extends Component {
 }
 
 const styles = () => ({
+  paper: {
+    borderRadius: '2px !important',
+    marginTop: '10px !important',
+    overflowX: 'visible !important',
+    overflowY: 'visible !important',
+  },
   button: {
     padding: '0 12px',
   },
   menuItem: {
+    zIndex: '9 !important',
     padding: '0 !important',
+    marginBottom: '-2px !important',
+    paddingBottom: '3px !important',
+    '&:last-child': {
+      paddingBottom: '0 !important',
+      paddingTop: '3px !important',
+    },
+    '&:hover': {
+      background: '#efefef',
+    },
   },
 });
 
@@ -136,7 +154,22 @@ const MenuSeperator = styled.div`
   height: 2px;
   background: #efefef;
   width: 80%;
-  margin: 1px auto;
+  margin: 0 auto;
+  position: absolute;
+  left: 10%;
+  z-index: 0 !important;
+`;
+
+const MenuArrow = styled.div`
+  width: 12px;
+  height: 12px;
+  transform: rotate(45deg);
+  background: white;
+  position: absolute;
+  top: -7px;
+  left: calc(75%);
+  border-top: 1px solid #e7e7e7;
+  border-left: 1px solid #e7e7e7;
 `;
 
 export default withStyles(styles)(BallotShareButton);
