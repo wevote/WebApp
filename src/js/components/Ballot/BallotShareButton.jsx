@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/esm/Button';
-import { Menu, MenuItem } from '@material-ui/core/esm';
+import { Menu, MenuItem, Tooltip } from '@material-ui/core/esm';
 import Comment from '@material-ui/icons/Comment';
 import { withStyles } from '@material-ui/core/esm/styles';
 import styled from 'styled-components';
@@ -72,6 +72,11 @@ class BallotShareButton extends Component {
               <MenuText>
                 Ballot
               </MenuText>
+              <MenuInfo>
+                <Tooltip title="Share a link to this election so that your friends can get ready to vote. Your opinions are not included." arrow enterDelay={300}>
+                  <i className="fas fa-info-circle" />
+                </Tooltip>
+              </MenuInfo>
             </MenuFlex>
           </MenuItem>
           <MenuSeperator />
@@ -105,10 +110,10 @@ const styles = () => ({
     zIndex: '9 !important',
     padding: '0 !important',
     marginBottom: '-2px !important',
-    paddingBottom: '3px !important',
+    paddingBottom: '1px !important',
     '&:last-child': {
       paddingBottom: '0 !important',
-      paddingTop: '3px !important',
+      paddingTop: '1px !important',
     },
     '&:hover': {
       background: '#efefef',
@@ -148,6 +153,11 @@ const MenuIcon = styled.div`
 
 const MenuText = styled.div`
   margin-left: 12px;
+`;
+
+const MenuInfo = styled.div`
+  margin-left: auto;
+  margin-top: 1px;
 `;
 
 const MenuSeperator = styled.div`
