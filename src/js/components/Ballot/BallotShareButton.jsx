@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/esm/Button';
 import { Menu, MenuItem } from '@material-ui/core/esm';
+import Comment from '@material-ui/icons/Comment';
 import { withStyles } from '@material-ui/core/esm/styles';
 import styled from 'styled-components';
 
@@ -13,7 +14,8 @@ class BallotShareButton extends Component {
   constructor (props) {
     super(props);
     this.state = {
-
+      open: false,
+      anchorEl: null,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -59,10 +61,28 @@ class BallotShareButton extends Component {
           transformOrigin={{
             horizontal: 'right',
           }}
-          className={classes.menu}
         >
-          <MenuItem>Ballot</MenuItem>
-          <MenuItem>My Choices & Opinions</MenuItem>
+          <MenuItem className={classes.menuItem}>
+            <MenuFlex>
+              <MenuIcon>
+                <i className="fas fa-list" />
+              </MenuIcon>
+              <MenuText>
+                Ballot
+              </MenuText>
+            </MenuFlex>
+          </MenuItem>
+          <MenuSeperator />
+          <MenuItem className={classes.menuItem}>
+            <MenuFlex>
+              <MenuIcon>
+                <Comment />
+              </MenuIcon>
+              <MenuText>
+                My Choice & Opinions
+              </MenuText>
+            </MenuFlex>
+          </MenuItem>
         </Menu>
       </>
     );
@@ -73,13 +93,50 @@ const styles = () => ({
   button: {
     padding: '0 12px',
   },
-  menu: {
-    borderRadius: '2px !important',
-  }
+  menuItem: {
+    padding: '0 !important',
+  },
 });
 
 const Icon = styled.span`
   margin-right: 4px;
+`;
+
+const MenuFlex = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+  padding: 10px 8px 10px 18px;
+`;
+
+const MenuIcon = styled.div`
+  width: 20px !important;
+  height: 20px !important;
+  top: -2px;
+  position: relative;
+  & * {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+  }
+  & svg {
+    position: relative;
+    left: -2px;
+  }
+`;
+
+const MenuText = styled.div`
+  margin-left: 12px;
+`;
+
+const MenuSeperator = styled.div`
+  height: 2px;
+  background: #efefef;
+  width: 80%;
+  margin: 1px auto;
 `;
 
 export default withStyles(styles)(BallotShareButton);
