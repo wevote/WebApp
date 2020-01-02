@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/esm/DialogContent';
 import IconButton from '@material-ui/core/esm/IconButton';
 import { withStyles, withTheme } from '@material-ui/core/esm/styles';
 import Mail from '@material-ui/icons/Mail';
-import Copy from '@material-ui/icons/CopyTex';
+import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import ShareModalOption from './ShareModalOption';
@@ -74,13 +74,14 @@ class ShareModal extends Component {
             <ShareModalOption link="https://facebook.com" background="#3b5998" icon={<i className="fab fa-facebook-square" />} title="Facebook" />
             <ShareModalOption link="https://twitter.com" background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
             <ShareModalOption link="mailto:jwpeachey107@aol.com" background="#2E3C5D" icon={<Mail />} title="Email" />
-            <ShareModalOption link="https://google.com" background="#2E3C5D" icon={<Copy />} title="Copy Link" />
+            <ShareModalOption copyLink link="https://google.com" background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
           </Flex>
         </DialogContent>
       </Dialog>
     );
   }
 }
+
 const styles = () => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
