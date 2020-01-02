@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/esm/Button';
-import { Menu, MenuItem, Tooltip } from '@material-ui/core/esm';
 import Comment from '@material-ui/icons/Comment';
+import { Menu, MenuItem, Tooltip } from '@material-ui/core/esm';
 import { withStyles } from '@material-ui/core/esm/styles';
+import Reply from '@material-ui/icons/Reply';
 import styled from 'styled-components';
 
 class BallotShareButton extends Component {
@@ -43,7 +44,10 @@ class BallotShareButton extends Component {
       <>
         <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="outlined" color="primary">
           <Icon>
-            <i className="fas fa-share" />
+            <Reply
+              classes={{ root: classes.shareIcon }}
+            />
+            {/* <i className="fas fa-share" /> */}
           </Icon>
           Share
         </Button>
@@ -61,6 +65,7 @@ class BallotShareButton extends Component {
           }}
           transformOrigin={{
             horizontal: 'right',
+            vertical: 'top',
           }}
         >
           <MenuArrow />
@@ -118,6 +123,10 @@ const styles = () => ({
     '&:hover': {
       background: '#efefef',
     },
+  },
+  shareIcon: {
+    // -webkit-transform: 'scaleX(-1)',
+    transform: 'scaleX(-1)',
   },
 });
 

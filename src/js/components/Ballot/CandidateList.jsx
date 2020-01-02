@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CandidateItem from './CandidateItem';
+import DelayedLoad from '../Widgets/DelayedLoad';
 import { renderLog } from '../../utils/logging';
 
 // This is related to components/VoterGuide/OrganizationVoterGuideCandidateList.jsx
@@ -11,20 +12,48 @@ export default class CandidateList extends Component {
 
   render () {
     renderLog('CandidateList');  // Set LOG_RENDER_EVENTS to log all renders
+    let candidateNumber = 0;
+    let candidatesDelayed = 0;
+    let showLoadingText = true;
     return (
       <article className="card-main__list-group">
-        { this.props.children.map(child => (
-          <div key={child.we_vote_id} className="card">
-            <CandidateItem
-              candidateWeVoteId={child.we_vote_id}
-              hideBallotItemSupportOpposeComment
-              key={child.we_vote_id}
-              linkToBallotItemPage
-              showHover
-              showTopCommentByBallotItem
-            />
-          </div>
-        ))
+        { this.props.children.map((child) => {
+          candidateNumber += 1;
+          if (candidateNumber <= 3) {
+            return (
+              <div key={child.we_vote_id} className="card">
+                <CandidateItem
+                  candidateWeVoteId={child.we_vote_id}
+                  hideBallotItemSupportOpposeComment
+                  key={child.we_vote_id}
+                  linkToBallotItemPage
+                  showHover
+                  showTopCommentByBallotItem
+                />
+              </div>
+            );
+          } else {
+            candidatesDelayed += 1;
+            if (candidatesDelayed > 1) {
+              // Only show the first "Loading..." text
+              showLoadingText = false;
+            }
+            return (
+              <DelayedLoad key={child.we_vote_id} showLoadingText={showLoadingText} waitBeforeShow={1000}>
+                <div className="card">
+                  <CandidateItem
+                    candidateWeVoteId={child.we_vote_id}
+                    hideBallotItemSupportOpposeComment
+                    key={child.we_vote_id}
+                    linkToBallotItemPage
+                    showHover
+                    showTopCommentByBallotItem
+                  />
+                </div>
+              </DelayedLoad>
+            );
+          }
+        })
         }
       </article>
     );
