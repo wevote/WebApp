@@ -70,7 +70,7 @@ class ShareModal extends Component {
         </ModalTitleArea>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <Flex>
-            <ShareModalOption link="https://wevote.us" background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />
+            <ShareModalOption link="/friends/invite" background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />
             <ShareModalOption link="https://www.facebook.com/sharer/sharer.php?u=wevote.us&t=WeVote" target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
             <ShareModalOption link={`https://twitter.com/share?text=Check out this cool ballot tool at https://wevote.us${window.location.pathname}!`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
             <ShareModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
@@ -138,7 +138,7 @@ const SubTitle = styled.div`
 const Flex = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-top: 24px;
+  margin-top: 36px;
   padding-bottom: 36px;
 `;
 
