@@ -162,7 +162,6 @@ export default class Office extends Component {
         office,
         officeWeVoteId,
       });
-
     }
   }
 

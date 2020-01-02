@@ -39,8 +39,8 @@ class OfficeItemCompressed extends Component {
     super(props);
     this.state = {
       candidateList: [],
-      changeFound: false,
-      componentDidMount: false,
+      // changeFound: false,
+      // componentDidMount: false,
       maximumNumberOrganizationsToDisplay: NUMBER_OF_CANDIDATES_TO_DISPLAY,
       organizationWeVoteId: '',
       positionListHasBeenRetrievedOnce: {},
@@ -61,7 +61,7 @@ class OfficeItemCompressed extends Component {
     // console.log('OfficeItemCompressed componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     this.setState({
       organizationWeVoteId,
-      componentDidMount: true,
+      // componentDidMount: true,
     });
     if (candidateList && candidateList.length && officeWeVoteId) {
       if (officeWeVoteId && !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
@@ -151,7 +151,7 @@ class OfficeItemCompressed extends Component {
       }
       this.setState({
         candidateList: sortedCandidateList,
-        changeFound,
+        // changeFound,
       });
     }
   }
