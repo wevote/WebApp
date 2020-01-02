@@ -31,6 +31,7 @@ import VoterStore from '../../stores/VoterStore';
 import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
+import ShareModal from '../Ballot/ShareModal';
 
 const webAppConfig = require('../../config');
 
@@ -63,6 +64,7 @@ class HeaderBar extends Component {
       showSelectBallotModal: false,
       showSignInModal: false,
       showPaidAccountUpgradeModal: false,
+      showShareModal: false,
       voter: {},
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
@@ -72,6 +74,7 @@ class HeaderBar extends Component {
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
+    this.closeShareModal = this.closeShareModal.bind(this);
   }
 
   componentDidMount () {
@@ -127,6 +130,9 @@ class HeaderBar extends Component {
       return true;
     }
     if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
+      return true;
+    }
+    if (this.state.showShareModal !== nextState.showShareModal) {
       return true;
     }
     if (this.state.scrolledDown !== nextState.scrolledDown) {
@@ -198,6 +204,7 @@ class HeaderBar extends Component {
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showPaidAccountUpgradeModal,
+      showShareModal: AppStore.showShareModal(),
       showSignInModal: AppStore.showSignInModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
     });
@@ -299,6 +306,10 @@ class HeaderBar extends Component {
     AppActions.setShowPaidAccountUpgradeModal(false);
   }
 
+  closeShareModal () {
+    AppActions.setShowShareModal(false);
+  }
+
   render () {
     renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.componentDidMountFinished) {
@@ -307,7 +318,7 @@ class HeaderBar extends Component {
     const { classes, pathname, location } = this.props;
     const {
       chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown,
-      showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal,
+      showEditAddressButton, showPaidAccountUpgradeModal, showShareModal, showSelectBallotModal,
       showSignInModal, voter, voterIsSignedIn,
     } = this.state;
     // console.log('Header Bar, showSignInModal ', showSignInModal);
@@ -527,6 +538,13 @@ class HeaderBar extends Component {
             pathname={pathname}
             show={showPaidAccountUpgradeModal}
             toggleFunction={this.closePaidAccountUpgradeModal}
+          />
+        )}
+        {showShareModal && (
+          <ShareModal
+            pathname={pathname}
+            show={showShareModal}
+            toggleFunction={this.closeShareModal}
           />
         )}
       </Wrapper>
