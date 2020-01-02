@@ -44,12 +44,11 @@ class ShareModalOption extends Component {
 }
 
 const Wrapper = styled.a`
+  display: block !important;
   flex: 1 1 0;
   height: 100%;
   text-align: center;
   text-decoration: none !important;
-  display: flex;
-  flex-direction: column;
   color: black !important;
   &:hover {
     text-decoration: none !important;
@@ -58,6 +57,7 @@ const Wrapper = styled.a`
 `;
 
 const Icon = styled.div`
+  margin: 0 auto;
   width: 65px;
   height: 65px;
   display: flex;
@@ -89,10 +89,10 @@ const Text = styled.h3`
 `;
 
 const TextArea = styled.textarea`
-  opacity: 0;
-  position: fixed;
-  display: hidden;
-  visibility: none;
+  display: none;
+  visibility: hidden;
+  position: absolute;
+  left: 999999999999999px;
 `;
 
 export default ShareModalOption;

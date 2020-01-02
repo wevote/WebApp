@@ -72,8 +72,8 @@ class ShareModal extends Component {
           <Flex>
             <ShareModalOption link="https://wevote.us" background="#2E3C5D" icon="W" title="We Vote Friends" />
             <ShareModalOption link="https://facebook.com" background="#3b5998" icon={<i className="fab fa-facebook-square" />} title="Facebook" />
-            <ShareModalOption link="https://twitter.com" background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
-            <ShareModalOption link="mailto:jwpeachey107@aol.com" background="#2E3C5D" icon={<Mail />} title="Email" />
+            <ShareModalOption link="https://twitter.com/share?text=Check out this cool ballot tool at https://wevote.us" background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
+            <ShareModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
             <ShareModalOption copyLink link="https://google.com" background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
           </Flex>
         </DialogContent>
@@ -147,9 +147,10 @@ const SubTitle = styled.div`
 `;
 const Flex = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
   margin-top: 24px;
 `;
 
 export default withTheme(withStyles(styles)(ShareModal));
+
+
