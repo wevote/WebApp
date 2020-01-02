@@ -84,24 +84,14 @@ class ShareModal extends Component {
 
 const styles = () => ({
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
-    '@media (min-width: 769px)': {
-      maxWidth: '600px',
-      width: '85%',
-      minHeight: '95%',
-      maxHeight: '95%',
-      height: '95%',
-      margin: '0 auto',
-    },
-    '@media (max-width: 768px)': {
-      minWidth: '100%',
-      maxWidth: '100%',
-      width: '100%',
-      minHeight: '100%',
-      maxHeight: '100%',
-      height: '100%',
-      margin: '0 auto',
-    },
+    maxWidth: '600px',
+    width: '85%',
+    height: 'fit-content',
+    margin: '0 auto',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
   },
   dialogContent: {
     '@media (max-width: 768px)': {
@@ -149,6 +139,7 @@ const Flex = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: 24px;
+  padding-bottom: 36px;
 `;
 
 export default withTheme(withStyles(styles)(ShareModal));
