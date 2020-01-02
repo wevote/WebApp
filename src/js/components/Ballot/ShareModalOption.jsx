@@ -66,19 +66,19 @@ const Icon = styled.div`
   background: ${props => props.background || 'black'};
   padding: 0px;
   border-radius: 60px;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: bold;
   color: white !important;
   & * {
     color: white !important;
   }
-  & svg {
-    width: 28px !important;
-    height: 28px !important;
+  & svg, & path {
+    width: 30px !important;
+    height: 30px !important;
   }
-  & path {
-    width: 28px !important;
-    height: 28px !important;
+  & img {
+    width: 42px;
+    height: 42px;
   }
   margin-bottom: 8px;
 `;
