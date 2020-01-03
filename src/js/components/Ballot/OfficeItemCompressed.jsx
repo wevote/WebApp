@@ -213,6 +213,7 @@ class OfficeItemCompressed extends Component {
                 key={`candidate_preview-${oneCandidate.we_vote_id}`}
               >
                 <CandidateInfo
+                  className="card-child"
                   brandBlue={theme.palette.primary.main}
                   numberOfCandidatesInList={candidatesToRender.length}
                   id={`officeItemCompressedCandidateInfo-${oneCandidate.we_vote_id}`}
@@ -361,7 +362,7 @@ const styles = theme => ({
 });
 
 const Column = styled.div`
-  padding: 12px;
+  padding: 6px;
   width: 100%;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     width: ${({ candidateLength }) => (candidateLength > 1 ? '50%' : '100%')};
@@ -369,18 +370,22 @@ const Column = styled.div`
 `;
 
 const CandidateInfo = styled.div`
+  margin: 0 !important;
+  height: 100%;
+  display: block !important;
+  padding: 12px !important;
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding: 16px !important;
+    position: relative;
+  }
   width: 100% !important;
   display: flex;
   flex-flow: column;
-  padding: 16px 16px 0 16px;
-  overflow-x: hidden;
   transition: all 200ms ease-in;
   border: 1px solid ${({ theme }) => theme.colors.grayBorder};
-  width: ${({ numberOfCandidatesInList }) => (numberOfCandidatesInList > 1 ? '48%' : '100%')};
-  border-radius: 4px;
   &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.linkHoverBorder};
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+    border: 1px solid ${props => (props.brandBlue)};
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: column;
@@ -390,8 +395,6 @@ const CandidateInfo = styled.div`
     flex-flow: column;
     border: none;
     border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
-    padding: 16px 0 0 0;
-    width: 100%;
     &:hover {
       border: none;
       border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
@@ -423,9 +426,7 @@ const Container = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: row wrap;
   }
-  margin-left: -12px;
-  margin-right: -12px;
-  width: calc(100% + 24px);
+  margin: 0px -6px;
 `;
 
 const MoreButtonWrapper = styled.div`

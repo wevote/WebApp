@@ -10,7 +10,7 @@ $outline-radius: 3px;
   border-radius: $radius-sm;
   box-shadow: $default-box-shadow;
   margin-bottom: $space-md;
-  overflow-y: none;
+  // overflow-y: none;
   border: none;
   @include clearfix;
   @include breakpoints(max mid-small) {
