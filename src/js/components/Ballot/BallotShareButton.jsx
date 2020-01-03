@@ -6,6 +6,7 @@ import { Menu, MenuItem, Tooltip } from '@material-ui/core/esm';
 import { withStyles } from '@material-ui/core/esm/styles';
 import Reply from '@material-ui/icons/Reply';
 import styled from 'styled-components';
+import AppActions from '../../actions/AppActions';
 
 class BallotShareButton extends Component {
   static propTypes = {
@@ -34,6 +35,11 @@ class BallotShareButton extends Component {
 
   handleClose () {
     this.setState({ anchorEl: null, open: false });
+  }
+
+  openShareModal () {
+    // console.log('SettingsDomain openPaidAccountUpgradeModal');
+    AppActions.setShowShareModal(true);
   }
 
   render () {
@@ -69,7 +75,7 @@ class BallotShareButton extends Component {
           }}
         >
           <MenuArrow />
-          <MenuItem className={classes.menuItem}>
+          <MenuItem className={classes.menuItem} onClick={this.openShareModal}>
             <MenuFlex>
               <MenuIcon>
                 <i className="fas fa-list" />
@@ -85,7 +91,7 @@ class BallotShareButton extends Component {
             </MenuFlex>
           </MenuItem>
           <MenuSeperator />
-          <MenuItem className={classes.menuItem}>
+          <MenuItem className={classes.menuItem} onClick={this.openShareModal}>
             <MenuFlex>
               <MenuIcon>
                 <Comment />
