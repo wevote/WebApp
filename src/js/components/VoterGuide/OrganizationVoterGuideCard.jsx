@@ -4,20 +4,22 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/esm/Button';
 import { Link } from 'react-router';
 import { historyPush } from '../../utils/cordovaUtils';
+import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
+import { isSpeakerTypeIndividual } from '../../utils/organization-functions';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import FollowToggle from '../Widgets/FollowToggle';
+import FriendToggle from '../Friends/FriendToggle';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
-import LoadingWheel from '../LoadingWheel';
-import { renderLog } from '../../utils/logging'; // numberWithCommas,
-import FollowToggle from '../Widgets/FollowToggle';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
-import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
 class OrganizationVoterGuideCard extends Component {
   static propTypes = {
     organization: PropTypes.object.isRequired,
-    is_voter_owner: PropTypes.bool,
+    isVoterOwner: PropTypes.bool,
     turnOffDescription: PropTypes.bool,
   };
 
@@ -37,12 +39,18 @@ class OrganizationVoterGuideCard extends Component {
     if (!this.props.organization) {
       return <div>{LoadingWheel}</div>;
     }
-
+    // console.log('this.props.organization:', this.props.organization);
+    const { isVoterOwner } = this.props;
     const {
-      organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
+      organization_name: organizationName,
+      organization_photo_url_large: organizationPhotoUrlLarge,
+      organization_twitter_handle: organizationTwitterHandle,
+      organization_type: organizationType,
+      organization_we_vote_id: organizationWeVoteId,
+      organization_website: organizationWebsiteRaw,
+      twitter_description: twitterDescriptionRaw,
       twitter_followers_count: twitterFollowersCount,
-      organization_photo_url_large: organizationPhotoUrlLarge, organization_website: organizationWebsiteRaw,
-      organization_name: organizationName, organization_we_vote_id: organizationWeVoteId,
+      linked_voter_we_vote_id: linkedVoterWeVoteId,
     } = this.props.organization;
     const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== 'http' ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
@@ -82,7 +90,7 @@ class OrganizationVoterGuideCard extends Component {
           </span>
         )}
         <br />
-        { this.props.is_voter_owner ? (
+        { isVoterOwner && (
           <Button
             color="primary"
             id="OrganizationVoterGuideCardEditYourVoterGuideButton"
@@ -91,9 +99,17 @@ class OrganizationVoterGuideCard extends Component {
           >
             <span>Edit Your Endorsements</span>
           </Button>
-        ) :
-          <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
-        }
+        )}
+        { !isVoterOwner && (
+          <>
+            <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
+            { isSpeakerTypeIndividual(organizationType) && (
+              <FriendToggleWrapper>
+                <FriendToggle displayFullWidth otherVoterWeVoteId={linkedVoterWeVoteId} showFriendsText />
+              </FriendToggleWrapper>
+            )}
+          </>
+        )}
         { twitterDescriptionMinusName && !this.props.turnOffDescription ? (
           <ParsedTwitterDescription
             twitter_description={twitterDescriptionMinusName}
@@ -105,7 +121,7 @@ class OrganizationVoterGuideCard extends Component {
           organizationWeVoteId={organizationWeVoteId}
           placement="bottom"
         />
-        { organizationWebsite ? (
+        { organizationWebsite && (
           <div>
             <span className="u-wrap-links">
               <OpenExternalWebSite
@@ -121,8 +137,7 @@ class OrganizationVoterGuideCard extends Component {
               />
             </span>
           </div>
-        ) : null
-        }
+        )}
         {/* 5 of your friends follow Organization Name<br /> */}
 
         {/* twitter_followers_count ?
@@ -137,17 +152,21 @@ class OrganizationVoterGuideCard extends Component {
   }
 }
 
-const ProfileAvatar = styled.div`
-  display: flex;
-  justify-content: center;
-  background: transparent;
-  position: relative;
-`;
-
 const CardMain = styled.div`
   border: 1px solid #fff;
   padding: 16px 16px 8px;
   font-size: 14px;
+  position: relative;
+`;
+
+const FriendToggleWrapper = styled.div`
+  margin-top: 10px;
+`;
+
+const ProfileAvatar = styled.div`
+  display: flex;
+  justify-content: center;
+  background: transparent;
   position: relative;
 `;
 

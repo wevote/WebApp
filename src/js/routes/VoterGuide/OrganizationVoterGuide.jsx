@@ -6,14 +6,15 @@ import Button from '@material-ui/core/esm/Button';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { historyPush } from '../../utils/cordovaUtils';
 import FollowToggle from '../../components/Widgets/FollowToggle';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import FriendActions from '../../actions/FriendActions';
 import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
+import { renderLog } from '../../utils/logging';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 
 const AUTO_FOLLOW = 'af';
@@ -90,6 +91,7 @@ export default class OrganizationVoterGuide extends Component {
       organizationWeVoteId,
       voter,
     });
+    FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
   }
 
   componentWillReceiveProps (nextProps) {
@@ -340,7 +342,7 @@ export default class OrganizationVoterGuide extends Component {
               <CardContainer bannerUrl={this.state.organization.organization_banner_url}>
                 <div className="card">
                   <div className="card-main">
-                    <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={isVoterOwner} />
+                    <OrganizationVoterGuideCard organization={this.state.organization} isVoterOwner={isVoterOwner} />
                   </div>
                   <br />
                 </div>

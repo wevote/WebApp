@@ -58,7 +58,6 @@ export default class FriendsCurrentPreview extends Component {
             </SectionTitle>
             <div>
               <FriendList
-                editMode
                 friendList={currentFriendListLimited}
                 previewMode
               />

@@ -4,6 +4,7 @@ import ReactSVG from 'react-svg';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import { withStyles, withTheme } from '@material-ui/core/esm/styles';
 import styled from 'styled-components';
+import FriendsIcon from './FriendsIcon';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -197,25 +198,29 @@ class PositionItemScorePopoverTextOnly extends Component {
                 </span>
               )}
             </OrganizationAddsToYourPersonalScoreExplanation>
-            {voterFollowingThisOrganization && (
+            {voterIsFriendsWithThisOrganization ? (
               <ScoreExplanationWrapper>
-                <CheckCircle className="following-icon" />
-                <ScoreExplanationText>
-                  You follow
-                  {' '}
-                  {speakerDisplayName}
-                </ScoreExplanationText>
-              </ScoreExplanationWrapper>
-            )}
-            {voterIsFriendsWithThisOrganization && (
-              <ScoreExplanationWrapper>
-                <CheckCircle className="friends-icon" />
+                {/* <CheckCircle className="friends-icon" /> */}
+                <FriendsIcon />
                 <ScoreExplanationText>
                   {speakerDisplayName}
                   {' '}
                   is your friend
                 </ScoreExplanationText>
               </ScoreExplanationWrapper>
+            ) : (
+              <>
+                {voterFollowingThisOrganization && (
+                  <ScoreExplanationWrapper>
+                    <CheckCircle className="following-icon" />
+                    <ScoreExplanationText>
+                      You follow
+                      {' '}
+                      {speakerDisplayName}
+                    </ScoreExplanationText>
+                  </ScoreExplanationWrapper>
+                )}
+              </>
             )}
             {issuesInCommonBetweenOrganizationAndVoter.map(issue => (
               <ScoreExplanationWrapper key={`issueInScore-${issue.issue_we_vote_id}`}>
