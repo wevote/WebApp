@@ -9,7 +9,6 @@ import { withStyles, withTheme } from '@material-ui/core/esm/styles';
 import Mail from '@material-ui/icons/Mail';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import { renderLog } from '../../utils/logging';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import ShareModalOption from './ShareModalOption';
 
 class ShareModal extends Component {

@@ -1,6 +1,7 @@
-import React, { Component, useRef } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { openSnackbar } from '../Widgets/SnackNotifier';
 
 class ShareModalOption extends Component {
   static propTypes = {
@@ -23,7 +24,8 @@ class ShareModalOption extends Component {
 
     document.execCommand('copy');
     e.target.focus();
-    alert("Copied!");
+
+    openSnackbar({ message: 'Copied!' });
   }
 
   render () {
