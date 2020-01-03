@@ -529,8 +529,10 @@ const TitleContainer = styled.div`
 `;
 
 const TitleText = styled.h3`
+  width: fit-content;
   font-weight: bold;
   font-size: 18px;
+  margin-bottom: 16px;
   @media print{
     font-size: 2rem;
   }

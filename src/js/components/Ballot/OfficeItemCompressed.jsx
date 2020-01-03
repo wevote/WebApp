@@ -393,13 +393,6 @@ const CandidateInfo = styled.div`
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     flex-flow: column;
-    border: none;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
-    &:hover {
-      border: none;
-      border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
-      box-shadow: none;
-    }
   }
 `;
 
@@ -437,14 +430,15 @@ const MoreButtonWrapper = styled.div`
   width: 100%;
 `;
 
-const Title = styled.div`
-  font-size: 18px;
+const Title = styled.h2`
+  width: fit-content;
   font-weight: bold;
-  margin-bottom: 12px;
+  font-size: 18px;
+  margin-bottom: 16px;
   cursor: pointer;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     font-size: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
 `;
 
