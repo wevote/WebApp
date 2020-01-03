@@ -34,6 +34,7 @@ class SupportStore extends ReduceStore {
     } else if (isMeasure) {
       allCachedPositions = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
     }
+    // console.log('getBallotItemStatSheet allCachedPositions:', allCachedPositions);
     const results = extractScoreFromNetworkFromPositionList(allCachedPositions);
     const { numberOfSupportPositionsForScore, numberOfOpposePositionsForScore, numberOfInfoOnlyPositionsForScore } = results;
     // console.log('getBallotItemStatSheet ballotItemWeVoteId:', ballotItemWeVoteId, ', this.voterSupportsList:', this.voterSupportsList);

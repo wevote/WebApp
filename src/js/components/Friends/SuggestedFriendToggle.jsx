@@ -9,6 +9,7 @@ import { renderLog } from '../../utils/logging';
 
 export default class SuggestedFriendToggle extends Component {
   static propTypes = {
+    displayFullWidth: PropTypes.bool,
     otherVoterWeVoteId: PropTypes.string.isRequired,
   };
 
@@ -57,7 +58,7 @@ export default class SuggestedFriendToggle extends Component {
   render () {
     renderLog('SuggestedFriendToggle');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
-    const { otherVoterWeVoteId } = this.props;
+    const { displayFullWidth, otherVoterWeVoteId } = this.props;
     const { addSuggestedFriendSent, isFriend } = this.state;
     // console.log('SuggestedFriendToggle, otherVoterWeVoteId:', otherVoterWeVoteId, ', isFriend:', isFriend);
     const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
@@ -82,7 +83,7 @@ export default class SuggestedFriendToggle extends Component {
             </Button>
           </ButtonContainer>
         ) : (
-          <ButtonContainer>
+          <ButtonContainer displayFullWidth={displayFullWidth}>
             <Button
               variant="contained"
               color="primary"
@@ -102,12 +103,12 @@ const ButtonContainer = styled.div`
   width: 100%;
   margin-right: 12px;
   @media(min-width: 400px) {
-    width: fit-content;
+    ${({ displayFullWidth }) => (displayFullWidth ? 'width: 100%;' : 'width: fit-content;')}
     margin: 0;
     margin-bottom: 6px;
   }
   @media(min-width: 520px) {
     margin: 0;
-    margin-left: 8px;
+    // margin-left: 8px;
   }
 `;
