@@ -5,7 +5,6 @@ import { renderLog } from '../../utils/logging';
 
 export default class FriendList extends Component {
   static propTypes = {
-    editMode: PropTypes.bool,
     friendList: PropTypes.array,
     previewMode: PropTypes.bool,
   };
@@ -28,7 +27,6 @@ export default class FriendList extends Component {
       <div className="guidelist card-child__list-group">
         {friendList.map(friend => (
           <FriendDisplayForList
-            editMode={this.props.editMode}
             key={friend.voter_we_vote_id}
             previewMode={this.props.previewMode}
             {...friend}

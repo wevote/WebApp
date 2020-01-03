@@ -116,7 +116,6 @@ export default class FriendsCurrent extends Component {
               }
               <FriendList
                 friendList={currentFriendList}
-                editMode
               />
             </span>
           ) : (

@@ -8,7 +8,6 @@ import { renderLog } from '../../utils/logging';
 
 class FriendDisplayForList extends Component {
   static propTypes = {
-    editMode: PropTypes.bool,
     linked_organization_we_vote_id: PropTypes.string,
     mutual_friends: PropTypes.number,
     positions_taken: PropTypes.number,
@@ -84,7 +83,7 @@ class FriendDisplayForList extends Component {
           )}
         </Flex>
         <>
-          { this.props.editMode ? <FriendToggle otherVoterWeVoteId={voterWeVoteId} /> : null }
+          <FriendToggle otherVoterWeVoteId={voterWeVoteId} showFriendsText />
         </>
       </Wrapper>
     );

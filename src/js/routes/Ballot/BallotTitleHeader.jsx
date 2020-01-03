@@ -10,9 +10,19 @@ const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled })
         <div className="ballot__header__title__cordova-text">
           <span>
             {electionName}
+            {!electionDayTextFormatted && (
+              <>
+                {' '}
+                Not Found
+              </>
+            )}
           </span>
-          <br />
-          <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+          {electionDayTextFormatted && (
+            <>
+              <br />
+              <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+            </>
+          )}
         </div>
       </h1>
     );
@@ -22,15 +32,27 @@ const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled })
         <Title>
           <ElectionName scrolled={scrolled}>
             {electionName}
+            {!electionDayTextFormatted && (
+              <>
+                {' '}
+                Not Found
+              </>
+            )}
           </ElectionName>
-          {' '}
-          <span className="d-none d-sm-inline">&mdash;</span>
-          {' '}
-          <ElectionDate scrolled={scrolled} className="u-gray-mid u-no-break">{electionDayTextFormatted}</ElectionDate>
+          {electionDayTextFormatted && (
+            <>
+              {' '}
+              <span className="d-none d-sm-inline">&mdash;</span>
+              {' '}
+              <ElectionDate scrolled={scrolled} className="u-gray-mid u-no-break">{electionDayTextFormatted}</ElectionDate>
+            </>
+          )}
         </Title>
-        <ShareButtonWrapper>
-          <BallotShareButton />
-        </ShareButtonWrapper>
+        {electionDayTextFormatted && (
+          <ShareButtonWrapper>
+            <BallotShareButton />
+          </ShareButtonWrapper>
+        )}
       </Wrapper>
     );
   } else if (electionName) {
@@ -39,13 +61,25 @@ const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled })
         <Title>
           <ElectionName>
             {electionName}
+            {!electionDayTextFormatted && (
+              <>
+                {' '}
+                Not Found
+              </>
+            )}
           </ElectionName>
-          {' '}
-          <span className="d-none d-sm-inline">&mdash;</span>
-          {' '}
-          <ElectionDate>{electionDayTextFormatted}</ElectionDate>
+          {electionDayTextFormatted && (
+            <>
+              {' '}
+              <span className="d-none d-sm-inline">&mdash;</span>
+              {' '}
+              <ElectionDate>{electionDayTextFormatted}</ElectionDate>
+            </>
+          )}
         </Title>
-        <BallotShareButton />
+        {electionDayTextFormatted && (
+          <BallotShareButton />
+        )}
       </>
     );
   } else {
