@@ -273,7 +273,7 @@ class VoterGuidePositionItem extends Component {
   render () {
     renderLog('VoterGuidePositionItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { position } = this.props;
-    console.log('VoterGuidePositionItem position:', position);
+    // console.log('VoterGuidePositionItem position:', position);
     const {
       // voterOpposesBallotItem,
       voterPositionIsPublic,
