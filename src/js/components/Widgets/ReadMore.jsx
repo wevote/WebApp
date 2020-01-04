@@ -112,6 +112,7 @@ export default class ReadMore extends Component {
         <span>
           <TextTruncate
             containerClassName={this.props.className}
+            element="span"
             line={numOfLines}
             truncateText="..."
             text={textToDisplay}

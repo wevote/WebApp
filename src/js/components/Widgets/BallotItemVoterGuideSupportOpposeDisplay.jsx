@@ -19,7 +19,7 @@ import StickyPopover from '../Ballot/StickyPopover';
 import { getPositionSummaryListForBallotItem, getPositionListSummaryIncomingDataStats } from '../../utils/positionFunctions';
 import PositionSummaryListForPopover from './PositionSummaryListForPopover';
 
-class BallotItemSupportOpposeCountDisplay extends Component {
+class BallotItemVoterGuideSupportOpposeDisplay extends Component {
   static closePositionsPopover () {
     document.body.click();
   }
@@ -64,7 +64,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   componentDidMount () {
-    // console.log('BallotItemSupportOpposeCountDisplay componentDidMount');
+    // console.log('BallotItemVoterGuideSupportOpposeDisplay componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
@@ -109,7 +109,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log('BallotItemSupportOpposeCountDisplay componentWillReceiveProps, nextProps: ', nextProps);
+    // console.log('BallotItemVoterGuideSupportOpposeDisplay componentWillReceiveProps, nextProps: ', nextProps);
     let ballotItemDisplayName;
     const { ballotItemWeVoteId } = nextProps;
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
@@ -391,18 +391,18 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error('BallotItemSupportOpposeCountDisplay caught error: ', `${error} with info: `, info);
+    console.error('BallotItemVoterGuideSupportOpposeDisplay caught error: ', `${error} with info: `, info);
   }
 
   goToBallotItemLinkLocal () {
-    // console.log("BallotItemSupportOpposeCountDisplay goToBallotItemLinkLocal");
+    // console.log("BallotItemVoterGuideSupportOpposeDisplay goToBallotItemLinkLocal");
     if (this.props.goToBallotItem) {
       this.props.goToBallotItem();
     }
   }
 
   render () {
-    renderLog('BallotItemSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('BallotItemVoterGuideSupportOpposeDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     const { ballotItemWeVoteId, classes, hideNumbersOfAllPositions } = this.props;
     const {
       ballotItemDisplayName,
@@ -417,7 +417,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       voterOpposesBallotItem,
       voterSupportsBallotItem,
     } = this.state;
-    // console.log('BallotItemSupportOpposeCountDisplay render, voterSupportsBallotItem/voterOpposesBallotItem:', voterSupportsBallotItem, voterOpposesBallotItem);
+    // console.log('BallotItemVoterGuideSupportOpposeDisplay render, voterSupportsBallotItem/voterOpposesBallotItem:', voterSupportsBallotItem, voterOpposesBallotItem);
 
     if (!ballotItemWeVoteId) return null;
 
@@ -954,4 +954,4 @@ const RenderedOrganizationsWrapper = styled.div`
   margin-top: 6px;
 `;
 
-export default withTheme(withStyles(styles)(BallotItemSupportOpposeCountDisplay));
+export default withTheme(withStyles(styles)(BallotItemVoterGuideSupportOpposeDisplay));

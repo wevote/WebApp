@@ -1,28 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
+import Card from '@material-ui/core/esm/Card';
+import BallotIcon from '@material-ui/icons/Ballot';
+import { withStyles } from '@material-ui/core/esm/styles';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
 import BallotActions from '../../actions/BallotActions';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
 import BallotStore from '../../stores/BallotStore';
 import EndorsementCard from '../Widgets/EndorsementCard';
 import FooterDoneBar from '../Navigation/FooterDoneBar';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import OrganizationPositionItem from './OrganizationPositionItem';
+import VoterGuidePositionItem from './VoterGuidePositionItem';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import ThisIsMeAction from '../Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterGuideRecommendationsFromOneOrganization from './VoterGuideRecommendationsFromOneOrganization';
 import VoterStore from '../../stores/VoterStore';
 import YourPositionsVisibilityMessage from './YourPositionsVisibilityMessage';
 
-export default class VoterGuidePositions extends Component {
+class VoterGuidePositions extends Component {
   static propTypes = {
     activeRoute: PropTypes.string,
+    classes: PropTypes.object,
     location: PropTypes.object,
     organizationWeVoteId: PropTypes.string.isRequired,
     params: PropTypes.object,
@@ -46,17 +51,18 @@ export default class VoterGuidePositions extends Component {
   }
 
   componentDidMount () {
+    const { organizationWeVoteId } = this.props;
+    console.log('VoterGuidePositions componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
     let googleCivicElectionIdFromUrl = this.props.params.google_civic_election_id || 0;
-    // console.log("googleCivicElectionIdFromUrl: ", googleCivicElectionIdFromUrl);
+    // console.log('googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
     let ballotReturnedWeVoteId = this.props.params.ballot_returned_we_vote_id || '';
     ballotReturnedWeVoteId = ballotReturnedWeVoteId === 'none' ? '' : ballotReturnedWeVoteId;
-    // console.log("this.props.params.ballot_returned_we_vote_id: ", this.props.params.ballot_returned_we_vote_id);
+    // console.log('this.props.params.ballot_returned_we_vote_id: ', this.props.params.ballot_returned_we_vote_id);
     let ballotLocationShortcut = this.props.params.ballot_location_shortcut || '';
     ballotLocationShortcut = ballotLocationShortcut.trim();
     ballotLocationShortcut = ballotLocationShortcut === 'none' ? '' : ballotLocationShortcut;
     let googleCivicElectionId = 0;
-    // console.log("componentDidMount, BallotStore.ballotProperties: ", BallotStore.ballotProperties);
     if (googleCivicElectionIdFromUrl !== 0) {
       googleCivicElectionIdFromUrl = parseInt(googleCivicElectionIdFromUrl, 10);
       // googleCivicElectionId = googleCivicElectionIdFromUrl;
@@ -64,7 +70,7 @@ export default class VoterGuidePositions extends Component {
       googleCivicElectionId = BallotStore.ballotProperties.google_civic_election_id;
     }
 
-    // console.log("ballotReturnedWeVoteId: ", ballotReturnedWeVoteId, ", ballotLocationShortcut:", ballotLocationShortcut, ", googleCivicElectionIdFromUrl: ", googleCivicElectionIdFromUrl);
+    // console.log('ballotReturnedWeVoteId: ', ballotReturnedWeVoteId, ', ballotLocationShortcut:', ballotLocationShortcut, ', googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
     if (ballotReturnedWeVoteId || ballotLocationShortcut || googleCivicElectionIdFromUrl) {
       if (ballotLocationShortcut !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
@@ -102,7 +108,7 @@ export default class VoterGuidePositions extends Component {
     }
     // DALE NOTE 2018-1-18 Commented this out because it will take voter away from voter guide. Needs further testing.
     // else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false) { // No ballot found
-    //   // console.log("if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false");
+    //   // console.log('if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false');
     //   historyPush("/settings/location");
     // }
 
@@ -113,7 +119,6 @@ export default class VoterGuidePositions extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    const { organizationWeVoteId } = this.props;
     if (organizationWeVoteId) {
       VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.electionId());
       // TODO: COMMENT OUT because they were added to OrganizationVoterGuideTabs?
@@ -304,6 +309,7 @@ export default class VoterGuidePositions extends Component {
 
   render () {
     renderLog('VoterGuidePositions');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes } = this.props;
     const { organization, organizationId, organizationWeVoteId, positionListForOneElection } = this.state;
     if (!organization) {
       // Wait until organization has been set to render
@@ -326,93 +332,167 @@ export default class VoterGuidePositions extends Component {
 
     // console.log("lookingAtSelf: ", lookingAtSelf);
     const electionName = BallotStore.currentBallotElectionName;
+    const electionDayText = BallotStore.currentBallotElectionDate;
+    const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format('MMM Do, YYYY')}</span> : <span />;
     const organizationName = capitalizeString(organization.organization_name);
     const titleText = `${organizationName} - We Vote`;
     const descriptionText = `See endorsements and opinions from ${organizationName} for the November election`;
     const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
     return (
-      <div className="opinions-followed__container">
+      <VoterGuidePositionsWrapper>
         {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
         <div className="card">
-          <ul className="card-child__list-group">
-            <h4 className="h4 card__additional-heading">
-              <span className="u-push--sm">{ electionName || 'This Election'}</span>
-              {/* {this.state.ballot_election_list.length > 1 ? <img src={cordovaDot("/img/global/icons/gear-icon.png")} className="d-print-none" role="button" onClick={this.toggleSelectBallotModal}
-              alt='view your ballots' /> : null} */}
-            </h4>
-            { lookingAtSelf ? (
-              <div className="u-margin-left--md u-push--md">
-                <BallotSearchResults
-                  clearSearchTextNow={this.state.clearSearchTextNow}
-                  googleCivicElectionId={this.state.currentGoogleCivicElectionId}
-                  organizationWeVoteId={this.state.voter.linked_organization_we_vote_id}
-                  searchUnderwayFunction={this.searchUnderway}
-                />
-              </div>
-            ) : null
-            }
-            { atLeastOnePositionFoundForThisElection && !this.state.searchIsUnderway ? (
-              <span>
-                { lookingAtSelf ?
-                  <YourPositionsVisibilityMessage positionList={positionListForOneElection} /> :
-                  null }
-                { positionListForOneElection.map(item => (
-                  <OrganizationPositionItem
-                    editMode={this.state.editMode}
-                    key={item.position_we_vote_id}
-                    organizationWeVoteId={organizationWeVoteId}
-                    position={item}
+          <div className="card-main">
+            <header className="ballot__header__group">
+              <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
+                { electionName ? (
+                  <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
+                    {electionName}
+                    {' '}
+                    <span className="d-none d-sm-inline">&mdash; </span>
+                    <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+                  </span>
+                ) : (
+                  <span className="u-push--sm">
+                         Loading Election...
+                  </span>
+                )}
+              </h1>
+            </header>
+          </div>
+        </div>
+
+        <div className="page-content-container">
+          <div className="container-fluid">
+            <VoterGuideEndorsementsWrapper>
+              { lookingAtSelf && (
+                <div className="u-margin-left--md u-push--md">
+                  <BallotSearchResults
+                    clearSearchTextNow={this.state.clearSearchTextNow}
+                    googleCivicElectionId={this.state.currentGoogleCivicElectionId}
+                    organizationWeVoteId={this.state.voter.linked_organization_we_vote_id}
+                    searchUnderwayFunction={this.searchUnderway}
                   />
-                )) }
+                </div>
+              )}
+              { !!(atLeastOnePositionFoundForThisElection && !this.state.searchIsUnderway) && (
+                <>
+                  {lookingAtSelf && <YourPositionsVisibilityMessage positionList={positionListForOneElection} />}
+                  {positionListForOneElection.map(item => (
+                    <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
+                      <VoterGuidePositionItem
+                        organizationWeVoteId={organizationWeVoteId}
+                        position={item}
+                      />
+                    </VoterGuidePositionItemWrapper>
+                  ))}
+                </>
+              )}
+              {/* If the positionListForOneElection comes back empty, display a message saying that there aren't any positions for this election. */}
+              { !atLeastOnePositionFoundForThisElection && (
+                <Card>
+                  <EmptyBallotMessageContainer>
+                    <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                    <EmptyBallotText>
+                      {organization.organization_name}
+                      {' '}
+                      has not made any endorsements for this election.
+                    </EmptyBallotText>
+                    {/*
+                    <Button
+                      classes={{ root: classes.ballotButtonRoot }}
+                      color="primary"
+                      variant="contained"
+                      // onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('addpositions')}
+                    >
+                      See All Endorsements
+                    </Button>
+                    */}
+                  </EmptyBallotMessageContainer>
+                </Card>
+              )}
+            </VoterGuideEndorsementsWrapper>
+            {this.state.searchIsUnderway ? (
+              <span className="d-block d-sm-none">
+                <FooterDoneBar doneFunction={this.clearSearch} doneButtonText="Clear Search" />
               </span>
             ) : null
             }
-            {/* If the positionListForOneElection comes back empty, display a message saying that there aren't any positions for this election. */}
-            { !atLeastOnePositionFoundForThisElection && (
-              <div className="card-child__content-text">
-                { lookingAtSelf ?
-                  null : (
-                    <div>
-                      There are no positions for this election in this voter guide yet.
-                      <br />
-                      <br />
-                      <VoterGuideRecommendationsFromOneOrganization organization_we_vote_id={this.state.organizationWeVoteId} />
-                      {/* TODO Add search all */}
-                      {/* TODO List all elections this organization has a voter guide for. */}
-                    </div>
-                  )}
-              </div>
-            )}
-          </ul>
+            <ExtraActionsWrapper>
+              <EndorsementCard
+                variant="primary"
+                buttonText="ENDORSEMENTS MISSING?"
+                organizationWeVoteId={organizationWeVoteId}
+                text={`Are there endorsements from ${organizationName} that you expected to see?`}
+                title="Endorsements Missing?"
+              />
+              {organization.organization_twitter_handle && (
+                <ThisIsMeAction
+                  twitterHandleBeingViewed={organization.organization_twitter_handle}
+                  nameBeingViewed={organization.organization_name}
+                  kindOfOwner="ORGANIZATION"
+                />
+              )}
+            </ExtraActionsWrapper>
+          </div>
         </div>
-
-        {this.state.searchIsUnderway ? (
-          <span className="d-block d-sm-none">
-            <FooterDoneBar doneFunction={this.clearSearch} doneButtonText="Clear Search" />
-          </span>
-        ) : null
-        }
-        <EndorsementCard
-          variant="primary"
-          buttonText="ENDORSEMENTS MISSING?"
-          organizationWeVoteId={organizationWeVoteId}
-          text={`Are there endorsements from ${organizationName} that you expected to see?`}
-          title="Endorsements Missing?"
-        />
-        {organization.organization_twitter_handle && (
-          <ThisIsMeAction
-            twitterHandleBeingViewed={organization.organization_twitter_handle}
-            nameBeingViewed={organization.organization_name}
-            kindOfOwner="ORGANIZATION"
-          />
-        )
-        }
-      </div>
+      </VoterGuidePositionsWrapper>
     );
   }
 }
+
+const styles = theme => ({
+  ballotIconRoot: {
+    width: 150,
+    height: 150,
+    color: 'rgb(171, 177, 191)',
+  },
+  ballotButtonRoot: {
+    width: 250,
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
+});
+
+const EmptyBallotMessageContainer = styled.div`
+  padding: 1em 2em;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+`;
+
+const EmptyBallotText = styled.p`
+  font-size: 16px;
+  text-align: center;
+  margin: 1em 2em;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin: 1em;
+  }
+`;
+
+const ExtraActionsWrapper = styled.div`
+  margin-bottom: 20px;
+  margin-left: -15px;
+  margin-right: -15px;
+`;
+
+const VoterGuideEndorsementsWrapper = styled.div`
+  margin-bottom: 10px;
+  margin-left: -15px;
+  margin-right: -15px;
+`;
+
+const VoterGuidePositionItemWrapper = styled.div`
+  margin-bottom: 10px;
+`;
+
+const VoterGuidePositionsWrapper = styled.div`
+`;
+
+export default withStyles(styles)(VoterGuidePositions);

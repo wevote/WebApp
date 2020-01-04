@@ -90,15 +90,20 @@ class BallotShareButton extends Component {
               </MenuInfo>
             </MenuFlex>
           </MenuItem>
-          <MenuSeperator />
+          <MenuSeparator />
           <MenuItem className={classes.menuItem} onClick={this.openShareModal}>
             <MenuFlex>
               <MenuIcon>
                 <Comment />
               </MenuIcon>
               <MenuText>
-                My Choice & Opinions
+                Your Ballot Opinions
               </MenuText>
+              <MenuInfo>
+                <Tooltip title="Share a link to the choices you've made for this election so that your friends can get ready to vote. This includes your public and friend's-only opinions." arrow enterDelay={300}>
+                  <i className="fas fa-info-circle" />
+                </Tooltip>
+              </MenuInfo>
             </MenuFlex>
           </MenuItem>
         </Menu>
@@ -173,9 +178,10 @@ const MenuText = styled.div`
 const MenuInfo = styled.div`
   margin-left: auto;
   margin-top: 1px;
+  padding-left: 10px;
 `;
 
-const MenuSeperator = styled.div`
+const MenuSeparator = styled.div`
   height: 2px;
   background: #efefef;
   width: 80%;

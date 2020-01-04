@@ -21,6 +21,17 @@ export default class OrganizationVoterGuideTabs extends Component {
     params: PropTypes.object.isRequired,
   };
 
+  // static getDerivedStateFromProps (props, state) {
+  //   const { defaultTabItem } = state;
+  //   // console.log('Friends getDerivedStateFromProps defaultTabItem:', defaultTabItem, ', this.props.params.tabItem:', props.params.tabItem);
+  //   // We only redirect when in mobile mode (when "displayFriendsTabs()" is true), a tab param has not been passed in, and we have a defaultTab specified
+  //   // This solves an edge case where you re-click the Friends Footer tab when you are in the friends section
+  //   if (displayFriendsTabs() && props.params.tabItem === undefined && defaultTabItem) {
+  //     historyPush(`/friends/${defaultTabItem}`);
+  //   }
+  //   return null;
+  // }
+
   constructor (props) {
     super(props);
     this.state = {
@@ -38,7 +49,7 @@ export default class OrganizationVoterGuideTabs extends Component {
   }
 
   componentDidMount () {
-    // console.log('OrganizationVoterGuideTabs, componentDidMount, organizationWeVoteId: ', this.props.organizationWeVoteId);
+    console.log('OrganizationVoterGuideTabs, componentDidMount, organizationWeVoteId: ', this.props.organizationWeVoteId);
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -47,9 +58,9 @@ export default class OrganizationVoterGuideTabs extends Component {
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.organizationWeVoteId);
     VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organizationWeVoteId, VoterStore.electionId());
     // Positions for this organization, for this voter / election
-    // OrganizationActions.positionListForOpinionMaker(this.props.organizationWeVoteId, true);
+    OrganizationActions.positionListForOpinionMaker(this.props.organizationWeVoteId, true); // Needed for friends
     // Positions for this organization, NOT including for this voter / election
-    // OrganizationActions.positionListForOpinionMaker(this.props.organizationWeVoteId, false, true);
+    OrganizationActions.positionListForOpinionMaker(this.props.organizationWeVoteId, false, true);
     // New call for all positions
     OrganizationActions.positionListForOpinionMaker(this.props.organizationWeVoteId, false, false);
 
@@ -67,7 +78,7 @@ export default class OrganizationVoterGuideTabs extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log('OrganizationVoterGuideTabs, componentWillReceiveProps, nextProps: ', nextProps);
+    // console.log('OrganizationVoterGuideTabs, componentWillReceiveProps');
     // When a new organization is passed in, update this component to show the new data
     // let different_election = this.state.current_google_civic_election_id !== VoterStore.electionId();
     const { organizationWeVoteId } = this.state;
@@ -236,7 +247,7 @@ export default class OrganizationVoterGuideTabs extends Component {
         break;
       case 'positions':
         voterGuideComponentToDisplay = (
-          <div>
+          <>
             { lookingAtSelf && !this.state.voter.is_signed_in ?
               <SettingsAccount /> :
               null }
@@ -246,7 +257,7 @@ export default class OrganizationVoterGuideTabs extends Component {
               organizationWeVoteId={organizationWeVoteId}
               params={this.props.params}
             />
-          </div>
+          </>
         );
         break;
       case 'following':

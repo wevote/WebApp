@@ -9,6 +9,7 @@ class ShareModalOption extends Component {
     icon: PropTypes.string,
     title: PropTypes.string,
     background: PropTypes.string,
+    copyLink: PropTypes.bool,
   };
 
   constructor (props) {

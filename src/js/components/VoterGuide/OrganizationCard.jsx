@@ -225,6 +225,7 @@ export default class OrganizationCard extends Component {
                     body={(
                       <span>
                         Website
+                        {' '}
                         <i className="fas fa-external-link-alt" />
                       </span>
                     )}

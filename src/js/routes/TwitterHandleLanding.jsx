@@ -16,7 +16,7 @@ import VoterStore from '../stores/VoterStore';
 
 export default class TwitterHandleLanding extends Component {
   static propTypes = {
-    active_route: PropTypes.string,
+    activeRoute: PropTypes.string,
     params: PropTypes.object,
     location: PropTypes.object.isRequired,
   };
@@ -32,7 +32,7 @@ export default class TwitterHandleLanding extends Component {
   componentDidMount () {
     // console.log("TwitterHandleLanding componentDidMount, this.props.params.twitter_handle: " + this.props.params.twitter_handle);
     this.setState({
-      activeRoute: this.props.active_route,
+      activeRoute: this.props.activeRoute,
       twitterHandle: this.props.params.twitter_handle,
     });
     TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
@@ -45,7 +45,7 @@ export default class TwitterHandleLanding extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log("TwitterHandleLanding componentWillReceiveProps");
     this.setState({
-      activeRoute: nextProps.active_route,
+      activeRoute: nextProps.activeRoute,
     });
     if (nextProps.params.twitter_handle && this.state.twitterHandle.toLowerCase() !== nextProps.params.twitter_handle.toLowerCase()) {
       // We need this test to prevent an infinite loop
@@ -148,7 +148,7 @@ export default class TwitterHandleLanding extends Component {
             {...this.props}
             location={this.props.location}
             params={this.props.params}
-            active_route={activeRoute}
+            activeRoute={activeRoute}
           />
         );
       }
