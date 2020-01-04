@@ -409,7 +409,7 @@ class SettingsVerifySecretCode extends Component {
                 onKeyDown={this.onDigit1Change}
                 onPaste={this.onPaste}
                 type="tel"
-                // value={this.state.digit1}
+                value={this.state.digit1}
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
