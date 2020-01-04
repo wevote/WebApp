@@ -134,13 +134,9 @@ class SettingsVerifySecretCode extends Component {
   onDigit1Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit1 === '') {
-      e.target.value = '';
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
-      if (e.target.value !== '') {
-        e.target.blur();
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+    if (e.keyCode !== 8 && regex.test(digit)) {
+      e.target.blur();
+      e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
         digit1: digit,
         errorToDisplay: false,
@@ -149,6 +145,8 @@ class SettingsVerifySecretCode extends Component {
       e.target.value = digit;
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    } else if (e.keyCode === 8 && this.state.digit1 === '') {
+      e.target.value = '';
     } else {
       e.target.value = '';
       this.setState({
@@ -162,15 +160,9 @@ class SettingsVerifySecretCode extends Component {
   onDigit2Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit2 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      this.setState({ digit1: '' });
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
-      if (e.target.value !== '') {
-        e.target.blur();
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+    if (e.keyCode !== 8 && regex.test(digit)) {
+      e.target.blur();
+      e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
         digit2: digit,
         errorToDisplay: false,
@@ -179,6 +171,10 @@ class SettingsVerifySecretCode extends Component {
       e.target.value = digit;
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    } else if (e.keyCode === 8 && this.state.digit2 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit2: '' });
     } else {
       e.target.value = '';
       this.setState({
@@ -192,15 +188,9 @@ class SettingsVerifySecretCode extends Component {
   onDigit3Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit3 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      this.setState({ digit2: '' });
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
-      if (e.target.value !== '') {
-        e.target.blur();
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+    if (e.keyCode !== 8 && regex.test(digit)) {
+      e.target.blur();
+      e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
         digit3: digit,
         errorToDisplay: false,
@@ -209,6 +199,10 @@ class SettingsVerifySecretCode extends Component {
       e.target.value = digit;
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    } else if (e.keyCode === 8 && this.state.digit3 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit2: '' });
     } else {
       e.target.value = '';
       this.setState({
@@ -222,15 +216,9 @@ class SettingsVerifySecretCode extends Component {
   onDigit4Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit4 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      this.setState({ digit3: '' });
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
-      if (e.target.value !== '') {
-        e.target.blur();
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+    if (e.keyCode !== 8 && regex.test(digit)) {
+      e.target.blur();
+      e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
         digit4: digit,
         errorToDisplay: false,
@@ -239,6 +227,10 @@ class SettingsVerifySecretCode extends Component {
       e.target.value = digit;
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    } else if (e.keyCode === 8 && this.state.digit4 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit3: '' });
     } else {
       e.target.value = '';
       this.setState({
@@ -252,15 +244,9 @@ class SettingsVerifySecretCode extends Component {
   onDigit5Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit5 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      this.setState({ digit4: '' });
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
-      if (e.target.value !== '') {
-        e.target.blur();
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+    if (e.keyCode !== 8 && regex.test(digit)) {
+      e.target.blur();
+      e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
         digit5: digit,
         errorToDisplay: false,
@@ -269,6 +255,10 @@ class SettingsVerifySecretCode extends Component {
       e.target.value = digit;
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    } else if (e.keyCode === 8 && this.state.digit5 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit4: '' });
     } else {
       e.target.value = '';
       this.setState({
@@ -282,17 +272,17 @@ class SettingsVerifySecretCode extends Component {
   onDigit6Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit6 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      this.setState({ digit5: '' });
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
+    if (e.keyCode !== 8 && regex.test(digit)) {
       this.setState({
         digit6: digit,
         errorToDisplay: false,
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
+    } else if (e.keyCode === 8 && this.state.digit6 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit5: '' });
     } else {
       e.target.value = '';
       this.setState({
@@ -419,7 +409,7 @@ class SettingsVerifySecretCode extends Component {
                 onKeyDown={this.onDigit1Change}
                 onPaste={this.onPaste}
                 type="tel"
-                value={this.state.digit1}
+                // value={this.state.digit1}
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
