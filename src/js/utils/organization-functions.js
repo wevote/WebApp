@@ -35,6 +35,20 @@ export function isSpeakerTypeOrganization (speakerType) {
   return isOrganization;
 }
 
+export function isSpeakerTypePrivateCitizen (speakerType) {
+  let isPrivateCitizen = false;
+  switch (speakerType) {
+    // These are defined in https://github.com/wevote/WeVoteServer/organization/models.py
+    case 'I': // INDIVIDUAL
+    case 'V': // VOTER
+      isPrivateCitizen = true;
+      break;
+    default:
+      break;
+  }
+  return isPrivateCitizen;
+}
+
 export function isSpeakerTypePublicFigure (speakerType) {
   let isPublicFigure = false;
   switch (speakerType) {

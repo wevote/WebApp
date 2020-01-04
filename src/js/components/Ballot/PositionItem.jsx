@@ -539,6 +539,7 @@ class PositionItem extends Component {
 }
 
 const PositionItemMobile = styled.li`
+  background: #eee;
   border-radius: 5px;
   margin: 16px;
   list-style: none;
@@ -622,7 +623,6 @@ const MobileItemEndorsementDisplay = styled.div`
 
 const MobileItemBody = styled.div`
   padding: 6px 6px 6px;
-  background: #f7f7f7;
   border-bottom-right-radius: 8px;
   border-top-right-radius: 8px;
   border-bottom-left-radius: 5px;
@@ -687,7 +687,7 @@ const PositionItemDesktop = styled.div`
   border-radius: 5px;
   list-style: none;
   padding: 6px 16px;
-  background: #f7f7f7;
+  background: #eee;
   flex: 1 1 0;
 `;
 
@@ -714,6 +714,7 @@ const DesktopItemName = styled.h4`
 
 const DesktopItemIssues = styled.div`
   margin: 0;
+  padding: 0;
 `;
 
 const DesktopItemEndorsementDisplay = styled.div`

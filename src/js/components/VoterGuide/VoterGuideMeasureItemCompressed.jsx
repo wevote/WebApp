@@ -236,10 +236,9 @@ class VoterGuideMeasureItemCompressed extends Component {
     const { classes } = this.props;
     let ballotDisplay = [];
     if (ballotItemDisplayName) {
+      ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
       ballotDisplay = ballotItemDisplayName.split(':');
     }
-    // measureSubtitle = capitalizeString(measureSubtitle);
-    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     return (
       <Card classes={{ root: classes.cardRoot }}>

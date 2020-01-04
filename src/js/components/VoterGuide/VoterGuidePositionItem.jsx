@@ -1,32 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import styled from 'styled-components';
+import Card from '@material-ui/core/esm/Card';
+import { withStyles } from '@material-ui/core/esm/styles';
+// import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
+import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import ImageHandler from '../ImageHandler';
-import ItemActionBar from '../Widgets/ItemActionBar';
-import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import OrganizationStore from '../../stores/OrganizationStore';
-import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
-import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
-import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
 import { capitalizeString } from '../../utils/textFormat';
+import ReadMore from '../Widgets/ReadMore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 
-export default class OrganizationPositionItem extends Component {
+class VoterGuidePositionItem extends Component {
   static propTypes = {
     ballotItemLink: PropTypes.string,
-    comment_text_off: PropTypes.bool,
-    editMode: PropTypes.bool,
+    classes: PropTypes.object,
     organizationWeVoteId: PropTypes.string.isRequired,
-    placement: PropTypes.string,
     position: PropTypes.object.isRequired,
-    popover_off: PropTypes.bool,
-    stance_display_off: PropTypes.bool,
-    turnOffLogo: PropTypes.bool,
-    turnOffName: PropTypes.bool,
   };
 
   constructor (props) {
@@ -42,7 +36,6 @@ export default class OrganizationPositionItem extends Component {
       signedInWithThisOrganization: false,
       signedInWithThisTwitterAccount: false,
       voterTextStatement: '',
-      transitioning: false,
       voter: {},
     };
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
@@ -50,6 +43,7 @@ export default class OrganizationPositionItem extends Component {
 
   componentDidMount () {
     const { organizationWeVoteId, position } = this.props;
+    const { ballot_item_we_vote_id: ballotItemWeVoteId } = position;
     const voter = VoterStore.getVoter();
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
     const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
@@ -71,9 +65,9 @@ export default class OrganizationPositionItem extends Component {
     let voterOpposesBallotItem;
     // If looking at your own page, update when supportProps change
     if (signedInWithThisTwitterAccount || signedInWithThisOrganization) {
-      // console.log('OrganizationPositionItem signedInWithThisTwitterAccount');
+      // console.log('VoterGuidePositionItem signedInWithThisTwitterAccount');
       // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
-      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(position.ballot_item_we_vote_id);
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
       if (ballotItemStatSheet) {
         ({ voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet);
       } else {
@@ -83,7 +77,7 @@ export default class OrganizationPositionItem extends Component {
         voterTextStatement = position.statement_text;
       }
     } else {
-      // console.log('OrganizationPositionItem NOT signedInWithThisTwitterAccount');
+      // console.log('VoterGuidePositionItem NOT signedInWithThisTwitterAccount');
       voterOpposesBallotItem = position.is_oppose;
       voterPositionIsPublic = position.is_public_position;
       voterSupportsBallotItem = position.is_support;
@@ -99,7 +93,6 @@ export default class OrganizationPositionItem extends Component {
       signedInWithThisOrganization,
       signedInWithThisTwitterAccount,
       voterTextStatement,
-      transitioning: false,
       voter,
     });
 
@@ -109,12 +102,13 @@ export default class OrganizationPositionItem extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log('OrganizationPositionItem componentWillReceiveProps');
+    // console.log('VoterGuidePositionItem componentWillReceiveProps');
     const { organizationWeVoteId, position } = nextProps;
+    const { ballot_item_we_vote_id: ballotItemWeVoteId } = position;
     this.setState({
       organizationWeVoteId,
     });
-    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(position.ballot_item_we_vote_id);
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
     if (ballotItemStatSheet) {
       const { voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
       this.setState({
@@ -188,7 +182,7 @@ export default class OrganizationPositionItem extends Component {
 
   onOrganizationStoreChange () {
     const { organizationWeVoteId, voter } = this.state;
-    // console.log('OrganizationPositionItem onOrganizationStoreChange, organization.organization_we_vote_id: ', organization.organization_we_vote_id);
+    // console.log('VoterGuidePositionItem onOrganizationStoreChange, organization.organization_we_vote_id: ', organization.organization_we_vote_id);
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
@@ -206,6 +200,7 @@ export default class OrganizationPositionItem extends Component {
   onSupportStoreChange () {
     const { position } = this.props;
     const { organizationWeVoteId, signedInWithThisTwitterAccount, signedInWithThisOrganization } = this.state;
+    const { ballot_item_we_vote_id: ballotItemWeVoteId } = position;
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
@@ -222,9 +217,9 @@ export default class OrganizationPositionItem extends Component {
     let voterOpposesBallotItem;
     // If looking at your own page, update when supportProps change
     if (signedInWithThisTwitterAccount || signedInWithThisOrganization) {
-      // console.log('OrganizationPositionItem signedInWithThisTwitterAccount');
+      // console.log('VoterGuidePositionItem signedInWithThisTwitterAccount');
       // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
-      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(position.ballot_item_we_vote_id);
+      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
       if (ballotItemStatSheet) {
         ({ voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet);
       } else {
@@ -234,7 +229,7 @@ export default class OrganizationPositionItem extends Component {
         voterTextStatement = position.statement_text;
       }
     } else {
-      // console.log('OrganizationPositionItem NOT signedInWithThisTwitterAccount');
+      // console.log('VoterGuidePositionItem NOT signedInWithThisTwitterAccount');
       voterOpposesBallotItem = position.is_oppose;
       voterPositionIsPublic = position.is_public_position;
       voterSupportsBallotItem = position.is_support;
@@ -245,7 +240,6 @@ export default class OrganizationPositionItem extends Component {
       voterPositionIsPublic,
       voterSupportsBallotItem,
       voterTextStatement,
-      transitioning: false,
     });
   }
 
@@ -277,156 +271,263 @@ export default class OrganizationPositionItem extends Component {
   }
 
   render () {
-    renderLog('OrganizationPositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    // console.log('OrganizationPositionItem');
-    const { comment_text_off: commentTextOff, position, stance_display_off: stanceDisplayOff } = this.props;
+    renderLog('VoterGuidePositionItem');  // Set LOG_RENDER_EVENTS to log all renders
+    const { position } = this.props;
+    // console.log('VoterGuidePositionItem position:', position);
     const {
-      voterOpposesBallotItem,
+      // voterOpposesBallotItem,
       voterPositionIsPublic,
-      voterSupportsBallotItem,
+      // voterSupportsBallotItem,
       signedInWithThisFacebookAccount,
       signedInWithThisOrganization,
       signedInWithThisTwitterAccount,
-      voterTextStatement,
+      // voterTextStatement,
     } = this.state;
+    const { ballot_item_we_vote_id: ballotItemWeVoteId, kind_of_ballot_item: kindOfBallotItem, statement_text: statementText } = position;
+    let { ballot_item_display_name: ballotItemDisplayName } = position;
 
-    if (!position.ballot_item_we_vote_id) {
-      // console.log('OrganizationPositionItem cannot render yet -- missing position.ballot_item_we_vote_id');
+    if (!ballotItemWeVoteId) {
+      // console.log('VoterGuidePositionItem cannot render yet -- missing ballotItemWeVoteId');
       return null;
     }
 
     let { ballotItemLink } = this.props;
     if (!ballotItemLink) {
       // TwitterHandle-based link
-      const ballotItemUrl = position.kind_of_ballot_item === 'MEASURE' ? '/measure/' : '/candidate/';
+      const ballotItemUrl = String(kindOfBallotItem) === 'MEASURE' ? '/measure/' : '/candidate/';
       // We are turning off links to twitter pages until we get politician pages working
-      // let ballotItemLink = position.ballot_item_twitter_handle ? '/' + position.ballot_item_twitter_handle : ballotItemUrl + position.ballot_item_we_vote_id;
-      ballotItemLink = ballotItemUrl + position.ballot_item_we_vote_id;
+      // let ballotItemLink = position.ballot_item_twitter_handle ? '/' + position.ballot_item_twitter_handle : ballotItemUrl + ballotItemWeVoteId;
+      ballotItemLink = ballotItemUrl + ballotItemWeVoteId;
     }
-    let positionDescription = '';
-    const isCandidate = position.kind_of_ballot_item === 'CANDIDATE';
-    let ballotItemDisplayName = '';
-    if (position.ballot_item_display_name) {
-      ballotItemDisplayName = capitalizeString(position.ballot_item_display_name);
-    }
-
-    const isOnBallotItemPage = false;
-    if (position.vote_smart_rating) {
-      // console.log('OrganizationPositionItem PositionRatingSnippet');
-      positionDescription = (
-        <PositionRatingSnippet
-          {...position}
-        />
-      );
-    } else if (voterSupportsBallotItem || voterOpposesBallotItem) {
-      // console.log('OrganizationPositionItem PositionSupportOpposeSnippet');
-      // We overwrite the 'voterTextStatement' passed in with position
-      positionDescription = (
-        <PositionSupportOpposeSnippet
-          {...position}
-          statement_text={voterTextStatement}
-          is_support={voterSupportsBallotItem}
-          is_oppose={voterOpposesBallotItem}
-          is_on_ballot_item_page={isOnBallotItemPage}
-          stance_display_off={stanceDisplayOff}
-          comment_text_off={commentTextOff}
-        />
-      );
+    const isCandidate = String(kindOfBallotItem) === 'CANDIDATE';
+    if (ballotItemDisplayName) {
+      ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
     } else {
-      // console.log('OrganizationPositionItem PositionInformationOnlySnippet');
-      positionDescription = (
-        <PositionInformationOnlySnippet
-          {...position}
-          is_on_ballot_item_page={isOnBallotItemPage}
-          stance_display_off={stanceDisplayOff}
-          comment_text_off={commentTextOff}
-        />
-      );
+      ballotItemDisplayName = '';
     }
 
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
     let contestOfficeName;
     let politicalParty;
-    if (position.kind_of_ballot_item === 'CANDIDATE') {
+    let ballotDisplay = [];
+    if (isCandidate) {
       contestOfficeName = position.contest_office_name;
       politicalParty = position.ballot_item_political_party;
+    } else {
+      ballotDisplay = ballotItemDisplayName.split(':');
     }
     return (
-      <li className="position-item card-child">
-        { isCandidate && !this.props.turnOffLogo && (
-          <div className="card-child__media-object-anchor">
-            <Link
-              to={ballotItemLink}
-              className="u-no-underline"
-              onlyActiveOnIndex={false}
-            >
-              <ImageHandler
-                className="card-child__avatar--round"
-                sizeClassName="icon-lg "
-                imageUrl={position.ballot_item_image_url_https_large}
-                alt="candidate-photo"
-                kind_of_ballot_item={position.kind_of_ballot_item}
-              />
-            </Link>
-          </div>
-        )}
-        <div className="card-child__media-object-content">
-          <div className="card-child__content">
-            {!this.props.turnOffName ? (
-              <div className="u-flex items-center">
-                <Link
-                  to={ballotItemLink}
-                  onlyActiveOnIndex={false}
-                  className="position-rating__candidate-name u-flex-auto"
-                >
-                  {ballotItemDisplayName}
-                </Link>
-                { (signedInWithThisTwitterAccount ||
-                  signedInWithThisOrganization ||
-                  signedInWithThisFacebookAccount) &&
-                  <FriendsOnlyIndicator isFriendsOnly={!voterPositionIsPublic} />
-                }
-              </div>
-            ) : null
-            }
-            { position.kind_of_ballot_item === 'CANDIDATE' && contestOfficeName !== undefined ? (
-              <OfficeNameText
-                politicalParty={politicalParty}
-                contestOfficeName={contestOfficeName}
-              />
-            ) : null
-            }
-            {/* show explicit position, if available, otherwise show rating */}
-            { positionDescription }
-            { this.props.editMode ? (
-              <div>
-                <ItemActionBar
-                  ballotItemWeVoteId={position.ballot_item_we_vote_id}
-                  ballotItemDisplayName={ballotItemDisplayName}
-                  commentButtonHide
-                  externalUniqueId={`organizationPositionItem-${position.ballot_item_we_vote_id}`}
-                  shareButtonHide
-                  transitioning={this.state.transitioning}
-                  type={position.kind_of_ballot_item}
-                  togglePositionStatementFunction={this.togglePositionStatement}
-                />
-                { this.state.hidePositionStatement ?
-                  null : (
-                    <ItemPositionStatementActionBar
-                      ballotItemWeVoteId={position.ballot_item_we_vote_id}
-                      ballotItemDisplayName={position.ballot_item_display_name}
-                      commentEditModeOn
-                      externalUniqueId="organizationPositionItem"
-                      transitioning={this.state.transitioning}
-                      type={position.kind_of_ballot_item}
+      <Card>
+        <BallotItemPadding>
+          <BallotItemWrapper className="card-main__media-object">
+            <BallotItemInfo>
+              { isCandidate ? (
+                <>
+                  <BallotItemImageWrapper>
+                    <ImageHandler
+                      className="card-main__avatar"
+                      sizeClassName="icon-lg "
+                      imageUrl={position.ballot_item_image_url_https_large}
+                      alt="candidate-photo"
+                      kind_of_ballot_item={kindOfBallotItem}
                     />
-                  )}
-              </div>
-            ) : null
-            }
-          </div>
-        </div>
-      </li>
+                  </BallotItemImageWrapper>
+                  <Candidate>
+                    <h2 className="card-main__display-name">
+                      {ballotItemDisplayName}
+                    </h2>
+                    {/* !!(twitterFollowersCount) && (
+                      <span
+                        className="u-show-desktop twitter-followers__badge u-cursor--pointer"
+                      >
+                        <span className="fab fa-twitter fa-sm" />
+                        <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
+                      </span>
+                    ) */}
+                    { (signedInWithThisTwitterAccount ||
+                     signedInWithThisOrganization ||
+                     signedInWithThisFacebookAccount) &&
+                     <FriendsOnlyIndicator isFriendsOnly={!voterPositionIsPublic} />
+                    }
+                    <span className="u-show-desktop">
+                      { !!(contestOfficeName) && (
+                        <p>
+                          <OfficeNameText
+                            contestOfficeName={contestOfficeName}
+                            politicalParty={politicalParty}
+                            showOfficeName
+                          />
+                        </p>
+                      )}
+                    </span>
+                  </Candidate>
+                </>
+              ) : (
+                <>
+                  <Title>
+                    {ballotDisplay[0]}
+                  </Title>
+                  <SubTitle>{ballotDisplay[1]}</SubTitle>
+                </>
+              )}
+            </BallotItemInfo>
+            <BallotItemSupportOpposeCountDisplayWrapper>
+              <BallotItemSupportOpposeCountDisplay
+                ballotItemWeVoteId={ballotItemWeVoteId}
+                hideNumbersOfAllPositions
+              />
+            </BallotItemSupportOpposeCountDisplayWrapper>
+            {/* Waiting to update BallotItemVoterGuideSupportOpposeDisplay
+            <BallotItemSupportOpposeCountDisplayWrapper>
+              <BallotItemVoterGuideSupportOpposeDisplay
+                ballotItemWeVoteId={ballotItemWeVoteId}
+                hideNumbersOfAllPositions
+              />
+            </BallotItemSupportOpposeCountDisplayWrapper>
+            */}
+            {' '}
+          </BallotItemWrapper>
+          {' '}
+          <span className="u-show-mobile">
+            { contestOfficeName && (
+              <p>
+                <OfficeNameText
+                  contestOfficeName={contestOfficeName}
+                  politicalParty={politicalParty}
+                  showOfficeName
+                />
+              </p>
+            )}
+            {statementText && (
+              <MobileItemDescription>
+                {position.speaker_image_url_https_tiny && (
+                  <BallotItemImageWrapper>
+                    <ImageHandler
+                      sizeClassName="icon-sm "
+                      imageUrl={position.speaker_image_url_https_tiny}
+                      alt="organization-photo"
+                      kind_of_ballot_item="ORGANIZATION"
+                    />
+                  </BallotItemImageWrapper>
+                )}
+                <ReadMore
+                  text_to_display={statementText}
+                  num_of_lines={4}
+                />
+              </MobileItemDescription>
+            )}
+          </span>
+          <span className="u-show-desktop-tablet">
+            {statementText && (
+              <DesktopItemDescription>
+                {position.speaker_image_url_https_tiny && (
+                  <BallotItemImageWrapper>
+                    <ImageHandler
+                      sizeClassName="icon-sm "
+                      imageUrl={position.speaker_image_url_https_tiny}
+                      alt="organization-photo"
+                      kind_of_ballot_item="ORGANIZATION"
+                    />
+                  </BallotItemImageWrapper>
+                )}
+                <ReadMore
+                  text_to_display={statementText}
+                  num_of_lines={3}
+                />
+              </DesktopItemDescription>
+            )}
+          </span>
+        </BallotItemPadding>
+      </Card>
     );
   }
 }
+
+const styles = theme => ({
+  ballotIconRoot: {
+    width: 150,
+    height: 150,
+    color: 'rgb(171, 177, 191)',
+  },
+  ballotButtonRoot: {
+    width: 250,
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
+});
+
+const BallotItemInfo = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-flow: row wrap;
+`;
+
+const BallotItemImageWrapper = styled.span`
+  padding-right: 8px;
+`;
+
+const BallotItemPadding = styled.div`
+  padding: 15px;
+  width: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 100%;
+  }
+`;
+
+const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+  cursor: pointer;
+`;
+
+const BallotItemWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+`;
+
+const Candidate = styled.div`
+`;
+
+const DesktopItemDescription = styled.div`
+  // display: flex;
+  // flex-flow: row nowrap;
+  font-size: 16px;
+  border-radius: 5px;
+  list-style: none;
+  padding: 6px;
+  background: #eee;
+  flex: 1 1 0;
+`;
+
+const MobileItemDescription = styled.div`
+  // display: flex;
+  // flex-flow: row nowrap;
+  font-size: 16px;
+  border-radius: 2px;
+  list-style: none;
+  padding: 4px;
+  background: #eee;
+  flex: 1 1 0;
+`;
+
+const SubTitle = styled.h3`
+  font-size: 16px;
+  font-weight: 300;
+  color: #555;
+  margin-top: .6rem;
+  width: 135%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    font-size: 13px;
+  }
+`;
+
+const Title = styled.h1`
+  font-size: 18px;
+  font-weight: bold;
+  margin: .1rem 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    font-size: 16px;
+  }
+`;
+
+export default withStyles(styles)(VoterGuidePositionItem);

@@ -5,7 +5,7 @@ import Button from '@material-ui/core/esm/Button';
 import { Link } from 'react-router';
 import { historyPush } from '../../utils/cordovaUtils';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
-import { isSpeakerTypeIndividual } from '../../utils/organization-functions';
+import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import FollowToggle from '../Widgets/FollowToggle';
@@ -75,7 +75,7 @@ class OrganizationVoterGuideCard extends Component {
           <h3 className="card-main__display-name">{displayName}</h3>
         </Link>
         { organizationTwitterHandle && (
-          <span>
+          <TwitterName>
             <span>
               @
               {organizationTwitterHandle}
@@ -87,9 +87,8 @@ class OrganizationVoterGuideCard extends Component {
                 {numberWithCommas(twitterFollowersCount)}
               </span>
             )}
-          </span>
+          </TwitterName>
         )}
-        <br />
         { isVoterOwner && (
           <Button
             color="primary"
@@ -102,8 +101,10 @@ class OrganizationVoterGuideCard extends Component {
         )}
         { !isVoterOwner && (
           <>
-            <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
-            { isSpeakerTypeIndividual(organizationType) && (
+            <FollowToggleWrapper>
+              <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
+            </FollowToggleWrapper>
+            { isSpeakerTypePrivateCitizen(organizationType) && (
               <FriendToggleWrapper>
                 <FriendToggle displayFullWidth otherVoterWeVoteId={linkedVoterWeVoteId} showFriendsText />
               </FriendToggleWrapper>
@@ -111,16 +112,20 @@ class OrganizationVoterGuideCard extends Component {
           </>
         )}
         { twitterDescriptionMinusName && !this.props.turnOffDescription ? (
-          <ParsedTwitterDescription
-            twitter_description={twitterDescriptionMinusName}
-          />
+          <TwitterDescription>
+            <ParsedTwitterDescription
+              twitter_description={twitterDescriptionMinusName}
+            />
+          </TwitterDescription>
         ) :
           <p className="card-main__description" />
         }
-        <IssuesByOrganizationDisplayList
-          organizationWeVoteId={organizationWeVoteId}
-          placement="bottom"
-        />
+        <IssuesWrapper>
+          <IssuesByOrganizationDisplayList
+            organizationWeVoteId={organizationWeVoteId}
+            placement="bottom"
+          />
+        </IssuesWrapper>
         { organizationWebsite && (
           <div>
             <span className="u-wrap-links">
@@ -139,14 +144,6 @@ class OrganizationVoterGuideCard extends Component {
           </div>
         )}
         {/* 5 of your friends follow Organization Name<br /> */}
-
-        {/* twitter_followers_count ?
-          <span className="twitter-followers__badge">
-              <span className="fab fa-twitter twitter-followers__icon" />
-            {numberWithCommas(twitter_followers_count)}
-            </span> :
-          null
-        */}
       </CardMain>
     );
   }
@@ -159,7 +156,15 @@ const CardMain = styled.div`
   position: relative;
 `;
 
+const FollowToggleWrapper = styled.div`
+  margin-top: 10px;
+`;
+
 const FriendToggleWrapper = styled.div`
+  margin-top: 10px;
+`;
+
+const IssuesWrapper = styled.div`
   margin-top: 10px;
 `;
 
@@ -168,6 +173,13 @@ const ProfileAvatar = styled.div`
   justify-content: center;
   background: transparent;
   position: relative;
+`;
+
+const TwitterDescription = styled.div`
+  margin-top: 10px;
+`;
+
+const TwitterName = styled.div`
 `;
 
 export default OrganizationVoterGuideCard;

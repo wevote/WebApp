@@ -21,7 +21,7 @@ const AUTO_FOLLOW = 'af';
 
 export default class OrganizationVoterGuide extends Component {
   static propTypes = {
-    active_route: PropTypes.string,
+    activeRoute: PropTypes.string,
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
   };
@@ -86,7 +86,7 @@ export default class OrganizationVoterGuide extends Component {
     // console.log('VoterStore.getAddressObject(): ', VoterStore.getAddressObject());
     const voter = VoterStore.getVoter();
     this.setState({
-      activeRoute: this.props.active_route || '',
+      activeRoute: this.props.activeRoute || '',
       linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
       organizationWeVoteId,
       voter,
@@ -132,10 +132,10 @@ export default class OrganizationVoterGuide extends Component {
     }
 
     // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
-    if (nextProps.active_route) {
-      // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.active_route: ', nextProps.active_route);
+    if (nextProps.activeRoute) {
+      // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.activeRoute: ', nextProps.activeRoute);
       this.setState({
-        activeRoute: nextProps.active_route || '',
+        activeRoute: nextProps.activeRoute || '',
       });
     }
   }
@@ -328,9 +328,11 @@ export default class OrganizationVoterGuide extends Component {
                       <span>Edit Your Endorsements</span>
                     </Button>
                   </div>
-                ) :
-                  <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
-                }
+                ) : (
+                  <FollowToggleMobileWrapper>
+                    <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
+                  </FollowToggleMobileWrapper>
+                )}
               </div>
             </div>
           </div>
@@ -390,4 +392,8 @@ const CardContainer = styled.div`
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     margin-top: ${({ bannerUrl }) => (bannerUrl ? '-203px' : '0')};
   }
+`;
+
+const FollowToggleMobileWrapper = styled.div`
+  margin-top: 10px;
 `;

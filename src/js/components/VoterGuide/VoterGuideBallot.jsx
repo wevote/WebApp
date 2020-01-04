@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import moment from 'moment';
+import styled from 'styled-components';
+import Card from '@material-ui/core/esm/Card';
+import BallotIcon from '@material-ui/icons/Ballot';
 import { withStyles } from '@material-ui/core/esm/styles';
 import AddressBox from '../AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -93,6 +96,8 @@ class VoterGuideBallot extends Component {
   }
 
   componentDidMount () {
+    const { organizationWeVoteId } = this.props;
+    // console.log('VoterGuideBallot componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
     // console.log('VoterGuideBallot componentDidMount, ballotBaseUrl', ballotBaseUrl);
 
@@ -207,17 +212,17 @@ class VoterGuideBallot extends Component {
 
     const { location } = this.props;
     const { pathname } = location;
-    // console.log('VoterGuideBallot organizationWeVoteId:', this.props.organizationWeVoteId);
+    // console.log('VoterGuideBallot organizationWeVoteId:', organizationWeVoteId);
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
       ballotReturnedWeVoteId,
       ballotLocationShortcut,
       googleCivicElectionId: parseInt(googleCivicElectionId, 10),
       location,
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
-      organizationWeVoteId: this.props.organizationWeVoteId,
+      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
+      organizationWeVoteId,
       pathname,
-      voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organizationWeVoteId, VoterStore.electionId()),
+      voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, VoterStore.electionId()),
     });
 
     const { hash } = location;
@@ -662,6 +667,7 @@ class VoterGuideBallot extends Component {
   render () {
     renderLog('VoterGuideBallot');  // Set LOG_RENDER_EVENTS to log all renders
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
+    const { classes } = this.props;
     const {
       ballotWithAllItems, ballotWithOrganizationEndorsements, ballotWithOrganizationEndorsementsLength, organization, organizationWeVoteId, voterIsAdmin, voterIsVerifiedVolunteer,
     } = this.state;
@@ -787,8 +793,8 @@ class VoterGuideBallot extends Component {
             <div className="row ballot__body-vg">
               <div className="col-xs-12 col-md-12">
                 {/* The ballot items the organization wants to promote */}
-                <div>
-                  {ballotWithOrganizationEndorsementsLength > 0 && (
+                <VoterGuideBallotWrapper>
+                  {ballotWithOrganizationEndorsementsLength > 0 ? (
                     <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
                       {ballotWithOrganizationEndorsements.map(item => (
                         <VoterGuideBallotItemCompressed
@@ -801,70 +807,91 @@ class VoterGuideBallot extends Component {
                         />
                       ))}
                     </div>
+                  ) : (
+                    <Card>
+                      <EmptyBallotMessageContainer>
+                        <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                        <EmptyBallotText>
+                          {organization.organization_name}
+                          {' '}
+                          has not made any endorsements on your ballot.
+                        </EmptyBallotText>
+                        {/*
+                        <Button
+                          classes={{ root: classes.ballotButtonRoot }}
+                          color="primary"
+                          variant="contained"
+                          // onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('addpositions')}
+                        >
+                          See All Endorsements
+                        </Button>
+                        */}
+                      </EmptyBallotMessageContainer>
+                    </Card>
+                  )
+                }
+                </VoterGuideBallotWrapper>
+                <ExtraActionsWrapper>
+                  <EndorsementCard
+                    variant="primary"
+                    buttonText="ENDORSEMENTS MISSING?"
+                    organizationWeVoteId={organizationWeVoteId}
+                    text={`Are there endorsements from ${organization.organization_name} that you expected to see?`}
+                    title="Endorsements Missing?"
+                  />
+                  {organization.organization_twitter_handle && (
+                    <ThisIsMeAction
+                      twitterHandleBeingViewed={organization.organization_twitter_handle}
+                      nameBeingViewed={organization.organization_name}
+                      kindOfOwner="ORGANIZATION"
+                    />
                   )}
-                </div>
-                <EndorsementCard
-                  variant="primary"
-                  buttonText="ENDORSEMENTS MISSING?"
-                  organizationWeVoteId={organizationWeVoteId}
-                  text={`Are there endorsements from ${organization.organization_name} that you expected to see?`}
-                  title="Endorsements Missing?"
-                />
-                {organization.organization_twitter_handle && (
-                  <ThisIsMeAction
-                    twitterHandleBeingViewed={organization.organization_twitter_handle}
-                    nameBeingViewed={organization.organization_name}
-                    kindOfOwner="ORGANIZATION"
+
+                  {/* Show links to this candidate in the admin tools */}
+                  { (voterIsAdmin || voterIsVerifiedVolunteer) && organizationWeVoteId && (
+                    <span className="u-wrap-links d-print-none">
+                      <span>Admin:</span>
+                      <OpenExternalWebSite
+                        url={organizationAdminUrl}
+                        target="_blank"
+                        body={(
+                          <span>
+                            Open this organization in Admin interface (&quot;
+                            {organizationWeVoteId}
+                            &quot;)
+                          </span>
+                        )}
+                      />
+                    </span>
+                  )}
+                  {/* Show links to the polling location this was copied from in the admin tools */}
+                  { !!(sourcePollingLocationWeVoteId && (voterIsAdmin || voterIsVerifiedVolunteer)) && (
+                    <div className="u-wrap-links d-print-none">
+                      Admin link:
+                      <OpenExternalWebSite
+                        url={ballotReturnedAdminEditUrl}
+                        target="_blank"
+                        body={(
+                          <span>
+                          This ballot copied from polling location &quot;
+                            {sourcePollingLocationWeVoteId}
+                            &quot;
+                          </span>
+                        )}
+                      />
+                    </div>
+                  )}
+                </ExtraActionsWrapper>
+                {this.state.showSelectBallotModal && (
+                  <SelectBallotModal
+                    ballotElectionList={this.state.ballotElectionList}
+                    ballotBaseUrl={ballotBaseUrl}
+                    location={this.props.location}
+                    pathname={this.props.pathname}
+                    show={this.state.showSelectBallotModal}
+                    toggleFunction={this.toggleSelectBallotModal}
                   />
                 )}
-
-                {/* Show links to this candidate in the admin tools */}
-                { (voterIsAdmin || voterIsVerifiedVolunteer) && organizationWeVoteId && (
-                  <span className="u-wrap-links d-print-none">
-                    <span>Admin:</span>
-                    <OpenExternalWebSite
-                      url={organizationAdminUrl}
-                      target="_blank"
-                      body={(
-                        <span>
-                          Open this organization in Admin interface (&quot;
-                          {organizationWeVoteId}
-                          &quot;)
-                        </span>
-                      )}
-                    />
-                  </span>
-                )}
-                {/* Show links to the polling location this was copied from in the admin tools */}
-                { sourcePollingLocationWeVoteId && (voterIsAdmin || voterIsVerifiedVolunteer) ? (
-                  <div className="u-wrap-links d-print-none">
-                    Admin link:
-                    <OpenExternalWebSite
-                      url={ballotReturnedAdminEditUrl}
-                      target="_blank"
-                      body={(
-                        <span>
-                        This ballot copied from polling location &quot;
-                          {sourcePollingLocationWeVoteId}
-                          &quot;
-                        </span>
-                      )}
-                    />
-                  </div>
-                ) : null
-                }
-                {
-                  this.state.showSelectBallotModal ? (
-                    <SelectBallotModal
-                      ballotElectionList={this.state.ballotElectionList}
-                      ballotBaseUrl={ballotBaseUrl}
-                      location={this.props.location}
-                      pathname={this.props.pathname}
-                      show={this.state.showSelectBallotModal}
-                      toggleFunction={this.toggleSelectBallotModal}
-                    />
-                  ) : null
-                }
               </div>
             </div>
           </div>
@@ -894,6 +921,20 @@ const styles = theme => ({
     background: theme.palette.primary.main,
     color: 'white',
   },
+  ballotIconRoot: {
+    width: 150,
+    height: 150,
+    color: 'rgb(171, 177, 191)',
+  },
+  ballotButtonIconRoot: {
+    marginRight: 8,
+  },
+  ballotButtonRoot: {
+    width: 250,
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
   chipRoot: {
     height: 26,
     [theme.breakpoints.down('md')]: {
@@ -912,5 +953,33 @@ const styles = theme => ({
     },
   },
 });
+
+const EmptyBallotMessageContainer = styled.div`
+  padding: 1em 2em;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+`;
+
+const EmptyBallotText = styled.p`
+  font-size: 16px;
+  text-align: center;
+  margin: 1em 2em;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin: 1em;
+  }
+`;
+
+const ExtraActionsWrapper = styled.div`
+  margin-bottom: 20px;
+  margin-left: -15px;
+  margin-right: -15px;
+`;
+
+const VoterGuideBallotWrapper = styled.div`
+  margin-bottom: 10px;
+  margin-left: -15px;
+  margin-right: -15px;
+`;
 
 export default withStyles(styles)(VoterGuideBallot);

@@ -67,8 +67,10 @@ export default class Values extends Component {
     let publicFiguresBlockToDisplay = null;
     const publicFiguresFollowedCount = 0;
     if (publicFiguresFollowedCount > 0) {
+      // console.log('PublicFiguresFollowedPreview');
       publicFiguresBlockToDisplay = <PublicFiguresFollowedPreview />;
     } else {
+      // console.log('PublicFiguresToFollowPreview');
       publicFiguresBlockToDisplay = <PublicFiguresToFollowPreview />;
     }
 

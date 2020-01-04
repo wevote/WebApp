@@ -237,7 +237,7 @@ const FollowIssueToggleContainer = styled.div`
 
 const IssuesByOrganization = styled.div`
   width: ${props => (props.fullWidth ? '100%' : '85%')};
-  padding: 8px 0;
+  padding: 8px 0 0 0;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: ${props => (props.fullWidth ? '100%' : '90%')};
   }
