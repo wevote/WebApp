@@ -31,8 +31,14 @@ class StickyPopover extends Component {
   }
 
   componentWillUnmount () {
-    clearTimeout(this.enterTimeoutId);
-    clearTimeout(this.leaveTimeoutId);
+    if (this.enterTimeoutId) {
+      clearTimeout(this.enterTimeoutId);
+      this.enterTimeoutId = null;
+    }
+    if (this.leaveTimeoutId) {
+      clearTimeout(this.leaveTimeoutId);
+      this.leaveTimeoutId = null;
+    }
   }
 
   onMouseEnterTarget () {

@@ -1,4 +1,4 @@
-// December 2018:  This is aan opensource file that we reuse, so no lint corrections are appropriate
+// December 2018:  This is an open source file that we reuse, so no lint corrections are appropriate
 /* eslint no-useless-escape: 0 */
 
 /*

@@ -7,17 +7,18 @@ import Tab from '@material-ui/core/esm/Tab';
 import Info from '@material-ui/icons/Info';
 import Tooltip from '@material-ui/core/esm/Tooltip';
 import { withStyles } from '@material-ui/core/esm/styles';
+import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
-import FriendActions from '../actions/FriendActions';
-import FriendStore from '../stores/FriendStore';
-import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import FirstAndLastNameRequiredAlert from '../components/Widgets/FirstAndLastNameRequiredAlert';
-import FriendsCurrentPreview from '../components/Friends/FriendsCurrentPreview';
+import FriendActions from '../actions/FriendActions';
 import FriendInvitationsSentByMePreview from '../components/Friends/FriendInvitationsSentByMePreview';
 import FriendInvitationsSentToMePreview from '../components/Friends/FriendInvitationsSentToMePreview';
+import FriendStore from '../stores/FriendStore';
+import FriendsCurrentPreview from '../components/Friends/FriendsCurrentPreview';
+import isMobileScreenSize from '../utils/isMobileScreenSize';
 import FriendsPromoBox from '../components/Friends/FriendsPromoBox';
 import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
@@ -446,7 +447,7 @@ class Friends extends Component {
         <Tab
           classes={{ root: classes.navigationTab }}
           value="invite"
-          label={window.innerWidth > 500 ? 'Invite Friends' : 'Invite'}
+          label={isMobileScreenSize() ? 'Friends' : 'Invite Invite'}
           onClick={() => {
             this.handleNavigation('/friends/invite');
           }}

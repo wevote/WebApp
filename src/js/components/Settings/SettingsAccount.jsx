@@ -142,7 +142,10 @@ export default class SettingsAccount extends Component {
     this.appStoreListener.remove();
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
-    this.timer = null;
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onAppStoreChange () {

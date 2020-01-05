@@ -90,8 +90,11 @@ class SettingsVerifySecretCode extends Component {
 
   componentWillUnmount () {
     // console.log('SettingsVerifySecretCode componentWillUnmount');
-    this.timer = null;
     this.voterStoreListener.remove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onVoterStoreChange () {

@@ -38,7 +38,10 @@ export default class CodeCopier extends Component {
 
   componentWillUnmount () {
     this.organizationStoreListener.remove();
-    this.timer = null;
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onOrganizationStoreChange () {

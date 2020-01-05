@@ -228,6 +228,14 @@ class VoterGuideSettingsAddPositions extends Component {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.ballotItemTimer) {
+      clearTimeout(this.ballotItemTimer);
+      this.ballotItemTimer = null;
+    }
+    if (this.positionItemTimer) {
+      clearTimeout(this.positionItemTimer);
+      this.positionItemTimer = null;
+    }
   }
 
   onBallotStoreChange () {
@@ -430,7 +438,7 @@ class VoterGuideSettingsAddPositions extends Component {
     let { numberOfBallotItemsToDisplay } = this.state;
     numberOfBallotItemsToDisplay += 5;
 
-    setTimeout(() => {
+    this.ballotItemTimer = setTimeout(() => {
       this.setState({
         numberOfBallotItemsToDisplay,
       });
@@ -441,7 +449,7 @@ class VoterGuideSettingsAddPositions extends Component {
     let { numberOfPositionItemsToDisplay } = this.state;
     numberOfPositionItemsToDisplay += 5;
 
-    setTimeout(() => {
+    this.positionItemTimer = setTimeout(() => {
       this.setState({
         numberOfPositionItemsToDisplay,
       });

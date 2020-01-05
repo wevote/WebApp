@@ -526,7 +526,7 @@ class VoterGuideStore extends ReduceStore {
       case 'voterGuidesFromFriendsUpcomingRetrieve': // List of all friends-only voter guides
         voterGuides = action.res.voter_guides;
         // is_empty = voter_guides.length === 0;
-        organizationWeVoteIdListFromVoterGuidesReturned = [];
+        organizationWeVoteIdListFromVoterGuidesReturned = state.organizationWeVoteIdsToFollowAll;
         voterGuides.forEach((oneVoterGuide) => {
           // console.log("VoterGuideStore voterGuidesToFollowRetrieve oneVoterGuide.google_civic_election_id: ", oneVoterGuide.google_civic_election_id);
           allCachedVoterGuides[oneVoterGuide.organization_we_vote_id] = oneVoterGuide;
@@ -534,7 +534,10 @@ class VoterGuideStore extends ReduceStore {
             allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] = [];
           }
           allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][oneVoterGuide.google_civic_election_id] = oneVoterGuide;
-          organizationWeVoteIdListFromVoterGuidesReturned.push(oneVoterGuide.organization_we_vote_id);
+          if (!arrayContains(oneVoterGuide.organization_we_vote_id, organizationWeVoteIdListFromVoterGuidesReturned)) {
+            // console.log('Adding to organizationWeVoteIdsToFollowAll');
+            organizationWeVoteIdListFromVoterGuidesReturned.push(oneVoterGuide.organization_we_vote_id);
+          }
         });
 
         // Start with previous list

@@ -284,10 +284,11 @@ const Issues = styled.div`
 const IssueList = styled.ul`
   display: flex;
   flex-flow: row${({ expand }) => (expand ? ' wrap' : '')};
+  overflow: hidden;
   padding-inline-start: 0;
 `;
 
-const MoreWrapper = styled.span`
+const MoreWrapper = styled.p`
   display: flex;
   flex-flow: row;
   display: inline;

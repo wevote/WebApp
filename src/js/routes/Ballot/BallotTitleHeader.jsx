@@ -106,7 +106,8 @@ const Title = styled.h1`
 `;
 
 const ElectionName = styled.span`
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: bold;
   @media (min-width: 576px) {
     font-size: 16px;
     font-weight: bold;

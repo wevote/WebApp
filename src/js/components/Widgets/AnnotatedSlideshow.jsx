@@ -19,6 +19,13 @@ class AnnotatedSlideshow extends PureComponent {
     this.autoAdvanceSlide();
   }
 
+  componentWillUnmount () {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+  }
+
   handleChangeSlide = (advanceIfTrue) => {
     const { selectedStepIndex, slides } = this.props;
     const { length } = Object.keys(slides);

@@ -11,7 +11,7 @@ export default {
   exitSearch () {
     // setTimeout, as some components attempt to close the search
     // while it is already being closed
-    setTimeout(() => Dispatcher.dispatch('exitSearch'), 0);
+    this.timer = setTimeout(() => Dispatcher.dispatch('exitSearch'), 0);
   },
 
   retrieveRecentSearches () {
