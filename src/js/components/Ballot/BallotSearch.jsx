@@ -54,7 +54,10 @@ class BallotSearch extends Component {
   }
 
   componentWillUnmount () {
-    this.searchInputTimer = null;
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   filterItems = search => this.props.items.map((item) => {
@@ -85,7 +88,7 @@ class BallotSearch extends Component {
     if (this.props.alwaysOpen && event.target.value && !this.props.isSearching) {
       this.toggleSearch();
     }
-    clearTimeout(this.searchInputTimer);
+    clearTimeout(this.timer);
     const { value } = event.target;
     this.setState({ searchValue: value, showCloser: value.length > 0 });
     // If search value is empty, exit and return all items
@@ -94,7 +97,7 @@ class BallotSearch extends Component {
     // If search value shorter than minimum length, exit
     // if (value.length < 3) return null;
 
-    this.searchInputTimer = setTimeout(() => {
+    this.timer = setTimeout(() => {
       // Filter out items without the search terms, and put the most likely search result at the top
       // Only return results if they get past the filter
       const sortedFiltered = sortBy(this.filterItems(value), ['priority']).reverse().filter(item => item.priority > 0);

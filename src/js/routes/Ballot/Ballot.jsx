@@ -29,6 +29,7 @@ import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import isMobile from '../../utils/isMobile';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import LocationGuess from '../../components/Ballot/LocationGuess';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import IssueActions from '../../actions/IssueActions';
@@ -36,6 +37,7 @@ import IssueStore from '../../stores/IssueStore';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
+import showBallotDecisionsTabs from '../../utils/showBallotDecisionsTabs';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterActions from '../../actions/VoterActions';
@@ -402,7 +404,10 @@ class Ballot extends Component {
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
     this.appStoreListener.remove();
-    this.timer = null;
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -677,7 +682,7 @@ class Ballot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? 'Remaining Choices' : 'Choices'}
+              {isMobileScreenSize() ? 'Choices' : 'Remaining Choices'}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you need to decide on.
@@ -694,7 +699,7 @@ class Ballot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? 'Items Decided' : 'Decided'}
+              {isMobileScreenSize() ? 'Decided' : 'Items Decided'}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you&apos;ve decided on.
@@ -902,8 +907,9 @@ class Ballot extends Component {
       historyPush(this.state.pathname);
     }
 
-    const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) &&
-      (BallotStore.ballotRemainingChoicesLength > 0);
+    // const isMobileScreenSize = window.innerWidth < 500;
+    // const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) &&
+    //   (BallotStore.ballotRemainingChoicesLength > 0) && !isMobileScreenSize;
 
     let ballotItemNumber = 0;
     let showLoadingText = true;
@@ -921,7 +927,7 @@ class Ballot extends Component {
 
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
-                      { showBallotDecisionTabs ? (
+                      { showBallotDecisionsTabs() && (
                         <React.Fragment>
                           <div className="ballot__filter d-print-none">
                             <BallotDecisionsTabs
@@ -932,7 +938,7 @@ class Ballot extends Component {
                           </div>
                           <hr className="ballot-header-divider" />
                         </React.Fragment>
-                      ) : undefined}
+                      )}
                       <BallotFilterRow showFilterTabs={showFilterTabs}>
                         <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
                           { ballotWithItemsFromCompletionFilterType.length ? (
@@ -961,26 +967,37 @@ class Ballot extends Component {
                                         return oneTypeOfBallotItem === item.race_office_level;
                                       }
                                     });
-                                    return (
-                                      <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
-                                        <Badge
-                                          badgeContent={ballotItemsByFilterType.length}
-                                          classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
-                                          color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
-                                          id={`ballotBadge-${oneTypeOfBallotItem}`}
-                                          invisible={ballotItemsByFilterType.length === 0}
-                                          onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
-                                        >
-                                          <Chip variant="outlined"
-                                            color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
-                                            onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
-                                            className="btn_ballot_filter"
-                                            classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
-                                            label={oneTypeOfBallotItem}
-                                          />
-                                        </Badge>
-                                      </div>
+                                    const ballotChip = (
+                                      <Chip variant="outlined"
+                                        color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                        onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
+                                        className="btn_ballot_filter"
+                                        classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
+                                        label={oneTypeOfBallotItem}
+                                      />
                                     );
+                                    if (isMobileScreenSize()) {
+                                      return (
+                                        <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
+                                          {ballotChip}
+                                        </div>
+                                      );
+                                    } else {
+                                      return (
+                                        <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
+                                          <Badge
+                                            badgeContent={ballotItemsByFilterType.length}
+                                            classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
+                                            color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                            id={`ballotBadge-${oneTypeOfBallotItem}`}
+                                            invisible={ballotItemsByFilterType.length === 0}
+                                            onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
+                                          >
+                                            {ballotChip}
+                                          </Badge>
+                                        </div>
+                                      );
+                                    }
                                   } else {
                                     return null;
                                   }
@@ -1007,7 +1024,7 @@ class Ballot extends Component {
             <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
               {emptyBallot}
               {/* eslint-disable-next-line no-nested-ternary */}
-              <div className={showBallotDecisionTabs ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
+              <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
                 <BrowserPushMessage incomingProps={this.props} />
                 {ballotWithItemsFromCompletionFilterType.length > 0 ? (
                   <BallotStatusMessage

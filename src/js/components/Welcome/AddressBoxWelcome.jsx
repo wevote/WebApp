@@ -37,6 +37,10 @@ class AddressBoxWelcome extends PureComponent {
       console.log('Google Maps Error: DeletedApiProjectMapError');
     }
     restoreStylesAfterCordovaKeyboard('AddressBoxWelcome');  // Set LOG_RENDER_EVENTS to log all renders
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onVoterStoreChange = () => {
@@ -68,7 +72,7 @@ class AddressBoxWelcome extends PureComponent {
     const ENTER_KEY_CODE = 13;
     if (event.keyCode === ENTER_KEY_CODE) {
       event.preventDefault();
-      setTimeout(() => {
+      this.timer = setTimeout(() => {
         VoterActions.voterAddressSave(this.state.textForMapSearch);
       }, 500);
     }

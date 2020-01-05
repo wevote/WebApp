@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import Button from '@material-ui/core/esm/Button';
 import ImageHandler from '../ImageHandler';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import FriendActions from '../../actions/FriendActions';
 import SuggestedFriendToggle from './SuggestedFriendToggle';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
@@ -122,7 +123,7 @@ class SuggestedFriendDisplayForList extends Component {
                 type="button"
                 variant="outlined"
               >
-                {window.innerWidth > 620 ? 'Remove' : 'Remove'}
+                {isMobileScreenSize() ? 'Remove' : 'Remove'}
               </Button>
             )}
           </ButtonContainer>

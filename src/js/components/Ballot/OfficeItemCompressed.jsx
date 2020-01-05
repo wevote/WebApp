@@ -198,6 +198,7 @@ class OfficeItemCompressed extends Component {
     // If voter has chosen 1+ candidates, only show those
     const supportedCandidatesList = candidateList.filter(candidate => SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id));
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
+    const hideCandidateDetails = supportedCandidatesList.length;
     return (
       <Container candidateLength={candidatesToRender.length}>
         { candidatesToRender.slice(0, candidatePreviewLimit)
@@ -243,34 +244,36 @@ class OfficeItemCompressed extends Component {
                       goToBallotItem={this.goToCandidateLink}
                     />
                   </CandidateTopRow>
-                  <CandidateBottomRow>
-                    {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
-                    <DelayedLoad showLoadingText waitBeforeShow={500}>
-                      <TopCommentByBallotItem
-                        ballotItemWeVoteId={oneCandidate.we_vote_id}
-                        // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
-                        onClickFunction={this.goToCandidateLink}
-                      >
-                        <span>
-                          <IssuesByBallotItemDisplayList
-                            ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            disableMoreWrapper
-                          />
-                          <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
-                            <Button
-                              id={`topCommentButtonOffice-${externalUniqueId}-${localUniqueId}`}
-                              variant="outlined"
-                              color="primary"
-                              classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-                            >
-                              More
-                            </Button>
-                          </MoreButtonWrapper>
-                        </span>
-                      </TopCommentByBallotItem>
-                    </DelayedLoad>
-                  </CandidateBottomRow>
+                  {!hideCandidateDetails && (
+                    <CandidateBottomRow>
+                      {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
+                      <DelayedLoad showLoadingText waitBeforeShow={500}>
+                        <TopCommentByBallotItem
+                          ballotItemWeVoteId={oneCandidate.we_vote_id}
+                          // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
+                          onClickFunction={this.goToCandidateLink}
+                        >
+                          <span>
+                            <IssuesByBallotItemDisplayList
+                              ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+                              ballotItemWeVoteId={oneCandidate.we_vote_id}
+                              disableMoreWrapper
+                            />
+                            <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
+                              <Button
+                                id={`topCommentButtonOffice-${externalUniqueId}-${localUniqueId}`}
+                                variant="outlined"
+                                color="primary"
+                                classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                              >
+                                Choose or Oppose
+                              </Button>
+                            </MoreButtonWrapper>
+                          </span>
+                        </TopCommentByBallotItem>
+                      </DelayedLoad>
+                    </CandidateBottomRow>
+                  )}
                 </CandidateInfo>
               </Column>
             );
@@ -330,10 +333,10 @@ const styles = theme => ({
   buttonRoot: {
     fontSize: 12,
     padding: 4,
-    width: 60,
+    minWidth: 60,
     height: 30,
     [theme.breakpoints.down('md')]: {
-      width: 60,
+      minWidth: 60,
       height: 30,
     },
     [theme.breakpoints.down('sm')]: {

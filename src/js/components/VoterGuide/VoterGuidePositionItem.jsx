@@ -18,7 +18,6 @@ import VoterStore from '../../stores/VoterStore';
 class VoterGuidePositionItem extends Component {
   static propTypes = {
     ballotItemLink: PropTypes.string,
-    classes: PropTypes.object,
     organizationWeVoteId: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
   };

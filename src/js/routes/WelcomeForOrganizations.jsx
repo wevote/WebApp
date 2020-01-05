@@ -56,6 +56,10 @@ class WelcomeForOrganizations extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onVoterStoreChange () {
@@ -82,7 +86,7 @@ class WelcomeForOrganizations extends Component {
     const currentStateAnimateTextIndex = this.state.currentAnimateTextIndex;
     const showMemberTextForThisLong = 2000;
     if (this.state.currentAnimateTextIndex < this.state.animateTextArray.length - 1) {
-      setTimeout(() => {
+      this.timer = setTimeout(() => {
         this.setState({ currentAnimateTextIndex: currentStateAnimateTextIndex + 1 });
 
         this.autoAnimateText();

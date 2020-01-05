@@ -375,6 +375,10 @@ class VoterGuideBallot extends Component {
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
     this.appStoreListener.remove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -630,7 +634,7 @@ class VoterGuideBallot extends Component {
       // Push onto callback queue so it runs after the DOM is updated,
       // this is required when navigating from a different page so that
       // the element is rendered on the page before trying to getElementById.
-      setTimeout(() => {
+      this.timer = setTimeout(() => {
         const id = hash.replace('#', '');
         const element = document.getElementById(id);
 

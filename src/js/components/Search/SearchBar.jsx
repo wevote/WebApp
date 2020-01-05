@@ -48,6 +48,13 @@ export default class SearchBar extends Component {
     }
   }
 
+  componentWillUnmount () {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+  }
+
   clearQuery () {
     this.props.clearFunction();
     this.setState({ searchString: '' });

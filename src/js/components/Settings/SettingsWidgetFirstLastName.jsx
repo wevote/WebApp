@@ -58,8 +58,18 @@ export default class SettingsWidgetFirstLastName extends Component {
   componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
-    this.timer = null;
-    this.clearStatusTimer = null;
+    if (this.clearStatusTimer) {
+      clearTimeout(this.clearStatusTimer);
+      this.clearStatusTimer = null;
+    }
+    if (this.organizationNameTimer) {
+      clearTimeout(this.organizationNameTimer);
+      this.organizationNameTimer = null;
+    }
+    if (this.voterNameTimer) {
+      clearTimeout(this.voterNameTimer);
+      this.voterNameTimer = null;
+    }
     FriendActions.friendInvitationsWaitingForVerification();
     restoreStylesAfterCordovaKeyboard('SettingsWidgetFirstLastName');
   }
@@ -105,23 +115,23 @@ export default class SettingsWidgetFirstLastName extends Component {
   }
 
   handleKeyPressOrganizationName () {
-    clearTimeout(this.timer);
+    clearTimeout(this.organizationNameTimer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
-    this.timer = setTimeout(() => {
+    this.organizationNameTimer = setTimeout(() => {
       OrganizationActions.organizationNameSave(this.state.linkedOrganizationWeVoteId, this.state.organizationName);
       this.setState({ organizationNameSavedStatus: 'Saved' });
     }, delayBeforeApiUpdateCall);
   }
 
   handleKeyPressVoterName () {
-    clearTimeout(this.timer);
+    clearTimeout(this.voterNameTimer);
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
 
-    this.timer = setTimeout(() => {
+    this.voterNameTimer = setTimeout(() => {
       VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
       this.setState({ voterNameSavedStatus: 'Saved' });
     }, delayBeforeApiUpdateCall);

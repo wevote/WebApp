@@ -1,6 +1,6 @@
 import { browserHistory, hashHistory } from 'react-router';
-import BallotStore from '../stores/BallotStore'; // eslint-disable-line import/no-cycle
 import { cordovaOffsetLog, oAuthLog } from './logging';
+import showBallotDecisionsTabs from './showBallotDecisionsTabs'; // eslint-disable-line import/no-cycle
 import { stringContains } from './textFormat';
 import webAppConfig from '../config';
 
@@ -400,7 +400,7 @@ export const enums = {
 
 export function pageEnumeration () {
   const { href } = window.location;
-  const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
+  // const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
 
   // second level paths must be tried first
   if (href.indexOf('/index.html#/ballot/vote') > 0) {
@@ -436,7 +436,7 @@ export function pageEnumeration () {
   } else if (href.indexOf('/index.html#/wevoteintro/') > 0) {
     return enums.wevoteintroWild;
   } else if (href.indexOf('/index.html#/ballot') > 0) {
-    if (showBallotDecisionTabs) {
+    if (showBallotDecisionsTabs()) {
       return enums.ballotLgHdrWild;
     } else {
       return enums.ballotSmHdrWild;

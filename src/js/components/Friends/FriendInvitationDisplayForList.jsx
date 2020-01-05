@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import Button from '@material-ui/core/esm/Button';
 import ImageHandler from '../ImageHandler';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import FriendActions from '../../actions/FriendActions';
 import FriendInvitationToggle from './FriendInvitationToggle';
 import FriendStore from '../../stores/FriendStore';
@@ -164,7 +165,7 @@ class FriendInvitationDisplayForList extends Component {
                 type="button"
                 variant="outlined"
               >
-                {window.innerWidth > 620 ? 'Delete' : 'Delete'}
+                {isMobileScreenSize() ? 'Delete' : 'Delete'}
               </Button>
             </ButtonContainer>
           </ButtonWrapper>

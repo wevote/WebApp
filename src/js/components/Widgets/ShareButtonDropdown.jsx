@@ -13,19 +13,23 @@ export default class ShareButtonDropDown extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { open: false };
+    this.state = {
+      open: false,
+      showCopyLinkModal: false,
+    };
     this.closeCopyLinkModal = this.closeCopyLinkModal.bind(this);
   }
 
-  componentWillMount () {
-    this.setState({
-      showCopyLinkModal: false,
-    });
+  componentWillUnmount () {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onButtonBlur () {
     // Delay closing the drop down so that onClick has time to work
-    setTimeout(() => {
+    this.timer = setTimeout(() => {
       this.closeDropDown();
     }, 250);
   }

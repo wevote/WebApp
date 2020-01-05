@@ -4,6 +4,7 @@ import Button from '@material-ui/core/esm/Button';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
@@ -70,7 +71,7 @@ export default class FriendInvitationToggle extends Component {
               onClick={this.acceptFriendInvite}
               fullWidth
             >
-              {window.innerWidth > 620 ? 'Confirm' : 'Confirm'}
+              {isMobileScreenSize() ? 'Confirm' : 'Confirm'}
             </Button>
           </ButtonContainer>
         )}
