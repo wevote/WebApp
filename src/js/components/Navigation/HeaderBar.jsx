@@ -358,7 +358,7 @@ class HeaderBar extends Component {
 
     const doNotShowWeVoteLogo = weVoteBrandingOff || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
-    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? true : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>

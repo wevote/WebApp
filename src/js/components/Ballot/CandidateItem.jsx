@@ -554,6 +554,7 @@ class CandidateItem extends Component {
 
 const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
   cursor: pointer;
+  float: right;
 `;
 
 const CandidateInfo = styled.div`

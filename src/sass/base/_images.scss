@@ -1,6 +1,19 @@
 .image-lg {
   width: 50px;
 }
+.image-12x12 {
+  height: 12px;
+  width: 12px;
+}
+
+.image-16x16 {
+  height: 16px;
+  width: 16px;
+}
+
+.image-border-gray-border {
+  border: 1px solid $gray-border;
+}
 
 .image-issue-photo-placeholder {
   background-color: $gray-mid;

@@ -52,7 +52,7 @@ class VoterGuidePositions extends Component {
 
   componentDidMount () {
     const { organizationWeVoteId } = this.props;
-    console.log('VoterGuidePositions componentDidMount, organizationWeVoteId:', organizationWeVoteId);
+    // console.log('VoterGuidePositions componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
     let googleCivicElectionIdFromUrl = this.props.params.google_civic_election_id || 0;
     // console.log('googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
@@ -145,8 +145,12 @@ class VoterGuidePositions extends Component {
         });
       }
     }
+    const electionName = BallotStore.currentBallotElectionName;
+    const electionDayText = BallotStore.currentBallotElectionDate;
     this.setState({
       currentGoogleCivicElectionId: VoterStore.electionId(),
+      electionName,
+      electionDayText,
       voter: VoterStore.getVoter(),
     });
   }
@@ -187,6 +191,13 @@ class VoterGuidePositions extends Component {
         currentGoogleCivicElectionId: VoterStore.electionId(),
       });
     }
+    const electionName = BallotStore.currentBallotElectionName;
+    const electionDayText = BallotStore.currentBallotElectionDate;
+    this.setState({
+      currentGoogleCivicElectionId: VoterStore.electionId(),
+      electionName,
+      electionDayText,
+    });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -199,12 +210,12 @@ class VoterGuidePositions extends Component {
       // console.log('shouldComponentUpdate: this.state.currentOrganizationWeVoteId', this.state.currentOrganizationWeVoteId, ', nextState.currentOrganizationWeVoteId', nextState.currentOrganizationWeVoteId);
       return true;
     }
-    if (this.state.organizationId !== nextState.organizationId) {
-      // console.log('shouldComponentUpdate: this.state.organizationId', this.state.organizationId, ', nextState.organizationId', nextState.organizationId);
+    if (this.state.electionName !== nextState.electionName) {
+      // console.log('shouldComponentUpdate: this.state.electionName', this.state.electionName, ', nextState.electionName', nextState.electionName);
       return true;
     }
-    if (this.state.currentOrganizationWeVoteId !== nextState.currentOrganizationWeVoteId) {
-      // console.log('shouldComponentUpdate: this.state.currentOrganizationWeVoteId', this.state.currentOrganizationWeVoteId, ', nextState.currentOrganizationWeVoteId', nextState.currentOrganizationWeVoteId);
+    if (this.state.organizationId !== nextState.organizationId) {
+      // console.log('shouldComponentUpdate: this.state.organizationId', this.state.organizationId, ', nextState.organizationId', nextState.organizationId);
       return true;
     }
     if (this.state.positionListForOneElectionLength !== nextState.positionListForOneElectionLength) {
@@ -309,8 +320,9 @@ class VoterGuidePositions extends Component {
 
   render () {
     renderLog('VoterGuidePositions');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('VoterGuidePositions render');
     const { classes } = this.props;
-    const { organization, organizationId, organizationWeVoteId, positionListForOneElection } = this.state;
+    const { electionDayText, electionName, organization, organizationId, organizationWeVoteId, positionListForOneElection } = this.state;
     if (!organization) {
       // Wait until organization has been set to render
       return null;
@@ -331,8 +343,6 @@ class VoterGuidePositions extends Component {
     }
 
     // console.log("lookingAtSelf: ", lookingAtSelf);
-    const electionName = BallotStore.currentBallotElectionName;
-    const electionDayText = BallotStore.currentBallotElectionDate;
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format('MMM Do, YYYY')}</span> : <span />;
     const organizationName = capitalizeString(organization.organization_name);
     const titleText = `${organizationName} - We Vote`;

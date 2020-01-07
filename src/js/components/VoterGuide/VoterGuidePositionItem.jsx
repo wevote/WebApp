@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Card from '@material-ui/core/esm/Card';
 import { withStyles } from '@material-ui/core/esm/styles';
-// import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
+import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import ImageHandler from '../ImageHandler';
-import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -14,10 +13,10 @@ import { capitalizeString } from '../../utils/textFormat';
 import ReadMore from '../Widgets/ReadMore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
+// import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 
 class VoterGuidePositionItem extends Component {
   static propTypes = {
-    ballotItemLink: PropTypes.string,
     organizationWeVoteId: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
   };
@@ -273,32 +272,26 @@ class VoterGuidePositionItem extends Component {
     renderLog('VoterGuidePositionItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { position } = this.props;
     // console.log('VoterGuidePositionItem position:', position);
+    let {
+      ballot_item_display_name: ballotItemDisplayName,
+    } = position;
     const {
-      // voterOpposesBallotItem,
-      voterPositionIsPublic,
-      // voterSupportsBallotItem,
-      signedInWithThisFacebookAccount,
-      signedInWithThisOrganization,
-      signedInWithThisTwitterAccount,
-      // voterTextStatement,
-    } = this.state;
-    const { ballot_item_we_vote_id: ballotItemWeVoteId, kind_of_ballot_item: kindOfBallotItem, statement_text: statementText } = position;
-    let { ballot_item_display_name: ballotItemDisplayName } = position;
-
+      ballot_item_image_url_https_large: ballotItemImageUrlHttpsLarge,
+      ballot_item_we_vote_id: ballotItemWeVoteId,
+      is_information_only: organizationInformationOnlyBallotItem,
+      is_oppose: organizationOpposesBallotItem,
+      is_support: organizationSupportsBallotItem,
+      kind_of_ballot_item: kindOfBallotItem,
+      speaker_image_url_https_tiny: organizationImageUrlHttpsTiny,
+      statement_text: statementText,
+    } = position;
+    const isCandidate = String(kindOfBallotItem) === 'CANDIDATE';
+    // console.log('kindOfBallotItem:', kindOfBallotItem, 'isCandidate:', isCandidate);
     if (!ballotItemWeVoteId) {
       // console.log('VoterGuidePositionItem cannot render yet -- missing ballotItemWeVoteId');
       return null;
     }
 
-    let { ballotItemLink } = this.props;
-    if (!ballotItemLink) {
-      // TwitterHandle-based link
-      const ballotItemUrl = String(kindOfBallotItem) === 'MEASURE' ? '/measure/' : '/candidate/';
-      // We are turning off links to twitter pages until we get politician pages working
-      // let ballotItemLink = position.ballot_item_twitter_handle ? '/' + position.ballot_item_twitter_handle : ballotItemUrl + ballotItemWeVoteId;
-      ballotItemLink = ballotItemUrl + ballotItemWeVoteId;
-    }
-    const isCandidate = String(kindOfBallotItem) === 'CANDIDATE';
     if (ballotItemDisplayName) {
       ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
     } else {
@@ -307,11 +300,11 @@ class VoterGuidePositionItem extends Component {
 
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
     let contestOfficeName;
-    let politicalParty;
+    // let politicalParty;
     let ballotDisplay = [];
     if (isCandidate) {
       contestOfficeName = position.contest_office_name;
-      politicalParty = position.ballot_item_political_party;
+      // politicalParty = position.ballot_item_political_party;
     } else {
       ballotDisplay = ballotItemDisplayName.split(':');
     }
@@ -319,91 +312,88 @@ class VoterGuidePositionItem extends Component {
       <Card>
         <BallotItemPadding>
           <BallotItemWrapper className="card-main__media-object">
-            <BallotItemInfo>
-              { isCandidate ? (
-                <>
-                  <BallotItemImageWrapper>
-                    <ImageHandler
-                      className="card-main__avatar"
-                      sizeClassName="icon-lg "
-                      imageUrl={position.ballot_item_image_url_https_large}
-                      alt="candidate-photo"
-                      kind_of_ballot_item={kindOfBallotItem}
-                    />
-                  </BallotItemImageWrapper>
-                  <Candidate>
-                    <h2 className="card-main__display-name">
-                      {ballotItemDisplayName}
-                    </h2>
-                    {/* !!(twitterFollowersCount) && (
-                      <span
-                        className="u-show-desktop twitter-followers__badge u-cursor--pointer"
-                      >
-                        <span className="fab fa-twitter fa-sm" />
-                        <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
-                      </span>
-                    ) */}
-                    { (signedInWithThisTwitterAccount ||
-                     signedInWithThisOrganization ||
-                     signedInWithThisFacebookAccount) &&
-                     <FriendsOnlyIndicator isFriendsOnly={!voterPositionIsPublic} />
-                    }
-                    <span className="u-show-desktop">
-                      { !!(contestOfficeName) && (
-                        <p>
-                          <OfficeNameText
-                            contestOfficeName={contestOfficeName}
-                            politicalParty={politicalParty}
-                            showOfficeName
-                          />
-                        </p>
-                      )}
+            { isCandidate ? (
+              <CandidateItemWrapper>
+                <BallotItemImageWrapper>
+                  <ImageHandler
+                    className="card-main__avatar"
+                    sizeClassName="icon-lg "
+                    imageUrl={ballotItemImageUrlHttpsLarge}
+                    alt="candidate-photo"
+                    kind_of_ballot_item={kindOfBallotItem}
+                  />
+                </BallotItemImageWrapper>
+                <Candidate>
+                  <h2 className="card-main__display-name">
+                    {ballotItemDisplayName}
+                  </h2>
+                  {/* !!(twitterFollowersCount) && (
+                    <span
+                      className="u-show-desktop twitter-followers__badge u-cursor--pointer"
+                    >
+                      <span className="fab fa-twitter fa-sm" />
+                      <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                     </span>
-                  </Candidate>
-                </>
-              ) : (
-                <>
-                  <Title>
-                    {ballotDisplay[0]}
-                  </Title>
-                  <SubTitle>{ballotDisplay[1]}</SubTitle>
-                </>
-              )}
-            </BallotItemInfo>
+                  ) */}
+                  <span className="u-show-desktop-tablet">
+                    { contestOfficeName && (
+                      <p>
+                        <OfficeNameText
+                          contestOfficeName={contestOfficeName}
+                          // politicalParty={politicalParty}
+                          showOfficeName
+                        />
+                      </p>
+                    )}
+                  </span>
+                </Candidate>
+              </CandidateItemWrapper>
+            ) : (
+              <MeasureItemWrapper>
+                <Title>
+                  {ballotDisplay[0]}
+                </Title>
+                <SubTitle>{ballotDisplay[1]}</SubTitle>
+              </MeasureItemWrapper>
+            )}
+            {/* (signedInWithThisTwitterAccount ||
+             signedInWithThisOrganization ||
+             signedInWithThisFacebookAccount) &&
+             <FriendsOnlyIndicator isFriendsOnly={!voterPositionIsPublic} />
+            */}
             <BallotItemSupportOpposeCountDisplayWrapper>
               <BallotItemSupportOpposeCountDisplay
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 hideNumbersOfAllPositions
               />
-            </BallotItemSupportOpposeCountDisplayWrapper>
-            {/* Waiting to update BallotItemVoterGuideSupportOpposeDisplay
-            <BallotItemSupportOpposeCountDisplayWrapper>
+              <VerticalSeparator />
               <BallotItemVoterGuideSupportOpposeDisplay
-                ballotItemWeVoteId={ballotItemWeVoteId}
-                hideNumbersOfAllPositions
+                organizationInformationOnlyBallotItem={organizationInformationOnlyBallotItem}
+                organizationOpposesBallotItem={organizationOpposesBallotItem}
+                organizationSupportsBallotItem={organizationSupportsBallotItem}
+                organizationImageUrlHttpsTiny={organizationImageUrlHttpsTiny}
+                positionItem={position}
               />
             </BallotItemSupportOpposeCountDisplayWrapper>
-            */}
             {' '}
           </BallotItemWrapper>
-          {' '}
           <span className="u-show-mobile">
             { contestOfficeName && (
               <p>
                 <OfficeNameText
                   contestOfficeName={contestOfficeName}
-                  politicalParty={politicalParty}
+                  // politicalParty={politicalParty}
                   showOfficeName
                 />
               </p>
             )}
             {statementText && (
               <MobileItemDescription>
-                {position.speaker_image_url_https_tiny && (
+                {organizationImageUrlHttpsTiny && (
                   <BallotItemImageWrapper>
                     <ImageHandler
                       sizeClassName="icon-sm "
-                      imageUrl={position.speaker_image_url_https_tiny}
+                      imageUrl={organizationImageUrlHttpsTiny}
                       alt="organization-photo"
                       kind_of_ballot_item="ORGANIZATION"
                     />
@@ -419,11 +409,11 @@ class VoterGuidePositionItem extends Component {
           <span className="u-show-desktop-tablet">
             {statementText && (
               <DesktopItemDescription>
-                {position.speaker_image_url_https_tiny && (
+                {organizationImageUrlHttpsTiny && (
                   <BallotItemImageWrapper>
                     <ImageHandler
                       sizeClassName="icon-sm "
-                      imageUrl={position.speaker_image_url_https_tiny}
+                      imageUrl={organizationImageUrlHttpsTiny}
                       alt="organization-photo"
                       kind_of_ballot_item="ORGANIZATION"
                     />
@@ -456,10 +446,10 @@ const styles = theme => ({
   },
 });
 
-const BallotItemInfo = styled.div`
+const CandidateItemWrapper = styled.div`
   cursor: pointer;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
 `;
 
 const BallotItemImageWrapper = styled.span`
@@ -476,6 +466,8 @@ const BallotItemPadding = styled.div`
 
 const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
   cursor: pointer;
+  display: flex;
+  float: right;
 `;
 
 const BallotItemWrapper = styled.div`
@@ -488,8 +480,6 @@ const Candidate = styled.div`
 `;
 
 const DesktopItemDescription = styled.div`
-  // display: flex;
-  // flex-flow: row nowrap;
   font-size: 16px;
   border-radius: 5px;
   list-style: none;
@@ -498,9 +488,13 @@ const DesktopItemDescription = styled.div`
   flex: 1 1 0;
 `;
 
+const MeasureItemWrapper = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-flow: row wrap;
+`;
+
 const MobileItemDescription = styled.div`
-  // display: flex;
-  // flex-flow: row nowrap;
   font-size: 16px;
   border-radius: 2px;
   list-style: none;
@@ -515,7 +509,7 @@ const SubTitle = styled.h3`
   color: #555;
   margin-top: .6rem;
   width: 135%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 13px;
   }
 `;
@@ -524,9 +518,16 @@ const Title = styled.h1`
   font-size: 18px;
   font-weight: bold;
   margin: .1rem 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 16px;
   }
+`;
+
+const VerticalSeparator = styled.div`
+  height: 44px;
+  width: 2px;
+  background: #ccc;
+  margin: 0 4px;
 `;
 
 export default withStyles(styles)(VoterGuidePositionItem);

@@ -874,7 +874,7 @@ const EndorsementCount = styled.div`
 `;
 
 const NetworkScore = styled.div`
-  background: ${({ hideNumbersOfAllPositions, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(240, 240, 240)') || '#888')};
+  background: ${({ hideNumbersOfAllPositions, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   cursor: pointer;
@@ -884,7 +884,6 @@ const NetworkScore = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 5px;
-  float: right;
   font-size: 16px;
   font-weight: bold;
   @media print{

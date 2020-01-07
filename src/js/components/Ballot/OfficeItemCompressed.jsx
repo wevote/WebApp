@@ -239,10 +239,12 @@ class OfficeItemCompressed extends Component {
                       </div>
                     </Candidate>
                     {/* Show check mark or score */}
-                    <BallotItemSupportOpposeCountDisplay
-                      ballotItemWeVoteId={oneCandidate.we_vote_id}
-                      goToBallotItem={this.goToCandidateLink}
-                    />
+                    <BallotItemSupportOpposeCountDisplayWrapper>
+                      <BallotItemSupportOpposeCountDisplay
+                        ballotItemWeVoteId={oneCandidate.we_vote_id}
+                        goToBallotItem={this.goToCandidateLink}
+                      />
+                    </BallotItemSupportOpposeCountDisplayWrapper>
                   </CandidateTopRow>
                   {!hideCandidateDetails && (
                     <CandidateBottomRow>
@@ -299,32 +301,30 @@ class OfficeItemCompressed extends Component {
     const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
 
     return (
-      <div className="card-main office-item">
+      <OfficeItemCompressedWrapper>
         <a // eslint-disable-line
           className="anchor-under-header"
           name={officeWeVoteId}
         />
-        <div className="card-main__content">
-          {/* Desktop */}
-          <Link id={`officeItemCompressedTopNameLink-${officeWeVoteId}`} to={this.getOfficeLink()}>
-            <Title>
-              {ballotItemDisplayName}
-              <ArrowForwardIcon
-                classes={{ root: classes.cardHeaderIconRoot }}
-              />
-            </Title>
-          </Link>
-          {/* *************************
-            Display either a) the candidates the voter supports, or b) the first several candidates running for this office
-            ************************* */}
-          {this.generateCandidates()}
+        {/* Desktop */}
+        <Link id={`officeItemCompressedTopNameLink-${officeWeVoteId}`} to={this.getOfficeLink()}>
+          <Title>
+            {ballotItemDisplayName}
+            <ArrowForwardIcon
+              classes={{ root: classes.cardHeaderIconRoot }}
+            />
+          </Title>
+        </Link>
+        {/* *************************
+          Display either a) the candidates the voter supports, or b) the first several candidates running for this office
+          ************************* */}
+        {this.generateCandidates()}
 
-          { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
-            <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
-            <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} />
-          }
-        </div>
-      </div>
+        { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
+          <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
+          <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} />
+        }
+      </OfficeItemCompressedWrapper>
     );
   }
 }
@@ -364,6 +364,11 @@ const styles = theme => ({
   },
 });
 
+const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+  cursor: pointer;
+  float: right;
+`;
+
 const Column = styled.div`
   padding: 6px;
   width: 100%;
@@ -373,24 +378,24 @@ const Column = styled.div`
 `;
 
 const CandidateInfo = styled.div`
-  margin: 0 !important;
-  height: 100%;
+  border: 1px solid ${({ theme }) => theme.colors.grayBorder};
   display: block !important;
-  padding: 12px !important;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    padding: 16px !important;
-    position: relative;
-  }
-  width: 100% !important;
   display: flex;
   flex-flow: column;
+  height: 100%;
+  margin: 0 !important;
+  padding: 12px 12px 4px 12px !important;
   transition: all 200ms ease-in;
-  border: 1px solid ${({ theme }) => theme.colors.grayBorder};
+  width: 100% !important;
   &:hover {
     border: 1px solid ${props => (props.brandBlue)};
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   }
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    position: relative;
+  }
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding: 8px 8px 4px 8px !important;
     flex-flow: column;
     width: 100%;
   }
@@ -433,15 +438,26 @@ const MoreButtonWrapper = styled.div`
   width: 100%;
 `;
 
+const OfficeItemCompressedWrapper = styled.div`
+  border: 1px solid #fff;
+  padding: 16px 16px 0px;
+  font-size: 14px;
+  position: relative;
+  @include print {
+    border-top: 1px solid #999;
+    padding: 16px 0 0 0;
+  }
+`;
+
 const Title = styled.h2`
-  width: fit-content;
+  cursor: pointer;
   font-weight: bold;
   font-size: 18px;
-  margin-bottom: 16px;
-  cursor: pointer;
+  margin-bottom: 6px;
+  width: fit-content;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     font-size: 16px;
-    margin-bottom: 12px;
+    margin-bottom: 2px;
   }
 `;
 

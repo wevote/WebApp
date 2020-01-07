@@ -28,7 +28,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
       ballotItemWeVoteId: '',
       // componentDidMountFinished: false,
       showPositionStatement: false,
-      shouldFocusCommentArea: false,
+      // shouldFocusCommentArea: false,
     };
     this.passDataBetweenItemActionToItemPosition = this.passDataBetweenItemActionToItemPosition.bind(this);
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
@@ -128,13 +128,13 @@ class BallotItemSupportOpposeComment extends PureComponent {
   }
 
   passDataBetweenItemActionToItemPosition () {
-    this.setState(() => ({ shouldFocusCommentArea: true }));
+    // this.setState(() => ({ shouldFocusCommentArea: true }));
   }
 
   togglePositionStatement () {
     this.setState(state => ({
       showPositionStatement: !state.showPositionStatement,
-      shouldFocusCommentArea: true,
+      // shouldFocusCommentArea: true,
     }));
   }
 
@@ -173,7 +173,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
           ballotItemDisplayName={ballotItemDisplayName}
           commentEditModeOn={showPositionStatement}
           externalUniqueId={`${externalUniqueId}-desktop-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}
-          shouldFocus={this.state.shouldFocusCommentArea}
+          // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type={ballotItemType}
           shownInList
@@ -187,7 +187,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
-          shouldFocus={this.state.shouldFocusCommentArea}
+          // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type={ballotItemType}
           externalUniqueId={`${externalUniqueId}-mobile-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}

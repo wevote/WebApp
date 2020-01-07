@@ -49,17 +49,18 @@ const styles = theme => ({
 });
 
 const ShowMoreFooterStyled = styled.div`
-  margin-top: 8px !important;
-  color: #4371cc;
-  font-size: 16px;
+  border: 0px !important;
+  color: #2e3c5d;
+  cursor: pointer;
   display: block !important;
+  background: #fff !important;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+  padding: 0px !important;
   text-align: right !important;
   user-select: none;
-  cursor: pointer;
-  background: #fff !important;
-  color: #2e3c5d;
-  font-weight: bold;
-  padding: 0px !important;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 18px;
   }
