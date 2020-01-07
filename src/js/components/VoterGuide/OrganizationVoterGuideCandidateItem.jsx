@@ -202,7 +202,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
         {/* END .card-main__media-object */}
         <div className="card-main__actions">
           <div>
-            <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
+            <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50 u-float-right">
               <BallotItemSupportOpposeComment
                 ballotItemWeVoteId={candidateWeVoteId}
                 externalUniqueId="organizationVoterGuideCandidateItem"

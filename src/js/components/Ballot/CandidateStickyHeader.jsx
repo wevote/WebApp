@@ -117,6 +117,7 @@ const ColumnOne = styled.div`
 `;
 
 const ColumnTwo = styled.div`
+  float: right;
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: block;
     width: fit-content;

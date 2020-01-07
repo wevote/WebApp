@@ -111,6 +111,7 @@ const BioColumn = styled.div`
 
 const OfficeColumn = styled.div`
   display: flex;
+  float: right;
 `;
 
 const MeasureNameText = styled.p`

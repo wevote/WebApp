@@ -284,12 +284,16 @@ class MeasureItemCompressed extends Component {
               />
             </Title>
             <SubTitle>{ballotDisplay[1]}</SubTitle>
-            <MeasureText>{shortenText(measureText, 200)}</MeasureText>
+            {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
+              <MeasureText>{shortenText(measureText, 200)}</MeasureText>
+            )}
           </MeasureInfoWrapper>
-          <BallotItemSupportOpposeCountDisplay
-            ballotItemWeVoteId={measureWeVoteId}
-            goToBallotItem={this.goToMeasureLink}
-          />
+          <BallotItemSupportOpposeCountDisplayWrapper>
+            <BallotItemSupportOpposeCountDisplay
+              ballotItemWeVoteId={measureWeVoteId}
+              goToBallotItem={this.goToMeasureLink}
+            />
+          </BallotItemSupportOpposeCountDisplayWrapper>
         </InfoRow>
         {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
           <ChoicesRow>
@@ -407,6 +411,11 @@ const styles = theme => ({
     margin: '0 0 .1rem .4rem',
   },
 });
+
+const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+  cursor: pointer;
+  float: right;
+`;
 
 const InfoRow = styled.div`
   display: flex;

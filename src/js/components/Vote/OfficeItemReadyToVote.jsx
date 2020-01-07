@@ -125,7 +125,9 @@ class OfficeItemReadyToVote extends Component {
                       <DesktopTabletView>
                         <OfficeText>{oneCandidate.contest_office_name}</OfficeText>
                       </DesktopTabletView>
-                      <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                      <BallotItemSupportOpposeCountDisplayWrapper>
+                        <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                      </BallotItemSupportOpposeCountDisplayWrapper>
                     </OfficeColumn>
                   </InnerWrapper>
                 )}
@@ -142,6 +144,11 @@ class OfficeItemReadyToVote extends Component {
 
 const styles = ({
 });
+
+const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+  cursor: pointer;
+  float: right;
+`;
 
 const Wrapper = styled.div`
   padding: 24px 24px 20px 24px;

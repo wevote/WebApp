@@ -134,7 +134,9 @@ class MeasureItem extends Component {
               null
             }
           </MeasureInfoWrapper>
-          <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+          <BallotItemSupportOpposeCountDisplayWrapper>
+            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+          </BallotItemSupportOpposeCountDisplayWrapper>
         </InfoRow>
         <BallotItemSupportOpposeComment
           ballotItemWeVoteId={measureWeVoteId}
@@ -166,6 +168,11 @@ const styles = theme => ({
     margin: '0 0 .1rem .4rem',
   },
 });
+
+const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+  cursor: pointer;
+  float: right;
+`;
 
 const InfoRow = styled.div`
   display: flex;

@@ -104,7 +104,7 @@ export default class HamburgerMenu extends Component {
     const { voter_photo_url_medium: photoUrl } = voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
     const showSettingsInDevelopment = false; // If developing any of the new settings, change this to true
-    const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? true : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
 

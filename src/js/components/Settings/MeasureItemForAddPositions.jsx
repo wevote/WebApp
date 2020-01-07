@@ -161,7 +161,7 @@ class MeasureItemForAddPositions extends Component {
     const { showPositionStatement } = this.state;
     this.setState({
       showPositionStatement: !showPositionStatement,
-      shouldFocusCommentArea: true,
+      // shouldFocusCommentArea: true,
     });
   }
 
@@ -187,7 +187,7 @@ class MeasureItemForAddPositions extends Component {
           ballotItemDisplayName={ballotItemDisplayName}
           commentEditModeOn={showPositionStatement}
           externalUniqueId="desktopPositionStatement"
-          shouldFocus={this.state.shouldFocusCommentArea}
+          // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="MEASURE"
           shownInList
@@ -202,7 +202,7 @@ class MeasureItemForAddPositions extends Component {
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
           externalUniqueId="mobilePositionStatement"
-          shouldFocus={this.state.shouldFocusCommentArea}
+          // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="MEASURE"
           shownInList

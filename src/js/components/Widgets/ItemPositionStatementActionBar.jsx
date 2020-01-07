@@ -19,7 +19,6 @@ class ItemPositionStatementActionBar extends Component {
     commentEditModeOn: PropTypes.bool,
     externalUniqueId: PropTypes.string,
     shownInList: PropTypes.bool,
-    shouldFocus: PropTypes.bool,
     classes: PropTypes.object,
     mobile: PropTypes.bool,
   };
@@ -32,7 +31,6 @@ class ItemPositionStatementActionBar extends Component {
       voterOpposesBallotItem: false,
       voterSupportsBallotItem: false,
       voterTextStatement: '',
-      // disabled: undefined,
       commentActive: false,
     };
     this.updateStatementTextToBeSaved = this.updateStatementTextToBeSaved.bind(this);
@@ -41,7 +39,7 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   componentDidMount () {
-    const { ballotItemWeVoteId, commentEditModeOn, shouldFocus } = this.props;
+    const { ballotItemWeVoteId, commentEditModeOn } = this.props;
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
     if (ballotItemStatSheet) {
       const { voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
@@ -52,13 +50,9 @@ class ItemPositionStatementActionBar extends Component {
         voterTextStatement,
       });
     }
-    if (shouldFocus && this.textarea) {
-      this.textarea.focus();
-    }
 
     this.setState({
       showEditPositionStatementInput: commentEditModeOn,
-      // disabled: !this.props.commentEditModeOn,
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
     });
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
@@ -85,13 +79,11 @@ class ItemPositionStatementActionBar extends Component {
       this.setState({
         voterTextStatement,
         showEditPositionStatementInput: false,
-        // disabled: true,
       });
     } else {
       this.setState({
         voterTextStatement: '',
         showEditPositionStatementInput: nextProps.commentEditModeOn,
-        // disabled: !nextProps.commentEditModeOn,
       });
     }
   }
@@ -116,24 +108,6 @@ class ItemPositionStatementActionBar extends Component {
       return true;
     }
     return false;
-  }
-
-  componentDidUpdate (prevProps, prevState) {
-    // console.log('ItemPositionStatementActionBar componentDidUpdate');
-    // Note: adding a focus on the textarea in componentDidUpdate can lead to an infinite loop.
-    // We protect against this with shouldComponentUpdate
-    const { voterOpposesBallotItem, voterSupportsBallotItem } = this.state;
-    if (this.textarea) {
-      if (prevState.voterOpposesBallotItem === true && voterSupportsBallotItem === true) { // oppose to support
-        this.textarea.focus();
-      } else if (prevState.voterSupportsBallotItem === true && voterOpposesBallotItem === true) { // support to oppose
-        this.textarea.focus();
-      } else if (prevState.voterOpposesBallotItem === false && prevState.voterSupportsBallotItem === false && voterSupportsBallotItem === true) { // comment to support
-        this.textarea.focus();
-      } else if (prevState.voterOpposesBallotItem === false && prevState.voterSupportsBallotItem === false && voterOpposesBallotItem === true) { // comment to oppose
-        this.textarea.focus();
-      }
-    }
   }
 
   componentWillUnmount () {
@@ -188,11 +162,11 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   closeEditPositionStatementInput = () => {
-    this.setState({ showEditPositionStatementInput: false, commentActive: false/* ,  disabled: true */ });
+    this.setState({ showEditPositionStatementInput: false, commentActive: false });
   };
 
   openEditPositionStatementInput = () => {
-    this.setState({ showEditPositionStatementInput: true, commentActive: true /* , disabled: false */ });
+    this.setState({ showEditPositionStatementInput: true, commentActive: true });
   };
 
   onBlurInput = () => {
@@ -228,7 +202,6 @@ class ItemPositionStatementActionBar extends Component {
     this.setState({
       voterTextStatement: e.target.value,
       showEditPositionStatementInput: true,
-      // disabled: false,
     });
   }
 

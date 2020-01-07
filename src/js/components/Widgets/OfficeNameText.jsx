@@ -32,10 +32,10 @@ export default class OfficeNameText extends Component {
             <span>Candidate for </span>
             { officeLink ? (
               <Link to={officeLink}>
-                <span className="candidate-card-main__office">{ contestOfficeName }</span>
+                <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>
               </Link>
             ) :
-              <span className="candidate-card-main__office">{ contestOfficeName }</span>
+              <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>
             }
           </span>
         );

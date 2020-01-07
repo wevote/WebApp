@@ -231,7 +231,7 @@ class TopCommentByBallotItem extends Component {
           &quot;
         </BallotItemEndorsementTextMobile>
         { hideMoreButton ? null : (
-          <span>
+          <LearnMoreWrapper>
             { this.state.learnMoreUrl ? (
               <span>
                 {' '}
@@ -249,7 +249,7 @@ class TopCommentByBallotItem extends Component {
               </Button>
             )
             }
-          </span>
+          </LearnMoreWrapper>
         )}
       </Wrapper>
     );
@@ -262,7 +262,7 @@ const styles = theme => ({
     fontSize: 12,
     minWidth: 60,
     height: 30,
-    marginTop: 5,
+    margin: '4px 0 4px 0',
     [theme.breakpoints.down('md')]: {
       minWidth: 60,
       height: 30,
@@ -314,6 +314,9 @@ const BallotItemEndorsementTextMobile = styled.span`
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 16px;
   font-weight: 400;
+`;
+
+const LearnMoreWrapper = styled.span`
 `;
 
 export default withStyles(styles)(TopCommentByBallotItem);

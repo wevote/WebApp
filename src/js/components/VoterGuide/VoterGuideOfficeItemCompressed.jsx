@@ -4,9 +4,9 @@ import { toTitleCase } from '../../utils/textFormat';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
-import OrganizationPositionItem from './OrganizationPositionItem';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
+import VoterGuidePositionItem from './VoterGuidePositionItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 
@@ -24,7 +24,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     this.state = {
       candidateList: [],
       displayAllCandidatesFlag: false,
-      editMode: false,
       organization: {},
       organizationWeVoteId: '',
     };
@@ -231,12 +230,20 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                   return (
                     <div key={candidateWeVoteId}>
                       {/* Organization Endorsement */}
+                      {/* <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
+                      </VoterGuidePositionItemWrapper> */}
+                      <VoterGuidePositionItem
+                        organizationWeVoteId={organizationWeVoteId}
+                        position={orgPositionForCandidate}
+                      />
+                      {/*
                       <OrganizationPositionItem
                         editMode={this.state.editMode}
                         key={orgPositionForCandidate.position_we_vote_id}
                         organizationWeVoteId={organizationWeVoteId}
                         position={orgPositionForCandidate}
                       />
+                      */}
                     </div>
                   );
                 }
@@ -250,3 +257,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     );
   }
 }
+
+// const VoterGuidePositionItemWrapper = styled.div`
+//   margin-bottom: 10px;
+// `;
