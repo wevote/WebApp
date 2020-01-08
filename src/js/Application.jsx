@@ -21,6 +21,7 @@ import webAppConfig from './config';
 import { stringContains } from './utils/textFormat';
 import SnackNotifier from './components/Widgets/SnackNotifier';
 import displayFriendsTabs from './utils/displayFriendsTabs';
+import BallotShareButtonFooter from './components/Ballot/BallotShareButtonFooter';
 
 class Application extends Component {
   static propTypes = {
@@ -282,6 +283,8 @@ class Application extends Component {
     const waitForStripe = (String(pathname) === '/more/donate' && StripeCheckout === undefined);
     // console.log('Application render, pathname:', pathname);
 
+    console.log(showBallotShareButtonFooter);
+
     if (this.state.voter === undefined || this.props.location === undefined || waitForStripe) {
       if (waitForStripe) {
         console.log('Waiting for stripe to load, on an initial direct URL to DonationForm');
@@ -301,7 +304,7 @@ class Application extends Component {
 
     routingLog(pathname);
 
-    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, voterGuideCreatorMode, voterGuideMode } = getApplicationViewBooleans(pathname);
+    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, showBallotShareButtonFooter, voterGuideCreatorMode, voterGuideMode } = getApplicationViewBooleans(pathname);
 
     if (inTheaterMode) {
       // console.log('inTheaterMode', inTheaterMode);
@@ -368,6 +371,9 @@ class Application extends Component {
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )}
+          {showBallotShareButtonFooter && (
+            <BallotShareButtonFooter />
+          )}
         </div>
       );
     }
@@ -412,6 +418,9 @@ class Application extends Component {
           <div className="footroom-wrapper">
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>
+        )}
+        {showBallotShareButtonFooter && (
+          <BallotShareButtonFooter />
         )}
       </div>
     );

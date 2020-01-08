@@ -134,6 +134,7 @@ const SubTitle = styled.div`
   font-size: 14px;
   width: 80%;
 `;
+
 const Flex = styled.div`
   display: flex;
   flex-wrap: wrap;
