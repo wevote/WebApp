@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import styled from 'styled-components';
 import FollowToggle from '../Widgets/FollowToggle';
 import ImageHandler from '../ImageHandler';
 import LoadingWheel from '../LoadingWheel';
@@ -121,6 +122,7 @@ export default class OrganizationCard extends Component {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }
 
+    const { currentBallotIdInUrl, followToggleOn, turnOffDescription, turnOffLogo, turnOffTwitterHandle, urlWithoutHash } = this.props;
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
       twitter_followers_count: twitterFollowersCount,
@@ -158,7 +160,7 @@ export default class OrganizationCard extends Component {
     return (
       <div className="card-main__media-object">
         <div className="card-main__media-object-anchor">
-          {this.props.turnOffLogo ?
+          {turnOffLogo ?
             null : (
               <Link to={voterGuideLink} className="u-no-underline">
                 <ImageHandler
@@ -169,12 +171,12 @@ export default class OrganizationCard extends Component {
                 />
               </Link>
             )}
-          {this.props.followToggleOn ? (
+          {followToggleOn ? (
             <div className="u-margin-top--md">
               <FollowToggle
-                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                currentBallotIdInUrl={currentBallotIdInUrl}
                 ballotItemWeVoteId={this.props.we_vote_id}
-                urlWithoutHash={this.props.urlWithoutHash}
+                urlWithoutHash={urlWithoutHash}
                 organizationWeVoteId={this.state.organizationWeVoteId}
               />
             </div>
@@ -188,37 +190,30 @@ export default class OrganizationCard extends Component {
           {/* Organization supports ballot item */}
           {positionDescription}
 
-          { twitterDescriptionMinusName && !this.props.turnOffDescription ? (
+          { twitterDescriptionMinusName && !turnOffDescription ? (
             <ParsedTwitterDescription
               twitter_description={twitterDescriptionMinusName}
             />
           ) :
             <p className="card-main__description" />
           }
-          { !this.props.turnOffDescription ? (
+          { !turnOffDescription ? (
             <div>
-              { organizationTwitterHandle && !this.props.turnOffTwitterHandle ? (
+              { organizationTwitterHandle && !turnOffTwitterHandle && (
                 <span>
                   @
                   {organizationTwitterHandle}
                   &nbsp;&nbsp;
                 </span>
-              ) :
-                null
-              }
-              {(twitterFollowersCount && numberWithCommas(twitterFollowersCount) !== '0' && !this.props.turnOffTwitterHandle) ? (
+              )}
+              {(twitterFollowersCount && numberWithCommas(twitterFollowersCount) !== '0' && !turnOffTwitterHandle) && (
                 <span className="twitter-followers__badge">
-                  <span className="fab fa-twitter twitter-followers__icon" />
+                  <TwitterFollowersIcon className="fab fa-twitter" />
                   {numberWithCommas(twitterFollowersCount)}
                 </span>
-              ) : null
-              }
-              <IssuesByOrganizationDisplayList
-                organizationWeVoteId={this.state.organizationWeVoteId}
-                placement="bottom"
-              />
-              { organizationWebsite ? (
-                <div>
+              )}
+              { organizationWebsite && (
+                <WebsiteWrapper>
                   <OpenExternalWebSite
                     url={organizationWebsite}
                     target="_blank"
@@ -230,9 +225,12 @@ export default class OrganizationCard extends Component {
                       </span>
                     )}
                   />
-                </div>
-              ) : null
-              }
+                </WebsiteWrapper>
+              )}
+              <IssuesByOrganizationDisplayList
+                organizationWeVoteId={this.state.organizationWeVoteId}
+                placement="bottom"
+              />
               {/* 5 of your friends follow Organization Name<br /> */}
             </div>
           ) : null
@@ -249,3 +247,14 @@ export default class OrganizationCard extends Component {
     );
   }
 }
+
+const TwitterFollowersIcon = styled.span`
+  font-size: 1.25rem;
+  color: #ccc;
+  margin-right: 2px;
+  vertical-align: bottom;
+`;
+
+const WebsiteWrapper = styled.span`
+  margin-left: 4px;
+`;

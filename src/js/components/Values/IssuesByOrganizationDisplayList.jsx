@@ -113,8 +113,8 @@ class IssuesByOrganizationDisplayList extends Component {
         </PopoverHeader>
         <PopoverDescriptionText>
           <ReadMore
-            text_to_display={oneIssue.issue_description}
-            num_of_lines={2}
+            textToDisplay={oneIssue.issue_description}
+            numberOfLines={2}
           />
           {oneIssue.issue_we_vote_id && (
             <FollowIssueToggleContainer>
@@ -237,7 +237,7 @@ const FollowIssueToggleContainer = styled.div`
 
 const IssuesByOrganization = styled.div`
   width: ${props => (props.fullWidth ? '100%' : '85%')};
-  padding: 8px 0 0 0;
+  padding: 6px 0 0 0;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: ${props => (props.fullWidth ? '100%' : '90%')};
   }

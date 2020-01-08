@@ -308,16 +308,6 @@ class VoterGuidePositions extends Component {
     });
   }
 
-  toggleEditMode () {
-    const { editMode } = this.state;
-    if (editMode) {
-      // If going from editMode == True to editMode == False, we want to refresh the positions
-      const { currentGoogleCivicElectionId, organizationWeVoteId } = this.state;
-      OrganizationActions.positionListForOpinionMaker(organizationWeVoteId, true, false, currentGoogleCivicElectionId);
-    }
-    this.setState({ editMode: !editMode });
-  }
-
   render () {
     renderLog('VoterGuidePositions');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('VoterGuidePositions render');

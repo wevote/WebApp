@@ -199,13 +199,15 @@ class IssueCard extends Component {
               <Link to={this.getIssueLink}
                       className="u-no-underline"
               >
-                <ReadMore text_to_display={issueDescription}
-                          num_of_lines={numberOfLines}
+                <ReadMore
+                  textToDisplay={issueDescription}
+                  numberOfLines={numberOfLines}
                 />
               </Link>
             ) : (
-              <ReadMore text_to_display={issueDescription}
-                          num_of_lines={numberOfLines}
+              <ReadMore
+                textToDisplay={issueDescription}
+                numberOfLines={numberOfLines}
               />
             )
               }

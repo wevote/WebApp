@@ -103,8 +103,8 @@ export default class OrganizationDisplayForList extends Component {
             { twitterDescriptionMinusName ? (
               <ReadMore
                 className="card-child__organization-description"
-                text_to_display={twitterDescriptionMinusName}
-                num_of_lines={numberOfLines}
+                textToDisplay={twitterDescriptionMinusName}
+                numberOfLines={numberOfLines}
               />
             ) : null
             }

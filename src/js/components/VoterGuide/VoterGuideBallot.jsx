@@ -20,6 +20,7 @@ import cookies from '../../utils/cookies';
 import {
   historyPush, isCordova, isWebApp,
 } from '../../utils/cordovaUtils';
+import DelayedLoad from '../Widgets/DelayedLoad';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import EndorsementCard from '../Widgets/EndorsementCard';
@@ -677,22 +678,24 @@ class VoterGuideBallot extends Component {
     } = this.state;
     if (!ballotWithAllItems) {
       return (
-        <div className="ballot container-fluid well u-stack--md u-inset--md">
-          <div className={`ballot__header ${isWebApp() ? 'ballot__header__top-cordova' : ''}`}>
-            <BrowserPushMessage incomingProps={this.props} />
-            <p className="ballot__date_location">
-              If your ballot does not appear momentarily, please
-              {' '}
-              <Link to="/settings/location">change your address</Link>
-              .
-            </p>
+        <DelayedLoad showLoadingText waitBeforeShow={2000}>
+          <div className="ballot container-fluid well u-stack--md u-inset--md">
+            <div className={`ballot__header ${isWebApp() ? 'ballot__header__top-cordova' : ''}`}>
+              <BrowserPushMessage incomingProps={this.props} />
+              <p className="ballot__date_location">
+                If your ballot does not appear momentarily, please
+                {' '}
+                <Link to="/settings/location">change your address</Link>
+                .
+              </p>
+            </div>
+            <BallotElectionList
+              ballotBaseUrl={ballotBaseUrl}
+              ballotElectionList={this.state.voterBallotList}
+              organization_we_vote_id={organizationWeVoteId}
+            />
           </div>
-          <BallotElectionList
-            ballotBaseUrl={ballotBaseUrl}
-            ballotElectionList={this.state.voterBallotList}
-            organization_we_vote_id={organizationWeVoteId}
-          />
-        </div>
+        </DelayedLoad>
       );
     }
 

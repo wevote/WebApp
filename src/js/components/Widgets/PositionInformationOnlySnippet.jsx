@@ -27,7 +27,7 @@ export default class PositionInformationOnlySnippet extends Component {
     const { is_looking_at_self: isLookingAtSelf } = this.props;
     let { more_info_url: moreInfoUrl } = this.props;
     const statementText = this.props.statement_text || '';
-    let statementTextHtml = <ReadMore text_to_display={statementText} />;
+    let statementTextHtml = <ReadMore textToDisplay={statementText} />;
 
     let videoUrl = '';
     let youTubeUrl;
@@ -47,13 +47,13 @@ export default class PositionInformationOnlySnippet extends Component {
     if (youTubeUrl) {
       [videoUrl] = youTubeUrl;
       statementTextNoUrl = statementText.replace(videoUrl[0], '');
-      statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
+      statementTextHtml = <ReadMore textToDisplay={statementTextNoUrl} />;
     }
 
     if (vimeoUrl) {
       [videoUrl] = vimeoUrl;
       statementTextNoUrl = statementText.replace(videoUrl, '');
-      statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
+      statementTextHtml = <ReadMore textToDisplay={statementTextNoUrl} />;
     }
 
     const className = 'position-rating__icon position-rating__icon--no-position';

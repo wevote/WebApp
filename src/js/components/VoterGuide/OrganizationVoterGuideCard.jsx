@@ -165,7 +165,7 @@ const FriendToggleWrapper = styled.div`
 `;
 
 const IssuesWrapper = styled.div`
-  margin-top: 10px;
+  margin-top: 0px;
 `;
 
 const ProfileAvatar = styled.div`

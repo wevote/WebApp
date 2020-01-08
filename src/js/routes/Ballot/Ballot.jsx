@@ -835,24 +835,26 @@ class Ballot extends Component {
 
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
-        <div className="ballot container-fluid well u-stack--md u-inset--md">
-          <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
-            <BallotLoadingWrapper>
-              If your ballot does not appear momentarily,
-              {' '}
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <Link
-                // since we use a button as the component, we can disable that es-lint rule
-                component="button"
-                id="ballotIfBallotDoesNotAppear"
-                onClick={this.toggleSelectBallotModal}
-                style={{ color: 'rgb(6, 95, 212)' }}
-              >
-                please click here to change your address.
-              </Link>
-            </BallotLoadingWrapper>
+        <DelayedLoad showLoadingText waitBeforeShow={2000}>
+          <div className="ballot container-fluid well u-stack--md u-inset--md">
+            <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
+              <BallotLoadingWrapper>
+                If your ballot does not appear momentarily,
+                {' '}
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <Link
+                  // since we use a button as the component, we can disable that es-lint rule
+                  component="button"
+                  id="ballotIfBallotDoesNotAppear"
+                  onClick={this.toggleSelectBallotModal}
+                  style={{ color: 'rgb(6, 95, 212)' }}
+                >
+                  please click here to change your address.
+                </Link>
+              </BallotLoadingWrapper>
+            </div>
           </div>
-        </div>
+        </DelayedLoad>
       );
     }
 

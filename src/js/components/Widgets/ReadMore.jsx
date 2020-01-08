@@ -5,10 +5,10 @@ import { renderLog } from '../../utils/logging';
 
 export default class ReadMore extends Component {
   static propTypes = {
-    text_to_display: PropTypes.node.isRequired,
-    link_text: PropTypes.node,
-    collapse_text: PropTypes.node,
-    num_of_lines: PropTypes.number,
+    textToDisplay: PropTypes.node.isRequired,
+    linkText: PropTypes.node,
+    collapseText: PropTypes.node,
+    numberOfLines: PropTypes.number,
     className: PropTypes.string,
   };
 
@@ -42,11 +42,11 @@ export default class ReadMore extends Component {
   render () {
     renderLog('ReadMore');  // Set LOG_RENDER_EVENTS to log all renders
     let {
-      text_to_display: textToDisplay, link_text: linkText, num_of_lines: numOfLines, collapse_text: collapseText,
+      textToDisplay, linkText, numberOfLines, collapseText,
     } = this.props;
     // default prop valuess
-    if (numOfLines === undefined) {
-      numOfLines = 3;
+    if (numberOfLines === undefined) {
+      numberOfLines = 3;
     }
     if (linkText === undefined) {
       linkText = 'More';
@@ -64,7 +64,7 @@ export default class ReadMore extends Component {
     // There are cases where we would like to show line breaks when there is a little bit of text
     let notEnoughTextToTruncate = false;
     let allLinesShort = true;
-    let maxNumOfLines = numOfLines;
+    let maxNumOfLines = numberOfLines;
     // max num of lines shouldn't be greater than the total num of line breaks hard coded
     if (maxNumOfLines > expandedTextArray.length) {
       maxNumOfLines = expandedTextArray.length;
@@ -75,7 +75,7 @@ export default class ReadMore extends Component {
         break;
       }
     }
-    if (expandedTextArray.length <= numOfLines && allLinesShort) {
+    if (expandedTextArray.length <= numberOfLines && allLinesShort) {
       notEnoughTextToTruncate = true;
     }
     // wrap text in array in separate spans with html line breaks
@@ -113,7 +113,7 @@ export default class ReadMore extends Component {
           <TextTruncate
             containerClassName={this.props.className}
             element="span"
-            line={numOfLines}
+            line={numberOfLines}
             truncateText="..."
             text={textToDisplay}
             textTruncateChild={(

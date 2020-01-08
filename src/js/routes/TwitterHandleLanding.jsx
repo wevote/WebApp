@@ -4,6 +4,7 @@ import Button from '@material-ui/core/esm/Button';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import Candidate from './Ballot/Candidate';
+import DelayedLoad from '../components/Widgets/DelayedLoad';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
 import OrganizationVoterGuide from './VoterGuide/OrganizationVoterGuide';
@@ -30,7 +31,7 @@ export default class TwitterHandleLanding extends Component {
   }
 
   componentDidMount () {
-    // console.log("TwitterHandleLanding componentDidMount, this.props.params.twitter_handle: " + this.props.params.twitter_handle);
+    // console.log('TwitterHandleLanding componentDidMount, this.props.params.twitter_handle: ' + this.props.params.twitter_handle);
     this.setState({
       activeRoute: this.props.activeRoute,
       twitterHandle: this.props.params.twitter_handle,
@@ -43,13 +44,13 @@ export default class TwitterHandleLanding extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("TwitterHandleLanding componentWillReceiveProps");
+    // console.log('TwitterHandleLanding componentWillReceiveProps');
     this.setState({
       activeRoute: nextProps.activeRoute,
     });
     if (nextProps.params.twitter_handle && this.state.twitterHandle.toLowerCase() !== nextProps.params.twitter_handle.toLowerCase()) {
       // We need this test to prevent an infinite loop
-      // console.log("TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ", nextProps.params.twitter_handle);
+      // console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', nextProps.params.twitter_handle);
       TwitterActions.twitterIdentityRetrieve(nextProps.params.twitter_handle);
     }
   }
@@ -60,7 +61,7 @@ export default class TwitterHandleLanding extends Component {
   }
 
   onTwitterStoreChange () {
-    // console.log("TwitterHandleLanding onTwitterStoreChange");
+    // console.log('TwitterHandleLanding onTwitterStoreChange');
     let { twitter_followers_count: twitterFollowersCount } = TwitterStore.get();
     const {
       kind_of_owner: kindOfOwner, owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle,
@@ -86,19 +87,19 @@ export default class TwitterHandleLanding extends Component {
   }
 
   onVoterStoreChange () {
-    // console.log("TwitterHandleLanding onTwitterStoreChange");
+    // console.log('TwitterHandleLanding onTwitterStoreChange');
     this.setState({ voter: VoterStore.getVoter() });
   }
 
   organizationCreateFromTwitter (newTwitterHandle) {
-    // console.log("TwitterHandleLanding organizationCreateFromTwitter");
+    // console.log('TwitterHandleLanding organizationCreateFromTwitter');
     OrganizationActions.saveFromTwitter(newTwitterHandle);
   }
 
   render () {
     renderLog('TwitterHandleLanding');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.state.status === undefined) {
-      // console.log("TwitterHandleLanding this.state.status undefined");
+      // console.log('TwitterHandleLanding this.state.status undefined');
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     }
@@ -119,19 +120,19 @@ export default class TwitterHandleLanding extends Component {
     }
 
     // If signedInWithThisTwitterAccount AND not an ORGANIZATION or POLITICIAN, then create ORGANIZATION
-    // We *may* eventually have a "VOTER" type, but for now ORGANIZATION is all we need for both orgs and voters
+    // We *may* eventually have a 'VOTER' type, but for now ORGANIZATION is all we need for both orgs and voters
     const isNeitherOrganizationNorPolitician = kindOfOwner !== 'ORGANIZATION' && kindOfOwner !== 'POLITICIAN';
     if (signedInWithThisTwitterAccount && isNeitherOrganizationNorPolitician) {
       // We make the API call to create a new organization for this Twitter handle. This will create a cascade so that
       // js/routes/TwitterHandleLanding will switch the view to an Organization card / PositionList
-      // console.log("TwitterHandleLanding, calling organizationCreateFromTwitter because isNeitherOrganizationNorPolitician");
+      // console.log('TwitterHandleLanding, calling organizationCreateFromTwitter because isNeitherOrganizationNorPolitician');
       this.organizationCreateFromTwitter(voter.twitter_screen_name);
     }
 
     // } else if (signedInWithThisTwitterAccount && voter_not_linked_to_organization) {
     //   // We (TODO DALE *should*) link the voter record to the organization with Twitter sign in -- this is for safety
     //   // TODO DALE 2016-10-30 Moving this to Twitter sign in
-    //   // console.log("TwitterHandleLanding, calling organizationCreateFromTwitter because voter_not_linked_to_organization");
+    //   // console.log('TwitterHandleLanding, calling organizationCreateFromTwitter because voter_not_linked_to_organization');
     //   // this.organizationCreateFromTwitter(voter.twitter_screen_name);
     // }
 
@@ -153,45 +154,47 @@ export default class TwitterHandleLanding extends Component {
         );
       }
     } else if (this.state.kindOfOwner === 'TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE') {
-      // console.log("TwitterHandleLanding TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE calling UnknownTwitterAccount");
+      // console.log('TwitterHandleLanding TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE calling UnknownTwitterAccount');
       return <UnknownTwitterAccount {...this.state} />;
     } else {
-      // console.log("render in TwitterHandleLanding  else, this.state.kindOfOwner");
+      // console.log('render in TwitterHandleLanding  else, this.state.kindOfOwner');
       return (
-        <div className="container-fluid well u-stack--md u-inset--md">
-          <Helmet title="Not Found - We Vote" />
-          <h3 className="h3">Claim Your Page</h3>
-          <div className="medium">
-            We were not able to find an account for this
-            Twitter Handle
-            { this.state.twitterHandle ? (
-              <span>
-                {' '}
-                &quot;
-                {this.state.twitterHandle}
-                &quot;
-              </span>
-            ) :
-              <span />
-            }
-            .
-          </div>
-          <br />
-          <Link
-            id="TwitterHandleLandingSignIntoTwitterToCreateVoterGuideButton"
-            to="/twittersigninprocess/signinswitchstart"
-          >
-            <Button
-              color="primary"
-              variant="contained"
+        <DelayedLoad showLoadingText waitBeforeShow={2000}>
+          <div className="container-fluid well u-stack--md u-inset--md">
+            <Helmet title="Not Found - We Vote" />
+            <h3 className="h3">Claim Your Page</h3>
+            <div className="medium">
+              We were not able to find an account for this
+              Twitter Handle
+              { this.state.twitterHandle ? (
+                <span>
+                  {' '}
+                  &quot;
+                  {this.state.twitterHandle}
+                  &quot;
+                </span>
+              ) :
+                <span />
+              }
+              .
+            </div>
+            <br />
+            <Link
+              id="TwitterHandleLandingSignIntoTwitterToCreateVoterGuideButton"
+              to="/twittersigninprocess/signinswitchstart"
             >
-              Sign Into Twitter to Create Voter Guide
-            </Button>
-          </Link>
-          <br />
-          <br />
-          <br />
-        </div>
+              <Button
+                color="primary"
+                variant="contained"
+              >
+                Sign Into Twitter to Create Voter Guide
+              </Button>
+            </Link>
+            <br />
+            <br />
+            <br />
+          </div>
+        </DelayedLoad>
       );
     }
   }

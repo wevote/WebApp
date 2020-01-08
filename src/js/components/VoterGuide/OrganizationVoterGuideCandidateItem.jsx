@@ -178,7 +178,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
               </p>
             </span>
             { twitterDescription ? (
-              <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+              <div className={`u-stack--xs ${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
                 <div>
                   <ParsedTwitterDescription
                     twitter_description={twitterDescription}

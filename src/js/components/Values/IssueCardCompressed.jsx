@@ -169,8 +169,8 @@ class IssueCardCompressed extends Component {
                       className="u-no-underline"
                 >
                   <ReadMore
-                    text_to_display={issueDescription}
-                    num_of_lines={numberOfLines}
+                    textToDisplay={issueDescription}
+                    numberOfLines={numberOfLines}
                   />
                 </Link>
               </Description>

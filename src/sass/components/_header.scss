@@ -12,6 +12,7 @@ $header-height: 48px;
 $header-height-back-to-ballot: 96px;
 $header-height-back-to-ballot-cordova: 71px;
 $header-height-voter-guide-creator: 108px;
+$header-padding-left: 15px;
 
 .page-header {
   // required overrides for Bootstrap :(
@@ -88,6 +89,7 @@ $header-height-voter-guide-creator: 108px;
   width: 100%;
   max-width: 960px;
   @include breakpoints(xsmall-bootstrap) {
+    padding-left: $header-padding-left;
     padding-right: $header-padding;
   }
 }

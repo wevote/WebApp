@@ -5,11 +5,16 @@ import Card from '@material-ui/core/esm/Card';
 import { withStyles } from '@material-ui/core/esm/styles';
 import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
+import BallotStore from '../../stores/BallotStore';
+import CandidateActions from '../../actions/CandidateActions';
+import CandidateStore from '../../stores/CandidateStore';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
+import MeasureActions from '../../actions/MeasureActions';
+import MeasureStore from '../../stores/MeasureStore';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { capitalizeString } from '../../utils/textFormat';
+import { capitalizeString, stringContains } from '../../utils/textFormat';
 import ReadMore from '../Widgets/ReadMore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
@@ -30,6 +35,7 @@ class VoterGuidePositionItem extends Component {
       voterPositionIsPublic: false,
       voterSupportsBallotItem: false,
       organizationWeVoteId: '',
+      positionListHasBeenRetrievedOnce: {},
       signedInWithThisFacebookAccount: false,
       signedInWithThisOrganization: false,
       signedInWithThisTwitterAccount: false,
@@ -93,7 +99,24 @@ class VoterGuidePositionItem extends Component {
       voterTextStatement,
       voter,
     });
+    if (ballotItemWeVoteId && !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
+      // console.log('componentDidMount positionListForBallotItemPublic', measureWeVoteId);
+      const isCandidate = stringContains('cand', ballotItemWeVoteId);
+      const isMeasure = stringContains('meas', ballotItemWeVoteId);
+      if (isCandidate) {
+        //
+      } else if (isMeasure) {
+        MeasureActions.positionListForBallotItemPublic(ballotItemWeVoteId);
+      }
+      const { positionListHasBeenRetrievedOnce } = this.state;
+      positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
+      this.setState({
+        positionListHasBeenRetrievedOnce,
+      });
+    }
 
+    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
+    this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -173,9 +196,45 @@ class VoterGuidePositionItem extends Component {
   }
 
   componentWillUnmount () {
+    this.candidateStoreListener.remove();
+    this.measureStoreListener.remove();
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onCandidateStoreChange () {
+    const { ballotItemWeVoteId } = this.state;
+    const isCandidate = stringContains('cand', ballotItemWeVoteId);
+    // console.log('VoterGuidePositionItem, onCandidateStoreChange');
+    if (isCandidate) {
+      if (ballotItemWeVoteId && !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
+        // console.log('VoterGuidePositionItem, onCandidateStoreChange, calling positionListForBallotItemPublic');
+        CandidateActions.positionListForBallotItemPublic(ballotItemWeVoteId);
+        const { positionListHasBeenRetrievedOnce } = this.state;
+        positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
+        this.setState({
+          positionListHasBeenRetrievedOnce,
+        });
+      }
+    }
+  }
+
+  onMeasureStoreChange () {
+    const { ballotItemWeVoteId } = this.state;
+    const isMeasure = stringContains('meas', ballotItemWeVoteId);
+    // console.log('VoterGuidePositionItem, onMeasureStoreChange');
+    if (isMeasure) {
+      if (ballotItemWeVoteId && !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
+        // console.log('VoterGuidePositionItem, onMeasureStoreChange, calling positionListForBallotItemPublic');
+        MeasureActions.positionListForBallotItemPublic(ballotItemWeVoteId);
+        const { positionListHasBeenRetrievedOnce } = this.state;
+        positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
+        this.setState({
+          positionListHasBeenRetrievedOnce,
+        });
+      }
+    }
   }
 
   onOrganizationStoreChange () {
@@ -266,6 +325,14 @@ class VoterGuidePositionItem extends Component {
   togglePositionStatement () {
     const { hidePositionStatement } = this.state;
     this.setState({ hidePositionStatement: !hidePositionStatement });
+  }
+
+  localPositionListHasBeenRetrievedOnce (ballotItemWeVoteId) {
+    if (ballotItemWeVoteId) {
+      const { positionListHasBeenRetrievedOnce } = this.state;
+      return positionListHasBeenRetrievedOnce[ballotItemWeVoteId];
+    }
+    return false;
   }
 
   render () {
@@ -400,8 +467,8 @@ class VoterGuidePositionItem extends Component {
                   </BallotItemImageWrapper>
                 )}
                 <ReadMore
-                  text_to_display={statementText}
-                  num_of_lines={4}
+                  textToDisplay={statementText}
+                  numberOfLines={4}
                 />
               </MobileItemDescription>
             )}
@@ -420,8 +487,8 @@ class VoterGuidePositionItem extends Component {
                   </BallotItemImageWrapper>
                 )}
                 <ReadMore
-                  text_to_display={statementText}
-                  num_of_lines={3}
+                  textToDisplay={statementText}
+                  numberOfLines={3}
                 />
               </DesktopItemDescription>
             )}
@@ -453,7 +520,7 @@ const CandidateItemWrapper = styled.div`
 `;
 
 const BallotItemImageWrapper = styled.span`
-  padding-right: 8px;
+  padding-right: 4px;
 `;
 
 const BallotItemPadding = styled.div`

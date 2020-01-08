@@ -126,8 +126,8 @@ class MeasureItem extends Component {
             { measureText ? (
               <div className="measure_text u-gray-mid">
                 <ReadMore
-                  num_of_lines={numberOfLines}
-                  text_to_display={measureText}
+                  numberOfLines={numberOfLines}
+                  textToDisplay={measureText}
                 />
               </div>
             ) :
