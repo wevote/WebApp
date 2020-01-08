@@ -372,7 +372,7 @@ class Application extends Component {
             </div>
           )}
           {showBallotShareButtonFooter && (
-            <BallotShareButtonFooter />
+            <BallotShareButtonFooter pathname={pathname} />
           )}
         </div>
       );
@@ -420,7 +420,7 @@ class Application extends Component {
           </div>
         )}
         {showBallotShareButtonFooter && (
-          <BallotShareButtonFooter />
+          <BallotShareButtonFooter pathname={pathname} />
         )}
       </div>
     );

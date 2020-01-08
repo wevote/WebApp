@@ -47,7 +47,7 @@ class BallotShareButtonFooter extends Component {
     const { classes } = this.props;
 
     return (
-      <Wrapper>
+      <Wrapper pinToBottom={this.props.pathname.toLowerCase().startsWith('/candidate') || this.props.pathname.toLowerCase().startsWith('/measure')}>
         <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="contained" color="primary">
           <Icon>
             <Reply
@@ -111,8 +111,6 @@ class BallotShareButtonFooter extends Component {
 const styles = () => ({
   button: {
     padding: '0 12px',
-    position: 'fixed',
-    bottom: '57px',
     width: '100%',
     boxShadow: 'none !important',
     borderRadius: '0 !important',
@@ -141,7 +139,10 @@ const styles = () => ({
 });
 
 const Wrapper = styled.div`
-  display: block
+  position: fixed;
+  width: 100%;
+  bottom: ${props => (props.pinToBottom ? '0' : '57px')};
+  display: block;
   @media (min-width: 576px) {
     display: none;
   }
