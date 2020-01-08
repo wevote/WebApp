@@ -47,7 +47,7 @@ class BallotShareButtonFooter extends Component {
     const { classes } = this.props;
 
     return (
-      <>
+      <Wrapper>
         <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="contained" color="primary">
           <Icon>
             <Reply
@@ -103,7 +103,7 @@ class BallotShareButtonFooter extends Component {
             </Button>
           </Container>
         </Drawer>
-      </>
+      </Wrapper>
     );
   }
 }
@@ -139,6 +139,13 @@ const styles = () => ({
     transform: 'scaleX(-1)',
   },
 });
+
+const Wrapper = styled.div`
+  display: block
+  @media (min-width: 576px) {
+    display: none;
+  }
+`;
 
 const Container = styled.div`
   margin: 0 auto;
@@ -219,6 +226,10 @@ const MenuSeparator = styled.div`
   position: absolute;
   left: 10%;
   z-index: 0 !important;
+  @media (min-width: 568px) {
+    width: 448px !important;
+    margin: 0 auto;
+  }
 `;
 
 export default withStyles(styles)(BallotShareButtonFooter);
