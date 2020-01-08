@@ -98,7 +98,7 @@ class BallotShareButtonFooter extends Component {
                 </MenuInfo>
               </MenuFlex>
             </MenuItem>
-            <Button className={classes.cancelButton} fullWidth onClick={this.onClose} variant="outlined" color="primary">
+            <Button className={classes.cancelButton} fullWidth onClick={this.handleClose} variant="outlined" color="primary">
               Cancel
             </Button>
           </Container>
@@ -143,7 +143,7 @@ const styles = () => ({
 const Container = styled.div`
   margin: 0 auto;
   max-width: 576px;
-  padding: '0px 12px 32px 12px',
+  padding: 24px 16px 32px !important;
 `;
 
 const ModalTitleArea = styled.div`
