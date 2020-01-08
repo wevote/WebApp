@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/esm/Button';
 import Comment from '@material-ui/icons/Comment';
-import { Tooltip, MenuItem } from '@material-ui/core/esm';
+import { Tooltip, Menu, MenuItem } from '@material-ui/core/esm';
 import { withStyles } from '@material-ui/core/esm/styles';
 import Reply from '@material-ui/icons/Reply';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
+import { Slide, Drawer } from '@material-ui/core';
 
 class BallotShareButtonFooter extends Component {
   static propTypes = {
@@ -44,7 +45,6 @@ class BallotShareButtonFooter extends Component {
 
   render () {
     const { classes } = this.props;
-    const { anchorEl } = this.state;
 
     return (
       <>
@@ -57,13 +57,7 @@ class BallotShareButtonFooter extends Component {
           </Icon>
           Share
         </Button>
-        <Menu
-          id="share-menu"
-          open={this.state.open}
-          onClose={this.handleClose}
-          getContentAnchorEl={null}
-          anchorEl={anchorEl}
-        >
+        <Drawer id="share-menu" anchor="bottom" open={this.state.open} direction="up" onClose={this.handleClose}>
           <Container>
             <ModalTitleArea>
               <Title>
@@ -108,19 +102,13 @@ class BallotShareButtonFooter extends Component {
               Cancel
             </Button>
           </Container>
-        </Menu>
+        </Drawer>
       </>
     );
   }
 }
 
 const styles = () => ({
-  paper: {
-    borderRadius: '2px !important',
-    marginTop: '10px !important',
-    overflowX: 'visible !important',
-    overflowY: 'visible !important',
-  },
   button: {
     padding: '0 12px',
     position: 'fixed',
@@ -152,20 +140,10 @@ const styles = () => ({
   },
 });
 
-const Menu = styled.div`
-  position: fixed;
-  bottom: 0;
-  width: 100% !important;
-  height: fit-content !important;
-  transform: ${props => (props.open ? 'none' : 'translateY(100%)')} !important;
-  z-index: 999 !important;
-  background: white !important;
-  padding: 0px 12px 32px 12px;
-`;
-
 const Container = styled.div`
   margin: 0 auto;
   max-width: 576px;
+  padding: '0px 12px 32px 12px',
 `;
 
 const ModalTitleArea = styled.div`
