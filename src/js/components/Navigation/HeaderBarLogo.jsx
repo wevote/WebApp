@@ -15,14 +15,16 @@ const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
         src={chosenSiteLogoUrl}
       />
     ) : (
-      <Link to={`${isCordova() ? '/ballot' : '/welcome'}`} className="page-logo page-logo-full-size" id="logoHeaderBar">
-        <img
-          className="header-logo-img"
-          alt="We Vote logo"
-          src={light ? cordovaDot(logoLight) : cordovaDot(logoDark)}
-        />
-        {isBeta && <span className="beta-marker"><BetaMarkerInner light={light}>beta</BetaMarkerInner></span>}
-      </Link>
+      <WeVoteLogoWrapper>
+        <Link to={`${isCordova() ? '/ballot' : '/welcome'}`} className="page-logo page-logo-full-size" id="logoHeaderBar">
+          <img
+            className="header-logo-img"
+            alt="We Vote logo"
+            src={light ? cordovaDot(logoLight) : cordovaDot(logoDark)}
+          />
+          {isBeta && <span className="beta-marker"><BetaMarkerInner light={light}>beta</BetaMarkerInner></span>}
+        </Link>
+      </WeVoteLogoWrapper>
     )}
   </HeaderBarWrapper>
 );
@@ -45,4 +47,12 @@ const HeaderBarWrapper = styled.div`
   @media print{
   }
 `;
+
+const WeVoteLogoWrapper = styled.div`
+  margin-left: -12px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin-left: -10px;
+  }
+`;
+
 export default HeaderBarLogo;

@@ -36,9 +36,6 @@ class VoterGuideMeasureItemCompressed extends Component {
     if (!measure.we_vote_id) {
       MeasureActions.measureRetrieve(measureWeVoteId);
     }
-    // if (measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
-    //   MeasureActions.positionListForBallotItemPublic(measureWeVoteId); // TODO DALE 2019-09-24
-    // }
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       if (!organization.organization_we_vote_id) {
@@ -73,9 +70,6 @@ class VoterGuideMeasureItemCompressed extends Component {
   componentWillReceiveProps (nextProps) {
     const { measureWeVoteId, organizationWeVoteId } = nextProps;
     const measure = MeasureStore.getMeasure(measureWeVoteId);
-    // if (nextProps.measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(nextProps.measureWeVoteId)) {
-    //   MeasureActions.positionListForBallotItemPublic(nextProps.measureWeVoteId); // TODO DALE 2019-09-24
-    // }
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
     if (!organization.organization_we_vote_id) {
       OrganizationActions.organizationRetrieve(organizationWeVoteId);
@@ -131,9 +125,6 @@ class VoterGuideMeasureItemCompressed extends Component {
     const { measureWeVoteId } = this.state;
     const measure = MeasureStore.getMeasure(measureWeVoteId);
     // console.log('VoterGuideMeasureItemCompressed, onMeasureStoreChange, measure:', measure);
-    // if (measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
-    //   MeasureActions.positionListForBallotItemPublic(measureWeVoteId); // TODO DALE 2019-09-24
-    // }
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
     });

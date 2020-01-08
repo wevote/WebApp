@@ -366,6 +366,7 @@ class Pricing extends Component {
       },
       selectedPricingPlanIndex: 0,
     };
+    this.getStartedForOrganizations = this.getStartedForOrganizations.bind(this);
   }
 
   componentDidMount () {
@@ -411,6 +412,10 @@ class Pricing extends Component {
       // console.log('this.state.selectedPricingPlanIndex', this.state.selectedPricingPlanIndex, ', nextState.selectedPricingPlanIndex', nextState.selectedPricingPlanIndex);
       return true;
     }
+    if (this.props.modalDisplayMode !== nextProps.modalDisplayMode) {
+      // console.log('this.props.modalDisplayMode', this.props.modalDisplayMode, ', nextProps.modalDisplayMode', nextProps.modalDisplayMode);
+      return true;
+    }
     return false;
   }
 
@@ -434,14 +439,15 @@ class Pricing extends Component {
   }
 
   getStartedForOrganizations = (pricingPlanChosen) => {
+    const { modalDisplayMode } = this.props;
     const voter = VoterStore.getVoter();
     let isSignedIn = false;
     if (voter) {
       ({ is_signed_in: isSignedIn } = voter);
     }
-    // console.log('Pricing getStartedForOrganizations, isSignedIn: ', isSignedIn, ', pricingPlanChosen:', pricingPlanChosen);
+    // console.log('Pricing getStartedForOrganizations, isSignedIn: ', isSignedIn, ', pricingPlanChosen:', pricingPlanChosen, ', this.props.modalDisplayMode:', modalDisplayMode);
     if (isSignedIn) {
-      if (this.props.modalDisplayMode) {
+      if (modalDisplayMode) {
         this.pricingPlanChosenFunctionLocal(pricingPlanChosen);
       } else {
         AppActions.setShowPaidAccountUpgradeModal(pricingPlanChosen);

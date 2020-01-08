@@ -211,7 +211,7 @@ class SettingsStripePayment extends Component {
 
     // let chargeAmountInPennies;
     let chargeAmountWithCommas;
-    let forWhichPlanText;
+    let forWhichPlanText = '';
     if (String(pricingPlanChosen) === 'professional') {
       forWhichPlanText = 'You are purchasing the Professional plan. ';
     } else if (String(pricingPlanChosen) === 'enterprise') {

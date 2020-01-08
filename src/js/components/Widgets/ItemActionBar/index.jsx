@@ -866,11 +866,8 @@ const ItemActionBarWrapper = styled.div`
   margin-top: ${({ displayInline }) => (displayInline ? '' : '16px')};
   margin-right: 0;
   margin-left: 0;
+  margin-bottom: 0;
   padding-top: ${({ displayInline }) => (displayInline ? '0' : '8px')};
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    margin-bottom: 8px;
-  }
-  margin-bottom: 16px;
 `;
 
 const ButtonGroup = styled.div`

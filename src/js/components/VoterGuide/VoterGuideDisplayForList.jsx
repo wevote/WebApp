@@ -104,8 +104,8 @@ export default class VoterGuideDisplayForList extends PureComponent {
             { twitterDescriptionMinusName ? (
               <ReadMore
                 className="card-child__organization-description"
-                text_to_display={twitterDescriptionMinusName}
-                num_of_lines={numOfLines}
+                textToDisplay={twitterDescriptionMinusName}
+                numberOfLines={numOfLines}
               />
             ) : null
             }

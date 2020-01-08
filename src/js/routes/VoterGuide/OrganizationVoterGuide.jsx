@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router';
 import Button from '@material-ui/core/esm/Button';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { historyPush } from '../../utils/cordovaUtils';
 import FollowToggle from '../../components/Widgets/FollowToggle';
 import FriendActions from '../../actions/FriendActions';
@@ -261,31 +262,22 @@ export default class OrganizationVoterGuide extends Component {
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
 
     if (!organizationId) {
-      const floatRight = {
-        float: 'right',
-      };
       return (
-        <div className="card">
-          <div style={{ margin: 10 }}>
-            <span style={floatRight}>
-              <Link
-                id="OrganizationVoterGuideGoToBallot"
-                to="/ballot"
+        <DelayedLoad showLoadingText waitBeforeShow={2000}>
+          <div style={{ margin: 'auto', width: '50%' }}>
+            <Link
+              id="OrganizationVoterGuideGoToBallot"
+              to="/ballot"
+            >
+              <Button
+                color="primary"
+                variant="outlined"
               >
-                <Button
-                  color="primary"
-                  variant="contained"
-                >
-                  Go to Ballot &#x21AC;
-                </Button>
-              </Link>
-            </span>
-            <p>
-              Find voter guides you can follow.
-              These voter guides have been created by nonprofits, public figures, your friends, and more. (OrganizationVoterGuide)
-            </p>
+                Go to Ballot
+              </Button>
+            </Link>
           </div>
-        </div>
+        </DelayedLoad>
       );
     }
 
@@ -395,5 +387,5 @@ const CardContainer = styled.div`
 `;
 
 const FollowToggleMobileWrapper = styled.div`
-  margin-top: 10px;
+  margin-top: 0px;
 `;

@@ -38,22 +38,15 @@ class CandidateStickyHeader extends Component {
                 {candidatePhotoUrl && <Avatar src={candidatePhotoUrl} alt="candidate-photo" />}
                 <div>
                   <CandidateName>{displayName}</CandidateName>
-                  <CandidateDescriptionDesktop>
+                  <CandidateDescription>
                     <Bold>{party}</Bold>
                     {' '}
                     candidate for
                     {' '}
                     <Bold>{officeName}</Bold>
-                  </CandidateDescriptionDesktop>
+                  </CandidateDescription>
                 </div>
               </Profile>
-              <CandidateDescriptionMobile className="u-show-mobile-tablet">
-                <Bold>{party}</Bold>
-                {' '}
-                candidate for
-                {' '}
-                <Bold>{officeName}</Bold>
-              </CandidateDescriptionMobile>
             </ColumnOne>
             <ColumnTwo>
               <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
@@ -137,21 +130,14 @@ const CandidateName = styled.h1`
 `;
 
 // Uses min-width. Parallel style is CandidateDescriptionMobile
-const CandidateDescriptionDesktop = styled.p`
-  display: none;
+const CandidateDescription = styled.div`
+  display: block;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 14px;
-    display: block;
     font-weight: 100;
   }
-`;
-
-// Uses max-width. Parallel style is CandidateDescriptionDesktop
-const CandidateDescriptionMobile = styled.h2`
-  display: none;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 12px;
-    display: block;
     font-weight: 100;
     margin-top: 6px;
   }
@@ -159,7 +145,7 @@ const CandidateDescriptionMobile = styled.h2`
 
 const Profile = styled.div`
   display: flex;
-  flex-flow: row;
+  flex-flow: row nowrap;
 `;
 
 const Avatar = styled.img`

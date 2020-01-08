@@ -109,8 +109,8 @@ class ValueIconAndText extends Component {
         </PopoverHeader>
         <PopoverDescriptionText>
           <ReadMore
-            text_to_display={oneIssue.issue_description}
-            num_of_lines={2}
+            textToDisplay={oneIssue.issue_description}
+            numberOfLines={2}
           />
           {!!(organizationsUnderThisIssueCount) && (
             <>

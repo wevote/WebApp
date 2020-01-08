@@ -310,7 +310,7 @@ const OrganizationInfoOnlyIconWrapper = styled.div`
 
 const OverlayImage = styled.div`
   margin-left: -2px;
-  margin-top: -18px;
+  margin-top: -17px;
   z-index: 2;
 `;
 

@@ -305,22 +305,24 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   pricingPlanChosenFunction = (pricingPlanChosen) => {
+    // console.log('pricingPlanChosenFunction pricingPlanChosen:', pricingPlanChosen);
+    const pricingPlanChosenCleaned = pricingPlanChosen || '';
     const { activePaidPlanChosen, radioGroupValue, defaultPricing, lastCouponResponseReceivedFromAPI } = this.state;
     // console.log('pricingPlanChosenFunction pricingPlanChosen:', pricingPlanChosen, ', lastCouponResponseReceivedFromAPI:', lastCouponResponseReceivedFromAPI);
-    if (pricingPlanChosen === activePaidPlanChosen) {
+    if (pricingPlanChosenCleaned === activePaidPlanChosen) {
       this.setState({
         paidAccountProcessStep: 'activePaidPlanExists',
-        pricingPlanChosen,
+        pricingPlanChosen: pricingPlanChosenCleaned,
       });
     } else if (window.innerWidth > 768 && pricingPlanChosen !== 'free') {
       this.setState({
         paidAccountProcessStep: 'payForPlanDesktop',
-        pricingPlanChosen,
+        pricingPlanChosen: pricingPlanChosenCleaned,
       });
     } else if (pricingPlanChosen !== 'free') {
       this.setState({
         paidAccountProcessStep: 'selectPlanDetailsMobile',
-        pricingPlanChosen,
+        pricingPlanChosen: pricingPlanChosenCleaned,
       });
     } else {
       this.props.toggleFunction(this.state.pathname);
@@ -587,7 +589,7 @@ class PaidAccountUpgradeModal extends Component {
     let modalTitle = '';
     let backToButton;
     let modalHtmlContents = <span />;
-    const planNameTitle = `${pricingPlanChosen} Plan`;
+    const planNameTitle = `${pricingPlanChosen || ''} Plan`;
     const couponDiscountValueString = ` $${couponDiscountValue}`;
 
     switch (paidAccountProcessStep) {

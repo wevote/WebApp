@@ -96,7 +96,7 @@ class WelcomeAppbar extends Component {
   }
 
   onAppStoreChange () {
-    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal();
+    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal() || '';
     // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
     const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
     this.setState({

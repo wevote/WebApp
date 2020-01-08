@@ -214,8 +214,8 @@ class PositionItem extends Component {
     // console.log('PositionItem supportOpposeInfo: ', supportOpposeInfo);
     const positionDescription = position.statement_text && (
       <ReadMore
-        num_of_lines={3}
-        text_to_display={position.statement_text}
+        numberOfLines={3}
+        textToDisplay={position.statement_text}
       />
     );
 

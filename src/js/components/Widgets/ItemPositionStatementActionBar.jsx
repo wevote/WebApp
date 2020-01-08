@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/esm/Paper';
 import InputBase from '@material-ui/core/esm/InputBase';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
+import { shortenText } from '../../utils/textFormat';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
@@ -341,7 +343,7 @@ class ItemPositionStatementActionBar extends Component {
                 name="voterTextStatement"
                 classes={{ root: classes.input, disabled: classes.disabledInput }}
                 placeholder={statementPlaceholderText}
-                defaultValue={voterTextStatement}
+                defaultValue={isMobileScreenSize() ? shortenText(voterTextStatement, 60) : shortenText(voterTextStatement, 100)}
                 onFocus={() => prepareForCordovaKeyboard('ItemPositionStatementActionBar')}
                 onBlur={() => restoreStylesAfterCordovaKeyboard('ItemPositionStatementActionBar')}
                 inputRef={(tag) => { this.textarea = tag; }}
@@ -396,7 +398,7 @@ const styles = theme => ({
     },
   },
   disabled: {
-    background: '#dcdcdc',
+    background: '#eee',
     border: 'none',
 
   },

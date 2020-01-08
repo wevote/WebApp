@@ -193,7 +193,7 @@ class HeaderBar extends Component {
   }
 
   onAppStoreChange () {
-    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal();
+    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal() || '';
     // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
     const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
     // console.log('HeaderBar onAppStoreChange showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);

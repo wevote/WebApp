@@ -324,18 +324,16 @@ class CandidateItem extends Component {
                   />
                 </ExternalWebSiteWrapper>
               )}
-              <span className="u-show-desktop">
-                { !!(contestOfficeName) && (
-                  <p className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}>
-                    <OfficeNameText
-                      contestOfficeName={contestOfficeName}
-                      officeLink={linkToOfficePage ? this.getOfficeLink() : ''}
-                      politicalParty={politicalParty}
-                      showOfficeName={showOfficeName}
-                    />
-                  </p>
-                )}
-              </span>
+              { contestOfficeName && (
+                <div className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}>
+                  <OfficeNameText
+                    contestOfficeName={contestOfficeName}
+                    officeLink={linkToOfficePage ? this.getOfficeLink() : ''}
+                    politicalParty={politicalParty}
+                    showOfficeName={showOfficeName}
+                  />
+                </div>
+              )}
             </Candidate>
           </CandidateInfo>
           <BallotItemSupportOpposeCountDisplayWrapper className="u-show-desktop">
@@ -350,21 +348,6 @@ class CandidateItem extends Component {
           </BallotItemSupportOpposeCountDisplayWrapper>
           {' '}
         </CandidateWrapper>
-        {' '}
-        <span className="u-show-mobile-tablet">
-          { contestOfficeName ? (
-            <p>
-              <OfficeNameText
-                contestOfficeName={contestOfficeName}
-                officeLink={linkToOfficePage ? this.getOfficeLink() : ''}
-                politicalParty={politicalParty}
-                showOfficeName={showOfficeName}
-              />
-            </p>
-          ) :
-            null
-          }
-        </span>
       </div>
     );
   };
@@ -376,7 +359,7 @@ class CandidateItem extends Component {
     >
       {/* If there aren't any comments about the candidate, show the text description of the candidate */}
       { (candidateText && candidateText.length) ? (
-        <div className={`u-stack--sm${this.props.linkToBallotItemPage ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+        <div className={`u-stack--xs ${this.props.linkToBallotItemPage ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
           <div className="card-main__description">
             <TextTruncate
               line={2}
@@ -461,12 +444,12 @@ class CandidateItem extends Component {
               <span>
                 {(candidateText && candidateText.length) && (
                   <div
-                    className={`u-stack--sm ${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
+                    className={`u-stack--xs ${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
                   >
                     <div className="card-main__description">
                       <ReadMore
-                        text_to_display={candidateText}
-                        num_of_lines={2}
+                        textToDisplay={candidateText}
+                        numberOfLines={2}
                       />
                     </div>
                   </div>
@@ -560,7 +543,7 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
 const CandidateInfo = styled.div`
   ${({ isClickable }) => ((isClickable) ? 'cursor: pointer;' : '')}
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
 `;
 
 const Candidate = styled.div`
@@ -571,7 +554,7 @@ const CandidateItemWrapper = styled.div`
 
 const CandidateWrapper = styled.div`
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
   width: 100%;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {

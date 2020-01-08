@@ -284,24 +284,25 @@ const Issues = styled.div`
 const IssueList = styled.ul`
   display: flex;
   flex-flow: row${({ expand }) => (expand ? ' wrap' : '')};
+  margin-bottom: 8px;
   overflow: hidden;
   padding-inline-start: 0;
 `;
 
 const MoreWrapper = styled.p`
-  display: flex;
-  flex-flow: row;
-  display: inline;
+  align-items: center;
   background-color: white;
+  cursor: pointer;
+  display: flex;
+  display: inline;
+  flex-flow: row;
+  height: 25px;
+  margin-top: -3px;
+  margin-bottom: 8px;
+  padding-left: 4px;
   position: absolute;
   right: -30px;
-  margin-top: -3px;
   width: 90px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding-left: 4px;
 `;
 
 export default IssuesByBallotItemDisplayList;

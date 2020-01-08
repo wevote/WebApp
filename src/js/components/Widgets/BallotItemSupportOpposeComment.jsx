@@ -201,10 +201,10 @@ class BallotItemSupportOpposeComment extends PureComponent {
     return (
       <Wrapper showPositionStatementActionBar={showPositionStatementActionBar}>
         {/* <BallotHeaderDivider className="u-show-mobile" /> */}
-        <ActionBar>
+        <ActionBarWrapper>
           {/* Support/Oppose/Comment toggle here */}
           {itemActionBar}
-        </ActionBar>
+        </ActionBarWrapper>
         { commentDisplayDesktop }
         { commentDisplayMobile }
       </Wrapper>
@@ -215,7 +215,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
 const Wrapper = styled.div`
   width: 100%;
   background-color: ${({ showPositionStatementActionBar }) => (showPositionStatementActionBar ? '#F5F5F5' : 'white')};
-  padding: 12px;
+  padding: 4px;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;
@@ -223,7 +223,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const ActionBar = styled.div`
+const ActionBarWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;

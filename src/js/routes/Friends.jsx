@@ -447,7 +447,7 @@ class Friends extends Component {
         <Tab
           classes={{ root: classes.navigationTab }}
           value="invite"
-          label={isMobileScreenSize() ? 'Friends' : 'Invite Invite'}
+          label={isMobileScreenSize() ? 'Invite' : 'Invite Friends'}
           onClick={() => {
             this.handleNavigation('/friends/invite');
           }}
