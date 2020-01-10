@@ -79,6 +79,7 @@ const ShowMoreFooterText = styled.div`
   &:hover {
     text-decoration: underline;
   }
+  margin-bottom: 8px !important;
 `;
 
 export default withTheme(withStyles(styles)(ShowMoreFooter));

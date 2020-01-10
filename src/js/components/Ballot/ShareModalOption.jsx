@@ -31,7 +31,7 @@ class ShareModalOption extends Component {
 
   render () {
     return (
-      <Wrapper href={this.props.copyLink ? null : this.props.link || '/'} onClick={this.props.copyLink ? this.copyLink : null}>
+      <Wrapper href={this.props.copyLink || this.props.onClickFunction ? null : this.props.link || '/'} onClick={this.props.copyLink ? this.copyLink : this.props.onClickFunction ? this.props.onClickFunction : null}>
         <Icon background={this.props.background}>
           {this.props.icon}
         </Icon>
