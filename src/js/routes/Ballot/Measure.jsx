@@ -47,6 +47,7 @@ export default class Measure extends Component {
     MeasureActions.measureRetrieve(measureWeVoteId);
     if (measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
       MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
+      MeasureActions.positionListForBallotItemFromFriends(measureWeVoteId);
       const { positionListHasBeenRetrievedOnce } = this.state;
       positionListHasBeenRetrievedOnce[measureWeVoteId] = true;
       this.setState({
@@ -87,6 +88,7 @@ export default class Measure extends Component {
       MeasureActions.measureRetrieve(measureWeVoteId);
       if (measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
         MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
+        MeasureActions.positionListForBallotItemFromFriends(measureWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[measureWeVoteId] = true;
         this.setState({

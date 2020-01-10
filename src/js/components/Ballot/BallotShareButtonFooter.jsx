@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/esm/Button';
 import Comment from '@material-ui/icons/Comment';
-import { Tooltip, Menu, MenuItem } from '@material-ui/core/esm';
+import { Drawer, Tooltip, MenuItem } from '@material-ui/core/esm';
 import { withStyles } from '@material-ui/core/esm/styles';
 import Reply from '@material-ui/icons/Reply';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
-import { Slide, Drawer } from '@material-ui/core';
 
 class BallotShareButtonFooter extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    pathname: PropTypes.string,
   };
 
   constructor (props) {

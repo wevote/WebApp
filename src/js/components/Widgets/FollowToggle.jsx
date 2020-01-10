@@ -350,11 +350,21 @@ export default class FollowToggle extends Component {
             ) : (
               <>
                 {this.props.lightModeOn ? (
-                  <Button id={`positionItemFollowToggleFollow-${organizationWeVoteId}`} type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--white" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                  <Button
+                    id={`positionItemFollowToggleFollow-${organizationWeVoteId}`}
+                    type="button"
+                    className="issues-follow-btn issues-follow-btn__main issues-follow-btn--white"
+                    onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                  >
                     Follow
                   </Button>
                 ) : (
-                  <Button id={`positionItemFollowToggleFollow-${organizationWeVoteId}`} type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                  <Button
+                    id={`positionItemFollowToggleFollow-${organizationWeVoteId}`}
+                    type="button"
+                    className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue"
+                    onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                  >
                     Follow
                   </Button>
                 )}

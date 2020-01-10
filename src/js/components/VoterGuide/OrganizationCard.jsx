@@ -15,7 +15,12 @@ import RatingPopover from '../Widgets/RatingPopover';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import ReadMore from '../Widgets/ReadMore';
+import {
+  numberWithCommas,
+  removeTwitterNameFromDescription,
+  stringContains,
+} from '../../utils/textFormat';
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
@@ -28,6 +33,7 @@ export default class OrganizationCard extends Component {
     turnOffDescription: PropTypes.bool,
     turnOffLogo: PropTypes.bool,
     turnOffTwitterHandle: PropTypes.bool,
+    useReadMoreForTwitterDescription: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string,
   };
@@ -122,7 +128,7 @@ export default class OrganizationCard extends Component {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }
 
-    const { currentBallotIdInUrl, followToggleOn, turnOffDescription, turnOffLogo, turnOffTwitterHandle, urlWithoutHash } = this.props;
+    const { currentBallotIdInUrl, followToggleOn, turnOffDescription, turnOffLogo, turnOffTwitterHandle, urlWithoutHash, useReadMoreForTwitterDescription } = this.props;
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
       twitter_followers_count: twitterFollowersCount,
@@ -191,9 +197,26 @@ export default class OrganizationCard extends Component {
           {positionDescription}
 
           { twitterDescriptionMinusName && !turnOffDescription ? (
-            <ParsedTwitterDescription
-              twitter_description={twitterDescriptionMinusName}
-            />
+            <>
+              {stringContains('https://t.co/', twitterDescriptionMinusName) ? (
+                <ParsedTwitterDescription
+                  twitter_description={twitterDescriptionMinusName}
+                />
+              ) : (
+                <>
+                  {useReadMoreForTwitterDescription ? (
+                    <ReadMore
+                      textToDisplay={twitterDescriptionMinusName}
+                      numberOfLines={3}
+                    />
+                  ) : (
+                    <>
+                      {twitterDescriptionMinusName}
+                    </>
+                  )}
+                </>
+              )}
+            </>
           ) :
             <p className="card-main__description" />
           }

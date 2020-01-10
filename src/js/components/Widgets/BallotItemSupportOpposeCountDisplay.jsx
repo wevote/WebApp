@@ -512,7 +512,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         positionsPopover = (
           <PopoverWrapper>
             <PopoverHeader>
-              <PopoverTitleText>About this Score</PopoverTitleText>
+              <PopoverTitleText>Your Personal Score</PopoverTitleText>
             </PopoverHeader>
             <PopoverBody>
               This score about
@@ -542,7 +542,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       positionsPopover = (
         <PopoverWrapper>
           <PopoverHeader>
-            <PopoverTitleText>About this Score</PopoverTitleText>
+            <PopoverTitleText>Your Personal Score</PopoverTitleText>
           </PopoverHeader>
           <PopoverBody>
             This score about
@@ -714,7 +714,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
                 voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
               >
-                &nbsp;
+                <YourScoreWrapper>
+                  Your Score
+                </YourScoreWrapper>
               </NetworkScore>
             ) : (
               <EndorsementsContainer>
@@ -951,6 +953,12 @@ const PopoverBody = styled.div`
 
 const RenderedOrganizationsWrapper = styled.div`
   margin-top: 6px;
+`;
+
+const YourScoreWrapper = styled.div`
+  text-align: center;
+  color: #999;
+  font-size: 12px;
 `;
 
 export default withTheme(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import Button from '@material-ui/core/esm/Button';
 import InfoIcon from '@material-ui/icons/Info';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -26,6 +28,7 @@ import { numberWithCommas } from '../../utils/textFormat';
 class PositionItem extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string.isRequired,
+    classes: PropTypes.object,
     position: PropTypes.object.isRequired,
     params: PropTypes.object,
   };
@@ -154,7 +157,7 @@ class PositionItem extends Component {
 
   render () {
     renderLog('PositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { position } = this.props;
+    const { classes, position } = this.props;
     if (!position) {
       return null;
     }
@@ -236,6 +239,119 @@ class PositionItem extends Component {
         />
       );
 
+      const positionItemSupportSquare = (
+        <div>
+          {supportOpposeInfo === 'SupportAndPartOfScore' ? (
+            <OrganizationSupportWrapper>
+              <SupportAndPartOfScore>
+                +1
+              </SupportAndPartOfScore>
+              {position.speaker_image_url_https_medium && (
+                <OverlayImage>
+                  <ImageHandler
+                    alt="organization-photo-16x16"
+                    className="image-border-gray-border"
+                    imageUrl={position.speaker_image_url_https_medium}
+                    kind_of_ballot_item="ORGANIZATION"
+                    sizeClassName="image-16x16 "
+                  />
+                </OverlayImage>
+              )}
+            </OrganizationSupportWrapper>
+          ) : (
+            <>
+              {supportOpposeInfo === 'OpposeAndPartOfScore' ? (
+                <OrganizationOpposeWrapper>
+                  <OpposeAndPartOfScore>
+                    -1
+                  </OpposeAndPartOfScore>
+                  {position.speaker_image_url_https_medium && (
+                    <OverlayImage>
+                      <ImageHandler
+                        alt="organization-photo-16x16"
+                        className="image-border-gray-border "
+                        imageUrl={position.speaker_image_url_https_medium}
+                        kind_of_ballot_item="ORGANIZATION"
+                        sizeClassName="image-16x16 "
+                      />
+                    </OverlayImage>
+                  )}
+                </OrganizationOpposeWrapper>
+              ) : (
+                <>
+                  {supportOpposeInfo === 'SupportButNotPartOfScore' ? (
+                    <OrganizationSupportWrapper>
+                      <OrganizationSupportSquare>
+                        <OrganizationSupportIconWrapper speakerImageExists={!!(position.speaker_image_url_https_medium)}>
+                          <ThumbUpIcon />
+                        </OrganizationSupportIconWrapper>
+                      </OrganizationSupportSquare>
+                      {position.speaker_image_url_https_medium && (
+                        <OverlayImage>
+                          <ImageHandler
+                            alt="organization-photo-16x16"
+                            className="image-border-gray-border"
+                            imageUrl={position.speaker_image_url_https_medium}
+                            kind_of_ballot_item="ORGANIZATION"
+                            sizeClassName="image-16x16 "
+                          />
+                        </OverlayImage>
+                      )}
+                    </OrganizationSupportWrapper>
+                  ) : (
+                    <>
+                      {supportOpposeInfo === 'OpposeButNotPartOfScore' ? (
+                        <OrganizationOpposeWrapper>
+                          <OrganizationOpposeSquare>
+                            <OrganizationOpposeIconWrapper speakerImageExists={!!(position.speaker_image_url_https_medium)}>
+                              <ThumbDownIcon />
+                            </OrganizationOpposeIconWrapper>
+                          </OrganizationOpposeSquare>
+                          {position.speaker_image_url_https_medium && (
+                            <OverlayImage>
+                              <ImageHandler
+                                alt="organization-photo-16x16"
+                                className="image-border-gray-border "
+                                imageUrl={position.speaker_image_url_https_medium}
+                                kind_of_ballot_item="ORGANIZATION"
+                                sizeClassName="image-16x16 "
+                              />
+                            </OverlayImage>
+                          )}
+                        </OrganizationOpposeWrapper>
+                      ) : (
+                        <>
+                          {supportOpposeInfo === 'InfoButNotPartOfScore' && (
+                            <OrganizationInformationOnlyWrapper>
+                              <OrganizationInformationOnlySquare>
+                                <OrganizationInfoOnlyIconWrapper speakerImageExists={!!(position.speaker_image_url_https_medium)}>
+                                  <InfoIcon />
+                                </OrganizationInfoOnlyIconWrapper>
+                              </OrganizationInformationOnlySquare>
+                              {position.speaker_image_url_https_medium && (
+                                <OverlayImage>
+                                  <ImageHandler
+                                    alt="organization-photo-16x16"
+                                    className="image-border-gray-border "
+                                    imageUrl={position.speaker_image_url_https_medium}
+                                    kind_of_ballot_item="ORGANIZATION"
+                                    sizeClassName="image-16x16 "
+                                  />
+                                </OverlayImage>
+                              )}
+                            </OrganizationInformationOnlyWrapper>
+                          )}
+                        </>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </div>
+      );
+
       return (
         <>
           <div className="u-show-desktop-tablet">
@@ -248,24 +364,33 @@ class PositionItem extends Component {
                     placement="auto"
                     id="positions-organization-popover-trigger-click-root-close"
                   >
-                    <Link
-                      to={speakerLink}
-                      className="u-no-underline"
-                    >
-                      { position.speaker_image_url_https_medium ? (
-                        <ImageHandler
-                          className="card-child__avatar"
-                          sizeClassName="icon-lg"
-                          imageUrl={position.speaker_image_url_https_medium}
-                        />
-                      ) :
-                        imagePlaceholder }
-                    </Link>
+                    <div>
+                      <Link
+                        to={speakerLink}
+                        className="u-no-underline"
+                      >
+                        { position.speaker_image_url_https_medium ? (
+                          <ImageHandler
+                            className="card-child__avatar"
+                            sizeClassName="icon-lg"
+                            imageUrl={position.speaker_image_url_https_medium}
+                          />
+                        ) :
+                          imagePlaceholder }
+                      </Link>
+                    </div>
                   </StickyPopover>
                 </DesktopItemImage>
                 {voterIsFriendsWithThisOrganization  ? (
                   <>
-                    Friend
+                    <Button
+                      variant="outlined"
+                      classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                      color="primary"
+                      disabled
+                    >
+                      Friend
+                    </Button>
                     {/* We don't want to make it too easy to remove friend
                     voterWeVoteIdForThisOrganization && <FriendToggle otherVoterWeVoteId={voterWeVoteIdForThisOrganization} /> */}
                   </>
@@ -284,9 +409,11 @@ class PositionItem extends Component {
                           placement="auto"
                           id="positions-popover-trigger-click-root-close"
                         >
-                          <Link to={speakerLink}>
-                            { position.speaker_display_name }
-                          </Link>
+                          <div>
+                            <Link to={speakerLink}>
+                              { position.speaker_display_name }
+                            </Link>
+                          </div>
                         </StickyPopover>
                       </DesktopItemName>
                       <DesktopItemTwitterContainer>
@@ -315,43 +442,7 @@ class PositionItem extends Component {
                       openOnClick
                       showCloseIcon
                     >
-                      {supportOpposeInfo === 'SupportAndPartOfScore' ? (
-                        <SupportAndPartOfScore>
-                          +1
-                        </SupportAndPartOfScore>
-                      ) : (
-                        <span>
-                          {supportOpposeInfo === 'OpposeAndPartOfScore' ? (
-                            <OpposeAndPartOfScore>
-                              -1
-                            </OpposeAndPartOfScore>
-                          ) : (
-                            <span>
-                              {supportOpposeInfo === 'SupportButNotPartOfScore' ? (
-                                <SupportButNotPartOfScore>
-                                  <ThumbUpIcon />
-                                </SupportButNotPartOfScore>
-                              ) : (
-                                <span>
-                                  {supportOpposeInfo === 'OpposeButNotPartOfScore' ? (
-                                    <OpposeButNotPartOfScore>
-                                      <ThumbDownIcon />
-                                    </OpposeButNotPartOfScore>
-                                  ) : (
-                                    <span>
-                                      {supportOpposeInfo === 'InfoButNotPartOfScore' && (
-                                        <InformationOnly>
-                                          <InfoIcon />
-                                        </InformationOnly>
-                                      )}
-                                    </span>
-                                  )}
-                                </span>
-                              )}
-                            </span>
-                          )}
-                        </span>
-                      )}
+                      {positionItemSupportSquare}
                     </StickyPopover>
                   </DesktopItemEndorsementDisplay>
                 </DesktopItemHeader>
@@ -436,43 +527,7 @@ class PositionItem extends Component {
                       openOnClick
                       showCloseIcon
                     >
-                      {supportOpposeInfo === 'SupportAndPartOfScore' ? (
-                        <SupportAndPartOfScore>
-                          +1
-                        </SupportAndPartOfScore>
-                      ) : (
-                        <span>
-                          {supportOpposeInfo === 'OpposeAndPartOfScore' ? (
-                            <OpposeAndPartOfScore>
-                              -1
-                            </OpposeAndPartOfScore>
-                          ) : (
-                            <span>
-                              {supportOpposeInfo === 'SupportButNotPartOfScore' ? (
-                                <SupportButNotPartOfScore>
-                                  <ThumbUpIcon />
-                                </SupportButNotPartOfScore>
-                              ) : (
-                                <span>
-                                  {supportOpposeInfo === 'OpposeButNotPartOfScore' ? (
-                                    <OpposeButNotPartOfScore>
-                                      <ThumbDownIcon />
-                                    </OpposeButNotPartOfScore>
-                                  ) : (
-                                    <span>
-                                      {supportOpposeInfo === 'InfoButNotPartOfScore' && (
-                                        <InformationOnly>
-                                          <InfoIcon />
-                                        </InformationOnly>
-                                      )}
-                                    </span>
-                                  )}
-                                </span>
-                              )}
-                            </span>
-                          )}
-                        </span>
-                      )}
+                      {positionItemSupportSquare}
                     </StickyPopover>
                   </MobileItemEndorsementDisplay>
                 </MobileItemEndorsementContainer>
@@ -494,7 +549,14 @@ class PositionItem extends Component {
                   <MobileItemFollowToggleDisplay>
                     {voterIsFriendsWithThisOrganization  ? (
                       <>
-                        Friend
+                        <Button
+                          variant="outlined"
+                          classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                          color="primary"
+                          disabled
+                        >
+                          Friend
+                        </Button>
                         {/* We don't want to make it too easy to remove friend
                         voterWeVoteIdForThisOrganization && <FriendToggle otherVoterWeVoteId={voterWeVoteIdForThisOrganization} /> */}
                       </>
@@ -537,6 +599,23 @@ class PositionItem extends Component {
     }
   }
 }
+
+const styles = theme => ({
+  buttonRoot: {
+    fontSize: 12,
+    padding: '4px 8px',
+    height: 32,
+    width: '100%',
+    [theme.breakpoints.down('md')]: {
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '4px 4px',
+    },
+  },
+  buttonOutlinedPrimary: {
+    background: 'white',
+  },
+});
 
 const PositionItemMobile = styled.li`
   background: #eee;
@@ -618,7 +697,7 @@ const MobileItemEndorsementContainer = styled.div`
 const MobileItemEndorsementDisplay = styled.div`
   width: 100%;
   height: 100%;
-  margin-bottom: 46px;
+  margin-bottom: 4px;
 `;
 
 const MobileItemBody = styled.div`
@@ -757,7 +836,6 @@ const SupportAndPartOfScore = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 5px;
-  float: right;
   font-size: 16px;
   font-weight: bold;
   @media print{
@@ -775,7 +853,6 @@ const OpposeAndPartOfScore = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 5px;
-  float: right;
   font-size: 16px;
   font-weight: bold;
   @media print{
@@ -783,52 +860,10 @@ const OpposeAndPartOfScore = styled.div`
   }
 `;
 
-const SupportButNotPartOfScore = styled.div`
-  background: white;
-  border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  float: right;
-  font-size: 20px;
-  font-weight: bold;
-`;
-
-const OpposeButNotPartOfScore = styled.div`
-  background: white;
-  border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
-  color: ${({ theme }) => theme.colors.opposeRedRgb};
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  float: right;
-  font-size: 20px;
-  font-weight: bold;
-`;
-
-const InformationOnly = styled.div`
-  color: ${({ theme }) => theme.colors.grayMid};
-  background: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  float: right;
-  border: 3px solid ${({ theme }) => theme.colors.grayMid};
-  font-size: 20px;
-  font-weight: bold;
+const OverlayImage = styled.div`
+  margin-left: -2px;
+  margin-top: -17px;
+  z-index: 2;
 `;
 
 const SourceLink = styled.div`
@@ -843,4 +878,78 @@ const TwitterIcon = styled.span`
   vertical-align: bottom;
 `;
 
-export default PositionItem;
+const OrganizationSupportWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+`;
+
+const OrganizationSupportSquare = styled.div`
+  align-items: center;
+  background: white;
+  border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
+  border-radius: 5px;
+  color: ${({ theme }) => theme.colors.supportGreenRgb};
+  cursor: pointer;
+  display: flex;
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  justify-content: center;
+  width: 40px;
+`;
+
+const OrganizationSupportIconWrapper = styled.div`
+  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '2px' : '0')};
+`;
+
+const OrganizationOpposeWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+`;
+
+const OrganizationOpposeSquare = styled.div`
+  background: white;
+  border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
+  color: ${({ theme }) => theme.colors.opposeRedRgb};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const OrganizationOpposeIconWrapper = styled.div`
+  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '2px' : '0')};
+  margin-top: ${({ speakerImageExists }) => (speakerImageExists ? '-2px' : '0')};
+`;
+
+const OrganizationInformationOnlyWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+`;
+
+const OrganizationInformationOnlySquare = styled.div`
+  color: ${({ theme }) => theme.colors.grayMid};
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  border: 3px solid ${({ theme }) => theme.colors.grayMid};
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const OrganizationInfoOnlyIconWrapper = styled.div`
+  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '4px' : '0')};
+  margin-top: ${({ speakerImageExists }) => (speakerImageExists ? '-5px' : '0')};
+`;
+
+export default withTheme(withStyles(styles)(PositionItem));

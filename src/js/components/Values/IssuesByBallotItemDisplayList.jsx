@@ -17,9 +17,10 @@ class IssuesByBallotItemDisplayList extends Component {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     ballotItemDisplayName: PropTypes.string,
     children: PropTypes.object,
+    disableMoreWrapper: PropTypes.bool,
+    externalUniqueId: PropTypes.string,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
-    disableMoreWrapper: PropTypes.bool,
   };
 
   constructor (props) {
@@ -168,6 +169,7 @@ class IssuesByBallotItemDisplayList extends Component {
   render () {
     renderLog('IssuesByBallotItemDisplayList.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('IssuesByBallotItemDisplayList render');
+    const { externalUniqueId } = this.props;
     const {
       ballotItemDisplayName, ballotItemWeVoteId, expand,
       issuesUnderThisBallotItemVoterIsFollowing, issuesUnderThisBallotItemVoterIsNotFollowing,
@@ -201,6 +203,7 @@ class IssuesByBallotItemDisplayList extends Component {
               key={oneIssue.issue_we_vote_id}
               ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={ballotItemWeVoteId}
+              externalUniqueId={externalUniqueId}
               issueFollowedByVoter
               issueWidths={this.issueWidths}
               oneIssue={oneIssue}
@@ -225,6 +228,7 @@ class IssuesByBallotItemDisplayList extends Component {
               key={oneIssue.issue_we_vote_id}
               ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={ballotItemWeVoteId}
+              externalUniqueId={externalUniqueId}
               issueWidths={this.issueWidths}
               oneIssue={oneIssue}
               subtractTotalWidth={this.handleSubtractTotalRemainingWidth}

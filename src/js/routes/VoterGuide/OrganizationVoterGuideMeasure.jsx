@@ -39,6 +39,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     MeasureActions.measureRetrieve(this.props.params.measure_we_vote_id);
     MeasureActions.positionListForBallotItemPublic(this.props.params.measure_we_vote_id);
+    MeasureActions.positionListForBallotItemFromFriends(this.props.params.measure_we_vote_id);
 
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.params.measure_we_vote_id, 'MEASURE');
@@ -59,6 +60,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     if (nextProps.params.measure_we_vote_id !== this.state.measureWeVoteId) {
       MeasureActions.measureRetrieve(nextProps.params.measure_we_vote_id);
       MeasureActions.positionListForBallotItemPublic(nextProps.params.measure_we_vote_id);
+      MeasureActions.positionListForBallotItemFromFriends(nextProps.params.measure_we_vote_id);
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, 'MEASURE');
       this.setState({
         measureWeVoteId: nextProps.params.measure_we_vote_id,
@@ -86,6 +88,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     const { measureWeVoteId } = this.state;
     // MeasureActions.measureRetrieve(measureWeVoteId);
     MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
+    MeasureActions.positionListForBallotItemFromFriends(measureWeVoteId);
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({

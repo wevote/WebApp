@@ -394,6 +394,7 @@ class CandidateItem extends Component {
             <IssuesByBallotItemDisplayList
               ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={candidateWeVoteId}
+              externalUniqueId={`candidateItem-${candidateWeVoteId}`}
               placement="bottom"
             />
             {/* If there is a quote about the candidate, show that too. */}

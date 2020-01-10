@@ -34,8 +34,8 @@ export default {
       });
   },
 
-  positionListForBallotItemForVoter (ballotItemWeVoteId) {
-    Dispatcher.loadEndpoint('positionListForBallotItemForVoter',
+  positionListForBallotItemFromFriends (ballotItemWeVoteId) {
+    Dispatcher.loadEndpoint('positionListForBallotItemFromFriends',
       {
         ballot_item_we_vote_id: ballotItemWeVoteId,
         kind_of_ballot_item: 'CANDIDATE',

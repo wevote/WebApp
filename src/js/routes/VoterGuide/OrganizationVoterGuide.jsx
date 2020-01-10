@@ -308,7 +308,10 @@ export default class OrganizationVoterGuide extends Component {
           <div className="col-12">
             <div className="card">
               <div className="card-main">
-                <OrganizationCard organization={this.state.organization} />
+                <OrganizationCard
+                  organization={this.state.organization}
+                  useReadMoreForTwitterDescription
+                />
                 { isVoterOwner ? (
                   <div className="u-float-right">
                     <Button

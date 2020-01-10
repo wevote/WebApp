@@ -7,6 +7,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import DelayedLoad from '../Widgets/DelayedLoad';
 import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
+import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -82,7 +83,12 @@ export default class PositionList extends Component {
     if (organizationWeVoteIdsNeeded.length) {
       // Add bulk Organization retrieve here
     }
+    // console.log('PositionList componentDidMount, organizationWeVoteIdsNeeded: ', organizationWeVoteIdsNeeded);
     OrganizationActions.organizationsFollowedRetrieve();
+    const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
+    if (!organizationsVoterIsFriendsWith.length > 0) {
+      FriendActions.currentFriends();
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -100,12 +106,12 @@ export default class PositionList extends Component {
   }
 
   onFriendStoreChange () {
-    // console.log('PositionList onOrganizationStoreChange');
     const { filteredPositionList, positionList } = this.state;
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
+    // console.log('PositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
     // eslint-disable-next-line arrow-body-style
     const positionListWithFriendData = positionList.map((position) => {
-      // console.log('PositionList onOrganizationStoreChange, position: ', position);
+      // console.log('PositionList onFriendStoreChange, position: ', position);
       return ({
         ...position,
         currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
@@ -113,7 +119,7 @@ export default class PositionList extends Component {
     });
     // eslint-disable-next-line arrow-body-style
     const filteredPositionListWithFriendData = filteredPositionList.map((position) => {
-      // console.log('PositionList onOrganizationStoreChange, position: ', position);
+      // console.log('PositionList onFriendStoreChange, position: ', position);
       return ({
         ...position,
         currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,

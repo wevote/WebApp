@@ -308,6 +308,7 @@ class FriendStore extends ReduceStore {
 
       case 'voterGuidesFromFriendsUpcomingRetrieve':
         // console.log('FriendStore voterGuidesFromFriendsUpcomingRetrieve, action.res:', action.res);
+        ({ currentFriendsOrganizationWeVoteIds } = state);
         if (action.res.voter_guides) {
           for (count = 0; count < action.res.voter_guides.length; count++) {
             if (!arrayContains(action.res.voter_guides[count].organization_we_vote_id, currentFriendsOrganizationWeVoteIds)) {

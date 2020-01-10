@@ -45,6 +45,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     CandidateActions.candidateRetrieve(candidateWeVoteId);
     CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
+    CandidateActions.positionListForBallotItemFromFriends(candidateWeVoteId);
 
     // Get the latest guides to follow for this candidate
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -70,6 +71,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
     if (candidateWeVoteId !== priorCandidateWeVoteId) {
       CandidateActions.candidateRetrieve(candidateWeVoteId);
       CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
+      CandidateActions.positionListForBallotItemFromFriends(candidateWeVoteId);
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateWeVoteId, 'CANDIDATE');
       this.setState({
         allCachedPositionsForThisCandidate: CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId),
@@ -100,6 +102,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
     // When the voterGuidesToFollowForLatestBallotItem changes, trigger an update of the candidate so we can get an updated position_list
     // CandidateActions.candidateRetrieve(candidateWeVoteId);
     CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
+    CandidateActions.positionListForBallotItemFromFriends(candidateWeVoteId);
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidateWeVoteId, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({

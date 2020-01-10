@@ -8,7 +8,6 @@ class MeasureStore extends ReduceStore {
     return {
       allCachedMeasures: {}, // Dictionary with measureWeVoteId as key and the measure as value
       allCachedPositionsAboutMeasuresByOrganization: {}, // Dictionary with measureWeVoteId as one key, organization_we_vote_id as the second key, and the position as value
-      allCachedPositionsAboutMeasures: {}, // Dictionary with measureWeVoteId as key and list of positions as value
     };
   }
 
@@ -37,12 +36,17 @@ class MeasureStore extends ReduceStore {
   }
 
   getAllCachedPositionsDictByMeasureWeVoteId (measureWeVoteId) {
-    return this.getState().allCachedPositionsAboutMeasures[measureWeVoteId] || [];
+    return this.getState().allCachedPositionsAboutMeasuresByOrganization[measureWeVoteId] || [];
   }
 
   getAllCachedPositionsByMeasureWeVoteId (measureWeVoteId) {
-    const allCachedPositionsForThisMeasureDict = this.getState().allCachedPositionsAboutMeasures[measureWeVoteId] || {};
+    const allCachedPositionsForThisMeasureDict = this.getState().allCachedPositionsAboutMeasuresByOrganization[measureWeVoteId] || {};
     return Object.values(allCachedPositionsForThisMeasureDict);
+  }
+
+  getPositionAboutMeasureFromOrganization (measureWeVoteId, organizationWeVoteId) {
+    const positionsAboutMeasure = this.getAllCachedPositionsDictByMeasureWeVoteId(measureWeVoteId);
+    return positionsAboutMeasure[organizationWeVoteId] || {};
   }
 
   getNumberOfPositionsByMeasureWeVoteId (measureWeVoteId) {
@@ -58,11 +62,6 @@ class MeasureStore extends ReduceStore {
       numberOfAllOpposePositions,
       numberOfAllInfoOnlyPositions,
     };
-  }
-
-  getPositionAboutMeasureFromOrganization (measureWeVoteId, organizationWeVoteId) {
-    const positionsAboutMeasure = this.getAllCachedPositionsDictByMeasureWeVoteId(measureWeVoteId);
-    return positionsAboutMeasure[organizationWeVoteId] || [];
   }
 
   createMeasurePosition (oneMeasureWeVoteId, oneVoterGuide) {
@@ -110,13 +109,12 @@ class MeasureStore extends ReduceStore {
   }
 
   reduce (state, action) { // eslint-disable-line
-    const { allCachedPositionsAboutMeasuresByOrganization, allCachedMeasures, allCachedPositionsAboutMeasures } = state;
+    const { allCachedPositionsAboutMeasuresByOrganization, allCachedMeasures } = state;
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
 
     let ballotItemWeVoteId;
     let measure;
-    let measureWeVoteId;
     let newPositionList;
     let onePosition;
     let organizationWeVoteId;
@@ -138,12 +136,12 @@ class MeasureStore extends ReduceStore {
         };
 
       case 'positionListForBallotItem':
+      case 'positionListForBallotItemFromFriends':
         if (action.res.count === 0) return state;
         positionListForMeasure = action.res.kind_of_ballot_item === 'MEASURE';
+        // console.log('MeasureStore positionListForMeasure:', positionListForMeasure, ', action.type:', action.type);
         if (positionListForMeasure) {
-          measureWeVoteId = action.res.ballot_item_we_vote_id;
           newPositionList = action.res.position_list;
-          allCachedPositionsAboutMeasures[measureWeVoteId] = newPositionList;
 
           newPositionList.forEach((one) => {
             ballotItemWeVoteId = one.ballot_item_we_vote_id;
@@ -157,14 +155,13 @@ class MeasureStore extends ReduceStore {
               allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][organizationWeVoteId] = {};
             }
 
-            // console.log('CandidateStore one_position_here: ', one_position_here);
+            // console.log('MeasureStore one_position_here: ', one);
             allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][organizationWeVoteId] = one;
           });
 
           return {
             ...state,
             allCachedPositionsAboutMeasuresByOrganization,
-            allCachedPositionsAboutMeasures,
           };
         } else {
           return state;
@@ -232,43 +229,47 @@ class MeasureStore extends ReduceStore {
             if (!allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id]) {
               allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
             }
-
-            onePosition = {
-              position_we_vote_id: oneVoterGuide.position_we_vote_id, // Currently empty
-              ballot_item_display_name: oneVoterGuide.ballot_item_display_name,
-              ballot_item_image_url_https_large: oneVoterGuide.ballot_item_image_url_https_large,
-              ballot_item_image_url_https_medium: oneVoterGuide.ballot_item_image_url_https_medium,
-              ballot_item_image_url_https_tiny: oneVoterGuide.ballot_item_image_url_https_tiny,
-              ballot_item_twitter_handle: oneVoterGuide.ballot_item_twitter_handle,
-              ballot_item_political_party: oneVoterGuide.ballot_item_political_party,
-              kind_of_ballot_item: 'MEASURE',
-              // ballot_item_id: 0,
-              ballot_item_we_vote_id: ballotItemWeVoteId,
-              // ballot_item_state_code: '',
-              // contest_office_id: 0,
-              // contest_office_we_vote_id: '',
-              // contest_office_name: '',
-              is_support: oneVoterGuide.is_support,
-              is_positive_rating: oneVoterGuide.is_positive_rating,
-              is_support_or_positive_rating: oneVoterGuide.is_support_or_positive_rating,
-              is_oppose: oneVoterGuide.is_oppose,
-              is_negative_rating: oneVoterGuide.is_negative_rating,
-              is_oppose_or_negative_rating: oneVoterGuide.is_oppose_or_negative_rating,
-              is_information_only: oneVoterGuide.is_information_only,
-              is_public_position: oneVoterGuide.is_public_position,
-              organization_we_vote_id: oneVoterGuide.organization_we_vote_id,
-              speaker_we_vote_id: oneVoterGuide.organization_we_vote_id,
-              speaker_display_name: oneVoterGuide.speaker_display_name,
-              vote_smart_rating: oneVoterGuide.vote_smart_rating,
-              vote_smart_time_span: oneVoterGuide.vote_smart_time_span,
-              google_civic_election_id: oneVoterGuide.google_civic_election_id,
-              // state_code: '',
-              more_info_url: oneVoterGuide.more_info_url,
-              statement_text: oneVoterGuide.statement_text,
-              last_updated: oneVoterGuide.last_updated,
-            };
-            // console.log('MeasureStore onePosition: ', onePosition);
-            allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
+            if (Object.prototype.hasOwnProperty.call(allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id], 'ballot_item_we_vote_id')) {
+              // Do not proceed
+              console.log('MeasureStore voterGuidesToFollowRetrieve position already exists');
+            } else {
+              onePosition = {
+                position_we_vote_id: oneVoterGuide.position_we_vote_id, // Currently empty
+                ballot_item_display_name: oneVoterGuide.ballot_item_display_name,
+                ballot_item_image_url_https_large: oneVoterGuide.ballot_item_image_url_https_large,
+                ballot_item_image_url_https_medium: oneVoterGuide.ballot_item_image_url_https_medium,
+                ballot_item_image_url_https_tiny: oneVoterGuide.ballot_item_image_url_https_tiny,
+                ballot_item_twitter_handle: oneVoterGuide.ballot_item_twitter_handle,
+                ballot_item_political_party: oneVoterGuide.ballot_item_political_party,
+                kind_of_ballot_item: 'MEASURE',
+                // ballot_item_id: 0,
+                ballot_item_we_vote_id: ballotItemWeVoteId,
+                // ballot_item_state_code: '',
+                // contest_office_id: 0,
+                // contest_office_we_vote_id: '',
+                // contest_office_name: '',
+                is_support: oneVoterGuide.is_support,
+                is_positive_rating: oneVoterGuide.is_positive_rating,
+                is_support_or_positive_rating: oneVoterGuide.is_support_or_positive_rating,
+                is_oppose: oneVoterGuide.is_oppose,
+                is_negative_rating: oneVoterGuide.is_negative_rating,
+                is_oppose_or_negative_rating: oneVoterGuide.is_oppose_or_negative_rating,
+                is_information_only: oneVoterGuide.is_information_only,
+                is_public_position: oneVoterGuide.is_public_position,
+                organization_we_vote_id: oneVoterGuide.organization_we_vote_id,
+                speaker_we_vote_id: oneVoterGuide.organization_we_vote_id,
+                speaker_display_name: oneVoterGuide.speaker_display_name,
+                vote_smart_rating: oneVoterGuide.vote_smart_rating,
+                vote_smart_time_span: oneVoterGuide.vote_smart_time_span,
+                google_civic_election_id: oneVoterGuide.google_civic_election_id,
+                // state_code: '',
+                more_info_url: oneVoterGuide.more_info_url,
+                statement_text: oneVoterGuide.statement_text,
+                last_updated: oneVoterGuide.last_updated,
+              };
+              // console.log('MeasureStore onePosition: ', onePosition);
+              allCachedPositionsAboutMeasuresByOrganization[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
+            }
           }
         });
         // console.log('MeasureStore allCachedPositionsAboutMeasuresByOrganization:', allCachedPositionsAboutMeasuresByOrganization);
