@@ -43,10 +43,10 @@ class BallotShareButtonFooter extends Component {
     this.setState({ anchorEl: null, open: false });
   }
 
-  openShareModal () {
-    // console.log('SettingsDomain openPaidAccountUpgradeModal');
+  openShareModal (step) {
     this.handleClose();
     AppActions.setShowShareModal(true);
+    AppActions.setShareModalStep(step);
   }
 
   toggleStep2 () {
@@ -56,8 +56,6 @@ class BallotShareButtonFooter extends Component {
 
   render () {
     const { classes } = this.props;
-
-    console.log(this.state.step2);
 
     return (
       <Wrapper pinToBottom={this.props.pathname.toLowerCase().startsWith('/candidate') || this.props.pathname.toLowerCase().startsWith('/measure')}>
@@ -91,7 +89,7 @@ class BallotShareButtonFooter extends Component {
             {this.state.step2 ? (
               <>
                 <Flex>
-                  <ShareModalOption noLink onClickFunction={() => this.openShareModal()} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />
+                  <ShareModalOption noLink onClickFunction={() => this.openShareModal('friends')} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />
                   <ShareModalOption noLink onClickFunction={() => this.openShareModal()} background="#2E3C5D" icon={<Reply />} title="Share" />
                 </Flex>
                 <Button className={classes.cancelButton} variant="contained" fullWidth color="primary">

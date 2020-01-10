@@ -438,7 +438,6 @@ export default class SettingsAccount extends Component {
                 toggleOtherSignInOptions={this.toggleNonEmailSignInOptions}
               />
             )}
-
             {debugMode && (
             <div className="text-center">
               is_signed_in:

@@ -25,12 +25,18 @@ export default class MessageCard extends Component {
   }
 
   render () {
-    const { mainText, buttonText, buttonURL } = this.props;
+    const { mainText, buttonText, buttonURL, icon, secondaryText, inModal } = this.props;
 
     return (
-      <Card className="card">
+      <Card inModal={inModal} className={this.props.noCard ? '' : 'card'}>
         <InnerWrapper className="card-main">
+          {icon ? (
+            <Icon>{icon}</Icon>
+          ) : null}
           <MainText>{mainText}</MainText>
+          {secondaryText ? (
+            <SecondaryText>{secondaryText}</SecondaryText>
+          ) : null}
           <Button variant="contained" color="primary" onClick={() => historyPush(buttonURL)}>
             {buttonText}
           </Button>
@@ -41,7 +47,7 @@ export default class MessageCard extends Component {
 }
 
 const Card = styled.div`
-  padding: 64px 32px;
+  padding: ${props => (props.inModal ? '0' : '64px 32px')};
 `;
 
 const InnerWrapper = styled.div`
@@ -52,8 +58,21 @@ const InnerWrapper = styled.div`
   text-align: center;
 `;
 
+const Icon = styled.div`
+  margin: 0 auto;
+  font-size: 48px;
+  width: 100px;
+  height: 100px;
+`;
+
 const MainText = styled.h3`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 48px !important;
+`;
+
+const SecondaryText = styled.h4`
+  font-size: 18px;
+  font-weight: normal;
+  margin-bottom: 12px !important;
 `;
