@@ -255,22 +255,19 @@ class PositionItemScorePopover extends Component {
           {organizationInVotersNetwork ? (
             <>
               <OrganizationAddsToYourPersonalScoreExplanation>
-                This opinion
-                {' '}
                 {organizationSupports && (
                   <span>
-                    adds +1 to your personal score because:
+                    This opinion adds +1 to your personal score because:
                   </span>
                 )}
                 {organizationOpposes && (
                   <span>
-                    subtracts -1 from your personal score because:
+                    This opinion subtracts -1 from your personal score because:
                   </span>
                 )}
               </OrganizationAddsToYourPersonalScoreExplanation>
               {voterIsFriendsWithThisOrganization ? (
                 <ScoreExplanationWrapper>
-                  {/* <CheckCircle className="friends-icon" /> */}
                   <FriendsIcon />
                   <ScoreExplanationText>
                     {speakerDisplayName}
@@ -370,6 +367,8 @@ const FollowOrganizationToggleContainer = styled.div`
 `;
 
 const OrganizationSupportsOrOpposesText = styled.div`
+  color: #999;
+  font-weight: 200;
 `;
 
 const PopoverWrapper = styled.div`
@@ -385,8 +384,6 @@ const PopoverWrapper = styled.div`
 `;
 
 const OrganizationAddsToYourPersonalScoreExplanation = styled.div`
-  color: #999;
-  font-weight: 200;
   margin-top: 4px;
 `;
 

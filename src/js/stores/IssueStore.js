@@ -631,6 +631,7 @@ class IssueStore extends ReduceStore {
         return state;
 
       case 'positionListForBallotItem':
+      case 'positionListForBallotItemFromFriends':
         if (action.res.count === 0) return state;
         // We want to create an entry in this.state.issueWeVoteIdsUnderEachBallotItem for this ballotItemWeVoteId
         // with a list of the issues connected to this position

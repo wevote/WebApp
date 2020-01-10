@@ -107,6 +107,7 @@ class VoterGuidePositionItem extends Component {
         //
       } else if (isMeasure) {
         MeasureActions.positionListForBallotItemPublic(ballotItemWeVoteId);
+        MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
       }
       const { positionListHasBeenRetrievedOnce } = this.state;
       positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
@@ -211,6 +212,7 @@ class VoterGuidePositionItem extends Component {
       if (ballotItemWeVoteId && !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
         // console.log('VoterGuidePositionItem, onCandidateStoreChange, calling positionListForBallotItemPublic');
         CandidateActions.positionListForBallotItemPublic(ballotItemWeVoteId);
+        CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
         this.setState({
@@ -228,6 +230,7 @@ class VoterGuidePositionItem extends Component {
       if (ballotItemWeVoteId && !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
         // console.log('VoterGuidePositionItem, onMeasureStoreChange, calling positionListForBallotItemPublic');
         MeasureActions.positionListForBallotItemPublic(ballotItemWeVoteId);
+        MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
         this.setState({
@@ -394,23 +397,15 @@ class VoterGuidePositionItem extends Component {
                   <h2 className="card-main__display-name">
                     {ballotItemDisplayName}
                   </h2>
-                  {/* !!(twitterFollowersCount) && (
-                    <span
-                      className="u-show-desktop twitter-followers__badge u-cursor--pointer"
-                    >
-                      <span className="fab fa-twitter fa-sm" />
-                      <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
-                    </span>
-                  ) */}
                   <span className="u-show-desktop-tablet">
                     { contestOfficeName && (
-                      <p>
+                      <div>
                         <OfficeNameText
                           contestOfficeName={contestOfficeName}
                           // politicalParty={politicalParty}
                           showOfficeName
                         />
-                      </p>
+                      </div>
                     )}
                   </span>
                 </Candidate>
@@ -446,25 +441,25 @@ class VoterGuidePositionItem extends Component {
           </BallotItemWrapper>
           <span className="u-show-mobile">
             { contestOfficeName && (
-              <p>
+              <div>
                 <OfficeNameText
                   contestOfficeName={contestOfficeName}
                   // politicalParty={politicalParty}
                   showOfficeName
                 />
-              </p>
+              </div>
             )}
             {statementText && (
               <MobileItemDescription>
                 {organizationImageUrlHttpsTiny && (
-                  <BallotItemImageWrapper>
+                  <OrganizationImageWrapper>
                     <ImageHandler
-                      sizeClassName="icon-sm "
+                      sizeClassName="image-24x24 "
                       imageUrl={organizationImageUrlHttpsTiny}
                       alt="organization-photo"
                       kind_of_ballot_item="ORGANIZATION"
                     />
-                  </BallotItemImageWrapper>
+                  </OrganizationImageWrapper>
                 )}
                 <ReadMore
                   textToDisplay={statementText}
@@ -477,14 +472,14 @@ class VoterGuidePositionItem extends Component {
             {statementText && (
               <DesktopItemDescription>
                 {organizationImageUrlHttpsTiny && (
-                  <BallotItemImageWrapper>
+                  <OrganizationImageWrapper>
                     <ImageHandler
-                      sizeClassName="icon-sm "
+                      sizeClassName="image-24x24 "
                       imageUrl={organizationImageUrlHttpsTiny}
                       alt="organization-photo"
                       kind_of_ballot_item="ORGANIZATION"
                     />
-                  </BallotItemImageWrapper>
+                  </OrganizationImageWrapper>
                 )}
                 <ReadMore
                   textToDisplay={statementText}
@@ -520,6 +515,10 @@ const CandidateItemWrapper = styled.div`
 `;
 
 const BallotItemImageWrapper = styled.span`
+  padding-right: 10px;
+`;
+
+const OrganizationImageWrapper = styled.span`
   padding-right: 4px;
 `;
 
@@ -541,6 +540,10 @@ const BallotItemWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+  padding-bottom: 4px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding-bottom: 2px;
+  }
 `;
 
 const Candidate = styled.div`

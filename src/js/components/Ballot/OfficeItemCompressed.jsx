@@ -66,6 +66,7 @@ class OfficeItemCompressed extends Component {
     if (candidateList && candidateList.length && officeWeVoteId) {
       if (officeWeVoteId && !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
         OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
+        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
         this.setState({
@@ -112,6 +113,7 @@ class OfficeItemCompressed extends Component {
     if (candidateList && candidateList.length && officeWeVoteId) {
       if (officeWeVoteId && !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
         OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
+        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
         this.setState({
@@ -260,6 +262,7 @@ class OfficeItemCompressed extends Component {
                               ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                               ballotItemWeVoteId={oneCandidate.we_vote_id}
                               disableMoreWrapper
+                              externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}`}
                             />
                             <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
                               <Button

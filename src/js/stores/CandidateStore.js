@@ -1,5 +1,4 @@
 import { ReduceStore } from 'flux/utils';
-import BallotStore from './BallotStore';  // eslint-disable-line import/no-cycle
 import Dispatcher from '../dispatcher/Dispatcher';
 import OfficeActions from '../actions/OfficeActions';
 import OfficeStore from './OfficeStore';
@@ -12,7 +11,6 @@ class CandidateStore extends ReduceStore {
       allCachedCandidates: {}, // Dictionary with candidate_we_vote_id as key and the candidate as value
       allCachedPositionsAboutCandidates: {}, // Dictionary with candidate_we_vote_id as one key, organization_we_vote_id as the second key, and the position as value
       numberOfCandidatesRetrievedByOffice: {}, // Dictionary with office_we_vote_id as key and number of candidates as value
-      positionListFromAdvisersFollowedByVoter: {}, // Dictionary with candidate_we_vote_id as key and list of positions as value
     };
   }
 
@@ -117,8 +115,7 @@ class CandidateStore extends ReduceStore {
 
   reduce (state, action) {
     const {
-      numberOfCandidatesRetrievedByOffice, allCachedCandidates, positionListFromAdvisersFollowedByVoter,
-      allCachedPositionsAboutCandidates,
+      numberOfCandidatesRetrievedByOffice, allCachedCandidates, allCachedPositionsAboutCandidates,
     } = state;
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
@@ -126,7 +123,6 @@ class CandidateStore extends ReduceStore {
     let ballotItemWeVoteId;
     let candidate;
     let candidateList;
-    let candidateId;
     let googleCivicElectionId;
     let incomingCandidateCount = 0;
     let newPositionList;
@@ -205,13 +201,12 @@ class CandidateStore extends ReduceStore {
         return state;
 
       case 'positionListForBallotItem':
+      case 'positionListForBallotItemFromFriends':
         // console.log('positionListForBallotItem action.res:', action.res);
         if (action.res.count === 0) return state;
 
         if (action.res.kind_of_ballot_item === 'CANDIDATE') {
-          candidateId = action.res.ballot_item_we_vote_id;
           newPositionList = action.res.position_list;
-          positionListFromAdvisersFollowedByVoter[candidateId] = newPositionList;
           newPositionList.forEach((oneIncomingPosition) => {
             ballotItemWeVoteId = oneIncomingPosition.ballot_item_we_vote_id;
             organizationWeVoteId = oneIncomingPosition.speaker_we_vote_id;
@@ -228,33 +223,14 @@ class CandidateStore extends ReduceStore {
             allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = oneIncomingPosition;
           });
 
-          // console.log('positionListForBallotItem positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]:', positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]);
           return {
             ...state,
             allCachedPositionsAboutCandidates,
-            positionListFromAdvisersFollowedByVoter,
           };
         } else if (action.res.kind_of_ballot_item === 'OFFICE') {
           officePositionList = action.res.position_list;
-          const officeWeVoteId = action.res.ballot_item_we_vote_id;
-
-          // Now reset the lists for all candidates under this office
-          const candidateWeVoteIdsUnderThisOffice = BallotStore.getCandidateWeVoteIdsForOfficeWeVoteId(officeWeVoteId);
-
-          // console.log('candidateWeVoteIdsUnderThisOffice: ', candidateWeVoteIdsUnderThisOffice);
-          if (candidateWeVoteIdsUnderThisOffice) {
-            candidateWeVoteIdsUnderThisOffice.forEach((id) => {
-              positionListFromAdvisersFollowedByVoter[id] = []; // Reset list
-            });
-          }
 
           officePositionList.forEach((oneIncomingPosition) => {
-            candidateId = oneIncomingPosition.ballot_item_we_vote_id;
-            if (!positionListFromAdvisersFollowedByVoter[candidateId]) {
-              positionListFromAdvisersFollowedByVoter[candidateId] = [];
-            }
-            positionListFromAdvisersFollowedByVoter[candidateId].push(oneIncomingPosition);
-
             ballotItemWeVoteId = oneIncomingPosition.ballot_item_we_vote_id;
             organizationWeVoteId = oneIncomingPosition.speaker_we_vote_id;
 
@@ -270,11 +246,9 @@ class CandidateStore extends ReduceStore {
             allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = oneIncomingPosition;
           });
 
-          // console.log('positionListForBallotItem OFFICE positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]:', positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]);
           return {
             ...state,
             allCachedPositionsAboutCandidates,
-            positionListFromAdvisersFollowedByVoter,
           };
         } else {
           return state;
@@ -335,7 +309,7 @@ class CandidateStore extends ReduceStore {
               // Only proceed if the position doesn't already exist
               if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
-                console.log('voterGuidesToFollowRetrieve part 1 position already exists');
+                // console.log('CandidateStore voterGuidesToFollowRetrieve part 1 position already exists');
               } else {
                 onePosition = {
                   position_we_vote_id: oneVoterGuide.position_we_vote_id, // Currently empty

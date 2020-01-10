@@ -67,6 +67,7 @@ export default class Candidate extends Component {
         !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
       ) {
         CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
+        CandidateActions.positionListForBallotItemFromFriends(candidateWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[candidateWeVoteId] = true;
         this.setState({

@@ -16,6 +16,7 @@ class ValueIconAndText extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     ballotItemDisplayName: PropTypes.string,
+    externalUniqueId: PropTypes.string,
     issueFollowedByVoter: PropTypes.bool,
     issueWidths: PropTypes.object,
     oneIssue: PropTypes.object,
@@ -159,7 +160,7 @@ class ValueIconAndText extends Component {
 
   render () {
     // console.log('ValueIconAndText render');
-    const { ballotItemWeVoteId, issueFollowedByVoter, oneIssue } = this.props;
+    const { ballotItemWeVoteId, externalUniqueId, issueFollowedByVoter, oneIssue } = this.props;
     const svgFill = issueFollowedByVoter ? '#555' : '#999';
     return (
       <StickyPopover
@@ -172,9 +173,9 @@ class ValueIconAndText extends Component {
         showCloseIcon
       >
         <ValueIconAndTextSpan
-          id={`valueIconAndText-${oneIssue.issue_we_vote_id}`}
+          id={`${externalUniqueId}-valueIconAndText-${oneIssue.issue_we_vote_id}`}
           issueFollowedByVoter={issueFollowedByVoter}
-          key={`valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
+          key={`${externalUniqueId}-valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
           className="u-no-break u-cursor--pointer"
         >
           {oneIssue.issue_icon_local_path ? (

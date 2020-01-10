@@ -111,13 +111,11 @@ class MeasureItem extends Component {
             { electionDisplayName || regionalDisplayName || stateDisplayName ?
               (
                 <SubTitle>
-                  <p>
-                    { electionDisplayName || 'Appearing on the ballot in ' }
-                    { electionDisplayName ? <span> &middot; </span> : null }
-                    { regionalDisplayName || null }
-                    { regionalDisplayName && stateDisplayName ? ', ' : null }
-                    { stateDisplayName }
-                  </p>
+                  { electionDisplayName || 'Appearing on the ballot in ' }
+                  { electionDisplayName ? <span> &middot; </span> : null }
+                  { regionalDisplayName || null }
+                  { regionalDisplayName && stateDisplayName ? ', ' : null }
+                  { stateDisplayName }
                 </SubTitle>
               ) :
               null
@@ -205,6 +203,7 @@ const SubTitle = styled.h3`
   font-size: 16px;
   font-weight: 300;
   color: #555;
+  margin-bottom: 4px;
   margin-top: .6rem;
   width: 135%;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
