@@ -84,6 +84,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     const { organizationWeVoteId } = this.state;
     const differentOrganization = organizationWeVoteId !== nextProps.organizationWeVoteId;
     if (differentOrganization) {
+      // console.log('OrganizationVoterGuideTabs, componentWillReceiveProps differentOrganization');
       OrganizationActions.organizationsFollowedRetrieve();
       VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organizationWeVoteId);
       VoterGuideActions.voterGuideFollowersRetrieve(nextProps.organizationWeVoteId);

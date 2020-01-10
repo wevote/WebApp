@@ -162,6 +162,7 @@ class VoterGuidePositions extends Component {
     const differentOrganization = this.state.organizationWeVoteId !== nextProps.organizationWeVoteId;
     // console.log('VoterGuidePositions componentWillReceiveProps-differentElection: ', differentElection, ' differentOrganization: ', differentOrganization);
     if (differentElection || differentOrganization) {
+      // console.log('VoterGuidePositions componentWillReceiveProps, differentElection:', differentElection, ', differentOrganization:', differentOrganization);
       // console.log('VoterGuidePositions, componentWillReceiveProps, nextProps.organization: ', nextProps.organization);
       VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organizationWeVoteId, VoterStore.electionId());
       // // Positions for this organization, for this voter / election

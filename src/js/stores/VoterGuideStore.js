@@ -361,6 +361,7 @@ class VoterGuideStore extends ReduceStore {
         return revisedState;
 
       case 'voterFollowAllOrganizationsFollowedByOrganization':
+        // console.log('VoterGuideStore voterFollowAllOrganizationsFollowedByOrganization');
         // Following one org can change the support/oppose count for many ballot items for the voter
         voterLinkedOrganizationWeVoteId = VoterStore.getVoter().linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
