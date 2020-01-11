@@ -227,12 +227,12 @@ export default class OrganizationCard extends Component {
                   @
                   {organizationTwitterHandle}
                   &nbsp;&nbsp;
-                </span>
-              )}
-              {(twitterFollowersCount && numberWithCommas(twitterFollowersCount) !== '0' && !turnOffTwitterHandle) && (
-                <span className="twitter-followers__badge">
-                  <TwitterFollowersIcon className="fab fa-twitter" />
-                  {numberWithCommas(twitterFollowersCount)}
+                  {(twitterFollowersCount && String(twitterFollowersCount) !== '0' && numberWithCommas(twitterFollowersCount) !== '0') && (
+                    <span className="twitter-followers__badge">
+                      <TwitterFollowersIcon className="fab fa-twitter" />
+                      {numberWithCommas(twitterFollowersCount)}
+                    </span>
+                  )}
                 </span>
               )}
               { organizationWebsite && (
