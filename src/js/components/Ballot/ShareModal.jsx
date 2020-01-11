@@ -12,9 +12,11 @@ import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import { Button } from '@material-ui/core';
 import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
+import FriendsCurrentPreview from '../Friends/FriendsCurrentPreview';
 import ShareModalOption from './ShareModalOption';
 import SettingsAccount from '../Settings/SettingsAccount';
 import FriendStore from '../../stores/FriendStore';
+import FriendActions from '../../actions/FriendActions';
 
 class ShareModal extends Component {
   static propTypes = {
@@ -33,6 +35,7 @@ class ShareModal extends Component {
     };
 
     this.closeShareModal = this.closeShareModal.bind(this);
+    this.setStep = this.setStep.bind(this);
   }
 
   // Steps: options, friends
@@ -41,7 +44,7 @@ class ShareModal extends Component {
     console.log(this.props.step);
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    // FriendActions.currentFriends();
+    FriendActions.currentFriends();
 
     this.setState({
       pathname: this.props.pathname,
@@ -63,6 +66,10 @@ class ShareModal extends Component {
 
   closeShareModal () {
     this.props.toggleFunction(this.state.pathname);
+  }
+
+  setStep (step) {
+    this.setState({ step });
   }
 
   render () {
@@ -132,20 +139,13 @@ class ShareModal extends Component {
           onClose={() => { this.props.toggleFunction(this.state.pathname); }}
         >
           <ModalTitleArea>
-            <Button className={classes.backButton} color="primary" onClick={this.toggleStep2}>
+            <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('options'); }}>
               <ArrowBackIos className={classes.backButtonIcon} />
               Back
             </Button>
-            <Title center bold>Friends!</Title>
           </ModalTitleArea>
           <DialogContent classes={{ root: classes.dialogContent }}>
-            <MessageCard
-              mainText="You haven't added any friends yet."
-              buttonText="Add Friends"
-              buttonURL="/friends/invite"
-              noCard
-              secondaryText="By adding friends who you enjoy discussing politics with to We Vote, you can help eachother get ready for elections."
-            />
+            <FriendsCurrentPreview />
           </DialogContent>
         </Dialog>
       );
@@ -157,7 +157,7 @@ class ShareModal extends Component {
           onClose={() => { this.props.toggleFunction(this.state.pathname); }}
         >
           <ModalTitleArea>
-            <Button className={classes.backButton} color="primary" onClick={this.toggleStep2}>
+            <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('options'); }}>
               <ArrowBackIos className={classes.backButtonIcon} />
               Back
             </Button>
