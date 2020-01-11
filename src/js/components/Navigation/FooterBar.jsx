@@ -15,7 +15,7 @@ import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 
-const webAppConfig = require('../../config');
+// const webAppConfig = require('../../config');
 
 
 class FooterBar extends React.Component {
@@ -82,7 +82,7 @@ class FooterBar extends React.Component {
       display: 'inline-block',
     };
 
-    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    // const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     return (
       <FooterBarWrapper>
@@ -90,20 +90,17 @@ class FooterBar extends React.Component {
           <BottomNavigation value={this.getSelectedTab()} onChange={this.handleChange} showLabels>
             <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<BallotIcon />} />
             <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />
-            { enableFriends ?
-              (
-                <BottomNavigationAction
-                  className="no-outline"
-                  id="friendsTabFooterBar"
-                  label="Friends"
-                  showLabel
-                  icon={(
-                    <Badge badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
-                      <PeopleIcon />
-                    </Badge>
-                  )}
-                />
-              ) : '' }
+            <BottomNavigationAction
+              className="no-outline"
+              id="friendsTabFooterBar"
+              label="Friends"
+              showLabel
+              icon={(
+                <Badge badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
+                  <PeopleIcon />
+                </Badge>
+              )}
+            />
             <BottomNavigationAction className="no-outline" id="voteTabFooterBar" label="Vote" showLabel icon={<HowToVoteIcon />} />
             {isCordova() && (
               <BottomNavigationAction

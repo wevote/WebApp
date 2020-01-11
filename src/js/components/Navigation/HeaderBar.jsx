@@ -33,7 +33,7 @@ import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import ShareModal from '../Ballot/ShareModal';
 
-const webAppConfig = require('../../config');
+// const webAppConfig = require('../../config');
 
 
 class HeaderBar extends Component {
@@ -358,7 +358,7 @@ class HeaderBar extends Component {
 
     const doNotShowWeVoteLogo = weVoteBrandingOff || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
-    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    // const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
@@ -384,7 +384,7 @@ class HeaderBar extends Component {
                 {showFullNavigation && (
                   <Tab classes={{ root: classes.tabRootDefault }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
                 )}
-                { enableFriends && showFullNavigation && (
+                { showFullNavigation && (
                   <Tab
                     classes={(numberOfIncomingFriendRequests > 0) ? { root: classes.tabRootIncomingFriendRequests } : { root: classes.tabRootDefault }}
                     id="friendsTabHeaderBar"
