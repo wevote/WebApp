@@ -103,7 +103,6 @@ export default class HamburgerMenu extends Component {
     let { is_signed_in: isSignedIn } = voter;
     const { voter_photo_url_medium: photoUrl } = voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
-    const showSettingsInDevelopment = false; // If developing any of the new settings, change this to true
     const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
@@ -165,7 +164,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && enableNextRelease && (
+            {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/domain"
@@ -175,7 +174,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && enableNextRelease && (
+            {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/sharing"
@@ -185,7 +184,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && enableNextRelease && (
+            {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/subscription"
@@ -195,7 +194,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && enableNextRelease && (
+            {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/analytics"
@@ -205,7 +204,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && showSettingsInDevelopment && (
+            {isSignedIn && enableNextRelease && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/promoted"
