@@ -102,7 +102,7 @@ class FooterBar extends React.Component {
               )}
             />
             <BottomNavigationAction className="no-outline" id="voteTabFooterBar" label="Vote" showLabel icon={<HowToVoteIcon />} />
-            {isCordova() && (
+            {isCordova() ? (
               <BottomNavigationAction
                 className="no-outline"
                 id="helpTabFooterBar"
@@ -111,6 +111,8 @@ class FooterBar extends React.Component {
                 icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />}
                 onClick={() => cordovaOpenSafariView('https://help.wevote.us', null, 50)}
               />
+            ) : (
+              <BottomNavigationAction className="no-outline" id="helpTabFooterBar" />
             )}
           </BottomNavigation>
         </div>

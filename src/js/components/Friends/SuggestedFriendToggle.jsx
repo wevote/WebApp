@@ -4,7 +4,6 @@ import Button from '@material-ui/core/esm/Button';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
@@ -86,12 +85,12 @@ export default class SuggestedFriendToggle extends Component {
         ) : (
           <ButtonContainer displayFullWidth={displayFullWidth}>
             <Button
-              variant="contained"
               color="primary"
-              onClick={this.addSuggestedFriend}
               fullWidth
+              onClick={this.addSuggestedFriend}
+              variant="contained"
             >
-              {isMobileScreenSize() ? 'Add Friend' : 'Add Friend'}
+              Add Friend
             </Button>
           </ButtonContainer>
         )}
