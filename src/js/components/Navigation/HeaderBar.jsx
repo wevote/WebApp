@@ -65,6 +65,7 @@ class HeaderBar extends Component {
       showSignInModal: false,
       showPaidAccountUpgradeModal: false,
       showShareModal: false,
+      shareModalStep: 'options',
       voter: {},
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
@@ -133,6 +134,9 @@ class HeaderBar extends Component {
       return true;
     }
     if (this.state.showShareModal !== nextState.showShareModal) {
+      return true;
+    }
+    if (this.state.shareModalStep !== nextState.shareModalStep) {
       return true;
     }
     if (this.state.scrolledDown !== nextState.scrolledDown) {
@@ -205,6 +209,7 @@ class HeaderBar extends Component {
       showEditAddressButton: AppStore.showEditAddressButton(),
       showPaidAccountUpgradeModal,
       showShareModal: AppStore.showShareModal(),
+      shareModalStep: AppStore.shareModalStep(),
       showSignInModal: AppStore.showSignInModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
     });
@@ -219,10 +224,12 @@ class HeaderBar extends Component {
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in || false;
+
     this.setState({
       voter,
       voterIsSignedIn,
       showSignInModal: AppStore.showSignInModal(),
+      showShareModal: AppStore.showShareModal(),
     });
   }
 
@@ -318,7 +325,7 @@ class HeaderBar extends Component {
     const { classes, pathname, location } = this.props;
     const {
       chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown,
-      showEditAddressButton, showPaidAccountUpgradeModal, showShareModal, showSelectBallotModal,
+      showEditAddressButton, showPaidAccountUpgradeModal, showShareModal, shareModalStep, showSelectBallotModal,
       showSignInModal, voter, voterIsSignedIn,
     } = this.state;
     // console.log('Header Bar, showSignInModal ', showSignInModal);
@@ -542,8 +549,10 @@ class HeaderBar extends Component {
         )}
         {showShareModal && (
           <ShareModal
+            isSignedIn={this.state.voter.is_signed_in}
             pathname={pathname}
             show={showShareModal}
+            step={shareModalStep}
             toggleFunction={this.closeShareModal}
           />
         )}

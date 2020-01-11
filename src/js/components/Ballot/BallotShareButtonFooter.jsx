@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/esm/Button';
 import Comment from '@material-ui/icons/Comment';
 import { Drawer, Tooltip, MenuItem } from '@material-ui/core/esm';
-import { withStyles } from '@material-ui/core/esm/styles';
+import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import Reply from '@material-ui/icons/Reply';
+import { withStyles } from '@material-ui/core/esm/styles';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
+import ShareModalOption from './ShareModalOption';
 
 class BallotShareButtonFooter extends Component {
   static propTypes = {
@@ -19,13 +21,16 @@ class BallotShareButtonFooter extends Component {
     this.state = {
       open: false,
       anchorEl: null,
+      step2: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.toggleStep2 = this.toggleStep2.bind(this);
   }
 
   shouldComponentUpdate (nextState) {
     if (this.state.open !== nextState.open) return true;
+    if (this.state.step2 !== nextState.step2) return true;
     if (this.state.anchorEl !== nextState.anchorEl) return true;
     return false;
   }
@@ -38,9 +43,15 @@ class BallotShareButtonFooter extends Component {
     this.setState({ anchorEl: null, open: false });
   }
 
-  openShareModal () {
-    // console.log('SettingsDomain openPaidAccountUpgradeModal');
+  openShareModal (step) {
+    this.handleClose();
     AppActions.setShowShareModal(true);
+    AppActions.setShareModalStep(step);
+  }
+
+  toggleStep2 () {
+    // console.log('SettingsDomain openPaidAccountUpgradeModal');
+    this.setState({ step2: !this.state.step2 });
   }
 
   render () {
@@ -58,8 +69,16 @@ class BallotShareButtonFooter extends Component {
           Share
         </Button>
         <Drawer id="share-menu" anchor="bottom" open={this.state.open} direction="up" onClose={this.handleClose}>
-          <Container>
+          <Container step2={this.state.step2}>
             <ModalTitleArea>
+              {this.state.step2 ? (
+                <Button className={classes.backButton} color="primary" onClick={this.toggleStep2}>
+                  <ArrowBackIos className={classes.backButtonIcon} />
+                  Back
+                </Button>
+              ) : (
+                null
+              )}
               <Title>
                 Share:
                 {' '}
@@ -67,40 +86,59 @@ class BallotShareButtonFooter extends Component {
               </Title>
               <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
             </ModalTitleArea>
-            <MenuItem className={classes.menuItem} onClick={this.openShareModal}>
-              <MenuFlex>
-                <MenuIcon>
-                  <i className="fas fa-list" />
-                </MenuIcon>
-                <MenuText>
-                  Ballot
-                </MenuText>
-                <MenuInfo>
-                  <Tooltip title="Share a link to this election so that your friends can get ready to vote. Your opinions are not included." arrow enterDelay={300}>
-                    <i className="fas fa-info-circle" />
-                  </Tooltip>
-                </MenuInfo>
-              </MenuFlex>
-            </MenuItem>
-            <MenuSeparator />
-            <MenuItem className={classes.menuItem} onClick={this.openShareModal}>
-              <MenuFlex>
-                <MenuIcon>
-                  <Comment />
-                </MenuIcon>
-                <MenuText>
-                  Your Ballot Opinions
-                </MenuText>
-                <MenuInfo>
-                  <Tooltip title="Share a link to the choices you've made for this election so that your friends can get ready to vote. This includes your public and friend's-only opinions." arrow enterDelay={300}>
-                    <i className="fas fa-info-circle" />
-                  </Tooltip>
-                </MenuInfo>
-              </MenuFlex>
-            </MenuItem>
-            <Button className={classes.cancelButton} fullWidth onClick={this.handleClose} variant="outlined" color="primary">
-              Cancel
-            </Button>
+            {this.state.step2 ? (
+              <>
+                <Flex>
+                  <ShareModalOption noLink onClickFunction={() => this.openShareModal('friends')} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />
+                  <ShareModalOption noLink onClickFunction={() => this.openShareModal()} background="#2E3C5D" icon={<Reply />} title="Share" />
+                </Flex>
+                <Button className={classes.cancelButton} variant="contained" fullWidth color="primary">
+                  Preview
+                </Button>
+                <Button className={classes.cancelButton} fullWidth onClick={this.handleClose} variant="outlined" color="primary">
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <>
+                <MenuItemsWrapper>
+                  <MenuItem className={classes.menuItem} onClick={this.toggleStep2}>
+                    <MenuFlex>
+                      <MenuIcon>
+                        <i className="fas fa-list" />
+                      </MenuIcon>
+                      <MenuText>
+                        Ballot
+                      </MenuText>
+                      <MenuInfo>
+                        <Tooltip title="Share a link to this election so that your friends can get ready to vote. Your opinions are not included." arrow enterDelay={300}>
+                          <i className="fas fa-info-circle" />
+                        </Tooltip>
+                      </MenuInfo>
+                    </MenuFlex>
+                  </MenuItem>
+                  <MenuSeparator />
+                  <MenuItem className={classes.menuItem} onClick={this.toggleStep2}>
+                    <MenuFlex>
+                      <MenuIcon>
+                        <Comment />
+                      </MenuIcon>
+                      <MenuText>
+                        Your Ballot Opinions
+                      </MenuText>
+                      <MenuInfo>
+                        <Tooltip title="Share a link to the choices you've made for this election so that your friends can get ready to vote. This includes your public and friend's-only opinions." arrow enterDelay={300}>
+                          <i className="fas fa-info-circle" />
+                        </Tooltip>
+                      </MenuInfo>
+                    </MenuFlex>
+                  </MenuItem>
+                </MenuItemsWrapper>
+                <Button className={classes.cancelButton} fullWidth onClick={this.handleClose} variant="outlined" color="primary">
+                  Cancel
+                </Button>
+              </>
+            )}
           </Container>
         </Drawer>
       </Wrapper>
@@ -116,8 +154,16 @@ const styles = () => ({
     borderRadius: '0 !important',
     height: '45px !important',
   },
+  backButton: {
+    marginBottom: 6,
+    marginLeft: -8,
+  },
+  backButtonIcon: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
   cancelButton: {
-    marginTop: 24,
+    marginTop: 12,
   },
   menuItem: {
     zIndex: '9 !important',
@@ -151,13 +197,13 @@ const Wrapper = styled.div`
 const Container = styled.div`
   margin: 0 auto;
   max-width: 576px;
-  padding: 24px 16px 32px !important;
+  padding: ${props => (props.step2 ? '16px 16px 32px' : '24px 16px 32px')};
 `;
 
 const ModalTitleArea = styled.div`
   text-align: left;
   width: 100%;
-  padding: 20px 16px 16px 16px;
+  padding: 0 16px 16px 16px;
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
@@ -179,6 +225,16 @@ const SubTitle = styled.div`
   width: 80%;
 `;
 
+const MenuItemsWrapper = styled.div`
+  padding: 16px 0;
+`;
+
+const Flex = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px 0;
+`;
+
 const Icon = styled.span`
   margin-right: 4px;
 `;
@@ -189,7 +245,7 @@ const MenuFlex = styled.div`
   justify-content: flex-start;
   width: 100%;
   height: 100%;
-  padding: 10px 8px 10px 18px;
+  padding: 14px 12px;
 `;
 
 const MenuIcon = styled.div`

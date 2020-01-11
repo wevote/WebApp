@@ -35,6 +35,10 @@ export default {
     Dispatcher.dispatch({ type: 'showShareModal', payload: show });
   },
 
+  setShareModalStep (step) {
+    Dispatcher.dispatch({ type: 'shareModalStep', payload: step });
+  },
+
   setShowSignInModal (show) {
     Dispatcher.dispatch({ type: 'showSignInModal', payload: show });
   },

@@ -344,7 +344,6 @@ class SettingsVerifySecretCode extends Component {
   };
 
   closeVerifyModalLocal = () => {
-    // console.log('SettingsVerifySecretCode closeVerifyModalLocal');
     if (this.props.closeVerifyModal) {
       this.props.closeVerifyModal();
     }
