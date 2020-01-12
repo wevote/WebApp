@@ -43,6 +43,7 @@ class OfficeItemCompressed extends Component {
       // componentDidMount: false,
       maximumNumberOrganizationsToDisplay: NUMBER_OF_CANDIDATES_TO_DISPLAY,
       organizationWeVoteId: '',
+      positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
     };
 
@@ -64,13 +65,26 @@ class OfficeItemCompressed extends Component {
       // componentDidMount: true,
     });
     if (candidateList && candidateList.length && officeWeVoteId) {
-      if (officeWeVoteId && !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
+      if (officeWeVoteId &&
+        !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
         OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
-        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
         this.setState({
           positionListHasBeenRetrievedOnce,
+        });
+      }
+      if (officeWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
     }
@@ -111,13 +125,26 @@ class OfficeItemCompressed extends Component {
     // console.log('OfficeItemCompressed onCandidateStoreChange', officeWeVoteId);
     let changeFound = false;
     if (candidateList && candidateList.length && officeWeVoteId) {
-      if (officeWeVoteId && !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
+      if (officeWeVoteId &&
+        !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
         OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
-        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
         this.setState({
           positionListHasBeenRetrievedOnce,
+        });
+      }
+      if (officeWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
       const newCandidateList = [];
@@ -291,6 +318,14 @@ class OfficeItemCompressed extends Component {
     if (officeWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
       return positionListHasBeenRetrievedOnce[officeWeVoteId];
+    }
+    return false;
+  }
+
+  localPositionListFromFriendsHasBeenRetrievedOnce (officeWeVoteId) {
+    if (officeWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId];
     }
     return false;
   }

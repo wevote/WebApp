@@ -101,7 +101,7 @@ export default class SuggestedFriendToggle extends Component {
 
 const ButtonContainer = styled.div`
   width: 100%;
-  margin-right: 12px;
+  // margin-right: 12px;
   @media(min-width: 400px) {
     ${({ displayFullWidth }) => (displayFullWidth ? 'width: 100%;' : 'width: fit-content;')}
     margin: 0;

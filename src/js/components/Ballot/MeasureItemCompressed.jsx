@@ -39,6 +39,7 @@ class MeasureItemCompressed extends Component {
       measureWeVoteId: '',
       noVoteDescription: '',
       organizationWeVoteId: '',
+      positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
       showPositionStatement: false,
       numberOfOpposePositionsForScore: 0,
@@ -60,13 +61,28 @@ class MeasureItemCompressed extends Component {
       // If the measure isn't in the MeasureStore, retrieve it
       MeasureActions.measureRetrieve(measureWeVoteId);
     }
-    if (measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
+    if (measureWeVoteId &&
+      !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) &&
+      !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)
+    ) {
       // console.log('componentDidMount positionListForBallotItemPublic', measureWeVoteId);
       MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
       const { positionListHasBeenRetrievedOnce } = this.state;
       positionListHasBeenRetrievedOnce[measureWeVoteId] = true;
       this.setState({
         positionListHasBeenRetrievedOnce,
+      });
+    }
+    if (measureWeVoteId &&
+      !this.localPositionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId) &&
+      !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId)
+    ) {
+      // console.log('componentDidMount positionListForBallotItemPublic', measureWeVoteId);
+      MeasureActions.positionListForBallotItemFromFriends(measureWeVoteId);
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId] = true;
+      this.setState({
+        positionListFromFriendsHasBeenRetrievedOnce,
       });
     }
     const organizationWeVoteId = (organization && organization.organization_we_vote_id) ? organization.organization_we_vote_id : this.props.organizationWeVoteId;
@@ -188,13 +204,28 @@ class MeasureItemCompressed extends Component {
     const { measureWeVoteId } = this.state;
     const measure = MeasureStore.getMeasure(measureWeVoteId);
     // console.log('MeasureItemCompressed, onMeasureStoreChange, measureWeVoteId:', measureWeVoteId);
-    if (measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
+    if (measureWeVoteId &&
+      !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) &&
+      !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)
+    ) {
       // console.log('onMeasureStoreChange positionListForBallotItemPublic', measureWeVoteId);
       MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
       const { positionListHasBeenRetrievedOnce } = this.state;
       positionListHasBeenRetrievedOnce[measureWeVoteId] = true;
       this.setState({
         positionListHasBeenRetrievedOnce,
+      });
+    }
+    if (measureWeVoteId &&
+      !this.localPositionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId) &&
+      !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId)
+    ) {
+      // console.log('componentDidMount positionListForBallotItemPublic', measureWeVoteId);
+      MeasureActions.positionListForBallotItemFromFriends(measureWeVoteId);
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId] = true;
+      this.setState({
+        positionListFromFriendsHasBeenRetrievedOnce,
       });
     }
     this.setState({
@@ -252,6 +283,14 @@ class MeasureItemCompressed extends Component {
     if (measureWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
       return positionListHasBeenRetrievedOnce[measureWeVoteId];
+    }
+    return false;
+  }
+
+  localPositionListFromFriendsHasBeenRetrievedOnce (measureWeVoteId) {
+    if (measureWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId];
     }
     return false;
   }

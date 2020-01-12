@@ -40,6 +40,7 @@ export default class Candidate extends Component {
       candidate: {},
       candidateWeVoteId: '',
       organizationWeVoteId: '',
+      positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
       scrolledDown: false,
     };
@@ -67,11 +68,22 @@ export default class Candidate extends Component {
         !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
       ) {
         CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
-        CandidateActions.positionListForBallotItemFromFriends(candidateWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[candidateWeVoteId] = true;
         this.setState({
           positionListHasBeenRetrievedOnce,
+        });
+      }
+      if (candidateWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(candidateWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(candidateWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        CandidateActions.positionListForBallotItemFromFriends(candidateWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[candidateWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
     }
@@ -220,6 +232,14 @@ export default class Candidate extends Component {
     if (candidateWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
       return positionListHasBeenRetrievedOnce[candidateWeVoteId];
+    }
+    return false;
+  }
+
+  localPositionListFromFriendsHasBeenRetrievedOnce (candidateWeVoteId) {
+    if (candidateWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[candidateWeVoteId];
     }
     return false;
   }

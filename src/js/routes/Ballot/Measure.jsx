@@ -33,6 +33,7 @@ export default class Measure extends Component {
       measure: {},
       measureBallotItemDisplayName: '',
       measureWeVoteId: '',
+      positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
       scrolledDown: AppStore.getScrolledDown(),
     };
@@ -45,13 +46,26 @@ export default class Measure extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     const { measure_we_vote_id: measureWeVoteId } = this.props.params;
     MeasureActions.measureRetrieve(measureWeVoteId);
-    if (measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
+    if (measureWeVoteId &&
+      !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) &&
+      !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)
+    ) {
       MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
-      MeasureActions.positionListForBallotItemFromFriends(measureWeVoteId);
       const { positionListHasBeenRetrievedOnce } = this.state;
       positionListHasBeenRetrievedOnce[measureWeVoteId] = true;
       this.setState({
         positionListHasBeenRetrievedOnce,
+      });
+    }
+    if (measureWeVoteId &&
+      !this.localPositionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId) &&
+      !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId)
+    ) {
+      MeasureActions.positionListForBallotItemFromFriends(measureWeVoteId);
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId] = true;
+      this.setState({
+        positionListFromFriendsHasBeenRetrievedOnce,
       });
     }
 
@@ -93,6 +107,17 @@ export default class Measure extends Component {
         positionListHasBeenRetrievedOnce[measureWeVoteId] = true;
         this.setState({
           positionListHasBeenRetrievedOnce,
+        });
+      }
+      if (measureWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId)
+      ) {
+        MeasureActions.positionListForBallotItemFromFriends(measureWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
       // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, 'MEASURE');
@@ -180,6 +205,14 @@ export default class Measure extends Component {
     if (measureWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
       return positionListHasBeenRetrievedOnce[measureWeVoteId];
+    }
+    return false;
+  }
+
+  localPositionListFromFriendsHasBeenRetrievedOnce (measureWeVoteId) {
+    if (measureWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId];
     }
     return false;
   }

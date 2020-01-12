@@ -31,6 +31,7 @@ export default class Office extends Component {
       candidateList: [],
       office: {},
       officeWeVoteId: '',
+      positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
     };
   }
@@ -59,6 +60,17 @@ export default class Office extends Component {
           positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
           this.setState({
             positionListHasBeenRetrievedOnce,
+          });
+        }
+        if (officeWeVoteId &&
+          !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
+          !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+        ) {
+          OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
+          const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+          positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
+          this.setState({
+            positionListFromFriendsHasBeenRetrievedOnce,
           });
         }
       }
@@ -123,6 +135,17 @@ export default class Office extends Component {
           positionListHasBeenRetrievedOnce,
         });
       }
+      if (officeWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
+        });
+      }
     }
   }
 
@@ -157,6 +180,17 @@ export default class Office extends Component {
           });
         }
       }
+      if (officeWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
+        });
+      }
       this.setState({
         candidateList,
         office,
@@ -169,6 +203,14 @@ export default class Office extends Component {
     if (officeWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
       return positionListHasBeenRetrievedOnce[officeWeVoteId];
+    }
+    return false;
+  }
+
+  localPositionListFromFriendsHasBeenRetrievedOnce (officeWeVoteId) {
+    if (officeWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId];
     }
     return false;
   }

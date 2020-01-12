@@ -60,6 +60,7 @@ class OrganizationVoterGuideCard extends Component {
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
     const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
 
+    // console.log('OrganizationVoterGuideCard linkedVoterWeVoteId:', linkedVoterWeVoteId);
     return (
       <CardMain>
         { organizationPhotoUrlLarge ? (
@@ -102,11 +103,19 @@ class OrganizationVoterGuideCard extends Component {
         { !isVoterOwner && (
           <>
             <FollowToggleWrapper>
-              <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
+              <FollowToggle
+                organizationWeVoteId={organizationWeVoteId}
+                otherVoterWeVoteId={linkedVoterWeVoteId}
+                showFollowingText
+              />
             </FollowToggleWrapper>
             { isSpeakerTypePrivateCitizen(organizationType) && (
               <FriendToggleWrapper>
-                <FriendToggle displayFullWidth otherVoterWeVoteId={linkedVoterWeVoteId} showFriendsText />
+                <FriendToggle
+                  displayFullWidth
+                  otherVoterWeVoteId={linkedVoterWeVoteId}
+                  showFriendsText
+                />
               </FriendToggleWrapper>
             )}
           </>

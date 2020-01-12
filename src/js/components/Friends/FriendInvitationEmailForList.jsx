@@ -121,7 +121,7 @@ class FriendInvitationEmailForList extends Component {
         <ButtonWrapper>
           <CancelButtonContainer>
             <Button variant="outlined" color="primary" fullWidth>
-              Cancel
+              Cancel Invite
             </Button>
           </CancelButtonContainer>
           {invitationState === 'PENDING_EMAIL_VERIFICATION' && !voter.signed_in_with_email ? (

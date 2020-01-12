@@ -35,6 +35,7 @@ class VoterGuidePositionItem extends Component {
       voterPositionIsPublic: false,
       voterSupportsBallotItem: false,
       organizationWeVoteId: '',
+      positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
       signedInWithThisFacebookAccount: false,
       signedInWithThisOrganization: false,
@@ -99,21 +100,42 @@ class VoterGuidePositionItem extends Component {
       voterTextStatement,
       voter,
     });
-    if (ballotItemWeVoteId && !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
+    const isCandidate = stringContains('cand', ballotItemWeVoteId);
+    const isMeasure = stringContains('meas', ballotItemWeVoteId);
+    if (ballotItemWeVoteId &&
+      !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+      !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)
+    ) {
       // console.log('componentDidMount positionListForBallotItemPublic', measureWeVoteId);
-      const isCandidate = stringContains('cand', ballotItemWeVoteId);
-      const isMeasure = stringContains('meas', ballotItemWeVoteId);
       if (isCandidate) {
-        //
+        CandidateActions.positionListForBallotItemPublic(ballotItemWeVoteId);
       } else if (isMeasure) {
         MeasureActions.positionListForBallotItemPublic(ballotItemWeVoteId);
+      }
+      if (isCandidate || isMeasure) {
+        const { positionListHasBeenRetrievedOnce } = this.state;
+        positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
+        this.setState({
+          positionListHasBeenRetrievedOnce,
+        });
+      }
+    }
+    if (ballotItemWeVoteId &&
+      !this.localPositionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+      !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId)
+    ) {
+      if (isCandidate) {
+        CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+      } else if (isMeasure) {
         MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
       }
-      const { positionListHasBeenRetrievedOnce } = this.state;
-      positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
-      this.setState({
-        positionListHasBeenRetrievedOnce,
-      });
+      if (isCandidate || isMeasure) {
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
+        });
+      }
     }
 
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
@@ -209,14 +231,28 @@ class VoterGuidePositionItem extends Component {
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
     // console.log('VoterGuidePositionItem, onCandidateStoreChange');
     if (isCandidate) {
-      if (ballotItemWeVoteId && !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
+      if (ballotItemWeVoteId &&
+        !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)
+      ) {
         // console.log('VoterGuidePositionItem, onCandidateStoreChange, calling positionListForBallotItemPublic');
         CandidateActions.positionListForBallotItemPublic(ballotItemWeVoteId);
-        CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
         this.setState({
           positionListHasBeenRetrievedOnce,
+        });
+      }
+      if (ballotItemWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId)
+      ) {
+        // console.log('VoterGuidePositionItem, onCandidateStoreChange, calling positionListForBallotItemPublic');
+        CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
     }
@@ -227,14 +263,28 @@ class VoterGuidePositionItem extends Component {
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
     // console.log('VoterGuidePositionItem, onMeasureStoreChange');
     if (isMeasure) {
-      if (ballotItemWeVoteId && !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
+      if (ballotItemWeVoteId &&
+        !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)
+      ) {
         // console.log('VoterGuidePositionItem, onMeasureStoreChange, calling positionListForBallotItemPublic');
         MeasureActions.positionListForBallotItemPublic(ballotItemWeVoteId);
-        MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
         this.setState({
           positionListHasBeenRetrievedOnce,
+        });
+      }
+      if (ballotItemWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId)
+      ) {
+        // console.log('VoterGuidePositionItem, onMeasureStoreChange, calling positionListForBallotItemPublic');
+        MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
     }
@@ -334,6 +384,14 @@ class VoterGuidePositionItem extends Component {
     if (ballotItemWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
       return positionListHasBeenRetrievedOnce[ballotItemWeVoteId];
+    }
+    return false;
+  }
+
+  localPositionListFromFriendsHasBeenRetrievedOnce (ballotItemWeVoteId) {
+    if (ballotItemWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[ballotItemWeVoteId];
     }
     return false;
   }

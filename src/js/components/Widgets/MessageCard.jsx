@@ -6,9 +6,13 @@ import { historyPush } from '../../utils/cordovaUtils';
 
 export default class MessageCard extends Component {
   static propTypes = {
-    mainText: PropTypes.string,
     buttonText: PropTypes.string,
     buttonURL: PropTypes.string,
+    icon: PropTypes.string,
+    inModal: PropTypes.bool,
+    noCard: PropTypes.bool,
+    mainText: PropTypes.string,
+    secondaryText: PropTypes.string,
   };
 
   constructor (props) {
@@ -25,10 +29,10 @@ export default class MessageCard extends Component {
   }
 
   render () {
-    const { mainText, buttonText, buttonURL, icon, secondaryText, inModal } = this.props;
+    const { buttonText, buttonURL, icon, inModal, mainText, noCard, secondaryText } = this.props;
 
     return (
-      <Card inModal={inModal} className={this.props.noCard ? '' : 'card'}>
+      <Card inModal={inModal} className={noCard ? '' : 'card'}>
         <InnerWrapper className="card-main">
           {icon ? (
             <Icon>{icon}</Icon>
