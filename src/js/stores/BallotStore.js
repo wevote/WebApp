@@ -2,8 +2,11 @@ import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
 import Dispatcher from '../dispatcher/Dispatcher';
 import BallotActions from '../actions/BallotActions';
+import CandidateActions from '../actions/CandidateActions';
+import MeasureActions from '../actions/MeasureActions'; // eslint-disable-line import/no-cycle
 import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
+import { stringContains } from '../utils/textFormat';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -20,6 +23,7 @@ class BallotStore extends ReduceStore {
       ballotItemUnfurledTracker: {},
       ballotItemListCandidatesDict: {}, // Dictionary with ballot_item_we_vote_id as key and list of candidate we_vote_ids as value
       positionListHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
+      positionListFromFriendsHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
     };
   }
 
@@ -253,6 +257,10 @@ class BallotStore extends ReduceStore {
     return this.getState().positionListHasBeenRetrievedOnceByBallotItem[ballotItemWeVoteId] || false;
   }
 
+  positionListFromFriendsHasBeenRetrievedOnce (ballotItemWeVoteId) {
+    return this.getState().positionListFromFriendsHasBeenRetrievedOnceByBallotItem[ballotItemWeVoteId] || false;
+  }
+
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
@@ -262,12 +270,17 @@ class BallotStore extends ReduceStore {
     let allBallotItemsHaveBeenRetrievedForElection = {};
     let allBallotItemsStateCode = '';
     let ballotCaveat = '';
+    let ballotItemWeVoteIdList = [];
+    let ballotItemWeVoteIdTemp = '';
     let googleCivicElectionId;
+    let isCandidate = false;
+    let isMeasure = false;
     let newBallots = {};
     let revisedState;
     let tempBallotItemList = [];
     let textForMapSearch = '';
     let voterBallotList = [];
+    let positionListFromFriendsHasBeenRetrievedOnceByBallotItem = {};
     const { ballotItemListCandidatesDict, ballotItemUnfurledTracker: newBallotItemUnfurledTracker } = state;
 
     switch (action.type) {
@@ -364,6 +377,17 @@ class BallotStore extends ReduceStore {
         return {
           ...state,
           positionListHasBeenRetrievedOnceByBallotItem: state.positionListHasBeenRetrievedOnceByBallotItem,
+        };
+
+      case 'positionListForBallotItemFromFriends':
+        // console.log('BallotStore, positionListForBallotItemFromFriends response received.');
+        if (action.res.count === 0) return state;
+
+        state.positionListFromFriendsHasBeenRetrievedOnceByBallotItem[action.res.ballot_item_we_vote_id] = true;
+
+        return {
+          ...state,
+          positionListFromFriendsHasBeenRetrievedOnceByBallotItem: state.positionListFromFriendsHasBeenRetrievedOnceByBallotItem,
         };
 
       case 'raceLevelFilterTypeSave':
@@ -509,9 +533,39 @@ class BallotStore extends ReduceStore {
         };
 
       case 'voterSignOut':
-        // console.log('resetting BallotStore');
+        // console.log('voterSignOut resetting BallotStore resetState');
         BallotActions.voterBallotItemsRetrieve();
         return this.resetState();
+
+      case 'twitterNativeSignInSave':
+      case 'twitterSignInRetrieve':
+      case 'voterEmailAddressSignIn':
+      case 'voterFacebookSignInRetrieve':
+      case 'voterMergeTwoAccounts':
+      case 'voterVerifySecretCode':
+        // Voter is signing in
+        // console.log('BallotStore resetVoterSpecificState action.type:', action.type);
+        // Cycle through all existing positionListFromFriendsHasBeenRetrievedOnceByBallotItem and request again
+        ({ positionListFromFriendsHasBeenRetrievedOnceByBallotItem } = state);
+        ballotItemWeVoteIdList = Object.keys(positionListFromFriendsHasBeenRetrievedOnceByBallotItem);
+        for (let i = 0; i < ballotItemWeVoteIdList.length; i++) {
+          ballotItemWeVoteIdTemp = ballotItemWeVoteIdList[i];
+          isCandidate = stringContains('cand', ballotItemWeVoteIdTemp);
+          isMeasure = stringContains('meas', ballotItemWeVoteIdTemp);
+          if (isCandidate) {
+            CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteIdTemp);
+          } else if (isMeasure) {
+            MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteIdTemp);
+          }
+        }
+        revisedState = state;
+        revisedState = Object.assign({}, revisedState, {
+          allBallotItemsHaveBeenRetrievedForElection: {},
+          ballotItemSearchResultsList: [],
+          ballotItemUnfurledTracker: {},
+          positionListFromFriendsHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
+        });
+        return revisedState;
 
       case 'error-voterBallotItemsRetrieve':
       default:

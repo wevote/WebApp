@@ -8,9 +8,11 @@ import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { historyPush } from '../../utils/cordovaUtils';
 import FollowToggle from '../../components/Widgets/FollowToggle';
 import FriendActions from '../../actions/FriendActions';
+import FriendToggle from '../../components/Friends/FriendToggle';
 import LoadingWheel from '../../components/LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
+import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
@@ -189,6 +191,8 @@ export default class OrganizationVoterGuide extends Component {
         this.setState({
           organization,
           organizationId: organization.organization_id,
+          linkedVoterWeVoteId: organization.linked_voter_we_vote_id,
+          organizationType: organization.organization_type,
         });
         if (organization.organization_banner_url) {
           this.setState({
@@ -207,6 +211,8 @@ export default class OrganizationVoterGuide extends Component {
         this.setState({
           organization,
           organizationId: organization.organization_id,
+          linkedVoterWeVoteId: organization.linked_voter_we_vote_id,
+          organizationType: organization.organization_type,
         });
         if (organization.organization_banner_url) {
           this.setState({
@@ -253,7 +259,7 @@ export default class OrganizationVoterGuide extends Component {
 
   render () {
     renderLog('OrganizationVoterGuide');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activeRoute, organizationBannerUrl, organizationId, organizationWeVoteId } = this.state;
+    const { activeRoute, linkedVoterWeVoteId, organizationBannerUrl, organizationId, organizationType, organizationWeVoteId } = this.state;
     if (!this.state.organization || !this.state.voter || this.state.autoFollowRedirectHappening) {
       return <div>{LoadingWheel}</div>;
     }
@@ -312,7 +318,7 @@ export default class OrganizationVoterGuide extends Component {
                   organization={this.state.organization}
                   useReadMoreForTwitterDescription
                 />
-                { isVoterOwner ? (
+                { isVoterOwner && (
                   <div className="u-float-right">
                     <Button
                       id="organizationVoterGuideEdit"
@@ -323,10 +329,26 @@ export default class OrganizationVoterGuide extends Component {
                       <span>Edit Your Endorsements</span>
                     </Button>
                   </div>
-                ) : (
-                  <FollowToggleMobileWrapper>
-                    <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
-                  </FollowToggleMobileWrapper>
+                )}
+                { !isVoterOwner && (
+                  <>
+                    <FollowToggleMobileWrapper>
+                      <FollowToggle
+                        organizationWeVoteId={organizationWeVoteId}
+                        otherVoterWeVoteId={linkedVoterWeVoteId}
+                        showFollowingText
+                      />
+                    </FollowToggleMobileWrapper>
+                    { isSpeakerTypePrivateCitizen(organizationType) && (
+                      <FriendToggleMobileWrapper>
+                        <FriendToggle
+                          displayFullWidth
+                          otherVoterWeVoteId={linkedVoterWeVoteId}
+                          showFriendsText
+                        />
+                      </FriendToggleMobileWrapper>
+                    )}
+                  </>
                 )}
               </div>
             </div>
@@ -336,7 +358,7 @@ export default class OrganizationVoterGuide extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="d-none d-sm-block col-md-4">
-              <CardContainer bannerUrl={this.state.organization.organization_banner_url}>
+              <CardContainer bannerUrl={organizationBannerUrl}>
                 <div className="card">
                   <div className="card-main">
                     <OrganizationVoterGuideCard organization={this.state.organization} isVoterOwner={isVoterOwner} />
@@ -390,5 +412,9 @@ const CardContainer = styled.div`
 `;
 
 const FollowToggleMobileWrapper = styled.div`
-  margin-top: 0px;
+  margin-top: 4px;
+`;
+
+const FriendToggleMobileWrapper = styled.div`
+  margin-top: 4px;
 `;

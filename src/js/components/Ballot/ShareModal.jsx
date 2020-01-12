@@ -21,8 +21,10 @@ import FriendActions from '../../actions/FriendActions';
 class ShareModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    show: PropTypes.bool,
+    isSignedIn: PropTypes.bool,
     pathname: PropTypes.string,
+    show: PropTypes.bool,
+    step: PropTypes.string,
     // stripe: PropTypes.object,
     toggleFunction: PropTypes.func.isRequired,
   };
@@ -64,12 +66,12 @@ class ShareModal extends Component {
     }
   }
 
-  closeShareModal () {
-    this.props.toggleFunction(this.state.pathname);
-  }
-
   setStep (step) {
     this.setState({ step });
+  }
+
+  closeShareModal () {
+    this.props.toggleFunction(this.state.pathname);
   }
 
   render () {

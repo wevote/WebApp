@@ -146,7 +146,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.onCachedPositionsOrIssueStoreChange();
   }
 
-  // Turning off while working on modifications 2019-12-06
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
@@ -222,7 +221,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       currentFriendsOrganizationWeVoteIdsLength: priorCurrentFriendsOrganizationWeVoteIdsLength,
       issueWeVoteIdsLinkedToByOrganizationDictLength: priorIssueWeVoteIdsLinkedToByOrganizationDictLength,
       organizationWeVoteIdsVoterIsFollowingLength: priorOrganizationWeVoteIdsVoterIsFollowingLength,
+      voterOpposesBallotItem: priorVoterOpposesBallotItem,
       voterOpposesListLength: priorVoterOpposesListLength,
+      voterSupportsBallotItem: priorVoterSupportsBallotItem,
       voterSupportsListLength: priorVoterSupportsListLength,
     } = this.state;
 
@@ -240,10 +241,15 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // console.log('voterOpposesListLength:', voterOpposesListLength, ', priorVoterOpposesListLength:', priorVoterOpposesListLength);
     // console.log('voterSupportsListLength:', voterSupportsListLength, ', priorVoterSupportsListLength:', priorVoterSupportsListLength);
 
-    const minimumPositionSummaryListVariablesFound = allCachedPositionsLength !== undefined && (currentFriendsOrganizationWeVoteIdsLength || issueWeVoteIdsLinkedToByOrganizationDictLength || organizationWeVoteIdsVoterIsFollowingLength);
-    const changedPositionSummaryListVariablesFound = !!((allCachedPositionsLength !== priorAllCachedPositionsLength) || (allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) || (currentFriendsOrganizationWeVoteIdsLength !== priorCurrentFriendsOrganizationWeVoteIdsLength) || (issueWeVoteIdsLinkedToByOrganizationDictLength !== priorIssueWeVoteIdsLinkedToByOrganizationDictLength) || (organizationWeVoteIdsVoterIsFollowingLength !== priorOrganizationWeVoteIdsVoterIsFollowingLength) || (voterOpposesListLength !== priorVoterOpposesListLength) || (voterSupportsListLength !== priorVoterSupportsListLength));
+    let voterSupportsBallotItem = SupportStore.voterSupportsList[ballotItemWeVoteId] || false;
+    let voterOpposesBallotItem = SupportStore.voterOpposesList[ballotItemWeVoteId] || false;
 
-    const refreshPositionSummaryList = !!(minimumPositionSummaryListVariablesFound && changedPositionSummaryListVariablesFound);
+    const minimumPositionSummaryListVariablesFound = !!(allCachedPositionsLength !== undefined && (currentFriendsOrganizationWeVoteIdsLength || issueWeVoteIdsLinkedToByOrganizationDictLength || organizationWeVoteIdsVoterIsFollowingLength));
+    const changedPositionSummaryListVariablesFound = !!((allCachedPositionsLength !== priorAllCachedPositionsLength) || (allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) || (currentFriendsOrganizationWeVoteIdsLength !== priorCurrentFriendsOrganizationWeVoteIdsLength) || (issueWeVoteIdsLinkedToByOrganizationDictLength !== priorIssueWeVoteIdsLinkedToByOrganizationDictLength) || (organizationWeVoteIdsVoterIsFollowingLength !== priorOrganizationWeVoteIdsVoterIsFollowingLength) || (voterOpposesListLength !== priorVoterOpposesListLength) || (voterSupportsListLength !== priorVoterSupportsListLength));
+    const changedVoterPosition = !!((voterOpposesBallotItem !== priorVoterOpposesBallotItem) || (voterSupportsBallotItem !== priorVoterSupportsBallotItem));
+    // console.log('minimumPositionSummaryListVariablesFound:', minimumPositionSummaryListVariablesFound, ', changedPositionSummaryListVariablesFound:', changedPositionSummaryListVariablesFound, ', changedVoterPosition:', changedVoterPosition);
+
+    const refreshPositionSummaryList = !!((minimumPositionSummaryListVariablesFound && changedPositionSummaryListVariablesFound) || changedVoterPosition);
     // console.log('refreshPositionSummaryList: ', refreshPositionSummaryList, ballotItemWeVoteId);
     if (refreshPositionSummaryList) {
       const limitToThisIssue = false;
@@ -275,8 +281,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       let voterPersonalNetworkScoreWithSign;
       let voterPersonalNetworkScoreIsNegative = false;
       let voterPersonalNetworkScoreIsPositive = false;
-      let voterOpposesBallotItem = false;
-      let voterSupportsBallotItem = false;
       if (ballotItemStatSheet) {
         ({ voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet);
         numberOfSupportPositionsForScore = parseInt(ballotItemStatSheet.numberOfSupportPositionsForScore) || 0;

@@ -5,11 +5,12 @@ import { openSnackbar } from '../Widgets/SnackNotifier';
 
 class ShareModalOption extends Component {
   static propTypes = {
-    link: PropTypes.string,
-    icon: PropTypes.string,
-    title: PropTypes.string,
     background: PropTypes.string,
     copyLink: PropTypes.bool,
+    icon: PropTypes.string,
+    link: PropTypes.string,
+    onClickFunction: PropTypes.func,
+    title: PropTypes.string,
   };
 
   constructor (props) {
@@ -18,6 +19,12 @@ class ShareModalOption extends Component {
 
     this.textAreaRef = React.createRef();
     this.copyLink = this.copyLink.bind(this);
+  }
+
+  onClickFunction = () => {
+    if (this.props.onClickFunction) {
+      this.props.onClickFunction();
+    }
   }
 
   copyLink (e) {
@@ -31,7 +38,10 @@ class ShareModalOption extends Component {
 
   render () {
     return (
-      <Wrapper href={this.props.copyLink || this.props.onClickFunction ? null : this.props.link || '/'} onClick={this.props.copyLink ? this.copyLink : this.props.onClickFunction ? this.props.onClickFunction : null}>
+      <Wrapper
+        href={this.props.copyLink || this.props.onClickFunction ? null : this.props.link || '/'}
+        onClick={this.props.copyLink ? this.copyLink : this.onClickFunction()}
+      >
         <Icon background={this.props.background}>
           {this.props.icon}
         </Icon>

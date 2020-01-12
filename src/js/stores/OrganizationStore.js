@@ -765,8 +765,42 @@ class OrganizationStore extends ReduceStore {
           organizationWeVoteIdsVoterIsIgnoring,
         };
 
+      case 'twitterNativeSignInSave':
+      case 'twitterSignInRetrieve':
+      case 'voterEmailAddressSignIn':
+      case 'voterFacebookSignInRetrieve':
+      case 'voterMergeTwoAccounts':
+      case 'voterVerifySecretCode':
+        // Voter is signing in
+        // console.log('OrganizationStore call OrganizationActions.organizationsFollowedRetrieve action.type:', action.type);
+        OrganizationActions.organizationsFollowedRetrieve();
+        revisedState = state;
+        revisedState = Object.assign({}, revisedState, {
+          organizationWeVoteIdsVoterIsFollowing: [],
+          organizationWeVoteIdsVoterIsIgnoring: [],
+          organizationWeVoteIdsVoterIsFollowingOnTwitter: [],
+          organizationSearchResults: {
+            organization_search_term: '',
+            organization_twitter_handle: '',
+            number_of_search_results: 0,
+            search_results: [],
+          },
+          voterOrganizationFeaturesProvided: {
+            chosenFaviconAllowed: false,
+            chosenFeaturePackage: 'FREE',
+            chosenFullDomainAllowed: false,
+            chosenGoogleAnalyticsAllowed: false,
+            chosenSocialShareImageAllowed: false,
+            chosenSocialShareDescriptionAllowed: false,
+            chosenPromotedOrganizationsAllowed: false,
+            featuresProvidedBitmap: 0,
+          },
+        });
+        return revisedState;
+
       case 'voterSignOut':
         // console.log('resetting OrganizationStore');
+        OrganizationActions.organizationsFollowedRetrieve();
         return this.resetState();
 
       default:

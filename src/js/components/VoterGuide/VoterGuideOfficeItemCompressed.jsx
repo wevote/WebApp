@@ -184,21 +184,10 @@ export default class VoterGuideOfficeItemCompressed extends Component {
 
                   return (
                     <div key={candidateWeVoteId}>
-                      {/* Organization Endorsement */}
-                      {/* <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
-                      </VoterGuidePositionItemWrapper> */}
                       <VoterGuidePositionItem
                         organizationWeVoteId={organizationWeVoteId}
                         position={orgPositionForCandidate}
                       />
-                      {/*
-                      <OrganizationPositionItem
-                        editMode={this.state.editMode}
-                        key={orgPositionForCandidate.position_we_vote_id}
-                        organizationWeVoteId={organizationWeVoteId}
-                        position={orgPositionForCandidate}
-                      />
-                      */}
                     </div>
                   );
                 }
