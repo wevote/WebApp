@@ -67,7 +67,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
   cancelMergeFunction = () => {
     historyPush({
-      pathname: '/more/network',
+      pathname: '/ballot',
       state: {
       },
     });
@@ -82,7 +82,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   voterMergeTwoAccountsByInvitationKey = (invitationSecretKey) => {
     VoterActions.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
     historyPush({
-      pathname: '/more/network',
+      pathname: '/ballot',
       state: {
         message: 'You have successfully signed in.',
         message_type: 'success',
@@ -99,6 +99,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     renderLog('FriendInvitationByEmailVerifyProcess');  // Set LOG_RENDER_EVENTS to log all renders
     const { invitation_secret_key: invitationSecretKey } = this.props.params;
     const { hostname, invitationStatus, saving, yesPleaseMergeAccounts } = this.state;
+    console.log('FriendInvitationByEmailVerifyProcess, invitationStatus:', invitationStatus);
 
     if (yesPleaseMergeAccounts) {
       // If yesPleaseMergeAccounts is true, it doesn't matter what is happening with invitationStatus
@@ -112,7 +113,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // console.log('FriendInvitationByEmailVerifyProcess, invitation_secret_key:', invitationSecretKey);
     // console.log('FriendInvitationByEmailVerifyProcess, invitationStatus:', invitationStatus);
     if (saving || !invitationStatus || !hostname || hostname === '') {
-      // console.log('FriendInvitationByEmailVerifyProcess, saving:', saving, ', or waiting for invitationStatus:', invitationStatus);
+      console.log('FriendInvitationByEmailVerifyProcess, saving:', saving, ', or waiting for invitationStatus:', invitationStatus);
       return LoadingWheel;
     } else if (!invitationSecretKey) {
       historyPush({
@@ -127,7 +128,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     // This process starts when we return from attempting friendInvitationByEmailVerify
     if (!invitationStatus.voterDeviceId) {
-      // console.log('voterDeviceId Missing');
+      console.log('voterDeviceId Missing');
       return LoadingWheel;
     } else if (!invitationStatus.invitationFound) {
       historyPush({
@@ -159,7 +160,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       return LoadingWheel;
     } else if (invitationStatus.voterHasDataToPreserve) {
       // If so, ask if they want to connect two accounts?
-      // console.log('FriendInvitationByEmailVerifyProcess yesPleaseMergeAccounts is FALSE');
+      console.log('FriendInvitationByEmailVerifyProcess yesPleaseMergeAccounts is FALSE');
       // Display the question of whether to merge accounts or not
       return (
         <WouldYouLikeToMergeAccounts
@@ -170,7 +171,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       // return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
       // Go ahead and merge the accounts, which means deleting the current voter and switching to the invitation owner
-      // console.log('FriendInvitationByEmailVerifyProcess - voterHasDataToPreserve is FALSE');
+      console.log('FriendInvitationByEmailVerifyProcess - voterHasDataToPreserve is FALSE');
       this.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
       // return <span>this.voterMergeTwoAccountsByInvitationKey - go ahead</span>;
       return LoadingWheel;

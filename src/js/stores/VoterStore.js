@@ -557,7 +557,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterMergeTwoAccounts':
-        // console.log('VoterStore, voterMergeTwoAccounts');
+        console.log('VoterStore, voterMergeTwoAccounts');
         // On the server we just switched linked this voterDeviceId to a new voter record, so we want to
         //  refresh a lot of data
         VoterActions.voterRetrieve();

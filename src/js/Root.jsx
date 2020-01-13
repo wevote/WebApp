@@ -18,7 +18,6 @@ import DonateThankYou from './routes/More/DonateThankYou';
 import StripeElementsTest from './routes/More/StripeElementsTest';
 import ElectionReminder from './routes/More/ElectionReminder';
 import Elections from './routes/More/Elections';
-import EmailBallot from './routes/More/EmailBallot';
 import FAQ from './routes/More/FAQ';
 import FacebookInvitableFriends from './routes/FacebookInvitableFriends';
 import Friends from './routes/Friends';
@@ -154,11 +153,6 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       {/* Friend related Pages */}
       <Route path="/friends" component={Friends} />
       <Route path="/friends/:tabItem" component={Friends} />
-      {/* <Route path="/friends/:current" component={FriendsCurrent} />
-      <Route path="/friends/:requests" component={FriendInvitationsSentToMe} />
-      <Route path="/friends/:your-requests" component={FriendInvitationsSentByMe} />
-      <Route path="/friends/:suggested" component={SuggestedFriends} />
-      <Route path="/friends/:invite" component={InviteByEmail} /> */}
       <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
 
       {/* More Menu Pages */}
@@ -172,7 +166,6 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/more/donate_thank_you" component={isNotWeVoteMarketingSite ? BallotRedirect : DonateThankYou} />
       <Route path="/more/stripe_elements_test" component={StripeElementsTest} />
       <Route path="/more/elections" component={Elections} />
-      <Route path="/more/email_ballot" component={EmailBallot} />
       <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
       <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
       <Route path="/more/faq" component={FAQ} />

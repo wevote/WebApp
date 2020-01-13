@@ -23,7 +23,7 @@ class VoterGuideStore extends ReduceStore {
       organizationWeVoteIdsToFollowForLatestBallotItem: [], // stores organization_we_vote_ids for latest ballot_item_we_vote_id
       organizationWeVoteIdsToFollowByIssuesFollowed: [],
       organizationWeVoteIdsToFollowOrganizationRecommendationDict: {}, // This is a dictionary with organization_we_vote_id as key and list of organization_we_vote_id's as value
-      organizationWeVoteIdsVoterIsFollowing: {},
+      organizationWeVoteIdsVoterIsFollowing: [],
       voterGuidesFollowedRetrieveStopped: false, // While this is set to true, don't allow any more calls to this API
       voterGuidesToFollowRetrieveStopped: false, // While this is set to true, don't allow any more calls to this API
       voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId: [], // stores google_civic_election_id for elections where all voter guides from friends have been retrieved
@@ -92,7 +92,7 @@ class VoterGuideStore extends ReduceStore {
     // Take the list that we are already following
     const organizationWeVoteIdsFollowed = this.getState().organizationWeVoteIdsVoterIsFollowing || [];
     // Remove organizationWeVoteIdsVoterIsFollowing
-    organizationWeVoteIdsToFollow = organizationWeVoteIdsToFollow.filter(el => !organizationWeVoteIdsFollowed.includes(el));
+    organizationWeVoteIdsToFollow = organizationWeVoteIdsToFollow.filter(organizationWeVoteId => !organizationWeVoteIdsFollowed.includes(organizationWeVoteId));
     let organizationWeVoteIdsToFollowWithLimit = [];
     if (limitToPublicFigures) {
       const listToFilter1 = this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollow) || [];

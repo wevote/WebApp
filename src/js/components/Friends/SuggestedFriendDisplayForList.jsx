@@ -144,17 +144,18 @@ class SuggestedFriendDisplayForList extends Component {
 }
 
 const Wrapper = styled.div`
-  margin: 24px 0;
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
   flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 24px 0;
+  position: relative;
+  width: 100%;
   @media(min-width: 400px) {
     align-items: center;
-    justify-content: flex-start;
     flex-direction: row;
+    justify-content: flex-start;
     padding-left: 100px;
   }
   @media (min-width: 520px) {
@@ -164,10 +165,11 @@ const Wrapper = styled.div`
 `;
 
 const Flex = styled.div`
+  align-items: flex-start;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
+  width: 100%;
 `;
 
 const Avatar = styled.div`
@@ -207,9 +209,9 @@ const Details = styled.div`
 const Name = styled.h3`
   font-weight: bold;
   color: black !important;
-  font-size: 26px;
+  font-size: 20px;
   margin-bottom: 4px;
-  text-align: center;
+  text-align: left;
   width: 100%;
   @media(min-width: 400px) {
     text-align: left;

@@ -336,6 +336,7 @@ export default class SettingsAccount extends Component {
                       <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
                       <TwitterSignIn
                         buttonText="Sign in with Twitter"
+                        buttonSubmittedText="Signing in..."
                         inModal={inModal}
                         closeSignInModal={this.localCloseSignInModal}
                       />
@@ -346,7 +347,11 @@ export default class SettingsAccount extends Component {
                 <div className="u-stack--md">
                   { !hideFacebookSignInButton && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
                     <span>
-                      <FacebookSignIn closeSignInModal={this.localCloseSignInModal} buttonText="Sign in with Facebook" />
+                      <FacebookSignIn
+                        closeSignInModal={this.localCloseSignInModal}
+                        buttonSubmittedText="Signing in..."
+                        buttonText="Sign in with Facebook"
+                      />
                     </span>
                   )
                   }

@@ -28,7 +28,7 @@ import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
-import { stringContains } from '../../utils/textFormat';
+import { shortenText, stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import ShareModal from '../Ballot/ShareModal';
@@ -67,6 +67,7 @@ class HeaderBar extends Component {
       showShareModal: false,
       shareModalStep: 'options',
       voter: {},
+      voterFirstName: '',
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
@@ -84,7 +85,7 @@ class HeaderBar extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // this.onBallotStoreChange();
 
-    // this.props.location &&
+    const voterFirstName = VoterStore.getFirstName();
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
@@ -97,6 +98,7 @@ class HeaderBar extends Component {
       showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSignInModal: AppStore.showSignInModal(),
       voter: this.props.voter,
+      voterFirstName,
       voterIsSignedIn: this.props.voter && this.props.voter.is_signed_in,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
@@ -223,10 +225,12 @@ class HeaderBar extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in || false;
 
     this.setState({
       voter,
+      voterFirstName,
       voterIsSignedIn,
       showSignInModal: AppStore.showSignInModal(),
       showShareModal: AppStore.showShareModal(),
@@ -326,7 +330,7 @@ class HeaderBar extends Component {
     const {
       chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown,
       showEditAddressButton, showPaidAccountUpgradeModal, showShareModal, shareModalStep, showSelectBallotModal,
-      showSignInModal, voter, voterIsSignedIn,
+      showSignInModal, voter, voterFirstName, voterIsSignedIn,
     } = this.state;
     // console.log('Header Bar, showSignInModal ', showSignInModal);
     const ballotBaseUrl = '/ballot';
@@ -472,24 +476,16 @@ class HeaderBar extends Component {
                 voterIsSignedIn && (
                   <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
                     {showEditAddressButton && editAddressButtonHtml}
-                    <span className="u-show-desktop-tablet">
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="profileAvatarHeaderBar"
-                        onClick={this.toggleProfilePopUp}
-                      >
-                        <AccountCircleIcon />
-                      </IconButton>
-                    </span>
-                    <span className="u-show-mobile">
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="profileAvatarHeaderBar"
-                        onClick={() => this.handleNavigation('/settings/hamburger')}
-                      >
-                        <AccountCircleIcon />
-                      </IconButton>
-                    </span>
+                    <IconButton
+                      classes={{ root: classes.iconButtonRoot }}
+                      id="profileAvatarHeaderBar"
+                      onClick={this.toggleProfilePopUp}
+                    >
+                      <FirstNameWrapper>
+                        {shortenText(voterFirstName, 9)}
+                      </FirstNameWrapper>
+                      <AccountCircleIcon />
+                    </IconButton>
                     {this.state.profilePopUpOpen && voterIsSignedIn && (
                       <HeaderBarProfilePopUp
                         hideProfilePopUp={this.hideProfilePopUp}
@@ -638,6 +634,11 @@ const Wrapper = styled.div`
   margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
   transition: all 50ms ease-in;
   ${({ scrolledDown }) => (scrolledDown ? 'transform: translateY(-100%);' : '')}
+`;
+
+const FirstNameWrapper = styled.div`
+  font-size: 14px;
+  padding-right: 4px;
 `;
 
 export default withStyles(styles)(HeaderBar);

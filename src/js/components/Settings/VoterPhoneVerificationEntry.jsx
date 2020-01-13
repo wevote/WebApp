@@ -11,6 +11,7 @@ import InputBase from '@material-ui/core/esm/InputBase';
 import Alert from 'react-bootstrap/esm/Alert';
 import LoadingWheel from '../LoadingWheel';
 import { isCordova } from '../../utils/cordovaUtils';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
@@ -33,6 +34,7 @@ class VoterPhoneVerificationEntry extends Component {
       secretCodeSystemLocked: false,
       showVerifyModal: false,
       showError: false,
+      signInCodeSMSSentAndWaitingForResponse: false,
       smsPhoneNumberList: [],
       smsPhoneNumberListCount: 0,
       smsPhoneNumberStatus: {},
@@ -124,11 +126,13 @@ class VoterPhoneVerificationEntry extends Component {
           sign_in_code_sms_sent: false,
         },
         showVerifyModal: true,
+        signInCodeSMSSentAndWaitingForResponse: false,
       });
     } else if (smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter) {
       this.setState({
         smsPhoneNumberStatus,
         showVerifyModal: false,
+        signInCodeSMSSentAndWaitingForResponse: false,
       });
     } else {
       this.setState({
@@ -215,7 +219,7 @@ class VoterPhoneVerificationEntry extends Component {
   };
 
   localToggleOtherSignInOptions = () => {
-    if (isCordova()) {
+    if (isCordova() || isMobileScreenSize()) {
       const { hideExistingPhoneNumbers } = this.state;
       this.setState({ hideExistingPhoneNumbers: !hideExistingPhoneNumbers });
       if (this.props.toggleOtherSignInOptions) {
@@ -229,7 +233,7 @@ class VoterPhoneVerificationEntry extends Component {
     // console.log('VoterPhoneVerificationEntry onPhoneInputBlur, voterSMSPhoneNumber:', voterSMSPhoneNumber);
     this.hidePhoneVerificationButton();
     this.localToggleOtherSignInOptions();
-    if (voterSMSPhoneNumber && isCordova()) {
+    if (voterSMSPhoneNumber && (isCordova() || isMobileScreenSize())) {
       // When there is a voterSMSPhoneNumber value and the keyboard closes, submit
       this.sendSignInCodeSMS(event);
     }
@@ -258,6 +262,7 @@ class VoterPhoneVerificationEntry extends Component {
       VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
       this.setState({
         displayPhoneVerificationButton: true,
+        signInCodeSMSSentAndWaitingForResponse: true,
         smsPhoneNumberStatus: {
           sms_phone_number_already_owned_by_other_voter: false,
         },
@@ -279,7 +284,11 @@ class VoterPhoneVerificationEntry extends Component {
     }
 
     const { classes } = this.props;
-    const { disablePhoneVerificationButton, displayPhoneVerificationButton, hideExistingPhoneNumbers, secretCodeSystemLocked, showError, showVerifyModal, smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber } = this.state;
+    const {
+      disablePhoneVerificationButton, displayPhoneVerificationButton, hideExistingPhoneNumbers,
+      secretCodeSystemLocked, showError, showVerifyModal, signInCodeSMSSentAndWaitingForResponse,
+      smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber
+    } = this.state;
 
     const signInLinkOrCodeSent = (smsPhoneNumberStatus.link_to_sign_in_sms_sent || smsPhoneNumberStatus.sign_in_code_sms_sent);
     const smsPhoneNumberStatusHtml = (
@@ -372,12 +381,12 @@ class VoterPhoneVerificationEntry extends Component {
             <Button
               className={classes.button}
               color="primary"
-              disabled={disablePhoneVerificationButton}
+              disabled={disablePhoneVerificationButton || signInCodeSMSSentAndWaitingForResponse}
               id="voterPhoneSendSMS"
               onClick={this.sendSignInCodeSMS}
               variant="contained"
             >
-              Send Verification Code
+              {signInCodeSMSSentAndWaitingForResponse ? 'Sending Verification Code...' : 'Send Verification Code'}
             </Button>
           )}
         </form>

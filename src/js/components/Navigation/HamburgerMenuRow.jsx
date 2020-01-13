@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/esm/styles';
 import { renderLog } from '../../utils/logging';
 
-export default class HamburgerMenuRow extends Component {
+class HamburgerMenuRow extends Component {
   static propTypes = {
     onClickAction: PropTypes.func,
     to: PropTypes.string.isRequired,
@@ -36,7 +38,11 @@ export default class HamburgerMenuRow extends Component {
             </Link>
           </td>
           <td className="hamburger-menu__td-2" colSpan={2}>
-            <Link onClick={this.onClickAction} to={this.props.to}>{this.props.linkText}</Link>
+            <Link onClick={this.onClickAction} to={this.props.to}>
+              <LinkTextWrapper>
+                {this.props.linkText}
+              </LinkTextWrapper>
+            </Link>
           </td>
         </tr>
       );
@@ -51,7 +57,11 @@ export default class HamburgerMenuRow extends Component {
             </Link>
           </td>
           <td className="hamburger-menu__td-1" colSpan={3}>
-            <Link onClick={this.onClickAction} to={this.props.to}>{this.props.linkText}</Link>
+            <Link onClick={this.onClickAction} to={this.props.to}>
+              <LinkTextWrapper>
+                {this.props.linkText}
+              </LinkTextWrapper>
+            </Link>
           </td>
         </tr>
       );
@@ -59,3 +69,14 @@ export default class HamburgerMenuRow extends Component {
   }
 }
 
+const styles = () => ({
+  indicator: {
+    height: 4,
+  },
+});
+
+const LinkTextWrapper = styled.div`
+  width: 100%;
+`;
+
+export default withStyles(styles)(HamburgerMenuRow);
