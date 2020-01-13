@@ -91,7 +91,7 @@ class IssueCardCompressed extends Component {
     issueDescription = issueDescription || '';
 
     let issueImage;
-    const numberOfLines = 1;
+    const numberOfLines = 2;
     if (this.state.issueImageSize === 'SMALL') {
       issueImage = (
         <IssueImageDisplay

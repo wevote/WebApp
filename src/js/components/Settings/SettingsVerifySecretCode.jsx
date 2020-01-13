@@ -39,6 +39,7 @@ class SettingsVerifySecretCode extends Component {
       voterMustRequestNewCode: false,
       voterPhoneNumber: '',
       voterSecretCodeRequestsLocked: false,
+      voterVerifySecretCodeSubmitted: false,
     };
     this.onDigit1Change = this.onDigit1Change.bind(this);
     this.onDigit2Change = this.onDigit2Change.bind(this);
@@ -124,12 +125,13 @@ class SettingsVerifySecretCode extends Component {
       }
       this.setState({
         errorMessageToDisplay,
+        errorToDisplay,
         incorrectSecretCodeEntered,
         numberOfTriesRemaining,
         secretCodeVerified,
         voterMustRequestNewCode,
         voterSecretCodeRequestsLocked,
-        errorToDisplay,
+        voterVerifySecretCodeSubmitted: false,
       });
     }
   }
@@ -341,6 +343,7 @@ class SettingsVerifySecretCode extends Component {
     const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
     const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
     VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
+    this.setState({ voterVerifySecretCodeSubmitted: true });
   };
 
   closeVerifyModalLocal = () => {
@@ -374,7 +377,12 @@ class SettingsVerifySecretCode extends Component {
   render () {
     renderLog('SettingsVerifySecretCode');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { condensed, errorMessageToDisplay, errorToDisplay, digit1, digit2, digit3, digit4, digit5, digit6, voterEmailAddress, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked } = this.state;
+    const {
+      condensed, errorMessageToDisplay, errorToDisplay,
+      digit1, digit2, digit3, digit4, digit5, digit6,
+      voterEmailAddress, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked,
+      voterVerifySecretCodeSubmitted,
+    } = this.state;
 
     if (!voterEmailAddress && !voterPhoneNumber) {
       // We get a weird extra ghost version of SettingsVerifySecretCode, and this is how we block it.
@@ -402,7 +410,7 @@ class SettingsVerifySecretCode extends Component {
             <InputContainer condensed={condensed}>
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit1"
                 maxLength={1}
@@ -415,7 +423,7 @@ class SettingsVerifySecretCode extends Component {
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit2"
                 maxLength={1}
@@ -428,7 +436,7 @@ class SettingsVerifySecretCode extends Component {
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit3"
                 maxLength={1}
@@ -441,7 +449,7 @@ class SettingsVerifySecretCode extends Component {
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit4"
                 maxLength={1}
@@ -454,7 +462,7 @@ class SettingsVerifySecretCode extends Component {
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit5"
                 maxLength={1}
@@ -467,7 +475,7 @@ class SettingsVerifySecretCode extends Component {
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit6"
                 maxLength={1}
@@ -485,14 +493,14 @@ class SettingsVerifySecretCode extends Component {
           </TextContainer>
           <ButtonsContainer condensed={condensed}>
             <Button
-              disabled={digit1 === '' || digit2 === '' || digit3 === '' || digit4 === '' || digit5 === '' || digit6 === '' || voterMustRequestNewCode || voterSecretCodeRequestsLocked}
               classes={{ root: classes.verifyButton }}
-              fullWidth
               color="primary"
+              disabled={digit1 === '' || digit2 === '' || digit3 === '' || digit4 === '' || digit5 === '' || digit6 === '' || voterMustRequestNewCode || voterSecretCodeRequestsLocked || voterVerifySecretCodeSubmitted}
+              fullWidth
               onClick={this.voterVerifySecretCode}
               variant="contained"
             >
-              Verify
+              {voterVerifySecretCodeSubmitted ? 'Verifying...' : 'Verify'}
             </Button>
             {/* We will make this button work later
             <Button
@@ -506,6 +514,7 @@ class SettingsVerifySecretCode extends Component {
             <Button
               classes={{ root: classes.button }}
               color="primary"
+              disabled={voterVerifySecretCodeSubmitted}
               onClick={this.closeVerifyModalLocal}
               variant={voterMustRequestNewCode ? 'contained' : 'outlined'}
             >

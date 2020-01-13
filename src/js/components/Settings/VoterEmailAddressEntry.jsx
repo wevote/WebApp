@@ -10,6 +10,7 @@ import Mail from '@material-ui/icons/Mail';
 import InputBase from '@material-ui/core/esm/InputBase';
 import LoadingWheel from '../LoadingWheel';
 import { isCordova } from '../../utils/cordovaUtils';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
@@ -206,7 +207,7 @@ class VoterEmailAddressEntry extends Component {
   };
 
   localToggleOtherSignInOptions = () => {
-    if (isCordova()) {
+    if (isCordova() || isMobileScreenSize()) {
       const { hideExistingEmailAddresses } = this.state;
       this.setState({ hideExistingEmailAddresses: !hideExistingEmailAddresses });
       if (this.props.toggleOtherSignInOptions) {
@@ -219,7 +220,7 @@ class VoterEmailAddressEntry extends Component {
     const { voterEmailAddress } = this.state;
     this.hideEmailVerificationButton();
     this.localToggleOtherSignInOptions();
-    if (voterEmailAddress && isCordova()) {
+    if (voterEmailAddress && (isCordova() || isMobileScreenSize())) {
       // When there is a voterEmailAddress value and the keyboard closes, submit
       this.sendSignInCodeEmail(event);
     }

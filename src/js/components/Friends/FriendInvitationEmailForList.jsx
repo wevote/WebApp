@@ -207,9 +207,9 @@ const Details = styled.div`
 const Name = styled.h3`
   font-weight: bold;
   color: black !important;
-  font-size: 26px;
+  font-size: 20px;
   margin-bottom: 4px;
-  text-align: center;
+  text-align: left;
   width: 100%;
   @media(min-width: 400px) {
     text-align: left;

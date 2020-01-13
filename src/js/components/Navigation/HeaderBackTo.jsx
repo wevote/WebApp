@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AppBar from '@material-ui/core/esm/AppBar';
 import Button from '@material-ui/core/esm/Button';
@@ -15,6 +16,7 @@ import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import SignInModal from '../Widgets/SignInModal';
+import { shortenText } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
@@ -36,6 +38,7 @@ class HeaderBackTo extends Component {
       profilePopUpOpen: false,
       showSignInModal: AppStore.showSignInModal(),
       voter: {},
+      voterFirstName: '',
       voterWeVoteId: '',
     };
     this.hideAccountMenu = this.hideAccountMenu.bind(this);
@@ -55,6 +58,7 @@ class HeaderBackTo extends Component {
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const voterWeVoteId = voter.we_vote_id;
@@ -62,6 +66,7 @@ class HeaderBackTo extends Component {
       backToLink: this.props.backToLink,
       backToLinkText: this.props.backToLinkText,
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
       voterWeVoteId: voter.we_vote_id || voterWeVoteId,
@@ -74,12 +79,14 @@ class HeaderBackTo extends Component {
     const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       backToLink: nextProps.backToLink,
       backToLinkText: nextProps.backToLinkText,
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
       voterWeVoteId: voter.we_vote_id || nextProps.voterWeVoteId,
@@ -144,10 +151,12 @@ class HeaderBackTo extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
@@ -210,7 +219,7 @@ class HeaderBackTo extends Component {
     const { classes } = this.props;
     const {
       backToLink, backToLinkText, profilePopUpOpen, showSignInModal,
-      voter, voterIsSignedIn, voterPhotoUrlMedium,
+      voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
     } = this.state;
 
     const headerClassName = (function header () {
@@ -269,24 +278,16 @@ class HeaderBackTo extends Component {
                   </span>
                 ) : (
                   <span>
-                    <span className="u-show-desktop-tablet">
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="profileAvatarHeaderBar"
-                        onClick={this.toggleProfilePopUp}
-                      >
-                        <AccountCircleIcon />
-                      </IconButton>
-                    </span>
-                    <span className="u-show-mobile">
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="profileAvatarHeaderBar"
-                        onClick={() => this.handleNavigation('/settings/hamburger')}
-                      >
-                        <AccountCircleIcon />
-                      </IconButton>
-                    </span>
+                    <IconButton
+                      classes={{ root: classes.iconButtonRoot }}
+                      id="profileAvatarHeaderBar"
+                      onClick={this.toggleProfilePopUp}
+                    >
+                      <FirstNameWrapper>
+                        {shortenText(voterFirstName, 9)}
+                      </FirstNameWrapper>
+                      <AccountCircleIcon />
+                    </IconButton>
                   </span>
                 )
                 }
@@ -344,7 +345,20 @@ const styles = theme => ({
       marginLeft: '.1rem',
     },
   },
+  iconButtonRoot: {
+    color: 'rgba(17, 17, 17, .4)',
+    outline: 'none !important',
+    paddingRight: 0,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
 });
+
+const FirstNameWrapper = styled.div`
+  font-size: 14px;
+  padding-right: 4px;
+`;
 
 export default withStyles(styles)(HeaderBackTo);
 

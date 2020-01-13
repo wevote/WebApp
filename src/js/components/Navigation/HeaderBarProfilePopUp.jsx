@@ -65,7 +65,7 @@ class HeaderBarProfilePopUp extends Component {
             </li>
             {/* Mobile only */}
             <li className="navli d-block d-sm-none">
-              <Link id="profilePopUpYourSettingsMobile" onClick={this.hideProfilePopUp} to="/settings/menu">
+              <Link id="profilePopUpYourSettingsMobile" onClick={this.hideProfilePopUp} to="/settings/hamburger">
                 <Button
                   variant="text"
                   color="primary"

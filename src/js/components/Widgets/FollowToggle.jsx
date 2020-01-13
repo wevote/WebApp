@@ -48,13 +48,18 @@ export default class FollowToggle extends Component {
 
   componentDidMount () {
     // console.log('componentDidMount, this.props: ', this.props);
-    if (this.props.organizationWeVoteId) {
+    const { organizationWeVoteId } = this.props;
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      let organizationName = '';
+      if (organization && organization.organization_name) {
+        organizationName = organization.organization_name;
+      }
       this.setState({
         componentDidMountFinished: true,
-        isFollowing: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
-        isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(this.props.organizationWeVoteId),
-        organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
-        organizationWeVoteId: this.props.organizationWeVoteId,
+        isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
+        isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
+        organizationName,
       });
     }
     this.onVoterStoreChange();
@@ -66,19 +71,6 @@ export default class FollowToggle extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
-    // console.log('itemActionBar, RELOAD componentWillReceiveProps');
-    if (nextProps.organizationWeVoteId !== undefined && nextProps.organizationWeVoteId && nextProps.organizationWeVoteId !== this.state.organizationWeVoteId) {
-      this.setState({
-        componentDidMountFinished: true,
-        isFollowing: OrganizationStore.isVoterFollowingThisOrganization(nextProps.organizationWeVoteId),
-        isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(nextProps.organizationWeVoteId),
-        organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organizationWeVoteId),
-        organizationWeVoteId: nextProps.organizationWeVoteId,
-      });
-    }
-  }
-
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
@@ -86,8 +78,8 @@ export default class FollowToggle extends Component {
       return true;
     }
 
-    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-      // console.log('shouldComponentUpdate: this.state.organizationWeVoteId', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
+    if (this.props.organizationWeVoteId !== nextProps.organizationWeVoteId) {
+      // console.log('shouldComponentUpdate: this.props.organizationWeVoteId', this.props.organizationWeVoteId, ', nextProps.organizationWeVoteId', nextProps.organizationWeVoteId);
       return true;
     }
 
@@ -109,7 +101,7 @@ export default class FollowToggle extends Component {
   }
 
   componentWillUnmount () {
-    // console.log('componentWillUnmount, this.state.organizationWeVoteId: ', this.state.organizationWeVoteId);
+    // console.log('componentWillUnmount, this.props.organizationWeVoteId: ', this.props.organizationWeVoteId);
     this.friendStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
@@ -123,32 +115,47 @@ export default class FollowToggle extends Component {
     });
   }
 
-  onVoterGuideStoreChange () {
-    // console.log('FollowToggle, onVoterGuideStoreChange, organization_we_vote_id: ', this.state.organizationWeVoteId);
-    if (this.state.organizationWeVoteId) {
-      const { organizationWeVoteId } = this.state;
-      this.setState({
-        isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
-        isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
-        organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
-      });
-    }
-  }
-
   onOrganizationStoreChange () {
     // console.log('FollowToggle, onOrganizationStoreChange, organization_we_vote_id: ', this.state.organizationWeVoteId);
-    if (this.state.organizationWeVoteId) {
-      const { organizationWeVoteId } = this.state;
+    const { organizationWeVoteId } = this.props;
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      let organizationName = '';
+      if (organization && organization.organization_name) {
+        organizationName = organization.organization_name;
+      }
       this.setState({
         isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
         isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
-        organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
+        organizationName,
       });
     }
   }
 
   onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+    const voter = VoterStore.getVoter();
+    let voterLinkedOrganizationWeVoteId = '';
+    if (voter && voter.linked_organization_we_vote_id) {
+      voterLinkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    }
+    this.setState({ voterLinkedOrganizationWeVoteId });
+  }
+
+  onVoterGuideStoreChange () {
+    // console.log('FollowToggle, onVoterGuideStoreChange, organizationWeVoteId: ', this.props.organizationWeVoteId);
+    const { organizationWeVoteId } = this.props;
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      let organizationName = '';
+      if (organization && organization.organization_name) {
+        organizationName = organization.organization_name;
+      }
+      this.setState({
+        isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
+        isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
+        organizationName,
+      });
+    }
   }
 
   startFollowingLocalState () {
@@ -180,16 +187,15 @@ export default class FollowToggle extends Component {
   }
 
   stopFollowingInstantly (stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {
+    const { organizationName } = this.state;
     if (currentBallotIdInUrl && urlWithoutHash && urlWithoutHash) {
       if (currentBallotIdInUrl !== ballotItemWeVoteId) {
-        historyPush(`${this.props.urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
+        historyPush(`${urlWithoutHash}#${ballotItemWeVoteId}`);
       }
     }
 
     let toastMessage = "You've stopped following this organization's opinions.";
-
-    if (this.state.organization && this.state.organization.organization_name) {
-      const organizationName = this.state.organization.organization_name;
+    if (organizationName) {
       toastMessage = `You've stopped following ${organizationName}'s opinions!`;
     }
 
@@ -199,16 +205,15 @@ export default class FollowToggle extends Component {
   }
 
   stopIgnoringInstantly (stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {
+    const { organizationName } = this.state;
     if (currentBallotIdInUrl && urlWithoutHash && urlWithoutHash) {
       if (currentBallotIdInUrl !== ballotItemWeVoteId) {
-        historyPush(`${this.props.urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
+        historyPush(`${urlWithoutHash}#${ballotItemWeVoteId}`);
       }
     }
 
     let toastMessage = "You've stopped ignoring this organization's opinions.";
-
-    if (this.state.organization && this.state.organization.organization_name) {
-      const organizationName = this.state.organization.organization_name;
+    if (organizationName) {
       toastMessage = `You've stopped ignoring ${organizationName}'s opinions!`;
     }
 
@@ -218,16 +223,15 @@ export default class FollowToggle extends Component {
   }
 
   followInstantly (followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {
+    const { organizationName } = this.state;
     if (currentBallotIdInUrl && urlWithoutHash && urlWithoutHash) {
       if (currentBallotIdInUrl !== ballotItemWeVoteId) {
-        historyPush(`${this.props.urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
+        historyPush(`${urlWithoutHash}#${ballotItemWeVoteId}`);
       }
     }
 
     let toastMessage = "Now following this organization's opinions!";
-
-    if (this.state.organization && this.state.organization.organization_name) {
-      const organizationName = this.state.organization.organization_name;
+    if (organizationName) {
       toastMessage = `Now following ${organizationName}'s opinions!`;
     }
 
@@ -244,16 +248,15 @@ export default class FollowToggle extends Component {
   }
 
   ignoreInstantly (ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {
+    const { organizationName } = this.state;
     if (currentBallotIdInUrl && urlWithoutHash && urlWithoutHash) {
       if (currentBallotIdInUrl !== ballotItemWeVoteId) {
-        historyPush(`${this.props.urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
+        historyPush(`${urlWithoutHash}#${ballotItemWeVoteId}`);
       }
     }
 
     let toastMessage = "Now ignoring this organization's opinions.";
-
-    if (this.state.organization && this.state.organization.organization_name) {
-      const organizationName = this.state.organization.organization_name;
+    if (organizationName) {
       toastMessage = `Now ignoring ${organizationName}'s opinions.`;
     }
 
@@ -265,18 +268,18 @@ export default class FollowToggle extends Component {
 
   render () {
     renderLog('FollowToggle');  // Set LOG_RENDER_EVENTS to log all renders
-    if (!this.state || !this.state.organizationWeVoteId) { return <div />; }
-
-    const { isFollowing, isFriend, isIgnoring, organizationWeVoteId } = this.state;
-    const isLookingAtSelf = this.state.voter.linked_organization_we_vote_id === organizationWeVoteId;
-    // You should not be able to follow yourself
-    if (isLookingAtSelf) { return <div />; }
-
     const {
       anchorLeft, ballotItemWeVoteId, currentBallotIdInUrl,
       hideDropdownButtonUntilFollowing, hideStopFollowingButton, hideStopIgnoringButton,
-      lightModeOn, showFollowingText, urlWithoutHash,
+      lightModeOn, organizationWeVoteId, showFollowingText, urlWithoutHash,
     } = this.props;
+    if (!organizationWeVoteId) { return <div />; }
+
+    const { isFollowing, isFriend, isIgnoring, voterLinkedOrganizationWeVoteId } = this.state;
+    const isLookingAtSelf = voterLinkedOrganizationWeVoteId === organizationWeVoteId;
+    // You should not be able to follow yourself
+    if (isLookingAtSelf) { return <div />; }
+
     const followFunction = OrganizationActions.organizationFollow.bind(this, organizationWeVoteId);
     const ignoreFunction = OrganizationActions.organizationFollowIgnore.bind(this, organizationWeVoteId);
     const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, organizationWeVoteId);
@@ -351,9 +354,9 @@ export default class FollowToggle extends Component {
                   ) : (
                     <Button
                       id={`positionItemFollowToggleFollowDropDown-${organizationWeVoteId}`}
-                      type="button"
                       className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
                       onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                      type="button"
                     >
                       Follow
                     </Button>

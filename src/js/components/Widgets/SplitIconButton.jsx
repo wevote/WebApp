@@ -10,6 +10,7 @@ class SplitIconButton extends PureComponent {
     backgroundColor: PropTypes.string,
     buttonText: PropTypes.string,
     classes: PropTypes.object,
+    disabled: PropTypes.bool,
     externalUniqueId: PropTypes.string,
     icon: PropTypes.node,
     iconRight: PropTypes.bool,
@@ -27,6 +28,7 @@ class SplitIconButton extends PureComponent {
       <Button
         className={classes.splitButton}
         classes={{ root: classes.splitButton, label: classes.label }}
+        disabled={this.props.disabled}
         id={`${this.props.externalUniqueId}-splitIconButton`}
         variant="contained"
         title={title}

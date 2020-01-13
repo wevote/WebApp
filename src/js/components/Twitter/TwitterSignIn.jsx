@@ -78,14 +78,23 @@ class TwitterSignIn extends Component {
 
   static propTypes = {
     buttonText: PropTypes.string,
-    inModal: PropTypes.bool,
+    buttonSubmittedText: PropTypes.string,
     closeSignInModal: PropTypes.func,
+    inModal: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
+      buttonSubmittedText: '',
+      twitterSignInStartSubmitted: false,
     };
+  }
+
+  componentDidMount () {
+    this.setState({
+      buttonSubmittedText: this.props.buttonSubmittedText || 'Signing in...',
+    });
   }
 
   twitterSignInWebAppCordova = () => {
@@ -93,6 +102,9 @@ class TwitterSignIn extends Component {
       `?cordova=true&voter_device_id=${cookies.getItem('voter_device_id')}&return_url=http://nonsense.com`;
     oAuthLog(`twitterSignInWebAppCordova requestURL: ${requestURL}`);
     const { inModal } = this.props;
+    this.setState({
+      twitterSignInStartSubmitted: true,
+    });
     if (isIOS()) {
       cordovaOpenSafariView(requestURL, null, 50);
       if (inModal) {
@@ -124,9 +136,12 @@ class TwitterSignIn extends Component {
     }
   };
 
-  twitterSignInWebApp () {
+  twitterSignInWebApp = () => {
     const brandingOff = cookies.getItem('we_vote_branding_off') || 0;
     oAuthLog(`twitterSignInWebApp isWebApp(): ${isWebApp()},  returnURL: ${returnURL}`);
+    this.setState({
+      twitterSignInStartSubmitted: true,
+    });
     $ajax({
       endpoint: 'twitterSignInStart',
       data: { return_url: returnURL },
@@ -159,11 +174,13 @@ class TwitterSignIn extends Component {
 
   render () {
     const { buttonText } = this.props;
+    const { buttonSubmittedText, twitterSignInStartSubmitted } = this.state;
     renderLog('TwitterSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <SplitIconButton
         backgroundColor="#55acee"
-        buttonText={shortenText(buttonText, 32)}
+        buttonText={twitterSignInStartSubmitted ? shortenText(buttonSubmittedText, 32) : shortenText(buttonText, 32)}
+        disabled={twitterSignInStartSubmitted}
         externalUniqueId="twitterSignIn"
         icon={<i className="fab fa-twitter" />}
         onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}

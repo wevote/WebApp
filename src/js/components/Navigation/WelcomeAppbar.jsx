@@ -25,6 +25,7 @@ import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import { shortenText } from "../../utils/textFormat";
 
 class WelcomeAppbar extends Component {
   static propTypes = {
@@ -40,6 +41,7 @@ class WelcomeAppbar extends Component {
       showMobileNavigationMenu: false,
       showPaidAccountUpgradeModal: false,
       showSignInModal: AppStore.showSignInModal(),
+      voterFirstName: '',
     };
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
   }
@@ -108,10 +110,12 @@ class WelcomeAppbar extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const { linked_organization_we_vote_id: linkedOrganizationWeVoteId, is_signed_in: voterIsSignedIn, voter_photo_url_medium: voterPhotoUrlMedium } = voter;
     this.setState({
       linkedOrganizationWeVoteId,
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
@@ -186,7 +190,7 @@ class WelcomeAppbar extends Component {
   render () {
     renderLog('WelcomeAppbar');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
-    const { paidAccountUpgradeMode, showMobileNavigationMenu, showPaidAccountUpgradeModal, showSignInModal, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
+    const { paidAccountUpgradeMode, showMobileNavigationMenu, showPaidAccountUpgradeModal, showSignInModal, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
     let showWelcomeForVoters = false;
     let showWelcomeForOrganizations = false;
     let showWelcomeForCampaigns = false;
@@ -314,15 +318,18 @@ class WelcomeAppbar extends Component {
                       />
                     </div>
                   ) : (
-                    <div>
+                    <ProfileWrapper>
                       <IconButton
                         classes={{ root: classes.iconButtonRoot }}
                         id="profileAvatarHeaderBar"
                         onClick={this.toggleProfilePopUp}
                       >
+                        <FirstNameWrapper>
+                          {shortenText(voterFirstName, 9)}
+                        </FirstNameWrapper>
                         <AccountCircleIcon />
                       </IconButton>
-                    </div>
+                    </ProfileWrapper>
                   )
                   }
                   {this.state.profilePopUpOpen && voterIsSignedIn && (
@@ -450,6 +457,13 @@ const styles = ({
   iconButton: {
     color: 'white',
   },
+  iconButtonRoot: {
+    color: 'rgba(255, 255, 255, .9)',
+    outline: 'none !important',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
   navButtonOutlined: {
     height: 32,
     borderRadius: 32,
@@ -476,11 +490,20 @@ const DesktopView = styled.div`
   }
 `;
 
+const FirstNameWrapper = styled.div`
+  font-size: 14px;
+  padding-right: 4px;
+`;
+
 const MobileTabletView = styled.div`
   display: inherit;
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
   }
+`;
+
+const ProfileWrapper = styled.div`
+  color: white;
 `;
 
 export default withStyles(styles)(WelcomeAppbar);

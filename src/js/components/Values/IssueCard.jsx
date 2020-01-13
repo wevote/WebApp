@@ -173,11 +173,21 @@ class IssueCard extends Component {
               <Link to={this.getIssueLink}
                     className="u-no-underline"
               >
-                <IssueName>{`${issueDisplayName} (${countOfOrganizationsUnderThisIssue})`}</IssueName>
+                <IssueName>
+                  {`${issueDisplayName} `}
+                  <IssueAdvocatesCount>
+                    {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
+                  </IssueAdvocatesCount>
+                </IssueName>
               </Link>
-            ) :
-              <IssueName>{`${issueDisplayName} (${countOfOrganizationsUnderThisIssue})`}</IssueName>
-            }
+            ) : (
+              <IssueName>
+                {`${issueDisplayName} `}
+                <IssueAdvocatesCount>
+                  {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
+                </IssueAdvocatesCount>
+              </IssueName>
+            )}
           </>
           {followToggleOn && issueWeVoteId ? (
             <FollowIssueToggleContainer>
@@ -233,6 +243,11 @@ const IssueName = styled.h3`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 0;
+`;
+
+const IssueAdvocatesCount = styled.span`
+  font-weight: normal;
+  white-space: nowrap;
 `;
 
 const FollowIssueToggleContainer = styled.div`
