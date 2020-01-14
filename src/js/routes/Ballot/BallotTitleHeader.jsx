@@ -2,14 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { isCordova, isIOsSmallerThanPlus } from '../../utils/cordovaUtils';
 import BallotShareButton from '../../components/Ballot/BallotShareButton';
+import { shortenText } from '../../utils/textFormat';
 
 const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled }) => {
   if (isCordova && isIOsSmallerThanPlus() && electionName) {
+
     return (
       <h1 className="ballot__header__title__cordova">
         <div className="ballot__header__title__cordova-text">
           <span>
-            {electionName}
+            {shortenText(electionName, 26)}
             {!electionDayTextFormatted && (
               <>
                 {' '}
@@ -19,19 +21,27 @@ const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled })
           </span>
           {electionDayTextFormatted && (
             <>
-              <br />
+              {' '}
               <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
             </>
           )}
         </div>
       </h1>
     );
-  } else if (isCordova && electionName) {
+  } else if (isCordova() && electionName) {
     return (
       <Wrapper scrolled={scrolled}>
         <Title>
           <ElectionName scrolled={scrolled}>
-            {electionName}
+            <span className="u-show-mobile-iphone5-or-smaller">
+              {shortenText(electionName, 26)}
+            </span>
+            <span className="u-show-mobile-bigger-than-iphone5">
+              {shortenText(electionName, 30)}
+            </span>
+            <span className="u-show-desktop-tablet">
+              {electionName}
+            </span>
             {!electionDayTextFormatted && (
               <>
                 {' '}
@@ -57,10 +67,18 @@ const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled })
     );
   } else if (electionName) {
     return (
-      <>
+      <Wrapper>
         <Title>
-          <ElectionName>
-            {electionName}
+          <ElectionName scrolled={scrolled}>
+            <span className="u-show-mobile-iphone5-or-smaller">
+              {shortenText(electionName, 26)}
+            </span>
+            <span className="u-show-mobile-bigger-than-iphone5">
+              {shortenText(electionName, 30)}
+            </span>
+            <span className="u-show-desktop-tablet">
+              {electionName}
+            </span>
             {!electionDayTextFormatted && (
               <>
                 {' '}
@@ -77,10 +95,13 @@ const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled })
             </>
           )}
         </Title>
-        {electionDayTextFormatted && (
-          <BallotShareButton />
+
+        {electionDayTextFormatted && enableNextRelease && (
+          <ShareButtonWrapper>
+            <BallotShareButton />
+          </ShareButtonWrapper>
         )}
-      </>
+      </Wrapper>
     );
   } else {
     return (
@@ -124,6 +145,7 @@ const ElectionDate = styled.span`
 const ShareButtonWrapper = styled.div`
   display: none;
   margin-left: auto;
+  margin-top: 4px;
   @media (min-width: 576px) {
     display: block;
   }

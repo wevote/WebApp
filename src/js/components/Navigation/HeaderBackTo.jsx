@@ -116,6 +116,10 @@ class HeaderBackTo extends Component {
       // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
       return true;
     }
+    if (this.state.voterFirstName !== nextState.voterFirstName) {
+      // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
+      return true;
+    }
     if (this.state.voterWeVoteId !== nextState.voterWeVoteId) {
       // console.log('this.state.voterWeVoteId: ', this.state.voterWeVoteId, ', nextState.voterWeVoteId', nextState.voterWeVoteId);
       return true;
@@ -245,36 +249,19 @@ class HeaderBackTo extends Component {
               <span>
                 {voterPhotoUrlMedium ? (
                   <span>
-                    <span className="u-show-desktop-tablet">
-                      <div
-                        id="profileAvatarHeaderBar"
-                        className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                        onClick={this.toggleProfilePopUp}
-                      >
-                        <img
-                          className="header-nav__avatar"
-                          src={voterPhotoUrlMedium}
-                          height={34}
-                          width={34}
-                          alt="Your Settings"
-                        />
-                      </div>
-                    </span>
-                    <span className="u-show-mobile">
-                      <div
-                        id="profileAvatarHeaderBar"
-                        className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                        onClick={() => this.handleNavigation('/settings/hamburger')}
-                      >
-                        <img
-                          className="header-nav__avatar"
-                          src={voterPhotoUrlMedium}
-                          height={34}
-                          width={34}
-                          alt="Your Settings"
-                        />
-                      </div>
-                    </span>
+                    <div
+                      id="profileAvatarHeaderBar"
+                      className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                      onClick={this.toggleProfilePopUp}
+                    >
+                      <img
+                        className="header-nav__avatar"
+                        src={voterPhotoUrlMedium}
+                        height={34}
+                        width={34}
+                        alt="Your Settings"
+                      />
+                    </div>
                   </span>
                 ) : (
                   <span>

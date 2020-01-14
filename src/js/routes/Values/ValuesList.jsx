@@ -3,12 +3,13 @@ import filter from 'lodash-es/filter';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
 import IssueCard from '../../components/Values/IssueCard';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
+
 
 export default class ValuesList extends Component {
   static propTypes = {

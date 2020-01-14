@@ -19,13 +19,12 @@ export default class FriendToggle extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      unFriendSubmitted: false,
       voter: {
         we_vote_id: '',
       },
     };
-    const { otherVoterWeVoteId } = this.props;
-    this.acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, otherVoterWeVoteId);
-    this.unFriend = FriendActions.unFriend.bind(this, otherVoterWeVoteId);
+    this.unFriend = this.unFriend.bind(this);
   }
 
   componentDidMount () {
@@ -42,8 +41,11 @@ export default class FriendToggle extends Component {
 
   onFriendStoreChange () {
     const { otherVoterWeVoteId } = this.props;
+    const { unFriendSubmitted } = this.state;
+    const isFriend = FriendStore.isFriend(otherVoterWeVoteId);
     this.setState({
-      isFriend: FriendStore.isFriend(otherVoterWeVoteId),
+      isFriend,
+      unFriendSubmitted: (unFriendSubmitted && !isFriend) ? false : unFriendSubmitted,
     });
   }
 
@@ -53,12 +55,19 @@ export default class FriendToggle extends Component {
     });
   }
 
+  unFriend () {
+    const { otherVoterWeVoteId } = this.props;
+    FriendActions.unFriend(otherVoterWeVoteId);
+    this.setState({
+      unFriendSubmitted: true,
+    });
+  }
+
   render () {
     renderLog('FriendToggle');  // Set LOG_RENDER_EVENTS to log all renders
-    // const { isFriend } = this.state;
     if (!this.state) { return <div />; }
     const { displayFullWidth, otherVoterWeVoteId, showFriendsText } = this.props;
-    const { isFriend } = this.state;
+    const { isFriend, unFriendSubmitted } = this.state;
     const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
     // You should not be able to friend yourself
     if (isLookingAtSelf) { return <div />; }
@@ -73,13 +82,11 @@ export default class FriendToggle extends Component {
             >
               {showFriendsText ? (
                 <span>
-                  {/* <CheckCircle className="friends-icon" /> */}
                   <FriendsIcon />
-                  <span className="pl-2">Friends</span>
+                  <span className="pl-2">{unFriendSubmitted ? 'Removing Friend...' : 'Friends'}</span>
                 </span>
               ) : (
                 <span>
-                  {/* <CheckCircle className="friends-icon" /> */}
                   <FriendsIcon />
                 </span>
               )}
@@ -101,6 +108,7 @@ export default class FriendToggle extends Component {
                 type="button"
                 id="dropdown-item-id"
                 className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                disabled={unFriendSubmitted}
                 // data-toggle="dropdown"
                 onClick={this.unFriend}
               >

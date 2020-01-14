@@ -69,37 +69,27 @@ export default class SuggestedFriendToggle extends Component {
     }
 
     return (
-      <>
-        {addSuggestedFriendSent || isFriend ? (
-          <ButtonContainer>
-            <Button
-              variant="contained"
-              color="primary"
-              disabled
-              fullWidth
-            >
-              {!!(addSuggestedFriendSent && !isFriend) && 'Invite Sent'}
-              {isFriend && 'Already Friends'}
-            </Button>
-          </ButtonContainer>
-        ) : (
-          <ButtonContainer displayFullWidth={displayFullWidth}>
-            <Button
-              color="primary"
-              fullWidth
-              onClick={this.addSuggestedFriend}
-              variant="contained"
-            >
-              Add Friend
-            </Button>
-          </ButtonContainer>
-        )}
-      </>
+      <ButtonContainer displayFullWidth={displayFullWidth}>
+        <Button
+          color="primary"
+          disabled={addSuggestedFriendSent || isFriend}
+          fullWidth
+          onClick={this.addSuggestedFriend}
+          variant="contained"
+        >
+          {isFriend ? 'Already Friends' : (
+            <>
+              {addSuggestedFriendSent ? 'Invite Sent' : 'Add Friend'}
+            </>
+          )}
+        </Button>
+      </ButtonContainer>
     );
   }
 }
 
 const ButtonContainer = styled.div`
+  white-space: nowrap;
   width: 100%;
   // margin-right: 12px;
   @media(min-width: 400px) {

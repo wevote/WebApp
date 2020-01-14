@@ -276,6 +276,10 @@ class HeaderBackToBallot extends Component {
       // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
       return true;
     }
+    if (this.state.voterFirstName !== nextState.voterFirstName) {
+      // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
+      return true;
+    }
     const { voter, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
     const { voter: nextVoter, voterIsSignedIn: nextVoterIsSignedIn, voterPhotoUrlMedium: nextVoterPhotoUrlMedium } = nextState;
     if (!voter && nextVoter) {

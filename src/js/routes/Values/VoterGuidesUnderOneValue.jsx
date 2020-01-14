@@ -7,11 +7,13 @@ import BallotIcon from '@material-ui/icons/Ballot';
 import Button from '@material-ui/core/esm/Button';
 import { withStyles } from '@material-ui/core/esm/styles';
 import { renderLog } from '../../utils/logging';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
+import { historyPush } from '../../utils/cordovaUtils';
 import GuideList from '../../components/VoterGuide/GuideList';
 import IssueStore from '../../stores/IssueStore';
 import IssueCard from '../../components/Values/IssueCard';
 import ValuesList from './ValuesList';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 // import SearchGuidesToFollowBox from '../../components/Search/SearchGuidesToFollowBox';
 
 class VoterGuidesUnderOneValue extends Component {
@@ -23,10 +25,10 @@ class VoterGuidesUnderOneValue extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      ballotHasGuidesForValue: [],
       issue: {},
       issueWeVoteId: '',
       voterGuidesForValue: [],
+      voterGuidesForValueLength: 0,
     };
     this.onIssueStoreChange = this.onIssueStoreChange.bind(this);
   }
@@ -39,9 +41,11 @@ class VoterGuidesUnderOneValue extends Component {
 
   componentWillReceiveProps (nextProps) {
     const issue = IssueStore.getIssueBySlug(nextProps.params.value_slug);
+    const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id);
+    const voterGuidesForValueLength = voterGuidesForValue.length || 0;
     this.setState({
-      ballotHasGuidesForValue: VoterGuideStore.ballotHasGuidesForValue(issue.issue_we_vote_id),
-      voterGuidesForValue: VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id),
+      voterGuidesForValue,
+      voterGuidesForValueLength,
       issue,
       issueWeVoteId: issue.issue_we_vote_id,
     });
@@ -51,7 +55,7 @@ class VoterGuidesUnderOneValue extends Component {
     if (this.state.issueWeVoteId !== nextState.issueWeVoteId) {
       return true;
     }
-    if (this.state.ballotHasGuidesForValue !== nextState.ballotHasGuidesForValue) {
+    if (this.state.voterGuidesForValueLength !== nextState.voterGuidesForValueLength) {
       return true;
     }
     return false;
@@ -66,9 +70,11 @@ class VoterGuidesUnderOneValue extends Component {
     const issue = IssueStore.getIssueBySlug(this.props.params.value_slug);
     // console.log('VoterGuidesUnderOneValue onIssueStoreChange, value_slug', this.props.params.value_slug);
     if (issue && issue.issue_name) {
+      const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id);
+      const voterGuidesForValueLength = voterGuidesForValue.length || 0;
       this.setState({
-        ballotHasGuidesForValue: VoterGuideStore.ballotHasGuidesForValue(issue.issue_we_vote_id),
-        voterGuidesForValue: VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id),
+        voterGuidesForValueLength,
+        voterGuidesForValue,
         issue,
         issueWeVoteId: issue.issue_we_vote_id,
       });
@@ -78,16 +84,17 @@ class VoterGuidesUnderOneValue extends Component {
   onVoterGuideStoreChange () {
     const { issueWeVoteId } = this.state;
     const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issueWeVoteId);
-    console.log('onVoterGuideStoreChange, voterGuidesForValue: ', voterGuidesForValue);
+    const voterGuidesForValueLength = voterGuidesForValue.length || 0;
+    // console.log('onVoterGuideStoreChange, voterGuidesForValue: ', voterGuidesForValue);
     this.setState({
-      ballotHasGuidesForValue: VoterGuideStore.ballotHasGuidesForValue(issueWeVoteId),
       voterGuidesForValue,
+      voterGuidesForValueLength,
     });
   }
 
   render () {
     renderLog('VoterGuidesUnderOneValue');  // Set LOG_RENDER_EVENTS to log all renders
-    const { ballotHasGuidesForValue, issue, voterGuidesForValue } = this.state;
+    const { issue, voterGuidesForValue, voterGuidesForValueLength } = this.state;
 
     const { classes } = this.props;
 
@@ -98,46 +105,57 @@ class VoterGuidesUnderOneValue extends Component {
       pageTitle = issue.issue_name;
     }
 
+    if (!issueNameFound) {
+      return null;
+    }
+
     return (
       <div className="opinion-view">
         <Helmet title={`${pageTitle} - We Vote`} />
-        <div>
-          <IssueCard
-            followToggleOn
-            issue={issue}
-            issueImageSize="MEDIUM"
-            key={`issue-list-key-${issue.issue_we_vote_id}`}
-          />
-          {/* This is not currently working and probably doesn't make sense to allow search on a single value page.
-          <SearchGuidesToFollowBox /> */}
-          { ballotHasGuidesForValue || !issueNameFound ?
-            <p /> : (
-              <>
-                <br />
-                <Card>
-                  <EmptyBallotMessageContainer>
-                    <BallotIcon classes={{ root: classes.ballotIconRoot }} />
-                    <EmptyBallotText>There are no endorsements for this issue yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyBallotText>
-                    <Button
-                      classes={{ root: classes.ballotButtonRoot }}
-                      color="primary"
-                      variant="contained"
-                    >
-                      <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
-                      Add Endorsements
-                    </Button>
-                  </EmptyBallotMessageContainer>
-                </Card>
-              </>
-            )}
-          <div className="card">
-            <Suspense fallback={<span>Loading...</span>}>
-              <GuideList incomingVoterGuideList={voterGuidesForValue} />
-            </Suspense>
-          </div>
-          <Title>Explore More Values</Title>
-          <ValuesList displayOnlyIssuesNotFollowedByVoter currentIssue={issue} />
-        </div>
+        <IssueCard
+          followToggleOn
+          issue={issue}
+          issueImageSize="MEDIUM"
+          key={`issue-list-key-${issue.issue_we_vote_id}`}
+        />
+        {/* This is not currently working and probably doesn't make sense to allow search on a single value page.
+        <SearchGuidesToFollowBox /> */}
+        { !voterGuidesForValueLength ? (
+          <DelayedLoad showLoadingText waitBeforeShow={500}>
+            <>
+              <br />
+              <Card>
+                <EmptyValueMessageContainer>
+                  <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                  <EmptyValueText>There are no endorsements for this issue yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyValueText>
+                  <Button
+                    classes={{ root: classes.ballotButtonRoot }}
+                    color="primary"
+                    onClick={() => historyPush('/settings/voterguidelist')}
+                    variant="contained"
+                  >
+                    <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
+                    Add Endorsements
+                  </Button>
+                </EmptyValueMessageContainer>
+              </Card>
+            </>
+          </DelayedLoad>
+        ) : (
+          <>
+            <div className="card">
+              <Suspense fallback={<span>Loading...</span>}>
+                <GuideList incomingVoterGuideList={voterGuidesForValue} />
+              </Suspense>
+            </div>
+          </>
+        )}
+        <DelayedLoad waitBeforeShow={2000}>
+          <>
+            <Title>Explore More Values</Title>
+            <ValuesList displayOnlyIssuesNotFollowedByVoter currentIssue={issue} />
+          </>
+        </DelayedLoad>
         <br />
       </div>
     );
@@ -161,14 +179,14 @@ const styles = theme => ({
   },
 });
 
-const EmptyBallotMessageContainer = styled.div`
+const EmptyValueMessageContainer = styled.div`
   padding: 1em 2em;
   display: flex;
   flex-flow: column;
   align-items: center;
 `;
 
-const EmptyBallotText = styled.p`
+const EmptyValueText = styled.p`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;

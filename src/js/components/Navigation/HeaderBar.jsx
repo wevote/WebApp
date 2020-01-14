@@ -147,6 +147,10 @@ class HeaderBar extends Component {
     if (this.state.showSignInModal !== nextState.showSignInModal) {
       return true;
     }
+    if (this.state.voterFirstName !== nextState.voterFirstName) {
+      // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
+      return true;
+    }
     if (this.state.voter && nextState.voter && this.state.voter.is_signed_in !== nextState.voter.is_signed_in) {
       // console.log('HeaderBar voter.isSignedIn shouldComponentUpdate true');
       return true;
@@ -250,12 +254,8 @@ class HeaderBar extends Component {
   handleNavigation = to => historyPush(to);
 
   toggleProfilePopUp () {
-    if (isWebApp()) {
-      const { profilePopUpOpen } = this.state;
-      this.setState({ profilePopUpOpen: !profilePopUpOpen });
-    } else {
-      this.handleNavigation('/settings/hamburger');
-    }
+    const { profilePopUpOpen } = this.state;
+    this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
@@ -427,40 +427,20 @@ class HeaderBar extends Component {
                   {
                     showEditAddressButton && editAddressButtonHtml
                   }
-                  <span className="u-show-desktop-tablet">
-                    <span id="profileAvatarHeaderBar"
-                      className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                      onClick={this.toggleProfilePopUp}
-                    >
-                      <img
-                        className="header-nav__avatar"
-                        src={voterPhotoUrlMedium}
-                        style={{
-                          marginLeft: 16,
-                        }}
-                        height={34}
-                        width={34}
-                        alt="Your Settings"
-                      />
-                    </span>
-                  </span>
-                  <span className="u-show-mobile">
-                    <div
-                      id="profileAvatarHeaderBar"
-                      className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                      onClick={() => this.handleNavigation('/settings/hamburger')}
-                    >
-                      <img
-                        className="header-nav__avatar"
-                        style={{
-                          marginLeft: 16,
-                        }}
-                        src={voterPhotoUrlMedium}
-                        height={34}
-                        width={34}
-                        alt="Your Settings"
-                      />
-                    </div>
+                  <span id="profileAvatarHeaderBar"
+                    className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                    onClick={this.toggleProfilePopUp}
+                  >
+                    <img
+                      className="header-nav__avatar"
+                      src={voterPhotoUrlMedium}
+                      style={{
+                        marginLeft: 16,
+                      }}
+                      height={34}
+                      width={34}
+                      alt="Your Settings"
+                    />
                   </span>
                   {this.state.profilePopUpOpen && voterIsSignedIn && (
                     <HeaderBarProfilePopUp

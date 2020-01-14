@@ -142,16 +142,6 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {/*
-            <HamburgerMenuRow
-              onClickAction={null}
-              to="/settings/voterguidesmenu"
-              icon="fa fa-list"
-              iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
-              linkText="Your Endorsements"
-            />
-            */}
-
             {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
@@ -229,16 +219,6 @@ export default class HamburgerMenu extends Component {
               iconStyle={{ fontSize: 22, color: '#1c2f4b' }}
               linkText="About We Vote"
             />
-
-            {/* isSignedIn && (
-            <HamburgerMenuRow
-              onClickAction={() => VoterSessionActions.voterSignOut()}
-              to="/settings/account"
-              icon={isSignedIn ? 'fa fa-sign-out' : 'fa fa-sign-in'}
-              iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
-              linkText="Sign Out"
-            />
-            ) */}
 
             <tr className="hamburger-terms__tr-terms">
               <td className="hamburger-terms__td" colSpan={3}>

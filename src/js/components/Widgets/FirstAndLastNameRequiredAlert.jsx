@@ -302,11 +302,13 @@ const ParagraphStyled = styled.div`
 const PrintWrapper = styled.div`
   position: relative;
   display: flex;
-  margin-bottom: 16px;
-  margin-bottom: 10px;
+  margin: 0 -10px 10px -10px;
   background-color: white;
   background-clip: border-box;
   border: 2px solid #999;
+  @media (min-width: 450px) {
+    margin: 0 0 10px 0;
+  }
   @media print {
     display: none;
   }
