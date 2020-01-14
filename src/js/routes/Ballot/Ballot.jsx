@@ -924,7 +924,11 @@ class Ballot extends Component {
                 <div className="col-md-12">
                   <Helmet title="Ballot - We Vote" />
                   <header className="ballot__header__group">
-                    <BallotTitleHeader scrolled={this.state.ballotHeaderUnpinned} electionName={electionName} electionDayTextFormatted={electionDayTextFormatted} />
+                    <BallotTitleHeader
+                      scrolled={this.state.ballotHeaderUnpinned}
+                      electionName={electionName}
+                      electionDayTextFormatted={electionDayTextFormatted}
+                    />
                   </header>
 
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (

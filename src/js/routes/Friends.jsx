@@ -227,7 +227,12 @@ class Friends extends Component {
         mobileContentToDisplay = (
           <>
             {suggestedFriendList.length > 0 ? (
-              <SuggestedFriends />
+              <>
+                {voterIsSignedIn && (
+                  <FirstAndLastNameRequiredAlert />
+                )}
+                <SuggestedFriends />
+              </>
             ) : (
               <>
                 {friendInvitationsSentToMe.length > 0 ? (

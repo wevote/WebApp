@@ -164,8 +164,8 @@ class VoterGuideStore extends ReduceStore {
     // Start with the full list of we_vote_ids that can be followed
     let organizationWeVoteIdsToFollow = this.getState().organizationWeVoteIdsToFollowBallotItemsDict[ballotItemWeVoteId] || [];
     // Take the list that we are already following
-    const organizationWeVoteIdsFollowed = this.getState().organizationWeVoteIds_voter_is_following || [];
-    // Remove organizationWeVoteIds_voter_is_following
+    const organizationWeVoteIdsFollowed = this.getState().organizationWeVoteIdsVoterIsFollowing || [];
+    // Remove organizationWeVoteIdsVoterIsFollowing
     organizationWeVoteIdsToFollow = organizationWeVoteIdsToFollow.filter(el => !organizationWeVoteIdsFollowed.includes(el));
 
     const voterGuidesToFollow = this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollow) || [];

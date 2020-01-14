@@ -30,6 +30,7 @@ class FriendInvitationDisplayForList extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      cancelFriendInviteVoterSubmitted: false,
       isFriend: false,
     };
     this.ignoreFriendInvite = this.ignoreFriendInvite.bind(this);
@@ -45,21 +46,28 @@ class FriendInvitationDisplayForList extends Component {
   }
 
   onFriendStoreChange () {
+    const { cancelFriendInviteVoterSubmitted } = this.state;
+    const isFriend = FriendStore.isFriend(this.props.voter_we_vote_id);
     this.setState({
-      isFriend: FriendStore.isFriend(this.props.voter_we_vote_id),
+      isFriend,
+      cancelFriendInviteVoterSubmitted: !cancelFriendInviteVoterSubmitted,
     });
   }
 
-  cancelFriendInviteEmail (voterEmailAddress) {
-    // TODO DALE We have a problem with how we are deleting friend invitations.
-    // It has to do with retrieve_friend_invitations_sent_by_me on the API server
-    // console.log("cancelFriendInviteEmail");
-    FriendActions.cancelFriendInviteEmail(voterEmailAddress);
+  cancelFriendInviteEmail (otherVoterWeVoteId) {
+    // console.log("cancelFriendInviteVoter");
+    FriendActions.cancelFriendInviteVoter(otherVoterWeVoteId);
+    this.setState({
+      cancelFriendInviteVoterSubmitted: true,
+    });
   }
 
   cancelFriendInviteVoter (otherVoterWeVoteId) {
     // console.log("cancelFriendInviteVoter");
     FriendActions.cancelFriendInviteVoter(otherVoterWeVoteId);
+    this.setState({
+      cancelFriendInviteVoterSubmitted: true,
+    });
   }
 
   ignoreFriendInvite (otherVoterWeVoteId) {
@@ -70,7 +78,7 @@ class FriendInvitationDisplayForList extends Component {
     renderLog('FriendInvitationDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
 
     // Do not render if already a friend
-    const { isFriend } = this.state;
+    const { cancelFriendInviteVoterSubmitted, isFriend } = this.state;
     if (isFriend) {
       return null;
     }
@@ -146,11 +154,12 @@ class FriendInvitationDisplayForList extends Component {
             <CancelButtonContainer>
               <Button
                 color="primary"
+                disabled={cancelFriendInviteVoterSubmitted}
                 fullWidth
                 onClick={() => this.cancelFriendInviteVoter(otherVoterWeVoteId)}
                 variant="outlined"
               >
-                Cancel Invite
+                {cancelFriendInviteVoterSubmitted ? 'Canceling...' : 'Cancel Invite'}
               </Button>
             </CancelButtonContainer>
           </ButtonWrapper>

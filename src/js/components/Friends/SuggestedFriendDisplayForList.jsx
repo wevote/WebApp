@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import Button from '@material-ui/core/esm/Button';
 import ImageHandler from '../ImageHandler';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import FriendActions from '../../actions/FriendActions';
 import SuggestedFriendToggle from './SuggestedFriendToggle';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
@@ -105,27 +104,16 @@ class SuggestedFriendDisplayForList extends Component {
         <ButtonWrapper>
           <SuggestedFriendToggle otherVoterWeVoteId={otherVoterWeVoteId} />
           <ButtonContainer>
-            {ignoreSuggestedFriendSent ? (
-              <Button
-                color="primary"
-                disabled
-                fullWidth
-                type="button"
-                variant="outlined"
-              >
-                Removing
-              </Button>
-            ) : (
-              <Button
-                color="primary"
-                fullWidth
-                onClick={() => this.ignoreSuggestedFriend(otherVoterWeVoteId)}
-                type="button"
-                variant="outlined"
-              >
-                {isMobileScreenSize() ? 'Remove' : 'Remove'}
-              </Button>
-            )}
+            <Button
+              color="primary"
+              disabled={ignoreSuggestedFriendSent}
+              fullWidth
+              onClick={() => this.ignoreSuggestedFriend(otherVoterWeVoteId)}
+              type="button"
+              variant="outlined"
+            >
+              {ignoreSuggestedFriendSent ? 'Removing...' : 'Remove'}
+            </Button>
           </ButtonContainer>
         </ButtonWrapper>
       </Wrapper>
@@ -155,6 +143,7 @@ const Wrapper = styled.div`
   @media(min-width: 400px) {
     align-items: center;
     flex-direction: row;
+    flex-flow: row nowrap;
     justify-content: flex-start;
     padding-left: 100px;
   }
@@ -235,6 +224,7 @@ const ButtonWrapper = styled.div`
   width: 100%;
   margin: 12px 0 0;
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
   @media(min-width: 400px) {
@@ -254,7 +244,7 @@ const ButtonWrapper = styled.div`
 
 const ButtonContainer = styled.div`
   width: 100%;
-  margin-left: 12px;
+  margin-right: 12px;
   @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
