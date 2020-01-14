@@ -22,10 +22,10 @@ import OrganizationActions from '../../actions/OrganizationActions';
 // eslint-disable-next-line import/no-cycle
 import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
 import SignInModal from '../Widgets/SignInModal';
+import { shortenText } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import { shortenText } from "../../utils/textFormat";
 
 class WelcomeAppbar extends Component {
   static propTypes = {
@@ -75,6 +75,10 @@ class WelcomeAppbar extends Component {
     }
     if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
       // console.log('this.state.profilePopUpOpen', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
+      return true;
+    }
+    if (this.state.voterFirstName !== nextState.voterFirstName) {
+      // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
       return true;
     }
     if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {

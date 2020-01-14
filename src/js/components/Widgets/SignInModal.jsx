@@ -127,9 +127,9 @@ const styles = theme => ({
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
-      minHeight: '90%',
+      // minHeight: '90%',
       maxHeight: '90%',
-      height: '90%',
+      height: 'unset',
       margin: '0 auto',
     },
   } : {

@@ -120,7 +120,7 @@ export default class Header extends Component {
               )}
               { showBackToSettingsMobile && (
                 <span>
-                  <span className="u-show-mobile-tablet">
+                  <span className="u-show-mobile">
                     <HeaderBackTo backToLink={backToSettingsLinkMobile} backToLinkText={backToSettingsLinkText} location={location} params={params} />
                   </span>
                   { !showBackToVoterGuides && !showBackToSettingsDesktop && (

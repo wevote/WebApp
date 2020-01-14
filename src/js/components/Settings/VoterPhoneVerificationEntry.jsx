@@ -287,7 +287,7 @@ class VoterPhoneVerificationEntry extends Component {
     const {
       disablePhoneVerificationButton, displayPhoneVerificationButton, hideExistingPhoneNumbers,
       secretCodeSystemLocked, showError, showVerifyModal, signInCodeSMSSentAndWaitingForResponse,
-      smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber
+      smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber,
     } = this.state;
 
     const signInLinkOrCodeSent = (smsPhoneNumberStatus.link_to_sign_in_sms_sent || smsPhoneNumberStatus.sign_in_code_sms_sent);
