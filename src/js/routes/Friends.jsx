@@ -251,6 +251,9 @@ class Friends extends Component {
       case 'invite':
         mobileContentToDisplay = (
           <>
+            {voterIsSignedIn && (
+              <FirstAndLastNameRequiredAlert />
+            )}
             <InviteByEmail />
             <FriendsPromoBox
               imageUrl={imageUrl}
