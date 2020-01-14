@@ -7,11 +7,8 @@ import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
 import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import LoadingWheel from '../../components/LoadingWheel';
-import VoterSessionActions from '../../actions/VoterSessionActions';
 import { renderLog } from '../../utils/logging';
 import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
-
-const webAppConfig = require('../../config');
 
 
 export default class HamburgerMenu extends Component {
@@ -103,7 +100,6 @@ export default class HamburgerMenu extends Component {
     let { is_signed_in: isSignedIn } = voter;
     const { voter_photo_url_medium: photoUrl } = voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
-    const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
 
@@ -206,7 +202,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && enableNextRelease && (
+            {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/promoted"

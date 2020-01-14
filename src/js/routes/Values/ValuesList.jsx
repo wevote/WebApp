@@ -8,7 +8,7 @@ import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
 import IssueCard from '../../components/Values/IssueCard';
-import DelayedLoad from "../../components/Widgets/DelayedLoad";
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 
 export default class ValuesList extends Component {
   static propTypes = {

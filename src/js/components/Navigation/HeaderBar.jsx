@@ -369,11 +369,15 @@ class HeaderBar extends Component {
 
     const doNotShowWeVoteLogo = weVoteBrandingOff || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
-    // const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 8px', right: 'unset' };
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
-        <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`}>
+        <AppBar position="relative"
+                color="default"
+                className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`}
+                style={cordovaOverrides}
+        >
           <Toolbar className="header-toolbar" disableGutters>
             {(showWeVoteLogo || chosenSiteLogoUrl) && (
               <HeaderBarLogo

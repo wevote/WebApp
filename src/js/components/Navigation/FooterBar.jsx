@@ -82,8 +82,6 @@ class FooterBar extends React.Component {
       display: 'inline-block',
     };
 
-    // const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-
     return (
       <FooterBarWrapper>
         <div className="footer-container u-show-mobile-tablet" style={{ height: `${cordovaFooterHeight()}` }}>

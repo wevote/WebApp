@@ -182,14 +182,14 @@ class VoterPhoneVerificationEntry extends Component {
     this.setState({ loading: true });
   };
 
-  updateVoterSMSPhoneNumber = (e) => {
-    const voterSMSPhoneNumber = e.target.value;
-    const voterSMSPhoneNumberIsValid = true;
-    this.setState({
-      voterSMSPhoneNumber,
-      voterSMSPhoneNumberIsValid,
-    });
-  };
+  // updateVoterSMSPhoneNumber = (e) => {
+  //   const voterSMSPhoneNumber = e.target.value;
+  //   const voterSMSPhoneNumberIsValid = true;
+  //   this.setState({
+  //     voterSMSPhoneNumber,
+  //     voterSMSPhoneNumberIsValid,
+  //   });
+  // };
 
   closeVerifyModal = () => {
     // console.log('VoterPhoneVerificationEntry closeVerifyModal');
@@ -287,7 +287,7 @@ class VoterPhoneVerificationEntry extends Component {
     const {
       disablePhoneVerificationButton, displayPhoneVerificationButton, hideExistingPhoneNumbers,
       secretCodeSystemLocked, showError, showVerifyModal, signInCodeSMSSentAndWaitingForResponse,
-      smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber
+      smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber,
     } = this.state;
 
     const signInLinkOrCodeSent = (smsPhoneNumberStatus.link_to_sign_in_sms_sent || smsPhoneNumberStatus.sign_in_code_sms_sent);

@@ -57,6 +57,10 @@ export default class Values extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
+  componentDidCatch (error, info) {
+    console.log('Values.jsx caught: ', error, info.coponentStack);
+  }
+
   render () {
     renderLog('Values');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {

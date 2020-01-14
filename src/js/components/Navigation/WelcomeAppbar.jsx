@@ -25,7 +25,7 @@ import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import { shortenText } from "../../utils/textFormat";
+import { shortenText } from '../../utils/textFormat';
 
 class WelcomeAppbar extends Component {
   static propTypes = {

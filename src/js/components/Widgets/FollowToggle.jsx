@@ -34,10 +34,10 @@ export default class FollowToggle extends Component {
       componentDidMountFinished: false,
       isFollowing: false,
       isIgnoring: false,
-      organization: {},
-      voter: {
-        we_vote_id: '',
-      },
+      // organization: {},
+      // voter: {
+      //   we_vote_id: '',
+      // },
     };
 
     this.followInstantly = this.followInstantly.bind(this);
