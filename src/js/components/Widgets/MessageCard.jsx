@@ -94,5 +94,5 @@ const MainText = styled.h3`
 const SecondaryText = styled.h4`
   font-size: 18px;
   font-weight: normal;
-  margin-bottom: 12px !important;
+  margin-bottom: 28px !important;
 `;

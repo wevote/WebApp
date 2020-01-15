@@ -231,7 +231,7 @@ class TopCommentByBallotItem extends Component {
           &quot;
         </BallotItemEndorsementTextMobile>
         { hideMoreButton ? null : (
-          <LearnMoreWrapper>
+          <LearnMoreWrapper isButton={!this.state.learnMoreUrl}>
             { this.state.learnMoreUrl ? (
               <span>
                 {' '}
@@ -242,7 +242,6 @@ class TopCommentByBallotItem extends Component {
                 id={`topCommentButtonByBallotItem-${externalUniqueId}-${localUniqueId}`}
                 variant="outlined"
                 color="primary"
-                className="u-float-right"
                 classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
               >
                 {learnMoreText}
@@ -277,6 +276,7 @@ const styles = theme => ({
   },
   buttonOutlinedPrimary: {
     background: 'white',
+    marginLeft: 'auto',
   },
   closeButton: {
     position: 'absolute',
@@ -316,7 +316,10 @@ const BallotItemEndorsementTextMobile = styled.span`
   font-weight: 400;
 `;
 
-const LearnMoreWrapper = styled.span`
+const LearnMoreWrapper = styled.div`
+  margin-left: auto;
+  display: ${props => (props.isButton ? 'flex' : 'inline')};
+  justify-content: flex-end;
 `;
 
 export default withStyles(styles)(TopCommentByBallotItem);

@@ -247,6 +247,8 @@ const styles = () => ({
   backButton: {
     // marginBottom: 6,
     // marginLeft: -8,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   backButtonIcon: {
     fontSize: 14,

@@ -179,8 +179,9 @@ const styles = () => ({
     },
   },
   shareIcon: {
-    // -webkit-transform: 'scaleX(-1)',
     transform: 'scaleX(-1)',
+    position: 'relative',
+    top: -1,
   },
 });
 

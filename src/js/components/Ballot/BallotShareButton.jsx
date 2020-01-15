@@ -49,7 +49,7 @@ class BallotShareButton extends Component {
 
     return (
       <>
-        <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="outlined" color="primary">
+        <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="contained" color="primary">
           <Icon>
             <Reply
               classes={{ root: classes.shareIcon }}
@@ -121,7 +121,7 @@ const styles = () => ({
     overflowY: 'visible !important',
   },
   button: {
-    padding: '0 12px',
+    padding: '4px 12px',
   },
   menuItem: {
     zIndex: '9 !important',
@@ -137,8 +137,9 @@ const styles = () => ({
     },
   },
   shareIcon: {
-    // -webkit-transform: 'scaleX(-1)',
     transform: 'scaleX(-1)',
+    position: 'relative',
+    top: -1,
   },
 });
 
