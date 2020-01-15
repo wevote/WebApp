@@ -6,7 +6,6 @@ import OrganizationStore from './OrganizationStore';  // eslint-disable-line imp
 import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
 import VoterGuideStore from './VoterGuideStore';  // eslint-disable-line import/no-cycle
 import { arrayContains, convertNameToSlug, removeValueFromArray } from '../utils/textFormat';
-// import VoterGuideActions from '../actions/VoterGuideActions';
 
 class IssueStore extends ReduceStore {
   getInitialState () {
@@ -939,9 +938,22 @@ class IssueStore extends ReduceStore {
           issueWeVoteIdsUnderEachBallotItem,
           organizationWeVoteIdsLinkedToIssueDict,
         };
+      case 'twitterNativeSignInSave':
+      case 'twitterSignInRetrieve':
+      case 'voterEmailAddressSignIn':
+      case 'voterFacebookSignInRetrieve':
+      case 'voterMergeTwoAccounts':
+      case 'voterVerifySecretCode':
+        if (VoterStore.electionId()) {
+          IssueActions.issuesRetrieveForElection(VoterStore.electionId());
+        }
+        return this.resetState();
 
       case 'voterSignOut':
         // console.log('resetting IssueStore');
+        if (VoterStore.electionId()) {
+          IssueActions.issuesRetrieveForElection(VoterStore.electionId());
+        }
         return this.resetState();
 
       default:

@@ -324,8 +324,21 @@ class FriendStore extends ReduceStore {
           currentFriendsOrganizationWeVoteIds,
         };
 
+      case 'twitterNativeSignInSave':
+      case 'twitterSignInRetrieve':
+      case 'voterEmailAddressSignIn':
+      case 'voterFacebookSignInRetrieve':
+      case 'voterMergeTwoAccounts':
+      case 'voterVerifySecretCode':
+        // console.log('resetting FriendStore from sign in process');
+        FriendActions.currentFriends();
+        FriendActions.friendInvitationsSentByMe();
+        FriendActions.friendInvitationsSentToMe();
+        FriendActions.friendInvitationsProcessed();
+        return this.resetState();
+
       case 'voterSignOut':
-        // console.log('resetting FriendStore');
+        // console.log('resetting FriendStore from voterSignOut');
         FriendActions.currentFriends();
         FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsSentToMe();

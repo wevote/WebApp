@@ -376,6 +376,7 @@ class SettingsVerifySecretCode extends Component {
 
   render () {
     renderLog('SettingsVerifySecretCode');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('SettingsVerifySecretCode render');
     const { classes } = this.props;
     const {
       condensed, errorMessageToDisplay, errorToDisplay,
