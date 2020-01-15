@@ -5,12 +5,11 @@ import { openSnackbar } from '../Widgets/SnackNotifier';
 
 class ShareModalOption extends Component {
   static propTypes = {
+    link: PropTypes.string,
+    icon: PropTypes.string,
+    title: PropTypes.string,
     background: PropTypes.string,
     copyLink: PropTypes.bool,
-    icon: PropTypes.string,
-    link: PropTypes.string,
-    onClickFunction: PropTypes.func,
-    title: PropTypes.string,
   };
 
   constructor (props) {
@@ -19,12 +18,6 @@ class ShareModalOption extends Component {
 
     this.textAreaRef = React.createRef();
     this.copyLink = this.copyLink.bind(this);
-  }
-
-  onClickFunction = () => {
-    if (this.props.onClickFunction) {
-      this.props.onClickFunction();
-    }
   }
 
   copyLink (e) {
@@ -38,10 +31,7 @@ class ShareModalOption extends Component {
 
   render () {
     return (
-      <Wrapper
-        href={this.props.copyLink || this.props.onClickFunction ? null : this.props.link || '/'}
-        onClick={this.props.copyLink ? this.copyLink : this.onClickFunction()}
-      >
+      <Wrapper href={this.props.copyLink || this.props.onClickFunction ? null : this.props.link || '/'} onClick={this.props.copyLink ? this.copyLink : this.props.onClickFunction ? this.props.onClickFunction : null}>
         <Icon background={this.props.background}>
           {this.props.icon}
         </Icon>
@@ -58,7 +48,10 @@ class ShareModalOption extends Component {
 
 const Wrapper = styled.a`
   display: block !important;
-  flex: 1 1 0;
+  margin-bottom: 12px;
+  @media (min-width: 380px) {
+    flex: 1 1 0;
+  }
   height: 100%;
   text-align: center;
   text-decoration: none !important;
@@ -66,6 +59,12 @@ const Wrapper = styled.a`
   &:hover {
     text-decoration: none !important;
     color: black !important;
+  }
+  @media (max-width: 576px) {
+    width: 33.333%;
+  }
+  @media (max-width: 379px) {
+    width: 50%;
   }
 `;
 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/esm/Button';
 import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
+import AppActions from '../../actions/AppActions';
 
 export default class MessageCard extends Component {
   static propTypes = {
@@ -18,6 +19,8 @@ export default class MessageCard extends Component {
   constructor (props) {
     super(props);
     this.state = {};
+
+    this.onClick = this.onClick.bind(this);
   }
 
   componentDidMount () {
@@ -28,20 +31,28 @@ export default class MessageCard extends Component {
 
   }
 
+  onClick () {
+    if (this.props.inShareModal) {
+      AppActions.setShowShareModal(false);
+    }
+
+    historyPush(this.props.buttonURL);
+  }
+
   render () {
-    const { buttonText, buttonURL, icon, inModal, mainText, noCard, secondaryText } = this.props;
+    const { buttonText, icon, inShareModal, mainText, noCard, secondaryText } = this.props;
 
     return (
-      <Card inModal={inModal} className={noCard ? '' : 'card'}>
-        <InnerWrapper className="card-main">
+      <Card inModal={inShareModal} className={noCard ? '' : 'card'}>
+        <InnerWrapper>
+          <MainText>{mainText}</MainText>
           {icon ? (
             <Icon>{icon}</Icon>
           ) : null}
-          <MainText>{mainText}</MainText>
           {secondaryText ? (
             <SecondaryText>{secondaryText}</SecondaryText>
           ) : null}
-          <Button variant="contained" color="primary" onClick={() => historyPush(buttonURL)}>
+          <Button onClick={this.onClick} fullWidth={this.props.fullWidthButton} variant="contained" color="primary">
             {buttonText}
           </Button>
         </InnerWrapper>
@@ -64,15 +75,20 @@ const InnerWrapper = styled.div`
 
 const Icon = styled.div`
   margin: 0 auto;
-  font-size: 48px;
-  width: 100px;
-  height: 100px;
+  font-size: 80px;
+  width: 200px;
+  height: 200px;
+  * {
+    width: 200px !important;
+    height: 200px !important;
+    fill: rgba(46, 60, 93, .4) !important;
+  }
 `;
 
 const MainText = styled.h3`
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 48px !important;
+  margin-bottom: 12px !important;
 `;
 
 const SecondaryText = styled.h4`
