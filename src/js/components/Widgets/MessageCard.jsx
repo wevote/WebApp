@@ -9,10 +9,11 @@ export default class MessageCard extends Component {
   static propTypes = {
     buttonText: PropTypes.string,
     buttonURL: PropTypes.string,
+    fullWidthButton: PropTypes.bool,
     icon: PropTypes.string,
-    inModal: PropTypes.bool,
-    noCard: PropTypes.bool,
+    inShareModal: PropTypes.bool,
     mainText: PropTypes.string,
+    noCard: PropTypes.bool,
     secondaryText: PropTypes.string,
   };
 

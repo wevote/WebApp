@@ -22,6 +22,7 @@ class SignInModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      focusedOnSingleInputToggle: false,
     };
   }
 
@@ -48,10 +49,32 @@ class SignInModal extends Component {
     }
   }
 
+  focusedOnSingleInputToggle = () => {
+    const { focusedOnSingleInputToggle } = this.state;
+    this.setState({
+      focusedOnSingleInputToggle: !focusedOnSingleInputToggle,
+    });
+  }
+
+  closeFunction = () => {
+    if (this.props.closeFunction) {
+      this.props.closeFunction();
+    }
+  }
+
+  onKeyDown = (event) => {
+    event.preventDefault();
+    // const ENTER_KEY_CODE = 13;
+    // const enterAndReturnKeyCodes = [ENTER_KEY_CODE];
+    // if (enterAndReturnKeyCodes.includes(event.keyCode)) {
+    //   this.closeFunction();
+    // }
+  }
+
   render () {
     renderLog('SignInModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { voter, voterIsSignedIn } = this.state;
+    const { focusedOnSingleInputToggle, voter, voterIsSignedIn } = this.state;
     if (!voter) {
       // console.log('SignInModal render voter NOT found');
       return <div className="undefined-props" />;
@@ -65,9 +88,9 @@ class SignInModal extends Component {
     // This modal is shown when the voter wants to sign in.
     return (
       <Dialog
-        classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}
+        classes={{ paper: focusedOnSingleInputToggle ? classes.dialogPaperFocusedOnSingleInput : classes.dialogPaper, root: classes.dialogRoot }}
         open={this.props.show}
-        onClose={() => { this.props.closeFunction(); }}
+        onClose={() => { this.closeFunction(); }}
       >
         <DialogTitle>
           <Typography className="text-center">
@@ -76,7 +99,7 @@ class SignInModal extends Component {
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}
-            onClick={() => { this.props.closeFunction(); }}
+            onClick={() => { this.closeFunction(); }}
             id="profileCloseSignInModal"
           >
             <CloseIcon />
@@ -92,7 +115,8 @@ class SignInModal extends Component {
               ) : (
                 <div>
                   <SettingsAccount
-                    closeSignInModal={this.props.closeFunction}
+                    closeSignInModal={this.closeFunction}
+                    focusedOnSingleInputToggle={this.focusedOnSingleInputToggle}
                     inModal
                   />
                 </div>
@@ -135,7 +159,6 @@ const styles = theme => ({
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
-      // minHeight: '90%',
       maxHeight: '90%',
       height: 'unset',
       margin: '0 auto',
@@ -153,6 +176,20 @@ const styles = theme => ({
     position: 'absolute',
     transform: 'translate(-50%, -25%)',
   },
+  dialogPaperFocusedOnSingleInput: isWebApp() ? {
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '95%',
+      maxWidth: '95%',
+      width: '95%',
+      maxHeight: '90%',
+      height: 'unset',
+      margin: '0 auto',
+      position: 'absolute',
+      top: '75%',
+      left: '73%',
+      transform: 'translate(-75%, -75%)',
+    },
+  } : {},
   dialogContent: {
     [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',

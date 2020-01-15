@@ -278,9 +278,11 @@ class HeaderBar extends Component {
   }
 
   closeSignInModal () {
+    // console.log('HeaderBar closeSignInModal');
     AppActions.setShowSignInModal(false);
     // signInModalGlobalState.set('isShowingSignInModal', false);
-    HeaderBar.goToGetStarted();
+    // When this is uncommented, closing the sign in box from pages like "Values" will redirect you to the ballot
+    // HeaderBar.goToGetStarted();
   }
 
   toggleSignInModal () {

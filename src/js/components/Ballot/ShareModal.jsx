@@ -11,22 +11,22 @@ import Mail from '@material-ui/icons/Mail';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import { Button } from '@material-ui/core';
+import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import FriendActions from '../../actions/FriendActions';
+import FriendsCurrentPreview from '../Friends/FriendsCurrentPreview';
+import FriendStore from '../../stores/FriendStore';
 import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
-import FriendsCurrentPreview from '../Friends/FriendsCurrentPreview';
 import ShareModalOption from './ShareModalOption';
 import SettingsAccount from '../Settings/SettingsAccount';
-import FriendStore from '../../stores/FriendStore';
-import FriendActions from '../../actions/FriendActions';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import AppActions from '../../actions/AppActions';
 
 class ShareModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    show: PropTypes.bool,
+    isSignedIn: PropTypes.bool,
     pathname: PropTypes.string,
-    // stripe: PropTypes.object,
+    show: PropTypes.bool,
+    step: PropTypes.string,
     toggleFunction: PropTypes.func.isRequired,
   };
 
@@ -67,12 +67,12 @@ class ShareModal extends Component {
     }
   }
 
-  closeShareModal () {
-    this.props.toggleFunction(this.state.pathname);
-  }
-
   setStep (step) {
     this.setState({ step });
+  }
+
+  closeShareModal () {
+    this.props.toggleFunction(this.state.pathname);
   }
 
   render () {

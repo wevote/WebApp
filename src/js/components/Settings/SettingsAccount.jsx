@@ -34,6 +34,7 @@ export default class SettingsAccount extends Component {
     pleaseSignInTitle: PropTypes.string,
     pleaseSignInSubTitle: PropTypes.string,
     closeSignInModal: PropTypes.func,
+    focusedOnSingleInputToggle: PropTypes.func,
   };
 
   constructor (props) {
@@ -45,8 +46,6 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: false,
       hideVoterEmailAddressEntry: false,
       hideVoterPhoneEntry: false,
-      inEmailCodeVerificationProcess: false,
-      inTextCodeVerificationProcess: false,
       isOnWeVoteRootUrl: true,
       isOnWeVoteSubdomainUrl: false,
       isOnFacebookSupportedDomainUrl: false,
@@ -157,10 +156,7 @@ export default class SettingsAccount extends Component {
   }
 
   onVoterStoreChange () {
-    const emailAddressStatus = VoterStore.getEmailAddressStatus();
-    const inEmailCodeVerificationProcess = (emailAddressStatus.sign_in_code_email_sent);
     this.setState({
-      inEmailCodeVerificationProcess,
       voter: VoterStore.getVoter(),
     });
   }
@@ -171,26 +167,17 @@ export default class SettingsAccount extends Component {
     });
   }
 
+  focusedOnSingleInputToggle = () => {
+    // console.log('SettingsAccount focusedOnSingleInput');
+    if (this.props.focusedOnSingleInputToggle) {
+      this.props.focusedOnSingleInputToggle();
+    }
+  };
+
   localCloseSignInModal = () => {
     // console.log('SettingsAccount localCloseSignInModal');
     if (this.props.closeSignInModal) {
       this.props.closeSignInModal();
-    }
-  };
-
-  toggleInTextCodeVerificationProcess = () => {
-    const { inTextCodeVerificationProcess } = this.state;
-    this.setState({ inTextCodeVerificationProcess: !inTextCodeVerificationProcess });
-  };
-
-  toggleInEmailCodeVerificationProcess = () => {
-    const { inEmailCodeVerificationProcess } = this.state;
-    if (inEmailCodeVerificationProcess) {
-      // If already in the verification process, reset the emailAddressStatus dict, so that VoterStore is refreshed without email verification data
-      VoterActions.clearEmailAddressStatus();
-    } else {
-      // If not already in the verification process, put us in the process
-      this.setState({ inEmailCodeVerificationProcess: true });
     }
   };
 
@@ -202,6 +189,7 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: !hideTwitterSignInButton,
       hideVoterPhoneEntry: !hideVoterPhoneEntry,
     });
+    this.focusedOnSingleInputToggle();
   };
 
   toggleNonPhoneSignInOptions = () => {
@@ -212,6 +200,7 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: !hideTwitterSignInButton,
       hideVoterEmailAddressEntry: !hideVoterEmailAddressEntry,
     });
+    this.focusedOnSingleInputToggle();
   };
 
   toggleTwitterDisconnectOpen () {
@@ -434,11 +423,13 @@ export default class SettingsAccount extends Component {
             }
             {!hideVoterPhoneEntry && (
               <VoterPhoneVerificationEntry
+                closeSignInModal={this.localCloseSignInModal}
                 toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
               />
             )}
             {!hideVoterEmailAddressEntry && (
               <VoterEmailAddressEntry
+                closeSignInModal={this.localCloseSignInModal}
                 inModal={inModal}
                 toggleOtherSignInOptions={this.toggleNonEmailSignInOptions}
               />
