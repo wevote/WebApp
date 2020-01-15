@@ -236,7 +236,7 @@ const styles = () => ({
     margin: '0 auto',
   },
   dialogContent: {
-    padding: '0 24px 36px 24px',
+    padding: '24px 24px 36px 24px',
     background: 'white',
     height: 'fit-content',
     display: 'flex',
@@ -266,7 +266,7 @@ const styles = () => ({
 const ModalTitleArea = styled.div`
   text-align: left;
   width: 100%;
-  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : '14px')};
+  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
@@ -292,7 +292,6 @@ const SubTitle = styled.div`
 const Flex = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-top: 36px;
-  padding-bottom: 36px;
+  padding-top: 16px;
 `;
 export default withTheme(withStyles(styles)(ShareModal));

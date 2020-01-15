@@ -121,7 +121,7 @@ const styles = () => ({
     overflowY: 'visible !important',
   },
   button: {
-    padding: '4px 12px',
+    padding: '2px 12px',
   },
   menuItem: {
     zIndex: '9 !important',

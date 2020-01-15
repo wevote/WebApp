@@ -74,7 +74,7 @@ const Wrapper = styled.div`
   cursor: pointer;
   display: block !important;
   margin-bottom: 12px;
-  @media (min-width: 380px) {
+  @media (min-width: 600px) {
     flex: 1 1 0;
   }
   height: 100%;
@@ -88,10 +88,10 @@ const Wrapper = styled.div`
     transform: scale(1.05);
     transition-duration: .25s;
   }
-  @media (max-width: 576px) {
+  @media (max-width: 600px) {
     width: 33.333%;
   }
-  @media (max-width: 379px) {
+  @media (max-width: 476px) {
     width: 50%;
   }
 `;

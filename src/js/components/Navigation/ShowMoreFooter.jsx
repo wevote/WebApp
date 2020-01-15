@@ -80,6 +80,7 @@ const ShowMoreFooterText = styled.div`
     text-decoration: underline;
   }
   margin-bottom: 8px !important;
+  margin-top: 8px !important;
 `;
 
 export default withTheme(withStyles(styles)(ShowMoreFooter));
