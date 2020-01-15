@@ -19,6 +19,7 @@ import SettingsAccount from '../Settings/SettingsAccount';
 import FriendStore from '../../stores/FriendStore';
 import FriendActions from '../../actions/FriendActions';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import AppActions from '../../actions/AppActions';
 
 class ShareModal extends Component {
   static propTypes = {
@@ -90,16 +91,18 @@ class ShareModal extends Component {
           open={this.props.show}
           onClose={() => { this.props.toggleFunction(this.state.pathname); }}
         >
-          <ModalTitleArea>
-            <Title>
-              Share:
-              {' '}
-              <strong>Ballot for Nov 2019 Elections</strong>
-            </Title>
-            <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
+          <ModalTitleArea firstSlide>
+            <div>
+              <Title>
+                Share:
+                {' '}
+                <strong>Ballot for Nov 2019 Elections</strong>
+              </Title>
+              <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
+            </div>
             <IconButton
               aria-label="Close"
-              className={classes.closeButton}
+              className={classes.closeButtonAbsolute}
               onClick={this.closeShareModal}
               id="profileCloseShareModal"
             >
@@ -108,7 +111,7 @@ class ShareModal extends Component {
           </ModalTitleArea>
           <DialogContent classes={{ root: classes.dialogContent }}>
             <Flex>
-              <ShareModalOption link="/friends/invite" background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />
+              <ShareModalOption noLink onClickFunction={() => this.setStep('friends')} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />
               <ShareModalOption link="https://www.facebook.com/sharer/sharer.php?u=wevote.us&t=WeVote" target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
               <ShareModalOption link={`https://twitter.com/share?text=Check out this cool ballot tool at https://wevote.us${window.location.pathname}!`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
               <ShareModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
@@ -244,21 +247,23 @@ const styles = () => ({
     fontWeight: 'bold',
   },
   closeButton: {
-    margin: 0,
-    display: 'block',
+    marginLeft: 'auto',
+  },
+  closeButtonAbsolute: {
     position: 'absolute',
-    top: 10,
-    right: 10,
+    right: 14,
+    top: 14,
   },
 });
 const ModalTitleArea = styled.div`
   text-align: left;
   width: 100%;
-  padding: 16px 16px 16px 16px;
+  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : '14px')};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
   }
+  display: flex;
 `;
 const Title = styled.h3`
   font-size: ${props => (props.bold ? '30px' : '24px')};

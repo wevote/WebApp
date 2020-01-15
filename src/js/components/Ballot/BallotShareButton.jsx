@@ -39,6 +39,7 @@ class BallotShareButton extends Component {
 
   openShareModal () {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
+    AppActions.setShareModalStep('options');
     AppActions.setShowShareModal(true);
   }
 
