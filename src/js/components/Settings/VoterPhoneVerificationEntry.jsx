@@ -21,6 +21,7 @@ import VoterStore from '../../stores/VoterStore';
 class VoterPhoneVerificationEntry extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    closeSignInModal: PropTypes.func,
     inModal: PropTypes.bool,
     toggleOtherSignInOptions: PropTypes.func,
   };
@@ -116,6 +117,7 @@ class VoterPhoneVerificationEntry extends Component {
     // console.log('onVoterStoreChange smsPhoneNumberStatus:', smsPhoneNumberStatus);
     if (secretCodeVerified) {
       this.setState({
+        displayPhoneVerificationButton: false,
         showVerifyModal: false,
         voterSMSPhoneNumber: '',
       });
@@ -130,6 +132,7 @@ class VoterPhoneVerificationEntry extends Component {
       });
     } else if (smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter) {
       this.setState({
+        displayPhoneVerificationButton: false,
         smsPhoneNumberStatus,
         showVerifyModal: false,
         signInCodeSMSSentAndWaitingForResponse: false,
@@ -182,14 +185,12 @@ class VoterPhoneVerificationEntry extends Component {
     this.setState({ loading: true });
   };
 
-  // updateVoterSMSPhoneNumber = (e) => {
-  //   const voterSMSPhoneNumber = e.target.value;
-  //   const voterSMSPhoneNumberIsValid = true;
-  //   this.setState({
-  //     voterSMSPhoneNumber,
-  //     voterSMSPhoneNumberIsValid,
-  //   });
-  // };
+  closeSignInModal = () => {
+    // console.log('SettingsAccount localCloseSignInModal');
+    if (this.props.closeSignInModal) {
+      this.props.closeSignInModal();
+    }
+  };
 
   closeVerifyModal = () => {
     // console.log('VoterPhoneVerificationEntry closeVerifyModal');
@@ -203,13 +204,9 @@ class VoterPhoneVerificationEntry extends Component {
   };
 
   hidePhoneVerificationButton = () => {
-    const { voterSMSPhoneNumber } = this.state;
-    if (!voterSMSPhoneNumber) {
-      // Only hide if no number entered
-      this.setState({
-        displayPhoneVerificationButton: false,
-      });
-    }
+    this.setState({
+      displayPhoneVerificationButton: false,
+    });
   };
 
   displayPhoneVerificationButton = () => {
@@ -228,16 +225,43 @@ class VoterPhoneVerificationEntry extends Component {
     }
   };
 
-  onPhoneInputBlur = (event) => {
-    const { voterSMSPhoneNumber } = this.state;
-    // console.log('VoterPhoneVerificationEntry onPhoneInputBlur, voterSMSPhoneNumber:', voterSMSPhoneNumber);
-    this.hidePhoneVerificationButton();
-    this.localToggleOtherSignInOptions();
-    if (voterSMSPhoneNumber && (isCordova() || isMobileScreenSize())) {
-      // When there is a voterSMSPhoneNumber value and the keyboard closes, submit
-      this.sendSignInCodeSMS(event);
+  onCancel = () => {
+    // console.log('VoterPhoneVerificationEntry onCancel');
+    const { inModal } = this.props;
+    if (inModal) {
+      this.closeSignInModal();
+    } else {
+      // There are Modal display problems that don't seem to be resolvable that prevents us from returning to the full SettingsAccount modal
+      this.hidePhoneVerificationButton();
+      this.localToggleOtherSignInOptions();
     }
   };
+
+  onFocus = () => {
+    const { displayPhoneVerificationButton } = this.state;
+    if (!displayPhoneVerificationButton) {
+      this.displayPhoneVerificationButton();
+      this.localToggleOtherSignInOptions();
+    }
+  }
+
+  onKeyDown = (event) => {
+    // console.log('onKeyDown, event.keyCode:', event.keyCode);
+    // Consider limiting to numbers, dash and plus
+    // const regex = /^[0-9]$/;
+    // const digit = String.fromCharCode((event.keyCode >= 96 && event.keyCode <= 105) ? event.keyCode - 48  : event.keyCode);
+    // if (e.keyCode !== 8 && regex.test(digit)) {
+    const ENTER_KEY_CODE = 13;
+    const SPACE_KEY_CODE = 32;
+    const keyCodesToBlock = [SPACE_KEY_CODE];
+    const keyCodesForSubmit = [ENTER_KEY_CODE];
+    if (keyCodesToBlock.includes(event.keyCode)) {
+      event.preventDefault();
+    } else if (keyCodesForSubmit.includes(event.keyCode)) {
+      event.preventDefault();
+      this.sendSignInCodeSMS(event);
+    }
+  }
 
   reSendSignInCodeSMS = (voterSMSPhoneNumber) => {
     if (voterSMSPhoneNumber) {
@@ -252,7 +276,11 @@ class VoterPhoneVerificationEntry extends Component {
         voterSMSPhoneNumber,
       });
     }
-  };
+  }
+
+  removeVoterSMSPhoneNumber (smsWeVoteId) {
+    VoterActions.removeVoterSMSPhoneNumber(smsWeVoteId);
+  }
 
   sendSignInCodeSMS (event) {
     // console.log('sendSignInCodeSMS');
@@ -271,10 +299,6 @@ class VoterPhoneVerificationEntry extends Component {
     } else {
       this.setState({ showError: true });
     }
-  }
-
-  removeVoterSMSPhoneNumber (smsWeVoteId) {
-    VoterActions.removeVoterSMSPhoneNumber(smsWeVoteId);
   }
 
   render () {
@@ -324,30 +348,26 @@ class VoterPhoneVerificationEntry extends Component {
           ) :
           null
         }
-        { (smsPhoneNumberStatus.sms_phone_number_created && !smsPhoneNumberStatus.verification_sms_sent && !secretCodeSystemLocked) ||
-        smsPhoneNumberStatus.sms_phone_number_deleted ||
-        smsPhoneNumberStatus.sms_ownership_is_verified ||
-        smsPhoneNumberStatus.make_primary_sms ||
-        smsPhoneNumberStatus.sign_in_code_sms_sent ? (
-          <Alert variant="success">
-            { smsPhoneNumberStatus.sms_phone_number_created && !smsPhoneNumberStatus.verification_sms_sent && !secretCodeSystemLocked ? <span>Your phone number was saved. </span> : null }
-            { smsPhoneNumberStatus.sms_phone_number_deleted ? <span>Your phone number was deleted. </span> : null }
-            { smsPhoneNumberStatus.sms_ownership_is_verified ? <span>Your phone number was verified. </span> : null }
-            { smsPhoneNumberStatus.make_primary_sms ? <span>Your have chosen a new primary phone number. </span> : null }
-            { smsPhoneNumberStatus.sign_in_code_sms_sent ? <span>Please check your phone. A sign in verification code was sent. </span> : null }
-          </Alert>
+        {(smsPhoneNumberStatus.sms_phone_number_created && !smsPhoneNumberStatus.verification_sms_sent && !secretCodeSystemLocked) ||
+          smsPhoneNumberStatus.sms_phone_number_deleted ||
+          smsPhoneNumberStatus.sms_ownership_is_verified ||
+          smsPhoneNumberStatus.make_primary_sms ||
+          smsPhoneNumberStatus.sign_in_code_sms_sent ? (
+            <Alert variant="success">
+              { smsPhoneNumberStatus.sms_phone_number_created && !smsPhoneNumberStatus.verification_sms_sent && !secretCodeSystemLocked ? <span>Your phone number was saved. </span> : null }
+              { smsPhoneNumberStatus.sms_phone_number_deleted ? <span>Your phone number was deleted. </span> : null }
+              { smsPhoneNumberStatus.sms_ownership_is_verified ? <span>Your phone number was verified. </span> : null }
+              { smsPhoneNumberStatus.make_primary_sms ? <span>Your have chosen a new primary phone number. </span> : null }
+              { smsPhoneNumberStatus.sign_in_code_sms_sent ? <span>Please check your phone. A sign in verification code was sent. </span> : null }
+            </Alert>
           ) : null
         }
       </span>
     );
 
     let enterSMSPhoneNumberTitle = 'Sign in with SMS Phone Number';
-    // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
-    //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
     if (this.state.voter && this.state.voter.is_signed_in) {
       enterSMSPhoneNumberTitle = 'Add New Phone Number';
-      // enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to verify this new email." :
-      //   "You'll receive a magic link in the email on this phone. Click that link to verify this new email.";
     }
 
     const enterSMSPhoneNumberHtml = (
@@ -371,23 +391,51 @@ class VoterPhoneVerificationEntry extends Component {
               type="tel"
               name="voter_phone_number"
               id="enterVoterPhone"
-              onBlur={this.onPhoneInputBlur}
               onChange={this.onPhoneNumberChange}
-              onFocus={() => { this.displayPhoneVerificationButton(); this.localToggleOtherSignInOptions(); }}
+              onFocus={this.onFocus}
+              onKeyDown={this.onKeyDown}
               placeholder="Type phone number here..."
             />
           </Paper>
           {displayPhoneVerificationButton && (
-            <Button
-              className={classes.button}
-              color="primary"
-              disabled={disablePhoneVerificationButton || signInCodeSMSSentAndWaitingForResponse}
-              id="voterPhoneSendSMS"
-              onClick={this.sendSignInCodeSMS}
-              variant="contained"
-            >
-              {signInCodeSMSSentAndWaitingForResponse ? 'Sending Verification Code...' : 'Send Verification Code'}
-            </Button>
+            <ButtonWrapper>
+              <CancelButtonContainer>
+                <Button
+                  color="primary"
+                  disabled={signInCodeSMSSentAndWaitingForResponse}
+                  className={classes.cancelButton}
+                  fullWidth
+                  onClick={this.onCancel}
+                  variant="outlined"
+                >
+                  Cancel
+                </Button>
+              </CancelButtonContainer>
+              <ButtonContainer>
+                <Button
+                  // className={classes.button}
+                  color="primary"
+                  disabled={disablePhoneVerificationButton || signInCodeSMSSentAndWaitingForResponse}
+                  id="voterPhoneSendSMS"
+                  onClick={this.sendSignInCodeSMS}
+                  variant="contained"
+                >
+                  {signInCodeSMSSentAndWaitingForResponse ? 'Sending...' : (
+                    <>
+                      <span className="u-show-mobile-iphone5-or-smaller">
+                        Send Code
+                      </span>
+                      <span className="u-show-mobile-bigger-than-iphone5">
+                        Send Verification Code
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Send Verification Code
+                      </span>
+                    </>
+                  )}
+                </Button>
+              </ButtonContainer>
+            </ButtonWrapper>
           )}
         </form>
       </div>
@@ -542,9 +590,28 @@ const styles = {
   },
   button: {
     width: '100%',
-    padding: '12px',
+  },
+  cancelButton: {
+    width: '100%',
   },
 };
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  margin: 4px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const ButtonContainer = styled.div`
+  width: fit-content;
+  margin-left: 8px;
+`;
+
+const CancelButtonContainer = styled.div`
+  width: fit-content;
+`;
 
 const Wrapper = styled.div`
   margin-top: 32px;

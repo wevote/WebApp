@@ -220,6 +220,7 @@ class HeaderBackTo extends Component {
 
   render () {
     renderLog('HeaderBackTo');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('HeaderBackTo render');
     const { classes } = this.props;
     const {
       backToLink, backToLinkText, profilePopUpOpen, showSignInModal,

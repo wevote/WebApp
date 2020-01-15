@@ -6,11 +6,12 @@ import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 class ShareModalOption extends Component {
   static propTypes = {
-    link: PropTypes.string,
-    icon: PropTypes.string,
-    title: PropTypes.string,
     background: PropTypes.string,
     copyLink: PropTypes.bool,
+    icon: PropTypes.object,
+    link: PropTypes.string,
+    onClickFunction: PropTypes.func,
+    title: PropTypes.string,
   };
 
   constructor (props) {
@@ -21,11 +22,20 @@ class ShareModalOption extends Component {
     this.copyLink = this.copyLink.bind(this);
   }
 
-  copyLink (e) {
+  onClick = () => {
+    // To get rid of "Do not nest ternary expressions  no-nested-ternary" error, we will need to upgrade to something like this.
+    if (this.props.copyLink) {
+      this.copyLink();
+    } else if (this.props.onClickFunction) {
+      this.props.onClickFunction();
+    }
+  }
+
+  copyLink (event) {
     this.textAreaRef.current.select();
 
     document.execCommand('copy');
-    e.target.focus();
+    event.target.focus();
 
     openSnackbar({ message: 'Copied!' });
   }

@@ -51,7 +51,8 @@ class BallotShareButtonFooter extends Component {
 
   toggleStep2 () {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
-    this.setState({ step2: !this.state.step2 });
+    const { step2 } = this.state;
+    this.setState({ step2: !step2 });
   }
 
   render () {
@@ -76,9 +77,7 @@ class BallotShareButtonFooter extends Component {
                   <ArrowBackIos className={classes.backButtonIcon} />
                   Back
                 </Button>
-              ) : (
-                null
-              )}
+              ) : null}
               <Title>
                 Share:
                 {' '}

@@ -20,6 +20,7 @@ import VoterStore from '../../stores/VoterStore';
 class VoterEmailAddressEntry extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    closeSignInModal: PropTypes.func,
     inModal: PropTypes.bool,
     toggleOtherSignInOptions: PropTypes.func,
   };
@@ -27,7 +28,7 @@ class VoterEmailAddressEntry extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      disableEmailVerificationButton: false,
+      disableEmailVerificationButton: true,
       displayEmailVerificationButton: false,
       emailAddressStatus: {
         email_address_already_owned_by_other_voter: false,
@@ -63,6 +64,10 @@ class VoterEmailAddressEntry extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     if (JSON.stringify(this.state.emailAddressStatus) !== JSON.stringify(nextState.emailAddressStatus)) {
       // console.log('this.state.emailAddressStatus', this.state.emailAddressStatus, ', nextState.emailAddressStatus', nextState.emailAddressStatus);
+      return true;
+    }
+    if (this.state.disableEmailVerificationButton !== nextState.disableEmailVerificationButton) {
+      // console.log('this.state.disableEmailVerificationButton', this.state.disableEmailVerificationButton, ', nextState.disableEmailVerificationButton', nextState.disableEmailVerificationButton);
       return true;
     }
     if (this.state.displayEmailVerificationButton !== nextState.displayEmailVerificationButton) {
@@ -166,10 +171,10 @@ class VoterEmailAddressEntry extends Component {
     if (voterEmailAddressIsValid) {
       VoterActions.sendSignInCodeEmail(voterEmailAddress);
       this.setState({
+        signInCodeEmailSentAndWaitingForResponse: true,
         emailAddressStatus: {
           email_address_already_owned_by_other_voter: false,
         },
-        loading: true,
       });
     } else {
       this.setState({ showError: true });
@@ -197,13 +202,9 @@ class VoterEmailAddressEntry extends Component {
   };
 
   hideEmailVerificationButton = () => {
-    const { voterEmailAddress } = this.state;
-    if (!voterEmailAddress) {
-      // Only hide if no email entered
-      this.setState({
-        displayEmailVerificationButton: false,
-      });
-    }
+    this.setState({
+      displayEmailVerificationButton: false,
+    });
   };
 
   localToggleOtherSignInOptions = () => {
@@ -216,15 +217,12 @@ class VoterEmailAddressEntry extends Component {
     }
   };
 
-  onEmailInputBlur = (event) => {
-    const { voterEmailAddress } = this.state;
-    this.hideEmailVerificationButton();
-    this.localToggleOtherSignInOptions();
-    if (voterEmailAddress && (isCordova() || isMobileScreenSize())) {
-      // When there is a voterEmailAddress value and the keyboard closes, submit
-      this.sendSignInCodeEmail(event);
+  closeSignInModal = () => {
+    // console.log('SettingsAccount localCloseSignInModal');
+    if (this.props.closeSignInModal) {
+      this.props.closeSignInModal();
     }
-  }
+  };
 
   closeVerifyModal = () => {
     // console.log('VoterEmailAddressEntry closeVerifyModal');
@@ -238,19 +236,51 @@ class VoterEmailAddressEntry extends Component {
     });
   };
 
-  updateVoterEmailAddress = (e) => {
-    const voterEmailAddress = e.target.value;
-    const voterEmailAddressIsValid = true;
+  updateVoterEmailAddress = (event) => {
+    const voterEmailAddress = event.target.value;
+    const voterEmailAddressIsValid = (voterEmailAddress && voterEmailAddress.length > 6);
+    const disableEmailVerificationButton = !voterEmailAddressIsValid;
     this.setState({
+      disableEmailVerificationButton,
       voterEmailAddress,
       voterEmailAddressIsValid,
     });
   };
 
-  sendVerificationEmail (emailWeVoteId) {
-    VoterActions.sendVerificationEmail(emailWeVoteId);
-    this.setState({ loading: true });
+  onCancel = () => {
+    // console.log('VoterEmailAddressEntry onCancel');
+    const { inModal } = this.props;
+    if (inModal) {
+      this.closeSignInModal();
+    } else {
+      // There are Modal display problems that don't seem to be resolvable that prevents us from returning to the full SettingsAccount modal
+      this.hideEmailVerificationButton();
+      this.localToggleOtherSignInOptions();
+    }
+  };
+
+  onFocus = () => {
+    const { displayEmailVerificationButton } = this.state;
+    if (!displayEmailVerificationButton) {
+      this.displayEmailVerificationButton();
+      this.localToggleOtherSignInOptions();
+    }
   }
+
+  onKeyDown = (event) => {
+    // console.log('onKeyDown, event.keyCode:', event.keyCode);
+    const ENTER_KEY_CODE = 13;
+    const SPACE_KEY_CODE = 32;
+    const keyCodesToBlock = [ENTER_KEY_CODE, SPACE_KEY_CODE];
+    if (keyCodesToBlock.includes(event.keyCode)) {
+      event.preventDefault();
+    }
+  }
+
+  // sendVerificationEmail (emailWeVoteId) {
+  //   VoterActions.sendVerificationEmail(emailWeVoteId);
+  //   this.setState({ loading: true });
+  // }
 
   removeVoterEmailAddress (emailWeVoteId) {
     VoterActions.removeVoterEmailAddress(emailWeVoteId);
@@ -266,7 +296,7 @@ class VoterEmailAddressEntry extends Component {
     const { classes } = this.props;
     const {
       disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, hideExistingEmailAddresses,
-      secretCodeSystemLocked, showVerifyModal, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
+      secretCodeSystemLocked, showVerifyModal, signInCodeEmailSentAndWaitingForResponse, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
     } = this.state;
 
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
@@ -352,23 +382,49 @@ class VoterEmailAddressEntry extends Component {
               name="voter_email_address"
               id="enterVoterEmailAddress"
               value={voterEmailAddress}
-              onBlur={this.onEmailInputBlur}
               onChange={this.updateVoterEmailAddress}
-              onFocus={() => { this.displayEmailVerificationButton(); this.localToggleOtherSignInOptions(); }}
+              onFocus={this.onFocus}
+              onKeyDown={this.onKeyDown}
               placeholder="Type email here..."
             />
           </Paper>
           {displayEmailVerificationButton && (
-            <Button
-              className={classes.button}
-              color="primary"
-              disabled={disableEmailVerificationButton}
-              id="voterEmailAddressEntrySendCode"
-              onClick={this.sendSignInCodeEmail}
-              variant="contained"
-            >
-              Email Verification Code
-            </Button>
+            <ButtonWrapper>
+              <CancelButtonContainer>
+                <Button
+                  color="primary"
+                  disabled={signInCodeEmailSentAndWaitingForResponse}
+                  fullWidth
+                  onClick={this.onCancel}
+                  variant="outlined"
+                >
+                  Cancel
+                </Button>
+              </CancelButtonContainer>
+              <ButtonContainer>
+                <Button
+                  color="primary"
+                  disabled={disableEmailVerificationButton || signInCodeEmailSentAndWaitingForResponse}
+                  id="voterEmailAddressEntrySendCode"
+                  onClick={this.sendSignInCodeEmail}
+                  variant="contained"
+                >
+                  {signInCodeEmailSentAndWaitingForResponse ? 'Sending...' : (
+                    <>
+                      <span className="u-show-mobile-iphone5-or-smaller">
+                        Send Code
+                      </span>
+                      <span className="u-show-mobile-bigger-than-iphone5">
+                        Email Verification Code
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Email Verification Code
+                      </span>
+                    </>
+                  )}
+                </Button>
+              </ButtonContainer>
+            </ButtonWrapper>
           )}
         </form>
       </div>
@@ -521,11 +577,24 @@ const styles = {
     flex: 1,
     padding: 8,
   },
-  button: {
-    width: '100%',
-    padding: '12px',
-  },
 };
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  margin: 4px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const ButtonContainer = styled.div`
+  width: fit-content;
+  margin-left: 8px;
+`;
+
+const CancelButtonContainer = styled.div`
+  width: fit-content;
+`;
 
 const Wrapper = styled.div`
   margin-top: 32px;
