@@ -66,7 +66,7 @@ class AddFriendsByEmail extends Component {
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       scope.addFriendsByEmailSubmit(event).bind(scope);
     }
-  }
+  };
 
   onFriendStoreChange () {
     const friendInvitationsWaitingForVerification = FriendStore.friendInvitationsWaitingForVerification() || [];
@@ -91,13 +91,13 @@ class AddFriendsByEmail extends Component {
     this.setState({
       add_friends_message: e.target.value,
     });
-  }
+  };
 
   cacheSenderEmailAddress = (e) => {
     this.setState({
       senderEmailAddress: e.target.value,
     });
-  }
+  };
 
   addFriendsByEmailSubmit = (event) => {
     // This function is called when the next button is submitted;
@@ -121,7 +121,7 @@ class AddFriendsByEmail extends Component {
       });
       this.friendInvitationByEmailSend(event);
     }
-  }
+  };
 
   deleteFriendFromList = (friend) => {
     const { friendsToInvite } = this.state;
@@ -132,7 +132,7 @@ class AddFriendsByEmail extends Component {
     // console.log('Email: ', friend.email);
 
     this.setState({ friendsToInvite: [...newArray]});
-  }
+  };
 
   cacheFriendData (event) {
     this.setState({ [event.target.name]: event.target.value });

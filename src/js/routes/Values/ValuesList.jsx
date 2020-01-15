@@ -10,6 +10,7 @@ import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
 import IssueCard from '../../components/Values/IssueCard';
 
+
 export default class ValuesList extends Component {
   static propTypes = {
     displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
