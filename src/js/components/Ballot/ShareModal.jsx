@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
+import People from '@material-ui/icons/People';
 import Dialog from '@material-ui/core/esm/Dialog';
 import DialogContent from '@material-ui/core/esm/DialogContent';
 import IconButton from '@material-ui/core/esm/IconButton';
@@ -17,14 +18,14 @@ import ShareModalOption from './ShareModalOption';
 import SettingsAccount from '../Settings/SettingsAccount';
 import FriendStore from '../../stores/FriendStore';
 import FriendActions from '../../actions/FriendActions';
+import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import AppActions from '../../actions/AppActions';
 
 class ShareModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    isSignedIn: PropTypes.bool,
-    pathname: PropTypes.string,
     show: PropTypes.bool,
-    step: PropTypes.string,
+    pathname: PropTypes.string,
     // stripe: PropTypes.object,
     toggleFunction: PropTypes.func.isRequired,
   };
@@ -66,12 +67,12 @@ class ShareModal extends Component {
     }
   }
 
-  setStep (step) {
-    this.setState({ step });
-  }
-
   closeShareModal () {
     this.props.toggleFunction(this.state.pathname);
+  }
+
+  setStep (step) {
+    this.setState({ step });
   }
 
   render () {
@@ -83,7 +84,6 @@ class ShareModal extends Component {
     let shareModalHtml = (
       <>Loading...</>
     );
-
     if (this.state.step === 'options') {
       shareModalHtml = (
         <Dialog
@@ -91,16 +91,18 @@ class ShareModal extends Component {
           open={this.props.show}
           onClose={() => { this.props.toggleFunction(this.state.pathname); }}
         >
-          <ModalTitleArea>
-            <Title>
-              Share:
-              {' '}
-              <strong>Ballot for Nov 2019 Elections</strong>
-            </Title>
-            <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
+          <ModalTitleArea firstSlide>
+            <div>
+              <Title>
+                Share:
+                {' '}
+                <strong>Ballot for Nov 2019 Elections</strong>
+              </Title>
+              <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
+            </div>
             <IconButton
               aria-label="Close"
-              className={classes.closeButton}
+              className={classes.closeButtonAbsolute}
               onClick={this.closeShareModal}
               id="profileCloseShareModal"
             >
@@ -108,13 +110,15 @@ class ShareModal extends Component {
             </IconButton>
           </ModalTitleArea>
           <DialogContent classes={{ root: classes.dialogContent }}>
-            <Flex>
-              <ShareModalOption link="/friends/invite" background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />
-              <ShareModalOption link="https://www.facebook.com/sharer/sharer.php?u=wevote.us&t=WeVote" target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
-              <ShareModalOption link={`https://twitter.com/share?text=Check out this cool ballot tool at https://wevote.us${window.location.pathname}!`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
-              <ShareModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
-              <ShareModalOption copyLink link="https://google.com" background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
-            </Flex>
+            <div className="full-width">
+              <Flex>
+                <ShareModalOption noLink onClickFunction={() => this.setStep('friends')} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />
+                <ShareModalOption link="https://www.facebook.com/sharer/sharer.php?u=wevote.us&t=WeVote" target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
+                <ShareModalOption link={`https://twitter.com/share?text=Check out this cool ballot tool at https://wevote.us${window.location.pathname}!`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
+                <ShareModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
+                <ShareModalOption copyLink link="https://google.com" background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
+              </Flex>
+            </div>
           </DialogContent>
         </Dialog>
       );
@@ -127,6 +131,14 @@ class ShareModal extends Component {
         >
           <ModalTitleArea>
             <Title center bold>Sign In</Title>
+            <IconButton
+              aria-label="Close"
+              className={classes.closeButton}
+              onClick={this.closeShareModal}
+              id="profileCloseShareModal"
+            >
+              <CloseIcon />
+            </IconButton>
           </ModalTitleArea>
           <DialogContent classes={{ root: classes.dialogContent }}>
             <SettingsAccount inShareModal inModal pleaseSignInTitle="Sign in to share with your friends" />
@@ -145,6 +157,14 @@ class ShareModal extends Component {
               <ArrowBackIos className={classes.backButtonIcon} />
               Back
             </Button>
+            <IconButton
+              aria-label="Close"
+              className={classes.closeButton}
+              onClick={this.closeShareModal}
+              id="profileCloseShareModal"
+            >
+              <CloseIcon />
+            </IconButton>
           </ModalTitleArea>
           <DialogContent classes={{ root: classes.dialogContent }}>
             <FriendsCurrentPreview />
@@ -163,6 +183,14 @@ class ShareModal extends Component {
               <ArrowBackIos className={classes.backButtonIcon} />
               Back
             </Button>
+            <IconButton
+              aria-label="Close"
+              className={classes.closeButton}
+              onClick={this.closeShareModal}
+              id="profileCloseShareModal"
+            >
+              <CloseIcon />
+            </IconButton>
           </ModalTitleArea>
           <DialogContent classes={{ root: classes.dialogContent }}>
             <MessageCard
@@ -170,14 +198,16 @@ class ShareModal extends Component {
               buttonText="Add Friends"
               buttonURL="/friends/invite"
               noCard
+              fullWidthButton
               secondaryText="By adding friends who you enjoy discussing politics with to We Vote, you can help eachother get ready for elections."
-              inModal
+              inShareModal
+              icon={<People />}
+              onClickFunc={this.closeShareModal}
             />
           </DialogContent>
         </Dialog>
       );
     }
-
     return (
       <>
         { shareModalHtml }
@@ -185,55 +215,64 @@ class ShareModal extends Component {
     );
   }
 }
-
 const styles = () => ({
   dialogPaper: {
-    maxWidth: '600px',
-    width: '85%',
-    height: 'fit-content',
+    marginTop: hasIPhoneNotch() ? 68 : 48,
+    '@media (min-width: 576px)': {
+      maxWidth: '600px',
+      width: '90%',
+      height: 'fit-content',
+      margin: '0 auto',
+      minWidth: 0,
+      minHeight: 0,
+      transitionDuration: '.25s',
+    },
+    minWidth: '100%',
+    maxWidth: '100%',
+    width: '100%',
+    minHeight: '100%',
+    maxHeight: '100%',
+    height: '100%',
     margin: '0 auto',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
   },
   dialogContent: {
-    '@media (max-width: 768px)': {
-      background: '#fff',
-      padding: '0 8px 8px',
-    },
+    padding: '24px 24px 36px 24px',
     background: 'white',
-    padding: '0px 16px',
     height: 'fit-content',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   backButton: {
-    marginBottom: 6,
-    marginLeft: -8,
+    // marginBottom: 6,
+    // marginLeft: -8,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   backButtonIcon: {
     fontSize: 14,
     fontWeight: 'bold',
   },
   closeButton: {
-    margin: 0,
-    display: 'block',
+    marginLeft: 'auto',
+  },
+  closeButtonAbsolute: {
     position: 'absolute',
-    top: 10,
-    right: 10,
+    right: 14,
+    top: 14,
   },
 });
-
 const ModalTitleArea = styled.div`
   text-align: left;
   width: 100%;
-  padding: 20px 16px 16px 16px;
+  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
   }
-  ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : '')}
+  display: flex;
 `;
-
 const Title = styled.h3`
   font-size: ${props => (props.bold ? '30px' : '24px')};
   color: black;
@@ -242,20 +281,17 @@ const Title = styled.h3`
   text-align: ${props => (props.center ? 'center' : 'initial')};
   font-weight: ${props => (props.bold ? 'bold' : 'initial')};
 `;
-
 const SubTitle = styled.div`
   margin-top: 0;
   font-size: 14px;
-  width: 80%;
+  width: 100%;
+  @media(min-width: 420px) {
+    width: 80%;
+  }
 `;
-
 const Flex = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-top: 36px;
-  padding-bottom: 36px;
+  padding-top: 16px;
 `;
-
 export default withTheme(withStyles(styles)(ShareModal));
-
-

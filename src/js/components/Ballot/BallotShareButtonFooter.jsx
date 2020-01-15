@@ -51,8 +51,7 @@ class BallotShareButtonFooter extends Component {
 
   toggleStep2 () {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
-    const { step2 } = this.state;
-    this.setState({ step2: !step2 });
+    this.setState({ step2: !this.state.step2 });
   }
 
   render () {
@@ -180,8 +179,9 @@ const styles = () => ({
     },
   },
   shareIcon: {
-    // -webkit-transform: 'scaleX(-1)',
     transform: 'scaleX(-1)',
+    position: 'relative',
+    top: -1,
   },
 });
 
@@ -233,7 +233,10 @@ const MenuItemsWrapper = styled.div`
 const Flex = styled.div`
   display: flex;
   flex-wrap: wrap;
-  padding: 16px 0;
+  padding: 20px 0 12px 0;
+  justify-content: center;
+  max-width: 320px !important;
+  margin: 0 auto;
 `;
 
 const Icon = styled.span`

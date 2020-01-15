@@ -408,7 +408,7 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
 `;
 
 const Column = styled.div`
-  padding: 6px;
+  padding: 10px;
   width: 100%;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     width: ${({ candidateLength }) => (candidateLength > 1 ? '50%' : '100%')};
@@ -422,12 +422,11 @@ const CandidateInfo = styled.div`
   flex-flow: column;
   height: 100%;
   margin: 0 !important;
-  padding: 12px 12px 4px 12px !important;
+  padding: 12px !important;
   transition: all 200ms ease-in;
   width: 100% !important;
   &:hover {
     border: 1px solid ${props => (props.brandBlue)};
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   }
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     position: relative;
@@ -455,7 +454,7 @@ const CandidateTopRow = styled.div`
 `;
 
 const CandidateBottomRow = styled.div`
-  padding-bottom: 10px;
+  // padding-bottom: 10px;
 `;
 
 const Container = styled.div`
@@ -465,7 +464,7 @@ const Container = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: row wrap;
   }
-  margin: 0px -6px;
+  margin: 0px -10px;
 `;
 
 const MoreButtonWrapper = styled.div`
