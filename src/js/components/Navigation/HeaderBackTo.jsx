@@ -235,8 +235,10 @@ class HeaderBackTo extends Component {
       }
     }());
 
+    const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 8px', right: 'unset' };
+
     return (
-      <AppBar className={headerClassName} color="default">
+      <AppBar className={headerClassName} color="default" style={cordovaOverrides}>
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}

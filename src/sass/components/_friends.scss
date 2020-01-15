@@ -28,6 +28,10 @@ $friends-padding-top: 50px;
       transform: $unpinned-transform;
       transition: all 100ms ease-in-out 0s;
     }
+    &__cordova {
+      transform: translate3d(0, -68px, 0);
+      padding-top: $space-none;
+    }
   }
 }
 

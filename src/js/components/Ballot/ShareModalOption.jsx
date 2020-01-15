@@ -42,6 +42,7 @@ class ShareModalOption extends Component {
 
   render () {
     return (
+      // eslint-disable-next-line no-nested-ternary
       <Wrapper onClick={this.props.copyLink ? this.copyLink : this.props.onClickFunction ? this.props.onClickFunction : null}>
         {this.props.copyLink || this.props.onClickFunction ? (
           <>
