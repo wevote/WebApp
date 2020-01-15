@@ -424,6 +424,7 @@ export default class SettingsAccount extends Component {
             {!hideVoterPhoneEntry && (
               <VoterPhoneVerificationEntry
                 closeSignInModal={this.localCloseSignInModal}
+                inModal={inModal}
                 toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
               />
             )}
