@@ -24,7 +24,7 @@ import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPrevi
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import VoterStore from '../stores/VoterStore';
 import testimonialImage from '../../img/global/photos/Dale_McGrew-200x200.jpg';
-import { cordovaDot, historyPush, isWebApp } from '../utils/cordovaUtils';
+import { cordovaDot, historyPush, isCordova, isWebApp } from '../utils/cordovaUtils';
 import FriendInvitationsSentToMe from './Friends/FriendInvitationsSentToMe';
 import SuggestedFriends from './Friends/SuggestedFriends';
 import FriendsCurrent from './Friends/FriendsCurrent';
@@ -487,7 +487,7 @@ class Friends extends Component {
       <span>
         {displayFriendsTabs() ? (
           <>
-            <div className={`friends__heading ${friendsHeaderUnpinned && isWebApp() ? 'friends__heading__unpinned' : ''}`}>
+            <div className={`friends__heading ${isCordova() && 'friends__heading__cordova'} ${friendsHeaderUnpinned && isWebApp() ? 'friends__heading__unpinned' : ''}`}>
               <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
                 <div className="container-fluid">
                   <div className="row">
