@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { openSnackbar } from '../Widgets/SnackNotifier';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 class ShareModalOption extends Component {
   static propTypes = {
@@ -31,22 +32,46 @@ class ShareModalOption extends Component {
 
   render () {
     return (
-      <Wrapper href={this.props.copyLink || this.props.onClickFunction ? null : this.props.link || '/'} onClick={this.props.copyLink ? this.copyLink : this.props.onClickFunction ? this.props.onClickFunction : null}>
-        <Icon background={this.props.background}>
-          {this.props.icon}
-        </Icon>
-        <Text>
-          {this.props.title}
-        </Text>
-        {this.props.copyLink ? (
-          <TextArea ref={this.textAreaRef} value={this.props.link} />
-        ) : null}
+      <Wrapper onClick={this.props.copyLink ? this.copyLink : this.props.onClickFunction ? this.props.onClickFunction : null}>
+        {this.props.copyLink || this.props.onClickFunction ? (
+          <>
+            <Icon background={this.props.background}>
+              {this.props.icon}
+            </Icon>
+            <Text>
+              {this.props.title}
+            </Text>
+            {this.props.copyLink ? (
+              <TextArea ref={this.textAreaRef} value={this.props.link} />
+            ) : null}
+          </>
+        ) : (
+          <OpenExternalWebSite
+            className="no-decoration"
+            url={this.props.link}
+            target="_blank"
+            body={(
+              <>
+                <Icon background={this.props.background}>
+                  {this.props.icon}
+                </Icon>
+                <Text>
+                  {this.props.title}
+                </Text>
+                {this.props.copyLink ? (
+                  <TextArea ref={this.textAreaRef} value={this.props.link} />
+                ) : null}
+              </>
+            )}
+          />
+        )}
       </Wrapper>
     );
   }
 }
 
-const Wrapper = styled.a`
+const Wrapper = styled.div`
+  cursor: pointer;
   display: block !important;
   margin-bottom: 12px;
   @media (min-width: 380px) {
@@ -56,9 +81,12 @@ const Wrapper = styled.a`
   text-align: center;
   text-decoration: none !important;
   color: black !important;
+  transition-duration: .25s;
   &:hover {
     text-decoration: none !important;
     color: black !important;
+    transform: scale(1.05);
+    transition-duration: .25s;
   }
   @media (max-width: 576px) {
     width: 33.333%;
@@ -69,6 +97,7 @@ const Wrapper = styled.a`
 `;
 
 const Icon = styled.div`
+  text-decoration: none !important;
   margin: 0 auto;
   width: 65px;
   height: 65px;
@@ -98,6 +127,7 @@ const Icon = styled.div`
 const Text = styled.h3`
   font-weight: normal;
   font-size: 16px;
+  color: black !important;
 `;
 
 const TextArea = styled.textarea`
