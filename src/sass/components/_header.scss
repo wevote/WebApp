@@ -67,7 +67,7 @@ $header-padding-left: 15px;
   }
 
   &__cordova {
-    margin: $space-none;
+    margin: $space-none $header-padding-left $space-none $header-padding-left;
     padding-bottom: $space-xs;
     padding-left: $space-none;
     padding-right: $page-header-cordova-padding-right;

@@ -182,14 +182,14 @@ class VoterPhoneVerificationEntry extends Component {
     this.setState({ loading: true });
   };
 
-  updateVoterSMSPhoneNumber = (e) => {
-    const voterSMSPhoneNumber = e.target.value;
-    const voterSMSPhoneNumberIsValid = true;
-    this.setState({
-      voterSMSPhoneNumber,
-      voterSMSPhoneNumberIsValid,
-    });
-  };
+  // updateVoterSMSPhoneNumber = (e) => {
+  //   const voterSMSPhoneNumber = e.target.value;
+  //   const voterSMSPhoneNumberIsValid = true;
+  //   this.setState({
+  //     voterSMSPhoneNumber,
+  //     voterSMSPhoneNumberIsValid,
+  //   });
+  // };
 
   closeVerifyModal = () => {
     // console.log('VoterPhoneVerificationEntry closeVerifyModal');

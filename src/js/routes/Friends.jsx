@@ -499,7 +499,7 @@ class Friends extends Component {
                 </div>
               </div>
             </div>
-            <div className="page-content-container">
+            <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
               <div className="container-fluid">
                 <Wrapper>
                   {mobileContentToDisplay}
@@ -508,7 +508,7 @@ class Friends extends Component {
             </div>
           </>
         ) : (
-          <div className="page-content-container">
+          <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             <div className="container-fluid">
               <div className="container-main">
                 {desktopContentToDisplay}
