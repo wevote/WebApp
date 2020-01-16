@@ -49,9 +49,12 @@ class SignInModal extends Component {
     }
   }
 
-  focusedOnSingleInputToggle = () => {
+  focusedOnSingleInputToggle = (focusedInputName) => {
     const { focusedOnSingleInputToggle } = this.state;
+    // console.log('focusedInputName:', focusedInputName);
+    const incomingInputName = focusedInputName === 'email' ? 'email' : 'phone';
     this.setState({
+      focusedInputName: incomingInputName,
       focusedOnSingleInputToggle: !focusedOnSingleInputToggle,
     });
   }
@@ -74,7 +77,7 @@ class SignInModal extends Component {
   render () {
     renderLog('SignInModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { focusedOnSingleInputToggle, voter, voterIsSignedIn } = this.state;
+    const { focusedInputName, focusedOnSingleInputToggle, voter, voterIsSignedIn } = this.state;
     if (!voter) {
       // console.log('SignInModal render voter NOT found');
       return <div className="undefined-props" />;
@@ -88,7 +91,10 @@ class SignInModal extends Component {
     // This modal is shown when the voter wants to sign in.
     return (
       <Dialog
-        classes={{ paper: focusedOnSingleInputToggle ? classes.dialogPaperFocusedOnSingleInput : classes.dialogPaper, root: classes.dialogRoot }}
+        classes={{
+          paper: focusedOnSingleInputToggle ? (focusedInputName === 'email' ? classes.dialogPaperFocusedOnEmailInput : classes.dialogPaperFocusedOnPhoneInput) : classes.dialogPaper, // eslint-disable-line no-nested-ternary
+          root: classes.dialogRoot,
+        }}
         open={this.props.show}
         onClose={() => { this.closeFunction(); }}
       >
@@ -176,7 +182,7 @@ const styles = theme => ({
     position: 'absolute',
     transform: 'translate(-50%, -25%)',
   },
-  dialogPaperFocusedOnSingleInput: isWebApp() ? {
+  dialogPaperFocusedOnEmailInput: isWebApp() ? {
     [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
@@ -187,7 +193,21 @@ const styles = theme => ({
       position: 'absolute',
       top: '75%',
       left: '73%',
-      transform: 'translate(-75%, -75%)',
+      transform: 'translate(-75%, -34%)', // Only difference is -34%
+    },
+  } : {},
+  dialogPaperFocusedOnPhoneInput: isWebApp() ? {
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '95%',
+      maxWidth: '95%',
+      width: '95%',
+      maxHeight: '90%',
+      height: 'unset',
+      margin: '0 auto',
+      position: 'absolute',
+      top: '75%',
+      left: '73%',
+      transform: 'translate(-75%, -70%)', // Only difference is second -70%
     },
   } : {},
   dialogContent: {

@@ -167,10 +167,10 @@ export default class SettingsAccount extends Component {
     });
   }
 
-  focusedOnSingleInputToggle = () => {
+  focusedOnSingleInputToggle = (focusedInputName) => {
     // console.log('SettingsAccount focusedOnSingleInput');
     if (this.props.focusedOnSingleInputToggle) {
-      this.props.focusedOnSingleInputToggle();
+      this.props.focusedOnSingleInputToggle(focusedInputName);
     }
   };
 
@@ -189,7 +189,8 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: !hideTwitterSignInButton,
       hideVoterPhoneEntry: !hideVoterPhoneEntry,
     });
-    this.focusedOnSingleInputToggle();
+    // console.log('SettingsAccount toggleNonEmailSignInOptions');
+    this.focusedOnSingleInputToggle('email');
   };
 
   toggleNonPhoneSignInOptions = () => {
@@ -200,7 +201,8 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: !hideTwitterSignInButton,
       hideVoterEmailAddressEntry: !hideVoterEmailAddressEntry,
     });
-    this.focusedOnSingleInputToggle();
+    // console.log('SettingsAccount toggleNonPhoneSignInOptions');
+    this.focusedOnSingleInputToggle('phone');
   };
 
   toggleTwitterDisconnectOpen () {
@@ -309,10 +311,16 @@ export default class SettingsAccount extends Component {
               <div>
                 {voterIsSignedIn ?
                   <div className="u-stack--sm">{yourAccountExplanation}</div> : (
-                    <div>
-                      <div className="u-f3">{pleaseSignInTitle}</div>
-                      <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
-                    </div>
+                    <>
+                      <div className="u-show-mobile-bigger-than-iphone5">
+                        <div className="u-f3">{pleaseSignInTitle}</div>
+                        <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
+                      </div>
+                      <div className="u-show-desktop-tablet">
+                        <div className="u-f3">{pleaseSignInTitle}</div>
+                        <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
+                      </div>
+                    </>
                   )
                 }
               </div>
