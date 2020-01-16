@@ -124,6 +124,7 @@ const DescriptionImageColumn = styled.div`
 const Description = styled.span`
   color: #333;
   font-size: 18px;
+  padding-bottom: 16px;
 `;
 
 const Image = styled.img`
