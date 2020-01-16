@@ -451,11 +451,8 @@ class VoterPhoneVerificationEntry extends Component {
                 >
                   {signInCodeSMSSentAndWaitingForResponse ? 'Sending...' : (
                     <>
-                      <span className="u-show-mobile-iphone5-or-smaller">
+                      <span className="u-show-mobile">
                         Send Code
-                      </span>
-                      <span className="u-show-mobile-bigger-than-iphone5">
-                        Send Verification Code
                       </span>
                       <span className="u-show-desktop-tablet">
                         Send Verification Code

@@ -58,7 +58,7 @@ export default class Values extends Component {
   }
 
   componentDidCatch (error, info) {
-    console.log('Values.jsx caught: ', error, info.coponentStack);
+    console.log('Values.jsx caught: ', error, info.componentStack);
   }
 
   render () {
