@@ -802,7 +802,7 @@ class VoterGuideBallot extends Component {
                 {/* The ballot items the organization wants to promote */}
                 <VoterGuideBallotWrapper>
                   {ballotWithOrganizationEndorsementsLength > 0 ? (
-                    <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
+                    <div className="BallotList">
                       {ballotWithOrganizationEndorsements.map(item => (
                         <VoterGuideBallotItemCompressed
                           key={item.we_vote_id}

@@ -20,7 +20,7 @@ export function cordovaScrollablePaneTopPadding () {
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding android: ${window.location.href}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionsTabs(): ${showBallotDecisionsTabs()}`);
     } else {
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(0, 40)}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionsTabs(): ${showBallotDecisionsTabs()}`);
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(window.location.length - 60)}`);
+      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(window.location.href.length - 60)}`);
     }
   }
 
@@ -95,7 +95,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '58px';
         case enums.candidate:       return '56px';
         case enums.candidateWild:   return '72px';
-        case enums.officeWild:      return '76px';
+        case enums.officeWild:      return '101px';
+        case enums.opinions:        return '10px';
         case enums.values:          return '10px';
         case enums.ballotVote:      return isSignedIn ? '163px' : '165px';
         case enums.ballotSmHdrWild: return '169px';
@@ -252,13 +253,23 @@ export function cordovaBallotFilterTopMargin () {
       return '53px';
     } else if (isIPhone4p7in()) {
       return '65px';
+    } else if (isIPhone6p1in()) {
+      if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '79px';
+      }
+      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
+        return '46px';
+      }
+      return '88px';
+    } else if (isIPhone6p5in()) {
+      if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '79px';
+      }
+      return '89px';
     } else if (hasIPhoneNotch()) {
       if (pageEnumeration() === enums.candidateWild) {
         return '65px';
       }
-      return '74px';
-    } else if (isIPhone6p1in()) {
-      return '46px';
     } else if (isIPad()) {
       return '38px';
     } else if (isIPhone4in()) {
@@ -315,7 +326,11 @@ export function cordovaNetworkNextButtonTop () {
 
 // <div className="container-main">
 export function cordovaContainerMainOverride () {
-  if (isAndroid()) {
+  if (isIOS()) {
+    if (isIPhone6p5in()) {
+      return '34px';
+    }
+  } else if (isAndroid()) {
     const sizeString = getAndroidSize();
     if (sizeString === '--xl') {
       return '0px';
@@ -401,6 +416,16 @@ export function cordovaVoteMiniHeader () {
         top: '69px',
         height: '127px',
       };
+    } else if (isIPhone6p1in()) {
+      return {
+        top: '94px',
+        height: '125px',
+      };
+    } else if (isIPhone6p5in()) {
+      return {
+        top: '91px',
+        height: '118px',
+      };
     } else if (hasIPhoneNotch()) {
       return {
         top: '82px',
@@ -475,9 +500,7 @@ export function cordovaTopHeaderTopMargin () {
           default:                    style.marginTop = '16px'; break;
         }
       } else if (isIPad()) {
-        switch (pageEnumeration()) {
-          default:                    style.marginTop = '0px'; break;
-        }
+        style.marginTop = '0px';
       } else {
         style.marginTop = '20px';
       }
@@ -543,4 +566,27 @@ export function cordovaSignInModalTopPosition (collapsed) {
     return collapsed ? '-30%' : '-25%';
   }
   return '';
+}
+
+export function cordovaFriendsWrapper () {
+  if (isIOS()) {
+    if (isIPhone6p1in()) {
+      return {
+        paddingTop: '69px',
+        paddingBottom: '90px',
+      };
+    }
+    if (isIPhone6p5in()) {
+      return {
+        paddingTop: '81px',
+        paddingBottom: '90px',
+      };
+    }
+  }
+
+  // Default for all other devices, including desktop and mobile browsers
+  return {
+    paddingTop: '60px',
+    paddingBottom: '90px',
+  };
 }
