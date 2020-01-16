@@ -644,7 +644,7 @@ class Ballot extends Component {
     } else {
       return false;
     }
-  }
+  };
 
   memberViewedBallot = (membershipOrganizationWeVoteId, googleCivicElectionId) => {
     if (!membershipOrganizationWeVoteId || !googleCivicElectionId) {
@@ -662,7 +662,7 @@ class Ballot extends Component {
       memberViewedBallotHasBeenSavedOnce,
     });
     return true;
-  }
+  };
 
   showUserEmptyOptions = () => {
     const { completionLevelFilterType } = this.state;
@@ -731,7 +731,7 @@ class Ballot extends Component {
         numberOfVoterRetrieveAttempts,
       });
     }, delayBeforeVoterRefreshCall);
-  }
+  };
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
@@ -1047,7 +1047,7 @@ class Ballot extends Component {
                   />
                   <div>
                     {/* The rest of the ballot items */}
-                    <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
+                    <div className="BallotList">
                       {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
                         // Ballot limited by items by race_office_level = (Federal, State, Local) or kind_of_ballot_item = (Measure)
                         if ((raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||

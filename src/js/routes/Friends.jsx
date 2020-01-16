@@ -32,7 +32,7 @@ import InviteByEmail from './Friends/InviteByEmail';
 import FriendInvitationsSentByMe from './Friends/FriendInvitationsSentByMe';
 import MessageCard from '../components/Widgets/MessageCard';
 import AppStore from '../stores/AppStore';
-import { cordovaBallotFilterTopMargin } from '../utils/cordovaOffsets';
+import { cordovaBallotFilterTopMargin, cordovaFriendsWrapper } from '../utils/cordovaOffsets';
 import displayFriendsTabs from '../utils/displayFriendsTabs';
 
 const testimonialAuthor = 'Dale M., Oakland, California';
@@ -501,9 +501,9 @@ class Friends extends Component {
             </div>
             <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
               <div className="container-fluid">
-                <Wrapper>
+                <div className="Friends__Wrapper" style={cordovaFriendsWrapper()}>
                   {mobileContentToDisplay}
-                </Wrapper>
+                </div>
               </div>
             </div>
           </>
@@ -532,11 +532,6 @@ const styles = () => ({
     maxHeight: '40px !important',
   },
 });
-
-const Wrapper = styled.div`
-  padding-top: 60px;
-  padding-bottom: 90px;
-`;
 
 const SectionTitle = styled.h2`
   width: fit-content;
