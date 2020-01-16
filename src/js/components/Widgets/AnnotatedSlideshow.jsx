@@ -16,7 +16,8 @@ class AnnotatedSlideshow extends PureComponent {
   };
 
   componentDidMount () {
-    this.autoAdvanceSlide();
+    // User testing is showing problems with auto advance...
+    // this.autoAdvanceSlide();
   }
 
   componentWillUnmount () {
@@ -34,7 +35,7 @@ class AnnotatedSlideshow extends PureComponent {
     }
     // this.handleSlideImage(num);
     this.props.onChangeSlide(advanceIfTrue ? selectedStepIndex + 1 : selectedStepIndex - 1);
-    this.autoAdvanceSlide();
+    // this.autoAdvanceSlide();
   }
 
   autoAdvanceSlide () {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/esm/styles';
 import Button from '@material-ui/core/esm/Button';
 import { isWebApp } from '../../utils/cordovaUtils';
@@ -53,44 +54,71 @@ class HeaderBarProfilePopUp extends Component {
           <ul className="nav flex-column">
             {/* Desktop only */}
             <li className="d-none d-sm-block">
-              <Link id="profilePopUpYourSettings" onClick={this.hideProfilePopUp} to="/settings/profile">
-                <Button
-                  variant="text"
-                  color="primary"
-                  classes={{ root: classes.signOutButton }}
-                >
-                  <span className="header-slide-out-menu-text-left">Your Settings</span>
-                </Button>
-              </Link>
+              <ListItemWrapper>
+                <Link id="profilePopUpYourSettings" onClick={this.hideProfilePopUp} to="/settings/profile">
+                  <Button
+                    variant="text"
+                    color="primary"
+                    classes={{ root: classes.signOutButton }}
+                  >
+                    <span className="header-slide-out-menu-text-left">Your Settings</span>
+                  </Button>
+                </Link>
+              </ListItemWrapper>
             </li>
             {/* Mobile only */}
             <li className="navli d-block d-sm-none">
-              <Link id="profilePopUpYourSettingsMobile" onClick={this.hideProfilePopUp} to="/settings/hamburger">
-                <Button
-                  variant="text"
-                  color="primary"
-                  classes={{ root: classes.signOutButton }}
-                >
-                  <span className="header-slide-out-menu-text-left">Your Settings</span>
-                </Button>
-              </Link>
+              <ListItemWrapper>
+                <Link id="profilePopUpYourSettingsMobile" onClick={this.hideProfilePopUp} to="/settings/hamburger">
+                  <Button
+                    variant="text"
+                    color="primary"
+                    classes={{ root: classes.signOutButton }}
+                  >
+                    <span className="header-slide-out-menu-text-left">Your Settings</span>
+                  </Button>
+                </Link>
+              </ListItemWrapper>
             </li>
             {/* Desktop or Mobile */}
             <li>
-              <Link id="profilePopUpYourEndorsements" onClick={this.hideProfilePopUp} to="/settings/voterguidelist">
-                <Button
-                  variant="text"
-                  color="primary"
-                  classes={{ root: classes.signOutButton }}
-                >
-                  <span className="header-slide-out-menu-text-left">Your Endorsements</span>
-                </Button>
-              </Link>
+              <ListItemWrapper>
+                <Link id="profilePopUpYourEndorsements" onClick={this.hideProfilePopUp} to="/settings/voterguidelist">
+                  <Button
+                    variant="text"
+                    color="primary"
+                    classes={{ root: classes.signOutButton }}
+                  >
+                    <span className="header-slide-out-menu-text-left">Your Endorsements</span>
+                  </Button>
+                </Link>
+              </ListItemWrapper>
             </li>
             {/* Desktop or Mobile */}
             {voter && isSignedIn ?
               null : (
                 <li>
+                  <ListItemWrapper>
+                    <Link // eslint-disable-line
+                      to=""
+                    >
+                      <Button
+                        variant="text"
+                        color="primary"
+                        classes={{ root: classes.signOutButton }}
+                        id="profilePopUpSignIn"
+                        onClick={this.signInFromPopUp}
+                      >
+                        <span className="header-slide-out-menu-text-left">Sign In</span>
+                      </Button>
+                    </Link>
+                  </ListItemWrapper>
+                </li>
+              )}
+            {/* Desktop or Mobile */}
+            {voter && isSignedIn ? (
+              <li>
+                <ListItemWrapper>
                   <Link // eslint-disable-line
                     to=""
                   >
@@ -98,30 +126,13 @@ class HeaderBarProfilePopUp extends Component {
                       variant="text"
                       color="primary"
                       classes={{ root: classes.signOutButton }}
-                      id="profilePopUpSignIn"
-                      onClick={this.signInFromPopUp}
+                      id="profilePopUpSignOut"
+                      onClick={this.signOutAndHideProfilePopUp}
                     >
-                      <span className="header-slide-out-menu-text-left">Sign In</span>
+                      <span className="header-slide-out-menu-text-left">Sign Out</span>
                     </Button>
                   </Link>
-                </li>
-              )}
-            {/* Desktop or Mobile */}
-            {voter && isSignedIn ? (
-              <li>
-                <Link // eslint-disable-line
-                  to=""
-                >
-                  <Button
-                    variant="text"
-                    color="primary"
-                    classes={{ root: classes.signOutButton }}
-                    id="profilePopUpSignOut"
-                    onClick={this.signOutAndHideProfilePopUp}
-                  >
-                    <span className="header-slide-out-menu-text-left">Sign Out</span>
-                  </Button>
-                </Link>
+                </ListItemWrapper>
               </li>
             ) : null
             }
@@ -137,13 +148,6 @@ class HeaderBarProfilePopUp extends Component {
               </Link>
             </span>
           </div>
-          {/* Commented out since this pop-up is so small. We still show attributions on Settings page
-          <div>
-            <span className="terms-and-privacy">
-              <Link id="profilePopUpAttributions" onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
-            </span>
-          </div>
-          */}
         </div>
       </div>
     );
@@ -160,5 +164,9 @@ const styles = {
     textAlign: 'left',
   },
 };
+
+const ListItemWrapper = styled.div`
+  padding: 5px 0 5px 10px;
+`;
 
 export default withStyles(styles)(HeaderBarProfilePopUp);
