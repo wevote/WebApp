@@ -27,9 +27,12 @@ class HamburgerMenuRow extends Component {
     const indented = this.props.indented !== undefined;
 
     if (indented) {
+      // "indented" not currently used
       return (
         <tr className="hamburger-menu__tr">
-          <td className="hamburger-menu__td-0" />
+          <td className="hamburger-menu__td-0">
+            &nbsp;
+          </td>
           <td className="hamburger-menu__td-1">
             <Link onClick={this.onClickAction} to={this.props.to}>
               {this.props.fullIcon ? this.props.fullIcon :
@@ -37,7 +40,7 @@ class HamburgerMenuRow extends Component {
               }
             </Link>
           </td>
-          <td className="hamburger-menu__td-2" colSpan={2}>
+          <td className="hamburger-menu__td-2">
             <Link onClick={this.onClickAction} to={this.props.to}>
               <LinkTextWrapper>
                 {this.props.linkText}
@@ -56,7 +59,7 @@ class HamburgerMenuRow extends Component {
               }
             </Link>
           </td>
-          <td className="hamburger-menu__td-1" colSpan={3}>
+          <td className="hamburger-menu__td-1" colSpan={2}>
             <Link onClick={this.onClickAction} to={this.props.to}>
               <LinkTextWrapper>
                 {this.props.linkText}
