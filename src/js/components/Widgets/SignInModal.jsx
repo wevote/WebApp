@@ -153,7 +153,7 @@ const styles = theme => ({
     width: '100%',
   } : {
     height: '100%',
-    position: 'absolute !important',
+    // position: 'absolute !important', // Causes problem on Firefox
     top: '-15%',
     left: '0% !important',
     right: 'unset !important',

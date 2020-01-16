@@ -849,8 +849,10 @@ class Ballot extends Component {
                   onClick={this.toggleSelectBallotModal}
                   style={{ color: 'rgb(6, 95, 212)' }}
                 >
-                  please click here to change your address.
+                  please click here to enter an address
                 </Link>
+                {' '}
+                in the United States of America where you are registered to vote.
               </BallotLoadingWrapper>
             </div>
           </div>
@@ -1135,6 +1137,8 @@ class Ballot extends Component {
 }
 
 const BallotLoadingWrapper = styled.div`
+  font-size: 20px;
+  padding-top: 20px;
   text-align: center;
 `;
 
