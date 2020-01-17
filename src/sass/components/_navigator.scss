@@ -26,7 +26,17 @@ $pop-up-menu-cordova-padding: 10px;
 // Header Nav
 // ================================
 
+.about-us,
+.Donate,
+.gettingStarted {
+  @include breakpoints(max mid-small) {
+    margin-right: $container-margin !important;
+    margin-left: $container-margin !important;
+  }
+}
+
 .profile-menu,
+.profile-menu-welcome-mobile-page,
 .about-menu {
   max-width: 320px;
   position: absolute;
@@ -38,15 +48,6 @@ $pop-up-menu-cordova-padding: 10px;
   transition: opacity .25s ease-in-out;
   z-index: 2;
   pointer-events: none;
-}
-
-.about-us,
-.Donate,
-.gettingStarted {
-  @include breakpoints(max mid-small) {
-    margin-right: $container-margin !important;
-    margin-left: $container-margin !important;
-  }
 }
 
 .profile-pop-up-menu-cordova {
@@ -76,6 +77,20 @@ $pop-up-menu-cordova-padding: 10px;
   border-right: 8px solid transparent;
   border-left: 8px solid transparent;
   right: 10px;
+  top: -16px;
+}
+
+.profile-menu-welcome-mobile-page::before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid #fff;
+  border-right: 8px solid transparent;
+  border-left: 8px solid transparent;
+  right: 37px;
   top: -16px;
 }
 
@@ -115,6 +130,7 @@ $pop-up-menu-cordova-padding: 10px;
 }
 
 .profile-menu--open .profile-menu,
+.profile-menu-welcome-mobile-page--open .profile-menu-welcome-mobile-page,
 .profile-pop-up-menu-cordova--open .profile-pop-up-menu-cordova,
 .about-menu--open .about-menu {
   opacity: 1;
