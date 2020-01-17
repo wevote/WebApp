@@ -68,15 +68,31 @@ class AnnotatedSlideshow extends PureComponent {
         </Slide>
         {
           selectedStepIndex < length - 1 && (
-            <Button
-              color="primary"
-              id="howItWorksNext"
-              variant="contained"
-              classes={{ root: classes.nextButtonRoot }}
-              onClick={() => this.handleChangeSlide(true)}
-            >
-              Next
-            </Button>
+            <TwoButtonsWrapper>
+              <BackButtonWrapper>
+                <Button
+                  classes={{ root: classes.nextButtonRoot }}
+                  color="primary"
+                  disabled={selectedStepIndex === 0}
+                  fullWidth
+                  onClick={() => this.handleChangeSlide(false)}
+                  variant="outlined"
+                >
+                  Back
+                </Button>
+              </BackButtonWrapper>
+              <NextButtonWrapper>
+                <Button
+                  color="primary"
+                  id="howItWorksNext"
+                  variant="contained"
+                  classes={{ root: classes.nextButtonRoot }}
+                  onClick={() => this.handleChangeSlide(true)}
+                >
+                  Next
+                </Button>
+              </NextButtonWrapper>
+            </TwoButtonsWrapper>
           )
         }
       </Wrapper>
@@ -115,6 +131,32 @@ const SlideShowTitle = styled.h3`
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 20px;
     margin-top: 16px;
+  }
+`;
+
+const TwoButtonsWrapper = styled.div`
+  width: 100%;
+  margin: 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const BackButtonWrapper = styled.div`
+  margin: 0;
+  margin-right: 12px;
+  width: 100%;
+  @media(min-width: 520px) {
+    margin-right: 8px;
+  }
+`;
+
+const NextButtonWrapper = styled.div`
+  margin: 0;
+  margin-right: 0;
+  width: 100%;
+  @media(min-width: 520px) {
+    margin-right: 8px;
   }
 `;
 

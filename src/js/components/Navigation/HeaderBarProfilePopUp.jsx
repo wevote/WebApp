@@ -11,6 +11,7 @@ class HeaderBarProfilePopUp extends Component {
   static propTypes = {
     classes: PropTypes.object,
     hideProfilePopUp: PropTypes.func.isRequired,
+    isWelcomeMobilePage: PropTypes.bool,
     profilePopUpOpen: PropTypes.bool,
     signOutAndHideProfilePopUp: PropTypes.func.isRequired,
     toggleProfilePopUp: PropTypes.func.isRequired,
@@ -35,13 +36,13 @@ class HeaderBarProfilePopUp extends Component {
 
   render () {
     renderLog('HeaderBarProfilePopUp');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, voter, profilePopUpOpen } = this.props;
+    const { classes, isWelcomeMobilePage, voter, profilePopUpOpen } = this.props;
     const isSignedIn = voter && voter.is_signed_in;
 
     /* eslint-disable no-extra-parens */
     const popUpOpen = (function opener () {
       if (profilePopUpOpen) {
-        return (isWebApp() ? 'profile-menu--open' : 'profile-pop-up-menu-cordova--open');
+        return (isWebApp() ? `${isWelcomeMobilePage ? 'profile-menu-welcome-mobile-page--open' : 'profile-menu--open'}` : 'profile-pop-up-menu-cordova--open');
       }
       return '';
     }());
@@ -49,7 +50,7 @@ class HeaderBarProfilePopUp extends Component {
     return (
       <div className={popUpOpen}>
         <div className="page-overlay" onClick={this.hideProfilePopUp} />
-        <div className={isWebApp() ? 'profile-menu' : 'profile-pop-up-menu-cordova'}>
+        <div className={isWebApp() ? `${isWelcomeMobilePage ? 'profile-menu-welcome-mobile-page' : 'profile-menu'}` : 'profile-pop-up-menu-cordova'}>
           <span className="we-vote-promise">Our Promise: We&apos;ll never sell your email.</span>
           <ul className="nav flex-column">
             {/* Desktop only */}

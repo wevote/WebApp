@@ -452,6 +452,10 @@ const styles = theme => ({
     width: 150,
     height: 150,
     color: 'rgb(171, 177, 191)',
+    [theme.breakpoints.down('sm')]: {
+      width: 75,
+      height: 75,
+    },
   },
   ballotButtonRoot: {
     width: 250,
@@ -462,18 +466,21 @@ const styles = theme => ({
 });
 
 const EmptyBallotMessageContainer = styled.div`
-  padding: 1em 2em;
+  align-items: center;
   display: flex;
   flex-flow: column;
-  align-items: center;
+  padding: 1em 2em;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: .5em .5em;
+  }
 `;
 
 const EmptyBallotText = styled.p`
   font-size: 16px;
   text-align: center;
   margin: 1em 2em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin: 1em;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin: 0 1em;
   }
 `;
 

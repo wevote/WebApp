@@ -304,8 +304,7 @@ class WelcomeAppbar extends Component {
               <NavLink id="welcomeYourBallot" to="/ballot">Your Ballot</NavLink>
               <Divider />
               {!voterIsSignedIn && <NavLink id="welcomeSignIn" to="" onClick={() => this.toggleSignInModal()}>Sign In</NavLink> }
-              {voterIsSignedIn &&
-              (
+              {voterIsSignedIn && (
                 <div>
                   {voterPhotoUrlMedium ? (
                     <div
@@ -322,7 +321,7 @@ class WelcomeAppbar extends Component {
                       />
                     </div>
                   ) : (
-                    <ProfileWrapper>
+                    <ProfileIconWrapper>
                       <IconButton
                         classes={{ root: classes.iconButtonRoot }}
                         id="profileAvatarHeaderBar"
@@ -333,7 +332,7 @@ class WelcomeAppbar extends Component {
                         </FirstNameWrapper>
                         <AccountCircleIcon />
                       </IconButton>
-                    </ProfileWrapper>
+                    </ProfileIconWrapper>
                   )
                   }
                   {this.state.profilePopUpOpen && voterIsSignedIn && (
@@ -350,14 +349,56 @@ class WelcomeAppbar extends Component {
                     />
                   )}
                 </div>
-              )
-              }
+              )}
             </DesktopView>
             <MobileTabletView>
               <NavLink id="welcomeYourBallotMobile" to="/ballot">Your Ballot</NavLink>
+              {voterIsSignedIn && (
+                <div>
+                  {voterPhotoUrlMedium ? (
+                    <ProfileImageWrapper
+                      id="profileAvatarHeaderBar"
+                      onClick={this.toggleProfilePopUp}
+                    >
+                      <img
+                        className="header-nav__avatar"
+                        src={voterPhotoUrlMedium}
+                        height={24}
+                        width={24}
+                        alt="generic avatar"
+                      />
+                    </ProfileImageWrapper>
+                  ) : (
+                    <ProfileIconWrapper>
+                      <IconButton
+                        classes={{ root: classes.iconProfileButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={this.toggleProfilePopUp}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </ProfileIconWrapper>
+                  )
+                  }
+                  {this.state.profilePopUpOpen && voterIsSignedIn && (
+                    <HeaderBarProfilePopUp
+                      onClick={this.toggleProfilePopUp}
+                      hideProfilePopUp={this.hideProfilePopUp}
+                      isWelcomeMobilePage
+                      profilePopUpOpen={this.state.profilePopUpOpen}
+                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      toggleSignInModal={this.toggleSignInModal}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      voter={this.state.voter}
+                      weVoteBrandingOff={this.state.we_vote_branding_off}
+                    />
+                  )}
+                </div>
+              )}
               <IconButton
                 classes={{ root: classes.iconButton }}
-                id="profileAvatarHeaderBar"
+                id="hamburgerMenuHeaderBar"
                 onClick={() => this.handleShowMobileNavigation(true)}
               >
                 <MenuIcon />
@@ -446,7 +487,7 @@ class WelcomeAppbar extends Component {
   }
 }
 
-const styles = ({
+const styles = theme => ({
   appBarRoot: {
     background: 'transparent',
     alignItems: 'center',
@@ -466,6 +507,17 @@ const styles = ({
     outline: 'none !important',
     '&:hover': {
       backgroundColor: 'transparent',
+    },
+  },
+  iconProfileButtonRoot: {
+    color: 'rgba(255, 255, 255, .9)',
+    outline: 'none !important',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 8,
+      paddingRight: 0,
     },
   },
   navButtonOutlined: {
@@ -506,8 +558,13 @@ const MobileTabletView = styled.div`
   }
 `;
 
-const ProfileWrapper = styled.div`
+const ProfileIconWrapper = styled.div`
   color: white;
+`;
+
+const ProfileImageWrapper = styled.div`
+  margin-top: 7px;
+  margin-left: 6px;
 `;
 
 export default withStyles(styles)(WelcomeAppbar);
