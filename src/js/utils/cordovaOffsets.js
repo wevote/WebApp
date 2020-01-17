@@ -34,7 +34,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidateWild:   return '42px';
         case enums.ballotVote:      return '157px';
         case enums.officeWild:      return '84px';
-        case enums.ballotSmHdrWild: return '161px';  // $body-padding-top-no-decision-tabs
+        case enums.ballotSmHdrWild: return '141px';  // $body-padding-top-no-decision-tabs
         case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '48px' : '32px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '40px';
@@ -141,8 +141,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidateWild:   return '69px';
         case enums.opinions:        return '10px';
         case enums.officeWild:      return '96px';
-        case enums.ballotVote:      return isSignedIn ? '162px' : '162px';
-        case enums.ballotSmHdrWild: return '167px';
+        case enums.ballotVote:      return '162px';
+        case enums.ballotSmHdrWild: return '163px';
         case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '58px' : '42px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
@@ -246,13 +246,18 @@ export function cordovaScrollablePaneTopPadding () {
 // This determines where the top of the "All", "Choices" and "Decided" tabs should start.
 export function cordovaBallotFilterTopMargin () {
   if (isIOS()) {
-    if (isIPhone5p5in()) {
+    if (isIPhone4p7in()) {
+      return '65px';
+    } else if (isIPhone5p5in()) {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '55px';
       }
-      return '53px';
-    } else if (isIPhone4p7in()) {
-      return '65px';
+      return '69px';
+    } else if (isIPhone5p8in()) {
+      if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '76px';
+      }
+      return '86px';
     } else if (isIPhone6p1in()) {
       if (window.location.href.indexOf('/index.html#/friends') > 0) {
         return '79px';
@@ -366,7 +371,7 @@ export function cordovaFooterHeight () {
 export function cordovaVoterGuideTopPadding () {
   if (isIOS()) {
     if (isIPhone5p5in()) {
-      return '66px';
+      return '11px';
     } else if (isIPhone4p7in()) {
       return '0px';
     } else if (hasIPhoneNotch()) {
@@ -415,6 +420,11 @@ export function cordovaVoteMiniHeader () {
       return {
         top: '69px',
         height: '127px',
+      };
+    } else if (isIPhone5p8in()) {
+      return {
+        top: '92px',
+        height: '116px',
       };
     } else if (isIPhone6p1in()) {
       return {
@@ -570,6 +580,12 @@ export function cordovaSignInModalTopPosition (collapsed) {
 
 export function cordovaFriendsWrapper () {
   if (isIOS()) {
+    if (isIPhone5p8in()) {
+      return {
+        paddingTop: '69px',
+        paddingBottom: '90px',
+      };
+    }
     if (isIPhone6p1in()) {
       return {
         paddingTop: '69px',
