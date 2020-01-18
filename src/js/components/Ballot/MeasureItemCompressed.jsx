@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/esm/Button';
-import Card from '@material-ui/core/esm/Card';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import BallotStore from '../../stores/BallotStore';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { historyPush } from '../../utils/cordovaUtils';

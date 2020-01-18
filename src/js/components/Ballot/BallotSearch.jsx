@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
-import InputBase from '@material-ui/core/esm/InputBase';
-import IconButton from '@material-ui/core/esm/IconButton';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';

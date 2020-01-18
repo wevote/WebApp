@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import KeyboardBackspaceIcon from '@material-ui/icons/ArrowBack';
 import KeyboardBackSpaceIconCordovaIOS from '@material-ui/icons/ArrowBackIos';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { historyPush, isIOS } from '../../utils/cordovaUtils';
 
 import { shortenText } from '../../utils/textFormat';

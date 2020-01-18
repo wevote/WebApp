@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/esm/styles';
+import { withTheme, withStyles } from '@material-ui/core/styles';
 import CandidateStore from '../../stores/CandidateStore';
 import ImageHandler from '../ImageHandler';
 import ItemActionBar from '../Widgets/ItemActionBar';

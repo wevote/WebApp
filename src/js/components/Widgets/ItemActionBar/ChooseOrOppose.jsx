@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import DialogTitle from '@material-ui/core/esm/DialogTitle';
-import IconButton from '@material-ui/core/esm/IconButton';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import DialogContent from '@material-ui/core/esm/DialogContent';
-import { withStyles } from '@material-ui/core/esm/styles';
+import DialogContent from '@material-ui/core/DialogContent';
+import { withStyles } from '@material-ui/core/styles';
 import PositionPublicToggle from '../PositionPublicToggle';
 import Slides from './Slides';
 import SettingsAccount from '../../Settings/SettingsAccount';

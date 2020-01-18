@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Alert from 'react-bootstrap/esm/Alert';
+import Alert from 'react-bootstrap/Alert';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';

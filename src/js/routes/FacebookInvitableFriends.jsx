@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button';
 import filter from 'lodash-es/filter';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import CheckBox from '../components/Connect/CheckBox';

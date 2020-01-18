@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/esm/Button';
-import Table from 'react-bootstrap/esm/Table';
-import Modal from 'react-bootstrap/esm/Modal';
+import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
+import Modal from 'react-bootstrap/Modal';
 import moment from 'moment';
 import DonateActions from '../../actions/DonateActions';
 import { renderLog } from '../../utils/logging';

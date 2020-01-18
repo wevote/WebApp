@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Tooltip from 'react-bootstrap/esm/Tooltip';
-import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import groupIcon from '../../../img/global/svg-icons/group-icon.svg';

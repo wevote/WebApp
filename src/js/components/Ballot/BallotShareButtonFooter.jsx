@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import Comment from '@material-ui/icons/Comment';
 import { Drawer, Tooltip, MenuItem } from '@material-ui/core/esm';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import Reply from '@material-ui/icons/Reply';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 import ShareModalOption from './ShareModalOption';

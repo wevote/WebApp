@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { withStyles } from '@material-ui/core/esm/styles';
-import List from '@material-ui/core/esm/List';
-import Typography from '@material-ui/core/esm/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
 import BallotSideBarLink from './BallotSideBarLink';

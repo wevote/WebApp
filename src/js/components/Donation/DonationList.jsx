@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
-import Table from 'react-bootstrap/esm/Table';
-import Card from 'react-bootstrap/esm/Card';
+import Table from 'react-bootstrap/Table';
+import Card from 'react-bootstrap/Card';
 
 import moment from 'moment';
 import { renderLog } from '../../utils/logging';
