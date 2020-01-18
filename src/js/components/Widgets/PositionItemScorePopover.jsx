@@ -5,7 +5,7 @@ import CheckCircle from '@material-ui/icons/CheckCircle';
 import InfoIcon from '@material-ui/icons/Info';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import FollowToggle from './FollowToggle';
 import FriendsIcon from './FriendsIcon';

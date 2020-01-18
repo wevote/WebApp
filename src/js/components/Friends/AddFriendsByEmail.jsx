@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Alert from 'react-bootstrap/esm/Alert';
-import Button from '@material-ui/core/esm/Button';
-import TextField from '@material-ui/core/esm/TextField';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Alert from 'react-bootstrap/Alert';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
 import Close from '@material-ui/icons/Close';
 import LoadingWheel from '../LoadingWheel';
 import FriendActions from '../../actions/FriendActions';

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/esm/styles';
-import CircularProgress from '@material-ui/core/esm/CircularProgress';
-import Card from '@material-ui/core/esm/Card';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import BallotItemForAddPositions from './BallotItemForAddPositions';
 import BallotActions from '../../actions/BallotActions';

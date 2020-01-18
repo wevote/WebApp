@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
-import Tab from 'react-bootstrap/esm/Tab';
-import Tabs from 'react-bootstrap/esm/Tabs';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import DonateActions from '../../actions/DonateActions';
 import DonationList from './DonationList';
 import DonateStore from '../../stores/DonateStore';

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';

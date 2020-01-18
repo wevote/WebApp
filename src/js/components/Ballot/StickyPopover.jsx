@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Overlay from 'react-bootstrap/esm/Overlay';
-import Popover from 'react-bootstrap/esm/Popover';
+import Overlay from 'react-bootstrap/Overlay';
+import Popover from 'react-bootstrap/Popover';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
