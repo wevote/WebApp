@@ -9,12 +9,12 @@ import Radio from '@material-ui/core/esm/Radio';
 import RadioGroup from '@material-ui/core/esm/RadioGroup';
 import InputBase from '@material-ui/core/esm/InputBase';
 import styled from 'styled-components';
-import PremiumableButton from '../Widgets/PremiumableButton';
 import AppActions from '../../actions/AppActions';
 import LoadingWheel from '../LoadingWheel';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
+import PremiumableButton from '../Widgets/PremiumableButton';
 import { renderLog } from '../../utils/logging';
 import SettingsAccount from './SettingsAccount';
 import SettingsAccountLevelChip from './SettingsAccountLevelChip';
@@ -321,9 +321,12 @@ class SettingsDomain extends Component {
     renderLog('SettingsDomain');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       chosenFeaturePackage,
-      organizationChosenDomainName, organizationChosenDomainNameAlreadyTaken, organizationChosenDomainNameChangedLocally,
-      organizationChosenSubdomain, organizationChosenSubdomainAlreadyTaken, organizationChosenSubdomainChangedLocally,
-      organizationWeVoteId, voter, voterFeaturePackageExceedsOrEqualsProfessional, voterIsSignedIn, radioGroupValue, chosenDomainNameBeforeErrorCheck, chosenSubdomainBeforeErrorCheck,
+      organizationChosenDomainName, organizationChosenDomainNameAlreadyTaken,
+      organizationChosenDomainNameChangedLocally, organizationChosenDomainNameSavedValue,
+      organizationChosenSubdomain, organizationChosenSubdomainAlreadyTaken,
+      organizationChosenSubdomainChangedLocally, organizationChosenSubdomainSavedValue,
+      organizationWeVoteId, voter, voterFeaturePackageExceedsOrEqualsProfessional, voterIsSignedIn,
+      radioGroupValue, chosenDomainNameBeforeErrorCheck, chosenSubdomainBeforeErrorCheck,
     } = this.state;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
@@ -341,7 +344,42 @@ class SettingsDomain extends Component {
         <div className="card">
           <div className="card-main">
             <h1 className="h2">Domain</h1>
-            <br />
+            <Introduction>
+              {chosenFeaturePackage === 'FREE' && (
+                <>
+                  Want to create a configured version of We Vote you can send out to your followers?
+                  {' '}
+                  <OpenExternalWebSite
+                    url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
+                    target="_blank"
+                    body={(<span>Learn more here.</span>)}
+                  />
+                </>
+              )}
+            </Introduction>
+            {!!(organizationChosenSubdomainSavedValue || organizationChosenDomainNameSavedValue) && (
+              <LinkToDomainRow>
+                <Separator />
+                To see the changes you make on this page, please visit:
+                {' '}
+                {organizationChosenSubdomainSavedValue && (
+                  <OpenExternalWebSite
+                    url={`https://${organizationChosenSubdomainSavedValue}.WeVote.US`}
+                    target="_blank"
+                    body={(<span>{`https://${organizationChosenSubdomainSavedValue}.WeVote.US`}</span>)}
+                  />
+                )}
+                {' '}
+                {organizationChosenDomainNameSavedValue && (
+                  <OpenExternalWebSite
+                    url={`https://${organizationChosenDomainNameSavedValue}`}
+                    target="_blank"
+                    body={(<span>{`https://${organizationChosenDomainNameSavedValue}`}</span>)}
+                  />
+                )}
+                <Separator />
+              </LinkToDomainRow>
+            )}
             <FormControl classes={{ root: classes.formControl }}>
               <RadioGroup
                 name="domainInput"
@@ -386,7 +424,14 @@ class SettingsDomain extends Component {
                   <div>
                     {!organizationChosenSubdomainAlreadyTaken && (
                       <InputBoxDescriptionUnder>
-                        After saving a new subdomain, please allow 10 minutes for your domain to be ready.
+                        After saving a new subdomain, please allow 10 minutes for your domain to be ready
+                        {organizationChosenSubdomain ? (
+                          <OpenExternalWebSite
+                            url={`https://${organizationChosenSubdomain}.WeVote.US`}
+                            target="_blank"
+                            body={(<span>{`: https://${organizationChosenSubdomain}.WeVote.US`}</span>)}
+                          />
+                        ) : '.'}
                       </InputBoxDescriptionUnder>
                     )}
                     <ButtonsContainer>
@@ -552,6 +597,11 @@ const styles = () => ({
   },
 });
 
+const Introduction = styled.p`
+  margin: 0 0 16px 0;
+  font-size: 14px;
+`;
+
 const IconInputContainer = styled.div`
   display: flex;
   align-items: center;
@@ -606,10 +656,15 @@ const ButtonsContainer = styled.div`
   margin-top: 12px;
 `;
 
+const LinkToDomainRow = styled.div`
+  margin: 0;
+  padding: 0;
+`;
+
 const Separator = styled.div`
   width: 100%;
   height: 2px;
-  background: #f7f7f7;
+  background: #eee;
   margin: 16px 0;
 `;
 

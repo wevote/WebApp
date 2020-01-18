@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -8,6 +9,7 @@ import FormControl from '@material-ui/core/esm/FormControl';
 import TextField from '@material-ui/core/esm/TextField';
 import AppActions from '../../actions/AppActions';
 import LoadingWheel from '../LoadingWheel';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
@@ -117,6 +119,8 @@ class SettingsAnalytics extends Component {
     const { organizationChosenGoogleAnalyticsTrackerChangedLocally, organizationChosenHtmlVerificationChangedLocally, organizationWeVoteId } = this.state;
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      const organizationChosenSubdomain = organization.chosen_subdomain_string || '';
+      const organizationChosenDomainName = organization.chosen_domain_string || '';
       const organizationChosenGoogleAnalyticsTrackerSavedValue = organization.chosen_google_analytics_account_number || '';
       const organizationChosenHtmlVerificationSavedValue = organization.chosen_html_verification_string || '';
       const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
@@ -124,6 +128,8 @@ class SettingsAnalytics extends Component {
       this.setState({
         chosenFeaturePackage,
         organization,
+        organizationChosenSubdomain,
+        organizationChosenDomainName,
         organizationChosenGoogleAnalyticsTrackerSavedValue,
         organizationChosenHtmlVerificationSavedValue,
         voterFeaturePackageExceedsOrEqualsEnterprise,
@@ -154,6 +160,8 @@ class SettingsAnalytics extends Component {
     const organizationWeVoteId = voter.linked_organization_we_vote_id;
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      const organizationChosenSubdomain = organization.chosen_subdomain_string || '';
+      const organizationChosenDomainName = organization.chosen_domain_string || '';
       const organizationChosenGoogleAnalyticsTrackerSavedValue = organization.chosen_google_analytics_account_number || '';
       const organizationChosenHtmlVerificationSavedValue = organization.chosen_html_verification_string || '';
       const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
@@ -161,6 +169,8 @@ class SettingsAnalytics extends Component {
       this.setState({
         chosenFeaturePackage,
         organization,
+        organizationChosenSubdomain,
+        organizationChosenDomainName,
         organizationChosenGoogleAnalyticsTrackerSavedValue,
         organizationChosenHtmlVerificationSavedValue,
         organizationWeVoteId,
@@ -273,6 +283,7 @@ class SettingsAnalytics extends Component {
     const {
       chosenFeaturePackage,
       organization, organizationWeVoteId, voter, voterIsSignedIn, analyticsButtonsActive,
+      organizationChosenDomainName, organizationChosenSubdomain,
       organizationChosenGoogleAnalyticsTracker, organizationChosenGoogleAnalyticsTrackerChangedLocally,
       organizationChosenHtmlVerification, organizationChosenHtmlVerificationChangedLocally,
       voterFeaturePackageExceedsOrEqualsEnterprise,
@@ -294,6 +305,53 @@ class SettingsAnalytics extends Component {
         <div className="card">
           <div className="card-main">
             <h1 className="h2">Analytics</h1>
+            <Introduction>
+              {chosenFeaturePackage === 'FREE' && (
+                <>
+                  Want to create a configured version of We Vote you can send out to your followers?
+                  {' '}
+                  <OpenExternalWebSite
+                    url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
+                    target="_blank"
+                    body={(<span>Learn more here.</span>)}
+                  />
+                </>
+              )}
+            </Introduction>
+            <Separator />
+            {organizationChosenSubdomain || organizationChosenDomainName ? (
+              <LinkToDomainRow>
+                To see the changes you make on this page, please visit:
+                {' '}
+                {organizationChosenSubdomain && (
+                  <OpenExternalWebSite
+                    url={`https://${organizationChosenSubdomain}.WeVote.US`}
+                    target="_blank"
+                    body={(<span>{`https://${organizationChosenSubdomain}.WeVote.US`}</span>)}
+                  />
+                )}
+                {' '}
+                {organizationChosenDomainName && (
+                  <OpenExternalWebSite
+                    url={`https://${organizationChosenDomainName}`}
+                    target="_blank"
+                    body={(<span>{`https://${organizationChosenDomainName}`}</span>)}
+                  />
+                )}
+              </LinkToDomainRow>
+            ) : (
+              <LinkToDomainRow>
+                To see these settings in action, enter a subdomain or domain name on the
+                {' '}
+                <Link to="/settings/domain">
+                  <strong>
+                    Your Settings &gt; Domain
+                  </strong>
+                </Link>
+                {' '}
+                page.
+              </LinkToDomainRow>
+            )}
             <Separator />
             <FormControl classes={{ root: classes.formControl }}>
               <InputLabel>
@@ -414,6 +472,15 @@ const InputLabel = styled.h4`
 const InputLabelHelperText = styled.p`
   font-size: 14px;
   font-weight: normal;
+`;
+
+const Introduction = styled.p`
+  margin: 0 0 16px 0;
+  font-size: 14px;
+`;
+
+const LinkToDomainRow = styled.div`
+  padding: 0;
 `;
 
 const ButtonsContainer = styled.div`
