@@ -1,9 +1,10 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/AppDispatcher';
-import { stringContains } from '../utils/textFormat';
-import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
+import webAppConfig from '../config'; // eslint-disable-line import/no-cycle
+import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
+import { stringContains } from '../utils/textFormat';
 
 /**
  * AppStore allows you to store state information, in situations where there is no API call needed
@@ -173,7 +174,12 @@ class AppStore extends ReduceStore {
           let onWeVoteSubdomainUrl = false;
           let onFacebookSupportedDomainUrl = false;
           let onChosenFullDomainUrl = false;
-          // console.log('siteConfigurationRetrieve hostname:', hostname);
+
+          if (isCordova()) {
+            hostname = webAppConfig.WE_VOTE_HOSTNAME;
+          }
+
+          console.log('siteConfigurationRetrieve hostname:', hostname);
           if (hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost') {
             onWeVoteRootUrl = true;
           } else if (stringContains('wevote.us', hostname)) {

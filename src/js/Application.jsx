@@ -64,6 +64,12 @@ class Application extends Component {
     }
   }
 
+  // See https://reactjs.org/docs/error-boundaries.html
+  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    return { hasError: true };
+  }
+
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate (prevProps, prevState, nextContent) {
     // console.log('Application componentDidUpdate');
@@ -274,6 +280,11 @@ class Application extends Component {
         }
       }
     }
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('Application caught error: ', `${error} with info: `, info);
   }
 
   render () {
