@@ -35,6 +35,12 @@ class SignInModal extends Component {
     this.voterStoreListener.remove();
   }
 
+  // See https://reactjs.org/docs/error-boundaries.html
+  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    return { hasError: true };
+  }
+
   onVoterStoreChange () {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
@@ -57,13 +63,13 @@ class SignInModal extends Component {
       focusedInputName: incomingInputName,
       focusedOnSingleInputToggle: !focusedOnSingleInputToggle,
     });
-  }
+  };
 
   closeFunction = () => {
     if (this.props.closeFunction) {
       this.props.closeFunction();
     }
-  }
+  };
 
   onKeyDown = (event) => {
     event.preventDefault();
@@ -72,6 +78,11 @@ class SignInModal extends Component {
     // if (enterAndReturnKeyCodes.includes(event.keyCode)) {
     //   this.closeFunction();
     // }
+  };
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('SignInModal caught error: ', `${error} with info: `, info);
   }
 
   render () {

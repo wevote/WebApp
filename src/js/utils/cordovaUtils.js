@@ -395,6 +395,7 @@ export const enums = {
   opinions: 202,
   values: 203,
   voterGuideWild: 204,
+  twitterSignIn: 205,
   defaultVal: 1000,
 };
 
@@ -423,7 +424,6 @@ export function pageEnumeration () {
   } else if (href.indexOf('/index.html#/office/') > 0) {
     return enums.officeWild;
   } else if (href.indexOf('/index.html#/settings/') > 0 ||
-             stringContains('twitter_sign_in', href) ||
              stringContains('facebook_sign_in', href)) {
     return enums.settingsWild;
   } else if (href.indexOf('/index.html#/value/') > 0) {
@@ -459,6 +459,8 @@ export function pageEnumeration () {
              href.indexOf('/index.html#/more/pricing') > 0 ||
              href.indexOf('/index.html#/how') > 0) {
     return enums.welcomeWild;
+  } else if (href.indexOf('/index.html#/twitter_sign_in') > 0) {
+    return enums.twitterSignIn;
   }
   return enums.defaultVal;
 }

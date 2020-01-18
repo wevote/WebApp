@@ -44,6 +44,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreHamburger:   return '10px';
         case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '16px';
+        case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
     } else if (isIPhone4p7in()) {
@@ -65,6 +66,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreHamburger:   return '10px';
         case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '16px';
+        case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
     } else if (isIPhone5p5in()) {
@@ -86,6 +88,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreHamburger:   return '10px';
         case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '16px';
+        case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
     } else if (isIPhone6p1in()) {
@@ -109,6 +112,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreHamburger:   return '35px';
         case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '32px';
+        case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
     } else if (isIPhone6p5in()) {
@@ -130,6 +134,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreHamburger:   return '35px';
         case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '32px';
+        case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
     } else if (hasIPhoneNotch()) {  // defaults for X or 11 Pro
