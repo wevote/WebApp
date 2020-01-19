@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
-import styled from 'styled-components';
 import { FormControl, FormGroup, FormControlLabel, Checkbox, withStyles, Button } from '@material-ui/core';
-import FriendToggle from './FriendToggle';
-import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import FriendsShareListItem from './FriendsShareListItem';
 
@@ -34,7 +30,6 @@ class FriendShareList extends Component {
     renderLog('FriendShareList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       classes,
-      list,
     } = this.props;
 
     const handleChange = (index, item) => (event) => {
@@ -53,7 +48,7 @@ class FriendShareList extends Component {
       <FormControl component="fieldset" className={classes.formControl}>
         <FormGroup className={classes.formGroup}>
           {this.props.list.map((item, index) => {
-            console.log(item);
+            // console.log(item);
 
             // return <FriendsShareListItem {...item} />;
 

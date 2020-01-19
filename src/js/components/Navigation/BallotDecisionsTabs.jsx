@@ -157,17 +157,17 @@ class BallotDecisionsTabs extends Component {
 // mobile transition: sm
 const styles = theme => ({
   badge: {
-    top: 12,
+    height: 19.5,
     right: -14,
+    top: 9,
     minWidth: 16,
     width: 20,
-    height: 19.5,
     [theme.breakpoints.down('sm')]: {
       fontSize: 8,
-      right: -11,
-      width: 16,
       height: 16,
+      right: -11,
       top: 11,
+      width: 16,
     },
   },
   badgeColorPrimary: {

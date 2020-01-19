@@ -1,110 +1,84 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
-import ImageHandler from '../ImageHandler';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
-import FriendInvitationToggle from './FriendInvitationToggle';
-import FriendStore from '../../stores/FriendStore';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
+import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
-class FriendInvitationDisplayForList extends Component {
+class FriendInvitationEmailLinkDisplayForList extends Component {
   static propTypes = {
-    invitationsSentByMe: PropTypes.bool,
+    invitation_status: PropTypes.string, // Comes friend data object from API server
     linked_organization_we_vote_id: PropTypes.string,
     mutual_friends: PropTypes.number,
     positions_taken: PropTypes.number,
-    voter_we_vote_id: PropTypes.string,
-    voter_photo_url_large: PropTypes.string,
-    voter_display_name: PropTypes.string,
-    voter_twitter_handle: PropTypes.string,
-    voter_twitter_description: PropTypes.string,
-    // voter_twitter_followers_count: PropTypes.number,
-    voter_email_address: PropTypes.string,
+    // voter_display_name: PropTypes.string, // Comes friend data object from API server
+    voter_email_address: PropTypes.string, // Comes friend data object from API server
+    voter_photo_url_large: PropTypes.string, // Comes friend data object from API server
+    // voter_twitter_description: PropTypes.string, // Comes friend data object from API server
+    // voter_twitter_followers_count: PropTypes.number, // Comes friend data object from API server
+    voter_twitter_handle: PropTypes.string, // Comes friend data object from API server
+    // voter_we_vote_id: PropTypes.string, // Comes friend data object from API server
     previewMode: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      cancelFriendInviteVoterSubmitted: false,
-      isFriend: false,
+      cancelFriendInviteEmailSubmitted: false,
+      voter: {},
     };
-    this.ignoreFriendInvite = this.ignoreFriendInvite.bind(this);
+    this.cancelFriendInviteEmail = this.cancelFriendInviteEmail.bind(this);
   }
 
   componentDidMount () {
-    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    this.onFriendStoreChange();
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
-    this.friendStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
-  onFriendStoreChange () {
-    const { cancelFriendInviteVoterSubmitted } = this.state;
-    const isFriend = FriendStore.isFriend(this.props.voter_we_vote_id);
+  onVoterStoreChange () {
+    this.setState({ voter: VoterStore.getVoter() });
+  }
+
+  cancelFriendInviteEmail (voterEmailAddress) {
+    // console.log("cancelFriendInviteEmail");
+    FriendActions.cancelFriendInviteEmail(voterEmailAddress);
     this.setState({
-      isFriend,
-      cancelFriendInviteVoterSubmitted: !cancelFriendInviteVoterSubmitted,
+      cancelFriendInviteEmailSubmitted: true,
     });
-  }
-
-  cancelFriendInviteEmail (otherVoterWeVoteId) {
-    // console.log("cancelFriendInviteVoter");
-    FriendActions.cancelFriendInviteVoter(otherVoterWeVoteId);
-    this.setState({
-      cancelFriendInviteVoterSubmitted: true,
-    });
-  }
-
-  cancelFriendInviteVoter (otherVoterWeVoteId) {
-    // console.log("cancelFriendInviteVoter");
-    FriendActions.cancelFriendInviteVoter(otherVoterWeVoteId);
-    this.setState({
-      cancelFriendInviteVoterSubmitted: true,
-    });
-  }
-
-  ignoreFriendInvite (otherVoterWeVoteId) {
-    FriendActions.ignoreFriendInvite(otherVoterWeVoteId);
   }
 
   render () {
-    renderLog('FriendInvitationDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
-
-    // Do not render if already a friend
-    const { cancelFriendInviteVoterSubmitted, isFriend } = this.state;
-    if (isFriend) {
-      return null;
-    }
-
+    renderLog('FriendInvitationEmailLinkDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      invitationsSentByMe,
+      invitation_status: invitationState,
       mutual_friends: mutualFriends,
       positions_taken: positionsTaken,
-      previewMode,
-      // voter_twitter_followers_count: voterTwitterFollowersCount,
       voter_twitter_handle: voterTwitterHandle,
-      voter_we_vote_id: otherVoterWeVoteId,
+      voter_email_address: voterEmailAddress,
       voter_photo_url_large: voterPhotoUrlLarge,
     } = this.props;
 
-    const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
-    const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : '';
-    // If the voterDisplayName is in the voter_twitter_description, remove it
-    const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterDisplayName, twitterDescription);
+    const { cancelFriendInviteEmailSubmitted, voter } = this.state;
+    let invitationStateText;
+    if (invitationState === 'PENDING_EMAIL_VERIFICATION') {
+      invitationStateText = 'Your invitation will be sent when you verify your email address.';
+    } else if (invitationState === 'NO_RESPONSE') {
+      invitationStateText = '';
+    }
 
     // Link to their voter guide
     const twitterVoterGuideLink = voterTwitterHandle ? `/${voterTwitterHandle}` : null;
     const weVoteIdVoterGuideLink = this.props.linked_organization_we_vote_id ? `/voterguide/${this.props.linked_organization_we_vote_id}` : null;
     const voterGuideLink = twitterVoterGuideLink || weVoteIdVoterGuideLink;
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
-    const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
+    const voterDisplayNameFormatted = <span className="card-child__display-name">{voterEmailAddress}</span>;
     const detailsHTML = (
       <Details>
         <Name>
@@ -124,12 +98,12 @@ class FriendInvitationDisplayForList extends Component {
             <strong>{mutualFriends || 0}</strong>
           </Info>
         )}
-        { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
+        { invitationStateText ? <p>{invitationStateText}</p> : null }
       </Details>
     );
 
     const friendInvitationHtml = (
-      <Wrapper previewMode={previewMode}>
+      <Wrapper previewMode={this.props.previewMode}>
         <Flex>
           <Avatar>
             { voterGuideLink ? (
@@ -137,7 +111,7 @@ class FriendInvitationDisplayForList extends Component {
                 {voterImage}
               </Link>
             ) :
-              <span>{voterImage}</span> }
+              <>{voterImage}</> }
           </Avatar>
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">
@@ -149,40 +123,33 @@ class FriendInvitationDisplayForList extends Component {
             </>
           )}
         </Flex>
-        { invitationsSentByMe ? (
-          <ButtonWrapper>
-            <CancelButtonContainer>
-              <Button
-                color="primary"
-                disabled={cancelFriendInviteVoterSubmitted}
-                fullWidth
-                onClick={() => this.cancelFriendInviteVoter(otherVoterWeVoteId)}
-                variant="outlined"
-              >
-                {cancelFriendInviteVoterSubmitted ? 'Canceling...' : window.innerWidth > 520 ? 'Cancel Invite' : 'Cancel'}
-              </Button>
-            </CancelButtonContainer>
-          </ButtonWrapper>
-        ) : (
-          <ButtonWrapper>
-            <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
-            <ButtonContainer>
-              <Button
-                color="primary"
-                fullWidth
-                onClick={() => this.ignoreFriendInvite(otherVoterWeVoteId)}
-                type="button"
-                variant="outlined"
-              >
-                {isMobileScreenSize() ? 'Delete' : 'Delete'}
-              </Button>
-            </ButtonContainer>
-          </ButtonWrapper>
-        )}
+        <ButtonWrapper>
+          <CancelButtonContainer>
+            <Button
+              color="primary"
+              disabled={cancelFriendInviteEmailSubmitted}
+              fullWidth
+              onClick={() => this.cancelFriendInviteEmail(voterEmailAddress)}
+              variant="outlined"
+            >
+              {cancelFriendInviteEmailSubmitted ? 'Canceling...' : 'Cancel Invite'}
+            </Button>
+          </CancelButtonContainer>
+          {invitationState === 'PENDING_EMAIL_VERIFICATION' && !voter.signed_in_with_email ? (
+            <Link to="/settings/account">
+              <ButtonContainer>
+                <Button variant="outlined" color="primary">
+                  Verify Your Email
+                </Button>
+              </ButtonContainer>
+            </Link>
+          ) : null
+          }
+        </ButtonWrapper>
       </Wrapper>
     );
 
-    if (previewMode) {
+    if (this.props.previewMode) {
       return <span>{friendInvitationHtml}</span>;
     } else {
       return (
@@ -206,7 +173,6 @@ const Wrapper = styled.div`
     justify-content: flex-start;
     flex-direction: row;
     padding-left: 100px;
-    height: 68px;
   }
   @media (min-width: 520px) {
     height: 68px;
@@ -248,14 +214,41 @@ const Details = styled.div`
     margin: 0;
   }
 `;
-
 const Name = styled.h3`
-  font-weight: bold;
   color: black !important;
   font-size: 20px;
+  font-weight: bold;
   margin-bottom: 4px;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 23ch;
   width: 100%;
+  @media(max-width: 321px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 322px) and (max-width: 370px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 371px) and (max-width: 441px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 442px) and (max-width: 519px) {
+    max-width: 12ch;
+  }
+  @media (min-width: 520px) and (max-width: 559px) {
+    max-width: 15ch;
+  }
+  @media (min-width: 560px) and (max-width: 653px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 654px) and (max-width: 773px) {
+    max-width: 25ch;
+  }
+  @media (min-width: 774px) and (max-width: 991px) {
+    max-width: 34ch;
+  }
   @media(min-width: 400px) {
     text-align: left;
     font-size: 22px;
@@ -318,4 +311,4 @@ const CancelButtonContainer = styled.div`
   }
 `;
 
-export default FriendInvitationDisplayForList;
+export default FriendInvitationEmailLinkDisplayForList;

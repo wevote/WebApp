@@ -34,6 +34,7 @@ export default class SettingsWidgetFirstLastName extends Component {
       linkedOrganizationWeVoteId: '',
       organizationName: '',
       organizationNameSavedStatus: '',
+      voterIsSignedIn: false,
       voterNameSavedStatus: '',
     };
 
@@ -92,10 +93,13 @@ export default class SettingsWidgetFirstLastName extends Component {
   onVoterStoreChange () {
     if (VoterStore.isVoterFound()) {
       const voter = VoterStore.getVoter();
+      const voterIsSignedIn = voter.is_signed_in;
+      const { voterIsSignedIn: priorVoterIsSignedIn } = this.state;
       this.setState({
         voter,
+        voterIsSignedIn,
       });
-      if (!this.state.initialNameLoaded) {
+      if (!this.state.initialNameLoaded || priorVoterIsSignedIn !== voterIsSignedIn) {
         this.setState({
           firstName: VoterStore.getFirstName(),
           lastName: VoterStore.getLastName(),

@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import Close from '@material-ui/icons/Close';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import LoadingWheel from '../LoadingWheel';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -17,6 +18,7 @@ import { renderLog } from '../../utils/logging';
 class AddFriendsByEmail extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    inSideColumn: PropTypes.bool,
   };
 
   constructor (props) {
@@ -70,8 +72,10 @@ class AddFriendsByEmail extends Component {
 
   onFriendStoreChange () {
     const friendInvitationsWaitingForVerification = FriendStore.friendInvitationsWaitingForVerification() || [];
+    const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
 
     this.setState({
+      errorMessageToShowVoter,
       friendInvitationsWaitingForVerification,
       invitationEmailsAlreadyScheduledStep: friendInvitationsWaitingForVerification.length,
       loading: false,
@@ -176,6 +180,7 @@ class AddFriendsByEmail extends Component {
     // console.log('firstNameArray: ', firstNameArray);
     // console.log('lastNameArray: ', lastNameArray);
     // const response =
+    FriendActions.clearErrorMessageToShowVoter();
     FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
       lastNameArray, '', this.state.add_friends_message,
       this.state.senderEmailAddress);
@@ -225,10 +230,11 @@ class AddFriendsByEmail extends Component {
 
   render () {
     renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
+    const { inSideColumn } = this.props;
     const {
-      emailAddressesError, friendContactInfo, friendFirstName, friendInvitationsWaitingForVerification,
+      emailAddressesError, errorMessageToShowVoter, friendContactInfo, friendFirstName, friendInvitationsWaitingForVerification,
       friendLastName, friendsToInvite,
-      loading, invitationEmailsAlreadyScheduledStep,
+      invitationEmailsAlreadyScheduledStep, loading,
       onEnterEmailAddressesStep, onFriendInvitationsSentStep, senderEmailAddressError, voterIsSignedIn,
     } = this.state;
     // console.log(friendsToInvite);
@@ -242,17 +248,20 @@ class AddFriendsByEmail extends Component {
 
     return (
       <div>
-        {onFriendInvitationsSentStep && (
-          <div className="alert alert-success">
-          Invitations sent. Is there anyone else you&apos;d like to invite?
-          </div>
-        )}
-        {emailAddressesError || senderEmailAddressError ? (
+        {emailAddressesError || errorMessageToShowVoter || senderEmailAddressError ? (
           <div className="alert alert-danger">
             {this.state.errorMessage}
+            {this.state.errorMessageToShowVoter}
           </div>
-        ) : null
-        }
+        ) : (
+          <div>
+            {onFriendInvitationsSentStep && (
+              <div className="alert alert-success">
+              Invitations sent. Is there anyone else you&apos;d like to invite?
+              </div>
+            )}
+          </div>
+        )}
         {friendsToInvite.length !== 0 && (
           <FriendsDisplay>
             <SectionTitle>Invite List</SectionTitle>
@@ -323,7 +332,7 @@ class AddFriendsByEmail extends Component {
                             name="friendFirstName"
                             value={friendFirstName}
                             onChange={this.cacheFriendData}
-                            placeholder="Optional"
+                            placeholder={isMobileScreenSize() || inSideColumn ? 'Optional' : 'Optional, but helpful!'}
                           />
                         </div>
                         <div className="col col-6">
@@ -450,6 +459,7 @@ const FormWrapper = styled.div`
 
 const Label = styled.div`
   margin-bottom: -4px;
+  white-space: nowrap;
 `;
 
 const ButtonContainer = styled.div`
