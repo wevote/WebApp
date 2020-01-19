@@ -41,9 +41,17 @@ class FriendsShareListItem extends Component {
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
     const detailsHTML = (
       <Details>
-        <Name>
-          {voterDisplayNameFormatted}
-        </Name>
+        {voterGuideLink ? (
+          <Link to={voterGuideLink} className="u-no-underline">
+            <Name>
+              {voterDisplayNameFormatted}
+            </Name>
+          </Link>
+        ) : (
+          <Name>
+            {voterDisplayNameFormatted}
+          </Name>
+        )}
         {!!(positionsTaken) && (
           <Info>
             Positions:
@@ -62,59 +70,25 @@ class FriendsShareListItem extends Component {
     );
 
     const friendDisplayHtml = (
-      <Wrapper previewMode={this.props.previewMode}>
+      <Wrapper>
         <Flex>
           <Avatar>
-            { voterGuideLink ? (
-              <Link to={voterGuideLink} className="u-no-underline">
-                {voterImage}
-              </Link>
-            ) :
-              <span>{voterImage}</span> }
+            <span>{voterImage}</span>
           </Avatar>
-          { voterGuideLink ? (
-            <Link to={voterGuideLink} className="u-no-underline">
-              {detailsHTML}
-            </Link>
-          ) : (
-            <>
-              {detailsHTML}
-            </>
-          )}
+          <span>{detailsHTML}</span>
         </Flex>
       </Wrapper>
     );
 
-    if (this.props.previewMode) {
-      return <span>{friendDisplayHtml}</span>;
-    } else {
-      return (
-        <section className="card">
-          <div className="card-main">
-            {friendDisplayHtml}
-          </div>
-        </section>
-      );
-    }
+    return <span>{friendDisplayHtml}</span>;
   }
 }
 
 const Wrapper = styled.div`
-  margin: 24px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  position: relative;
-  flex-wrap: wrap;
-  @media(min-width: 400px) {
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: row;
-    padding-left: 100px;
-  }
+  width: 100%;
+  margin-left: 12px;
   @media (min-width: 520px) {
-    height: 68px;
-    padding-left: 85px;
+    margin-left: 18px;
   }
 `;
 
@@ -126,56 +100,39 @@ const Flex = styled.div`
 `;
 
 const Avatar = styled.div`
-  max-width: 68.8px;
   margin-right: 8px;
-  @media (min-width: 400px) {
-    height: 100% !important;
-    max-width: 100%;
-    min-height: 100% !important;
-    max-height: 100% !important;
-    position: absolute !important;
-    left: 0;
-    top: 0;
-    margin: 0 auto;
-    & img {
-      border-radius: 6px;
-      width: 68.8px;
-      height: 68.8px;
-    }
+  width: 50px;
+  height: 50px;
+  @media (min-width: 520px) {
+    width: 65px;
+    height: 65px;
+  }
+  & img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
   }
 `;
 
 const Details = styled.div`
-  margin: 0 auto;
-  @media(min-width: 400px) {
-    width: fit-content;
-    margin: 0;
-  }
+  margin: 0;
+  width: fit-content;
 `;
 
 const Name = styled.h3`
   font-weight: bold;
-  color: black !important;
   font-size: 20px;
   margin-bottom: 4px;
   text-align: left;
   width: 100%;
   @media(min-width: 400px) {
-    text-align: left;
     font-size: 22px;
     width: fit-content;
   }
 `;
 
 const Info = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  @media (min-width: 400px){
-    display: block;
-    width: fit-content;
-  }
+
 `;
 
 export default FriendsShareListItem;

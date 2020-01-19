@@ -10,7 +10,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import Mail from '@material-ui/icons/Mail';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import { Button, FormControl, FormGroup, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Button, Tooltip } from '@material-ui/core';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -18,7 +18,7 @@ import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
 import ShareModalOption from './ShareModalOption';
 import SettingsAccount from '../Settings/SettingsAccount';
-import FriendsShareListItem from '../Friends/FriendsShareListItem';
+import FriendsShareList from '../Friends/FriendsShareList';
 
 class ShareModal extends Component {
   static propTypes = {
@@ -35,6 +35,7 @@ class ShareModal extends Component {
     this.state = {
       pathname: '',
       currentFriendsList: [],
+      friendsToShareWith: [],
     };
 
     this.closeShareModal = this.closeShareModal.bind(this);
@@ -81,9 +82,19 @@ class ShareModal extends Component {
     // console.log('currentSelectedPlanCostForPayment:', currentSelectedPlanCostForPayment);
     // console.log(this.state);
 
-    const handleChange = index => event => {
-      this.setState({ index: event.target.checked });
-    }
+    console.log('Friends to share with: ', this.state.friendsToShareWith);
+
+    const handleChange = (index, item) => (event) => {
+      let newFriendsToShareWith = [];
+
+      if (event.target.checked) {
+        newFriendsToShareWith = this.state.friendsToShareWith.filter(newItem => newItem.voter_we_vote_id !== item.voter_we_vote_id);
+      } else {
+        newFriendsToShareWith = [...this.state.friendsToShareWith, item];
+      }
+
+      this.setState({ friendsToShareWith: newFriendsToShareWith, [index]: event.target.checked });
+    };
 
     let shareModalHtml = (
       <>Loading...</>
@@ -171,22 +182,21 @@ class ShareModal extends Component {
             </IconButton>
           </ModalTitleArea>
           <DialogContent classes={{ root: classes.dialogContent }}>
-            <FormControl component="fieldset">
-              <FormGroup>
-                {this.state.currentFriendsList.map((item, index) => {
-                  console.log(item);
-
-                  // return <FriendsShareListItem {...item} />;
-
-                  return (
-                    <FormControlLabel
-                      control={<Checkbox color="primary" checked={this.state[index]} onChange={handleChange(`${index}`)} value={`${index}`} />}
-                      label={item}
-                    />
-                  );
-                })}
-              </FormGroup>
-            </FormControl>
+            <div className="full-width">
+              <FriendsShareTextWrapper>
+                <Title left>
+                  <strong>Share Ballot With Friends</strong>
+                  {' '}
+                  <Tooltip title="Share a link to this election so that your friends can get ready to vote. Your opinions are not included." arrow enterDelay={300}>
+                    <i className="fas fa-info-circle" />
+                  </Tooltip>
+                </Title>
+                <SubTitle larger left>
+                  Invite friends by email or phone
+                </SubTitle>
+              </FriendsShareTextWrapper>
+              <FriendsShareList list={this.state.currentFriendsList} />
+            </div>
           </DialogContent>
         </Dialog>
       );
@@ -262,6 +272,9 @@ const styles = () => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    '@media(max-width: 576px)': {
+      justifyContent: 'flex-start !important',
+    },
   },
   backButton: {
     // marginBottom: 6,
@@ -282,6 +295,7 @@ const styles = () => ({
     top: 14,
   },
 });
+
 const ModalTitleArea = styled.div`
   justify-content: flex-start;
   width: 100%;
@@ -293,6 +307,13 @@ const ModalTitleArea = styled.div`
   display: ${props => (props.onSignInSlide ? 'block' : 'flex')};
   text-align: ${props => (props.onSignInSlide ? 'center' : 'left')};
 `;
+
+const FriendsShareTextWrapper = styled.div`
+  position: relative;
+  top: -16px;
+  margin-bottom: 12px;
+`;
+
 const Title = styled.h3`
   font-size: ${props => (props.bold ? '30px' : '24px')};
   color: black;
@@ -300,18 +321,23 @@ const Title = styled.h3`
   margin-top: 0;
   margin-bottom: ${props => (props.bold ? '0' : '12px')};
   font-weight: ${props => (props.bold ? 'bold' : 'initial')};
+  text-align: ${props => (props.left && 'left')};
 `;
+
 const SubTitle = styled.div`
   margin-top: 0;
-  font-size: 14px;
+  font-size: ${props => (props.larger ? '18px' : '14px')};
   width: 100%;
+  text-align: ${props => (props.left && 'left')};
   @media(min-width: 420px) {
     width: 80%;
   }
 `;
+
 const Flex = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding-top: 16px;
 `;
+
 export default withTheme(withStyles(styles)(ShareModal));
