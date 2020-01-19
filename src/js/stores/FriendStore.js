@@ -131,6 +131,9 @@ class FriendStore extends ReduceStore {
     let currentFriendsOrganizationWeVoteIds = [];
 
     switch (action.type) {
+      case 'clearErrorMessageToShowVoter':
+        // console.log('FriendStore clearErrorMessageToShowVoter');
+        return { ...state, errorMessageToShowVoter: '' };
       case 'friendInviteResponse':
         if (!action.res.success) {
           // There was a problem
@@ -161,6 +164,7 @@ class FriendStore extends ReduceStore {
           };
         } else if (action.res.kind_of_invite_response === 'DELETE_INVITATION_VOTER_SENT_BY_ME') {
           FriendActions.friendInvitationsSentByMe();
+          FriendActions.suggestedFriendList();
           // console.log('FriendStore friendInviteResponse incoming data DELETE_INVITATION_VOTER_SENT_BY_ME, action.res:', action.res);
           return {
             ...state,

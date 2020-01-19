@@ -10,6 +10,10 @@ export default {
     });
   },
 
+  clearErrorMessageToShowVoter () {
+    Dispatcher.dispatch({ type: 'clearErrorMessageToShowVoter', payload: true });
+  },
+
   currentFriends () {
     Dispatcher.loadEndpoint('friendList',
       {

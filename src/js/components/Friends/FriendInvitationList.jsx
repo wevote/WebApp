@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FriendInvitationDisplayForList from './FriendInvitationDisplayForList';
-import FriendInvitationEmailForList from './FriendInvitationEmailForList';
+import FriendInvitationVoterLinkDisplayForList from './FriendInvitationVoterLinkDisplayForList';
+import FriendInvitationEmailLinkDisplayForList from './FriendInvitationEmailLinkDisplayForList';
 import { renderLog } from '../../utils/logging';
 
 export default class FriendInvitationList extends Component {
@@ -25,12 +25,13 @@ export default class FriendInvitationList extends Component {
         <div className={!previewMode ? 'card' : null}>
           <div className={!previewMode ? 'card-main' : null}>
             {friendList.map((friend, index) => {
-              if (friend.voter_we_vote_id && friend.voter_we_vote_id !== '') {
+              // console.log('friend invitation: ', friend);
+              if (friend.invitation_table && friend.invitation_table === 'VOTER') {
                 // console.log('Index: ', index);
                 // console.log('Length: ', friendList.length - 1);
                 return (
                   <div key={`invite-key-${friend.voter_we_vote_id}`}>
-                    <FriendInvitationDisplayForList
+                    <FriendInvitationVoterLinkDisplayForList
                       id={`invite-id-${friend.voter_we_vote_id}`}
                       {...friend}
                       invitationsSentByMe={invitationsSentByMe}
@@ -41,11 +42,11 @@ export default class FriendInvitationList extends Component {
                     ) : null}
                   </div>
                 );
-              } else {
+              } else if (friend.invitation_table && friend.invitation_table === 'EMAIL') {
                 simpleKeyCounter++;
                 return (
                   <div key={`invite-key-${simpleKeyCounter}`}>
-                    <FriendInvitationEmailForList
+                    <FriendInvitationEmailLinkDisplayForList
                       id={`invite-id-${simpleKeyCounter}`}
                       {...friend}
                       invitationsSentByMe={invitationsSentByMe}
@@ -56,6 +57,8 @@ export default class FriendInvitationList extends Component {
                     ) : null}
                   </div>
                 );
+              } else {
+                return null;
               }
             })}
           </div>

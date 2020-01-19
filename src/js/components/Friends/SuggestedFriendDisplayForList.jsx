@@ -196,12 +196,31 @@ const Details = styled.div`
 `;
 
 const Name = styled.h3`
-  font-weight: bold;
   color: black !important;
   font-size: 20px;
+  font-weight: bold;
   margin-bottom: 4px;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 18ch;
   width: 100%;
+  @media(max-width: 321px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 322px) and (max-width: 400px) {
+    max-width: 25ch;
+  }
+  @media (min-width: 401px) and (max-width: 600px) {
+    max-width: 12ch;
+  }
+  @media (min-width: 601px) and (max-width: 787px) {
+    max-width: 18ch;
+  }
+  @media (min-width: 788px) and (max-width: 991px) {
+    max-width: 30ch;
+  }
   @media(min-width: 400px) {
     text-align: left;
     font-size: 22px;

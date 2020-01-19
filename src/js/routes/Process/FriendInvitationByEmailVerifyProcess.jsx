@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AppStore from '../../stores/AppStore';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -114,7 +115,18 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // console.log('FriendInvitationByEmailVerifyProcess, invitationStatus:', invitationStatus);
     if (saving || !invitationStatus || !hostname || hostname === '') {
       // console.log('FriendInvitationByEmailVerifyProcess, saving:', saving, ', or waiting for invitationStatus:', invitationStatus);
-      return LoadingWheel;
+      return (
+        <div>
+          <DelayedLoad waitBeforeShow={1000}>
+            Setting up your account...
+            {' '}
+          </DelayedLoad>
+          <DelayedLoad waitBeforeShow={3000}>
+            Thank you for your patience!
+          </DelayedLoad>
+          {LoadingWheel}
+        </div>
+      );
     } else if (!invitationSecretKey) {
       historyPush({
         pathname: '/ballot',
@@ -174,7 +186,18 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       // console.log('FriendInvitationByEmailVerifyProcess - voterHasDataToPreserve is FALSE');
       this.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
       // return <span>this.voterMergeTwoAccountsByInvitationKey - go ahead</span>;
-      return LoadingWheel;
+      return (
+        <div>
+          <DelayedLoad waitBeforeShow={1000}>
+            Setting up your account.
+            {' '}
+          </DelayedLoad>
+          <DelayedLoad waitBeforeShow={3000}>
+            Thank you for your patience!
+          </DelayedLoad>
+          {LoadingWheel}
+        </div>
+      );
     }
   }
 }

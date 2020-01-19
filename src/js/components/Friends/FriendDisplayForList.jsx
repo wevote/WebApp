@@ -157,12 +157,34 @@ const Details = styled.div`
 `;
 
 const Name = styled.h3`
-  font-weight: bold;
   color: black !important;
   font-size: 20px;
+  font-weight: bold;
   margin-bottom: 4px;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 25ch;
   width: 100%;
+  @media(max-width: 321px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 322px) and (max-width: 370px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 371px) and (max-width: 399px) {
+    max-width: 24ch;
+  }
+  @media (min-width: 400px) and (max-width: 479px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 480px) and (max-width: 599px) {
+    max-width: 25ch;
+  }
+  @media (min-width: 600px) and (max-width: 991px) {
+    max-width: 34ch;
+  }
   @media(min-width: 400px) {
     text-align: left;
     font-size: 22px;

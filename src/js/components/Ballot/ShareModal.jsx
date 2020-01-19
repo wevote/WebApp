@@ -82,7 +82,7 @@ class ShareModal extends Component {
     // console.log('currentSelectedPlanCostForPayment:', currentSelectedPlanCostForPayment);
     // console.log(this.state);
 
-    console.log('Friends to share with: ', this.state.friendsToShareWith);
+    // console.log('Friends to share with: ', this.state.friendsToShareWith);
 
     const handleChange = (index, item) => (event) => {
       let newFriendsToShareWith = [];

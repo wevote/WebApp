@@ -37,7 +37,7 @@ import displayFriendsTabs from '../utils/displayFriendsTabs';
 
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = cordovaDot(testimonialImage);
-const testimonial = 'Instead of sending my friends a list of who they should vote for, I can add them as friends on We Vote.';
+const testimonial = 'Instead of searching through emails and social media for recommendations, I can see how my friends are voting on We Vote.';
 
 class Friends extends Component {
   static getDerivedStateFromProps (props, state) {
@@ -404,7 +404,7 @@ class Friends extends Component {
                           <Info />
                         </Tooltip>
                       </Icon>
-                      <AddFriendsByEmail />
+                      <AddFriendsByEmail inSideColumn />
                     </div>
                   </section>
                 )}

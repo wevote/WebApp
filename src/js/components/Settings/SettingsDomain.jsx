@@ -349,6 +349,12 @@ class SettingsDomain extends Component {
                 <>
                   Want to create a configured version of We Vote you can send out to your followers?
                   {' '}
+                  {!(organizationChosenSubdomainSavedValue || organizationChosenDomainNameSavedValue) && (
+                    <>
+                      Start by entering your own Subdomain or Custom Domain.
+                      {' '}
+                    </>
+                  )}
                   <OpenExternalWebSite
                     url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
                     target="_blank"

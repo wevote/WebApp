@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import FriendToggle from './FriendToggle';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 
@@ -11,7 +10,6 @@ class FriendsShareListItem extends Component {
     linked_organization_we_vote_id: PropTypes.string,
     mutual_friends: PropTypes.number,
     positions_taken: PropTypes.number,
-    previewMode: PropTypes.bool,
     voter_we_vote_id: PropTypes.string,
     voter_photo_url_large: PropTypes.string,
     voter_email_address: PropTypes.string,
@@ -26,7 +24,7 @@ class FriendsShareListItem extends Component {
     const {
       mutual_friends: mutualFriends,
       positions_taken: positionsTaken,
-      voter_we_vote_id: voterWeVoteId,
+      // voter_we_vote_id: voterWeVoteId,
       voter_photo_url_large: voterPhotoUrlLarge,
     } = this.props;
 
