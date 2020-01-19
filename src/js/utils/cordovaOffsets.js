@@ -166,7 +166,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '58px';
         case enums.candidate:       return '40px';
         case enums.candidateWild:   return '40px';
-        case enums.ballotVote:      return '16px';
+        case enums.ballotVote:      return '131px';
         case enums.officeWild:      return '64px';
         case enums.ballotSmHdrWild: return '137px';
         case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '28px' : '12px';
@@ -177,7 +177,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.welcomeWild:     return '0px';
         case enums.moreHamburger:   return '15px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '15px';
+        case enums.settingsWild:    return '61px';
         default:                    return '0px';
       }
     } else {
@@ -281,7 +281,7 @@ export function cordovaBallotFilterTopMargin () {
         return '65px';
       }
     } else if (isIPad()) {
-      return '38px';
+      return '61px';
     } else if (isIPhone4in()) {
       return '67px';
     }
@@ -382,7 +382,7 @@ export function cordovaVoterGuideTopPadding () {
     } else if (hasIPhoneNotch()) {
       return '28px';
     } else if (isIPad()) {
-      return '8px';
+      return '0px';
     }
   } else if (isAndroid()) {
     return '0px';
@@ -448,8 +448,8 @@ export function cordovaVoteMiniHeader () {
       };
     } else if (isIPad()) {
       return {
-        top: '40px',
-        height: '125px',
+        top: '53px',
+        height: '116px',
       };
     }
   } else if (isAndroid()) {
