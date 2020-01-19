@@ -159,7 +159,7 @@ class FriendInvitationDisplayForList extends Component {
                 onClick={() => this.cancelFriendInviteVoter(otherVoterWeVoteId)}
                 variant="outlined"
               >
-                {cancelFriendInviteVoterSubmitted ? 'Canceling...' : 'Cancel Invite'}
+                {cancelFriendInviteVoterSubmitted ? 'Canceling...' : window.innerWidth > 520 ? 'Cancel Invite' : 'Cancel'}
               </Button>
             </CancelButtonContainer>
           </ButtonWrapper>
@@ -206,6 +206,7 @@ const Wrapper = styled.div`
     justify-content: flex-start;
     flex-direction: row;
     padding-left: 100px;
+    height: 68px;
   }
   @media (min-width: 520px) {
     height: 68px;

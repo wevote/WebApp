@@ -298,10 +298,10 @@ export default class SettingsAccount extends Component {
     }
 
     return (
-      <div className="">
+      <>
         <Helmet title={pageTitle} />
         <BrowserPushMessage incomingProps={this.props} />
-        <div className={inModal ? '' : 'card'}>
+        <div className={inModal ? 'card-main full-width' : 'card'}>
           <Main inModal={inModal}>
             {voterIsSignedInTwitter && voterIsSignedInFacebook ?
               null :
@@ -485,7 +485,7 @@ export default class SettingsAccount extends Component {
             )}
           </Main>
         </div>
-      </div>
+      </>
     );
   }
 }
@@ -495,6 +495,7 @@ const Main = styled.div`
   padding: 16px;
   text-align: center;
   padding-top: 0;
+  width: 100%;
 `;
 
 const SignInSubtitle = styled.p`

@@ -129,11 +129,11 @@ class ShareModal extends Component {
           open={this.props.show}
           onClose={() => { this.props.toggleFunction(this.state.pathname); }}
         >
-          <ModalTitleArea>
-            <Title center bold>Sign In</Title>
+          <ModalTitleArea onSignInSlide>
+            <Title onSignInSlide bold>Sign In</Title>
             <IconButton
               aria-label="Close"
-              className={classes.closeButton}
+              className={classes.closeButtonAbsolute}
               onClick={this.closeShareModal}
               id="profileCloseShareModal"
             >
@@ -264,21 +264,22 @@ const styles = () => ({
   },
 });
 const ModalTitleArea = styled.div`
-  text-align: left;
+  justify-content: flex-start;
   width: 100%;
-  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
+  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : props.onSignInSlide ? '20px 14px 10px' : '10px 14px')};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
   }
-  display: flex;
+  display: ${props => (props.onSignInSlide ? 'block' : 'flex')};
+  text-align: ${props => (props.onSignInSlide ? 'center' : 'left')};
 `;
 const Title = styled.h3`
   font-size: ${props => (props.bold ? '30px' : '24px')};
   color: black;
+  margin: ${props => (props.onSignInSlide ? '0 auto' : '0')};
   margin-top: 0;
   margin-bottom: ${props => (props.bold ? '0' : '12px')};
-  text-align: ${props => (props.center ? 'center' : 'initial')};
   font-weight: ${props => (props.bold ? 'bold' : 'initial')};
 `;
 const SubTitle = styled.div`
