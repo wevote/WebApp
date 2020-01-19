@@ -10,15 +10,15 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import Mail from '@material-ui/icons/Mail';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import { Button } from '@material-ui/core';
+import { Button, FormControl, FormGroup, FormControlLabel, Checkbox } from '@material-ui/core';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
-import FriendsCurrentPreview from '../Friends/FriendsCurrentPreview';
 import FriendStore from '../../stores/FriendStore';
 import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
 import ShareModalOption from './ShareModalOption';
 import SettingsAccount from '../Settings/SettingsAccount';
+import FriendsShareListItem from '../Friends/FriendsShareListItem';
 
 class ShareModal extends Component {
   static propTypes = {
@@ -80,6 +80,10 @@ class ShareModal extends Component {
     const { classes } = this.props;
     // console.log('currentSelectedPlanCostForPayment:', currentSelectedPlanCostForPayment);
     // console.log(this.state);
+
+    const handleChange = index => event => {
+      this.setState({ index: event.target.checked });
+    }
 
     let shareModalHtml = (
       <>Loading...</>
@@ -167,7 +171,22 @@ class ShareModal extends Component {
             </IconButton>
           </ModalTitleArea>
           <DialogContent classes={{ root: classes.dialogContent }}>
-            <FriendsCurrentPreview />
+            <FormControl component="fieldset">
+              <FormGroup>
+                {this.state.currentFriendsList.map((item, index) => {
+                  console.log(item);
+
+                  // return <FriendsShareListItem {...item} />;
+
+                  return (
+                    <FormControlLabel
+                      control={<Checkbox color="primary" checked={this.state[index]} onChange={handleChange(`${index}`)} value={`${index}`} />}
+                      label={item}
+                    />
+                  );
+                })}
+              </FormGroup>
+            </FormControl>
           </DialogContent>
         </Dialog>
       );
