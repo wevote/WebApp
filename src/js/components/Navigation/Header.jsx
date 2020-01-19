@@ -104,7 +104,7 @@ export default class Header extends Component {
       return (
         <div id="app-header">
           { iPhoneSpacer }
-          <div className={isWebApp ? classNameHeadroom : ''} id="headroom-wrapper">
+          <div className={isWebApp() ? classNameHeadroom : ''} id="headroom-wrapper">
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
                 <span>
@@ -120,10 +120,10 @@ export default class Header extends Component {
               )}
               { showBackToSettingsMobile && (
                 <span>
-                  <span className="u-show-mobile">
+                  <span className={isWebApp() ? 'u-show-mobile' : ''}>
                     <HeaderBackTo backToLink={backToSettingsLinkMobile} backToLinkText={backToSettingsLinkText} location={location} params={params} />
                   </span>
-                  { !showBackToVoterGuides && !showBackToSettingsDesktop && (
+                  { isWebApp() && !showBackToVoterGuides && !showBackToSettingsDesktop && (
                     <span className="u-show-desktop-tablet">
                       <HeaderBar location={location} pathname={pathname} voter={voter} />
                     </span>

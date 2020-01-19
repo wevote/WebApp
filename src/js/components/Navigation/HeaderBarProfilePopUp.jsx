@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { isWebApp } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 class HeaderBarProfilePopUp extends Component {
@@ -54,9 +54,13 @@ class HeaderBarProfilePopUp extends Component {
           <span className="we-vote-promise">Our Promise: We&apos;ll never sell your email.</span>
           <ul className="nav flex-column">
             {/* Desktop only */}
+            {isWebApp() && (
             <li className="d-none d-sm-block">
               <ListItemWrapper>
-                <Link id="profilePopUpYourSettings" onClick={this.hideProfilePopUp} to="/settings/profile">
+                <Link id="profilePopUpYourSettings"
+                      onClick={this.hideProfilePopUp}
+                      to="/settings/profile"
+                >
                   <Button
                     variant="text"
                     color="primary"
@@ -67,8 +71,9 @@ class HeaderBarProfilePopUp extends Component {
                 </Link>
               </ListItemWrapper>
             </li>
-            {/* Mobile only */}
-            <li className="navli d-block d-sm-none">
+            )}
+            {/* Mobile and cordova  */}
+            <li className={isCordova() ? 'navli' : 'navli d-block d-sm-none'}>
               <ListItemWrapper>
                 <Link id="profilePopUpYourSettingsMobile" onClick={this.hideProfilePopUp} to="/settings/hamburger">
                   <Button
