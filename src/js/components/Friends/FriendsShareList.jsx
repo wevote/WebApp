@@ -60,6 +60,7 @@ class FriendShareList extends Component {
             return (
               <FormControlLabel
                 control={<Checkbox color="primary" checked={this.state[index]} onChange={handleChange(index, item)} value={index} />}
+                classes={{ label: classes.label, root: classes.label }}
                 label={<FriendsShareListItem {...item} />}
               />
             );
@@ -82,10 +83,15 @@ const styles = () => ({
   formControl: {
     width: '100%',
     textAlign: 'left',
+    marginBottom: '0 !important',
   },
   formGroup: {
     width: '100%',
     textAlign: 'left',
+  },
+  label: {
+    width: '100%',
+    marginBottom: '0 !important',
   },
 });
 

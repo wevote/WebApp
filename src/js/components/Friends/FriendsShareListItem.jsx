@@ -80,7 +80,9 @@ class FriendsShareListItem extends Component {
       </Wrapper>
     );
 
-    return <span>{friendDisplayHtml}</span>;
+    return (
+      <>{friendDisplayHtml}</>
+    );
   }
 }
 
@@ -90,22 +92,25 @@ const Wrapper = styled.div`
   @media (min-width: 520px) {
     margin-left: 18px;
   }
+  margin: 8px 0;
+  display: flex;
+
 `;
 
 const Flex = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
 `;
 
 const Avatar = styled.div`
   margin-right: 8px;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   @media (min-width: 520px) {
-    width: 65px;
-    height: 65px;
+    width: 55px;
+    height: 55px;
   }
   & img {
     object-fit: cover;
@@ -121,18 +126,22 @@ const Details = styled.div`
 
 const Name = styled.h3`
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 4px;
   text-align: left;
   width: 100%;
   @media(min-width: 400px) {
-    font-size: 22px;
+    font-size: 20px;
     width: fit-content;
   }
 `;
 
 const Info = styled.div`
-
+  font-size: 12px;
+  @media(min-width: 400px) {
+    font-size: 14px;
+    width: fit-content;
+  }
 `;
 
 export default FriendsShareListItem;
