@@ -118,11 +118,20 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       return (
         <div>
           <DelayedLoad waitBeforeShow={1000}>
-            Setting up your account...
-            {' '}
+            <div>
+              Verifying invitation code...
+              {' '}
+            </div>
           </DelayedLoad>
           <DelayedLoad waitBeforeShow={3000}>
-            Thank you for your patience!
+            <div>
+              Setting up your account...
+            </div>
+          </DelayedLoad>
+          <DelayedLoad waitBeforeShow={5000}>
+            <div>
+              Preparing your ballot...
+            </div>
           </DelayedLoad>
           {LoadingWheel}
         </div>
@@ -189,11 +198,20 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       return (
         <div>
           <DelayedLoad waitBeforeShow={1000}>
-            Setting up your account.
-            {' '}
+            <div>
+              Verifying invitation code.
+              {' '}
+            </div>
           </DelayedLoad>
           <DelayedLoad waitBeforeShow={3000}>
-            Thank you for your patience!
+            <div>
+              Setting up your account.
+            </div>
+          </DelayedLoad>
+          <DelayedLoad waitBeforeShow={5000}>
+            <div>
+              Preparing your ballot.
+            </div>
           </DelayedLoad>
           {LoadingWheel}
         </div>
