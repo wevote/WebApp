@@ -358,7 +358,7 @@ class SettingsAnalytics extends Component {
                 Google Analytics Tracker
                 <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
               </InputLabel>
-              <InputLabelHelperText>Add your tracking code (e.g., UA-XXXXXXX-X) so you can watch voter activity.</InputLabelHelperText>
+              <InputLabelHelperText>Add your tracking code (e.g., UA-XXXXXXX-X) so you can see which parts of your site voters like the best.</InputLabelHelperText>
               <TextField
                 onChange={this.handleOrganizationChosenGoogleAnalyticsTrackerChange}
                 onClick={this.showChosenGoogleAnalyticsTrackerButtons}

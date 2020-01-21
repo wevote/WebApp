@@ -35,7 +35,7 @@ class ShareModal extends Component {
     this.state = {
       pathname: '',
       currentFriendsList: [],
-      friendsToShareWith: [],
+      // friendsToShareWith: [],
     };
 
     this.closeShareModal = this.closeShareModal.bind(this);
@@ -84,17 +84,17 @@ class ShareModal extends Component {
 
     // console.log('Friends to share with: ', this.state.friendsToShareWith);
 
-    const handleChange = (index, item) => (event) => {
-      let newFriendsToShareWith = [];
-
-      if (event.target.checked) {
-        newFriendsToShareWith = this.state.friendsToShareWith.filter(newItem => newItem.voter_we_vote_id !== item.voter_we_vote_id);
-      } else {
-        newFriendsToShareWith = [...this.state.friendsToShareWith, item];
-      }
-
-      this.setState({ friendsToShareWith: newFriendsToShareWith, [index]: event.target.checked });
-    };
+    // const handleChange = (index, item) => (event) => {
+    //   let newFriendsToShareWith = [];
+    //
+    //   if (event.target.checked) {
+    //     newFriendsToShareWith = this.state.friendsToShareWith.filter(newItem => newItem.voter_we_vote_id !== item.voter_we_vote_id);
+    //   } else {
+    //     newFriendsToShareWith = [...this.state.friendsToShareWith, item];
+    //   }
+    //
+    //   this.setState({ friendsToShareWith: newFriendsToShareWith, [index]: event.target.checked });
+    // };
 
     let shareModalHtml = (
       <>Loading...</>
@@ -296,6 +296,7 @@ const styles = () => ({
   },
 });
 
+/* eslint no-nested-ternary: ["off"] */
 const ModalTitleArea = styled.div`
   justify-content: flex-start;
   width: 100%;

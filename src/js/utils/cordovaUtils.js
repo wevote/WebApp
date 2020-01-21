@@ -348,6 +348,86 @@ export function getAndroidSize () {
   return sizeString;
 }
 
+export function isAndroidSizeSM () {
+  if (isAndroid()) {
+    if (getAndroidSize() === '--sm') {
+      logMatch('isAndroidSizeSM: sm = 480*800 = 384,000      Nexus One', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isAndroidSizeMD () {
+  if (isAndroid()) {
+    if (getAndroidSize() === '--md') {
+      logMatch('isAndroidSizeMD: md = 1080*1920 = 2,073,600  PixelXL, Nexus5X, Moto G5', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isAndroidSizeLG () {
+  if (isAndroid()) {
+    if (getAndroidSize() === '--lg') {
+      logMatch('isAndroidSizeLG: lg = 1440*2560 = 3,686,400  Nexus6P', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isAndroidSizeXL () {
+  if (isAndroid()) {
+    if (getAndroidSize() === '--xl') {
+      logMatch('isAndroidSizeXL: xl = 2560*1600 = 4,096,000  Nexus10 Tablet', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isWebAppHeight0to568 () {
+  if (isWebApp()) {
+    if (window && window.screen && window.screen.height <= 568) {
+      logMatch('isWebApp0to568: iPhone5, iPhone SE', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isWebAppHeight569to667 () {
+  if (isWebApp()) {
+    if (window && window.screen && window.screen.height >= 569 && window.screen.height <= 667) {
+      logMatch('isWebApp0to568: iPhone6/7/8', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isWebAppHeight668to736 () {
+  if (isWebApp()) {
+    if (window && window.screen && window.screen.height >= 668 && window.screen.height <= 736) {
+      logMatch('isWebApp0to568: iPhone8Plus', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isWebAppHeight737to896 () {
+  if (isWebApp()) {
+    if (window && window.screen && window.screen.height >= 737 && window.screen.height <= 896) {
+      logMatch('isWebApp0to568: iPhoneX/iPhone11 Pro Max', true);
+      return true;
+    }
+  }
+  return false;
+}
+
 export function isAndroidSimulator () {
   return window.location.href.startsWith('file:///android');
 }
