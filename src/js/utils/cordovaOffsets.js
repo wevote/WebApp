@@ -41,9 +41,9 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.welcomeWild:     return '10px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
-        case enums.moreHamburger:   return '10px';
+        case enums.moreHamburger:   return '57px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '16px';
+        case enums.settingsWild:    return '45px';
         case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
@@ -63,9 +63,9 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.welcomeWild:     return '10px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
-        case enums.moreHamburger:   return '10px';
+        case enums.moreHamburger:   return '66px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '16px';
+        case enums.settingsWild:    return '76px';
         case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
@@ -109,9 +109,9 @@ export function cordovaScrollablePaneTopPadding () {
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '22px';
-        case enums.moreHamburger:   return '35px';
+        case enums.moreHamburger:   return '90px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '32px';
+        case enums.settingsWild:    return '89px';
         case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
