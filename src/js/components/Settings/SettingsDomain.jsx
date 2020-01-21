@@ -10,6 +10,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import InputBase from '@material-ui/core/InputBase';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
+import { cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
 import LoadingWheel from '../LoadingWheel';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -20,6 +21,7 @@ import SettingsAccount from './SettingsAccount';
 import SettingsAccountLevelChip from './SettingsAccountLevelChip';
 import VoterStore from '../../stores/VoterStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
+
 
 class SettingsDomain extends Component {
   static propTypes = {
@@ -314,7 +316,11 @@ class SettingsDomain extends Component {
 
   openPaidAccountUpgradeModal (paidAccountUpgradeMode) {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
-    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+    if (isWebApp()) {
+      AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+    } else {
+      cordovaOpenSafariView('https://wevote.us/more/pricing', null, 50);
+    }
   }
 
   render () {
