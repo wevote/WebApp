@@ -66,7 +66,7 @@ class SuggestedFriendDisplayForList extends Component {
         </Name>
         {!!(positionsTaken) && (
           <Info>
-            Positions:
+            Opinions:
             {' '}
             <strong>{positionsTaken}</strong>
           </Info>

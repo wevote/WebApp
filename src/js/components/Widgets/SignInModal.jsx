@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -8,7 +9,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
-import { isCordova, isWebApp } from '../../utils/cordovaUtils';
+import {
+  isCordova,
+  isAndroidSizeSM, isAndroidSizeMD, isAndroidSizeLG, isAndroidSizeXL,
+  isIPhone3p5in, isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in,
+  isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896,
+  isWebApp,
+} from '../../utils/cordovaUtils';
 import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 
@@ -88,6 +95,7 @@ class SignInModal extends Component {
   render () {
     renderLog('SignInModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
+
     const { focusedInputName, focusedOnSingleInputToggle, voter, voterIsSignedIn } = this.state;
     if (!voter) {
       // console.log('SignInModal render voter NOT found');
@@ -100,10 +108,29 @@ class SignInModal extends Component {
     }
 
     // This modal is shown when the voter wants to sign in.
+    console.log('window.screen.height:', window.screen.height);
     return (
       <Dialog
         classes={{
-          paper: focusedOnSingleInputToggle ? (focusedInputName === 'email' ? classes.dialogPaperFocusedOnEmailInput : classes.dialogPaperFocusedOnPhoneInput) : classes.dialogPaper, // eslint-disable-line no-nested-ternary
+          paper: clsx(classes.dialogPaper, {
+            [classes.focusedOnSingleInput]: focusedOnSingleInputToggle,
+            // iPhone 5 / SE
+            [classes.emailInputWebApp0to568]: isWebAppHeight0to568() && focusedOnSingleInputToggle && focusedInputName === 'email',
+            [classes.phoneInputWebApp0to568]: isWebAppHeight0to568() && focusedOnSingleInputToggle && focusedInputName === 'phone',
+            // iPhone6/7/8, iPhone8Plus
+            [classes.emailInputWebApp569to736]: (isWebAppHeight569to667() || isWebAppHeight668to736()) && focusedOnSingleInputToggle && focusedInputName === 'email',
+            [classes.phoneInputWebApp569to736]: (isWebAppHeight569to667() || isWebAppHeight668to736()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
+            // iPhoneX/iPhone11 Pro Max
+            [classes.emailInputWebApp737to896]: isWebAppHeight737to896() && focusedOnSingleInputToggle && focusedInputName === 'email',
+            [classes.phoneInputWebApp737to896]: isWebAppHeight737to896() && focusedOnSingleInputToggle && focusedInputName === 'phone',
+            // 2020-01-20 These are to be configured and are placeholders
+            [classes.emailInputCordovaSmall]: (isIPhone3p5in() || isAndroidSizeSM()) && focusedOnSingleInputToggle && focusedInputName === 'email',
+            [classes.phoneInputCordovaSmall]: (isIPhone3p5in() || isAndroidSizeSM()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
+            [classes.emailInputCordovaMedium]: (isIPhone4in() || isIPhone4p7in() || isIPhone5p5in() || isIPhone5p8in() || isIPhone6p1in() || isAndroidSizeMD()) && focusedOnSingleInputToggle && focusedInputName === 'email',
+            [classes.phoneInputCordovaMedium]: (isIPhone4in() || isIPhone4p7in() || isIPhone5p5in() || isIPhone5p8in() || isIPhone6p1in() || isAndroidSizeMD()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
+            [classes.emailInputCordovaLarge]: (isIPhone6p5in() || isAndroidSizeLG() || isAndroidSizeXL()) && focusedOnSingleInputToggle && focusedInputName === 'email',
+            [classes.phoneInputCordovaLarge]: (isIPhone6p5in() || isAndroidSizeLG() || isAndroidSizeXL()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
+          }),
           root: classes.dialogRoot,
         }}
         open={this.props.show}
@@ -154,9 +181,9 @@ be honored, Cordova tries to do the best it can, but sometimes it crashes and lo
 For Cordova eliminate as many fixed vertical dimensions as needed to avoid overconstraint.
 */
 const styles = theme => ({
-  dialogRoot: isCordova() ? {
+  dialogRoot: isWebApp() ? {
     height: '100%',
-    position: 'absolute !important',
+    // position: 'absolute !important', // Causes problem on Firefox
     top: '-15%',
     left: '0% !important',
     right: 'unset !important',
@@ -164,7 +191,7 @@ const styles = theme => ({
     width: '100%',
   } : {
     height: '100%',
-    // position: 'absolute !important', // Causes problem on Firefox
+    position: 'absolute !important',
     top: '-15%',
     left: '0% !important',
     right: 'unset !important',
@@ -193,34 +220,61 @@ const styles = theme => ({
     position: 'absolute',
     transform: 'translate(-50%, -25%)',
   },
-  dialogPaperFocusedOnEmailInput: isWebApp() ? {
+  focusedOnSingleInput: isWebApp() ? {
     [theme.breakpoints.down('sm')]: {
-      minWidth: '95%',
-      maxWidth: '95%',
-      width: '95%',
-      maxHeight: '90%',
-      height: 'unset',
-      margin: '0 auto',
       position: 'absolute',
       top: '75%',
       left: '73%',
-      transform: 'translate(-75%, -34%)', // Only difference is -34%
     },
   } : {},
-  dialogPaperFocusedOnPhoneInput: isWebApp() ? {
+  emailInputWebApp0to568: {
     [theme.breakpoints.down('sm')]: {
-      minWidth: '95%',
-      maxWidth: '95%',
-      width: '95%',
-      maxHeight: '90%',
-      height: 'unset',
-      margin: '0 auto',
-      position: 'absolute',
-      top: '75%',
-      left: '73%',
-      transform: 'translate(-75%, -70%)', // Only difference is second -70%
+      transform: 'translate(-75%, -50%)',
     },
-  } : {},
+  },
+  phoneInputWebApp0to568: {
+    [theme.breakpoints.down('sm')]: {
+      transform: 'translate(-75%, -60%)',
+    },
+  },
+  emailInputWebApp569to736: {
+    [theme.breakpoints.down('sm')]: {
+      transform: 'translate(-75%, -55%)',
+    },
+  },
+  phoneInputWebApp569to736: {
+    [theme.breakpoints.down('sm')]: {
+      transform: 'translate(-75%, -55%)',
+    },
+  },
+  emailInputWebApp737to896: {
+    [theme.breakpoints.down('sm')]: {
+      transform: 'translate(-75%, -40%)',
+    },
+  },
+  phoneInputWebApp737to896: {
+    [theme.breakpoints.down('sm')]: {
+      transform: 'translate(-75%, -55%)',
+    },
+  },
+  emailInputCordovaSmall: {
+    transform: 'translate(-75%, -25%)', // To be configured
+  },
+  phoneInputCordovaSmall: {
+    transform: 'translate(-75%, -25%)', // To be configured
+  },
+  emailInputCordovaMedium: {
+    transform: 'translate(-75%, -25%)', // To be configured
+  },
+  phoneInputCordovaMedium: {
+    transform: 'translate(-75%, -25%)', // To be configured
+  },
+  emailInputCordovaLarge: {
+    transform: 'translate(-75%, -25%)', // To be configured
+  },
+  phoneInputCordovaLarge: {
+    transform: 'translate(-75%, -25%)', // To be configured
+  },
   dialogContent: {
     [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',

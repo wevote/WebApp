@@ -47,11 +47,7 @@ class FriendShareList extends Component {
     return (
       <FormControl component="fieldset" className={classes.formControl}>
         <FormGroup className={classes.formGroup}>
-          {this.props.list.map((item, index) => {
-            // console.log(item);
-
-            // return <FriendsShareListItem {...item} />;
-
+          {this.props.list.map((item, index) => { // eslint-disable-line arrow-body-style
             return (
               <FormControlLabel
                 control={<Checkbox color="primary" checked={this.state[index]} onChange={handleChange(index, item)} value={index} />}

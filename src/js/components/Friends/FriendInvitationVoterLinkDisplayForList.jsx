@@ -103,7 +103,7 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
         </Name>
         {!!(positionsTaken) && (
           <Info>
-            Positions:
+            Opinions:
             {' '}
             <strong>{positionsTaken}</strong>
           </Info>
@@ -150,7 +150,16 @@ class FriendInvitationVoterLinkDisplayForList extends Component {
                 onClick={() => this.cancelFriendInviteVoter(otherVoterWeVoteId)}
                 variant="outlined"
               >
-                {cancelFriendInviteVoterSubmitted ? 'Canceling...' : window.innerWidth > 520 ? 'Cancel Invite' : 'Cancel'}
+                {cancelFriendInviteVoterSubmitted ? 'Canceling...' : (
+                  <>
+                    <span className="u-show-mobile">
+                      Cancel
+                    </span>
+                    <span className="u-show-desktop-tablet">
+                      Cancel Invite
+                    </span>
+                  </>
+                )}
               </Button>
             </CancelButtonContainer>
           </ButtonWrapper>

@@ -86,7 +86,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
         </Name>
         {!!(positionsTaken) && (
           <Info>
-            Positions:
+            Opinions:
             {' '}
             <strong>{positionsTaken}</strong>
           </Info>
