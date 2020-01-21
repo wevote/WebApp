@@ -19,6 +19,7 @@ export default class OpenExternalWebSite extends Component {
 
   render () {
     renderLog('OpenExternalWebSite');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('OpenExternalWebSite props ', this.props);
     const { delay, className } = this.props;
     const integerDelay = delay && delay >= 0 ? delay : 50;
     const classNameString = className !== undefined ? className : 'open-web-site';

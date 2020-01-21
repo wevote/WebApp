@@ -12,6 +12,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import Table from '@material-ui/core/Table';
 import { withStyles } from '@material-ui/core/styles';
+import { isWebApp, cordovaOpenSafariView } from '../../utils/cordovaUtils';
 import DonateStore from '../../stores/DonateStore';
 import DonateActions from '../../actions/DonateActions';
 import LoadingWheel from '../LoadingWheel';
@@ -163,7 +164,7 @@ class SettingsSubscriptionPlan extends Component {
       chosenFeaturePackage,
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
     });
-  }
+  };
 
   onVoterStoreChange = () => {
     const voter = VoterStore.getVoter();
@@ -177,11 +178,11 @@ class SettingsSubscriptionPlan extends Component {
       voter,
       voterIsSignedIn,
     });
-  }
+  };
 
   openPaidAccountUpgradeModal = (paidAccountUpgradeMode) => {
     AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
-  }
+  };
 
   onChangePlan = () => {
     const { activePaidPlanChosen } = this.state;
@@ -198,8 +199,13 @@ class SettingsSubscriptionPlan extends Component {
         paidAccountUpgradeMode = 'professional';
         break;
     }
-    this.openPaidAccountUpgradeModal(paidAccountUpgradeMode);
-  }
+
+    if (isWebApp()) {
+      this.openPaidAccountUpgradeModal(paidAccountUpgradeMode);
+    } else {
+      cordovaOpenSafariView('https://wevote.us/more/pricing', null, 50);
+    }
+  };
 
   onCancelPlan = () => {
     const activePaidPlan = DonateStore.getActivePaidPlan();
