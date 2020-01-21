@@ -127,7 +127,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/friends/suggested' ||
     pathnameLowerCase === '/friends/invitebyemail' ||
     pathnameLowerCase === '/facebook_invitable_friends') {
-    showBackToFriends = true;
+    showBackToFriends = isWebApp();
   } else if (stringContains('/vg/', pathnameLowerCase)) {
     showBackToVoterGuides = true; // DALE 2019-02-19 Soon we should be able to delete the interim voter guides page
   }
