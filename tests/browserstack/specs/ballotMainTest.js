@@ -36,8 +36,8 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
     // // //////////////////////
-    // // Sign in using Twitter
-    if (twitterUserName && twitterPassword) {
+    // // Sign in using Twitter, when in browser
+    if (!isCordovaFromAppStore && twitterUserName && twitterPassword) {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('signInHeaderBar'); // Clicks on Sign in
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -92,7 +92,7 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Visit the candidate page
-    // await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate
+    // await simpleClick('officeItemCompressedCandidateImageAndName-wv02cand53902'); // Clicks the candidate
     // // Using same IDs for two different elements for eg. valueIconAndText-wv02issue25
     // await simpleClick('candidateItem-wv02cand53902-valueIconAndText-wv02issue37'); // Clicks to OPEN the issue icon
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -114,7 +114,7 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Visit the candidate Maria Cantwell for choose, oppose, comment and save
     if (isDesktopScreenSize) {
-      await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate Maria Cantwell
+      await simpleClick('officeItemCompressedCandidateImageAndName-wv02cand53902'); // Clicks the candidate Maria Cantwell
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       const chooseButtonId = 'itemActionBarSupportButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
       browser.execute((id) => {
@@ -155,7 +155,7 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('backToLinkTabHeader');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     } else {
-      await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate Maria Cantwell
+      await simpleClick('officeItemCompressedCandidateImageAndName-wv02cand53902'); // Clicks the candidate Maria Cantwell
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('itemActionBarSupportButton-candidateItem-mobileIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-mobileVersion-wv02cand53902'); // Choose the candidate
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
