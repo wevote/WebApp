@@ -57,7 +57,7 @@ class BallotDecisionsTabs extends Component {
       default:
         return 0;
     }
-  }
+  };
 
   goToDifferentCompletionLevelTab (completionLevelFilterType = '') {
     BallotActions.completionLevelFilterTypeSave(completionLevelFilterType);
@@ -105,6 +105,7 @@ class BallotDecisionsTabs extends Component {
             classes={{ root: classes.tabRoot }}
             id="remainingChoicesCompletionLevelTab"
             onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
+            style={{ paddingRight: '26px' }}
             label={(
               <Badge
                 classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 1 ? null : classes.badgeColorPrimary }}
