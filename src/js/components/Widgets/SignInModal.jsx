@@ -258,23 +258,23 @@ const styles = theme => ({
     },
   },
   emailInputCordovaSmall: {
-    transform: 'translate(-75%, -25%)', // To be configured
+    transform: 'translate(-75%, 47%)', // Works ok
   },
   phoneInputCordovaSmall: {
-    transform: 'translate(-75%, -25%)', // To be configured
+    transform: 'translate(-75%, -25%)', // Works ok.  Verify is modal and needs to be scrolled to see the confirmation area.
   },
   emailInputCordovaMedium: {
-    transform: 'translate(-75%, -25%)', // To be configured
+    transform: 'translate(-50%, -25%)', // Looks ok, verify page is full screen, and works well.  This does throw "Unable to simultaneously satisfy constraints", but does not crash iPhone 8
   },
   phoneInputCordovaMedium: {
-    transform: 'translate(-75%, -25%)', // To be configured
+    transform: 'translate(-50%, -25%)', // Looks ok. dialog layout is a bit off.  Verify is modal and needs to be scrolled to see the confirmation area. This does throw "Unable to simultaneously satisfy constraints", but does not crash iPhone 8
   },
   emailInputCordovaLarge: {
-    transform: 'translate(-75%, -25%)', // To be configured
+    transform: 'translate(-50%, 0%)', // Works ok.
   },
   phoneInputCordovaLarge: {
-    transform: 'translate(-75%, -25%)', // To be configured
-  },
+    transform: 'translate(-50%, 0%)', // Looks ok. dialog layout is a bit off.  Verify is modal and needs to be scrolled to see the confirmation area. This does throw "Unable to simultaneously satisfy constraints", but does not crash iPhone XsMax
+  },                                  // On the iPad, Verify is modal and needs to be scrolled to see the confirmation area.
   dialogContent: {
     [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',

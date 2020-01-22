@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
+import { isWebApp } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
 import ImageHandler from '../ImageHandler';
 import VoterStore from '../../stores/VoterStore';
@@ -161,7 +162,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
   }
 }
 
-const Wrapper = styled.div`
+const Wrapper = isWebApp() ? styled.div`
   margin: 24px 0;
   display: flex;
   flex-direction: column;
@@ -178,6 +179,13 @@ const Wrapper = styled.div`
     height: 68px;
     padding-left: 85px;
   }
+` : styled.div`
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  flex-wrap: wrap;
 `;
 
 const Flex = styled.div`
@@ -187,7 +195,7 @@ const Flex = styled.div`
   justify-content: flex-start;
 `;
 
-const Avatar = styled.div`
+const Avatar = isWebApp() ? styled.div`
   max-width: 68.8px;
   margin-right: 8px;
   @media (min-width: 400px) {
@@ -205,15 +213,27 @@ const Avatar = styled.div`
       height: 68.8px;
     }
   }
+` : styled.div`
+  max-width: 68.8px;
+  margin-right: 8px;
+    & img {
+      border-radius: 6px;
+      width: 68.8px;
+      height: 68.8px;
+    }
+  }
 `;
 
-const Details = styled.div`
+const Details = isWebApp() ? styled.div`
   margin: 0 auto;
   @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
   }
+` : styled.div`
+  margin: 0 auto;
 `;
+
 const Name = styled.h3`
   color: black !important;
   font-size: 20px;
@@ -267,7 +287,7 @@ const Info = styled.div`
   }
 `;
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = isWebApp() ? styled.div`
   width: 100%;
   margin: 12px 0 0;
   display: flex;
@@ -286,6 +306,12 @@ const ButtonWrapper = styled.div`
     justify-content: flex-end;
     align-items: center;
   }
+` : styled.div`
+  width: 100%;
+  margin: 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const ButtonContainer = styled.div`
