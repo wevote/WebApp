@@ -92,15 +92,15 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Visit the candidate page
-//    await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate
-//    // Using same IDs for two different elements for eg. valueIconAndText-wv02issue25
-//    await simpleClick('candidateItem-wv02cand53902-valueIconAndText-wv02issue37'); // Clicks to OPEN the issue icon
-//    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//    await simpleClick('candidateItem-wv02cand53902-valueIconAndText-wv02issue37'); // Clicks to CLOSE the issue icon //
-//
-//    await simpleClick('valueIconAndText-wv02issue65'); // Clicks to OPEN the issue icon
-//    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//    await simpleClick('valueIconAndText-wv02issue65'); // Clicks to CLOSE the issue icon
+    // await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate
+    // // Using same IDs for two different elements for eg. valueIconAndText-wv02issue25
+    // await simpleClick('candidateItem-wv02cand53902-valueIconAndText-wv02issue37'); // Clicks to OPEN the issue icon
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick('candidateItem-wv02cand53902-valueIconAndText-wv02issue37'); // Clicks to CLOSE the issue icon //
+    //
+    // await simpleClick('valueIconAndText-wv02issue65'); // Clicks to OPEN the issue icon
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick('valueIconAndText-wv02issue65'); // Clicks to CLOSE the issue icon
 
     // //////////////////////
     // Test Following an organization endorsing this candidate
@@ -136,22 +136,22 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902','I am tring to comment');
+      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902', 'I am trying to comment');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902','Successed in deleting nad rewriting the test');
+      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902', 'Succeeded in deleting and rewriting the test');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('itemPositionStatementActionBarSave-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902'); // save the text
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('positionItemFollowToggleFollow-wv02org1360');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await simpleClick('positionItemFollowToggleFollowDropdown-wv02org1360');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await simpleClick('positionItemFollowToggleDropdown-wv02org1360');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await simpleClick('positionItemFollowToggleUnfollow-wv02org1360');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // await simpleClick('positionItemFollowToggleFollowDropdown-wv02org1360');
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // await simpleClick('positionItemFollowToggleDropdown-wv02org1360');
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // await simpleClick('positionItemFollowToggleUnfollow-wv02org1360');
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('backToLinkTabHeader');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     } else {
@@ -168,11 +168,11 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902','I am tring to comment');
+      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902', 'I am tring to comment');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902','Successed in deleting nad rewriting the test');
+      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902', 'Successed in deleting nad rewriting the test');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       const saveButtonId = 'itemPositionStatementActionBarSave-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902';
@@ -185,12 +185,12 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('positionItemFollowToggleFollow-wv02org1360'); // Follow the Organisation
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await simpleClick('positionItemFollowToggleFollowDropdown-wv02org1360');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await simpleClick('positionItemFollowToggleDropdown-wv02org1360');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await simpleClick('positionItemFollowToggleUnfollow-wv02org1360');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // await simpleClick('positionItemFollowToggleFollowDropdown-wv02org1360');
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // await simpleClick('positionItemFollowToggleDropdown-wv02org1360');
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // await simpleClick('positionItemFollowToggleUnfollow-wv02org1360');
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('backToLinkTabHeader');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     }
@@ -217,13 +217,13 @@ describe('Basic cross-platform We Vote test',  () => {
       document.getElementById(id).click();
     }, voteYesButtonId); // Click on Voting Yes
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//    await simpleClick('profileCloseItemActionBar'); // Click on Close Pop Up of Voting Yes // not able to find this element on web page -Poonam
-//    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick('profileCloseItemActionBar'); // Click on Close Pop Up of Voting Yes // not able to find this element on web page -Poonam
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on TextArea //
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779',' '); // Clear Text on TextArea
+    await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779', ' '); // Clear Text on TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleTextInput('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779','Commenting in measure to check'); // Write something on TextArea
+    await simpleTextInput('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779', 'Commenting in measure to check'); // Write something on TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Clcik on Save Button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -232,27 +232,27 @@ describe('Basic cross-platform We Vote test',  () => {
       document.getElementById(id).click();
     }, voteNoButtonId); // Click on Voting No
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//    await simpleClick('itemPositionStatementActionBarEdit-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Clicks on Edit Button - not visible-Poonam
-//    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//    await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779',' '); // Clear Text on TextArea
-//    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//    await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on Save Button
-//    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick('itemPositionStatementActionBarEdit-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Clicks on Edit Button - not visible-Poonam
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779',' '); // Clear Text on TextArea
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on Save Button
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     const voteNoButton = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
     browser.execute((id) => {
       document.getElementById(id).click();
     }, voteNoButton); // Click on Voting No again (to unset)
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//    await simpleClick('filterBaseFilters'); // was crashing because it couldn't find filterBaseFilters
-//    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//
-//    scrollThroughPage();   // script is failing to scroll down
-//
-//    const stickyYesButton = 'itemActionBarYesButton-measureStickyHeader-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
-//    browser.execute((id) => {
-//      document.getElementById(id).click();
-//    }, stickyYesButton); // Click on Sticky Header Yes
-//    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick('filterBaseFilters'); // was crashing because it couldn't find filterBaseFilters
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    //
+    // scrollThroughPage();   // script is failing to scroll down
+    //
+    // const stickyYesButton = 'itemActionBarYesButton-measureStickyHeader-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
+    // browser.execute((id) => {
+    //  document.getElementById(id).click();
+    // }, stickyYesButton); // Click on Sticky Header Yes
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await simpleClick('itemPositionStatementActionBarTextArea-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on TextArea
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779',' '); // Clear Text on TextArea
@@ -333,21 +333,21 @@ describe('Basic cross-platform We Vote test',  () => {
 
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
-    // Open sign in modal, then close it by pressing button
-    await simpleClick('signInHeaderBar');
-    await simpleClick('profileCloseSignInModal');
-
-    // Open sign in modal, then close it by clicking/tapping outside of modal
-    // NOTE: having trouble doing this with W3C Web Driver protocol, so skip for now
-    if (!browser.isW3C) {
-      await simpleClick('signInHeaderBar');
-      await clickTopLeftCornerOfElement('div[role="document"]');
-    }
-    // If keyboard is available, open sign in modal and close by hitting escape key
-    if (!isAndroid && !isIOS) {
-      await simpleClick('signInHeaderBar');
-      browser.keys(['Escape']);
-    }
+    // // Open sign in modal, then close it by pressing button
+    // await simpleClick('signInHeaderBar');
+    // await simpleClick('profileCloseSignInModal');
+    //
+    // // Open sign in modal, then close it by clicking/tapping outside of modal
+    // // NOTE: having trouble doing this with W3C Web Driver protocol, so skip for now
+    // if (!browser.isW3C) {
+    //   await simpleClick('signInHeaderBar');
+    //   await clickTopLeftCornerOfElement('div[role="document"]');
+    // }
+    // // If keyboard is available, open sign in modal and close by hitting escape key
+    // if (!isAndroid && !isIOS) {
+    //   await simpleClick('signInHeaderBar');
+    //   browser.keys(['Escape']);
+    // }
 
     assert(true);
   });

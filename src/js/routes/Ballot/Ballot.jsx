@@ -978,7 +978,6 @@ class Ballot extends Component {
                                     const ballotChip = (
                                       <Chip variant="outlined"
                                         color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
-                                        onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                         className="btn_ballot_filter"
                                         classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
                                         label={oneTypeOfBallotItem}
@@ -986,7 +985,12 @@ class Ballot extends Component {
                                     );
                                     if (isMobileScreenSize()) {
                                       return (
-                                        <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
+                                        <div
+                                          className="ballot_filter_btns"
+                                          id={`ballotBadge-${oneTypeOfBallotItem}`}
+                                          key={oneTypeOfBallotItem}
+                                          onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
+                                        >
                                           {ballotChip}
                                         </div>
                                       );
