@@ -246,10 +246,12 @@ class OfficeItemCompressed extends Component {
                   className="card-child"
                   brandBlue={theme.palette.primary.main}
                   numberOfCandidatesInList={candidatesToRender.length}
-                  id={`officeItemCompressedCandidateInfo-${oneCandidate.we_vote_id}`}
                 >
                   <CandidateTopRow>
-                    <Candidate onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
+                    <Candidate
+                      id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}`}
+                      onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
+                    >
                       {/* Candidate Image */}
                       <ImageHandler
                         className="card-main__avatar-compressed"
