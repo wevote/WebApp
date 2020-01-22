@@ -62,12 +62,22 @@ async function setNewAddress (elementIdName, addressValue) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
+async function setNewAddressAndroid (elementIdName, addressValue) {
+  const clickableSelector = `#${elementIdName}`;
+  const clickableItem = await $(clickableSelector);
+  await clickableItem.click();
+  // Delete 30 characters, add new address, then enter key
+  const addressConcatenation = `\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003${addressValue}\uE007`; // 007 is ENTER
+  await clickableItem.setValue(addressConcatenation);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
 async function setNewAddressIOS (elementIdName, addressValue) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
   await clickableItem.click();
   // Delete 30 characters, add new address, then enter key
-  const addressConcatenation = `\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003${addressValue}\uE007`;
+  const addressConcatenation = `\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003${addressValue}\uE006`; // 006 is RETURN
   await clickableItem.setValue(addressConcatenation);
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
@@ -113,4 +123,4 @@ async function clickTopLeftCornerOfElement (selector) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
-module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, clickTopLeftCornerOfElement, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, setNewAddressIOS, writeToLog };
+module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, clickTopLeftCornerOfElement, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, setNewAddressAndroid, setNewAddressIOS, writeToLog };

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { scrollThroughPage, clickTopLeftCornerOfElement, setNewAddress, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal, simpleTextInput, clearTextInputValue } = require('../utils');
+const { scrollThroughPage, clickTopLeftCornerOfElement, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal, simpleTextInput, clearTextInputValue } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
@@ -15,19 +15,22 @@ describe('Basic cross-platform We Vote test',  () => {
 
     if (isCordovaFromAppStore) {
       // switch contexts and click through intro
+      await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+      await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+
       const contexts = await driver.getContexts();
       const context = contexts.includes(ANDROID_CONTEXT) ? ANDROID_CONTEXT : IOS_CONTEXT;
       await driver.switchContext(context);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       const firstNextButton = await $('div[data-index="0"] .intro-story__btn--bottom');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await firstNextButton.click();
+      await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
       const secondNextButton = await $('div[data-index="1"] .intro-story__btn--bottom');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await secondNextButton.click();
+      await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
       const thirdNextButton = await $('div[data-index="2"] .intro-story__btn--bottom');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await thirdNextButton.click();
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
     } else {
       // navigate browser to WeVote QA site
       await browser.url('https://quality.wevote.us/ballot');
@@ -50,14 +53,39 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('allow'); // Clicks on Authorize App
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('profilePopUpSignOut'); // Clicks on Sign Out
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     }
 
+    // // //////////////////////
+    // // Check the positioning of the SignInModal when we click "Enter Phone"
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('signInHeaderBar'); // Clicks on Sign in
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('enterVoterPhone'); // Puts cursor in Phone text input
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+    // // //////////////////////
+    // // Check the positioning of the SignInModal when we click "Enter Email"
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('signInHeaderBar'); // Clicks on Sign in
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
     // //////////////////////
     // Change Address
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('profileCloseSelectBallotModal');
@@ -66,9 +94,15 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // We want to start by setting the location, which will automatically choose the next upcoming election for that address
     await simpleClick('changeAddressHeaderBar'); // Opens the "Enter Your Full Address" link
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
-    // await setNewAddress('addressBoxText', 'Oakland, CA 94602'); // Sets the text for the address box and hits enter
-    await setNewAddressIOS('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
+    if (isIOS && isCordovaFromAppStore) {
+      await setNewAddressIOS('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
+    } else if (isAndroid && isCordovaFromAppStore) {
+      await setNewAddressAndroid('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
+    } else {
+      await setNewAddress('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
+    }
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
     // //////////////////////
@@ -155,7 +189,11 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('backToLinkTabHeader');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     } else {
-      await simpleClick('officeItemCompressedCandidateImageAndName-wv02cand53902'); // Clicks the candidate Maria Cantwell
+      if (isCordovaFromAppStore) {
+        await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate Maria Cantwell
+      } else {
+        await simpleClick('officeItemCompressedCandidateImageAndName-wv02cand53902'); // Clicks the candidate Maria Cantwell
+      }
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('itemActionBarSupportButton-candidateItem-mobileIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-mobileVersion-wv02cand53902'); // Choose the candidate
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -168,11 +206,11 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902', 'I am tring to comment');
+      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902', 'I am trying to comment');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902', 'Successed in deleting nad rewriting the test');
+      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902', 'Successful in deleting nad rewriting the test');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       const saveButtonId = 'itemPositionStatementActionBarSave-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902';
