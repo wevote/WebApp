@@ -4,16 +4,18 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
+import SettingsAccountLevelChip from '../Settings/SettingsAccountLevelChip';
 
 class HamburgerMenuRow extends Component {
   static propTypes = {
-    onClickAction: PropTypes.func,
-    to: PropTypes.string.isRequired,
+    fullIcon: PropTypes.object,
     icon: PropTypes.string,
     iconStyle: PropTypes.object,
-    fullIcon: PropTypes.object,
-    linkText: PropTypes.string.isRequired,
     indented: PropTypes.bool,
+    linkText: PropTypes.string.isRequired,
+    onClickAction: PropTypes.func,
+    showProChip: PropTypes.bool,
+    to: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -25,6 +27,7 @@ class HamburgerMenuRow extends Component {
   render () {
     renderLog('HamburgerMenuRow');  // Set LOG_RENDER_EVENTS to log all renders
     const indented = this.props.indented !== undefined;
+    const { showProChip } = this.props;
 
     if (indented) {
       // "indented" not currently used
@@ -44,6 +47,7 @@ class HamburgerMenuRow extends Component {
             <Link onClick={this.onClickAction} to={this.props.to}>
               <LinkTextWrapper>
                 {this.props.linkText}
+                {showProChip ? <SettingsAccountLevelChip onClickDisabled requiredFeaturePackage="PROFESSIONAL" /> : null}
               </LinkTextWrapper>
             </Link>
           </td>
@@ -63,6 +67,7 @@ class HamburgerMenuRow extends Component {
             <Link onClick={this.onClickAction} to={this.props.to}>
               <LinkTextWrapper>
                 {this.props.linkText}
+                {showProChip ? <SettingsAccountLevelChip onClickDisabled requiredFeaturePackage="PROFESSIONAL" /> : null}
               </LinkTextWrapper>
             </Link>
           </td>

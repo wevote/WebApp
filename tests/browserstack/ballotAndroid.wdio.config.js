@@ -1,4 +1,5 @@
 const browserStackConfig = require('./browserstack.config');
+
 const date = new Date();
 const dateForDisplay = date.toDateString();
 const buildNameForDisplay = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
@@ -24,6 +25,23 @@ exports.config = {
       'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      'browserstack.local': false,
+      isAndroid: true,
+      isCordovaFromAppStore: true,
+      isIOS: false,
+      isMobileScreenSize: false,
+    },
+    {
+      // capabilities for a cordova android test
+      name: 'ballotMainTest-AndroidSamsungGalaxyS8',
+      build: buildNameForDisplay,
+      device: 'Samsung Galaxy S8',
+      os_version: '7.0',
+      app: browserStackConfig.BROWSERSTACK_APK_URL,
+      'browserstack.console': 'info',
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+      'browserstack.local': false,
       isAndroid: true,
       isCordovaFromAppStore: true,
       isIOS: false,
@@ -38,6 +56,7 @@ exports.config = {
       'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      'browserstack.local': false,
       isAndroid: true,
       isCordovaFromAppStore: true,
       isIOS: false,

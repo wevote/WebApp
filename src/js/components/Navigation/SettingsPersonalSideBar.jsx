@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { renderLog } from '../../utils/logging';
 import AppStore from '../../stores/AppStore';
+import SettingsAccountLevelChip from '../Settings/SettingsAccountLevelChip';
 
 // https://stackoverflow.com/questions/32647215/declaring-static-constants-in-es6-classes
 const CORPORATION = 'C';
@@ -145,6 +146,7 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                   Domain
                   </span>
+                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>
               </div>
             </div>
@@ -163,6 +165,7 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                   Sharing
                   </span>
+                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>
               </div>
             </div>
@@ -181,6 +184,7 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                   Subscription Plan
                   </span>
+                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>
               </div>
             </div>
@@ -199,6 +203,7 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                   Analytics
                   </span>
+                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>
               </div>
             </div>
@@ -217,6 +222,7 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                     Organizational Values
                   </span>
+                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>
               </div>
             </div>
@@ -235,6 +241,7 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                   Promoted Organizations
                   </span>
+                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>
               </div>
             </div>
@@ -253,6 +260,7 @@ export default class SettingsPersonalSideBar extends Component {
                   >
                   Tools for Your Website
                   </span>
+                  <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>
               </div>
             </div>
