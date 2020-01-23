@@ -119,109 +119,115 @@ export default class HamburgerMenu extends Component {
 
             {!isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/account"
                 fullIcon={this.yourAccountIcon(photoUrl)}
                 linkText="Sign In"
+                onClickAction={null}
+                to="/settings/account"
               />
             )}
 
             {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/profile"
                 icon="fa fa-address-card"
                 iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
                 linkText="General"
+                onClickAction={null}
+                to="/settings/profile"
               />
             )}
 
             {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/account"
                 fullIcon={this.yourAccountIcon(photoUrl)}
                 linkText="Security & Sign In"
+                onClickAction={null}
+                to="/settings/account"
               />
             )}
 
             {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/notifications"
                 icon="fa fa-bell"
                 iconStyle={{ fontSize: 26, color: '#1c2f4b' }}
                 linkText="Notifications"
+                onClickAction={null}
+                to="/settings/notifications"
               />
             )}
 
+            <HamburgerMenuRow
+              icon="fa fa-users"
+              iconStyle={{ fontSize: 22, color: '#1c2f4b' }}
+              linkText="About We Vote"
+              onClickAction={null}
+              to="/more/about"
+            />
+
             {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/domain"
                 icon="fa fa-globe-americas"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Domain"
+                onClickAction={null}
+                showProChip
+                to="/settings/domain"
               />
             )}
 
             {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/sharing"
                 icon="fa fa-share"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Sharing"
+                onClickAction={null}
+                showProChip
+                to="/settings/sharing"
               />
             )}
 
             {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/subscription"
                 icon="fa fa-shopping-cart"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Subscription Plan"
+                onClickAction={null}
+                showProChip
+                to="/settings/subscription"
               />
             )}
 
             {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/analytics"
                 icon="fa fa-chart-line"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Analytics"
+                onClickAction={null}
+                showProChip
+                to="/settings/analytics"
               />
             )}
 
             {isSignedIn && enableNextRelease && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/promoted"
                 icon="fa fa-bullhorn"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Promoted Organizations"
+                onClickAction={null}
+                showProChip
+                to="/settings/promoted"
               />
             )}
 
             {isWebApp() && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/tools"
                 icon="fa fa-tools"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Tools for Your Website"
+                onClickAction={null}
+                showProChip
+                to="/settings/tools"
               />
             )}
-
-            <HamburgerMenuRow
-              onClickAction={null}
-              to="/more/about"
-              icon="fa fa-users"
-              iconStyle={{ fontSize: 22, color: '#1c2f4b' }}
-              linkText="About We Vote"
-            />
 
             <tr className="hamburger-terms__tr-terms">
               <td className="hamburger-terms__td" colSpan={3}>
