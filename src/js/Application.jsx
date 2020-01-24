@@ -353,9 +353,11 @@ class Application extends Component {
               </div>
             </div>
           </Wrapper>
-          <div className="footroom-wrapper">
-            <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
-          </div>
+          {showFooterBar && (
+            <div className="footroom-wrapper">
+              <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
+            </div>
+          )}
         </div>
       );
     } else if (settingsMode) {

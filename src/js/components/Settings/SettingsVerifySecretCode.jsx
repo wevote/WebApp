@@ -70,7 +70,7 @@ class SettingsVerifySecretCode extends Component {
     window.addEventListener('paste', this.onPaste);
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.incorrectSecretCodeEntered !== nextState.incorrectSecretCodeEntered) return true;
     if (this.state.numberOfTriesRemaining !== nextState.numberOfTriesRemaining) return true;
     if (this.state.secretCodeVerified !== nextState.secretCodeVerified) return true;

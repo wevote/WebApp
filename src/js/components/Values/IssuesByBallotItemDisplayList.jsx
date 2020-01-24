@@ -282,7 +282,7 @@ const Wrapper = styled.div`
 
 const Issues = styled.div`
   width: 100%;
-  margin-left: -10px;
+  margin-left: 0px;
 `;
 
 const IssueList = styled.ul`
@@ -295,18 +295,17 @@ const IssueList = styled.ul`
 
 const MoreWrapper = styled.p`
   align-items: center;
-  background-color: white;
+  background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
   cursor: pointer;
   display: flex;
   display: inline;
   flex-flow: row;
-  height: 25px;
+  height: 30px;
   margin-top: -3px;
   margin-bottom: 8px;
   padding-left: 4px;
   position: absolute;
-  right: -30px;
-  width: 90px;
+  right: 8px;
 `;
 
 export default IssuesByBallotItemDisplayList;

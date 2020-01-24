@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import styled from 'styled-components';
+import Chip from '@material-ui/core/Chip';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueStore from '../../stores/IssueStore';
@@ -22,6 +24,7 @@ class IssuesByOrganizationDisplayList extends Component {
     fullWidth: PropTypes.bool,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -97,6 +100,7 @@ class IssuesByOrganizationDisplayList extends Component {
   }
 
   generateValueListItem = (oneIssue) => {
+    const { classes } = this.props;
     const issueFollowedByVoter = IssueStore.isVoterFollowingThisIssue(oneIssue.issue_we_vote_id);
     const valuePopover = (
       <PopoverWrapper>
@@ -139,18 +143,17 @@ class IssuesByOrganizationDisplayList extends Component {
         className="u-no-break u-cursor--pointer"
         issueFollowedByVoter={issueFollowedByVoter}
       >
-        {oneIssue.issue_icon_local_path ? (
-          <div className="issue-icon-list__issue-icon">
+        <Chip
+          avatar={oneIssue.issue_icon_local_path ? (
             <ReactSVG
               src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
               svgStyle={{ fill: svgFill, padding: '1px 1px 1px 0px' }}
             />
-          </div>
-        ) : null
-        }
-        <div className="u-margin-left--xxs issue-icon-list__issue-label-name">
-          {oneIssue.issue_name}
-        </div>
+          ) : <span />}
+          classes={{ root: classes.chipStyle }}
+          label={oneIssue.issue_name}
+         ref={this.valueSpan}
+        />
       </ValueIconAndTextOrganization>
     );
 
@@ -224,6 +227,14 @@ class IssuesByOrganizationDisplayList extends Component {
   }
 }
 
+const styles = () => ({
+  chipStyle: {
+    color: '#555',
+    fontSize: '.7rem',
+    height: 'auto',
+  },
+});
+
 const Wrapper = styled.div`
   overflow: show;
   display: flex;
@@ -294,4 +305,4 @@ const PopoverDescriptionText = styled.div`
   padding: 8px;
 `;
 
-export default IssuesByOrganizationDisplayList;
+export default withTheme(withStyles(styles)(IssuesByOrganizationDisplayList));

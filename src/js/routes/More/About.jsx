@@ -7,7 +7,7 @@ import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../utils/logging';
-import Footer from '../../components/Welcome/Footer';
+import WelcomeFooter from '../../components/Welcome/WelcomeFooter';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import Section, {
   Bold,
@@ -215,7 +215,7 @@ class About extends Component {
         <Section>
           &nbsp;
         </Section>
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }

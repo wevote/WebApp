@@ -13,6 +13,7 @@ import { renderLog } from '../../utils/logging';
 import MeasureActions from '../../actions/MeasureActions';
 import MeasureStore from '../../stores/MeasureStore';
 import OfficeNameText from '../Widgets/OfficeNameText';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { capitalizeString, stringContains } from '../../utils/textFormat';
 import ReadMore from '../Widgets/ReadMore';
@@ -402,6 +403,7 @@ class VoterGuidePositionItem extends Component {
     // console.log('VoterGuidePositionItem position:', position);
     let {
       ballot_item_display_name: ballotItemDisplayName,
+      more_info_url: moreInfoUrl,
     } = position;
     const {
       ballot_item_image_url_https_large: ballotItemImageUrlHttpsLarge,
@@ -435,6 +437,11 @@ class VoterGuidePositionItem extends Component {
       // politicalParty = position.ballot_item_political_party;
     } else {
       ballotDisplay = ballotItemDisplayName.split(':');
+    }
+    if (moreInfoUrl) {
+      if (!moreInfoUrl.toLowerCase().startsWith('http')) {
+        moreInfoUrl = `http://${moreInfoUrl}`;
+      }
     }
     return (
       <Card>
@@ -523,6 +530,25 @@ class VoterGuidePositionItem extends Component {
                   textToDisplay={statementText}
                   numberOfLines={4}
                 />
+                <MobileItemFooter>
+                  {moreInfoUrl ? (
+                    <SourceLink>
+                      <OpenExternalWebSite
+                        body={(
+                          <span>
+                            source
+                            {' '}
+                            <i className="fas fa-external-link-alt" aria-hidden="true" />
+                          </span>
+                        )}
+                        className="u-gray-mid"
+                        target="_blank"
+                        url={moreInfoUrl}
+                      />
+                    </SourceLink>
+                  ) : null
+                  }
+                </MobileItemFooter>
               </MobileItemDescription>
             )}
           </span>
@@ -543,6 +569,25 @@ class VoterGuidePositionItem extends Component {
                   textToDisplay={statementText}
                   numberOfLines={3}
                 />
+                <DesktopItemFooter>
+                  {moreInfoUrl ? (
+                    <SourceLink>
+                      <OpenExternalWebSite
+                        body={(
+                          <span>
+                            view source
+                            {' '}
+                            <i className="fas fa-external-link-alt" aria-hidden="true" />
+                          </span>
+                        )}
+                        className="u-gray-mid"
+                        target="_blank"
+                        url={moreInfoUrl}
+                      />
+                    </SourceLink>
+                  ) : null
+                  }
+                </DesktopItemFooter>
               </DesktopItemDescription>
             )}
           </span>
@@ -574,10 +619,6 @@ const CandidateItemWrapper = styled.div`
 
 const BallotItemImageWrapper = styled.span`
   padding-right: 10px;
-`;
-
-const OrganizationImageWrapper = styled.span`
-  padding-right: 4px;
 `;
 
 const BallotItemPadding = styled.div`
@@ -616,6 +657,12 @@ const DesktopItemDescription = styled.div`
   flex: 1 1 0;
 `;
 
+const DesktopItemFooter = styled.div`
+  font-size: 12px;
+  margin-top: 8px;
+  padding-bottom: 12px;
+`;
+
 const MeasureItemWrapper = styled.div`
   cursor: pointer;
   display: flex;
@@ -629,6 +676,21 @@ const MobileItemDescription = styled.div`
   padding: 4px;
   background: #eee;
   flex: 1 1 0;
+`;
+
+const MobileItemFooter = styled.div`
+  font-size: 12px;
+  margin-top: 8px;
+  padding-bottom: 12px;
+`;
+
+const OrganizationImageWrapper = styled.span`
+  padding-right: 4px;
+`;
+
+const SourceLink = styled.div`
+  float: right;
+  margin-bottom: -4px;
 `;
 
 const SubTitle = styled.h3`

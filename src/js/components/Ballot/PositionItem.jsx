@@ -250,7 +250,7 @@ class PositionItem extends Component {
                 <OverlayImage>
                   <ImageHandler
                     alt="organization-photo-16x16"
-                    className="image-border-gray-border"
+                    className="image-border-support "
                     imageUrl={position.speaker_image_url_https_medium}
                     kind_of_ballot_item="ORGANIZATION"
                     sizeClassName="image-16x16 "
@@ -269,7 +269,7 @@ class PositionItem extends Component {
                     <OverlayImage>
                       <ImageHandler
                         alt="organization-photo-16x16"
-                        className="image-border-gray-border "
+                        className="image-border-oppose "
                         imageUrl={position.speaker_image_url_https_medium}
                         kind_of_ballot_item="ORGANIZATION"
                         sizeClassName="image-16x16 "
@@ -290,7 +290,7 @@ class PositionItem extends Component {
                         <OverlayImage>
                           <ImageHandler
                             alt="organization-photo-16x16"
-                            className="image-border-gray-border"
+                            className="image-border-support "
                             imageUrl={position.speaker_image_url_https_medium}
                             kind_of_ballot_item="ORGANIZATION"
                             sizeClassName="image-16x16 "
@@ -311,7 +311,7 @@ class PositionItem extends Component {
                             <OverlayImage>
                               <ImageHandler
                                 alt="organization-photo-16x16"
-                                className="image-border-gray-border "
+                                className="image-border-oppose "
                                 imageUrl={position.speaker_image_url_https_medium}
                                 kind_of_ballot_item="ORGANIZATION"
                                 sizeClassName="image-16x16 "
@@ -457,11 +457,8 @@ class PositionItem extends Component {
                       Flag Links
                     </div> */}
                     {moreInfoUrl ? (
-                      <div className="u-float-right">
+                      <SourceLink>
                         <OpenExternalWebSite
-                          url={moreInfoUrl}
-                          target="_blank"
-                          className="u-gray-mid"
                           body={(
                             <span>
                               view source
@@ -469,8 +466,11 @@ class PositionItem extends Component {
                               <i className="fas fa-external-link-alt" aria-hidden="true" />
                             </span>
                           )}
+                          className="u-gray-mid"
+                          target="_blank"
+                          url={moreInfoUrl}
                         />
-                      </div>
+                      </SourceLink>
                     ) : null
                     }
                   </DesktopItemFooter>
@@ -574,9 +574,6 @@ class PositionItem extends Component {
                   {moreInfoUrl ? (
                     <SourceLink>
                       <OpenExternalWebSite
-                        url={moreInfoUrl}
-                        target="_blank"
-                        className="u-gray-mid"
                         body={(
                           <span>
                             source
@@ -584,6 +581,9 @@ class PositionItem extends Component {
                             <i className="fas fa-external-link-alt" aria-hidden="true" />
                           </span>
                         )}
+                        className="u-gray-mid"
+                        target="_blank"
+                        url={moreInfoUrl}
                       />
                     </SourceLink>
                   ) : null
@@ -641,7 +641,7 @@ const MobileItemImage = styled.div`
   width: 40px;
   height: 40px;
   * {
-    border-radius: 40px;
+    border-radius: 4px;
     width: 40px !important;
     height: 40px !important;
     max-width: 40px !important;
@@ -753,7 +753,7 @@ const DesktopItemImage = styled.div`
   justify-content: center;
   margin-bottom: 8px;
   * {
-    border-radius: 57.76px;
+    border-radius: 6px;
     width: 57.76px !important;
     height: 57.76px !important;
     max-width: 57.76px !important;

@@ -23,7 +23,7 @@ class BallotShareButton extends Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.open !== nextState.open) return true;
     if (this.state.anchorEl !== nextState.anchorEl) return true;
     return false;

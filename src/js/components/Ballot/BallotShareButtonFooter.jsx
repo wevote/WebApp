@@ -7,6 +7,7 @@ import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import Reply from '@material-ui/icons/Reply';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
+import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import AppActions from '../../actions/AppActions';
 import ShareModalOption from './ShareModalOption';
 
@@ -28,10 +29,11 @@ class BallotShareButtonFooter extends Component {
     this.toggleStep2 = this.toggleStep2.bind(this);
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.open !== nextState.open) return true;
     if (this.state.step2 !== nextState.step2) return true;
     if (this.state.anchorEl !== nextState.anchorEl) return true;
+    if (this.props.pathname !== nextProps.pathname) return true;
     return false;
   }
 
@@ -56,10 +58,11 @@ class BallotShareButtonFooter extends Component {
   }
 
   render () {
-    const { classes } = this.props;
+    const { classes, pathname } = this.props;
+    const { showFooterBar } = getApplicationViewBooleans(pathname);
 
     return (
-      <Wrapper pinToBottom={this.props.pathname.toLowerCase().startsWith('/candidate') || this.props.pathname.toLowerCase().startsWith('/measure')}>
+      <Wrapper pinToBottom={!showFooterBar}>
         <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="contained" color="primary">
           <Icon>
             <Reply
