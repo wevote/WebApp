@@ -223,17 +223,24 @@ export default class OrganizationCard extends Component {
           { !turnOffDescription ? (
             <div>
               { organizationTwitterHandle && !turnOffTwitterHandle && (
-                <span>
-                  @
-                  {organizationTwitterHandle}
-                  &nbsp;&nbsp;
-                  {(twitterFollowersCount && String(twitterFollowersCount) !== '0' && numberWithCommas(twitterFollowersCount) !== '0') && (
-                    <span className="twitter-followers__badge">
-                      <TwitterFollowersIcon className="fab fa-twitter" />
-                      {numberWithCommas(twitterFollowersCount)}
+                <OpenExternalWebSite
+                  url={`https://twitter.com/${organizationTwitterHandle}`}
+                  target="_blank"
+                  body={(
+                    <span>
+                      <TwitterHandleWrapper>
+                        @
+                        {organizationTwitterHandle}
+                      </TwitterHandleWrapper>
+                      {(twitterFollowersCount && String(twitterFollowersCount) !== '0' && numberWithCommas(twitterFollowersCount) !== '0') && (
+                        <span className="twitter-followers__badge">
+                          <TwitterFollowersIcon className="fab fa-twitter" />
+                          {numberWithCommas(twitterFollowersCount)}
+                        </span>
+                      )}
                     </span>
                   )}
-                </span>
+                />
               )}
               { organizationWebsite && (
                 <WebsiteWrapper>
@@ -241,7 +248,7 @@ export default class OrganizationCard extends Component {
                     url={organizationWebsite}
                     target="_blank"
                     body={(
-                      <span>
+                      <span className="u-no-break">
                         Website
                         {' '}
                         <i className="fas fa-external-link-alt" />
@@ -278,6 +285,10 @@ const TwitterFollowersIcon = styled.span`
   vertical-align: bottom;
 `;
 
-const WebsiteWrapper = styled.span`
+const TwitterHandleWrapper = styled.span`
+  margin-right: 10px;
+`;
+
+const WebsiteWrapper = styled.div`
   margin-left: 4px;
 `;

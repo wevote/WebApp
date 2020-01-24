@@ -29,7 +29,7 @@ class PositionPublicToggle extends Component {
     className: PropTypes.string.isRequired,
     externalUniqueId: PropTypes.string,
     inTestMode: PropTypes.bool,
-    type: PropTypes.string.isRequired,
+    ballotItemType: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -147,15 +147,15 @@ class PositionPublicToggle extends Component {
       voterPositionIsPublic: false,
     });
 
-    // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.type:", this.props.type);
-    SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.type, 'FRIENDS_ONLY');
+    // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.ballotItemType:", this.props.ballotItemType);
+    SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.ballotItemType, 'FRIENDS_ONLY');
     openSnackbar({ message: 'Endorsement now visible to We Vote friends only!' });
   }
 
   showItemToPublic () {
     const { inTestMode, isSignedIn } = this.state;
 
-    // console.log("PositionPublicToggle-showItemToPublic, this.props.type:", this.props.type);
+    // console.log("PositionPublicToggle-showItemToPublic, this.props.ballotItemType:", this.props.ballotItemType);
     if (inTestMode) {
       this.setState({
         voterPositionIsPublic: true,
@@ -165,7 +165,7 @@ class PositionPublicToggle extends Component {
       this.setState({
         voterPositionIsPublic: true,
       });
-      SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.type, 'SHOW_PUBLIC');
+      SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.ballotItemType, 'SHOW_PUBLIC');
       // TODO DALE: const positionPublicToggleModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
       const positionPublicToggleModalHasBeenShown = false;
       if (!positionPublicToggleModalHasBeenShown) {

@@ -63,6 +63,13 @@ class SupportStore extends ReduceStore {
     return this.voterOpposesList[ballotItemWeVoteId] || false;
   }
 
+  getVoterTextStatementByBallotItemWeVoteId (ballotItemWeVoteId) {
+    if (!(this.statementList)) {
+      return false;
+    }
+    return this.statementList[ballotItemWeVoteId] || '';
+  }
+
   getVoterSupportsByBallotItemWeVoteId (ballotItemWeVoteId) {
     if (!(this.voterSupportsList)) {
       return false;

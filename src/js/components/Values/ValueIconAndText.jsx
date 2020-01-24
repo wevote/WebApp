@@ -98,7 +98,7 @@ class ValueIconAndText extends Component {
   }
 
   valuePopover = () => {
-    const { ballotItemWeVoteId, ballotItemDisplayName, oneIssue } = this.props;
+    const { ballotItemWeVoteId, ballotItemDisplayName, issueFollowedByVoter, oneIssue } = this.props;
     const { issueSpecificPositionList, organizationsUnderThisIssueCount } = this.state;
     return (
       <PopoverWrapper>
@@ -113,26 +113,24 @@ class ValueIconAndText extends Component {
           </PopoverTitleText>
         </PopoverHeader>
         <PopoverDescriptionText>
-          <ReadMore
-            textToDisplay={oneIssue.issue_description}
-            numberOfLines={2}
-          />
           {!!(organizationsUnderThisIssueCount) && (
             <>
               <OpinionsRelatedToText>
-                Opinions
+                These groups or people advocate for
                 {' '}
+                <strong>
+                  {oneIssue.issue_name}
+                </strong>
                 {ballotItemDisplayName && (
                   <span>
-                    about
                     {' '}
-                    {ballotItemDisplayName}
+                    and endorse
                     {' '}
+                    <strong>
+                      {ballotItemDisplayName}
+                    </strong>
                   </span>
                 )}
-                related to
-                {' '}
-                {oneIssue.issue_name}
                 :
               </OpinionsRelatedToText>
               {issueSpecificPositionList && (
@@ -146,16 +144,24 @@ class ValueIconAndText extends Component {
             </>
           )}
           {oneIssue.issue_we_vote_id && (
-            <FollowIssueToggleContainer>
-              <IssueFollowToggleButton
-                classNameOverride="pull-left"
-                issueName={oneIssue.issue_name}
-                issueWeVoteId={oneIssue.issue_we_vote_id}
-                showFollowingButtonText
-                showIssueNameOnFollowButton
-                lightModeOn
-              />
-            </FollowIssueToggleContainer>
+            <>
+              <FollowIssueToggleContainer>
+                <IssueFollowToggleButton
+                  classNameOverride="pull-left"
+                  issueName={oneIssue.issue_name}
+                  issueWeVoteId={oneIssue.issue_we_vote_id}
+                  showFollowingButtonText
+                  showIssueNameOnFollowButton
+                  lightModeOn
+                />
+              </FollowIssueToggleContainer>
+              <FollowIfYouCare>
+                <ReadMore
+                  textToDisplay={issueFollowedByVoter ? oneIssue.issue_description : `Follow if you care about ${oneIssue.issue_name}: "${oneIssue.issue_description}"`}
+                  numberOfLines={4}
+                />
+              </FollowIfYouCare>
+            </>
           )}
         </PopoverDescriptionText>
       </PopoverWrapper>
@@ -208,7 +214,7 @@ const styles = () => ({
 });
 
 const FollowIssueToggleContainer = styled.div`
-  margin-top: 10px;
+  margin-top: 24px;
 `;
 
 const PopoverWrapper = styled.div`
@@ -233,9 +239,13 @@ const ValueIconAndTextSpan = styled.span`
   width: fit-content;
 `;
 
-const OpinionsRelatedToText = styled.div`
+const FollowIfYouCare = styled.div`
   color: #999;
-  font-weight: 200;
+  font-size: .75rem;
+  padding-top: 8px;
+`;
+
+const OpinionsRelatedToText = styled.div`
   margin-top: 4px;
 `;
 

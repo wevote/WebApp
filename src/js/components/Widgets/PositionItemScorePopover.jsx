@@ -19,6 +19,7 @@ class PositionItemScorePopover extends Component {
   static propTypes = {
     classes: PropTypes.object,
     positionItem: PropTypes.object.isRequired,
+    showPersonalScoreInformation: PropTypes.bool,
   };
 
   constructor (props) {
@@ -74,7 +75,7 @@ class PositionItemScorePopover extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log('componentWillReceiveProps, nextProps: ', nextProps);
+    // console.log('componentWillReceiveProps, nextProps: ', nextProps);
     const { positionItem } = nextProps;
     if (positionItem) {
       const {
@@ -181,8 +182,8 @@ class PositionItemScorePopover extends Component {
   }
 
   render () {
-    const { classes, positionItem } = this.props;
-    // console.log('PositionItemScorePopover render, positionItem:', positionItem);
+    const { classes, positionItem, showPersonalScoreInformation } = this.props;
+    // console.log('PositionItemScorePopover render');
     if (!positionItem) {
       return null;
     }
@@ -227,13 +228,17 @@ class PositionItemScorePopover extends Component {
               </InformationOnly>
             )}
             <OrganizationSupportsOrOpposesText>
-              {speakerDisplayName}
+              <strong>
+                {speakerDisplayName}
+              </strong>
               {' '}
               {organizationSupports && (
                 <span>
                   supports
                   {' '}
-                  {ballotItemDisplayName}
+                  <strong>
+                    {ballotItemDisplayName}
+                  </strong>
                   .
                 </span>
               )}
@@ -241,7 +246,9 @@ class PositionItemScorePopover extends Component {
                 <span>
                   opposes
                   {' '}
-                  {ballotItemDisplayName}
+                  <strong>
+                    {ballotItemDisplayName}
+                  </strong>
                   .
                 </span>
               )}
@@ -252,93 +259,97 @@ class PositionItemScorePopover extends Component {
               )}
             </OrganizationSupportsOrOpposesText>
           </PositionSummaryWrapper>
-          {organizationInVotersNetwork ? (
+          {showPersonalScoreInformation && (
             <>
-              <OrganizationAddsToYourPersonalScoreExplanation>
-                {organizationSupports && (
-                  <span>
-                    This opinion adds +1 to your personal score because:
-                  </span>
-                )}
-                {organizationOpposes && (
-                  <span>
-                    This opinion subtracts -1 from your personal score because:
-                  </span>
-                )}
-              </OrganizationAddsToYourPersonalScoreExplanation>
-              {voterIsFriendsWithThisOrganization ? (
-                <ScoreExplanationWrapper>
-                  <FriendsIcon />
-                  <ScoreExplanationText>
-                    {speakerDisplayName}
-                    {' '}
-                    is your friend
-                  </ScoreExplanationText>
-                </ScoreExplanationWrapper>
-              ) : (
+              {organizationInVotersNetwork ? (
                 <>
-                  {voterFollowingThisOrganization && (
+                  <OrganizationAddsToYourPersonalScoreExplanation>
+                    {organizationSupports && (
+                      <span>
+                        This opinion adds +1 to your personal score because:
+                      </span>
+                    )}
+                    {organizationOpposes && (
+                      <span>
+                        This opinion subtracts -1 from your personal score because:
+                      </span>
+                    )}
+                  </OrganizationAddsToYourPersonalScoreExplanation>
+                  {voterIsFriendsWithThisOrganization ? (
                     <ScoreExplanationWrapper>
-                      <CheckCircle className="following-icon" />
+                      <FriendsIcon />
                       <ScoreExplanationText>
-                        You follow
-                        {' '}
                         {speakerDisplayName}
+                        {' '}
+                        is your friend
                       </ScoreExplanationText>
                     </ScoreExplanationWrapper>
+                  ) : (
+                    <>
+                      {voterFollowingThisOrganization && (
+                        <ScoreExplanationWrapper>
+                          <CheckCircle className="following-icon" />
+                          <ScoreExplanationText>
+                            You follow
+                            {' '}
+                            {speakerDisplayName}
+                          </ScoreExplanationText>
+                        </ScoreExplanationWrapper>
+                      )}
+                    </>
                   )}
+                  {issuesInCommonBetweenOrganizationAndVoter.map(issue => (
+                    <ScoreExplanationWrapper key={`issueInScore-${issue.issue_we_vote_id}`}>
+                      <PopoverTitleIcon>
+                        <ReactSVG
+                          src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
+                          svgStyle={{ fill: '#555', padding: '1px 1px 1px 0px' }}
+                        />
+                      </PopoverTitleIcon>
+                      <ScoreExplanationText>
+                        You both care about
+                        {' '}
+                        {issue.issue_name}
+                      </ScoreExplanationText>
+                    </ScoreExplanationWrapper>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <FollowOrganizationText>
+                    Follow
+                    {' '}
+                    <strong>
+                      {speakerDisplayName}
+                    </strong>
+                    {' '}
+                    {organizationSupports && (
+                      <span>
+                        to add +1 to your personal score of
+                        {' '}
+                        {ballotItemDisplayName}
+                        .
+                      </span>
+                    )}
+                    {organizationOpposes && (
+                      <span>
+                        to subtract -1 from your personal score of
+                        {' '}
+                        {ballotItemDisplayName}
+                        .
+                      </span>
+                    )}
+                    {organizationProvidingInformationOnly && (
+                      <span>
+                        to see more of their opinions.
+                      </span>
+                    )}
+                  </FollowOrganizationText>
+                  <FollowOrganizationToggleContainer>
+                    <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                  </FollowOrganizationToggleContainer>
                 </>
               )}
-              {issuesInCommonBetweenOrganizationAndVoter.map(issue => (
-                <ScoreExplanationWrapper key={`issueInScore-${issue.issue_we_vote_id}`}>
-                  <PopoverTitleIcon>
-                    <ReactSVG
-                      src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
-                      svgStyle={{ fill: '#555', padding: '1px 1px 1px 0px' }}
-                    />
-                  </PopoverTitleIcon>
-                  <ScoreExplanationText>
-                    You both care about
-                    {' '}
-                    {issue.issue_name}
-                  </ScoreExplanationText>
-                </ScoreExplanationWrapper>
-              ))}
-            </>
-          ) : (
-            <>
-              <FollowOrganizationText>
-                Follow
-                {' '}
-                <strong>
-                  {speakerDisplayName}
-                </strong>
-                {' '}
-                {organizationSupports && (
-                  <span>
-                    to add +1 to your personal score for
-                    {' '}
-                    {ballotItemDisplayName}
-                    .
-                  </span>
-                )}
-                {organizationOpposes && (
-                  <span>
-                    to subtract -1 from your personal score for
-                    {' '}
-                    {ballotItemDisplayName}
-                    .
-                  </span>
-                )}
-                {organizationProvidingInformationOnly && (
-                  <span>
-                    to see more of their opinions.
-                  </span>
-                )}
-              </FollowOrganizationText>
-              <FollowOrganizationToggleContainer>
-                <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
-              </FollowOrganizationToggleContainer>
             </>
           )}
         </PopoverDescriptionText>
@@ -367,8 +378,6 @@ const FollowOrganizationToggleContainer = styled.div`
 `;
 
 const OrganizationSupportsOrOpposesText = styled.div`
-  color: #999;
-  font-weight: 200;
 `;
 
 const PopoverWrapper = styled.div`

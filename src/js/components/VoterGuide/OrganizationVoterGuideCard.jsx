@@ -76,19 +76,41 @@ class OrganizationVoterGuideCard extends Component {
           <h3 className="card-main__display-name">{displayName}</h3>
         </Link>
         { organizationTwitterHandle && (
-          <TwitterName>
-            <span>
-              @
-              {organizationTwitterHandle}
-              &nbsp;&nbsp;
-            </span>
-            { twitterFollowersCount && String(twitterFollowersCount) !== '0' && (
-              <span className="twitter-followers__badge">
-                <span className="fab fa-twitter twitter-followers__icon" />
-                {numberWithCommas(twitterFollowersCount)}
-              </span>
+          <OpenExternalWebSite
+            url={`https://twitter.com/${organizationTwitterHandle}`}
+            target="_blank"
+            body={(
+              <TwitterName>
+                <TwitterHandleWrapper>
+                  @
+                  {organizationTwitterHandle}
+                </TwitterHandleWrapper>
+                { twitterFollowersCount && String(twitterFollowersCount) !== '0' && (
+                  <span className="twitter-followers__badge">
+                    <span className="fab fa-twitter twitter-followers__icon" />
+                    {numberWithCommas(twitterFollowersCount)}
+                  </span>
+                )}
+              </TwitterName>
             )}
-          </TwitterName>
+          />
+        )}
+        { organizationWebsite && (
+          <OrganizationWebsiteWrapper>
+            <span className="u-wrap-links">
+              <OpenExternalWebSite
+                url={organizationWebsite}
+                target="_blank"
+                body={(
+                  <span>
+                    {organizationWebsite}
+                    {' '}
+                    <i className="fas fa-external-link-alt" />
+                  </span>
+                )}
+              />
+            </span>
+          </OrganizationWebsiteWrapper>
         )}
         { isVoterOwner && (
           <Button
@@ -135,23 +157,6 @@ class OrganizationVoterGuideCard extends Component {
             placement="bottom"
           />
         </IssuesWrapper>
-        { organizationWebsite && (
-          <div>
-            <span className="u-wrap-links">
-              <OpenExternalWebSite
-                url={organizationWebsite}
-                target="_blank"
-                body={(
-                  <span>
-                    {organizationWebsite}
-                    {' '}
-                    <i className="fas fa-external-link-alt" />
-                  </span>
-                )}
-              />
-            </span>
-          </div>
-        )}
         {/* 5 of your friends follow Organization Name<br /> */}
       </CardMain>
     );
@@ -177,6 +182,10 @@ const IssuesWrapper = styled.div`
   margin-top: 0px;
 `;
 
+const OrganizationWebsiteWrapper = styled.div`
+  margin-top: 0px;
+`;
+
 const ProfileAvatar = styled.div`
   display: flex;
   justify-content: center;
@@ -186,6 +195,10 @@ const ProfileAvatar = styled.div`
 
 const TwitterDescription = styled.div`
   margin-top: 10px;
+`;
+
+const TwitterHandleWrapper = styled.span`
+  margin-right: 10px;
 `;
 
 const TwitterName = styled.div`

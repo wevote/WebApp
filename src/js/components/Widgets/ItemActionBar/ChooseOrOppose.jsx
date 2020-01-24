@@ -13,13 +13,13 @@ import SettingsAccount from '../../Settings/SettingsAccount';
 class ChooseOrOppose extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    type: PropTypes.string.isRequired,
+    ballotItemType: PropTypes.string.isRequired,
     externalUniqueId: PropTypes.string,
     onClose: PropTypes.func,
   }
 
   getSlides = () => {
-    const { type } = this.props;
+    const { ballotItemType } = this.props;
     const slides = [
       (
         <React.Fragment>
@@ -28,11 +28,11 @@ class ChooseOrOppose extends Component {
           <Row>
             <BoldText>Test the toggle here:</BoldText>
             <PositionPublicToggle
-                ballotItemWeVoteId="null"
-                className="null"
-                externalUniqueId={`practiceToggle-${this.props.externalUniqueId}`}
-                type={type}
-                inTestMode
+              ballotItemWeVoteId="null"
+              className="null"
+              externalUniqueId={`practiceToggle-${this.props.externalUniqueId}`}
+              ballotItemType={ballotItemType}
+              inTestMode
             />
           </Row>
         </React.Fragment>
