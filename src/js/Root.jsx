@@ -20,6 +20,7 @@ import ElectionReminder from './routes/More/ElectionReminder';
 import Elections from './routes/More/Elections';
 import FAQ from './routes/More/FAQ';
 import FacebookInvitableFriends from './routes/FacebookInvitableFriends';
+import FriendInvitationOnboarding from './routes/Intro/FriendInvitationOnboarding';
 import Friends from './routes/Friends';
 import GetStarted from './routes/Intro/GetStarted';
 import HamburgerMenu from './routes/Settings/HamburgerMenu';
@@ -154,6 +155,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/friends" component={Friends} />
       <Route path="/friends/:tabItem" component={Friends} />
       <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
+      <Route path="/wevoteintro/newfriend/:organizationWeVoteId" component={FriendInvitationOnboarding} />
 
       {/* More Menu Pages */}
       <Route path="/more/about" component={isNotWeVoteMarketingSite ? BallotRedirect : About} />

@@ -8,7 +8,7 @@ import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 
-class Footer extends Component {
+class WelcomeFooter extends Component {
   static propTypes = {
     classes: PropTypes.object,
   };
@@ -286,4 +286,4 @@ const Text = styled.p`
   }
 `;
 
-export default withStyles(styles)(Footer);
+export default withStyles(styles)(WelcomeFooter);

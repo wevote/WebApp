@@ -16,7 +16,7 @@ import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
-import Footer from '../components/Welcome/Footer';
+import WelcomeFooter from '../components/Welcome/WelcomeFooter';
 import { renderLog } from '../utils/logging';
 import TextBox from '../components/Welcome/TextBox';
 import Testimonial from '../components/Widgets/Testimonial';
@@ -267,7 +267,7 @@ class WelcomeForVoters extends PureComponent {
             </Section>
           )
         }
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }

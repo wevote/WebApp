@@ -9,7 +9,7 @@ import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import { organizationalDonors, teamOfVolunteers } from '../../components/More/people';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import Section from '../../components/Welcome/Section';
-import Footer from '../../components/Welcome/Footer';
+import WelcomeFooter from '../../components/Welcome/WelcomeFooter';
 
 class Credits extends Component {
   static getProps () {
@@ -115,7 +115,7 @@ class Credits extends Component {
             (Our apologies if you should be on this list and are missing. Please contact Dale McGrew with corrections.)
           </CreditsDescriptionContainer>
         </Section>
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }

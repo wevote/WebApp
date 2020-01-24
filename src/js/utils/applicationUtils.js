@@ -1,6 +1,6 @@
 import { stringContains } from './textFormat';
 import { isCordova, isWebApp } from './cordovaUtils';
-import displayFriendsTabs from './displayFriendsTabs';
+// import displayFriendsTabs from './displayFriendsTabs';
 
 
 // We have to do all this, because we allow urls like https://wevote.us/aclu where "aclu" is a twitter account.
@@ -21,7 +21,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/intro/get_started' ||
     pathnameLowerCase === '/more/myballot' ||
     pathnameLowerCase.startsWith('/voterguidepositions') ||
-    pathnameLowerCase === '/wevoteintro/network') {
+    pathnameLowerCase.startsWith('/wevoteintro')) {
     inTheaterMode = true;
   } else if (pathnameLowerCase.startsWith('/candidate/') ||
     pathnameLowerCase === '/for-campaigns' ||
@@ -136,35 +136,62 @@ export function getApplicationViewBooleans (pathname) {
     showBackToBallotHeader = true;
   }
 
-  let showFooterBar = false;
+  let showFooterBar;
+  // console.log('stringContains(\'/settings/positions\', pathnameLowerCase):', stringContains('/settings/positions', pathnameLowerCase), pathnameLowerCase);
   if (!pathnameLowerCase) {
     showFooterBar = false;
-  } else if (!pathnameLowerCase.startsWith('/candidate') &&
-      // !pathnameLowerCase.startsWith('/friends/') &&
-      !((pathnameLowerCase.startsWith('/friends/requests') || pathnameLowerCase.startsWith('/friends/suggested') || pathnameLowerCase.startsWith('/friends/current') || pathnameLowerCase.startsWith('/friends/sent-requests')) && !displayFriendsTabs()) &&
-      !pathnameLowerCase.startsWith('/measure') &&
-      !pathnameLowerCase.startsWith('/office') &&
-      !pathnameLowerCase.startsWith('/value/') &&
-      !pathnameLowerCase.startsWith('/values/') &&
-      !(pathnameLowerCase === '/for-campaigns') &&
-      !(pathnameLowerCase === '/for-organizations') &&
-      !(pathnameLowerCase.startsWith('/how')) &&
-      !(pathnameLowerCase === '/more/about') &&
-      !(pathnameLowerCase === '/more/credits') &&
-      !(pathnameLowerCase.startsWith('/more/donate')) &&
-      !(pathnameLowerCase.startsWith('/more/pricing')) &&
-      !(pathnameLowerCase === '/more/myballot') &&
-      !(pathnameLowerCase === '/welcome') &&
-      !pathnameLowerCase.startsWith('/settings/voterguidelist') &&
-      !pathnameLowerCase.startsWith('/settings/voterguidesmenu') &&
-      !stringContains('/settings/positions', pathnameLowerCase)) {
-    // We want to show the footer bar on the above path patterns, so we leave the footer bar OFF if NOT on any of these pages
+  // ///////// EXCLUDE: The following are URLS we want to specifically exclude (because otherwise they will be picked up in a broader pattern in the next branch
+  } else if (stringContains('/b/btdb', pathnameLowerCase) ||
+      stringContains('/b/btdo', pathnameLowerCase) ||
+      stringContains('/btcand/', pathnameLowerCase) ||
+      pathnameLowerCase.startsWith('/value/') ||
+      pathnameLowerCase.startsWith('/values/') ||
+      pathnameLowerCase.startsWith('/settings/account') ||
+      pathnameLowerCase.startsWith('/settings/domain') ||
+      pathnameLowerCase.startsWith('/settings/notifications') ||
+      stringContains('/settings/positions', pathnameLowerCase) ||
+      pathnameLowerCase.startsWith('/settings/profile') ||
+      pathnameLowerCase.startsWith('/settings/sharing') ||
+      pathnameLowerCase.startsWith('/settings/subscription') ||
+      pathnameLowerCase.startsWith('/settings/tools') ||
+      pathnameLowerCase.startsWith('/settings/voterguidelist') ||
+      pathnameLowerCase.startsWith('/settings/voterguidesmenu')
+  ) {
+    // We want to HIDE the footer bar on the above path patterns
+    showFooterBar = false;
+  // ///////// SHOW: The following are URLS where we want the footer to show
+  } else if (pathnameLowerCase.startsWith('/ballot') ||
+      pathnameLowerCase.startsWith('/candidate') || // Show Footer if back to not specified above
+      pathnameLowerCase.startsWith('/friends') ||
+      pathnameLowerCase.startsWith('/measure') || // Show Footer if back to not specified above
+      pathnameLowerCase.startsWith('/office') || // Show Footer if back to not specified above
+      pathnameLowerCase.startsWith('/values') ||
+      (pathnameLowerCase === '/for-campaigns') ||
+      (pathnameLowerCase === '/for-organizations') ||
+      (pathnameLowerCase.startsWith('/how')) ||
+      (pathnameLowerCase === '/more/about') ||
+      (pathnameLowerCase === '/more/attributions') ||
+      (pathnameLowerCase === '/more/credits') ||
+      (pathnameLowerCase.startsWith('/more/donate')) ||
+      (pathnameLowerCase === '/more/myballot') ||
+      (pathnameLowerCase.startsWith('/more/pricing')) ||
+      (pathnameLowerCase === '/more/privacy') ||
+      (pathnameLowerCase === '/more/terms') ||
+      (pathnameLowerCase === '/welcome') ||
+      pathnameLowerCase.startsWith('/settings')) {
+    // We want to SHOW the footer bar on the above path patterns
+    showFooterBar = true;
+  } else {
+    // We need to default to True because of URLs like: https://WeVote.US/orlandosentinel
     showFooterBar = true;
   }
 
   let showBallotShareButtonFooter = false;
 
-  if (pathnameLowerCase.startsWith('/ballot') || pathnameLowerCase.startsWith('/candidate') || pathnameLowerCase.startsWith('/measure')) {
+  if (pathnameLowerCase.startsWith('/ballot') ||
+    pathnameLowerCase.startsWith('/candidate') ||
+    pathnameLowerCase.startsWith('/measure') ||
+    pathnameLowerCase.startsWith('/office')) {
     showBallotShareButtonFooter = true;
   }
 
@@ -214,6 +241,7 @@ export function setZenDeskHelpVisibility (pathname) {
         match => pathname.toLowerCase().startsWith(match),
       )) { // '/values'
       try {
+        // console.log('setZenDeskHelpVisibility true, pathname:', pathname);
         global.zE('webWidget', 'show');
       } catch {
         console.log('setZenDeskHelpVisibility global.zE failure show');

@@ -103,7 +103,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
                 <OverlayImage>
                   <ImageHandler
                     alt="organization-photo-16x16"
-                    className="image-border-gray-border"
+                    className="image-border-support "
                     imageUrl={organizationImageUrlHttpsTiny}
                     kind_of_ballot_item="ORGANIZATION"
                     sizeClassName="image-16x16 "
@@ -133,7 +133,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
                 <OverlayImage>
                   <ImageHandler
                     alt="organization-photo-16x16"
-                    className="image-border-gray-border "
+                    className="image-border-oppose "
                     imageUrl={organizationImageUrlHttpsTiny}
                     kind_of_ballot_item="ORGANIZATION"
                     sizeClassName="image-16x16 "
@@ -310,7 +310,7 @@ const OrganizationInfoOnlyIconWrapper = styled.div`
 
 const OverlayImage = styled.div`
   margin-left: -2px;
-  margin-top: -17px;
+  margin-top: -15px;
   z-index: 2;
 `;
 

@@ -15,8 +15,6 @@ import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 
-// const webAppConfig = require('../../config');
-
 
 class FooterBar extends React.Component {
   static propTypes = {
@@ -81,8 +79,6 @@ class FooterBar extends React.Component {
     const badgeStyle = {
       display: 'inline-block',
     };
-
-    // const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     return (
       <FooterBarWrapper>

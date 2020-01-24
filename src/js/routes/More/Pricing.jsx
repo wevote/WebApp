@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
 import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { renderLog } from '../../utils/logging';
-import Footer from '../../components/Welcome/Footer';
+import WelcomeFooter from '../../components/Welcome/WelcomeFooter';
 import Section from '../../components/Welcome/Section';
 import PricingCard from '../../components/More/PricingCard';
 import PricingSwitch from '../../components/Widgets/PricingSwitch';
@@ -629,7 +629,7 @@ class Pricing extends Component {
           </Section>
         )}
         {this.props.modalDisplayMode ? null : (
-          <Footer />
+          <WelcomeFooter />
         )}
       </Wrapper>
     );

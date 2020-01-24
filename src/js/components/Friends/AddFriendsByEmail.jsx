@@ -52,7 +52,7 @@ class AddFriendsByEmail extends Component {
     FriendActions.friendInvitationsWaitingForVerification();
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.friendsToInvite !== nextState.friendsToInvite) return true;
     return false;
   }

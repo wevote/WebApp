@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import ReactSVG from 'react-svg';
+import Chip from '@material-ui/core/Chip';
 import CandidateStore from '../../stores/CandidateStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
@@ -16,6 +17,7 @@ class ValueIconAndText extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     ballotItemDisplayName: PropTypes.string,
+    classes: PropTypes.object,
     externalUniqueId: PropTypes.string,
     issueFollowedByVoter: PropTypes.bool,
     issueWidths: PropTypes.object,
@@ -54,9 +56,11 @@ class ValueIconAndText extends Component {
     // console.log('ValueIconAndText componentDidUpdate');
     const { oneIssue } = this.props;
     if (!prevProps.issueWidths[oneIssue.issue_we_vote_id]) {
-      const width = this.valueSpan.current.offsetWidth;
-      if (width > 0) {
-        this.props.subtractTotalWidth(this.props.oneIssue.issue_we_vote_id, width + 25);
+      if (this.valueSpan && this.valueSpan.current) {
+        const width = this.valueSpan.current.offsetWidth;
+        if (width > 0) {
+          this.props.subtractTotalWidth(this.props.oneIssue.issue_we_vote_id, width + 25);
+        }
       }
     }
   }
@@ -160,7 +164,7 @@ class ValueIconAndText extends Component {
 
   render () {
     // console.log('ValueIconAndText render');
-    const { ballotItemWeVoteId, externalUniqueId, issueFollowedByVoter, oneIssue } = this.props;
+    const { ballotItemWeVoteId, classes, externalUniqueId, issueFollowedByVoter, oneIssue } = this.props;
     const svgFill = issueFollowedByVoter ? '#555' : '#999';
     return (
       <StickyPopover
@@ -178,18 +182,17 @@ class ValueIconAndText extends Component {
           key={`${externalUniqueId}-valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
           className="u-no-break u-cursor--pointer"
         >
-          {oneIssue.issue_icon_local_path ? (
-            <div className="issue-icon-list__issue-icon">
+          <Chip
+            avatar={oneIssue.issue_icon_local_path ? (
               <ReactSVG
                 src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
                 svgStyle={{ fill: svgFill, padding: '1px 1px 1px 0px' }}
               />
-            </div>
-          ) : null
-        }
-          <div className="u-margin-left--xxs issue-icon-list__issue-label-name" ref={this.valueSpan}>
-            {oneIssue.issue_name}
-          </div>
+            ) : <span />}
+            classes={{ root: classes.chipStyle }}
+            label={oneIssue.issue_name}
+           ref={this.valueSpan}
+          />
         </ValueIconAndTextSpan>
       </StickyPopover>
     );
@@ -197,9 +200,10 @@ class ValueIconAndText extends Component {
 }
 
 const styles = () => ({
-  endorsementIcon: {
-    width: 12,
-    height: 12,
+  chipStyle: {
+    color: '#555',
+    fontSize: '.7rem',
+    height: 'auto',
   },
 });
 
