@@ -293,7 +293,7 @@ export default class OrganizationVoterGuide extends Component {
         <BannerContainer>
           { organizationBannerUrl !== '' ? (
             <div className="organization-banner-image-div d-print-none">
-              <img className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
+              <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
             </div>
           ) :
             <div className="organization-banner-image-non-twitter-users" />
@@ -303,7 +303,7 @@ export default class OrganizationVoterGuide extends Component {
         <div className="d-block d-sm-none d-print-none">
           { organizationBannerUrl !== '' ? (
             <div className="organization-banner-image-div d-print-none">
-              <img className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
+              <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
             </div>
           ) :
             <div className="organization-banner-image-non-twitter-users" />

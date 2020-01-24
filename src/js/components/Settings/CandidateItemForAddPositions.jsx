@@ -211,10 +211,7 @@ class CandidateItemForAddPositions extends Component {
             externalUniqueId={`candidateItemForAddPositions-${oneCandidate.we_vote_id}`}
             positionPublicToggleWrapAllowed={this.props.numberOfCandidatesInList > 1}
             shareButtonHide
-            // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
             togglePositionStatementFunction={this.togglePositionStatement}
-            // transitioning={this.state.transitioning}
-            type="CANDIDATE"
           />
         </CandidateTopRow>
         {commentDisplayDesktop}

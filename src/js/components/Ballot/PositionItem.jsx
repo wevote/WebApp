@@ -236,6 +236,7 @@ class PositionItem extends Component {
       const positionsPopover = (
         <PositionItemScorePopover
           positionItem={position}
+          showPersonalScoreInformation
         />
       );
 

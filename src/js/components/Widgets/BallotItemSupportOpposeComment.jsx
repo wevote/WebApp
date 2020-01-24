@@ -161,7 +161,6 @@ class BallotItemSupportOpposeComment extends PureComponent {
         supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
         togglePositionStatementFunction={this.togglePositionStatement}
         transitioning={this.state.transitioning}
-        type={ballotItemType}
         urlWithoutHash={this.props.urlWithoutHash}
       />
     );

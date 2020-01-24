@@ -33,29 +33,38 @@ class IssuesByOrganizationDisplayList extends Component {
       componentDidMount: false,
       issuesUnderThisOrganization: [],
       issuesUnderThisOrganizationLength: 0,
+      issuesVoterIsFollowingLength: 0,
+      voterGuideDisplayName: '',
+      organizationWeVoteId: '',
     };
   }
 
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    const issuesUnderThisOrganization = IssueStore.getIssuesLinkedToByOrganization(this.props.organizationWeVoteId) || [];
+    const { organizationWeVoteId } = this.props;
+    const issuesUnderThisOrganization = IssueStore.getIssuesLinkedToByOrganization(organizationWeVoteId) || [];
     const issuesUnderThisOrganizationLength = issuesUnderThisOrganization.length;
+    const voterGuide = VoterGuideStore.getVoterGuideForOrganizationId(organizationWeVoteId);
     this.setState({
       componentDidMount: true,
       organizationWeVoteId: this.props.organizationWeVoteId,
       issuesUnderThisOrganization,
       issuesUnderThisOrganizationLength,
+      voterGuideDisplayName: voterGuide.voter_guide_display_name,
     });
   }
 
   componentWillReceiveProps (nextProps) {
     const issuesUnderThisOrganization = IssueStore.getIssuesLinkedToByOrganization(nextProps.organizationWeVoteId) || [];
     const issuesUnderThisOrganizationLength = issuesUnderThisOrganization.length;
+    const { organizationWeVoteId } = nextProps;
+    const voterGuide = VoterGuideStore.getVoterGuideForOrganizationId(organizationWeVoteId);
     this.setState({
       organizationWeVoteId: nextProps.organizationWeVoteId,
       issuesUnderThisOrganization,
       issuesUnderThisOrganizationLength,
+      voterGuideDisplayName: voterGuide.voter_guide_display_name,
     });
   }
 
@@ -71,6 +80,10 @@ class IssuesByOrganizationDisplayList extends Component {
     }
     if (this.state.issuesVoterIsFollowingLength !== nextState.issuesVoterIsFollowingLength) {
       // console.log('this.state.issuesVoterIsFollowingLength: ', this.state.issuesVoterIsFollowingLength, ', nextState.issuesVoterIsFollowingLength', nextState.issuesVoterIsFollowingLength);
+      return true;
+    }
+    if (this.state.voterGuideDisplayName !== nextState.voterGuideDisplayName) {
+      // console.log('this.state.voterGuideDisplayName: ', this.state.voterGuideDisplayName, ', nextState.voterGuideDisplayName', nextState.voterGuideDisplayName);
       return true;
     }
     return false;
@@ -95,12 +108,16 @@ class IssuesByOrganizationDisplayList extends Component {
   }
 
   onVoterGuideStoreChange () {
-    // We just want to trigger a re-render
-    this.setState();
+    const { organizationWeVoteId } = this.props;
+    const voterGuide = VoterGuideStore.getVoterGuideForOrganizationId(organizationWeVoteId);
+    this.setState({
+      voterGuideDisplayName: voterGuide.voter_guide_display_name,
+    });
   }
 
   generateValueListItem = (oneIssue) => {
     const { classes } = this.props;
+    const { voterGuideDisplayName } = this.state;
     const issueFollowedByVoter = IssueStore.isVoterFollowingThisIssue(oneIssue.issue_we_vote_id);
     const valuePopover = (
       <PopoverWrapper>
@@ -116,9 +133,25 @@ class IssuesByOrganizationDisplayList extends Component {
           </PopoverTitleText>
         </PopoverHeader>
         <PopoverDescriptionText>
+          {voterGuideDisplayName && (
+            <>
+              <OrganizationAdvocatesText>
+                <strong>
+                  {voterGuideDisplayName}
+                </strong>
+                {' '}
+                focuses on advocating for
+                {' '}
+                <strong>
+                  {oneIssue.issue_name}
+                </strong>
+                :
+              </OrganizationAdvocatesText>
+            </>
+          )}
           <ReadMore
-            textToDisplay={oneIssue.issue_description}
-            numberOfLines={2}
+            textToDisplay={`"${oneIssue.issue_description}"`}
+            numberOfLines={4}
           />
           {oneIssue.issue_we_vote_id && (
             <FollowIssueToggleContainer>
@@ -127,10 +160,17 @@ class IssuesByOrganizationDisplayList extends Component {
                 issueName={oneIssue.issue_name}
                 issueWeVoteId={oneIssue.issue_we_vote_id}
                 showFollowingButtonText
+                showIssueNameOnFollowButton
                 lightModeOn
               />
             </FollowIssueToggleContainer>
           )}
+          <FollowIfYouCare>
+            Follow if you care about
+            {' '}
+            {oneIssue.issue_name}
+            .
+          </FollowIfYouCare>
         </PopoverDescriptionText>
       </PopoverWrapper>
     );
@@ -242,8 +282,14 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
+const FollowIfYouCare = styled.div`
+  color: #999;
+  font-size: .75rem;
+  margin-top: 6px;
+`;
+
 const FollowIssueToggleContainer = styled.div`
-  margin: 10px 0;
+  margin-top: 20px;
 `;
 
 const IssuesByOrganization = styled.div`
@@ -260,6 +306,10 @@ const IssueByOrganizationList = styled.ul`
   padding-inline-start: 0;
   justify-content: flex-start;
   width: 100%;
+`;
+
+const OrganizationAdvocatesText = styled.div`
+  padding-bottom: 8px;
 `;
 
 const ValueIconAndTextOrganization = styled.span`
