@@ -2,21 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { cordovaDot } from '../../utils/cordovaUtils';
+// import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-
-/*
-The problem with urls in css for Apache Cordova
-https://github.com/webpack-contrib/file-loader/issues/46
-... cordova ...
-"The core of the problem is that CSS loads assets relative to itself, and js loads
-assets relative to the HTML. So if the CSS isn't in the same place as the HTML
-then you can't use relative paths."
-*/
 
 class FriendInvitationOnboardingIntro extends Component {
   static propTypes = {
-    next: PropTypes.func,
+    nextSlide: PropTypes.func,
   };
 
   constructor (props) {
@@ -25,30 +16,23 @@ class FriendInvitationOnboardingIntro extends Component {
   }
 
   render () {
-    renderLog('IntroNetworkSafety');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('FriendInvitationOnboardingIntro');  // Set LOG_RENDER_EVENTS to log all renders
     return (
-      <div className="intro-story__padding intro-story__margin--auto">
-        <div className="intro-story__h1">
-          Plan your entire ballot
-          <br />
-          <span className="intro-story__h1--highlight">
-          in 6 minutes
-          </span>
-        </div>
-        <div className="intro-story__seperator" />
-        <div>
-          <img
-            className="center-block intro-story__img-height intro-story__placeholder"
-            src={cordovaDot('/img/how-it-works/HowItWorksForVoters-Choose-20190507.gif')}
-            alt="Create your ballot with ease with We Vote"
-          />
-          {/* <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div> */}
-        </div>
-        <div className="intro-story__h2 intro-story__h2--highlight">
-          Choose your interests
-        </div>
-        <p className="intro-story__info">Follow topics that interest you.  We will suggest endorsements based on your interests.</p>
-      </div>
+      <Wrapper>
+        <FriendInvitationTopHeader className="FriendInvitationTopHeader">
+          Invitation accepted!
+        </FriendInvitationTopHeader>
+        <FriendInvitationIntroHeader className="FriendInvitationIntroHeader">
+          Get ready to vote faster.
+        </FriendInvitationIntroHeader>
+        <FriendInvitationListWrapper>
+          <FriendInvitationListUl>
+            <FriendInvitationListLi>See what&apos;s on your ballot</FriendInvitationListLi>
+            <FriendInvitationListLi>See what your friends think</FriendInvitationListLi>
+            <FriendInvitationListLi>Help your other friends get ready to vote</FriendInvitationListLi>
+          </FriendInvitationListUl>
+        </FriendInvitationListWrapper>
+      </Wrapper>
     );
   }
 }
@@ -70,24 +54,47 @@ const styles = theme => ({
   },
 });
 
-const OrganizationInformationOnlySquare = styled.div`
-  color: ${({ theme }) => theme.colors.grayMid};
-  background: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  border: 3px solid ${({ theme }) => theme.colors.grayMid};
-  font-size: 20px;
-  font-weight: bold;
+const Wrapper = styled.div`
 `;
 
-const OrganizationInfoOnlyIconWrapper = styled.div`
-  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '4px' : '0')};
-  margin-top: ${({ speakerImageExists }) => (speakerImageExists ? '-5px' : '0')};
+// Styled divs are not working in react-slick environment, so I put these styles in _intro-story.scss
+const FriendInvitationTopHeader = styled.div`
+  // font-size: 24px;
+  // font-weight: 600;
+  // padding-top: 32px;
+  // padding-bottom: 16px;
+  // @include breakpoints (mid-small) {
+  //   font-size: 24px;
+  // }
+`;
+
+// Styled divs are not working in react-slick environment, so I put these styles in _intro-story.scss
+const FriendInvitationIntroHeader = styled.div`
+  // color: ${({ theme }) => theme.colors.brandBlue};
+  // font-size: 24px;
+  // font-weight: 600;
+  // padding-top: 32px;
+  // padding-bottom: 16px;
+  // @include breakpoints (mid-small) {
+  //   font-size: 24px;
+  // }
+`;
+
+const FriendInvitationListWrapper = styled.div`
+  display: table;
+`;
+
+const FriendInvitationListUl = styled.ul`
+  // border-color: red;
+  // border-style: solid;
+  // border-width: 1 px;
+  margin: auto;
+  max-width: 300px;
+`;
+
+const FriendInvitationListLi = styled.li`
+  margin: 10px 0;
+  text-align: left;
 `;
 
 export default withTheme(withStyles(styles)(FriendInvitationOnboardingIntro));

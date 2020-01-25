@@ -9,6 +9,7 @@ import closeIcon from '../../../img/global/icons/x-close.png';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
 import FriendInvitationOnboardingIntro from '../../components/Intro/FriendInvitationOnboardingIntro';
+import FriendInvitationOnboardingValues from '../../components/Intro/FriendInvitationOnboardingValues';
 import { renderLog } from '../../utils/logging';
 
 
@@ -24,9 +25,12 @@ class FriendInvitationOnboarding extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      activeSlideBefore: 0,
+      activeSlideAfter: 0,
+    };
 
-    this.next = this.next.bind(this);
+    this.nextSlide = this.nextSlide.bind(this);
     this.previous = this.previous.bind(this);
     this.slider = React.createRef();
   }
@@ -41,7 +45,7 @@ class FriendInvitationOnboarding extends Component {
     document.body.className = '';
   }
 
-  next () {
+  nextSlide () {
     this.slider.current.slickNext();
   }
 
@@ -66,6 +70,7 @@ class FriendInvitationOnboarding extends Component {
   render () {
     renderLog('FriendInvitationOnboarding');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
+    const { activeSlideAfter } = this.state;
 
     // These are settings for the react-slick slider
     const settings = {
@@ -77,6 +82,8 @@ class FriendInvitationOnboarding extends Component {
       swipe: true,
       accessibility: true,
       arrows: false,
+      beforeChange: (current, next) => this.setState({ activeSlideBefore: next }),
+      afterChange: current => this.setState({ activeSlideAfter: current }),
     };
 
     return (
@@ -91,9 +98,8 @@ class FriendInvitationOnboarding extends Component {
             />
           </span>
           <Slider {...settings} dotsClass="slick-dots intro-modal__gray-dots" ref={this.slider}>
-            <div key={1}><FriendInvitationOnboardingIntro next={this.next} /></div>
-            <div key={2}><FriendInvitationOnboardingIntro next={this.next} /></div>
-            <div key={3}><FriendInvitationOnboardingIntro next={this.next} /></div>
+            <div key={1}><FriendInvitationOnboardingIntro nextSlide={this.nextSlide} /></div>
+            <div key={2}><FriendInvitationOnboardingValues nextSlide={this.nextSlide} /></div>
           </Slider>
           <FooterBarWrapper style={{ height: `${cordovaFooterHeight()}` }}>
             <TwoButtonsWrapper>
@@ -101,7 +107,7 @@ class FriendInvitationOnboarding extends Component {
                 <Button
                   classes={{ root: classes.nextButtonRoot }}
                   color="primary"
-                  // disabled={selectedStepIndex === 0}
+                  disabled={activeSlideAfter === 0}
                   fullWidth
                   id="voterGuideSettingsPositionsSeeFullBallot"
                   onClick={this.previous}
@@ -117,7 +123,7 @@ class FriendInvitationOnboarding extends Component {
                   id="howItWorksNext"
                   variant="contained"
                   classes={{ root: classes.nextButtonRoot }}
-                  onClick={this.next}
+                  onClick={this.nextSlide}
                 >
                   Next
                 </Button>

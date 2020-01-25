@@ -43,6 +43,14 @@ export default class SnackNotifier extends Component {
   }
 }
 
+function isFunction (functionToCheck) {
+  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+}
+
 export function openSnackbar ({ message }) {
-  openSnackbarFn({ message });
+  if (isFunction(openSnackbarFn)) {
+    openSnackbarFn({ message });
+  } else {
+    console.log('*** SnackNotifier openSnackbarFn not a Function');
+  }
 }
