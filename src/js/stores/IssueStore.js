@@ -555,7 +555,7 @@ class IssueStore extends ReduceStore {
         if (action.res.voter_issues_only === true || action.res.voter_issues_only === 'true') {
           issueWeVoteIdsVoterIsFollowing = []; // Reset
           issueList.forEach((issue) => {
-            allCachedIssues[issue.issue_we_vote_id] = issue;
+            // allCachedIssues[issue.issue_we_vote_id] = issue;
             if (!arrayContains(issue.issue_we_vote_id, issueWeVoteIdsVoterIsFollowing)) {
               issueWeVoteIdsVoterIsFollowing.push(issue.issue_we_vote_id);
             }
@@ -697,14 +697,14 @@ class IssueStore extends ReduceStore {
         issueList.forEach((issue) => {
           if (!(issue.issue_we_vote_id in allCachedIssues)) {
             // Only add issue if it isn't in allCachedIssues already
-            allCachedIssues[issue.issue_we_vote_id] = issue;
+            // allCachedIssues[issue.issue_we_vote_id] = issue; // Don't add because partial issue dict
           }
           issueWeVoteIdsVoterCanFollow.push(issue.issue_we_vote_id);
         });
 
         return {
           ...state,
-          allCachedIssues,
+          // allCachedIssues,
           issueWeVoteIdsVoterCanFollow,
         };
 

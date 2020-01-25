@@ -10,6 +10,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
+import ItemActionBar from './ItemActionBar';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -18,7 +19,6 @@ import { stringContains } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
 import { getPositionSummaryListForBallotItem, getPositionListSummaryIncomingDataStats } from '../../utils/positionFunctions';
 import PositionSummaryListForPopover from './PositionSummaryListForPopover';
-import ItemActionBar from "./ItemActionBar";
 
 class BallotItemSupportOpposeCountDisplay extends Component {
   static closePositionsPopover () {
@@ -211,7 +211,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
-    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    // Update state so the next render will show the fallback UI, We should have a 'Oh snap' page
     return { hasError: true };
   }
 
@@ -401,7 +401,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   goToBallotItemLinkLocal () {
-    // console.log("BallotItemSupportOpposeCountDisplay goToBallotItemLinkLocal");
+    // console.log('BallotItemSupportOpposeCountDisplay goToBallotItemLinkLocal');
     if (this.props.goToBallotItem) {
       this.props.goToBallotItem();
     }
