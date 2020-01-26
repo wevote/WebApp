@@ -72,11 +72,14 @@ const StepLabel = styled.p`
 `;
 
 const GetStarted = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  margin: 3em 0;
-  width: 450px;
-  max-width: 100%;
+display: flex;
+flex-flow: column;
+text-align: center;
+align-items: center;
+width: 500px;
+margin: auto;
+margin-bottom: 100px;
+margin-top: 15px;
 `;
 
 const ButtonContainer = styled.div`

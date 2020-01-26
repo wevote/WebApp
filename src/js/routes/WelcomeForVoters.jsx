@@ -31,7 +31,6 @@ import Section, {
   StepNumber,
   StepLabel,
   GetStarted,
-  ButtonContainer,
   DescriptionContainer,
   DescriptionLeftColumn,
   DescriptionImageColumn,
@@ -135,14 +134,21 @@ class WelcomeForVoters extends PureComponent {
             <BlueTitle> in 6 Minutes</BlueTitle>
           </Title>
           <SubTitle>Finally, a simple way to fill out your ballot.</SubTitle>
-          <PlayerContainer>
-            <Video
-              src="https://player.vimeo.com/video/329164243"
-              frameBorder="0"
-              allow="fullscreen"
+          <GetStarted>
+            <AddressBoxWelcome icon={
+              <LocationIcon classes={{ root: classes.locationIcon }} />
+            }
             />
-            <script src="https://player.vimeo.com/api/player.js" />
-          </PlayerContainer>
+            <Button
+              variant="contained"
+              color="primary"
+              classes={{ containedPrimary: classes.viewBallotButton }}
+              id="welcomeForVotersViewBallot"
+              onClick={() => historyPush('/ballot')}
+            >
+              View Ballot
+            </Button>
+          </GetStarted>
         </HeaderForVoters>
         <Section>
           <SectionTitle>
@@ -165,22 +171,19 @@ class WelcomeForVoters extends PureComponent {
             <StepNumber>4</StepNumber>
             <StepLabel>Fill out the whole thing in under 6 minutes</StepLabel>
           </Step>
-          <GetStarted>
-            <AddressBoxWelcome icon={<LocationIcon />} />
-            <ButtonContainer>
-              <Button
-                variant="contained"
-                color="primary"
-                classes={{ containedPrimary: classes.buttonContained }}
-                id="welcomeForVotersViewBallot"
-                onClick={() => historyPush('/ballot')}
-              >
-                View Ballot
-              </Button>
-            </ButtonContainer>
-          </GetStarted>
         </Section>
         <Section variant="dark" rounded>
+          <SectionTitle>
+            Text Here
+          </SectionTitle>
+          <PlayerContainer>
+            <Video
+              src="https://player.vimeo.com/video/329164243"
+              frameBorder="0"
+              allow="fullscreen"
+            />
+            <script src="https://player.vimeo.com/api/player.js" />
+          </PlayerContainer>
           <SectionTitle>
             Voting Should be
             <SectionTitleBold> Simple</SectionTitleBold>
@@ -287,11 +290,26 @@ const styles = theme => ({
   iconButton: {
     color: 'white',
   },
+  viewBallotButton: {
+    borderRadius: 32,
+    height: 50,
+    [theme.breakpoints.down('md')]: {
+      height: 36,
+    },
+    background: 'linear-gradient(180deg, white, rgb(178, 200, 255))',
+    color: '#2e3c5d',
+    fontWeight: 'bold',
+    paddingLeft: 30,
+    paddingRight: 30,
+    marginTop: 15,
+  },
+  locationIcon: {
+    color: '#2e3c5d',
+  },
 });
 
 const HeaderForVoters = styled.div`
   position: relative;
-  height: 590px;
   width: 110%;
   color: white;
   background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
