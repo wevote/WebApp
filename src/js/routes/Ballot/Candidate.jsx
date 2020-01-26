@@ -88,10 +88,6 @@ export default class Candidate extends Component {
       }
     }
 
-    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-      IssueActions.issuesRetrieveForElection(VoterStore.electionId());
-    }
-
     // Get the latest guides to follow for this candidate
 
     // June 2018: Avoid hitting this same api multiple times, if we already have the data
@@ -118,6 +114,15 @@ export default class Candidate extends Component {
     }
 
     const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      IssueActions.issueDescriptionsRetrieveCalled();
+    }
+    IssueActions.issuesFollowedRetrieve();
+    if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
+      IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
+      IssueActions.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId());
+    }
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
     this.setState({
       allCachedPositionsForThisCandidate,

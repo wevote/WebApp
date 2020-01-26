@@ -23,11 +23,15 @@ export default class FriendInvitationOnboardingValuesList extends Component {
   }
 
   componentDidMount () {
-    IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      IssueActions.issueDescriptionsRetrieveCalled();
+    }
+    IssueActions.issuesFollowedRetrieve();
 
     const allIssues = IssueStore.getAllIssues();
-    console.log('allIssues:', allIssues);
+    // console.log('allIssues:', allIssues);
     this.setState({
       allIssues,
     });
@@ -39,7 +43,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
 
   onIssueStoreChange () {
     const allIssues = IssueStore.getAllIssues();
-    console.log('allIssues:', allIssues);
+    // console.log('allIssues:', allIssues);
     this.setState({
       allIssues,
     });
@@ -52,7 +56,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
     let issuesList = [];
     if (allIssues) {
       if (displayOnlyIssuesNotFollowedByVoter) {
-        issuesList = allIssues.filter(issue => issue.is_issue_followed === false);
+        issuesList = allIssues.filter(issue => !IssueStore.isVoterFollowingThisIssue(issue.issue_we_vote_id));
       } else {
         issuesList = allIssues;
       }
@@ -94,7 +98,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
           <DelayedLoad
             key={`delayed-issue-list-key-${issue.issue_we_vote_id}`}
             showLoadingText={issuesRenderedCount === (issuesToShowBeforeDelayedLoad + 1)}
-            waitBeforeShow={500}
+            waitBeforeShow={1000}
           >
             {issueCardHtml}
           </DelayedLoad>

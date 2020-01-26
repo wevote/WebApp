@@ -227,7 +227,9 @@ const Wrapper = styled.div`
   box-shadow: ${props => (props.condensed ? 'none !important' : null)};
   padding: ${props => (props.condensed ? '16px 12px' : null)};
   height: ${props => (props.condensed ? 'fit-content' : null)};
-  margin: 0px 16px;
+  @media (max-width: 479px) {
+    margin: 0 -16px;
+  }
 `;
 
 const IssueName = styled.h3`

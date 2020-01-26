@@ -18,17 +18,17 @@
 
 .image-border-gray-border {
   border: 1px solid $gray-mid;
-  border-radius: 4px;
+  border-radius: $space-xs;
 }
 
 .image-border-support {
   border: 1px solid rgb(31, 192, 111);
-  border-radius: 4px;
+  border-radius: $space-xs;
 }
 
 .image-border-oppose {
   border: 1px solid rgb(255, 73, 34);
-  border-radius: 4px;
+  border-radius: $space-xs;
 }
 
 .image-issue-photo-placeholder {

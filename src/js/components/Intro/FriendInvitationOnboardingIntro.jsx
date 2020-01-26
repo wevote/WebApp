@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 // import { cordovaDot } from '../../utils/cordovaUtils';
@@ -7,7 +6,6 @@ import { renderLog } from '../../utils/logging';
 
 class FriendInvitationOnboardingIntro extends Component {
   static propTypes = {
-    nextSlide: PropTypes.func,
   };
 
   constructor (props) {

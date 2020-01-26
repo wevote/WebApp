@@ -26,7 +26,7 @@ class FriendInvitationOnboarding extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      activeSlideBefore: 0,
+      // activeSlideBefore: 0,
       activeSlideAfter: 0,
     };
 
@@ -82,7 +82,7 @@ class FriendInvitationOnboarding extends Component {
       swipe: true,
       accessibility: true,
       arrows: false,
-      beforeChange: (current, next) => this.setState({ activeSlideBefore: next }),
+      // beforeChange: (current, next) => this.setState({ activeSlideBefore: next }),
       afterChange: current => this.setState({ activeSlideAfter: current }),
     };
 

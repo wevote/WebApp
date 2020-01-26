@@ -195,11 +195,23 @@ class Ballot extends Component {
 
     // console.log('Ballot, googleCivicElectionId: ', googleCivicElectionId, ', ballotLocationShortcut: ', ballotLocationShortcut, 'ballotReturnedWeVoteId: ', ballotReturnedWeVoteId);
     // console.log('VoterStore.election_id: ', VoterStore.electionId());
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      IssueActions.issueDescriptionsRetrieveCalled();
+    }
+    IssueActions.issuesFollowedRetrieve();
     if (googleCivicElectionId || ballotLocationShortcut || ballotReturnedWeVoteId) {
-      // console.log('CALLING IssueActions.issuesRetrieveForElection');
-
-      if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-        IssueActions.issuesRetrieveForElection(googleCivicElectionId, ballotLocationShortcut, ballotReturnedWeVoteId);
+      // console.log('CALLING IssueActions.issuesUnderBallotItemsRetrieve');
+      let callIssuesUnderBallotItemRetrieve = true;
+      if (googleCivicElectionId) {
+        // If we have a value for googleCivicElectionId, then prevent a calling issuesUnderBallotItemsRetrieve if we already have the data
+        if (IssueStore.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId)) {
+          callIssuesUnderBallotItemRetrieve = false;
+        }
+      }
+      if (callIssuesUnderBallotItemRetrieve) {
+        IssueActions.issuesUnderBallotItemsRetrieve(googleCivicElectionId, ballotLocationShortcut, ballotReturnedWeVoteId);
+        IssueActions.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId);
       }
 
       this.setState({
@@ -531,14 +543,21 @@ class Ballot extends Component {
       }
     }
     if (ballotProperties) {
-      // If the incoming googleCivicElectionId, ballotReturnedWeVoteId, or ballotLocationShortcut are different, call issuesRetrieveForElection
+      // If the incoming googleCivicElectionId, ballotReturnedWeVoteId, or ballotLocationShortcut are different, call issuesUnderBallotItemsRetrieve
       if (parseInt(ballotProperties.google_civic_election_id, 10) !== issuesRetrievedFromGoogleCivicElectionId ||
           ballotProperties.ballot_returned_we_vote_id !== issuesRetrievedFromBallotReturnedWeVoteId ||
           ballotProperties.ballot_location_shortcut !== issuesRetrievedFromBallotLocationShortcut) {
-        // console.log('onBallotStoreChange, Calling issuesRetrieveForElection');
-
-        if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-          IssueActions.issuesRetrieveForElection(ballotProperties.google_civic_election_id, ballotProperties.ballot_location_shortcut, ballotProperties.ballot_returned_we_vote_id);
+        // console.log('onBallotStoreChange, Calling issuesUnderBallotItemsRetrieve');
+        let callIssuesUnderBallotItemRetrieve = true;
+        if (ballotProperties.google_civic_election_id) {
+          // If we only have a value for googleCivicElectionId, then prevent a calling issuesUnderBallotItemsRetrieve if we already have the data
+          if (IssueStore.issuesUnderBallotItemsRetrieveCalled(ballotProperties.google_civic_election_id)) {
+            callIssuesUnderBallotItemRetrieve = false;
+          }
+        }
+        if (callIssuesUnderBallotItemRetrieve) {
+          IssueActions.issuesUnderBallotItemsRetrieve(ballotProperties.google_civic_election_id, ballotProperties.ballot_location_shortcut, ballotProperties.ballot_returned_we_vote_id);
+          // IssueActions.issuesUnderBallotItemsRetrieveCalled(ballotProperties.google_civic_election_id); // This causes error: "Cannot dispatch in the middle of a dispatch"
         }
 
         this.setState({

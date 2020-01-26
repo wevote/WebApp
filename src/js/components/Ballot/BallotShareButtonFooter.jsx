@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import ShareModalOption from './ShareModalOption';
 
 class BallotShareButtonFooter extends Component {
@@ -29,11 +30,26 @@ class BallotShareButtonFooter extends Component {
     this.toggleStep2 = this.toggleStep2.bind(this);
   }
 
+  componentDidMount () {
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+  }
+
+  onAppStoreChange () {
+    const { open } = this.state;
+    const scrolledDown = AppStore.getScrolledDown();
+    const hideBallotShareButtonFooter = scrolledDown && !open;
+    // console.log('scrolledDown:', scrolledDown, ', hideBallotShareButtonFooter:', hideBallotShareButtonFooter);
+    this.setState({
+      hideBallotShareButtonFooter,
+    });
+  }
+
   shouldComponentUpdate (nextProps, nextState) {
     if (this.state.open !== nextState.open) return true;
     if (this.state.step2 !== nextState.step2) return true;
     if (this.state.anchorEl !== nextState.anchorEl) return true;
     if (this.props.pathname !== nextProps.pathname) return true;
+    if (this.state.hideBallotShareButtonFooter !== nextState.hideBallotShareButtonFooter) return true;
     return false;
   }
 
@@ -59,7 +75,13 @@ class BallotShareButtonFooter extends Component {
 
   render () {
     const { classes, pathname } = this.props;
+    const { hideBallotShareButtonFooter } = this.state;
     const { showFooterBar } = getApplicationViewBooleans(pathname);
+
+    // Hide if scrolled down the page
+    if (hideBallotShareButtonFooter) {
+      return null;
+    }
 
     return (
       <Wrapper pinToBottom={!showFooterBar}>
