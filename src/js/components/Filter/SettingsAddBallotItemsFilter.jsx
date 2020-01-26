@@ -204,7 +204,7 @@ class SettingsAddBallotItemsFilter extends Component {
         // Is there a state in the previous selectedStates that is not in the current list? If so, trigger re-render
         if (!arrayContains(stateCode, newSelectedStates)) {
           // console.log('stateCodeRemoved: ', stateCodeRemoved, ', stateCode:', stateCode);
-          selectedFilters = removeValueFromArray(selectedFilters, stateCode);
+          selectedFilters = removeValueFromArray(stateCode, selectedFilters);
           // console.log('Updated selectedFilters:', selectedFilters);
           stateCodeRemoved = true;
         }
@@ -446,12 +446,12 @@ class SettingsAddBallotItemsFilter extends Component {
       let newSelectedFilters = [];
       if (arrayContains(newValue, priorValues)) {
         // Remove newValue
-        const newValues = removeValueFromArray(priorValues, newValue);
+        const newValues = removeValueFromArray(newValue, priorValues);
         this.setState({
           selectedStates: newValues,
         });
         // And finally, end by resetting all filters in FilterBase with the updated set
-        newSelectedFilters = removeValueFromArray(selectedFilters, newValue);
+        newSelectedFilters = removeValueFromArray(newValue, selectedFilters);
         // console.log('onSelectedStatesChange, REMOVE selectedFilters:', newSelectedFilters);
         this.props.updateSelectedFilters(newSelectedFilters);
         this.props.forceChangeTrigger('REMOVE-STATE');

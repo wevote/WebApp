@@ -17,10 +17,13 @@ class ValuesFollowedPreview extends Component {
   }
 
   componentDidMount () {
-    IssueActions.retrieveIssuesToFollow();
-
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.onIssueStoreChange();
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      IssueActions.issueDescriptionsRetrieveCalled();
+    }
+    IssueActions.issuesFollowedRetrieve();
   }
 
   componentWillUnmount () {

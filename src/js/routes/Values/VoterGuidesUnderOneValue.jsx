@@ -10,11 +10,11 @@ import { renderLog } from '../../utils/logging';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { historyPush } from '../../utils/cordovaUtils';
 import GuideList from '../../components/VoterGuide/GuideList';
+import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import IssueCard from '../../components/Values/IssueCard';
 import ValuesList from './ValuesList';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-// import SearchGuidesToFollowBox from '../../components/Search/SearchGuidesToFollowBox';
 
 class VoterGuidesUnderOneValue extends Component {
   static propTypes = {
@@ -34,9 +34,13 @@ class VoterGuidesUnderOneValue extends Component {
   }
 
   componentDidMount () {
-    this.onIssueStoreChange();
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange);
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.onIssueStoreChange();
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      IssueActions.issueDescriptionsRetrieveCalled();
+    }
   }
 
   componentWillReceiveProps (nextProps) {

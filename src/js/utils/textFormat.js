@@ -240,7 +240,7 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
   return twitterDescriptionMinusName;
 }
 
-export function removeValueFromArray (listArray, valueToRemove) {
+export function removeValueFromArray (valueToRemove, listArray) {
   if (listArray && listArray.constructor === Array) {
     const index = listArray.indexOf(valueToRemove);
     if (index !== -1) {

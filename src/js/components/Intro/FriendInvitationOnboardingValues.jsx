@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
+import DelayedLoad from '../Widgets/DelayedLoad';
 import FriendInvitationOnboardingValuesList from '../Values/FriendInvitationOnboardingValuesList';
+import { renderLog } from '../../utils/logging';
+
 
 class FriendInvitationOnboardingValues extends Component {
   static propTypes = {
-    nextSlide: PropTypes.func,
   };
 
   constructor (props) {
@@ -22,14 +22,21 @@ class FriendInvitationOnboardingValues extends Component {
         <FriendInvitationTopHeader className="FriendInvitationTopHeader">
           Follow values you care about.
         </FriendInvitationTopHeader>
-        <FriendInvitationValuesHeader className="FriendInvitationValuesHeader">
-          Choose from popular values:
-        </FriendInvitationValuesHeader>
-        <ValuesWrapper>
-          <FriendInvitationOnboardingValuesList
-            displayOnlyIssuesNotFollowedByVoter
-          />
-        </ValuesWrapper>
+        <DelayedLoad
+          showLoadingText
+          waitBeforeShow={2000}
+        >
+          <div>
+            <FriendInvitationValuesHeader className="FriendInvitationValuesHeader">
+              Choose from popular values:
+            </FriendInvitationValuesHeader>
+            <ValuesWrapper>
+              <FriendInvitationOnboardingValuesList
+                displayOnlyIssuesNotFollowedByVoter
+              />
+            </ValuesWrapper>
+          </div>
+        </DelayedLoad>
       </Wrapper>
     );
   }
