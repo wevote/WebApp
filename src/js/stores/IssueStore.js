@@ -489,9 +489,13 @@ class IssueStore extends ReduceStore {
           allCachedIssues[issue.issue_we_vote_id] = issue;
           issueSlug = convertNameToSlug(issue.issue_name);
           issueWeVoteIdsBySlug[issueSlug] = issue.issue_we_vote_id;
+          if (!arrayContains(issue.issue_we_vote_id, issueWeVoteIdsVoterIsFollowing) && !arrayContains(issue.issue_we_vote_id, issueWeVoteIdsVoterCanFollow)) {
+            issueWeVoteIdsVoterCanFollow.push(issue.issue_we_vote_id);
+          }
         });
         revisedState = Object.assign({}, revisedState, {
           allCachedIssues,
+          issueWeVoteIdsVoterCanFollow,
           issueWeVoteIdsBySlug,
         });
         return revisedState;

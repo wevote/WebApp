@@ -90,6 +90,10 @@ const GetStarted = styled.div`
     padding-right: 20px;
     width: 100%;
   }
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 `;
 
 const ButtonContainer = styled.div`

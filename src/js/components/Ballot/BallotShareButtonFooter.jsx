@@ -21,8 +21,9 @@ class BallotShareButtonFooter extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      open: false,
       anchorEl: null,
+      hideBallotShareButtonFooter: false,
+      open: false,
       step2: false,
     };
     this.handleClick = this.handleClick.bind(this);
@@ -34,6 +35,15 @@ class BallotShareButtonFooter extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.props.pathname !== nextProps.pathname) return true;
+    if (this.state.anchorEl !== nextState.anchorEl) return true;
+    if (this.state.hideBallotShareButtonFooter !== nextState.hideBallotShareButtonFooter) return true;
+    if (this.state.open !== nextState.open) return true;
+    if (this.state.step2 !== nextState.step2) return true;
+    return false;
+  }
+
   onAppStoreChange () {
     const { open } = this.state;
     const scrolledDown = AppStore.getScrolledDown();
@@ -42,15 +52,6 @@ class BallotShareButtonFooter extends Component {
     this.setState({
       hideBallotShareButtonFooter,
     });
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.open !== nextState.open) return true;
-    if (this.state.step2 !== nextState.step2) return true;
-    if (this.state.anchorEl !== nextState.anchorEl) return true;
-    if (this.props.pathname !== nextProps.pathname) return true;
-    if (this.state.hideBallotShareButtonFooter !== nextState.hideBallotShareButtonFooter) return true;
-    return false;
   }
 
   handleClick (event) {
