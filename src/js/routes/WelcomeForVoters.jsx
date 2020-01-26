@@ -174,7 +174,8 @@ class WelcomeForVoters extends PureComponent {
         </Section>
         <Section variant="dark" rounded>
           <SectionTitle>
-            Text Here
+            Voting Should be
+            <SectionTitleBold> Simple</SectionTitleBold>
           </SectionTitle>
           <PlayerContainer>
             <Video
@@ -184,10 +185,6 @@ class WelcomeForVoters extends PureComponent {
             />
             <script src="https://player.vimeo.com/api/player.js" />
           </PlayerContainer>
-          <SectionTitle>
-            Voting Should be
-            <SectionTitleBold> Simple</SectionTitleBold>
-          </SectionTitle>
           <DescriptionContainer>
             <DescriptionLeftColumn>
               <Description>
@@ -317,12 +314,6 @@ const HeaderForVoters = styled.div`
   border-bottom-right-radius: 50% 25%;
   padding: 0 2em;
   margin-top: -72px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    height: 450px;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    height: 350px;
-  }
 `;
 
 const Wrapper = styled.div`
