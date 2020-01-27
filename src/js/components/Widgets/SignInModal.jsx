@@ -108,7 +108,7 @@ class SignInModal extends Component {
     }
 
     // This modal is shown when the voter wants to sign in.
-    console.log('window.screen.height:', window.screen.height);
+    // console.log('window.screen.height:', window.screen.height);
     return (
       <Dialog
         classes={{

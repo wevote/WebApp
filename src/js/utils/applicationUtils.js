@@ -236,12 +236,16 @@ export function polyfillObjectEntries () {
 export function setZenDeskHelpVisibility (pathname) {
   if (isWebApp()) {
     const { showFooterBar } = getApplicationViewBooleans(pathname);
-    if (showFooterBar ||
+    // console.log('setZenDeskHelpVisibility true, pathname:', pathname, ', showFooterBar:', showFooterBar);
+    if ((showFooterBar ||
       ['/ballot', '/ballot/vote', '/friends', '/more/network', '/office', '/opinions', '/settings', '/value'].some(
         match => pathname.toLowerCase().startsWith(match),
-      )) { // '/values'
+      )) &&
+      !['/wevoteintro'].some(
+        match => pathname.toLowerCase().startsWith(match),
+      )
+    ) { // '/values'
       try {
-        // console.log('setZenDeskHelpVisibility true, pathname:', pathname);
         global.zE('webWidget', 'show');
       } catch {
         console.log('setZenDeskHelpVisibility global.zE failure show');

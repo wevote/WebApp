@@ -107,6 +107,12 @@ class Ballot extends Component {
   componentDidMount () {
     const ballotBaseUrl = '/ballot';
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    // We need a ballotStoreListener here because we want the ballot to display before positions are received
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     this.setState({
       componentDidMountFinished: true,
@@ -197,7 +203,7 @@ class Ballot extends Component {
     // console.log('VoterStore.election_id: ', VoterStore.electionId());
     if (!IssueStore.issueDescriptionsRetrieveCalled()) {
       IssueActions.issueDescriptionsRetrieve();
-      IssueActions.issueDescriptionsRetrieveCalled();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
     }
     IssueActions.issuesFollowedRetrieve();
     if (googleCivicElectionId || ballotLocationShortcut || ballotReturnedWeVoteId) {
@@ -211,7 +217,7 @@ class Ballot extends Component {
       }
       if (callIssuesUnderBallotItemRetrieve) {
         IssueActions.issuesUnderBallotItemsRetrieve(googleCivicElectionId, ballotLocationShortcut, ballotReturnedWeVoteId);
-        IssueActions.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId);
+        // IssueActions.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
       }
 
       this.setState({
@@ -220,22 +226,16 @@ class Ballot extends Component {
         issuesRetrievedFromBallotLocationShortcut: ballotLocationShortcut,
       });
     }
-    // We need a ballotStoreListener here because we want the ballot to display before positions are received
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     // NOTE: voterAllPositionsRetrieve is also called in SupportStore when voterAddressRetrieve is received,
     // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
     SupportActions.voterAllPositionsRetrieve();
 
     BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
     this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     // Once a voter hits the ballot, they have gone through orientation
     cookies.setItem('ballot_has_been_visited', '1', Infinity, '/');
 
-    this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
     OrganizationActions.organizationsFollowedRetrieve();
     VoterActions.voterRetrieve(); // This is needed to update the interface status settings
@@ -410,12 +410,12 @@ class Ballot extends Component {
       mounted: false,
     });
 
+    this.appStoreListener.remove();
     this.ballotStoreListener.remove();
     this.electionListListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    this.appStoreListener.remove();
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;

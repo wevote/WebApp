@@ -26,7 +26,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     if (!IssueStore.issueDescriptionsRetrieveCalled()) {
       IssueActions.issueDescriptionsRetrieve();
-      IssueActions.issueDescriptionsRetrieveCalled();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
     }
     IssueActions.issuesFollowedRetrieve();
 

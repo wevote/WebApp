@@ -14,6 +14,7 @@ import ItemActionBar from './ItemActionBar';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
@@ -400,10 +401,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     console.error('BallotItemSupportOpposeCountDisplay caught error: ', `${error} with info: `, info);
   }
 
-  goToBallotItemLinkLocal () {
+  goToBallotItemLinkLocal (ballotItemWeVoteId) {
     // console.log('BallotItemSupportOpposeCountDisplay goToBallotItemLinkLocal');
     if (this.props.goToBallotItem) {
-      this.props.goToBallotItem();
+      this.props.goToBallotItem(ballotItemWeVoteId);
     }
   }
 
@@ -621,6 +622,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 shareButtonHide
               />
             </ItemActionBarWrapper>
+            <ShowCandidateFooterWrapper>
+              <ShowMoreFooter
+                showMoreId={`noPositionsForPopoverShowAllPositions-${ballotItemWeVoteId}`}
+                showMoreLink={() => this.goToBallotItemLinkLocal(ballotItemWeVoteId)}
+                showMoreText="Show More"
+              />
+            </ShowCandidateFooterWrapper>
           </PopoverBody>
         </PopoverWrapper>
       );
@@ -1030,6 +1038,10 @@ const PopoverBody = styled.div`
 
 const RenderedOrganizationsWrapper = styled.div`
   margin-top: 6px;
+`;
+
+const ShowCandidateFooterWrapper = styled.div`
+  margin-top: 10px;
 `;
 
 const YourPersonalNetworkIntroText = styled.div`
