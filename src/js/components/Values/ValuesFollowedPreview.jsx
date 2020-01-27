@@ -21,7 +21,7 @@ class ValuesFollowedPreview extends Component {
     this.onIssueStoreChange();
     if (!IssueStore.issueDescriptionsRetrieveCalled()) {
       IssueActions.issueDescriptionsRetrieve();
-      IssueActions.issueDescriptionsRetrieveCalled();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
     }
     IssueActions.issuesFollowedRetrieve();
   }

@@ -116,12 +116,12 @@ export default class Candidate extends Component {
     const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
     if (!IssueStore.issueDescriptionsRetrieveCalled()) {
       IssueActions.issueDescriptionsRetrieve();
-      IssueActions.issueDescriptionsRetrieveCalled();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
     }
     IssueActions.issuesFollowedRetrieve();
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
-      IssueActions.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId());
+      // IssueActions.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId()); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
     }
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
     this.setState({
