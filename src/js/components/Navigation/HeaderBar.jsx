@@ -32,6 +32,7 @@ import { shortenText, stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import ShareModal from '../Ballot/ShareModal';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 // const webAppConfig = require('../../config');
 
@@ -203,6 +204,7 @@ class HeaderBar extends Component {
   }
 
   onAppStoreChange () {
+    // console.log('HeaderBar, onAppStoreChange');
     const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal() || '';
     // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
     const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
@@ -222,23 +224,29 @@ class HeaderBar extends Component {
   }
 
   onFriendStoreChange () {
-    this.setState({
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
-    });
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      // console.log('HeaderBar, onFriendStoreChange');
+      this.setState({
+        friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      });
+    }
   }
 
   onVoterStoreChange () {
-    const voter = VoterStore.getVoter();
-    const voterFirstName = VoterStore.getFirstName();
-    const voterIsSignedIn = voter.is_signed_in || false;
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      // console.log('HeaderBar, onVoterStoreChange'};
+      const voter = VoterStore.getVoter();
+      const voterFirstName = VoterStore.getFirstName();
+      const voterIsSignedIn = voter.is_signed_in || false;
 
-    this.setState({
-      voter,
-      voterFirstName,
-      voterIsSignedIn,
-      showSignInModal: AppStore.showSignInModal(),
-      showShareModal: AppStore.showShareModal(),
-    });
+      this.setState({
+        voter,
+        voterFirstName,
+        voterIsSignedIn,
+        showSignInModal: AppStore.showSignInModal(),
+        showShareModal: AppStore.showShareModal(),
+      });
+    }
   }
 
   getSelectedTab = () => {

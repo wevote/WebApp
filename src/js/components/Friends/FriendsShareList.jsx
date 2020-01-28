@@ -59,6 +59,7 @@ class FriendShareList extends Component {
         </FormGroup>
         <br />
         <br />
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="message"><strong>Add Personal Message</strong></label>
         <textarea name="message" id="message" className="full-width" rows="5" />
         <br />

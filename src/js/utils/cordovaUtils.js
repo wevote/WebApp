@@ -247,42 +247,6 @@ export function isIPhone6p5in () {
 export function isIPad () {
   if (isIOS()) {
     if (window.device.model.substring(0, 4) === 'iPad') {
-      // June 2019, save this, we will need it, if we need to distinguish between types of iPads
-      // window.device.model === 'iPad4,1'  ||  // iPad Air
-      // window.device.model === 'iPad4,2'  ||  // iPad Air
-      // window.device.model === 'iPad4,3'  ||  // iPad Air
-      // window.device.model === 'iPad5,3'  ||  // iPad Air 2
-      // window.device.model === 'iPad5,4'  ||  // iPad Air 2
-      // window.device.model === 'iPad6,7'  ||  // iPad Pro (12.9-inch)
-      // window.device.model === 'iPad6,8'  ||  // iPad Pro (12.9-inch)
-      // window.device.model === 'iPad6,3'  ||  // iPad Pro (9.7-inch)
-      // window.device.model === 'iPad6,4'  ||  // iPad Pro (9.7-inch)
-      // window.device.model === 'iPad6,11' ||  // iPad (5th generation)
-      // window.device.model === 'iPad6,12' ||  // iPad (5th generation)
-      // window.device.model === 'iPad7,1'  ||  // iPad Pro (12.9-inch) (2nd generation)
-      // window.device.model === 'iPad7,2'  ||  // iPad Pro (12.9-inch) (2nd generation)
-      // window.device.model === 'iPad7,3'  ||  // iPad Pro (10.5-inch)
-      // window.device.model === 'iPad7,4'  ||  // iPad Pro (10.5-inch)
-      // window.device.model === 'iPad7,5 ' ||  // iPad (6th generation)
-      // window.device.model === 'iPad7,6 ' ||  // iPad (6th generation)
-      // window.device.model === 'iPad8,1'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,2'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,3'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,4'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,5'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,6'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,5'  ||  // iPad Pro (12.9-inch) (3rd generation)
-      // window.device.model === 'iPad8,7'  ||  // iPad Pro (12.9-inch) (3rd generation)
-      // window.device.model === 'iPad8,8'  ||  // iPad Pro (12.9-inch) (3rd generation)
-      // window.device.model === 'iPad11,3' ||  // iPad Air (3rd generation)
-      // window.device.model === 'iPad11,4' ||  // iPad Air (3rd generation)
-      // window.device.model === 'iPad4,7'  ||  // iPad mini 3
-      // window.device.model === 'iPad4,8'  ||  // iPad mini 3
-      // window.device.model === 'iPad4,9'  ||  // iPad mini 3
-      // window.device.model === 'iPad5,1'  ||  // iPad mini 4
-      // window.device.model === 'iPad5,2'  ||  // iPad mini 4
-      // window.device.model === 'iPad11,1' ||  // iPad mini (5th generation)
-      // window.device.model === 'iPad11,2')) { // iPad mini (5th generation)
       logMatch('iPad', true);
       return true;
     } else {

@@ -11,13 +11,15 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import {
   isCordova,
-  isAndroidSizeSM, isAndroidSizeMD, isAndroidSizeLG, isAndroidSizeXL,
-  isIPhone3p5in, isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in,
   isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896,
-  isWebApp,
+  isWebApp, prepareForCordovaKeyboard, historyPush, restoreStylesAfterCordovaKeyboard,
 } from '../../utils/cordovaUtils';
 import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
+import { stringContains } from '../../utils/textFormat';
+import signInModalGlobalState from './signInModalGlobalState';
+
+/* global $ */
 
 class SignInModal extends Component {
   static propTypes = {
@@ -31,11 +33,31 @@ class SignInModal extends Component {
     this.state = {
       focusedOnSingleInputToggle: false,
     };
+    signInModalGlobalState.set('textOrEmailSignInInProcess', false);
   }
 
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    if (isCordova()) {
+      prepareForCordovaKeyboard('SignInModal');
+    }
+  }
+
+  componentDidUpdate () {
+    if (isCordova()) {
+      // Cordova really has trouble with animations on dialogs, while the visible area is being compressed to fit the software keyboard
+      // eslint-disable-next-line func-names
+      $('*').each(function () {
+        const styleWorking = $(this).attr('style');
+        if (styleWorking && stringContains('transition', styleWorking)) {
+          console.log(`SignInModal componentDidUpdate transition style removed before: ${styleWorking}`);
+          const cleaned = styleWorking.replace(/transition.*?;/, '');
+          $(this).attr('style', cleaned);
+          console.log(`SignInModal componentDidUpdate transition style removed after: ${cleaned}`);
+        }
+      });
+    }
   }
 
   componentWillUnmount () {
@@ -52,7 +74,10 @@ class SignInModal extends Component {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
     if (secretCodeVerified) {
-      this.props.closeFunction();
+      if (isWebApp()) {
+        // In Cordova something else has already closed the dialog, so this has to be suppressed to avoid an error -- Jan 27, 2020 is this still needed?
+        this.props.closeFunction();
+      }
     } else {
       const voter = VoterStore.getVoter();
       this.setState({
@@ -73,8 +98,17 @@ class SignInModal extends Component {
   };
 
   closeFunction = () => {
+    // console.log('SignInModal closeFunction');
+    signInModalGlobalState.set('textOrEmailSignInInProcess', false);
+
     if (this.props.closeFunction) {
       this.props.closeFunction();
+    }
+
+    if (isCordova()) {
+      // console.log('closeFunction in SignInModal doing restoreStylesAfterCordovaKeyboard and historyPush');
+      restoreStylesAfterCordovaKeyboard('SignInModal');
+      historyPush('/ballot');
     }
   };
 
@@ -124,12 +158,12 @@ class SignInModal extends Component {
             [classes.emailInputWebApp737to896]: isWebAppHeight737to896() && focusedOnSingleInputToggle && focusedInputName === 'email',
             [classes.phoneInputWebApp737to896]: isWebAppHeight737to896() && focusedOnSingleInputToggle && focusedInputName === 'phone',
             // 2020-01-20 These are to be configured and are placeholders
-            [classes.emailInputCordovaSmall]: (isIPhone3p5in() || isAndroidSizeSM()) && focusedOnSingleInputToggle && focusedInputName === 'email',
-            [classes.phoneInputCordovaSmall]: (isIPhone3p5in() || isAndroidSizeSM()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
-            [classes.emailInputCordovaMedium]: (isIPhone4in() || isIPhone4p7in() || isIPhone5p5in() || isIPhone5p8in() || isIPhone6p1in() || isAndroidSizeMD()) && focusedOnSingleInputToggle && focusedInputName === 'email',
-            [classes.phoneInputCordovaMedium]: (isIPhone4in() || isIPhone4p7in() || isIPhone5p5in() || isIPhone5p8in() || isIPhone6p1in() || isAndroidSizeMD()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
-            [classes.emailInputCordovaLarge]: (isIPhone6p5in() || isAndroidSizeLG() || isAndroidSizeXL()) && focusedOnSingleInputToggle && focusedInputName === 'email',
-            [classes.phoneInputCordovaLarge]: (isIPhone6p5in() || isAndroidSizeLG() || isAndroidSizeXL()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
+            // [classes.emailInputCordovaSmall]: (isIPhone3p5in() || isAndroidSizeSM()) && focusedOnSingleInputToggle && focusedInputName === 'email',
+            // [classes.phoneInputCordovaSmall]: (isIPhone3p5in() || isAndroidSizeSM()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
+            // [classes.emailInputCordovaMedium]: (isIPhone4in() || isIPhone4p7in() || isIPhone5p5in() || isIPhone5p8in() || isIPhone6p1in() || isAndroidSizeMD()) && focusedOnSingleInputToggle && focusedInputName === 'email',
+            // [classes.phoneInputCordovaMedium]: (isIPhone4in() || isIPhone4p7in() || isIPhone5p5in() || isIPhone5p8in() || isIPhone6p1in() || isAndroidSizeMD()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
+            // [classes.emailInputCordovaLarge]: (isIPhone6p5in() || isAndroidSizeLG() || isAndroidSizeXL()) && focusedOnSingleInputToggle && focusedInputName === 'email',
+            // [classes.phoneInputCordovaLarge]: (isIPhone6p5in() || isAndroidSizeLG() || isAndroidSizeXL()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
           }),
           root: classes.dialogRoot,
         }}
@@ -181,15 +215,7 @@ be honored, Cordova tries to do the best it can, but sometimes it crashes and lo
 For Cordova eliminate as many fixed vertical dimensions as needed to avoid overconstraint.
 */
 const styles = theme => ({
-  dialogRoot: isWebApp() ? {
-    height: '100%',
-    // position: 'absolute !important', // Causes problem on Firefox
-    top: '-15%',
-    left: '0% !important',
-    right: 'unset !important',
-    bottom: 'unset !important',
-    width: '100%',
-  } : {
+  dialogRoot: {
     height: '100%',
     position: 'absolute !important',
     top: '-15%',
@@ -198,7 +224,24 @@ const styles = theme => ({
     bottom: 'unset !important',
     width: '100%',
   },
-  dialogPaper: isWebApp() ? {
+  // dialogRoot: isWebApp() ? {
+  //   height: '100%',
+  //   // position: 'absolute !important', // Causes problem on Firefox
+  //   top: '-15%',
+  //   left: '0% !important',
+  //   right: 'unset !important',
+  //   bottom: 'unset !important',
+  //   width: '100%',
+  // } : {
+  //   height: '100%',
+  //   position: 'absolute !important',
+  //   top: '-15%',
+  //   left: '0% !important',
+  //   right: 'unset !important',
+  //   bottom: 'unset !important',
+  //   width: '100%',
+  // },
+  dialogPaper: {
     [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
@@ -207,26 +250,37 @@ const styles = theme => ({
       height: 'unset',
       margin: '0 auto',
     },
-  } : {
-    margin: '0 !important',
-    width: '95%',
-    height: 'unset',
-    maxHeight: '90%',
-    offsetHeight: 'unset !important',
-    top: '50%',
-    left: '50%',
-    right: 'unset !important',
-    bottom: 'unset !important',
-    position: 'absolute',
-    transform: 'translate(-50%, -25%)',
   },
-  focusedOnSingleInput: isWebApp() ? {
-    [theme.breakpoints.down('sm')]: {
-      position: 'absolute',
-      top: '75%',
-      left: '73%',
-    },
-  } : {},
+  // dialogPaper: isWebApp() ? {
+  //   [theme.breakpoints.down('sm')]: {
+  //     minWidth: '95%',
+  //     maxWidth: '95%',
+  //     width: '95%',
+  //     maxHeight: '90%',
+  //     height: 'unset',
+  //     margin: '0 auto',
+  //   },
+  // } : {
+  //   margin: '0 !important',
+  //   width: '95%',
+  //   height: 'unset',
+  //   maxHeight: '90%',
+  //   offsetHeight: 'unset !important',
+  //   top: '50%',
+  //   left: '50%',
+  //   right: 'unset !important',
+  //   bottom: 'unset !important',
+  //   position: 'absolute',
+  //   transform: 'translate(-50%, -58%)',
+  // },
+  // focusedOnSingleInput: isWebApp() ? {
+  //   [theme.breakpoints.down('sm')]: {
+  //     position: 'absolute',
+  //     top: '75%',
+  //     left: '73%',
+  //   },
+  // } : {},
+  focusedOnSingleInput: {},
   emailInputWebApp0to568: {
     [theme.breakpoints.down('sm')]: {
       transform: 'translate(-75%, -50%)',
@@ -257,24 +311,24 @@ const styles = theme => ({
       transform: 'translate(-75%, -55%)',
     },
   },
-  emailInputCordovaSmall: {
-    transform: 'translate(-75%, 47%)', // Works ok
-  },
-  phoneInputCordovaSmall: {
-    transform: 'translate(-75%, -25%)', // Works ok.  Verify is modal and needs to be scrolled to see the confirmation area.
-  },
-  emailInputCordovaMedium: {
-    transform: 'translate(-50%, -25%)', // Looks ok, verify page is full screen, and works well.  This does throw "Unable to simultaneously satisfy constraints", but does not crash iPhone 8
-  },
-  phoneInputCordovaMedium: {
-    transform: 'translate(-50%, -25%)', // Looks ok. dialog layout is a bit off.  Verify is modal and needs to be scrolled to see the confirmation area. This does throw "Unable to simultaneously satisfy constraints", but does not crash iPhone 8
-  },
-  emailInputCordovaLarge: {
-    transform: 'translate(-50%, 0%)', // Works ok.
-  },
-  phoneInputCordovaLarge: {
-    transform: 'translate(-50%, 0%)', // Looks ok. dialog layout is a bit off.  Verify is modal and needs to be scrolled to see the confirmation area. This does throw "Unable to simultaneously satisfy constraints", but does not crash iPhone XsMax
-  },                                  // On the iPad, Verify is modal and needs to be scrolled to see the confirmation area.
+  // emailInputCordovaSmall: {
+  //   transform: 'translate(-75%, 47%)',
+  // },
+  // phoneInputCordovaSmall: {
+  //   transform: 'translate(-75%, -25%)',
+  // },
+  // emailInputCordovaMedium: {
+  //   transform: 'translate(-50%, -58%)',
+  // },
+  // phoneInputCordovaMedium: {
+  //   transform: 'translate(-50%, 85%)',
+  // },
+  // emailInputCordovaLarge: {
+  //   transform: 'translate(-50%, 0%)',
+  // },
+  // phoneInputCordovaLarge: {
+  //   transform: 'translate(-50%, 0%)',
+  // },
   dialogContent: {
     [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',

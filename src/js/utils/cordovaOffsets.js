@@ -56,7 +56,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidateWild:   return '57px';
         case enums.ballotVote:      return isSignedIn ? '149px' : '148px';
         case enums.officeWild:      return '84px';
-        case enums.ballotSmHdrWild: return isSignedIn ? '161px' : '160px';
+        case enums.ballotSmHdrWild: return isSignedIn ? '144px' : '160px';
         case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '52px' : '36px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '40px';
@@ -277,6 +277,10 @@ export function cordovaBallotFilterTopMargin () {
       }
       return '88px';
     } else if (isIPhone6p5in()) {
+      // friendsfallback 1/27 steve
+      // if (window.location.href.indexOf('/index.html#/friends/invite') > 0) {
+      //   return '0px';
+      // } else
       if (window.location.href.indexOf('/index.html#/friends') > 0) {
         return '79px';
       }
@@ -587,7 +591,7 @@ export function cordovaSignInModalTopPosition (collapsed) {
     } else if (isIPhone5p5in()) {             //  6 Plus, 7 Plus and 8 Plus
       return collapsed ? '-3%' : '-170px';
     } else if (isIPhone4p7in()) {             // 6, 7, 8
-      return collapsed ? '-3%' : '-24%';
+      return collapsed ? 'unset' : '-24%';
     } else if (isIPhone4in()) {               // SE
       return collapsed ? '30px' : '-18%';
     } else if (isIPad()) {
@@ -616,6 +620,13 @@ export function cordovaFriendsWrapper () {
       };
     }
     if (isIPhone6p5in()) {
+      // friendsfallback 1/27 steve
+      // if (window.location.href.indexOf('/index.html#/friends/invite') > 0) {
+      //   return {
+      //     paddingTop: '93px',
+      //     paddingBottom: '0px',
+      //   };
+      // }
       return {
         paddingTop: '81px',
         paddingBottom: '90px',

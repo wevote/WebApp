@@ -14,6 +14,7 @@ import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
 import { renderLog } from '../../utils/logging';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 
 class AddFriendsByEmail extends Component {
   static propTypes = {
@@ -40,6 +41,7 @@ class AddFriendsByEmail extends Component {
       voter: {},
       voterIsSignedIn: false,
     };
+    prepareForCordovaKeyboard('AddFriendsByEmail');
     this.addFriend = this.addFriend.bind(this);
     this.cacheFriendData = this.cacheFriendData.bind(this);
   }
@@ -58,6 +60,7 @@ class AddFriendsByEmail extends Component {
   }
 
   componentWillUnmount () {
+    restoreStylesAfterCordovaKeyboard('AddFriendsByEmail');
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -123,6 +126,7 @@ class AddFriendsByEmail extends Component {
         loading: false,
         onEnterEmailAddressesStep: false,
       });
+      restoreStylesAfterCordovaKeyboard('AddFriendsByEmail');
       this.friendInvitationByEmailSend(event);
     }
   };
@@ -198,6 +202,7 @@ class AddFriendsByEmail extends Component {
       invitationEmailsAlreadyScheduledStep: false,
       onFriendInvitationsSentStep: true,
     });
+    prepareForCordovaKeyboard('AddFriendsByEmail');
   }
 
   addFriend () {
@@ -237,6 +242,7 @@ class AddFriendsByEmail extends Component {
       invitationEmailsAlreadyScheduledStep, loading,
       onEnterEmailAddressesStep, onFriendInvitationsSentStep, senderEmailAddressError, voterIsSignedIn,
     } = this.state;
+
     // console.log(friendsToInvite);
     const atLeastOneValidated = friendsToInvite.length !== 0 || validatePhoneOrEmail(this.state.friendContactInfo);
 
