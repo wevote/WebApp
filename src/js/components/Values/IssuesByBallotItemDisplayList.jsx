@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import IssueStore from '../../stores/IssueStore';
-import { renderLog } from '../../utils/logging';
 import ValueIconAndText from './ValueIconAndText';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import { renderLog } from '../../utils/logging';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByBallotItemDisplayList extends Component {
@@ -119,22 +120,29 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 
   onIssueStoreChange () {
-    const { ballotItemWeVoteId } = this.state;
-    const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(ballotItemWeVoteId) || [];
-    const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(ballotItemWeVoteId) || [];
-    const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
-    const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
-    this.setState({
-      issuesUnderThisBallotItemVoterIsFollowing,
-      issuesUnderThisBallotItemVoterIsNotFollowing,
-      issuesUnderThisBallotItemVoterIsFollowingLength,
-      issuesUnderThisBallotItemVoterIsNotFollowingLength,
-    });
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      // console.log('IssuesByBallotItemDisplayList, onIssueStoreChange');
+      const { ballotItemWeVoteId } = this.state;
+      const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(ballotItemWeVoteId) || [];
+      const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(ballotItemWeVoteId) || [];
+      const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
+      const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
+      this.setState({
+        issuesUnderThisBallotItemVoterIsFollowing,
+        issuesUnderThisBallotItemVoterIsNotFollowing,
+        issuesUnderThisBallotItemVoterIsFollowingLength,
+        issuesUnderThisBallotItemVoterIsNotFollowingLength,
+      });
+    }
   }
 
   onVoterGuideStoreChange () {
-    // We just want to trigger a re-render
-    this.setState();
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      // console.log('IssuesByBallotItemDisplayList, onVoterGuideStoreChange');
+
+      // We just want to trigger a re-render, if SignInModal is not in use
+      this.setState();
+    }
   }
 
   handleEnterHoverLocalArea = () => {

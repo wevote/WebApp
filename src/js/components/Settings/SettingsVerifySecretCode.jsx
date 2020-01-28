@@ -101,7 +101,9 @@ class SettingsVerifySecretCode extends Component {
   onVoterStoreChange () {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { incorrectSecretCodeEntered, numberOfTriesRemaining, secretCodeVerified, voterMustRequestNewCode, voterSecretCodeRequestsLocked } = secretCodeVerificationStatus;
+    // console.log('onVoterStoreChange secretCodeVerified: ' + secretCodeVerified);
     if (secretCodeVerified) {
+      // console.log('onVoterStoreChange secretCodeVerified: yes');
       this.closeVerifyModalLocal();
     } else {
       let errorMessageToDisplay = '';
@@ -347,6 +349,7 @@ class SettingsVerifySecretCode extends Component {
   };
 
   closeVerifyModalLocal = () => {
+    // console.log('voterVerifySecretCode this.props.closeVerifyModal:', this.props.closeVerifyModal);
     if (this.props.closeVerifyModal) {
       this.props.closeVerifyModal();
     }
@@ -356,7 +359,7 @@ class SettingsVerifySecretCode extends Component {
     const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
     this.setState({ condensed: false });
     if (digit6 && isCordova()) {
-      // When their is a voterEmailAddress value and the keyboard closes, submit
+      // Jan 2020 this comment looks wrong, but might still contain a clue:  When there is a voterEmailAddress value and the keyboard closes, submit
       const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
       const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
       VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);

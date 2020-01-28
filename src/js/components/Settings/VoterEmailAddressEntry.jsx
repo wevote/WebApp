@@ -9,13 +9,16 @@ import Paper from '@material-ui/core/Paper';
 import Mail from '@material-ui/icons/Mail';
 import InputBase from '@material-ui/core/InputBase';
 import LoadingWheel from '../LoadingWheel';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+
+/* global $ */
 
 class VoterEmailAddressEntry extends Component {
   static propTypes = {
@@ -40,6 +43,7 @@ class VoterEmailAddressEntry extends Component {
         make_primary_email: false,
         sign_in_code_email_sent: false,
         verification_email_sent: false,
+        movedInitialFocus: false,
       },
       hideExistingEmailAddresses: false,
       loading: true,
@@ -53,12 +57,13 @@ class VoterEmailAddressEntry extends Component {
       voterEmailAddressListCount: 0,
       voterEmailAddressesVerifiedCount: 0,
     };
+    if (isCordova()) {
+      signInModalGlobalState.set('textOrEmailSignInInProcess', true);
+    }
   }
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // Steve 11/14/19: commenting out the next line: it is expensive and causes trouble in SignInModal, and is almost certainly not needed
-    // VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
   }
 
@@ -111,6 +116,17 @@ class VoterEmailAddressEntry extends Component {
     return false;
   }
 
+  componentDidUpdate () {
+    if (isCordova() && !this.state.movedInitialFocus) {
+      const inputFld = $('#enterVoterEmailAddress');
+      // console.log('enterVoterEmailAddress ', $(inputFld));
+      $(inputFld).focus();
+      if ($(inputFld).is(':focus')) {
+        this.setState({ movedInitialFocus: true });
+      }
+    }
+  }
+
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
@@ -121,7 +137,15 @@ class VoterEmailAddressEntry extends Component {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
     // console.log('onVoterStoreChange emailAddressStatus:', emailAddressStatus);
-    if (secretCodeVerified) {
+
+    const voter = VoterStore.getVoter();
+    const { signed_in_with_email: signedInWithEmail } = voter;
+    // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithEmail: ${signedInWithEmail}`);
+    if (signedInWithEmail) {
+      console.log('VoterEmailAddressEntry onVoterStoreChange signedInWithEmail so doing a hacky fallback close');
+      this.closeSignInModal();
+      return;
+    } else if (secretCodeVerified) {
       this.setState({
         displayEmailVerificationButton: false,
         showVerifyModal: false,
@@ -164,7 +188,7 @@ class VoterEmailAddressEntry extends Component {
   }
 
   voterEmailAddressSave = (event) => {
-    // console.log('VoterEmailAddressEntry this.voterEmailAddressSave');
+    console.log('VoterEmailAddressEntry this.voterEmailAddressSave');
     event.preventDefault();
     const sendLinkToSignIn = true;
     VoterActions.voterEmailAddressSave(this.state.voterEmailAddress, sendLinkToSignIn);
@@ -172,7 +196,9 @@ class VoterEmailAddressEntry extends Component {
   };
 
   sendSignInCodeEmail = (event) => {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     const { displayEmailVerificationButton, voterEmailAddress, voterEmailAddressIsValid } = this.state;
     if (voterEmailAddressIsValid && displayEmailVerificationButton) {
       VoterActions.sendSignInCodeEmail(voterEmailAddress);
@@ -244,7 +270,7 @@ class VoterEmailAddressEntry extends Component {
   };
 
   closeSignInModal = () => {
-    // console.log('SettingsAccount localCloseSignInModal');
+    // console.log('VoterEmailAddressEntry closeSignInModal');
     if (this.props.closeSignInModal) {
       this.props.closeSignInModal();
     }
@@ -293,7 +319,23 @@ class VoterEmailAddressEntry extends Component {
       this.displayEmailVerificationButton();
       this.turnOtherSignInOptionsOff();
     }
-  }
+  };
+
+  onAnimationEndCancel = () => {
+    // In Cordova when the virtual keyboard goes away, the on-click doesn't happen, but the onAnimation does.
+    // This allows us to react to the first click.
+    if (isCordova()) {
+      // console.log('VoterEmailAddressEntry onAnimationEndCancel calling onCancel');
+      this.onCancel();
+    }
+  };
+
+  onAnimationEndSend = () => {
+    if (isCordova()) {
+      // console.log('VoterPhoneVerificationEntry onAnimationEndSend calling sendSignInCodeEmail');
+      this.sendSignInCodeEmail();
+    }
+  };
 
   onKeyDown = (event) => {
     // console.log('onKeyDown, event.keyCode:', event.keyCode);
@@ -303,7 +345,7 @@ class VoterEmailAddressEntry extends Component {
     if (keyCodesToBlock.includes(event.keyCode)) {
       event.preventDefault();
     }
-  }
+  };
 
   // sendVerificationEmail (emailWeVoteId) {
   //   VoterActions.sendVerificationEmail(emailWeVoteId);
@@ -383,7 +425,7 @@ class VoterEmailAddressEntry extends Component {
       </span>
     );
 
-    let enterEmailTitle = 'Sign in with Email';
+    let enterEmailTitle = isWebApp() ? 'Sign in with Email' : 'Email the Sign In code to';
     // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
     //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
     if (this.state.voter && this.state.voter.is_signed_in) {
@@ -420,10 +462,12 @@ class VoterEmailAddressEntry extends Component {
             <ButtonWrapper>
               <CancelButtonContainer>
                 <Button
+                  id="cancelEmailButton"
                   color="primary"
                   disabled={signInCodeEmailSentAndWaitingForResponse}
                   fullWidth
                   onClick={this.onCancel}
+                  onAnimationEnd={this.onAnimationEndCancel}
                   variant="outlined"
                 >
                   Cancel
@@ -435,6 +479,7 @@ class VoterEmailAddressEntry extends Component {
                   disabled={disableEmailVerificationButton || signInCodeEmailSentAndWaitingForResponse}
                   id="voterEmailAddressEntrySendCode"
                   onClick={this.sendSignInCodeEmail}
+                  onAnimationEnd={this.onAnimationEndSend}
                   variant="contained"
                 >
                   {signInCodeEmailSentAndWaitingForResponse ? 'Sending...' : (
@@ -548,11 +593,11 @@ class VoterEmailAddressEntry extends Component {
     });
 
     return (
-      <Wrapper>
+      <Wrapper isWeb={isWebApp()}>
         {!hideExistingEmailAddresses ? (
           <div>
             {verifiedEmailsFound && !this.props.inModal ? (
-              <EmailSection>
+              <EmailSection isWeb={isWebApp()}>
                 <span className="h3">
                   Your Email
                   {voterEmailAddressListCount > 1 ? 's' : ''}
@@ -566,7 +611,7 @@ class VoterEmailAddressEntry extends Component {
               </span>
             )}
             {unverifiedEmailsFound && !this.props.inModal && (
-              <EmailSection>
+              <EmailSection isWeb={isWebApp()}>
                 <span className="h3">Emails to Verify</span>
                 {toVerifyEmailListHtml}
               </EmailSection>
@@ -577,7 +622,7 @@ class VoterEmailAddressEntry extends Component {
             {emailAddressStatusHtml}
           </span>
         )}
-        <EmailSection>
+        <EmailSection isWeb={isWebApp()}>
           {enterEmailHtml}
         </EmailSection>
         {showVerifyModal && (
@@ -626,11 +671,11 @@ const CancelButtonContainer = styled.div`
 `;
 
 const Wrapper = styled.div`
-  margin-top: 32px;
+  margin-top: ${({ isWeb }) => (isWeb ? '32px;' : '0')};
 `;
 
 const EmailSection = styled.div`
-  margin-top: 18px;
+  margin-top: ${({ isWeb }) => (isWeb ? '18px;' : '0')};
 `;
 
 export default withStyles(styles)(VoterEmailAddressEntry);

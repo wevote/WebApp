@@ -14,6 +14,7 @@ import { historyPush, isCordova, cordovaOpenSafariView } from '../../utils/cordo
 import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 
 class FooterBar extends React.Component {
@@ -41,9 +42,12 @@ class FooterBar extends React.Component {
   }
 
   onFriendStoreChange () {
-    this.setState({
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
-    });
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      // console.log('FooterBar, onFriendStoreChange');
+      this.setState({
+        friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
+      });
+    }
   }
 
   handleChange = (event, value) => {

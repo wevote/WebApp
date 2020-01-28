@@ -22,6 +22,7 @@ import { stringContains } from './utils/textFormat';
 import SnackNotifier from './components/Widgets/SnackNotifier';
 import displayFriendsTabs from './utils/displayFriendsTabs';
 import BallotShareButtonFooter from './components/Ballot/BallotShareButtonFooter';
+import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
 
 class Application extends Component {
   static propTypes = {
@@ -137,6 +138,7 @@ class Application extends Component {
   }
 
   onAppStoreChange () {
+    // console.log('Application, onAppStoreChange');
     let signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
     // console.log('Application onAppStoreChange, current signInStartFullUrl: ', signInStartFullUrl);
     // Do not let sign_in_start_full_url be set again. Different logic while we figure out how to call AppActions.unsetStoreSignInStartFullUrl()
@@ -158,27 +160,28 @@ class Application extends Component {
   }
 
   onVoterStoreChange () {
-    // console.log('Application, onVoterStoreChange');
-    const voterDeviceId = VoterStore.voterDeviceId();
-    if (voterDeviceId && voterDeviceId !== '') {
-      if (this.state.voter_initial_retrieve_needed) {
-        VoterActions.voterEmailAddressRetrieve();
-        VoterActions.voterSMSPhoneNumberRetrieve();
-        FriendActions.friendInvitationsSentToMe();
-        this.incomingVariableManagement();
-        this.setState({
-          voter: VoterStore.getVoter(),
-          voter_initial_retrieve_needed: false,
-        });
-      } else {
-        this.setState({
-          voter: VoterStore.getVoter(),
-        });
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      console.log('Application, onVoterStoreChange');
+      const voterDeviceId = VoterStore.voterDeviceId();
+      if (voterDeviceId && voterDeviceId !== '') {
+        if (this.state.voter_initial_retrieve_needed) {
+          VoterActions.voterEmailAddressRetrieve();
+          VoterActions.voterSMSPhoneNumberRetrieve();
+          FriendActions.friendInvitationsSentToMe();
+          this.incomingVariableManagement();
+          this.setState({
+            voter: VoterStore.getVoter(),
+            voter_initial_retrieve_needed: false,
+          });
+        } else {
+          this.setState({
+            voter: VoterStore.getVoter(),
+          });
+        }
       }
+      // console.log('Application onVoterStoreChange voter: ', VoterStore.getVoter());
+      // console.log('SignedIn Voter in Application onVoterStoreChange voter: ', VoterStore.getVoter().full_name);
     }
-
-    // console.log('Application onVoterStoreChange voter: ', VoterStore.getVoter());
-    // console.log('SignedIn Voter in Application onVoterStoreChange voter: ', VoterStore.getVoter().full_name);
   }
 
   getAppBaseClass = () => {
