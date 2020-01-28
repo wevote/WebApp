@@ -215,7 +215,15 @@ be honored, Cordova tries to do the best it can, but sometimes it crashes and lo
 For Cordova eliminate as many fixed vertical dimensions as needed to avoid overconstraint.
 */
 const styles = theme => ({
-  dialogRoot: {
+  dialogRoot: isWebApp() ? {
+    height: '100%',
+    // position: 'absolute !important', // Causes problem on Firefox
+    top: '-15%',
+    left: '0% !important',
+    right: 'unset !important',
+    bottom: 'unset !important',
+    width: '100%',
+  } : {
     height: '100%',
     position: 'absolute !important',
     top: '-15%',
@@ -224,24 +232,7 @@ const styles = theme => ({
     bottom: 'unset !important',
     width: '100%',
   },
-  // dialogRoot: isWebApp() ? {
-  //   height: '100%',
-  //   // position: 'absolute !important', // Causes problem on Firefox
-  //   top: '-15%',
-  //   left: '0% !important',
-  //   right: 'unset !important',
-  //   bottom: 'unset !important',
-  //   width: '100%',
-  // } : {
-  //   height: '100%',
-  //   position: 'absolute !important',
-  //   top: '-15%',
-  //   left: '0% !important',
-  //   right: 'unset !important',
-  //   bottom: 'unset !important',
-  //   width: '100%',
-  // },
-  dialogPaper: {
+  dialogPaper: isWebApp() ? {
     [theme.breakpoints.down('sm')]: {
       minWidth: '95%',
       maxWidth: '95%',
@@ -250,37 +241,26 @@ const styles = theme => ({
       height: 'unset',
       margin: '0 auto',
     },
+  } : {
+    margin: '0 !important',
+    width: '95%',
+    height: 'unset',
+    maxHeight: '90%',
+    offsetHeight: 'unset !important',
+    top: '50%',
+    left: '50%',
+    right: 'unset !important',
+    bottom: 'unset !important',
+    position: 'absolute',
+    transform: 'translate(-50%, -25%)',
   },
-  // dialogPaper: isWebApp() ? {
-  //   [theme.breakpoints.down('sm')]: {
-  //     minWidth: '95%',
-  //     maxWidth: '95%',
-  //     width: '95%',
-  //     maxHeight: '90%',
-  //     height: 'unset',
-  //     margin: '0 auto',
-  //   },
-  // } : {
-  //   margin: '0 !important',
-  //   width: '95%',
-  //   height: 'unset',
-  //   maxHeight: '90%',
-  //   offsetHeight: 'unset !important',
-  //   top: '50%',
-  //   left: '50%',
-  //   right: 'unset !important',
-  //   bottom: 'unset !important',
-  //   position: 'absolute',
-  //   transform: 'translate(-50%, -58%)',
-  // },
-  // focusedOnSingleInput: isWebApp() ? {
-  //   [theme.breakpoints.down('sm')]: {
-  //     position: 'absolute',
-  //     top: '75%',
-  //     left: '73%',
-  //   },
-  // } : {},
-  focusedOnSingleInput: {},
+  focusedOnSingleInput: isWebApp() ? {
+    [theme.breakpoints.down('sm')]: {
+      position: 'absolute',
+      top: '75%',
+      left: '73%',
+    },
+  } : {},
   emailInputWebApp0to568: {
     [theme.breakpoints.down('sm')]: {
       transform: 'translate(-75%, -50%)',
