@@ -33,6 +33,14 @@ class Credits extends Component {
               The companies on this list give us free or heavily discounted services (since we are a nonprofit), and
               {' '}
               the nonprofits overcome so many challenges to provide the data or other services we rely on.
+              {' '}
+              Please also see the
+              {' '}
+              <Link to="/more/attributions">
+                summary of open source software
+              </Link>
+              {' '}
+              We Vote uses.
             </span>
             <CompanyWrapper>
               { organizationalDonors.map(item => (
