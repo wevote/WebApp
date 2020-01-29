@@ -447,7 +447,7 @@ class VoterPhoneVerificationEntry extends Component {
           {' '}
         </div>
         <form className="form-inline">
-          <Paper className={classes.root} elevation={1}>
+          <Paper className={classes.root} elevation={1} id="paperWrapperPhone">
             <Phone />
             <InputBase
               className={classes.input}
@@ -596,7 +596,7 @@ class VoterPhoneVerificationEntry extends Component {
     });
 
     return (
-      <Wrapper isWeb={isWebApp()}>
+      <Wrapper isWeb={isWebApp()} id="voterPhoneEntryWrapper">
         {!hideExistingPhoneNumbers ? (
           <div>
             {verifiedSMSFound && !this.props.inModal ? (

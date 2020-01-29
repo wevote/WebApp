@@ -10,9 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import {
-  isCordova,
+  isCordova, isIPhone3p5in, isIPhone4in, isIPhone4p7in,
+  isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in,
   isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896,
-  isWebApp, prepareForCordovaKeyboard, historyPush, restoreStylesAfterCordovaKeyboard,
+  isWebApp, historyPush, restoreStylesAfterCordovaKeyboard,
 } from '../../utils/cordovaUtils';
 import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
@@ -39,9 +40,6 @@ class SignInModal extends Component {
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    if (isCordova()) {
-      prepareForCordovaKeyboard('SignInModal');
-    }
   }
 
   componentDidUpdate () {
@@ -145,6 +143,7 @@ class SignInModal extends Component {
     // console.log('window.screen.height:', window.screen.height);
     return (
       <Dialog
+        id="signInModalDialog"
         classes={{
           paper: clsx(classes.dialogPaper, {
             [classes.focusedOnSingleInput]: focusedOnSingleInputToggle,
@@ -157,13 +156,7 @@ class SignInModal extends Component {
             // iPhoneX/iPhone11 Pro Max
             [classes.emailInputWebApp737to896]: isWebAppHeight737to896() && focusedOnSingleInputToggle && focusedInputName === 'email',
             [classes.phoneInputWebApp737to896]: isWebAppHeight737to896() && focusedOnSingleInputToggle && focusedInputName === 'phone',
-            // 2020-01-20 These are to be configured and are placeholders
-            // [classes.emailInputCordovaSmall]: (isIPhone3p5in() || isAndroidSizeSM()) && focusedOnSingleInputToggle && focusedInputName === 'email',
-            // [classes.phoneInputCordovaSmall]: (isIPhone3p5in() || isAndroidSizeSM()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
-            // [classes.emailInputCordovaMedium]: (isIPhone4in() || isIPhone4p7in() || isIPhone5p5in() || isIPhone5p8in() || isIPhone6p1in() || isAndroidSizeMD()) && focusedOnSingleInputToggle && focusedInputName === 'email',
-            // [classes.phoneInputCordovaMedium]: (isIPhone4in() || isIPhone4p7in() || isIPhone5p5in() || isIPhone5p8in() || isIPhone6p1in() || isAndroidSizeMD()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
-            // [classes.emailInputCordovaLarge]: (isIPhone6p5in() || isAndroidSizeLG() || isAndroidSizeXL()) && focusedOnSingleInputToggle && focusedInputName === 'email',
-            // [classes.phoneInputCordovaLarge]: (isIPhone6p5in() || isAndroidSizeLG() || isAndroidSizeXL()) && focusedOnSingleInputToggle && focusedInputName === 'phone',
+            [classes.signInModalDialogLarger]: (isIPhone5p5in() || isIPhone5p8in() || isIPhone6p1in() || isIPhone6p5in()) && isCordova(),
           }),
           root: classes.dialogRoot,
         }}
@@ -252,7 +245,7 @@ const styles = theme => ({
     right: 'unset !important',
     bottom: 'unset !important',
     position: 'absolute',
-    transform: 'translate(-50%, -25%)',
+    transform: (isIPhone3p5in() || isIPhone4in() || isIPhone4p7in()) ? 'translate(-50%, -59%)' : 'translate(-50%, -25%)',
   },
   focusedOnSingleInput: isWebApp() ? {
     [theme.breakpoints.down('sm')]: {
@@ -291,24 +284,10 @@ const styles = theme => ({
       transform: 'translate(-75%, -55%)',
     },
   },
-  // emailInputCordovaSmall: {
-  //   transform: 'translate(-75%, 47%)',
-  // },
-  // phoneInputCordovaSmall: {
-  //   transform: 'translate(-75%, -25%)',
-  // },
-  // emailInputCordovaMedium: {
-  //   transform: 'translate(-50%, -58%)',
-  // },
-  // phoneInputCordovaMedium: {
-  //   transform: 'translate(-50%, 85%)',
-  // },
-  // emailInputCordovaLarge: {
-  //   transform: 'translate(-50%, 0%)',
-  // },
-  // phoneInputCordovaLarge: {
-  //   transform: 'translate(-50%, 0%)',
-  // },
+  signInModalDialogLarger: {
+    bottom: 'unset',
+    top: 'unset',
+  },
   dialogContent: {
     [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',

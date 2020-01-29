@@ -5,12 +5,14 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import Button from '@material-ui/core/Button';
+import clsx from 'clsx';
 import Dialog from '@material-ui/core/Dialog';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { renderLog } from '../../utils/logging';
-import { hasIPhoneNotch, isIPhone4in, isIOS, isCordova } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isIPhone4in, isIOS, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
+/* global $ */
 
 class SettingsVerifySecretCode extends Component {
   static propTypes = {
@@ -20,6 +22,7 @@ class SettingsVerifySecretCode extends Component {
     voterEmailAddress: PropTypes.string,
     voterPhoneNumber: PropTypes.string,
   };
+
 
   constructor (props) {
     super(props);
@@ -68,6 +71,10 @@ class SettingsVerifySecretCode extends Component {
     }, delayBeforeClearingVerificationStatus);
 
     window.addEventListener('paste', this.onPaste);
+
+    if (isCordova()) {
+      $('#textOrEmailEntryDialog').css('display', 'none');  // Hide the entry dialog
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -91,6 +98,9 @@ class SettingsVerifySecretCode extends Component {
 
   componentWillUnmount () {
     // console.log('SettingsVerifySecretCode componentWillUnmount');
+    if (isCordova()) {
+      $('#textOrEmailEntryDialog').css('display', 'unset');  // Reveal the entry dialog
+    }
     this.voterStoreListener.remove();
     if (this.timer) {
       clearTimeout(this.timer);
@@ -395,9 +405,15 @@ class SettingsVerifySecretCode extends Component {
 
     return (
       <Dialog
-        classes={{ paper: classes.dialogPaper }}
+        id="codeVerificationDialog"
         open={this.props.show}
         onClose={this.closeVerifyModalLocal}
+        classes={{
+          paper: clsx(classes.dialogPaper, {
+            [classes.codeVerifyCordova]: isCordova(),
+          }),
+          root: classes.dialogRoot,
+        }}
       >
         <ModalTitleArea condensed={condensed}>
           <Button onClick={this.closeVerifyModalLocal}>
@@ -406,7 +422,7 @@ class SettingsVerifySecretCode extends Component {
             Back
           </Button>
         </ModalTitleArea>
-        <ModalContent condensed={condensed}>
+        <ModalContent condensed={condensed} style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }}>
           <TextContainer condensed={condensed}>
             <Title condensed={condensed}>Code Verification</Title>
             <Subtitle>A 6-digit code has been sent to</Subtitle>
@@ -424,6 +440,7 @@ class SettingsVerifySecretCode extends Component {
                 onPaste={this.onPaste}
                 type="tel"
                 value={this.state.digit1}
+                autoFocus={isCordova()}
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
@@ -552,6 +569,13 @@ const styles = theme => ({
       margin: '0 auto',
     },
   },
+  codeVerifyCordova: {
+    top: '9%',
+    bottom: 'unset',
+    height: 'unset',
+    minHeight: 'unset',
+    margin: '5px',
+  },
   inputBase: {
     alignContent: 'center',
     display: 'flex',
@@ -607,7 +631,7 @@ const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: ${props => (props.condensed ? 'flex-start' : 'space-evenly')};
-  height: 100%;
+  height: isWebApp() ? 100% : 'unset';
   width: 80%;
   max-width: 400px;
   margin: 0 auto;
