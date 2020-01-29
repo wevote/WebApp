@@ -89,6 +89,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('ballotElectionListWithFiltersButton-6000'); // Clicks on US 2018 Midterm Election
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
+    // Click on ballot filter badges at top of page
     await simpleClick('ballotBadge-State');
     await simpleClick('ballotBadge-Measure');
     await simpleClick('ballotBadge-Local');
@@ -109,11 +110,11 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779',' '); // Clear Text on TextArea
+    await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779',''); // Clear Text on TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleTextInput('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779','Commenting in measure to check'); // Write something on TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Clcik on Save Button
+    await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on Save Button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     const voteNoButtonId = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
     browser.execute((id) => {
@@ -124,21 +125,24 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779',' '); // Clear Text on TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Clcik on Save Button
+    await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on Save Button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     const voteNoButton = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
     browser.execute((id) => {
       document.getElementById(id).click();
     }, voteNoButton); // Click on Voting No again (to unset)
+    // Open position display filters
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('filterBaseFilters');
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    scrollThroughPage();
-    const stickyYesButton = 'itemActionBarYesButton-measureStickyHeader-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
-    browser.execute((id) => {
-      document.getElementById(id).click();
-    }, stickyYesButton); // Click on Sticky Header Yes
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // Scroll down the page so the sticky header appears
+    // scrollThroughPage();
+    // const stickyYesButton = 'itemActionBarYesButton-measureStickyHeader-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
+    // browser.execute((id) => {
+    //   document.getElementById(id).click();
+    // }, stickyYesButton); // Click on Sticky Header Yes
+
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await simpleClick('itemPositionStatementActionBarTextArea-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on TextArea
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779',' '); // Clear Text on TextArea
@@ -158,31 +162,14 @@ describe('Basic cross-platform We Vote test',  () => {
 
 
     // //////////////////////
-    // Visit the candidate page
-    await simpleClick('officeItemCompressedCandidateInfo-wv02cand53915'); // Clicks the candidate
-    await simpleClick('valueIconAndText-wv02issue25'); // Clicks to OPEN the issue icon
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue25'); // Clicks to CLOSE the issue icon
+    // Visit the candidate page for Maria Cantwell
+    await simpleClick('ballotBadge-Federal');
+    await simpleClick('officeItemCompressedCandidateImageAndName-wv02cand53902'); // Clicks the candidate
 
-    await simpleClick('valueIconAndText-wv02issue65'); // Clicks to OPEN the issue icon
+    // Open and close Value "Common sense gun reform"
+    await simpleClick('candidateItem-wv02cand53902-valueIconAndText-wv02issue37'); // Clicks to OPEN the issue icon
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue65'); // Clicks to CLOSE the issue icon
-
-    await simpleClick('valueIconAndText-wv02issue4'); // Clicks to OPEN the issue icon
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue4'); // Clicks to CLOSE the issue icon
-
-    await simpleClick('valueIconAndText-wv02issue2'); // Clicks to OPEN the issue icon
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue2'); // Clicks to CLOSE the issue icon
-
-    await simpleClick('valueIconAndText-wv02issue84'); // Clicks to OPEN the issue icon
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue84'); // Clicks to CLOSE the issue icon
-
-    await simpleClick('valueIconAndText-wv02issue66'); // Clicks to OPEN issue icon
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue66'); // Clicks to CLOSE the issue icon
+    await simpleClick('candidateItem-wv02cand53902-valueIconAndText-wv02issue37'); // Clicks to CLOSE the issue icon
 
     // //////////////////////
     // Test Following an organization endorsing this candidate
@@ -196,7 +183,7 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Visit the candidate Maria Cantwell for choose, oppose, comment and save
     if (isDesktopScreenSize) {
-      await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate Maria Cantwell
+      // await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate Maria Cantwell
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       const chooseButtonId = 'itemActionBarSupportButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
       browser.execute((id) => {
