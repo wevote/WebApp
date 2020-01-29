@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import MessageIcon from '@material-ui/icons/Message';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import MessageIcon from '@material-ui/icons/Message';
+import clsx from 'clsx';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { renderLog } from '../../utils/logging';
-import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
 import SplitIconButton from '../Widgets/SplitIconButton';
 import VoterEmailAddressEntry from './VoterEmailAddressEntry';
-import { restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
+import { isCordova, restoreStylesAfterCordovaKeyboard, isIPhone3p5in, isIPhone4in, isIPhone4p7in } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 
 // Work around for dialog placement in Cordova when virtual keyboard appears
 class VoterPhoneEmailCordovaEntryModal extends Component {
   static propTypes = {
-    // classes: PropTypes.object,
+    classes: PropTypes.object,
     closeSignInModal: PropTypes.func,
     // inModal: PropTypes.bool,
     // toggleOtherSignInOptions: PropTypes.func,
@@ -58,7 +59,8 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
   render () {
     renderLog('VoterPhoneVerificationEntryModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { showDialog } = this.state;
-    const { isPhone } = this.props;
+    const { classes, isPhone } = this.props;
+    const isSmallApple = isIPhone3p5in() || isIPhone4in() || isIPhone4p7in();
 
     return (
       <React.Fragment>
@@ -75,8 +77,18 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
         </div>
         <Dialog
           open={showDialog}
+          id="textOrEmailEntryDialog"
+          classes={{
+            paper: clsx(classes.dialogPaper, {
+              [classes.phoneInputCordovaSmallApples]: isSmallApple && isPhone,
+              [classes.emailInputCordovaSmallApples]: isSmallApple && !isPhone,
+              [classes.phoneInputCordovaLargerApples]: !isSmallApple && isPhone,
+              [classes.emailInputCordovaLargerApples]: !isSmallApple && !isPhone,
+            }),
+            root: classes.dialogRoot,
+          }}
         >
-          <DialogContent>
+          <DialogContent id="textOrEmailEntryContent" style={{ paddingTop: `${isCordova() ? 'unset' : 'undefined'}`, bottom: `${isCordova() ? 'unset' : 'undefined'}` }}>
             {isPhone ? (
               <VoterPhoneVerificationEntry
                 closeSignInModal={this.closeSignInModalLocal}
@@ -109,6 +121,27 @@ const styles = theme => ({
       height: '90%',
       margin: '0 auto',
     },
+  },
+  phoneInputCordovaSmallApples: {
+    margin: '32px 32px 0 32px',
+    height: 'unset',
+    minHeight: 'unset',
+  },
+  emailInputCordovaSmallApples: {
+    margin: '32px 32px 0 32px',
+    height: 'unset',
+    minHeight: 'unset',
+    top: '-25%',
+  },
+  phoneInputCordovaLargerApples: {
+    height: 'unset',
+    minHeight: 'unset',
+    top: '-5%',
+  },
+  emailInputCordovaLargerApples: {
+    height: 'unset',
+    minHeight: 'unset',
+    top: '-5%',
   },
   dialogContent: {
     [theme.breakpoints.down('md')]: {

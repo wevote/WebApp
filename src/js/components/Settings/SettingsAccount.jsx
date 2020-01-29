@@ -146,7 +146,7 @@ export default class SettingsAccount extends Component {
       const sendButtonEmail = $('#voterEmailAddressEntrySendCode');
       const cont = $('.MuiDialog-container');
       const styleWorking = cont.length ? $(cont).attr('style') : '';
-      const translate = isIPhone4in() || isIPhone4p7in() ? 'transform: translateY(10%);' : 'transform: translateY(27%);';
+      const translate = isIPhone4in() || isIPhone4p7in() ? 'transform: translateY(10%); height: unset;' : 'transform: translateY(27%); height: unset;';
 
       // The VoterPhoneEmailCordovaEntryModal dialog gets pushed out of the way when the virtual keyboard appears,
       // so we wait for it to be rendered, then move it into place
@@ -330,7 +330,7 @@ export default class SettingsAccount extends Component {
           <BrowserPushMessage incomingProps={this.props} />
         }
         <div className={inModal ? 'card-main full-width' : 'card'} style={{ display: `${hideDialogForCordova ? ' none' : 'undefined'}` }}>
-          <Main inModal={inModal}>
+          <Main inModal={inModal} id="settingsAccountMain">
             {voterIsSignedInTwitter && voterIsSignedInFacebook ?
               null :
               <h1 className="h3">{!hideTwitterSignInButton && !hideFacebookSignInButton && voterIsSignedIn ? <span>{yourAccountTitle}</span> : null}</h1>
