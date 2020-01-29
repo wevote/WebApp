@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import isEqual from 'lodash-es/isEqual';
-import FormControlLabel from '@material-ui/core/esm/FormControlLabel';
-import { withStyles } from '@material-ui/core/esm/styles';
-import Radio from '@material-ui/core/esm/Radio';
-import Select from '@material-ui/core/esm/Select';
-import Chip from '@material-ui/core/esm/Chip';
-import Input from '@material-ui/core/esm/Input';
-import MenuItem from '@material-ui/core/esm/MenuItem';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { withStyles } from '@material-ui/core/styles';
+import Radio from '@material-ui/core/Radio';
+import Select from '@material-ui/core/Select';
+import Chip from '@material-ui/core/Chip';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
 import { arrayContains, removeValueFromArray } from '../../utils/textFormat';
 import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/address-functions';
 import BallotActions from '../../actions/BallotActions';
@@ -204,7 +204,7 @@ class SettingsAddBallotItemsFilter extends Component {
         // Is there a state in the previous selectedStates that is not in the current list? If so, trigger re-render
         if (!arrayContains(stateCode, newSelectedStates)) {
           // console.log('stateCodeRemoved: ', stateCodeRemoved, ', stateCode:', stateCode);
-          selectedFilters = removeValueFromArray(selectedFilters, stateCode);
+          selectedFilters = removeValueFromArray(stateCode, selectedFilters);
           // console.log('Updated selectedFilters:', selectedFilters);
           stateCodeRemoved = true;
         }
@@ -446,12 +446,12 @@ class SettingsAddBallotItemsFilter extends Component {
       let newSelectedFilters = [];
       if (arrayContains(newValue, priorValues)) {
         // Remove newValue
-        const newValues = removeValueFromArray(priorValues, newValue);
+        const newValues = removeValueFromArray(newValue, priorValues);
         this.setState({
           selectedStates: newValues,
         });
         // And finally, end by resetting all filters in FilterBase with the updated set
-        newSelectedFilters = removeValueFromArray(selectedFilters, newValue);
+        newSelectedFilters = removeValueFromArray(newValue, selectedFilters);
         // console.log('onSelectedStatesChange, REMOVE selectedFilters:', newSelectedFilters);
         this.props.updateSelectedFilters(newSelectedFilters);
         this.props.forceChangeTrigger('REMOVE-STATE');
@@ -468,6 +468,11 @@ class SettingsAddBallotItemsFilter extends Component {
       }
     }
   };
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('SettingsAddBallotItemsFilter caught error: ', `${error} with info: `, info);
+  }
 
   render () {
     renderLog('SettingsAddBallotItemsFilter');  // Set LOG_RENDER_EVENTS to log all renders

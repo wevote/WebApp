@@ -1,9 +1,10 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/AppDispatcher';
-import { stringContains } from '../utils/textFormat';
-import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
+import webAppConfig from '../config'; // eslint-disable-line import/no-cycle
+import { isCordova } from '../utils/cordovaUtils'; // eslint-disable-line import/no-cycle
+import { stringContains } from '../utils/textFormat';
 
 /**
  * AppStore allows you to store state information, in situations where there is no API call needed
@@ -20,6 +21,8 @@ class AppStore extends ReduceStore {
       showEditAddressButton: false,
       showNewVoterGuideModal: false,
       showPaidAccountUpgradeModal: false,
+      showShareModal: false,
+      shareModalStep: 'options',
       showSelectBallotModal: false,
       showSignInModal: false,
       siteConfigurationHasBeenRetrieved: false,
@@ -95,6 +98,14 @@ class AppStore extends ReduceStore {
     return this.getState().showPaidAccountUpgradeModal;
   }
 
+  showShareModal () {
+    return this.getState().showShareModal;
+  }
+
+  shareModalStep () {
+    return this.getState().shareModalStep;
+  }
+
   showSelectBallotModal () {
     return this.getState().showSelectBallotModal;
   }
@@ -141,6 +152,10 @@ class AppStore extends ReduceStore {
         return { ...state, showNewVoterGuideModal: action.payload };
       case 'showPaidAccountUpgradeModal':
         return { ...state, showPaidAccountUpgradeModal: action.payload };
+      case 'showShareModal':
+        return { ...state, showShareModal: action.payload };
+      case 'shareModalStep':
+        return { ...state, shareModalStep: action.payload };
       case 'showSelectBallotModal':
         return { ...state, showSelectBallotModal: action.payload };
       case 'showSignInModal':
@@ -159,7 +174,12 @@ class AppStore extends ReduceStore {
           let onWeVoteSubdomainUrl = false;
           let onFacebookSupportedDomainUrl = false;
           let onChosenFullDomainUrl = false;
-          // console.log('siteConfigurationRetrieve hostname:', hostname);
+
+          if (isCordova()) {
+            hostname = webAppConfig.WE_VOTE_HOSTNAME;
+          }
+
+          console.log('siteConfigurationRetrieve hostname:', hostname);
           if (hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost') {
             onWeVoteRootUrl = true;
           } else if (stringContains('wevote.us', hostname)) {

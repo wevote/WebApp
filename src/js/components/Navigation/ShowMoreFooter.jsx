@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/esm/styles';
+import { withTheme, withStyles } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { renderLog } from '../../utils/logging';
 
@@ -49,17 +49,18 @@ const styles = theme => ({
 });
 
 const ShowMoreFooterStyled = styled.div`
-  margin-top: 8px !important;
-  color: #4371cc;
-  font-size: 16px;
+  border: 0px !important;
+  color: #2e3c5d;
+  cursor: pointer;
   display: block !important;
+  background: #fff !important;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+  padding: 0px !important;
   text-align: right !important;
   user-select: none;
-  cursor: pointer;
-  background: #fff !important;
-  color: #2e3c5d;
-  font-weight: bold;
-  padding: 0px !important;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 18px;
   }
@@ -78,6 +79,8 @@ const ShowMoreFooterText = styled.div`
   &:hover {
     text-decoration: underline;
   }
+  margin-bottom: 8px !important;
+  margin-top: 8px !important;
 `;
 
 export default withTheme(withStyles(styles)(ShowMoreFooter));

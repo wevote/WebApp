@@ -57,6 +57,10 @@ export default class Values extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
+  componentDidCatch (error, info) {
+    console.log('Values.jsx caught: ', error, info.componentStack);
+  }
+
   render () {
     renderLog('Values');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
@@ -67,8 +71,10 @@ export default class Values extends Component {
     let publicFiguresBlockToDisplay = null;
     const publicFiguresFollowedCount = 0;
     if (publicFiguresFollowedCount > 0) {
+      // console.log('PublicFiguresFollowedPreview');
       publicFiguresBlockToDisplay = <PublicFiguresFollowedPreview />;
     } else {
+      // console.log('PublicFiguresToFollowPreview');
       publicFiguresBlockToDisplay = <PublicFiguresToFollowPreview />;
     }
 

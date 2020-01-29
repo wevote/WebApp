@@ -2,23 +2,24 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import BallotStore from '../../stores/BallotStore';
-import { historyPush } from '../../utils/cordovaUtils';
-import { toTitleCase } from '../../utils/textFormat';
 import CandidateStore from '../../stores/CandidateStore';
 import DelayedLoad from '../Widgets/DelayedLoad';
 import ImageHandler from '../ImageHandler';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
-import { renderLog } from '../../utils/logging';
 import OfficeActions from '../../actions/OfficeActions';
-import { sortCandidateList } from '../../utils/positionFunctions';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { sortCandidateList } from '../../utils/positionFunctions';
+import { toTitleCase } from '../../utils/textFormat';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 4;
 
@@ -43,6 +44,7 @@ class OfficeItemCompressed extends Component {
       // componentDidMount: false,
       maximumNumberOrganizationsToDisplay: NUMBER_OF_CANDIDATES_TO_DISPLAY,
       organizationWeVoteId: '',
+      positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
     };
 
@@ -64,12 +66,26 @@ class OfficeItemCompressed extends Component {
       // componentDidMount: true,
     });
     if (candidateList && candidateList.length && officeWeVoteId) {
-      if (officeWeVoteId && !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
+      if (officeWeVoteId &&
+        !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
         OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
         const { positionListHasBeenRetrievedOnce } = this.state;
         positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
         this.setState({
           positionListHasBeenRetrievedOnce,
+        });
+      }
+      if (officeWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
     }
@@ -106,53 +122,70 @@ class OfficeItemCompressed extends Component {
   }
 
   onCandidateStoreChange () {
-    const { candidateList, officeWeVoteId } = this.props;
-    // console.log('OfficeItemCompressed onCandidateStoreChange', officeWeVoteId);
-    let changeFound = false;
-    if (candidateList && candidateList.length && officeWeVoteId) {
-      if (officeWeVoteId && !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
-        OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
-        const { positionListHasBeenRetrievedOnce } = this.state;
-        positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
-        this.setState({
-          positionListHasBeenRetrievedOnce,
-        });
-      }
-      const newCandidateList = [];
-      let newCandidate = {};
-      if (candidateList) {
-        candidateList.forEach((candidate) => {
-          if (candidate && candidate.we_vote_id) {
-            newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
-            if (newCandidate && newCandidate.we_vote_id) {
-              newCandidateList.push(newCandidate);
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      // console.log('OfficeItemCompressed, onCandidateStoreChange');
+      const { candidateList, officeWeVoteId } = this.props;
+      // console.log('OfficeItemCompressed onCandidateStoreChange', officeWeVoteId);
+      let changeFound = false;
+      if (candidateList && candidateList.length && officeWeVoteId) {
+        if (officeWeVoteId &&
+          !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
+          !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
+        ) {
+          OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
+          const { positionListHasBeenRetrievedOnce } = this.state;
+          positionListHasBeenRetrievedOnce[officeWeVoteId] = true;
+          this.setState({
+            positionListHasBeenRetrievedOnce,
+          });
+        }
+        if (officeWeVoteId &&
+          !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
+          !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+        ) {
+          OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
+          const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+          positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
+          this.setState({
+            positionListFromFriendsHasBeenRetrievedOnce,
+          });
+        }
+        const newCandidateList = [];
+        let newCandidate = {};
+        if (candidateList) {
+          candidateList.forEach((candidate) => {
+            if (candidate && candidate.we_vote_id) {
+              newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
+              if (newCandidate && newCandidate.we_vote_id) {
+                newCandidateList.push(newCandidate);
+              } else {
+                newCandidateList.push(candidate);
+              }
+              if (!changeFound) {
+                if (candidate.ballot_item_display_name !== newCandidate.ballot_item_display_name) {
+                  changeFound = true;
+                }
+                if (candidate.candidate_photo_url_medium !== newCandidate.candidate_photo_url_medium) {
+                  changeFound = true;
+                }
+                if (candidate.party !== newCandidate.party) {
+                  changeFound = true;
+                }
+              }
             } else {
               newCandidateList.push(candidate);
             }
-            if (!changeFound) {
-              if (candidate.ballot_item_display_name !== newCandidate.ballot_item_display_name) {
-                changeFound = true;
-              }
-              if (candidate.candidate_photo_url_medium !== newCandidate.candidate_photo_url_medium) {
-                changeFound = true;
-              }
-              if (candidate.party !== newCandidate.party) {
-                changeFound = true;
-              }
-            }
-          } else {
-            newCandidateList.push(candidate);
-          }
+          });
+        }
+        let sortedCandidateList = {};
+        if (newCandidateList && newCandidateList.length) {
+          sortedCandidateList = sortCandidateList(newCandidateList);
+        }
+        this.setState({
+          candidateList: sortedCandidateList,
+          // changeFound,
         });
       }
-      let sortedCandidateList = {};
-      if (newCandidateList && newCandidateList.length) {
-        sortedCandidateList = sortCandidateList(newCandidateList);
-      }
-      this.setState({
-        candidateList: sortedCandidateList,
-        // changeFound,
-      });
     }
   }
 
@@ -198,6 +231,7 @@ class OfficeItemCompressed extends Component {
     // If voter has chosen 1+ candidates, only show those
     const supportedCandidatesList = candidateList.filter(candidate => SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id));
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
+    const hideCandidateDetails = supportedCandidatesList.length;
     return (
       <Container candidateLength={candidatesToRender.length}>
         { candidatesToRender.slice(0, candidatePreviewLimit)
@@ -213,12 +247,15 @@ class OfficeItemCompressed extends Component {
                 key={`candidate_preview-${oneCandidate.we_vote_id}`}
               >
                 <CandidateInfo
+                  className="card-child"
                   brandBlue={theme.palette.primary.main}
                   numberOfCandidatesInList={candidatesToRender.length}
-                  id={`officeItemCompressedCandidateInfo-${oneCandidate.we_vote_id}`}
                 >
                   <CandidateTopRow>
-                    <Candidate onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
+                    <Candidate
+                      id={`officeItemCompressedCandidateImageAndName-${oneCandidate.we_vote_id}`}
+                      onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
+                    >
                       {/* Candidate Image */}
                       <ImageHandler
                         className="card-main__avatar-compressed"
@@ -237,39 +274,44 @@ class OfficeItemCompressed extends Component {
                       </div>
                     </Candidate>
                     {/* Show check mark or score */}
-                    <BallotItemSupportOpposeCountDisplay
-                      ballotItemWeVoteId={oneCandidate.we_vote_id}
-                      goToBallotItem={this.goToCandidateLink}
-                    />
-                  </CandidateTopRow>
-                  <CandidateBottomRow>
-                    {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
-                    <DelayedLoad showLoadingText waitBeforeShow={500}>
-                      <TopCommentByBallotItem
+                    <BallotItemSupportOpposeCountDisplayWrapper>
+                      <BallotItemSupportOpposeCountDisplay
                         ballotItemWeVoteId={oneCandidate.we_vote_id}
-                        // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
-                        onClickFunction={this.goToCandidateLink}
-                      >
-                        <span>
-                          <IssuesByBallotItemDisplayList
-                            ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            disableMoreWrapper
-                          />
-                          <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
-                            <Button
-                              id={`topCommentButtonOffice-${externalUniqueId}-${localUniqueId}`}
-                              variant="outlined"
-                              color="primary"
-                              classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-                            >
-                              More
-                            </Button>
-                          </MoreButtonWrapper>
-                        </span>
-                      </TopCommentByBallotItem>
-                    </DelayedLoad>
-                  </CandidateBottomRow>
+                        goToBallotItem={this.goToCandidateLink}
+                      />
+                    </BallotItemSupportOpposeCountDisplayWrapper>
+                  </CandidateTopRow>
+                  {!hideCandidateDetails && (
+                    <CandidateBottomRow>
+                      {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
+                      <DelayedLoad showLoadingText waitBeforeShow={500}>
+                        <TopCommentByBallotItem
+                          ballotItemWeVoteId={oneCandidate.we_vote_id}
+                          // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
+                          onClickFunction={this.goToCandidateLink}
+                        >
+                          <span>
+                            <IssuesByBallotItemDisplayList
+                              ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+                              ballotItemWeVoteId={oneCandidate.we_vote_id}
+                              disableMoreWrapper
+                              externalUniqueId={`officeItemCompressed-${oneCandidate.we_vote_id}`}
+                            />
+                            <MoreButtonWrapper onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}>
+                              <Button
+                                id={`topCommentButtonOffice-${externalUniqueId}-${localUniqueId}`}
+                                variant="outlined"
+                                color="primary"
+                                classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                              >
+                                Choose or Oppose
+                              </Button>
+                            </MoreButtonWrapper>
+                          </span>
+                        </TopCommentByBallotItem>
+                      </DelayedLoad>
+                    </CandidateBottomRow>
+                  )}
                 </CandidateInfo>
               </Column>
             );
@@ -286,6 +328,14 @@ class OfficeItemCompressed extends Component {
     return false;
   }
 
+  localPositionListFromFriendsHasBeenRetrievedOnce (officeWeVoteId) {
+    if (officeWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId];
+    }
+    return false;
+  }
+
   render () {
     renderLog('OfficeItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('OfficeItemCompressed render');
@@ -295,32 +345,30 @@ class OfficeItemCompressed extends Component {
     const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
 
     return (
-      <div className="card-main office-item">
+      <OfficeItemCompressedWrapper>
         <a // eslint-disable-line
           className="anchor-under-header"
           name={officeWeVoteId}
         />
-        <div className="card-main__content">
-          {/* Desktop */}
-          <Link id={`officeItemCompressedTopNameLink-${officeWeVoteId}`} to={this.getOfficeLink()}>
-            <Title>
-              {ballotItemDisplayName}
-              <ArrowForwardIcon
-                classes={{ root: classes.cardHeaderIconRoot }}
-              />
-            </Title>
-          </Link>
-          {/* *************************
-            Display either a) the candidates the voter supports, or b) the first several candidates running for this office
-            ************************* */}
-          {this.generateCandidates()}
+        {/* Desktop */}
+        <Link id={`officeItemCompressedTopNameLink-${officeWeVoteId}`} to={this.getOfficeLink()}>
+          <Title>
+            {ballotItemDisplayName}
+            <ArrowForwardIcon
+              classes={{ root: classes.cardHeaderIconRoot }}
+            />
+          </Title>
+        </Link>
+        {/* *************************
+          Display either a) the candidates the voter supports, or b) the first several candidates running for this office
+          ************************* */}
+        {this.generateCandidates()}
 
-          { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
-            <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
-            <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} />
-          }
-        </div>
-      </div>
+        { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
+          <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
+          <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} />
+        }
+      </OfficeItemCompressedWrapper>
     );
   }
 }
@@ -329,10 +377,10 @@ const styles = theme => ({
   buttonRoot: {
     fontSize: 12,
     padding: 4,
-    width: 60,
+    minWidth: 60,
     height: 30,
     [theme.breakpoints.down('md')]: {
-      width: 60,
+      minWidth: 60,
       height: 30,
     },
     [theme.breakpoints.down('sm')]: {
@@ -360,8 +408,13 @@ const styles = theme => ({
   },
 });
 
+const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+  cursor: pointer;
+  float: right;
+`;
+
 const Column = styled.div`
-  padding: 12px;
+  padding: 10px;
   width: 100%;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     width: ${({ candidateLength }) => (candidateLength > 1 ? '50%' : '100%')};
@@ -369,34 +422,28 @@ const Column = styled.div`
 `;
 
 const CandidateInfo = styled.div`
-  width: 100% !important;
+  border: 1px solid ${({ theme }) => theme.colors.grayBorder};
+  display: block !important;
   display: flex;
   flex-flow: column;
-  padding: 16px 16px 0 16px;
-  overflow-x: hidden;
+  height: 100%;
+  margin: 0 !important;
+  padding: 12px !important;
   transition: all 200ms ease-in;
-  border: 1px solid ${({ theme }) => theme.colors.grayBorder};
-  width: ${({ numberOfCandidatesInList }) => (numberOfCandidatesInList > 1 ? '48%' : '100%')};
-  border-radius: 4px;
+  width: 100% !important;
   &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.linkHoverBorder};
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+    border: 1px solid ${props => (props.brandBlue)};
+  }
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    position: relative;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding: 8px 8px 4px 8px !important;
     flex-flow: column;
     width: 100%;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     flex-flow: column;
-    border: none;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
-    padding: 16px 0 0 0;
-    width: 100%;
-    &:hover {
-      border: none;
-      border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
-      box-shadow: none;
-    }
   }
 `;
 
@@ -413,7 +460,7 @@ const CandidateTopRow = styled.div`
 `;
 
 const CandidateBottomRow = styled.div`
-  padding-bottom: 10px;
+  // padding-bottom: 10px;
 `;
 
 const Container = styled.div`
@@ -423,9 +470,7 @@ const Container = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: row wrap;
   }
-  margin-left: -12px;
-  margin-right: -12px;
-  width: calc(100% + 24px);
+  margin: 0px -10px;
 `;
 
 const MoreButtonWrapper = styled.div`
@@ -436,14 +481,26 @@ const MoreButtonWrapper = styled.div`
   width: 100%;
 `;
 
-const Title = styled.div`
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 12px;
+const OfficeItemCompressedWrapper = styled.div`
+  border: 1px solid #fff;
+  padding: 16px 16px 0px;
+  font-size: 14px;
+  position: relative;
+  @include print {
+    border-top: 1px solid #999;
+    padding: 16px 0 0 0;
+  }
+`;
+
+const Title = styled.h2`
   cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 6px;
+  width: fit-content;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     font-size: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 2px;
   }
 `;
 

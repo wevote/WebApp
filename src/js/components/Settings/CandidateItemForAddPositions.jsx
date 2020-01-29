@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/esm/styles';
+import { withTheme, withStyles } from '@material-ui/core/styles';
 import CandidateStore from '../../stores/CandidateStore';
 import ImageHandler from '../ImageHandler';
 import ItemActionBar from '../Widgets/ItemActionBar';
@@ -28,7 +28,7 @@ class CandidateItemForAddPositions extends Component {
       voterSupportsBallotItem: false,
       voterTextStatement: '',
       oneCandidate: {},
-      shouldFocusCommentArea: false,
+      // shouldFocusCommentArea: false,
       showPositionStatement: false,
     };
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
@@ -137,7 +137,7 @@ class CandidateItemForAddPositions extends Component {
     const { showPositionStatement } = this.state;
     this.setState({
       showPositionStatement: !showPositionStatement,
-      shouldFocusCommentArea: true,
+      // shouldFocusCommentArea: true,
     });
   }
 
@@ -156,7 +156,7 @@ class CandidateItemForAddPositions extends Component {
           ballotItemDisplayName={this.state.ballotItemDisplayName}
           commentEditModeOn={this.state.showPositionStatement}
           externalUniqueId="desktopPositionStatement"
-          shouldFocus={this.state.shouldFocusCommentArea}
+          // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="CANDIDATE"
           shownInList
@@ -171,7 +171,7 @@ class CandidateItemForAddPositions extends Component {
           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
           externalUniqueId="mobilePositionStatement"
-          shouldFocus={this.state.shouldFocusCommentArea}
+          // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="CANDIDATE"
           shownInList
@@ -211,10 +211,7 @@ class CandidateItemForAddPositions extends Component {
             externalUniqueId={`candidateItemForAddPositions-${oneCandidate.we_vote_id}`}
             positionPublicToggleWrapAllowed={this.props.numberOfCandidatesInList > 1}
             shareButtonHide
-            // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
             togglePositionStatementFunction={this.togglePositionStatement}
-            // transitioning={this.state.transitioning}
-            type="CANDIDATE"
           />
         </CandidateTopRow>
         {commentDisplayDesktop}

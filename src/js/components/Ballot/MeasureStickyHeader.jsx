@@ -53,8 +53,8 @@ class MeasureStickyHeader extends Component {
               <MobileSubtitle className="u-show-mobile-tablet">
                 {!!(ballotItemDisplay[1]) && (
                   <ReadMore
-                    text_to_display={ballotItemDisplay[1]}
-                    num_of_lines={2}
+                    textToDisplay={ballotItemDisplay[1]}
+                    numberOfLines={2}
                   />
                 )}
               </MobileSubtitle>
@@ -117,6 +117,7 @@ const ColumnOne = styled.div`
 `;
 
 const ColumnTwo = styled.div`
+  float: right;
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: block;
     width: fit-content;

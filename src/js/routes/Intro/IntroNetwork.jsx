@@ -60,7 +60,7 @@ export default class IntroNetwork extends Component {
 
     // These are settings for the react-slick slider
     const settings = {
-      dots: true,
+      dots: false,
       infinite: false,
       speed: 500,
       slidesToShow: 1,

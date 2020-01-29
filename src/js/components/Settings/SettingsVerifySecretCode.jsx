@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import Button from '@material-ui/core/esm/Button';
-import Dialog from '@material-ui/core/esm/Dialog';
-import OutlinedInput from '@material-ui/core/esm/OutlinedInput';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch, isIPhone4in, isIOS, isCordova } from '../../utils/cordovaUtils';
 import VoterActions from '../../actions/VoterActions';
@@ -39,6 +39,7 @@ class SettingsVerifySecretCode extends Component {
       voterMustRequestNewCode: false,
       voterPhoneNumber: '',
       voterSecretCodeRequestsLocked: false,
+      voterVerifySecretCodeSubmitted: false,
     };
     this.onDigit1Change = this.onDigit1Change.bind(this);
     this.onDigit2Change = this.onDigit2Change.bind(this);
@@ -69,7 +70,7 @@ class SettingsVerifySecretCode extends Component {
     window.addEventListener('paste', this.onPaste);
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.incorrectSecretCodeEntered !== nextState.incorrectSecretCodeEntered) return true;
     if (this.state.numberOfTriesRemaining !== nextState.numberOfTriesRemaining) return true;
     if (this.state.secretCodeVerified !== nextState.secretCodeVerified) return true;
@@ -90,14 +91,19 @@ class SettingsVerifySecretCode extends Component {
 
   componentWillUnmount () {
     // console.log('SettingsVerifySecretCode componentWillUnmount');
-    this.timer = null;
     this.voterStoreListener.remove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onVoterStoreChange () {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { incorrectSecretCodeEntered, numberOfTriesRemaining, secretCodeVerified, voterMustRequestNewCode, voterSecretCodeRequestsLocked } = secretCodeVerificationStatus;
+    // console.log('onVoterStoreChange secretCodeVerified: ' + secretCodeVerified);
     if (secretCodeVerified) {
+      // console.log('onVoterStoreChange secretCodeVerified: yes');
       this.closeVerifyModalLocal();
     } else {
       let errorMessageToDisplay = '';
@@ -121,12 +127,13 @@ class SettingsVerifySecretCode extends Component {
       }
       this.setState({
         errorMessageToDisplay,
+        errorToDisplay,
         incorrectSecretCodeEntered,
         numberOfTriesRemaining,
         secretCodeVerified,
         voterMustRequestNewCode,
         voterSecretCodeRequestsLocked,
-        errorToDisplay,
+        voterVerifySecretCodeSubmitted: false,
       });
     }
   }
@@ -134,13 +141,9 @@ class SettingsVerifySecretCode extends Component {
   onDigit1Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit1 === '') {
-      e.target.value = '';
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
-      if (e.target.value !== '') {
-        e.target.blur();
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+    if (e.keyCode !== 8 && regex.test(digit)) {
+      e.target.blur();
+      e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
         digit1: digit,
         errorToDisplay: false,
@@ -149,6 +152,8 @@ class SettingsVerifySecretCode extends Component {
       e.target.value = digit;
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    } else if (e.keyCode === 8 && this.state.digit1 === '') {
+      e.target.value = '';
     } else {
       e.target.value = '';
       this.setState({
@@ -162,15 +167,9 @@ class SettingsVerifySecretCode extends Component {
   onDigit2Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit2 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      this.setState({ digit1: '' });
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
-      if (e.target.value !== '') {
-        e.target.blur();
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+    if (e.keyCode !== 8 && regex.test(digit)) {
+      e.target.blur();
+      e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
         digit2: digit,
         errorToDisplay: false,
@@ -179,6 +178,10 @@ class SettingsVerifySecretCode extends Component {
       e.target.value = digit;
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    } else if (e.keyCode === 8 && this.state.digit2 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit2: '' });
     } else {
       e.target.value = '';
       this.setState({
@@ -192,15 +195,9 @@ class SettingsVerifySecretCode extends Component {
   onDigit3Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit3 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      this.setState({ digit2: '' });
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
-      if (e.target.value !== '') {
-        e.target.blur();
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+    if (e.keyCode !== 8 && regex.test(digit)) {
+      e.target.blur();
+      e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
         digit3: digit,
         errorToDisplay: false,
@@ -209,6 +206,10 @@ class SettingsVerifySecretCode extends Component {
       e.target.value = digit;
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    } else if (e.keyCode === 8 && this.state.digit3 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit2: '' });
     } else {
       e.target.value = '';
       this.setState({
@@ -222,15 +223,9 @@ class SettingsVerifySecretCode extends Component {
   onDigit4Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit4 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      this.setState({ digit3: '' });
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
-      if (e.target.value !== '') {
-        e.target.blur();
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+    if (e.keyCode !== 8 && regex.test(digit)) {
+      e.target.blur();
+      e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
         digit4: digit,
         errorToDisplay: false,
@@ -239,6 +234,10 @@ class SettingsVerifySecretCode extends Component {
       e.target.value = digit;
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    } else if (e.keyCode === 8 && this.state.digit4 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit3: '' });
     } else {
       e.target.value = '';
       this.setState({
@@ -252,15 +251,9 @@ class SettingsVerifySecretCode extends Component {
   onDigit5Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit5 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      this.setState({ digit4: '' });
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
-      if (e.target.value !== '') {
-        e.target.blur();
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+    if (e.keyCode !== 8 && regex.test(digit)) {
+      e.target.blur();
+      e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
         digit5: digit,
         errorToDisplay: false,
@@ -269,6 +262,10 @@ class SettingsVerifySecretCode extends Component {
       e.target.value = digit;
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
+    } else if (e.keyCode === 8 && this.state.digit5 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit4: '' });
     } else {
       e.target.value = '';
       this.setState({
@@ -282,17 +279,17 @@ class SettingsVerifySecretCode extends Component {
   onDigit6Change (e) {
     const regex = /^[0-9]$/;
     const digit = String.fromCharCode((e.keyCode >= 96 && e.keyCode <= 105) ? e.keyCode - 48  : e.keyCode);
-    if (e.keyCode === 8 && this.state.digit6 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.nextElementSibling.focus();
-      this.setState({ digit5: '' });
-    } else if (e.keyCode !== 8 && regex.test(digit)) {
+    if (e.keyCode !== 8 && regex.test(digit)) {
       this.setState({
         digit6: digit,
         errorToDisplay: false,
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
+    } else if (e.keyCode === 8 && this.state.digit6 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit5: '' });
     } else {
       e.target.value = '';
       this.setState({
@@ -348,10 +345,11 @@ class SettingsVerifySecretCode extends Component {
     const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
     const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
     VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
+    this.setState({ voterVerifySecretCodeSubmitted: true });
   };
 
   closeVerifyModalLocal = () => {
-    // console.log('SettingsVerifySecretCode closeVerifyModalLocal');
+    // console.log('voterVerifySecretCode this.props.closeVerifyModal:', this.props.closeVerifyModal);
     if (this.props.closeVerifyModal) {
       this.props.closeVerifyModal();
     }
@@ -361,7 +359,7 @@ class SettingsVerifySecretCode extends Component {
     const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber } = this.state;
     this.setState({ condensed: false });
     if (digit6 && isCordova()) {
-      // When their is a voterEmailAddress value and the keyboard closes, submit
+      // Jan 2020 this comment looks wrong, but might still contain a clue:  When there is a voterEmailAddress value and the keyboard closes, submit
       const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
       const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
       VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
@@ -381,8 +379,14 @@ class SettingsVerifySecretCode extends Component {
 
   render () {
     renderLog('SettingsVerifySecretCode');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('SettingsVerifySecretCode render');
     const { classes } = this.props;
-    const { condensed, errorMessageToDisplay, errorToDisplay, digit1, digit2, digit3, digit4, digit5, digit6, voterEmailAddress, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked } = this.state;
+    const {
+      condensed, errorMessageToDisplay, errorToDisplay,
+      digit1, digit2, digit3, digit4, digit5, digit6,
+      voterEmailAddress, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked,
+      voterVerifySecretCodeSubmitted,
+    } = this.state;
 
     if (!voterEmailAddress && !voterPhoneNumber) {
       // We get a weird extra ghost version of SettingsVerifySecretCode, and this is how we block it.
@@ -410,7 +414,7 @@ class SettingsVerifySecretCode extends Component {
             <InputContainer condensed={condensed}>
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit1"
                 maxLength={1}
@@ -423,7 +427,7 @@ class SettingsVerifySecretCode extends Component {
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit2"
                 maxLength={1}
@@ -436,7 +440,7 @@ class SettingsVerifySecretCode extends Component {
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit3"
                 maxLength={1}
@@ -449,7 +453,7 @@ class SettingsVerifySecretCode extends Component {
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit4"
                 maxLength={1}
@@ -462,7 +466,7 @@ class SettingsVerifySecretCode extends Component {
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit5"
                 maxLength={1}
@@ -475,7 +479,7 @@ class SettingsVerifySecretCode extends Component {
               />
               <OutlinedInput
                 classes={{ root: classes.inputBase, input: classes.input }}
-                disabled={this.state.numberOfTriesRemaining === 0}
+                disabled={(this.state.numberOfTriesRemaining === 0) || voterVerifySecretCodeSubmitted}
                 error={errorToDisplay}
                 id="digit6"
                 maxLength={1}
@@ -493,14 +497,14 @@ class SettingsVerifySecretCode extends Component {
           </TextContainer>
           <ButtonsContainer condensed={condensed}>
             <Button
-              disabled={digit1 === '' || digit2 === '' || digit3 === '' || digit4 === '' || digit5 === '' || digit6 === '' || voterMustRequestNewCode || voterSecretCodeRequestsLocked}
               classes={{ root: classes.verifyButton }}
-              fullWidth
               color="primary"
+              disabled={digit1 === '' || digit2 === '' || digit3 === '' || digit4 === '' || digit5 === '' || digit6 === '' || voterMustRequestNewCode || voterSecretCodeRequestsLocked || voterVerifySecretCodeSubmitted}
+              fullWidth
               onClick={this.voterVerifySecretCode}
               variant="contained"
             >
-              Verify
+              {voterVerifySecretCodeSubmitted ? 'Verifying...' : 'Verify'}
             </Button>
             {/* We will make this button work later
             <Button
@@ -514,6 +518,7 @@ class SettingsVerifySecretCode extends Component {
             <Button
               classes={{ root: classes.button }}
               color="primary"
+              disabled={voterVerifySecretCodeSubmitted}
               onClick={this.closeVerifyModalLocal}
               variant={voterMustRequestNewCode ? 'contained' : 'outlined'}
             >

@@ -1,24 +1,29 @@
 import React, { Component } from 'react';
-import Alert from 'react-bootstrap/esm/Alert';
+import Alert from 'react-bootstrap/Alert';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/esm/styles';
-import Button from '@material-ui/core/esm/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Delete from '@material-ui/icons/Delete';
-import Paper from '@material-ui/core/esm/Paper';
+import Paper from '@material-ui/core/Paper';
 import Mail from '@material-ui/icons/Mail';
-import InputBase from '@material-ui/core/esm/InputBase';
+import InputBase from '@material-ui/core/InputBase';
 import LoadingWheel from '../LoadingWheel';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../utils/cordovaUtils';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+
+/* global $ */
 
 class VoterEmailAddressEntry extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    closeSignInModal: PropTypes.func,
     inModal: PropTypes.bool,
     toggleOtherSignInOptions: PropTypes.func,
   };
@@ -26,7 +31,7 @@ class VoterEmailAddressEntry extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      disableEmailVerificationButton: false,
+      disableEmailVerificationButton: true,
       displayEmailVerificationButton: false,
       emailAddressStatus: {
         email_address_already_owned_by_other_voter: false,
@@ -38,9 +43,11 @@ class VoterEmailAddressEntry extends Component {
         make_primary_email: false,
         sign_in_code_email_sent: false,
         verification_email_sent: false,
+        movedInitialFocus: false,
       },
       hideExistingEmailAddresses: false,
       loading: true,
+      otherSignInOptionsOff: false,
       secretCodeSystemLocked: false,
       showVerifyModal: false,
       voter: VoterStore.getVoter(),
@@ -50,18 +57,23 @@ class VoterEmailAddressEntry extends Component {
       voterEmailAddressListCount: 0,
       voterEmailAddressesVerifiedCount: 0,
     };
+    if (isCordova()) {
+      signInModalGlobalState.set('textOrEmailSignInInProcess', true);
+    }
   }
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // Steve 11/14/19: commenting out the next line: it is expensive and causes trouble in SignInModal, and is almost certainly not needed
-    // VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
   }
 
   shouldComponentUpdate (nextProps, nextState) {
     if (JSON.stringify(this.state.emailAddressStatus) !== JSON.stringify(nextState.emailAddressStatus)) {
       // console.log('this.state.emailAddressStatus', this.state.emailAddressStatus, ', nextState.emailAddressStatus', nextState.emailAddressStatus);
+      return true;
+    }
+    if (this.state.disableEmailVerificationButton !== nextState.disableEmailVerificationButton) {
+      // console.log('this.state.disableEmailVerificationButton', this.state.disableEmailVerificationButton, ', nextState.disableEmailVerificationButton', nextState.disableEmailVerificationButton);
       return true;
     }
     if (this.state.displayEmailVerificationButton !== nextState.displayEmailVerificationButton) {
@@ -84,6 +96,10 @@ class VoterEmailAddressEntry extends Component {
       // console.log('this.state.showVerifyModal', this.state.showVerifyModal, ', nextState.showVerifyModal', nextState.showVerifyModal);
       return true;
     }
+    if (this.state.signInCodeEmailSentAndWaitingForResponse !== nextState.signInCodeEmailSentAndWaitingForResponse) {
+      // console.log('this.state.signInCodeEmailSentAndWaitingForResponse', this.state.signInCodeEmailSentAndWaitingForResponse, ', nextState.signInCodeEmailSentAndWaitingForResponse', nextState.signInCodeEmailSentAndWaitingForResponse);
+      return true;
+    }
     if (this.state.voterEmailAddress !== nextState.voterEmailAddress) {
       // console.log('this.state.voterEmailAddress', this.state.voterEmailAddress, ', nextState.voterEmailAddress', nextState.voterEmailAddress);
       return true;
@@ -100,6 +116,17 @@ class VoterEmailAddressEntry extends Component {
     return false;
   }
 
+  componentDidUpdate () {
+    if (isCordova() && !this.state.movedInitialFocus) {
+      const inputFld = $('#enterVoterEmailAddress');
+      // console.log('enterVoterEmailAddress ', $(inputFld));
+      $(inputFld).focus();
+      if ($(inputFld).is(':focus')) {
+        this.setState({ movedInitialFocus: true });
+      }
+    }
+  }
+
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
@@ -110,8 +137,17 @@ class VoterEmailAddressEntry extends Component {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
     // console.log('onVoterStoreChange emailAddressStatus:', emailAddressStatus);
-    if (secretCodeVerified) {
+
+    const voter = VoterStore.getVoter();
+    const { signed_in_with_email: signedInWithEmail } = voter;
+    // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithEmail: ${signedInWithEmail}`);
+    if (signedInWithEmail) {
+      console.log('VoterEmailAddressEntry onVoterStoreChange signedInWithEmail so doing a hacky fallback close');
+      this.closeSignInModal();
+      return;
+    } else if (secretCodeVerified) {
       this.setState({
+        displayEmailVerificationButton: false,
         showVerifyModal: false,
         voterEmailAddress: '',
       });
@@ -152,7 +188,7 @@ class VoterEmailAddressEntry extends Component {
   }
 
   voterEmailAddressSave = (event) => {
-    // console.log('VoterEmailAddressEntry this.voterEmailAddressSave');
+    console.log('VoterEmailAddressEntry this.voterEmailAddressSave');
     event.preventDefault();
     const sendLinkToSignIn = true;
     VoterActions.voterEmailAddressSave(this.state.voterEmailAddress, sendLinkToSignIn);
@@ -160,15 +196,18 @@ class VoterEmailAddressEntry extends Component {
   };
 
   sendSignInCodeEmail = (event) => {
-    event.preventDefault();
-    const { voterEmailAddress, voterEmailAddressIsValid } = this.state;
-    if (voterEmailAddressIsValid) {
+    if (event) {
+      event.preventDefault();
+    }
+    const { displayEmailVerificationButton, voterEmailAddress, voterEmailAddressIsValid } = this.state;
+    if (voterEmailAddressIsValid && displayEmailVerificationButton) {
       VoterActions.sendSignInCodeEmail(voterEmailAddress);
       this.setState({
+        displayEmailVerificationButton: false,
         emailAddressStatus: {
           email_address_already_owned_by_other_voter: false,
         },
-        loading: true,
+        signInCodeEmailSentAndWaitingForResponse: true,
       });
     } else {
       this.setState({ showError: true });
@@ -196,60 +235,122 @@ class VoterEmailAddressEntry extends Component {
   };
 
   hideEmailVerificationButton = () => {
-    const { voterEmailAddress } = this.state;
-    if (!voterEmailAddress) {
-      // Only hide if no email entered
-      this.setState({
-        displayEmailVerificationButton: false,
-      });
-    }
+    this.setState({
+      displayEmailVerificationButton: false,
+    });
   };
 
   localToggleOtherSignInOptions = () => {
-    if (isCordova()) {
-      const { hideExistingEmailAddresses } = this.state;
-      this.setState({ hideExistingEmailAddresses: !hideExistingEmailAddresses });
+    if (isCordova() || isMobileScreenSize()) {
+      const { hideExistingEmailAddresses, otherSignInOptionsOff } = this.state;
+      this.setState({
+        hideExistingEmailAddresses: !hideExistingEmailAddresses,
+        otherSignInOptionsOff: !otherSignInOptionsOff,
+      });
       if (this.props.toggleOtherSignInOptions) {
         this.props.toggleOtherSignInOptions();
       }
     }
   };
 
-  onEmailInputBlur = (event) => {
-    const { voterEmailAddress } = this.state;
-    this.hideEmailVerificationButton();
-    this.localToggleOtherSignInOptions();
-    if (voterEmailAddress && isCordova()) {
-      // When there is a voterEmailAddress value and the keyboard closes, submit
-      this.sendSignInCodeEmail(event);
+  turnOtherSignInOptionsOff = () => {
+    if (isCordova() || isMobileScreenSize()) {
+      const { otherSignInOptionsOff } = this.state;
+      this.setState({
+        hideExistingEmailAddresses: true,
+        otherSignInOptionsOff: true,
+        signInCodeEmailSentAndWaitingForResponse: false,
+      });
+      if (!otherSignInOptionsOff) {
+        if (this.props.toggleOtherSignInOptions) {
+          this.props.toggleOtherSignInOptions();
+        }
+      }
     }
-  }
+  };
+
+  closeSignInModal = () => {
+    // console.log('VoterEmailAddressEntry closeSignInModal');
+    if (this.props.closeSignInModal) {
+      this.props.closeSignInModal();
+    }
+  };
 
   closeVerifyModal = () => {
     // console.log('VoterEmailAddressEntry closeVerifyModal');
+    VoterActions.clearEmailAddressStatus();
+    VoterActions.clearSecretCodeVerificationStatus();
     this.setState({
       displayEmailVerificationButton: false,
       emailAddressStatus: {
         sign_in_code_email_sent: false,
       },
       showVerifyModal: false,
-      voterEmailAddress: '',
+      signInCodeEmailSentAndWaitingForResponse: false,
     });
   };
 
-  updateVoterEmailAddress = (e) => {
-    const voterEmailAddress = e.target.value;
-    const voterEmailAddressIsValid = true;
+  updateVoterEmailAddress = (event) => {
+    const voterEmailAddress = event.target.value;
+    const voterEmailAddressIsValid = (voterEmailAddress && voterEmailAddress.length > 6);
+    const disableEmailVerificationButton = !voterEmailAddressIsValid;
     this.setState({
+      disableEmailVerificationButton,
       voterEmailAddress,
       voterEmailAddressIsValid,
     });
   };
 
-  sendVerificationEmail (emailWeVoteId) {
-    VoterActions.sendVerificationEmail(emailWeVoteId);
-    this.setState({ loading: true });
-  }
+  onCancel = () => {
+    // console.log('VoterEmailAddressEntry onCancel');
+    const { inModal } = this.props;
+    if (inModal) {
+      this.closeSignInModal();
+    } else {
+      // There are Modal display problems that don't seem to be resolvable that prevents us from returning to the full SettingsAccount modal
+      this.hideEmailVerificationButton();
+      this.localToggleOtherSignInOptions();
+    }
+  };
+
+  onFocus = () => {
+    const { displayEmailVerificationButton } = this.state;
+    if (!displayEmailVerificationButton) {
+      this.displayEmailVerificationButton();
+      this.turnOtherSignInOptionsOff();
+    }
+  };
+
+  onAnimationEndCancel = () => {
+    // In Cordova when the virtual keyboard goes away, the on-click doesn't happen, but the onAnimation does.
+    // This allows us to react to the first click.
+    if (isCordova()) {
+      // console.log('VoterEmailAddressEntry onAnimationEndCancel calling onCancel');
+      this.onCancel();
+    }
+  };
+
+  onAnimationEndSend = () => {
+    if (isCordova()) {
+      // console.log('VoterPhoneVerificationEntry onAnimationEndSend calling sendSignInCodeEmail');
+      this.sendSignInCodeEmail();
+    }
+  };
+
+  onKeyDown = (event) => {
+    // console.log('onKeyDown, event.keyCode:', event.keyCode);
+    const ENTER_KEY_CODE = 13;
+    const SPACE_KEY_CODE = 32;
+    const keyCodesToBlock = [ENTER_KEY_CODE, SPACE_KEY_CODE];
+    if (keyCodesToBlock.includes(event.keyCode)) {
+      event.preventDefault();
+    }
+  };
+
+  // sendVerificationEmail (emailWeVoteId) {
+  //   VoterActions.sendVerificationEmail(emailWeVoteId);
+  //   this.setState({ loading: true });
+  // }
 
   removeVoterEmailAddress (emailWeVoteId) {
     VoterActions.removeVoterEmailAddress(emailWeVoteId);
@@ -265,7 +366,7 @@ class VoterEmailAddressEntry extends Component {
     const { classes } = this.props;
     const {
       disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, hideExistingEmailAddresses,
-      secretCodeSystemLocked, showVerifyModal, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
+      secretCodeSystemLocked, showVerifyModal, signInCodeEmailSentAndWaitingForResponse, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
     } = this.state;
 
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
@@ -324,7 +425,7 @@ class VoterEmailAddressEntry extends Component {
       </span>
     );
 
-    let enterEmailTitle = 'Sign in with Email';
+    let enterEmailTitle = isWebApp() ? 'Sign in with Email' : 'Email the Sign In code to';
     // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
     //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
     if (this.state.voter && this.state.voter.is_signed_in) {
@@ -351,23 +452,49 @@ class VoterEmailAddressEntry extends Component {
               name="voter_email_address"
               id="enterVoterEmailAddress"
               value={voterEmailAddress}
-              onBlur={this.onEmailInputBlur}
               onChange={this.updateVoterEmailAddress}
-              onFocus={() => { this.displayEmailVerificationButton(); this.localToggleOtherSignInOptions(); }}
+              onFocus={this.onFocus}
+              onKeyDown={this.onKeyDown}
               placeholder="Type email here..."
             />
           </Paper>
           {displayEmailVerificationButton && (
-            <Button
-              className={classes.button}
-              color="primary"
-              disabled={disableEmailVerificationButton}
-              id="voterEmailAddressEntrySendCode"
-              onClick={this.sendSignInCodeEmail}
-              variant="contained"
-            >
-              Email Verification Code
-            </Button>
+            <ButtonWrapper>
+              <CancelButtonContainer>
+                <Button
+                  id="cancelEmailButton"
+                  color="primary"
+                  disabled={signInCodeEmailSentAndWaitingForResponse}
+                  fullWidth
+                  onClick={this.onCancel}
+                  onAnimationEnd={this.onAnimationEndCancel}
+                  variant="outlined"
+                >
+                  Cancel
+                </Button>
+              </CancelButtonContainer>
+              <ButtonContainer>
+                <Button
+                  color="primary"
+                  disabled={disableEmailVerificationButton || signInCodeEmailSentAndWaitingForResponse}
+                  id="voterEmailAddressEntrySendCode"
+                  onClick={this.sendSignInCodeEmail}
+                  onAnimationEnd={this.onAnimationEndSend}
+                  variant="contained"
+                >
+                  {signInCodeEmailSentAndWaitingForResponse ? 'Sending...' : (
+                    <>
+                      <span className="u-show-mobile">
+                        Send Code
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Send Verification Code
+                      </span>
+                    </>
+                  )}
+                </Button>
+              </ButtonContainer>
+            </ButtonWrapper>
           )}
         </form>
       </div>
@@ -466,11 +593,11 @@ class VoterEmailAddressEntry extends Component {
     });
 
     return (
-      <Wrapper>
-        {!hideExistingEmailAddresses && (
+      <Wrapper isWeb={isWebApp()}>
+        {!hideExistingEmailAddresses ? (
           <div>
             {verifiedEmailsFound && !this.props.inModal ? (
-              <EmailSection>
+              <EmailSection isWeb={isWebApp()}>
                 <span className="h3">
                   Your Email
                   {voterEmailAddressListCount > 1 ? 's' : ''}
@@ -484,14 +611,18 @@ class VoterEmailAddressEntry extends Component {
               </span>
             )}
             {unverifiedEmailsFound && !this.props.inModal && (
-              <EmailSection>
+              <EmailSection isWeb={isWebApp()}>
                 <span className="h3">Emails to Verify</span>
                 {toVerifyEmailListHtml}
               </EmailSection>
             )}
           </div>
+        ) : (
+          <span>
+            {emailAddressStatusHtml}
+          </span>
         )}
-        <EmailSection>
+        <EmailSection isWeb={isWebApp()}>
           {enterEmailHtml}
         </EmailSection>
         {showVerifyModal && (
@@ -520,18 +651,31 @@ const styles = {
     flex: 1,
     padding: 8,
   },
-  button: {
-    width: '100%',
-    padding: '12px',
-  },
 };
 
+const ButtonWrapper = styled.div`
+  width: 100%;
+  margin: 4px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const ButtonContainer = styled.div`
+  width: fit-content;
+  margin-left: 8px;
+`;
+
+const CancelButtonContainer = styled.div`
+  width: fit-content;
+`;
+
 const Wrapper = styled.div`
-  margin-top: 32px;
+  margin-top: ${({ isWeb }) => (isWeb ? '32px;' : '0')};
 `;
 
 const EmailSection = styled.div`
-  margin-top: 18px;
+  margin-top: ${({ isWeb }) => (isWeb ? '18px;' : '0')};
 `;
 
 export default withStyles(styles)(VoterEmailAddressEntry);

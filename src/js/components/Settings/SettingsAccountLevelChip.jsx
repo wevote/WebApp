@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Chip from '@material-ui/core/esm/Chip';
+import Chip from '@material-ui/core/Chip';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import AppActions from '../../actions/AppActions';
@@ -9,8 +9,10 @@ import AppActions from '../../actions/AppActions';
 class SettingsAccountLevelChip extends Component {
   static propTypes = {
     chosenFeaturePackage: PropTypes.oneOf(['FREE', 'PROFESSIONAL', 'ENTERPRISE']),
-    requiredFeaturePackage: PropTypes.oneOf(['PROFESSIONAL', 'ENTERPRISE']),
     classes: PropTypes.object,
+    ignoreIfUpgraded: PropTypes.bool,
+    onClickDisabled: PropTypes.bool,
+    requiredFeaturePackage: PropTypes.oneOf(['PROFESSIONAL', 'ENTERPRISE']),
   };
 
   constructor (props) {
@@ -34,7 +36,7 @@ class SettingsAccountLevelChip extends Component {
 
   render () {
     renderLog('SettingsAccountLevelChip');  // Set LOG_RENDER_EVENTS to log all renders
-    const { chosenFeaturePackage, requiredFeaturePackage, classes } = this.props;
+    const { chosenFeaturePackage, classes, ignoreIfUpgraded, onClickDisabled, requiredFeaturePackage } = this.props;
     let chipLabel;
     const yourFeaturePackageExceedsOrEquals = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, requiredFeaturePackage);
     switch (requiredFeaturePackage.toUpperCase()) {
@@ -49,11 +51,11 @@ class SettingsAccountLevelChip extends Component {
     return (
       <Chip
         classes={{
-          root: `${classes.root} ${yourFeaturePackageExceedsOrEquals ? classes.alreadyUpgraded : classes.notUpgraded}`,
+          root: `${classes.root} ${yourFeaturePackageExceedsOrEquals && !ignoreIfUpgraded ? classes.alreadyUpgraded : (ignoreIfUpgraded ? classes.notUpgradedNoHover : classes.notUpgraded)}`, // eslint-disable-line no-nested-ternary
           label: classes.label,
         }}
         label={chipLabel}
-        onClick={yourFeaturePackageExceedsOrEquals ? undefined : this.onClickHandler}
+        onClick={yourFeaturePackageExceedsOrEquals || onClickDisabled ? undefined : this.onClickHandler}
         onMouseDown={this.preventFocus}
         clickable
       />
@@ -77,6 +79,15 @@ const styles = {
     '&:hover, &:focus, &:active': {
       backgroundColor: 'rgb(44, 58, 95)',
       color: 'white',
+    },
+  },
+  notUpgradedNoHover: {
+    backgroundColor: 'rgb(242, 230, 210)',
+    color: 'rgb(192, 133, 17)',
+    '&:hover, &:focus, &:active, &:visited': {
+      backgroundColor: 'rgb(242, 230, 210)',
+      color: 'rgb(192, 133, 17)',
+      textDecoration: 'none', // Not working
     },
   },
   alreadyUpgraded: {

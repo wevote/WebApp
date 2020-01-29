@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import AppBar from '@material-ui/core/esm/AppBar';
-import Toolbar from '@material-ui/core/esm/Toolbar';
-import Tabs from '@material-ui/core/esm/Tabs';
-import Tab from '@material-ui/core/esm/Tab';
-import Button from '@material-ui/core/esm/Button';
-import IconButton from '@material-ui/core/esm/IconButton';
-import Tooltip from '@material-ui/core/esm/Tooltip';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import PlaceIcon from '@material-ui/icons/Place';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { withStyles } from '@material-ui/core/esm/styles';
-import Badge from '@material-ui/core/esm/Badge';
+import { withStyles } from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge';
 import { historyPush, isWebApp, isCordova, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
@@ -28,11 +28,13 @@ import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
-import { stringContains } from '../../utils/textFormat';
+import { shortenText, stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
+import ShareModal from '../Ballot/ShareModal';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
-const webAppConfig = require('../../config');
+// const webAppConfig = require('../../config');
 
 
 class HeaderBar extends Component {
@@ -63,7 +65,10 @@ class HeaderBar extends Component {
       showSelectBallotModal: false,
       showSignInModal: false,
       showPaidAccountUpgradeModal: false,
+      showShareModal: false,
+      shareModalStep: 'options',
       voter: {},
+      voterFirstName: '',
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
@@ -72,6 +77,7 @@ class HeaderBar extends Component {
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
+    this.closeShareModal = this.closeShareModal.bind(this);
   }
 
   componentDidMount () {
@@ -80,7 +86,7 @@ class HeaderBar extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // this.onBallotStoreChange();
 
-    // this.props.location &&
+    const voterFirstName = VoterStore.getFirstName();
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
@@ -93,6 +99,7 @@ class HeaderBar extends Component {
       showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSignInModal: AppStore.showSignInModal(),
       voter: this.props.voter,
+      voterFirstName,
       voterIsSignedIn: this.props.voter && this.props.voter.is_signed_in,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
@@ -129,10 +136,20 @@ class HeaderBar extends Component {
     if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
       return true;
     }
+    if (this.state.showShareModal !== nextState.showShareModal) {
+      return true;
+    }
+    if (this.state.shareModalStep !== nextState.shareModalStep) {
+      return true;
+    }
     if (this.state.scrolledDown !== nextState.scrolledDown) {
       return true;
     }
     if (this.state.showSignInModal !== nextState.showSignInModal) {
+      return true;
+    }
+    if (this.state.voterFirstName !== nextState.voterFirstName) {
+      // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
       return true;
     }
     if (this.state.voter && nextState.voter && this.state.voter.is_signed_in !== nextState.voter.is_signed_in) {
@@ -187,7 +204,8 @@ class HeaderBar extends Component {
   }
 
   onAppStoreChange () {
-    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal();
+    // console.log('HeaderBar, onAppStoreChange');
+    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal() || '';
     // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
     const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
     // console.log('HeaderBar onAppStoreChange showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);
@@ -198,25 +216,37 @@ class HeaderBar extends Component {
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showPaidAccountUpgradeModal,
+      showShareModal: AppStore.showShareModal(),
+      shareModalStep: AppStore.shareModalStep(),
       showSignInModal: AppStore.showSignInModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
     });
   }
 
   onFriendStoreChange () {
-    this.setState({
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
-    });
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      // console.log('HeaderBar, onFriendStoreChange');
+      this.setState({
+        friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      });
+    }
   }
 
   onVoterStoreChange () {
-    const voter = VoterStore.getVoter();
-    const voterIsSignedIn = voter.is_signed_in || false;
-    this.setState({
-      voter,
-      voterIsSignedIn,
-      showSignInModal: AppStore.showSignInModal(),
-    });
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      // console.log('HeaderBar, onVoterStoreChange'};
+      const voter = VoterStore.getVoter();
+      const voterFirstName = VoterStore.getFirstName();
+      const voterIsSignedIn = voter.is_signed_in || false;
+
+      this.setState({
+        voter,
+        voterFirstName,
+        voterIsSignedIn,
+        showSignInModal: AppStore.showSignInModal(),
+        showShareModal: AppStore.showShareModal(),
+      });
+    }
   }
 
   getSelectedTab = () => {
@@ -232,12 +262,8 @@ class HeaderBar extends Component {
   handleNavigation = to => historyPush(to);
 
   toggleProfilePopUp () {
-    if (isWebApp()) {
-      const { profilePopUpOpen } = this.state;
-      this.setState({ profilePopUpOpen: !profilePopUpOpen });
-    } else {
-      this.handleNavigation('/settings/hamburger');
-    }
+    const { profilePopUpOpen } = this.state;
+    this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
@@ -260,9 +286,11 @@ class HeaderBar extends Component {
   }
 
   closeSignInModal () {
+    // console.log('HeaderBar closeSignInModal');
     AppActions.setShowSignInModal(false);
     // signInModalGlobalState.set('isShowingSignInModal', false);
-    HeaderBar.goToGetStarted();
+    // When this is uncommented, closing the sign in box from pages like "Values" will redirect you to the ballot
+    // HeaderBar.goToGetStarted();
   }
 
   toggleSignInModal () {
@@ -299,6 +327,10 @@ class HeaderBar extends Component {
     AppActions.setShowPaidAccountUpgradeModal(false);
   }
 
+  closeShareModal () {
+    AppActions.setShowShareModal(false);
+  }
+
   render () {
     renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.componentDidMountFinished) {
@@ -307,8 +339,8 @@ class HeaderBar extends Component {
     const { classes, pathname, location } = this.props;
     const {
       chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown,
-      showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal,
-      showSignInModal, voter, voterIsSignedIn,
+      showEditAddressButton, showPaidAccountUpgradeModal, showShareModal, shareModalStep, showSelectBallotModal,
+      showSignInModal, voter, voterFirstName, voterIsSignedIn,
     } = this.state;
     // console.log('Header Bar, showSignInModal ', showSignInModal);
     const ballotBaseUrl = '/ballot';
@@ -347,11 +379,15 @@ class HeaderBar extends Component {
 
     const doNotShowWeVoteLogo = weVoteBrandingOff || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
-    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? true : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 8px', right: 'unset' };
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
-        <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`}>
+        <AppBar position="relative"
+                color="default"
+                className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`}
+                style={cordovaOverrides}
+        >
           <Toolbar className="header-toolbar" disableGutters>
             {(showWeVoteLogo || chosenSiteLogoUrl) && (
               <HeaderBarLogo
@@ -373,7 +409,7 @@ class HeaderBar extends Component {
                 {showFullNavigation && (
                   <Tab classes={{ root: classes.tabRootDefault }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
                 )}
-                { enableFriends && showFullNavigation && (
+                { showFullNavigation && (
                   <Tab
                     classes={(numberOfIncomingFriendRequests > 0) ? { root: classes.tabRootIncomingFriendRequests } : { root: classes.tabRootDefault }}
                     id="friendsTabHeaderBar"
@@ -401,40 +437,20 @@ class HeaderBar extends Component {
                   {
                     showEditAddressButton && editAddressButtonHtml
                   }
-                  <span className="u-show-desktop-tablet">
-                    <span id="profileAvatarHeaderBar"
-                      className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                      onClick={this.toggleProfilePopUp}
-                    >
-                      <img
-                        className="header-nav__avatar"
-                        src={voterPhotoUrlMedium}
-                        style={{
-                          marginLeft: 16,
-                        }}
-                        height={34}
-                        width={34}
-                        alt="Your Settings"
-                      />
-                    </span>
-                  </span>
-                  <span className="u-show-mobile">
-                    <div
-                      id="profileAvatarHeaderBar"
-                      className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                      onClick={() => this.handleNavigation('/settings/hamburger')}
-                    >
-                      <img
-                        className="header-nav__avatar"
-                        style={{
-                          marginLeft: 16,
-                        }}
-                        src={voterPhotoUrlMedium}
-                        height={34}
-                        width={34}
-                        alt="Your Settings"
-                      />
-                    </div>
+                  <span id="profileAvatarHeaderBar"
+                    className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                    onClick={this.toggleProfilePopUp}
+                  >
+                    <img
+                      className="header-nav__avatar"
+                      src={voterPhotoUrlMedium}
+                      style={{
+                        marginLeft: 16,
+                      }}
+                      height={34}
+                      width={34}
+                      alt="Your Settings"
+                    />
                   </span>
                   {this.state.profilePopUpOpen && voterIsSignedIn && (
                     <HeaderBarProfilePopUp
@@ -454,24 +470,16 @@ class HeaderBar extends Component {
                 voterIsSignedIn && (
                   <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
                     {showEditAddressButton && editAddressButtonHtml}
-                    <span className="u-show-desktop-tablet">
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="profileAvatarHeaderBar"
-                        onClick={this.toggleProfilePopUp}
-                      >
-                        <AccountCircleIcon />
-                      </IconButton>
-                    </span>
-                    <span className="u-show-mobile">
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="profileAvatarHeaderBar"
-                        onClick={() => this.handleNavigation('/settings/hamburger')}
-                      >
-                        <AccountCircleIcon />
-                      </IconButton>
-                    </span>
+                    <IconButton
+                      classes={{ root: classes.iconButtonRoot }}
+                      id="profileAvatarHeaderBar"
+                      onClick={this.toggleProfilePopUp}
+                    >
+                      <FirstNameWrapper>
+                        {shortenText(voterFirstName, 9)}
+                      </FirstNameWrapper>
+                      <AccountCircleIcon />
+                    </IconButton>
                     {this.state.profilePopUpOpen && voterIsSignedIn && (
                       <HeaderBarProfilePopUp
                         hideProfilePopUp={this.hideProfilePopUp}
@@ -527,6 +535,15 @@ class HeaderBar extends Component {
             pathname={pathname}
             show={showPaidAccountUpgradeModal}
             toggleFunction={this.closePaidAccountUpgradeModal}
+          />
+        )}
+        {showShareModal && (
+          <ShareModal
+            isSignedIn={this.state.voter.is_signed_in}
+            pathname={pathname}
+            show={showShareModal}
+            step={shareModalStep}
+            toggleFunction={this.closeShareModal}
           />
         )}
       </Wrapper>
@@ -611,6 +628,11 @@ const Wrapper = styled.div`
   margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
   transition: all 50ms ease-in;
   ${({ scrolledDown }) => (scrolledDown ? 'transform: translateY(-100%);' : '')}
+`;
+
+const FirstNameWrapper = styled.div`
+  font-size: 14px;
+  padding-right: 4px;
 `;
 
 export default withStyles(styles)(HeaderBar);

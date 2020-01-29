@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import Testimonial from '../Widgets/Testimonial';
 import cookies from '../../utils/cookies';

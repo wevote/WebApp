@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Snackbar from '@material-ui/core/esm/Snackbar';
-import IconButton from '@material-ui/core/esm/IconButton';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { renderLog } from '../../utils/logging';
 
@@ -46,6 +46,7 @@ class BrowserPushMessage extends Component {
     const { classes } = this.props;
     let { message, type } = this.state;
     const { name } = this.state;
+    // console.log(`BrowserPushMessage message: ${message}  type: ${type}`);
 
     if (name === 'test') {
       type = 'danger';

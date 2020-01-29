@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
-import Popover from 'react-bootstrap/esm/Popover';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 import FacebookFriendTinyDisplay from './FacebookFriendTinyDisplay';
 import FacebookFriendCard from './FacebookFriendCard';
 import FacebookStore from '../../stores/FacebookStore';
@@ -47,6 +47,10 @@ export default class FacebookFriendsDisplay extends Component {
 
   componentWillUnmount () {
     this.facebookStoreListener.remove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onFacebookStoreChange () {
@@ -58,13 +62,13 @@ export default class FacebookFriendsDisplay extends Component {
   onTriggerEnter (friendWeVoteId) {
     this.refs[`overlay-${friendWeVoteId}`].show(); // eslint-disable-line react/no-string-refs
     this.show_popover = true;
-    clearTimeout(this.hide_popover_timer);
+    clearTimeout(this.timer);
   }
 
   onTriggerLeave (friendWeVoteId) {
     this.show_popover = false;
-    clearTimeout(this.hide_popover_timer);
-    this.hide_popover_timer = setTimeout(() => {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
       if (!this.show_popover) {
         this.refs[`overlay-${friendWeVoteId}`].hide(); // eslint-disable-line react/no-string-refs
       }

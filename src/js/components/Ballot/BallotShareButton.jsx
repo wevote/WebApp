@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import Comment from '@material-ui/icons/Comment';
 import { Menu, MenuItem, Tooltip } from '@material-ui/core/esm';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Reply from '@material-ui/icons/Reply';
 import styled from 'styled-components';
+import AppActions from '../../actions/AppActions';
 
 class BallotShareButton extends Component {
   static propTypes = {
@@ -22,7 +23,7 @@ class BallotShareButton extends Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.open !== nextState.open) return true;
     if (this.state.anchorEl !== nextState.anchorEl) return true;
     return false;
@@ -36,13 +37,19 @@ class BallotShareButton extends Component {
     this.setState({ anchorEl: null, open: false });
   }
 
+  openShareModal () {
+    // console.log('SettingsDomain openPaidAccountUpgradeModal');
+    AppActions.setShareModalStep('options');
+    AppActions.setShowShareModal(true);
+  }
+
   render () {
     const { classes } = this.props;
     const { anchorEl } = this.state;
 
     return (
       <>
-        <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="outlined" color="primary">
+        <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="contained" color="primary">
           <Icon>
             <Reply
               classes={{ root: classes.shareIcon }}
@@ -69,7 +76,7 @@ class BallotShareButton extends Component {
           }}
         >
           <MenuArrow />
-          <MenuItem className={classes.menuItem}>
+          <MenuItem className={classes.menuItem} onClick={this.openShareModal}>
             <MenuFlex>
               <MenuIcon>
                 <i className="fas fa-list" />
@@ -84,15 +91,20 @@ class BallotShareButton extends Component {
               </MenuInfo>
             </MenuFlex>
           </MenuItem>
-          <MenuSeperator />
-          <MenuItem className={classes.menuItem}>
+          <MenuSeparator />
+          <MenuItem className={classes.menuItem} onClick={this.openShareModal}>
             <MenuFlex>
               <MenuIcon>
                 <Comment />
               </MenuIcon>
               <MenuText>
-                My Choice & Opinions
+                Your Ballot Opinions
               </MenuText>
+              <MenuInfo>
+                <Tooltip title="Share a link to the choices you've made for this election so that your friends can get ready to vote. This includes your public and friend's-only opinions." arrow enterDelay={300}>
+                  <i className="fas fa-info-circle" />
+                </Tooltip>
+              </MenuInfo>
             </MenuFlex>
           </MenuItem>
         </Menu>
@@ -109,7 +121,7 @@ const styles = () => ({
     overflowY: 'visible !important',
   },
   button: {
-    padding: '0 12px',
+    padding: '2px 12px',
   },
   menuItem: {
     zIndex: '9 !important',
@@ -125,8 +137,9 @@ const styles = () => ({
     },
   },
   shareIcon: {
-    // -webkit-transform: 'scaleX(-1)',
     transform: 'scaleX(-1)',
+    position: 'relative',
+    top: -1,
   },
 });
 
@@ -167,9 +180,10 @@ const MenuText = styled.div`
 const MenuInfo = styled.div`
   margin-left: auto;
   margin-top: 1px;
+  padding-left: 10px;
 `;
 
-const MenuSeperator = styled.div`
+const MenuSeparator = styled.div`
   height: 2px;
   background: #efefef;
   width: 80%;

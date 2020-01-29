@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/esm/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const overrides = {
   MuiButton: {

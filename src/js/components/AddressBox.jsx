@@ -1,11 +1,11 @@
 /* global google */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import EditLocationIcon from '@material-ui/icons/EditLocation';
-import { withStyles } from '@material-ui/core/esm/styles';
-import Paper from '@material-ui/core/esm/Paper';
-import InputBase from '@material-ui/core/esm/InputBase';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
 import BallotStore from '../stores/BallotStore';
 import BallotActions from '../actions/BallotActions';
 import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';

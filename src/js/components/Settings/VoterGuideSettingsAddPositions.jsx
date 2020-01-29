@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/esm/styles';
-import CircularProgress from '@material-ui/core/esm/CircularProgress';
-import Card from '@material-ui/core/esm/Card';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import BallotItemForAddPositions from './BallotItemForAddPositions';
 import BallotActions from '../../actions/BallotActions';
@@ -228,6 +228,14 @@ class VoterGuideSettingsAddPositions extends Component {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.ballotItemTimer) {
+      clearTimeout(this.ballotItemTimer);
+      this.ballotItemTimer = null;
+    }
+    if (this.positionItemTimer) {
+      clearTimeout(this.positionItemTimer);
+      this.positionItemTimer = null;
+    }
   }
 
   onBallotStoreChange () {
@@ -430,7 +438,7 @@ class VoterGuideSettingsAddPositions extends Component {
     let { numberOfBallotItemsToDisplay } = this.state;
     numberOfBallotItemsToDisplay += 5;
 
-    setTimeout(() => {
+    this.ballotItemTimer = setTimeout(() => {
       this.setState({
         numberOfBallotItemsToDisplay,
       });
@@ -441,7 +449,7 @@ class VoterGuideSettingsAddPositions extends Component {
     let { numberOfPositionItemsToDisplay } = this.state;
     numberOfPositionItemsToDisplay += 5;
 
-    setTimeout(() => {
+    this.positionItemTimer = setTimeout(() => {
       this.setState({
         numberOfPositionItemsToDisplay,
       });
@@ -450,6 +458,11 @@ class VoterGuideSettingsAddPositions extends Component {
 
   goToDifferentVoterGuideSettingsDashboardTab (dashboardEditMode = '') {
     AppActions.setVoterGuideSettingsDashboardEditMode(dashboardEditMode);
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('VoterGuideSettingsAddPositions caught error: ', `${error} with info: `, info);
   }
 
   render () {

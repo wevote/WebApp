@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { withStyles } from '@material-ui/core/esm/styles';
-import AppBar from '@material-ui/core/esm/AppBar';
-import Button from '@material-ui/core/esm/Button';
-import Toolbar from '@material-ui/core/esm/Toolbar';
-import Tooltip from '@material-ui/core/esm/Tooltip';
-import IconButton from '@material-ui/core/esm/IconButton';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 import PlaceIcon from '@material-ui/icons/Place';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
@@ -21,7 +21,7 @@ import isMobile from '../../utils/isMobile';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
-import { stringContains } from '../../utils/textFormat';
+import { shortenText, stringContains } from '../../utils/textFormat';
 import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
@@ -43,6 +43,7 @@ class HeaderBackToVoterGuides extends Component {
       showNewVoterGuideModal: false,
       showSignInModal: false,
       voter: {},
+      voterFirstName: '',
       voterIsSignedIn: false,
     };
     this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
@@ -77,6 +78,7 @@ class HeaderBackToVoterGuides extends Component {
 
     // console.log('organizationWeVoteId: ', organizationWeVoteId);
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
@@ -86,6 +88,7 @@ class HeaderBackToVoterGuides extends Component {
       showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
       showSignInModal: AppStore.showSignInModal(),
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
@@ -111,10 +114,12 @@ class HeaderBackToVoterGuides extends Component {
     const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
@@ -145,10 +150,12 @@ class HeaderBackToVoterGuides extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
@@ -215,7 +222,7 @@ class HeaderBackToVoterGuides extends Component {
     renderLog('HeaderBackToVoterGuides');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       profilePopUpOpen, showNewVoterGuideModal, showSignInModal,
-      voter, voterIsSignedIn, voterPhotoUrlMedium,
+      voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
     } = this.state;
     const { classes, pathname } = this.props;
 
@@ -302,6 +309,9 @@ class HeaderBackToVoterGuides extends Component {
                       id="profileAvatarHeaderBar"
                       onClick={this.toggleProfilePopUp}
                     >
+                      <FirstNameWrapper>
+                        {shortenText(voterFirstName, 9)}
+                      </FirstNameWrapper>
                       <AccountCircleIcon />
                     </IconButton>
                   </div>
@@ -394,6 +404,7 @@ const styles = theme => ({
     },
   },
   iconButtonRoot: {
+    marginTop: 4,
     paddingTop: 2,
     paddingRight: 0,
     paddingBottom: 2,
@@ -421,6 +432,11 @@ const styles = theme => ({
     height: 4,
   },
 });
+
+const FirstNameWrapper = styled.div`
+  font-size: 14px;
+  padding-right: 4px;
+`;
 
 const VoterGuideTitle = styled.div`
   align-items: left;

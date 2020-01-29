@@ -86,6 +86,7 @@ class TwitterStore extends ReduceStore {
         } else if (action.res.kind_of_owner === 'CANDIDATE') {
           CandidateActions.candidateRetrieve(action.res.owner_we_vote_id);
           CandidateActions.positionListForBallotItemPublic(action.res.owner_we_vote_id);
+          CandidateActions.positionListForBallotItemFromFriends(action.res.owner_we_vote_id);
         }
 
         return {

@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import AppBar from '@material-ui/core/esm/AppBar';
-import Button from '@material-ui/core/esm/Button';
-import IconButton from '@material-ui/core/esm/IconButton';
-import Toolbar from '@material-ui/core/esm/Toolbar';
-import { withStyles } from '@material-ui/core/esm/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Toolbar from '@material-ui/core/Toolbar';
+import { withStyles } from '@material-ui/core/styles';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import CandidateStore from '../../stores/CandidateStore';
@@ -20,7 +20,7 @@ import OfficeStore from '../../stores/OfficeStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
-import { stringContains } from '../../utils/textFormat';
+import { shortenText, stringContains } from '../../utils/textFormat';
 import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -52,6 +52,7 @@ class HeaderBackToBallot extends Component {
       showSignInModal: AppStore.showSignInModal(),
       scrolledDown: AppStore.getScrolledDown(),
       voter: {},
+      voterFirstName: '',
     };
     this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
     this.hideAccountMenu = this.hideAccountMenu.bind(this);
@@ -136,10 +137,12 @@ class HeaderBackToBallot extends Component {
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
@@ -215,10 +218,12 @@ class HeaderBackToBallot extends Component {
     const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
@@ -269,6 +274,10 @@ class HeaderBackToBallot extends Component {
     }
     if (this.state.showSignInModal !== nextState.showSignInModal) {
       // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
+      return true;
+    }
+    if (this.state.voterFirstName !== nextState.voterFirstName) {
+      // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
       return true;
     }
     const { voter, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
@@ -362,10 +371,12 @@ class HeaderBackToBallot extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
@@ -449,7 +460,7 @@ class HeaderBackToBallot extends Component {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
       candidate, measureWeVoteId, officeName, officeWeVoteId,
       organization, organizationWeVoteId, profilePopUpOpen, scrolledDown, showSignInModal,
-      voter, voterIsSignedIn, voterPhotoUrlMedium,
+      voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
     } = this.state;
     const { classes, pathname } = this.props;
 
@@ -515,8 +526,10 @@ class HeaderBackToBallot extends Component {
       appBarClasses = { root: classes.noBoxShadow };
     }
 
+    const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 8px', right: 'unset' };
+
     return (
-      <AppBar className={headerClassName} color="default" classes={appBarClasses}>
+      <AppBar className={headerClassName} color="default" classes={appBarClasses} style={cordovaOverrides}>
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}
@@ -528,7 +541,7 @@ class HeaderBackToBallot extends Component {
             {voterIsSignedIn ? (
               <span>
                 {voterPhotoUrlMedium ? (
-                  <div
+                  <span
                     id="profileAvatarHeaderBar"
                     className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
                     onClick={this.toggleProfilePopUp}
@@ -540,17 +553,20 @@ class HeaderBackToBallot extends Component {
                       width={34}
                       alt="Your Settings"
                     />
-                  </div>
+                  </span>
                 ) : (
-                  <div>
+                  <span>
                     <IconButton
                       classes={{ root: classes.iconButtonRoot }}
                       id="profileAvatarHeaderBar"
                       onClick={this.toggleProfilePopUp}
                     >
+                      <FirstNameWrapper>
+                        {shortenText(voterFirstName, 9)}
+                      </FirstNameWrapper>
                       <AccountCircleIcon />
                     </IconButton>
-                  </div>
+                  </span>
                 )
                 }
                 {profilePopUpOpen && (
@@ -617,10 +633,23 @@ const styles = theme => ({
       marginLeft: '.1rem',
     },
   },
+  iconButtonRoot: {
+    color: 'rgba(17, 17, 17, .4)',
+    outline: 'none !important',
+    paddingRight: 0,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
 });
 
 const OfficeNameWrapper = styled.div`
   margin-left: 30px;
+`;
+
+const FirstNameWrapper = styled.div`
+  font-size: 14px;
+  padding-right: 4px;
 `;
 
 export default withStyles(styles)(HeaderBackToBallot);

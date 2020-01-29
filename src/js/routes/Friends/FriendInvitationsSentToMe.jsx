@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import Badge from '@material-ui/core/esm/Badge';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Badge from '@material-ui/core/Badge';
+import { withStyles } from '@material-ui/core/styles';
 import FriendInvitationList from '../../components/Friends/FriendInvitationList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -76,7 +76,7 @@ class FriendInvitationsSentToMe extends Component {
             </span>
           ) : (
             <MessageCard
-              mainText="You currently have no incoming requests. Send some invites to connect with your friends!"
+              mainText="You have no incoming friend requests. Send some invites to connect with your friends!"
               buttonText="Invite Friends"
               buttonURL="/friends/invite"
             />

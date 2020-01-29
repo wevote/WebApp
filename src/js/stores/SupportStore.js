@@ -5,11 +5,17 @@ import CandidateStore from './CandidateStore';  // eslint-disable-line import/no
 import MeasureStore from './MeasureStore';  // eslint-disable-line import/no-cycle
 import { extractScoreFromNetworkFromPositionList } from '../utils/positionFunctions';  // eslint-disable-line import/no-cycle
 import { stringContains } from '../utils/textFormat';
+import CandidateActions from '../actions/CandidateActions';
+import MeasureActions from '../actions/MeasureActions';
 import SupportActions from '../actions/SupportActions';
 
 class SupportStore extends ReduceStore {
   getInitialState () {
     return {
+      voter_supports: {},
+      voter_opposes: {},
+      voter_statement_text: {},
+      is_public_position: {},
       weVoteIdSupportListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
       weVoteIdOpposeListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
       nameSupportListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
@@ -34,6 +40,7 @@ class SupportStore extends ReduceStore {
     } else if (isMeasure) {
       allCachedPositions = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
     }
+    // console.log('getBallotItemStatSheet allCachedPositions:', allCachedPositions);
     const results = extractScoreFromNetworkFromPositionList(allCachedPositions);
     const { numberOfSupportPositionsForScore, numberOfOpposePositionsForScore, numberOfInfoOnlyPositionsForScore } = results;
     // console.log('getBallotItemStatSheet ballotItemWeVoteId:', ballotItemWeVoteId, ', this.voterSupportsList:', this.voterSupportsList);
@@ -54,6 +61,13 @@ class SupportStore extends ReduceStore {
     }
 
     return this.voterOpposesList[ballotItemWeVoteId] || false;
+  }
+
+  getVoterTextStatementByBallotItemWeVoteId (ballotItemWeVoteId) {
+    if (!(this.statementList)) {
+      return false;
+    }
+    return this.statementList[ballotItemWeVoteId] || '';
   }
 
   getVoterSupportsByBallotItemWeVoteId (ballotItemWeVoteId) {
@@ -124,6 +138,9 @@ class SupportStore extends ReduceStore {
       ballotItemWeVoteId = action.res.ballot_item_we_vote_id;
     }
 
+    let isCandidate = false;
+    let isMeasure = false;
+    let revisedState;
     let voterOpposes = {};
     let voterSupports = {};
 
@@ -149,6 +166,13 @@ class SupportStore extends ReduceStore {
         if (voterSupports && voterSupports[ballotItemWeVoteId] !== undefined) {
           delete voterSupports[ballotItemWeVoteId];
         }
+        isCandidate = stringContains('cand', ballotItemWeVoteId);
+        isMeasure = stringContains('meas', ballotItemWeVoteId);
+        if (isCandidate) {
+          CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        } else if (isMeasure) {
+          MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        }
         return {
           ...state,
           voter_supports: voterSupports,
@@ -170,6 +194,13 @@ class SupportStore extends ReduceStore {
         if (voterOpposes && voterOpposes[ballotItemWeVoteId] !== undefined) {
           delete voterOpposes[ballotItemWeVoteId];
         }
+        isCandidate = stringContains('cand', ballotItemWeVoteId);
+        isMeasure = stringContains('meas', ballotItemWeVoteId);
+        if (isCandidate) {
+          CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        } else if (isMeasure) {
+          MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        }
         return {
           ...state,
           voter_supports: assign({}, state.voter_supports, { [ballotItemWeVoteId]: true }),
@@ -187,25 +218,55 @@ class SupportStore extends ReduceStore {
         };
 
       case 'voterPositionCommentSave':
-
         // Add the comment to the list in memory
+        isCandidate = stringContains('cand', ballotItemWeVoteId);
+        isMeasure = stringContains('meas', ballotItemWeVoteId);
+        if (isCandidate) {
+          CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        } else if (isMeasure) {
+          MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        }
         return {
           ...state,
           voter_statement_text: this.statementListWithChanges(state.voter_statement_text, ballotItemWeVoteId, action.res.statement_text),
         };
 
       case 'voterPositionVisibilitySave':
-
         // Add the visibility to the list in memory
+        isCandidate = stringContains('cand', ballotItemWeVoteId);
+        isMeasure = stringContains('meas', ballotItemWeVoteId);
+        if (isCandidate) {
+          CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        } else if (isMeasure) {
+          MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        }
         return {
           ...state,
           is_public_position: this.isForPublicListWithChanges(state.is_public_position, ballotItemWeVoteId, action.res.is_public_position),
         };
 
       case 'voterSignOut':
-
-        // console.log("resetting SupportStore");
+        // console.log('resetting SupportStore');
+        SupportActions.voterAllPositionsRetrieve();
         return this.resetState();
+
+      case 'twitterNativeSignInSave':
+      case 'twitterSignInRetrieve':
+      case 'voterEmailAddressSignIn':
+      case 'voterFacebookSignInRetrieve':
+      case 'voterMergeTwoAccounts':
+      case 'voterVerifySecretCode':
+        // Voter is signing in
+        // console.log('SupportStore call SupportActions.voterAllPositionsRetrieve action.type:', action.type);
+        SupportActions.voterAllPositionsRetrieve();
+        revisedState = state;
+        revisedState = Object.assign({}, revisedState, {
+          voter_supports: {},
+          voter_opposes: {},
+          voter_statement_text: {},
+          is_public_position: {},
+        });
+        return revisedState;
 
       default:
         return state;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/esm/styles';
-import Button from '@material-ui/core/esm/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
@@ -79,6 +79,14 @@ class SettingsStripePayment extends Component {
   componentWillUnmount () {
     this.donateStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.stripeErrorTimer) {
+      clearTimeout(this.stripeErrorTimer);
+      this.stripeErrorTimer = null;
+    }
+    if (this.stripeSubmitTimer) {
+      clearTimeout(this.stripeSubmitTimer);
+      this.stripeSubmitTimer = null;
+    }
   }
 
   onVoterStoreChange () {
@@ -100,7 +108,7 @@ class SettingsStripePayment extends Component {
           paymentError: true,
           stripeErrorMessageForVoter,
         });
-        setTimeout(() => {
+        this.stripeErrorTimer = setTimeout(() => {
           this.setState({
             paymentError: false,
             stripeErrorMessageForVoter: '',
@@ -179,7 +187,7 @@ class SettingsStripePayment extends Component {
       this.setState({
         paymentError: true,
       });
-      setTimeout(() => {
+      this.stripeSubmitTimer = setTimeout(() => {
         this.setState({ paymentError: false });
       }, 3000);
     }
@@ -203,7 +211,7 @@ class SettingsStripePayment extends Component {
 
     // let chargeAmountInPennies;
     let chargeAmountWithCommas;
-    let forWhichPlanText;
+    let forWhichPlanText = '';
     if (String(pricingPlanChosen) === 'professional') {
       forWhichPlanText = 'You are purchasing the Professional plan. ';
     } else if (String(pricingPlanChosen) === 'enterprise') {

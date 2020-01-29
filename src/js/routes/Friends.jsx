@@ -2,28 +2,29 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import Tabs from '@material-ui/core/esm/Tabs';
-import Tab from '@material-ui/core/esm/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import Info from '@material-ui/icons/Info';
-import Tooltip from '@material-ui/core/esm/Tooltip';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
+import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
-import FriendActions from '../actions/FriendActions';
-import FriendStore from '../stores/FriendStore';
-import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import FirstAndLastNameRequiredAlert from '../components/Widgets/FirstAndLastNameRequiredAlert';
-import FriendsCurrentPreview from '../components/Friends/FriendsCurrentPreview';
+import FriendActions from '../actions/FriendActions';
 import FriendInvitationsSentByMePreview from '../components/Friends/FriendInvitationsSentByMePreview';
 import FriendInvitationsSentToMePreview from '../components/Friends/FriendInvitationsSentToMePreview';
+import FriendStore from '../stores/FriendStore';
+import FriendsCurrentPreview from '../components/Friends/FriendsCurrentPreview';
+import isMobileScreenSize from '../utils/isMobileScreenSize';
 import FriendsPromoBox from '../components/Friends/FriendsPromoBox';
 import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import VoterStore from '../stores/VoterStore';
 import testimonialImage from '../../img/global/photos/Dale_McGrew-200x200.jpg';
-import { cordovaDot, historyPush, isWebApp } from '../utils/cordovaUtils';
+import { cordovaDot, historyPush, isCordova, isWebApp } from '../utils/cordovaUtils';
 import FriendInvitationsSentToMe from './Friends/FriendInvitationsSentToMe';
 import SuggestedFriends from './Friends/SuggestedFriends';
 import FriendsCurrent from './Friends/FriendsCurrent';
@@ -31,14 +32,25 @@ import InviteByEmail from './Friends/InviteByEmail';
 import FriendInvitationsSentByMe from './Friends/FriendInvitationsSentByMe';
 import MessageCard from '../components/Widgets/MessageCard';
 import AppStore from '../stores/AppStore';
-import { cordovaBallotFilterTopMargin } from '../utils/cordovaOffsets';
+import { cordovaBallotFilterTopMargin, cordovaFriendsWrapper } from '../utils/cordovaOffsets';
 import displayFriendsTabs from '../utils/displayFriendsTabs';
 
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = cordovaDot(testimonialImage);
-const testimonial = 'Instead of sending my friends a list of who they should vote for, I can add them as friends on We Vote.';
+const testimonial = 'Instead of searching through emails and social media for recommendations, I can see how my friends are voting on We Vote.';
 
 class Friends extends Component {
+  static getDerivedStateFromProps (props, state) {
+    const { defaultTabItem } = state;
+    // console.log('Friends getDerivedStateFromProps defaultTabItem:', defaultTabItem, ', this.props.params.tabItem:', props.params.tabItem);
+    // We only redirect when in mobile mode (when "displayFriendsTabs()" is true), a tab param has not been passed in, and we have a defaultTab specified
+    // This solves an edge case where you re-click the Friends Footer tab when you are in the friends section
+    if (displayFriendsTabs() && props.params.tabItem === undefined && defaultTabItem) {
+      historyPush(`/friends/${defaultTabItem}`);
+    }
+    return null;
+  }
+
   static propTypes = {
     classes: PropTypes.object,
     params: PropTypes.object,
@@ -49,7 +61,10 @@ class Friends extends Component {
     this.state = {
       currentFriends: [],
       defaultTabItem: '',
+      friendInvitationsSentByMe: [],
+      friendInvitationsSentToMe: [],
       friendsHeaderUnpinned: false,
+      suggestedFriendList: [],
     };
   }
 
@@ -58,12 +73,12 @@ class Friends extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    FriendActions.suggestedFriendList();
     FriendActions.currentFriends();
     FriendActions.friendInvitationsSentToMe();
     FriendActions.friendInvitationsSentByMe();
-    const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
+    FriendActions.suggestedFriendList();
     const friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
+    const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
     const suggestedFriendList = FriendStore.suggestedFriendList();
 
     this.setState({
@@ -88,24 +103,24 @@ class Friends extends Component {
   }
 
   onFriendStoreChange () {
-    const { currentFriends, friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe } = this.state;
-    if (suggestedFriendList.length !== FriendStore.suggestedFriendList().length) {
-      this.setState({ suggestedFriendList: FriendStore.suggestedFriendList() });
-      // console.log('suggestedFriends has changed');
-      this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
-    }
+    const { currentFriends, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList } = this.state;
     if (currentFriends.length !== FriendStore.currentFriends().length) {
       this.setState({ currentFriends: FriendStore.currentFriends() });
       // console.log('currentFriends has changed');
+    }
+    if (friendInvitationsSentByMe.length !== FriendStore.friendInvitationsSentByMe().length) {
+      this.setState({ friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe() });
+      // console.log('friendInvitationsSentByMe has changed');
+      this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
     }
     if (friendInvitationsSentToMe.length !== FriendStore.friendInvitationsSentToMe().length) {
       this.setState({ friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe() });
       // console.log('friendInvitationsSentToMe has changed');
       this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
     }
-    if (friendInvitationsSentByMe.length !== FriendStore.friendInvitationsSentByMe().length) {
-      this.setState({ friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe() });
-      // console.log('friendInvitationsSentByMe has changed');
+    if (suggestedFriendList.length !== FriendStore.suggestedFriendList().length) {
+      this.setState({ suggestedFriendList: FriendStore.suggestedFriendList() });
+      // console.log('suggestedFriends has changed');
       this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
     }
   }
@@ -117,14 +132,38 @@ class Friends extends Component {
   }
 
   getSelectedTab () {
-    return this.props.params.tabItem || this.state.defaultTabItem;
+    const { currentFriends, defaultTabItem, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList } = this.state;
+    // console.log('getSelectedTab this.props.params.tabItem:', this.props.params.tabItem, ', defaultTabItem:', defaultTabItem);
+    let selectedTab = this.props.params.tabItem || defaultTabItem;
+    // Don't return a selected tab if the tab isn't available
+    if (String(selectedTab) === 'requests') {
+      if (friendInvitationsSentToMe.length < 1) {
+        selectedTab = 'invite';
+      }
+    } else if (String(selectedTab) === 'suggested') {
+      if (suggestedFriendList.length < 1) {
+        selectedTab = 'invite';
+      }
+    } else if (String(selectedTab) === 'friends') {
+      if (currentFriends.length < 1) {
+        selectedTab = 'invite';
+      }
+    } else if (String(selectedTab) === 'sent-requests') {
+      if (friendInvitationsSentByMe.length < 1) {
+        selectedTab = 'invite';
+      }
+    }
+    return selectedTab;
   }
 
   handleNavigation = to => historyPush(to);
 
   resetDefaultTabForMobile (friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe) {
     let defaultTabItem;
-    if (friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0) {
+    if (this.props.params.tabItem) {
+      // If the voter is directed to a friends tab, make that the default
+      defaultTabItem = this.props.params.tabItem;
+    } else if (friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0) {
       defaultTabItem = 'requests';
     } else if (suggestedFriendList && suggestedFriendList.length > 0) {
       defaultTabItem = 'suggested';
@@ -134,19 +173,18 @@ class Friends extends Component {
       defaultTabItem = 'invite';
     }
     this.setState({ defaultTabItem });
-    // console.log(defaultTabItem);
+    // console.log('resetDefaultTabForMobile defaultTabItem:', defaultTabItem, ', this.props.params.tabItem:', this.props.params.tabItem);
     // We only redirect when in mobile mode, when "displayFriendsTabs()" is true
-    if (defaultTabItem !== this.props.params.tabItem && displayFriendsTabs()) {
+    if (displayFriendsTabs() && defaultTabItem !== this.props.params.tabItem) {
       this.handleNavigation(`/friends/${defaultTabItem}`);
     }
   }
 
   render () {
     renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
-    const { currentFriends, friendsHeaderUnpinned, friendInvitationsSentByMe, friendInvitationsSentToMe, mobileValue, suggestedFriendList, voter } = this.state;  // , desktopValue
+    const { currentFriends, friendsHeaderUnpinned, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList, voter } = this.state;
     const { classes } = this.props;
 
-    // console.log('Desktop value: ', desktopValue);
     // console.log('friendsHeaderUnpinned', friendsHeaderUnpinned);
 
     if (!voter) {
@@ -156,6 +194,7 @@ class Friends extends Component {
 
     let mobileContentToDisplay;
     let desktopContentToDisplay;
+    const friendActivityExists = currentFriends.length || friendInvitationsSentByMe.length || friendInvitationsSentToMe.length || suggestedFriendList.length;
 
     // Generate mobileContentToDisplay
     switch (this.props.params.tabItem) {
@@ -168,13 +207,13 @@ class Friends extends Component {
               <>
                 {suggestedFriendList.length > 0 ? (
                   <MessageCard
-                    mainText="You currently have no incoming requests. Check out your suggested friends."
-                    buttonText="View Suggestions"
+                    mainText="You have no incoming friend requests. Check out people you may know."
+                    buttonText="View Suggested Friends"
                     buttonURL="/friends/suggested"
                   />
                 ) : (
                   <MessageCard
-                    mainText="You currently have no incoming requests. Send some invites to connect with your friends!"
+                    mainText="You have no incoming friend requests. Send some invites to connect with your friends!"
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />
@@ -188,7 +227,12 @@ class Friends extends Component {
         mobileContentToDisplay = (
           <>
             {suggestedFriendList.length > 0 ? (
-              <SuggestedFriends />
+              <>
+                {voterIsSignedIn && (
+                  <FirstAndLastNameRequiredAlert />
+                )}
+                <SuggestedFriends />
+              </>
             ) : (
               <>
                 {friendInvitationsSentToMe.length > 0 ? (
@@ -212,6 +256,9 @@ class Friends extends Component {
       case 'invite':
         mobileContentToDisplay = (
           <>
+            {voterIsSignedIn && (
+              <FirstAndLastNameRequiredAlert />
+            )}
             <InviteByEmail />
             <FriendsPromoBox
               imageUrl={imageUrl}
@@ -254,7 +301,7 @@ class Friends extends Component {
               <FriendInvitationsSentByMe />
             ) : (
               <MessageCard
-                mainText="You currently have no sent requests. Send some now!"
+                mainText="Invite more friends now!"
                 buttonText="Invite Friends"
                 buttonURL="/friends/invite"
               />
@@ -271,13 +318,13 @@ class Friends extends Component {
               <>
                 {suggestedFriendList.length > 0 ? (
                   <MessageCard
-                    mainText="You currently have no incoming requests. Check out your suggested friends."
-                    buttonText="View Suggestions"
+                    mainText="You have no incoming friend requests. Check out your suggested friends."
+                    buttonText="View Suggested Friends"
                     buttonURL="/friends/suggested"
                   />
                 ) : (
                   <MessageCard
-                    mainText="You currently have no incoming requests. Send some invites to connect with your friends!"
+                    mainText="You have no incoming friend requests. Send some invites to connect with your friends!"
                     buttonText="Invite Friends"
                     buttonURL="/friends/invite"
                   />
@@ -323,9 +370,10 @@ class Friends extends Component {
             <div className="row">
               <div className="col-sm-12 col-lg-8">
                 <>
-                  {voterIsSignedIn ? (
+                  {voterIsSignedIn && (
                     <FirstAndLastNameRequiredAlert />
-                  ) : (
+                  )}
+                  {!(friendActivityExists) && (
                     <InviteByEmail />
                   )}
                   <FriendInvitationsSentToMePreview />
@@ -342,7 +390,7 @@ class Friends extends Component {
                 </>
               </div>
               <div className="col-md-12 col-lg-4 d-none d-md-block">
-                {voterIsSignedIn && (
+                {!!(voterIsSignedIn && friendActivityExists) && (
                   <section className="card">
                     <div className="card-main">
                       <SectionTitle>
@@ -356,7 +404,7 @@ class Friends extends Component {
                           <Info />
                         </Tooltip>
                       </Icon>
-                      <AddFriendsByEmail />
+                      <AddFriendsByEmail inSideColumn />
                     </div>
                   </section>
                 )}
@@ -384,7 +432,7 @@ class Friends extends Component {
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
       >
-        {!!(friendInvitationsSentToMe.length > 0 || mobileValue === 'requests') && (
+        {friendInvitationsSentToMe.length > 0 && (
           <Tab
             classes={{ root: classes.navigationTab }}
             value="requests"
@@ -394,7 +442,7 @@ class Friends extends Component {
             }}
           />
         )}
-        {!!(suggestedFriendList.length > 0 || mobileValue === 'suggested') && (
+        {suggestedFriendList.length > 0 && (
           <Tab
             classes={{ root: classes.navigationTab }}
             value="suggested"
@@ -407,12 +455,12 @@ class Friends extends Component {
         <Tab
           classes={{ root: classes.navigationTab }}
           value="invite"
-          label={window.innerWidth > 500 ? 'Invite Friends' : 'Invite'}
+          label={isMobileScreenSize() ? 'Invite' : 'Invite Friends'}
           onClick={() => {
             this.handleNavigation('/friends/invite');
           }}
         />
-        {!!(currentFriends.length > 0 || mobileValue === 'current') && (
+        {currentFriends.length > 0 && (
           <Tab
             classes={{ root: classes.navigationTab }}
             value="current"
@@ -422,7 +470,7 @@ class Friends extends Component {
             }}
           />
         )}
-        {!!(friendInvitationsSentByMe.length > 0 || mobileValue === 'sent-requests') && (
+        {friendInvitationsSentByMe.length > 0 && (
           <Tab
             classes={{ root: classes.navigationTab }}
             value="sent-requests"
@@ -435,11 +483,14 @@ class Friends extends Component {
       </Tabs>
     );
 
+    // friendsfallback 1/27 steve
+    // const friendsHeadClass = isWebApp() ? `friends__heading ${friendsHeaderUnpinned ? 'friends__heading__unpinned' : ''}` : 'friends-heading-cordova';
+
     return (
       <span>
         {displayFriendsTabs() ? (
           <>
-            <div className={`friends__heading ${friendsHeaderUnpinned && isWebApp() ? 'friends__heading__unpinned' : ''}`}>
+            <div className={`friends__heading ${isCordova() && 'friends__heading__cordova'} ${friendsHeaderUnpinned && isWebApp() ? 'friends__heading__unpinned' : ''}`}>
               <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
                 <div className="container-fluid">
                   <div className="row">
@@ -451,16 +502,16 @@ class Friends extends Component {
                 </div>
               </div>
             </div>
-            <div className="page-content-container">
+            <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
               <div className="container-fluid">
-                <Wrapper>
+                <div className="Friends__Wrapper" style={cordovaFriendsWrapper()}>
                   {mobileContentToDisplay}
-                </Wrapper>
+                </div>
               </div>
             </div>
           </>
         ) : (
-          <div className="page-content-container">
+          <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             <div className="container-fluid">
               <div className="container-main">
                 {desktopContentToDisplay}
@@ -484,11 +535,6 @@ const styles = () => ({
     maxHeight: '40px !important',
   },
 });
-
-const Wrapper = styled.div`
-  padding-top: 60px;
-  padding-bottom: 90px;
-`;
 
 const SectionTitle = styled.h2`
   width: fit-content;

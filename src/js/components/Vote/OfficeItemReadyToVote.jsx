@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Avatar from '@material-ui/core/esm/Avatar/index';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Avatar from '@material-ui/core/Avatar/index';
+import { withStyles } from '@material-ui/core/styles';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { isCordova } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
@@ -125,7 +125,9 @@ class OfficeItemReadyToVote extends Component {
                       <DesktopTabletView>
                         <OfficeText>{oneCandidate.contest_office_name}</OfficeText>
                       </DesktopTabletView>
-                      <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                      <BallotItemSupportOpposeCountDisplayWrapper>
+                        <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                      </BallotItemSupportOpposeCountDisplayWrapper>
                     </OfficeColumn>
                   </InnerWrapper>
                 )}
@@ -142,6 +144,11 @@ class OfficeItemReadyToVote extends Component {
 
 const styles = ({
 });
+
+const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+  cursor: pointer;
+  float: right;
+`;
 
 const Wrapper = styled.div`
   padding: 24px 24px 20px 24px;

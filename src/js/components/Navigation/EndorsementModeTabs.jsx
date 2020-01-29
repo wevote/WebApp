@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@material-ui/core/esm/Tabs';
-import Tab from '@material-ui/core/esm/Tab';
-import Badge from '@material-ui/core/esm/Badge';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Badge from '@material-ui/core/Badge';
+import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { renderLog } from '../../utils/logging';

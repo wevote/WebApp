@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Dialog from '@material-ui/core/esm/Dialog';
-import DialogTitle from '@material-ui/core/esm/DialogTitle';
-import IconButton from '@material-ui/core/esm/IconButton';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/esm/Typography';
-import DialogContent from '@material-ui/core/esm/DialogContent';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import Typography from '@material-ui/core/Typography';
+import DialogContent from '@material-ui/core/DialogContent';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';

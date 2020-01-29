@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -9,6 +9,7 @@ import { renderLog } from '../../utils/logging';
 
 export default class SuggestedFriendToggle extends Component {
   static propTypes = {
+    displayFullWidth: PropTypes.bool,
     otherVoterWeVoteId: PropTypes.string.isRequired,
   };
 
@@ -57,7 +58,7 @@ export default class SuggestedFriendToggle extends Component {
   render () {
     renderLog('SuggestedFriendToggle');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
-    const { otherVoterWeVoteId } = this.props;
+    const { displayFullWidth, otherVoterWeVoteId } = this.props;
     const { addSuggestedFriendSent, isFriend } = this.state;
     // console.log('SuggestedFriendToggle, otherVoterWeVoteId:', otherVoterWeVoteId, ', isFriend:', isFriend);
     const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
@@ -68,46 +69,36 @@ export default class SuggestedFriendToggle extends Component {
     }
 
     return (
-      <>
-        {addSuggestedFriendSent || isFriend ? (
-          <ButtonContainer>
-            <Button
-              variant="contained"
-              color="primary"
-              disabled
-              fullWidth
-            >
-              {!!(addSuggestedFriendSent && !isFriend) && 'Invite Sent'}
-              {isFriend && 'Already Friends'}
-            </Button>
-          </ButtonContainer>
-        ) : (
-          <ButtonContainer>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.addSuggestedFriend}
-              fullWidth
-            >
-              {window.innerWidth > 620 ? 'Add Friend' : 'Add Friend'}
-            </Button>
-          </ButtonContainer>
-        )}
-      </>
+      <ButtonContainer displayFullWidth={displayFullWidth}>
+        <Button
+          color="primary"
+          disabled={addSuggestedFriendSent || isFriend}
+          fullWidth
+          onClick={this.addSuggestedFriend}
+          variant="contained"
+        >
+          {isFriend ? 'Already Friends' : (
+            <>
+              {addSuggestedFriendSent ? 'Invite Sent' : 'Add Friend'}
+            </>
+          )}
+        </Button>
+      </ButtonContainer>
     );
   }
 }
 
 const ButtonContainer = styled.div`
+  white-space: nowrap;
   width: 100%;
-  margin-right: 12px;
+  // margin-right: 12px;
   @media(min-width: 400px) {
-    width: fit-content;
+    ${({ displayFullWidth }) => (displayFullWidth ? 'width: 100%;' : 'width: fit-content;')}
     margin: 0;
     margin-bottom: 6px;
   }
   @media(min-width: 520px) {
     margin: 0;
-    margin-left: 8px;
+    // margin-left: 8px;
   }
 `;

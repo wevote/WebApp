@@ -83,14 +83,14 @@ import { Button } from '@material-ui/core';   /DO NOT DO THIS!!!!!
  instead, cherry pick the component, and only that component will be added to the bundle.  
 
  ```
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
  ```
 
 Making these changes for material-ui saved about 300 MB in bundle size!
 
 Note that you can't load third level components this way, so you need to decompose second level components like this...
 ```
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 ```
 
 

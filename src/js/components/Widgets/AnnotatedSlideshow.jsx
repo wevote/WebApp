@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import styled, { withTheme } from 'styled-components';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -16,7 +16,15 @@ class AnnotatedSlideshow extends PureComponent {
   };
 
   componentDidMount () {
-    this.autoAdvanceSlide();
+    // User testing is showing problems with auto advance...
+    // this.autoAdvanceSlide();
+  }
+
+  componentWillUnmount () {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   handleChangeSlide = (advanceIfTrue) => {
@@ -27,7 +35,7 @@ class AnnotatedSlideshow extends PureComponent {
     }
     // this.handleSlideImage(num);
     this.props.onChangeSlide(advanceIfTrue ? selectedStepIndex + 1 : selectedStepIndex - 1);
-    this.autoAdvanceSlide();
+    // this.autoAdvanceSlide();
   }
 
   autoAdvanceSlide () {
@@ -60,15 +68,31 @@ class AnnotatedSlideshow extends PureComponent {
         </Slide>
         {
           selectedStepIndex < length - 1 && (
-            <Button
-              color="primary"
-              id="howItWorksNext"
-              variant="contained"
-              classes={{ root: classes.nextButtonRoot }}
-              onClick={() => this.handleChangeSlide(true)}
-            >
-              Next
-            </Button>
+            <TwoButtonsWrapper>
+              <BackButtonWrapper>
+                <Button
+                  classes={{ root: classes.nextButtonRoot }}
+                  color="primary"
+                  disabled={selectedStepIndex === 0}
+                  fullWidth
+                  onClick={() => this.handleChangeSlide(false)}
+                  variant="outlined"
+                >
+                  Back
+                </Button>
+              </BackButtonWrapper>
+              <NextButtonWrapper>
+                <Button
+                  color="primary"
+                  id="howItWorksNext"
+                  variant="contained"
+                  classes={{ root: classes.nextButtonRoot }}
+                  onClick={() => this.handleChangeSlide(true)}
+                >
+                  Next
+                </Button>
+              </NextButtonWrapper>
+            </TwoButtonsWrapper>
           )
         }
       </Wrapper>
@@ -107,6 +131,32 @@ const SlideShowTitle = styled.h3`
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 20px;
     margin-top: 16px;
+  }
+`;
+
+const TwoButtonsWrapper = styled.div`
+  width: 100%;
+  margin: 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const BackButtonWrapper = styled.div`
+  margin: 0;
+  margin-right: 12px;
+  width: 100%;
+  @media(min-width: 520px) {
+    margin-right: 8px;
+  }
+`;
+
+const NextButtonWrapper = styled.div`
+  margin: 0;
+  margin-right: 0;
+  width: 100%;
+  @media(min-width: 520px) {
+    margin-right: 8px;
   }
 `;
 

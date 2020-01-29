@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import DialogTitle from '@material-ui/core/esm/DialogTitle';
-import IconButton from '@material-ui/core/esm/IconButton';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import DialogContent from '@material-ui/core/esm/DialogContent';
-import { withStyles } from '@material-ui/core/esm/styles';
+import DialogContent from '@material-ui/core/DialogContent';
+import { withStyles } from '@material-ui/core/styles';
 import PositionPublicToggle from '../PositionPublicToggle';
 import Slides from './Slides';
 import SettingsAccount from '../../Settings/SettingsAccount';
@@ -13,13 +13,13 @@ import SettingsAccount from '../../Settings/SettingsAccount';
 class ChooseOrOppose extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    type: PropTypes.string.isRequired,
+    ballotItemType: PropTypes.string.isRequired,
     externalUniqueId: PropTypes.string,
     onClose: PropTypes.func,
   }
 
   getSlides = () => {
-    const { type } = this.props;
+    const { ballotItemType } = this.props;
     const slides = [
       (
         <React.Fragment>
@@ -28,11 +28,11 @@ class ChooseOrOppose extends Component {
           <Row>
             <BoldText>Test the toggle here:</BoldText>
             <PositionPublicToggle
-                ballotItemWeVoteId="null"
-                className="null"
-                externalUniqueId={`practiceToggle-${this.props.externalUniqueId}`}
-                type={type}
-                inTestMode
+              ballotItemWeVoteId="null"
+              className="null"
+              externalUniqueId={`practiceToggle-${this.props.externalUniqueId}`}
+              ballotItemType={ballotItemType}
+              inTestMode
             />
           </Row>
         </React.Fragment>

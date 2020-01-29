@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import IssueStore from '../../stores/IssueStore';
-import { renderLog } from '../../utils/logging';
 import ValueIconAndText from './ValueIconAndText';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import { renderLog } from '../../utils/logging';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByBallotItemDisplayList extends Component {
@@ -17,9 +18,10 @@ class IssuesByBallotItemDisplayList extends Component {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     ballotItemDisplayName: PropTypes.string,
     children: PropTypes.object,
+    disableMoreWrapper: PropTypes.bool,
+    externalUniqueId: PropTypes.string,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
-    disableMoreWrapper: PropTypes.bool,
   };
 
   constructor (props) {
@@ -118,22 +120,29 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 
   onIssueStoreChange () {
-    const { ballotItemWeVoteId } = this.state;
-    const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(ballotItemWeVoteId) || [];
-    const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(ballotItemWeVoteId) || [];
-    const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
-    const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
-    this.setState({
-      issuesUnderThisBallotItemVoterIsFollowing,
-      issuesUnderThisBallotItemVoterIsNotFollowing,
-      issuesUnderThisBallotItemVoterIsFollowingLength,
-      issuesUnderThisBallotItemVoterIsNotFollowingLength,
-    });
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      // console.log('IssuesByBallotItemDisplayList, onIssueStoreChange');
+      const { ballotItemWeVoteId } = this.state;
+      const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(ballotItemWeVoteId) || [];
+      const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(ballotItemWeVoteId) || [];
+      const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
+      const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
+      this.setState({
+        issuesUnderThisBallotItemVoterIsFollowing,
+        issuesUnderThisBallotItemVoterIsNotFollowing,
+        issuesUnderThisBallotItemVoterIsFollowingLength,
+        issuesUnderThisBallotItemVoterIsNotFollowingLength,
+      });
+    }
   }
 
   onVoterGuideStoreChange () {
-    // We just want to trigger a re-render
-    this.setState();
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      // console.log('IssuesByBallotItemDisplayList, onVoterGuideStoreChange');
+
+      // We just want to trigger a re-render, if SignInModal is not in use
+      this.setState();
+    }
   }
 
   handleEnterHoverLocalArea = () => {
@@ -168,6 +177,7 @@ class IssuesByBallotItemDisplayList extends Component {
   render () {
     renderLog('IssuesByBallotItemDisplayList.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('IssuesByBallotItemDisplayList render');
+    const { externalUniqueId } = this.props;
     const {
       ballotItemDisplayName, ballotItemWeVoteId, expand,
       issuesUnderThisBallotItemVoterIsFollowing, issuesUnderThisBallotItemVoterIsNotFollowing,
@@ -201,6 +211,7 @@ class IssuesByBallotItemDisplayList extends Component {
               key={oneIssue.issue_we_vote_id}
               ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={ballotItemWeVoteId}
+              externalUniqueId={externalUniqueId}
               issueFollowedByVoter
               issueWidths={this.issueWidths}
               oneIssue={oneIssue}
@@ -225,6 +236,7 @@ class IssuesByBallotItemDisplayList extends Component {
               key={oneIssue.issue_we_vote_id}
               ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={ballotItemWeVoteId}
+              externalUniqueId={externalUniqueId}
               issueWidths={this.issueWidths}
               oneIssue={oneIssue}
               subtractTotalWidth={this.handleSubtractTotalRemainingWidth}
@@ -278,29 +290,30 @@ const Wrapper = styled.div`
 
 const Issues = styled.div`
   width: 100%;
-  margin-left: -10px;
+  margin-left: 0px;
 `;
 
 const IssueList = styled.ul`
   display: flex;
   flex-flow: row${({ expand }) => (expand ? ' wrap' : '')};
+  margin-bottom: 8px;
+  overflow: hidden;
   padding-inline-start: 0;
 `;
 
-const MoreWrapper = styled.span`
-  display: flex;
-  flex-flow: row;
-  display: inline;
-  background-color: white;
-  position: absolute;
-  right: -30px;
-  margin-top: -3px;
-  width: 90px;
-  height: 40px;
-  display: flex;
+const MoreWrapper = styled.p`
   align-items: center;
+  background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
   cursor: pointer;
+  display: flex;
+  display: inline;
+  flex-flow: row;
+  height: 30px;
+  margin-top: -3px;
+  margin-bottom: 8px;
   padding-left: 4px;
+  position: absolute;
+  right: 8px;
 `;
 
 export default IssuesByBallotItemDisplayList;

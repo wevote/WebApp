@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/esm/Button';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import PersonIcon from '@material-ui/icons/Person';
 import EmailIcon from '@material-ui/icons/Email';
@@ -16,7 +16,7 @@ import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
-import Footer from '../components/Welcome/Footer';
+import WelcomeFooter from '../components/Welcome/WelcomeFooter';
 import { renderLog } from '../utils/logging';
 import TextBox from '../components/Welcome/TextBox';
 import Testimonial from '../components/Widgets/Testimonial';
@@ -31,7 +31,6 @@ import Section, {
   StepNumber,
   StepLabel,
   GetStarted,
-  ButtonContainer,
   DescriptionContainer,
   DescriptionLeftColumn,
   DescriptionImageColumn,
@@ -135,14 +134,21 @@ class WelcomeForVoters extends PureComponent {
             <BlueTitle> in 6 Minutes</BlueTitle>
           </Title>
           <SubTitle>Finally, a simple way to fill out your ballot.</SubTitle>
-          <PlayerContainer>
-            <Video
-              src="https://player.vimeo.com/video/329164243"
-              frameBorder="0"
-              allow="fullscreen"
+          <GetStarted>
+            <AddressBoxWelcome icon={
+              <LocationIcon classes={{ root: classes.locationIcon }} />
+            }
             />
-            <script src="https://player.vimeo.com/api/player.js" />
-          </PlayerContainer>
+            <Button
+              variant="contained"
+              color="primary"
+              classes={{ containedPrimary: classes.viewBallotButton }}
+              id="welcomeForVotersViewBallot"
+              onClick={() => historyPush('/ballot')}
+            >
+              View Ballot
+            </Button>
+          </GetStarted>
         </HeaderForVoters>
         <Section>
           <SectionTitle>
@@ -165,26 +171,20 @@ class WelcomeForVoters extends PureComponent {
             <StepNumber>4</StepNumber>
             <StepLabel>Fill out the whole thing in under 6 minutes</StepLabel>
           </Step>
-          <GetStarted>
-            <AddressBoxWelcome icon={<LocationIcon />} />
-            <ButtonContainer>
-              <Button
-                variant="contained"
-                color="primary"
-                classes={{ containedPrimary: classes.buttonContained }}
-                id="welcomeForVotersViewBallot"
-                onClick={() => historyPush('/ballot')}
-              >
-                View Ballot
-              </Button>
-            </ButtonContainer>
-          </GetStarted>
         </Section>
         <Section variant="dark" rounded>
           <SectionTitle>
             Voting Should be
             <SectionTitleBold> Simple</SectionTitleBold>
           </SectionTitle>
+          <PlayerContainer>
+            <Video
+              src="https://player.vimeo.com/video/329164243"
+              frameBorder="0"
+              allow="fullscreen"
+            />
+            <script src="https://player.vimeo.com/api/player.js" />
+          </PlayerContainer>
           <DescriptionContainer>
             <DescriptionLeftColumn>
               <Description>
@@ -267,7 +267,7 @@ class WelcomeForVoters extends PureComponent {
             </Section>
           )
         }
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }
@@ -287,11 +287,26 @@ const styles = theme => ({
   iconButton: {
     color: 'white',
   },
+  viewBallotButton: {
+    borderRadius: 32,
+    height: 50,
+    [theme.breakpoints.down('md')]: {
+      height: 36,
+    },
+    background: 'linear-gradient(180deg, white, rgb(178, 200, 255))',
+    color: '#2e3c5d',
+    fontWeight: 'bold',
+    paddingLeft: 30,
+    paddingRight: 30,
+    marginTop: 15,
+  },
+  locationIcon: {
+    color: '#2e3c5d',
+  },
 });
 
 const HeaderForVoters = styled.div`
   position: relative;
-  height: 590px;
   width: 110%;
   color: white;
   background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
@@ -299,12 +314,6 @@ const HeaderForVoters = styled.div`
   border-bottom-right-radius: 50% 25%;
   padding: 0 2em;
   margin-top: -72px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    height: 450px;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    height: 350px;
-  }
 `;
 
 const Wrapper = styled.div`

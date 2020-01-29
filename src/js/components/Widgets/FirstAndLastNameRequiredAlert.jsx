@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Alert from 'react-bootstrap/esm/Alert';
+import Alert from 'react-bootstrap/Alert';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
@@ -101,7 +101,10 @@ class FirstAndLastNameRequiredAlert extends Component {
     if (this.timer > 0) {
       FriendActions.friendInvitationByEmailSend();
     }
-    this.timer = null;
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
     this.friendStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
@@ -299,11 +302,13 @@ const ParagraphStyled = styled.div`
 const PrintWrapper = styled.div`
   position: relative;
   display: flex;
-  margin-bottom: 16px;
-  margin-bottom: 10px;
+  margin: 0 -10px 10px -10px;
   background-color: white;
   background-clip: border-box;
   border: 2px solid #999;
+  @media (min-width: 450px) {
+    margin: 0 0 10px 0;
+  }
   @media print {
     display: none;
   }

@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Dialog from '@material-ui/core/esm/Dialog';
-import DialogContent from '@material-ui/core/esm/DialogContent';
-import DialogTitle from '@material-ui/core/esm/DialogTitle';
-import IconButton from '@material-ui/core/esm/IconButton';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/esm/Typography';
-import Radio from '@material-ui/core/esm/Radio';
-import FormControlLabel from '@material-ui/core/esm/FormControlLabel';
-import FormControl from '@material-ui/core/esm/FormControl';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Typography from '@material-ui/core/Typography';
+import Radio from '@material-ui/core/Radio';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../utils/cordovaUtils'; // hasIPhoneNotch,
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import SettingsAccount from '../Settings/SettingsAccount';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
-import VoterActions from '../../actions/VoterActions';
-import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from './SnackNotifier';
+// import VoterActions from '../../actions/VoterActions';
+// import VoterConstants from '../../constants/VoterConstants';
 
 class PositionPublicToggle extends Component {
   static propTypes = {
@@ -28,7 +29,7 @@ class PositionPublicToggle extends Component {
     className: PropTypes.string.isRequired,
     externalUniqueId: PropTypes.string,
     inTestMode: PropTypes.bool,
-    type: PropTypes.string.isRequired,
+    ballotItemType: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -146,31 +147,32 @@ class PositionPublicToggle extends Component {
       voterPositionIsPublic: false,
     });
 
-    // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.type:", this.props.type);
-    SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.type, 'FRIENDS_ONLY');
-    openSnackbar({ message: 'Position now visible to friends only!' });
+    // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.ballotItemType:", this.props.ballotItemType);
+    SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.ballotItemType, 'FRIENDS_ONLY');
+    openSnackbar({ message: 'Endorsement now visible to We Vote friends only!' });
   }
 
   showItemToPublic () {
     const { inTestMode, isSignedIn } = this.state;
 
-    // console.log("PositionPublicToggle-showItemToPublic, this.props.type:", this.props.type);
+    // console.log("PositionPublicToggle-showItemToPublic, this.props.ballotItemType:", this.props.ballotItemType);
     if (inTestMode) {
       this.setState({
         voterPositionIsPublic: true,
       });
-      openSnackbar({ message: 'This position now visible to anyone on We Vote!' });
+      openSnackbar({ message: 'Endorsement now visible to anyone!' });
     } else if (isSignedIn) {
       this.setState({
         voterPositionIsPublic: true,
       });
-      SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.type, 'SHOW_PUBLIC');
-      const positionPublicToggleModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
+      SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.ballotItemType, 'SHOW_PUBLIC');
+      // TODO DALE: const positionPublicToggleModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
+      const positionPublicToggleModalHasBeenShown = false;
       if (!positionPublicToggleModalHasBeenShown) {
         this.togglePositionPublicHelpModal();
-        VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
+        // TODO DALE: VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
       } else {
-        openSnackbar({ message: 'This position now visible to anyone on We Vote!' });
+        openSnackbar({ message: 'Endorsement now visible to anyone!' });
       }
     } else {
       this.togglePositionPublicHelpModal();
@@ -229,12 +231,14 @@ class PositionPublicToggle extends Component {
     // or for the first time after being signed in.
     const PositionPublicToggleHelpModal = (
       <Dialog
-        classes={{ paper: classes.dialogPaper }}
+        classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}
         open={this.state.showPositionPublicHelpModal}
         onClose={() => { this.togglePositionPublicHelpModal(); }}
       >
         <DialogTitle>
-          <Typography variant="h6" className="text-center">Make Your Endorsements Public</Typography>
+          <Typography component="span" variant="h6" className="text-center">
+            {isSignedIn ? 'Public' : 'Show to Public'}
+          </Typography>
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}
@@ -244,25 +248,24 @@ class PositionPublicToggle extends Component {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent>
-          <section className="card">
+        <DialogContent classes={{ root: classes.dialogContent }}>
+          {isSignedIn ? (
             <div className="text-center">
-              {isSignedIn ? (
-                <div>
-                  <div className="u-f2">Your position is now visible to anyone.</div>
-                  <div className="u-f4">If you do NOT want to share your position publicly, click the toggle again to restrict visibility to We Vote friends only.</div>
-                </div>
-              ) : (
-                <div>
-                  <SettingsAccount />
-                </div>
-              )}
+              <div className="u-f3">Your endorsement is now visible to anyone.</div>
               <br />
-              We Vote makes it easy to share your views either publicly, or privately with your We Vote friends.
-              <br />
-              <br />
+              <div className="u-f6">Click the &quot;Friends&quot; toggle to show to We Vote friends only.</div>
             </div>
-          </section>
+          ) : (
+            <div>
+              <SettingsAccount
+                pleaseSignInTitle="Sign in to Make Your Endorsements Public"
+                pleaseSignInSubTitle=""
+                inModal
+              />
+            </div>
+          )}
+          <br />
+          <br />
         </DialogContent>
       </Dialog>
     );
@@ -280,7 +283,7 @@ class PositionPublicToggle extends Component {
                   classes={{ label: classes.radioLabel }}
                   id={`positionPublicToggleFriendsOnly-${this.props.externalUniqueId}`}
                   value="Friends Only"
-                  label="Friends Only"
+                  label={isMobileScreenSize() ? 'Friends' : 'Friends Only'}
                   labelPlacement="end"
                   control={
                     (
@@ -320,15 +323,47 @@ class PositionPublicToggle extends Component {
 }
 
 const styles = theme => ({
+  dialogRoot: isCordova() ? {
+    height: '100%',
+    position: 'absolute !important',
+    top: '-15%',
+    left: '0% !important',
+    right: 'unset !important',
+    bottom: 'unset !important',
+    width: '100%',
+  } : {},
+  dialogPaper: isWebApp() ? {
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '95%',
+      maxWidth: '95%',
+      width: '95%',
+      maxHeight: '90%',
+      margin: '0 auto',
+    },
+  } : {
+    margin: '0 !important',
+    width: '95%',
+    height: 'unset',
+    maxHeight: '90%',
+    offsetHeight: 'unset !important',
+    top: '50%',
+    left: '50%',
+    right: 'unset !important',
+    bottom: 'unset !important',
+    position: 'absolute',
+    transform: 'translate(-50%, -25%)',
+  },
+  dialogContent: {
+    [theme.breakpoints.down('md')]: {
+      padding: '0 8px 8px',
+    },
+  },
   radioPrimary: {
     padding: '.1rem',
     margin: '.1rem .1rem .6rem .6rem',
     [theme.breakpoints.down('md')]: {
       marginLeft: 0,
     },
-  },
-  dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
   },
   radioLabel: {
     fontSize: '14px',
@@ -362,7 +397,7 @@ const PublicToggle = styled.div`
 `;
 
 const RadioItem = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
     width: 100% !important;
     min-width: 100% !important;
     margin-bottom: -6px;
@@ -370,13 +405,15 @@ const RadioItem = styled.div`
 `;
 
 const RadioGroup = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
   width: 100%;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-bottom: -10px;
   }
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    display: flex;
-    flex-flow: row nowrap;;
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    flex-flow: row wrap;
+    margin-bottom: 0;
   }
 `;
 

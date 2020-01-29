@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
-import Dialog from '@material-ui/core/esm/Dialog';
-import DialogContent from '@material-ui/core/esm/DialogContent';
-import FormControl from '@material-ui/core/esm/FormControl';
-import FormControlLabel from '@material-ui/core/esm/FormControlLabel';
-import IconButton from '@material-ui/core/esm/IconButton';
-import OutlinedInput from '@material-ui/core/esm/OutlinedInput';
-import Radio from '@material-ui/core/esm/Radio';
-import RadioGroup from '@material-ui/core/esm/RadioGroup';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import IconButton from '@material-ui/core/IconButton';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
 import extractNumber from '../../utils/extractNumber';
@@ -165,6 +165,10 @@ class PaidAccountUpgradeModal extends Component {
   componentWillUnmount () {
     this.donateStoreListener.remove();
     window.removeEventListener('resize', this.handleResize);
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onCouponInputChange (e) {
@@ -270,13 +274,13 @@ class PaidAccountUpgradeModal extends Component {
       console.log('couponViewed:', couponViewed);
       if (couponMatchFound === false) {
         this.setState({ couponCodeError: true, couponCodeInputValue: '' });
-        setTimeout(() => {
+        this.timer = setTimeout(() => {
           DonateActions.setLatestCouponViewed(true);
           this.setState({ couponCodeError: false });
         }, 3000);
       } else if (couponStillValid === false) {
         this.setState({ couponCodeError: true, couponCodeInputValue: '' });
-        setTimeout(() => {
+        this.timer = setTimeout(() => {
           DonateActions.setLatestCouponViewed(true);
           this.setState({ couponCodeError: false });
         }, 3000);
@@ -301,22 +305,24 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   pricingPlanChosenFunction = (pricingPlanChosen) => {
+    // console.log('pricingPlanChosenFunction pricingPlanChosen:', pricingPlanChosen);
+    const pricingPlanChosenCleaned = pricingPlanChosen || '';
     const { activePaidPlanChosen, radioGroupValue, defaultPricing, lastCouponResponseReceivedFromAPI } = this.state;
     // console.log('pricingPlanChosenFunction pricingPlanChosen:', pricingPlanChosen, ', lastCouponResponseReceivedFromAPI:', lastCouponResponseReceivedFromAPI);
-    if (pricingPlanChosen === activePaidPlanChosen) {
+    if (pricingPlanChosenCleaned === activePaidPlanChosen) {
       this.setState({
         paidAccountProcessStep: 'activePaidPlanExists',
-        pricingPlanChosen,
+        pricingPlanChosen: pricingPlanChosenCleaned,
       });
     } else if (window.innerWidth > 768 && pricingPlanChosen !== 'free') {
       this.setState({
         paidAccountProcessStep: 'payForPlanDesktop',
-        pricingPlanChosen,
+        pricingPlanChosen: pricingPlanChosenCleaned,
       });
     } else if (pricingPlanChosen !== 'free') {
       this.setState({
         paidAccountProcessStep: 'selectPlanDetailsMobile',
-        pricingPlanChosen,
+        pricingPlanChosen: pricingPlanChosenCleaned,
       });
     } else {
       this.props.toggleFunction(this.state.pathname);
@@ -583,7 +589,7 @@ class PaidAccountUpgradeModal extends Component {
     let modalTitle = '';
     let backToButton;
     let modalHtmlContents = <span />;
-    const planNameTitle = `${pricingPlanChosen} Plan`;
+    const planNameTitle = `${pricingPlanChosen || ''} Plan`;
     const couponDiscountValueString = ` $${couponDiscountValue}`;
 
     switch (paidAccountProcessStep) {

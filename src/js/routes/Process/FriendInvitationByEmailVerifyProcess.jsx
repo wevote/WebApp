@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AppStore from '../../stores/AppStore';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -67,7 +68,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
   cancelMergeFunction = () => {
     historyPush({
-      pathname: '/more/network',
+      pathname: '/ballot',
       state: {
       },
     });
@@ -82,7 +83,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   voterMergeTwoAccountsByInvitationKey = (invitationSecretKey) => {
     VoterActions.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
     historyPush({
-      pathname: '/more/network',
+      pathname: '/ballot',
       state: {
         message: 'You have successfully signed in.',
         message_type: 'success',
@@ -99,6 +100,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     renderLog('FriendInvitationByEmailVerifyProcess');  // Set LOG_RENDER_EVENTS to log all renders
     const { invitation_secret_key: invitationSecretKey } = this.props.params;
     const { hostname, invitationStatus, saving, yesPleaseMergeAccounts } = this.state;
+    // console.log('FriendInvitationByEmailVerifyProcess, invitationStatus:', invitationStatus);
 
     if (yesPleaseMergeAccounts) {
       // If yesPleaseMergeAccounts is true, it doesn't matter what is happening with invitationStatus
@@ -113,10 +115,30 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // console.log('FriendInvitationByEmailVerifyProcess, invitationStatus:', invitationStatus);
     if (saving || !invitationStatus || !hostname || hostname === '') {
       // console.log('FriendInvitationByEmailVerifyProcess, saving:', saving, ', or waiting for invitationStatus:', invitationStatus);
-      return LoadingWheel;
+      return (
+        <div>
+          <DelayedLoad waitBeforeShow={1000}>
+            <div>
+              Verifying invitation code...
+              {' '}
+            </div>
+          </DelayedLoad>
+          <DelayedLoad waitBeforeShow={3000}>
+            <div>
+              Setting up your account...
+            </div>
+          </DelayedLoad>
+          <DelayedLoad waitBeforeShow={5000}>
+            <div>
+              Preparing your ballot...
+            </div>
+          </DelayedLoad>
+          {LoadingWheel}
+        </div>
+      );
     } else if (!invitationSecretKey) {
       historyPush({
-        pathname: '/friends',
+        pathname: '/ballot',
         state: {
           message: 'Invitation secret key not found. Invitation not accepted.',
           message_type: 'warning',
@@ -127,11 +149,11 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     // This process starts when we return from attempting friendInvitationByEmailVerify
     if (!invitationStatus.voterDeviceId) {
-      console.log('voterDeviceId Missing');
+      // console.log('voterDeviceId Missing');
       return LoadingWheel;
     } else if (!invitationStatus.invitationFound) {
       historyPush({
-        pathname: '/friends',
+        pathname: '/ballot',
         state: {
           message: 'Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.',
           message_type: 'warning',
@@ -150,16 +172,16 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     } else if (invitationStatus.invitationSecretKeyBelongsToThisVoter) {
       // We don't need to do anything more except redirect to the email management page
       historyPush({
-        pathname: '/friends',
+        pathname: '/ballot',
         state: {
-          message: 'You have accepted your friend\'s invitation. Visit your ballot to see what your friends are supporting or opposing.',
+          message: 'You have accepted your friend\'s invitation. See what your friends are supporting or opposing!',
           message_type: 'success',
         },
       });
       return LoadingWheel;
     } else if (invitationStatus.voterHasDataToPreserve) {
       // If so, ask if they want to connect two accounts?
-      console.log('FriendInvitationByEmailVerifyProcess yesPleaseMergeAccounts is FALSE');
+      // console.log('FriendInvitationByEmailVerifyProcess yesPleaseMergeAccounts is FALSE');
       // Display the question of whether to merge accounts or not
       return (
         <WouldYouLikeToMergeAccounts
@@ -170,10 +192,30 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       // return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
       // Go ahead and merge the accounts, which means deleting the current voter and switching to the invitation owner
-      console.log('FriendInvitationByEmailVerifyProcess - voterHasDataToPreserve is FALSE');
+      // console.log('FriendInvitationByEmailVerifyProcess - voterHasDataToPreserve is FALSE');
       this.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
       // return <span>this.voterMergeTwoAccountsByInvitationKey - go ahead</span>;
-      return LoadingWheel;
+      return (
+        <div>
+          <DelayedLoad waitBeforeShow={1000}>
+            <div>
+              Verifying invitation code.
+              {' '}
+            </div>
+          </DelayedLoad>
+          <DelayedLoad waitBeforeShow={3000}>
+            <div>
+              Setting up your account.
+            </div>
+          </DelayedLoad>
+          <DelayedLoad waitBeforeShow={5000}>
+            <div>
+              Preparing your ballot.
+            </div>
+          </DelayedLoad>
+          {LoadingWheel}
+        </div>
+      );
     }
   }
 }

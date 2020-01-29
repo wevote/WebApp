@@ -4,9 +4,9 @@ import { toTitleCase } from '../../utils/textFormat';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
-import OrganizationPositionItem from './OrganizationPositionItem';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
+import VoterGuidePositionItem from './VoterGuidePositionItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 
@@ -23,20 +23,9 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     super(props);
     this.state = {
       candidateList: [],
-      displayAllCandidatesFlag: false,
-      editMode: false,
       organization: {},
       organizationWeVoteId: '',
     };
-
-    this.closeYourNetworkIsUndecidedPopover = this.closeYourNetworkIsUndecidedPopover.bind(this);
-    this.closeYourNetworkSupportsPopover = this.closeYourNetworkSupportsPopover.bind(this);
-    this.closeHighestIssueScorePopover = this.closeHighestIssueScorePopover.bind(this);
-    // this.getCandidateLink = this.getCandidateLink.bind(this);
-    // this.getOfficeLink = this.getOfficeLink.bind(this);
-    // this.goToCandidateLink = this.goToCandidateLink.bind(this);
-    // this.goToOfficeLink = this.goToOfficeLink.bind(this);
-    this.toggleDisplayAllCandidates = this.toggleDisplayAllCandidates.bind(this);
   }
 
   componentDidMount () {
@@ -132,14 +121,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       });
     }
   }
-  //
-  // getCandidateLink (candidateWeVoteId) {
-  //   return `/candidate/${candidateWeVoteId}/btvg/${this.state.organization.organization_we_vote_id}`;
-  // }
-  //
-  // getOfficeLink () {
-  //   return `/office/${this.props.we_vote_id}/btvg/${this.state.organization.organization_we_vote_id}`;
-  // }
 
   getOrganizationPositionForThisCandidate (candidateWeVoteId, positionListForOneElection) {
     // console.log('getOrganizationPositionForThisCandidate position_list_for_one_election: ', position_list_for_one_election);
@@ -156,33 +137,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     }
 
     return onePositionToReturn;
-  }
-
-  toggleDisplayAllCandidates () {
-    const { displayAllCandidatesFlag } = this.state;
-    this.setState({ displayAllCandidatesFlag: !displayAllCandidatesFlag });
-  }
-
-  // goToCandidateLink (candidateWeVoteId) {
-  //   const candidateLink = this.getCandidateLink(candidateWeVoteId);
-  //   historyPush(candidateLink);
-  // }
-  //
-  // goToOfficeLink () {
-  //   const officeLink = this.getOfficeLink();
-  //   historyPush(officeLink);
-  // }
-
-  closeYourNetworkSupportsPopover () {
-    this.refs['supports-overlay'].hide(); // eslint-disable-line react/no-string-refs
-  }
-
-  closeHighestIssueScorePopover () {
-    this.refs['highest-issue-score-overlay'].hide(); // eslint-disable-line react/no-string-refs
-  }
-
-  closeYourNetworkIsUndecidedPopover () {
-    this.refs['undecided-overlay'].hide(); // eslint-disable-line react/no-string-refs
   }
 
   render () {
@@ -230,10 +184,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
 
                   return (
                     <div key={candidateWeVoteId}>
-                      {/* Organization Endorsement */}
-                      <OrganizationPositionItem
-                        editMode={this.state.editMode}
-                        key={orgPositionForCandidate.position_we_vote_id}
+                      <VoterGuidePositionItem
                         organizationWeVoteId={organizationWeVoteId}
                         position={orgPositionForCandidate}
                       />

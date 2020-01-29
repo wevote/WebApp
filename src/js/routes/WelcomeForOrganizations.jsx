@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/esm/Button';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
 import googleLogo from '../../img/global/logos/google-logo.svg';
 import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
-import Footer from '../components/Welcome/Footer';
+import WelcomeFooter from '../components/Welcome/WelcomeFooter';
 import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
@@ -56,6 +56,10 @@ class WelcomeForOrganizations extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onVoterStoreChange () {
@@ -82,7 +86,7 @@ class WelcomeForOrganizations extends Component {
     const currentStateAnimateTextIndex = this.state.currentAnimateTextIndex;
     const showMemberTextForThisLong = 2000;
     if (this.state.currentAnimateTextIndex < this.state.animateTextArray.length - 1) {
-      setTimeout(() => {
+      this.timer = setTimeout(() => {
         this.setState({ currentAnimateTextIndex: currentStateAnimateTextIndex + 1 });
 
         this.autoAnimateText();
@@ -281,7 +285,7 @@ class WelcomeForOrganizations extends Component {
             <NetworkImage src={cordovaDot(vipLogo)} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }

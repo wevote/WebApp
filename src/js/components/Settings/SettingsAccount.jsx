@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -8,8 +8,9 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import { cordovaSignInModalTopPosition } from '../../utils/cordovaOffsets';
-import { isCordova, isIOS } from '../../utils/cordovaUtils';
+import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, isWebApp,
+  restoreStylesAfterCordovaKeyboard,
+} from '../../utils/cordovaUtils';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
@@ -23,6 +24,7 @@ import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
+import VoterPhoneEmailCordovaEntryModal from './VoterPhoneEmailCordovaEntryModal';
 
 /* global $ */
 
@@ -34,6 +36,7 @@ export default class SettingsAccount extends Component {
     pleaseSignInTitle: PropTypes.string,
     pleaseSignInSubTitle: PropTypes.string,
     closeSignInModal: PropTypes.func,
+    focusedOnSingleInputToggle: PropTypes.func,
   };
 
   constructor (props) {
@@ -41,12 +44,11 @@ export default class SettingsAccount extends Component {
     this.state = {
       facebookAuthResponse: {},
       hideCurrentlySignedInHeader: false,
+      hideDialogForCordova: false,
       hideFacebookSignInButton: false,
       hideTwitterSignInButton: false,
       hideVoterEmailAddressEntry: false,
       hideVoterPhoneEntry: false,
-      inEmailCodeVerificationProcess: false,
-      inTextCodeVerificationProcess: false,
       isOnWeVoteRootUrl: true,
       isOnWeVoteSubdomainUrl: false,
       isOnFacebookSupportedDomainUrl: false,
@@ -57,6 +59,7 @@ export default class SettingsAccount extends Component {
     this.toggleTwitterDisconnectClose = this.toggleTwitterDisconnectClose.bind(this);
     this.toggleTwitterDisconnectOpen = this.toggleTwitterDisconnectOpen.bind(this);
     this.voterSplitIntoTwoAccounts = this.voterSplitIntoTwoAccounts.bind(this);
+    this.hideDialogForCordovaLocal = this.hideDialogForCordovaLocal.bind(this);
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -137,12 +140,43 @@ export default class SettingsAccount extends Component {
     }, delayBeforeClearingStatus);
   }
 
+  componentDidUpdate () {
+    if (isCordova()) {
+      const sendButtonSMS = $('#voterPhoneSendSMS');
+      const sendButtonEmail = $('#voterEmailAddressEntrySendCode');
+      const cont = $('.MuiDialog-container');
+      const styleWorking = cont.length ? $(cont).attr('style') : '';
+      const translate = isIPhone4in() || isIPhone4p7in() ? 'transform: translateY(10%);' : 'transform: translateY(27%);';
+
+      // The VoterPhoneEmailCordovaEntryModal dialog gets pushed out of the way when the virtual keyboard appears,
+      // so we wait for it to be rendered, then move it into place
+
+      if (sendButtonSMS.length) {
+        console.log('SettingsAccount componentDidUpdate SEND CODE was rendered. sendButtonSMS:', sendButtonSMS);
+      } else if ((sendButtonSMS.length)) {
+        console.log('SettingsAccount componentDidUpdate SEND CODE was rendered. sendButtonEmail:', sendButtonEmail);
+      }
+      if (sendButtonSMS.length || sendButtonSMS.length) {
+        if (styleWorking && !stringContains(translate, styleWorking)) {
+          $(cont).attr('style', `${styleWorking} ${translate}`);
+          console.log(`SettingsAccount componentDidUpdate was rendered. NEW style: ${$(cont).attr('style')}`);
+        } else {
+          console.log(`SettingsAccount componentDidUpdate was rendered. transform was already there. style: ${$(cont).attr('style')}`);
+        }
+      }
+    }
+  }
+
   componentWillUnmount () {
     // console.log("SignIn ---- UN mount");
     this.appStoreListener.remove();
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
-    this.timer = null;
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+    restoreStylesAfterCordovaKeyboard('SettingsAccount');
   }
 
   onAppStoreChange () {
@@ -154,10 +188,7 @@ export default class SettingsAccount extends Component {
   }
 
   onVoterStoreChange () {
-    const emailAddressStatus = VoterStore.getEmailAddressStatus();
-    const inEmailCodeVerificationProcess = (emailAddressStatus.sign_in_code_email_sent);
     this.setState({
-      inEmailCodeVerificationProcess,
       voter: VoterStore.getVoter(),
     });
   }
@@ -168,26 +199,17 @@ export default class SettingsAccount extends Component {
     });
   }
 
+  focusedOnSingleInputToggle = (focusedInputName) => {
+    // console.log('SettingsAccount focusedOnSingleInput');
+    if (this.props.focusedOnSingleInputToggle) {
+      this.props.focusedOnSingleInputToggle(focusedInputName);
+    }
+  };
+
   localCloseSignInModal = () => {
     // console.log('SettingsAccount localCloseSignInModal');
     if (this.props.closeSignInModal) {
       this.props.closeSignInModal();
-    }
-  };
-
-  toggleInTextCodeVerificationProcess = () => {
-    const { inTextCodeVerificationProcess } = this.state;
-    this.setState({ inTextCodeVerificationProcess: !inTextCodeVerificationProcess });
-  };
-
-  toggleInEmailCodeVerificationProcess = () => {
-    const { inEmailCodeVerificationProcess } = this.state;
-    if (inEmailCodeVerificationProcess) {
-      // If already in the verification process, reset the emailAddressStatus dict, so that VoterStore is refreshed without email verification data
-      VoterActions.clearEmailAddressStatus();
-    } else {
-      // If not already in the verification process, put us in the process
-      this.setState({ inEmailCodeVerificationProcess: true });
     }
   };
 
@@ -199,6 +221,8 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: !hideTwitterSignInButton,
       hideVoterPhoneEntry: !hideVoterPhoneEntry,
     });
+    // console.log('SettingsAccount toggleNonEmailSignInOptions');
+    this.focusedOnSingleInputToggle('email');
   };
 
   toggleNonPhoneSignInOptions = () => {
@@ -209,6 +233,8 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: !hideTwitterSignInButton,
       hideVoterEmailAddressEntry: !hideVoterEmailAddressEntry,
     });
+    // console.log('SettingsAccount toggleNonPhoneSignInOptions');
+    this.focusedOnSingleInputToggle('phone');
   };
 
   toggleTwitterDisconnectOpen () {
@@ -236,11 +262,24 @@ export default class SettingsAccount extends Component {
     }
   }
 
+  hideDialogForCordovaLocal () {
+    if (!this.state.hideDialogForCordova) {
+      this.setState({ hideDialogForCordova: true });
+      $('.MuiDialog-paperScrollPaper').css('display', 'none');  // Manually hide the underlying dialog title
+    }
+  }
+
   twitterLogOutOnKeyDown (event) {
     const enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       TwitterActions.appLogout();
     }
+  }
+
+  signOut () {
+    // console.log('SettingsAccount.jsx signOut');
+    VoterSessionActions.voterSignOut();
+    historyPush('/ballot');
   }
 
   render () {
@@ -249,7 +288,7 @@ export default class SettingsAccount extends Component {
     const {
       facebookAuthResponse, hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton,
       hideVoterEmailAddressEntry, hideVoterPhoneEntry, isOnWeVoteRootUrl, isOnWeVoteSubdomainUrl,
-      isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle, voter,
+      isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle, voter, hideDialogForCordova,
     } = this.state;
     if (!voter) {
       return LoadingWheel;
@@ -262,6 +301,7 @@ export default class SettingsAccount extends Component {
     } = voter;
     // console.log("SettingsAccount.jsx facebookAuthResponse:", facebookAuthResponse);
     // console.log("SettingsAccount.jsx voter:", voter);
+    // console.log('SettingsAccount.jsx hideDialogForCordova:', hideDialogForCordova);
     if (!voterIsSignedInFacebook && facebookAuthResponse && facebookAuthResponse.length && facebookAuthResponse.facebook_retrieve_attempted) {
       // console.log('SettingsAccount.jsx facebook_retrieve_attempted');
       oAuthLog('SettingsAccount facebook_retrieve_attempted');
@@ -283,31 +323,13 @@ export default class SettingsAccount extends Component {
       }
     }
 
-    if (isCordova()) {
-      // The dialog fades in, so it will not be there on the initial passes through this render() function
-      const dlg = $('[class*="SignInModal-dialogRoot-"]');
-      if (dlg.length) {
-        const collapse = hideVoterEmailAddressEntry === true;
-        // console.log("cordovaSignInModalTopPosition(collapse): ", cordovaSignInModalTopPosition(collapse));
-        // console.log("cordovaSignInModalTopPosition -- collapse: ", collapse);
-        const topStyle = `z-index: 1300; top: ${cordovaSignInModalTopPosition(collapse)}`;
-        $(dlg).attr('style', topStyle);
-        if (isIOS()) {
-          const container = $('.MuiDialog-container');
-          if (collapse) {
-            $(container).attr('style', `${$(container).attr('style')}; height: 240px; transform: translateY(2%);`);
-          } else {
-            $(container).attr('style', $(container).attr('style').replace('height: 240px; transform: translateY(2%);', ''));
-          }
-        }
-      }
-    }
-
     return (
-      <div className="">
+      <>
         <Helmet title={pageTitle} />
-        <BrowserPushMessage incomingProps={this.props} />
-        <div className={inModal ? '' : 'card'}>
+        {!hideDialogForCordova &&
+          <BrowserPushMessage incomingProps={this.props} />
+        }
+        <div className={inModal ? 'card-main full-width' : 'card'} style={{ display: `${hideDialogForCordova ? ' none' : 'undefined'}` }}>
           <Main inModal={inModal}>
             {voterIsSignedInTwitter && voterIsSignedInFacebook ?
               null :
@@ -317,15 +339,21 @@ export default class SettingsAccount extends Component {
               <div>
                 {voterIsSignedIn ?
                   <div className="u-stack--sm">{yourAccountExplanation}</div> : (
-                    <div>
-                      <div className="u-f3">{pleaseSignInTitle}</div>
-                      <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
-                    </div>
+                    <>
+                      <div className="u-show-mobile-bigger-than-iphone5">
+                        <div className="u-f3">{pleaseSignInTitle}</div>
+                        <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
+                      </div>
+                      <div className="u-show-desktop-tablet">
+                        <div className="u-f3">{pleaseSignInTitle}</div>
+                        <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
+                      </div>
+                    </>
                   )
                 }
               </div>
             )}
-            {!voterIsSignedInTwitter || !voterIsSignedInFacebook ? (
+            {(!voterIsSignedInTwitter || !voterIsSignedInFacebook) && !hideDialogForCordova ? (
               <>
                 <div className="u-stack--md">
                   { !hideTwitterSignInButton && !voterIsSignedInTwitter && (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl) && (
@@ -333,6 +361,7 @@ export default class SettingsAccount extends Component {
                       <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
                       <TwitterSignIn
                         buttonText="Sign in with Twitter"
+                        buttonSubmittedText="Signing in..."
                         inModal={inModal}
                         closeSignInModal={this.localCloseSignInModal}
                       />
@@ -343,7 +372,11 @@ export default class SettingsAccount extends Component {
                 <div className="u-stack--md">
                   { !hideFacebookSignInButton && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
                     <span>
-                      <FacebookSignIn closeSignInModal={this.localCloseSignInModal} buttonText="Sign in with Facebook" />
+                      <FacebookSignIn
+                        closeSignInModal={this.localCloseSignInModal}
+                        buttonSubmittedText="Signing in..."
+                        buttonText="Sign in with Facebook"
+                      />
                     </span>
                   )
                   }
@@ -351,14 +384,14 @@ export default class SettingsAccount extends Component {
               </>
             ) : null
             }
-            {voterIsSignedIn ? (
+            {voterIsSignedIn && !hideDialogForCordova ? (
               <div className="u-stack--md">
                 {!hideCurrentlySignedInHeader && (
                   <div className="u-stack--sm">
                     <span className="h3">Currently Signed In</span>
                     <span className="u-margin-left--sm" />
                     <span className="account-edit-action" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
-                      <span className="pull-right" onClick={VoterSessionActions.voterSignOut}>sign out</span>
+                      <span className="pull-right" onClick={this.signOut.bind(this)}>sign out</span>
                     </span>
                   </div>
                 )}
@@ -424,18 +457,38 @@ export default class SettingsAccount extends Component {
               </div>
             ) : null
             }
-            {!hideVoterPhoneEntry && (
+            {!hideVoterPhoneEntry && isWebApp() && (
               <VoterPhoneVerificationEntry
+                closeSignInModal={this.localCloseSignInModal}
+                inModal={inModal}
                 toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
               />
             )}
-            {!hideVoterEmailAddressEntry && (
+            {!hideVoterPhoneEntry && isCordova() && (
+              <VoterPhoneEmailCordovaEntryModal
+                closeSignInModal={this.localCloseSignInModal}
+                inModal={inModal}
+                toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
+                isPhone
+                hideDialogForCordova={this.hideDialogForCordovaLocal}
+              />
+            )}
+            {!hideVoterEmailAddressEntry && isWebApp() && (
               <VoterEmailAddressEntry
+                closeSignInModal={this.localCloseSignInModal}
                 inModal={inModal}
                 toggleOtherSignInOptions={this.toggleNonEmailSignInOptions}
               />
             )}
-
+            {!hideVoterEmailAddressEntry && isCordova() && (
+              <VoterPhoneEmailCordovaEntryModal
+                closeSignInModal={this.localCloseSignInModal}
+                inModal={inModal}
+                toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
+                isPhone={false}
+                hideDialogForCordova={this.hideDialogForCordovaLocal}
+              />
+            )}
             {debugMode && (
             <div className="text-center">
               is_signed_in:
@@ -478,7 +531,7 @@ export default class SettingsAccount extends Component {
             )}
           </Main>
         </div>
-      </div>
+      </>
     );
   }
 }
@@ -488,6 +541,7 @@ const Main = styled.div`
   padding: 16px;
   text-align: center;
   padding-top: 0;
+  width: 100%;
 `;
 
 const SignInSubtitle = styled.p`

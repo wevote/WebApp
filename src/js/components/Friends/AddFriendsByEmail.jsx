@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Alert from 'react-bootstrap/esm/Alert';
-import Button from '@material-ui/core/esm/Button';
-import TextField from '@material-ui/core/esm/TextField';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Alert from 'react-bootstrap/Alert';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
 import Close from '@material-ui/icons/Close';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import LoadingWheel from '../LoadingWheel';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -13,10 +14,12 @@ import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
 import { renderLog } from '../../utils/logging';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 
 class AddFriendsByEmail extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    inSideColumn: PropTypes.bool,
   };
 
   constructor (props) {
@@ -38,6 +41,7 @@ class AddFriendsByEmail extends Component {
       voter: {},
       voterIsSignedIn: false,
     };
+    prepareForCordovaKeyboard('AddFriendsByEmail');
     this.addFriend = this.addFriend.bind(this);
     this.cacheFriendData = this.cacheFriendData.bind(this);
   }
@@ -50,12 +54,13 @@ class AddFriendsByEmail extends Component {
     FriendActions.friendInvitationsWaitingForVerification();
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.friendsToInvite !== nextState.friendsToInvite) return true;
     return false;
   }
 
   componentWillUnmount () {
+    restoreStylesAfterCordovaKeyboard('AddFriendsByEmail');
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -66,12 +71,14 @@ class AddFriendsByEmail extends Component {
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       scope.addFriendsByEmailSubmit(event).bind(scope);
     }
-  }
+  };
 
   onFriendStoreChange () {
     const friendInvitationsWaitingForVerification = FriendStore.friendInvitationsWaitingForVerification() || [];
+    const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
 
     this.setState({
+      errorMessageToShowVoter,
       friendInvitationsWaitingForVerification,
       invitationEmailsAlreadyScheduledStep: friendInvitationsWaitingForVerification.length,
       loading: false,
@@ -91,13 +98,13 @@ class AddFriendsByEmail extends Component {
     this.setState({
       add_friends_message: e.target.value,
     });
-  }
+  };
 
   cacheSenderEmailAddress = (e) => {
     this.setState({
       senderEmailAddress: e.target.value,
     });
-  }
+  };
 
   addFriendsByEmailSubmit = (event) => {
     // This function is called when the next button is submitted;
@@ -119,9 +126,10 @@ class AddFriendsByEmail extends Component {
         loading: false,
         onEnterEmailAddressesStep: false,
       });
+      restoreStylesAfterCordovaKeyboard('AddFriendsByEmail');
       this.friendInvitationByEmailSend(event);
     }
-  }
+  };
 
   deleteFriendFromList = (friend) => {
     const { friendsToInvite } = this.state;
@@ -132,7 +140,7 @@ class AddFriendsByEmail extends Component {
     // console.log('Email: ', friend.email);
 
     this.setState({ friendsToInvite: [...newArray]});
-  }
+  };
 
   cacheFriendData (event) {
     this.setState({ [event.target.name]: event.target.value });
@@ -176,6 +184,7 @@ class AddFriendsByEmail extends Component {
     // console.log('firstNameArray: ', firstNameArray);
     // console.log('lastNameArray: ', lastNameArray);
     // const response =
+    FriendActions.clearErrorMessageToShowVoter();
     FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
       lastNameArray, '', this.state.add_friends_message,
       this.state.senderEmailAddress);
@@ -193,6 +202,7 @@ class AddFriendsByEmail extends Component {
       invitationEmailsAlreadyScheduledStep: false,
       onFriendInvitationsSentStep: true,
     });
+    prepareForCordovaKeyboard('AddFriendsByEmail');
   }
 
   addFriend () {
@@ -225,12 +235,14 @@ class AddFriendsByEmail extends Component {
 
   render () {
     renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
+    const { inSideColumn } = this.props;
     const {
-      emailAddressesError, friendContactInfo, friendFirstName, friendInvitationsWaitingForVerification,
+      emailAddressesError, errorMessageToShowVoter, friendContactInfo, friendFirstName, friendInvitationsWaitingForVerification,
       friendLastName, friendsToInvite,
-      loading, invitationEmailsAlreadyScheduledStep,
+      invitationEmailsAlreadyScheduledStep, loading,
       onEnterEmailAddressesStep, onFriendInvitationsSentStep, senderEmailAddressError, voterIsSignedIn,
     } = this.state;
+
     // console.log(friendsToInvite);
     const atLeastOneValidated = friendsToInvite.length !== 0 || validatePhoneOrEmail(this.state.friendContactInfo);
 
@@ -242,17 +254,20 @@ class AddFriendsByEmail extends Component {
 
     return (
       <div>
-        {onFriendInvitationsSentStep && (
-          <div className="alert alert-success">
-          Invitations sent. Is there anyone else you&apos;d like to invite?
-          </div>
-        )}
-        {emailAddressesError || senderEmailAddressError ? (
+        {emailAddressesError || errorMessageToShowVoter || senderEmailAddressError ? (
           <div className="alert alert-danger">
             {this.state.errorMessage}
+            {this.state.errorMessageToShowVoter}
           </div>
-        ) : null
-        }
+        ) : (
+          <div>
+            {onFriendInvitationsSentStep && (
+              <div className="alert alert-success">
+              Invitations sent. Is there anyone else you&apos;d like to invite?
+              </div>
+            )}
+          </div>
+        )}
         {friendsToInvite.length !== 0 && (
           <FriendsDisplay>
             <SectionTitle>Invite List</SectionTitle>
@@ -323,7 +338,7 @@ class AddFriendsByEmail extends Component {
                             name="friendFirstName"
                             value={friendFirstName}
                             onChange={this.cacheFriendData}
-                            placeholder="Optional"
+                            placeholder={isMobileScreenSize() || inSideColumn ? 'Optional' : 'Optional, but helpful!'}
                           />
                         </div>
                         <div className="col col-6">
@@ -450,6 +465,7 @@ const FormWrapper = styled.div`
 
 const Label = styled.div`
   margin-bottom: -4px;
+  white-space: nowrap;
 `;
 
 const ButtonContainer = styled.div`

@@ -131,6 +131,9 @@ class FriendStore extends ReduceStore {
     let currentFriendsOrganizationWeVoteIds = [];
 
     switch (action.type) {
+      case 'clearErrorMessageToShowVoter':
+        // console.log('FriendStore clearErrorMessageToShowVoter');
+        return { ...state, errorMessageToShowVoter: '' };
       case 'friendInviteResponse':
         if (!action.res.success) {
           // There was a problem
@@ -161,6 +164,7 @@ class FriendStore extends ReduceStore {
           };
         } else if (action.res.kind_of_invite_response === 'DELETE_INVITATION_VOTER_SENT_BY_ME') {
           FriendActions.friendInvitationsSentByMe();
+          FriendActions.suggestedFriendList();
           // console.log('FriendStore friendInviteResponse incoming data DELETE_INVITATION_VOTER_SENT_BY_ME, action.res:', action.res);
           return {
             ...state,
@@ -224,7 +228,7 @@ class FriendStore extends ReduceStore {
       case 'friendInvitationByEmailVerify':
         if (action.res.voter_device_id === '') {
           // The first time it was called there was no voter_device_id, so we want to call it again
-          // console.log('FriendStore, friendInvitationByEmailVerify, voter_device_id missing, invitation_secret_key:', action.res.invitation_secret_key);
+          console.log('FriendStore, friendInvitationByEmailVerify, voter_device_id missing, invitation_secret_key:', action.res.invitation_secret_key);
           FriendActions.friendInvitationByEmailVerify(action.res.invitation_secret_key);
         } else {
           // console.log('FriendStore, voterDeviceId present');
@@ -308,6 +312,7 @@ class FriendStore extends ReduceStore {
 
       case 'voterGuidesFromFriendsUpcomingRetrieve':
         // console.log('FriendStore voterGuidesFromFriendsUpcomingRetrieve, action.res:', action.res);
+        ({ currentFriendsOrganizationWeVoteIds } = state);
         if (action.res.voter_guides) {
           for (count = 0; count < action.res.voter_guides.length; count++) {
             if (!arrayContains(action.res.voter_guides[count].organization_we_vote_id, currentFriendsOrganizationWeVoteIds)) {
@@ -323,8 +328,21 @@ class FriendStore extends ReduceStore {
           currentFriendsOrganizationWeVoteIds,
         };
 
+      case 'twitterNativeSignInSave':
+      case 'twitterSignInRetrieve':
+      case 'voterEmailAddressSignIn':
+      case 'voterFacebookSignInRetrieve':
+      case 'voterMergeTwoAccounts':
+      case 'voterVerifySecretCode':
+        // console.log('resetting FriendStore from sign in process');
+        FriendActions.currentFriends();
+        FriendActions.friendInvitationsSentByMe();
+        FriendActions.friendInvitationsSentToMe();
+        FriendActions.friendInvitationsProcessed();
+        return this.resetState();
+
       case 'voterSignOut':
-        // console.log('resetting FriendStore');
+        // console.log('resetting FriendStore from voterSignOut');
         FriendActions.currentFriends();
         FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsSentToMe();

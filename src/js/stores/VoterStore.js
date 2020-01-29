@@ -9,6 +9,7 @@ import OrganizationActions from '../actions/OrganizationActions';
 import { stringContains } from '../utils/textFormat';
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterGuideActions from '../actions/VoterGuideActions';
+import signInModalGlobalState from '../components/Widgets/signInModalGlobalState';
 
 class VoterStore extends ReduceStore {
   getInitialState () {
@@ -274,14 +275,6 @@ class VoterStore extends ReduceStore {
   }
 
   reduce (state, action) {
-    // 11/14/19, removed by Steve, not sure what this was trying to catch, but this is a bit of a red herring, since calls to the FaceBook api will not have these fields
-    // // Exit if we don't have a response. "success" is not required though -- we should deal with error conditions below.
-    // if (!action.res && !action.payload) {
-    //   // Note that
-    //   console.log('VoterStore, no action.res or action.payload received. (Check to see that this is even meant for VoterStore). action: ', action);
-    //   return state;
-    // }
-
     let facebookPhotoRetrieveLoopCount;
     let address;
     let currentVoterDeviceId;
@@ -557,7 +550,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterMergeTwoAccounts':
-        // console.log('VoterStore, voterMergeTwoAccounts');
+        console.log('VoterStore, voterMergeTwoAccounts');
         // On the server we just switched linked this voterDeviceId to a new voter record, so we want to
         //  refresh a lot of data
         VoterActions.voterRetrieve();
@@ -567,11 +560,14 @@ class VoterStore extends ReduceStore {
         // }, delayBeforeApiCall);
         VoterActions.voterEmailAddressRetrieve();
         VoterActions.voterSMSPhoneNumberRetrieve();
-        FriendActions.currentFriends();
-        FriendActions.friendInvitationsSentByMe();
-        FriendActions.friendInvitationsSentToMe();
-        FriendActions.friendInvitationsProcessed();
-        BallotActions.voterBallotItemsRetrieve();
+        if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+          // Cascading actions like this causes serious problems when you have a dialog with components that change stores.
+          FriendActions.currentFriends();
+          FriendActions.friendInvitationsSentByMe();
+          FriendActions.friendInvitationsSentToMe();
+          FriendActions.friendInvitationsProcessed();
+          BallotActions.voterBallotItemsRetrieve();
+        }
         return {
           ...state,
           emailSignInStatus: {

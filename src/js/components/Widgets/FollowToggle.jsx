@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import NotInterested from '@material-ui/icons/NotInterested';
+import FriendStore from '../../stores/FriendStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { renderLog } from '../../utils/logging';
@@ -21,6 +22,7 @@ export default class FollowToggle extends Component {
     showFollowingText: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
     organizationWeVoteId: PropTypes.string,
+    otherVoterWeVoteId: PropTypes.string,
     hideDropdownButtonUntilFollowing: PropTypes.bool,
     lightModeOn: PropTypes.bool,
     anchorLeft: PropTypes.bool,
@@ -32,10 +34,6 @@ export default class FollowToggle extends Component {
       componentDidMountFinished: false,
       isFollowing: false,
       isIgnoring: false,
-      organization: {},
-      voter: {
-        we_vote_id: '',
-      },
     };
 
     this.followInstantly = this.followInstantly.bind(this);
@@ -46,34 +44,27 @@ export default class FollowToggle extends Component {
 
   componentDidMount () {
     // console.log('componentDidMount, this.props: ', this.props);
-    if (this.props.organizationWeVoteId) {
+    const { organizationWeVoteId } = this.props;
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      let organizationName = '';
+      if (organization && organization.organization_name) {
+        organizationName = organization.organization_name;
+      }
       this.setState({
         componentDidMountFinished: true,
-        isFollowing: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
-        isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(this.props.organizationWeVoteId),
-        organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
-        organizationWeVoteId: this.props.organizationWeVoteId,
+        isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
+        isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
+        organizationName,
       });
     }
     this.onVoterStoreChange();
 
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     // We need the voterGuideStoreListener until we take the follow functions out of OrganizationActions and VoterGuideStore
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-  }
-
-  componentWillReceiveProps (nextProps) {
-    // console.log('itemActionBar, RELOAD componentWillReceiveProps');
-    if (nextProps.organizationWeVoteId !== undefined && nextProps.organizationWeVoteId && nextProps.organizationWeVoteId !== this.state.organizationWeVoteId) {
-      this.setState({
-        componentDidMountFinished: true,
-        isFollowing: OrganizationStore.isVoterFollowingThisOrganization(nextProps.organizationWeVoteId),
-        isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(nextProps.organizationWeVoteId),
-        organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organizationWeVoteId),
-        organizationWeVoteId: nextProps.organizationWeVoteId,
-      });
-    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -83,13 +74,18 @@ export default class FollowToggle extends Component {
       return true;
     }
 
-    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-      // console.log('shouldComponentUpdate: this.state.organizationWeVoteId', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
+    if (this.props.organizationWeVoteId !== nextProps.organizationWeVoteId) {
+      // console.log('shouldComponentUpdate: this.props.organizationWeVoteId', this.props.organizationWeVoteId, ', nextProps.organizationWeVoteId', nextProps.organizationWeVoteId);
       return true;
     }
 
     if (this.state.isFollowing !== nextState.isFollowing) {
       // console.log('shouldComponentUpdate: this.state.isFollowing', this.state.isFollowing, ', nextState.isFollowing', nextState.isFollowing);
+      return true;
+    }
+
+    if (this.state.isFriend !== nextState.isFriend) {
+      // console.log('shouldComponentUpdate: this.state.isFriend', this.state.isFriend, ', nextState.isFriend', nextState.isFriend);
       return true;
     }
 
@@ -101,38 +97,61 @@ export default class FollowToggle extends Component {
   }
 
   componentWillUnmount () {
-    // console.log('componentWillUnmount, this.state.organizationWeVoteId: ', this.state.organizationWeVoteId);
-    this.voterGuideStoreListener.remove();
+    // console.log('componentWillUnmount, this.props.organizationWeVoteId: ', this.props.organizationWeVoteId);
+    this.friendStoreListener.remove();
     this.organizationStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  onVoterGuideStoreChange () {
-    // console.log('FollowToggle, onVoterGuideStoreChange, organization_we_vote_id: ', this.state.organizationWeVoteId);
-    if (this.state.organizationWeVoteId) {
-      const { organizationWeVoteId } = this.state;
-      this.setState({
-        isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
-        isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
-        organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
-      });
-    }
+  onFriendStoreChange () {
+    const { otherVoterWeVoteId } = this.props;
+    this.setState({
+      isFriend: FriendStore.isFriend(otherVoterWeVoteId),
+    });
   }
 
   onOrganizationStoreChange () {
     // console.log('FollowToggle, onOrganizationStoreChange, organization_we_vote_id: ', this.state.organizationWeVoteId);
-    if (this.state.organizationWeVoteId) {
-      const { organizationWeVoteId } = this.state;
+    const { organizationWeVoteId } = this.props;
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      let organizationName = '';
+      if (organization && organization.organization_name) {
+        organizationName = organization.organization_name;
+      }
       this.setState({
         isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
         isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
-        organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
+        organizationName,
       });
     }
   }
 
   onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+    const voter = VoterStore.getVoter();
+    let voterLinkedOrganizationWeVoteId = '';
+    if (voter && voter.linked_organization_we_vote_id) {
+      voterLinkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    }
+    this.setState({ voterLinkedOrganizationWeVoteId });
+  }
+
+  onVoterGuideStoreChange () {
+    // console.log('FollowToggle, onVoterGuideStoreChange, organizationWeVoteId: ', this.props.organizationWeVoteId);
+    const { organizationWeVoteId } = this.props;
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      let organizationName = '';
+      if (organization && organization.organization_name) {
+        organizationName = organization.organization_name;
+      }
+      this.setState({
+        isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
+        isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),
+        organizationName,
+      });
+    }
   }
 
   startFollowingLocalState () {
@@ -164,16 +183,15 @@ export default class FollowToggle extends Component {
   }
 
   stopFollowingInstantly (stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {
+    const { organizationName } = this.state;
     if (currentBallotIdInUrl && urlWithoutHash && urlWithoutHash) {
       if (currentBallotIdInUrl !== ballotItemWeVoteId) {
-        historyPush(`${this.props.urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
+        historyPush(`${urlWithoutHash}#${ballotItemWeVoteId}`);
       }
     }
 
     let toastMessage = "You've stopped following this organization's opinions.";
-
-    if (this.state.organization && this.state.organization.organization_name) {
-      const organizationName = this.state.organization.organization_name;
+    if (organizationName) {
       toastMessage = `You've stopped following ${organizationName}'s opinions!`;
     }
 
@@ -183,16 +201,15 @@ export default class FollowToggle extends Component {
   }
 
   stopIgnoringInstantly (stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {
+    const { organizationName } = this.state;
     if (currentBallotIdInUrl && urlWithoutHash && urlWithoutHash) {
       if (currentBallotIdInUrl !== ballotItemWeVoteId) {
-        historyPush(`${this.props.urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
+        historyPush(`${urlWithoutHash}#${ballotItemWeVoteId}`);
       }
     }
 
     let toastMessage = "You've stopped ignoring this organization's opinions.";
-
-    if (this.state.organization && this.state.organization.organization_name) {
-      const organizationName = this.state.organization.organization_name;
+    if (organizationName) {
       toastMessage = `You've stopped ignoring ${organizationName}'s opinions!`;
     }
 
@@ -202,16 +219,15 @@ export default class FollowToggle extends Component {
   }
 
   followInstantly (followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {
+    const { organizationName } = this.state;
     if (currentBallotIdInUrl && urlWithoutHash && urlWithoutHash) {
       if (currentBallotIdInUrl !== ballotItemWeVoteId) {
-        historyPush(`${this.props.urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
+        historyPush(`${urlWithoutHash}#${ballotItemWeVoteId}`);
       }
     }
 
     let toastMessage = "Now following this organization's opinions!";
-
-    if (this.state.organization && this.state.organization.organization_name) {
-      const organizationName = this.state.organization.organization_name;
+    if (organizationName) {
       toastMessage = `Now following ${organizationName}'s opinions!`;
     }
 
@@ -228,16 +244,15 @@ export default class FollowToggle extends Component {
   }
 
   ignoreInstantly (ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {
+    const { organizationName } = this.state;
     if (currentBallotIdInUrl && urlWithoutHash && urlWithoutHash) {
       if (currentBallotIdInUrl !== ballotItemWeVoteId) {
-        historyPush(`${this.props.urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
+        historyPush(`${urlWithoutHash}#${ballotItemWeVoteId}`);
       }
     }
 
     let toastMessage = "Now ignoring this organization's opinions.";
-
-    if (this.state.organization && this.state.organization.organization_name) {
-      const organizationName = this.state.organization.organization_name;
+    if (organizationName) {
       toastMessage = `Now ignoring ${organizationName}'s opinions.`;
     }
 
@@ -249,16 +264,18 @@ export default class FollowToggle extends Component {
 
   render () {
     renderLog('FollowToggle');  // Set LOG_RENDER_EVENTS to log all renders
-    if (!this.state || !this.state.organizationWeVoteId) { return <div />; }
+    const {
+      anchorLeft, ballotItemWeVoteId, currentBallotIdInUrl,
+      hideDropdownButtonUntilFollowing, hideStopFollowingButton, hideStopIgnoringButton,
+      lightModeOn, organizationWeVoteId, showFollowingText, urlWithoutHash,
+    } = this.props;
+    if (!organizationWeVoteId) { return <div />; }
 
-    const { isFollowing, isIgnoring, organizationWeVoteId } = this.state;
-    const isLookingAtSelf = this.state.voter.linked_organization_we_vote_id === organizationWeVoteId;
-    // console.log('FollowToggle render, isFollowing: ', isFollowing, ', isIgnoring: ', isIgnoring);
-
+    const { isFollowing, isFriend, isIgnoring, voterLinkedOrganizationWeVoteId } = this.state;
+    const isLookingAtSelf = voterLinkedOrganizationWeVoteId === organizationWeVoteId;
     // You should not be able to follow yourself
     if (isLookingAtSelf) { return <div />; }
 
-    const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId, showFollowingText } = this.props;
     const followFunction = OrganizationActions.organizationFollow.bind(this, organizationWeVoteId);
     const ignoreFunction = OrganizationActions.organizationFollowIgnore.bind(this, organizationWeVoteId);
     const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, organizationWeVoteId);
@@ -266,111 +283,51 @@ export default class FollowToggle extends Component {
 
     return (
       <div className="issues-follow-container">
-        {isFollowing || isIgnoring ? (
-          <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled" disabled>
-            {showFollowingText ? (
-              <span>
-                { isFollowing && (
-                  <span>
-                    <CheckCircle className="following-icon" />
-                    <span className="pl-2">Following</span>
-                  </span>
-                )}
-                { isIgnoring && (
-                  <span>
-                    <NotInterested className="ignoring-icon" />
-                    <span className="pl-2">Ignoring</span>
-                  </span>
-                )}
-              </span>
-            ) : (
-              <span>
-                { isFollowing &&
-                  <CheckCircle className="following-icon" /> }
-                { isIgnoring &&
-                  <NotInterested className="ignoring-icon" /> }
-              </span>
-            )}
-          </Button>
-        ) : (
+        {isFollowing || isFriend || isIgnoring ? (
           <>
-            {this.props.hideDropdownButtonUntilFollowing ? (
-              <>
-                {this.props.lightModeOn ? (
-                  <Button id={`positionItemFollowToggleFollow-${organizationWeVoteId}`} type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Follow
-                  </Button>
-                ) : (
-                  <Button id={`positionItemFollowToggleFollow-${organizationWeVoteId}`} type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Follow
-                  </Button>
-                )}
-                <div className={this.props.anchorLeft ? (
-                  'dropdown-menu dropdown-menu-left issues-follow-btn__menu'
-                ) : (
-                  'dropdown-menu dropdown-menu-right issues-follow-btn__menu'
-                )}
-                >
-                  {isFollowing ? (
-                    <span className="d-print-none">
-                      { this.props.hideStopFollowingButton ?
-                        null : (
-                          <Button id={`positionItemFollowToggleUnfollow-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                            Unfollow
-                          </Button>
-                        )}
+            <Button
+              type="button"
+              className={`issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled ${isFriend ? ' dropdown-toggle dropdown-toggle-split issues-follow-btn__main--radius' : ''}`}
+              disabled
+            >
+              {showFollowingText ? (
+                <span>
+                  { (isFollowing || isFriend) && (
+                    <span>
+                      <CheckCircle className="following-icon" />
+                      <span className="pl-2">Following</span>
                     </span>
-                  ) : (
-                    <Button id={`positionItemFollowToggleFollowDropdown-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                      Follow
-                    </Button>
                   )}
-                  <div className="dropdown-divider" />
-                  {isIgnoring ? (
-                    <span className="d-print-none">
-                      { this.props.hideStopIgnoringButton ?
-                        null : (
-                          <Button id={`positionItemFollowToggleStopIgnoring-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                            Stop Ignoring
-                          </Button>
-                        )}
+                  { isIgnoring && (
+                    <span>
+                      <NotInterested className="ignoring-icon" />
+                      <span className="pl-2">Ignoring</span>
                     </span>
-                  ) : (
-                    <Button
-                      id={`positionItemFollowToggleIgnore-${organizationWeVoteId}`}
-                      type="button"
-                      className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
-                      onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-                    >
-                      Ignore
-                    </Button>
                   )}
-                </div>
-              </>
-            ) : (
-              <>
-                {this.props.lightModeOn ? (
-                  <Button id={`positionItemFollowToggleFollow-${organizationWeVoteId}`} type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--white" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                    Follow
-                  </Button>
-                ) : (
-                  <Button id={`positionItemFollowToggleFollow-${organizationWeVoteId}`} type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                    Follow
-                  </Button>
-                )}
-              </>
-            )}
-          </>
-        )}
-        {this.props.hideDropdownButtonUntilFollowing ? (
-          <>
-            {isFollowing || isIgnoring ? (
+                </span>
+              ) : (
+                <span>
+                  { (isFollowing || isFriend) &&
+                    <CheckCircle className="following-icon" /> }
+                  { isIgnoring &&
+                    <NotInterested className="ignoring-icon" /> }
+                </span>
+              )}
+            </Button>
+            {!isFriend && (
               <>
                 <div className="issues-follow-btn__seperator" />
-                <Button id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`} type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <Button
+                  id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`}
+                  type="button"
+                  className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
                   <span className="sr-only">Toggle Dropdown</span>
                 </Button>
-                <div className={this.props.anchorLeft ? (
+                <div className={anchorLeft ? (
                   'dropdown-menu dropdown-menu-left issues-follow-btn__menu'
                 ) : (
                   'dropdown-menu dropdown-menu-right issues-follow-btn__menu'
@@ -378,24 +335,39 @@ export default class FollowToggle extends Component {
                 >
                   {isFollowing ? (
                     <span className="d-print-none">
-                      { this.props.hideStopFollowingButton ?
+                      { hideStopFollowingButton ?
                         null : (
-                          <Button id={`positionItemFollowToggleUnfollow-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                          <Button
+                            id={`positionItemFollowToggleUnfollow-${organizationWeVoteId}`}
+                            type="button"
+                            className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                            onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                          >
                             Unfollow
                           </Button>
                         )}
                     </span>
                   ) : (
-                    <Button id={`positionItemFollowToggleFollowDropDown-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                    <Button
+                      id={`positionItemFollowToggleFollowDropDown-${organizationWeVoteId}`}
+                      className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                      onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                      type="button"
+                    >
                       Follow
                     </Button>
                   )}
                   <div className="dropdown-divider" />
                   {isIgnoring ? (
                     <span className="d-print-none">
-                      { this.props.hideStopIgnoringButton ?
+                      { hideStopIgnoringButton ?
                         null : (
-                          <Button id={`positionItemFollowToggleStopIgnoring-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                          <Button
+                            id={`positionItemFollowToggleStopIgnoring-${organizationWeVoteId}`}
+                            type="button"
+                            className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                            onClick={() => this.stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                          >
                             Stop Ignoring
                           </Button>
                         )}
@@ -412,96 +384,53 @@ export default class FollowToggle extends Component {
                   )}
                 </div>
               </>
-            ) : (
-              null
             )}
           </>
         ) : (
           <>
-            {isFollowing || isIgnoring ? (
+            <Button
+              id={`positionItemFollowToggleFollow-${organizationWeVoteId}`}
+              type="button"
+              className={`issues-follow-btn issues-follow-btn__main ${hideDropdownButtonUntilFollowing ? ' dropdown-toggle dropdown-toggle-split issues-follow-btn__main--radius' : ''} ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
+              onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+            >
+              Follow
+            </Button>
+            {!hideDropdownButtonUntilFollowing && (
               <>
                 <div className="issues-follow-btn__seperator" />
-                <Button id={`positionItemFollowToggleDropDown-${organizationWeVoteId}`} type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <Button
+                  id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`}
+                  type="button"
+                  className={`dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
                   <span className="sr-only">Toggle Dropdown</span>
                 </Button>
-                <div className="dropdown-menu issues-follow-btn__menu">
-                  {isFollowing ? (
-                    <span className="d-print-none">
-                      { this.props.hideStopFollowingButton ?
-                        null : (
-                          <Button id={`positionItemFollowToggleUnfollow-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                            Unfollow
-                          </Button>
-                        )}
-                    </span>
-                  ) : (
-                    <Button id={`positionItemFollowToggleFollow-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                      Follow
-                    </Button>
-                  )}
+                <div className={`dropdown-menu issues-follow-btn__menu ${anchorLeft ? ' dropdown-menu-left' : ' dropdown-menu-right'}`}>
+                  <Button
+                    id={`positionItemFollowToggleFollow-${organizationWeVoteId}`}
+                    type="button"
+                    className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                    onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                  >
+                    Follow
+                  </Button>
                   <div className="dropdown-divider" />
                   {isIgnoring ? (
                     <span className="d-print-none">
-                      { this.props.hideStopIgnoringButton ?
-                        null : (
-                          <Button id={`positionItemFollowToggleStopIgnoring-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                            Stop Ignoring
-                          </Button>
-                        )}
-                    </span>
-                  ) : (
-                    <Button
-                      id={`positionItemFollowToggleIgnore-${organizationWeVoteId}`}
-                      type="button"
-                      className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
-                      onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-                    >
-                      Ignore
-                    </Button>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="issues-follow-btn__seperator" />
-                {this.props.lightModeOn ? (
-                  <Button id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`} type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span className="sr-only">Toggle Dropdown</span>
-                  </Button>
-                ) : (
-                  <Button id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`} type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span className="sr-only">Toggle Dropdown</span>
-                  </Button>
-                )}
-                <div className={this.props.anchorLeft ? (
-                  'dropdown-menu dropdown-menu-left issues-follow-btn__menu'
-                ) : (
-                  'dropdown-menu dropdown-menu-right issues-follow-btn__menu'
-                )}
-                >
-                  {isFollowing ? (
-                    <span className="d-print-none">
-                      { this.props.hideStopFollowingButton ?
-                        null : (
-                          <Button id={`positionItemFollowToggleUnfollow-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                            Unfollow
-                          </Button>
-                        )}
-                    </span>
-                  ) : (
-                    <Button id={`positionItemFollowToggleFollow-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                      Follow
-                    </Button>
-                  )}
-                  <div className="dropdown-divider" />
-                  {isIgnoring ? (
-                    <span className="d-print-none">
-                      { this.props.hideStopIgnoringButton ?
-                        null : (
-                          <Button id={`positionItemFollowToggleStopIgnoring-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                            Stop Ignoring
-                          </Button>
-                        )}
+                      { !hideStopIgnoringButton && (
+                        <Button
+                          id={`positionItemFollowToggleStopIgnoring-${organizationWeVoteId}`}
+                          type="button"
+                          className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                          onClick={() => this.stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                        >
+                          Stop Ignoring
+                        </Button>
+                      )}
                     </span>
                   ) : (
                     <Button

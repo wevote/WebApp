@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
-import Card from '@material-ui/core/esm/Card';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
@@ -111,36 +111,34 @@ class MeasureItem extends Component {
             { electionDisplayName || regionalDisplayName || stateDisplayName ?
               (
                 <SubTitle>
-                  <p>
-                    { electionDisplayName || 'Appearing on the ballot in ' }
-                    { electionDisplayName ? <span> &middot; </span> : null }
-                    { regionalDisplayName || null }
-                    { regionalDisplayName && stateDisplayName ? ', ' : null }
-                    { stateDisplayName }
-                  </p>
+                  { electionDisplayName || 'Appearing on the ballot in ' }
+                  { electionDisplayName ? <span> &middot; </span> : null }
+                  { regionalDisplayName || null }
+                  { regionalDisplayName && stateDisplayName ? ', ' : null }
+                  { stateDisplayName }
                 </SubTitle>
               ) :
               null
             }
             {/* <SubTitle>{measureSubtitle}</SubTitle> */}
-            { measureText ? (
-              <div className="measure_text u-gray-mid">
-                <ReadMore
-                  num_of_lines={numberOfLines}
-                  text_to_display={measureText}
-                />
-              </div>
-            ) :
-              null
-            }
           </MeasureInfoWrapper>
-          <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+          <BallotItemSupportOpposeCountDisplayWrapper>
+            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+          </BallotItemSupportOpposeCountDisplayWrapper>
         </InfoRow>
         <BallotItemSupportOpposeComment
           ballotItemWeVoteId={measureWeVoteId}
           externalUniqueId="measureItem"
           showPositionStatementActionBar={this.state.showPositionStatementActionBar}
         />
+        { measureText && (
+          <MeasureTextWrapper>
+            <ReadMore
+              numberOfLines={numberOfLines}
+              textToDisplay={measureText}
+            />
+          </MeasureTextWrapper>
+        )}
       </Card>
     );
   }
@@ -167,6 +165,11 @@ const styles = theme => ({
   },
 });
 
+const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+  cursor: pointer;
+  float: right;
+`;
+
 const InfoRow = styled.div`
   display: flex;
   flex-flow: row wrap;
@@ -185,6 +188,11 @@ const MeasureInfoWrapper = styled.div`
   }
 `;
 
+const MeasureTextWrapper = styled.div`
+  color: #999;
+  padding-bottom: 8px;
+`;
+
 const Title = styled.h1`
   font-size: 18px;
   font-weight: bold;
@@ -198,6 +206,7 @@ const SubTitle = styled.h3`
   font-size: 16px;
   font-weight: 300;
   color: #555;
+  margin-bottom: 4px;
   margin-top: .6rem;
   width: 135%;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {

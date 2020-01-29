@@ -35,8 +35,8 @@ export default class PositionSupportOpposeSnippet extends Component {
     const statementText = this.props.statement_text || '';
     let statementTextHtml = (
       <ReadMore
-        num_of_lines={5}
-        text_to_display={statementText}
+        numberOfLines={5}
+        textToDisplay={statementText}
       />
     );
 
@@ -53,13 +53,13 @@ export default class PositionSupportOpposeSnippet extends Component {
     if (youTubeUrl) {
       [videoUrl] = youTubeUrl;
       statementTextNoUrl = statementText.replace(videoUrl, '');
-      statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
+      statementTextHtml = <ReadMore textToDisplay={statementTextNoUrl} />;
     }
 
     if (vimeoUrl) {
       [videoUrl] = vimeoUrl;
       statementTextNoUrl = statementText.replace(videoUrl, '');
-      statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
+      statementTextHtml = <ReadMore textToDisplay={statementTextNoUrl} />;
     }
 
     if (this.props.is_support) {

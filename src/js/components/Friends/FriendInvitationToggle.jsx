@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -15,12 +15,12 @@ export default class FriendInvitationToggle extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      acceptFriendInviteSent: false,
       voter: {
         we_vote_id: '',
       },
     };
-    this.acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, this.props.otherVoterWeVoteId);
-    // this.unFriend = FriendActions.unFriend.bind(this, this.props.otherVoterWeVoteId);
+    this.acceptFriendInvite = this.acceptFriendInvite.bind(this);
   }
 
   componentDidMount () {
@@ -36,8 +36,9 @@ export default class FriendInvitationToggle extends Component {
   }
 
   onFriendStoreChange () {
+    const { otherVoterWeVoteId } = this.props;
     this.setState({
-      isFriend: FriendStore.isFriend(this.props.otherVoterWeVoteId),
+      isFriend: FriendStore.isFriend(otherVoterWeVoteId),
     });
   }
 
@@ -47,11 +48,20 @@ export default class FriendInvitationToggle extends Component {
     });
   }
 
+  acceptFriendInvite () {
+    console.log('acceptFriendInvite');
+    const { otherVoterWeVoteId } = this.props;
+    FriendActions.acceptFriendInvite(otherVoterWeVoteId);
+    this.setState({
+      acceptFriendInviteSent: true,
+    });
+  }
+
   render () {
     renderLog('FriendInvitationToggle');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
     const { otherVoterWeVoteId } = this.props;
-    const { isFriend } = this.state;
+    const { acceptFriendInviteSent, isFriend } = this.state;
     // console.log("FriendInvitationToggle, my voter_we_vote_id:", this.state.voter.we_vote_id, ", otherVoterWeVoteId:", otherVoterWeVoteId, ", isFriend:", isFriend);
     const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
     // You should not be able to friend yourself
@@ -65,12 +75,13 @@ export default class FriendInvitationToggle extends Component {
         {isFriend ? null : (
           <ButtonContainer>
             <Button
-              variant="contained"
               color="primary"
-              onClick={this.acceptFriendInvite}
+              disabled={acceptFriendInviteSent}
               fullWidth
+              onClick={this.acceptFriendInvite}
+              variant="contained"
             >
-              {window.innerWidth > 620 ? 'Confirm' : 'Confirm'}
+              {acceptFriendInviteSent ? 'Confirming...' : 'Confirm'}
             </Button>
           </ButtonContainer>
         )}

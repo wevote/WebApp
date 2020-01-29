@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import styled from 'styled-components';
 import FollowToggle from '../Widgets/FollowToggle';
 import ImageHandler from '../ImageHandler';
 import LoadingWheel from '../LoadingWheel';
@@ -14,7 +15,12 @@ import RatingPopover from '../Widgets/RatingPopover';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import ReadMore from '../Widgets/ReadMore';
+import {
+  numberWithCommas,
+  removeTwitterNameFromDescription,
+  stringContains,
+} from '../../utils/textFormat';
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
@@ -27,6 +33,7 @@ export default class OrganizationCard extends Component {
     turnOffDescription: PropTypes.bool,
     turnOffLogo: PropTypes.bool,
     turnOffTwitterHandle: PropTypes.bool,
+    useReadMoreForTwitterDescription: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string,
   };
@@ -121,6 +128,7 @@ export default class OrganizationCard extends Component {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }
 
+    const { currentBallotIdInUrl, followToggleOn, turnOffDescription, turnOffLogo, turnOffTwitterHandle, urlWithoutHash, useReadMoreForTwitterDescription } = this.props;
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
       twitter_followers_count: twitterFollowersCount,
@@ -158,7 +166,7 @@ export default class OrganizationCard extends Component {
     return (
       <div className="card-main__media-object">
         <div className="card-main__media-object-anchor">
-          {this.props.turnOffLogo ?
+          {turnOffLogo ?
             null : (
               <Link to={voterGuideLink} className="u-no-underline">
                 <ImageHandler
@@ -169,12 +177,12 @@ export default class OrganizationCard extends Component {
                 />
               </Link>
             )}
-          {this.props.followToggleOn ? (
+          {followToggleOn ? (
             <div className="u-margin-top--md">
               <FollowToggle
-                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                currentBallotIdInUrl={currentBallotIdInUrl}
                 ballotItemWeVoteId={this.props.we_vote_id}
-                urlWithoutHash={this.props.urlWithoutHash}
+                urlWithoutHash={urlWithoutHash}
                 organizationWeVoteId={this.state.organizationWeVoteId}
               />
             </div>
@@ -188,50 +196,71 @@ export default class OrganizationCard extends Component {
           {/* Organization supports ballot item */}
           {positionDescription}
 
-          { twitterDescriptionMinusName && !this.props.turnOffDescription ? (
-            <ParsedTwitterDescription
-              twitter_description={twitterDescriptionMinusName}
-            />
+          { twitterDescriptionMinusName && !turnOffDescription ? (
+            <>
+              {stringContains('https://t.co/', twitterDescriptionMinusName) ? (
+                <ParsedTwitterDescription
+                  twitter_description={twitterDescriptionMinusName}
+                />
+              ) : (
+                <>
+                  {useReadMoreForTwitterDescription ? (
+                    <ReadMore
+                      textToDisplay={twitterDescriptionMinusName}
+                      numberOfLines={3}
+                    />
+                  ) : (
+                    <>
+                      {twitterDescriptionMinusName}
+                    </>
+                  )}
+                </>
+              )}
+            </>
           ) :
             <p className="card-main__description" />
           }
-          { !this.props.turnOffDescription ? (
+          { !turnOffDescription ? (
             <div>
-              { organizationTwitterHandle && !this.props.turnOffTwitterHandle ? (
-                <span>
-                  @
-                  {organizationTwitterHandle}
-                  &nbsp;&nbsp;
-                </span>
-              ) :
-                null
-              }
-              {(twitterFollowersCount && numberWithCommas(twitterFollowersCount) !== '0' && !this.props.turnOffTwitterHandle) ? (
-                <span className="twitter-followers__badge">
-                  <span className="fab fa-twitter twitter-followers__icon" />
-                  {numberWithCommas(twitterFollowersCount)}
-                </span>
-              ) : null
-              }
-              <IssuesByOrganizationDisplayList
-                organizationWeVoteId={this.state.organizationWeVoteId}
-                placement="bottom"
-              />
-              { organizationWebsite ? (
-                <div>
+              { organizationTwitterHandle && !turnOffTwitterHandle && (
+                <OpenExternalWebSite
+                  url={`https://twitter.com/${organizationTwitterHandle}`}
+                  target="_blank"
+                  body={(
+                    <span>
+                      <TwitterHandleWrapper>
+                        @
+                        {organizationTwitterHandle}
+                      </TwitterHandleWrapper>
+                      {(twitterFollowersCount && String(twitterFollowersCount) !== '0' && numberWithCommas(twitterFollowersCount) !== '0') && (
+                        <span className="twitter-followers__badge">
+                          <TwitterFollowersIcon className="fab fa-twitter" />
+                          {numberWithCommas(twitterFollowersCount)}
+                        </span>
+                      )}
+                    </span>
+                  )}
+                />
+              )}
+              { organizationWebsite && (
+                <WebsiteWrapper>
                   <OpenExternalWebSite
                     url={organizationWebsite}
                     target="_blank"
                     body={(
-                      <span>
+                      <span className="u-no-break">
                         Website
+                        {' '}
                         <i className="fas fa-external-link-alt" />
                       </span>
                     )}
                   />
-                </div>
-              ) : null
-              }
+                </WebsiteWrapper>
+              )}
+              <IssuesByOrganizationDisplayList
+                organizationWeVoteId={this.state.organizationWeVoteId}
+                placement="bottom"
+              />
               {/* 5 of your friends follow Organization Name<br /> */}
             </div>
           ) : null
@@ -248,3 +277,18 @@ export default class OrganizationCard extends Component {
     );
   }
 }
+
+const TwitterFollowersIcon = styled.span`
+  font-size: 1.25rem;
+  color: #ccc;
+  margin-right: 2px;
+  vertical-align: bottom;
+`;
+
+const TwitterHandleWrapper = styled.span`
+  margin-right: 10px;
+`;
+
+const WebsiteWrapper = styled.div`
+  margin-left: 4px;
+`;

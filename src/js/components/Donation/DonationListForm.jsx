@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
-import Tab from 'react-bootstrap/esm/Tab';
-import Tabs from 'react-bootstrap/esm/Tabs';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import DonateActions from '../../actions/DonateActions';
 import DonationList from './DonationList';
 import DonateStore from '../../stores/DonateStore';
@@ -32,6 +32,10 @@ export default class DonationListForm extends Component {
 
   componentWillUnmount () {
     this.donateStoreListener.remove();
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onDonateStoreChange () {
@@ -56,11 +60,11 @@ export default class DonationListForm extends Component {
   pollForWebhookCompletion (pollCount) {
     // console.log(`pollForWebhookCompletion polling -- start: ${this.state.donationJournalList ? this.state.donationJournalList.length : -1}`);
     // console.log(`pollForWebhookCompletion polling -- start pollCount: ${pollCount}`);
-    this.polling = setTimeout(() => {
+    this.timer = setTimeout(() => {
       if (pollCount < 0 || (this.state.donationJournalList && (this.state.initialDonationCount !== this.state.donationJournalList.length))) {
         // console.log(`pollForWebhookCompletion polling -- clearTimeout: ${this.state.donationJournalList.length}`);
         // console.log(`pollForWebhookCompletion polling -- pollCount: ${pollCount}`);
-        clearTimeout(this.polling);
+        clearTimeout(this.timer);
         return;
       }
       // console.log(`pollForWebhookCompletion polling ----- ${pollCount}`);

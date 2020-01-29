@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/esm/Button';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import AppActions from '../actions/AppActions';
 import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
 import { historyPush, isCordova } from '../utils/cordovaUtils';
-import Footer from '../components/Welcome/Footer';
+import WelcomeFooter from '../components/Welcome/WelcomeFooter';
 import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import { renderLog } from '../utils/logging';
@@ -28,35 +28,35 @@ class HowItWorks extends Component {
       forCampaignsStepLabels: ['Claim', 'Import', 'Customize', 'Launch', 'Social Lift'],
       forCampaignsSteps: {
         Claim: {
-          title: 'Claim your campaign profile',
+          title: '1. Claim your campaign profile',
           description: 'Sign in & verify your account using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Claim-20190516.gif?',
           index: 0,
           delayBeforeAdvancingSlide: 12100,
         },
         Import: {
-          title: 'Import your endorsements',
+          title: '2. Import your endorsements',
           description: 'We are here to help you get your opinions in front of voters, whether you have 5 endorsements, or 1,005. We Vote’s unique tech instamagically captures endorsement data from your website, spreadsheets, or text lists of candidates. No formatting overhauls required.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Import-20190425.gif?',
           index: 1,
           delayBeforeAdvancingSlide: 12000,
         },
         Customize: {
-          title: 'Add more customizations for your supporters',
+          title: '3. Add more customizations for your supporters',
           description: 'Want all the bells and whistles?  We Vote offers a lot for free, but has paid premium features that include the endorsements from your chapters and partners, and give you deeper analytics.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Customize-20190425.gif?',
           index: 2,
           delayBeforeAdvancingSlide: 6700,
         },
         Launch: {
-          title: 'Launch to your people',
+          title: '4. Launch to your people',
           description: 'Promote your unique url over your email, text, and social media channels. Add the We Vote widget directly to your campaign website.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Launch-20190506.gif?',
           index: 3,
           delayBeforeAdvancingSlide: 13150,
         },
         SocialLift: {
-          title: 'Social lift',
+          title: '5. Social lift',
           description: 'Let your people share with their friends. Watch your social lift in real time.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-SocialLift-20190506.gif?',
           index: 4,
@@ -66,28 +66,28 @@ class HowItWorks extends Component {
       forOrganizationsStepLabels: ['Claim', 'Customize', 'Launch', 'Social Lift'],
       forOrganizationsSteps: {
         Claim: {
-          title: 'Claim your organization profile',
+          title: '1. Claim your organization profile',
           description: 'Sign in & verify your organization using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Claim-20190506.gif?',
           index: 0,
           delayBeforeAdvancingSlide: 10100,
         },
         Customize: {
-          title: 'Customize your Election Center',
+          title: '2. Customize your Election Center',
           description: 'Want all the bells and whistles?  We Vote offers a lot for free, but has paid premium features to help you further customize branding and messaging, and give you deeper analytics.',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Customize-20190507.gif?',
           index: 1,
           delayBeforeAdvancingSlide: 9000,
         },
         Launch: {
-          title: 'Launch',
+          title: '3. Launch',
           description: 'Share your unique url over your email, text, and social media channels. Add the We Vote widget directly to your website.',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Launch-20190506.gif?',
           index: 2,
           delayBeforeAdvancingSlide: 11500,
         },
         SocialLift: {
-          title: 'Social lift',
+          title: '4. Social lift',
           description: 'Let your people share with their friends. Watch your social lift in real time.',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-SocialLift-20190506.gif?',
           index: 3,
@@ -97,35 +97,35 @@ class HowItWorks extends Component {
       forVoterStepLabels: ['Choose', 'Follow', 'Review', 'Decide', 'Friends'],
       forVoterSteps: {
         Choose: {
-          title: 'Choose your interests',
+          title: '1. Choose your interests',
           description: 'Follow topics that interest you. We will suggest endorsements based on your interests.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Choose-20190507.gif?',
           index: 0,
           delayBeforeAdvancingSlide: 5600,
         },
         Follow: {
-          title: 'Follow organizations and people you trust',
+          title: '2. Follow organizations and people you trust',
           description: 'Their recommendations are highlighted on your ballot.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Follow-20190507.gif?',
           index: 1,
           delayBeforeAdvancingSlide: 7000,
         },
         Review: {
-          title: 'See who endorsed each choice on your ballot',
+          title: '3. See who endorsed each choice on your ballot',
           description: 'Learn from the people you trust.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Review-20190401.gif?',
           index: 2,
           delayBeforeAdvancingSlide: 9500,
         },
         Decide: {
-          title: 'Complete your ballot in under six minutes',
+          title: '4. Complete your ballot in under six minutes',
           description: 'We Vote is fast, mobile, and helps you decide on the go. Vote with confidence!',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif?',
           index: 3,
           delayBeforeAdvancingSlide: 8250,
         },
         Friends: {
-          title: 'Share with friends who could use a guide',
+          title: '5. Share with friends who could use a guide',
           description: 'Are your family and friends feeling lost when it’s time to vote? Be their hero, no matter which state they vote in.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Friends-20190401.gif?',
           index: 4,
@@ -202,6 +202,11 @@ class HowItWorks extends Component {
 
   handleChangeSlide = (selectedStepIndex) => {
     this.setState({ selectedStepIndex });
+  };
+
+  handleChangeSlideGoBack = () => {
+    const { selectedStepIndex } = this.state;
+    this.setState({ selectedStepIndex: selectedStepIndex - 1 });
   };
 
   switchToDifferentCategoryFunction = (selectedCategoryIndex) => {
@@ -298,19 +303,34 @@ class HowItWorks extends Component {
           />
           {
             selectedStepIndex === stepLabels.length - 1 && (
-              <Button
-                classes={{ root: classes.getStartedButtonRoot }}
-                color="primary"
-                variant="contained"
-                onClick={() => this.howItWorksGetStarted()}
-                id="howItWorksGetStarted"
-              >
-                Get Started
-              </Button>
+              <TwoButtonsWrapper>
+                <BackButtonWrapper className="u-show-mobile-tablet">
+                  <Button
+                    classes={{ root: classes.nextButtonRoot }}
+                    color="primary"
+                    fullWidth
+                    onClick={() => this.handleChangeSlideGoBack()}
+                    variant="outlined"
+                  >
+                    Back
+                  </Button>
+                </BackButtonWrapper>
+                <NextButtonWrapper>
+                  <Button
+                    classes={{ root: classes.getStartedButtonRoot }}
+                    color="primary"
+                    variant="contained"
+                    onClick={() => this.howItWorksGetStarted()}
+                    id="howItWorksGetStarted"
+                  >
+                    Get Started
+                  </Button>
+                </NextButtonWrapper>
+              </TwoButtonsWrapper>
             )
           }
         </Section>
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }
@@ -352,6 +372,36 @@ const MobileTabletView = styled.div`
   margin-top: ${({ marginTop }) => marginTop || '-11px'};
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
+  }
+`;
+
+const TwoButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  width: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    justify-content: space-between;
+  }
+`;
+
+const BackButtonWrapper = styled.div`
+  margin: 0;
+  margin-right: 12px;
+  width: 100%;
+  @media(max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    margin-right: 8px;
+  }
+`;
+
+const NextButtonWrapper = styled.div`
+  margin: 0;
+  margin-right: 0;
+  width: 50%;
+  @media(max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    margin-right: 8px;
+    width: 100%;
   }
 `;
 

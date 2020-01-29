@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import FollowToggle from './FollowToggle';
+import FriendsIcon from './FriendsIcon';
 import MaterialUIPopover from './MaterialUIPopover';
 import PositionItemScorePopoverTextOnly from './PositionItemScorePopoverTextOnly';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
@@ -151,15 +152,19 @@ class PositionSummaryListForPopover extends Component {
                     ))}
                   </VoterAndOrganizationShareTheseIssuesWrapper>
                 )}
-                {positionSummary.voterIsFollowingOrganization && (
+                {positionSummary.voterIsFriendsWithThisOrganization ? (
                   <FollowingWrapper>
-                    <CheckCircle className="following-icon" />
+                    {/* <CheckCircle className="friends-icon" /> */}
+                    <FriendsIcon />
                   </FollowingWrapper>
-                )}
-                {positionSummary.voterIsFriendsWithThisOrganization && (
-                  <FollowingWrapper>
-                    <CheckCircle className="friends-icon" />
-                  </FollowingWrapper>
+                ) : (
+                  <>
+                    {positionSummary.voterIsFollowingOrganization && (
+                      <FollowingWrapper>
+                        <CheckCircle className="following-icon" />
+                      </FollowingWrapper>
+                    )}
+                  </>
                 )}
               </OrganizationPopoverWrapper>
             </MaterialUIPopover>

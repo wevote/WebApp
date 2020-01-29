@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import uniqBy from 'lodash-es/uniqBy';
-import FormControlLabel from '@material-ui/core/esm/FormControlLabel';
-import { withStyles } from '@material-ui/core/esm/styles';
-import Checkbox from '@material-ui/core/esm/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { withStyles } from '@material-ui/core/styles';
+import Checkbox from '@material-ui/core/Checkbox';
 import IssueStore from '../../stores/IssueStore';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import { renderLog } from '../../utils/logging';
@@ -184,9 +184,9 @@ class VoterGuideOrganizationFilter extends Component {
           // Put written comments on top, and then within those two separations, move Twitter followers to the top
           // console.log('sortByMagic');
           filteredItems = filteredItems.sort(this.orderByTwitterFollowers);
+          filteredItems = filteredItems.sort(this.orderByWrittenComment);
           filteredItems = filteredItems.sort(this.orderByFollowedOrgsFirst);
           filteredItems = filteredItems.sort(this.orderByCurrentFriendsFirst);
-          filteredItems = filteredItems.sort(this.orderByWrittenComment);
           this.setState({
             sortedBy: 'sortByMagic',
           });

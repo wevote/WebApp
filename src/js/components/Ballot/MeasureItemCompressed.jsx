@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/esm/Button';
-import Card from '@material-ui/core/esm/Card';
-import Divider from '@material-ui/core/esm/Divider';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import BallotStore from '../../stores/BallotStore';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -40,10 +39,13 @@ class MeasureItemCompressed extends Component {
       measureWeVoteId: '',
       noVoteDescription: '',
       organizationWeVoteId: '',
+      positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
       showPositionStatement: false,
       numberOfOpposePositionsForScore: 0,
       numberOfSupportPositionsForScore: 0,
+      voterOpposesBallotItem: false,
+      voterSupportsBallotItem: false,
       yesVoteDescription: '',
     };
     this.getMeasureLink = this.getMeasureLink.bind(this);
@@ -59,13 +61,28 @@ class MeasureItemCompressed extends Component {
       // If the measure isn't in the MeasureStore, retrieve it
       MeasureActions.measureRetrieve(measureWeVoteId);
     }
-    if (measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
+    if (measureWeVoteId &&
+      !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) &&
+      !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)
+    ) {
       // console.log('componentDidMount positionListForBallotItemPublic', measureWeVoteId);
       MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
       const { positionListHasBeenRetrievedOnce } = this.state;
       positionListHasBeenRetrievedOnce[measureWeVoteId] = true;
       this.setState({
         positionListHasBeenRetrievedOnce,
+      });
+    }
+    if (measureWeVoteId &&
+      !this.localPositionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId) &&
+      !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId)
+    ) {
+      // console.log('componentDidMount positionListForBallotItemPublic', measureWeVoteId);
+      MeasureActions.positionListForBallotItemFromFriends(measureWeVoteId);
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId] = true;
+      this.setState({
+        positionListFromFriendsHasBeenRetrievedOnce,
       });
     }
     const organizationWeVoteId = (organization && organization.organization_we_vote_id) ? organization.organization_we_vote_id : this.props.organizationWeVoteId;
@@ -84,10 +101,15 @@ class MeasureItemCompressed extends Component {
     });
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
     if (ballotItemStatSheet) {
-      const { numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet;
+      const {
+        numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
+        voterOpposesBallotItem, voterSupportsBallotItem,
+      } = ballotItemStatSheet;
       this.setState({
         numberOfOpposePositionsForScore,
         numberOfSupportPositionsForScore,
+        voterOpposesBallotItem,
+        voterSupportsBallotItem,
       });
     }
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
@@ -161,6 +183,14 @@ class MeasureItemCompressed extends Component {
       // console.log('this.state.showPositionStatement change');
       return true;
     }
+    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
+      // console.log('this.state.showPositionStatement change');
+      return true;
+    }
+    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
+      // console.log('this.state.showPositionStatement change');
+      return true;
+    }
     // console.log('shouldComponentUpdate no change');
     return false;
   }
@@ -174,13 +204,28 @@ class MeasureItemCompressed extends Component {
     const { measureWeVoteId } = this.state;
     const measure = MeasureStore.getMeasure(measureWeVoteId);
     // console.log('MeasureItemCompressed, onMeasureStoreChange, measureWeVoteId:', measureWeVoteId);
-    if (measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
+    if (measureWeVoteId &&
+      !this.localPositionListHasBeenRetrievedOnce(measureWeVoteId) &&
+      !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)
+    ) {
       // console.log('onMeasureStoreChange positionListForBallotItemPublic', measureWeVoteId);
       MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
       const { positionListHasBeenRetrievedOnce } = this.state;
       positionListHasBeenRetrievedOnce[measureWeVoteId] = true;
       this.setState({
         positionListHasBeenRetrievedOnce,
+      });
+    }
+    if (measureWeVoteId &&
+      !this.localPositionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId) &&
+      !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId)
+    ) {
+      // console.log('componentDidMount positionListForBallotItemPublic', measureWeVoteId);
+      MeasureActions.positionListForBallotItemFromFriends(measureWeVoteId);
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId] = true;
+      this.setState({
+        positionListFromFriendsHasBeenRetrievedOnce,
       });
     }
     this.setState({
@@ -199,10 +244,15 @@ class MeasureItemCompressed extends Component {
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
     if (ballotItemStatSheet) {
-      const { numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet;
+      const {
+        numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
+        voterOpposesBallotItem, voterSupportsBallotItem,
+      } = ballotItemStatSheet;
       this.setState({
         numberOfOpposePositionsForScore,
         numberOfSupportPositionsForScore,
+        voterOpposesBallotItem,
+        voterSupportsBallotItem,
       });
     }
   }
@@ -237,11 +287,19 @@ class MeasureItemCompressed extends Component {
     return false;
   }
 
+  localPositionListFromFriendsHasBeenRetrievedOnce (measureWeVoteId) {
+    if (measureWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId];
+    }
+    return false;
+  }
+
   render () {
     renderLog('MeasureItemCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     const { externalUniqueId, localUniqueId, noVoteDescription, yesVoteDescription } = this.state;
     let { ballotItemDisplayName } = this.state;
-    const { measureText, measureWeVoteId } = this.state;
+    const { measureText, measureWeVoteId, voterOpposesBallotItem, voterSupportsBallotItem } = this.state;
     if (!measureWeVoteId) {
       return null;
     }
@@ -265,82 +323,87 @@ class MeasureItemCompressed extends Component {
               />
             </Title>
             <SubTitle>{ballotDisplay[1]}</SubTitle>
-            <MeasureText>{shortenText(measureText, 200)}</MeasureText>
+            {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
+              <MeasureText>{shortenText(measureText, 200)}</MeasureText>
+            )}
           </MeasureInfoWrapper>
-          <BallotItemSupportOpposeCountDisplay
-            ballotItemWeVoteId={measureWeVoteId}
-            goToBallotItem={this.goToMeasureLink}
-          />
+          <BallotItemSupportOpposeCountDisplayWrapper>
+            <BallotItemSupportOpposeCountDisplay
+              ballotItemWeVoteId={measureWeVoteId}
+              goToBallotItem={this.goToMeasureLink}
+            />
+          </BallotItemSupportOpposeCountDisplayWrapper>
         </InfoRow>
-        <ChoicesRow>
-          <Choice
-            id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
-            brandBlue={theme.palette.primary.main}
-            onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
-          >
-            <ChoiceTitle brandBlue={theme.palette.primary.main}>
-              {`Yes On ${extractNumber(ballotItemDisplayName)}`}
-            </ChoiceTitle>
-            <ChoiceInfo>
-              {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
-              <DelayedLoad showLoadingText waitBeforeShow={500}>
-                <TopCommentByBallotItem
-                  ballotItemWeVoteId={measureWeVoteId}
-                  childChangeIndicator={yesVoteDescription}
-                  // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                  limitToYes
-                >
-                  <span>
-                    {shortenText(yesVoteDescription, 200)}
-                    <Button
-                      id={`measureLearnMoreYesButton-${externalUniqueId}-${localUniqueId}`}
-                      variant="outlined"
-                      color="primary"
-                      className="u-float-right"
-                      classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-                    >
-                      more
-                    </Button>
-                  </span>
-                </TopCommentByBallotItem>
-              </DelayedLoad>
-            </ChoiceInfo>
-          </Choice>
-          <Choice
-            id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
-            brandBlue={theme.palette.primary.main}
-            onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
-          >
-            <ChoiceTitle brandBlue={theme.palette.primary.main}>
-              {`No On ${extractNumber(ballotItemDisplayName)}`}
-            </ChoiceTitle>
-            <ChoiceInfo>
-              {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
-              <DelayedLoad showLoadingText waitBeforeShow={500}>
-                <TopCommentByBallotItem
-                  ballotItemWeVoteId={measureWeVoteId}
-                  childChangeIndicator={noVoteDescription}
-                  // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                  limitToNo
-                >
-                  <span>
-                    {shortenText(noVoteDescription, 200)}
-                    <Button
-                      id={`measureLearnMoreNoButton-${externalUniqueId}-${localUniqueId}`}
-                      variant="outlined"
-                      color="primary"
-                      className="u-float-right"
-                      classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-                    >
-                      more
-                    </Button>
-                  </span>
-                </TopCommentByBallotItem>
-              </DelayedLoad>
-            </ChoiceInfo>
-          </Choice>
-        </ChoicesRow>
-        <Divider />
+        {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
+          <ChoicesRow>
+            <Choice
+              id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
+              brandBlue={theme.palette.primary.main}
+              onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
+            >
+              <ChoiceTitle brandBlue={theme.palette.primary.main}>
+                {`Yes On ${extractNumber(ballotItemDisplayName)}`}
+              </ChoiceTitle>
+              <ChoiceInfo>
+                {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
+                <DelayedLoad showLoadingText waitBeforeShow={500}>
+                  <TopCommentByBallotItem
+                    ballotItemWeVoteId={measureWeVoteId}
+                    childChangeIndicator={yesVoteDescription}
+                    // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                    limitToYes
+                  >
+                    <span>
+                      {shortenText(yesVoteDescription, 200)}
+                      <Button
+                        id={`measureLearnMoreYesButton-${externalUniqueId}-${localUniqueId}`}
+                        variant="outlined"
+                        color="primary"
+                        className="u-float-right"
+                        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                      >
+                        Choose Yes or No
+                      </Button>
+                    </span>
+                  </TopCommentByBallotItem>
+                </DelayedLoad>
+              </ChoiceInfo>
+            </Choice>
+            <Choice
+              id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
+              brandBlue={theme.palette.primary.main}
+              onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
+            >
+              <ChoiceTitle brandBlue={theme.palette.primary.main}>
+                {`No On ${extractNumber(ballotItemDisplayName)}`}
+              </ChoiceTitle>
+              <ChoiceInfo>
+                {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
+                <DelayedLoad showLoadingText waitBeforeShow={500}>
+                  <TopCommentByBallotItem
+                    ballotItemWeVoteId={measureWeVoteId}
+                    childChangeIndicator={noVoteDescription}
+                    // learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                    limitToNo
+                  >
+                    <span>
+                      {shortenText(noVoteDescription, 200)}
+                      <Button
+                        id={`measureLearnMoreNoButton-${externalUniqueId}-${localUniqueId}`}
+                        variant="outlined"
+                        color="primary"
+                        className="u-float-right"
+                        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                      >
+                        Choose Yes or No
+                      </Button>
+                    </span>
+                  </TopCommentByBallotItem>
+                </DelayedLoad>
+              </ChoiceInfo>
+            </Choice>
+          </ChoicesRow>
+        )}
         <ShowMoreFooter showMoreId="measureItemCompressedShowMoreFooter" showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} />
       </Card>
     );
@@ -351,10 +414,10 @@ const styles = theme => ({
   buttonRoot: {
     padding: 4,
     fontSize: 12,
-    width: 60,
+    minWidth: 60,
     height: 30,
     [theme.breakpoints.down('md')]: {
-      width: 60,
+      minWidth: 60,
       height: 30,
     },
     [theme.breakpoints.down('sm')]: {
@@ -387,6 +450,11 @@ const styles = theme => ({
     margin: '0 0 .1rem .4rem',
   },
 });
+
+const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
+  cursor: pointer;
+  float: right;
+`;
 
 const InfoRow = styled.div`
   display: flex;

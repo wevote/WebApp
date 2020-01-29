@@ -31,15 +31,12 @@ export default class Office extends Component {
       candidateList: [],
       office: {},
       officeWeVoteId: '',
+      positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
     };
   }
 
   componentDidMount () {
-    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-      IssueActions.issuesRetrieveForElection(VoterStore.electionId());
-    }
-
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
     const officeWeVoteId = this.props.params.office_we_vote_id;
@@ -61,6 +58,17 @@ export default class Office extends Component {
             positionListHasBeenRetrievedOnce,
           });
         }
+        if (officeWeVoteId &&
+          !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
+          !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+        ) {
+          OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
+          const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+          positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
+          this.setState({
+            positionListFromFriendsHasBeenRetrievedOnce,
+          });
+        }
       }
       this.setState({
         candidateList,
@@ -72,6 +80,14 @@ export default class Office extends Component {
       officeWeVoteId,
     });
 
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+    }
+    IssueActions.issuesFollowedRetrieve();
+    if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
+      IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
+    }
     AnalyticsActions.saveActionOffice(VoterStore.electionId(), this.props.params.office_we_vote_id);
   }
 
@@ -123,6 +139,17 @@ export default class Office extends Component {
           positionListHasBeenRetrievedOnce,
         });
       }
+      if (officeWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
+        });
+      }
     }
   }
 
@@ -157,6 +184,17 @@ export default class Office extends Component {
           });
         }
       }
+      if (officeWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        OfficeActions.positionListForBallotItemFromFriends(officeWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
+        });
+      }
       this.setState({
         candidateList,
         office,
@@ -169,6 +207,14 @@ export default class Office extends Component {
     if (officeWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
       return positionListHasBeenRetrievedOnce[officeWeVoteId];
+    }
+    return false;
+  }
+
+  localPositionListFromFriendsHasBeenRetrievedOnce (officeWeVoteId) {
+    if (officeWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[officeWeVoteId];
     }
     return false;
   }

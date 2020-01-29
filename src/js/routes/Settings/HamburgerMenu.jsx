@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
-import Table from 'react-bootstrap/esm/Table';
+import Table from 'react-bootstrap/Table';
 import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
 import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import LoadingWheel from '../../components/LoadingWheel';
-import VoterSessionActions from '../../actions/VoterSessionActions';
 import { renderLog } from '../../utils/logging';
 import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
 
@@ -103,8 +102,7 @@ export default class HamburgerMenu extends Component {
     let { is_signed_in: isSignedIn } = voter;
     const { voter_photo_url_medium: photoUrl } = voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
-    const showSettingsInDevelopment = false; // If developing any of the new settings, change this to true
-    const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? true : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
 
@@ -121,126 +119,114 @@ export default class HamburgerMenu extends Component {
 
             {!isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/account"
                 fullIcon={this.yourAccountIcon(photoUrl)}
                 linkText="Sign In"
+                onClickAction={null}
+                to="/settings/account"
               />
             )}
 
             {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/profile"
                 icon="fa fa-address-card"
                 iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
                 linkText="General"
+                onClickAction={null}
+                to="/settings/profile"
               />
             )}
 
             {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/account"
                 fullIcon={this.yourAccountIcon(photoUrl)}
                 linkText="Security & Sign In"
+                onClickAction={null}
+                to="/settings/account"
+              />
+            )}
+
+            {isSignedIn && (
+              <HamburgerMenuRow
+                icon="fa fa-bell"
+                iconStyle={{ fontSize: 26, color: '#1c2f4b' }}
+                linkText="Notifications"
+                onClickAction={null}
+                to="/settings/notifications"
               />
             )}
 
             <HamburgerMenuRow
+              icon="fa fa-users"
+              iconStyle={{ fontSize: 22, color: '#1c2f4b' }}
+              linkText="About We Vote"
               onClickAction={null}
-              to="/settings/voterguidesmenu"
-              icon="fa fa-list"
-              iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
-              linkText="Your Endorsements"
+              to="/more/about"
             />
 
             {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/notifications"
-                icon="fa fa-bell"
-                iconStyle={{ fontSize: 26, color: '#1c2f4b' }}
-                linkText="Notifications"
-              />
-            )}
-
-            {isSignedIn && enableNextRelease && (
-              <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/domain"
                 icon="fa fa-globe-americas"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Domain"
+                onClickAction={null}
+                showProChip
+                to="/settings/domain"
               />
             )}
 
-            {isSignedIn && enableNextRelease && (
+            {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/sharing"
                 icon="fa fa-share"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Sharing"
+                onClickAction={null}
+                showProChip
+                to="/settings/sharing"
               />
             )}
 
-            {isSignedIn && enableNextRelease && (
+            {isSignedIn && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/subscription"
                 icon="fa fa-shopping-cart"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Subscription Plan"
+                onClickAction={null}
+                showProChip
+                to="/settings/subscription"
+              />
+            )}
+
+            {isSignedIn && (
+              <HamburgerMenuRow
+                icon="fa fa-chart-line"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Analytics"
+                onClickAction={null}
+                showProChip
+                to="/settings/analytics"
               />
             )}
 
             {isSignedIn && enableNextRelease && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/analytics"
-                icon="fa fa-chart-line"
-                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
-                linkText="Analytics"
-              />
-            )}
-
-            {isSignedIn && showSettingsInDevelopment && (
-              <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/promoted"
                 icon="fa fa-bullhorn"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Promoted Organizations"
+                onClickAction={null}
+                showProChip
+                to="/settings/promoted"
               />
             )}
 
             {isWebApp() && (
               <HamburgerMenuRow
-                onClickAction={null}
-                to="/settings/tools"
                 icon="fa fa-tools"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Tools for Your Website"
+                onClickAction={null}
+                showProChip
+                to="/settings/tools"
               />
-            )}
-
-            <HamburgerMenuRow
-              onClickAction={null}
-              to="/more/about"
-              icon="fa fa-users"
-              iconStyle={{ fontSize: 22, color: '#1c2f4b' }}
-              linkText="About We Vote"
-            />
-
-            {isSignedIn && (
-            <HamburgerMenuRow
-              onClickAction={() => VoterSessionActions.voterSignOut()}
-              to="/settings/account"
-              icon={isSignedIn ? 'fa fa-sign-out' : 'fa fa-sign-in'}
-              iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
-              linkText="Sign Out"
-            />
             )}
 
             <tr className="hamburger-terms__tr-terms">

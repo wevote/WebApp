@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../utils/logging';
-import Footer from '../../components/Welcome/Footer';
+import WelcomeFooter from '../../components/Welcome/WelcomeFooter';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import Section, {
   Bold,
@@ -215,7 +215,7 @@ class About extends Component {
         <Section>
           &nbsp;
         </Section>
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }

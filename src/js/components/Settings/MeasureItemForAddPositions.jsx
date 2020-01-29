@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Card from '@material-ui/core/esm/Card';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import Card from '@material-ui/core/Card';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import ItemActionBar from '../Widgets/ItemActionBar';
 import SupportStore from '../../stores/SupportStore';
@@ -161,7 +161,7 @@ class MeasureItemForAddPositions extends Component {
     const { showPositionStatement } = this.state;
     this.setState({
       showPositionStatement: !showPositionStatement,
-      shouldFocusCommentArea: true,
+      // shouldFocusCommentArea: true,
     });
   }
 
@@ -187,7 +187,7 @@ class MeasureItemForAddPositions extends Component {
           ballotItemDisplayName={ballotItemDisplayName}
           commentEditModeOn={showPositionStatement}
           externalUniqueId="desktopPositionStatement"
-          shouldFocus={this.state.shouldFocusCommentArea}
+          // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="MEASURE"
           shownInList
@@ -202,7 +202,7 @@ class MeasureItemForAddPositions extends Component {
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
           externalUniqueId="mobilePositionStatement"
-          shouldFocus={this.state.shouldFocusCommentArea}
+          // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="MEASURE"
           shownInList
@@ -229,10 +229,8 @@ class MeasureItemForAddPositions extends Component {
             buttonsOnly
             externalUniqueId={`measureItemForAddPositions-${ballotItemWeVoteId}`}
             shareButtonHide
-            // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
             togglePositionStatementFunction={this.togglePositionStatement}
             // transitioning={this.state.transitioning}
-            type="MEASURE"
           />
         </InfoRow>
         {commentDisplayDesktop}

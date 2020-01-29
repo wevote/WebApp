@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/esm/styles';
-import Switch from '@material-ui/core/esm/Switch';
-import Button from '@material-ui/core/esm/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Switch from '@material-ui/core/Switch';
+import Button from '@material-ui/core/Button';
 import AppActions from '../../actions/AppActions';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import { cordovaDot, cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
 import LoadingWheel from '../LoadingWheel';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import PremiumableButton from '../Widgets/PremiumableButton';
 import { renderLog } from '../../utils/logging';
 import SettingsAccountLevelChip from './SettingsAccountLevelChip';
-import { ImageDescription, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions } from './SettingsStyled';
+import { ImageDescription, LinkToDomainRow, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions } from './SettingsStyled';
 import VoterStore from '../../stores/VoterStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 
@@ -129,6 +131,8 @@ class SettingsSharing extends Component {
     }
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      const organizationChosenSubdomain = organization.chosen_subdomain_string || '';
+      const organizationChosenDomainName = organization.chosen_domain_string || '';
       const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
       const chosenSocialShareDescriptionSavedValue = organization.chosen_social_share_description || '';
       const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
@@ -140,6 +144,8 @@ class SettingsSharing extends Component {
         chosenSocialShareMasterImageUrlHttps: organization.chosen_social_share_master_image_url_https,
         hideLogo: organization.chosen_hide_we_vote_logo || false,
         organization,
+        organizationChosenSubdomain,
+        organizationChosenDomainName,
         voterFeaturePackageExceedsOrEqualsEnterprise,
       });
       // If it hasn't been changed locally, then use the one saved in the API server
@@ -162,6 +168,8 @@ class SettingsSharing extends Component {
     const organizationWeVoteId = voter.linked_organization_we_vote_id;
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      const organizationChosenSubdomain = organization.chosen_subdomain_string || '';
+      const organizationChosenDomainName = organization.chosen_domain_string || '';
       const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
       const chosenSocialShareDescriptionSavedValue = organization.chosen_social_share_description || '';
       const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
@@ -172,6 +180,8 @@ class SettingsSharing extends Component {
         chosenSocialShareDescriptionSavedValue,
         chosenSocialShareMasterImageUrlHttps: organization.chosen_social_share_master_image_url_https,
         organization,
+        organizationChosenDomainName,
+        organizationChosenSubdomain,
         organizationWeVoteId,
         voterFeaturePackageExceedsOrEqualsEnterprise,
       });
@@ -292,8 +302,13 @@ class SettingsSharing extends Component {
   };
 
   openPaidAccountUpgradeModal (paidAccountUpgradeMode) {
+    //
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
-    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+    if (isWebApp()) {
+      AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+    } else {
+      cordovaOpenSafariView('https://wevote.us/more/pricing', null, 50);
+    }
   }
 
   render () {
@@ -308,6 +323,8 @@ class SettingsSharing extends Component {
       chosenSocialShareMasterImageFromFileReader,
       hideLogo,
       organization,
+      organizationChosenDomainName,
+      organizationChosenSubdomain,
       organizationWeVoteId,
       voter,
       voterFeaturePackageExceedsOrEqualsEnterprise,
@@ -336,15 +353,58 @@ class SettingsSharing extends Component {
         <Card className="card">
           <CardMain className="card-main">
             <h1 className="h2">Sharing Information</h1>
+            <Introduction>
+              {chosenFeaturePackage === 'FREE' && (
+                <>
+                  Want to create a configured version of We Vote you can send out to your followers?
+                  {' '}
+                  <OpenExternalWebSite
+                    url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
+                    target="_blank"
+                    body={(<span>Learn more here.</span>)}
+                  />
+                </>
+              )}
+            </Introduction>
+            {organizationChosenSubdomain || organizationChosenDomainName ? (
+              <LinkToDomainRow>
+                To see the changes you make on this page, please visit:
+                {' '}
+                {organizationChosenSubdomain && (
+                  <OpenExternalWebSite
+                    url={`https://${organizationChosenSubdomain}.WeVote.US`}
+                    target="_blank"
+                    body={(<span>{`https://${organizationChosenSubdomain}.WeVote.US`}</span>)}
+                  />
+                )}
+                {organizationChosenDomainName && (
+                  <OpenExternalWebSite
+                    url={`https://${organizationChosenDomainName}`}
+                    target="_blank"
+                    body={(<span>{`https://${organizationChosenDomainName}`}</span>)}
+                  />
+                )}
+              </LinkToDomainRow>
+            ) : (
+              <LinkToDomainRow>
+                To see these settings in action, enter a subdomain or domain name on the
+                {' '}
+                <Link to="/settings/domain">
+                  <strong>
+                    Your Settings &gt; Domain
+                  </strong>
+                </Link>
+                {' '}
+                page.
+              </LinkToDomainRow>
+            )}
             <SharingRow>
               <SharingColumn>
                 <InputBoxLabel>Hide We Vote Logo</InputBoxLabel>
                 <DescriptionText>
                   Remove the We Vote logo from the header bar.
                   {' '}
-                  This setting will also hide the We Vote logo from the favicon and social share images for Enterprise Plans, even if you haven
-                  &apos;
-                  t uploaded your own.
+                  This setting will also hide the We Vote logo from the favicon and social share images for Enterprise Plans, even if you haven&apos;t uploaded your own.
                 </DescriptionText>
               </SharingColumn>
               <SharingColumn alignRight>
@@ -594,6 +654,11 @@ const DesktopView = styled.div`
 
 const MobileTabletView = styled.div`
   display: inherit;
+`;
+
+const Introduction = styled.p`
+  margin: 0 0 16px 0;
+  font-size: 14px;
 `;
 
 export default withStyles(styles)(SettingsSharing);

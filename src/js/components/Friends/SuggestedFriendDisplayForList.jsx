@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import ImageHandler from '../ImageHandler';
 import FriendActions from '../../actions/FriendActions';
 import SuggestedFriendToggle from './SuggestedFriendToggle';
@@ -66,7 +66,7 @@ class SuggestedFriendDisplayForList extends Component {
         </Name>
         {!!(positionsTaken) && (
           <Info>
-            Positions:
+            Opinions:
             {' '}
             <strong>{positionsTaken}</strong>
           </Info>
@@ -104,27 +104,16 @@ class SuggestedFriendDisplayForList extends Component {
         <ButtonWrapper>
           <SuggestedFriendToggle otherVoterWeVoteId={otherVoterWeVoteId} />
           <ButtonContainer>
-            {ignoreSuggestedFriendSent ? (
-              <Button
-                color="primary"
-                disabled
-                fullWidth
-                type="button"
-                variant="outlined"
-              >
-                Removing
-              </Button>
-            ) : (
-              <Button
-                color="primary"
-                fullWidth
-                onClick={() => this.ignoreSuggestedFriend(otherVoterWeVoteId)}
-                type="button"
-                variant="outlined"
-              >
-                {window.innerWidth > 620 ? 'Remove' : 'Remove'}
-              </Button>
-            )}
+            <Button
+              color="primary"
+              disabled={ignoreSuggestedFriendSent}
+              fullWidth
+              onClick={() => this.ignoreSuggestedFriend(otherVoterWeVoteId)}
+              type="button"
+              variant="outlined"
+            >
+              {ignoreSuggestedFriendSent ? 'Removing...' : 'Remove'}
+            </Button>
           </ButtonContainer>
         </ButtonWrapper>
       </Wrapper>
@@ -143,17 +132,19 @@ class SuggestedFriendDisplayForList extends Component {
 }
 
 const Wrapper = styled.div`
-  margin: 24px 0;
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
   flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 24px 0;
+  position: relative;
+  width: 100%;
   @media(min-width: 400px) {
     align-items: center;
-    justify-content: flex-start;
     flex-direction: row;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
     padding-left: 100px;
   }
   @media (min-width: 520px) {
@@ -163,10 +154,11 @@ const Wrapper = styled.div`
 `;
 
 const Flex = styled.div`
+  align-items: flex-start;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
+  width: 100%;
 `;
 
 const Avatar = styled.div`
@@ -204,12 +196,31 @@ const Details = styled.div`
 `;
 
 const Name = styled.h3`
-  font-weight: bold;
   color: black !important;
-  font-size: 26px;
+  font-size: 20px;
+  font-weight: bold;
   margin-bottom: 4px;
-  text-align: center;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 18ch;
   width: 100%;
+  @media(max-width: 321px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 322px) and (max-width: 400px) {
+    max-width: 25ch;
+  }
+  @media (min-width: 401px) and (max-width: 600px) {
+    max-width: 12ch;
+  }
+  @media (min-width: 601px) and (max-width: 787px) {
+    max-width: 18ch;
+  }
+  @media (min-width: 788px) and (max-width: 991px) {
+    max-width: 30ch;
+  }
   @media(min-width: 400px) {
     text-align: left;
     font-size: 22px;
@@ -232,6 +243,7 @@ const ButtonWrapper = styled.div`
   width: 100%;
   margin: 12px 0 0;
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
   @media(min-width: 400px) {
@@ -251,7 +263,7 @@ const ButtonWrapper = styled.div`
 
 const ButtonContainer = styled.div`
   width: 100%;
-  margin-left: 12px;
+  margin-right: 12px;
   @media(min-width: 400px) {
     width: fit-content;
     margin: 0;

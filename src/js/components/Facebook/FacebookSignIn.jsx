@@ -14,17 +14,20 @@ import VoterActions from '../../actions/VoterActions';
 class FacebookSignIn extends Component {
   static propTypes = {
     closeSignInModal: PropTypes.func,
+    buttonSubmittedText: PropTypes.string,
     buttonText: PropTypes.string,
   };
 
   constructor (props) {
     super(props);
     this.state = {
+      buttonSubmittedText: '',
+      deferredFacebookSignInRetrieve: false,
       facebookAuthResponse: {},
+      facebookSignInSequenceStarted: false,
       mergingTwoAccounts: false,
       redirectInProgress: false,
       retrievingSignIn: false,
-      deferredFacebookSignInRetrieve: false,
       saving: false,
       waitingForMergeTwoAccounts: false,
     };
@@ -37,6 +40,9 @@ class FacebookSignIn extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.appStoreListener = AppStore.addListener(this.onVoterStoreChange.bind(this));
     // console.log('FacebookSignIn, componentDidMount');
+    this.setState({
+      buttonSubmittedText: this.props.buttonSubmittedText || 'Signing in...',
+    });
 
     if (!signInModalGlobalState.getBool('waitingForFacebookApiCompletion')) {
       signInModalGlobalState.set('waitingForFacebookApiCompletion', true);
@@ -112,6 +118,9 @@ class FacebookSignIn extends Component {
   };
 
   didClickFacebookSignInButton = () => {
+    this.setState({
+      facebookSignInSequenceStarted: true,
+    });
     signInModalGlobalState.set('startFacebookSignInSequence', true);
     FacebookActions.login();
   };
@@ -144,7 +153,7 @@ class FacebookSignIn extends Component {
   render () {
     renderLog('FacebookSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     const { buttonText } = this.props;
-    const { facebookAuthResponse, mergingTwoAccounts, redirectInProgress, waitingForMergeTwoAccounts } = this.state;
+    const { buttonSubmittedText, facebookAuthResponse, facebookSignInSequenceStarted, mergingTwoAccounts, redirectInProgress, waitingForMergeTwoAccounts } = this.state;
     if (redirectInProgress) {
       return null;
     }
@@ -189,8 +198,9 @@ class FacebookSignIn extends Component {
     return (
       <div>
         <SplitIconButton
-          buttonText={buttonText}
+          buttonText={facebookSignInSequenceStarted ? buttonSubmittedText : buttonText}
           backgroundColor="#3b5998"
+          disabled={facebookSignInSequenceStarted}
           externalUniqueId="facebookSignIn"
           icon={<span className="fab fa-facebook-square" />}
           onClick={this.didClickFacebookSignInButton}

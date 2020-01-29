@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import DoneIcon from '@material-ui/icons/Done';
 import CommentIcon from '@material-ui/icons/Comment';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
@@ -10,9 +10,11 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
+import ItemActionBar from './ItemActionBar';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
@@ -26,10 +28,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
-    goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     classes: PropTypes.object,
+    goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
+    hideNumbersOfAllPositions: PropTypes.bool,
+    uniqueExternalId: PropTypes.string,
   };
 
   constructor (props) {
@@ -145,7 +149,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.onCachedPositionsOrIssueStoreChange();
   }
 
-  // Turning off while working on modifications 2019-12-06
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
@@ -209,7 +212,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
-    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    // Update state so the next render will show the fallback UI, We should have a 'Oh snap' page
     return { hasError: true };
   }
 
@@ -221,7 +224,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       currentFriendsOrganizationWeVoteIdsLength: priorCurrentFriendsOrganizationWeVoteIdsLength,
       issueWeVoteIdsLinkedToByOrganizationDictLength: priorIssueWeVoteIdsLinkedToByOrganizationDictLength,
       organizationWeVoteIdsVoterIsFollowingLength: priorOrganizationWeVoteIdsVoterIsFollowingLength,
+      voterOpposesBallotItem: priorVoterOpposesBallotItem,
       voterOpposesListLength: priorVoterOpposesListLength,
+      voterSupportsBallotItem: priorVoterSupportsBallotItem,
       voterSupportsListLength: priorVoterSupportsListLength,
     } = this.state;
 
@@ -239,10 +244,15 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // console.log('voterOpposesListLength:', voterOpposesListLength, ', priorVoterOpposesListLength:', priorVoterOpposesListLength);
     // console.log('voterSupportsListLength:', voterSupportsListLength, ', priorVoterSupportsListLength:', priorVoterSupportsListLength);
 
-    const minimumPositionSummaryListVariablesFound = allCachedPositionsLength !== undefined && (currentFriendsOrganizationWeVoteIdsLength || issueWeVoteIdsLinkedToByOrganizationDictLength || organizationWeVoteIdsVoterIsFollowingLength);
-    const changedPositionSummaryListVariablesFound = !!((allCachedPositionsLength !== priorAllCachedPositionsLength) || (allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) || (currentFriendsOrganizationWeVoteIdsLength !== priorCurrentFriendsOrganizationWeVoteIdsLength) || (issueWeVoteIdsLinkedToByOrganizationDictLength !== priorIssueWeVoteIdsLinkedToByOrganizationDictLength) || (organizationWeVoteIdsVoterIsFollowingLength !== priorOrganizationWeVoteIdsVoterIsFollowingLength) || (voterOpposesListLength !== priorVoterOpposesListLength) || (voterSupportsListLength !== priorVoterSupportsListLength));
+    let voterSupportsBallotItem = SupportStore.voterSupportsList[ballotItemWeVoteId] || false;
+    let voterOpposesBallotItem = SupportStore.voterOpposesList[ballotItemWeVoteId] || false;
 
-    const refreshPositionSummaryList = !!(minimumPositionSummaryListVariablesFound && changedPositionSummaryListVariablesFound);
+    const minimumPositionSummaryListVariablesFound = !!(allCachedPositionsLength !== undefined && (currentFriendsOrganizationWeVoteIdsLength || issueWeVoteIdsLinkedToByOrganizationDictLength || organizationWeVoteIdsVoterIsFollowingLength));
+    const changedPositionSummaryListVariablesFound = !!((allCachedPositionsLength !== priorAllCachedPositionsLength) || (allIssuesVoterIsFollowingLength !== priorAllIssuesVoterIsFollowingLength) || (currentFriendsOrganizationWeVoteIdsLength !== priorCurrentFriendsOrganizationWeVoteIdsLength) || (issueWeVoteIdsLinkedToByOrganizationDictLength !== priorIssueWeVoteIdsLinkedToByOrganizationDictLength) || (organizationWeVoteIdsVoterIsFollowingLength !== priorOrganizationWeVoteIdsVoterIsFollowingLength) || (voterOpposesListLength !== priorVoterOpposesListLength) || (voterSupportsListLength !== priorVoterSupportsListLength));
+    const changedVoterPosition = !!((voterOpposesBallotItem !== priorVoterOpposesBallotItem) || (voterSupportsBallotItem !== priorVoterSupportsBallotItem));
+    // console.log('minimumPositionSummaryListVariablesFound:', minimumPositionSummaryListVariablesFound, ', changedPositionSummaryListVariablesFound:', changedPositionSummaryListVariablesFound, ', changedVoterPosition:', changedVoterPosition);
+
+    const refreshPositionSummaryList = !!((minimumPositionSummaryListVariablesFound && changedPositionSummaryListVariablesFound) || changedVoterPosition);
     // console.log('refreshPositionSummaryList: ', refreshPositionSummaryList, ballotItemWeVoteId);
     if (refreshPositionSummaryList) {
       const limitToThisIssue = false;
@@ -274,8 +284,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       let voterPersonalNetworkScoreWithSign;
       let voterPersonalNetworkScoreIsNegative = false;
       let voterPersonalNetworkScoreIsPositive = false;
-      let voterOpposesBallotItem = false;
-      let voterSupportsBallotItem = false;
       if (ballotItemStatSheet) {
         ({ voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet);
         numberOfSupportPositionsForScore = parseInt(ballotItemStatSheet.numberOfSupportPositionsForScore) || 0;
@@ -393,16 +401,16 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     console.error('BallotItemSupportOpposeCountDisplay caught error: ', `${error} with info: `, info);
   }
 
-  goToBallotItemLinkLocal () {
-    // console.log("BallotItemSupportOpposeCountDisplay goToBallotItemLinkLocal");
+  goToBallotItemLinkLocal (ballotItemWeVoteId) {
+    // console.log('BallotItemSupportOpposeCountDisplay goToBallotItemLinkLocal');
     if (this.props.goToBallotItem) {
-      this.props.goToBallotItem();
+      this.props.goToBallotItem(ballotItemWeVoteId);
     }
   }
 
   render () {
     renderLog('BallotItemSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
-    const { ballotItemWeVoteId, classes } = this.props;
+    const { ballotItemWeVoteId, classes, hideNumbersOfAllPositions, uniqueExternalId } = this.props;
     const {
       ballotItemDisplayName,
       numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions,
@@ -462,10 +470,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                     </NetworkScoreSmall>
                   </DecidedIconWrapper>
                   You support
-                  {' '}
-                  <strong>{ballotItemDisplayName}</strong>
-                  .
-                  <br />
+                  {ballotItemDisplayName && (
+                    <>
+                      {' '}
+                      <strong>{ballotItemDisplayName}</strong>
+                      .
+                    </>
+                  )}
                 </div>
               )}
               {voterOpposesBallotItem && (
@@ -476,13 +487,26 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                     </NetworkScoreSmall>
                   </DecidedIconWrapper>
                   You oppose
-                  {' '}
-                  <strong>{ballotItemDisplayName}</strong>
-                  .
-                  {' '}
+                  {ballotItemDisplayName && (
+                    <>
+                      {' '}
+                      <strong>{ballotItemDisplayName}</strong>
+                      .
+                    </>
+                  )}
                 </span>
               )}
-              <span>
+              <ItemActionBarWrapper>
+                <ItemActionBar
+                  ballotItemWeVoteId={ballotItemWeVoteId}
+                  commentButtonHide
+                  externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                  hidePositionPublicToggle
+                  positionPublicToggleWrapAllowed
+                  shareButtonHide
+                />
+              </ItemActionBarWrapper>
+              <YourPersonalNetworkIntroText>
                 Your personal network also has
                 {' '}
                 {positionsInNetworkSummaryListLength > 1 ? (
@@ -490,7 +514,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 ) : (
                   <span> this opinion:</span>
                 )}
-              </span>
+              </YourPersonalNetworkIntroText>
               {positionsInNetworkSummaryList && (
                 <RenderedOrganizationsWrapper>
                   <PositionSummaryListForPopover
@@ -511,10 +535,20 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         positionsPopover = (
           <PopoverWrapper>
             <PopoverHeader>
-              <PopoverTitleText>About this Score</PopoverTitleText>
+              <PopoverTitleText>Your Personal Score</PopoverTitleText>
             </PopoverHeader>
             <PopoverBody>
-              This score about
+              <ItemActionBarWrapper>
+                <ItemActionBar
+                  ballotItemWeVoteId={ballotItemWeVoteId}
+                  commentButtonHide
+                  externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                  hidePositionPublicToggle
+                  positionPublicToggleWrapAllowed
+                  shareButtonHide
+                />
+              </ItemActionBarWrapper>
+              Your personal score of
               {' '}
               <strong>{ballotItemDisplayName}</strong>
               {' '}
@@ -541,10 +575,20 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       positionsPopover = (
         <PopoverWrapper>
           <PopoverHeader>
-            <PopoverTitleText>About this Score</PopoverTitleText>
+            <PopoverTitleText>Your Personal Score</PopoverTitleText>
           </PopoverHeader>
           <PopoverBody>
-            This score about
+            <ItemActionBarWrapper>
+              <ItemActionBar
+                ballotItemWeVoteId={ballotItemWeVoteId}
+                commentButtonHide
+                externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                hidePositionPublicToggle
+                positionPublicToggleWrapAllowed
+                shareButtonHide
+              />
+            </ItemActionBarWrapper>
+            Your personal score of
             {' '}
             <strong>{ballotItemDisplayName}</strong>
             {' '}
@@ -568,6 +612,23 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             <strong>{ballotItemDisplayName ? `${ballotItemDisplayName}` : ''}</strong>
             {' '}
             yet.
+            <ItemActionBarWrapper>
+              <ItemActionBar
+                ballotItemWeVoteId={ballotItemWeVoteId}
+                commentButtonHide
+                externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                hidePositionPublicToggle
+                positionPublicToggleWrapAllowed
+                shareButtonHide
+              />
+            </ItemActionBarWrapper>
+            <ShowCandidateFooterWrapper>
+              <ShowMoreFooter
+                showMoreId={`noPositionsForPopoverShowAllPositions-${ballotItemWeVoteId}`}
+                showMoreLink={() => this.goToBallotItemLinkLocal(ballotItemWeVoteId)}
+                showMoreText="Show More"
+              />
+            </ShowCandidateFooterWrapper>
           </PopoverBody>
         </PopoverWrapper>
       );
@@ -606,6 +667,16 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 {' '}
               </span>
             )}
+            <ItemActionBarWrapper>
+              <ItemActionBar
+                ballotItemWeVoteId={ballotItemWeVoteId}
+                commentButtonHide
+                externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                hidePositionPublicToggle
+                positionPublicToggleWrapAllowed
+                shareButtonHide
+              />
+            </ItemActionBarWrapper>
           </PopoverBody>
         </PopoverWrapper>
       );
@@ -620,8 +691,18 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             </PopoverTitleText>
           </PopoverHeader>
           <PopoverBody>
+            <ItemActionBarWrapper>
+              <ItemActionBar
+                ballotItemWeVoteId={ballotItemWeVoteId}
+                commentButtonHide
+                externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+                hidePositionPublicToggle
+                positionPublicToggleWrapAllowed
+                shareButtonHide
+              />
+            </ItemActionBarWrapper>
             <div>
-              Follow opinions to build your score about
+              Follow opinions to build your personal score of
               {' '}
               <strong>{ballotItemDisplayName ? ` ${ballotItemDisplayName}` : ''}</strong>
               .
@@ -707,37 +788,49 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             openOnClick
             showCloseIcon
           >
-            <EndorsementsContainer>
-              <EndorsementsTitle>
-                Endorsements
-              </EndorsementsTitle>
-              <EndorsementWrapper>
-                <EndorsementRow>
-                  <Endorsement>
-                    <ThumbUpIcon classes={{ root: classes.endorsementIconRoot }} />
-                    <EndorsementCount>
-                      {numberOfAllSupportPositions}
-                    </EndorsementCount>
-                  </Endorsement>
-                  { showOpposeCount && (
+            {hideNumbersOfAllPositions ? (
+              <NetworkScore
+                hideNumbersOfAllPositions
+                voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+              >
+                <YourScoreWrapper>
+                  Your Score
+                </YourScoreWrapper>
+              </NetworkScore>
+            ) : (
+              <EndorsementsContainer>
+                <EndorsementsTitle>
+                  Endorsements
+                </EndorsementsTitle>
+                <EndorsementWrapper>
+                  <EndorsementRow>
                     <Endorsement>
-                      <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
+                      <ThumbUpIcon classes={{ root: classes.endorsementIconRoot }} />
                       <EndorsementCount>
-                        {numberOfAllOpposePositions}
+                        {numberOfAllSupportPositions}
                       </EndorsementCount>
                     </Endorsement>
-                  )}
-                  { showCommentCount && (
-                    <Endorsement>
-                      <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
-                      <EndorsementCount>
-                        {numberOfAllInfoOnlyPositions}
-                      </EndorsementCount>
-                    </Endorsement>
-                  )}
-                </EndorsementRow>
-              </EndorsementWrapper>
-            </EndorsementsContainer>
+                    { showOpposeCount && (
+                      <Endorsement>
+                        <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
+                        <EndorsementCount>
+                          {numberOfAllOpposePositions}
+                        </EndorsementCount>
+                      </Endorsement>
+                    )}
+                    { showCommentCount && (
+                      <Endorsement>
+                        <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
+                        <EndorsementCount>
+                          {numberOfAllInfoOnlyPositions}
+                        </EndorsementCount>
+                      </Endorsement>
+                    )}
+                  </EndorsementRow>
+                </EndorsementWrapper>
+              </EndorsementsContainer>
+            )}
           </StickyPopover>
         )}
 
@@ -862,8 +955,13 @@ const EndorsementCount = styled.div`
   padding-top: 4px;
 `;
 
+const ItemActionBarWrapper = styled.div`
+  margin-bottom: 8px;
+  width: 100%;
+`;
+
 const NetworkScore = styled.div`
-  background: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
+  background: ${({ hideNumbersOfAllPositions, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888')};
   color: white;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   cursor: pointer;
@@ -873,13 +971,12 @@ const NetworkScore = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 5px;
-  float: right;
   font-size: 16px;
   font-weight: bold;
   @media print{
     border-width: 1 px;
     border-style: solid;
-    border-color: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
+    border-color: ${({ hideNumbersOfAllPositions, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (hideNumbersOfAllPositions && 'rgb(240, 240, 240)') || '#888')};
   }
 `;
 
@@ -941,6 +1038,20 @@ const PopoverBody = styled.div`
 
 const RenderedOrganizationsWrapper = styled.div`
   margin-top: 6px;
+`;
+
+const ShowCandidateFooterWrapper = styled.div`
+  margin-top: 10px;
+`;
+
+const YourPersonalNetworkIntroText = styled.div`
+  margin-top: 6px;
+`;
+
+const YourScoreWrapper = styled.div`
+  text-align: center;
+  color: #999;
+  font-size: 12px;
 `;
 
 export default withTheme(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

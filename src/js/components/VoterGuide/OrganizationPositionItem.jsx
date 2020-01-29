@@ -278,6 +278,7 @@ export default class OrganizationPositionItem extends Component {
 
   render () {
     renderLog('OrganizationPositionItem');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('OrganizationPositionItem');
     const { comment_text_off: commentTextOff, position, stance_display_off: stanceDisplayOff } = this.props;
     const {
       voterOpposesBallotItem,
@@ -406,7 +407,6 @@ export default class OrganizationPositionItem extends Component {
                   externalUniqueId={`organizationPositionItem-${position.ballot_item_we_vote_id}`}
                   shareButtonHide
                   transitioning={this.state.transitioning}
-                  type={position.kind_of_ballot_item}
                   togglePositionStatementFunction={this.togglePositionStatement}
                 />
                 { this.state.hidePositionStatement ?

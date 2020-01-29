@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button';
 import filter from 'lodash-es/filter';
 import GuideList from './GuideList';
 import LoadingWheel from '../LoadingWheel';

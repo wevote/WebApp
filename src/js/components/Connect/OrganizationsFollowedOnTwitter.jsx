@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
-import Popover from 'react-bootstrap/esm/Popover';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 import FollowToggle from '../Widgets/FollowToggle';
 import { renderLog } from '../../utils/logging';
 import OrganizationCard from '../VoterGuide/OrganizationCard';
@@ -44,16 +44,23 @@ export default class OrganizationsFollowedOnTwitter extends Component {
     // }
   }
 
+  componentWillUnmount () {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+  }
+
   onTriggerEnter (organizationWeVoteId) {
     this.refs[`overlay-${organizationWeVoteId}`].show(); // eslint-disable-line react/no-string-refs
     this.show_popover = true;
-    clearTimeout(this.hide_popover_timer);
+    clearTimeout(this.timer);
   }
 
   onTriggerLeave (organizationWeVoteId) {
     this.show_popover = false;
-    clearTimeout(this.hide_popover_timer);
-    this.hide_popover_timer = setTimeout(() => {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
       if (!this.show_popover) {
         this.refs[`overlay-${organizationWeVoteId}`].hide(); // eslint-disable-line react/no-string-refs
       }

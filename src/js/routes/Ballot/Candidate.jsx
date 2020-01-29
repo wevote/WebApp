@@ -40,6 +40,7 @@ export default class Candidate extends Component {
       candidate: {},
       candidateWeVoteId: '',
       organizationWeVoteId: '',
+      positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
       scrolledDown: false,
     };
@@ -73,10 +74,18 @@ export default class Candidate extends Component {
           positionListHasBeenRetrievedOnce,
         });
       }
-    }
-
-    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-      IssueActions.issuesRetrieveForElection(VoterStore.electionId());
+      if (candidateWeVoteId &&
+        !this.localPositionListFromFriendsHasBeenRetrievedOnce(candidateWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(candidateWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        CandidateActions.positionListForBallotItemFromFriends(candidateWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[candidateWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
+        });
+      }
     }
 
     // Get the latest guides to follow for this candidate
@@ -105,6 +114,15 @@ export default class Candidate extends Component {
     }
 
     const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+    }
+    IssueActions.issuesFollowedRetrieve();
+    if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
+      IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
+      // IssueActions.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId()); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+    }
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
     this.setState({
       allCachedPositionsForThisCandidate,
@@ -219,6 +237,14 @@ export default class Candidate extends Component {
     if (candidateWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
       return positionListHasBeenRetrievedOnce[candidateWeVoteId];
+    }
+    return false;
+  }
+
+  localPositionListFromFriendsHasBeenRetrievedOnce (candidateWeVoteId) {
+    if (candidateWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[candidateWeVoteId];
     }
     return false;
   }

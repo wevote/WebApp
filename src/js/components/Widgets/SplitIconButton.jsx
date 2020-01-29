@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/esm/Button';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import { getTextColorFromBackground } from '../../utils/color';
 
 class SplitIconButton extends PureComponent {
@@ -10,6 +10,7 @@ class SplitIconButton extends PureComponent {
     backgroundColor: PropTypes.string,
     buttonText: PropTypes.string,
     classes: PropTypes.object,
+    disabled: PropTypes.bool,
     externalUniqueId: PropTypes.string,
     icon: PropTypes.node,
     iconRight: PropTypes.bool,
@@ -27,6 +28,7 @@ class SplitIconButton extends PureComponent {
       <Button
         className={classes.splitButton}
         classes={{ root: classes.splitButton, label: classes.label }}
+        disabled={this.props.disabled}
         id={`${this.props.externalUniqueId}-splitIconButton`}
         variant="contained"
         title={title}

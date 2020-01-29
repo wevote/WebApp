@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';

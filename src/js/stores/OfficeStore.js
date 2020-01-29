@@ -39,44 +39,6 @@ class OfficeStore extends ReduceStore {
           offices: assign({}, state.offices, newOffices),
         };
 
-      case 'organizationFollow':
-        // DALE 2019-12-11 I don't think this is necessary any more
-        // // Go through all of the offices currently on this voter's ballot and update their positions
-        // if (state.offices && state.offices.length) {
-        //   // console.log("OfficeStore organizationFollow, state.offices.length:", state.offices.length);
-        //   arrayOfOfficeWeVoteIds = Object.keys(state.offices);
-        //   for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
-        //     OfficeActions.positionListForBallotItemPublic(arrayOfOfficeWeVoteIds[i]);  // Use positionListForBallotItemForVoter?
-        //   }
-        // }
-        return state;
-
-      case 'organizationStopFollowing':
-        // DALE 2019-12-11 I don't think this is necessary any more
-        // // Go through all of the offices currently on this voter's ballot and update their positions
-        // if (state.offices) {
-        //   // console.log('OfficeStore organizationStopFollowing, state.offices.length:', state.offices.length);
-        //   arrayOfOfficeWeVoteIds = Object.keys(state.offices);
-        //   for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
-        //     // DALE 2019-05-08 It seems like we should just remove the follow data locally instead of hitting API server again
-        //     OfficeActions.positionListForBallotItemPublic(arrayOfOfficeWeVoteIds[i]);  // Use positionListForBallotItemForVoter?
-        //   }
-        // }
-        return state;
-
-      case 'organizationFollowIgnore':
-        // DALE 2019-12-11 I don't think this is necessary any more
-        // // Go through all of the offices currently on this voter's ballot and update their positions
-        // if (state.offices) {
-        //   // console.log('OfficeStore organizationFollowIgnore, state.offices.length:', state.offices.length);
-        //   arrayOfOfficeWeVoteIds = Object.keys(state.offices);
-        //   for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
-        //     // DALE 2019-05-08 It seems like we should just set the ignore data locally instead of hitting API server again
-        //     OfficeActions.positionListForBallotItemPublic(arrayOfOfficeWeVoteIds[i]);  // Use positionListForBallotItemForVoter?
-        //   }
-        // }
-        return state;
-
       case 'voterBallotItemsRetrieve':
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         if (googleCivicElectionId !== 0) {

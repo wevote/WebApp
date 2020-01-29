@@ -28,6 +28,12 @@ const SharingRow = styled.div`
   padding-top: 20px;
 `;
 
+const LinkToDomainRow = styled.div`
+  border-top: 1px solid #eee;
+  padding: 16px 0;
+  padding-top: 20px;
+`;
+
 const SharingColumn = styled.div`
   display: flex;
   flex-flow: column;
@@ -60,4 +66,4 @@ const Actions = styled.div`
   margin-top: 1em;
 `;
 
-export { ImageDescription, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions };
+export { ImageDescription, LinkToDomainRow, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions };

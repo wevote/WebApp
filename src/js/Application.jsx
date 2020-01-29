@@ -21,6 +21,8 @@ import webAppConfig from './config';
 import { stringContains } from './utils/textFormat';
 import SnackNotifier from './components/Widgets/SnackNotifier';
 import displayFriendsTabs from './utils/displayFriendsTabs';
+import BallotShareButtonFooter from './components/Ballot/BallotShareButtonFooter';
+import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
 
 class Application extends Component {
   static propTypes = {
@@ -61,6 +63,12 @@ class Application extends Component {
       // disabled for cordova June 2019, see note in https://github.com/wevote/WebApp/pull/2303
       window.addEventListener('scroll', this.handleWindowScroll);
     }
+  }
+
+  // See https://reactjs.org/docs/error-boundaries.html
+  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    return { hasError: true };
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -130,6 +138,7 @@ class Application extends Component {
   }
 
   onAppStoreChange () {
+    // console.log('Application, onAppStoreChange');
     let signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
     // console.log('Application onAppStoreChange, current signInStartFullUrl: ', signInStartFullUrl);
     // Do not let sign_in_start_full_url be set again. Different logic while we figure out how to call AppActions.unsetStoreSignInStartFullUrl()
@@ -151,27 +160,28 @@ class Application extends Component {
   }
 
   onVoterStoreChange () {
-    // console.log('Application, onVoterStoreChange');
-    const voterDeviceId = VoterStore.voterDeviceId();
-    if (voterDeviceId && voterDeviceId !== '') {
-      if (this.state.voter_initial_retrieve_needed) {
-        VoterActions.voterEmailAddressRetrieve();
-        VoterActions.voterSMSPhoneNumberRetrieve();
-        FriendActions.friendInvitationsSentToMe();
-        this.incomingVariableManagement();
-        this.setState({
-          voter: VoterStore.getVoter(),
-          voter_initial_retrieve_needed: false,
-        });
-      } else {
-        this.setState({
-          voter: VoterStore.getVoter(),
-        });
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      console.log('Application, onVoterStoreChange');
+      const voterDeviceId = VoterStore.voterDeviceId();
+      if (voterDeviceId && voterDeviceId !== '') {
+        if (this.state.voter_initial_retrieve_needed) {
+          VoterActions.voterEmailAddressRetrieve();
+          VoterActions.voterSMSPhoneNumberRetrieve();
+          FriendActions.friendInvitationsSentToMe();
+          this.incomingVariableManagement();
+          this.setState({
+            voter: VoterStore.getVoter(),
+            voter_initial_retrieve_needed: false,
+          });
+        } else {
+          this.setState({
+            voter: VoterStore.getVoter(),
+          });
+        }
       }
+      // console.log('Application onVoterStoreChange voter: ', VoterStore.getVoter());
+      // console.log('SignedIn Voter in Application onVoterStoreChange voter: ', VoterStore.getVoter().full_name);
     }
-
-    // console.log('Application onVoterStoreChange voter: ', VoterStore.getVoter());
-    // console.log('SignedIn Voter in Application onVoterStoreChange voter: ', VoterStore.getVoter().full_name);
   }
 
   getAppBaseClass = () => {
@@ -275,6 +285,11 @@ class Application extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('Application caught error: ', `${error} with info: `, info);
+  }
+
   render () {
     renderLog('Application');  // Set LOG_RENDER_EVENTS to log all renders
     const { location: { pathname } } = this.props;
@@ -301,7 +316,9 @@ class Application extends Component {
 
     routingLog(pathname);
 
-    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, voterGuideCreatorMode, voterGuideMode } = getApplicationViewBooleans(pathname);
+    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, showBallotShareButtonFooter, voterGuideCreatorMode, voterGuideMode } = getApplicationViewBooleans(pathname);
+    // console.log('showBallotShareButtonFooter:', showBallotShareButtonFooter);
+    const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     if (inTheaterMode) {
       // console.log('inTheaterMode', inTheaterMode);
@@ -339,9 +356,11 @@ class Application extends Component {
               </div>
             </div>
           </Wrapper>
-          <div className="footroom-wrapper">
-            <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
-          </div>
+          {showFooterBar && (
+            <div className="footroom-wrapper">
+              <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
+            </div>
+          )}
         </div>
       );
     } else if (settingsMode) {
@@ -367,6 +386,9 @@ class Application extends Component {
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
+          )}
+          {showBallotShareButtonFooter && enableNextRelease && (
+            <BallotShareButtonFooter pathname={pathname} />
           )}
         </div>
       );
@@ -412,6 +434,9 @@ class Application extends Component {
           <div className="footroom-wrapper">
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>
+        )}
+        {showBallotShareButtonFooter && enableNextRelease && (
+          <BallotShareButtonFooter pathname={pathname} />
         )}
       </div>
     );

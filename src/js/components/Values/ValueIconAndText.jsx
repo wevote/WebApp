@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, withTheme } from '@material-ui/core/esm/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import ReactSVG from 'react-svg';
+import Chip from '@material-ui/core/Chip';
 import CandidateStore from '../../stores/CandidateStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
@@ -16,6 +17,8 @@ class ValueIconAndText extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     ballotItemDisplayName: PropTypes.string,
+    classes: PropTypes.object,
+    externalUniqueId: PropTypes.string,
     issueFollowedByVoter: PropTypes.bool,
     issueWidths: PropTypes.object,
     oneIssue: PropTypes.object,
@@ -53,9 +56,11 @@ class ValueIconAndText extends Component {
     // console.log('ValueIconAndText componentDidUpdate');
     const { oneIssue } = this.props;
     if (!prevProps.issueWidths[oneIssue.issue_we_vote_id]) {
-      const width = this.valueSpan.current.offsetWidth;
-      if (width > 0) {
-        this.props.subtractTotalWidth(this.props.oneIssue.issue_we_vote_id, width + 25);
+      if (this.valueSpan && this.valueSpan.current) {
+        const width = this.valueSpan.current.offsetWidth;
+        if (width > 0) {
+          this.props.subtractTotalWidth(this.props.oneIssue.issue_we_vote_id, width + 25);
+        }
       }
     }
   }
@@ -93,7 +98,7 @@ class ValueIconAndText extends Component {
   }
 
   valuePopover = () => {
-    const { ballotItemWeVoteId, ballotItemDisplayName, oneIssue } = this.props;
+    const { ballotItemWeVoteId, ballotItemDisplayName, issueFollowedByVoter, oneIssue } = this.props;
     const { issueSpecificPositionList, organizationsUnderThisIssueCount } = this.state;
     return (
       <PopoverWrapper>
@@ -108,26 +113,24 @@ class ValueIconAndText extends Component {
           </PopoverTitleText>
         </PopoverHeader>
         <PopoverDescriptionText>
-          <ReadMore
-            text_to_display={oneIssue.issue_description}
-            num_of_lines={2}
-          />
           {!!(organizationsUnderThisIssueCount) && (
             <>
               <OpinionsRelatedToText>
-                Opinions
+                These groups or people advocate for
                 {' '}
+                <strong>
+                  {oneIssue.issue_name}
+                </strong>
                 {ballotItemDisplayName && (
                   <span>
-                    about
                     {' '}
-                    {ballotItemDisplayName}
+                    and endorse
                     {' '}
+                    <strong>
+                      {ballotItemDisplayName}
+                    </strong>
                   </span>
                 )}
-                related to
-                {' '}
-                {oneIssue.issue_name}
                 :
               </OpinionsRelatedToText>
               {issueSpecificPositionList && (
@@ -141,16 +144,24 @@ class ValueIconAndText extends Component {
             </>
           )}
           {oneIssue.issue_we_vote_id && (
-            <FollowIssueToggleContainer>
-              <IssueFollowToggleButton
-                classNameOverride="pull-left"
-                issueName={oneIssue.issue_name}
-                issueWeVoteId={oneIssue.issue_we_vote_id}
-                showFollowingButtonText
-                showIssueNameOnFollowButton
-                lightModeOn
-              />
-            </FollowIssueToggleContainer>
+            <>
+              <FollowIssueToggleContainer>
+                <IssueFollowToggleButton
+                  classNameOverride="pull-left"
+                  issueName={oneIssue.issue_name}
+                  issueWeVoteId={oneIssue.issue_we_vote_id}
+                  showFollowingButtonText
+                  showIssueNameOnFollowButton
+                  lightModeOn
+                />
+              </FollowIssueToggleContainer>
+              <FollowIfYouCare>
+                <ReadMore
+                  textToDisplay={issueFollowedByVoter ? oneIssue.issue_description : `Follow if you care about ${oneIssue.issue_name}: "${oneIssue.issue_description}"`}
+                  numberOfLines={4}
+                />
+              </FollowIfYouCare>
+            </>
           )}
         </PopoverDescriptionText>
       </PopoverWrapper>
@@ -159,7 +170,7 @@ class ValueIconAndText extends Component {
 
   render () {
     // console.log('ValueIconAndText render');
-    const { ballotItemWeVoteId, issueFollowedByVoter, oneIssue } = this.props;
+    const { ballotItemWeVoteId, classes, externalUniqueId, issueFollowedByVoter, oneIssue } = this.props;
     const svgFill = issueFollowedByVoter ? '#555' : '#999';
     return (
       <StickyPopover
@@ -172,23 +183,22 @@ class ValueIconAndText extends Component {
         showCloseIcon
       >
         <ValueIconAndTextSpan
-          id={`valueIconAndText-${oneIssue.issue_we_vote_id}`}
+          id={`${externalUniqueId}-valueIconAndText-${oneIssue.issue_we_vote_id}`}
           issueFollowedByVoter={issueFollowedByVoter}
-          key={`valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
+          key={`${externalUniqueId}-valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
           className="u-no-break u-cursor--pointer"
         >
-          {oneIssue.issue_icon_local_path ? (
-            <div className="issue-icon-list__issue-icon">
+          <Chip
+            avatar={oneIssue.issue_icon_local_path ? (
               <ReactSVG
                 src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
                 svgStyle={{ fill: svgFill, padding: '1px 1px 1px 0px' }}
               />
-            </div>
-          ) : null
-        }
-          <div className="u-margin-left--xxs issue-icon-list__issue-label-name" ref={this.valueSpan}>
-            {oneIssue.issue_name}
-          </div>
+            ) : <span />}
+            classes={{ root: classes.chipStyle }}
+            label={oneIssue.issue_name}
+           ref={this.valueSpan}
+          />
         </ValueIconAndTextSpan>
       </StickyPopover>
     );
@@ -196,14 +206,15 @@ class ValueIconAndText extends Component {
 }
 
 const styles = () => ({
-  endorsementIcon: {
-    width: 12,
-    height: 12,
+  chipStyle: {
+    color: '#555',
+    fontSize: '.7rem',
+    height: 'auto',
   },
 });
 
 const FollowIssueToggleContainer = styled.div`
-  margin-top: 10px;
+  margin-top: 24px;
 `;
 
 const PopoverWrapper = styled.div`
@@ -228,9 +239,13 @@ const ValueIconAndTextSpan = styled.span`
   width: fit-content;
 `;
 
-const OpinionsRelatedToText = styled.div`
+const FollowIfYouCare = styled.div`
   color: #999;
-  font-weight: 200;
+  font-size: .75rem;
+  padding-top: 8px;
+`;
+
+const OpinionsRelatedToText = styled.div`
   margin-top: 4px;
 `;
 

@@ -2,25 +2,29 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { historyPush } from '../../utils/cordovaUtils';
 import FollowToggle from '../../components/Widgets/FollowToggle';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import FriendActions from '../../actions/FriendActions';
+import FriendToggle from '../../components/Friends/FriendToggle';
 import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
+import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
+import { renderLog } from '../../utils/logging';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 
 const AUTO_FOLLOW = 'af';
 
 export default class OrganizationVoterGuide extends Component {
   static propTypes = {
-    active_route: PropTypes.string,
+    activeRoute: PropTypes.string,
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
   };
@@ -85,11 +89,12 @@ export default class OrganizationVoterGuide extends Component {
     // console.log('VoterStore.getAddressObject(): ', VoterStore.getAddressObject());
     const voter = VoterStore.getVoter();
     this.setState({
-      activeRoute: this.props.active_route || '',
+      activeRoute: this.props.activeRoute || '',
       linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
       organizationWeVoteId,
       voter,
     });
+    FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
   }
 
   componentWillReceiveProps (nextProps) {
@@ -130,10 +135,10 @@ export default class OrganizationVoterGuide extends Component {
     }
 
     // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
-    if (nextProps.active_route) {
-      // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.active_route: ', nextProps.active_route);
+    if (nextProps.activeRoute) {
+      // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.activeRoute: ', nextProps.activeRoute);
       this.setState({
-        activeRoute: nextProps.active_route || '',
+        activeRoute: nextProps.activeRoute || '',
       });
     }
   }
@@ -186,6 +191,8 @@ export default class OrganizationVoterGuide extends Component {
         this.setState({
           organization,
           organizationId: organization.organization_id,
+          linkedVoterWeVoteId: organization.linked_voter_we_vote_id,
+          organizationType: organization.organization_type,
         });
         if (organization.organization_banner_url) {
           this.setState({
@@ -204,6 +211,8 @@ export default class OrganizationVoterGuide extends Component {
         this.setState({
           organization,
           organizationId: organization.organization_id,
+          linkedVoterWeVoteId: organization.linked_voter_we_vote_id,
+          organizationType: organization.organization_type,
         });
         if (organization.organization_banner_url) {
           this.setState({
@@ -250,7 +259,7 @@ export default class OrganizationVoterGuide extends Component {
 
   render () {
     renderLog('OrganizationVoterGuide');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activeRoute, organizationBannerUrl, organizationId, organizationWeVoteId } = this.state;
+    const { activeRoute, linkedVoterWeVoteId, organizationBannerUrl, organizationId, organizationType, organizationWeVoteId } = this.state;
     if (!this.state.organization || !this.state.voter || this.state.autoFollowRedirectHappening) {
       return <div>{LoadingWheel}</div>;
     }
@@ -259,31 +268,22 @@ export default class OrganizationVoterGuide extends Component {
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
 
     if (!organizationId) {
-      const floatRight = {
-        float: 'right',
-      };
       return (
-        <div className="card">
-          <div style={{ margin: 10 }}>
-            <span style={floatRight}>
-              <Link
-                id="OrganizationVoterGuideGoToBallot"
-                to="/ballot"
+        <DelayedLoad showLoadingText waitBeforeShow={2000}>
+          <div style={{ margin: 'auto', width: '50%' }}>
+            <Link
+              id="OrganizationVoterGuideGoToBallot"
+              to="/ballot"
+            >
+              <Button
+                color="primary"
+                variant="outlined"
               >
-                <Button
-                  color="primary"
-                  variant="contained"
-                >
-                  Go to Ballot &#x21AC;
-                </Button>
-              </Link>
-            </span>
-            <p>
-              Find voter guides you can follow.
-              These voter guides have been created by nonprofits, public figures, your friends, and more. (OrganizationVoterGuide)
-            </p>
+                Go to Ballot
+              </Button>
+            </Link>
           </div>
-        </div>
+        </DelayedLoad>
       );
     }
 
@@ -293,7 +293,7 @@ export default class OrganizationVoterGuide extends Component {
         <BannerContainer>
           { organizationBannerUrl !== '' ? (
             <div className="organization-banner-image-div d-print-none">
-              <img className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
+              <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
             </div>
           ) :
             <div className="organization-banner-image-non-twitter-users" />
@@ -303,7 +303,7 @@ export default class OrganizationVoterGuide extends Component {
         <div className="d-block d-sm-none d-print-none">
           { organizationBannerUrl !== '' ? (
             <div className="organization-banner-image-div d-print-none">
-              <img className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
+              <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
             </div>
           ) :
             <div className="organization-banner-image-non-twitter-users" />
@@ -314,8 +314,11 @@ export default class OrganizationVoterGuide extends Component {
           <div className="col-12">
             <div className="card">
               <div className="card-main">
-                <OrganizationCard organization={this.state.organization} />
-                { isVoterOwner ? (
+                <OrganizationCard
+                  organization={this.state.organization}
+                  useReadMoreForTwitterDescription
+                />
+                { isVoterOwner && (
                   <div className="u-float-right">
                     <Button
                       id="organizationVoterGuideEdit"
@@ -326,9 +329,27 @@ export default class OrganizationVoterGuide extends Component {
                       <span>Edit Your Endorsements</span>
                     </Button>
                   </div>
-                ) :
-                  <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
-                }
+                )}
+                { !isVoterOwner && (
+                  <>
+                    <FollowToggleMobileWrapper>
+                      <FollowToggle
+                        organizationWeVoteId={organizationWeVoteId}
+                        otherVoterWeVoteId={linkedVoterWeVoteId}
+                        showFollowingText
+                      />
+                    </FollowToggleMobileWrapper>
+                    { isSpeakerTypePrivateCitizen(organizationType) && (
+                      <FriendToggleMobileWrapper>
+                        <FriendToggle
+                          displayFullWidth
+                          otherVoterWeVoteId={linkedVoterWeVoteId}
+                          showFriendsText
+                        />
+                      </FriendToggleMobileWrapper>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -337,10 +358,10 @@ export default class OrganizationVoterGuide extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="d-none d-sm-block col-md-4">
-              <CardContainer bannerUrl={this.state.organization.organization_banner_url}>
+              <CardContainer bannerUrl={organizationBannerUrl}>
                 <div className="card">
                   <div className="card-main">
-                    <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={isVoterOwner} />
+                    <OrganizationVoterGuideCard organization={this.state.organization} isVoterOwner={isVoterOwner} />
                   </div>
                   <br />
                 </div>
@@ -388,4 +409,12 @@ const CardContainer = styled.div`
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     margin-top: ${({ bannerUrl }) => (bannerUrl ? '-203px' : '0')};
   }
+`;
+
+const FollowToggleMobileWrapper = styled.div`
+  margin-top: 4px;
+`;
+
+const FriendToggleMobileWrapper = styled.div`
+  margin-top: 4px;
 `;

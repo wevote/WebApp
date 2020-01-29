@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Tabs from '@material-ui/core/esm/Tabs';
-import Tab from '@material-ui/core/esm/Tab';
-import Badge from '@material-ui/core/esm/Badge';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Badge from '@material-ui/core/Badge';
+import { withStyles } from '@material-ui/core/styles';
 import BallotActions from '../../actions/BallotActions';
 import { renderLog } from '../../utils/logging';
 
@@ -57,7 +57,7 @@ class BallotDecisionsTabs extends Component {
       default:
         return 0;
     }
-  }
+  };
 
   goToDifferentCompletionLevelTab (completionLevelFilterType = '') {
     BallotActions.completionLevelFilterTypeSave(completionLevelFilterType);
@@ -105,6 +105,7 @@ class BallotDecisionsTabs extends Component {
             classes={{ root: classes.tabRoot }}
             id="remainingChoicesCompletionLevelTab"
             onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
+            style={{ paddingRight: '26px' }}
             label={(
               <Badge
                 classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 1 ? null : classes.badgeColorPrimary }}
@@ -157,17 +158,17 @@ class BallotDecisionsTabs extends Component {
 // mobile transition: sm
 const styles = theme => ({
   badge: {
-    top: 12,
+    height: 19.5,
     right: -14,
+    top: 9,
     minWidth: 16,
     width: 20,
-    height: 19.5,
     [theme.breakpoints.down('sm')]: {
       fontSize: 8,
-      right: -11,
-      width: 16,
       height: 16,
+      right: -11,
       top: 11,
+      width: 16,
     },
   },
   badgeColorPrimary: {

@@ -1,7 +1,7 @@
-import BallotStore from '../stores/BallotStore';
 import { isCordova, isIOS, isAndroid, isAndroidSimulator, isSimulator, getAndroidSize, pageEnumeration, enums,
   isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, hasIPhoneNotch, isIPhone6p1in, isIPhone6p5in, isIPad } from './cordovaUtils';
 import { cordovaOffsetLog } from './logging';
+import showBallotDecisionsTabs from './showBallotDecisionsTabs';
 import VoterStore from '../stores/VoterStore';
 
 
@@ -13,14 +13,14 @@ import VoterStore from '../stores/VoterStore';
 export function cordovaScrollablePaneTopPadding () {
   const voter = VoterStore.getVoter();
   const { is_signed_in: isSignedIn } = voter;
-  const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
+  // const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
 
   if (isSimulator()) {
     if (isAndroidSimulator()) {
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding android: ${window.location.href}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionTabs: ${showBallotDecisionTabs}`);
+      cordovaOffsetLog(`cordovaScrollablePaneTopPadding android: ${window.location.href}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionsTabs(): ${showBallotDecisionsTabs()}`);
     } else {
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(0, 40)}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionTabs: ${showBallotDecisionTabs}`);
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(window.location.length - 60)}`);
+      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(0, 40)}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionsTabs(): ${showBallotDecisionsTabs()}`);
+      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(window.location.href.length - 60)}`);
     }
   }
 
@@ -34,16 +34,17 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidateWild:   return '42px';
         case enums.ballotVote:      return '157px';
         case enums.officeWild:      return '84px';
-        case enums.ballotSmHdrWild: return '161px';  // $body-padding-top-no-decision-tabs
-        case enums.ballotLgHdrWild: return showBallotDecisionTabs ? '48px' : '32px';
+        case enums.ballotSmHdrWild: return '141px';  // $body-padding-top-no-decision-tabs
+        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '48px' : '32px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '40px';
         case enums.welcomeWild:     return '10px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
-        case enums.moreHamburger:   return '10px';
+        case enums.moreHamburger:   return '57px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '16px';
+        case enums.settingsWild:    return '67px';
+        case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
     } else if (isIPhone4p7in()) {
@@ -55,16 +56,17 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidateWild:   return '57px';
         case enums.ballotVote:      return isSignedIn ? '149px' : '148px';
         case enums.officeWild:      return '84px';
-        case enums.ballotSmHdrWild: return isSignedIn ? '161px' : '160px';
-        case enums.ballotLgHdrWild: return showBallotDecisionTabs ? '52px' : '36px';
+        case enums.ballotSmHdrWild: return isSignedIn ? '144px' : '160px';
+        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '52px' : '36px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '40px';
         case enums.welcomeWild:     return '10px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
-        case enums.moreHamburger:   return '10px';
+        case enums.moreHamburger:   return '66px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '16px';
+        case enums.settingsWild:    return '76px';
+        case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
     } else if (isIPhone5p5in()) {
@@ -77,7 +79,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotVote:      return '157px';
         case enums.officeWild:      return '84px';
         case enums.ballotSmHdrWild: return '148px';
-        case enums.ballotLgHdrWild: return showBallotDecisionTabs ? '35px' : '19px';
+        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '35px' : '19px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '44px';
         case enums.welcomeWild:     return '22px';
@@ -86,6 +88,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreHamburger:   return '10px';
         case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '16px';
+        case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
     } else if (isIPhone6p1in()) {
@@ -95,19 +98,21 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '58px';
         case enums.candidate:       return '56px';
         case enums.candidateWild:   return '72px';
-        case enums.officeWild:      return '76px';
+        case enums.officeWild:      return '101px';
+        case enums.opinions:        return '10px';
         case enums.values:          return '10px';
         case enums.ballotVote:      return isSignedIn ? '163px' : '165px';
         case enums.ballotSmHdrWild: return '169px';
-        case enums.ballotLgHdrWild: return showBallotDecisionTabs ? '58px' : '41px';
+        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '58px' : '41px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '22px';
-        case enums.moreHamburger:   return '35px';
+        case enums.moreHamburger:   return '90px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '32px';
+        case enums.settingsWild:    return '89px';
+        case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
     } else if (isIPhone6p5in()) {
@@ -120,7 +125,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.officeWild:      return '76px';
         case enums.ballotVote:      return isSignedIn ? '165px' : '173px';
         case enums.ballotSmHdrWild: return '170px';
-        case enums.ballotLgHdrWild: return showBallotDecisionTabs ? '58px' : '42px';
+        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '58px' : '42px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
@@ -129,6 +134,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreHamburger:   return '35px';
         case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '32px';
+        case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
     } else if (hasIPhoneNotch()) {  // defaults for X or 11 Pro
@@ -140,9 +146,9 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidateWild:   return '69px';
         case enums.opinions:        return '10px';
         case enums.officeWild:      return '96px';
-        case enums.ballotVote:      return isSignedIn ? '162px' : '162px';
-        case enums.ballotSmHdrWild: return '167px';
-        case enums.ballotLgHdrWild: return showBallotDecisionTabs ? '58px' : '42px';
+        case enums.ballotVote:      return '162px';
+        case enums.ballotSmHdrWild: return '163px';
+        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '58px' : '42px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
@@ -160,10 +166,10 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '58px';
         case enums.candidate:       return '40px';
         case enums.candidateWild:   return '40px';
-        case enums.ballotVote:      return '16px';
+        case enums.ballotVote:      return '131px';
         case enums.officeWild:      return '64px';
         case enums.ballotSmHdrWild: return '137px';
-        case enums.ballotLgHdrWild: return showBallotDecisionTabs ? '28px' : '12px';
+        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '28px' : '12px';
         case enums.moreAbout:       return '0px';
         case enums.moreTerms:       return '44px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
@@ -171,7 +177,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.welcomeWild:     return '0px';
         case enums.moreHamburger:   return '15px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '15px';
+        case enums.settingsWild:    return '61px';
         default:                    return '0px';
       }
     } else {
@@ -187,11 +193,13 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '64px';
         case enums.candidateWild:   return '53px';
         case enums.ballotSmHdrWild: return '131px';
-        case enums.ballotLgHdrWild: return showBallotDecisionTabs ? '58px' : '42px';
+        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '25px' : '42px';
         case enums.ballotVote:      return isSignedIn ? '149px' : '145px';
         case enums.moreTerms:       return '32px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
+        case enums.moreHamburger:   return '43px';
+        case enums.settingsWild:    return '57px';
         default:                    return '0px';
       }
     } else if (sizeString === '--lg') {
@@ -205,6 +213,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreTerms:       return '32px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
+        case enums.settingsWild:    return '61px';
         default:                    return '0px';
       }
     } if (sizeString === '--md') {
@@ -214,11 +223,12 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '53px';
         case enums.candidateWild:   return '51px';
         case enums.ballotSmHdrWild: return '124px';
-        case enums.ballotLgHdrWild: return showBallotDecisionTabs ? '58px' : '42px';
+        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '58px' : '42px';
         case enums.ballotVote:      return isSignedIn ? '132px' : '131px';
         case enums.moreTerms:       return '32px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
+        case enums.settingsWild:    return '61px';
         default:                    return '0px';
       }
     } else if (sizeString === '--sm') {
@@ -227,13 +237,14 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '42px';
         case enums.candidate:       return '24px';
         case enums.candidateWild:   return '36px';
-        case enums.ballotSmHdrWild: return '138px';
-        case enums.ballotLgHdrWild: return showBallotDecisionTabs ? '58px' : '42px';
+        case enums.ballotSmHdrWild: return '123px';
+        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '58px' : '42px';
         case enums.ballotVote:      return isSignedIn ? '131px' : '128px';
         case enums.moreTerms:       return '32px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
-        case enums.valuesList:
+        case enums.moreHamburger:   return '43px';
+        case enums.settingsWild:    return '55px';
         default:                    return '0px';
       }
     }
@@ -245,22 +256,41 @@ export function cordovaScrollablePaneTopPadding () {
 // This determines where the top of the "All", "Choices" and "Decided" tabs should start.
 export function cordovaBallotFilterTopMargin () {
   if (isIOS()) {
-    if (isIPhone5p5in()) {
+    if (isIPhone4p7in()) {
+      return '65px';
+    } else if (isIPhone5p5in()) {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '55px';
       }
-      return '53px';
-    } else if (isIPhone4p7in()) {
-      return '65px';
+      return '69px';
+    } else if (isIPhone5p8in()) {
+      if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '76px';
+      }
+      return '86px';
+    } else if (isIPhone6p1in()) {
+      if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '79px';
+      }
+      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
+        return '46px';
+      }
+      return '88px';
+    } else if (isIPhone6p5in()) {
+      // friendsfallback 1/27 steve
+      // if (window.location.href.indexOf('/index.html#/friends/invite') > 0) {
+      //   return '0px';
+      // } else
+      if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '79px';
+      }
+      return '89px';
     } else if (hasIPhoneNotch()) {
       if (pageEnumeration() === enums.candidateWild) {
         return '65px';
       }
-      return '74px';
-    } else if (isIPhone6p1in()) {
-      return '46px';
     } else if (isIPad()) {
-      return '38px';
+      return '61px';
     } else if (isIPhone4in()) {
       return '67px';
     }
@@ -269,23 +299,29 @@ export function cordovaBallotFilterTopMargin () {
     if (sizeString === '--sm') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-12px';
+      } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '59px';
       }
-      return '32px';
+      return '47px';
     } else if (sizeString === '--md') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-58px';
+      } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '56px';
       }
-      return '32px';
+      return '49px';
     } else if (sizeString === '--lg') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-32px';
+      } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '61px';
       }
-      return '32px';
+      return '49px';
     } else if (sizeString === '--xl') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-10px';
       }
-      return '31px';
+      return '52px';
     }
   }
   return undefined;
@@ -315,7 +351,11 @@ export function cordovaNetworkNextButtonTop () {
 
 // <div className="container-main">
 export function cordovaContainerMainOverride () {
-  if (isAndroid()) {
+  if (isIOS()) {
+    if (isIPhone6p5in()) {
+      return '34px';
+    }
+  } else if (isAndroid()) {
     const sizeString = getAndroidSize();
     if (sizeString === '--xl') {
       return '0px';
@@ -327,7 +367,7 @@ export function cordovaContainerMainOverride () {
       return '0px';
     }
     if (sizeString === '--sm') {
-      return '0px';
+      return '16px';
     }
   }
   return undefined;
@@ -351,13 +391,13 @@ export function cordovaFooterHeight () {
 export function cordovaVoterGuideTopPadding () {
   if (isIOS()) {
     if (isIPhone5p5in()) {
-      return '66px';
+      return '11px';
     } else if (isIPhone4p7in()) {
       return '0px';
     } else if (hasIPhoneNotch()) {
       return '28px';
     } else if (isIPad()) {
-      return '8px';
+      return '0px';
     }
   } else if (isAndroid()) {
     return '0px';
@@ -401,6 +441,21 @@ export function cordovaVoteMiniHeader () {
         top: '69px',
         height: '127px',
       };
+    } else if (isIPhone5p8in()) {
+      return {
+        top: '92px',
+        height: '116px',
+      };
+    } else if (isIPhone6p1in()) {
+      return {
+        top: '94px',
+        height: '125px',
+      };
+    } else if (isIPhone6p5in()) {
+      return {
+        top: '91px',
+        height: '118px',
+      };
     } else if (hasIPhoneNotch()) {
       return {
         top: '82px',
@@ -408,14 +463,21 @@ export function cordovaVoteMiniHeader () {
       };
     } else if (isIPad()) {
       return {
-        top: '40px',
-        height: '125px',
+        top: '53px',
+        height: '116px',
       };
     }
   } else if (isAndroid()) {
+    const sizeString = getAndroidSize();
+    if (sizeString === '--sm') {
+      return {
+        top: '53px',
+        height: '134px !important',
+      };
+    }
     return {
-      top: '44px',
-      height: '125px',
+      top: '53px',
+      height: '116px',
     };
   }
   return undefined;
@@ -475,9 +537,7 @@ export function cordovaTopHeaderTopMargin () {
           default:                    style.marginTop = '16px'; break;
         }
       } else if (isIPad()) {
-        switch (pageEnumeration()) {
-          default:                    style.marginTop = '0px'; break;
-        }
+        style.marginTop = '0px';
       } else {
         style.marginTop = '20px';
       }
@@ -531,7 +591,7 @@ export function cordovaSignInModalTopPosition (collapsed) {
     } else if (isIPhone5p5in()) {             //  6 Plus, 7 Plus and 8 Plus
       return collapsed ? '-3%' : '-170px';
     } else if (isIPhone4p7in()) {             // 6, 7, 8
-      return collapsed ? '-3%' : '-24%';
+      return collapsed ? 'unset' : '-24%';
     } else if (isIPhone4in()) {               // SE
       return collapsed ? '30px' : '-18%';
     } else if (isIPad()) {
@@ -543,4 +603,40 @@ export function cordovaSignInModalTopPosition (collapsed) {
     return collapsed ? '-30%' : '-25%';
   }
   return '';
+}
+
+export function cordovaFriendsWrapper () {
+  if (isIOS()) {
+    if (isIPhone5p8in()) {
+      return {
+        paddingTop: '69px',
+        paddingBottom: '90px',
+      };
+    }
+    if (isIPhone6p1in()) {
+      return {
+        paddingTop: '69px',
+        paddingBottom: '90px',
+      };
+    }
+    if (isIPhone6p5in()) {
+      // friendsfallback 1/27 steve
+      // if (window.location.href.indexOf('/index.html#/friends/invite') > 0) {
+      //   return {
+      //     paddingTop: '93px',
+      //     paddingBottom: '0px',
+      //   };
+      // }
+      return {
+        paddingTop: '81px',
+        paddingBottom: '90px',
+      };
+    }
+  }
+
+  // Default for all other devices, including desktop and mobile browsers
+  return {
+    paddingTop: '60px',
+    paddingBottom: '90px',
+  };
 }

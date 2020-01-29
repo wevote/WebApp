@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import BallotIcon from '@material-ui/icons/Ballot';
-import Button from '@material-ui/core/esm/Button';
-import Card from '@material-ui/core/esm/Card';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import BallotActions from '../actions/BallotActions';
 import AppStore from '../stores/AppStore';
 import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
@@ -158,6 +158,11 @@ class Vote extends Component {
     // Once a voter hits the ballot, they have gone through orientation
     cookies.setItem('ballot_has_been_visited', '1', Infinity, '/');
 
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+    }
+    IssueActions.issuesFollowedRetrieve();
     ElectionActions.electionsRetrieve();
     OrganizationActions.organizationsFollowedRetrieve();
     VoterActions.voterRetrieve(); // This is needed to update the interface status settings
@@ -300,14 +305,22 @@ class Vote extends Component {
       });
     }
     if (ballotProperties) {
-      // If the incoming googleCivicElectionId, ballotReturnedWeVoteId, or ballotLocationShortcut are different, call issuesRetrieveForElection
+      // If the incoming googleCivicElectionId, ballotReturnedWeVoteId, or ballotLocationShortcut are different, call issuesUnderBallotItemsRetrieve
       if (parseInt(ballotProperties.google_civic_election_id, 10) !== issuesRetrievedFromGoogleCivicElectionId ||
           ballotProperties.ballot_returned_we_vote_id !== issuesRetrievedFromBallotReturnedWeVoteId ||
           ballotProperties.ballot_location_shortcut !== issuesRetrievedFromBallotLocationShortcut) {
-        // console.log('onBallotStoreChange, Calling issuesRetrieveForElection');
+        // console.log('onBallotStoreChange, Calling issuesUnderBallotItemsRetrieve');
 
-        if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-          IssueActions.issuesRetrieveForElection(ballotProperties.google_civic_election_id, ballotProperties.ballot_location_shortcut, ballotProperties.ballot_returned_we_vote_id);
+        let callIssuesUnderBallotItemRetrieve = true;
+        if (ballotProperties.google_civic_election_id) {
+          // If we only have a value for googleCivicElectionId, then prevent a calling issuesUnderBallotItemsRetrieve if we already have the data
+          if (IssueStore.issuesUnderBallotItemsRetrieveCalled(ballotProperties.google_civic_election_id)) {
+            callIssuesUnderBallotItemRetrieve = false;
+          }
+        }
+        if (callIssuesUnderBallotItemRetrieve) {
+          IssueActions.issuesUnderBallotItemsRetrieve(ballotProperties.google_civic_election_id, ballotProperties.ballot_location_shortcut, ballotProperties.ballot_returned_we_vote_id);
+          // IssueActions.issuesUnderBallotItemsRetrieveCalled(ballotProperties.google_civic_election_id); // This causes error: "Cannot dispatch in the middle of a dispatch"
         }
 
         this.setState({
@@ -365,14 +378,14 @@ class Vote extends Component {
     this.setState({ isSearching: !isSearching });
   };
 
-  hideLocationsGuessComponent () {
-    document.getElementById('location_guess').style.display = 'none';
-  }
-
-  // componentDidCatch (error, info) {
-  //   // We should get this information to Splunk!
-  //   console.error('Ballot caught error: ', `${error} with info: `, info);
+  // hideLocationsGuessComponent () {
+  //   document.getElementById('location_guess').style.display = 'none';
   // }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('Ballot caught error: ', `${error} with info: `, info);
+  }
 
   updateOfficeDisplayUnfurledTracker (weVoteId, status) {
     const { ballotItemUnfurledTracker } = this.state;
@@ -529,8 +542,10 @@ const TitleContainer = styled.div`
 `;
 
 const TitleText = styled.h3`
+  width: fit-content;
   font-weight: bold;
   font-size: 18px;
+  margin-bottom: 16px;
   @media print{
     font-size: 2rem;
   }

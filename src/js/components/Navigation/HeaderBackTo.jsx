@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import AppBar from '@material-ui/core/esm/AppBar';
-import Button from '@material-ui/core/esm/Button';
-import IconButton from '@material-ui/core/esm/IconButton';
-import Toolbar from '@material-ui/core/esm/Toolbar';
-import { withStyles } from '@material-ui/core/esm/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Toolbar from '@material-ui/core/Toolbar';
+import { withStyles } from '@material-ui/core/styles';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import cookies from '../../utils/cookies';
@@ -15,6 +16,7 @@ import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import SignInModal from '../Widgets/SignInModal';
+import { shortenText } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
@@ -36,6 +38,7 @@ class HeaderBackTo extends Component {
       profilePopUpOpen: false,
       showSignInModal: AppStore.showSignInModal(),
       voter: {},
+      voterFirstName: '',
       voterWeVoteId: '',
     };
     this.hideAccountMenu = this.hideAccountMenu.bind(this);
@@ -55,6 +58,7 @@ class HeaderBackTo extends Component {
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const voterWeVoteId = voter.we_vote_id;
@@ -62,6 +66,7 @@ class HeaderBackTo extends Component {
       backToLink: this.props.backToLink,
       backToLinkText: this.props.backToLinkText,
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
       voterWeVoteId: voter.we_vote_id || voterWeVoteId,
@@ -74,12 +79,14 @@ class HeaderBackTo extends Component {
     const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       backToLink: nextProps.backToLink,
       backToLinkText: nextProps.backToLinkText,
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
       voterWeVoteId: voter.we_vote_id || nextProps.voterWeVoteId,
@@ -107,6 +114,10 @@ class HeaderBackTo extends Component {
     }
     if (this.state.showSignInModal !== nextState.showSignInModal) {
       // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
+      return true;
+    }
+    if (this.state.voterFirstName !== nextState.voterFirstName) {
+      // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
       return true;
     }
     if (this.state.voterWeVoteId !== nextState.voterWeVoteId) {
@@ -144,10 +155,12 @@ class HeaderBackTo extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
@@ -207,10 +220,11 @@ class HeaderBackTo extends Component {
 
   render () {
     renderLog('HeaderBackTo');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('HeaderBackTo render');
     const { classes } = this.props;
     const {
       backToLink, backToLinkText, profilePopUpOpen, showSignInModal,
-      voter, voterIsSignedIn, voterPhotoUrlMedium,
+      voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
     } = this.state;
 
     const headerClassName = (function header () {
@@ -221,8 +235,10 @@ class HeaderBackTo extends Component {
       }
     }());
 
+    const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 8px', right: 'unset' };
+
     return (
-      <AppBar className={headerClassName} color="default">
+      <AppBar className={headerClassName} color="default" style={cordovaOverrides}>
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}
@@ -236,57 +252,32 @@ class HeaderBackTo extends Component {
               <span>
                 {voterPhotoUrlMedium ? (
                   <span>
-                    <span className="u-show-desktop-tablet">
-                      <div
-                        id="profileAvatarHeaderBar"
-                        className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                        onClick={this.toggleProfilePopUp}
-                      >
-                        <img
-                          className="header-nav__avatar"
-                          src={voterPhotoUrlMedium}
-                          height={34}
-                          width={34}
-                          alt="Your Settings"
-                        />
-                      </div>
-                    </span>
-                    <span className="u-show-mobile">
-                      <div
-                        id="profileAvatarHeaderBar"
-                        className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                        onClick={() => this.handleNavigation('/settings/hamburger')}
-                      >
-                        <img
-                          className="header-nav__avatar"
-                          src={voterPhotoUrlMedium}
-                          height={34}
-                          width={34}
-                          alt="Your Settings"
-                        />
-                      </div>
-                    </span>
+                    <div
+                      id="profileAvatarHeaderBar"
+                      className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                      onClick={this.toggleProfilePopUp}
+                    >
+                      <img
+                        className="header-nav__avatar"
+                        src={voterPhotoUrlMedium}
+                        height={34}
+                        width={34}
+                        alt="Your Settings"
+                      />
+                    </div>
                   </span>
                 ) : (
                   <span>
-                    <span className="u-show-desktop-tablet">
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="profileAvatarHeaderBar"
-                        onClick={this.toggleProfilePopUp}
-                      >
-                        <AccountCircleIcon />
-                      </IconButton>
-                    </span>
-                    <span className="u-show-mobile">
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="profileAvatarHeaderBar"
-                        onClick={() => this.handleNavigation('/settings/hamburger')}
-                      >
-                        <AccountCircleIcon />
-                      </IconButton>
-                    </span>
+                    <IconButton
+                      classes={{ root: classes.iconButtonRoot }}
+                      id="profileAvatarHeaderBar"
+                      onClick={this.toggleProfilePopUp}
+                    >
+                      <FirstNameWrapper>
+                        {shortenText(voterFirstName, 9)}
+                      </FirstNameWrapper>
+                      <AccountCircleIcon />
+                    </IconButton>
                   </span>
                 )
                 }
@@ -344,7 +335,20 @@ const styles = theme => ({
       marginLeft: '.1rem',
     },
   },
+  iconButtonRoot: {
+    color: 'rgba(17, 17, 17, .4)',
+    outline: 'none !important',
+    paddingRight: 0,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
 });
+
+const FirstNameWrapper = styled.div`
+  font-size: 14px;
+  padding-right: 4px;
+`;
 
 export default withStyles(styles)(HeaderBackTo);
 

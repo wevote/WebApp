@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/esm/styles';
-import Button from '@material-ui/core/esm/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -196,17 +196,19 @@ class TopCommentByBallotItem extends Component {
 
   render () {
     renderLog('TopCommentByBallotItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, hideMoreButton } = this.props;
+    const { ballotItemWeVoteId, classes, hideMoreButton } = this.props;
     const { endorsementOrganization, endorsementText, externalUniqueId, localUniqueId } = this.state;
     if (!endorsementText) {
       // console.log('TopCommentByBallotItem no endorsementText');
       // If we don't have any endorsement text, show the alternate component passed in
       return this.props.children || null;
     }
+    const isForCandidate = stringContains('cand', ballotItemWeVoteId);
 
     const croppedEndorsementTextDesktopTablet = shortenText(endorsementText, 100);
     const croppedEndorsementTextMobile = shortenText(endorsementText, 75);
-    const learnMoreText = this.state.learnMoreText ? this.state.learnMoreText : 'more';
+    const learnMoreTextDefault = isForCandidate ? 'Choose or Oppose' : 'Choose Yes or No';
+    const learnMoreText = this.state.learnMoreText ? this.state.learnMoreText : learnMoreTextDefault;
 
     // console.log('GuideList organizationsToFollow: ', this.state.organizationsToFollow);
     //       on_click={this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
@@ -229,7 +231,7 @@ class TopCommentByBallotItem extends Component {
           &quot;
         </BallotItemEndorsementTextMobile>
         { hideMoreButton ? null : (
-          <span>
+          <LearnMoreWrapper isButton={!this.state.learnMoreUrl}>
             { this.state.learnMoreUrl ? (
               <span>
                 {' '}
@@ -240,14 +242,13 @@ class TopCommentByBallotItem extends Component {
                 id={`topCommentButtonByBallotItem-${externalUniqueId}-${localUniqueId}`}
                 variant="outlined"
                 color="primary"
-                className="u-float-right"
                 classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
               >
                 {learnMoreText}
               </Button>
             )
             }
-          </span>
+          </LearnMoreWrapper>
         )}
       </Wrapper>
     );
@@ -258,11 +259,11 @@ const styles = theme => ({
   buttonRoot: {
     padding: 4,
     fontSize: 12,
-    width: 60,
+    minWidth: 60,
     height: 30,
-    marginTop: 5,
+    margin: '4px 0 4px 0',
     [theme.breakpoints.down('md')]: {
-      width: 60,
+      minWidth: 60,
       height: 30,
     },
     [theme.breakpoints.down('sm')]: {
@@ -275,6 +276,7 @@ const styles = theme => ({
   },
   buttonOutlinedPrimary: {
     background: 'white',
+    marginLeft: 'auto',
   },
   closeButton: {
     position: 'absolute',
@@ -312,6 +314,12 @@ const BallotItemEndorsementTextMobile = styled.span`
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 16px;
   font-weight: 400;
+`;
+
+const LearnMoreWrapper = styled.div`
+  margin-left: auto;
+  display: ${props => (props.isButton ? 'flex' : 'inline')};
+  justify-content: flex-end;
 `;
 
 export default withStyles(styles)(TopCommentByBallotItem);

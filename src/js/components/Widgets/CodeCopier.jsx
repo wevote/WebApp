@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -38,7 +38,10 @@ export default class CodeCopier extends Component {
 
   componentWillUnmount () {
     this.organizationStoreListener.remove();
-    this.timer = null;
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   onOrganizationStoreChange () {

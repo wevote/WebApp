@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -350,7 +350,7 @@ export default class BallotElectionList extends Component {
 
       return (
         <div className="ballot-election-list__list">
-          <div className="ballot-election-list__upcoming">
+          <div className="ballot-election-list__upcoming DEPRECATED">
             <h4 className="h4">
             Upcoming Election
               { (upcomingElectionListInState && upcomingElectionListInState.length !== 1 && !this.state.showMoreUpcomingElections) ||

@@ -10,7 +10,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const port = process.env.PORT || 3000;
 
 // Set isProduction to false, to enable the interactive bundle analyser and the Unused component analyzer
-const isProduction = true;   // Developers can set this to be true, but in git it should always be false
+const isProduction = true;   // Developers can set this to be false, but in git it should always be true
 
 module.exports = {
   mode: 'development',
@@ -26,17 +26,10 @@ module.exports = {
     }),
     new CopyPlugin([
       { from: 'src/javascript/', to: 'javascript/' },
-      { from: 'src/img/global/icons/', to: 'img/global/icons/' },
-      // { from: 'src/img/global/intro-story/', to: 'img/global/intro-story/' },
-      { from: 'src/img/global/logos/', to: 'img/global/logos/' },
-      { from: 'src/img/global/photos/', to: 'img/global/photos/' },
-      { from: 'src/img/global/svg-icons/', to: 'img/global/svg-icons/' },
-      { from: 'src/img/how-it-works/', to: 'img/how-it-works/' },
-      { from: 'src/img/tools/', to: 'img/tools/' },
-      { from: 'src/img/welcome/', to: 'img/welcome/' },
-      // { from: 'src/img/welcome/benefits/', to: 'img/welcome/benefits/' },
-      { from: 'src/img/welcome/partners/', to: 'img/welcome/partners/' },
-      { from: 'src/img/endorsement-extension/', to: 'img/endorsement-extension/' },
+      { from: 'src/img/',
+        to: 'img/',
+        ignore: ['DO-NOT-BUNDLE/**/*', 'welcome/partners/**/*' ],
+      },
       { from: 'src/vip.html', to: '.' },
       { from: 'src/css/', to: 'css/' },
     ]),
@@ -48,7 +41,7 @@ module.exports = {
     }),
     ...(isProduction ? [] : [
       new UnusedWebpackPlugin({  // Set isProduction to false to list (likely) unused files
-      // Source directories
+      // Source directories and files, to exclude from unused file checking
         directories: [path.join(__dirname, 'src')],
         exclude: [
           '**/cert/',

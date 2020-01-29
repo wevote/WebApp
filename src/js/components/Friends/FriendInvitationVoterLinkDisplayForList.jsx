@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import ImageHandler from '../ImageHandler';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import FriendActions from '../../actions/FriendActions';
 import FriendInvitationToggle from './FriendInvitationToggle';
 import FriendStore from '../../stores/FriendStore';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
-class FriendInvitationDisplayForList extends Component {
+class FriendInvitationVoterLinkDisplayForList extends Component {
   static propTypes = {
     invitationsSentByMe: PropTypes.bool,
     linked_organization_we_vote_id: PropTypes.string,
@@ -29,8 +30,10 @@ class FriendInvitationDisplayForList extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      cancelFriendInviteVoterSubmitted: false,
       isFriend: false,
     };
+    this.cancelFriendInviteVoter = this.cancelFriendInviteVoter.bind(this);
     this.ignoreFriendInvite = this.ignoreFriendInvite.bind(this);
   }
 
@@ -44,21 +47,18 @@ class FriendInvitationDisplayForList extends Component {
   }
 
   onFriendStoreChange () {
+    const isFriend = FriendStore.isFriend(this.props.voter_we_vote_id);
     this.setState({
-      isFriend: FriendStore.isFriend(this.props.voter_we_vote_id),
+      isFriend,
     });
-  }
-
-  cancelFriendInviteEmail (voterEmailAddress) {
-    // TODO DALE We have a problem with how we are deleting friend invitations.
-    // It has to do with retrieve_friend_invitations_sent_by_me on the API server
-    // console.log("cancelFriendInviteEmail");
-    FriendActions.cancelFriendInviteEmail(voterEmailAddress);
   }
 
   cancelFriendInviteVoter (otherVoterWeVoteId) {
     // console.log("cancelFriendInviteVoter");
     FriendActions.cancelFriendInviteVoter(otherVoterWeVoteId);
+    this.setState({
+      cancelFriendInviteVoterSubmitted: true,
+    });
   }
 
   ignoreFriendInvite (otherVoterWeVoteId) {
@@ -66,12 +66,12 @@ class FriendInvitationDisplayForList extends Component {
   }
 
   render () {
-    renderLog('FriendInvitationDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('FriendInvitationVoterLinkDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
 
     // Do not render if already a friend
-    const { isFriend } = this.state;
+    const { cancelFriendInviteVoterSubmitted, isFriend } = this.state;
     if (isFriend) {
-      return null;
+      // We still want to show the invite
     }
 
     const {
@@ -103,7 +103,7 @@ class FriendInvitationDisplayForList extends Component {
         </Name>
         {!!(positionsTaken) && (
           <Info>
-            Positions:
+            Opinions:
             {' '}
             <strong>{positionsTaken}</strong>
           </Info>
@@ -145,11 +145,21 @@ class FriendInvitationDisplayForList extends Component {
             <CancelButtonContainer>
               <Button
                 color="primary"
+                disabled={cancelFriendInviteVoterSubmitted}
                 fullWidth
                 onClick={() => this.cancelFriendInviteVoter(otherVoterWeVoteId)}
                 variant="outlined"
               >
-                Cancel Invite
+                {cancelFriendInviteVoterSubmitted ? 'Canceling...' : (
+                  <>
+                    <span className="u-show-mobile">
+                      Cancel
+                    </span>
+                    <span className="u-show-desktop-tablet">
+                      Cancel Invite
+                    </span>
+                  </>
+                )}
               </Button>
             </CancelButtonContainer>
           </ButtonWrapper>
@@ -164,7 +174,7 @@ class FriendInvitationDisplayForList extends Component {
                 type="button"
                 variant="outlined"
               >
-                {window.innerWidth > 620 ? 'Delete' : 'Delete'}
+                {isMobileScreenSize() ? 'Delete' : 'Delete'}
               </Button>
             </ButtonContainer>
           </ButtonWrapper>
@@ -196,6 +206,7 @@ const Wrapper = styled.div`
     justify-content: flex-start;
     flex-direction: row;
     padding-left: 100px;
+    height: 68px;
   }
   @media (min-width: 520px) {
     height: 68px;
@@ -239,12 +250,40 @@ const Details = styled.div`
 `;
 
 const Name = styled.h3`
-  font-weight: bold;
   color: black !important;
-  font-size: 26px;
+  font-size: 20px;
+  font-weight: bold;
   margin-bottom: 4px;
-  text-align: center;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 23ch;
   width: 100%;
+  @media(max-width: 321px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 322px) and (max-width: 370px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 371px) and (max-width: 441px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 442px) and (max-width: 519px) {
+    max-width: 12ch;
+  }
+  @media (min-width: 520px) and (max-width: 559px) {
+    max-width: 15ch;
+  }
+  @media (min-width: 560px) and (max-width: 653px) {
+    max-width: 20ch;
+  }
+  @media (min-width: 654px) and (max-width: 773px) {
+    max-width: 25ch;
+  }
+  @media (min-width: 774px) and (max-width: 991px) {
+    max-width: 34ch;
+  }
   @media(min-width: 400px) {
     text-align: left;
     font-size: 22px;
@@ -307,4 +346,4 @@ const CancelButtonContainer = styled.div`
   }
 `;
 
-export default FriendInvitationDisplayForList;
+export default FriendInvitationVoterLinkDisplayForList;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/esm/styles';
+import { withTheme } from '@material-ui/core/styles';
 import IssueActions from '../../actions/IssueActions';
 import IssueCardCompressed from './IssueCardCompressed';
 import IssueStore from '../../stores/IssueStore';
@@ -17,10 +17,13 @@ class ValuesToFollowPreview extends Component {
   }
 
   componentDidMount () {
-    IssueActions.retrieveIssuesToFollow();
-
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.onIssueStoreChange();
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+    }
+    IssueActions.issuesFollowedRetrieve();
   }
 
   componentWillUnmount () {

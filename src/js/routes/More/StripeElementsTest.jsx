@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Elements, StripeProvider } from 'react-stripe-elements';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import StripeElementsTestForm from './StripeElementsTestForm';
 import { renderLog } from '../../utils/logging';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';

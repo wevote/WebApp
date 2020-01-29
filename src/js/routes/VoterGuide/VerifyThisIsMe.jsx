@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Alert from 'react-bootstrap/esm/Alert';
+import Alert from 'react-bootstrap/Alert';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/esm/styles';
-import Button from '@material-ui/core/esm/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import AppActions from '../../actions/AppActions';
 import CandidateItem from '../../components/Ballot/CandidateItem';
 import CandidateStore from '../../stores/CandidateStore';

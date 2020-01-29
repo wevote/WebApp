@@ -3,11 +3,13 @@ import filter from 'lodash-es/filter';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
 import IssueCard from '../../components/Values/IssueCard';
+
 
 export default class ValuesList extends Component {
   static propTypes = {
@@ -28,62 +30,28 @@ export default class ValuesList extends Component {
   }
 
   componentDidMount () {
-    IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+    }
+    IssueActions.issuesFollowedRetrieve();
     const { currentIssue } = this.props;
-    // let currentIssueWeVoteId = '';
-    // if (currentIssue) {
-    //   currentIssueWeVoteId = currentIssue.issue_we_vote_id;
-    // }
     const allIssues = IssueStore.getAllIssues();
-    // let allIssuesCount = 0;
-    // if (allIssues) {
-    //   allIssuesCount = allIssues.length;
-    // }
     this.setState({
       allIssues,
-      // allIssuesCount,
       currentIssue,
-      // currentIssueWeVoteId,
     });
   }
 
   componentWillReceiveProps (nextProps) {
     const { currentIssue } = nextProps;
-    // let currentIssueWeVoteId = '';
-    // if (currentIssue) {
-    //   currentIssueWeVoteId = currentIssue.issue_we_vote_id;
-    // }
     const allIssues = IssueStore.getAllIssues();
-    // let allIssuesCount = 0;
-    // if (allIssues) {
-    //   allIssuesCount = allIssues.length;
-    // }
     this.setState({
       allIssues,
-      // allIssuesCount,
       currentIssue,
-      // currentIssueWeVoteId,
     });
   }
-
-  // This was preventing the page from updating on search. Commenting out and not fixing because this isn't a CPU intensive page.
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   if (this.state.allIssuesCount !== nextState.allIssuesCount) {
-  //     // console.log("shouldComponentUpdate: this.state.allIssuesCount", this.state.allIssuesCount, ", nextState.allIssuesCount", nextState.allIssuesCount);
-  //     return true;
-  //   }
-  //   if (this.state.currentIssueWeVoteId !== nextState.currentIssueWeVoteId) {
-  //     // console.log("shouldComponentUpdate: this.state.currentIssueWeVoteId", this.state.currentIssueWeVoteId, ", nextState.currentIssueWeVoteId", nextState.currentIssueWeVoteId);
-  //     return true;
-  //   }
-  //   if (this.props.displayOnlyIssuesNotFollowedByVoter !== nextProps.displayOnlyIssuesNotFollowedByVoter) {
-  //     // console.log("shouldComponentUpdate: this.props.displayOnlyIssuesNotFollowedByVoter", this.props.displayOnlyIssuesNotFollowedByVoter, ", nextProps.displayOnlyIssuesNotFollowedByVoter", nextProps.displayOnlyIssuesNotFollowedByVoter);
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
@@ -91,13 +59,8 @@ export default class ValuesList extends Component {
 
   onIssueStoreChange () {
     const allIssues = IssueStore.getAllIssues();
-    // let allIssuesCount = 0;
-    // if (allIssues) {
-    //   allIssuesCount = allIssues.length;
-    // }
     this.setState({
       allIssues,
-      // allIssuesCount,
     });
   }
 
@@ -117,7 +80,7 @@ export default class ValuesList extends Component {
     // let issuesNotCurrentIssue = [];
     if (allIssues) {
       if (this.props.displayOnlyIssuesNotFollowedByVoter) {
-        issuesList = allIssues.filter(issue => issue.issue_we_vote_id !== currentIssue.issue_we_vote_id).filter(issue => issue.is_issue_followed === false);
+        issuesList = allIssues.filter(issue => issue.issue_we_vote_id !== currentIssue.issue_we_vote_id).filter(issue => !IssueStore.isVoterFollowingThisIssue(issue.issue_we_vote_id));
       } else {
         issuesList = allIssues;
       }
@@ -132,21 +95,40 @@ export default class ValuesList extends Component {
             oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase));
     }
 
-    const issuesListForDisplay = issuesList.map(issue => (
-      <Column
-        className="col col-12 col-md-6 u-stack--lg"
-        key={`div-issue-list-key-${issue.issue_we_vote_id}`}
-
-      >
-        <IssueCard
-          followToggleOn
-          includeLinkToIssue
-          issue={issue}
-          issueImageSize="SMALL"
-          key={`issue-list-key-${issue.issue_we_vote_id}`}
-        />
-      </Column>
-    ));
+    const issuesToShowBeforeDelayedLoad = 6;
+    let issuesRenderedCount = 0;
+    let issueCardHtml = '';
+    const issuesListForDisplay = issuesList.map((issue) => {
+      issuesRenderedCount += 1;
+      issueCardHtml = (
+        <Column
+          className="col col-12 col-md-6 u-stack--lg"
+          key={`column-issue-list-key-${issue.issue_we_vote_id}`}
+        >
+          <IssueCard
+            followToggleOn
+            includeLinkToIssue
+            issue={issue}
+            issueImageSize="SMALL"
+            key={`issue-list-key-${issue.issue_we_vote_id}`}
+          />
+        </Column>
+      );
+      if (issuesRenderedCount <= issuesToShowBeforeDelayedLoad) {
+        return issueCardHtml;
+      } else {
+        // We create a delay after the first 6 issues are rendered, so the initial page load is a little faster
+        return (
+          <DelayedLoad
+            key={`delayed-issue-list-key-${issue.issue_we_vote_id}`}
+            showLoadingText={issuesRenderedCount === (issuesToShowBeforeDelayedLoad + 1)}
+            waitBeforeShow={500}
+          >
+            {issueCardHtml}
+          </DelayedLoad>
+        );
+      }
+    });
 
     return (
       <>
@@ -161,7 +143,7 @@ export default class ValuesList extends Component {
               <div className="card-main">
                 <h1 className="h1">Values</h1>
                 <p>
-                  Follow the values and issues you care about, so we can highlight the organizations that care about the same issues you do.
+                  Follow the values and issues you care about, so we can highlight the advocates (organizations and public figures) that care about the same issues you do.
                 </p>
                 <SearchBar
                   clearButton

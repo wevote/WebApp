@@ -1,28 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
-import CheckCircle from '@material-ui/icons/CheckCircle';
 import FriendActions from '../../actions/FriendActions';
+import FriendsIcon from '../Widgets/FriendsIcon';
 import FriendStore from '../../stores/FriendStore';
+import SuggestedFriendToggle from './SuggestedFriendToggle';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 export default class FriendToggle extends Component {
   static propTypes = {
+    displayFullWidth: PropTypes.bool,
     otherVoterWeVoteId: PropTypes.string.isRequired,
+    showFriendsText: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
+      unFriendSubmitted: false,
       voter: {
         we_vote_id: '',
       },
     };
-    const { otherVoterWeVoteId } = this.props;
-    this.acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, otherVoterWeVoteId);
-    this.unFriend = FriendActions.unFriend.bind(this, otherVoterWeVoteId);
+    this.unFriend = this.unFriend.bind(this);
   }
 
   componentDidMount () {
@@ -38,9 +40,13 @@ export default class FriendToggle extends Component {
   }
 
   onFriendStoreChange () {
-    // this.setState({
-    //   isFriend: FriendStore.isFriend(this.props.otherVoterWeVoteId),
-    // });
+    const { otherVoterWeVoteId } = this.props;
+    const { unFriendSubmitted } = this.state;
+    const isFriend = FriendStore.isFriend(otherVoterWeVoteId);
+    this.setState({
+      isFriend,
+      unFriendSubmitted: (unFriendSubmitted && !isFriend) ? false : unFriendSubmitted,
+    });
   }
 
   onVoterStoreChange () {
@@ -49,50 +55,72 @@ export default class FriendToggle extends Component {
     });
   }
 
+  unFriend () {
+    const { otherVoterWeVoteId } = this.props;
+    FriendActions.unFriend(otherVoterWeVoteId);
+    this.setState({
+      unFriendSubmitted: true,
+    });
+  }
+
   render () {
     renderLog('FriendToggle');  // Set LOG_RENDER_EVENTS to log all renders
-    // const { isFriend } = this.state;
     if (!this.state) { return <div />; }
-    const { otherVoterWeVoteId } = this.props;
+    const { displayFullWidth, otherVoterWeVoteId, showFriendsText } = this.props;
+    const { isFriend, unFriendSubmitted } = this.state;
     const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
     // You should not be able to friend yourself
     if (isLookingAtSelf) { return <div />; }
 
     return (
-      <ButtonContainer>
-        <InnerButtonContainer>
-          <Button
-            className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--white"
-            disabled
-          >
-            <span>
-              <CheckCircle className="friends-icon" />
-            </span>
-          </Button>
-          <div className="issues-follow-btn__seperator" />
-          <Button
-            type="button"
-            id="dropdown-toggle-id"
-            className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            data-reference="parent"
-          >
-            <span className="sr-only">Toggle Dropdown</span>
-          </Button>
-          <Menu id="issues-follow-btn__menu" className="dropdown-menu issues-follow-btn__menu" aria-labelledby="dropdown-toggle-id">
+      <ButtonContainer displayFullWidth={displayFullWidth}>
+        {isFriend ? (
+          <InnerButtonContainer>
+            <Button
+              className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--white"
+              disabled
+            >
+              {showFriendsText ? (
+                <span>
+                  <FriendsIcon />
+                  <span className="pl-2">{unFriendSubmitted ? 'Removing Friend...' : 'Friends'}</span>
+                </span>
+              ) : (
+                <span>
+                  <FriendsIcon />
+                </span>
+              )}
+            </Button>
+            <div className="issues-follow-btn__seperator" />
             <Button
               type="button"
-              id="dropdown-item-id"
-              className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
-              // data-toggle="dropdown"
-              onClick={this.unFriend}
+              id="dropdown-toggle-id"
+              className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              data-reference="parent"
             >
-              Remove Friend
+              <span className="sr-only">Toggle Dropdown</span>
             </Button>
-          </Menu>
-        </InnerButtonContainer>
+            <Menu id="issues-follow-btn__menu" className="dropdown-menu issues-follow-btn__menu" aria-labelledby="dropdown-toggle-id">
+              <Button
+                type="button"
+                id="dropdown-item-id"
+                className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                disabled={unFriendSubmitted}
+                // data-toggle="dropdown"
+                onClick={this.unFriend}
+              >
+                Remove Friend
+              </Button>
+            </Menu>
+          </InnerButtonContainer>
+        ) : (
+          <InnerButtonContainer>
+            <SuggestedFriendToggle displayFullWidth={displayFullWidth} otherVoterWeVoteId={otherVoterWeVoteId} />
+          </InnerButtonContainer>
+        )}
       </ButtonContainer>
     );
   }
@@ -107,7 +135,7 @@ const ButtonContainer = styled.div`
   width: 100%;
   margin-top: 18px;
   @media(min-width: 400px) {
-    width: fit-content;
+    ${({ displayFullWidth }) => (displayFullWidth ? 'width: 100%;' : 'width: fit-content;')}
     margin-top: 0;
     margin-left: auto;
   }
@@ -119,4 +147,5 @@ const InnerButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   height: 32px !important;
+  width: 100%;
 `;

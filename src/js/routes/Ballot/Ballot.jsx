@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import styled from 'styled-components';
-import Badge from '@material-ui/core/esm/Badge';
-import Chip from '@material-ui/core/esm/Chip';
-import Link from '@material-ui/core/esm/Link';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Badge from '@material-ui/core/Badge';
+import Chip from '@material-ui/core/Chip';
+import Link from '@material-ui/core/Link';
+import { withStyles } from '@material-ui/core/styles';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
@@ -29,6 +29,7 @@ import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import isMobile from '../../utils/isMobile';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import LocationGuess from '../../components/Ballot/LocationGuess';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import IssueActions from '../../actions/IssueActions';
@@ -36,6 +37,7 @@ import IssueStore from '../../stores/IssueStore';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
+import showBallotDecisionsTabs from '../../utils/showBallotDecisionsTabs';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterActions from '../../actions/VoterActions';
@@ -105,6 +107,12 @@ class Ballot extends Component {
   componentDidMount () {
     const ballotBaseUrl = '/ballot';
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    // We need a ballotStoreListener here because we want the ballot to display before positions are received
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     this.setState({
       componentDidMountFinished: true,
@@ -193,11 +201,23 @@ class Ballot extends Component {
 
     // console.log('Ballot, googleCivicElectionId: ', googleCivicElectionId, ', ballotLocationShortcut: ', ballotLocationShortcut, 'ballotReturnedWeVoteId: ', ballotReturnedWeVoteId);
     // console.log('VoterStore.election_id: ', VoterStore.electionId());
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+    }
+    IssueActions.issuesFollowedRetrieve();
     if (googleCivicElectionId || ballotLocationShortcut || ballotReturnedWeVoteId) {
-      // console.log('CALLING IssueActions.issuesRetrieveForElection');
-
-      if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-        IssueActions.issuesRetrieveForElection(googleCivicElectionId, ballotLocationShortcut, ballotReturnedWeVoteId);
+      // console.log('CALLING IssueActions.issuesUnderBallotItemsRetrieve');
+      let callIssuesUnderBallotItemRetrieve = true;
+      if (googleCivicElectionId) {
+        // If we have a value for googleCivicElectionId, then prevent a calling issuesUnderBallotItemsRetrieve if we already have the data
+        if (IssueStore.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId)) {
+          callIssuesUnderBallotItemRetrieve = false;
+        }
+      }
+      if (callIssuesUnderBallotItemRetrieve) {
+        IssueActions.issuesUnderBallotItemsRetrieve(googleCivicElectionId, ballotLocationShortcut, ballotReturnedWeVoteId);
+        // IssueActions.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
       }
 
       this.setState({
@@ -206,22 +226,16 @@ class Ballot extends Component {
         issuesRetrievedFromBallotLocationShortcut: ballotLocationShortcut,
       });
     }
-    // We need a ballotStoreListener here because we want the ballot to display before positions are received
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     // NOTE: voterAllPositionsRetrieve is also called in SupportStore when voterAddressRetrieve is received,
     // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
     SupportActions.voterAllPositionsRetrieve();
 
     BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
     this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     // Once a voter hits the ballot, they have gone through orientation
     cookies.setItem('ballot_has_been_visited', '1', Infinity, '/');
 
-    this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
     OrganizationActions.organizationsFollowedRetrieve();
     VoterActions.voterRetrieve(); // This is needed to update the interface status settings
@@ -396,13 +410,16 @@ class Ballot extends Component {
       mounted: false,
     });
 
+    this.appStoreListener.remove();
     this.ballotStoreListener.remove();
     this.electionListListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    this.appStoreListener.remove();
-    this.timer = null;
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -526,14 +543,21 @@ class Ballot extends Component {
       }
     }
     if (ballotProperties) {
-      // If the incoming googleCivicElectionId, ballotReturnedWeVoteId, or ballotLocationShortcut are different, call issuesRetrieveForElection
+      // If the incoming googleCivicElectionId, ballotReturnedWeVoteId, or ballotLocationShortcut are different, call issuesUnderBallotItemsRetrieve
       if (parseInt(ballotProperties.google_civic_election_id, 10) !== issuesRetrievedFromGoogleCivicElectionId ||
           ballotProperties.ballot_returned_we_vote_id !== issuesRetrievedFromBallotReturnedWeVoteId ||
           ballotProperties.ballot_location_shortcut !== issuesRetrievedFromBallotLocationShortcut) {
-        // console.log('onBallotStoreChange, Calling issuesRetrieveForElection');
-
-        if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-          IssueActions.issuesRetrieveForElection(ballotProperties.google_civic_election_id, ballotProperties.ballot_location_shortcut, ballotProperties.ballot_returned_we_vote_id);
+        // console.log('onBallotStoreChange, Calling issuesUnderBallotItemsRetrieve');
+        let callIssuesUnderBallotItemRetrieve = true;
+        if (ballotProperties.google_civic_election_id) {
+          // If we only have a value for googleCivicElectionId, then prevent a calling issuesUnderBallotItemsRetrieve if we already have the data
+          if (IssueStore.issuesUnderBallotItemsRetrieveCalled(ballotProperties.google_civic_election_id)) {
+            callIssuesUnderBallotItemRetrieve = false;
+          }
+        }
+        if (callIssuesUnderBallotItemRetrieve) {
+          IssueActions.issuesUnderBallotItemsRetrieve(ballotProperties.google_civic_election_id, ballotProperties.ballot_location_shortcut, ballotProperties.ballot_returned_we_vote_id);
+          // IssueActions.issuesUnderBallotItemsRetrieveCalled(ballotProperties.google_civic_election_id); // This causes error: "Cannot dispatch in the middle of a dispatch"
         }
 
         this.setState({
@@ -639,7 +663,7 @@ class Ballot extends Component {
     } else {
       return false;
     }
-  }
+  };
 
   memberViewedBallot = (membershipOrganizationWeVoteId, googleCivicElectionId) => {
     if (!membershipOrganizationWeVoteId || !googleCivicElectionId) {
@@ -657,7 +681,7 @@ class Ballot extends Component {
       memberViewedBallotHasBeenSavedOnce,
     });
     return true;
-  }
+  };
 
   showUserEmptyOptions = () => {
     const { completionLevelFilterType } = this.state;
@@ -677,7 +701,7 @@ class Ballot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? 'Remaining Choices' : 'Choices'}
+              {isMobileScreenSize() ? 'Choices' : 'Remaining Choices'}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you need to decide on.
@@ -694,7 +718,7 @@ class Ballot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? 'Items Decided' : 'Decided'}
+              {isMobileScreenSize() ? 'Decided' : 'Items Decided'}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you&apos;ve decided on.
@@ -726,7 +750,7 @@ class Ballot extends Component {
         numberOfVoterRetrieveAttempts,
       });
     }, delayBeforeVoterRefreshCall);
-  }
+  };
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
@@ -830,24 +854,28 @@ class Ballot extends Component {
 
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
-        <div className="ballot container-fluid well u-stack--md u-inset--md">
-          <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
-            <BallotLoadingWrapper>
-              If your ballot does not appear momentarily,
-              {' '}
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <Link
-                // since we use a button as the component, we can disable that es-lint rule
-                component="button"
-                id="ballotIfBallotDoesNotAppear"
-                onClick={this.toggleSelectBallotModal}
-                style={{ color: 'rgb(6, 95, 212)' }}
-              >
-                please click here to change your address.
-              </Link>
-            </BallotLoadingWrapper>
+        <DelayedLoad showLoadingText waitBeforeShow={2000}>
+          <div className="ballot container-fluid well u-stack--md u-inset--md">
+            <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
+              <BallotLoadingWrapper>
+                If your ballot does not appear momentarily,
+                {' '}
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <Link
+                  // since we use a button as the component, we can disable that es-lint rule
+                  component="button"
+                  id="ballotIfBallotDoesNotAppear"
+                  onClick={this.toggleSelectBallotModal}
+                  style={{ color: 'rgb(6, 95, 212)' }}
+                >
+                  please click here to enter an address
+                </Link>
+                {' '}
+                in the United States of America where you are registered to vote.
+              </BallotLoadingWrapper>
+            </div>
           </div>
-        </div>
+        </DelayedLoad>
       );
     }
 
@@ -902,8 +930,9 @@ class Ballot extends Component {
       historyPush(this.state.pathname);
     }
 
-    const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) &&
-      (BallotStore.ballotRemainingChoicesLength > 0);
+    // const isMobileScreenSize = window.innerWidth < 500;
+    // const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) &&
+    //   (BallotStore.ballotRemainingChoicesLength > 0) && !isMobileScreenSize;
 
     let ballotItemNumber = 0;
     let showLoadingText = true;
@@ -916,12 +945,16 @@ class Ballot extends Component {
                 <div className="col-md-12">
                   <Helmet title="Ballot - We Vote" />
                   <header className="ballot__header__group">
-                    <BallotTitleHeader scrolled={this.state.ballotHeaderUnpinned} electionName={electionName} electionDayTextFormatted={electionDayTextFormatted} />
+                    <BallotTitleHeader
+                      scrolled={this.state.ballotHeaderUnpinned}
+                      electionName={electionName}
+                      electionDayTextFormatted={electionDayTextFormatted}
+                    />
                   </header>
 
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
-                      { showBallotDecisionTabs ? (
+                      { showBallotDecisionsTabs() && (
                         <React.Fragment>
                           <div className="ballot__filter d-print-none">
                             <BallotDecisionsTabs
@@ -932,7 +965,7 @@ class Ballot extends Component {
                           </div>
                           <hr className="ballot-header-divider" />
                         </React.Fragment>
-                      ) : undefined}
+                      )}
                       <BallotFilterRow showFilterTabs={showFilterTabs}>
                         <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
                           { ballotWithItemsFromCompletionFilterType.length ? (
@@ -961,26 +994,41 @@ class Ballot extends Component {
                                         return oneTypeOfBallotItem === item.race_office_level;
                                       }
                                     });
-                                    return (
-                                      <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
-                                        <Badge
-                                          badgeContent={ballotItemsByFilterType.length}
-                                          classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
-                                          color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                    const ballotChip = (
+                                      <Chip variant="outlined"
+                                        color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                        className="btn_ballot_filter"
+                                        classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
+                                        label={oneTypeOfBallotItem}
+                                      />
+                                    );
+                                    if (isMobileScreenSize()) {
+                                      return (
+                                        <div
+                                          className="ballot_filter_btns"
                                           id={`ballotBadge-${oneTypeOfBallotItem}`}
-                                          invisible={ballotItemsByFilterType.length === 0}
+                                          key={oneTypeOfBallotItem}
                                           onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                         >
-                                          <Chip variant="outlined"
+                                          {ballotChip}
+                                        </div>
+                                      );
+                                    } else {
+                                      return (
+                                        <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
+                                          <Badge
+                                            badgeContent={ballotItemsByFilterType.length}
+                                            classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
                                             color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                            id={`ballotBadge-${oneTypeOfBallotItem}`}
+                                            invisible={ballotItemsByFilterType.length === 0}
                                             onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
-                                            className="btn_ballot_filter"
-                                            classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
-                                            label={oneTypeOfBallotItem}
-                                          />
-                                        </Badge>
-                                      </div>
-                                    );
+                                          >
+                                            {ballotChip}
+                                          </Badge>
+                                        </div>
+                                      );
+                                    }
                                   } else {
                                     return null;
                                   }
@@ -1007,7 +1055,7 @@ class Ballot extends Component {
             <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
               {emptyBallot}
               {/* eslint-disable-next-line no-nested-ternary */}
-              <div className={showBallotDecisionTabs ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
+              <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
                 <BrowserPushMessage incomingProps={this.props} />
                 {ballotWithItemsFromCompletionFilterType.length > 0 ? (
                   <BallotStatusMessage
@@ -1022,7 +1070,7 @@ class Ballot extends Component {
                   />
                   <div>
                     {/* The rest of the ballot items */}
-                    <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
+                    <div className="BallotList">
                       {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
                         // Ballot limited by items by race_office_level = (Federal, State, Local) or kind_of_ballot_item = (Measure)
                         if ((raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||
@@ -1112,6 +1160,8 @@ class Ballot extends Component {
 }
 
 const BallotLoadingWrapper = styled.div`
+  font-size: 20px;
+  padding-top: 20px;
   text-align: center;
 `;
 

@@ -5,16 +5,18 @@ import styled from 'styled-components';
 // import Edit from '@material-ui/icons/Edit';
 // import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import CheckCircle from '@material-ui/icons/CheckCircle';
-import Button from '@material-ui/core/esm/Button';
-import TableRow from '@material-ui/core/esm/TableRow';
-import TableHead from '@material-ui/core/esm/TableHead';
-import TableCell from '@material-ui/core/esm/TableCell';
-import TableBody from '@material-ui/core/esm/TableBody';
-import Table from '@material-ui/core/esm/Table';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Button from '@material-ui/core/Button';
+import TableRow from '@material-ui/core/TableRow';
+import TableHead from '@material-ui/core/TableHead';
+import TableCell from '@material-ui/core/TableCell';
+import TableBody from '@material-ui/core/TableBody';
+import Table from '@material-ui/core/Table';
+import { withStyles } from '@material-ui/core/styles';
+import { isWebApp, cordovaOpenSafariView } from '../../utils/cordovaUtils';
 import DonateStore from '../../stores/DonateStore';
 import DonateActions from '../../actions/DonateActions';
 import LoadingWheel from '../LoadingWheel';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
@@ -57,6 +59,10 @@ class SettingsSubscriptionPlan extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.chosenFeaturePackage !== nextState.chosenFeaturePackage) {
+      // console.log('this.state.chosenFeaturePackage', this.state.chosenFeaturePackage, ', nextState.chosenFeaturePackage', nextState.chosenFeaturePackage);
+      return true;
+    }
     if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
       // console.log('this.state.organizationWeVoteId', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
       return true;
@@ -138,11 +144,13 @@ class SettingsSubscriptionPlan extends Component {
     const subscriptionJournalHistory = subscriptionJournalHistoryRaw.filter(item => item.record_enum !== 'SUBSCRIPTION_SETUP_AND_INITIAL');
     const subscriptionJournalHistoryCount = subscriptionJournalHistory.length;
     const nextInvoice = DonateStore.getNextInvoice();
+    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
     this.setState({
       activePaidPlanChosen,
       activePaidPlanChosenDisplay,
       // activePaidPlanBillingFrequency,
       activePaidPlanBillingFrequencyDisplay,
+      chosenFeaturePackage,
       nextInvoice,
       subscriptionJournalHistory,
       subscriptionJournalHistoryCount,
@@ -151,26 +159,30 @@ class SettingsSubscriptionPlan extends Component {
 
   onOrganizationStoreChange = () => {
     const { organizationWeVoteId } = this.state;
+    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
     this.setState({
+      chosenFeaturePackage,
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
     });
-  }
+  };
 
   onVoterStoreChange = () => {
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
     const organizationWeVoteId = voter.linked_organization_we_vote_id;
+    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
     this.setState({
+      chosenFeaturePackage,
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
       organizationWeVoteId,
       voter,
       voterIsSignedIn,
     });
-  }
+  };
 
   openPaidAccountUpgradeModal = (paidAccountUpgradeMode) => {
     AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
-  }
+  };
 
   onChangePlan = () => {
     const { activePaidPlanChosen } = this.state;
@@ -187,8 +199,13 @@ class SettingsSubscriptionPlan extends Component {
         paidAccountUpgradeMode = 'professional';
         break;
     }
-    this.openPaidAccountUpgradeModal(paidAccountUpgradeMode);
-  }
+
+    if (isWebApp()) {
+      this.openPaidAccountUpgradeModal(paidAccountUpgradeMode);
+    } else {
+      cordovaOpenSafariView('https://wevote.us/more/pricing', null, 50);
+    }
+  };
 
   onCancelPlan = () => {
     const activePaidPlan = DonateStore.getActivePaidPlan();
@@ -211,7 +228,11 @@ class SettingsSubscriptionPlan extends Component {
 
   render () {
     renderLog('SettingsSubscriptionPlan');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activePaidPlanChosen, activePaidPlanChosenDisplay, activePaidPlanBillingFrequencyDisplay, nextInvoice, organization, organizationWeVoteId, subscriptionJournalHistory, subscriptionJournalHistoryCount, voter, voterIsSignedIn, mobileMode } = this.state;
+    const {
+      activePaidPlanChosen, activePaidPlanChosenDisplay, activePaidPlanBillingFrequencyDisplay, chosenFeaturePackage,
+      nextInvoice, organization, organizationWeVoteId, subscriptionJournalHistory, subscriptionJournalHistoryCount,
+      voter, voterIsSignedIn, mobileMode,
+    } = this.state;
     const { classes } = this.props;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
@@ -233,6 +254,19 @@ class SettingsSubscriptionPlan extends Component {
             <SectionTitle>
               Your Plan
             </SectionTitle>
+            <Introduction>
+              {chosenFeaturePackage === 'FREE' && (
+                <>
+                  Want to create a configured version of We Vote you can send out to your followers?
+                  {' '}
+                  <OpenExternalWebSite
+                    url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
+                    target="_blank"
+                    body={(<span>Learn more here.</span>)}
+                  />
+                </>
+              )}
+            </Introduction>
             <h4 className="h4">
               <strong>
                 {activePaidPlanChosenDisplay}
@@ -405,6 +439,19 @@ class SettingsSubscriptionPlan extends Component {
         <Card className="card">
           <CardMain className="card-main">
             <h1 className="h2">Subscription Plan</h1>
+            <Introduction>
+              {chosenFeaturePackage === 'FREE' && (
+                <>
+                  Want to create a configured version of We Vote you can send out to your followers?
+                  {' '}
+                  <OpenExternalWebSite
+                    url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
+                    target="_blank"
+                    body={(<span>Learn more here.</span>)}
+                  />
+                </>
+              )}
+            </Introduction>
             <SectionCard className="u-position-relative">
               <SectionTitle>
                 Your Plan
@@ -852,8 +899,15 @@ const FlexOne = styled.div`
   font-weight: 500;
   color: #444;
 `;
+
 const FlexTwo = styled.div`
   font-weight: 500;
   color: black;
 `;
+
+const Introduction = styled.p`
+  margin: 0 0 16px 0;
+  font-size: 14px;
+`;
+
 export default withStyles(styles)(SettingsSubscriptionPlan);

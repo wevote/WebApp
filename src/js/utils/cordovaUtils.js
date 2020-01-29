@@ -1,6 +1,6 @@
 import { browserHistory, hashHistory } from 'react-router';
-import BallotStore from '../stores/BallotStore'; // eslint-disable-line import/no-cycle
 import { cordovaOffsetLog, oAuthLog } from './logging';
+import showBallotDecisionsTabs from './showBallotDecisionsTabs'; // eslint-disable-line import/no-cycle
 import { stringContains } from './textFormat';
 import webAppConfig from '../config';
 
@@ -247,42 +247,6 @@ export function isIPhone6p5in () {
 export function isIPad () {
   if (isIOS()) {
     if (window.device.model.substring(0, 4) === 'iPad') {
-      // June 2019, save this, we will need it, if we need to distinguish between types of iPads
-      // window.device.model === 'iPad4,1'  ||  // iPad Air
-      // window.device.model === 'iPad4,2'  ||  // iPad Air
-      // window.device.model === 'iPad4,3'  ||  // iPad Air
-      // window.device.model === 'iPad5,3'  ||  // iPad Air 2
-      // window.device.model === 'iPad5,4'  ||  // iPad Air 2
-      // window.device.model === 'iPad6,7'  ||  // iPad Pro (12.9-inch)
-      // window.device.model === 'iPad6,8'  ||  // iPad Pro (12.9-inch)
-      // window.device.model === 'iPad6,3'  ||  // iPad Pro (9.7-inch)
-      // window.device.model === 'iPad6,4'  ||  // iPad Pro (9.7-inch)
-      // window.device.model === 'iPad6,11' ||  // iPad (5th generation)
-      // window.device.model === 'iPad6,12' ||  // iPad (5th generation)
-      // window.device.model === 'iPad7,1'  ||  // iPad Pro (12.9-inch) (2nd generation)
-      // window.device.model === 'iPad7,2'  ||  // iPad Pro (12.9-inch) (2nd generation)
-      // window.device.model === 'iPad7,3'  ||  // iPad Pro (10.5-inch)
-      // window.device.model === 'iPad7,4'  ||  // iPad Pro (10.5-inch)
-      // window.device.model === 'iPad7,5 ' ||  // iPad (6th generation)
-      // window.device.model === 'iPad7,6 ' ||  // iPad (6th generation)
-      // window.device.model === 'iPad8,1'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,2'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,3'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,4'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,5'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,6'  ||  // iPad Pro (11-inch)
-      // window.device.model === 'iPad8,5'  ||  // iPad Pro (12.9-inch) (3rd generation)
-      // window.device.model === 'iPad8,7'  ||  // iPad Pro (12.9-inch) (3rd generation)
-      // window.device.model === 'iPad8,8'  ||  // iPad Pro (12.9-inch) (3rd generation)
-      // window.device.model === 'iPad11,3' ||  // iPad Air (3rd generation)
-      // window.device.model === 'iPad11,4' ||  // iPad Air (3rd generation)
-      // window.device.model === 'iPad4,7'  ||  // iPad mini 3
-      // window.device.model === 'iPad4,8'  ||  // iPad mini 3
-      // window.device.model === 'iPad4,9'  ||  // iPad mini 3
-      // window.device.model === 'iPad5,1'  ||  // iPad mini 4
-      // window.device.model === 'iPad5,2'  ||  // iPad mini 4
-      // window.device.model === 'iPad11,1' ||  // iPad mini (5th generation)
-      // window.device.model === 'iPad11,2')) { // iPad mini (5th generation)
       logMatch('iPad', true);
       return true;
     } else {
@@ -348,6 +312,86 @@ export function getAndroidSize () {
   return sizeString;
 }
 
+export function isAndroidSizeSM () {
+  if (isAndroid()) {
+    if (getAndroidSize() === '--sm') {
+      logMatch('isAndroidSizeSM: sm = 480*800 = 384,000      Nexus One', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isAndroidSizeMD () {
+  if (isAndroid()) {
+    if (getAndroidSize() === '--md') {
+      logMatch('isAndroidSizeMD: md = 1080*1920 = 2,073,600  PixelXL, Nexus5X, Moto G5', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isAndroidSizeLG () {
+  if (isAndroid()) {
+    if (getAndroidSize() === '--lg') {
+      logMatch('isAndroidSizeLG: lg = 1440*2560 = 3,686,400  Nexus6P', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isAndroidSizeXL () {
+  if (isAndroid()) {
+    if (getAndroidSize() === '--xl') {
+      logMatch('isAndroidSizeXL: xl = 2560*1600 = 4,096,000  Nexus10 Tablet', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isWebAppHeight0to568 () {
+  if (isWebApp()) {
+    if (window && window.screen && window.screen.height <= 568) {
+      logMatch('isWebApp0to568: iPhone5, iPhone SE', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isWebAppHeight569to667 () {
+  if (isWebApp()) {
+    if (window && window.screen && window.screen.height >= 569 && window.screen.height <= 667) {
+      logMatch('isWebApp0to568: iPhone6/7/8', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isWebAppHeight668to736 () {
+  if (isWebApp()) {
+    if (window && window.screen && window.screen.height >= 668 && window.screen.height <= 736) {
+      logMatch('isWebApp0to568: iPhone8Plus', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isWebAppHeight737to896 () {
+  if (isWebApp()) {
+    if (window && window.screen && window.screen.height >= 737 && window.screen.height <= 896) {
+      logMatch('isWebApp0to568: iPhoneX/iPhone11 Pro Max', true);
+      return true;
+    }
+  }
+  return false;
+}
+
 export function isAndroidSimulator () {
   return window.location.href.startsWith('file:///android');
 }
@@ -395,12 +439,13 @@ export const enums = {
   opinions: 202,
   values: 203,
   voterGuideWild: 204,
+  twitterSignIn: 205,
   defaultVal: 1000,
 };
 
 export function pageEnumeration () {
   const { href } = window.location;
-  const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
+  // const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
 
   // second level paths must be tried first
   if (href.indexOf('/index.html#/ballot/vote') > 0) {
@@ -423,7 +468,6 @@ export function pageEnumeration () {
   } else if (href.indexOf('/index.html#/office/') > 0) {
     return enums.officeWild;
   } else if (href.indexOf('/index.html#/settings/') > 0 ||
-             stringContains('twitter_sign_in', href) ||
              stringContains('facebook_sign_in', href)) {
     return enums.settingsWild;
   } else if (href.indexOf('/index.html#/value/') > 0) {
@@ -436,7 +480,7 @@ export function pageEnumeration () {
   } else if (href.indexOf('/index.html#/wevoteintro/') > 0) {
     return enums.wevoteintroWild;
   } else if (href.indexOf('/index.html#/ballot') > 0) {
-    if (showBallotDecisionTabs) {
+    if (showBallotDecisionsTabs()) {
       return enums.ballotLgHdrWild;
     } else {
       return enums.ballotSmHdrWild;
@@ -459,6 +503,8 @@ export function pageEnumeration () {
              href.indexOf('/index.html#/more/pricing') > 0 ||
              href.indexOf('/index.html#/how') > 0) {
     return enums.welcomeWild;
+  } else if (href.indexOf('/index.html#/twitter_sign_in') > 0) {
+    return enums.twitterSignIn;
   }
   return enums.defaultVal;
 }

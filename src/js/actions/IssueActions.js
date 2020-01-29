@@ -1,26 +1,27 @@
 import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
-  retrieveIssuesToFollow () {
-    Dispatcher.loadEndpoint('retrieveIssuesToFollow');
+  issueDescriptionsRetrieve () {
+    Dispatcher.loadEndpoint('issueDescriptionsRetrieve', {});
   },
 
-  issuesRetrieve () {
-    Dispatcher.loadEndpoint('issuesRetrieve', {
-      include_voter_follow_status: true,
-      voter_issues_only: false,
-    });
+  issueDescriptionsRetrieveCalled () {
+    Dispatcher.dispatch({ type: 'issueDescriptionsRetrieveCalled', payload: true });
   },
 
-  // June 15, 2018:  There is no functional difference in the JSON retured with this API, than with issuesRetrieve, and before today's change, we called the two API's 11 times
-  // in 3 seconds when navigating between Ballot and Candidate (and each time receiving the exact same return)
-  issuesRetrieveForElection (googleCivicElectionId, ballot_location_shortcut = '', ballot_returned_we_vote_id = '') {
-    Dispatcher.loadEndpoint('issuesRetrieve', {
+  issuesUnderBallotItemsRetrieveCalled (googleCivicElectionId) {
+    Dispatcher.dispatch({ type: 'issuesUnderBallotItemsRetrieveCalled', payload: googleCivicElectionId });
+  },
+
+  issuesFollowedRetrieve () {
+    Dispatcher.loadEndpoint('issuesFollowedRetrieve', {});
+  },
+
+  issuesUnderBallotItemsRetrieve (googleCivicElectionId, ballot_location_shortcut = '', ballot_returned_we_vote_id = '') {
+    Dispatcher.loadEndpoint('issuesUnderBallotItemsRetrieve', {
       ballot_location_shortcut,
       ballot_returned_we_vote_id,
       google_civic_election_id: googleCivicElectionId,
-      include_voter_follow_status: true,
-      voter_issues_only: false,
     });
   },
 

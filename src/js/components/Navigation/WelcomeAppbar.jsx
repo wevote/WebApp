@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Appbar from '@material-ui/core/esm/AppBar/index';
-import Toolbar from '@material-ui/core/esm/Toolbar/index';
-import Button from '@material-ui/core/esm/Button/index';
-import IconButton from '@material-ui/core/esm/IconButton/index';
-import { withStyles } from '@material-ui/core/esm/styles';
+import Appbar from '@material-ui/core/AppBar/index';
+import Toolbar from '@material-ui/core/Toolbar/index';
+import Button from '@material-ui/core/Button/index';
+import IconButton from '@material-ui/core/IconButton/index';
+import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import MenuIcon from '@material-ui/icons/Menu';
 import { renderLog } from '../../utils/logging';
@@ -22,6 +22,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 // eslint-disable-next-line import/no-cycle
 import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
 import SignInModal from '../Widgets/SignInModal';
+import { shortenText } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -40,6 +41,7 @@ class WelcomeAppbar extends Component {
       showMobileNavigationMenu: false,
       showPaidAccountUpgradeModal: false,
       showSignInModal: AppStore.showSignInModal(),
+      voterFirstName: '',
     };
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
   }
@@ -75,6 +77,10 @@ class WelcomeAppbar extends Component {
       // console.log('this.state.profilePopUpOpen', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
       return true;
     }
+    if (this.state.voterFirstName !== nextState.voterFirstName) {
+      // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
+      return true;
+    }
     if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
       // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
       return true;
@@ -96,7 +102,7 @@ class WelcomeAppbar extends Component {
   }
 
   onAppStoreChange () {
-    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal();
+    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal() || '';
     // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
     const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
     this.setState({
@@ -108,10 +114,12 @@ class WelcomeAppbar extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
+    const voterFirstName = VoterStore.getFirstName();
     const { linked_organization_we_vote_id: linkedOrganizationWeVoteId, is_signed_in: voterIsSignedIn, voter_photo_url_medium: voterPhotoUrlMedium } = voter;
     this.setState({
       linkedOrganizationWeVoteId,
       voter,
+      voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
@@ -186,7 +194,7 @@ class WelcomeAppbar extends Component {
   render () {
     renderLog('WelcomeAppbar');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
-    const { paidAccountUpgradeMode, showMobileNavigationMenu, showPaidAccountUpgradeModal, showSignInModal, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
+    const { paidAccountUpgradeMode, showMobileNavigationMenu, showPaidAccountUpgradeModal, showSignInModal, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
     let showWelcomeForVoters = false;
     let showWelcomeForOrganizations = false;
     let showWelcomeForCampaigns = false;
@@ -296,8 +304,7 @@ class WelcomeAppbar extends Component {
               <NavLink id="welcomeYourBallot" to="/ballot">Your Ballot</NavLink>
               <Divider />
               {!voterIsSignedIn && <NavLink id="welcomeSignIn" to="" onClick={() => this.toggleSignInModal()}>Sign In</NavLink> }
-              {voterIsSignedIn &&
-              (
+              {voterIsSignedIn && (
                 <div>
                   {voterPhotoUrlMedium ? (
                     <div
@@ -314,15 +321,18 @@ class WelcomeAppbar extends Component {
                       />
                     </div>
                   ) : (
-                    <div>
+                    <ProfileIconWrapper>
                       <IconButton
                         classes={{ root: classes.iconButtonRoot }}
                         id="profileAvatarHeaderBar"
                         onClick={this.toggleProfilePopUp}
                       >
+                        <FirstNameWrapper>
+                          {shortenText(voterFirstName, 9)}
+                        </FirstNameWrapper>
                         <AccountCircleIcon />
                       </IconButton>
-                    </div>
+                    </ProfileIconWrapper>
                   )
                   }
                   {this.state.profilePopUpOpen && voterIsSignedIn && (
@@ -339,14 +349,56 @@ class WelcomeAppbar extends Component {
                     />
                   )}
                 </div>
-              )
-              }
+              )}
             </DesktopView>
             <MobileTabletView>
               <NavLink id="welcomeYourBallotMobile" to="/ballot">Your Ballot</NavLink>
+              {voterIsSignedIn && (
+                <div>
+                  {voterPhotoUrlMedium ? (
+                    <ProfileImageWrapper
+                      id="profileAvatarHeaderBar"
+                      onClick={this.toggleProfilePopUp}
+                    >
+                      <img
+                        className="header-nav__avatar"
+                        src={voterPhotoUrlMedium}
+                        height={24}
+                        width={24}
+                        alt="generic avatar"
+                      />
+                    </ProfileImageWrapper>
+                  ) : (
+                    <ProfileIconWrapper>
+                      <IconButton
+                        classes={{ root: classes.iconProfileButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={this.toggleProfilePopUp}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </ProfileIconWrapper>
+                  )
+                  }
+                  {this.state.profilePopUpOpen && voterIsSignedIn && (
+                    <HeaderBarProfilePopUp
+                      onClick={this.toggleProfilePopUp}
+                      hideProfilePopUp={this.hideProfilePopUp}
+                      isWelcomeMobilePage
+                      profilePopUpOpen={this.state.profilePopUpOpen}
+                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      toggleSignInModal={this.toggleSignInModal}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      voter={this.state.voter}
+                      weVoteBrandingOff={this.state.we_vote_branding_off}
+                    />
+                  )}
+                </div>
+              )}
               <IconButton
                 classes={{ root: classes.iconButton }}
-                id="profileAvatarHeaderBar"
+                id="hamburgerMenuHeaderBar"
                 onClick={() => this.handleShowMobileNavigation(true)}
               >
                 <MenuIcon />
@@ -435,7 +487,7 @@ class WelcomeAppbar extends Component {
   }
 }
 
-const styles = ({
+const styles = theme => ({
   appBarRoot: {
     background: 'transparent',
     alignItems: 'center',
@@ -449,6 +501,24 @@ const styles = ({
   },
   iconButton: {
     color: 'white',
+  },
+  iconButtonRoot: {
+    color: 'rgba(255, 255, 255, .9)',
+    outline: 'none !important',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
+  iconProfileButtonRoot: {
+    color: 'rgba(255, 255, 255, .9)',
+    outline: 'none !important',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 8,
+      paddingRight: 0,
+    },
   },
   navButtonOutlined: {
     height: 32,
@@ -476,11 +546,25 @@ const DesktopView = styled.div`
   }
 `;
 
+const FirstNameWrapper = styled.div`
+  font-size: 14px;
+  padding-right: 4px;
+`;
+
 const MobileTabletView = styled.div`
   display: inherit;
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
   }
+`;
+
+const ProfileIconWrapper = styled.div`
+  color: white;
+`;
+
+const ProfileImageWrapper = styled.div`
+  margin-top: 7px;
+  margin-left: 6px;
 `;
 
 export default withStyles(styles)(WelcomeAppbar);

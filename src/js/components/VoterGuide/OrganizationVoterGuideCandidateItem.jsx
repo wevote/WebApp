@@ -178,7 +178,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
               </p>
             </span>
             { twitterDescription ? (
-              <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+              <div className={`u-stack--xs ${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
                 <div>
                   <ParsedTwitterDescription
                     twitter_description={twitterDescription}
@@ -202,7 +202,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
         {/* END .card-main__media-object */}
         <div className="card-main__actions">
           <div>
-            <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
+            <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50 u-float-right">
               <BallotItemSupportOpposeComment
                 ballotItemWeVoteId={candidateWeVoteId}
                 externalUniqueId="organizationVoterGuideCandidateItem"

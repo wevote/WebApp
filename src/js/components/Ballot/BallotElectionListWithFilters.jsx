@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
-import Button from '@material-ui/core/esm/Button';
+import Button from '@material-ui/core/Button';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
+import DelayedLoad from '../Widgets/DelayedLoad';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
@@ -413,14 +414,21 @@ export default class BallotElectionListWithFilters extends Component {
       <div className="ballot-election-list__list">
         <div className="ballot-election-list__upcoming">
           {!hideUpcomingElectionTitle && (
-            <h4 className="h4">
-              Upcoming Election
-              {(upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null }
-            </h4>
+            <DelayedLoad waitBeforeShow={2000}>
+              <h4 className="h4">
+                Upcoming Election
+                {(upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null }
+              </h4>
+            </DelayedLoad>
           )}
           { upcomingElectionList && upcomingElectionList.length ?
-            upcomingElectionList :
-            'There are no upcoming elections at this time.'
+            upcomingElectionList : (
+              <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                <>
+                  There are no upcoming elections at this time.
+                </>
+              </DelayedLoad>
+            )
           }
         </div>
         { showPriorElectionsList && (

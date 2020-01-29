@@ -30,6 +30,15 @@ export default {
     Dispatcher.dispatch({ type: 'showPaidAccountUpgradeModal', payload: chosenPaidAccount });
   },
 
+  setShowShareModal (show) {
+    // The chosenPaidAccount values are: free, professional, enterprise
+    Dispatcher.dispatch({ type: 'showShareModal', payload: show });
+  },
+
+  setShareModalStep (step) {
+    Dispatcher.dispatch({ type: 'shareModalStep', payload: step });
+  },
+
   setShowSignInModal (show) {
     Dispatcher.dispatch({ type: 'showSignInModal', payload: show });
   },

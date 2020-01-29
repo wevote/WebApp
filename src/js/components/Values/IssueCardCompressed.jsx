@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withTheme } from '@material-ui/core/esm/styles';
+import { withTheme } from '@material-ui/core/styles';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import { convertNameToSlug } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
@@ -91,7 +91,7 @@ class IssueCardCompressed extends Component {
     issueDescription = issueDescription || '';
 
     let issueImage;
-    const numberOfLines = 1;
+    const numberOfLines = 2;
     if (this.state.issueImageSize === 'SMALL') {
       issueImage = (
         <IssueImageDisplay
@@ -169,8 +169,8 @@ class IssueCardCompressed extends Component {
                       className="u-no-underline"
                 >
                   <ReadMore
-                    text_to_display={issueDescription}
-                    num_of_lines={numberOfLines}
+                    textToDisplay={issueDescription}
+                    numberOfLines={numberOfLines}
                   />
                 </Link>
               </Description>

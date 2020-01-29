@@ -11,6 +11,10 @@ export default {
     Dispatcher.dispatch({ type: 'clearSecretCodeVerificationStatus', payload: true });
   },
 
+  clearSMSPhoneNumberStatus () {
+    Dispatcher.dispatch({ type: 'clearSMSPhoneNumberStatus', payload: true });
+  },
+
   organizationSuggestionTasks (kindOfSuggestionTask, kindOfFollowTask) {
     Dispatcher.loadEndpoint('organizationSuggestionTasks',
       {

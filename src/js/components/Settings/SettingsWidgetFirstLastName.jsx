@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import Button from '@material-ui/core/Button';
+import { isCordova, isWebApp, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import LoadingWheel from '../LoadingWheel';
 import FriendActions from '../../actions/FriendActions';
@@ -10,7 +11,7 @@ import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
-const delayBeforeApiUpdateCall = 1200;
+const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;
 
 
@@ -33,6 +34,7 @@ export default class SettingsWidgetFirstLastName extends Component {
       linkedOrganizationWeVoteId: '',
       organizationName: '',
       organizationNameSavedStatus: '',
+      voterIsSignedIn: false,
       voterNameSavedStatus: '',
     };
 
@@ -40,47 +42,64 @@ export default class SettingsWidgetFirstLastName extends Component {
     this.handleKeyPressVoterName = this.handleKeyPressVoterName.bind(this);
     this.updateOrganizationName = this.updateOrganizationName.bind(this);
     this.updateVoterName = this.updateVoterName.bind(this);
-  }
-
-  componentWillMount () {
-    prepareForCordovaKeyboard('SettingsWidgetFirstLastName');
+    this.saveNameCordova = this.saveNameCordova.bind(this);
   }
 
   componentDidMount () {
     this.onVoterStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    this.setState({
-      displayOnly: this.props.displayOnly,
-    });
+    const displayOnly = this.props.displayOnly || false;
+    this.setState({ displayOnly });
+    if (!displayOnly) {
+      prepareForCordovaKeyboard('SettingsWidgetFirstLastName');
+    }
   }
 
   componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
-    this.timer = null;
-    this.clearStatusTimer = null;
+    if (isWebApp()) {
+      if (this.clearStatusTimer) {
+        clearTimeout(this.clearStatusTimer);
+        this.clearStatusTimer = null;
+      }
+      if (this.organizationNameTimer) {
+        clearTimeout(this.organizationNameTimer);
+        this.organizationNameTimer = null;
+      }
+      if (this.voterNameTimer) {
+        clearTimeout(this.voterNameTimer);
+        this.voterNameTimer = null;
+      }
+    }
     FriendActions.friendInvitationsWaitingForVerification();
-    restoreStylesAfterCordovaKeyboard('SettingsWidgetFirstLastName');
   }
 
   onOrganizationStoreChange () {
     const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_type) {
-      this.setState({
-        isOrganization: isSpeakerTypeOrganization(organization.organization_type),
-        organizationName: organization.organization_name,
-      });
+      // While typing 'Tom Smith' in the org field, without the following line, when you get to 'Tom ', autosaving trims and overwrites it to 'Tom' before you can type the 'S'
+      // console.log('onOrganizationStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
+      if (organization.organization_name.trim() !== this.state.organizationName.trim()) {
+        this.setState({
+          isOrganization: isSpeakerTypeOrganization(organization.organization_type),
+          organizationName: organization.organization_name,
+        });
+      }
     }
   }
 
   onVoterStoreChange () {
     if (VoterStore.isVoterFound()) {
       const voter = VoterStore.getVoter();
+      const voterIsSignedIn = voter.is_signed_in;
+      const { voterIsSignedIn: priorVoterIsSignedIn } = this.state;
       this.setState({
         voter,
+        voterIsSignedIn,
       });
-      if (!this.state.initialNameLoaded) {
+      if (!this.state.initialNameLoaded || priorVoterIsSignedIn !== voterIsSignedIn) {
         this.setState({
           firstName: VoterStore.getFirstName(),
           lastName: VoterStore.getLastName(),
@@ -94,10 +113,14 @@ export default class SettingsWidgetFirstLastName extends Component {
         if (voter.linked_organization_we_vote_id !== this.state.linkedOrganizationWeVoteId) {
           const organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
           if (organization && organization.organization_type) {
-            this.setState({
-              isOrganization: isSpeakerTypeOrganization(organization.organization_type),
-              organizationName: organization.organization_name,
-            });
+            // While typing 'Tom Smith' in the org field, without the following line, when you get to 'Tom ', autosaving trims and overwrites it to 'Tom' before you can type the 'S'
+            // console.log('onVoterStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
+            if (organization.organization_name.trim() !== this.state.organizationName.trim()) {
+              this.setState({
+                isOrganization: isSpeakerTypeOrganization(organization.organization_type),
+                organizationName: organization.organization_name,
+              });
+            }
           }
         }
       }
@@ -105,59 +128,83 @@ export default class SettingsWidgetFirstLastName extends Component {
   }
 
   handleKeyPressOrganizationName () {
-    clearTimeout(this.timer);
+    if (isWebApp()) {
+      clearTimeout(this.organizationNameTimer);
+    }
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
-    this.timer = setTimeout(() => {
-      OrganizationActions.organizationNameSave(this.state.linkedOrganizationWeVoteId, this.state.organizationName);
-      this.setState({ organizationNameSavedStatus: 'Saved' });
-    }, delayBeforeApiUpdateCall);
+    if (isWebApp()) {
+      this.organizationNameTimer = setTimeout(() => {
+        OrganizationActions.organizationNameSave(this.state.linkedOrganizationWeVoteId, this.state.organizationName);
+        this.setState({ organizationNameSavedStatus: 'Saved' });
+      }, delayBeforeApiUpdateCall);
+    }
   }
 
   handleKeyPressVoterName () {
-    clearTimeout(this.timer);
+    if (isWebApp()) {
+      clearTimeout(this.voterNameTimer);
+    }
     if (this.props.voterHasMadeChangesFunction) {
       this.props.voterHasMadeChangesFunction();
     }
 
-    this.timer = setTimeout(() => {
-      VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
-      this.setState({ voterNameSavedStatus: 'Saved' });
-    }, delayBeforeApiUpdateCall);
+    if (isWebApp()) {
+      this.voterNameTimer = setTimeout(() => {
+        VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
+        this.setState({ voterNameSavedStatus: 'Saved' });
+      }, delayBeforeApiUpdateCall);
+    }
   }
 
   updateOrganizationName (event) {
     if (event.target.name === 'organizationName') {
       this.setState({
         organizationName: event.target.value,
-        organizationNameSavedStatus: 'Saving Organization Name...',
+        organizationNameSavedStatus: isWebApp() ? 'Saving Organization Name...' : '',
       });
     }
-    // After some time, clear saved message
-    clearTimeout(this.clearStatusTimer);
-    this.clearStatusTimer = setTimeout(() => {
-      this.setState({ organizationNameSavedStatus: '' });
-    }, delayBeforeRemovingSavedStatus);
+    if (isWebApp()) {
+      // After some time, clear saved message
+      clearTimeout(this.clearStatusTimer);
+      this.clearStatusTimer = setTimeout(() => {
+        this.setState({ organizationNameSavedStatus: '' });
+      }, delayBeforeRemovingSavedStatus);
+    }
+  }
+
+  saveNameCordova () {
+    restoreStylesAfterCordovaKeyboard('SettingsWidgetFirstLastName');
+    VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
+    if (!this.props.hideNameShownWithEndorsements && this.state.organizationName.length) {
+      OrganizationActions.organizationNameSave(this.state.linkedOrganizationWeVoteId, this.state.organizationName);
+    }
+    this.setState({
+      voterNameSavedStatus: 'Saved',
+      displayOnly: true,
+    });
   }
 
   updateVoterName (event) {
     if (event.target.name === 'firstName') {
       this.setState({
         firstName: event.target.value,
-        voterNameSavedStatus: 'Saving First Name...',
+        voterNameSavedStatus: isWebApp() ? 'Saving First Name...' : '',
       });
     } else if (event.target.name === 'lastName') {
       this.setState({
         lastName: event.target.value,
-        voterNameSavedStatus: 'Saving Last Name...',
+        voterNameSavedStatus: isWebApp() ? 'Saving Last Name...' : '',
       });
     }
-    // After some time, clear saved message
-    clearTimeout(this.clearStatusTimer);
-    this.clearStatusTimer = setTimeout(() => {
-      this.setState({ voterNameSavedStatus: '' });
-    }, delayBeforeRemovingSavedStatus);
+    if (isWebApp()) {
+      // After some time, clear saved message
+      clearTimeout(this.clearStatusTimer);
+      this.clearStatusTimer = setTimeout(() => {
+        this.setState({ voterNameSavedStatus: '' });
+      }, delayBeforeRemovingSavedStatus);
+    }
   }
 
   render () {
@@ -263,6 +310,17 @@ export default class SettingsWidgetFirstLastName extends Component {
                       </label>
                       <div className="u-gray-mid">{organizationNameSavedStatus}</div>
                     </>
+                  )}
+                  { isCordova() && (
+                    <Button
+                      color="primary"
+                      id="firstLastSaveButton"
+                      onClick={this.saveNameCordova}
+                      variant="outlined"
+                      fullWidth
+                    >
+                      Save
+                    </Button>
                   )}
                 </form>
               )}

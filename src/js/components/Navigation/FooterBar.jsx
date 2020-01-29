@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BottomNavigation from '@material-ui/core/esm/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/esm/BottomNavigationAction';
-import Badge from '@material-ui/core/esm/Badge';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import Badge from '@material-ui/core/Badge';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import BallotIcon from '@material-ui/icons/Ballot';
@@ -14,8 +14,7 @@ import { historyPush, isCordova, cordovaOpenSafariView } from '../../utils/cordo
 import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
-
-const webAppConfig = require('../../config');
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 
 class FooterBar extends React.Component {
@@ -43,9 +42,12 @@ class FooterBar extends React.Component {
   }
 
   onFriendStoreChange () {
-    this.setState({
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
-    });
+    if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
+      // console.log('FooterBar, onFriendStoreChange');
+      this.setState({
+        friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
+      });
+    }
   }
 
   handleChange = (event, value) => {
@@ -82,38 +84,35 @@ class FooterBar extends React.Component {
       display: 'inline-block',
     };
 
-    const enableFriends = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? true : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
-
     return (
       <FooterBarWrapper>
         <div className="footer-container u-show-mobile-tablet" style={{ height: `${cordovaFooterHeight()}` }}>
           <BottomNavigation value={this.getSelectedTab()} onChange={this.handleChange} showLabels>
             <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<BallotIcon />} />
             <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />
-            { enableFriends ?
-              (
-                <BottomNavigationAction
-                  className="no-outline"
-                  id="friendsTabFooterBar"
-                  label="Friends"
-                  showLabel
-                  icon={(
-                    <Badge badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
-                      <PeopleIcon />
-                    </Badge>
-                  )}
-                />
-              ) : '' }
+            <BottomNavigationAction
+              className="no-outline"
+              id="friendsTabFooterBar"
+              label="Friends"
+              showLabel
+              icon={(
+                <Badge badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
+                  <PeopleIcon />
+                </Badge>
+              )}
+            />
             <BottomNavigationAction className="no-outline" id="voteTabFooterBar" label="Vote" showLabel icon={<HowToVoteIcon />} />
-            {isCordova() && (
+            {isCordova() ? (
               <BottomNavigationAction
                 className="no-outline"
                 id="helpTabFooterBar"
-                label=""
+                label="Help"
                 showLabel
                 icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />}
                 onClick={() => cordovaOpenSafariView('https://help.wevote.us', null, 50)}
               />
+            ) : (
+              <BottomNavigationAction className="no-outline" id="helpTabFooterBar" />
             )}
           </BottomNavigation>
         </div>

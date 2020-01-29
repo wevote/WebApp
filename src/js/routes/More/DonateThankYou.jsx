@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/esm/styles';
+import { withStyles } from '@material-ui/core/styles';
 import DonationListForm from '../../components/Donation/DonationListForm';
 import { renderLog } from '../../utils/logging';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import Section from '../../components/Welcome/Section';
-import Footer from '../../components/Welcome/Footer';
+import WelcomeFooter from '../../components/Welcome/WelcomeFooter';
 
 class DonateThankYou extends Component {
   render () {
@@ -28,7 +28,7 @@ class DonateThankYou extends Component {
             </div>
           </div>
         </Section>
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }

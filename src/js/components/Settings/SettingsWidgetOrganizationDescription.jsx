@@ -43,8 +43,14 @@ export default class SettingsWidgetOrganizationDescription extends Component {
   componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
-    this.timer = null;
-    this.clearStatusTimer = null;
+    if (this.clearStatusTimer) {
+      clearTimeout(this.clearStatusTimer);
+      this.clearStatusTimer = null;
+    }
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
     restoreStylesAfterCordovaKeyboard('SettingsWidgetOrganizationDescription');
   }
 
