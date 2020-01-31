@@ -14,7 +14,6 @@ import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
 import { renderLog } from '../../utils/logging';
-import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 
 class AddFriendsByEmail extends Component {
   static propTypes = {
@@ -41,7 +40,6 @@ class AddFriendsByEmail extends Component {
       voter: {},
       voterIsSignedIn: false,
     };
-    prepareForCordovaKeyboard('AddFriendsByEmail');
     this.addFriend = this.addFriend.bind(this);
     this.cacheFriendData = this.cacheFriendData.bind(this);
   }
@@ -52,6 +50,27 @@ class AddFriendsByEmail extends Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     FriendActions.friendInvitationsWaitingForVerification();
+    // Steve: let's save this for a while -- ok to delete after 3/1/2020
+    // window.addEventListener('keyboardWillShow', () => {
+    // console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+    //   prepareForCordovaKeyboard('AddFriendsByEmail');
+    // $('.friends__heading__cordova').css('display', 'none');
+    // $('.InviteByEmail__SectionTitle-hoeb70-0').css('display', 'none');
+    // $('.page-header__cordova').css('display', 'none');
+    // $('.Friends__Wrapper').css('padding-top', '0');
+    // $('.footroom-wrapper').css('padding-bottom', '0');
+    // $('.app-wrapper').css('min-height', '0');
+    // $('.page-content-container').css('margin', '11% auto 0 auto');
+    // Inside
+    //   $('[class^="AddFriendsByEmail__ButtonContainer"]').css('display', 'none');
+    //   $('[class^="AddFriendsByEmail__FormWrapper"]').css({ margin: 'unset', padding: 'unset' });
+    //   $('.card-main').css({ paddingTop: '2px', paddingBottom: '0' });  // doesnt work?
+    //   $('.col, .col-6').css('display', 'none');
+    //   $('.home div').filter(function () {
+    //     return this.className.match(/\btab/);
+    //   }).css('color', 'red');
+    //   $('[class^="AddFriendsByEmail-textField"]').css('margin-bottom', '0');
+    // // });
   }
 
   // shouldComponentUpdate (nextProps, nextState) {
@@ -60,7 +79,6 @@ class AddFriendsByEmail extends Component {
   // }
 
   componentWillUnmount () {
-    restoreStylesAfterCordovaKeyboard('AddFriendsByEmail');
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -126,7 +144,6 @@ class AddFriendsByEmail extends Component {
         loading: false,
         onEnterEmailAddressesStep: false,
       });
-      restoreStylesAfterCordovaKeyboard('AddFriendsByEmail');
       this.friendInvitationByEmailSend(event);
     }
   };
@@ -202,7 +219,6 @@ class AddFriendsByEmail extends Component {
       invitationEmailsAlreadyScheduledStep: false,
       onFriendInvitationsSentStep: true,
     });
-    prepareForCordovaKeyboard('AddFriendsByEmail');
   }
 
   addFriend () {

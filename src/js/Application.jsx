@@ -4,7 +4,10 @@ import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
-import { getToastClass, historyPush, isCordova, isWebApp } from './utils/cordovaUtils';
+import {
+  getToastClass, historyPush, isCordova, isWebApp,
+  prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard,
+} from './utils/cordovaUtils';
 import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
 import ElectionActions from './actions/ElectionActions';
 import FooterBar from './components/Navigation/FooterBar';
@@ -63,6 +66,16 @@ class Application extends Component {
       // disabled for cordova June 2019, see note in https://github.com/wevote/WebApp/pull/2303
       window.addEventListener('scroll', this.handleWindowScroll);
     }
+
+    if (isCordova()) {
+      window.addEventListener('keyboardWillShow', () => {
+        prepareForCordovaKeyboard('ballot');
+      });
+
+      window.addEventListener('keyboardDidHide', () => {
+        restoreStylesAfterCordovaKeyboard('ballot');
+      });
+    }
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -98,6 +111,8 @@ class Application extends Component {
     this.appStoreListener.remove();
     this.voterStoreListener.remove();
     window.removeEventListener('scroll', this.handleWindowScroll);
+    window.removeEventListener('keyboardWillShow');
+    window.removeEventListener('keyboardDidHide');
   }
 
   initializationForCordova () { // eslint-disable-line

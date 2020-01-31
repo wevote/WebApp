@@ -66,7 +66,7 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
       <React.Fragment>
         <div className="u-stack--md">
           <SplitIconButton
-            backgroundColor="#76d00b"
+            backgroundColor="#2E3C5D"
             buttonText={isPhone ? 'Sign in with a text' : 'Sign in with an Email'}
             externalUniqueId={isPhone ? 'smsSignIn' : 'emailSignIn'}
             icon={isPhone ? <MessageIcon /> : <MailOutlineIcon />}

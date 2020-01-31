@@ -483,9 +483,6 @@ class Friends extends Component {
       </Tabs>
     );
 
-    // friendsfallback 1/27 steve
-    // const friendsHeadClass = isWebApp() ? `friends__heading ${friendsHeaderUnpinned ? 'friends__heading__unpinned' : ''}` : 'friends-heading-cordova';
-
     return (
       <span>
         {displayFriendsTabs() ? (
