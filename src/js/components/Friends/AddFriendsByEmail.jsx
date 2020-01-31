@@ -54,10 +54,10 @@ class AddFriendsByEmail extends Component {
     FriendActions.friendInvitationsWaitingForVerification();
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.friendsToInvite !== nextState.friendsToInvite) return true;
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   if (this.state.friendsToInvite !== nextState.friendsToInvite) return true;
+  //   return false;
+  // }
 
   componentWillUnmount () {
     restoreStylesAfterCordovaKeyboard('AddFriendsByEmail');
