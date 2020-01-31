@@ -13,6 +13,7 @@ import FriendStore from '../../stores/FriendStore';
 import FriendInvitationOnboardingIntro from '../../components/Intro/FriendInvitationOnboardingIntro';
 import FriendInvitationOnboardingValues from '../../components/Intro/FriendInvitationOnboardingValues';
 import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 
 class FriendInvitationOnboarding extends Component {
@@ -47,11 +48,9 @@ class FriendInvitationOnboarding extends Component {
   componentDidMount () {
     // this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { invitationSecretKey } = this.props.params;
     // console.log('FriendInvitationOnboarding, componentDidMount, this.props.params.invitation_secret_key: ', invitationSecretKey);
-    // const hostname = AppStore.getHostname();
-    // if (hostname && hostname !== '') {
-    // }
     if (invitationSecretKey) {
       this.friendInvitationInformation(invitationSecretKey);
     }
@@ -61,6 +60,7 @@ class FriendInvitationOnboarding extends Component {
     document.body.style.backgroundColor = null;
     document.body.className = '';
     this.friendStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onFriendStoreChange () {
@@ -79,7 +79,15 @@ class FriendInvitationOnboarding extends Component {
     }
   }
 
+  onVoterStoreChange () {
+    this.onFriendStoreChange();
+  }
+
   nextSlide () {
+    const { invitationSecretKey } = this.props.params;
+    if (invitationSecretKey) {
+      this.friendInvitationInformation(invitationSecretKey);
+    }
     this.slider.current.slickNext();
   }
 
