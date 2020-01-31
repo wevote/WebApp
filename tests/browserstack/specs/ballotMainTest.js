@@ -116,9 +116,13 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // Click on ballot filter badges at top of page
     await simpleClick('ballotBadge-State');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('ballotBadge-Measure');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('ballotBadge-Local');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('ballotBadge-Federal');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Visit Measure Page
@@ -131,7 +135,10 @@ describe('Basic cross-platform We Vote test',  () => {
       document.getElementById(id).click();
     }, voteYesButtonId); // Click on Voting Yes
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('profileCloseItemActionBar'); // Click on Close Pop Up of Voting Yes
+    // Click on Close Pop Up of Voting Yes
+    // The very first time a Yes or No option is clicked, we open a popover that explains Friends vs. Public
+    // If you try to close this popover with "profileCloseItemActionBar" later in the script, it won't be able to find this id
+    await simpleClick('profileCloseItemActionBar');
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -156,10 +163,12 @@ describe('Basic cross-platform We Vote test',  () => {
     browser.execute((id) => {
       document.getElementById(id).click();
     }, voteNoButton); // Click on Voting No again (to unset)
+
+
     // Open position display filters
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('filterBaseFilters');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick('filterBaseFilters');
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // Scroll down the page so the sticky header appears
     // scrollThroughPage();
     // const stickyYesButton = 'itemActionBarYesButton-measureStickyHeader-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
@@ -180,6 +189,10 @@ describe('Basic cross-platform We Vote test',  () => {
     // browser.execute((id) => {
     // document.getElementById(id).click();
     // }, stickyNoButton); // Click on Sticky Header No
+
+    // Go back to ballot
+    await simpleClick('backToLinkTabHeader');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Visit the candidate page for Maria Cantwell
@@ -203,7 +216,7 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Visit the candidate Maria Cantwell for choose, oppose, comment and save
     if (isDesktopScreenSize) {
-      await simpleClick('officeItemCompressedCandidateImageAndName-wv02cand53902'); // Clicks the candidate Maria Cantwell
+      // await simpleClick('officeItemCompressedCandidateImageAndName-wv02cand53902'); // Clicks the candidate Maria Cantwell
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       const chooseButtonId = 'itemActionBarSupportButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
       browser.execute((id) => {
@@ -252,8 +265,8 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('itemActionBarSupportButton-candidateItem-mobileIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-mobileVersion-wv02cand53902'); // Choose the candidate
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('profileCloseItemActionBar');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // await simpleClick('profileCloseItemActionBar');
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('itemActionBarOpposeButton-candidateItem-mobileIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-mobileVersion-wv02cand53902'); // oppose the candidate
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
