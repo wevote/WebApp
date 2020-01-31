@@ -155,7 +155,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/friends" component={Friends} />
       <Route path="/friends/:tabItem" component={Friends} />
       <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
-      <Route path="/wevoteintro/newfriend/:organizationWeVoteId" component={FriendInvitationOnboarding} />
+      <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendInvitationOnboarding} />
 
       {/* More Menu Pages */}
       <Route path="/more/about" component={isNotWeVoteMarketingSite ? BallotRedirect : About} />

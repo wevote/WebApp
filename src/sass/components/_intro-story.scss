@@ -1,10 +1,10 @@
 .FriendInvitationTopHeader {
   font-size: 24px;
   font-weight: 600;
-  padding-top: 32px; // eslint-disable-line declaration-use-variable
+  padding-top: 6px; // eslint-disable-line declaration-use-variable
   padding-bottom: 0; // eslint-disable-line declaration-use-variable
-  @include breakpoints (mid-small) {
-    font-size: 22px;
+  @include breakpoints (max mid-small) {
+    font-size: 20px;
   }
 }
 
@@ -14,7 +14,7 @@
   font-weight: 600;
   padding-top: 32px; // eslint-disable-line declaration-use-variable
   padding-bottom: 16px; // eslint-disable-line declaration-use-variable
-  @include breakpoints(mid-small) {
+  @include breakpoints(max mid-small) {
     font-size: 24px;
   }
 }
@@ -25,7 +25,7 @@
   font-weight: 600;
   padding-top: 0; // eslint-disable-line declaration-use-variable
   padding-bottom: 16px; // eslint-disable-line declaration-use-variable
-  @include breakpoints(mid-small) {
+  @include breakpoints(max mid-small) {
     font-size: 16px;
   }
 }

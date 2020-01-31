@@ -122,6 +122,12 @@ export default {
       });
   },
 
+  friendInvitationInformation (invitationSecretKey) {
+    Dispatcher.loadEndpoint('friendInvitationInformation', {
+      invitation_secret_key: invitationSecretKey,
+    });
+  },
+
   friendInvitationByEmailVerify (invitationSecretKey) {
     Dispatcher.loadEndpoint('friendInvitationByEmailVerify', {
       invitation_secret_key: invitationSecretKey,

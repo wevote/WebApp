@@ -56,10 +56,10 @@ class IssueStore extends ReduceStore {
     };
   }
 
-  getAllIssues () {
+  getAllIssues (includeOrganizationsCount = false) {
     // List of all issue objects
     const allIssueKeys = Object.keys(this.getState().allCachedIssues);
-    return this.getIssuesFromListOfWeVoteIds(allIssueKeys);
+    return this.getIssuesFromListOfWeVoteIds(allIssueKeys, includeOrganizationsCount);
   }
 
   getIssuesVoterIsFollowing () {
@@ -195,16 +195,21 @@ class IssueStore extends ReduceStore {
     return this.getIssuesFromListOfWeVoteIds(issueWeVoteIdsInCommonBetweenOrganizationAndVoter);
   }
 
-  getIssuesFromListOfWeVoteIds (listOfIssueWeVoteIds) {
+  getIssuesFromListOfWeVoteIds (listOfIssueWeVoteIds, includeOrganizationsCount = false) {
     const { allCachedIssues } = this.getState();
     // console.log('getIssuesFromListOfWeVoteIds listOfIssueWeVoteIds: ', listOfIssueWeVoteIds);
     // make sure that listOfIssueWeVoteIds has unique values
     const uniqListOfIssueWeVoteIds = listOfIssueWeVoteIds.filter((value, index, self) => self.indexOf(value) === index);
 
     const issuesList = [];
+    let oneIssue;
     uniqListOfIssueWeVoteIds.forEach((issueWeVoteId) => {
       if (allCachedIssues[issueWeVoteId]) {
-        issuesList.push(allCachedIssues[issueWeVoteId]);
+        oneIssue = allCachedIssues[issueWeVoteId];
+        if (includeOrganizationsCount) {
+          oneIssue.organizations_under_this_issue_count = VoterGuideStore.getVoterGuidesForValue(issueWeVoteId).length;
+        }
+        issuesList.push(oneIssue);
       }
     });
     // console.log('getIssuesFromListOfWeVoteIds issuesList: ', issuesList);

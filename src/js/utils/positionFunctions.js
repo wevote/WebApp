@@ -266,7 +266,7 @@ export function sortCandidateList (newCandidateList) {
   sortedCandidateList = unsortedCandidateListModified;
   // Start by ordering by twitter_followers_count
   sortedCandidateList.sort((optionA, optionB) => optionB.twitter_followers_count - optionA.twitter_followers_count);
-  // Move candidates with the highest personal score to the top of the list
+  // Move candidates with the highest personalized score to the top of the list
   sortedCandidateList.sort((optionA, optionB) => optionB.voterNetworkScoreForCandidate - optionA.voterNetworkScoreForCandidate);
   // Move candidates supported by the voter to the top of list
   sortedCandidateList.sort((optionA, optionB) => (optionB.voterSupportsBallotItem ? 1 : 0) - (optionA.voterSupportsBallotItem ? 1 : 0));

@@ -83,7 +83,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   voterMergeTwoAccountsByInvitationKey = (invitationSecretKey) => {
     VoterActions.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
     historyPush({
-      pathname: '/ballot',
+      pathname: `/wevoteintro/newfriend/${invitationSecretKey}`,
       state: {
         message: 'You have successfully signed in.',
         message_type: 'success',
@@ -172,7 +172,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     } else if (invitationStatus.invitationSecretKeyBelongsToThisVoter) {
       // We don't need to do anything more except redirect to the email management page
       historyPush({
-        pathname: '/ballot',
+        pathname: `/wevoteintro/newfriend/${invitationSecretKey}`,
         state: {
           message: 'You have accepted your friend\'s invitation. See what your friends are supporting or opposing!',
           message_type: 'success',

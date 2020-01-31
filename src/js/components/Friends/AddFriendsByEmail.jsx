@@ -25,7 +25,7 @@ class AddFriendsByEmail extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      add_friends_message: 'Join me in preparing for this election.',
+      add_friends_message: 'Here’s how I’m figuring out this election.',
       friendsToInvite: [],
       friendFirstName: '',
       friendLastName: '',
@@ -371,7 +371,7 @@ class AddFriendsByEmail extends Component {
                             name="addFriendsMessage"
                             onChange={this.cacheAddFriendsByEmailMessage}
                             fullWidth
-                            placeholder="Join me in preparing for this election."
+                            placeholder="Here’s how I’m figuring out this election."
                           />
                         </>
                       ) : null

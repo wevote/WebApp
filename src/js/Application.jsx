@@ -161,7 +161,7 @@ class Application extends Component {
 
   onVoterStoreChange () {
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
-      console.log('Application, onVoterStoreChange');
+      // console.log('Application, onVoterStoreChange');
       const voterDeviceId = VoterStore.voterDeviceId();
       if (voterDeviceId && voterDeviceId !== '') {
         if (this.state.voter_initial_retrieve_needed) {
