@@ -179,7 +179,7 @@ class AppStore extends ReduceStore {
             hostname = webAppConfig.WE_VOTE_HOSTNAME;
           }
 
-          console.log('siteConfigurationRetrieve hostname:', hostname);
+          // console.log('siteConfigurationRetrieve hostname:', hostname);
           if (hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost') {
             onWeVoteRootUrl = true;
           } else if (stringContains('wevote.us', hostname)) {

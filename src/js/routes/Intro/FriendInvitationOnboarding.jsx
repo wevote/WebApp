@@ -8,6 +8,8 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import closeIcon from '../../../img/global/icons/x-close.png';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
+import FriendActions from '../../actions/FriendActions';
+import FriendStore from '../../stores/FriendStore';
 import FriendInvitationOnboardingIntro from '../../components/Intro/FriendInvitationOnboardingIntro';
 import FriendInvitationOnboardingValues from '../../components/Intro/FriendInvitationOnboardingValues';
 import { renderLog } from '../../utils/logging';
@@ -21,13 +23,15 @@ class FriendInvitationOnboarding extends Component {
 
   static propTypes = {
     classes: PropTypes.object,
+    params: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      // activeSlideBefore: 0,
+      activeSlideBefore: 0,
       activeSlideAfter: 0,
+      invitationMessage: '',
     };
 
     this.nextSlide = this.nextSlide.bind(this);
@@ -40,9 +44,39 @@ class FriendInvitationOnboarding extends Component {
     document.body.className = 'story-view';
   }
 
+  componentDidMount () {
+    // this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    const { invitationSecretKey } = this.props.params;
+    // console.log('FriendInvitationOnboarding, componentDidMount, this.props.params.invitation_secret_key: ', invitationSecretKey);
+    // const hostname = AppStore.getHostname();
+    // if (hostname && hostname !== '') {
+    // }
+    if (invitationSecretKey) {
+      this.friendInvitationInformation(invitationSecretKey);
+    }
+  }
+
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
     document.body.className = '';
+    this.friendStoreListener.remove();
+  }
+
+  onFriendStoreChange () {
+    const friendInvitationInformation = FriendStore.getFriendInvitationInformation();
+    if (friendInvitationInformation) {
+      const {
+        friendFirstName, friendLastName, friendImageUrlHttpsTiny, friendIssueWeVoteIdList, invitationMessage,
+      } = friendInvitationInformation;
+      this.setState({
+        friendFirstName,
+        friendLastName,
+        friendImageUrlHttpsTiny,
+        friendIssueWeVoteIdList,
+        invitationMessage,
+      });
+    }
   }
 
   nextSlide () {
@@ -67,10 +101,17 @@ class FriendInvitationOnboarding extends Component {
     return {};
   }
 
+  friendInvitationInformation (invitationSecretKey) {
+    FriendActions.friendInvitationInformation(invitationSecretKey);
+  }
+
   render () {
     renderLog('FriendInvitationOnboarding');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { activeSlideAfter } = this.state;
+    const {
+      activeSlideAfter, activeSlideBefore, friendFirstName, friendLastName,
+      friendImageUrlHttpsTiny, friendIssueWeVoteIdList, invitationMessage,
+    } = this.state;
 
     // These are settings for the react-slick slider
     const settings = {
@@ -82,24 +123,42 @@ class FriendInvitationOnboarding extends Component {
       swipe: true,
       accessibility: true,
       arrows: false,
-      // beforeChange: (current, next) => this.setState({ activeSlideBefore: next }),
+      beforeChange: (current, next) => this.setState({ activeSlideBefore: next }),
       afterChange: current => this.setState({ activeSlideAfter: current }),
     };
 
+    const showMyBallotNextTextOnThisSlide = 1;
+    // console.log('activeSlideBefore: ', activeSlideBefore, ', activeSlideAfter:', activeSlideAfter);
     return (
       <div>
-        <Helmet title="Welcome to We Vote" />
+        <Helmet title="Invitation Accepted!" />
         <div className="intro-story container-fluid well u-inset--md" style={this.overrideMediaQueryForAndroidTablets()}>
           <span onClick={FriendInvitationOnboarding.goToBallotLink}>
             <img
               src={cordovaDot(closeIcon)}
-              className={isWebApp() ? 'x-close' : 'x-close x-close__cordova'}
+              className={`x-close x-close__black ${isWebApp() ? '' : 'x-close__cordova'}`}
               alt="close"
             />
           </span>
           <Slider {...settings} dotsClass="slick-dots intro-modal__gray-dots" ref={this.slider}>
-            <div key={1}><FriendInvitationOnboardingIntro nextSlide={this.nextSlide} /></div>
-            <div key={2}><FriendInvitationOnboardingValues nextSlide={this.nextSlide} /></div>
+            <div key={1}>
+              <FriendInvitationOnboardingIntro
+                friendFirstName={friendFirstName}
+                friendLastName={friendLastName}
+                friendImageUrlHttpsTiny={friendImageUrlHttpsTiny}
+                invitationMessage={invitationMessage}
+                nextSlide={this.nextSlide}
+              />
+            </div>
+            <div key={2}>
+              <FriendInvitationOnboardingValues
+                friendFirstName={friendFirstName}
+                friendLastName={friendLastName}
+                friendImageUrlHttpsTiny={friendImageUrlHttpsTiny}
+                friendIssueWeVoteIdList={friendIssueWeVoteIdList}
+                nextSlide={this.nextSlide}
+              />
+            </div>
           </Slider>
           <FooterBarWrapper style={{ height: `${cordovaFooterHeight()}` }}>
             <TwoButtonsWrapper>
@@ -123,9 +182,9 @@ class FriendInvitationOnboarding extends Component {
                   id="howItWorksNext"
                   variant="contained"
                   classes={{ root: classes.nextButtonRoot }}
-                  onClick={this.nextSlide}
+                  onClick={activeSlideBefore === showMyBallotNextTextOnThisSlide ? FriendInvitationOnboarding.goToBallotLink : this.nextSlide}
                 >
-                  Next
+                  {activeSlideBefore === showMyBallotNextTextOnThisSlide ? 'My Ballot >' : 'Next'}
                 </Button>
               </NextButtonWrapper>
             </TwoButtonsWrapper>

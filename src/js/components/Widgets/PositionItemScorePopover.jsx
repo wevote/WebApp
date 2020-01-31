@@ -266,12 +266,12 @@ class PositionItemScorePopover extends Component {
                   <OrganizationAddsToYourPersonalScoreExplanation>
                     {organizationSupports && (
                       <span>
-                        This opinion adds +1 to your personal score because:
+                        This opinion adds +1 to your personalized score because:
                       </span>
                     )}
                     {organizationOpposes && (
                       <span>
-                        This opinion subtracts -1 from your personal score because:
+                        This opinion subtracts -1 from your personalized score because:
                       </span>
                     )}
                   </OrganizationAddsToYourPersonalScoreExplanation>
@@ -325,7 +325,7 @@ class PositionItemScorePopover extends Component {
                     {' '}
                     {organizationSupports && (
                       <span>
-                        to add +1 to your personal score of
+                        to add +1 to your personalized score about
                         {' '}
                         {ballotItemDisplayName}
                         .
@@ -333,7 +333,7 @@ class PositionItemScorePopover extends Component {
                     )}
                     {organizationOpposes && (
                       <span>
-                        to subtract -1 from your personal score of
+                        to subtract -1 from your personalized score about
                         {' '}
                         {ballotItemDisplayName}
                         .

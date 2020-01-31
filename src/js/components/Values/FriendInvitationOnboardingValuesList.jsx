@@ -1,81 +1,98 @@
 import React, { Component } from 'react';
-import filter from 'lodash-es/filter';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import DelayedLoad from '../Widgets/DelayedLoad';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
-import { renderLog } from '../../utils/logging';
 import IssueCard from './IssueCard';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import { renderLog } from '../../utils/logging';
+import { arrayContains } from '../../utils/textFormat';
 
 
 export default class FriendInvitationOnboardingValuesList extends Component {
   static propTypes = {
     displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
+    friendIssueWeVoteIdList: PropTypes.array,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      allIssues: [],
-      searchQuery: '',
+      allIssuesNoLean: [],
+      allLeftIssues: [],
+      allRightIssues: [],
     };
   }
 
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onIssueStoreChange.bind(this));
     if (!IssueStore.issueDescriptionsRetrieveCalled()) {
       IssueActions.issueDescriptionsRetrieve();
-      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
     }
     IssueActions.issuesFollowedRetrieve();
-
-    const allIssues = IssueStore.getAllIssues();
-    // console.log('allIssues:', allIssues);
-    this.setState({
-      allIssues,
-    });
+    this.onIssueStoreChange();
   }
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   onIssueStoreChange () {
-    const allIssues = IssueStore.getAllIssues();
-    // console.log('allIssues:', allIssues);
+    const { displayOnlyIssuesNotFollowedByVoter, friendIssueWeVoteIdList } = this.props;
+    const includeOrganizationsCount = true;
+    const allIssuesRaw = IssueStore.getAllIssues(includeOrganizationsCount);
+    // console.log('allIssuesRaw:', allIssuesRaw);
+    let allIssuesForDisplay = [];
+    if (allIssuesRaw) {
+      if (displayOnlyIssuesNotFollowedByVoter) {
+        allIssuesForDisplay = allIssuesRaw.filter(issue => !IssueStore.isVoterFollowingThisIssue(issue.issue_we_vote_id));
+      } else {
+        allIssuesForDisplay = allIssuesRaw;
+      }
+    }
+    // Remove issues shown under friend who invited voter
+    if (friendIssueWeVoteIdList && friendIssueWeVoteIdList.length) {
+      allIssuesForDisplay = allIssuesForDisplay.filter(issue => !arrayContains(issue.issue_we_vote_id, friendIssueWeVoteIdList));
+    }
+    let oneIssue;
+    const allIssuesNoLean = [];
+    const allLeftIssues = [];
+    const allRightIssues = [];
+    for (let i = 0; i < allIssuesForDisplay.length; i++) {
+      oneIssue = allIssuesForDisplay[i];
+      if (oneIssue.considered_left) {
+        allLeftIssues.push(oneIssue);
+      } else if (oneIssue.considered_right) {
+        allRightIssues.push(oneIssue);
+      } else {
+        allIssuesNoLean.push(oneIssue);
+      }
+    }
+    allIssuesNoLean.sort((optionA, optionB) => (optionB.organizations_under_this_issue_count - optionA.organizations_under_this_issue_count));
+    allLeftIssues.sort((optionA, optionB) => (optionB.organizations_under_this_issue_count - optionA.organizations_under_this_issue_count));
+    allRightIssues.sort((optionA, optionB) => (optionB.organizations_under_this_issue_count - optionA.organizations_under_this_issue_count));
     this.setState({
-      allIssues,
+      allIssuesNoLean,
+      allLeftIssues,
+      allRightIssues,
     });
   }
 
   render () {
     renderLog('FriendInvitationOnboardingValuesList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { displayOnlyIssuesNotFollowedByVoter } = this.props;
-    const { allIssues, searchQuery } = this.state;
-    let issuesList = [];
-    if (allIssues) {
-      if (displayOnlyIssuesNotFollowedByVoter) {
-        issuesList = allIssues.filter(issue => !IssueStore.isVoterFollowingThisIssue(issue.issue_we_vote_id));
-      } else {
-        issuesList = allIssues;
-      }
-    }
+    const { allIssuesNoLean, allLeftIssues, allRightIssues } = this.state;
 
     // console.log('All issues:', issuesList);
 
-    if (searchQuery.length > 0) {
-      const searchQueryLowercase = searchQuery.toLowerCase();
-      issuesList = filter(issuesList,
-        oneIssue => oneIssue.issue_name.toLowerCase().includes(searchQueryLowercase) ||
-            oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase));
-    }
-
-    const issuesToShowBeforeDelayedLoad = 6;
+    const issuesToShowPerClassification = 2;
+    let totalIssuesRenderedCount = 0;
     let issuesRenderedCount = 0;
     let issueCardHtml = '';
-    const issuesListForDisplay = issuesList.map((issue) => {
+    const noLeanIssuesListForDisplay = allIssuesNoLean.map((issue) => {
       issuesRenderedCount += 1;
+      totalIssuesRenderedCount += 1;
       issueCardHtml = (
         <Column
           className="col col-12 col-md-6 u-stack--lg"
@@ -90,44 +107,83 @@ export default class FriendInvitationOnboardingValuesList extends Component {
           />
         </Column>
       );
-      if (issuesRenderedCount <= issuesToShowBeforeDelayedLoad) {
-        return issueCardHtml;
+      if (issuesRenderedCount > issuesToShowPerClassification) {
+        return null;
       } else {
-        // We create a delay after the first 6 issues are rendered, so the initial page load is a little faster
-        return (
-          <DelayedLoad
-            key={`delayed-issue-list-key-${issue.issue_we_vote_id}`}
-            showLoadingText={issuesRenderedCount === (issuesToShowBeforeDelayedLoad + 1)}
-            waitBeforeShow={1000}
-          >
-            {issueCardHtml}
-          </DelayedLoad>
-        );
+        return issueCardHtml;
+      }
+    });
+    issuesRenderedCount = 0;
+    const leftIssuesListForDisplay = allLeftIssues.map((issue) => {
+      issuesRenderedCount += 1;
+      totalIssuesRenderedCount += 1;
+      issueCardHtml = (
+        <Column
+          className="col col-12 col-md-6 u-stack--lg"
+          key={`column-issue-list-key-${issue.issue_we_vote_id}`}
+        >
+          <IssueCard
+            followToggleOn
+            hideAdvocatesCount
+            issue={issue}
+            issueImageSize="SMALL"
+            key={`issue-list-key-${issue.issue_we_vote_id}`}
+          />
+        </Column>
+      );
+      if (issuesRenderedCount > issuesToShowPerClassification) {
+        return null;
+      } else {
+        return issueCardHtml;
+      }
+    });
+    issuesRenderedCount = 0;
+    const rightIssuesListForDisplay = allRightIssues.map((issue) => {
+      issuesRenderedCount += 1;
+      totalIssuesRenderedCount += 1;
+      issueCardHtml = (
+        <Column
+          className="col col-12 col-md-6 u-stack--lg"
+          key={`column-issue-list-key-${issue.issue_we_vote_id}`}
+        >
+          <IssueCard
+            followToggleOn
+            hideAdvocatesCount
+            issue={issue}
+            issueImageSize="SMALL"
+            key={`issue-list-key-${issue.issue_we_vote_id}`}
+          />
+        </Column>
+      );
+      if (issuesRenderedCount > issuesToShowPerClassification) {
+        return null;
+      } else {
+        return issueCardHtml;
       }
     });
 
     return (
-      <>
-        { issuesList && issuesList.length ? (
+      <Wrapper>
+        { totalIssuesRenderedCount ? (
           <Row className="row">
-            {issuesListForDisplay}
+            {noLeanIssuesListForDisplay}
+            {leftIssuesListForDisplay}
+            {rightIssuesListForDisplay}
           </Row>
         ) :
           null
         }
-      </>
+      </Wrapper>
     );
   }
 }
 
+const Wrapper = styled.div`
+  margin-bottom: 64px;
+`;
+
 const Row = styled.div`
-  // margin-left: -16px;
-  // margin-right: -16px;
-  // width: calc(100% + 32px);
 `;
 
 const Column = styled.div`
-  @media (max-width: 768px) {
-    margin-bottom: 24px !important;
-  }
 `;

@@ -535,7 +535,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         positionsPopover = (
           <PopoverWrapper>
             <PopoverHeader>
-              <PopoverTitleText>Your Personal Score</PopoverTitleText>
+              <PopoverTitleText>Your Personalized Score</PopoverTitleText>
             </PopoverHeader>
             <PopoverBody>
               <ItemActionBarWrapper>
@@ -548,7 +548,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   shareButtonHide
                 />
               </ItemActionBarWrapper>
-              Your personal score of
+              Your personalized score about
               {' '}
               <strong>{ballotItemDisplayName}</strong>
               {' '}
@@ -575,7 +575,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       positionsPopover = (
         <PopoverWrapper>
           <PopoverHeader>
-            <PopoverTitleText>Your Personal Score</PopoverTitleText>
+            <PopoverTitleText>Your Personalized Score</PopoverTitleText>
           </PopoverHeader>
           <PopoverBody>
             <ItemActionBarWrapper>
@@ -588,7 +588,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 shareButtonHide
               />
             </ItemActionBarWrapper>
-            Your personal score of
+            Your personalized score about
             {' '}
             <strong>{ballotItemDisplayName}</strong>
             {' '}
@@ -702,7 +702,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               />
             </ItemActionBarWrapper>
             <div>
-              Follow opinions to build your personal score of
+              Follow opinions to build your personalized score about
               {' '}
               <strong>{ballotItemDisplayName ? ` ${ballotItemDisplayName}` : ''}</strong>
               .
@@ -778,7 +778,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           </StickyPopover>
         )}
 
-        {/* Gray overview display. Show if no personal score, or voter position */}
+        {/* Gray overview display. Show if no personalized score, or voter position */}
         {(!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem) && (
           <StickyPopover
             delay={{ show: 700, hide: 100 }}
@@ -834,7 +834,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           </StickyPopover>
         )}
 
-        {/* Show green or red score square. A personal score exists, and the voter hasn't chosen to support or oppose yet. */}
+        {/* Show green or red score square. A personalized score exists, and the voter hasn't chosen to support or oppose yet. */}
         { showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem ? (
           <StickyPopover
             delay={{ show: 700, hide: 100 }}

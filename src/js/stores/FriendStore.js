@@ -76,6 +76,10 @@ class FriendStore extends ReduceStore {
     return errorMessageToShowVoter;
   }
 
+  getFriendInvitationInformation () {
+    return this.getState().friendInvitationInformation;
+  }
+
   getInvitationStatus () {
     return this.getState().invitationStatus;
   }
@@ -223,6 +227,26 @@ class FriendStore extends ReduceStore {
         FriendActions.friendInvitationsSentByMe();
         return {
           ...state,
+        };
+
+      case 'friendInvitationInformation':
+        if (action.res.voter_device_id === '') {
+          // The first time it was called there was no voter_device_id, so we want to call it again
+          console.log('FriendStore, friendInvitationInformation, voter_device_id missing, invitation_secret_key:', action.res.invitation_secret_key);
+          FriendActions.friendInvitationInformation(action.res.invitation_secret_key);
+        }
+        return {
+          ...state,
+          friendInvitationInformation: {
+            friendFirstName: action.res.friend_first_name,
+            friendLastName: action.res.friend_last_name,
+            friendImageUrlHttpsTiny: action.res.friend_image_url_https_tiny,
+            friendIssueWeVoteIdList: action.res.friend_issue_we_vote_id_list,
+            friendOrganizationWeVoteId: action.res.friend_organization_we_vote_id,
+            friendWeVoteId: action.res.friend_we_vote_id,
+            invitationFound: action.res.invitation_found,
+            invitationMessage: action.res.invitation_message,
+          },
         };
 
       case 'friendInvitationByEmailVerify':
