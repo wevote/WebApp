@@ -53,6 +53,9 @@ class CandidateItem extends Component {
       officeWeVoteId: '',
       politicalParty: '',
       twitterFollowersCount: '',
+      voterOpposesBallotItem: false,
+      voterSupportsBallotItem: false,
+      voterTextStatement: '',
     };
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
@@ -91,6 +94,7 @@ class CandidateItem extends Component {
       const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
       const voterOpposesBallotItem = SupportStore.getVoterOpposesByBallotItemWeVoteId(candidateWeVoteId);
       const voterSupportsBallotItem = SupportStore.getVoterSupportsByBallotItemWeVoteId(candidateWeVoteId);
+      const voterTextStatement = SupportStore.getVoterTextStatementByBallotItemWeVoteId(candidateWeVoteId);
       this.setState({
         ballotItemDisplayName: candidate.ballot_item_display_name,
         // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
@@ -103,6 +107,7 @@ class CandidateItem extends Component {
         twitterFollowersCount: candidate.twitter_followers_count,
         voterOpposesBallotItem,
         voterSupportsBallotItem,
+        voterTextStatement,
       });
     }
   }
@@ -148,6 +153,9 @@ class CandidateItem extends Component {
       return true;
     }
     if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
+      return true;
+    }
+    if (this.state.voterTextStatement !== nextState.voterTextStatement) {
       return true;
     }
     // console.log('CandidateItem shouldComponentUpdate FALSE');
@@ -341,10 +349,14 @@ class CandidateItem extends Component {
               handleLeaveCandidateCard={this.handleLeave}
               handleEnterCandidateCard={this.handleEnter}
               ballotItemWeVoteId={candidateWeVoteId}
+              uniqueExternalId="CandidateItem-Desktop"
             />
           </BallotItemSupportOpposeCountDisplayWrapper>
           <BallotItemSupportOpposeCountDisplayWrapper className="u-show-mobile-tablet">
-            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
+            <BallotItemSupportOpposeCountDisplay
+              ballotItemWeVoteId={candidateWeVoteId}
+              uniqueExternalId="CandidateItem-MobileTablet"
+            />
           </BallotItemSupportOpposeCountDisplayWrapper>
           {' '}
         </CandidateWrapper>
@@ -384,91 +396,88 @@ class CandidateItem extends Component {
     } = this.props;
     const {
       ballotItemDisplayName, largeAreaHoverColorOnNow,
-      largeAreaHoverLinkOnNow, voterOpposesBallotItem, voterSupportsBallotItem,
+      largeAreaHoverLinkOnNow, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement,
     } = this.state;
     return (
       <div>
         <div className="card-main__actions">
           <div>
-            {/* Issues related to this Candidate */}
-            <IssuesByBallotItemDisplayList
-              ballotItemDisplayName={ballotItemDisplayName}
-              ballotItemWeVoteId={candidateWeVoteId}
-              externalUniqueId={`candidateItem-${candidateWeVoteId}`}
-              placement="bottom"
-            />
-            {/* If there is a quote about the candidate, show that too. */}
-            {showTopCommentByBallotItem ? (
-              <div>
-                <div className="u-show-desktop">
-                  {linkToBallotItemPage && largeAreaHoverLinkOnNow && showHover ?
-                    (
-                      <div className="row">
-                        <div className={`card__blue ${(voterSupportsBallotItem || voterOpposesBallotItem) ? 'col col-6' : 'col col-9'}`}>
-                          <Link to={this.getCandidateLink()} className="card-main__no-underline">
-                            {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
-                          </Link>
-                        </div>
-                        <div className={`${(voterSupportsBallotItem || voterOpposesBallotItem) ? 'col col-6' : 'col col-3'}`}>
-                          <ItemActionBar
-                            ballotItemWeVoteId={candidateWeVoteId}
-                            buttonsOnly
-                            className="u-float-right"
-                            commentButtonHide
-                            externalUniqueId={`candidateItem-ItemActionBar-${localUniqueId}`}
-                            shareButtonHide
-                            type="CANDIDATE"
-                          />
-                        </div>
-                      </div>
-                    ) :
-                    (
-                      <div
-                        className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? (
-                          'card__blue'
-                        ) : (
-                          ''
-                        )}
-                      >
-                        {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
-                      </div>
-                    )
-                  }
-                </div>
-                <div className="u-show-mobile-tablet">
-                  <Link to={this.getCandidateLink()} className="card-main__no-underline">
-                    {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <span>
-                {(candidateText && candidateText.length) && (
-                  <div
-                    className={`u-stack--xs ${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
-                  >
-                    <div className="card-main__description">
-                      <ReadMore
-                        textToDisplay={candidateText}
-                        numberOfLines={2}
-                      />
-                    </div>
-                  </div>
-                )}
-              </span>
-            )}
-            <div>
-              {hideBallotItemSupportOpposeComment ?
-                null : (
-                  <BallotItemSupportOpposeComment
-                    ballotItemWeVoteId={candidateWeVoteId}
-                    externalUniqueId={`candidateItem-${localUniqueId}`}
-                    showPositionStatementActionBar={showPositionStatementActionBar}
-                  />
-                )
-              }
-            </div>
+            {hideBallotItemSupportOpposeComment ?
+              null : (
+                <BallotItemSupportOpposeComment
+                  ballotItemWeVoteId={candidateWeVoteId}
+                  externalUniqueId={`candidateItem-${localUniqueId}`}
+                  showPositionStatementActionBar={showPositionStatementActionBar}
+                />
+              )
+            }
           </div>
+          {/* If there is a quote about the candidate, show that here. */}
+          {showTopCommentByBallotItem ? (
+            <div>
+              <div className="u-show-desktop">
+                {linkToBallotItemPage && largeAreaHoverLinkOnNow && showHover ?
+                  (
+                    <div className="row">
+                      <div className={`card__blue ${(voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement) ? 'col col-6' : 'col col-9'}`}>
+                        <Link to={this.getCandidateLink()} className="card-main__no-underline">
+                          {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
+                        </Link>
+                      </div>
+                      <div className={`${(voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement) ? 'col col-6' : 'col col-3'}`}>
+                        <ItemActionBar
+                          ballotItemWeVoteId={candidateWeVoteId}
+                          buttonsOnly
+                          className="u-float-right"
+                          commentButtonHide
+                          externalUniqueId={`candidateItem-ItemActionBar-${localUniqueId}`}
+                          shareButtonHide
+                        />
+                      </div>
+                    </div>
+                  ) :
+                  (
+                    <div
+                      className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? (
+                        'card__blue'
+                      ) : (
+                        ''
+                      )}
+                    >
+                      {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
+                    </div>
+                  )
+                }
+              </div>
+              <div className="u-show-mobile-tablet">
+                <Link to={this.getCandidateLink()} className="card-main__no-underline">
+                  {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <span>
+              {(candidateText && candidateText.length) && (
+                <div
+                  className={`u-stack--xs ${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
+                >
+                  <div className="card-main__description">
+                    <ReadMore
+                      textToDisplay={candidateText}
+                      numberOfLines={2}
+                    />
+                  </div>
+                </div>
+              )}
+            </span>
+          )}
+          {/* Issues related to this Candidate */}
+          <IssuesByBallotItemDisplayList
+            ballotItemDisplayName={ballotItemDisplayName}
+            ballotItemWeVoteId={candidateWeVoteId}
+            externalUniqueId={`candidateItem-${candidateWeVoteId}`}
+            placement="bottom"
+          />
         </div>
         {hideShowMoreFooter ?
           null :

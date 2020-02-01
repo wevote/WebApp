@@ -47,11 +47,7 @@ class FriendShareList extends Component {
     return (
       <FormControl component="fieldset" className={classes.formControl}>
         <FormGroup className={classes.formGroup}>
-          {this.props.list.map((item, index) => {
-            // console.log(item);
-
-            // return <FriendsShareListItem {...item} />;
-
+          {this.props.list.map((item, index) => { // eslint-disable-line arrow-body-style
             return (
               <FormControlLabel
                 control={<Checkbox color="primary" checked={this.state[index]} onChange={handleChange(index, item)} value={index} />}
@@ -63,6 +59,7 @@ class FriendShareList extends Component {
         </FormGroup>
         <br />
         <br />
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="message"><strong>Add Personal Message</strong></label>
         <textarea name="message" id="message" className="full-width" rows="5" />
         <br />

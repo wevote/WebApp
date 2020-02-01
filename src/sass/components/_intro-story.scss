@@ -1,14 +1,46 @@
+.FriendInvitationTopHeader {
+  font-size: 24px;
+  font-weight: 600;
+  padding-top: 6px; // eslint-disable-line declaration-use-variable
+  padding-bottom: 0; // eslint-disable-line declaration-use-variable
+  @include breakpoints (max mid-small) {
+    font-size: 20px;
+  }
+}
+
+.FriendInvitationIntroHeader {
+  color: $brand-blue;
+  font-size: 24px;
+  font-weight: 600;
+  padding-top: 32px; // eslint-disable-line declaration-use-variable
+  padding-bottom: 16px; // eslint-disable-line declaration-use-variable
+  @include breakpoints(max mid-small) {
+    font-size: 24px;
+  }
+}
+
+.FriendInvitationValuesHeader {
+  color: $brand-blue;
+  font-size: 18px;
+  font-weight: 600;
+  padding-top: 0; // eslint-disable-line declaration-use-variable
+  padding-bottom: 16px; // eslint-disable-line declaration-use-variable
+  @include breakpoints(max mid-small) {
+    font-size: 16px;
+  }
+}
+
 .intro-story {
   background-color: $white;
   padding: $space-none;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   max-width: 750px;
   color: $black;
   text-align: center;
   @include breakpoints (max large) {
-    height: 100vh;
-    max-height: 990px; // We set this so that when We Vote is in a frame, the modal isn't too long.
+    // height: 100vh;
+    // max-height: 990px; // We set this so that when We Vote is in a frame, the modal isn't too long.
   }
   &__h1 {
     font-weight: 800;
@@ -176,39 +208,12 @@
   }
 }
 
-.background--image2 {
-  @include breakpoints (small) {
-    background-image: url('/img/global/intro-story/slide2-lady-liberty-698x600.jpg');
-  }
-  @include breakpoints (large) {
-    background-image: url('/img/global/intro-story/slide2-lady-liberty-1000x600.jpg');
-  }
-}
-
 .background--image3 {
   @include breakpoints (small) {
     background-image: url('/img/global/intro-story/slide3-historic-place-698x600.jpg');
   }
   @include breakpoints (large) {
     background-image: url('/img/global/intro-story/slide3-historic-place-1000x600.jpg');
-  }
-}
-
-.background--image4 {
-  @include breakpoints (small) {
-    background-image: url('/img/global/intro-story/slide4-working-together-698x600.jpg');
-  }
-  @include breakpoints (large) {
-    background-image: url('/img/global/intro-story/slide4-working-together-1000x600.jpg');
-  }
-}
-
-.background--image5 {
-  @include breakpoints (small) {
-    background-image: url('/img/global/intro-story/slide5-flagpole-698x600.jpg');
-  }
-  @include breakpoints (large) {
-    background-image: url('/img/global/intro-story/slide5-flagpole-1000x600.jpg');
   }
 }
 

@@ -16,6 +16,7 @@ class IssueCard extends Component {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
     followToggleOn: PropTypes.bool,
+    hideAdvocatesCount: PropTypes.bool,
     includeLinkToIssue: PropTypes.bool,
     issue: PropTypes.object.isRequired,
     issueImageSize: PropTypes.string,
@@ -142,7 +143,7 @@ class IssueCard extends Component {
     }
 
     const { issueWeVoteId, ballotItemWeVoteId } = this.state;
-    const { turnOffIssueImage, includeLinkToIssue, followToggleOn, turnOffDescription, currentBallotIdInUrl, urlWithoutHash } = this.props;
+    const { currentBallotIdInUrl, followToggleOn, hideAdvocatesCount, includeLinkToIssue, turnOffDescription, turnOffIssueImage, urlWithoutHash } = this.props;
     return (
       <Wrapper
         key={`issue-card-${issueWeVoteId}`}
@@ -165,8 +166,7 @@ class IssueCard extends Component {
                   </span>
                 )}
               </span>
-            )
-            }
+            )}
           </div>
           <>
             {includeLinkToIssue ? (
@@ -175,17 +175,21 @@ class IssueCard extends Component {
               >
                 <IssueName>
                   {`${issueDisplayName} `}
-                  <IssueAdvocatesCount>
-                    {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
-                  </IssueAdvocatesCount>
+                  {!hideAdvocatesCount && (
+                    <IssueAdvocatesCount>
+                      {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
+                    </IssueAdvocatesCount>
+                  )}
                 </IssueName>
               </Link>
             ) : (
               <IssueName>
                 {`${issueDisplayName} `}
-                <IssueAdvocatesCount>
-                  {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
-                </IssueAdvocatesCount>
+                {!hideAdvocatesCount && (
+                  <IssueAdvocatesCount>
+                    {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
+                  </IssueAdvocatesCount>
+                )}
               </IssueName>
             )}
           </>
@@ -204,26 +208,13 @@ class IssueCard extends Component {
           }
         </Flex>
         { !turnOffDescription && !this.props.condensed && (
-        <Description>
-            { includeLinkToIssue ? (
-              <Link to={this.getIssueLink}
-                      className="u-no-underline"
-              >
-                <ReadMore
-                  textToDisplay={issueDescription}
-                  numberOfLines={numberOfLines}
-                />
-              </Link>
-            ) : (
-              <ReadMore
-                textToDisplay={issueDescription}
-                numberOfLines={numberOfLines}
-              />
-            )
-              }
-        </Description>
-        )
-        }
+          <Description>
+            <ReadMore
+              textToDisplay={issueDescription}
+              numberOfLines={numberOfLines}
+            />
+          </Description>
+        )}
       </Wrapper>
     );
   }
@@ -236,7 +227,9 @@ const Wrapper = styled.div`
   box-shadow: ${props => (props.condensed ? 'none !important' : null)};
   padding: ${props => (props.condensed ? '16px 12px' : null)};
   height: ${props => (props.condensed ? 'fit-content' : null)};
-  margin: 0px 16px;
+  @media (max-width: 479px) {
+    margin: 0 -16px;
+  }
 `;
 
 const IssueName = styled.h3`

@@ -10,7 +10,7 @@ import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png
 import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
-import Footer from '../components/Welcome/Footer';
+import WelcomeFooter from '../components/Welcome/WelcomeFooter';
 import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
@@ -285,7 +285,7 @@ class WelcomeForOrganizations extends Component {
             <NetworkImage src={cordovaDot(vipLogo)} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }

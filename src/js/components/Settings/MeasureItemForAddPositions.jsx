@@ -229,10 +229,8 @@ class MeasureItemForAddPositions extends Component {
             buttonsOnly
             externalUniqueId={`measureItemForAddPositions-${ballotItemWeVoteId}`}
             shareButtonHide
-            // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
             togglePositionStatementFunction={this.togglePositionStatement}
             // transitioning={this.state.transitioning}
-            type="MEASURE"
           />
         </InfoRow>
         {commentDisplayDesktop}

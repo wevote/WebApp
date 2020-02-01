@@ -7,7 +7,9 @@ import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import Reply from '@material-ui/icons/Reply';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
+import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import ShareModalOption from './ShareModalOption';
 
 class BallotShareButtonFooter extends Component {
@@ -19,8 +21,9 @@ class BallotShareButtonFooter extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      open: false,
       anchorEl: null,
+      hideBallotShareButtonFooter: false,
+      open: false,
       step2: false,
     };
     this.handleClick = this.handleClick.bind(this);
@@ -28,11 +31,27 @@ class BallotShareButtonFooter extends Component {
     this.toggleStep2 = this.toggleStep2.bind(this);
   }
 
-  shouldComponentUpdate (nextState) {
+  componentDidMount () {
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.props.pathname !== nextProps.pathname) return true;
+    if (this.state.anchorEl !== nextState.anchorEl) return true;
+    if (this.state.hideBallotShareButtonFooter !== nextState.hideBallotShareButtonFooter) return true;
     if (this.state.open !== nextState.open) return true;
     if (this.state.step2 !== nextState.step2) return true;
-    if (this.state.anchorEl !== nextState.anchorEl) return true;
     return false;
+  }
+
+  onAppStoreChange () {
+    const { open } = this.state;
+    const scrolledDown = AppStore.getScrolledDown();
+    const hideBallotShareButtonFooter = scrolledDown && !open;
+    // console.log('scrolledDown:', scrolledDown, ', hideBallotShareButtonFooter:', hideBallotShareButtonFooter);
+    this.setState({
+      hideBallotShareButtonFooter,
+    });
   }
 
   handleClick (event) {
@@ -56,10 +75,17 @@ class BallotShareButtonFooter extends Component {
   }
 
   render () {
-    const { classes } = this.props;
+    const { classes, pathname } = this.props;
+    const { hideBallotShareButtonFooter } = this.state;
+    const { showFooterBar } = getApplicationViewBooleans(pathname);
+
+    // Hide if scrolled down the page
+    if (hideBallotShareButtonFooter) {
+      return null;
+    }
 
     return (
-      <Wrapper pinToBottom={this.props.pathname.toLowerCase().startsWith('/candidate') || this.props.pathname.toLowerCase().startsWith('/measure')}>
+      <Wrapper pinToBottom={!showFooterBar}>
         <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="contained" color="primary">
           <Icon>
             <Reply

@@ -33,7 +33,8 @@ export default class Header extends Component {
     window.addEventListener('resize', this.handleResize);
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.props.pathname !== nextProps.pathname) return true;
     if (this.state.windowWidth !== nextState.windowWidth) return true;
     return false;
   }

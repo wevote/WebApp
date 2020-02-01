@@ -107,6 +107,12 @@ class Ballot extends Component {
   componentDidMount () {
     const ballotBaseUrl = '/ballot';
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    // We need a ballotStoreListener here because we want the ballot to display before positions are received
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     this.setState({
       componentDidMountFinished: true,
@@ -195,11 +201,23 @@ class Ballot extends Component {
 
     // console.log('Ballot, googleCivicElectionId: ', googleCivicElectionId, ', ballotLocationShortcut: ', ballotLocationShortcut, 'ballotReturnedWeVoteId: ', ballotReturnedWeVoteId);
     // console.log('VoterStore.election_id: ', VoterStore.electionId());
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+    }
+    IssueActions.issuesFollowedRetrieve();
     if (googleCivicElectionId || ballotLocationShortcut || ballotReturnedWeVoteId) {
-      // console.log('CALLING IssueActions.issuesRetrieveForElection');
-
-      if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-        IssueActions.issuesRetrieveForElection(googleCivicElectionId, ballotLocationShortcut, ballotReturnedWeVoteId);
+      // console.log('CALLING IssueActions.issuesUnderBallotItemsRetrieve');
+      let callIssuesUnderBallotItemRetrieve = true;
+      if (googleCivicElectionId) {
+        // If we have a value for googleCivicElectionId, then prevent a calling issuesUnderBallotItemsRetrieve if we already have the data
+        if (IssueStore.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId)) {
+          callIssuesUnderBallotItemRetrieve = false;
+        }
+      }
+      if (callIssuesUnderBallotItemRetrieve) {
+        IssueActions.issuesUnderBallotItemsRetrieve(googleCivicElectionId, ballotLocationShortcut, ballotReturnedWeVoteId);
+        // IssueActions.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
       }
 
       this.setState({
@@ -208,22 +226,16 @@ class Ballot extends Component {
         issuesRetrievedFromBallotLocationShortcut: ballotLocationShortcut,
       });
     }
-    // We need a ballotStoreListener here because we want the ballot to display before positions are received
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     // NOTE: voterAllPositionsRetrieve is also called in SupportStore when voterAddressRetrieve is received,
     // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
     SupportActions.voterAllPositionsRetrieve();
 
     BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
     this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     // Once a voter hits the ballot, they have gone through orientation
     cookies.setItem('ballot_has_been_visited', '1', Infinity, '/');
 
-    this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
     OrganizationActions.organizationsFollowedRetrieve();
     VoterActions.voterRetrieve(); // This is needed to update the interface status settings
@@ -398,12 +410,12 @@ class Ballot extends Component {
       mounted: false,
     });
 
+    this.appStoreListener.remove();
     this.ballotStoreListener.remove();
     this.electionListListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-    this.appStoreListener.remove();
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
@@ -531,14 +543,21 @@ class Ballot extends Component {
       }
     }
     if (ballotProperties) {
-      // If the incoming googleCivicElectionId, ballotReturnedWeVoteId, or ballotLocationShortcut are different, call issuesRetrieveForElection
+      // If the incoming googleCivicElectionId, ballotReturnedWeVoteId, or ballotLocationShortcut are different, call issuesUnderBallotItemsRetrieve
       if (parseInt(ballotProperties.google_civic_election_id, 10) !== issuesRetrievedFromGoogleCivicElectionId ||
           ballotProperties.ballot_returned_we_vote_id !== issuesRetrievedFromBallotReturnedWeVoteId ||
           ballotProperties.ballot_location_shortcut !== issuesRetrievedFromBallotLocationShortcut) {
-        // console.log('onBallotStoreChange, Calling issuesRetrieveForElection');
-
-        if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-          IssueActions.issuesRetrieveForElection(ballotProperties.google_civic_election_id, ballotProperties.ballot_location_shortcut, ballotProperties.ballot_returned_we_vote_id);
+        // console.log('onBallotStoreChange, Calling issuesUnderBallotItemsRetrieve');
+        let callIssuesUnderBallotItemRetrieve = true;
+        if (ballotProperties.google_civic_election_id) {
+          // If we only have a value for googleCivicElectionId, then prevent a calling issuesUnderBallotItemsRetrieve if we already have the data
+          if (IssueStore.issuesUnderBallotItemsRetrieveCalled(ballotProperties.google_civic_election_id)) {
+            callIssuesUnderBallotItemRetrieve = false;
+          }
+        }
+        if (callIssuesUnderBallotItemRetrieve) {
+          IssueActions.issuesUnderBallotItemsRetrieve(ballotProperties.google_civic_election_id, ballotProperties.ballot_location_shortcut, ballotProperties.ballot_returned_we_vote_id);
+          // IssueActions.issuesUnderBallotItemsRetrieveCalled(ballotProperties.google_civic_election_id); // This causes error: "Cannot dispatch in the middle of a dispatch"
         }
 
         this.setState({
@@ -978,7 +997,6 @@ class Ballot extends Component {
                                     const ballotChip = (
                                       <Chip variant="outlined"
                                         color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
-                                        onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                         className="btn_ballot_filter"
                                         classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
                                         label={oneTypeOfBallotItem}
@@ -986,7 +1004,12 @@ class Ballot extends Component {
                                     );
                                     if (isMobileScreenSize()) {
                                       return (
-                                        <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
+                                        <div
+                                          className="ballot_filter_btns"
+                                          id={`ballotBadge-${oneTypeOfBallotItem}`}
+                                          key={oneTypeOfBallotItem}
+                                          onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
+                                        >
                                           {ballotChip}
                                         </div>
                                       );

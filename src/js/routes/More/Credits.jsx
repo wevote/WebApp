@@ -9,7 +9,7 @@ import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import { organizationalDonors, teamOfVolunteers } from '../../components/More/people';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import Section from '../../components/Welcome/Section';
-import Footer from '../../components/Welcome/Footer';
+import WelcomeFooter from '../../components/Welcome/WelcomeFooter';
 
 class Credits extends Component {
   static getProps () {
@@ -33,6 +33,14 @@ class Credits extends Component {
               The companies on this list give us free or heavily discounted services (since we are a nonprofit), and
               {' '}
               the nonprofits overcome so many challenges to provide the data or other services we rely on.
+              {' '}
+              Please also see the
+              {' '}
+              <Link to="/more/attributions">
+                summary of open source software
+              </Link>
+              {' '}
+              We Vote uses.
             </span>
             <CompanyWrapper>
               { organizationalDonors.map(item => (
@@ -115,7 +123,7 @@ class Credits extends Component {
             (Our apologies if you should be on this list and are missing. Please contact Dale McGrew with corrections.)
           </CreditsDescriptionContainer>
         </Section>
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }

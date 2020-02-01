@@ -17,7 +17,7 @@ import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import Section from '../../components/Welcome/Section';
-import Footer from '../../components/Welcome/Footer';
+import WelcomeFooter from '../../components/Welcome/WelcomeFooter';
 import DonateActions from '../../actions/DonateActions';
 
 class Donate extends Component {
@@ -248,7 +248,7 @@ class Donate extends Component {
             <DonationListForm waitForWebhook={false} />
           </DonateDescriptionContainer>
         </Section>
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }

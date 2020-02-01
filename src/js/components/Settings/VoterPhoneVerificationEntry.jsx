@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Phone from '@material-ui/icons/Phone';
 import InputBase from '@material-ui/core/InputBase';
 import Alert from 'react-bootstrap/Alert';
-import { isCordova } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
@@ -17,6 +17,9 @@ import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import SettingsVerifySecretCode from './SettingsVerifySecretCode';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+
+/* global $ */
 
 class VoterPhoneVerificationEntry extends Component {
   static propTypes = {
@@ -48,13 +51,17 @@ class VoterPhoneVerificationEntry extends Component {
     this.onPhoneNumberChange = this.onPhoneNumberChange.bind(this);
     this.sendSignInCodeSMS = this.sendSignInCodeSMS.bind(this);
     this.closeVerifyModal = this.closeVerifyModal.bind(this);
+    if (isCordova()) {
+      signInModalGlobalState.set('textOrEmailSignInInProcess', true);
+    }
   }
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // Steve 11/14/19: commenting out the next line: it is expensive and causes trouble in SignInModal, and is almost certainly not needed
-    // VoterActions.voterRetrieve();
     VoterActions.voterSMSPhoneNumberRetrieve();
+    if (isCordova()) {
+      $('#enterVoterPhone').focus();
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -120,7 +127,15 @@ class VoterPhoneVerificationEntry extends Component {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { secretCodeVerified } = secretCodeVerificationStatus;
     // console.log('onVoterStoreChange smsPhoneNumberStatus:', smsPhoneNumberStatus);
-    if (secretCodeVerified) {
+    const voter = VoterStore.getVoter();
+    const { signed_in_with_email: signedInWithEmail, signed_in_facebook: signedInFacebook, signed_in_twitter: signedInTwitter } = voter;
+    // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithEmail: ${signedInWithEmail}`);
+    // TODO:  Why is there no "signed_in_with_sms"?  This is going to bite us someday, probably right here.
+    if (signedInWithEmail || signedInFacebook || signedInTwitter) {
+      // console.log('VoterEmailAddressEntry onVoterStoreChange signedInWithEmail so doing a hacky fallback close ===================');
+      this.closeSignInModal();
+      return;
+    } else if (secretCodeVerified) {
       this.setState({
         displayPhoneVerificationButton: false,
         showVerifyModal: false,
@@ -195,7 +210,7 @@ class VoterPhoneVerificationEntry extends Component {
   };
 
   closeSignInModal = () => {
-    // console.log('SettingsAccount localCloseSignInModal');
+    // console.log('VoterPhoneVerificationEntry closeSignInModal');
     if (this.props.closeSignInModal) {
       this.props.closeSignInModal();
     }
@@ -272,7 +287,23 @@ class VoterPhoneVerificationEntry extends Component {
       this.displayPhoneVerificationButton();
       this.turnOtherSignInOptionsOff();
     }
-  }
+  };
+
+  onAnimationEndCancel = () => {
+    // In Cordova when the virtual keyboard goes away, the on-click doesn't happen, but the onAnimation does.
+    // This allows us to react to the first click.
+    if (isCordova()) {
+      // console.log('VoterPhoneVerificationEntry onAnimationEndCancel calling onCancel');
+      this.onCancel();
+    }
+  };
+
+  onAnimationEndSend = () => {
+    if (isCordova()) {
+      // console.log('VoterPhoneVerificationEntry onAnimationEndSend calling sendSignInCodeSMS');
+      this.sendSignInCodeSMS();
+    }
+  };
 
   onKeyDown = (event) => {
     // console.log('onKeyDown, event.keyCode:', event.keyCode);
@@ -290,7 +321,7 @@ class VoterPhoneVerificationEntry extends Component {
       event.preventDefault();
       this.sendSignInCodeSMS(event);
     }
-  }
+  };
 
   reSendSignInCodeSMS = (voterSMSPhoneNumber) => {
     if (voterSMSPhoneNumber) {
@@ -305,15 +336,17 @@ class VoterPhoneVerificationEntry extends Component {
         voterSMSPhoneNumber,
       });
     }
-  }
+  };
 
   removeVoterSMSPhoneNumber (smsWeVoteId) {
     VoterActions.removeVoterSMSPhoneNumber(smsWeVoteId);
   }
 
   sendSignInCodeSMS (event) {
-    // console.log('sendSignInCodeSMS');
-    event.preventDefault();
+    console.log('sendSignInCodeSMS');
+    if (event) {
+      event.preventDefault();
+    }
     const { displayPhoneVerificationButton, voterSMSPhoneNumber, voterSMSPhoneNumberIsValid } = this.state;
     if (voterSMSPhoneNumberIsValid && displayPhoneVerificationButton) {
       VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
@@ -394,7 +427,8 @@ class VoterPhoneVerificationEntry extends Component {
       </span>
     );
 
-    let enterSMSPhoneNumberTitle = 'Sign in with SMS Phone Number';
+    // "SMS" is techno jargon
+    let enterSMSPhoneNumberTitle = isWebApp() ? 'Sign in with SMS Phone Number' : 'Text the sign in code to';
     if (this.state.voter && this.state.voter.is_signed_in) {
       enterSMSPhoneNumberTitle = 'Add New Phone Number';
     }
@@ -413,7 +447,7 @@ class VoterPhoneVerificationEntry extends Component {
           {' '}
         </div>
         <form className="form-inline">
-          <Paper className={classes.root} elevation={1}>
+          <Paper className={classes.root} elevation={1} id="paperWrapperPhone">
             <Phone />
             <InputBase
               className={classes.input}
@@ -434,7 +468,9 @@ class VoterPhoneVerificationEntry extends Component {
                   disabled={signInCodeSMSSentAndWaitingForResponse}
                   className={classes.cancelButton}
                   fullWidth
+                  id="cancelVoterPhoneSendSMS"
                   onClick={this.onCancel}
+                  onAnimationEnd={this.onAnimationEndCancel}
                   variant="outlined"
                 >
                   Cancel
@@ -447,6 +483,7 @@ class VoterPhoneVerificationEntry extends Component {
                   disabled={disablePhoneVerificationButton || signInCodeSMSSentAndWaitingForResponse}
                   id="voterPhoneSendSMS"
                   onClick={this.sendSignInCodeSMS}
+                  onAnimationEnd={() => this.onAnimationEndSend()}
                   variant="contained"
                 >
                   {signInCodeSMSSentAndWaitingForResponse ? 'Sending...' : (
@@ -560,11 +597,11 @@ class VoterPhoneVerificationEntry extends Component {
     });
 
     return (
-      <Wrapper>
+      <Wrapper isWeb={isWebApp()} id="voterPhoneEntryWrapper">
         {!hideExistingPhoneNumbers ? (
           <div>
             {verifiedSMSFound && !this.props.inModal ? (
-              <PhoneNumberSection>
+              <PhoneNumberSection isWeb={isWebApp()}>
                 <span className="h3">
                   Your Phone Number
                   {smsPhoneNumberListCount > 1 ? 's' : ''}
@@ -578,7 +615,7 @@ class VoterPhoneVerificationEntry extends Component {
               </span>
             )}
             {unverifiedSMSFound && !this.props.inModal && (
-              <PhoneNumberSection>
+              <PhoneNumberSection isWeb={isWebApp()}>
                 <span className="h3">Phone Numbers to Verify</span>
                 {toVerifySMSListHtml}
               </PhoneNumberSection>
@@ -589,7 +626,7 @@ class VoterPhoneVerificationEntry extends Component {
             {smsPhoneNumberStatusHtml}
           </span>
         )}
-        <PhoneNumberSection>
+        <PhoneNumberSection isWeb={isWebApp()}>
           {enterSMSPhoneNumberHtml}
         </PhoneNumberSection>
         {showVerifyModal && (
@@ -644,11 +681,11 @@ const CancelButtonContainer = styled.div`
 `;
 
 const Wrapper = styled.div`
-  margin-top: 32px;
+  margin-top: ${({ isWeb }) => (isWeb ? '32px;' : '0')};
 `;
 
 const PhoneNumberSection = styled.div`
-  margin-top: 18px;
+  margin-top: ${({ isWeb }) => (isWeb ? '18px;' : '0')};
 `;
 
 const Error = styled.div`

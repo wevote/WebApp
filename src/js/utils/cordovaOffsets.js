@@ -41,9 +41,9 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.welcomeWild:     return '10px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
-        case enums.moreHamburger:   return '10px';
+        case enums.moreHamburger:   return '57px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '16px';
+        case enums.settingsWild:    return '67px';
         case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
@@ -56,16 +56,16 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidateWild:   return '57px';
         case enums.ballotVote:      return isSignedIn ? '149px' : '148px';
         case enums.officeWild:      return '84px';
-        case enums.ballotSmHdrWild: return isSignedIn ? '161px' : '160px';
+        case enums.ballotSmHdrWild: return isSignedIn ? '144px' : '160px';
         case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '52px' : '36px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '40px';
         case enums.welcomeWild:     return '10px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
-        case enums.moreHamburger:   return '10px';
+        case enums.moreHamburger:   return '66px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '16px';
+        case enums.settingsWild:    return '76px';
         case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
@@ -109,9 +109,9 @@ export function cordovaScrollablePaneTopPadding () {
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '22px';
-        case enums.moreHamburger:   return '35px';
+        case enums.moreHamburger:   return '90px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '32px';
+        case enums.settingsWild:    return '89px';
         case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
@@ -193,11 +193,13 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '64px';
         case enums.candidateWild:   return '53px';
         case enums.ballotSmHdrWild: return '131px';
-        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '58px' : '42px';
+        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '25px' : '42px';
         case enums.ballotVote:      return isSignedIn ? '149px' : '145px';
         case enums.moreTerms:       return '32px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
+        case enums.moreHamburger:   return '43px';
+        case enums.settingsWild:    return '57px';
         default:                    return '0px';
       }
     } else if (sizeString === '--lg') {
@@ -211,6 +213,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreTerms:       return '32px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
+        case enums.settingsWild:    return '61px';
         default:                    return '0px';
       }
     } if (sizeString === '--md') {
@@ -225,6 +228,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreTerms:       return '32px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
+        case enums.settingsWild:    return '61px';
         default:                    return '0px';
       }
     } else if (sizeString === '--sm') {
@@ -233,13 +237,14 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '42px';
         case enums.candidate:       return '24px';
         case enums.candidateWild:   return '36px';
-        case enums.ballotSmHdrWild: return '138px';
+        case enums.ballotSmHdrWild: return '123px';
         case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '58px' : '42px';
         case enums.ballotVote:      return isSignedIn ? '131px' : '128px';
         case enums.moreTerms:       return '32px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
-        case enums.valuesList:
+        case enums.moreHamburger:   return '43px';
+        case enums.settingsWild:    return '55px';
         default:                    return '0px';
       }
     }
@@ -272,6 +277,10 @@ export function cordovaBallotFilterTopMargin () {
       }
       return '88px';
     } else if (isIPhone6p5in()) {
+      // friendsfallback 1/27 steve
+      // if (window.location.href.indexOf('/index.html#/friends/invite') > 0) {
+      //   return '0px';
+      // } else
       if (window.location.href.indexOf('/index.html#/friends') > 0) {
         return '79px';
       }
@@ -290,23 +299,29 @@ export function cordovaBallotFilterTopMargin () {
     if (sizeString === '--sm') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-12px';
+      } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '59px';
       }
-      return '32px';
+      return '47px';
     } else if (sizeString === '--md') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-58px';
+      } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '56px';
       }
-      return '32px';
+      return '49px';
     } else if (sizeString === '--lg') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-32px';
+      } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
+        return '61px';
       }
-      return '32px';
+      return '49px';
     } else if (sizeString === '--xl') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-10px';
       }
-      return '31px';
+      return '52px';
     }
   }
   return undefined;
@@ -352,7 +367,7 @@ export function cordovaContainerMainOverride () {
       return '0px';
     }
     if (sizeString === '--sm') {
-      return '0px';
+      return '16px';
     }
   }
   return undefined;
@@ -453,9 +468,16 @@ export function cordovaVoteMiniHeader () {
       };
     }
   } else if (isAndroid()) {
+    const sizeString = getAndroidSize();
+    if (sizeString === '--sm') {
+      return {
+        top: '53px',
+        height: '134px !important',
+      };
+    }
     return {
-      top: '44px',
-      height: '125px',
+      top: '53px',
+      height: '116px',
     };
   }
   return undefined;
@@ -569,7 +591,7 @@ export function cordovaSignInModalTopPosition (collapsed) {
     } else if (isIPhone5p5in()) {             //  6 Plus, 7 Plus and 8 Plus
       return collapsed ? '-3%' : '-170px';
     } else if (isIPhone4p7in()) {             // 6, 7, 8
-      return collapsed ? '-3%' : '-24%';
+      return collapsed ? 'unset' : '-24%';
     } else if (isIPhone4in()) {               // SE
       return collapsed ? '30px' : '-18%';
     } else if (isIPad()) {
@@ -598,6 +620,13 @@ export function cordovaFriendsWrapper () {
       };
     }
     if (isIPhone6p5in()) {
+      // friendsfallback 1/27 steve
+      // if (window.location.href.indexOf('/index.html#/friends/invite') > 0) {
+      //   return {
+      //     paddingTop: '93px',
+      //     paddingBottom: '0px',
+      //   };
+      // }
       return {
         paddingTop: '81px',
         paddingBottom: '90px',

@@ -30,9 +30,12 @@ export default class ValuesList extends Component {
   }
 
   componentDidMount () {
-    IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+    }
+    IssueActions.issuesFollowedRetrieve();
     const { currentIssue } = this.props;
     const allIssues = IssueStore.getAllIssues();
     this.setState({
@@ -77,7 +80,7 @@ export default class ValuesList extends Component {
     // let issuesNotCurrentIssue = [];
     if (allIssues) {
       if (this.props.displayOnlyIssuesNotFollowedByVoter) {
-        issuesList = allIssues.filter(issue => issue.issue_we_vote_id !== currentIssue.issue_we_vote_id).filter(issue => issue.is_issue_followed === false);
+        issuesList = allIssues.filter(issue => issue.issue_we_vote_id !== currentIssue.issue_we_vote_id).filter(issue => !IssueStore.isVoterFollowingThisIssue(issue.issue_we_vote_id));
       } else {
         issuesList = allIssues;
       }

@@ -353,14 +353,23 @@ export const teamOfVolunteers = [{
   name: 'Dale John McGrew',
   title: 'Oakland, CA',
 }, {
-  name: 'Jenifer Fernandez Ancona',
-  title: 'Oakland, CA',
-}, {
   name: 'Steve Podell',
   title: 'Oakland, CA',
 }, {
+  name: 'Jarod Peachey',
+  title: '',
+}, {
   name: 'Anisha Jain',
   title: 'San Jose, CA',
+}, {
+  name: 'Ahmed Elgamal',
+  title: 'Berkeley, CA',
+}, {
+  name: 'Leon Li',
+  title: 'Livermore, CA',
+}, {
+  name: 'Jenifer Fernandez Ancona',
+  title: 'Oakland, CA',
 }, {
   name: 'Rob Simpson',
   title: 'Warrenton, VA',
@@ -386,9 +395,6 @@ export const teamOfVolunteers = [{
   name: 'Daniel Bellerose',
   title: 'Harrisonberg, VA',
 }, {
-  name: 'Ahmed Elgamal',
-  title: 'Berkeley, CA',
-}, {
   name: 'Yuanhsin Chang',
   title: 'San Francisco, CA',
 }, {
@@ -397,9 +403,6 @@ export const teamOfVolunteers = [{
 }, {
   name: 'Joe Evans',
   title: 'Santa Cruz, CA',
-}, {
-  name: 'Leon Li',
-  title: 'Livermore, CA',
 }, {
   name: 'Bharath D N Reddy',
   title: 'Mountain View, CA',
@@ -454,9 +457,6 @@ export const teamOfVolunteers = [{
 }, {
   name: 'Mary O\'Connor',
   title: 'Asheville, NC',
-}, {
-  name: 'Jarod Peachey',
-  title: '',
 }, {
   name: 'Harsha Dronamraju',
   title: 'San Francisco, CA',

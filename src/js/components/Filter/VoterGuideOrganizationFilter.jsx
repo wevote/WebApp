@@ -184,9 +184,9 @@ class VoterGuideOrganizationFilter extends Component {
           // Put written comments on top, and then within those two separations, move Twitter followers to the top
           // console.log('sortByMagic');
           filteredItems = filteredItems.sort(this.orderByTwitterFollowers);
+          filteredItems = filteredItems.sort(this.orderByWrittenComment);
           filteredItems = filteredItems.sort(this.orderByFollowedOrgsFirst);
           filteredItems = filteredItems.sort(this.orderByCurrentFriendsFirst);
-          filteredItems = filteredItems.sort(this.orderByWrittenComment);
           this.setState({
             sortedBy: 'sortByMagic',
           });

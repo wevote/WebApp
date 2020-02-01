@@ -8,7 +8,7 @@ import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import AppActions from '../actions/AppActions';
 import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
 import { historyPush, isCordova } from '../utils/cordovaUtils';
-import Footer from '../components/Welcome/Footer';
+import WelcomeFooter from '../components/Welcome/WelcomeFooter';
 import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import { renderLog } from '../utils/logging';
@@ -330,7 +330,7 @@ class HowItWorks extends Component {
             )
           }
         </Section>
-        <Footer />
+        <WelcomeFooter />
       </Wrapper>
     );
   }

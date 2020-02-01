@@ -1,4 +1,5 @@
 $friends-padding-top: 50px;
+$friends-cordova-padding-top: 84px;
 
 .friends {
   // ===========================================
@@ -33,6 +34,20 @@ $friends-padding-top: 50px;
       padding-top: $space-none;
     }
   }
+}
+
+// friendsfallback 1/27 steve
+.friends-heading-cordova {
+  width: 100%;
+  background-color: $white;
+  border-bottom: 1px solid #aaa;
+  overflow: hidden;
+  position: fixed;
+  z-index: 1;
+  left: $space-none;
+  padding-top: $friends-cordova-padding-top;
+  transition: all 100ms ease-in-out 0s;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
 }
 
 .invite-inputs {

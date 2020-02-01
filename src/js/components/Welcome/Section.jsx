@@ -14,6 +14,10 @@ const Section = styled.div`
   background: ${({ variant }) => (variant === 'dark' ? 'rgb(235, 236, 240)' : 'white')};
   ${({ rounded }) => (rounded ? // eslint-disable-next-line
       'border-radius: 50% 50%;\nwidth: 200%;\npadding: 3em 2em;' : '')}
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding-top: ${({ noTopMargin }) => (noTopMargin ? '0' : '2em')};
+    padding-bottom: ${({ noTopMargin }) => (noTopMargin ? '0' : '1em')};
+  }
 `;
 
 const SectionTitle = styled.h1`
@@ -72,11 +76,24 @@ const StepLabel = styled.p`
 `;
 
 const GetStarted = styled.div`
+  align-items: center;
   display: flex;
-  flex-flow: row nowrap;
-  margin: 3em 0;
-  width: 450px;
-  max-width: 100%;
+  flex-flow: column;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 50px;
+  margin-top: 15px;
+  width: 500px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 `;
 
 const ButtonContainer = styled.div`

@@ -89,7 +89,6 @@ class AddressBoxWelcome extends PureComponent {
           ...this.props.inputProps,
           onChange: this.updateVoterAddress,
           onKeyDown: this.handleKeyPress,
-          style: { width: '65%' },
         }}
         {...this.props}
       />

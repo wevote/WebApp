@@ -121,16 +121,6 @@ class MeasureItem extends Component {
               null
             }
             {/* <SubTitle>{measureSubtitle}</SubTitle> */}
-            { measureText ? (
-              <div className="measure_text u-gray-mid">
-                <ReadMore
-                  numberOfLines={numberOfLines}
-                  textToDisplay={measureText}
-                />
-              </div>
-            ) :
-              null
-            }
           </MeasureInfoWrapper>
           <BallotItemSupportOpposeCountDisplayWrapper>
             <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
@@ -141,6 +131,14 @@ class MeasureItem extends Component {
           externalUniqueId="measureItem"
           showPositionStatementActionBar={this.state.showPositionStatementActionBar}
         />
+        { measureText && (
+          <MeasureTextWrapper>
+            <ReadMore
+              numberOfLines={numberOfLines}
+              textToDisplay={measureText}
+            />
+          </MeasureTextWrapper>
+        )}
       </Card>
     );
   }
@@ -188,6 +186,11 @@ const MeasureInfoWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     max-width: 70%;
   }
+`;
+
+const MeasureTextWrapper = styled.div`
+  color: #999;
+  padding-bottom: 8px;
 `;
 
 const Title = styled.h1`

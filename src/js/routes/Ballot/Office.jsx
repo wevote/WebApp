@@ -37,10 +37,6 @@ export default class Office extends Component {
   }
 
   componentDidMount () {
-    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-      IssueActions.issuesRetrieveForElection(VoterStore.electionId());
-    }
-
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
     const officeWeVoteId = this.props.params.office_we_vote_id;
@@ -84,6 +80,14 @@ export default class Office extends Component {
       officeWeVoteId,
     });
 
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+    }
+    IssueActions.issuesFollowedRetrieve();
+    if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
+      IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
+    }
     AnalyticsActions.saveActionOffice(VoterStore.electionId(), this.props.params.office_we_vote_id);
   }
 

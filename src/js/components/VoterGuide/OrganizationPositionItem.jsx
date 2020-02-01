@@ -407,7 +407,6 @@ export default class OrganizationPositionItem extends Component {
                   externalUniqueId={`organizationPositionItem-${position.ballot_item_we_vote_id}`}
                   shareButtonHide
                   transitioning={this.state.transitioning}
-                  type={position.kind_of_ballot_item}
                   togglePositionStatementFunction={this.togglePositionStatement}
                 />
                 { this.state.hidePositionStatement ?

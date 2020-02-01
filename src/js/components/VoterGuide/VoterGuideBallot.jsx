@@ -17,26 +17,20 @@ import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import cookies from '../../utils/cookies';
-import {
-  historyPush, isCordova, isWebApp,
-} from '../../utils/cordovaUtils';
+import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import DelayedLoad from '../Widgets/DelayedLoad';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import EndorsementCard from '../Widgets/EndorsementCard';
 import isMobile from '../../utils/isMobile';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import { openSnackbar } from '../Widgets/SnackNotifier';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import PledgeToSupportOrganizationButton from './PledgeToSupportOrganizationButton';
-import PledgeToSupportOrganizationStatusBar from './PledgeToSupportOrganizationStatusBar';
 import { renderLog } from '../../utils/logging';
 import SelectBallotModal from '../Ballot/SelectBallotModal';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import ThisIsMeAction from '../Widgets/ThisIsMeAction';
-import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideBallotItemCompressed from './VoterGuideBallotItemCompressed';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
@@ -82,7 +76,7 @@ class VoterGuideBallot extends Component {
       showBallotIntroModal: false,
       showSelectBallotModal: false,
       voterBallotList: [],
-      voterGuideOnStage: undefined,
+      // voterGuideOnStage: undefined,
       voterIsAdmin: false,
       voterIsVerifiedVolunteer: false,
       isSearching: false,
@@ -92,7 +86,7 @@ class VoterGuideBallot extends Component {
     this.ballotItems = {};
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
     this.ballotItemsCompressedReference = {};
-    this.pledgeToVoteWithVoterGuide = this.pledgeToVoteWithVoterGuide.bind(this);
+    // this.pledgeToVoteWithVoterGuide = this.pledgeToVoteWithVoterGuide.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
   }
 
@@ -223,7 +217,7 @@ class VoterGuideBallot extends Component {
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
       organizationWeVoteId,
       pathname,
-      voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, VoterStore.electionId()),
+      // voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, VoterStore.electionId()),
     });
 
     const { hash } = location;
@@ -270,7 +264,7 @@ class VoterGuideBallot extends Component {
       ballotWithOrganizationEndorsementsLength,
       organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organizationWeVoteId),
       organizationWeVoteId: nextProps.organizationWeVoteId,
-      voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organizationWeVoteId, VoterStore.electionId()),
+      // voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organizationWeVoteId, VoterStore.electionId()),
     });
 
     if (nextProps.location && nextProps.location.hash) {
@@ -544,14 +538,14 @@ class VoterGuideBallot extends Component {
   onVoterGuideStoreChange () {
     // console.log('VoterGuideBallot onVoterGuideStoreChange');
     // Update the data for the modal to include the position of the organization related to this ballot item
-    const { candidateForModal, measureForModal, organizationWeVoteId } = this.state;
+    const { candidateForModal, measureForModal } = this.state; // organizationWeVoteId
     if (candidateForModal) {
       this.setState({
         candidateForModal: {
           ...candidateForModal,
           voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
         },
-        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, VoterStore.electionId()),
+        // voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, VoterStore.electionId()),
       });
     } else if (measureForModal) {
       this.setState({
@@ -559,7 +553,7 @@ class VoterGuideBallot extends Component {
           ...measureForModal,
           voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
         },
-        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, VoterStore.electionId()),
+        // voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, VoterStore.electionId()),
       });
     }
   }
@@ -662,12 +656,12 @@ class VoterGuideBallot extends Component {
     return OrganizationStore.doesOrganizationHavePositionOnBallotItem(organizationWeVoteId, contestWeVoteId);
   }
 
-  pledgeToVoteWithVoterGuide () {
-    // console.log('VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voterGuideOnStage:', this.state.voterGuideOnStage);
-    const toastMessage = `Now you match what ${this.state.organization.organization_name} supports or opposes`;
-    VoterGuideActions.pledgeToVoteWithVoterGuide(this.state.voterGuideOnStage.we_vote_id);
-    openSnackbar({ message: toastMessage });
-  }
+  // pledgeToVoteWithVoterGuide () {
+  //   // console.log('VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voterGuideOnStage:', this.state.voterGuideOnStage);
+  //   const toastMessage = `Now you match what ${this.state.organization.organization_name} supports or opposes`;
+  //   VoterGuideActions.pledgeToVoteWithVoterGuide(this.state.voterGuideOnStage.we_vote_id);
+  //   openSnackbar({ message: toastMessage });
+  // }
 
   render () {
     renderLog('VoterGuideBallot');  // Set LOG_RENDER_EVENTS to log all renders
@@ -775,6 +769,7 @@ class VoterGuideBallot extends Component {
               </h1>
             </header>
 
+            {/* I think this is too heavy (interface-wise) at this time:
             <div className="d-print-none">
               { ballotWithOrganizationEndorsementsLength ?
                 <PledgeToSupportOrganizationStatusBar organization={organization} /> :
@@ -791,6 +786,7 @@ class VoterGuideBallot extends Component {
               ) : null
               }
             </div>
+            */}
           </div>
         </div>
 

@@ -204,7 +204,7 @@ class PositionSummaryListForPopover extends Component {
             </NetworkScoreSmall>
           )}
           <NetworkScoreDescriptionText>
-            Total Personal Score
+            Total Personalized Score
           </NetworkScoreDescriptionText>
         </VoterPersonalNetworkScoreWrapper>,
       );

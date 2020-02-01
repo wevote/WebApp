@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 class HeaderBarProfilePopUp extends Component {
@@ -27,6 +27,10 @@ class HeaderBarProfilePopUp extends Component {
     this.toggleProfilePopUp = this.props.toggleProfilePopUp.bind(this);
     this.toggleSignInModal = this.props.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.props.transitionToYourVoterGuide.bind(this);
+  }
+
+  componentWillUnmount () {
+    restoreStylesAfterCordovaKeyboard('HeaderBarProfilePopUp');
   }
 
   signInFromPopUp = () => {

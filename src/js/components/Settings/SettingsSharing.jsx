@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import AppActions from '../../actions/AppActions';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import { cordovaDot, cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
 import LoadingWheel from '../LoadingWheel';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -302,8 +302,13 @@ class SettingsSharing extends Component {
   };
 
   openPaidAccountUpgradeModal (paidAccountUpgradeMode) {
+    //
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
-    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+    if (isWebApp()) {
+      AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+    } else {
+      cordovaOpenSafariView('https://wevote.us/more/pricing', null, 50);
+    }
   }
 
   render () {
