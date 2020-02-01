@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Mail from '@material-ui/icons/Mail';
 import InputBase from '@material-ui/core/InputBase';
 import LoadingWheel from '../LoadingWheel';
-import { isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
@@ -128,6 +128,7 @@ class VoterEmailAddressEntry extends Component {
   }
 
   componentWillUnmount () {
+    // console.log('VoterEmailAddressEntry componentWillUnmount');
     this.voterStoreListener.remove();
   }
 
@@ -319,6 +320,7 @@ class VoterEmailAddressEntry extends Component {
       this.displayEmailVerificationButton();
       this.turnOtherSignInOptionsOff();
     }
+    focusTextFieldAndroid();
   };
 
   onAnimationEndCancel = () => {
@@ -454,6 +456,7 @@ class VoterEmailAddressEntry extends Component {
               value={voterEmailAddress}
               onChange={this.updateVoterEmailAddress}
               onFocus={this.onFocus}
+              onBlur={blurTextFieldAndroid}
               onKeyDown={this.onKeyDown}
               placeholder="Type email here..."
             />

@@ -237,7 +237,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '42px';
         case enums.candidate:       return '24px';
         case enums.candidateWild:   return '36px';
-        case enums.ballotSmHdrWild: return '123px';
+        case enums.ballotSmHdrWild: return '141px';
         case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '58px' : '42px';
         case enums.ballotVote:      return isSignedIn ? '131px' : '128px';
         case enums.moreTerms:       return '32px';
@@ -312,7 +312,7 @@ export function cordovaBallotFilterTopMargin () {
       } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
         return '61px';
       }
-      return '49px';
+      return '61px';
     } else if (sizeString === '--xl') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-10px';

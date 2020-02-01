@@ -549,3 +549,14 @@ export function setGlobalScreenSize (result) {
   window.pbakondyScreenSize = result;
 }
 
+export function focusTextFieldAndroid () {
+  if (isAndroid()) {
+    prepareForCordovaKeyboard('AddFriendsByEmail');
+  }
+}
+
+export function blurTextFieldAndroid () {
+  if (isAndroid()) {
+    restoreStylesAfterCordovaKeyboard('AddFriendsByEmail');
+  }
+}

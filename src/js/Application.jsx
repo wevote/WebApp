@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
 import {
-  getToastClass, historyPush, isCordova, isWebApp,
+  getToastClass, historyPush, isCordova, isIOS, isWebApp,
   prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard,
 } from './utils/cordovaUtils';
 import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
@@ -67,7 +67,8 @@ class Application extends Component {
       window.addEventListener('scroll', this.handleWindowScroll);
     }
 
-    if (isCordova()) {
+    if (isIOS()) {
+      // Unfortunately this event only works on iOS, but fortunately it is most needed on iOS
       window.addEventListener('keyboardWillShow', () => {
         prepareForCordovaKeyboard('ballot');
       });
