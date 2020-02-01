@@ -128,7 +128,7 @@ class IssueFollowToggleButton extends Component {
   }
 
   handleClick (event) {
-    this.setState({ anchorEl: event.target, open: true });
+    this.setState({ anchorEl: event.currentTarget, open: true });
   }
 
   handleClose () {
@@ -171,6 +171,7 @@ class IssueFollowToggleButton extends Component {
               aria-controls="follow-menu"
               aria-haspopup="true"
               onClick={this.handleClick}
+              id="toggle-button"
             >
               <ArrowDropDown />
               <span className="sr-only">Toggle Dropdown</span>
