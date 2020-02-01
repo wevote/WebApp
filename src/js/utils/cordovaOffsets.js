@@ -277,10 +277,6 @@ export function cordovaBallotFilterTopMargin () {
       }
       return '88px';
     } else if (isIPhone6p5in()) {
-      // friendsfallback 1/27 steve
-      // if (window.location.href.indexOf('/index.html#/friends/invite') > 0) {
-      //   return '0px';
-      // } else
       if (window.location.href.indexOf('/index.html#/friends') > 0) {
         return '79px';
       }
@@ -616,17 +612,16 @@ export function cordovaFriendsWrapper () {
     if (isIPhone6p1in()) {
       return {
         paddingTop: '69px',
-        paddingBottom: '90px',
+        paddingBottom: '0',
       };
     }
     if (isIPhone6p5in()) {
-      // friendsfallback 1/27 steve
-      // if (window.location.href.indexOf('/index.html#/friends/invite') > 0) {
-      //   return {
-      //     paddingTop: '93px',
-      //     paddingBottom: '0px',
-      //   };
-      // }
+      if (window.location.href.indexOf('/index.html#/friends/invite') > 0) {
+        return {
+          paddingTop: '20%',
+          paddingBottom: '0px',
+        };
+      }
       return {
         paddingTop: '81px',
         paddingBottom: '90px',
