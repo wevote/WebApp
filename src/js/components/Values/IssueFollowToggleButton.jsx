@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CheckCircle from '@material-ui/icons/CheckCircle';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+import { Menu, MenuItem, withStyles } from '@material-ui/core';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
@@ -11,7 +13,7 @@ import { shortenText } from '../../utils/textFormat';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
 
-export default class IssueFollowToggleButton extends Component {
+class IssueFollowToggleButton extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
@@ -23,6 +25,7 @@ export default class IssueFollowToggleButton extends Component {
     showIssueNameOnFollowButton: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
     lightModeOn: PropTypes.bool,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -33,6 +36,8 @@ export default class IssueFollowToggleButton extends Component {
       isFollowing: false,
       isFollowingLocalValue: false,
     };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
   }
@@ -47,12 +52,8 @@ export default class IssueFollowToggleButton extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if not needed
-    if (this.state.isFollowing !== nextState.isFollowing) {
-      // console.log('this.state.isFollowing: ', this.state.isFollowing, ', nextState.isFollowing', nextState.isFollowing);
-      return true;
-    }
-    // console.log('shouldComponentUpdate no change');
+    if (this.state.isFollowing !== nextState.isFollowing) return true;
+    if (this.state.open !== nextState.open) return true;
     return false;
   }
 
@@ -126,6 +127,14 @@ export default class IssueFollowToggleButton extends Component {
     });
   }
 
+  handleClick (event) {
+    this.setState({ anchorEl: event.target, open: true });
+  }
+
+  handleClose () {
+    this.setState({ anchorEl: null, open: false });
+  }
+
   render () {
     renderLog('IssueFollowToggleButton');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
@@ -134,7 +143,7 @@ export default class IssueFollowToggleButton extends Component {
       // console.log('error');
       return <div>{this.state.errorInfo}</div>;
     }
-    const { issueName, showFollowingButtonText, showIssueNameOnFollowButton, lightModeOn } = this.props;
+    const { issueName, showFollowingButtonText, showIssueNameOnFollowButton, lightModeOn, classes } = this.props;
     const { isFollowing } = this.state;
     let followButtonText = 'Follow';
     if (showIssueNameOnFollowButton) {
@@ -158,27 +167,40 @@ export default class IssueFollowToggleButton extends Component {
             </Button>
             <div className="issues-follow-btn__seperator" />
             <Button
-              type="button"
-              id="dropdown-toggle-id"
-              className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
-              data-toggle="dropdown"
+              className="dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
+              aria-controls="follow-menu"
               aria-haspopup="true"
-              aria-expanded="false"
-              data-reference="parent"
+              onClick={this.handleClick}
             >
+              <ArrowDropDown />
               <span className="sr-only">Toggle Dropdown</span>
             </Button>
-            <div id="issues-follow-btn__menu" className="dropdown-menu issues-follow-btn__menu" aria-labelledby="dropdown-toggle-id">
-              <Button
-                type="button"
-                id="dropdown-item-id"
-                className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+            <Menu
+              id="follow-menu"
+              // className="issues-follow-btn__menu"
+              classes={{ list: classes.list, paper: classes.paper }}
+              open={this.state.open}
+              onClose={this.handleClose}
+              elevation={2}
+              getContentAnchorEl={null}
+              anchorEl={this.state.anchorEl}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                horizontal: 'right',
+                vertical: 'top',
+              }}
+            >
+              <MenuItem
+                className={classes.menuItem}
                 // data-toggle="dropdown"
                 onClick={this.onIssueStopFollowing}
               >
                 Unfollow
-              </Button>
-            </div>
+              </MenuItem>
+            </Menu>
           </React.Fragment>
         ) : (
           <Button
@@ -193,3 +215,28 @@ export default class IssueFollowToggleButton extends Component {
     );
   }
 }
+
+const styles = () => ({
+  paper: {
+    fontSize: '12.5px !important',
+    width: '140px !important',
+    minWidth: '0 !important',
+    maxWidth: '140px !important',
+    padding: '0 !important',
+    border: 'none !important',
+    boxShadow: '1px 1px 4px 0 #ddd',
+  },
+  list: {
+    padding: '0 !important',
+  },
+  menuItem: {
+    padding: '7px 0 !important',
+    borderRadius: '0 !important',
+    textAlign: 'center',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+});
+
+export default withStyles(styles)(IssueFollowToggleButton);
