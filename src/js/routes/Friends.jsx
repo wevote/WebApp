@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Info from '@material-ui/icons/Info';
-import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -34,6 +33,7 @@ import MessageCard from '../components/Widgets/MessageCard';
 import AppStore from '../stores/AppStore';
 import { cordovaBallotFilterTopMargin, cordovaFriendsWrapper } from '../utils/cordovaOffsets';
 import displayFriendsTabs from '../utils/displayFriendsTabs';
+import WeVoteTooltip from '../components/Widgets/Tooltip';
 
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = cordovaDot(testimonialImage);
@@ -396,14 +396,7 @@ class Friends extends Component {
                       <SectionTitle>
                         Invite Friends
                       </SectionTitle>
-                      <Icon>
-                        <Tooltip
-                          classes={{ tooltip: classes.tooltip }}
-                          title="These friends will see what you support and oppose."
-                        >
-                          <Info />
-                        </Tooltip>
-                      </Icon>
+                      <WeVoteTooltip title="These friends will see what you support and oppose." />
                       <AddFriendsByEmail inSideColumn />
                     </div>
                   </section>
@@ -538,12 +531,13 @@ const SectionTitle = styled.h2`
   font-weight: bolder;
   font-size: 18px;
   margin-bottom: 4px;
+  display: inline;
 `;
 
 const Icon = styled.span`
-  position: absolute;
-  left: 158px;
-  top: 16px;
+  position: relative;
+  top: -2px;
+  left: 4px;
   * {
     color: #777;
   }
