@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
+import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import ElectionStore from '../../stores/ElectionStore';
@@ -104,7 +105,7 @@ export default class SelectVoterGuidesSideBar extends Component {
     return (
       <div className="card">
         <div className="card-main">
-          <div className="SettingsItem__summary__title">Your Endorsements</div>
+          <SectionTitle>Your Endorsements</SectionTitle>
           <div className="u-padding-bottom--md">
             <Button
               color="primary"
@@ -128,3 +129,9 @@ export default class SelectVoterGuidesSideBar extends Component {
     );
   }
 }
+
+const SectionTitle = styled.h2`
+  width: fit-content;  font-weight: bold;
+  font-size: 22px;
+  margin-bottom: 16px;
+`;
