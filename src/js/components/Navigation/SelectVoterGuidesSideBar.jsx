@@ -150,6 +150,7 @@ const Row = styled.div`
 const Column = styled.div`
   width: 100%;
   padding: 12px 0;
+  height: 100%;
   @media (min-width: 576px) and (max-width: 767px) {
     width: 50%;
     padding: 12px;
