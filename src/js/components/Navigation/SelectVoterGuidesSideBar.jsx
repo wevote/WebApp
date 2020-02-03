@@ -86,7 +86,7 @@ export default class SelectVoterGuidesSideBar extends Component {
         const displaySubtitles = true;
         if (voterGuide && voterGuide.we_vote_id) {
           return (
-            <div key={`voter-guides-${voterGuide.we_vote_id}`}>
+            <Column key={`voter-guides-${voterGuide.we_vote_id}`}>
               <SelectVoterGuidesSideBarLink
                 linkTo={`/vg/${voterGuide.we_vote_id}/settings/positions`}
                 label={ElectionStore.getElectionName(voterGuide.google_civic_election_id)}
@@ -95,7 +95,7 @@ export default class SelectVoterGuidesSideBar extends Component {
                 voterGuideWeVoteId={voterGuide.we_vote_id}
                 voterGuideWeVoteIdSelected={this.state.voterGuideWeVoteIdSelected}
               />
-            </div>
+            </Column>
           );
         } else {
           return null;
@@ -117,7 +117,9 @@ export default class SelectVoterGuidesSideBar extends Component {
              Choose New Election
             </Button>
           </div>
-          {voterGuideLinksHtml}
+          <Row>
+            {voterGuideLinksHtml}
+          </Row>
         </div>
         {showNewVoterGuideModal && (
           <VoterGuideChooseElectionModal
@@ -134,4 +136,22 @@ const SectionTitle = styled.h2`
   width: fit-content;  font-weight: bold;
   font-size: 22px;
   margin-bottom: 16px;
+`;
+
+const Row = styled.div`
+  @media (min-width: 576px) and (max-width: 767px) {
+    margin: 0 -12px;
+    display: flex;
+    flex-wrap: wrap;
+    width: calc(100% + 24px);
+  }
+`;
+
+const Column = styled.div`
+  width: 100%;
+  padding: 12px 0;
+  @media (min-width: 576px) and (max-width: 767px) {
+    width: 50%;
+    padding: 12px;
+  }
 `;

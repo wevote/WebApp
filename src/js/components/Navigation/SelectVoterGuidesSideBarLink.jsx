@@ -82,7 +82,6 @@ const Wrapper = styled.div`
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 16px;
-  margin-bottom: 8px;
 `;
 
 const Content = styled.div`
