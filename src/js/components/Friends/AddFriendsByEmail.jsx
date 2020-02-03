@@ -341,7 +341,7 @@ class AddFriendsByEmail extends Component {
                         placeholder="For example: name@domain.com"
                       />
                       <div className="row">
-                        <div className="col col-6">
+                        <div className={this.props.inSideColumn ? 'col col-12' : 'col col-6'}>
                           <Label>
                             Friend&apos;s First Name
                           </Label>
@@ -357,7 +357,7 @@ class AddFriendsByEmail extends Component {
                             placeholder={isMobileScreenSize() || inSideColumn ? 'Optional' : 'Optional, but helpful!'}
                           />
                         </div>
-                        <div className="col col-6">
+                        <div className={this.props.inSideColumn ? 'col col-12' : 'col col-6'}>
                           <Label>
                             Friend&apos;s Last Name
                           </Label>
