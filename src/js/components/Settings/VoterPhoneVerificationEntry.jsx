@@ -464,6 +464,7 @@ class VoterPhoneVerificationEntry extends Component {
             <ButtonWrapper>
               <CancelButtonContainer>
                 <Button
+                  id="cancelVoterPhoneSendSMS"
                   color="primary"
                   disabled={signInCodeSMSSentAndWaitingForResponse}
                   className={classes.cancelButton}

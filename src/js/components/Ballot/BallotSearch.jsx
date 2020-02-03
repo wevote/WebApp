@@ -7,7 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
 import sortBy from 'lodash-es/sortBy';
-import { isCordova } from '../../utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isCordova } from '../../utils/cordovaUtils';
 import addVoterGuideSearchPriority from '../../utils/addVoterGuideSearchPriority';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
 
@@ -127,6 +127,8 @@ class BallotSearch extends Component {
           inputRef={(input) => { this.searchInput = input; }}
           onChange={this.handleSearch}
           value={searchValue}
+          onFocus={focusTextFieldAndroid}
+          onBlur={blurTextFieldAndroid}
           placeholder="Search"
         />
         <Closer isSearching={isSearching} showCloser={showCloser} brandBlue={theme.palette.primary.main}>

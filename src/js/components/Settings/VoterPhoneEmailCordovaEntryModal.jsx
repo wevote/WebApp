@@ -52,12 +52,12 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
       console.log('VoterPhoneEmailCordovaEntryModal closeSignInModalLocal this.props valid');
       this.props.closeSignInModal();
     } catch (err) {
-      console.log('VoterPhoneVerificationEntryModal closeSignInModalLocal caught error: ', err);
+      console.log('VoterPhoneEmailCordovaEntryModal closeSignInModalLocal caught error: ', err);
     }
   }
 
   render () {
-    renderLog('VoterPhoneVerificationEntryModal');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('VoterPhoneEmailCordovaEntryModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { showDialog } = this.state;
     const { classes, isPhone } = this.props;
     const isSmallApple = isIPhone3p5in() || isIPhone4in() || isIPhone4p7in();

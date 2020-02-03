@@ -14,6 +14,8 @@ import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
 import { renderLog } from '../../utils/logging';
+import { focusTextFieldAndroid, blurTextFieldAndroid } from '../../utils/cordovaUtils';
+
 
 class AddFriendsByEmail extends Component {
   static propTypes = {
@@ -249,6 +251,7 @@ class AddFriendsByEmail extends Component {
     return voter !== undefined ? voter.has_valid_email : false;
   }
 
+
   render () {
     renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
     const { inSideColumn } = this.props;
@@ -338,6 +341,8 @@ class AddFriendsByEmail extends Component {
                         name="friendContactInfo"
                         value={friendContactInfo}
                         onChange={this.cacheFriendData}
+                        onFocus={focusTextFieldAndroid}
+                        onBlur={blurTextFieldAndroid}
                         placeholder="For example: name@domain.com"
                       />
                       <div className="row">
@@ -354,6 +359,8 @@ class AddFriendsByEmail extends Component {
                             name="friendFirstName"
                             value={friendFirstName}
                             onChange={this.cacheFriendData}
+                            onFocus={focusTextFieldAndroid}
+                            onBlur={blurTextFieldAndroid}
                             placeholder={isMobileScreenSize() || inSideColumn ? 'Optional' : 'Optional, but helpful!'}
                           />
                         </div>
@@ -370,6 +377,8 @@ class AddFriendsByEmail extends Component {
                             name="friendLastName"
                             value={friendLastName}
                             onChange={this.cacheFriendData}
+                            onFocus={focusTextFieldAndroid}
+                            onBlur={blurTextFieldAndroid}
                             placeholder="Optional"
                           />
                         </div>
@@ -387,6 +396,8 @@ class AddFriendsByEmail extends Component {
                             name="addFriendsMessage"
                             onChange={this.cacheAddFriendsByEmailMessage}
                             fullWidth
+                            onFocus={focusTextFieldAndroid}
+                            onBlur={blurTextFieldAndroid}
                             placeholder="Here’s how I’m figuring out this election."
                           />
                         </>

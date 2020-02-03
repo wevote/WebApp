@@ -25,6 +25,7 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
 import VoterPhoneEmailCordovaEntryModal from './VoterPhoneEmailCordovaEntryModal';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 /* global $ */
 
@@ -168,7 +169,8 @@ export default class SettingsAccount extends Component {
   }
 
   componentWillUnmount () {
-    // console.log("SignIn ---- UN mount");
+    // console.log("SettingsAccount componentWillUnmount");
+    signInModalGlobalState.set('textOrEmailSignInInProcess', false);
     this.appStoreListener.remove();
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();

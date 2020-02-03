@@ -9,9 +9,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
-import {
-  isCordova, isIPhone3p5in, isIPhone4in, isIPhone4p7in,
-  isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in,
+import { isCordova, isAndroid, isIOS,
+  isIPhone3p5in, isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in,
   isWebAppHeight0to568, isWebAppHeight569to667, isWebAppHeight668to736, isWebAppHeight737to896,
   isWebApp, historyPush, restoreStylesAfterCordovaKeyboard,
 } from '../../utils/cordovaUtils';
@@ -43,7 +42,7 @@ class SignInModal extends Component {
   }
 
   componentDidUpdate () {
-    if (isCordova()) {
+    if (isIOS()) {
       // Cordova really has trouble with animations on dialogs, while the visible area is being compressed to fit the software keyboard
       // eslint-disable-next-line func-names
       $('*').each(function () {
@@ -52,13 +51,14 @@ class SignInModal extends Component {
           console.log(`SignInModal componentDidUpdate transition style removed before: ${styleWorking}`);
           const cleaned = styleWorking.replace(/transition.*?;/, '');
           $(this).attr('style', cleaned);
-          console.log(`SignInModal componentDidUpdate transition style removed after: ${cleaned}`);
         }
       });
     }
   }
 
   componentWillUnmount () {
+    // console.log('SignInModal componentWillUnmount');
+    signInModalGlobalState.set('textOrEmailSignInInProcess', false);
     this.voterStoreListener.remove();
   }
 
@@ -157,6 +157,7 @@ class SignInModal extends Component {
             [classes.emailInputWebApp737to896]: isWebAppHeight737to896() && focusedOnSingleInputToggle && focusedInputName === 'email',
             [classes.phoneInputWebApp737to896]: isWebAppHeight737to896() && focusedOnSingleInputToggle && focusedInputName === 'phone',
             [classes.signInModalDialogLarger]: (isIPhone5p5in() || isIPhone5p8in() || isIPhone6p1in() || isIPhone6p5in()) && isCordova(),
+            [classes.signInModalDialogAndroid]: isAndroid(),
           }),
           root: classes.dialogRoot,
         }}
@@ -283,6 +284,9 @@ const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       transform: 'translate(-75%, -55%)',
     },
+  },
+  signInModalDialogAndroid: {
+    transform: 'translate(-50%, -60%)',
   },
   signInModalDialogLarger: {
     bottom: 'unset',

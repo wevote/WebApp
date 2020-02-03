@@ -224,6 +224,7 @@ class HeaderBar extends Component {
   }
 
   onFriendStoreChange () {
+    // console.log('HeaderBar, onFriendStoreChange textOrEmailSignInInProcess: ' + signInModalGlobalState.get('textOrEmailSignInInProcess'));
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
       // console.log('HeaderBar, onFriendStoreChange');
       this.setState({
@@ -233,6 +234,8 @@ class HeaderBar extends Component {
   }
 
   onVoterStoreChange () {
+    // console.log('HeaderBar, onVoterStoreChange textOrEmailSignInInProcess: ' + signInModalGlobalState.get('textOrEmailSignInInProcess'));
+    // console.log('HeaderBar, onVoterStoreChange voter: ', VoterStore.getVoter());
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
       // console.log('HeaderBar, onVoterStoreChange'};
       const voter = VoterStore.getVoter();
