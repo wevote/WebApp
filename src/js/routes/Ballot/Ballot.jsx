@@ -45,6 +45,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
+import CompleteYourProfile from '../../components/Ballot/CompleteYourProfile';
 
 const TYPES = require('keymirror')({
   OFFICE: null,
@@ -1068,6 +1069,7 @@ class Ballot extends Component {
                   <LocationGuess
                     toggleSelectBallotModal={this.toggleSelectBallotModal}
                   />
+                  <CompleteYourProfile />
                   <div>
                     {/* The rest of the ballot items */}
                     <div className="BallotList">
