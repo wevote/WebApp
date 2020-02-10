@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Card, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 
 class CompleteYourProfile extends Component {
@@ -13,16 +13,127 @@ class CompleteYourProfile extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      activeStep: 1,
+      steps: [
+        {
+          id: 1,
+          title: 'Step One',
+          buttonText: 'Step One',
+          completed: false,
+        },
+        {
+          id: 2,
+          title: 'Step Two',
+          buttonText: 'Step Two',
+          completed: true,
+        },
+        {
+          id: 3,
+          title: 'Step Three',
+          buttonText: 'Step Three',
+          completed: false,
+        },
+        {
+          id: 4,
+          title: 'Step Four',
+          buttonText: 'Step Four',
+          completed: false,
+        },
+        {
+          id: 5,
+          title: 'Step Five',
+          buttonText: 'Step Five',
+          completed: true,
+        },
+        {
+          id: 6,
+          title: 'Step Six',
+          buttonText: 'Step Six',
+          completed: false,
+        },
+        {
+          id: 7,
+          title: 'Step Seven',
+          buttonText: 'Step Seven',
+          completed: false,
+        },
+        {
+          id: 8,
+          title: 'Step Eight',
+          buttonText: 'Step Eight',
+          completed: false,
+        },
+      ],
     };
+
+    this.previousStep = this.previousStep.bind(this);
+    this.nextStep = this.nextStep.bind(this);
   }
 
   // Steps: options, friends
   componentDidMount () {
+    this.sortSteps();
+  }
 
+  sortSteps () {
+    function compare (a, b) {
+      // Use toUpperCase() to ignore character casing
+      const itemA = a;
+      const itemB = b;
+
+      let comparison = 0;
+      // if (itemA.completed) {
+      //   comparison = -1;
+      // } else
+      if (itemA.id > itemB.id) {
+        comparison = 1;
+      } else if (itemA.id < itemB.id) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+
+    const completed = this.state.steps.filter(item => item.completed);
+    const notCompleted = this.state.steps.filter(item => !item.completed);
+
+    completed.sort(compare);
+    notCompleted.sort(compare);
+
+    console.log('Completed: ', completed);
+    console.log('Not Completed: ', notCompleted);
+
+    const all = [...completed, ...notCompleted];
+    // all.push(completed);
+    // all.push(notCompleted);
+
+    console.log('All: ', all);
+
+    this.setState({ steps: all });
+  }
+
+  previousStep () {
+    this.sortSteps();
+
+    const currentIndex = this.state.steps.map(e => e.id).indexOf(this.state.activeStep);
+
+    console.log(currentIndex);
+
+    this.setState({ activeStep: this.state.steps[currentIndex - 1].id });
+  }
+
+  nextStep () {
+    this.sortSteps();
+
+    const currentIndex = this.state.steps.map(e => e.id).indexOf(this.state.activeStep);
+
+    console.log(currentIndex);
+
+    this.setState({ activeStep: this.state.steps[currentIndex + 1].id });
   }
 
   render () {
     const { classes } = this.props;
+    const { activeStep } = this.state;
 
     return (
       <>
@@ -35,47 +146,54 @@ class CompleteYourProfile extends Component {
                 actions completed
               </span>
               <Indicators>
-                <Indicator complete />
-                <Indicator complete />
-                <Indicator complete />
-                <Indicator />
-                <Indicator />
-                <Indicator />
-                <Indicator />
-                <Indicator />
+                {this.state.steps.map(step => (
+                  <Indicator complete={step.completed}>
+                    {step.id}
+                  </Indicator>
+                ))}
               </Indicators>
             </Flex>
             <Seperator />
-            <Description>
-              <TitleArea>
-                <Icon>
-                  <PlayCircleFilled />
-                </Icon>
-                <Title>Watch how it works</Title>
-                <TabletActionButton>
-                  <Button fullWidth variant="contained" color="primary">
-                    How It Works
-                  </Button>
-                </TabletActionButton>
-              </TitleArea>
-              <MobileActionButton>
-                <Button fullWidth variant="contained" color="primary">
-                  How It Works
-                </Button>
-              </MobileActionButton>
-              <NavButtons>
-                <NavButton>
-                  <Button color="primary">
-                    {'< Previous'}
-                  </Button>
-                </NavButton>
-                <NavButton>
-                  <Button color="primary">
-                    {'Next >'}
-                  </Button>
-                </NavButton>
-              </NavButtons>
-            </Description>
+            {this.state.steps.map((step, index) => {
+              if (step.id === this.state.activeStep) {
+                return (
+                  <Description>
+                    <TitleArea>
+                      <Icon>
+                        <PlayCircleFilled />
+                      </Icon>
+                      <Title>{step.title}</Title>
+                      <TabletActionButton>
+                        <Button fullWidth variant="contained" color="primary">
+                          {step.buttonText}
+                        </Button>
+                      </TabletActionButton>
+                    </TitleArea>
+                    <MobileActionButton>
+                      <Button fullWidth variant="contained" color="primary">
+                        {step.buttonText}
+                      </Button>
+                    </MobileActionButton>
+                    <NavButtons>
+                      {index !== 0 ? (
+                        <NavButton>
+                          <Button onClick={this.previousStep} color="primary">
+                            {'< Previous'}
+                          </Button>
+                        </NavButton>
+                      ) : null}
+                      {index !== 7 ? (
+                        <NavButton>
+                          <Button onClick={this.nextStep} color="primary">
+                            {'Next >'}
+                          </Button>
+                        </NavButton>
+                      ) : null}
+                    </NavButtons>
+                  </Description>
+                );
+              }
+            })}
           </div>
         </div>
       </>
