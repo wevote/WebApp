@@ -20,48 +20,56 @@ class CompleteYourProfile extends Component {
           title: 'Step One',
           buttonText: 'Step One',
           completed: false,
+          description: 'Do step one',
         },
         {
           id: 2,
           title: 'Step Two',
           buttonText: 'Step Two',
           completed: true,
+          description: 'Do step two',
         },
         {
           id: 3,
           title: 'Step Three',
           buttonText: 'Step Three',
           completed: false,
+          description: 'Do step three',
         },
         {
           id: 4,
           title: 'Step Four',
           buttonText: 'Step Four',
           completed: false,
+          description: 'Do step four',
         },
         {
           id: 5,
           title: 'Step Five',
           buttonText: 'Step Five',
           completed: true,
+          description: 'Do step five',
         },
         {
           id: 6,
           title: 'Step Six',
           buttonText: 'Step Six',
           completed: false,
+          description: 'Do step six',
         },
         {
           id: 7,
           title: 'Step Seven',
           buttonText: 'Step Seven',
           completed: false,
+          description: 'Do step seven',
         },
         {
           id: 8,
           title: 'Step Eight',
           buttonText: 'Step Eight',
           completed: false,
+          description: 'Do step eight',
         },
       ],
     };
@@ -163,13 +171,12 @@ class CompleteYourProfile extends Component {
                   of 8
                 </strong>
                 {' '}
-                actions completed
+                <Info>actions </Info>
+                completed
               </span>
               <Indicators>
                 {this.state.steps.map(step => (
-                  <Indicator complete={step.completed}>
-                    {step.id}
-                  </Indicator>
+                  <Indicator complete={step.completed} />
                 ))}
               </Indicators>
             </Flex>
@@ -182,7 +189,10 @@ class CompleteYourProfile extends Component {
                       <Icon>
                         <PlayCircleFilled />
                       </Icon>
-                      <Title>{step.title}</Title>
+                      <Title>
+                        {step.title}
+                      </Title>
+                      {step.description}
                       <TabletActionButton>
                         <Button onClick={() => this.setItemComplete(activeStep)} fullWidth variant="contained" color="primary">
                           {step.buttonText}
@@ -222,6 +232,13 @@ class CompleteYourProfile extends Component {
 }
 const styles = () => ({
 });
+
+const Info = styled.span`
+  display: none;
+  @media(min-width: 525px) {
+    display: inline;
+  }
+`;
 
 const Flex = styled.div`
   display: flex;
@@ -275,8 +292,9 @@ const Icon = styled.div`
 
 const Title = styled.h2`
   display: inline-block;
-  font-weight: normal;
+  font-weight: 600;
   margin: 0 0 0 8px;
+  margin-right: 6px;
 `;
 
 const TitleArea = styled.div`
