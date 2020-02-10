@@ -68,6 +68,7 @@ class CompleteYourProfile extends Component {
 
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
+    this.setItemComplete = this.setItemComplete.bind(this);
   }
 
   // Steps: options, friends
@@ -131,6 +132,21 @@ class CompleteYourProfile extends Component {
     this.setState({ activeStep: this.state.steps[currentIndex + 1].id });
   }
 
+  setItemComplete (id) {
+    console.log("Setting complete!");
+    this.state.steps.map((item) => {
+      if (item.id === id) {
+        console.log("Item to mark complete: ", item);
+
+        item.completed = true;
+      }
+    });
+
+    this.setState({ steps: this.state.steps });
+
+    this.nextStep();
+  }
+
   render () {
     const { classes } = this.props;
     const { activeStep } = this.state;
@@ -141,7 +157,11 @@ class CompleteYourProfile extends Component {
           <div className="card-main">
             <Flex>
               <span>
-                <strong>3 of 8</strong>
+                <strong>
+                  {this.state.steps.filter(item => item.completed).length }
+                  {' '}
+                  of 8
+                </strong>
                 {' '}
                 actions completed
               </span>
@@ -164,13 +184,13 @@ class CompleteYourProfile extends Component {
                       </Icon>
                       <Title>{step.title}</Title>
                       <TabletActionButton>
-                        <Button fullWidth variant="contained" color="primary">
+                        <Button onClick={() => this.setItemComplete(activeStep)} fullWidth variant="contained" color="primary">
                           {step.buttonText}
                         </Button>
                       </TabletActionButton>
                     </TitleArea>
                     <MobileActionButton>
-                      <Button fullWidth variant="contained" color="primary">
+                      <Button onClick={() => this.setItemComplete(activeStep)} fullWidth variant="contained" color="primary">
                         {step.buttonText}
                       </Button>
                     </MobileActionButton>
