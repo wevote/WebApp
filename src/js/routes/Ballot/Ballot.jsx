@@ -852,6 +852,12 @@ class Ballot extends Component {
     // console.log(ballotWithAllItems);
     const textForMapSearch = VoterStore.getTextForMapSearch();
 
+    const modalToOpen = this.props.params.modal_to_show || '';
+
+    if (modalToOpen === 'share') {
+      AppActions.setShowShareModal(true);
+    }
+
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
         <DelayedLoad showLoadingText waitBeforeShow={2000}>

@@ -117,6 +117,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       </Route>
       <Route path="/ballot/vote" component={Vote} />
       <Route path="/ballot/:ballot_location_shortcut" component={Ballot} />
+      <Route path="/ballot/modal/:modal_to_show" component={Ballot} />
       <Route path="/ballot/id/:ballot_returned_we_vote_id" component={Ballot} />
       <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />
 

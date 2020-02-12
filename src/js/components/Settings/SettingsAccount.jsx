@@ -88,6 +88,11 @@ export default class SettingsAccount extends Component {
     const getStartedMode = AppStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
     const { origin } = window.location;
+
+    // if (window.location.pathname === '/ballot/modal/share') {
+
+    // }
+
     if (this.props.pleaseSignInTitle || this.props.pleaseSignInSubTitle) {
       AppActions.storeSignInStartFullUrl();
       this.setState({

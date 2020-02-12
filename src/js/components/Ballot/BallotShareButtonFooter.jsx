@@ -11,6 +11,7 @@ import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import ShareModalOption from './ShareModalOption';
+import { historyPush } from '../../utils/cordovaUtils';
 
 class BallotShareButtonFooter extends Component {
   static propTypes = {
@@ -64,7 +65,8 @@ class BallotShareButtonFooter extends Component {
 
   openShareModal (step) {
     this.handleClose();
-    AppActions.setShowShareModal(true);
+    // AppActions.setShowShareModal(true);
+    historyPush('/ballot/modal/share');
     AppActions.setShareModalStep(step);
   }
 
