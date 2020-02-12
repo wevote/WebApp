@@ -11,7 +11,7 @@ import Mail from '@material-ui/icons/Mail';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import { Button, Tooltip } from '@material-ui/core';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import MessageCard from '../Widgets/MessageCard';
@@ -19,6 +19,8 @@ import { renderLog } from '../../utils/logging';
 import ShareModalOption from './ShareModalOption';
 import SettingsAccount from '../Settings/SettingsAccount';
 import FriendsShareList from '../Friends/FriendsShareList';
+import AppActions from '../../actions/AppActions';
+import cookies from '../../utils/cookies';
 
 class ShareModal extends Component {
   static propTypes = {
@@ -127,7 +129,20 @@ class ShareModal extends Component {
           <DialogContent classes={{ root: classes.dialogContent }}>
             <div className="full-width">
               <Flex>
-                <ShareModalOption noLink onClickFunction={() => this.setStep('friends')} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />
+                <ShareModalOption
+                  noLink
+                  onClickFunction={() => {
+                    if (!this.props.isSignedIn) {
+                      AppActions.setShowSignInModal(true);
+                      this.setStep('friends');
+                    } else {
+                      this.setStep('friends');
+                    }
+                  }}
+                  background="#2E3C5D"
+                  icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />}
+                  title="We Vote Friends"
+                />
                 <ShareModalOption link="https://www.facebook.com/sharer/sharer.php?u=wevote.us&t=WeVote" target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
                 <ShareModalOption link={`https://twitter.com/share?text=Check out this cool ballot tool at https://wevote.us${window.location.pathname}!`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
                 <ShareModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
@@ -138,28 +153,33 @@ class ShareModal extends Component {
         </Dialog>
       );
     } else if (this.state.step === 'friends' && !this.props.isSignedIn) {
-      shareModalHtml = (
-        <Dialog
-          classes={{ paper: classes.dialogPaper }}
-          open={this.props.show}
-          onClose={() => { this.props.toggleFunction(this.state.pathname); }}
-        >
-          <ModalTitleArea onSignInSlide>
-            <Title onSignInSlide bold>Sign In</Title>
-            <IconButton
-              aria-label="Close"
-              className={classes.closeButtonAbsolute}
-              onClick={this.closeShareModal}
-              id="profileCloseShareModal"
-            >
-              <CloseIcon />
-            </IconButton>
-          </ModalTitleArea>
-          <DialogContent classes={{ root: classes.dialogContent }}>
-            <SettingsAccount inShareModal inModal pleaseSignInTitle="Sign in to share with your friends" />
-          </DialogContent>
-        </Dialog>
-      );
+      // historyPush('/ballot/modal/share');
+      // AppActions.setShowSignInModal(true);
+
+
+      // cookies.setItem('sign_in_start_full_url', signInStartFullUrl, 86400, '/', 'wevote.us');
+      // shareModalHtml = (
+      //   <Dialog
+      //     classes={{ paper: classes.dialogPaper }}
+      //     open={this.props.show}
+      //     onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+      //   >
+      //     <ModalTitleArea onSignInSlide>
+      //       <Title onSignInSlide bold>Sign In</Title>
+      //       <IconButton
+      //         aria-label="Close"
+      //         className={classes.closeButtonAbsolute}
+      //         onClick={this.closeShareModal}
+      //         id="profileCloseShareModal"
+      //       >
+      //         <CloseIcon />
+      //       </IconButton>
+      //     </ModalTitleArea>
+      //     <DialogContent classes={{ root: classes.dialogContent }}>
+      //       <SettingsAccount inShareModal inModal pleaseSignInTitle="Sign in to share with your friends" />
+      //     </DialogContent>
+      //   </Dialog>
+      // );
     } else if (this.state.step === 'friends' && this.props.isSignedIn && this.state.currentFriendsList.length > 0) {
       shareModalHtml = (
         <Dialog

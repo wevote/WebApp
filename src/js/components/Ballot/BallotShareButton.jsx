@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Reply from '@material-ui/icons/Reply';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
+import { historyPush } from '../../utils/cordovaUtils';
 
 class BallotShareButton extends Component {
   static propTypes = {
@@ -39,8 +40,9 @@ class BallotShareButton extends Component {
 
   openShareModal () {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
+    historyPush('/ballot/modal/share');
     AppActions.setShareModalStep('options');
-    AppActions.setShowShareModal(true);
+    // AppActions.setShowShareModal(true);
   }
 
   render () {
