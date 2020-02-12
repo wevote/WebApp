@@ -4,6 +4,10 @@ import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
+import EditLocation from '@material-ui/icons/EditLocation';
+import Comment from '@material-ui/icons/Comment';
+import ThumbUp from '@material-ui/icons/ThumbUp';
+import People from '@material-ui/icons/People';
 
 class CompleteYourProfile extends Component {
   static propTypes = {
@@ -21,6 +25,7 @@ class CompleteYourProfile extends Component {
           buttonText: 'Step One',
           completed: false,
           description: 'Do step one',
+          icon: (<PlayCircleFilled />),
         },
         {
           id: 2,
@@ -28,6 +33,7 @@ class CompleteYourProfile extends Component {
           buttonText: 'Step Two',
           completed: true,
           description: 'Do step two',
+          icon: (<EditLocation />),
         },
         {
           id: 3,
@@ -35,6 +41,7 @@ class CompleteYourProfile extends Component {
           buttonText: 'Step Three',
           completed: false,
           description: 'Do step three',
+          icon: (<People />),
         },
         {
           id: 4,
@@ -42,6 +49,7 @@ class CompleteYourProfile extends Component {
           buttonText: 'Step Four',
           completed: false,
           description: 'Do step four',
+          icon: (<ThumbUp />),
         },
         {
           id: 5,
@@ -49,6 +57,7 @@ class CompleteYourProfile extends Component {
           buttonText: 'Step Five',
           completed: true,
           description: 'Do step five',
+          icon: (<EditLocation />),
         },
         {
           id: 6,
@@ -56,6 +65,7 @@ class CompleteYourProfile extends Component {
           buttonText: 'Step Six',
           completed: false,
           description: 'Do step six',
+          icon: (<PlayCircleFilled />),
         },
         {
           id: 7,
@@ -63,6 +73,7 @@ class CompleteYourProfile extends Component {
           buttonText: 'Step Seven',
           completed: false,
           description: 'Do step seven',
+          icon: (<People />),
         },
         {
           id: 8,
@@ -70,6 +81,7 @@ class CompleteYourProfile extends Component {
           buttonText: 'Step Eight',
           completed: false,
           description: 'Do step eight',
+          icon: (<ThumbUp />),
         },
       ],
     };
@@ -187,7 +199,7 @@ class CompleteYourProfile extends Component {
                   <Description>
                     <TitleArea>
                       <Icon>
-                        <PlayCircleFilled />
+                        {step.icon}
                       </Icon>
                       <Title>
                         {step.title}
