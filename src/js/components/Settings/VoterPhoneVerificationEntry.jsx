@@ -469,7 +469,6 @@ class VoterPhoneVerificationEntry extends Component {
                   disabled={signInCodeSMSSentAndWaitingForResponse}
                   className={classes.cancelButton}
                   fullWidth
-                  id="cancelVoterPhoneSendSMS"
                   onClick={this.onCancel}
                   onAnimationEnd={this.onAnimationEndCancel}
                   variant="outlined"

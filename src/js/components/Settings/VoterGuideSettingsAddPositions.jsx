@@ -391,8 +391,8 @@ class VoterGuideSettingsAddPositions extends Component {
 
   onScroll () {
     const element =  document.querySelector('#show_more_indicator');
-    console.log("Element: ", element);
-    console.log("Loading more: ", this.state.loadingMoreItems);
+    console.log('Element: ', element);
+    console.log('Loading more: ', this.state.loadingMoreItems);
     if (element) {
       const { numberOfBallotItemsToDisplay, numberOfPositionItemsToDisplay, totalNumberOfBallotItems, totalNumberOfPositionItems } = this.state;
       const yPosition = element.offsetTop - element.scrollTop + element.clientTop;
@@ -400,8 +400,8 @@ class VoterGuideSettingsAddPositions extends Component {
       // console.log('Window Scroll: ', window.scrollY);
       // console.log('Element Scroll: ', yPosition);
 
-      console.log("Number to display: ", numberOfBallotItemsToDisplay);
-      console.log("Total number to display: ", totalNumberOfBallotItems);
+      console.log('Number to display: ', numberOfBallotItemsToDisplay);
+      console.log('Total number to display: ', totalNumberOfBallotItems);
       if (numberOfBallotItemsToDisplay < totalNumberOfBallotItems) {
         if (window.scrollY > yPosition - 500) {
           this.setState({ loadingMoreItems: true });
@@ -442,10 +442,10 @@ class VoterGuideSettingsAddPositions extends Component {
 
   increaseNumberOfBallotItemsToDisplay = () => {
     let { numberOfBallotItemsToDisplay } = this.state;
-    console.log("Number of ballot items before increment: ", numberOfBallotItemsToDisplay);
+    console.log('Number of ballot items before increment: ', numberOfBallotItemsToDisplay);
 
     numberOfBallotItemsToDisplay += 5;
-    console.log("Number of ballot items after increment: ", numberOfBallotItemsToDisplay);
+    console.log('Number of ballot items after increment: ', numberOfBallotItemsToDisplay);
 
 
     this.ballotItemTimer = setTimeout(() => {
@@ -457,10 +457,10 @@ class VoterGuideSettingsAddPositions extends Component {
 
   increaseNumberOfPositionItemsToDisplay = () => {
     let { numberOfPositionItemsToDisplay } = this.state;
-    console.log("Number of position items before increment: ", numberOfPositionItemsToDisplay);
+    console.log('Number of position items before increment: ', numberOfPositionItemsToDisplay);
 
     numberOfPositionItemsToDisplay += 5;
-    console.log("Number of position items after increment: ", numberOfPositionItemsToDisplay);
+    console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
 
     this.positionItemTimer = setTimeout(() => {
       this.setState({

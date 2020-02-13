@@ -4,7 +4,6 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Info from '@material-ui/icons/Info';
 import { withStyles } from '@material-ui/core/styles';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -532,15 +531,6 @@ const SectionTitle = styled.h2`
   font-size: 18px;
   margin-bottom: 4px;
   display: inline;
-`;
-
-const Icon = styled.span`
-  position: relative;
-  top: -2px;
-  left: 4px;
-  * {
-    color: #777;
-  }
 `;
 
 export default withStyles(styles)(Friends);
