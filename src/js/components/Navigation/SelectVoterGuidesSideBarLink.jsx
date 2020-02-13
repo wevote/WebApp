@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import styled from 'styled-components';
+import { Button } from '@material-ui/core';
 import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
-import { Button } from '@material-ui/core';
 
 
 export default class SelectVoterGuidesSideBarLink extends Component {
   static propTypes = {
-    linkTo: PropTypes.string,
     label: PropTypes.string,
     subtitle: PropTypes.string,
     displaySubtitles: PropTypes.bool,
@@ -44,7 +42,7 @@ export default class SelectVoterGuidesSideBarLink extends Component {
     const labelInSentenceCase = capitalizeString(this.props.label);
     const subtitleInSentenceCase = sentenceCaseString(this.props.subtitle);
 
-    const atStateIsOnThisVoterGuide = this.state.voterGuideWeVoteIdSelected && this.state.voterGuideWeVoteIdSelected === this.state.voterGuideWeVoteId;
+    // const atStateIsOnThisVoterGuide = this.state.voterGuideWeVoteIdSelected && this.state.voterGuideWeVoteIdSelected === this.state.voterGuideWeVoteId;
 
     return (
       <span>

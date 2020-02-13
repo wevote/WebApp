@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import EditLocation from '@material-ui/icons/EditLocation';
-import Comment from '@material-ui/icons/Comment';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import People from '@material-ui/icons/People';
 
 class CompleteYourProfile extends Component {
   static propTypes = {
-    classes: PropTypes.object,
+    // classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -96,6 +94,44 @@ class CompleteYourProfile extends Component {
     this.sortSteps();
   }
 
+  setItemComplete (id) {
+    console.log('Setting complete!');
+    const { steps } = this.state;
+    let tempItem;
+    const newSteps = steps.map((item) => {
+      if (item.id === id) {
+        console.log('Item to mark complete: ', item);
+        tempItem = item;
+        tempItem.completed = true;
+        return tempItem;
+      } else {
+        return item;
+      }
+    });
+    this.setState({ steps: newSteps });
+    this.nextStep();
+  }
+
+  previousStep () {
+    this.sortSteps();
+    const { steps } = this.state;
+    const currentIndex = steps.map(e => e.id).indexOf(this.state.activeStep);
+
+    console.log(currentIndex);
+
+    this.setState({ activeStep: steps[currentIndex - 1].id });
+  }
+
+  nextStep () {
+    this.sortSteps();
+    const { steps } = this.state;
+    const currentIndex = steps.map(e => e.id).indexOf(this.state.activeStep);
+
+    console.log(currentIndex);
+
+    this.setState({ activeStep: steps[currentIndex + 1].id });
+  }
+
   sortSteps () {
     function compare (a, b) {
       // Use toUpperCase() to ignore character casing
@@ -132,43 +168,8 @@ class CompleteYourProfile extends Component {
     this.setState({ steps: all });
   }
 
-  previousStep () {
-    this.sortSteps();
-
-    const currentIndex = this.state.steps.map(e => e.id).indexOf(this.state.activeStep);
-
-    console.log(currentIndex);
-
-    this.setState({ activeStep: this.state.steps[currentIndex - 1].id });
-  }
-
-  nextStep () {
-    this.sortSteps();
-
-    const currentIndex = this.state.steps.map(e => e.id).indexOf(this.state.activeStep);
-
-    console.log(currentIndex);
-
-    this.setState({ activeStep: this.state.steps[currentIndex + 1].id });
-  }
-
-  setItemComplete (id) {
-    console.log("Setting complete!");
-    this.state.steps.map((item) => {
-      if (item.id === id) {
-        console.log("Item to mark complete: ", item);
-
-        item.completed = true;
-      }
-    });
-
-    this.setState({ steps: this.state.steps });
-
-    this.nextStep();
-  }
-
   render () {
-    const { classes } = this.props;
+    // const { classes } = this.props;
     const { activeStep } = this.state;
 
     return (
@@ -234,6 +235,8 @@ class CompleteYourProfile extends Component {
                     </NavButtons>
                   </Description>
                 );
+              } else {
+                return null;
               }
             })}
           </div>
@@ -272,7 +275,7 @@ const Indicator = styled.div`
   @media (max-width: 768px) {
     &:nth-child(even) {
       margin-left: -4px;
-    }    
+    }
   }
 `;
 

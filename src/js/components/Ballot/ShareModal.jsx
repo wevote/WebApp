@@ -11,16 +11,14 @@ import Mail from '@material-ui/icons/Mail';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import { Button, Tooltip } from '@material-ui/core';
-import { hasIPhoneNotch, historyPush } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
 import ShareModalOption from './ShareModalOption';
-import SettingsAccount from '../Settings/SettingsAccount';
 import FriendsShareList from '../Friends/FriendsShareList';
 import AppActions from '../../actions/AppActions';
-import cookies from '../../utils/cookies';
 
 class ShareModal extends Component {
   static propTypes = {
