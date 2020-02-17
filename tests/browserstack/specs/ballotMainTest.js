@@ -62,26 +62,49 @@ describe('Basic cross-platform We Vote test',  () => {
     }
 
     // // //////////////////////
-    // // Check the positioning of the SignInModal when we click "Enter Phone"
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('signInHeaderBar'); // Clicks on Sign in
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('enterVoterPhone'); // Puts cursor in Phone text input
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-
-    // // //////////////////////
     // // Check the positioning of the SignInModal when we click "Enter Email"
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('signInHeaderBar'); // Clicks on Sign in
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
+    if (isCordovaFromAppStore) {
+      await simpleClick('emailSignIn-splitIconButton'); // Clicks "Sign in with an email" button
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('cancelEmailButton'); // Clicks the cancel button
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    } else {
+      await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    }
+
+    // // //////////////////////
+    // // Check the positioning of the SignInModal when we click "Enter Phone"
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('signInHeaderBar'); // Clicks on Sign in
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    if (isCordovaFromAppStore) {
+      await simpleClick('smsSignIn-splitIconButton'); // Clicks "Sign in with a text" button
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      // Stop the script here for now
+      assert(true);
+      driver.quit();
+
+      await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    } else {
+      await simpleClick('enterVoterPhone'); // Puts cursor in Phone text input
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    }
 
     // //////////////////////
     // Change Address

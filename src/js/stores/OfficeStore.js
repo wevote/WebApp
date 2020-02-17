@@ -26,11 +26,47 @@ class OfficeStore extends ReduceStore {
     if (!action.res || !action.res.success) return state;
 
     // let arrayOfOfficeWeVoteIds;
+    let candidateList;
+    let contestOfficeWeVoteId = '';
     let googleCivicElectionId;
     let office;
-    const newOffices = {};
+    let officeList;
+    let newOffices = {};
 
     switch (action.type) {
+      case 'candidatesRetrieve':
+        // Make sure we have information for the office the candidate is running for
+        if (!action.res.contest_office_we_vote_id) {
+          return {
+            ...state,
+          };
+        }
+        contestOfficeWeVoteId = action.res.contest_office_we_vote_id;
+        officeList = state.offices;
+        if (officeList) {
+          office = officeList[contestOfficeWeVoteId];
+        }
+        if (!office || !office.ballot_item_display_name) {
+          return {
+            ...state,
+          };
+        }
+
+        candidateList = action.res.candidate_list;
+        if (candidateList && candidateList.length) {
+          office.candidate_list = candidateList;
+          newOffices = {};
+          newOffices[office.we_vote_id] = office;
+          return {
+            ...state,
+            offices: assign({}, state.offices, newOffices),
+          };
+        } else {
+          return {
+            ...state,
+          };
+        }
+
       case 'officeRetrieve':
         office = action.res;
         newOffices[office.we_vote_id] = office;

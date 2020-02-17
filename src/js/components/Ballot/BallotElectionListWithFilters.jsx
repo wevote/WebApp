@@ -176,7 +176,7 @@ export default class BallotElectionListWithFilters extends Component {
     }
   }
 
-  goToBallotForDifferentElection (ballotLocationShortcut, ballotReturnedWeVoteId, googleCivicElectionId, originalTextForMapSearch = '') {
+  goToBallotForDifferentElection (originalTextForMapSearch, googleCivicElectionId, ballotLocationShortcut = '', ballotReturnedWeVoteId = '') {
     // console.log('BallotElectionListWithFilters, goToBallotForDifferentElection');
     const ballotBaseUrlClean = this.props.ballotBaseUrl || '/ballot';
     const { organizationWeVoteId } = this.props;
@@ -189,18 +189,17 @@ export default class BallotElectionListWithFilters extends Component {
       // console.log('goToBallotForDifferentElection, ballotReturnedWeVoteId: ', ballotReturnedWeVoteId);
       BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, '');
       destinationUrlForHistoryPush = `${ballotBaseUrlClean}/id/${ballotReturnedWeVoteId}`; // Used with historyPush once modal is closed
+    } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
+      BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, '', '');
+      // console.log('goToBallotForDifferentElection, googleCivicElectionId: ', googleCivicElectionId);
+      destinationUrlForHistoryPush = `${ballotBaseUrlClean}/election/${googleCivicElectionId}`; // Used with historyPush once modal is closed
     } else if (originalTextForMapSearch && originalTextForMapSearch !== '') {
       // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
       // console.log('goToBallotForDifferentElection, originalTextForMapSearch: ', originalTextForMapSearch);
       const simpleSave = false;
       VoterActions.voterAddressSave(originalTextForMapSearch, simpleSave, googleCivicElectionId);
       destinationUrlForHistoryPush = ballotBaseUrlClean; // Used with historyPush once modal is closed
-    } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
-      BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, '', '');
-      // console.log('goToBallotForDifferentElection, googleCivicElectionId: ', googleCivicElectionId);
-      destinationUrlForHistoryPush = `${ballotBaseUrlClean}/election/${googleCivicElectionId}`; // Used with historyPush once modal is closed
     }
-
     // Request positions for the different election
     if (organizationWeVoteId && organizationWeVoteId !== '') {
       // console.log('BallotElectionListWithFilters calling positionListForOpinionMaker, this.props.organizationWeVoteId: ', this.props.organizationWeVoteId, ', googleCivicElectionId:', googleCivicElectionId);
@@ -232,7 +231,7 @@ export default class BallotElectionListWithFilters extends Component {
     if (item) {
       const { ballotBaseUrl } = this.props;
       if (ballotBaseUrl) {
-        this.goToBallotForDifferentElection(item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search);
+        this.goToBallotForDifferentElection(item.original_text_for_map_search, item.google_civic_election_id); // Removing for now: , item.ballot_location_shortcut, item.ballot_returned_we_vote_id
       } else {
         this.saveVoterGuideForElection(item.google_civic_election_id);
       }

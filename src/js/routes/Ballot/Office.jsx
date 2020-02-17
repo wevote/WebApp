@@ -5,6 +5,7 @@ import CandidateList from '../../components/Ballot/CandidateList';
 import { capitalizeString } from '../../utils/textFormat';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotStore from '../../stores/BallotStore';
+import CandidateActions from '../../actions/CandidateActions';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
@@ -43,8 +44,11 @@ export default class Office extends Component {
     const office = OfficeStore.getOffice(officeWeVoteId);
     if (!office || !office.ballot_item_display_name) {
       OfficeActions.officeRetrieve(officeWeVoteId);
+      CandidateActions.candidatesRetrieve(officeWeVoteId);
+      // console.log('componentDidMount officeRetrieve');
     } else {
       let { candidate_list: candidateList } = office;
+      // console.log('componentDidMount office:', office);
       if (candidateList && candidateList.length && officeWeVoteId) {
         candidateList = sortCandidateList(candidateList);
         if (officeWeVoteId &&
@@ -156,6 +160,7 @@ export default class Office extends Component {
   onOfficeStoreChange () {
     const { officeWeVoteId } = this.state;
     const office = OfficeStore.getOffice(officeWeVoteId);
+    // console.log('Office.jsx onOfficeStoreChange:', officeWeVoteId, ', office:', office);
     let newCandidate;
     const newCandidateList = [];
     if (office && office.ballot_item_display_name) {
@@ -222,6 +227,7 @@ export default class Office extends Component {
   render () {
     renderLog('Office');  // Set LOG_RENDER_EVENTS to log all renders
     const { candidateList, office } = this.state;
+    // console.log('Office.jsx office:', office);
 
     if (!office || !office.ballot_item_display_name) {
       // TODO DALE If the officeWeVoteId is not valid, we need to update this with a notice
