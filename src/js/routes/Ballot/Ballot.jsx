@@ -56,6 +56,8 @@ const TYPES = require('keymirror')({
 const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
 const delayBeforeVoterRefreshCall = 1000;
 
+const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
 class Ballot extends Component {
   static propTypes = {
     location: PropTypes.object,
@@ -1075,7 +1077,9 @@ class Ballot extends Component {
                   <LocationGuess
                     toggleSelectBallotModal={this.toggleSelectBallotModal}
                   />
-                  <CompleteYourProfile />
+                  {enableNextRelease ? (
+                    <CompleteYourProfile />
+                  ) : null}
                   <div>
                     {/* The rest of the ballot items */}
                     <div className="BallotList">
