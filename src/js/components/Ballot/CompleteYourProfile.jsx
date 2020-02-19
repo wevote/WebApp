@@ -7,6 +7,7 @@ import EditLocation from '@material-ui/icons/EditLocation';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import People from '@material-ui/icons/People';
 import CheckCircle from '@material-ui/icons/CheckCircle';
+import AppActions from '../../actions/AppActions';
 
 class CompleteYourProfile extends Component {
   static propTypes = {
@@ -20,19 +21,21 @@ class CompleteYourProfile extends Component {
       steps: [
         {
           id: 1,
-          title: 'Step One',
-          buttonText: 'Step One',
+          title: 'Watch how it works',
+          buttonText: 'How It Works',
           completed: false,
-          description: 'Do step one',
+          description: '',
           icon: (<PlayCircleFilled />),
+          onClick: this.openHowItWorksModal,
         },
         {
           id: 2,
           title: 'Step Two',
           buttonText: 'Step Two',
-          completed: true,
+          completed: false,
           description: 'Do step two',
           icon: (<EditLocation />),
+          onClick: this.openHowItWorksModal,
         },
         {
           id: 3,
@@ -41,53 +44,55 @@ class CompleteYourProfile extends Component {
           completed: false,
           description: 'Do step three',
           icon: (<People />),
+          onClick: this.openHowItWorksModal,
         },
-        {
-          id: 4,
-          title: 'Step Four',
-          buttonText: 'Step Four',
-          completed: false,
-          description: 'Do step four',
-          icon: (<ThumbUp />),
-        },
-        {
-          id: 5,
-          title: 'Step Five',
-          buttonText: 'Step Five',
-          completed: true,
-          description: 'Do step five',
-          icon: (<EditLocation />),
-        },
-        {
-          id: 6,
-          title: 'Step Six',
-          buttonText: 'Step Six',
-          completed: false,
-          description: 'Do step six',
-          icon: (<PlayCircleFilled />),
-        },
-        {
-          id: 7,
-          title: 'Step Seven',
-          buttonText: 'Step Seven',
-          completed: false,
-          description: 'Do step seven',
-          icon: (<People />),
-        },
-        {
-          id: 8,
-          title: 'Step Eight',
-          buttonText: 'Step Eight',
-          completed: false,
-          description: 'Do step eight',
-          icon: (<ThumbUp />),
-        },
+        // {
+        //   id: 4,
+        //   title: 'Step Four',
+        //   buttonText: 'Step Four',
+        //   completed: false,
+        //   description: 'Do step four',
+        //   icon: (<ThumbUp />),
+        // },
+        // {
+        //   id: 5,
+        //   title: 'Step Five',
+        //   buttonText: 'Step Five',
+        //   completed: true,
+        //   description: 'Do step five',
+        //   icon: (<EditLocation />),
+        // },
+        // {
+        //   id: 6,
+        //   title: 'Step Six',
+        //   buttonText: 'Step Six',
+        //   completed: false,
+        //   description: 'Do step six',
+        //   icon: (<PlayCircleFilled />),
+        // },
+        // {
+        //   id: 7,
+        //   title: 'Step Seven',
+        //   buttonText: 'Step Seven',
+        //   completed: false,
+        //   description: 'Do step seven',
+        //   icon: (<People />),
+        // },
+        // {
+        //   id: 8,
+        //   title: 'Step Eight',
+        //   buttonText: 'Step Eight',
+        //   completed: false,
+        //   description: 'Do step eight',
+        //   icon: (<ThumbUp />),
+        // },
       ],
     };
 
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.setItemComplete = this.setItemComplete.bind(this);
+    this.openHowItWorksModal = this.openHowItWorksModal.bind(this);
   }
 
   // Steps: options, friends
@@ -111,6 +116,12 @@ class CompleteYourProfile extends Component {
     });
     this.setState({ steps: newSteps });
     this.nextStep();
+  }
+
+  openHowItWorksModal () {
+    console.log('Opening modal');
+
+    AppActions.setShowHowItWorksModal(true);
   }
 
   previousStep () {
@@ -182,7 +193,9 @@ class CompleteYourProfile extends Component {
                 <strong>
                   {this.state.steps.filter(item => item.completed).length }
                   {' '}
-                  of 8
+                  of
+                  {' '}
+                  {this.state.steps.length}
                 </strong>
                 {' '}
                 <Info>actions </Info>
@@ -223,13 +236,27 @@ class CompleteYourProfile extends Component {
                       )}
                       {step.description}
                       <TabletActionButton>
-                        <Button onClick={() => this.setItemComplete(activeStep)} fullWidth variant="contained" color="primary">
+                        <Button onClick={() => {
+                          this.setItemComplete(activeStep);
+                          step.onClick();
+                        }}
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        >
                           {step.buttonText}
                         </Button>
                       </TabletActionButton>
                     </TitleArea>
                     <MobileActionButton>
-                      <Button onClick={() => this.setItemComplete(activeStep)} fullWidth variant="contained" color="primary">
+                      <Button onClick={() => {
+                        this.setItemComplete(activeStep);
+                        step.onClick();
+                      }}
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      >
                         {step.buttonText}
                       </Button>
                     </MobileActionButton>

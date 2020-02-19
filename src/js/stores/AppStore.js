@@ -21,6 +21,7 @@ class AppStore extends ReduceStore {
       showEditAddressButton: false,
       showNewVoterGuideModal: false,
       showPaidAccountUpgradeModal: false,
+      showHowItWorksModal: false,
       showShareModal: false,
       shareModalStep: 'options',
       showSelectBallotModal: false,
@@ -98,6 +99,10 @@ class AppStore extends ReduceStore {
     return this.getState().showPaidAccountUpgradeModal;
   }
 
+  showHowItWorksModal () {
+    return this.getState().showHowItWorksModal;
+  }
+
   showShareModal () {
     return this.getState().showShareModal;
   }
@@ -152,6 +157,8 @@ class AppStore extends ReduceStore {
         return { ...state, showNewVoterGuideModal: action.payload };
       case 'showPaidAccountUpgradeModal':
         return { ...state, showPaidAccountUpgradeModal: action.payload };
+      case 'showHowItWorksModal':
+        return { ...state, showHowItWorksModal: action.payload };
       case 'showShareModal':
         return { ...state, showShareModal: action.payload };
       case 'shareModalStep':
