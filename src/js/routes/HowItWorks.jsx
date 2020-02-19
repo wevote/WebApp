@@ -254,8 +254,10 @@ class HowItWorks extends Component {
     }
     if (isSignedIn) {
       historyPush(getStartedUrl);
+      AppActions.setShowHowItWorksModal(false);
     } else {
       AppActions.setGetStartedMode(getStartedMode);
+      AppActions.setShowHowItWorksModal(false);
       AppActions.setShowSignInModal(true);
     }
   }
