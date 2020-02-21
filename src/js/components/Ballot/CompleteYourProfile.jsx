@@ -6,6 +6,7 @@ import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import EditLocation from '@material-ui/icons/EditLocation';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import People from '@material-ui/icons/People';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 
 class CompleteYourProfile extends Component {
   static propTypes = {
@@ -202,9 +203,24 @@ class CompleteYourProfile extends Component {
                       <Icon>
                         {step.icon}
                       </Icon>
-                      <Title>
-                        {step.title}
-                      </Title>
+                      {step.completed ? (
+                        <TitleFlex>
+                          <Title>
+                            {step.title}
+                          </Title>
+                          <Completed>
+                            <CheckCircle />
+                            {' '}
+                            Completed
+                          </Completed>
+                        </TitleFlex>
+                      ) : (
+                        <TitleFlex>
+                          <Title>
+                            {step.title}
+                          </Title>
+                        </TitleFlex>
+                      )}
                       {step.description}
                       <TabletActionButton>
                         <Button onClick={() => this.setItemComplete(activeStep)} fullWidth variant="contained" color="primary">
@@ -272,11 +288,6 @@ const Indicator = styled.div`
   margin: 0 4px;
   background: ${props => (props.complete ? '#2E3C5D' : '#e1e1e1')};
   height: 8px;
-  @media (max-width: 768px) {
-    &:nth-child(even) {
-      margin-left: -4px;
-    }
-  }
 `;
 
 const Seperator = styled.div`
@@ -308,8 +319,23 @@ const Icon = styled.div`
 const Title = styled.h2`
   display: inline-block;
   font-weight: 600;
+  margin: 0;
+`;
+
+const TitleFlex = styled.div`
   margin: 0 0 0 8px;
-  margin-right: 6px;
+  margin-right: 8px;
+`;
+
+const Completed = styled.div`
+  color: green;
+  margin-left: -2px;
+  & * {
+    width: 15px !important;
+    height: 15px !important;
+    position: relative;
+    top: -2px;
+  }
 `;
 
 const TitleArea = styled.div`
