@@ -168,7 +168,7 @@ class CandidateStore extends ReduceStore {
         incomingCandidateCount = 0;
         candidateList = action.res.candidate_list;
         candidateList.forEach((one) => {
-          allCachedCandidates[candidate.we_vote_id] = one;
+          allCachedCandidates[one.we_vote_id] = one;
           incomingCandidateCount += 1;
         });
         if (contestOfficeWeVoteId.length) {

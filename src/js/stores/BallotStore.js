@@ -262,9 +262,6 @@ class BallotStore extends ReduceStore {
   }
 
   reduce (state, action) {
-    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success) return state;
-
     let allBallotItemsByOfficeOrMeasureDict = {}; // Key is office or measure weVoteId
     let allBallotItemsFlattenedDict = {}; // Key is office, candidate or measure weVoteId
     let allBallotItemsHaveBeenRetrievedForElection = {};
@@ -285,6 +282,9 @@ class BallotStore extends ReduceStore {
 
     switch (action.type) {
       case 'allBallotItemsRetrieve':
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         // console.log('BallotStore, voterBallotItemsRetrieve response received.');
         tempBallotItemList = action.res.ballot_item_list;
         // console.log('BallotStore, voterBallotItemsRetrieve, action.res.ballot_item_list: ', action.res.ballot_item_list);
@@ -353,10 +353,16 @@ class BallotStore extends ReduceStore {
 
       case 'allBallotItemsRetrieveCalled':
         // Make note that allBallotItemsRetrieved has been called - do not call again
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         return { ...state, allBallotItemsRetrieveCalled: action.payload };
 
       case 'ballotItemOptionsClear':
         // console.log('action.res', action.res)
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         return {
           ...state,
           ballotItemSearchResultsList: [],
@@ -370,6 +376,9 @@ class BallotStore extends ReduceStore {
 
       case 'positionListForBallotItem':
         // console.log('BallotStore, positionListForBallotItem response received.');
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         if (action.res.count === 0) return state;
 
         state.positionListHasBeenRetrievedOnceByBallotItem[action.res.ballot_item_we_vote_id] = true;
@@ -381,6 +390,9 @@ class BallotStore extends ReduceStore {
 
       case 'positionListForBallotItemFromFriends':
         // console.log('BallotStore, positionListForBallotItemFromFriends response received.');
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         if (action.res.count === 0) return state;
 
         state.positionListFromFriendsHasBeenRetrievedOnceByBallotItem[action.res.ballot_item_we_vote_id] = true;
@@ -392,6 +404,9 @@ class BallotStore extends ReduceStore {
 
       case 'raceLevelFilterTypeSave':
         // console.log('raceLevelFilterTypeSave action.res', action.res);
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         return {
           ...state,
           raceLevelFilterTypeSaved: action.res.race_level_filter_type_saved,
@@ -400,6 +415,9 @@ class BallotStore extends ReduceStore {
 
       case 'completionLevelFilterTypeSave':
         // console.log('completionLevelFilterTypeSave action.res', action.res);
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         return {
           ...state,
           completionLevelFilterTypeSaved: action.res.completion_level_filter_type_saved,
@@ -412,7 +430,16 @@ class BallotStore extends ReduceStore {
         return state;
 
       case 'voterBallotItemsRetrieve':
-        // console.log('BallotStore, voterBallotItemsRetrieve response received.');
+        // console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
+        // Exit if we don't have a successful response
+        if (action.res && !action.res.success && stringContains('VALID_VOTER_DEVICE_ID_MISSING', action.res.status)) {
+          // On the first call, we didn't have a valid voter_device_id yet. Call again.
+          console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
+          BallotActions.voterBallotItemsRetrieve(action.res.google_civic_election_id);
+        }
+
+        if (!action.res || !action.res.success) return state;
+
         tempBallotItemList = action.res.ballot_item_list;
         // console.log('BallotStore, voterBallotItemsRetrieve, action.res.ballot_item_list: ', action.res.ballot_item_list);
         newBallots = {};
@@ -496,6 +523,9 @@ class BallotStore extends ReduceStore {
         return revisedState;
 
       case 'voterBallotListRetrieve':
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         voterBallotList = action.res.voter_ballot_list;
         // console.log('BallotStore, voterBallotListRetrieve response received, voterBallotList: ', voterBallotList);
         return {
@@ -505,6 +535,9 @@ class BallotStore extends ReduceStore {
 
       case 'voterAddressSave':
         // console.log('BallotStore, voterAddressSave response received.');
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         if (action.res.status === 'SIMPLE_ADDRESS_SAVE') {
           return state;
         } else {
@@ -528,6 +561,9 @@ class BallotStore extends ReduceStore {
 
       case 'voterBallotItemOpenOrClosedSave':
         // console.log('action.res', action.res)
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         return {
           ...state,
           ballotItemUnfurledTracker: action.res.ballot_item_unfurled_tracker,
@@ -535,6 +571,9 @@ class BallotStore extends ReduceStore {
 
       case 'voterSignOut':
         // console.log('voterSignOut resetting BallotStore resetState');
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         BallotActions.voterBallotItemsRetrieve();
         return this.resetState();
 
@@ -546,6 +585,9 @@ class BallotStore extends ReduceStore {
       case 'voterVerifySecretCode':
         // Voter is signing in
         // console.log('BallotStore resetVoterSpecificState action.type:', action.type);
+        // Exit if we don't have a successful response
+        if (!action.res || !action.res.success) return state;
+
         // Cycle through all existing positionListFromFriendsHasBeenRetrievedOnceByBallotItem and request again
         ({ positionListFromFriendsHasBeenRetrievedOnceByBallotItem } = state);
         ballotItemWeVoteIdList = Object.keys(positionListFromFriendsHasBeenRetrievedOnceByBallotItem);

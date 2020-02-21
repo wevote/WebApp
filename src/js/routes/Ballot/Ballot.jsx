@@ -267,6 +267,12 @@ class Ballot extends Component {
       // this.hashLinkScroll();
       this.setState({ lastHashUsedInLinkScroll: hash });
     }
+
+    const modalToOpen = this.props.params.modal_to_show || '';
+
+    if (modalToOpen === 'share') {
+      AppActions.setShowShareModal(true);
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -854,12 +860,6 @@ class Ballot extends Component {
     }
     // console.log(ballotWithAllItems);
     const textForMapSearch = VoterStore.getTextForMapSearch();
-
-    const modalToOpen = this.props.params.modal_to_show || '';
-
-    if (modalToOpen === 'share') {
-      AppActions.setShowShareModal(true);
-    }
 
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
