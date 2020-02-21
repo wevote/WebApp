@@ -860,6 +860,7 @@ class Ballot extends Component {
     }
     // console.log(ballotWithAllItems);
     const textForMapSearch = VoterStore.getTextForMapSearch();
+    const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
@@ -1077,9 +1078,7 @@ class Ballot extends Component {
                   <LocationGuess
                     toggleSelectBallotModal={this.toggleSelectBallotModal}
                   />
-                  {enableNextRelease ? (
-                    <CompleteYourProfile />
-                  ) : null}
+                  {nextReleaseFeaturesEnabled && <CompleteYourProfile />}
                   <div>
                     {/* The rest of the ballot items */}
                     <div className="BallotList">

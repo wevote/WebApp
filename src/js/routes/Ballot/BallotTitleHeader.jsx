@@ -7,7 +7,7 @@ import { shortenText } from '../../utils/textFormat';
 const webAppConfig = require('../../config');
 
 const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled }) => {
-  const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+  const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
   if (isCordova() && isIOsSmallerThanPlus() && electionName) {
     return (
       <h1 className="ballot__header__title__cordova">
@@ -60,7 +60,7 @@ const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled })
             </>
           )}
         </Title>
-        {electionDayTextFormatted && enableNextRelease && (
+        {electionDayTextFormatted && nextReleaseFeaturesEnabled && (
           <ShareButtonWrapper>
             <BallotShareButton />
           </ShareButtonWrapper>
@@ -97,7 +97,7 @@ const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled })
             </>
           )}
         </Title>
-        {electionDayTextFormatted && enableNextRelease && (
+        {electionDayTextFormatted && nextReleaseFeaturesEnabled && (
           <ShareButtonWrapper>
             <BallotShareButton />
           </ShareButtonWrapper>
