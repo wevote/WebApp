@@ -189,7 +189,7 @@ class CompleteYourProfile extends Component {
               </span>
               <Indicators>
                 {this.state.steps.map(step => (
-                  <Indicator complete={step.completed} />
+                  <Indicator key={`completeYourProfileIndicator-${step.id}`} complete={step.completed} />
                 ))}
               </Indicators>
             </Flex>
@@ -197,7 +197,7 @@ class CompleteYourProfile extends Component {
             {this.state.steps.map((step, index) => {
               if (step.id === this.state.activeStep) {
                 return (
-                  <Description>
+                  <Description key={`completeYourProfileDescription-${step.id}`}>
                     <TitleArea>
                       <Icon>
                         {step.icon}

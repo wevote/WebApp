@@ -69,13 +69,8 @@ class Application extends Component {
 
     if (isIOS()) {
       // Unfortunately this event only works on iOS, but fortunately it is most needed on iOS
-      window.addEventListener('keyboardWillShow', () => {
-        prepareForCordovaKeyboard('ballot');
-      });
-
-      window.addEventListener('keyboardDidHide', () => {
-        restoreStylesAfterCordovaKeyboard('ballot');
-      });
+      window.addEventListener('keyboardWillShow', this.localPrepareForCordovaKeyboard);
+      window.addEventListener('keyboardDidHide', this.localRestoreStylesAfterCordovaKeyboard);
     }
   }
 
@@ -112,8 +107,10 @@ class Application extends Component {
     this.appStoreListener.remove();
     this.voterStoreListener.remove();
     window.removeEventListener('scroll', this.handleWindowScroll);
-    window.removeEventListener('keyboardWillShow');
-    window.removeEventListener('keyboardDidHide');
+    if (isIOS()) {
+      window.removeEventListener('keyboardWillShow', this.localPrepareForCordovaKeyboard);
+      window.removeEventListener('keyboardDidHide', this.localRestoreStylesAfterCordovaKeyboard);
+    }
   }
 
   initializationForCordova () { // eslint-disable-line
@@ -221,6 +218,13 @@ class Application extends Component {
     }
   };
 
+  localPrepareForCordovaKeyboard () {
+    prepareForCordovaKeyboard('ballot');
+  }
+
+  localRestoreStylesAfterCordovaKeyboard () {
+    restoreStylesAfterCordovaKeyboard('ballot');
+  }
 
   incomingVariableManagement () {
     // console.log('Application, incomingVariableManagement, this.props.location.query: ', this.props.location.query);
