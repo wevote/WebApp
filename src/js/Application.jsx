@@ -338,7 +338,7 @@ class Application extends Component {
 
     const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, showBallotShareButtonFooter, voterGuideCreatorMode, voterGuideMode } = getApplicationViewBooleans(pathname);
     // console.log('showBallotShareButtonFooter:', showBallotShareButtonFooter);
-    const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     if (inTheaterMode) {
       // console.log('inTheaterMode', inTheaterMode);
@@ -407,7 +407,7 @@ class Application extends Component {
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )}
-          {showBallotShareButtonFooter && enableNextRelease && (
+          {showBallotShareButtonFooter && nextReleaseFeaturesEnabled && (
             <BallotShareButtonFooter pathname={pathname} />
           )}
         </div>
@@ -455,7 +455,7 @@ class Application extends Component {
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>
         )}
-        {showBallotShareButtonFooter && enableNextRelease && (
+        {showBallotShareButtonFooter && nextReleaseFeaturesEnabled && (
           <BallotShareButtonFooter pathname={pathname} />
         )}
       </div>

@@ -102,7 +102,7 @@ export default class HamburgerMenu extends Component {
     let { is_signed_in: isSignedIn } = voter;
     const { voter_photo_url_medium: photoUrl } = voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
-    const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
 
@@ -207,7 +207,7 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            {isSignedIn && enableNextRelease && (
+            {isSignedIn && nextReleaseFeaturesEnabled && (
               <HamburgerMenuRow
                 icon="fa fa-bullhorn"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
