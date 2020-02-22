@@ -144,6 +144,15 @@ export function getApplicationViewBooleans (pathname) {
   } else if (stringContains('/b/btdb', pathnameLowerCase) ||
       stringContains('/b/btdo', pathnameLowerCase) ||
       stringContains('/btcand/', pathnameLowerCase) ||
+      (pathnameLowerCase === '/for-campaigns') ||
+      (pathnameLowerCase === '/for-organizations') ||
+      pathnameLowerCase.startsWith('/how') ||
+      (pathnameLowerCase === '/more/about') ||
+      (pathnameLowerCase === '/more/credits') ||
+      pathnameLowerCase.startsWith('/more/donate') ||
+      (pathnameLowerCase === '/more/myballot') ||
+      pathnameLowerCase.startsWith('/more/pricing') ||
+      (pathnameLowerCase === '/welcome') ||
       pathnameLowerCase.startsWith('/value/') ||
       pathnameLowerCase.startsWith('/values/') ||
       pathnameLowerCase.startsWith('/settings/account') ||
@@ -164,20 +173,11 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/candidate') || // Show Footer if back to not specified above
       pathnameLowerCase.startsWith('/friends') ||
       pathnameLowerCase.startsWith('/measure') || // Show Footer if back to not specified above
-      pathnameLowerCase.startsWith('/office') || // Show Footer if back to not specified above
-      pathnameLowerCase.startsWith('/values') ||
-      (pathnameLowerCase === '/for-campaigns') ||
-      (pathnameLowerCase === '/for-organizations') ||
-      (pathnameLowerCase.startsWith('/how')) ||
-      (pathnameLowerCase === '/more/about') ||
       (pathnameLowerCase === '/more/attributions') ||
-      (pathnameLowerCase === '/more/credits') ||
-      (pathnameLowerCase.startsWith('/more/donate')) ||
-      (pathnameLowerCase === '/more/myballot') ||
-      (pathnameLowerCase.startsWith('/more/pricing')) ||
       (pathnameLowerCase === '/more/privacy') ||
       (pathnameLowerCase === '/more/terms') ||
-      (pathnameLowerCase === '/welcome') ||
+      pathnameLowerCase.startsWith('/office') || // Show Footer if back to not specified above
+      pathnameLowerCase.startsWith('/values') ||
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = true;
@@ -187,7 +187,6 @@ export function getApplicationViewBooleans (pathname) {
   }
 
   let showBallotShareButtonFooter = false;
-
   if (pathnameLowerCase.startsWith('/ballot') ||
     pathnameLowerCase.startsWith('/candidate') ||
     pathnameLowerCase.startsWith('/measure') ||
@@ -241,7 +240,7 @@ export function setZenDeskHelpVisibility (pathname) {
       ['/ballot', '/ballot/vote', '/friends', '/more/network', '/office', '/opinions', '/settings', '/value'].some(
         match => pathname.toLowerCase().startsWith(match),
       )) &&
-      !['/wevoteintro'].some(
+      !['/wevoteintro', '/how'].some(
         match => pathname.toLowerCase().startsWith(match),
       )
     ) { // '/values'

@@ -2,30 +2,28 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
-import People from '@material-ui/icons/People';
+// import People from '@material-ui/icons/People';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import Mail from '@material-ui/icons/Mail';
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import { Button, Tooltip } from '@material-ui/core';
+// import Mail from '@material-ui/icons/Mail';
+// import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+// import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
+// import { Button, Tooltip } from '@material-ui/core';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import MessageCard from '../Widgets/MessageCard';
+// import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
-import AppActions from '../../actions/AppActions';
+// import AppActions from '../../actions/AppActions';
 import HowItWorks from '../../routes/HowItWorks';
 
 class HowItWorksModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    isSignedIn: PropTypes.bool,
     pathname: PropTypes.string,
     show: PropTypes.bool,
-    step: PropTypes.string,
     toggleFunction: PropTypes.func.isRequired,
   };
 
@@ -38,17 +36,12 @@ class HowItWorksModal extends Component {
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
   }
 
-  // Steps: options, friends
-
   componentDidMount () {
-    console.log(this.props.step);
-
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
 
     this.setState({
       pathname: this.props.pathname,
-      step: this.props.step || 'options',
       currentFriendsList: FriendStore.currentFriends(),
     });
   }
@@ -62,10 +55,6 @@ class HowItWorksModal extends Component {
     if (currentFriendsList.length !== FriendStore.currentFriends().length) {
       this.setState({ currentFriendsList: FriendStore.currentFriends() });
     }
-  }
-
-  setStep (step) {
-    this.setState({ step });
   }
 
   closeHowItWorksModal () {
@@ -127,11 +116,9 @@ const styles = () => ({
     margin: '0 auto',
   },
   dialogContent: {
-    padding: '24px 24px 36px 24px',
+    padding: '0 24px 12px 24px',
     background: 'white',
-    // height: 'fit-content',
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'center',
   },
   backButton: {
@@ -159,7 +146,7 @@ const ModalTitleArea = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : props.onSignInSlide ? '20px 14px 10px' : '10px 14px')};
+  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;

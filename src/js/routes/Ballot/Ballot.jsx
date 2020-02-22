@@ -56,7 +56,7 @@ const TYPES = require('keymirror')({
 const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
 const delayBeforeVoterRefreshCall = 1000;
 
-const enableNextRelease = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class Ballot extends Component {
   static propTypes = {
@@ -860,7 +860,6 @@ class Ballot extends Component {
     }
     // console.log(ballotWithAllItems);
     const textForMapSearch = VoterStore.getTextForMapSearch();
-    const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
@@ -1075,10 +1074,10 @@ class Ballot extends Component {
                 ) : null
                 }
                 <div className="col-sm-12 col-lg-9">
+                  {nextReleaseFeaturesEnabled && <CompleteYourProfile />}
                   <LocationGuess
                     toggleSelectBallotModal={this.toggleSelectBallotModal}
                   />
-                  {nextReleaseFeaturesEnabled && <CompleteYourProfile />}
                   <div>
                     {/* The rest of the ballot items */}
                     <div className="BallotList">

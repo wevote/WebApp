@@ -9,10 +9,11 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 
 class AnnotatedSlideshow extends PureComponent {
   static propTypes = {
-    slides: PropTypes.object.isRequired,
-    selectedStepIndex: PropTypes.number.isRequired,
-    onChangeSlide: PropTypes.func,
     classes: PropTypes.object,
+    inModal: PropTypes.bool,
+    onChangeSlide: PropTypes.func,
+    selectedStepIndex: PropTypes.number.isRequired,
+    slides: PropTypes.object.isRequired,
   };
 
   componentDidMount () {
@@ -53,25 +54,30 @@ class AnnotatedSlideshow extends PureComponent {
     const data = Object.values(slides);
     const { length } = data;
     const { title, description, imgSrc } = data.find(slide => slide.index === selectedStepIndex);
+    // console.log('AnnotatedSlideshow selectedStepIndex:', selectedStepIndex, 'length:', length);
     return (
-      <Wrapper>
-        <SlideShowTitle>{title}</SlideShowTitle>
+      <Wrapper inModal={this.props.inModal}>
+        <SlideShowTitle inModal={this.props.inModal}>{title}</SlideShowTitle>
         <Description>{description}</Description>
         <Slide>
-          <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(false)}>
-            <ArrowLeftIcon classes={{ root: classes.navIconRoot }} />
-          </Nav>
+          {!this.props.inModal && (
+            <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(false)}>
+              <ArrowLeftIcon classes={{ root: classes.navIconRoot }} />
+            </Nav>
+          )}
           <Image inModal={this.props.inModal} src={cordovaDot(imgSrc)} />
-          <Nav disabled={selectedStepIndex === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(true)}>
-            <ArrowRightIcon classes={{ root: classes.navIconRoot }} />
-          </Nav>
+          {!this.props.inModal && (
+            <Nav disabled={selectedStepIndex === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(true)}>
+              <ArrowRightIcon classes={{ root: classes.navIconRoot }} />
+            </Nav>
+          )}
         </Slide>
         {
-          selectedStepIndex < length - 1 && (
+          selectedStepIndex < (length - 1) && (
             <TwoButtonsWrapper>
               <BackButtonWrapper>
                 <Button
-                  classes={{ root: classes.nextButtonRoot }}
+                  classes={{ root: this.props.inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
                   color="primary"
                   disabled={selectedStepIndex === 0}
                   fullWidth
@@ -86,7 +92,7 @@ class AnnotatedSlideshow extends PureComponent {
                   color="primary"
                   id="howItWorksNext"
                   variant="contained"
-                  classes={{ root: classes.nextButtonRoot }}
+                  classes={{ root: this.props.inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
                   onClick={() => this.handleChangeSlide(true)}
                 >
                   Next
@@ -113,6 +119,9 @@ const styles = theme => ({
       display: 'none',
     },
   },
+  nextButtonRootModal: {
+    width: '100%',
+  },
 });
 
 const Wrapper = styled.div`
@@ -120,17 +129,17 @@ const Wrapper = styled.div`
   flex-flow: column;
   text-align: left;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding: 1em 0;
+    padding: ${({ inModal }) => (inModal ? '0' : '1em 0')};
   }
 `;
 
 const SlideShowTitle = styled.h3`
   font-weight: bold;
   font-size: 24px;
-  margin-top: 36px;
+  margin-top:  ${({ inModal }) => (inModal ? '0' : '36px')};
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 20px;
-    margin-top: 16px;
+    margin-top: ${({ inModal }) => (inModal ? '0' : '16px')};
   }
 `;
 
