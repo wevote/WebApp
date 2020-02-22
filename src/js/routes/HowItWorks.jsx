@@ -141,20 +141,29 @@ class HowItWorks extends Component {
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    if (this.props.params.category_string === 'for-campaigns') {
-      this.setState({
-        getStartedMode: 'getStartedForCampaigns',
-        getStartedUrl: '/settings/profile',
-        selectedCategoryIndex: 2,
-        selectedStepIndex: 0,
-      });
-    } else if (this.props.params.category_string === 'for-organizations') {
-      this.setState({
-        getStartedMode: 'getStartedForOrganizations',
-        getStartedUrl: '/settings/profile',
-        selectedCategoryIndex: 1,
-        selectedStepIndex: 0,
-      });
+    if (!this.props.inModal) {
+      if (this.props.params.category_string === 'for-campaigns') {
+        this.setState({
+          getStartedMode: 'getStartedForCampaigns',
+          getStartedUrl: '/settings/profile',
+          selectedCategoryIndex: 2,
+          selectedStepIndex: 0,
+        });
+      } else if (this.props.params.category_string === 'for-organizations') {
+        this.setState({
+          getStartedMode: 'getStartedForOrganizations',
+          getStartedUrl: '/settings/profile',
+          selectedCategoryIndex: 1,
+          selectedStepIndex: 0,
+        });
+      } else {
+        this.setState({
+          getStartedMode: 'getStartedForVoters',
+          getStartedUrl: '/ballot',
+          selectedCategoryIndex: 0,
+          selectedStepIndex: 0,
+        });
+      }
     } else {
       this.setState({
         getStartedMode: 'getStartedForVoters',
@@ -166,20 +175,29 @@ class HowItWorks extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.params.category_string === 'for-campaigns') {
-      this.setState({
-        getStartedMode: 'getStartedForCampaigns',
-        getStartedUrl: '/settings/profile',
-        selectedCategoryIndex: 2,
-        selectedStepIndex: 0,
-      });
-    } else if (nextProps.params.category_string === 'for-organizations') {
-      this.setState({
-        getStartedMode: 'getStartedForOrganizations',
-        getStartedUrl: '/settings/profile',
-        selectedCategoryIndex: 1,
-        selectedStepIndex: 0,
-      });
+    if (!this.props.inModal) {
+      if (nextProps.params.category_string === 'for-campaigns') {
+        this.setState({
+          getStartedMode: 'getStartedForCampaigns',
+          getStartedUrl: '/settings/profile',
+          selectedCategoryIndex: 2,
+          selectedStepIndex: 0,
+        });
+      } else if (nextProps.params.category_string === 'for-organizations') {
+        this.setState({
+          getStartedMode: 'getStartedForOrganizations',
+          getStartedUrl: '/settings/profile',
+          selectedCategoryIndex: 1,
+          selectedStepIndex: 0,
+        });
+      } else {
+        this.setState({
+          getStartedMode: 'getStartedForVoters',
+          getStartedUrl: '/ballot',
+          selectedCategoryIndex: 0,
+          selectedStepIndex: 0,
+        });
+      }
     } else {
       this.setState({
         getStartedMode: 'getStartedForVoters',
@@ -236,8 +254,10 @@ class HowItWorks extends Component {
     }
     if (isSignedIn) {
       historyPush(getStartedUrl);
+      AppActions.setShowHowItWorksModal(false);
     } else {
       AppActions.setGetStartedMode(getStartedMode);
+      AppActions.setShowHowItWorksModal(false);
       AppActions.setShowSignInModal(true);
     }
   }
@@ -272,7 +292,44 @@ class HowItWorks extends Component {
     }
     // console.log('HowItWorks, selectedStepIndex: ', selectedStepIndex);
 
-    return (
+    return this.props.inModal ? (
+      <>
+        <AnnotatedSlideshow
+          inModal
+          slides={currentSlides}
+          selectedStepIndex={selectedStepIndex}
+          onChangeSlide={this.handleChangeSlide}
+        />
+        {
+          selectedStepIndex === stepLabels.length - 1 && (
+            <TwoButtonsWrapper>
+              <BackButtonWrapper className="u-show-mobile-tablet">
+                <Button
+                  classes={{ root: classes.nextButtonRoot }}
+                  color="primary"
+                  fullWidth
+                  onClick={() => this.handleChangeSlideGoBack()}
+                  variant="outlined"
+                >
+                  Back
+                </Button>
+              </BackButtonWrapper>
+              <NextButtonWrapper>
+                <Button
+                  classes={{ root: classes.getStartedButtonRoot }}
+                  color="primary"
+                  variant="contained"
+                  onClick={() => this.howItWorksGetStarted()}
+                  id="howItWorksGetStarted"
+                >
+                  Get Started
+                </Button>
+              </NextButtonWrapper>
+            </TwoButtonsWrapper>
+          )
+        }
+      </>
+    ) : (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title={helmetTitle} />
         <WelcomeAppbar pathname={simulatedPathname} />
