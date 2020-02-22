@@ -19,6 +19,7 @@ import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 class HowItWorks extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    inModal: PropTypes.bool,
     params: PropTypes.object,
   };
 
@@ -301,9 +302,9 @@ class HowItWorks extends Component {
           onChangeSlide={this.handleChangeSlide}
         />
         {
-          selectedStepIndex === stepLabels.length - 1 && (
+          selectedStepIndex === (stepLabels.length - 1) && (
             <TwoButtonsWrapper>
-              <BackButtonWrapper className="u-show-mobile-tablet">
+              <BackButtonWrapper>
                 <Button
                   classes={{ root: classes.nextButtonRoot }}
                   color="primary"

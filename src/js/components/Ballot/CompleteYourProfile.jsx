@@ -4,7 +4,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import EditLocation from '@material-ui/icons/EditLocation';
-import ThumbUp from '@material-ui/icons/ThumbUp';
+// import ThumbUp from '@material-ui/icons/ThumbUp';
 import People from '@material-ui/icons/People';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import AppActions from '../../actions/AppActions';
@@ -119,8 +119,7 @@ class CompleteYourProfile extends Component {
   }
 
   openHowItWorksModal () {
-    console.log('Opening modal');
-
+    // console.log('Opening modal');
     AppActions.setShowHowItWorksModal(true);
   }
 

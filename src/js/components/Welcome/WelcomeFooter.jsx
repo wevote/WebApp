@@ -90,19 +90,19 @@ class WelcomeFooter extends Component {
               />
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkFacebook"
-                url="https://www.facebook.com/wevoteusa"
+                url="https://www.facebook.com/WeVoteUSA/"
                 target="_blank"
                 body={(
-                  <span>Facebook</span>
+                  <span>Facebook - WeVoteUSA</span>
                 )}
                 className={classes.link}
               />
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkTwitter"
-                url="https://twitter.com/wevote"
+                url="https://twitter.com/WeVote"
                 target="_blank"
                 body={(
-                  <span>Twitter</span>
+                  <span>Twitter - @WeVote</span>
                 )}
                 className={classes.link}
               />
@@ -150,7 +150,7 @@ class WelcomeFooter extends Component {
             {' '}
             <OpenExternalWebSite
               linkIdAttribute="footerLinkOpenSource"
-              url="https://github.com/wevote"
+              url="https://github.com/WeVote"
               target="_blank"
               body={(
                 <span>open source</span>

@@ -563,7 +563,6 @@ class HeaderBar extends Component {
         )}
         {showHowItWorksModal && (
           <HowItWorksModal
-            isSignedIn={this.state.voter.is_signed_in}
             pathname={pathname}
             show={showHowItWorksModal}
             toggleFunction={this.closeHowItWorksModal}
