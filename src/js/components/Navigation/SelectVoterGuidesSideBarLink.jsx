@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
+import { historyPush } from '../../utils/cordovaUtils';
 import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 
 export default class SelectVoterGuidesSideBarLink extends Component {
@@ -11,38 +13,44 @@ export default class SelectVoterGuidesSideBarLink extends Component {
     label: PropTypes.string,
     subtitle: PropTypes.string,
     displaySubtitles: PropTypes.bool,
+    electionId: PropTypes.number,
     voterGuideWeVoteId: PropTypes.string,
-    voterGuideWeVoteIdSelected: PropTypes.string,
   };
 
-  constructor (props) {
-    super(props);
-    this.state = {
-      voterGuideWeVoteId: '',
-      voterGuideWeVoteIdSelected: '',
-    };
-  }
-
   componentDidMount () {
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    const linkedOrganizationWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
     this.setState({
-      voterGuideWeVoteId: this.props.voterGuideWeVoteId,
-      voterGuideWeVoteIdSelected: this.props.voterGuideWeVoteIdSelected,
+      linkedOrganizationWeVoteId,
     });
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({
-      voterGuideWeVoteId: nextProps.voterGuideWeVoteId,
-      voterGuideWeVoteIdSelected: nextProps.voterGuideWeVoteIdSelected,
-    });
+  goToEditLink = () => {
+    const { voterGuideWeVoteId } = this.props;
+    const editLink = `/vg/${voterGuideWeVoteId}/settings/positions`;
+    historyPush(editLink);
+  }
+
+  goToPreviewLink = () => {
+    const { electionId } = this.props;
+    const { linkedOrganizationWeVoteId } = this.state;
+    const previewLink = `/voterguide/${linkedOrganizationWeVoteId}/ballot/election/${electionId}/positions`;
+    historyPush(previewLink);
   }
 
   render () {
+    // console.log('voterGuideWeVoteId:', this.props.voterGuideWeVoteId);
     renderLog('SelectVoterGuidesSideBarLink');  // Set LOG_RENDER_EVENTS to log all renders
     const labelInSentenceCase = capitalizeString(this.props.label);
     const subtitleInSentenceCase = sentenceCaseString(this.props.subtitle);
-
-    // const atStateIsOnThisVoterGuide = this.state.voterGuideWeVoteIdSelected && this.state.voterGuideWeVoteIdSelected === this.state.voterGuideWeVoteId;
 
     return (
       <span>
@@ -59,10 +67,23 @@ export default class SelectVoterGuidesSideBarLink extends Component {
               ) : null }
               <ButtonWrapper>
                 <ButtonContainer>
-                  <Button fullWidth color="primary" variant="contained">Edit</Button>
+                  <Button
+                    color="primary"
+                    fullWidth
+                    onClick={this.goToEditLink}
+                    variant="contained"
+                  >
+                    Edit
+                  </Button>
                 </ButtonContainer>
                 <ButtonContainer>
-                  <Button fullWidth variant="outlined">Preview</Button>
+                  <Button
+                    fullWidth
+                    onClick={this.goToPreviewLink}
+                    variant="outlined"
+                  >
+                    Preview
+                  </Button>
                 </ButtonContainer>
               </ButtonWrapper>
             </Content>

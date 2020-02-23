@@ -85,7 +85,7 @@ class OrganizationVoterGuideCard extends Component {
                   @
                   {organizationTwitterHandle}
                 </TwitterHandleWrapper>
-                { twitterFollowersCount && String(twitterFollowersCount) !== '0' && (
+                { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
                   <span className="twitter-followers__badge">
                     <span className="fab fa-twitter twitter-followers__icon" />
                     {numberWithCommas(twitterFollowersCount)}
