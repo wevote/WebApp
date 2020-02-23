@@ -91,7 +91,7 @@ export default class FriendToggle extends Component {
                 </span>
               )}
             </Button>
-            <div className="issues-follow-btn__seperator" />
+            <div className="issues-follow-btn__separator" />
             <Button
               type="button"
               id="dropdown-toggle-id"

@@ -215,7 +215,7 @@ class BallotSideBar extends Component {
           { this.props.displayTitle ? (
             <>
               <Typography variant="h3" classes={{ root: classes.typography }}>Summary Of Ballot Items</Typography>
-              <Seperator />
+              <Separator />
             </>
           ) :
             null
@@ -270,7 +270,7 @@ const SidebarFooter = styled.div`
   text-align: center;
 `;
 
-const Seperator = styled.div`
+const Separator = styled.div`
   height: 2px;
   width: 90%;
   margin: 0 auto;

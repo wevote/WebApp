@@ -316,7 +316,7 @@ export default class FollowToggle extends Component {
             </Button>
             {!isFriend && (
               <>
-                <div className="issues-follow-btn__seperator" />
+                <div className="issues-follow-btn__separator" />
                 <Button
                   id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`}
                   type="button"
@@ -398,7 +398,7 @@ export default class FollowToggle extends Component {
             </Button>
             {!hideDropdownButtonUntilFollowing && (
               <>
-                <div className="issues-follow-btn__seperator" />
+                <div className="issues-follow-btn__separator" />
                 <Button
                   id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`}
                   type="button"

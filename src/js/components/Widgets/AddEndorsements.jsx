@@ -41,7 +41,7 @@ class AddEndorsements extends Component {
                 //   <span className="split-button__icon">
                 //     <img src={cordovaDot('/img/global/svg-icons/positions-icon-24-x-24.svg')} alt="" />
                 //   </span>
-                //   <div className="split-button__seperator split-button__seperator--left" />
+                //   <div className="split-button__separator split-button__separator--left" />
                 //   <span className="split-button__text">
                 //     Add endorsements
                 //   </span>

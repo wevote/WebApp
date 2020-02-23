@@ -44,7 +44,7 @@ class SplitIconButton extends PureComponent {
           {icon}
         </SplitButtonIcon>
         {this.props.iconRight ? (
-          <SplitButtonSeperatorRight
+          <SplitButtonSeparatorRight
             style={this.props.separatorColor ? (
               {
                 backgroundColor: this.props.separatorColor,
@@ -52,7 +52,7 @@ class SplitIconButton extends PureComponent {
             ) : null}
           />
         ) : (
-          <SplitButtonSeperatorLeft
+          <SplitButtonSeparatorLeft
             style={this.props.separatorColor ? (
               {
                 backgroundColor: this.props.separatorColor,
@@ -87,7 +87,7 @@ const styles = () => ({
   },
 });
 
-const SplitButtonSeperatorLeft = styled.div`
+const SplitButtonSeparatorLeft = styled.div`
   display: inline-block;
   height: 100%;
   width: 1.5px !important;
@@ -98,7 +98,7 @@ const SplitButtonSeperatorLeft = styled.div`
   left: 44px;
 `;
 
-const SplitButtonSeperatorRight = styled.div`
+const SplitButtonSeparatorRight = styled.div`
   display: inline-block;
   height: 100%;
   width: 1.5px !important;

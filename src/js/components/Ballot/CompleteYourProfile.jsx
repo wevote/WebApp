@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
-import EditLocation from '@material-ui/icons/EditLocation';
+// import EditLocation from '@material-ui/icons/EditLocation';
 // import ThumbUp from '@material-ui/icons/ThumbUp';
-import People from '@material-ui/icons/People';
+// import People from '@material-ui/icons/People';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import AppActions from '../../actions/AppActions';
+import VoterStore from '../../stores/VoterStore';
+import VoterConstants from '../../constants/VoterConstants';
 
 class CompleteYourProfile extends Component {
   static propTypes = {
@@ -28,24 +30,24 @@ class CompleteYourProfile extends Component {
           icon: (<PlayCircleFilled />),
           onClick: this.openHowItWorksModal,
         },
-        {
-          id: 2,
-          title: 'Step Two',
-          buttonText: 'Step Two',
-          completed: false,
-          description: 'Do step two',
-          icon: (<EditLocation />),
-          onClick: this.openHowItWorksModal,
-        },
-        {
-          id: 3,
-          title: 'Step Three',
-          buttonText: 'Step Three',
-          completed: false,
-          description: 'Do step three',
-          icon: (<People />),
-          onClick: this.openHowItWorksModal,
-        },
+        // {
+        //   id: 2,
+        //   title: 'Step Two',
+        //   buttonText: 'Step Two',
+        //   completed: false,
+        //   description: 'Do step two',
+        //   icon: (<EditLocation />),
+        //   onClick: this.openHowItWorksModal,
+        // },
+        // {
+        //   id: 3,
+        //   title: 'Step Three',
+        //   buttonText: 'Step Three',
+        //   completed: false,
+        //   description: 'Do step three',
+        //   icon: (<People />),
+        //   onClick: this.openHowItWorksModal,
+        // },
         // {
         //   id: 4,
         //   title: 'Step Four',
@@ -91,27 +93,51 @@ class CompleteYourProfile extends Component {
 
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
-    this.setItemComplete = this.setItemComplete.bind(this);
+    // this.setItemComplete = this.setItemComplete.bind(this);
     this.openHowItWorksModal = this.openHowItWorksModal.bind(this);
   }
 
   // Steps: options, friends
   componentDidMount () {
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.sortSteps();
+    const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
+    if (howItWorksWatched) {
+      const howItWorksWatchedId = 1;
+      this.setItemComplete(howItWorksWatchedId);
+    }
+    this.setState({
+      howItWorksWatched,
+    });
   }
 
-  setItemComplete (id) {
-    console.log('Setting complete!');
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
+    if (howItWorksWatched) {
+      const howItWorksWatchedId = 1;
+      this.setItemComplete(howItWorksWatchedId);
+    }
+    this.setState({
+      howItWorksWatched,
+    });
+  }
+
+  setItemComplete (stepItemIdToMarkComplete) {
+    // console.log('Setting complete!');
     const { steps } = this.state;
-    let tempItem;
-    const newSteps = steps.map((item) => {
-      if (item.id === id) {
-        console.log('Item to mark complete: ', item);
-        tempItem = item;
-        tempItem.completed = true;
-        return tempItem;
+    let oneStepModified;
+    const newSteps = steps.map((oneStep) => {
+      if (oneStep.id === stepItemIdToMarkComplete) {
+        // console.log('Item to mark complete: ', oneStep);
+        oneStepModified = oneStep;
+        oneStepModified.completed = true;
+        return oneStepModified;
       } else {
-        return item;
+        return oneStep;
       }
     });
     this.setState({ steps: newSteps });
@@ -126,21 +152,26 @@ class CompleteYourProfile extends Component {
   previousStep () {
     this.sortSteps();
     const { steps } = this.state;
-    const currentIndex = steps.map(e => e.id).indexOf(this.state.activeStep);
+    const currentIndex = steps.map(oneStep => oneStep.id).indexOf(this.state.activeStep);
 
-    console.log(currentIndex);
+    // console.log('currentIndex: ', currentIndex);
 
-    this.setState({ activeStep: steps[currentIndex - 1].id });
+    this.setState({
+      activeStep: steps[currentIndex - 1].id,
+    });
   }
 
   nextStep () {
     this.sortSteps();
     const { steps } = this.state;
     const currentIndex = steps.map(e => e.id).indexOf(this.state.activeStep);
+    // console.log('currentIndex: ', currentIndex);
 
-    console.log(currentIndex);
-
-    this.setState({ activeStep: steps[currentIndex + 1].id });
+    if (steps[currentIndex + 1]) {
+      this.setState({
+        activeStep: steps[currentIndex + 1].id,
+      });
+    }
   }
 
   sortSteps () {
@@ -161,27 +192,35 @@ class CompleteYourProfile extends Component {
       return comparison;
     }
 
-    const completed = this.state.steps.filter(item => item.completed);
-    const notCompleted = this.state.steps.filter(item => !item.completed);
+    const completed = this.state.steps.filter(oneStep => oneStep.completed);
+    const notCompleted = this.state.steps.filter(oneStep => !oneStep.completed);
 
     completed.sort(compare);
     notCompleted.sort(compare);
 
-    console.log('Completed: ', completed);
-    console.log('Not Completed: ', notCompleted);
+    // console.log('Completed: ', completed);
+    // console.log('Not Completed: ', notCompleted);
 
     const all = [...completed, ...notCompleted];
     // all.push(completed);
     // all.push(notCompleted);
 
-    console.log('All: ', all);
+    // console.log('All steps: ', all);
 
     this.setState({ steps: all });
   }
 
   render () {
-    // const { classes } = this.props;
-    const { activeStep } = this.state;
+    const { activeStep, howItWorksWatched } = this.state;
+
+    // If we have completed all of the steps, don't render this component
+    const showCompleteYourProfileForDebugging = false;
+    if (showCompleteYourProfileForDebugging) {
+      // Pass by this OFF switch so we render this component
+    } else if (howItWorksWatched) {
+      // If we have done all of the steps, do not render CompleteYourProfile
+      return null;
+    }
 
     return (
       <>
@@ -190,7 +229,7 @@ class CompleteYourProfile extends Component {
             <Flex>
               <span>
                 <strong>
-                  {this.state.steps.filter(item => item.completed).length }
+                  {this.state.steps.filter(oneStep => oneStep.completed).length }
                   {' '}
                   of
                   {' '}
@@ -206,9 +245,9 @@ class CompleteYourProfile extends Component {
                 ))}
               </Indicators>
             </Flex>
-            <Seperator />
+            <Separator />
             {this.state.steps.map((step, index) => {
-              if (step.id === this.state.activeStep) {
+              if (step.id === activeStep) {
                 return (
                   <Description key={`completeYourProfileDescription-${step.id}`}>
                     <TitleArea>
@@ -236,7 +275,7 @@ class CompleteYourProfile extends Component {
                       {step.description}
                       <TabletActionButton>
                         <Button onClick={() => {
-                          this.setItemComplete(activeStep);
+                          // this.setItemComplete(activeStep);
                           step.onClick();
                         }}
                         fullWidth
@@ -249,7 +288,7 @@ class CompleteYourProfile extends Component {
                     </TitleArea>
                     <MobileActionButton>
                       <Button onClick={() => {
-                        this.setItemComplete(activeStep);
+                        // this.setItemComplete(activeStep);
                         step.onClick();
                       }}
                       fullWidth
@@ -260,20 +299,20 @@ class CompleteYourProfile extends Component {
                       </Button>
                     </MobileActionButton>
                     <NavButtons>
-                      {index !== 0 ? (
-                        <NavButton>
+                      <NavButton>
+                        {index !== 0 && (
                           <Button onClick={this.previousStep} color="primary">
                             {'< Previous'}
                           </Button>
-                        </NavButton>
-                      ) : null}
-                      {index !== 7 ? (
-                        <NavButton>
+                        )}
+                      </NavButton>
+                      <NavButton>
+                        {index < (this.state.steps.length - 1) && (
                           <Button onClick={this.nextStep} color="primary">
                             {'Next >'}
                           </Button>
-                        </NavButton>
-                      ) : null}
+                        )}
+                      </NavButton>
                     </NavButtons>
                   </Description>
                 );
@@ -316,7 +355,7 @@ const Indicator = styled.div`
   height: 8px;
 `;
 
-const Seperator = styled.div`
+const Separator = styled.div`
   width: 90%;
   background: #e1e1e1;
   height: 1px;

@@ -13,6 +13,8 @@ import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import { renderLog } from '../utils/logging';
 import StepsChips from '../components/Widgets/StepsChips';
+import VoterActions from '../actions/VoterActions';
+import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 
@@ -253,6 +255,8 @@ class HowItWorks extends Component {
       ({ is_signed_in: isSignedIn } = voter);
       isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
     }
+    // Mark this so we know to show 'How it Works' as completed
+    VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);
     if (isSignedIn) {
       historyPush(getStartedUrl);
       AppActions.setShowHowItWorksModal(false);

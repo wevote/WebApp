@@ -232,7 +232,7 @@ $space-button-span: 10px;
       font-size: 0 !important;
     }
   }
-  &__seperator {
+  &__separator {
     display: inline-block;
     height: 100%;
     width: 1.5px;
@@ -326,7 +326,7 @@ $space-button-span: 10px;
   &__left > span { // stylelint-disable-line selector-max-type
     justify-content: flex-start;
   }
-  &__seperator {
+  &__separator {
     display: inline-block;
     height: 100%;
     width: 1.5px !important;
