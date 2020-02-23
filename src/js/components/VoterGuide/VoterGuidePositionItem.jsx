@@ -360,7 +360,7 @@ class VoterGuidePositionItem extends Component {
     const signedInWithThisOrganization = voter && voter.linked_organization_we_vote_id === organizationWeVoteId;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
     let signedInWithThisTwitterAccount = false;
-    if (signedInTwitter && voter.twitter_screen_name !== null) {
+    if (signedInTwitter && voter.twitter_screen_name !== null && organizationTwitterHandleBeingViewed) {
       signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === organizationTwitterHandleBeingViewed.toLowerCase();
     }
     const signedInFacebook = voter === undefined ? false : voter.signed_in_facebook;

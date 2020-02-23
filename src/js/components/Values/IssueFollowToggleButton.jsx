@@ -165,7 +165,7 @@ class IssueFollowToggleButton extends Component {
                 <CheckCircle className="issue-following-icon" />
               </span>
             </Button>
-            <div className="issues-follow-btn__seperator" />
+            <div className="issues-follow-btn__separator" />
             <Button
               className="dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
               aria-controls="follow-menu"

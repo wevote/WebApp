@@ -34,7 +34,7 @@ export default class IntroNetworkBallotIsNext extends Component {
             in 6 minutes
           </span>
         </div>
-        <div className="intro-story__seperator" />
+        <div className="intro-story__separator" />
         <div>
           <img
             className="center-block intro-story__img-height intro-story__placeholder"

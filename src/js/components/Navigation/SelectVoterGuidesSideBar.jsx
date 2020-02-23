@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
@@ -12,16 +11,11 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 
 export default class SelectVoterGuidesSideBar extends Component {
-  static propTypes = {
-    voterGuideWeVoteIdSelected: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
       linkedOrganizationWeVoteId: '',
       showNewVoterGuideModal: false,
-      voterGuideWeVoteIdSelected: '',
     };
   }
 
@@ -30,21 +24,8 @@ export default class SelectVoterGuidesSideBar extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.setState({
       showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
-      voterGuideWeVoteIdSelected: this.props.voterGuideWeVoteIdSelected,
     });
   }
-
-  componentWillReceiveProps (nextProps) {
-    this.setState({ voterGuideWeVoteIdSelected: nextProps.voterGuideWeVoteIdSelected });
-  }
-
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-  //   if (this.state.showNewVoterGuideModal !== nextState.showNewVoterGuideModal) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   componentWillUnmount () {
     this.appStoreListener.remove();
@@ -88,12 +69,11 @@ export default class SelectVoterGuidesSideBar extends Component {
           return (
             <Column key={`voter-guides-${voterGuide.we_vote_id}`}>
               <SelectVoterGuidesSideBarLink
-                linkTo={`/vg/${voterGuide.we_vote_id}/settings/positions`}
+                displaySubtitles={displaySubtitles}
+                electionId={voterGuide.google_civic_election_id}
                 label={ElectionStore.getElectionName(voterGuide.google_civic_election_id)}
                 subtitle={ElectionStore.getElectionDayText(voterGuide.google_civic_election_id)}
-                displaySubtitles={displaySubtitles}
                 voterGuideWeVoteId={voterGuide.we_vote_id}
-                voterGuideWeVoteIdSelected={this.state.voterGuideWeVoteIdSelected}
               />
             </Column>
           );

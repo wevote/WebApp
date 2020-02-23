@@ -477,7 +477,7 @@ class SettingsSubscriptionPlan extends Component {
             </SectionCard>
             {nextInvoice && nextInvoice.next_invoice_found && (
               <>
-                <Seperator />
+                <Separator />
                 <SectionCard className="u-position-relative">
                   <SectionTitle>
                     Payment Method
@@ -527,7 +527,7 @@ class SettingsSubscriptionPlan extends Component {
             )}
             {nextInvoice && nextInvoice.next_invoice_found && (
               <>
-                <Seperator />
+                <Separator />
                 <SectionCard>
                   <SectionTitle>
                     Next Invoice
@@ -567,7 +567,7 @@ class SettingsSubscriptionPlan extends Component {
                 </SectionCard>
               </>
             )}
-            <Seperator />
+            <Separator />
             <SectionCard>
               <SectionTitle>
                 Paid Invoices (
@@ -632,7 +632,7 @@ class SettingsSubscriptionPlan extends Component {
             </SectionCard>
             {activePaidPlanChosen !== 'free' && (
               <>
-                <Seperator />
+                <Separator />
                 <SectionCard className="u-position-relative">
                   <SectionTitle>
                     Cancel Plan
@@ -828,7 +828,7 @@ const CardMain = styled.div`
 const MobileWrapper = styled.div`
 `;
 
-const Seperator = styled.div`
+const Separator = styled.div`
   height: 1px;
   background: #ddd;
   width: 100%;
