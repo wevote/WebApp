@@ -206,16 +206,16 @@ const Nav = styled.div`
 `;
 
 const Image = styled.img`
-  width: ${props => (props.inModal ? null : '640px')};
   border: 1px solid #999;
   border-radius: 16px;
   box-shadow: 2px 2px 4px 2px ${({ theme }) => theme.colors.grayLight};
-  height: ${props => (props.inModal ? null : '360px')};
-  max-width: ${props => (props.inModal ? null : '100%')};
+  ${inModal => (inModal ? 'width: 100%;' : 'width: 640px;')}
+  ${inModal => (inModal ? null : 'height: 360px;')}
+  ${inModal => (inModal ? null : 'max-width: 100%;')}
   transition: all 150ms ease-in;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    width: ${props => (props.inModal ? null : '90vw')};
-    height: ${props => (props.inModal ? null : 'calc(90vw * 0.5625)')};
+    ${inModal => (inModal ? null : 'width: 90vw;')}
+    ${inModal => (inModal ? null : 'height: calc(90vw * 0.5625);')}
   }
 `;
 

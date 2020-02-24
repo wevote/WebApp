@@ -432,7 +432,7 @@ class BallotStore extends ReduceStore {
       case 'voterBallotItemsRetrieve':
         // console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
         // Exit if we don't have a successful response
-        if (action.res && !action.res.success && stringContains('VALID_VOTER_DEVICE_ID_MISSING', action.res.status)) {
+        if (action.res && action.res.success === false && stringContains('VALID_VOTER_DEVICE_ID_MISSING', action.res.status)) {
           // On the first call, we didn't have a valid voter_device_id yet. Call again.
           console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
           BallotActions.voterBallotItemsRetrieve(action.res.google_civic_election_id);
