@@ -209,13 +209,15 @@ const Image = styled.img`
   border: 1px solid #999;
   border-radius: 16px;
   box-shadow: 2px 2px 4px 2px ${({ theme }) => theme.colors.grayLight};
-  ${inModal => (inModal ? 'width: 100%;' : 'width: 640px;')}
+  ${inModal => (inModal ? null : 'width: 640px;')}
   ${inModal => (inModal ? null : 'height: 360px;')}
   ${inModal => (inModal ? null : 'max-width: 100%;')}
   transition: all 150ms ease-in;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    ${inModal => (inModal ? null : 'width: 90vw;')}
-    ${inModal => (inModal ? null : 'height: calc(90vw * 0.5625);')}
+    // ${inModal => (inModal ? null : 'width: 90vw;')}
+    // ${inModal => (inModal ? null : 'height: calc(90vw * 0.5625);')}
+    width: 90vw;
+    height: auto;
   }
 `;
 
