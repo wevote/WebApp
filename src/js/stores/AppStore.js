@@ -19,12 +19,13 @@ class AppStore extends ReduceStore {
       hostname: '',
       scrolledDown: false,
       showEditAddressButton: false,
+      showHowItWorksModal: false,
+      shareModalStep: 'options',
       showNewVoterGuideModal: false,
       showPaidAccountUpgradeModal: false,
-      showHowItWorksModal: false,
-      showShareModal: false,
-      shareModalStep: 'options',
+      showPersonalizedScoreIntroModal: false,
       showSelectBallotModal: false,
+      showShareModal: false,
       showSignInModal: false,
       siteConfigurationHasBeenRetrieved: false,
       siteOwnerOrganizationWeVoteId: '',
@@ -86,8 +87,20 @@ class AppStore extends ReduceStore {
     return this.getState().onChosenFullDomainUrl;
   }
 
+  showAdviserIntroModal () {
+    return this.getState().showAdviserIntroModal;
+  }
+
   showEditAddressButton () {
     return this.getState().showEditAddressButton;
+  }
+
+  showFirstPositionIntroModal () {
+    return this.getState().showFirstPositionIntroModal;
+  }
+
+  showHowItWorksModal () {
+    return this.getState().showHowItWorksModal;
   }
 
   showNewVoterGuideModal () {
@@ -99,8 +112,8 @@ class AppStore extends ReduceStore {
     return this.getState().showPaidAccountUpgradeModal;
   }
 
-  showHowItWorksModal () {
-    return this.getState().showHowItWorksModal;
+  showPersonalizedScoreIntroModal () {
+    return this.getState().showPersonalizedScoreIntroModal;
   }
 
   showShareModal () {
@@ -117,6 +130,10 @@ class AppStore extends ReduceStore {
 
   showSignInModal () {
     return this.getState().showSignInModal;
+  }
+
+  showValuesIntroModal () {
+    return this.getState().showValuesIntroModal;
   }
 
   siteConfigurationHasBeenRetrieved () {
@@ -151,14 +168,20 @@ class AppStore extends ReduceStore {
         return { ...state, getVoterGuideSettingsDashboardEditMode: action.payload };
       case 'scrolledDown':
         return { ...state, scrolledDown: action.payload };
+      case 'showAdviserIntroModal':
+        return { ...state, showAdviserIntroModal: action.payload };
       case 'showEditAddressButton':
         return { ...state, showEditAddressButton: action.payload };
+      case 'showFirstPositionIntroModal':
+        return { ...state, showFirstPositionIntroModal: action.payload };
+      case 'showHowItWorksModal':
+        return { ...state, showHowItWorksModal: action.payload };
       case 'showNewVoterGuideModal':
         return { ...state, showNewVoterGuideModal: action.payload };
       case 'showPaidAccountUpgradeModal':
         return { ...state, showPaidAccountUpgradeModal: action.payload };
-      case 'showHowItWorksModal':
-        return { ...state, showHowItWorksModal: action.payload };
+      case 'showPersonalizedScoreIntroModal':
+        return { ...state, showPersonalizedScoreIntroModal: action.payload };
       case 'showShareModal':
         return { ...state, showShareModal: action.payload };
       case 'shareModalStep':
@@ -167,6 +190,8 @@ class AppStore extends ReduceStore {
         return { ...state, showSelectBallotModal: action.payload };
       case 'showSignInModal':
         return { ...state, showSignInModal: action.payload };
+      case 'showValuesIntroModal':
+        return { ...state, showValuesIntroModal: action.payload };
       case 'siteConfigurationRetrieve':
         ({
           status: apiStatus,

@@ -13,18 +13,23 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
 import { historyPush, isWebApp, isCordova, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import AdviserIntroModal from '../Ballot/AdviserIntroModal';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
 import cookies from '../../utils/cookies';
+import FirstPositionIntroModal from '../Ballot/FirstPositionIntroModal';
 import FriendStore from '../../stores/FriendStore';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderBarLogo from './HeaderBarLogo';
+import HowItWorksModal from '../Ballot/HowItWorksModal';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
+import PersonalizedScoreIntroModal from '../Ballot/PersonalizedScoreIntroModal';
 import SelectBallotModal from '../Ballot/SelectBallotModal';
 import SignInModal from '../Widgets/SignInModal';
+import ValuesIntroModal from '../Ballot/ValuesIntroModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
@@ -32,7 +37,6 @@ import { shortenText, stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import ShareModal from '../Ballot/ShareModal';
-import HowItWorksModal from '../Ballot/HowItWorksModal';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 // const webAppConfig = require('../../config');
@@ -62,12 +66,16 @@ class HeaderBar extends Component {
       paidAccountUpgradeMode: '',
       profilePopUpOpen: false,
       scrolledDown: false,
+      showAdviserIntroModal: false,
       showEditAddressButton: false,
+      showFirstPositionIntroModal: false,
+      showHowItWorksModal: false,
       showSelectBallotModal: false,
+      showShareModal: false,
       showSignInModal: false,
       showPaidAccountUpgradeModal: false,
-      showShareModal: false,
-      showHowItWorksModal: false,
+      showPersonalizedScoreIntroModal: false,
+      showValuesIntroModal: false,
       shareModalStep: 'options',
       voter: {},
       voterFirstName: '',
@@ -98,9 +106,14 @@ class HeaderBar extends Component {
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       hideWeVoteLogo: AppStore.getHideWeVoteLogo(),
       scrolledDown: AppStore.getScrolledDown(),
+      showAdviserIntroModal: AppStore.showAdviserIntroModal(),
       showEditAddressButton: AppStore.showEditAddressButton(),
+      showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
+      showHowItWorksModal: AppStore.showHowItWorksModal(),
+      showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSignInModal: AppStore.showSignInModal(),
+      showValuesIntroModal: AppStore.showValuesIntroModal(),
       voter: this.props.voter,
       voterFirstName,
       voterIsSignedIn: this.props.voter && this.props.voter.is_signed_in,
@@ -133,7 +146,22 @@ class HeaderBar extends Component {
       // console.log("shouldComponentUpdate: this.state.friendInvitationsSentToMe", this.state.friendInvitationsSentToMe, ", nextState.friendInvitationsSentToMe", nextState.friendInvitationsSentToMe);
       return true;
     }
+    if (this.state.scrolledDown !== nextState.scrolledDown) {
+      return true;
+    }
+    if (this.state.shareModalStep !== nextState.shareModalStep) {
+      return true;
+    }
+    if (this.state.showAdviserIntroModal !== nextState.showAdviserIntroModal) {
+      return true;
+    }
     if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
+      return true;
+    }
+    if (this.state.showFirstPositionIntroModal !== nextState.showFirstPositionIntroModal) {
+      return true;
+    }
+    if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) {
       return true;
     }
     if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
@@ -142,16 +170,13 @@ class HeaderBar extends Component {
     if (this.state.showShareModal !== nextState.showShareModal) {
       return true;
     }
-    if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) {
-      return true;
-    }
-    if (this.state.shareModalStep !== nextState.shareModalStep) {
-      return true;
-    }
-    if (this.state.scrolledDown !== nextState.scrolledDown) {
-      return true;
-    }
     if (this.state.showSignInModal !== nextState.showSignInModal) {
+      return true;
+    }
+    if (this.state.showValuesIntroModal !== nextState.showValuesIntroModal) {
+      return true;
+    }
+    if (this.state.showPersonalizedScoreIntroModal !== nextState.showPersonalizedScoreIntroModal) {
       return true;
     }
     if (this.state.voterFirstName !== nextState.voterFirstName) {
@@ -220,13 +245,17 @@ class HeaderBar extends Component {
       hideWeVoteLogo: AppStore.getHideWeVoteLogo(),
       paidAccountUpgradeMode,
       scrolledDown: AppStore.getScrolledDown(),
+      shareModalStep: AppStore.shareModalStep(),
+      showAdviserIntroModal: AppStore.showAdviserIntroModal(),
       showEditAddressButton: AppStore.showEditAddressButton(),
+      showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
+      showHowItWorksModal: AppStore.showHowItWorksModal(),
       showPaidAccountUpgradeModal,
       showShareModal: AppStore.showShareModal(),
-      showHowItWorksModal: AppStore.showHowItWorksModal(),
-      shareModalStep: AppStore.shareModalStep(),
-      showSignInModal: AppStore.showSignInModal(),
+      showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
+      showSignInModal: AppStore.showSignInModal(),
+      showValuesIntroModal: AppStore.showValuesIntroModal(),
     });
   }
 
@@ -256,6 +285,7 @@ class HeaderBar extends Component {
         showSignInModal: AppStore.showSignInModal(),
         showShareModal: AppStore.showShareModal(),
         showHowItWorksModal: AppStore.showHowItWorksModal(),
+        showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       });
     }
   }
@@ -334,16 +364,32 @@ class HeaderBar extends Component {
     this.setState({ profilePopUpOpen: false });
   }
 
+  closeAdviserIntroModal = () => {
+    AppActions.setShowAdviserIntroModal(false);
+  }
+
+  closeFirstPositionIntroModal = () => {
+    AppActions.setShowFirstPositionIntroModal(false);
+  }
+
+  closeHowItWorksModal () {
+    AppActions.setShowHowItWorksModal(false);
+  }
+
   closePaidAccountUpgradeModal () {
     AppActions.setShowPaidAccountUpgradeModal(false);
+  }
+
+  closePersonalizedScoreIntroModal = () => {
+    AppActions.setShowPersonalizedScoreIntroModal(false);
   }
 
   closeShareModal () {
     AppActions.setShowShareModal(false);
   }
 
-  closeHowItWorksModal () {
-    AppActions.setShowHowItWorksModal(false);
+  closeValuesIntroModal = () => {
+    AppActions.setShowValuesIntroModal(false);
   }
 
   render () {
@@ -353,9 +399,11 @@ class HeaderBar extends Component {
     }
     const { classes, pathname, location } = this.props;
     const {
-      chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown,
-      showEditAddressButton, showPaidAccountUpgradeModal, showShareModal, showHowItWorksModal, shareModalStep, showSelectBallotModal,
-      showSignInModal, voter, voterFirstName, voterIsSignedIn,
+      chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, shareModalStep,
+      showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
+      showHowItWorksModal, showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal, showSelectBallotModal, showShareModal,
+      showSignInModal, showValuesIntroModal,
+      voter, voterFirstName, voterIsSignedIn,
     } = this.state;
     // console.log('Header Bar, showSignInModal ', showSignInModal);
     const ballotBaseUrl = '/ballot';
@@ -561,11 +609,39 @@ class HeaderBar extends Component {
             toggleFunction={this.closeShareModal}
           />
         )}
+        {showAdviserIntroModal && (
+          <AdviserIntroModal
+            pathname={pathname}
+            show={showAdviserIntroModal}
+            toggleFunction={this.closeAdviserIntroModal}
+          />
+        )}
+        {showFirstPositionIntroModal && (
+          <FirstPositionIntroModal
+            pathname={pathname}
+            show={showFirstPositionIntroModal}
+            toggleFunction={this.closeFirstPositionIntroModal}
+          />
+        )}
         {showHowItWorksModal && (
           <HowItWorksModal
             pathname={pathname}
             show={showHowItWorksModal}
             toggleFunction={this.closeHowItWorksModal}
+          />
+        )}
+        {showPersonalizedScoreIntroModal && (
+          <PersonalizedScoreIntroModal
+            pathname={pathname}
+            show={showPersonalizedScoreIntroModal}
+            toggleFunction={this.closePersonalizedScoreIntroModal}
+          />
+        )}
+        {showValuesIntroModal && (
+          <ValuesIntroModal
+            pathname={pathname}
+            show={showValuesIntroModal}
+            toggleFunction={this.closeValuesIntroModal}
           />
         )}
       </Wrapper>

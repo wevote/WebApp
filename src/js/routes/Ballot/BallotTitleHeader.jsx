@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { isCordova, isIOsSmallerThanPlus } from '../../utils/cordovaUtils';
 import BallotShareButton from '../../components/Ballot/BallotShareButton';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { shortenText } from '../../utils/textFormat';
 
 const webAppConfig = require('../../config');
@@ -15,10 +16,12 @@ const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled })
           <span>
             {shortenText(electionName, 26)}
             {!electionDayTextFormatted && (
-              <>
-                {' '}
-                Not Found
-              </>
+              <DelayedLoad waitBeforeShow={1000}>
+                <>
+                  {' '}
+                  Not Found
+                </>
+              </DelayedLoad>
             )}
           </span>
           {electionDayTextFormatted && (
@@ -45,10 +48,12 @@ const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled })
               {electionName}
             </span>
             {!electionDayTextFormatted && (
-              <>
-                {' '}
-                Not Found
-              </>
+              <DelayedLoad waitBeforeShow={1000}>
+                <>
+                  {' '}
+                  Not Found
+                </>
+              </DelayedLoad>
             )}
           </ElectionName>
           {electionDayTextFormatted && (
@@ -82,10 +87,12 @@ const BallotTitleHeader = ({ electionName, electionDayTextFormatted, scrolled })
               {electionName}
             </span>
             {!electionDayTextFormatted && (
-              <>
-                {' '}
-                Not Found
-              </>
+              <DelayedLoad waitBeforeShow={1000}>
+                <>
+                  {' '}
+                  Not Found
+                </>
+              </DelayedLoad>
             )}
           </ElectionName>
           {electionDayTextFormatted && (

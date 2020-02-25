@@ -13,12 +13,25 @@ export default {
     Dispatcher.dispatch({ type: 'scrolledDown', payload: scrolledDown });
   },
 
+  setShareModalStep (step) {
+    Dispatcher.dispatch({ type: 'shareModalStep', payload: step });
+  },
+
+  setShowAdviserIntroModal (show) {
+    Dispatcher.dispatch({ type: 'showAdviserIntroModal', payload: show });
+  },
+
   setShowEditAddressButton (show) {
     Dispatcher.dispatch({ type: 'showEditAddressButton', payload: show });
   },
 
-  setShowSelectBallotModal (show) {
-    Dispatcher.dispatch({ type: 'showSelectBallotModal', payload: show });
+  setShowFirstPositionIntroModal (show) {
+    Dispatcher.dispatch({ type: 'showFirstPositionIntroModal', payload: show });
+  },
+
+  setShowHowItWorksModal (show) {
+    // The chosenPaidAccount values are: free, professional, enterprise
+    Dispatcher.dispatch({ type: 'showHowItWorksModal', payload: show });
   },
 
   setShowNewVoterGuideModal (show) {
@@ -30,22 +43,25 @@ export default {
     Dispatcher.dispatch({ type: 'showPaidAccountUpgradeModal', payload: chosenPaidAccount });
   },
 
+  setShowPersonalizedScoreIntroModal (show) {
+    Dispatcher.dispatch({ type: 'showPersonalizedScoreIntroModal', payload: show });
+  },
+
+  setShowSelectBallotModal (show) {
+    Dispatcher.dispatch({ type: 'showSelectBallotModal', payload: show });
+  },
+
   setShowShareModal (show) {
     // The chosenPaidAccount values are: free, professional, enterprise
     Dispatcher.dispatch({ type: 'showShareModal', payload: show });
   },
 
-  setShowHowItWorksModal (show) {
-    // The chosenPaidAccount values are: free, professional, enterprise
-    Dispatcher.dispatch({ type: 'showHowItWorksModal', payload: show });
-  },
-
-  setShareModalStep (step) {
-    Dispatcher.dispatch({ type: 'shareModalStep', payload: step });
-  },
-
   setShowSignInModal (show) {
     Dispatcher.dispatch({ type: 'showSignInModal', payload: show });
+  },
+
+  setShowValuesIntroModal (show) {
+    Dispatcher.dispatch({ type: 'showValuesIntroModal', payload: show });
   },
 
   siteConfigurationRetrieve (hostname, refresh_string = '') {
