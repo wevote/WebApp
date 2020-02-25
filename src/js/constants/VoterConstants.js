@@ -3,7 +3,7 @@
 const VoterConstants = {
   // Used for interface_status_flags
   SUPPORT_OPPOSE_MODAL_SHOWN: 1, // When this bit is set, we know the voter has seen the initial support/oppose modal
-  BALLOT_INTRO_MODAL_SHOWN: 2, // When this bit is set, we know the voter has seen the initial ballot introduction modal
+  ADDRESS_INTRO_COMPLETED: 2,
   BALLOT_INTRO_ISSUES_COMPLETED: 4, // When this bit is set, the voter follows at least one issue (no need for intro)
   BALLOT_INTRO_ORGANIZATIONS_COMPLETED: 8, // ...the voter follows at least one organization (no need for intro)
   BALLOT_INTRO_POSITIONS_COMPLETED: 16, // ...the voter has taken at least one position (no need for intro)
@@ -12,6 +12,7 @@ const VoterConstants = {
   BALLOT_INTRO_VOTE_COMPLETED: 128, // ...the voter learned about casting their vote (no need for intro)
   POSITION_PUBLIC_MODAL_SHOWN: 256, // ...the voter has seen the initial public position modal
   HOW_IT_WORKS_WATCHED: 512, // ...the voter has watched the 'How It Works' animation
+  PERSONALIZED_SCORE_INTRO_COMPLETED: 1024,
 
   // Used for notification_settings bits. Which notification options has the voter chosen?
   NOTIFICATION_ZERO: 0,

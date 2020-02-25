@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import BallotIcon from '@material-ui/icons/Ballot';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
-// import EditLocation from '@material-ui/icons/EditLocation';
-// import ThumbUp from '@material-ui/icons/ThumbUp';
+import EditLocation from '@material-ui/icons/EditLocation';
+import ThumbUp from '@material-ui/icons/ThumbUp';
 // import People from '@material-ui/icons/People';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import AppActions from '../../actions/AppActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterConstants from '../../constants/VoterConstants';
+import { cordovaDot } from '../../utils/cordovaUtils';
 
 class CompleteYourProfile extends Component {
   static propTypes = {
@@ -23,61 +25,64 @@ class CompleteYourProfile extends Component {
       steps: [
         {
           id: 1,
-          title: 'Watch how it works',
+          title: 'Watch how it works (no sound)',
           buttonText: 'How It Works',
           completed: false,
           description: '',
           icon: (<PlayCircleFilled />),
           onClick: this.openHowItWorksModal,
         },
-        // {
-        //   id: 2,
-        //   title: 'Step Two',
-        //   buttonText: 'Step Two',
-        //   completed: false,
-        //   description: 'Do step two',
-        //   icon: (<EditLocation />),
-        //   onClick: this.openHowItWorksModal,
-        // },
-        // {
-        //   id: 3,
-        //   title: 'Step Three',
-        //   buttonText: 'Step Three',
-        //   completed: false,
-        //   description: 'Do step three',
-        //   icon: (<People />),
-        //   onClick: this.openHowItWorksModal,
-        // },
-        // {
-        //   id: 4,
-        //   title: 'Step Four',
-        //   buttonText: 'Step Four',
-        //   completed: false,
-        //   description: 'Do step four',
-        //   icon: (<ThumbUp />),
-        // },
-        // {
-        //   id: 5,
-        //   title: 'Step Five',
-        //   buttonText: 'Step Five',
-        //   completed: true,
-        //   description: 'Do step five',
-        //   icon: (<EditLocation />),
-        // },
-        // {
-        //   id: 6,
-        //   title: 'Step Six',
-        //   buttonText: 'Step Six',
-        //   completed: false,
-        //   description: 'Do step six',
-        //   icon: (<PlayCircleFilled />),
-        // },
+        {
+          id: 2,
+          title: 'Choose your interests',
+          buttonText: 'Follow Values',
+          completed: false,
+          description: '',
+          icon: (<img alt="Follow Values" src={cordovaDot(`/img/global/svg-icons/issues/climate-change-24.svg`)} />),
+          onClick: this.openValuesIntroModal,
+        },
+        {
+          id: 3,
+          title: 'Follow people you trust',
+          buttonText: 'Find Advisers',
+          completed: false,
+          description: '',
+          icon: (<ThumbUp />),
+          onClick: this.openAdviserIntroModal,
+        },
+        {
+          id: 4,
+          title: 'Enter your full address to see your entire ballot',
+          buttonText: 'Confirm Address',
+          completed: false,
+          description: '',
+          icon: (<EditLocation />),
+          onClick: this.openAddressIntroModal,
+        },
+        {
+          id: 5,
+          title: 'What\'s a personalized score?',
+          buttonText: 'Learn More',
+          completed: false,
+          description: '',
+          icon: (<PersonalizedScorePlusOne>+1</PersonalizedScorePlusOne>),
+          onClick: this.openPersonalizedScoreIntroModal,
+        },
+        {
+          id: 6,
+          title: 'Choose your first candidate',
+          buttonText: 'Choose Candidate',
+          completed: false,
+          description: '',
+          icon: (<BallotIcon />),
+          onClick: this.openFirstPositionIntroModal,
+        },
         // {
         //   id: 7,
         //   title: 'Step Seven',
         //   buttonText: 'Step Seven',
         //   completed: false,
-        //   description: 'Do step seven',
+        //   description: '',
         //   icon: (<People />),
         // },
         // {
@@ -85,7 +90,7 @@ class CompleteYourProfile extends Component {
         //   title: 'Step Eight',
         //   buttonText: 'Step Eight',
         //   completed: false,
-        //   description: 'Do step eight',
+        //   description: '',
         //   icon: (<ThumbUp />),
         // },
       ],
@@ -93,22 +98,13 @@ class CompleteYourProfile extends Component {
 
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
-    // this.setItemComplete = this.setItemComplete.bind(this);
-    this.openHowItWorksModal = this.openHowItWorksModal.bind(this);
   }
 
   // Steps: options, friends
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.sortSteps();
-    const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
-    if (howItWorksWatched) {
-      const howItWorksWatchedId = 1;
-      this.setItemComplete(howItWorksWatchedId);
-    }
-    this.setState({
-      howItWorksWatched,
-    });
+    this.setCompletedStatus();
   }
 
   componentWillUnmount () {
@@ -116,13 +112,47 @@ class CompleteYourProfile extends Component {
   }
 
   onVoterStoreChange () {
+    this.setCompletedStatus();
+  }
+
+  setCompletedStatus = () => {
     const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
     if (howItWorksWatched) {
       const howItWorksWatchedId = 1;
       this.setItemComplete(howItWorksWatchedId);
     }
+    const valuesIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ISSUES_COMPLETED);
+    if (valuesIntroCompleted) {
+      const valuesIntroCompletedId = 2;
+      this.setItemComplete(valuesIntroCompletedId);
+    }
+    const adviserIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ORGANIZATIONS_COMPLETED);
+    if (adviserIntroCompleted) {
+      const adviserIntroCompletedId = 3;
+      this.setItemComplete(adviserIntroCompletedId);
+    }
+    const addressIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.ADDRESS_INTRO_COMPLETED);
+    if (addressIntroCompleted) {
+      const addressIntroCompletedId = 4;
+      this.setItemComplete(addressIntroCompletedId);
+    }
+    const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+    if (personalizedScoreIntroCompleted) {
+      const personalizedScoreIntroCompletedId = 5;
+      this.setItemComplete(personalizedScoreIntroCompletedId);
+    }
+    const firstPositionIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED);
+    if (firstPositionIntroCompleted) {
+      const firstPositionIntroCompletedId = 6;
+      this.setItemComplete(firstPositionIntroCompletedId);
+    }
     this.setState({
+      addressIntroCompleted,
+      adviserIntroCompleted,
+      firstPositionIntroCompleted,
       howItWorksWatched,
+      personalizedScoreIntroCompleted,
+      valuesIntroCompleted,
     });
   }
 
@@ -144,9 +174,33 @@ class CompleteYourProfile extends Component {
     this.nextStep();
   }
 
-  openHowItWorksModal () {
+  openHowItWorksModal = () => {
     // console.log('Opening modal');
     AppActions.setShowHowItWorksModal(true);
+  }
+
+  openValuesIntroModal = () => {
+    // console.log('Opening modal');
+    AppActions.setShowValuesIntroModal(true);
+  }
+
+  openAddressIntroModal = () => {
+    AppActions.setShowSelectBallotModal(true);
+  }
+
+  openAdviserIntroModal = () => {
+    // console.log('Opening modal');
+    AppActions.setShowAdviserIntroModal(true);
+  }
+
+  openPersonalizedScoreIntroModal = () => {
+    // console.log('Opening modal');
+    AppActions.setShowPersonalizedScoreIntroModal(true);
+  }
+
+  openFirstPositionIntroModal = () => {
+    // console.log('Opening modal');
+    AppActions.setShowFirstPositionIntroModal(true);
   }
 
   previousStep () {
@@ -211,13 +265,13 @@ class CompleteYourProfile extends Component {
   }
 
   render () {
-    const { activeStep, howItWorksWatched } = this.state;
+    const { activeStep, howItWorksWatched, personalizedScoreIntroCompleted } = this.state;
 
     // If we have completed all of the steps, don't render this component
     const showCompleteYourProfileForDebugging = false;
     if (showCompleteYourProfileForDebugging) {
       // Pass by this OFF switch so we render this component
-    } else if (howItWorksWatched) {
+    } else if (howItWorksWatched && personalizedScoreIntroCompleted) {
       // If we have done all of the steps, do not render CompleteYourProfile
       return null;
     }
@@ -274,26 +328,24 @@ class CompleteYourProfile extends Component {
                       )}
                       {step.description}
                       <TabletActionButton>
-                        <Button onClick={() => {
-                          // this.setItemComplete(activeStep);
-                          step.onClick();
-                        }}
-                        fullWidth
-                        variant="contained"
-                        color="primary"
+                        <Button
+                          className="u-no-break"
+                          color="primary"
+                          fullWidth
+                          onClick={() => { step.onClick(); }}
+                          variant="contained"
                         >
                           {step.buttonText}
                         </Button>
                       </TabletActionButton>
                     </TitleArea>
                     <MobileActionButton>
-                      <Button onClick={() => {
-                        // this.setItemComplete(activeStep);
-                        step.onClick();
-                      }}
-                      fullWidth
-                      variant="contained"
-                      color="primary"
+                      <Button
+                        className="u-no-break"
+                        color="primary"
+                        fullWidth
+                        onClick={() => { step.onClick(); }}
+                        variant="contained"
                       >
                         {step.buttonText}
                       </Button>
@@ -301,14 +353,14 @@ class CompleteYourProfile extends Component {
                     <NavButtons>
                       <NavButton>
                         {index !== 0 && (
-                          <Button onClick={this.previousStep} color="primary">
+                          <Button onClick={this.previousStep} className="u-no-break" color="primary">
                             {'< Previous'}
                           </Button>
                         )}
                       </NavButton>
                       <NavButton>
                         {index < (this.state.steps.length - 1) && (
-                          <Button onClick={this.nextStep} color="primary">
+                          <Button onClick={this.nextStep} className="u-no-break" color="primary">
                             {'Next >'}
                           </Button>
                         )}
@@ -356,10 +408,10 @@ const Indicator = styled.div`
 `;
 
 const Separator = styled.div`
-  width: 90%;
+  width: 100%;
   background: #e1e1e1;
   height: 1px;
-  margin: 12px auto;
+  margin: 8px auto;
 `;
 
 const Description = styled.div`
@@ -403,6 +455,22 @@ const Completed = styled.div`
   }
 `;
 
+const PersonalizedScorePlusOne = styled.div`
+  background: #2E3C5D;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  @media print{
+    border: 2px solid grey;
+  }
+`;
+
 const TitleArea = styled.div`
   display: flex;
   align-items: center;
@@ -413,10 +481,10 @@ const TitleArea = styled.div`
 `;
 
 const MobileActionButton = styled.div`
-  margin-top: 12px;
-  padding-bottom: 16px;
+  margin-top: 8px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #e1e1e1;
-  margin-bottom: 12px;
+  margin-bottom: 0px;
   @media (min-width: 576px) {
     display: none;
   }

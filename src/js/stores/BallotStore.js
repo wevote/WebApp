@@ -435,7 +435,11 @@ class BallotStore extends ReduceStore {
         if (action.res && action.res.success === false && stringContains('VALID_VOTER_DEVICE_ID_MISSING', action.res.status)) {
           // On the first call, we didn't have a valid voter_device_id yet. Call again.
           console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
-          BallotActions.voterBallotItemsRetrieve(action.res.google_civic_election_id);
+          // Add a 2 second delay
+          clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
+            BallotActions.voterBallotItemsRetrieve(action.res.google_civic_election_id);
+          }, 2000);
         }
 
         if (!action.res || !action.res.success) return state;

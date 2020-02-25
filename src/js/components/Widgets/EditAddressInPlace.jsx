@@ -80,7 +80,7 @@ export default class EditAddressInPlace extends Component {
     if (this.state.editingAddress) {
       return (
         <span>
-          <h4 className="h4">Address</h4>
+          <h4 className="h4">Your Address</h4>
           <AddressBox
             cancelEditAddress={this.incomingCancelButtonAction ? this.incomingCancelButtonAction : this.toggleEditingAddress}
             saveUrl={ballotBaseUrl}
