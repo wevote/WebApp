@@ -207,7 +207,7 @@ class IssueCard extends Component {
           ) : null
           }
         </Flex>
-        { !turnOffDescription && !this.props.condensed && (
+        { !turnOffDescription && (
           <Description>
             <ReadMore
               textToDisplay={issueDescription}
@@ -223,9 +223,9 @@ class IssueCard extends Component {
 const Wrapper = styled.div`
   display: block !important;
   background: white;
-  border: ${props => (props.condensed ? '1px solid #888' : 'none')};
+  // border: ${props => (props.condensed ? '1px solid #888' : 'none')};
   box-shadow: ${props => (props.condensed ? 'none !important' : null)};
-  padding: ${props => (props.condensed ? '16px 12px' : null)};
+  padding: ${props => (props.condensed ? '0 0' : null)};
   height: ${props => (props.condensed ? 'fit-content' : null)};
   @media (max-width: 479px) {
     margin: 0 -16px;

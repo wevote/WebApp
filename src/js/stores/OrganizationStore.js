@@ -12,12 +12,13 @@ import { arrayContains } from '../utils/textFormat';
 
 class OrganizationStore extends ReduceStore {
   getInitialState () {
+    const explanationOrganizationsVoterIsFollowing = ['organizationLeagueOfWomenVoters', 'organizationOprah', 'organizationSierraClub'];
     return {
       allCachedOrganizationsDict: {}, // This is a dictionary with organizationWeVoteId as key and list of organizations
       allCachedPositionsByOrganizationDict: {}, // This is a dictionary with organizationWeVoteId as key and another dictionary with contestWeVoteId as second key
       organizationWeVoteIdsFollowedByOrganizationDict: {}, // Dictionary with organizationWeVoteId as key and list of organizationWeVoteId's being followed as value
       organizationWeVoteIdsFollowingByOrganizationDict: {}, // Dictionary with organizationWeVoteId as key and list of organizationWeVoteId's following that org as value
-      organizationWeVoteIdsVoterIsFollowing: [],
+      organizationWeVoteIdsVoterIsFollowing: explanationOrganizationsVoterIsFollowing,
       organizationWeVoteIdsVoterIsIgnoring: [],
       organizationWeVoteIdsVoterIsFollowingOnTwitter: [],
       organizationSearchResults: {

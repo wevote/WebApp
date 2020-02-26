@@ -26,10 +26,14 @@ class CandidateItem extends Component {
   static propTypes = {
     candidateWeVoteId: PropTypes.string.isRequired,
     hideBallotItemSupportOpposeComment: PropTypes.bool,
+    hideCandidateText: PropTypes.bool,
+    hideCandidateUrl: PropTypes.bool,
+    hideIssuesRelatedToCandidate: PropTypes.bool,
     hideShowMoreFooter: PropTypes.bool,
     linkToBallotItemPage: PropTypes.bool,
     linkToOfficePage: PropTypes.bool,
     organizationWeVoteId: PropTypes.string,
+    showDownArrow: PropTypes.bool,
     showHover: PropTypes.bool,
     showOfficeName: PropTypes.bool,
     showLargeImage: PropTypes.bool,
@@ -147,6 +151,9 @@ class CandidateItem extends Component {
       return true;
     }
     if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
+      return true;
+    }
+    if (this.props.showDownArrow !== nextProps.showDownArrow) {
       return true;
     }
     if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
@@ -276,7 +283,8 @@ class CandidateItem extends Component {
   }
 
   candidateRenderBlock = (candidateWeVoteId, useLinkToCandidatePage = false) => {
-    const { linkToBallotItemPage, linkToOfficePage, showHover, showOfficeName } = this.props;
+    // console.log('CandidateItem candidateRenderBlock');
+    const { hideCandidateUrl, linkToBallotItemPage, linkToOfficePage, showDownArrow, showHover, showOfficeName } = this.props;
     const {
       ballotItemDisplayName,
       candidatePhotoUrl,
@@ -316,7 +324,7 @@ class CandidateItem extends Component {
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
               )}
-              {candidateUrl && (
+              {!hideCandidateUrl && candidateUrl && (
                 <ExternalWebSiteWrapper className="u-show-desktop">
                   <OpenExternalWebSite
                     url={candidateUrl}
@@ -350,12 +358,14 @@ class CandidateItem extends Component {
               handleEnterCandidateCard={this.handleEnter}
               ballotItemWeVoteId={candidateWeVoteId}
               uniqueExternalId="CandidateItem-Desktop"
+              showDownArrow={showDownArrow}
             />
           </BallotItemSupportOpposeCountDisplayWrapper>
           <BallotItemSupportOpposeCountDisplayWrapper className="u-show-mobile-tablet">
             <BallotItemSupportOpposeCountDisplay
               ballotItemWeVoteId={candidateWeVoteId}
               uniqueExternalId="CandidateItem-MobileTablet"
+              showDownArrow={showDownArrow}
             />
           </BallotItemSupportOpposeCountDisplayWrapper>
           {' '}
@@ -391,7 +401,7 @@ class CandidateItem extends Component {
 
   candidateIssuesAndCommentBlock = (candidateText, localUniqueId) => {
     const {
-      candidateWeVoteId, hideBallotItemSupportOpposeComment, hideShowMoreFooter,
+      candidateWeVoteId, hideBallotItemSupportOpposeComment, hideCandidateText, hideIssuesRelatedToCandidate, hideShowMoreFooter,
       linkToBallotItemPage, showHover, showPositionStatementActionBar, showTopCommentByBallotItem,
     } = this.props;
     const {
@@ -457,7 +467,7 @@ class CandidateItem extends Component {
             </div>
           ) : (
             <span>
-              {(candidateText && candidateText.length) && (
+              {(!hideCandidateText && candidateText && candidateText.length) && (
                 <div
                   className={`u-stack--xs ${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
                 >
@@ -472,12 +482,14 @@ class CandidateItem extends Component {
             </span>
           )}
           {/* Issues related to this Candidate */}
-          <IssuesByBallotItemDisplayList
-            ballotItemDisplayName={ballotItemDisplayName}
-            ballotItemWeVoteId={candidateWeVoteId}
-            externalUniqueId={`candidateItem-${candidateWeVoteId}`}
-            placement="bottom"
-          />
+          {!hideIssuesRelatedToCandidate && (
+            <IssuesByBallotItemDisplayList
+              ballotItemDisplayName={ballotItemDisplayName}
+              ballotItemWeVoteId={candidateWeVoteId}
+              externalUniqueId={`candidateItem-${candidateWeVoteId}`}
+              placement="bottom"
+            />
+          )}
         </div>
         {hideShowMoreFooter ?
           null :

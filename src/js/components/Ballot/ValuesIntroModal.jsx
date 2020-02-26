@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import FriendInvitationOnboardingValuesList from '../Values/FriendInvitationOnboardingValuesList';
 
 class ValuesIntroModal extends Component {
   static propTypes = {
@@ -51,6 +53,7 @@ class ValuesIntroModal extends Component {
   render () {
     renderLog('ValuesIntroModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
+    const { atLeastOneValueChosen } = this.state;
 
     return (
       <Dialog
@@ -75,7 +78,29 @@ class ValuesIntroModal extends Component {
         </ModalTitleArea>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <div className="full-width">
-            &nbsp;
+            <ExplanationTextLighter>
+              When you follow a value, the endorsements from all organizations categorized under that value are added to your personalized score.
+            </ExplanationTextLighter>
+            <ExplanationText>
+              Choose from some popular options:
+            </ExplanationText>
+            <ValuesListWrapper>
+              <FriendInvitationOnboardingValuesList
+                displayOnlyIssuesNotFollowedByVoter
+              />
+            </ValuesListWrapper>
+            <ContinueButtonWrapper>
+              <Button
+                classes={{ root: classes.continueButtonRoot }}
+                color="primary"
+                disabled={!atLeastOneValueChosen}
+                id="valuesIntroModalNext"
+                // onClick={this.personalizedScoreIntroCompleted}
+                variant="contained"
+              >
+                Continue
+              </Button>
+            </ContinueButtonWrapper>
           </div>
         </DialogContent>
       </Dialog>
@@ -100,16 +125,20 @@ const styles = () => ({
     minHeight: '100%',
     maxHeight: '100%',
     height: '100%',
-    margin: '0 auto',
+    margin: '0 0 64px 0',
   },
   dialogContent: {
-    padding: '0 24px 12px 24px',
+    margin: '0 auto',
+    padding: '24px',
     background: 'white',
     display: 'flex',
     justifyContent: 'center',
   },
   closeButton: {
     marginLeft: 'auto',
+  },
+  continueButtonRoot: {
+    width: '100%',
   },
 });
 
@@ -118,7 +147,7 @@ const ModalTitleArea = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
+  padding: 10px 12px 0 24px;
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
@@ -135,6 +164,37 @@ const Title = styled.h3`
   @media (max-width: 769px) {
     font-size: 18px;
   }
+`;
+
+const ExplanationText = styled.div`
+  color: #2e3c5d;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 24px 0 18px 0;
+  padding: 0;
+  @include breakpoints (max mid-small) {
+    font-size: 16px;
+  }
+`;
+
+const ExplanationTextLighter = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  margin: 24px 0 0 0;
+  @include breakpoints (max mid-small) {
+    font-size: 14px;
+  }
+`;
+
+const ValuesListWrapper = styled.div`
+`;
+
+const ContinueButtonWrapper = styled.div`
+  width: 100%;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export default withTheme(withStyles(styles)(ValuesIntroModal));

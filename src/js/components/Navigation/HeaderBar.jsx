@@ -167,6 +167,9 @@ class HeaderBar extends Component {
     if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
       return true;
     }
+    if (this.state.showPersonalizedScoreIntroModal !== nextState.showPersonalizedScoreIntroModal) {
+      return true;
+    }
     if (this.state.showShareModal !== nextState.showShareModal) {
       return true;
     }
@@ -174,9 +177,6 @@ class HeaderBar extends Component {
       return true;
     }
     if (this.state.showValuesIntroModal !== nextState.showValuesIntroModal) {
-      return true;
-    }
-    if (this.state.showPersonalizedScoreIntroModal !== nextState.showPersonalizedScoreIntroModal) {
       return true;
     }
     if (this.state.voterFirstName !== nextState.voterFirstName) {

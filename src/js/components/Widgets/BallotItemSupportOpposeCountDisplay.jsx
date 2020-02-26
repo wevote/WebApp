@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import DoneIcon from '@material-ui/icons/Done';
 import CommentIcon from '@material-ui/icons/Comment';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
@@ -33,6 +34,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
     hideNumbersOfAllPositions: PropTypes.bool,
+    showDownArrow: PropTypes.bool,
     uniqueExternalId: PropTypes.string,
   };
 
@@ -186,6 +188,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     if (this.state.positionsOutOfNetworkSummaryListLength !== nextState.positionsOutOfNetworkSummaryListLength) {
       return true;
     }
+    if (this.props.showDownArrow !== nextProps.showDownArrow) {
+      return true;
+    }
     if (this.state.voterPersonalNetworkScore !== nextState.voterPersonalNetworkScore) {
       // console.log('this.state.voterPersonalNetworkScore:', this.state.voterPersonalNetworkScore, ', nextState.voterPersonalNetworkScore:', nextState.voterPersonalNetworkScore);
       return true;
@@ -260,6 +265,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       const doNotShowPositionsInVotersNetwork = false;
       const showPositionsOutOfVotersNetwork = true;
       const positionsInNetworkSummaryList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, showPositionsInVotersNetwork);
+      // console.log('positionsInNetworkSummaryList: ', positionsInNetworkSummaryList);
       const positionsInNetworkSummaryListLength = positionsInNetworkSummaryList.length;
       const positionsOutOfNetworkSummaryList = getPositionSummaryListForBallotItem(ballotItemWeVoteId, limitToThisIssue, doNotShowPositionsInVotersNetwork, showPositionsOutOfVotersNetwork);
       const positionsOutOfNetworkSummaryListLength = positionsOutOfNetworkSummaryList.length;
@@ -410,7 +416,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
   render () {
     renderLog('BallotItemSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
-    const { ballotItemWeVoteId, classes, hideNumbersOfAllPositions, uniqueExternalId } = this.props;
+    const { ballotItemWeVoteId, classes, hideNumbersOfAllPositions, showDownArrow, uniqueExternalId } = this.props;
     const {
       ballotItemDisplayName,
       numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions,
@@ -849,9 +855,16 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 0
               </NetworkScore>
             ) : (
-              <NetworkScore voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
-                { voterPersonalNetworkScoreWithSign }
-              </NetworkScore>
+              <NetworkScoreWrapper>
+                <NetworkScore voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+                  { voterPersonalNetworkScoreWithSign }
+                </NetworkScore>
+                {showDownArrow && (
+                  <OverlayArrow>
+                    <ArrowRightAltIcon classes={{ root: classes.arrowRightAltIcon }} />
+                  </OverlayArrow>
+                )}
+              </NetworkScoreWrapper>
             )}
           </StickyPopover>
         ) : null
@@ -867,6 +880,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
 // ${theme.colors.opposeRedRgb}  // Why doesn't this pull from WebApp/src/js/styled-theme.js ?
 const styles = theme => ({
+  arrowRightAltIcon: {
+    transform: 'rotate(90deg) scale(2, 2)',
+    position: 'relative',
+  },
   decidedIcon: {
     fontSize: 32,
     [theme.breakpoints.down('lg')]: {
@@ -958,6 +975,11 @@ const EndorsementCount = styled.div`
 const ItemActionBarWrapper = styled.div`
   margin-bottom: 8px;
   width: 100%;
+`;
+
+const NetworkScoreWrapper = styled.div`
+  position: relative;
+  z-index: 1;
 `;
 
 const NetworkScore = styled.div`
@@ -1052,6 +1074,12 @@ const YourScoreWrapper = styled.div`
   text-align: center;
   color: #999;
   font-size: 12px;
+`;
+
+const OverlayArrow = styled.div`
+  margin-left: 9px;
+  margin-top: -70px;
+  z-index: 2;
 `;
 
 export default withTheme(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

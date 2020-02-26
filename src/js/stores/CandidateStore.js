@@ -2,14 +2,71 @@ import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import OfficeActions from '../actions/OfficeActions';
 import OfficeStore from './OfficeStore';
+import { cordovaDot } from '../utils/cordovaUtils';
 import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions';  // eslint-disable-line import/no-cycle
 import { stringContains } from '../utils/textFormat';
 
 class CandidateStore extends ReduceStore {
   getInitialState () {
+    const explanationCandidates = {
+      candidateAlexanderHamilton: {
+        we_vote_id: 'candidateAlexanderHamilton',
+        ballot_item_display_name: 'Alexander Hamilton',
+        candidate_photo_url_large: cordovaDot('../../../img/global/photos/Alexander_Hamilton-48x48.png'),
+        contest_office_name: 'President',
+        party: 'Nonpartisan',
+      },
+    };
+    const explanationPositions = {
+      candidateAlexanderHamilton: [
+        {
+          position_we_vote_id: 'positionOneAlexanderHamilton',
+          ballot_item_display_name: 'Alexander Hamilton',
+          ballot_item_we_vote_id: 'candidateAlexanderHamilton',
+          kind_of_ballot_item: 'CANDIDATE',
+          is_support: true,
+          is_support_or_positive_rating: true,
+          speaker_display_name: 'Sierra Club',
+          speaker_type: 'G',
+          speaker_we_vote_id: 'organizationSierraClub',
+          speaker_image_url_https_large: 'https://wevote-images.s3.amazonaws.com/wv02org1061/twitter_profile_image-20180818_1_200x200.jpeg',
+          contest_office_name: 'President',
+          party: 'Nonpartisan',
+        },
+        {
+          position_we_vote_id: 'positionTwoAlexanderHamilton',
+          ballot_item_display_name: 'Alexander Hamilton',
+          ballot_item_we_vote_id: 'candidateAlexanderHamilton',
+          kind_of_ballot_item: 'CANDIDATE',
+          is_support: true,
+          is_support_or_positive_rating: true,
+          speaker_display_name: 'Oprah',
+          speaker_type: 'PF',
+          speaker_we_vote_id: 'organizationOprah',
+          speaker_image_url_https_large: 'https://wevote-images.s3.amazonaws.com/wv02org1061/twitter_profile_image-20180818_1_200x200.jpeg',
+          contest_office_name: 'President',
+          party: 'Nonpartisan',
+        },
+        {
+          position_we_vote_id: 'positionThreeAlexanderHamilton',
+          ballot_item_display_name: 'Alexander Hamilton',
+          ballot_item_we_vote_id: 'candidateAlexanderHamilton',
+          kind_of_ballot_item: 'CANDIDATE',
+          is_support: true,
+          is_support_or_positive_rating: true,
+          speaker_display_name: 'League of Women Voters',
+          speaker_type: 'G',
+          speaker_we_vote_id: 'organizationLeagueOfWomenVoters',
+          speaker_image_url_https_large: 'https://wevote-images.s3.amazonaws.com/wv02org1061/twitter_profile_image-20180818_1_200x200.jpeg',
+          contest_office_name: 'President',
+          party: 'Nonpartisan',
+        },
+      ],
+    };
+
     return {
-      allCachedCandidates: {}, // Dictionary with candidate_we_vote_id as key and the candidate as value
-      allCachedPositionsAboutCandidates: {}, // Dictionary with candidate_we_vote_id as one key, organization_we_vote_id as the second key, and the position as value
+      allCachedCandidates: explanationCandidates, // Dictionary with candidate_we_vote_id as key and the candidate as value
+      allCachedPositionsAboutCandidates: explanationPositions, // Dictionary with candidate_we_vote_id as one key, organization_we_vote_id as the second key, and the position as value
       numberOfCandidatesRetrievedByOffice: {}, // Dictionary with office_we_vote_id as key and number of candidates as value
     };
   }

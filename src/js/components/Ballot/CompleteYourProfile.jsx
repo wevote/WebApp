@@ -6,12 +6,12 @@ import BallotIcon from '@material-ui/icons/Ballot';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import EditLocation from '@material-ui/icons/EditLocation';
 import ThumbUp from '@material-ui/icons/ThumbUp';
-// import People from '@material-ui/icons/People';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import AppActions from '../../actions/AppActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterConstants from '../../constants/VoterConstants';
 import { cordovaDot } from '../../utils/cordovaUtils';
+// import People from '@material-ui/icons/People';
 
 class CompleteYourProfile extends Component {
   static propTypes = {
@@ -34,16 +34,16 @@ class CompleteYourProfile extends Component {
         },
         {
           id: 2,
-          title: 'Choose your interests',
-          buttonText: 'Follow Values',
+          title: 'Interests that match your values',
+          buttonText: 'Choose Interests',
           completed: false,
           description: '',
-          icon: (<img alt="Follow Values" src={cordovaDot(`/img/global/svg-icons/issues/climate-change-24.svg`)} />),
+          icon: (<img alt="Choose Interests" src={cordovaDot('/img/global/svg-icons/issues/climate-change-24.svg')} />),
           onClick: this.openValuesIntroModal,
         },
         {
           id: 3,
-          title: 'Follow people you trust',
+          title: 'Find people and groups you trust',
           buttonText: 'Find Advisers',
           completed: false,
           description: '',
@@ -52,7 +52,7 @@ class CompleteYourProfile extends Component {
         },
         {
           id: 4,
-          title: 'Enter your full address to see your entire ballot',
+          title: 'Enter your full address to see entire ballot',
           buttonText: 'Confirm Address',
           completed: false,
           description: '',
@@ -171,7 +171,7 @@ class CompleteYourProfile extends Component {
       }
     });
     this.setState({ steps: newSteps });
-    this.nextStep();
+    this.goToNextIncompleteStep();
   }
 
   openHowItWorksModal = () => {
@@ -228,6 +228,13 @@ class CompleteYourProfile extends Component {
     }
   }
 
+  goToNextIncompleteStep = () => {
+    const notCompletedSteps = this.state.steps.filter(oneStep => !oneStep.completed);
+    this.setState({
+      activeStep: notCompletedSteps[0].id,
+    });
+  }
+
   sortSteps () {
     function compare (a, b) {
       // Use toUpperCase() to ignore character casing
@@ -265,13 +272,13 @@ class CompleteYourProfile extends Component {
   }
 
   render () {
-    const { activeStep, howItWorksWatched, personalizedScoreIntroCompleted } = this.state;
+    const { activeStep, addressIntroCompleted, adviserIntroCompleted, firstPositionIntroCompleted, howItWorksWatched, personalizedScoreIntroCompleted, valuesIntroCompleted } = this.state;
 
     // If we have completed all of the steps, don't render this component
     const showCompleteYourProfileForDebugging = false;
     if (showCompleteYourProfileForDebugging) {
       // Pass by this OFF switch so we render this component
-    } else if (howItWorksWatched && personalizedScoreIntroCompleted) {
+    } else if (addressIntroCompleted && adviserIntroCompleted && firstPositionIntroCompleted && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted) {
       // If we have done all of the steps, do not render CompleteYourProfile
       return null;
     }
@@ -359,10 +366,12 @@ class CompleteYourProfile extends Component {
                         )}
                       </NavButton>
                       <NavButton>
-                        {index < (this.state.steps.length - 1) && (
+                        {index < (this.state.steps.length - 1) ? (
                           <Button onClick={this.nextStep} className="u-no-break" color="primary">
                             {'Next >'}
                           </Button>
+                        ) : (
+                          <NextButtonPlaceholder />
                         )}
                       </NavButton>
                     </NavButtons>
@@ -521,5 +530,8 @@ const NavButton = styled.div`
   }
 `;
 
+const NextButtonPlaceholder = styled.div`
+  width: 64px;
+`;
 
 export default withTheme(withStyles(styles)(CompleteYourProfile));

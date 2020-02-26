@@ -99,6 +99,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
           key={`column-issue-list-key-${issue.issue_we_vote_id}`}
         >
           <IssueCard
+            condensed
             followToggleOn
             hideAdvocatesCount
             issue={issue}
@@ -123,6 +124,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
           key={`column-issue-list-key-${issue.issue_we_vote_id}`}
         >
           <IssueCard
+            condensed
             followToggleOn
             hideAdvocatesCount
             issue={issue}
@@ -147,6 +149,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
           key={`column-issue-list-key-${issue.issue_we_vote_id}`}
         >
           <IssueCard
+            condensed
             followToggleOn
             hideAdvocatesCount
             issue={issue}
@@ -179,7 +182,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
 }
 
 const Wrapper = styled.div`
-  margin-bottom: 64px;
+  margin-bottom: 18px;
 `;
 
 const Row = styled.div`
