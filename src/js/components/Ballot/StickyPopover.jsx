@@ -3,20 +3,22 @@ import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 
 class StickyPopover extends Component {
   static propTypes = {
+    children: PropTypes.element.isRequired,
+    classes: PropTypes.object,
     delay: PropTypes.shape({
       show: PropTypes.number,
       hide: PropTypes.number,
     }),
-    children: PropTypes.element.isRequired,
-    popoverComponent: PropTypes.node.isRequired,
+    openOnClick: PropTypes.bool,
     placement: PropTypes.string,
+    popoverComponent: PropTypes.node.isRequired,
     popoverId: PropTypes.string,
     showCloseIcon: PropTypes.bool,
-    openOnClick: PropTypes.bool,
   };
 
   constructor (props) {
@@ -72,7 +74,7 @@ class StickyPopover extends Component {
 
   render () {
     renderLog('StickyPopover');  // Set LOG_RENDER_EVENTS to log all renders
-    const { popoverComponent, children, placement, popoverId } = this.props;
+    const { children, classes, placement, popoverComponent, popoverId } = this.props;
     const { showPopover, target } = this.state;
     // console.log('StickyPopover render, showPopover:', showPopover);
     return (
@@ -95,12 +97,13 @@ class StickyPopover extends Component {
           show={showPopover}
           target={target}
           placement={placement}
-          className="u-position-relative"
+          classes={{ root: classes.popoverRoot }}
+          className="u-position-relative u-z-index-5000"
         >
           <Popover
+            id={popoverId}
             onMouseEnter={this.onMouseEnterPopover}
             onMouseLeave={this.onMouseLeave}
-            id={popoverId}
           >
             {popoverComponent}
             {this.props.showCloseIcon && (
@@ -115,6 +118,11 @@ class StickyPopover extends Component {
     );
   }
 }
+const styles = () => ({
+  popoverRoot: {
+    zIndex: 5000,
+  },
+});
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -128,4 +136,4 @@ const CloseIcon = styled.div`
   color: white;
 `;
 
-export default StickyPopover;
+export default withTheme(withStyles(styles)(StickyPopover));

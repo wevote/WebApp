@@ -75,7 +75,9 @@ class AdviserIntroModal extends Component {
         </ModalTitleArea>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <div className="full-width">
-            &nbsp;
+            <ExplanationText>
+              We take what the people you trust think, and calculate your personalized score for each candidate.
+            </ExplanationText>
           </div>
         </DialogContent>
       </Dialog>
@@ -103,7 +105,7 @@ const styles = () => ({
     margin: '0 auto',
   },
   dialogContent: {
-    padding: '0 24px 12px 24px',
+    padding: '0 12px 24px 24px',
     background: 'white',
     display: 'flex',
     justifyContent: 'center',
@@ -118,7 +120,7 @@ const ModalTitleArea = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
+  padding: 10px 12px 0 24px;
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
@@ -134,6 +136,17 @@ const Title = styled.h3`
   font-weight: bold;
   @media (max-width: 769px) {
     font-size: 18px;
+  }
+`;
+
+const ExplanationText = styled.div`
+  color: #2e3c5d;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  padding: 6px 0 0 0;
+  @include breakpoints (max mid-small) {
+    font-size: 16px;
   }
 `;
 
