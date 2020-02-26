@@ -203,11 +203,18 @@ class CompleteYourProfile extends Component {
     AppActions.setShowFirstPositionIntroModal(true);
   }
 
+  goToNextIncompleteStep = () => {
+    const { steps } = this.state;
+    const notCompletedSteps = steps.filter(oneStep => !oneStep.completed);
+    this.setState({
+      activeStep: notCompletedSteps[0].id,
+    });
+  }
+
   previousStep () {
     this.sortSteps();
     const { steps } = this.state;
     const currentIndex = steps.map(oneStep => oneStep.id).indexOf(this.state.activeStep);
-
     // console.log('currentIndex: ', currentIndex);
 
     this.setState({
@@ -226,13 +233,6 @@ class CompleteYourProfile extends Component {
         activeStep: steps[currentIndex + 1].id,
       });
     }
-  }
-
-  goToNextIncompleteStep = () => {
-    const notCompletedSteps = this.state.steps.filter(oneStep => !oneStep.completed);
-    this.setState({
-      activeStep: notCompletedSteps[0].id,
-    });
   }
 
   sortSteps () {

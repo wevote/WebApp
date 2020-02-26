@@ -32,20 +32,6 @@ class AddEndorsements extends Component {
               target="_blank"
               title="ENDORSEMENTS MISSING?"
               body={(
-                // <Button
-                //   className="split-button split-button__left"
-                //   id="myValuesAddEndorsementsToWeVote"
-                //   color="primary"
-                //   variant="contained"
-                // >
-                //   <span className="split-button__icon">
-                //     <img src={cordovaDot('/img/global/svg-icons/positions-icon-24-x-24.svg')} alt="" />
-                //   </span>
-                //   <div className="split-button__separator split-button__separator--left" />
-                //   <span className="split-button__text">
-                //     Add endorsements
-                //   </span>
-                // </Button>
                 <SplitIconButton
                   title="Endorsements missing?"
                   id="myValuesAddEndorsementsToWeVote"

@@ -1,8 +1,9 @@
+$top-header-padding-top: 6px;
 .FriendInvitationTopHeader {
   font-size: 24px;
   font-weight: 600;
-  padding-top: 6px; // eslint-disable-line declaration-use-variable
-  padding-bottom: 0; // eslint-disable-line declaration-use-variable
+  padding-top: $top-header-padding-top;
+  padding-bottom: $space-none;
   @include breakpoints (max mid-small) {
     font-size: 20px;
   }
@@ -12,8 +13,8 @@
   color: $brand-blue;
   font-size: 24px;
   font-weight: 600;
-  padding-top: 32px; // eslint-disable-line declaration-use-variable
-  padding-bottom: 16px; // eslint-disable-line declaration-use-variable
+  padding-top: $space-lg;
+  padding-bottom: $space-md;
   @include breakpoints(max mid-small) {
     font-size: 24px;
   }
@@ -23,8 +24,8 @@
   color: $brand-blue;
   font-size: 18px;
   font-weight: 600;
-  padding-top: 0; // eslint-disable-line declaration-use-variable
-  padding-bottom: 16px; // eslint-disable-line declaration-use-variable
+  padding-top: $space-none;
+  padding-bottom: $space-md;
   @include breakpoints(max mid-small) {
     font-size: 16px;
   }

@@ -2,7 +2,7 @@ import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import OfficeActions from '../actions/OfficeActions';
 import OfficeStore from './OfficeStore';
-import { cordovaDot } from '../utils/cordovaUtils';
+import { cordovaDot } from '../utils/cordovaUtils';  // eslint-disable-line import/no-cycle
 import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions';  // eslint-disable-line import/no-cycle
 import { stringContains } from '../utils/textFormat';
 
