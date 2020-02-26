@@ -302,6 +302,34 @@ class HeaderBar extends Component {
 
   handleNavigation = to => historyPush(to);
 
+  closeAdviserIntroModal = () => {
+    AppActions.setShowAdviserIntroModal(false);
+  }
+
+  closeFirstPositionIntroModal = () => {
+    AppActions.setShowFirstPositionIntroModal(false);
+  }
+
+  closeValuesIntroModal = () => {
+    AppActions.setShowValuesIntroModal(false);
+  }
+
+  closePersonalizedScoreIntroModal = () => {
+    AppActions.setShowPersonalizedScoreIntroModal(false);
+  }
+
+  closePaidAccountUpgradeModal () {
+    AppActions.setShowPaidAccountUpgradeModal(false);
+  }
+
+  closeHowItWorksModal () {
+    AppActions.setShowHowItWorksModal(false);
+  }
+
+  closeShareModal () {
+    AppActions.setShowShareModal(false);
+  }
+
   toggleProfilePopUp () {
     const { profilePopUpOpen } = this.state;
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
@@ -362,34 +390,6 @@ class HeaderBar extends Component {
     VoterGuideActions.voterGuideFollowersRetrieve(this.state.voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
     this.setState({ profilePopUpOpen: false });
-  }
-
-  closeAdviserIntroModal = () => {
-    AppActions.setShowAdviserIntroModal(false);
-  }
-
-  closeFirstPositionIntroModal = () => {
-    AppActions.setShowFirstPositionIntroModal(false);
-  }
-
-  closeHowItWorksModal () {
-    AppActions.setShowHowItWorksModal(false);
-  }
-
-  closePaidAccountUpgradeModal () {
-    AppActions.setShowPaidAccountUpgradeModal(false);
-  }
-
-  closePersonalizedScoreIntroModal = () => {
-    AppActions.setShowPersonalizedScoreIntroModal(false);
-  }
-
-  closeShareModal () {
-    AppActions.setShowShareModal(false);
-  }
-
-  closeValuesIntroModal = () => {
-    AppActions.setShowValuesIntroModal(false);
   }
 
   render () {

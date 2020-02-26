@@ -122,8 +122,7 @@ const styles = theme => ({
 });
 
 const Wrapper = styled.div`
-  padding-left: 12px;
-  padding-right: 12px;
+  margin: 0 !important;
 `;
 
 // Styled divs are not working in react-slick environment, so I put these styles in _intro-story.scss
