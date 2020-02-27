@@ -44,7 +44,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
-import CompleteYourProfile from '../../components/Ballot/CompleteYourProfile';
+import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 
 const TYPES = require('keymirror')({
   OFFICE: null,
