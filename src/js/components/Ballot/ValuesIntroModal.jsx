@@ -10,6 +10,10 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import FriendInvitationOnboardingValuesList from '../Values/FriendInvitationOnboardingValuesList';
+import IssueActions from '../../actions/IssueActions';
+import IssueStore from '../../stores/IssueStore';
+import VoterActions from '../../actions/VoterActions';
+import VoterConstants from '../../constants/VoterConstants';
 
 class ValuesIntroModal extends Component {
   static propTypes = {
@@ -22,13 +26,14 @@ class ValuesIntroModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      atLeastOneValueChosen: false,
       pathname: '',
     };
   }
 
   componentDidMount () {
-    // this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    // FriendActions.currentFriends();
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    IssueActions.issuesFollowedRetrieve();
 
     this.setState({
       pathname: this.props.pathname,
@@ -36,17 +41,23 @@ class ValuesIntroModal extends Component {
   }
 
   componentWillUnmount () {
-    // this.friendStoreListener.remove();
+    this.issueStoreListener.remove();
   }
 
-  // onFriendStoreChange () {
-  //   const { currentFriendsList } = this.state;
-  //   if (currentFriendsList.length !== FriendStore.currentFriends().length) {
-  //     this.setState({ currentFriendsList: FriendStore.currentFriends() });
-  //   }
-  // }
+  onIssueStoreChange () {
+    const issueWeVoteIdsVoterIsFollowing = IssueStore.getIssueWeVoteIdsVoterIsFollowing() || [];
+    this.setState({
+      atLeastOneValueChosen: !!(issueWeVoteIdsVoterIsFollowing.length),
+    });
+  }
 
   closeThisModal = () => {
+    this.props.toggleFunction(this.state.pathname);
+  }
+
+  valuesIntroCompleted = () => {
+    // Mark this so we know to show 'How it Works' as completed
+    VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.VALUES_INTRO_COMPLETED);
     this.props.toggleFunction(this.state.pathname);
   }
 
@@ -95,10 +106,10 @@ class ValuesIntroModal extends Component {
                 color="primary"
                 disabled={!atLeastOneValueChosen}
                 id="valuesIntroModalNext"
-                // onClick={this.personalizedScoreIntroCompleted}
+                onClick={this.valuesIntroCompleted}
                 variant="contained"
               >
-                Continue
+                Got It!
               </Button>
             </ContinueButtonWrapper>
           </div>

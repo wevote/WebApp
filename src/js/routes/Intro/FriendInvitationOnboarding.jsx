@@ -155,7 +155,6 @@ class FriendInvitationOnboarding extends Component {
                 friendLastName={friendLastName}
                 friendImageUrlHttpsTiny={friendImageUrlHttpsTiny}
                 invitationMessage={invitationMessage}
-                nextSlide={this.nextSlide}
               />
             </div>
             <div key={2}>
@@ -164,7 +163,6 @@ class FriendInvitationOnboarding extends Component {
                 friendLastName={friendLastName}
                 friendImageUrlHttpsTiny={friendImageUrlHttpsTiny}
                 friendIssueWeVoteIdList={friendIssueWeVoteIdList}
-                nextSlide={this.nextSlide}
               />
             </div>
           </Slider>
