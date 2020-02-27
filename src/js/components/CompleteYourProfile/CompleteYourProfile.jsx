@@ -456,20 +456,20 @@ const Flex = styled.div`
 
 const Indicators = styled.div`
   align-items: center;
-  cursor: pointer;
   display: flex;
   flex: 1 1 0;
   margin-left: 8px;
 `;
 
 const Indicator = styled.div`
+  cursor: pointer;
   flex: 1 1 0;
+  height: 8px;
   margin: 0 4px;
   ${props => (props.complete && props.active ? 'background: rgb(31,192,111); border-bottom: 2px solid #2E3C5D;' : '')}
   ${props => (props.complete && !props.active ? 'background: rgb(31,192,111);' : '')}
   ${props => (!props.complete && props.active ? 'background: #e1e1e1; border-bottom: 2px solid #2E3C5D;' : '')}
   ${props => (!props.complete && !props.active ? 'background: #e1e1e1;' : '')}
-  height: 8px;
 `;
 
 const Separator = styled.div`
