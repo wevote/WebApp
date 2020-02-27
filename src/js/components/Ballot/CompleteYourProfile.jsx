@@ -5,13 +5,14 @@ import { Button } from '@material-ui/core';
 import BallotIcon from '@material-ui/icons/Ballot';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import EditLocation from '@material-ui/icons/EditLocation';
-import ThumbUp from '@material-ui/icons/ThumbUp';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import AppActions from '../../actions/AppActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterConstants from '../../constants/VoterConstants';
 import { cordovaDot } from '../../utils/cordovaUtils';
+import cookies from '../../utils/cookies';
 // import People from '@material-ui/icons/People';
+// import ThumbUp from '@material-ui/icons/ThumbUp';
 
 class CompleteYourProfile extends Component {
   static propTypes = {
@@ -22,6 +23,11 @@ class CompleteYourProfile extends Component {
     super(props);
     this.state = {
       activeStep: 1,
+      addressIntroCompleted: false,
+      firstPositionIntroCompleted: false,
+      howItWorksWatched: false,
+      personalizedScoreIntroCompleted: false,
+      valuesIntroCompleted: false,
       steps: [
         {
           id: 1,
@@ -41,18 +47,18 @@ class CompleteYourProfile extends Component {
           icon: (<img alt="Choose Interests" src={cordovaDot('/img/global/svg-icons/issues/climate-change-24.svg')} />),
           onClick: this.openValuesIntroModal,
         },
+        // {
+        //   id: 3,
+        //   title: 'Find people and groups you trust',
+        //   buttonText: 'Find Advisers',
+        //   completed: false,
+        //   description: '',
+        //   icon: (<ThumbUp />),
+        //   onClick: this.openAdviserIntroModal,
+        // },
         {
           id: 3,
-          title: 'Find people and groups you trust',
-          buttonText: 'Find Advisers',
-          completed: false,
-          description: '',
-          icon: (<ThumbUp />),
-          onClick: this.openAdviserIntroModal,
-        },
-        {
-          id: 4,
-          title: 'Enter your full address to see entire ballot',
+          title: 'Enter your full address to see the correct ballot items.',
           buttonText: 'Confirm Address',
           completed: false,
           description: '',
@@ -60,7 +66,7 @@ class CompleteYourProfile extends Component {
           onClick: this.openAddressIntroModal,
         },
         {
-          id: 5,
+          id: 4,
           title: 'What\'s a personalized score?',
           buttonText: 'Learn More',
           completed: false,
@@ -69,7 +75,7 @@ class CompleteYourProfile extends Component {
           onClick: this.openPersonalizedScoreIntroModal,
         },
         {
-          id: 6,
+          id: 5,
           title: 'Choose your first candidate',
           buttonText: 'Choose Candidate',
           completed: false,
@@ -94,6 +100,7 @@ class CompleteYourProfile extends Component {
         //   icon: (<ThumbUp />),
         // },
       ],
+      textForMapSearch: '',
     };
 
     this.previousStep = this.previousStep.bind(this);
@@ -103,8 +110,11 @@ class CompleteYourProfile extends Component {
   // Steps: options, friends
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    this.sortSteps();
     this.setCompletedStatus();
+    this.sortSteps();
+    this.setState({
+      textForMapSearch: VoterStore.getTextForMapSearch(),
+    });
   }
 
   componentWillUnmount () {
@@ -113,6 +123,10 @@ class CompleteYourProfile extends Component {
 
   onVoterStoreChange () {
     this.setCompletedStatus();
+    this.sortSteps();
+    this.setState({
+      textForMapSearch: VoterStore.getTextForMapSearch(),
+    });
   }
 
   setCompletedStatus = () => {
@@ -121,34 +135,34 @@ class CompleteYourProfile extends Component {
       const howItWorksWatchedId = 1;
       this.setItemComplete(howItWorksWatchedId);
     }
-    const valuesIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ISSUES_COMPLETED);
+    const valuesIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.VALUES_INTRO_COMPLETED);
     if (valuesIntroCompleted) {
       const valuesIntroCompletedId = 2;
       this.setItemComplete(valuesIntroCompletedId);
     }
-    const adviserIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ORGANIZATIONS_COMPLETED);
-    if (adviserIntroCompleted) {
-      const adviserIntroCompletedId = 3;
-      this.setItemComplete(adviserIntroCompletedId);
-    }
-    const addressIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.ADDRESS_INTRO_COMPLETED);
-    if (addressIntroCompleted) {
-      const addressIntroCompletedId = 4;
+    // const adviserIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ORGANIZATIONS_COMPLETED);
+    // if (adviserIntroCompleted) {
+    //   const adviserIntroCompletedId = 3;
+    //   this.setItemComplete(adviserIntroCompletedId);
+    // }
+    const addressIntroCompletedByCookie = cookies.getItem('location_guess_closed');
+    const { addressIntroCompleted } = this.state;
+    if (addressIntroCompleted || addressIntroCompletedByCookie) {
+      const addressIntroCompletedId = 3;
       this.setItemComplete(addressIntroCompletedId);
     }
     const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     if (personalizedScoreIntroCompleted) {
-      const personalizedScoreIntroCompletedId = 5;
+      const personalizedScoreIntroCompletedId = 4;
       this.setItemComplete(personalizedScoreIntroCompletedId);
     }
     const firstPositionIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED);
     if (firstPositionIntroCompleted) {
-      const firstPositionIntroCompletedId = 6;
+      const firstPositionIntroCompletedId = 5;
       this.setItemComplete(firstPositionIntroCompletedId);
     }
     this.setState({
-      addressIntroCompleted,
-      adviserIntroCompleted,
+      // adviserIntroCompleted,
       firstPositionIntroCompleted,
       howItWorksWatched,
       personalizedScoreIntroCompleted,
@@ -185,13 +199,20 @@ class CompleteYourProfile extends Component {
   }
 
   openAddressIntroModal = () => {
+    const oneMonthExpires = 86400 * 31;
+    cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
+    this.setState({
+      addressIntroCompleted: true,
+    });
     AppActions.setShowSelectBallotModal(true);
+    const addressIntroCompletedId = 3;
+    this.setItemComplete(addressIntroCompletedId);
   }
 
-  openAdviserIntroModal = () => {
-    // console.log('Opening modal');
-    AppActions.setShowAdviserIntroModal(true);
-  }
+  // openAdviserIntroModal = () => {
+  //   // console.log('Opening modal');
+  //   AppActions.setShowAdviserIntroModal(true);
+  // }
 
   openPersonalizedScoreIntroModal = () => {
     // console.log('Opening modal');
@@ -208,6 +229,13 @@ class CompleteYourProfile extends Component {
     const notCompletedSteps = steps.filter(oneStep => !oneStep.completed);
     this.setState({
       activeStep: notCompletedSteps[0].id,
+    });
+  }
+
+  goToStep = (stepId) => {
+    this.sortSteps();
+    this.setState({
+      activeStep: stepId,
     });
   }
 
@@ -272,14 +300,21 @@ class CompleteYourProfile extends Component {
   }
 
   render () {
-    const { activeStep, addressIntroCompleted, adviserIntroCompleted, firstPositionIntroCompleted, howItWorksWatched, personalizedScoreIntroCompleted, valuesIntroCompleted } = this.state;
+    const {
+      activeStep, addressIntroCompleted, firstPositionIntroCompleted,
+      howItWorksWatched, personalizedScoreIntroCompleted, steps,
+      textForMapSearch, valuesIntroCompleted,
+    } = this.state;
+    const addressIntroCompletedByCookie = cookies.getItem('location_guess_closed');
+    // console.log('activeStep: ', activeStep);
+    // console.log('steps: ', steps);
 
     // If we have completed all of the steps, don't render this component
     const showCompleteYourProfileForDebugging = false;
     if (showCompleteYourProfileForDebugging) {
       // Pass by this OFF switch so we render this component
-    } else if (addressIntroCompleted && adviserIntroCompleted && firstPositionIntroCompleted && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted) {
-      // If we have done all of the steps, do not render CompleteYourProfile
+    } else if (addressIntroCompleted && addressIntroCompletedByCookie && firstPositionIntroCompleted && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted) {
+      // If we have done all of the steps, do not render CompleteYourProfile // OFF FOR NOW: adviserIntroCompleted &&
       return null;
     }
 
@@ -290,62 +325,79 @@ class CompleteYourProfile extends Component {
             <Flex>
               <span>
                 <strong>
-                  {this.state.steps.filter(oneStep => oneStep.completed).length }
+                  {steps.filter(oneStep => oneStep.completed).length }
                   {' '}
                   of
                   {' '}
-                  {this.state.steps.length}
+                  {steps.length}
                 </strong>
                 {' '}
                 <Info>actions </Info>
                 completed
               </span>
               <Indicators>
-                {this.state.steps.map(step => (
-                  <Indicator key={`completeYourProfileIndicator-${step.id}`} complete={step.completed} />
+                {steps.map(step => (
+                  <Indicator
+                    active={step.id === activeStep}
+                    complete={step.completed}
+                    key={`completeYourProfileIndicator-${step.id}`}
+                    onClick={() => this.goToStep(step.id)}
+                  />
                 ))}
               </Indicators>
             </Flex>
             <Separator />
-            {this.state.steps.map((step, index) => {
+            {steps.map((step, index) => {
               if (step.id === activeStep) {
                 return (
                   <Description key={`completeYourProfileDescription-${step.id}`}>
+                    <Icon className="u-show-desktop-tablet">
+                      {step.icon}
+                    </Icon>
                     <TitleArea>
-                      <Icon>
+                      <Icon className="u-show-mobile">
                         {step.icon}
                       </Icon>
-                      {step.completed ? (
-                        <TitleFlex>
-                          <Title>
-                            {step.title}
-                          </Title>
+                      <TitleFlex>
+                        <Title>
+                          {step.title}
+                        </Title>
+                        {textForMapSearch && step.id === 3 &&
+                          (
+                            <YourLocation>
+                              Our best guess for your location is
+                              {' '}
+                              <BestGuess>
+                                &quot;
+                                {textForMapSearch}
+                                &quot;
+                              </BestGuess>
+                              .
+                              {' '}
+                            </YourLocation>
+                          )
+                        }
+                        {step.completed && (
                           <Completed>
                             <CheckCircle />
                             {' '}
                             Completed
                           </Completed>
-                        </TitleFlex>
-                      ) : (
-                        <TitleFlex>
-                          <Title>
-                            {step.title}
-                          </Title>
-                        </TitleFlex>
-                      )}
+                        )}
+                      </TitleFlex>
                       {step.description}
-                      <TabletActionButton>
-                        <Button
-                          className="u-no-break"
-                          color="primary"
-                          fullWidth
-                          onClick={() => { step.onClick(); }}
-                          variant="contained"
-                        >
-                          {step.buttonText}
-                        </Button>
-                      </TabletActionButton>
                     </TitleArea>
+                    <TabletActionButton>
+                      <Button
+                        className="u-no-break"
+                        color="primary"
+                        fullWidth
+                        onClick={() => { step.onClick(); }}
+                        variant="contained"
+                      >
+                        {step.buttonText}
+                      </Button>
+                    </TabletActionButton>
                     <MobileActionButton>
                       <Button
                         className="u-no-break"
@@ -366,7 +418,7 @@ class CompleteYourProfile extends Component {
                         )}
                       </NavButton>
                       <NavButton>
-                        {index < (this.state.steps.length - 1) ? (
+                        {index < (steps.length - 1) ? (
                           <Button onClick={this.nextStep} className="u-no-break" color="primary">
                             {'Next >'}
                           </Button>
@@ -403,16 +455,20 @@ const Flex = styled.div`
 `;
 
 const Indicators = styled.div`
+  align-items: center;
+  cursor: pointer;
   display: flex;
   flex: 1 1 0;
-  align-items: center;
   margin-left: 8px;
 `;
 
 const Indicator = styled.div`
   flex: 1 1 0;
   margin: 0 4px;
-  background: ${props => (props.complete ? '#2E3C5D' : '#e1e1e1')};
+  ${props => (props.complete && props.active ? 'background: rgb(31,192,111); border-bottom: 2px solid #2E3C5D;' : '')}
+  ${props => (props.complete && !props.active ? 'background: rgb(31,192,111);' : '')}
+  ${props => (!props.complete && props.active ? 'background: #e1e1e1; border-bottom: 2px solid #2E3C5D;' : '')}
+  ${props => (!props.complete && !props.active ? 'background: #e1e1e1;' : '')}
   height: 8px;
 `;
 
@@ -426,7 +482,7 @@ const Separator = styled.div`
 const Description = styled.div`
   @media (min-width: 769px) {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
   }
 `;
@@ -464,6 +520,13 @@ const Completed = styled.div`
   }
 `;
 
+const BestGuess = styled.span`
+  font-weight: bold;
+`;
+
+const YourLocation = styled.span`
+`;
+
 const PersonalizedScorePlusOne = styled.div`
   background: #2E3C5D;
   color: white;
@@ -482,7 +545,7 @@ const PersonalizedScorePlusOne = styled.div`
 
 const TitleArea = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   @media(min-width: 576px) {
     margin-bottom: 12px;

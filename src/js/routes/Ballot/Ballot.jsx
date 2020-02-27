@@ -30,7 +30,6 @@ import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import LocationGuess from '../../components/Ballot/LocationGuess';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
@@ -1077,9 +1076,6 @@ class Ballot extends Component {
                   <DelayedLoad waitBeforeShow={2000}>
                     <CompleteYourProfile />
                   </DelayedLoad>
-                  <LocationGuess
-                    toggleSelectBallotModal={this.toggleSelectBallotModal}
-                  />
                   <div>
                     {/* The rest of the ballot items */}
                     <div className="BallotList">

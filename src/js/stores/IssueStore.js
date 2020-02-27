@@ -3,8 +3,10 @@ import Dispatcher from '../dispatcher/Dispatcher';
 import BallotStore from './BallotStore';  // eslint-disable-line import/no-cycle
 import IssueActions from '../actions/IssueActions';
 import OrganizationStore from './OrganizationStore';  // eslint-disable-line import/no-cycle
-import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
+import VoterActions from '../actions/VoterActions';  // eslint-disable-line import/no-cycle
+import VoterConstants from '../constants/VoterConstants';
 import VoterGuideStore from './VoterGuideStore';  // eslint-disable-line import/no-cycle
+import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
 import { arrayContains, convertNameToSlug, removeValueFromArray } from '../utils/textFormat';
 
 class IssueStore extends ReduceStore {
@@ -467,6 +469,11 @@ class IssueStore extends ReduceStore {
             issueWeVoteIdsVoterCanFollow = removeValueFromArray(action.res.issue_we_vote_id, issueWeVoteIdsVoterCanFollow);
             if (!arrayContains(action.res.issue_we_vote_id, issueWeVoteIdsVoterIsFollowing)) {
               issueWeVoteIdsVoterIsFollowing.push(action.res.issue_we_vote_id);
+            }
+            // console.log('VALUES_INTRO_COMPLETED: ', VoterStore.getInterfaceFlagState(VoterConstants.VALUES_INTRO_COMPLETED));
+            if (!VoterStore.getInterfaceFlagState(VoterConstants.VALUES_INTRO_COMPLETED)) {
+              // console.log('Set VALUES_INTRO_COMPLETED');
+              VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.VALUES_INTRO_COMPLETED);
             }
           } else if (action.res.follow_value === false) {
             if (action.res.ignore_value === false) {

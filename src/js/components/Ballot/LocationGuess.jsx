@@ -7,6 +7,7 @@ import cookies from '../../utils/cookies';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
+// DEPRECATED
 class LocationGuess extends Component {
   static propTypes = {
     toggleSelectBallotModal: PropTypes.func.isRequired,

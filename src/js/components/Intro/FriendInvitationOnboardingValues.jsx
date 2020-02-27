@@ -123,6 +123,9 @@ const styles = theme => ({
 
 const Wrapper = styled.div`
   margin: 0 !important;
+  padding-bottom: 64px;
+  padding-left: 24px;
+  padding-right: 24px;
 `;
 
 // Styled divs are not working in react-slick environment, so I put these styles in _intro-story.scss
@@ -138,7 +141,6 @@ const PopularValuesWrapper = styled.div`
 `;
 
 const ValuesWrapper = styled.div`
-  margin: 0 !important;
 `;
 
 const WeVoteLogoWrapper = styled.div`
