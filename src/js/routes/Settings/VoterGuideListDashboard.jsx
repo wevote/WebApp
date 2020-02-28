@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
+import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -10,7 +12,8 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 
-export default class VoterGuideListDashboard extends Component {
+
+class VoterGuideListDashboard extends Component {
   static propTypes = {
     params: PropTypes.object,
   };
@@ -117,14 +120,6 @@ export default class VoterGuideListDashboard extends Component {
   render () {
     renderLog('VoterGuideListDashboard');  // Set LOG_RENDER_EVENTS to log all renders
 
-    let settingsComponentToDisplay = null;
-    switch (this.state.editMode) {
-      default:
-      case 'intro':
-        settingsComponentToDisplay = <div>Create your own voter guide by clicking &quot;Choose New Election&quot;.</div>;
-        break;
-    }
-
     return (
       <div className="settings-dashboard">
         <Helmet title="Your Endorsements - We Vote" />
@@ -140,7 +135,22 @@ export default class VoterGuideListDashboard extends Component {
                 null }
               <div className="card">
                 <div className="card-main">
-                  {settingsComponentToDisplay}
+                  <Faq>Frequently Asked Questions</Faq>
+                  <br />
+                  <Questions>Why enter endorsements ?</Questions>
+                  <Description>
+                    Enter your own endorsements so your friends and community can learn from you.
+                    {' '}
+                    Help the people who share your values decide how to vote, so they aren&quot;t making hard choices alone.
+                  </Description>
+                  <Questions>How do I start entering my opinions?</Questions>
+                  <Description>
+                    Choose the election you have opinions about by clicking the &quot;Choose New Election&quot; button.
+                    {' '}
+                    If you have already chosen or opposed any candidates (or measures), you can click &quot;Edit&quot; under the election in the left column.
+                  </Description>
+                  <Questions>What does an endorsement look like as I am entering it?</Questions>
+                  <img src={cordovaDot('../../../img/global/screens/endorsement-1422x354.png')} alt="" />
                 </div>
               </div>
             </div>
@@ -150,3 +160,32 @@ export default class VoterGuideListDashboard extends Component {
     );
   }
 }
+
+const Faq = styled.h3`
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  @media (max-width: 576px) {
+    text-align: center;
+  }
+`;
+
+const Questions = styled.p`
+  font-size: 16px;
+  font-weight: bold;
+  font-style: italic;
+  text-align: left;
+  @media (max-width: 576px) {
+    text-align: center;
+  }
+`;
+
+const Description = styled.p`
+  color: #A9A9A9;
+  font-size: 16px;
+  margin-top: 8px;
+`;
+
+export default VoterGuideListDashboard;
