@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import BallotIcon from '@material-ui/icons/Ballot';
+// import BallotIcon from '@material-ui/icons/Ballot';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import EditLocation from '@material-ui/icons/EditLocation';
 import CheckCircle from '@material-ui/icons/CheckCircle';
@@ -65,24 +65,24 @@ class CompleteYourProfile extends Component {
           icon: (<EditLocation />),
           onClick: this.openAddressIntroModal,
         },
-        {
-          id: 4,
-          title: 'What\'s a personalized score?',
-          buttonText: 'Learn More',
-          completed: false,
-          description: '',
-          icon: (<PersonalizedScorePlusOne>+1</PersonalizedScorePlusOne>),
-          onClick: this.openPersonalizedScoreIntroModal,
-        },
-        {
-          id: 5,
-          title: 'Choose your first candidate',
-          buttonText: 'Choose Candidate',
-          completed: false,
-          description: '',
-          icon: (<BallotIcon />),
-          onClick: this.openFirstPositionIntroModal,
-        },
+        // {
+        //   id: 4,
+        //   title: 'What\'s a personalized score?',
+        //   buttonText: 'Learn More',
+        //   completed: false,
+        //   description: '',
+        //   icon: (<PersonalizedScorePlusOne>+1</PersonalizedScorePlusOne>),
+        //   onClick: this.openPersonalizedScoreIntroModal,
+        // },
+        // {
+        //   id: 5,
+        //   title: 'Choose your first candidate',
+        //   buttonText: 'Choose Candidate',
+        //   completed: false,
+        //   description: '',
+        //   icon: (<BallotIcon />),
+        //   onClick: this.openFirstPositionIntroModal,
+        // },
         // {
         //   id: 7,
         //   title: 'Step Seven',
@@ -151,21 +151,21 @@ class CompleteYourProfile extends Component {
       const addressIntroCompletedId = 3;
       this.setItemComplete(addressIntroCompletedId);
     }
-    const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
-    if (personalizedScoreIntroCompleted) {
-      const personalizedScoreIntroCompletedId = 4;
-      this.setItemComplete(personalizedScoreIntroCompletedId);
-    }
-    const firstPositionIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED);
-    if (firstPositionIntroCompleted) {
-      const firstPositionIntroCompletedId = 5;
-      this.setItemComplete(firstPositionIntroCompletedId);
-    }
+    // const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+    // if (personalizedScoreIntroCompleted) {
+    //   const personalizedScoreIntroCompletedId = 4;
+    //   this.setItemComplete(personalizedScoreIntroCompletedId);
+    // }
+    // const firstPositionIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED);
+    // if (firstPositionIntroCompleted) {
+    //   const firstPositionIntroCompletedId = 5;
+    //   this.setItemComplete(firstPositionIntroCompletedId);
+    // }
     this.setState({
       // adviserIntroCompleted,
-      firstPositionIntroCompleted,
+      // firstPositionIntroCompleted,
       howItWorksWatched,
-      personalizedScoreIntroCompleted,
+      // personalizedScoreIntroCompleted,
       valuesIntroCompleted,
     });
   }
@@ -214,22 +214,24 @@ class CompleteYourProfile extends Component {
   //   AppActions.setShowAdviserIntroModal(true);
   // }
 
-  openPersonalizedScoreIntroModal = () => {
-    // console.log('Opening modal');
-    AppActions.setShowPersonalizedScoreIntroModal(true);
-  }
+  // openPersonalizedScoreIntroModal = () => {
+  //   // console.log('Opening modal');
+  //   AppActions.setShowPersonalizedScoreIntroModal(true);
+  // }
 
-  openFirstPositionIntroModal = () => {
-    // console.log('Opening modal');
-    AppActions.setShowFirstPositionIntroModal(true);
-  }
+  // openFirstPositionIntroModal = () => {
+  //   // console.log('Opening modal');
+  //   AppActions.setShowFirstPositionIntroModal(true);
+  // }
 
   goToNextIncompleteStep = () => {
     const { steps } = this.state;
     const notCompletedSteps = steps.filter(oneStep => !oneStep.completed);
-    this.setState({
-      activeStep: notCompletedSteps[0].id,
-    });
+    if (notCompletedSteps && notCompletedSteps[0]) {
+      this.setState({
+        activeStep: notCompletedSteps[0].id,
+      });
+    }
   }
 
   goToStep = (stepId) => {
@@ -244,10 +246,11 @@ class CompleteYourProfile extends Component {
     const { steps } = this.state;
     const currentIndex = steps.map(oneStep => oneStep.id).indexOf(this.state.activeStep);
     // console.log('currentIndex: ', currentIndex);
-
-    this.setState({
-      activeStep: steps[currentIndex - 1].id,
-    });
+    if (currentIndex >= 1) {
+      this.setState({
+        activeStep: steps[currentIndex - 1].id,
+      });
+    }
   }
 
   nextStep () {
@@ -255,7 +258,6 @@ class CompleteYourProfile extends Component {
     const { steps } = this.state;
     const currentIndex = steps.map(e => e.id).indexOf(this.state.activeStep);
     // console.log('currentIndex: ', currentIndex);
-
     if (steps[currentIndex + 1]) {
       this.setState({
         activeStep: steps[currentIndex + 1].id,
@@ -284,8 +286,12 @@ class CompleteYourProfile extends Component {
     const completed = this.state.steps.filter(oneStep => oneStep.completed);
     const notCompleted = this.state.steps.filter(oneStep => !oneStep.completed);
 
-    completed.sort(compare);
-    notCompleted.sort(compare);
+    if (completed) {
+      completed.sort(compare);
+    }
+    if (notCompleted) {
+      notCompleted.sort(compare);
+    }
 
     // console.log('Completed: ', completed);
     // console.log('Not Completed: ', notCompleted);
@@ -301,10 +307,12 @@ class CompleteYourProfile extends Component {
 
   render () {
     const {
-      activeStep, addressIntroCompleted, firstPositionIntroCompleted,
-      howItWorksWatched, personalizedScoreIntroCompleted, steps,
+      activeStep, addressIntroCompleted,
+      howItWorksWatched, steps,
       textForMapSearch, valuesIntroCompleted,
     } = this.state;
+    // firstPositionIntroCompleted,
+    //  personalizedScoreIntroCompleted,
     const addressIntroCompletedByCookie = cookies.getItem('location_guess_closed');
     // console.log('activeStep: ', activeStep);
     // console.log('steps: ', steps);
@@ -313,8 +321,10 @@ class CompleteYourProfile extends Component {
     const showCompleteYourProfileForDebugging = false;
     if (showCompleteYourProfileForDebugging) {
       // Pass by this OFF switch so we render this component
-    } else if (addressIntroCompleted && addressIntroCompletedByCookie && firstPositionIntroCompleted && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted) {
+    } else if ((addressIntroCompleted || addressIntroCompletedByCookie) && howItWorksWatched && valuesIntroCompleted) {
       // If we have done all of the steps, do not render CompleteYourProfile // OFF FOR NOW: adviserIntroCompleted &&
+      // firstPositionIntroCompleted &&
+      // personalizedScoreIntroCompleted &&
       return null;
     }
 
@@ -527,21 +537,21 @@ const BestGuess = styled.span`
 const YourLocation = styled.span`
 `;
 
-const PersonalizedScorePlusOne = styled.div`
-  background: #2E3C5D;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  @media print{
-    border: 2px solid grey;
-  }
-`;
+// const PersonalizedScorePlusOne = styled.div`
+//   background: #2E3C5D;
+//   color: white;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 40px;
+//   height: 40px;
+//   border-radius: 5px;
+//   font-size: 16px;
+//   font-weight: bold;
+//   @media print{
+//     border: 2px solid grey;
+//   }
+// `;
 
 const TitleArea = styled.div`
   display: flex;

@@ -40,7 +40,7 @@ class ElectionStore extends ReduceStore {
 
   googleCivicDataExists (googleCivicElectionId) {
     const election = this.getElectionByGoogleCivicElectionId(googleCivicElectionId);
-    if (election) return election.ballot_returned_count > 20;
+    if (election) return election.ballot_returned_count > 20; // ballot_returned_count not returned any more 2020-03-01
     return false;
   }
 
