@@ -7,6 +7,7 @@ import { renderLog } from '../../utils/logging';
 // TODO: This would be better as https://localhost:3000/candidate-for-extension&candidate_name... if you can figure out the chages in Root.jsx, I Will change the extension.
 export default class CandidateForExtension extends Component {
   static propTypes = {
+    location: PropTypes.object,
   };
 
   constructor (props) {

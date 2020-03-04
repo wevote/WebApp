@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -14,25 +13,15 @@ import VoterStore from '../../stores/VoterStore';
 
 
 class VoterGuideListDashboard extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
-      editMode: '',
       linkedOrganizationWeVoteId: '',
       voter: {},
     };
   }
 
   componentDidMount () {
-    if (this.props.params.edit_mode) {
-      this.setState({ editMode: this.props.params.edit_mode });
-    } else {
-      this.setState({ editMode: 'address' });
-    }
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -59,7 +48,7 @@ class VoterGuideListDashboard extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps () {
     const voter = VoterStore.getVoter();
     this.setState({
       voter,
@@ -79,9 +68,6 @@ class VoterGuideListDashboard extends Component {
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       }
-    }
-    if (nextProps.params.edit_mode) {
-      this.setState({ editMode: nextProps.params.edit_mode });
     }
   }
 
