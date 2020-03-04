@@ -10,6 +10,7 @@ import Ballot from './routes/Ballot/Ballot';
 import BallotIndex from './routes/Ballot/BallotIndex';
 import BallotRedirect from './routes/Ballot/BallotRedirect';
 import Candidate from './routes/Ballot/Candidate';
+import CandidateForExtension from './routes/Ballot/CandidateForExtension';
 import ClaimYourPage from './routes/Settings/ClaimYourPage';
 import Connect from './routes/Connect';
 import Credits from './routes/More/Credits';
@@ -121,6 +122,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/ballot/id/:ballot_returned_we_vote_id" component={Ballot} />
       <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />
 
+      <Route path="/candidate-for-extension" component={CandidateForExtension} />
       <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
       <Route path="/for-campaigns" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForCampaigns {...props} pathname="/for-campaigns" />} />
       <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
