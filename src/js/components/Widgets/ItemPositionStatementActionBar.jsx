@@ -91,24 +91,13 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.commentActive !== nextState.commentActive) {
-      return true;
-    }
-    if (this.state.voterPositionIsPublic !== nextState.voterPositionIsPublic) {
-      return true;
-    }
-    if (this.state.voterTextStatement !== nextState.voterTextStatement) {
-      return true;
-    }
-    if (this.state.showEditPositionStatementInput !== nextState.showEditPositionStatementInput) {
-      return true;
-    }
-    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
-      return true;
-    }
-    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
-      return true;
-    }
+    if (this.state.commentActive !== nextState.commentActive) return true;
+    if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) return true;
+    if (this.state.voterPositionIsPublic !== nextState.voterPositionIsPublic) return true;
+    if (this.state.voterTextStatement !== nextState.voterTextStatement) return true;
+    if (this.state.showEditPositionStatementInput !== nextState.showEditPositionStatementInput) return true;
+    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) return true;
+    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) return true;
     return false;
   }
 
@@ -214,8 +203,10 @@ class ItemPositionStatementActionBar extends Component {
 
   render () {
     renderLog('ItemPositionStatementActionBar');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, ballotItemDisplayName, ballotItemWeVoteId, externalUniqueId, mobile } = this.props;
+    const { classes, ballotItemDisplayName, ballotItemWeVoteId, externalUniqueId, mobile, showPositionStatementActionBar } = this.props;
     const { commentActive, showEditPositionStatementInput, voterIsSignedIn, voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = this.state;
+
+    console.log('inModal: ', this.props.inModal);
 
     let rows = 1;
 
@@ -299,13 +290,14 @@ class ItemPositionStatementActionBar extends Component {
 
     // console.log('ItemPositionStatementActionBar, editMode: ', editMode);
     // minRows={1}
+
     return (
       <Wrapper shownInList={this.props.shownInList}>
         { // Show the edit box (Viewing self)
           editMode ? (
             <Paper
               elevation={2}
-              className={classes.root}
+              className={window.innerWidth >= 769 ? classes.rootWhite : classes.root}
             >
               <form className={classes.flex} onSubmit={this.savePositionStatement.bind(this)} onFocus={this.onFocusInput} onBlur={this.onBlurInput}>
                 <InputBase onChange={this.updateStatementTextToBeSaved}
@@ -336,7 +328,7 @@ class ItemPositionStatementActionBar extends Component {
           ) : (
             <Paper
               elevation={2}
-              className={`${classes.disabled} ${classes.flex} ${classes.root}`}
+              className={`${window.innerWidth >= 769 ? classes.disabledWhite : classes.disabled} ${classes.flex} ${classes.root}`}
             >
               <InputBase
                 onKeyDown={onKeyDown}
@@ -381,6 +373,14 @@ const styles = theme => ({
       height: 'auto',
     },
   },
+  rootWhite: {
+    boxShadow: 'none',
+    border: 'none',
+    padding: '8px',
+    [theme.breakpoints.down('xs')]: {
+      height: 'auto',
+    },
+  },
   flex: {
     display: 'flex',
     width: '100%',
@@ -400,7 +400,10 @@ const styles = theme => ({
   disabled: {
     background: '#eee',
     border: 'none',
-
+  },
+  disabledWhite: {
+    background: '#fff',
+    border: 'none',
   },
   disabledInput: {
     color: '#313131',

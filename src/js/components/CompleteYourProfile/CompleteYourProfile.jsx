@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-// import BallotIcon from '@material-ui/icons/Ballot';
+import BallotIcon from '@material-ui/icons/Ballot';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import EditLocation from '@material-ui/icons/EditLocation';
 import CheckCircle from '@material-ui/icons/CheckCircle';
@@ -74,15 +74,15 @@ class CompleteYourProfile extends Component {
         //   icon: (<PersonalizedScorePlusOne>+1</PersonalizedScorePlusOne>),
         //   onClick: this.openPersonalizedScoreIntroModal,
         // },
-        // {
-        //   id: 5,
-        //   title: 'Choose your first candidate',
-        //   buttonText: 'Choose Candidate',
-        //   completed: false,
-        //   description: '',
-        //   icon: (<BallotIcon />),
-        //   onClick: this.openFirstPositionIntroModal,
-        // },
+        {
+          id: 5,
+          title: 'Choose your first candidate',
+          buttonText: 'Choose Candidate',
+          completed: false,
+          description: '',
+          icon: (<BallotIcon />),
+          onClick: this.openFirstPositionIntroModal,
+        },
         // {
         //   id: 7,
         //   title: 'Step Seven',
@@ -219,10 +219,10 @@ class CompleteYourProfile extends Component {
   //   AppActions.setShowPersonalizedScoreIntroModal(true);
   // }
 
-  // openFirstPositionIntroModal = () => {
-  //   // console.log('Opening modal');
-  //   AppActions.setShowFirstPositionIntroModal(true);
-  // }
+  openFirstPositionIntroModal = () => {
+    // console.log('Opening modal');
+    AppActions.setShowFirstPositionIntroModal(true);
+  }
 
   goToNextIncompleteStep = () => {
     const { steps } = this.state;

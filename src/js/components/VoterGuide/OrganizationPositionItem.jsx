@@ -401,6 +401,7 @@ export default class OrganizationPositionItem extends Component {
             { this.props.editMode ? (
               <div>
                 <ItemActionBar
+                  inModal={this.props.inModal}
                   ballotItemWeVoteId={position.ballot_item_we_vote_id}
                   ballotItemDisplayName={ballotItemDisplayName}
                   commentButtonHide

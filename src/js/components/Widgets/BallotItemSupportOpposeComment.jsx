@@ -151,6 +151,9 @@ class BallotItemSupportOpposeComment extends PureComponent {
     }
     const itemActionBar = (
       <ItemActionBar
+        showPositionPublicToggle={this.props.showPositionPublicToggle}
+        inModal={this.props.inModal}
+        showPositionStatementActionBar={showPositionStatementActionBar}
         ballotItemDisplayName={ballotItemDisplayName}
         ballotItemWeVoteId={ballotItemWeVoteId}
         commentButtonHide={commentBoxIsVisible}
@@ -166,8 +169,11 @@ class BallotItemSupportOpposeComment extends PureComponent {
     );
 
     const commentDisplayDesktop = showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
-      <div className="d-none d-sm-block u-min-50 u-stack--sm">
+      <div className="d-none d-sm-block">
         <ItemPositionStatementActionBar
+          showPositionPublicToggle={this.props.showPositionPublicToggle}
+          inModal={this.props.inModal}
+          showPositionStatementActionBar={showPositionStatementActionBar}
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
           commentEditModeOn={showPositionStatement}
@@ -182,8 +188,11 @@ class BallotItemSupportOpposeComment extends PureComponent {
       null;
 
     const commentDisplayMobile = showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement ? (
-      <div className="d-block d-sm-none u-min-50 u-push--xs u-stack--xs">
+      <div className="d-block d-sm-none">
         <ItemPositionStatementActionBar
+          showPositionPublicToggle={this.props.showPositionPublicToggle}
+          inModal={this.props.inModal}
+          showPositionStatementActionBar={showPositionStatementActionBar}
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
           // shouldFocus={this.state.shouldFocusCommentArea}
@@ -197,15 +206,19 @@ class BallotItemSupportOpposeComment extends PureComponent {
     ) :
       null;
 
+    console.log('White background from root: ', showPositionStatementActionBar);
+
     return (
-      <Wrapper showPositionStatementActionBar={showPositionStatementActionBar}>
+      <Wrapper inModal={this.props.inModal} showPositionStatementActionBar={showPositionStatementActionBar}>
         {/* <BallotHeaderDivider className="u-show-mobile" /> */}
-        <ActionBarWrapper>
+        <ActionBarWrapper inModal={this.props.inModal}>
           {/* Support/Oppose/Comment toggle here */}
           {itemActionBar}
         </ActionBarWrapper>
-        { commentDisplayDesktop }
-        { commentDisplayMobile }
+        <CommentDisplayWrapper inModal={this.props.inModal}>
+          { commentDisplayDesktop }
+          { commentDisplayMobile }
+        </CommentDisplayWrapper>
       </Wrapper>
     );
   }
@@ -213,20 +226,24 @@ class BallotItemSupportOpposeComment extends PureComponent {
 
 const Wrapper = styled.div`
   width: 100%;
-  background-color: ${({ showPositionStatementActionBar }) => (showPositionStatementActionBar ? '#F5F5F5' : 'white')};
-  padding: 4px;
+  background-color: ${({ showPositionStatementActionBar, inModal }) => (showPositionStatementActionBar || inModal ? '#eee' : 'white')} !important;
+  padding: ${props => (props.showPositionStatementActionBar || props.inModal ? '12px 12px 0 12px' : '0')} !important;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;
     padding: 0;
   }
+  margin-top: 12px;
 `;
 
 const ActionBarWrapper = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
   padding: 0px;
+  margin-bottom: 12px;
+`;
+
+const CommentDisplayWrapper = styled.div`
+  padding: 0px;
+  padding-bottom: 12px;
 `;
 
 

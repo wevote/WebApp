@@ -24,8 +24,7 @@ class FirstPositionIntroModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      actionButtonText: 'Show Personalized Score',
-      explanationText: 'For every candidate on your ballot, we add up the opinions of the people you trust.',
+      explanationText: 'Please click the "CHOOSE" or "OPPOSE" button.',
       pathname: '',
     };
   }
@@ -134,27 +133,11 @@ class FirstPositionIntroModal extends Component {
             <ExplanationText>
               {explanationText}
             </ExplanationText>
-            <ActionButtonWrapper>
-              <ActionButtonInsideWrapper>
-                {!hideNextStepButton && (
-                  <Button
-                    classes={{ root: classes.actionButtonRoot }}
-                    color="primary"
-                    id="showPersonalizedScoreButton"
-                    onClick={this.clickNextStepButton}
-                    variant="contained"
-                  >
-                    <div className="u-no-break">
-                      {actionButtonText}
-                    </div>
-                  </Button>
-                )}
-              </ActionButtonInsideWrapper>
-            </ActionButtonWrapper>
             <section className="card">
               <CandidateItem
-                candidateWeVoteId="candidateAlexanderHamilton"
-                hideBallotItemSupportOpposeComment
+                inModal
+                candidateWeVoteId="wv02cand55927"
+                // hideBallotItemSupportOpposeComment
                 hideCandidateText
                 hideCandidateUrl
                 hideIssuesRelatedToCandidate
@@ -162,6 +145,8 @@ class FirstPositionIntroModal extends Component {
                 showDownArrow={showPersonalizedScoreArrow}
                 showLargeImage
                 showOfficeName
+                showPositionStatementActionBar
+                showPositionPublicToggle={false}
               />
             </section>
             <ExplanationTextLighter>
