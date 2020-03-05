@@ -150,6 +150,7 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/more/about') ||
       (pathnameLowerCase === '/more/credits') ||
       pathnameLowerCase.startsWith('/more/donate') ||
+      (pathnameLowerCase === '/more/extensionsignin') ||
       (pathnameLowerCase === '/more/myballot') ||
       pathnameLowerCase.startsWith('/more/pricing') ||
       (pathnameLowerCase === '/welcome') ||

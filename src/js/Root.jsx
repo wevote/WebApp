@@ -19,6 +19,7 @@ import DonateThankYou from './routes/More/DonateThankYou';
 import StripeElementsTest from './routes/More/StripeElementsTest';
 import ElectionReminder from './routes/More/ElectionReminder';
 import Elections from './routes/More/Elections';
+import ExtensionSignIn from './routes/More/ExtensionSignIn';
 import FAQ from './routes/More/FAQ';
 import FacebookInvitableFriends from './routes/FacebookInvitableFriends';
 import FriendInvitationOnboarding from './routes/Intro/FriendInvitationOnboarding';
@@ -169,6 +170,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/more/credits" component={Credits} />
       <Route path="/more/donate" component={isNotWeVoteMarketingSite ? BallotRedirect : Donate} />
       <Route path="/more/donate_thank_you" component={isNotWeVoteMarketingSite ? BallotRedirect : DonateThankYou} />
+      <Route path="/more/extensionsignin" component={ExtensionSignIn} />
       <Route path="/more/stripe_elements_test" component={StripeElementsTest} />
       <Route path="/more/elections" component={Elections} />
       <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
