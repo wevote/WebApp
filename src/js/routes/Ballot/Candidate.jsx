@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
@@ -23,11 +24,12 @@ import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
+import BallotShareButton from '../../components/Ballot/BallotShareButton';
 // import VoterGuideActions from '../../actions/VoterGuideActions';
 
 
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
-export default class Candidate extends Component {
+class Candidate extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
   };
@@ -282,15 +284,24 @@ export default class Candidate extends Component {
           )
         }
         <section className="card">
-          <CandidateItem
-            candidateWeVoteId={candidate.we_vote_id}
-            hideShowMoreFooter
-            organizationWeVoteId={organizationWeVoteId}
-            linkToOfficePage
-            showLargeImage
-            showOfficeName
-            showPositionStatementActionBar
-          />
+          <div className="row">
+            <div className="col-12 col-sm-9 col-lg-10">
+              <CandidateItem
+                candidateWeVoteId={candidate.we_vote_id}
+                hideShowMoreFooter
+                organizationWeVoteId={organizationWeVoteId}
+                linkToOfficePage
+                showLargeImage
+                showOfficeName
+                showPositionStatementActionBar
+              />
+            </div>
+            <div className="col-sm-3 col-lg-2 d-none d-sm-block text-center">
+              <RightColumnWrapper>
+                <BallotShareButton />
+              </RightColumnWrapper>
+            </div>
+          </div>
         </section>
         { !!(allCachedPositionsForThisCandidate.length) && (
           <section className="card">
@@ -339,3 +350,9 @@ export default class Candidate extends Component {
     );
   }
 }
+
+const RightColumnWrapper = styled.div`
+  margin-top: 12px;
+`;
+
+export default Candidate;
