@@ -400,6 +400,8 @@ class CandidateItem extends Component {
   );
 
   candidateIssuesAndCommentBlock = (candidateText, localUniqueId) => {
+    console.log(this.props.inModal);
+    console.log(this.props.showPositionStatementActionBar);
     const {
       candidateWeVoteId, hideBallotItemSupportOpposeComment, hideCandidateText, hideIssuesRelatedToCandidate, hideShowMoreFooter,
       linkToBallotItemPage, showHover, showPositionStatementActionBar, showTopCommentByBallotItem,
@@ -409,22 +411,23 @@ class CandidateItem extends Component {
       largeAreaHoverLinkOnNow, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement,
     } = this.state;
     return (
-      <div>
+      <>
         <div className="card-main__actions">
-          <div>
-            {hideBallotItemSupportOpposeComment ?
-              null : (
-                <BallotItemSupportOpposeComment
-                  ballotItemWeVoteId={candidateWeVoteId}
-                  externalUniqueId={`candidateItem-${localUniqueId}`}
-                  showPositionStatementActionBar={showPositionStatementActionBar}
-                />
-              )
-            }
-          </div>
+          {hideBallotItemSupportOpposeComment ?
+            null : (
+              <BallotItemSupportOpposeComment
+                hidePositionPublicToggle={this.props.hidePositionPublicToggle}
+                inModal={this.props.inModal}
+                showPositionPublicToggle={this.props.showPositionPublicToggle}
+                ballotItemWeVoteId={candidateWeVoteId}
+                externalUniqueId={`candidateItem-${localUniqueId}`}
+                showPositionStatementActionBar={showPositionStatementActionBar}
+              />
+            )
+          }
           {/* If there is a quote about the candidate, show that here. */}
           {showTopCommentByBallotItem ? (
-            <div>
+            <>
               <div className="u-show-desktop">
                 {linkToBallotItemPage && largeAreaHoverLinkOnNow && showHover ?
                   (
@@ -436,6 +439,8 @@ class CandidateItem extends Component {
                       </div>
                       <div className={`${(voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement) ? 'col col-6' : 'col col-3'}`}>
                         <ItemActionBar
+                          showPositionPublicToggle={this.props.showPositionPublicToggle}
+                          inModal={this.props.inModal}
                           ballotItemWeVoteId={candidateWeVoteId}
                           buttonsOnly
                           className="u-float-right"
@@ -464,22 +469,20 @@ class CandidateItem extends Component {
                   {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
                 </Link>
               </div>
-            </div>
+            </>
           ) : (
-            <span>
+            <>
               {(!hideCandidateText && candidateText && candidateText.length) && (
-                <div
-                  className={`u-stack--xs ${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
+                <CandidateTextWrapper
+                  className={`${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
                 >
-                  <div className="card-main__description">
-                    <ReadMore
-                      textToDisplay={candidateText}
-                      numberOfLines={2}
-                    />
-                  </div>
-                </div>
+                  <ReadMore
+                    textToDisplay={candidateText}
+                    numberOfLines={2}
+                  />
+                </CandidateTextWrapper>
               )}
-            </span>
+            </>
           )}
           {/* Issues related to this Candidate */}
           {!hideIssuesRelatedToCandidate && (
@@ -495,7 +498,7 @@ class CandidateItem extends Component {
           null :
           <ShowMoreFooter showMoreId="candidateItemShowMoreFooter" showMoreLink={this.goToCandidateLink} />
         }
-      </div>
+      </>
     );
   };
 
@@ -582,6 +585,10 @@ const CandidateWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 100%;
   }
+`;
+
+const CandidateTextWrapper = styled.div`
+  margin: 12px 0;
 `;
 
 const DesktopWrapper = styled.div`

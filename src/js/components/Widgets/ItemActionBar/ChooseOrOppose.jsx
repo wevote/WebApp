@@ -28,6 +28,7 @@ class ChooseOrOppose extends Component {
           <Row>
             <BoldText>Test the toggle here:</BoldText>
             <PositionPublicToggle
+              inModal={this.props.inModal}
               ballotItemWeVoteId="null"
               className="null"
               externalUniqueId={`practiceToggle-${this.props.externalUniqueId}`}

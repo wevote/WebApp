@@ -205,6 +205,7 @@ class CandidateItemForAddPositions extends Component {
           </Candidate>
           {/* Action Buttons: Support/Oppose/Comment */}
           <ItemActionBar
+            inModal={this.props.inModal}
             ballotItemDisplayName={oneCandidate.ballot_item_display_name}
             ballotItemWeVoteId={oneCandidate.we_vote_id}
             buttonsOnly

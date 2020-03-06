@@ -224,6 +224,7 @@ class MeasureItemForAddPositions extends Component {
           </MeasureInfoWrapper>
           {/* Action Buttons: Support/Oppose/Comment */}
           <ItemActionBar
+            inModal={this.props.inModal}
             ballotItemDisplayName={ballotItemDisplayName}
             ballotItemWeVoteId={ballotItemWeVoteId}
             buttonsOnly

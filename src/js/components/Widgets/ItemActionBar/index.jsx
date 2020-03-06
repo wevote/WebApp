@@ -612,6 +612,8 @@ class ItemActionBar extends PureComponent {
       }
     };
 
+    console.log(this.props.inModal);
+
     const iconSize = 18;
     const iconColor = '#00749e'; // $link-color
 
@@ -694,9 +696,11 @@ class ItemActionBar extends PureComponent {
 
     // console.log('ItemActionBar buttonsOnly:', buttonsOnly);
     const showPositionPublicToggle = !this.props.hidePositionPublicToggle && this.isAnyEndorsementCalculated();
+    console.log(showPositionPublicToggle);
     return (
       <>
         <ItemActionBarWrapper
+          inModal={this.props.inModal}
           displayInline={buttonsOnly || this.props.shareButtonHide}
           onMouseOver={handleEnterHoverLocalArea}
           onFocus={handleEnterHoverLocalArea}
@@ -765,7 +769,7 @@ class ItemActionBar extends PureComponent {
                 {ballotItemType === 'CANDIDATE' ? this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`mobileVersion-${ballotItemWeVoteId}`)}
               </ButtonWrapper>
             )}
-            { this.props.commentButtonHide ?
+            { this.props.commentButtonHide || this.props.inModal ?
               null : (
                 <span>
                   {buttonsOnly ? (
@@ -780,7 +784,7 @@ class ItemActionBar extends PureComponent {
                 </span>
               )}
 
-            { this.props.shareButtonHide ?
+            { this.props.shareButtonHide || this.props.inModal ?
               null :
               <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
             { showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null }
@@ -813,9 +817,6 @@ const styles = theme => ({
     fontSize: 12,
     width: 110,
     height: 32,
-    marginLeft: '.1rem',
-    marginTop: '.3rem',
-    marginBottom: 4,
     [theme.breakpoints.down('md')]: {
       width: 100,
       height: 30,
@@ -893,6 +894,10 @@ const StackedButton = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
+  &:last-child {
+    margin-right: 0;
+  }
+  margin-right: 8px;
   display: flex;
   align-items: center;
   // ${({ onlyTwoButtons }) => (onlyTwoButtons ? 'width: 50% !important;' : '')}

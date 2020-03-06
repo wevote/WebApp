@@ -504,6 +504,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               )}
               <ItemActionBarWrapper>
                 <ItemActionBar
+                  inModal={this.props.inModal}
                   ballotItemWeVoteId={ballotItemWeVoteId}
                   commentButtonHide
                   externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
@@ -546,7 +547,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             <PopoverBody>
               <ItemActionBarWrapper>
                 <ItemActionBar
-                  ballotItemWeVoteId={ballotItemWeVoteId}
+  inModal={this.props.inModal}ballotItemWeVoteId={ballotItemWeVoteId}
                   commentButtonHide
                   externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
                   hidePositionPublicToggle
@@ -586,6 +587,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           <PopoverBody>
             <ItemActionBarWrapper>
               <ItemActionBar
+                inModal={this.props.inModal}
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 commentButtonHide
                 externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
@@ -620,6 +622,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             yet.
             <ItemActionBarWrapper>
               <ItemActionBar
+                inModal={this.props.inModal}
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 commentButtonHide
                 externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
@@ -675,6 +678,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             )}
             <ItemActionBarWrapper>
               <ItemActionBar
+                inModal={this.props.inModal}
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 commentButtonHide
                 externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
@@ -699,6 +703,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           <PopoverBody>
             <ItemActionBarWrapper>
               <ItemActionBar
+                inModal={this.props.inModal}
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 commentButtonHide
                 externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}

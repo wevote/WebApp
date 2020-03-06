@@ -24,8 +24,7 @@ class FirstPositionIntroModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      actionButtonText: 'Show Personalized Score',
-      explanationText: 'For every candidate on your ballot, we add up the opinions of the people you trust.',
+      explanationText: 'Please click the "CHOOSE" or "OPPOSE" button.',
       pathname: '',
     };
   }
@@ -134,27 +133,11 @@ class FirstPositionIntroModal extends Component {
             <ExplanationText>
               {explanationText}
             </ExplanationText>
-            <ActionButtonWrapper>
-              <ActionButtonInsideWrapper>
-                {!hideNextStepButton && (
-                  <Button
-                    classes={{ root: classes.actionButtonRoot }}
-                    color="primary"
-                    id="showPersonalizedScoreButton"
-                    onClick={this.clickNextStepButton}
-                    variant="contained"
-                  >
-                    <div className="u-no-break">
-                      {actionButtonText}
-                    </div>
-                  </Button>
-                )}
-              </ActionButtonInsideWrapper>
-            </ActionButtonWrapper>
             <section className="card">
               <CandidateItem
-                candidateWeVoteId="candidateAlexanderHamilton"
-                hideBallotItemSupportOpposeComment
+                inModal
+                candidateWeVoteId="wv02cand55927"
+                // hideBallotItemSupportOpposeComment
                 hideCandidateText
                 hideCandidateUrl
                 hideIssuesRelatedToCandidate
@@ -162,6 +145,9 @@ class FirstPositionIntroModal extends Component {
                 showDownArrow={showPersonalizedScoreArrow}
                 showLargeImage
                 showOfficeName
+                showPositionStatementActionBar
+                // showPositionPublicToggle={false}
+                // hidePositionPublicToggle
               />
             </section>
             <ExplanationTextLighter>
@@ -206,7 +192,7 @@ const styles = () => ({
     margin: '0 auto',
   },
   dialogContent: {
-    padding: '0 12px 24px 24px',
+    padding: '0 24px 24px 24px',
     background: 'white',
     // display: 'flex',
     // justifyContent: 'center',
@@ -236,7 +222,7 @@ const ModalTitleArea = styled.div`
 `;
 
 const Title = styled.h3`
-  font-size: 24px;
+  font-size: 28px;
   color: black;
   margin-top: 0;
   margin-bottom: 0;
@@ -248,8 +234,8 @@ const Title = styled.h3`
 
 const ExplanationText = styled.div`
   color: #2e3c5d;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
   margin: 6px 0 12px 0;
   @include breakpoints (max mid-small) {
     font-size: 16px;
@@ -275,6 +261,7 @@ const ExplanationTextLighter = styled.div`
   @include breakpoints (max mid-small) {
     font-size: 14px;
   }
+  margin-bottom: 12px;
 `;
 
 const ContinueButtonWrapper = styled.div`
