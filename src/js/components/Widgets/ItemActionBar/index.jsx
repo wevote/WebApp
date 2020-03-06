@@ -696,6 +696,7 @@ class ItemActionBar extends PureComponent {
 
     // console.log('ItemActionBar buttonsOnly:', buttonsOnly);
     const showPositionPublicToggle = !this.props.hidePositionPublicToggle && this.isAnyEndorsementCalculated();
+    console.log(showPositionPublicToggle);
     return (
       <>
         <ItemActionBarWrapper

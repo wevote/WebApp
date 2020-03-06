@@ -161,6 +161,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
         currentBallotIdInUrl={currentBallotIdInUrl}
         externalUniqueId={`${externalUniqueId}-ballotItemSupportOpposeComment-${ballotItemWeVoteId}`}
         shareButtonHide
+        hidePositionPublicToggle={this.props.hidePositionPublicToggle}
         supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
         togglePositionStatementFunction={this.togglePositionStatement}
         transitioning={this.state.transitioning}
@@ -195,6 +196,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
           showPositionStatementActionBar={showPositionStatementActionBar}
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
+          hidePositionPublicToggle={this.props.hidePositionPublicToggle}
           // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type={ballotItemType}

@@ -411,11 +411,12 @@ class CandidateItem extends Component {
       largeAreaHoverLinkOnNow, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement,
     } = this.state;
     return (
-      <div>
+      <>
         <div className="card-main__actions">
           {hideBallotItemSupportOpposeComment ?
             null : (
               <BallotItemSupportOpposeComment
+                hidePositionPublicToggle={this.props.hidePositionPublicToggle}
                 inModal={this.props.inModal}
                 showPositionPublicToggle={this.props.showPositionPublicToggle}
                 ballotItemWeVoteId={candidateWeVoteId}
@@ -497,7 +498,7 @@ class CandidateItem extends Component {
           null :
           <ShowMoreFooter showMoreId="candidateItemShowMoreFooter" showMoreLink={this.goToCandidateLink} />
         }
-      </div>
+      </>
     );
   };
 
