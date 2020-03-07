@@ -336,11 +336,17 @@ class Application extends Component {
 
     routingLog(pathname);
 
-    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, showBallotShareButtonFooter, voterGuideCreatorMode, voterGuideMode } = getApplicationViewBooleans(pathname);
+    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, showBallotShareButtonFooter, voterGuideCreatorMode, voterGuideMode, extensionPageMode } = getApplicationViewBooleans(pathname);
     // console.log('showBallotShareButtonFooter:', showBallotShareButtonFooter);
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
-    if (inTheaterMode) {
+    if (extensionPageMode) {
+      return (
+        <div>
+          { this.props.children }
+        </div>
+      );
+    } else if (inTheaterMode) {
       // console.log('inTheaterMode', inTheaterMode);
       return (
         <div className="app-base" id="app-base-id">

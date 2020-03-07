@@ -16,6 +16,7 @@ export function getApplicationViewBooleans (pathname) {
   let valuesMode = false;
   let voterGuideMode = false;
   let voterGuideCreatorMode = false;
+  let extensionPageMode = false;
   if (pathnameLowerCase === '/intro/story' ||
     pathnameLowerCase === '/intro/sample_ballot' ||
     pathnameLowerCase === '/intro/get_started' ||
@@ -169,7 +170,9 @@ export function getApplicationViewBooleans (pathname) {
   ) {
     // We want to HIDE the footer bar on the above path patterns
     showFooterBar = false;
-  // ///////// SHOW: The following are URLS where we want the footer to show
+  } else if (pathnameLowerCase.startsWith('/candidate-for-extension')) {
+    extensionPageMode = true;
+    // ///////// SHOW: The following are URLS where we want the footer to show
   } else if (pathnameLowerCase.startsWith('/ballot') ||
       pathnameLowerCase.startsWith('/candidate') || // Show Footer if back to not specified above
       pathnameLowerCase.startsWith('/friends') ||
@@ -206,6 +209,7 @@ export function getApplicationViewBooleans (pathname) {
     valuesMode,
     voterGuideCreatorMode,
     voterGuideMode,
+    extensionPageMode,
     showBackToFriends,
     showBackToBallotHeader,
     showBackToSettingsDesktop,
