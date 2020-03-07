@@ -27,6 +27,7 @@ export default class OrganizationPositionItem extends Component {
     stance_display_off: PropTypes.bool,
     turnOffLogo: PropTypes.bool,
     turnOffName: PropTypes.bool,
+    inModal: PropTypes.bool,
   };
 
   constructor (props) {

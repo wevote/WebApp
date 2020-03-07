@@ -39,6 +39,9 @@ class CandidateItem extends Component {
     showLargeImage: PropTypes.bool,
     showPositionStatementActionBar: PropTypes.bool,
     showTopCommentByBallotItem: PropTypes.bool,
+    inModal: PropTypes.bool,
+    hidePositionPublicToggle: PropTypes.bool,
+    showPositionPublicToggle: PropTypes.bool,
   };
 
   constructor (props) {
@@ -177,13 +180,13 @@ class CandidateItem extends Component {
   }
 
   onCandidateStoreChange () {
-    const { candidateWeVoteId } = this.props;
+    const { candidateWeVoteId, showLargeImage } = this.props;
     // console.log('CandidateItem onCandidateStoreChange, candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
       // console.log('CandidateItem onCandidateStoreChange, candidate:', candidate);
       let candidatePhotoUrl;
-      if (this.props.showLargeImage && candidate.candidate_photo_url_large) {
+      if (showLargeImage && candidate.candidate_photo_url_large) {
         candidatePhotoUrl = candidate.candidate_photo_url_large;
       } else if (candidate.candidate_photo_url_medium) {
         candidatePhotoUrl = candidate.candidate_photo_url_medium;
@@ -273,14 +276,14 @@ class CandidateItem extends Component {
     if (this.props.showHover) {
       this.setState({ largeAreaHoverColorOnNow: true, largeAreaHoverLinkOnNow: true });
     }
-  }
+  };
 
   handleLeave = () => {
     // console.log('Handle leave', e.target);
     if (this.props.showHover) {
       this.setState({ largeAreaHoverColorOnNow: false, largeAreaHoverLinkOnNow: false });
     }
-  }
+  };
 
   candidateRenderBlock = (candidateWeVoteId, useLinkToCandidatePage = false) => {
     // console.log('CandidateItem candidateRenderBlock');
@@ -400,25 +403,26 @@ class CandidateItem extends Component {
   );
 
   candidateIssuesAndCommentBlock = (candidateText, localUniqueId) => {
-    console.log(this.props.inModal);
-    console.log(this.props.showPositionStatementActionBar);
     const {
       candidateWeVoteId, hideBallotItemSupportOpposeComment, hideCandidateText, hideIssuesRelatedToCandidate, hideShowMoreFooter,
-      linkToBallotItemPage, showHover, showPositionStatementActionBar, showTopCommentByBallotItem,
+      linkToBallotItemPage, showHover, showPositionStatementActionBar, showTopCommentByBallotItem, hidePositionPublicToggle, showPositionPublicToggle, inModal,
     } = this.props;
     const {
       ballotItemDisplayName, largeAreaHoverColorOnNow,
       largeAreaHoverLinkOnNow, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement,
     } = this.state;
+    console.log(inModal);
+    console.log(showPositionStatementActionBar);
+
     return (
       <>
         <div className="card-main__actions">
           {hideBallotItemSupportOpposeComment ?
             null : (
               <BallotItemSupportOpposeComment
-                hidePositionPublicToggle={this.props.hidePositionPublicToggle}
-                inModal={this.props.inModal}
-                showPositionPublicToggle={this.props.showPositionPublicToggle}
+                hidePositionPublicToggle={hidePositionPublicToggle}
+                inModal={inModal}
+                showPositionPublicToggle={showPositionPublicToggle}
                 ballotItemWeVoteId={candidateWeVoteId}
                 externalUniqueId={`candidateItem-${localUniqueId}`}
                 showPositionStatementActionBar={showPositionStatementActionBar}
@@ -439,8 +443,8 @@ class CandidateItem extends Component {
                       </div>
                       <div className={`${(voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement) ? 'col col-6' : 'col col-3'}`}>
                         <ItemActionBar
-                          showPositionPublicToggle={this.props.showPositionPublicToggle}
-                          inModal={this.props.inModal}
+                          showPositionPublicToggle={showPositionPublicToggle}
+                          inModal={inModal}
                           ballotItemWeVoteId={candidateWeVoteId}
                           buttonsOnly
                           className="u-float-right"

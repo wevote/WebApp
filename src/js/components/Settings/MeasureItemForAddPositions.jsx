@@ -19,6 +19,7 @@ class MeasureItemForAddPositions extends Component {
     organization: PropTypes.object,
     organization_we_vote_id: PropTypes.string,
     showPositionStatementActionBar: PropTypes.bool,
+    inModal: PropTypes.bool,
   };
 
   constructor (props) {

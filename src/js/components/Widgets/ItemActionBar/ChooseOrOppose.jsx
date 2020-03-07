@@ -16,7 +16,8 @@ class ChooseOrOppose extends Component {
     ballotItemType: PropTypes.string.isRequired,
     externalUniqueId: PropTypes.string,
     onClose: PropTypes.func,
-  }
+    inModal: PropTypes.bool,
+  };
 
   getSlides = () => {
     const { ballotItemType } = this.props;

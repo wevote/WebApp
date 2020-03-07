@@ -52,13 +52,13 @@ class PersonalizedScoreIntroModal extends Component {
 
   closeThisModal = () => {
     this.props.toggleFunction(this.state.pathname);
-  }
+  };
 
   personalizedScoreIntroCompleted = () => {
     // Mark this so we know to show 'How it Works' as completed
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.props.toggleFunction(this.state.pathname);
-  }
+  };
 
   clickNextStepButton = () => {
     const { openAdviserDetailsButtonClicked, personalizedScoreModalButtonClicked, personalizedScoreButtonClicked } = this.state;
@@ -74,8 +74,8 @@ class PersonalizedScoreIntroModal extends Component {
         // Buttons clicked
         openAdviserDetailsButtonClicked: true,
         // Results
-        openAdviserDetails: true,
-        openPersonalizedScoreModal: true,
+        // openAdviserDetails: true,
+        // openPersonalizedScoreModal: true,
         showPersonalizedScoreArrow: false,
       });
     } else if (personalizedScoreButtonClicked) {
@@ -85,8 +85,8 @@ class PersonalizedScoreIntroModal extends Component {
         // Buttons clicked
         personalizedScoreModalButtonClicked: true,
         // Results
-        openAdviserDetails: false,
-        openPersonalizedScoreModal: true,
+        // openAdviserDetails: false,
+        // openPersonalizedScoreModal: true,
         showPersonalizedScoreArrow: false,
       });
     } else {
@@ -96,12 +96,12 @@ class PersonalizedScoreIntroModal extends Component {
         // Buttons clicked
         personalizedScoreButtonClicked: true,
         // Results
-        openAdviserDetails: false,
-        openPersonalizedScoreModal: false,
+        // openAdviserDetails: false,
+        // openPersonalizedScoreModal: false,
         showPersonalizedScoreArrow: true,
       });
     }
-  }
+  };
 
   render () {
     renderLog('PersonalizedScoreIntroModal');  // Set LOG_RENDER_EVENTS to log all renders

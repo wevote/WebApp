@@ -44,6 +44,7 @@ class ItemActionBar extends PureComponent {
     shareButtonHide: PropTypes.bool,
     supportOrOpposeHasBeenClicked: PropTypes.func,
     togglePositionStatementFunction: PropTypes.func,
+    inModal: PropTypes.bool,
     // urlWithoutHash: PropTypes.string,
   };
 

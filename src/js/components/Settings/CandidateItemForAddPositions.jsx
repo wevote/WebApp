@@ -14,6 +14,7 @@ class CandidateItemForAddPositions extends Component {
   static propTypes = {
     oneCandidate: PropTypes.object,
     numberOfCandidatesInList: PropTypes.number,
+    inModal: PropTypes.bool,
     // togglePositionStatement: PropTypes.func,
   };
 

@@ -14,7 +14,10 @@ class BallotItemSupportOpposeComment extends PureComponent {
     currentBallotIdInUrl: PropTypes.string,
     externalUniqueId: PropTypes.string,
     showPositionStatementActionBar: PropTypes.bool,
+    showPositionPublicToggle: PropTypes.bool,
+    hidePositionPublicToggle: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
+    inModal: PropTypes.bool,
   };
 
   constructor (props) {
@@ -140,7 +143,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
 
   render () {
     renderLog('BallotItemSupportOpposeComment');  // Set LOG_RENDER_EVENTS to log all renders
-    const { currentBallotIdInUrl, externalUniqueId, showPositionStatementActionBar } = this.props;
+    const { currentBallotIdInUrl, externalUniqueId, showPositionStatementActionBar, showPositionPublicToggle, hidePositionPublicToggle, urlWithoutHash, inModal } = this.props;
     const { ballotItemDisplayName, ballotItemType, ballotItemWeVoteId, showPositionStatement, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement } = this.state;
 
     if (!ballotItemWeVoteId) return null;
@@ -151,8 +154,8 @@ class BallotItemSupportOpposeComment extends PureComponent {
     }
     const itemActionBar = (
       <ItemActionBar
-        showPositionPublicToggle={this.props.showPositionPublicToggle}
-        inModal={this.props.inModal}
+        showPositionPublicToggle={showPositionPublicToggle}
+        inModal={inModal}
         showPositionStatementActionBar={showPositionStatementActionBar}
         ballotItemDisplayName={ballotItemDisplayName}
         ballotItemWeVoteId={ballotItemWeVoteId}
@@ -161,19 +164,19 @@ class BallotItemSupportOpposeComment extends PureComponent {
         currentBallotIdInUrl={currentBallotIdInUrl}
         externalUniqueId={`${externalUniqueId}-ballotItemSupportOpposeComment-${ballotItemWeVoteId}`}
         shareButtonHide
-        hidePositionPublicToggle={this.props.hidePositionPublicToggle}
+        hidePositionPublicToggle={hidePositionPublicToggle}
         supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
         togglePositionStatementFunction={this.togglePositionStatement}
         transitioning={this.state.transitioning}
-        urlWithoutHash={this.props.urlWithoutHash}
+        urlWithoutHash={urlWithoutHash}
       />
     );
 
     const commentDisplayDesktop = showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
       <div className="d-none d-sm-block">
         <ItemPositionStatementActionBar
-          showPositionPublicToggle={this.props.showPositionPublicToggle}
-          inModal={this.props.inModal}
+          showPositionPublicToggle={showPositionPublicToggle}
+          inModal={inModal}
           showPositionStatementActionBar={showPositionStatementActionBar}
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
@@ -191,12 +194,12 @@ class BallotItemSupportOpposeComment extends PureComponent {
     const commentDisplayMobile = showPositionStatementActionBar || voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement ? (
       <div className="d-block d-sm-none">
         <ItemPositionStatementActionBar
-          showPositionPublicToggle={this.props.showPositionPublicToggle}
-          inModal={this.props.inModal}
+          showPositionPublicToggle={showPositionPublicToggle}
+          inModal={inModal}
           showPositionStatementActionBar={showPositionStatementActionBar}
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
-          hidePositionPublicToggle={this.props.hidePositionPublicToggle}
+          hidePositionPublicToggle={hidePositionPublicToggle}
           // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type={ballotItemType}
@@ -211,13 +214,13 @@ class BallotItemSupportOpposeComment extends PureComponent {
     console.log('White background from root: ', showPositionStatementActionBar);
 
     return (
-      <Wrapper inModal={this.props.inModal} showPositionStatementActionBar={showPositionStatementActionBar}>
+      <Wrapper inModal={inModal} showPositionStatementActionBar={showPositionStatementActionBar}>
         {/* <BallotHeaderDivider className="u-show-mobile" /> */}
-        <ActionBarWrapper inModal={this.props.inModal}>
+        <ActionBarWrapper inModal={inModal}>
           {/* Support/Oppose/Comment toggle here */}
           {itemActionBar}
         </ActionBarWrapper>
-        <CommentDisplayWrapper inModal={this.props.inModal}>
+        <CommentDisplayWrapper inModal={inModal}>
           { commentDisplayDesktop }
           { commentDisplayMobile }
         </CommentDisplayWrapper>
