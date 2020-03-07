@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
-import ItemActionBar from './ItemActionBar';
+import ItemActionBar from './ItemActionBar/ItemActionBar';
 import ItemPositionStatementActionBar from './ItemPositionStatementActionBar';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';

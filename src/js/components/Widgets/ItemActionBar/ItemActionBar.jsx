@@ -220,7 +220,7 @@ class ItemActionBar extends PureComponent {
     if (this.props.togglePositionStatementFunction) {
       this.props.togglePositionStatementFunction();
     }
-  }
+  };
 
   opposeButton = (localUniqueId) => {
     const { classes, externalUniqueId } = this.props;
@@ -586,7 +586,7 @@ class ItemActionBar extends PureComponent {
   }
 
   render () {
-    renderLog('ItemActionBar index.jsx');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('ItemActionBar ItemActionBar.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ItemActionBar render');
     const { buttonsOnly, commentButtonHide, commentButtonHideInMobile, classes } = this.props;
     const { ballotItemType, ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState, numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, showSupportOrOpposeHelpModal, voterPositionIsPublic } = this.state;

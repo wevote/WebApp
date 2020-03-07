@@ -10,7 +10,7 @@ import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import IssueStore from '../../stores/IssueStore';
-import ItemActionBar from '../Widgets/ItemActionBar';
+import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';

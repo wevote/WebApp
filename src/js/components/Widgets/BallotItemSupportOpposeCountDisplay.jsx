@@ -11,7 +11,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
-import ItemActionBar from './ItemActionBar';
+import ItemActionBar from './ItemActionBar/ItemActionBar';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
