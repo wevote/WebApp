@@ -123,11 +123,11 @@ class VoterGuideListDashboard extends Component {
                 <div className="card-main">
                   <Faq>Frequently Asked Questions</Faq>
                   <br />
-                  <Questions>Why enter endorsements ?</Questions>
+                  <Questions>Why enter endorsements?</Questions>
                   <Description>
                     Enter your own endorsements so your friends and community can learn from you.
                     {' '}
-                    Help the people who share your values decide how to vote, so they aren&quot;t making hard choices alone.
+                    Help the people who share your values decide how to vote, so they aren&apos;t making hard choices alone.
                   </Description>
                   <Questions>How do I start entering my opinions?</Questions>
                   <Description>
