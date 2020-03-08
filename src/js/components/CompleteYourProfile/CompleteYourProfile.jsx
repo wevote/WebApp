@@ -24,9 +24,9 @@ class CompleteYourProfile extends Component {
     this.state = {
       activeStep: 1,
       addressIntroCompleted: false,
-      firstPositionIntroCompleted: false,
+      // firstPositionIntroCompleted: false,
       howItWorksWatched: false,
-      personalizedScoreIntroCompleted: false,
+      // personalizedScoreIntroCompleted: false,
       valuesIntroCompleted: false,
       steps: [
         {

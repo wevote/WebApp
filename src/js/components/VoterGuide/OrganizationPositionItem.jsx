@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import ImageHandler from '../ImageHandler';
-import ItemActionBar from '../Widgets/ItemActionBar';
+import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 import { renderLog } from '../../utils/logging';
@@ -27,6 +27,7 @@ export default class OrganizationPositionItem extends Component {
     stance_display_off: PropTypes.bool,
     turnOffLogo: PropTypes.bool,
     turnOffName: PropTypes.bool,
+    inModal: PropTypes.bool,
   };
 
   constructor (props) {

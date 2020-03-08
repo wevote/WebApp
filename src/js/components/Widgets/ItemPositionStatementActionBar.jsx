@@ -23,6 +23,7 @@ class ItemPositionStatementActionBar extends Component {
     shownInList: PropTypes.bool,
     classes: PropTypes.object,
     mobile: PropTypes.bool,
+    inModal: PropTypes.bool,
   };
 
   constructor (props) {
@@ -92,7 +93,7 @@ class ItemPositionStatementActionBar extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     if (this.state.commentActive !== nextState.commentActive) return true;
-    if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) return true;
+    // if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) return true;
     if (this.state.voterPositionIsPublic !== nextState.voterPositionIsPublic) return true;
     if (this.state.voterTextStatement !== nextState.voterTextStatement) return true;
     if (this.state.showEditPositionStatementInput !== nextState.showEditPositionStatementInput) return true;
@@ -203,12 +204,12 @@ class ItemPositionStatementActionBar extends Component {
 
   render () {
     renderLog('ItemPositionStatementActionBar');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, ballotItemDisplayName, ballotItemWeVoteId, externalUniqueId, mobile, showPositionStatementActionBar } = this.props;
+    const { classes, ballotItemDisplayName, ballotItemWeVoteId, externalUniqueId, mobile, inModal /* , showPositionStatementActionBar */ } = this.props;
     const { commentActive, showEditPositionStatementInput, voterIsSignedIn, voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = this.state;
 
-    console.log('inModal: ', this.props.inModal);
+    console.log('inModal: ', inModal);
 
-    let rows = 1;
+    let rows;
 
     if (mobile) {
       if (commentActive) {

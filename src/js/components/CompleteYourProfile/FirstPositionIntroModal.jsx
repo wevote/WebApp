@@ -51,61 +51,61 @@ class FirstPositionIntroModal extends Component {
 
   closeThisModal = () => {
     this.props.toggleFunction(this.state.pathname);
-  }
+  };
 
   personalizedScoreIntroCompleted = () => {
     // Mark this so we know to show 'How it Works' as completed
     VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.props.toggleFunction(this.state.pathname);
-  }
+  };
 
-  clickNextStepButton = () => {
-    const { openAdviserDetailsButtonClicked, personalizedScoreModalButtonClicked, personalizedScoreButtonClicked } = this.state;
-    if (openAdviserDetailsButtonClicked) {
-      this.setState({
-        explanationText: 'Success! Now you know what a personalized score is.',
-        hideNextStepButton: true,
-      });
-    } else if (personalizedScoreModalButtonClicked) {
-      this.setState({
-        actionButtonText: 'Next',
-        explanationText: 'Click on any trusted adviser to see why they are part of your personalized score.',
-        // Buttons clicked
-        openAdviserDetailsButtonClicked: true,
-        // Results
-        openAdviserDetails: true,
-        openPersonalizedScoreModal: true,
-        showPersonalizedScoreArrow: false,
-      });
-    } else if (personalizedScoreButtonClicked) {
-      this.setState({
-        actionButtonText: 'Show Adviser Details',
-        explanationText: 'These are examples of trusted advisers.',
-        // Buttons clicked
-        personalizedScoreModalButtonClicked: true,
-        // Results
-        openAdviserDetails: false,
-        openPersonalizedScoreModal: true,
-        showPersonalizedScoreArrow: false,
-      });
-    } else {
-      this.setState({
-        actionButtonText: 'Show Score Details',
-        explanationText: 'We put an example personalized score of +3 in this green box.',
-        // Buttons clicked
-        personalizedScoreButtonClicked: true,
-        // Results
-        openAdviserDetails: false,
-        openPersonalizedScoreModal: false,
-        showPersonalizedScoreArrow: true,
-      });
-    }
-  }
+  // clickNextStepButton = () => {
+  //   const { openAdviserDetailsButtonClicked, personalizedScoreModalButtonClicked, personalizedScoreButtonClicked } = this.state;
+  //   if (openAdviserDetailsButtonClicked) {
+  //     this.setState({
+  //       explanationText: 'Success! Now you know what a personalized score is.',
+  //       hideNextStepButton: true,
+  //     });
+  //   } else if (personalizedScoreModalButtonClicked) {
+  //     this.setState({
+  //       /* actionButtonText: 'Next', */
+  //       explanationText: 'Click on any trusted adviser to see why they are part of your personalized score.',
+  //       // Buttons clicked
+  //       openAdviserDetailsButtonClicked: true,
+  //       // Results
+  //       /* openAdviserDetails: true,
+  //       openPersonalizedScoreModal: true, */
+  //       showPersonalizedScoreArrow: false,
+  //     });
+  //   } else if (personalizedScoreButtonClicked) {
+  //     this.setState({
+  //       /* actionButtonText: 'Show Adviser Details', */
+  //       explanationText: 'These are examples of trusted advisers.',
+  //       // Buttons clicked
+  //       personalizedScoreModalButtonClicked: true,
+  //       // Results
+  //       /* openAdviserDetails: false,
+  //       openPersonalizedScoreModal: true, */
+  //       showPersonalizedScoreArrow: false,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       /* actionButtonText: 'Show Score Details', */
+  //       explanationText: 'We put an example personalized score of +3 in this green box.',
+  //       // Buttons clicked
+  //       personalizedScoreButtonClicked: true,
+  //       // Results
+  //       /* openAdviserDetails: false,
+  //       openPersonalizedScoreModal: false, */
+  //       showPersonalizedScoreArrow: true,
+  //     });
+  //   }
+  // };
 
   render () {
     renderLog('FirstPositionIntroModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { actionButtonText, explanationText, hideNextStepButton, showPersonalizedScoreArrow } = this.state;
+    const { /* actionButtonText */ explanationText, hideNextStepButton, showPersonalizedScoreArrow } = this.state;
 
     return (
       <Dialog
@@ -242,16 +242,16 @@ const ExplanationText = styled.div`
   }
 `;
 
-const ActionButtonWrapper = styled.div`
-  width: 100%;
-  margin-bottom: 24px
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const ActionButtonInsideWrapper = styled.div`
-`;
+// const ActionButtonWrapper = styled.div`
+//   width: 100%;
+//   margin-bottom: 24px
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+// `;
+//
+// const ActionButtonInsideWrapper = styled.div`
+// `;
 
 const ExplanationTextLighter = styled.div`
   font-size: 14px;

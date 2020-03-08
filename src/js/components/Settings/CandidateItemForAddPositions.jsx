@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import CandidateStore from '../../stores/CandidateStore';
 import ImageHandler from '../ImageHandler';
-import ItemActionBar from '../Widgets/ItemActionBar';
+import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 import { renderLog } from '../../utils/logging';
 import SupportStore from '../../stores/SupportStore';
@@ -14,6 +14,7 @@ class CandidateItemForAddPositions extends Component {
   static propTypes = {
     oneCandidate: PropTypes.object,
     numberOfCandidatesInList: PropTypes.number,
+    inModal: PropTypes.bool,
     // togglePositionStatement: PropTypes.func,
   };
 

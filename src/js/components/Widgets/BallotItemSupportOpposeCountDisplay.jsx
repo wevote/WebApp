@@ -11,7 +11,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
-import ItemActionBar from './ItemActionBar';
+import ItemActionBar from './ItemActionBar/ItemActionBar';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -36,6 +36,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     hideNumbersOfAllPositions: PropTypes.bool,
     showDownArrow: PropTypes.bool,
     uniqueExternalId: PropTypes.string,
+    inModal: PropTypes.bool,
   };
 
   constructor (props) {
@@ -430,6 +431,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       voterOpposesBallotItem,
       voterSupportsBallotItem,
     } = this.state;
+    const { inModal } = this.props;
     // console.log('BallotItemSupportOpposeCountDisplay render, voterSupportsBallotItem/voterOpposesBallotItem:', voterSupportsBallotItem, voterOpposesBallotItem);
 
     if (!ballotItemWeVoteId) return null;
@@ -504,7 +506,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               )}
               <ItemActionBarWrapper>
                 <ItemActionBar
-                  inModal={this.props.inModal}
+                  inModal={inModal}
                   ballotItemWeVoteId={ballotItemWeVoteId}
                   commentButtonHide
                   externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
@@ -547,7 +549,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             <PopoverBody>
               <ItemActionBarWrapper>
                 <ItemActionBar
-  inModal={this.props.inModal}ballotItemWeVoteId={ballotItemWeVoteId}
+                  inModal={inModal}
+                  ballotItemWeVoteId={ballotItemWeVoteId}
                   commentButtonHide
                   externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
                   hidePositionPublicToggle
@@ -587,7 +590,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           <PopoverBody>
             <ItemActionBarWrapper>
               <ItemActionBar
-                inModal={this.props.inModal}
+                inModal={inModal}
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 commentButtonHide
                 externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
@@ -622,7 +625,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             yet.
             <ItemActionBarWrapper>
               <ItemActionBar
-                inModal={this.props.inModal}
+                inModal={inModal}
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 commentButtonHide
                 externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
@@ -678,7 +681,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             )}
             <ItemActionBarWrapper>
               <ItemActionBar
-                inModal={this.props.inModal}
+                inModal={inModal}
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 commentButtonHide
                 externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
@@ -703,7 +706,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           <PopoverBody>
             <ItemActionBarWrapper>
               <ItemActionBar
-                inModal={this.props.inModal}
+                inModal={inModal}
                 ballotItemWeVoteId={ballotItemWeVoteId}
                 commentButtonHide
                 externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}

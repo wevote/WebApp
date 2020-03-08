@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
-import ItemActionBar from '../Widgets/ItemActionBar';
+import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
@@ -19,6 +19,7 @@ class MeasureItemForAddPositions extends Component {
     organization: PropTypes.object,
     organization_we_vote_id: PropTypes.string,
     showPositionStatementActionBar: PropTypes.bool,
+    inModal: PropTypes.bool,
   };
 
   constructor (props) {
