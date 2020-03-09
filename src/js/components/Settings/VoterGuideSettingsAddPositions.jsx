@@ -392,18 +392,18 @@ class VoterGuideSettingsAddPositions extends Component {
   onScroll () {
     const element =  document.querySelector('#show_more_indicator');
     console.log('Element: ', element);
-    console.log('Loading more: ', this.state.loadingMoreItems);
+    // console.log('Loading more: ', this.state.loadingMoreItems);
     if (element) {
       const { numberOfBallotItemsToDisplay, numberOfPositionItemsToDisplay, totalNumberOfBallotItems, totalNumberOfPositionItems } = this.state;
-      const yPosition = element.offsetTop - element.scrollTop + element.clientTop;
 
+      // console.log('window.height: ', window.innerHeight);
       // console.log('Window Scroll: ', window.scrollY);
-      // console.log('Element Scroll: ', yPosition);
+      // console.log('Bottom: ', element.getBoundingClientRect().bottom);
 
       console.log('Number to display: ', numberOfBallotItemsToDisplay);
       console.log('Total number to display: ', totalNumberOfBallotItems);
       if (numberOfBallotItemsToDisplay < totalNumberOfBallotItems) {
-        if (window.scrollY > yPosition - 500) {
+        if (element.getBoundingClientRect().bottom <= window.innerHeight) {
           this.setState({ loadingMoreItems: true });
           this.increaseNumberOfBallotItemsToDisplay();
         }
@@ -412,7 +412,7 @@ class VoterGuideSettingsAddPositions extends Component {
       }
 
       if (numberOfPositionItemsToDisplay < totalNumberOfPositionItems) {
-        if (window.scrollY > yPosition - 500) {
+        if (element.getBoundingClientRect().bottom <= window.innerHeight) {
           this.setState({ loadingMoreItems: true });
           this.increaseNumberOfPositionItemsToDisplay();
         }
