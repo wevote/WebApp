@@ -25,6 +25,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import BallotShareButton from '../../components/Ballot/BallotShareButton';
+import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 // import VoterGuideActions from '../../actions/VoterGuideActions';
 
 
@@ -299,6 +300,7 @@ class Candidate extends Component {
             <div className="col-sm-3 col-lg-2 d-none d-sm-block text-center">
               <RightColumnWrapper>
                 <BallotShareButton />
+                <ViewOnBallotpedia externalLinkUrl="https://ballotpedia.org/Aaron_Hermes" />
               </RightColumnWrapper>
             </div>
           </div>
