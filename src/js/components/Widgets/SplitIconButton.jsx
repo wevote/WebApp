@@ -12,6 +12,7 @@ class SplitIconButton extends PureComponent {
     classes: PropTypes.object,
     disabled: PropTypes.bool,
     externalUniqueId: PropTypes.string,
+    fontColor: PropTypes.string,
     icon: PropTypes.node,
     iconRight: PropTypes.bool,
     onClick: PropTypes.func,
@@ -21,8 +22,11 @@ class SplitIconButton extends PureComponent {
   };
 
   render () {
-    const { classes, buttonText, icon, backgroundColor, title } = this.props;
-    const buttonStyle = { background: this.props.backgroundColor ? backgroundColor : '#2e3c5d', color: getTextColorFromBackground(this.props.backgroundColor ? backgroundColor : '#2e3c5d') };
+    const { classes, buttonText, icon, backgroundColor, title, fontColor } = this.props;
+    const buttonStyle = {
+      background: backgroundColor ? backgroundColor : '#2e3c5d',
+      color: fontColor ? fontColor : getTextColorFromBackground(backgroundColor ? backgroundColor : '#2e3c5d')
+    };
 
     return (
       <Button
