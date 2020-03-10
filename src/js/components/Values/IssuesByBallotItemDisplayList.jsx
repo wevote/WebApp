@@ -19,6 +19,7 @@ class IssuesByBallotItemDisplayList extends Component {
     ballotItemDisplayName: PropTypes.string,
     children: PropTypes.object,
     disableMoreWrapper: PropTypes.bool,
+    expandIssuesByDefault: PropTypes.bool,
     externalUniqueId: PropTypes.string,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
@@ -32,7 +33,7 @@ class IssuesByBallotItemDisplayList extends Component {
       issuesUnderThisBallotItemVoterIsFollowingLength: 0,
       issuesUnderThisBallotItemVoterIsNotFollowingLength: 0,
       maximumNumberOfIssuesToDisplay: 26,
-      expand: false,
+      expandIssues: false,
       totalWidth: null,
       totalRemainingWidth: null,
     };
@@ -49,10 +50,11 @@ class IssuesByBallotItemDisplayList extends Component {
     const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(this.props.ballotItemWeVoteId) || [];
     const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
     const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
-    const { ballotItemDisplayName, ballotItemWeVoteId } = this.props;
+    const { ballotItemDisplayName, ballotItemWeVoteId, expandIssuesByDefault } = this.props;
     this.setState({
       ballotItemDisplayName,
       ballotItemWeVoteId,
+      expandIssues: expandIssuesByDefault,
       issuesUnderThisBallotItemVoterIsFollowing,
       issuesUnderThisBallotItemVoterIsNotFollowing,
       issuesUnderThisBallotItemVoterIsFollowingLength,
@@ -83,8 +85,8 @@ class IssuesByBallotItemDisplayList extends Component {
       // console.log('this.state.ballotItemWeVoteId: ', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId', nextState.ballotItemWeVoteId);
       return true;
     }
-    if (this.state.expand !== nextState.expand) {
-      // console.log('this.state.expand: ', this.state.expand, ', nextState.expand', nextState.expand);
+    if (this.state.expandIssues !== nextState.expandIssues) {
+      // console.log('this.state.expandIssues: ', this.state.expandIssues, ', nextState.expandIssues', nextState.expandIssues);
       return true;
     }
     if (this.state.issuesUnderThisBallotItemVoterIsFollowingLength !== nextState.issuesUnderThisBallotItemVoterIsFollowingLength) {
@@ -152,8 +154,8 @@ class IssuesByBallotItemDisplayList extends Component {
   };
 
   handleExpandIssues = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
+    const { expandIssues } = this.state;
+    this.setState({ expandIssues: !expandIssues });
   };
 
   handleLeaveHoverLocalArea = () => {
@@ -179,7 +181,7 @@ class IssuesByBallotItemDisplayList extends Component {
     // console.log('IssuesByBallotItemDisplayList render');
     const { externalUniqueId } = this.props;
     const {
-      ballotItemDisplayName, ballotItemWeVoteId, expand,
+      ballotItemDisplayName, ballotItemWeVoteId, expandIssues,
       issuesUnderThisBallotItemVoterIsFollowing, issuesUnderThisBallotItemVoterIsNotFollowing,
       issuesUnderThisBallotItemVoterIsFollowingLength, issuesUnderThisBallotItemVoterIsNotFollowingLength,
       maximumNumberOfIssuesToDisplay,
@@ -258,7 +260,7 @@ class IssuesByBallotItemDisplayList extends Component {
         <Issues>
           {/* Show a break-down of the current positions in your network */}
           <div ref={this.issuesList}>
-            <IssueList key={`issuesByBallotItemDisplayList-${ballotItemWeVoteId}`} expand={expand}>
+            <IssueList key={`issuesByBallotItemDisplayList-${ballotItemWeVoteId}`} expandIssues={expandIssues}>
               {/* Issues the voter is already following */}
               {issuesVoterIsFollowingHtml}
               {/* Issues the voter is not following yet */}
@@ -266,7 +268,7 @@ class IssuesByBallotItemDisplayList extends Component {
             </IssueList>
           </div>
         </Issues>
-        {(expand || this.props.disableMoreWrapper || totalRemainingWidth > 0) ? null : (
+        {(expandIssues || this.props.disableMoreWrapper || totalRemainingWidth > 0) ? null : (
           <MoreWrapper onClick={this.handleExpandIssues}>
             <MoreHorizIcon
               id="issuesByBallotItemDisplayListMoreIssuesIcon"
@@ -295,7 +297,7 @@ const Issues = styled.div`
 
 const IssueList = styled.ul`
   display: flex;
-  flex-flow: row${({ expand }) => (expand ? ' wrap' : '')};
+  flex-flow: row${({ expandIssues }) => (expandIssues ? ' wrap' : '')};
   margin-bottom: 8px;
   overflow: hidden;
   padding-inline-start: 0;
