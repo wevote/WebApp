@@ -24,7 +24,7 @@ import webAppConfig from './config';
 import { stringContains } from './utils/textFormat';
 import SnackNotifier from './components/Widgets/SnackNotifier';
 import displayFriendsTabs from './utils/displayFriendsTabs';
-import BallotShareButtonFooter from './components/Ballot/BallotShareButtonFooter';
+import BallotShareButtonFooter from './components/Share/BallotShareButtonFooter';
 import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
 
 class Application extends Component {

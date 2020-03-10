@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { isCordova, isIOsSmallerThanPlus } from '../../utils/cordovaUtils';
-import BallotShareButton from '../../components/Ballot/BallotShareButton';
+import BallotShareButton from '../../components/Share/BallotShareButton';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { shortenText } from '../../utils/textFormat';
 

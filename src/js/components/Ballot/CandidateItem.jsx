@@ -411,8 +411,8 @@ class CandidateItem extends Component {
       ballotItemDisplayName, largeAreaHoverColorOnNow,
       largeAreaHoverLinkOnNow, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement,
     } = this.state;
-    console.log(inModal);
-    console.log(showPositionStatementActionBar);
+    // console.log('inModal: ', inModal);
+    // console.log('showPositionStatementActionBar: ', showPositionStatementActionBar);
 
     return (
       <>

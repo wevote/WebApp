@@ -52,6 +52,9 @@ class ExtensionSignIn extends Component {
         <DelayedLoad showLoadingText waitBeforeShow={2000}>
           <SignInOuterWrapper>
             <SignInInnerWrapper>
+              <SignInIntro>
+                Please sign in here to start:
+              </SignInIntro>
               <SettingsAccount />
             </SignInInnerWrapper>
           </SignInOuterWrapper>
@@ -61,14 +64,15 @@ class ExtensionSignIn extends Component {
     return (
       <Wrapper>
         <Success>
-          You are now signed in!
+          You are now signed in! To finish this process, please follow these 3 steps.
         </Success>
         <Step>Step 1</Step>
-        <Description>Click the We Vote logo above (the Chrome Extension Icon), in browser navigation bar.</Description>
+        <Description>Click the We Vote Chrome extension icon in browser navigation bar.</Description>
         <ImageWrapper>
           <IconImage src={cordovaDot('/img/global/screens/chrome-extension-icon-198x25.png')} />
         </ImageWrapper>
         <Step>Step 2</Step>
+        <Description>You will see a menu appear. Click the &quot;Sign In&quot; button.</Description>
         <ImageWrapper>
           <ScreenImage src={cordovaDot('/img/global/screens/chrome-extension-sign-in-452x246.png')} />
         </ImageWrapper>
@@ -93,6 +97,7 @@ const IconImage = styled.img`
   height: auto;
   margin-top: 8px;
   margin-bottom: 12px;
+  width: 60%;
   @media (max-width: 576px) {
     width: 100%;
   }
@@ -129,6 +134,17 @@ const SignInInnerWrapper = styled.div`
   }
 `;
 
+const SignInIntro = styled.div`
+  color: #2e3c5d;
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-align: center;
+  @media (max-width: 576px) {
+    font-size: 20px;
+  }
+`;
+
 const Step = styled.h3`
   color: #A9A9A9;
   font-size: 25px;
@@ -156,7 +172,7 @@ const Success = styled.div`
 
 const Wrapper = styled.div`
   background-color: #E9EBEE;
-  margin-bottom: 32px;
+  margin-bottom: 64px;
   margin-left: 12px;
   margin-right: 12px;
 `;

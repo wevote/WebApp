@@ -613,7 +613,7 @@ class ItemActionBar extends PureComponent {
       }
     };
 
-    console.log(this.props.inModal);
+    // console.log('inModal: ', this.props.inModal);
 
     const iconSize = 18;
     const iconColor = '#00749e'; // $link-color
@@ -697,7 +697,7 @@ class ItemActionBar extends PureComponent {
 
     // console.log('ItemActionBar buttonsOnly:', buttonsOnly);
     const showPositionPublicToggle = !this.props.hidePositionPublicToggle && this.isAnyEndorsementCalculated();
-    console.log(showPositionPublicToggle);
+    // console.log('showPositionPublicToggle:', showPositionPublicToggle);
     return (
       <>
         <ItemActionBarWrapper

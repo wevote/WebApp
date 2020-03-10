@@ -36,7 +36,7 @@ import VoterStore from '../../stores/VoterStore';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
-import ShareModal from '../Ballot/ShareModal';
+import ShareModal from '../Share/ShareModal';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 // const webAppConfig = require('../../config');
