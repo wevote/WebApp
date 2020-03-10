@@ -1,4 +1,3 @@
-/* global google */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -53,9 +52,12 @@ class AddressBox extends Component {
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
-    addressAutocomplete.setComponentRestrictions({ country: 'us' });
-    this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
+    const { google } = window;
+    if (google !== undefined) {
+      const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
+      addressAutocomplete.setComponentRestrictions({ country: 'us' });
+      this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -84,6 +86,14 @@ class AddressBox extends Component {
         } else {
           addressBox.blur();
         }
+      }
+    }
+    if (this.googleAutocompleteListener === undefined) {
+      const { google } = window;
+      if (google !== undefined) {
+        const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
+        addressAutocomplete.setComponentRestrictions({ country: 'us' });
+        this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
       }
     }
   }

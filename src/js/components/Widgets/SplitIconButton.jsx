@@ -10,6 +10,7 @@ class SplitIconButton extends PureComponent {
     backgroundColor: PropTypes.string,
     buttonText: PropTypes.string,
     classes: PropTypes.object,
+    compressedSize: PropTypes.bool,
     disabled: PropTypes.bool,
     externalUniqueId: PropTypes.string,
     fontColor: PropTypes.string,
@@ -22,11 +23,17 @@ class SplitIconButton extends PureComponent {
   };
 
   render () {
-    const { classes, buttonText, icon, backgroundColor, title, fontColor } = this.props;
+    const { backgroundColor, buttonText, classes, compressedSize, fontColor, icon, title } = this.props;
     const buttonStyle = {
-      background: backgroundColor ? backgroundColor : '#2e3c5d',
-      color: fontColor ? fontColor : getTextColorFromBackground(backgroundColor ? backgroundColor : '#2e3c5d')
+      background: backgroundColor || '#2e3c5d',
+      color: fontColor || getTextColorFromBackground(backgroundColor || '#2e3c5d'),
     };
+    if (compressedSize) {
+      buttonStyle.border = '1px solid rgba(46, 60, 93, .5)';
+      buttonStyle.padding = 4;
+      buttonStyle.width = 160;
+      buttonStyle.height = 32;
+    }
 
     return (
       <Button
@@ -36,11 +43,7 @@ class SplitIconButton extends PureComponent {
         id={`${this.props.externalUniqueId}-splitIconButton`}
         variant="contained"
         title={title}
-        style={{
-          background: buttonStyle.background,
-          color: buttonStyle.color,
-          fontSize: buttonStyle.fontSize,
-        }}
+        style={buttonStyle}
         onClick={this.props.onClick}
         onKeyDown={this.props.onKeyDown}
       >
@@ -73,6 +76,12 @@ class SplitIconButton extends PureComponent {
 }
 
 const styles = () => ({
+  label: {
+    // padding: '10px 0 !important',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+  },
   splitButton: {
     boxShadow: 'none !important',
     padding: '12px 0',
@@ -82,12 +91,6 @@ const styles = () => ({
     '&:hover': {
       filter: 'brightness(92%)',
     },
-  },
-  label: {
-    // padding: '10px 0 !important',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
   },
 });
 

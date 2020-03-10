@@ -136,7 +136,7 @@ class FirstPositionIntroModal extends Component {
             <section className="card">
               <CandidateItem
                 inModal
-                candidateWeVoteId="wv02cand55927"
+                candidateWeVoteId="candidateAlexanderHamilton"
                 // hideBallotItemSupportOpposeComment
                 hideCandidateText
                 hideCandidateUrl

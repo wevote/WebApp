@@ -211,7 +211,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
     ) :
       null;
 
-    console.log('White background from root: ', showPositionStatementActionBar);
+    // console.log('White background from root: ', showPositionStatementActionBar);
 
     return (
       <Wrapper inModal={inModal} showPositionStatementActionBar={showPositionStatementActionBar}>

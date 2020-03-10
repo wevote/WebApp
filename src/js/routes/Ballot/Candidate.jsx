@@ -7,6 +7,7 @@ import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
 import CandidateItem from '../../components/Ballot/CandidateItem';
+import CandidateShareButton from '../../components/Share/CandidateShareButton';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import CandidateStore from '../../stores/CandidateStore';
 import { capitalizeString } from '../../utils/textFormat';
@@ -21,13 +22,13 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import PositionList from '../../components/Ballot/PositionList';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
+import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
-import BallotShareButton from '../../components/Ballot/BallotShareButton';
-import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
-// import VoterGuideActions from '../../actions/VoterGuideActions';
 
+
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 class Candidate extends Component {
@@ -255,7 +256,7 @@ class Candidate extends Component {
   render () {
     renderLog('Candidate');  // Set LOG_RENDER_EVENTS to log all renders
     const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown } = this.state;
-
+    // console.log('candidate: ', candidate);
     if (!candidate || !candidate.ballot_item_display_name) {
       // console.log('No candidate or candidate.ballot_item_display_name, candidate:', candidate);
       return (
@@ -285,8 +286,8 @@ class Candidate extends Component {
           )
         }
         <section className="card">
-          <div className="row">
-            <div className="col-12 col-sm-9 col-lg-10">
+          <TwoColumns>
+            <LeftColumnWrapper>
               <CandidateItem
                 candidateWeVoteId={candidate.we_vote_id}
                 hideShowMoreFooter
@@ -296,14 +297,18 @@ class Candidate extends Component {
                 showOfficeName
                 showPositionStatementActionBar
               />
-            </div>
-            <div className="col-sm-3 col-lg-2 d-none d-sm-block text-center">
-              <RightColumnWrapper>
-                <BallotShareButton />
-                <ViewOnBallotpedia externalLinkUrl="https://ballotpedia.org/Aaron_Hermes" />
-              </RightColumnWrapper>
-            </div>
-          </div>
+            </LeftColumnWrapper>
+            <RightColumnWrapper className="u-show-desktop-tablet">
+              {nextReleaseFeaturesEnabled && (
+                <CandidateShareWrapper>
+                  <CandidateShareButton />
+                </CandidateShareWrapper>
+              )}
+              {candidate.ballotpedia_candidate_url && (
+                <ViewOnBallotpedia externalLinkUrl={candidate.ballotpedia_candidate_url} />
+              )}
+            </RightColumnWrapper>
+          </TwoColumns>
         </section>
         { !!(allCachedPositionsForThisCandidate.length) && (
           <section className="card">
@@ -353,8 +358,24 @@ class Candidate extends Component {
   }
 }
 
+const CandidateShareWrapper = styled.div`
+  margin-bottom: 12px;
+`;
+
+const LeftColumnWrapper = styled.div`
+  flex-grow: 6;
+`;
+
 const RightColumnWrapper = styled.div`
+  flex-grow: 1;
+  margin-right: 12px;
   margin-top: 12px;
+`;
+
+const TwoColumns = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
 `;
 
 export default Candidate;

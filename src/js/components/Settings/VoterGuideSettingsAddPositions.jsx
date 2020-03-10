@@ -391,7 +391,7 @@ class VoterGuideSettingsAddPositions extends Component {
 
   onScroll () {
     const element =  document.querySelector('#show_more_indicator');
-    console.log('Element: ', element);
+    // console.log('Element: ', element);
     // console.log('Loading more: ', this.state.loadingMoreItems);
     if (element) {
       const { numberOfBallotItemsToDisplay, numberOfPositionItemsToDisplay, totalNumberOfBallotItems, totalNumberOfPositionItems } = this.state;
@@ -399,9 +399,8 @@ class VoterGuideSettingsAddPositions extends Component {
       // console.log('window.height: ', window.innerHeight);
       // console.log('Window Scroll: ', window.scrollY);
       // console.log('Bottom: ', element.getBoundingClientRect().bottom);
-
-      console.log('Number to display: ', numberOfBallotItemsToDisplay);
-      console.log('Total number to display: ', totalNumberOfBallotItems);
+      // console.log('Number to display: ', numberOfBallotItemsToDisplay);
+      // console.log('Total number to display: ', totalNumberOfBallotItems);
       if (numberOfBallotItemsToDisplay < totalNumberOfBallotItems) {
         if (element.getBoundingClientRect().bottom <= window.innerHeight) {
           this.setState({ loadingMoreItems: true });
@@ -442,10 +441,10 @@ class VoterGuideSettingsAddPositions extends Component {
 
   increaseNumberOfBallotItemsToDisplay = () => {
     let { numberOfBallotItemsToDisplay } = this.state;
-    console.log('Number of ballot items before increment: ', numberOfBallotItemsToDisplay);
+    // console.log('Number of ballot items before increment: ', numberOfBallotItemsToDisplay);
 
     numberOfBallotItemsToDisplay += 5;
-    console.log('Number of ballot items after increment: ', numberOfBallotItemsToDisplay);
+    // console.log('Number of ballot items after increment: ', numberOfBallotItemsToDisplay);
 
 
     this.ballotItemTimer = setTimeout(() => {

@@ -1,4 +1,3 @@
-/* global google */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextBox from './TextBox';
@@ -24,9 +23,23 @@ class AddressBoxWelcome extends PureComponent {
       textForMapSearch: VoterStore.getTextForMapSearch(),
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
-    addressAutocomplete.setComponentRestrictions({ country: 'us' });
-    this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
+    const { google } = window;
+    if (google !== undefined) {
+      const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
+      addressAutocomplete.setComponentRestrictions({ country: 'us' });
+      this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
+    }
+  }
+
+  componentDidUpdate () {
+    if (this.googleAutocompleteListener === undefined) {
+      const { google } = window;
+      if (google !== undefined) {
+        const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
+        addressAutocomplete.setComponentRestrictions({ country: 'us' });
+        this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
+      }
+    }
   }
 
   componentWillUnmount () {

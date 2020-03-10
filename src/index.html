@@ -75,7 +75,12 @@
       $("head").append(...rest);
     })(cssTags);
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCM0vM1mzh56OuA5IfgW_U6Qd9jD99WH6M&libraries=places"></script>
+    <script>
+    function initMap(){
+      //
+    }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCM0vM1mzh56OuA5IfgW_U6Qd9jD99WH6M&callback=initMap&libraries=places"></script>
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script type="text/javascript" async src="https://checkout.stripe.com/checkout.js"></script>
