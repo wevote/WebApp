@@ -274,6 +274,8 @@ class Candidate extends Component {
     const voter = VoterStore.getVoter();
     const candidateAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}c/${candidate.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
+    // TODO When we remove expandIssuesByDefault from CandidateItem, the page is pushed very wide. This needs to be fixed.
+    //   This started happening when we implemented the flex-based "TwoColumns"
     return (
       <span>
         <Helmet
@@ -285,11 +287,12 @@ class Candidate extends Component {
             <CandidateStickyHeader candidate={candidate} />
           )
         }
-        <section className="card">
+        <div className="card">
           <TwoColumns>
             <LeftColumnWrapper>
               <CandidateItem
                 candidateWeVoteId={candidate.we_vote_id}
+                expandIssuesByDefault
                 hideShowMoreFooter
                 organizationWeVoteId={organizationWeVoteId}
                 linkToOfficePage
@@ -309,7 +312,7 @@ class Candidate extends Component {
               )}
             </RightColumnWrapper>
           </TwoColumns>
-        </section>
+        </div>
         { !!(allCachedPositionsForThisCandidate.length) && (
           <section className="card">
             <DelayedLoad showLoadingText waitBeforeShow={500}>
@@ -363,19 +366,15 @@ const CandidateShareWrapper = styled.div`
 `;
 
 const LeftColumnWrapper = styled.div`
-  flex-grow: 6;
 `;
 
 const RightColumnWrapper = styled.div`
-  flex-grow: 1;
   margin-right: 12px;
   margin-top: 12px;
 `;
 
 const TwoColumns = styled.div`
   display: flex;
-  justify-content: flex-start;
-  width: 100%;
 `;
 
 export default Candidate;

@@ -25,6 +25,7 @@ import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 class CandidateItem extends Component {
   static propTypes = {
     candidateWeVoteId: PropTypes.string.isRequired,
+    expandIssuesByDefault: PropTypes.bool,
     hideBallotItemSupportOpposeComment: PropTypes.bool,
     hideCandidateText: PropTypes.bool,
     hideCandidateUrl: PropTypes.bool,
@@ -404,7 +405,7 @@ class CandidateItem extends Component {
 
   candidateIssuesAndCommentBlock = (candidateText, localUniqueId) => {
     const {
-      candidateWeVoteId, hideBallotItemSupportOpposeComment, hideCandidateText, hideIssuesRelatedToCandidate, hideShowMoreFooter,
+      candidateWeVoteId, expandIssuesByDefault, hideBallotItemSupportOpposeComment, hideCandidateText, hideIssuesRelatedToCandidate, hideShowMoreFooter,
       linkToBallotItemPage, showHover, showPositionStatementActionBar, showTopCommentByBallotItem, hidePositionPublicToggle, showPositionPublicToggle, inModal,
     } = this.props;
     const {
@@ -493,6 +494,7 @@ class CandidateItem extends Component {
             <IssuesByBallotItemDisplayList
               ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={candidateWeVoteId}
+              expandIssuesByDefault={expandIssuesByDefault}
               externalUniqueId={`candidateItem-${candidateWeVoteId}`}
               placement="bottom"
             />
