@@ -151,7 +151,6 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/more/about') ||
       (pathnameLowerCase === '/more/credits') ||
       pathnameLowerCase.startsWith('/more/donate') ||
-      (pathnameLowerCase === '/more/extensionsignin') ||
       (pathnameLowerCase === '/more/myballot') ||
       pathnameLowerCase.startsWith('/more/pricing') ||
       (pathnameLowerCase === '/welcome') ||
@@ -170,7 +169,8 @@ export function getApplicationViewBooleans (pathname) {
   ) {
     // We want to HIDE the footer bar on the above path patterns
     showFooterBar = false;
-  } else if (pathnameLowerCase.startsWith('/candidate-for-extension')) {
+  } else if (pathnameLowerCase.startsWith('/candidate-for-extension') ||
+    pathnameLowerCase.startsWith('/more/extensionsignin')) {
     extensionPageMode = true;
     // ///////// SHOW: The following are URLS where we want the footer to show
   } else if (pathnameLowerCase.startsWith('/ballot') ||
