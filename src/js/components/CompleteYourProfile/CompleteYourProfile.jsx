@@ -492,8 +492,9 @@ const Separator = styled.div`
 const Description = styled.div`
   @media (min-width: 769px) {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
+    margin: 14px 0 8px;
   }
 `;
 
@@ -501,6 +502,10 @@ const Icon = styled.div`
   display: inline-block;
   width: 35px;
   height: 35px;
+  @media (min-width: 576px) and (max-width: 769px) {
+    margin-bottom: 12px;
+  }
+  margin-right: 8px;
   * {
     height: 35px !important;
     width: 35px !important;
@@ -515,7 +520,8 @@ const Title = styled.h2`
 `;
 
 const TitleFlex = styled.div`
-  margin: 0 0 0 8px;
+  display: inline-block;
+  // margin: 2px 0 0 0;
   margin-right: 8px;
 `;
 
@@ -555,10 +561,11 @@ const YourLocation = styled.span`
 
 const TitleArea = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
-  @media(min-width: 576px) {
-    margin-bottom: 12px;
+  @media (min-width: 576px) {
+    display: inline-block;
+    margin: auto 0;
   }
 `;
 
@@ -586,14 +593,14 @@ const TabletActionButton = styled.div`
 const NavButtons = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 12px;
   justify-content: space-between;
   @media(min-width: 576px) {
     width: fit-content;
-    margin-right: auto;
-  }
-  @media(min-width: 769px) {
     margin-left: auto;
-    margin-right: 0;
+  }
+  @media (min-width: 769px) {
+    margin-top: 0;
   }
 `;
 
