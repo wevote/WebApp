@@ -11,7 +11,6 @@ import VoterStore from '../../stores/VoterStore';
 import VoterConstants from '../../constants/VoterConstants';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import cookies from '../../utils/cookies';
-// import People from '@material-ui/icons/People';
 // import ThumbUp from '@material-ui/icons/ThumbUp';
 
 class CompleteYourProfile extends Component {
@@ -24,9 +23,9 @@ class CompleteYourProfile extends Component {
     this.state = {
       activeStep: 1,
       addressIntroCompleted: false,
-      // firstPositionIntroCompleted: false,
+      firstPositionIntroCompleted: false,
       howItWorksWatched: false,
-      // personalizedScoreIntroCompleted: false,
+      personalizedScoreIntroCompleted: false,
       valuesIntroCompleted: false,
       steps: [
         {
@@ -65,15 +64,15 @@ class CompleteYourProfile extends Component {
           icon: (<EditLocation />),
           onClick: this.openAddressIntroModal,
         },
-        // {
-        //   id: 4,
-        //   title: 'What\'s a personalized score?',
-        //   buttonText: 'Learn More',
-        //   completed: false,
-        //   description: '',
-        //   icon: (<PersonalizedScorePlusOne>+1</PersonalizedScorePlusOne>),
-        //   onClick: this.openPersonalizedScoreIntroModal,
-        // },
+        {
+          id: 4,
+          title: 'What\'s a personalized score?',
+          buttonText: 'Learn More',
+          completed: false,
+          description: '',
+          icon: (<PersonalizedScorePlusOne>+1</PersonalizedScorePlusOne>),
+          onClick: this.openPersonalizedScoreIntroModal,
+        },
         {
           id: 5,
           title: 'Choose your first candidate',
@@ -83,22 +82,6 @@ class CompleteYourProfile extends Component {
           icon: (<BallotIcon />),
           onClick: this.openFirstPositionIntroModal,
         },
-        // {
-        //   id: 7,
-        //   title: 'Step Seven',
-        //   buttonText: 'Step Seven',
-        //   completed: false,
-        //   description: '',
-        //   icon: (<People />),
-        // },
-        // {
-        //   id: 8,
-        //   title: 'Step Eight',
-        //   buttonText: 'Step Eight',
-        //   completed: false,
-        //   description: '',
-        //   icon: (<ThumbUp />),
-        // },
       ],
       textForMapSearch: '',
     };
@@ -151,21 +134,21 @@ class CompleteYourProfile extends Component {
       const addressIntroCompletedId = 3;
       this.setItemComplete(addressIntroCompletedId);
     }
-    // const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
-    // if (personalizedScoreIntroCompleted) {
-    //   const personalizedScoreIntroCompletedId = 4;
-    //   this.setItemComplete(personalizedScoreIntroCompletedId);
-    // }
-    // const firstPositionIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED);
-    // if (firstPositionIntroCompleted) {
-    //   const firstPositionIntroCompletedId = 5;
-    //   this.setItemComplete(firstPositionIntroCompletedId);
-    // }
+    const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+    if (personalizedScoreIntroCompleted) {
+      const personalizedScoreIntroCompletedId = 4;
+      this.setItemComplete(personalizedScoreIntroCompletedId);
+    }
+    const firstPositionIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED);
+    if (firstPositionIntroCompleted) {
+      const firstPositionIntroCompletedId = 5;
+      this.setItemComplete(firstPositionIntroCompletedId);
+    }
     this.setState({
       // adviserIntroCompleted,
-      // firstPositionIntroCompleted,
+      firstPositionIntroCompleted,
       howItWorksWatched,
-      // personalizedScoreIntroCompleted,
+      personalizedScoreIntroCompleted,
       valuesIntroCompleted,
     });
   }
@@ -214,10 +197,10 @@ class CompleteYourProfile extends Component {
   //   AppActions.setShowAdviserIntroModal(true);
   // }
 
-  // openPersonalizedScoreIntroModal = () => {
-  //   // console.log('Opening modal');
-  //   AppActions.setShowPersonalizedScoreIntroModal(true);
-  // }
+  openPersonalizedScoreIntroModal = () => {
+    // console.log('Opening modal');
+    AppActions.setShowPersonalizedScoreIntroModal(true);
+  }
 
   openFirstPositionIntroModal = () => {
     // console.log('Opening modal');
@@ -308,11 +291,10 @@ class CompleteYourProfile extends Component {
   render () {
     const {
       activeStep, addressIntroCompleted,
-      howItWorksWatched, steps,
+      firstPositionIntroCompleted,
+      howItWorksWatched, personalizedScoreIntroCompleted, steps,
       textForMapSearch, valuesIntroCompleted,
     } = this.state;
-    // firstPositionIntroCompleted,
-    //  personalizedScoreIntroCompleted,
     const addressIntroCompletedByCookie = cookies.getItem('location_guess_closed');
     // console.log('activeStep: ', activeStep);
     // console.log('steps: ', steps);
@@ -321,10 +303,8 @@ class CompleteYourProfile extends Component {
     const showCompleteYourProfileForDebugging = false;
     if (showCompleteYourProfileForDebugging) {
       // Pass by this OFF switch so we render this component
-    } else if ((addressIntroCompleted || addressIntroCompletedByCookie) && howItWorksWatched && valuesIntroCompleted) {
+    } else if ((addressIntroCompleted || addressIntroCompletedByCookie) && firstPositionIntroCompleted && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted) {
       // If we have done all of the steps, do not render CompleteYourProfile // OFF FOR NOW: adviserIntroCompleted &&
-      // firstPositionIntroCompleted &&
-      // personalizedScoreIntroCompleted &&
       return null;
     }
 
@@ -361,10 +341,10 @@ class CompleteYourProfile extends Component {
               if (step.id === activeStep) {
                 return (
                   <Description key={`completeYourProfileDescription-${step.id}`}>
-                    <Icon className="u-show-desktop-tablet">
+                    <Icon className="u-show-desktop-tablet" onClick={() => { step.onClick(); }}>
                       {step.icon}
                     </Icon>
-                    <TitleArea>
+                    <TitleArea onClick={() => { step.onClick(); }}>
                       <Icon className="u-show-mobile">
                         {step.icon}
                       </Icon>
@@ -483,10 +463,10 @@ const Indicator = styled.div`
 `;
 
 const Separator = styled.div`
-  width: 100%;
   background: #e1e1e1;
-  height: 1px;
   margin: 8px auto;
+  width: 100%;
+  height: 1px;
 `;
 
 const Description = styled.div`
@@ -498,6 +478,7 @@ const Description = styled.div`
 `;
 
 const Icon = styled.div`
+  cursor: pointer;
   display: inline-block;
   width: 35px;
   height: 35px;
@@ -537,25 +518,26 @@ const BestGuess = styled.span`
 const YourLocation = styled.span`
 `;
 
-// const PersonalizedScorePlusOne = styled.div`
-//   background: #2E3C5D;
-//   color: white;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   width: 40px;
-//   height: 40px;
-//   border-radius: 5px;
-//   font-size: 16px;
-//   font-weight: bold;
-//   @media print{
-//     border: 2px solid grey;
-//   }
-// `;
+const PersonalizedScorePlusOne = styled.div`
+  align-items: center;
+  background: #2E3C5D;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  font-size: 16px;
+  font-weight: bold;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  @media print{
+    border: 2px solid grey;
+  }
+`;
 
 const TitleArea = styled.div`
-  display: flex;
   align-items: flex-start;
+  cursor: pointer;
+  display: flex;
   justify-content: flex-start;
   @media(min-width: 576px) {
     margin-bottom: 12px;
@@ -563,10 +545,10 @@ const TitleArea = styled.div`
 `;
 
 const MobileActionButton = styled.div`
-  margin-top: 8px;
-  padding-bottom: 8px;
   border-bottom: 1px solid #e1e1e1;
   margin-bottom: 0px;
+  margin-top: 8px;
+  padding-bottom: 8px;
   @media (min-width: 576px) {
     display: none;
   }
@@ -584,8 +566,8 @@ const TabletActionButton = styled.div`
 `;
 
 const NavButtons = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: space-between;
   @media(min-width: 576px) {
     width: fit-content;
