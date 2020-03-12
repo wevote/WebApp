@@ -35,6 +35,7 @@ class IssueFollowToggleButton extends Component {
       errorInfo: null,
       isFollowing: false,
       isFollowingLocalValue: false,
+      open: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
