@@ -3,35 +3,41 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import OpenExternalWebSite from './OpenExternalWebSite';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import ballotpediaIcon from '../../../img/global/logos/ballotpedia-initials-67x48.png';
+import googleIcon from '../../../img/global/logos/google-icon.svg';
 import SplitIconButton from './SplitIconButton';
 
 
-class ViewOnBallotpedia extends Component {
+class SearchOnGoogle extends Component {
   static propTypes={
-    externalLinkUrl: PropTypes.string,
+    googleQuery: PropTypes.string,
   };
 
   constructor (props) {
     super(props);
     this.state = {};
+    this.generateURL = this.generateURL.bind(this);
+  }
+
+  generateURL (item) {
+    var temp = item.replace(/ /g,"+");
+    return "https://www.google.com/search?q=" + temp + "&oq=" + temp;
   }
 
   render () {
     return (
       <Wrapper>
         <OpenExternalWebSite
-          url={this.props.externalLinkUrl}
+          url={this.generateURL(this.props.googleQuery)}
           target="_blank"
-          title="BALLOTPEDIA"
+          title="GOOGLE"
           body={(
             <SplitIconButton
-              buttonText="Ballotpedia"
+              buttonText="Google"
               backgroundColor="#fff"
               compressedSize
               fontColor="#000"
-              icon={<img src={cordovaDot(ballotpediaIcon)} alt="" />}
-              title="View on Ballotpedia"
+              icon={<img src={cordovaDot(googleIcon)} alt="" />}
+              title="Google"
             />
           )}
         />
@@ -41,7 +47,6 @@ class ViewOnBallotpedia extends Component {
 }
 
 const Wrapper = styled.div`
-  margin-bottom: 12px;
 `;
 
-export default ViewOnBallotpedia;
+export default SearchOnGoogle;
