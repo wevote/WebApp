@@ -439,6 +439,7 @@ class CandidateItem extends Component {
                     <div className="row">
                       <div className={`card__blue ${(voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement) ? 'col col-6' : 'col col-9'}`}>
                         <Link to={this.getCandidateLink()} className="card-main__no-underline">
+                          <br />
                           {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
                         </Link>
                       </div>
@@ -464,6 +465,7 @@ class CandidateItem extends Component {
                         ''
                       )}
                     >
+                      <br />
                       {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
                     </div>
                   )
@@ -471,6 +473,7 @@ class CandidateItem extends Component {
               </div>
               <div className="u-show-mobile-tablet">
                 <Link to={this.getCandidateLink()} className="card-main__no-underline">
+                  <br />
                   {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
                 </Link>
               </div>

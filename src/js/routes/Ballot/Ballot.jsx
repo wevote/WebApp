@@ -657,8 +657,9 @@ class Ballot extends Component {
     }
   }
 
-  setRaceLevelFilterType (type) {
-    this.setState({ raceLevelFilterType: type });
+  setRaceLevelFilterType (raceLevelFilterType) {
+    BallotActions.raceLevelFilterTypeSave(raceLevelFilterType);
+    this.setState({ raceLevelFilterType });
   }
 
   memberViewedBallotHasBeenSavedOnce = (membershipOrganizationWeVoteId, googleCivicElectionId) => {
@@ -1076,7 +1077,7 @@ class Ballot extends Component {
                   <DelayedLoad waitBeforeShow={2000}>
                     <CompleteYourProfile />
                   </DelayedLoad>
-                  <div>
+                  <BallotListWrapper>
                     {/* The rest of the ballot items */}
                     <div className="BallotList">
                       {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
@@ -1122,7 +1123,7 @@ class Ballot extends Component {
                         setActiveRaceItem={type => this.setRaceLevelFilterType(type)}
                       />
                     </div>
-                  </div>
+                  </BallotListWrapper>
                   {/* Show links to this candidate in the admin tools */}
                   { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
                     <span className="u-wrap-links d-print-none">
@@ -1166,6 +1167,10 @@ class Ballot extends Component {
     );
   }
 }
+
+const BallotListWrapper = styled.div`
+  padding-bottom: 40px;
+`;
 
 const BallotLoadingWrapper = styled.div`
   font-size: 20px;
