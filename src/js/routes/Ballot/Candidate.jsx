@@ -366,15 +366,17 @@ const CandidateShareWrapper = styled.div`
 `;
 
 const LeftColumnWrapper = styled.div`
+  flex: 1 1 0;
 `;
 
 const RightColumnWrapper = styled.div`
-  margin-right: 12px;
-  margin-top: 12px;
+  padding: 16px 16px 16px 0;
+  width: fit-content;
 `;
 
 const TwoColumns = styled.div`
   display: flex;
+  margin: 0 -8px 0 -8px;
 `;
 
 export default Candidate;
