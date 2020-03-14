@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
@@ -34,6 +34,13 @@ class BallotSummaryFooterItem extends Component {
     });
   }
 
+  jumpToNewSection = (activeRaceItem) => {
+    if (this.props.setActiveRaceItem) {
+      this.props.setActiveRaceItem(activeRaceItem);
+    }
+    window.scrollTo(0, 0);
+  }
+
   render () {
     renderLog('BallotSummaryFooterItem'); // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
@@ -50,9 +57,9 @@ class BallotSummaryFooterItem extends Component {
             return (
               <Column className="col col-12 col-md-4" key={child.props.label}>
                 <Card>
-                  <Title>{child.props.label}</Title>
-                  <Body>{child.props.children}</Body>
-                  <Button onClick={() => this.props.setActiveRaceItem(child.props.label)} variant="outlined" classes={{ root: classes.button }}>
+                  <Title onClick={() => this.jumpToNewSection(child.props.label)}>{child.props.label}</Title>
+                  <Body onClick={() => this.props.setActiveRaceItem(child.props.label)}>{child.props.children}</Body>
+                  <Button onClick={() => this.jumpToNewSection(child.props.label)} variant="outlined" classes={{ root: classes.button }}>
                     Show all
                     {' '}
                     {child.props.label}
@@ -105,6 +112,7 @@ const Card = styled.div`
 `;
 
 const Title = styled.div`
+  cursor: pointer;
   margin-bottom: 8px;
   font-size: 18px;
   font-weight: bold;

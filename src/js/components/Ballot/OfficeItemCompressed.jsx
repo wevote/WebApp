@@ -229,7 +229,7 @@ class OfficeItemCompressed extends Component {
     const { candidateList } = this.state;
     const candidatePreviewLimit = this.state.maximumNumberOrganizationsToDisplay;
     // If voter has chosen 1+ candidates, only show those
-    const supportedCandidatesList = candidateList.filter(candidate => SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id));
+    const supportedCandidatesList = candidateList.filter(candidate => SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election);
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
     const hideCandidateDetails = supportedCandidatesList.length;
     return (

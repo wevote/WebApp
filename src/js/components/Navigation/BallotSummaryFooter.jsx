@@ -222,7 +222,10 @@ class BallotSummaryFooter extends Component {
               null
             }
             <Row className="row">
-              <BallotSummaryFooterItem setActiveRaceItem={type => this.props.setActiveRaceItem(type)} activeRaceItem={this.props.activeRaceItem}>
+              <BallotSummaryFooterItem
+                setActiveRaceItem={type => this.props.setActiveRaceItem(type)}
+                activeRaceItem={this.props.activeRaceItem}
+              >
                 {raceLevelFilterItemsInThisBallotOrdered.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
               </BallotSummaryFooterItem>
             </Row>
