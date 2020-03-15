@@ -28,8 +28,7 @@ class BallotSearch extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      searchValue: '',
-      showCloser: false,
+      searchText: '',
     };
     this.handleSearch = this.handleSearch.bind(this);
   }
@@ -40,11 +39,8 @@ class BallotSearch extends Component {
       // console.log("shouldComponentUpdate: this.state.isSearching", this.state.isSearching, ", nextState.isSearching", nextState.isSearching);
       return true;
     }
-    if (this.state.searchValue !== nextState.searchValue) {
-      // console.log("shouldComponentUpdate: this.state.searchValue", this.state.searchValue, ", nextState.searchValue", nextState.searchValue);
-      return true;
-    }
-    if (this.state.showCloser !== nextState.showCloser) {
+    if (this.state.searchText !== nextState.searchText) {
+      // console.log("shouldComponentUpdate: this.state.searchText", this.state.searchText, ", nextState.searchText", nextState.searchText);
       return true;
     }
     if (this.props.alwaysOpen !== nextProps.alwaysOpen) {
@@ -74,9 +70,8 @@ class BallotSearch extends Component {
     const { isSearching } = this.props;
     // console.log('toggleSearch, isSearching:', isSearching);
     if (isSearching) {
-      this.setState({ searchValue: '', showCloser: false });
-      // Reset to the original items
-      this.props.onBallotSearch(this.props.items);
+      this.setState({ searchText: '' });
+      this.props.onBallotSearch('', []);
     } else {
       this.searchInput.focus();
     }
@@ -89,10 +84,10 @@ class BallotSearch extends Component {
       this.toggleSearch();
     }
     clearTimeout(this.timer);
-    const { value } = event.target;
-    this.setState({ searchValue: value, showCloser: value.length > 0 });
+    const { value: searchText } = event.target;
+    this.setState({ searchText });
     // If search value is empty, exit and return all items
-    if (!value.length) return this.props.onBallotSearch(this.props.items);
+    if (!searchText.length) return this.props.onBallotSearch(searchText, this.props.items);
 
     // If search value shorter than minimum length, exit
     // if (value.length < 3) return null;
@@ -100,14 +95,18 @@ class BallotSearch extends Component {
     this.timer = setTimeout(() => {
       // Filter out items without the search terms, and put the most likely search result at the top
       // Only return results if they get past the filter
-      const sortedFiltered = sortBy(this.filterItems(value), ['priority']).reverse().filter(item => item.priority > 0);
-      return this.props.onBallotSearch(sortedFiltered.length ? sortedFiltered : []);
+      if (!searchText) {
+        return [];
+      }
+      const sortedFiltered = sortBy(this.filterItems(searchText), ['priority']).reverse().filter(item => item.priority > 0);
+      // console.log('sortedFiltered:', sortedFiltered);
+      return this.props.onBallotSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
     }, delayBeforeSearchExecution);
   }
 
   render () {
     const { classes, theme, isSearching, alwaysOpen } = this.props;
-    const { searchValue, showCloser } = this.state;
+    const { searchText } = this.state;
     return (
       <SearchWrapper
         searchOpen={isSearching || alwaysOpen}
@@ -126,12 +125,12 @@ class BallotSearch extends Component {
           classes={{ input: (isSearching || alwaysOpen) ? classes.input : classes.inputHidden }}
           inputRef={(input) => { this.searchInput = input; }}
           onChange={this.handleSearch}
-          value={searchValue}
+          value={searchText}
           onFocus={focusTextFieldAndroid}
           onBlur={blurTextFieldAndroid}
           placeholder="Search"
         />
-        <Closer isSearching={isSearching} showCloser={showCloser} brandBlue={theme.palette.primary.main}>
+        <Closer isSearching={isSearching} showCloser={isSearching} brandBlue={theme.palette.primary.main}>
           <IconButton
             classes={{ root: classes.iconButtonRoot }}
             onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
