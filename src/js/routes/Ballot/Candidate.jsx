@@ -21,6 +21,7 @@ import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import PositionList from '../../components/Ballot/PositionList';
+import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -309,6 +310,9 @@ class Candidate extends Component {
               )}
               {candidate.ballotpedia_candidate_url && (
                 <ViewOnBallotpedia externalLinkUrl={candidate.ballotpedia_candidate_url} />
+              )}
+              {candidate.contest_office_name && (
+                <SearchOnGoogle googleQuery={candidateName + " " + candidate.contest_office_name} />
               )}
             </RightColumnWrapper>
           </TwoColumns>
