@@ -64,6 +64,13 @@ function checkShouldUpdate (state, nextState) {
     // console.log("shouldComponentUpdate: state.location", state.location, ", nextState.location", nextState.location);
     return true;
   }
+  if (state.loadingMoreItems !== nextState.loadingMoreItems) {
+    // console.log("shouldComponentUpdate: state.loadingMoreItems", state.loadingMoreItems, ", nextState.loadingMoreItems", nextState.loadingMoreItems);
+    return true;
+  }
+  if (state.numberOfBallotItemsToDisplay !== nextState.numberOfBallotItemsToDisplay) {
+    return true;
+  }
   if (state.pathname !== nextState.pathname) {
     // console.log("shouldComponentUpdate: state.pathname", state.pathname, ", nextState.pathname", nextState.pathname);
     return true;
@@ -87,6 +94,9 @@ function checkShouldUpdate (state, nextState) {
     return true;
   }
   if (state.textForMapSearchFromBallot !== nextState.textForMapSearchFromBallot) {
+    return true;
+  }
+  if (state.totalNumberOfBallotItems !== nextState.totalNumberOfBallotItems) {
     return true;
   }
   if (state.ballotHeaderUnpinned !== nextState.ballotHeaderUnpinned) {

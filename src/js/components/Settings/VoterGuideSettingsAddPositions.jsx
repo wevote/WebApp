@@ -71,6 +71,7 @@ class VoterGuideSettingsAddPositions extends Component {
       currentSelectedPositionFilters: [], // So we know when the position filters change
       filteredBallotItems: [],
       filteredPositionListForOneElection: [],
+      loadingMoreItems: false,
       localAllBallotItemsHaveBeenRetrieved: {},
       localPositionListHasBeenRetrieved: {},
       numberOfBallotItemsToDisplay: 5,
@@ -79,7 +80,7 @@ class VoterGuideSettingsAddPositions extends Component {
       stateCodeFromIpAddress: '',
       stateCodeFromVoterGuide: '',
       stateCodeToRetrieve: '',
-      loadingMoreItems: false,
+      totalNumberOfBallotItems: 0,
     };
     this.onScroll = this.onScroll.bind(this);
   }
@@ -390,19 +391,19 @@ class VoterGuideSettingsAddPositions extends Component {
   }
 
   onScroll () {
-    const element =  document.querySelector('#show_more_indicator');
-    // console.log('Element: ', element);
+    const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
+    // console.log('showMoreItemsElement: ', showMoreItemsElement);
     // console.log('Loading more: ', this.state.loadingMoreItems);
-    if (element) {
+    if (showMoreItemsElement) {
       const { numberOfBallotItemsToDisplay, numberOfPositionItemsToDisplay, totalNumberOfBallotItems, totalNumberOfPositionItems } = this.state;
 
       // console.log('window.height: ', window.innerHeight);
       // console.log('Window Scroll: ', window.scrollY);
-      // console.log('Bottom: ', element.getBoundingClientRect().bottom);
+      // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
       // console.log('Number to display: ', numberOfBallotItemsToDisplay);
       // console.log('Total number to display: ', totalNumberOfBallotItems);
       if (numberOfBallotItemsToDisplay < totalNumberOfBallotItems) {
-        if (element.getBoundingClientRect().bottom <= window.innerHeight) {
+        if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
           this.setState({ loadingMoreItems: true });
           this.increaseNumberOfBallotItemsToDisplay();
         }
@@ -411,7 +412,7 @@ class VoterGuideSettingsAddPositions extends Component {
       }
 
       if (numberOfPositionItemsToDisplay < totalNumberOfPositionItems) {
-        if (element.getBoundingClientRect().bottom <= window.innerHeight) {
+        if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
           this.setState({ loadingMoreItems: true });
           this.increaseNumberOfPositionItemsToDisplay();
         }
@@ -585,7 +586,7 @@ class VoterGuideSettingsAddPositions extends Component {
             })
             }
           </CardChildListGroup>
-          <ShowMoreItems id="show_more_indicator">
+          <ShowMoreItems id="showMoreItemsId">
             Displaying
             {' '}
             {numberOfPositionItemsDisplayed}
@@ -672,7 +673,7 @@ class VoterGuideSettingsAddPositions extends Component {
                 })
                 }
               </CardChildListGroup>
-              <ShowMoreItems id="show_more_indicator">
+              <ShowMoreItems id="showMoreItemsId">
                 Displaying
                 {' '}
                 {numberOfBallotItemsDisplayed}

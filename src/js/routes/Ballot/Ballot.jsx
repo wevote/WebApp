@@ -7,6 +7,7 @@ import Badge from '@material-ui/core/Badge';
 import Chip from '@material-ui/core/Chip';
 import Link from '@material-ui/core/Link';
 import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
@@ -52,7 +53,7 @@ const TYPES = require('keymirror')({
 });
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
-const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
+const BALLOT_ITEM_FILTER_TYPES = ['All', 'Federal', 'State', 'Measure', 'Local'];
 const delayBeforeVoterRefreshCall = 1000;
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -84,14 +85,17 @@ class Ballot extends Component {
       },
       componentDidMountFinished: false,
       lastHashUsedInLinkScroll: '',
+      loadingMoreItems: false,
       measureForModal: {
         voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: [],
       },
       memberViewedBallotHasBeenSavedOnce: {},
       mounted: false,
+      numberOfBallotItemsToDisplay: 5,
       numberOfVoterRetrieveAttempts: 0,
       showSelectBallotModal: false,
+      totalNumberOfBallotItems: 0,
       voterBallotList: [],
       showFilterTabs: false,
       ballotHeaderUnpinned: false,
@@ -104,6 +108,7 @@ class Ballot extends Component {
     this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
+    this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
@@ -205,7 +210,7 @@ class Ballot extends Component {
     // console.log('VoterStore.election_id: ', VoterStore.electionId());
     if (!IssueStore.issueDescriptionsRetrieveCalled()) {
       IssueActions.issueDescriptionsRetrieve();
-      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
     }
     IssueActions.issuesFollowedRetrieve();
     if (googleCivicElectionId || ballotLocationShortcut || ballotReturnedWeVoteId) {
@@ -219,7 +224,7 @@ class Ballot extends Component {
       }
       if (callIssuesUnderBallotItemRetrieve) {
         IssueActions.issuesUnderBallotItemsRetrieve(googleCivicElectionId, ballotLocationShortcut, ballotReturnedWeVoteId);
-        // IssueActions.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+        // IssueActions.issuesUnderBallotItemsRetrieveCalled(googleCivicElectionId); // TODO: Move this to AppActions? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
       }
 
       this.setState({
@@ -272,6 +277,7 @@ class Ballot extends Component {
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
     }
+    window.addEventListener('scroll', this.onScroll);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -342,7 +348,7 @@ class Ballot extends Component {
         let raceLevelCapitalized;
         let ballotItemKindOfOfficeItem;
         raceLevelFilterItemsInThisBallot = ballotWithAllItems.filter((ballotItem) => {
-          // If true comes back from this filter, the "map" tacked onto the end of this returns just the race_office_level
+          // If true comes back from this filter, the 'map' tacked onto the end of this returns just the race_office_level
           raceLevelCapitalized = '';
           ballotItemRaceOfficeLevel = ballotItem.race_office_level || '';
           if (ballotItemRaceOfficeLevel) {
@@ -428,6 +434,10 @@ class Ballot extends Component {
       clearTimeout(this.timer);
       this.timer = null;
     }
+    if (this.ballotItemTimer) {
+      clearTimeout(this.ballotItemTimer);
+      this.ballotItemTimer = null;
+    }
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -474,14 +484,14 @@ class Ballot extends Component {
         const { numberOfVoterRetrieveAttempts } = this.state;
         if (voter && voter.is_signed_in) {
           // console.log('onVoterStoreChange, about to historyPush(this.state.pathname):', this.state.pathname);
-          // Return to the same page without the "voter_refresh_timer_on" variable
+          // Return to the same page without the 'voter_refresh_timer_on' variable
           historyPush(this.state.pathname);
         } else if (numberOfVoterRetrieveAttempts < 3) {
           // console.log('About to startTimerToRetrieveVoter');
           this.startTimerToRetrieveVoter();
         } else {
-          // We have exceeded the number of allowed attempts and want to "turn off" the request to refresh the voter object
-          // Return to the same page without the "voter_refresh_timer_on" variable
+          // We have exceeded the number of allowed attempts and want to 'turn off' the request to refresh the voter object
+          // Return to the same page without the 'voter_refresh_timer_on' variable
           // console.log('Exiting voterRefreshTimerOn');
           historyPush(this.state.pathname);
         }
@@ -516,7 +526,7 @@ class Ballot extends Component {
     const { ballot, ballotProperties } = BallotStore;
     // console.log('Ballot.jsx onBallotStorechange, ballotProperties: ', ballotProperties);
     const {
-      mounted, issuesRetrievedFromGoogleCivicElectionId,
+      mounted, isSearching, issuesRetrievedFromGoogleCivicElectionId,
       issuesRetrievedFromBallotReturnedWeVoteId, issuesRetrievedFromBallotLocationShortcut,
     } = this.state;
     let { raceLevelFilterType } = this.state;
@@ -529,11 +539,12 @@ class Ballot extends Component {
         // Ballot is found but ballot is empty. We want to stay put.
         // console.log('onBallotStoreChange: ballotWithItemsFromCompletionFilterType is empty');
       } else {
-        const ballotWithAllItems = BallotStore.getBallotByCompletionLevelFilterType('all');
-        // console.log('completionLevelFilterType: ', completionLevelFilterType);
+        const ballotWithAllItems = BallotStore.getBallotByCompletionLevelFilterType('all') || [];
+        let raceLevelFilterItems = [];
+        // console.log('onBallotStoreChange completionLevelFilterType: ', completionLevelFilterType);
         let ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
         if (ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length) {
-          const raceLevelFilterItems = ballotWithItemsFromCompletionFilterType.filter(item => item.race_office_level === raceLevelFilterType ||
+          raceLevelFilterItems = ballotWithItemsFromCompletionFilterType.filter(item => item.race_office_level === raceLevelFilterType ||
             item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
           this.setState({
             doubleFilteredBallotItemsLength: raceLevelFilterItems.length,
@@ -548,6 +559,23 @@ class Ballot extends Component {
           ballotWithAllItems,
           ballotWithItemsFromCompletionFilterType,
         });
+
+        // Calculate totalNumberOfBallotItems given filters set
+        if (!isSearching) {
+          let totalNumberOfBallotItems;
+          if (raceLevelFilterItems && raceLevelFilterItems.length) {
+            totalNumberOfBallotItems = raceLevelFilterItems.length;
+          } else if (completionLevelFilterType !== '') {
+            const list = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
+            totalNumberOfBallotItems = list.length;
+          } else {
+            totalNumberOfBallotItems = BallotStore.ballotLength;
+          }
+          // console.log('totalNumberOfBallotItems:', totalNumberOfBallotItems);
+          this.setState({
+            totalNumberOfBallotItems,
+          });
+        }
       }
     }
     if (ballotProperties) {
@@ -565,7 +593,7 @@ class Ballot extends Component {
         }
         if (callIssuesUnderBallotItemRetrieve) {
           IssueActions.issuesUnderBallotItemsRetrieve(ballotProperties.google_civic_election_id, ballotProperties.ballot_location_shortcut, ballotProperties.ballot_returned_we_vote_id);
-          // IssueActions.issuesUnderBallotItemsRetrieveCalled(ballotProperties.google_civic_election_id); // This causes error: "Cannot dispatch in the middle of a dispatch"
+          // IssueActions.issuesUnderBallotItemsRetrieveCalled(ballotProperties.google_civic_election_id); // This causes error: 'Cannot dispatch in the middle of a dispatch'
         }
 
         this.setState({
@@ -588,8 +616,9 @@ class Ballot extends Component {
     });
 
     if (this.state.ballotLength !== BallotStore.ballotLength) {
+      const { ballotLength } = BallotStore;
       this.setState({
-        ballotLength: BallotStore.ballotLength,
+        ballotLength,
         // raceLevelFilterType: 'Federal',
         showFilterTabs: false,
         foundFirstRaceLevel: false,
@@ -637,12 +666,48 @@ class Ballot extends Component {
     }
   }
 
+  onScroll () {
+    const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
+    // console.log('showMoreItemsElement: ', showMoreItemsElement);
+    // console.log('Loading more: ', this.state.loadingMoreItems);
+    if (showMoreItemsElement) {
+      const { numberOfBallotItemsToDisplay, totalNumberOfBallotItems } = this.state;
+      if (numberOfBallotItemsToDisplay < totalNumberOfBallotItems) {
+        if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
+          this.setState({ loadingMoreItems: true });
+          this.increaseNumberOfBallotItemsToDisplay();
+        }
+      } else {
+        this.setState({ loadingMoreItems: false });
+      }
+    }
+  }
+
   setBallotItemFilterType (raceLevelFilterType, doubleFilteredBallotItemsLength) {
+    window.scrollTo(0, 0);
     BallotActions.raceLevelFilterTypeSave(raceLevelFilterType);
+    // Calculate totalNumberOfBallotItems given filters set
+    const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || '';
+    const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
+    let totalNumberOfBallotItems;
+    if (ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length) {
+      const raceLevelFilterItems = ballotWithItemsFromCompletionFilterType.filter(item => item.race_office_level === raceLevelFilterType ||
+        item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
+      if (raceLevelFilterItems && raceLevelFilterItems.length) {
+        totalNumberOfBallotItems = raceLevelFilterItems.length;
+      } else if (completionLevelFilterType !== '') {
+        const list = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
+        totalNumberOfBallotItems = list.length;
+      } else {
+        totalNumberOfBallotItems = BallotStore.ballotLength;
+      }
+    }
+    // console.log('totalNumberOfBallotItems:', totalNumberOfBallotItems);
     this.setState({
-      raceLevelFilterType,
       doubleFilteredBallotItemsLength,
       isSearching: false,
+      raceLevelFilterType,
+      totalNumberOfBallotItems,
     });
   }
 
@@ -699,6 +764,9 @@ class Ballot extends Component {
       raceLevelFilterType = ''; // Make sure this is a string
     }
     const raceLevel = raceLevelFilterType.toLowerCase();
+    if (raceLevel === 'all') {
+      return null;
+    }
     switch (completionLevelFilterType) {
       case 'filterDecided':
         return (
@@ -739,13 +807,44 @@ class Ballot extends Component {
     }
   };
 
-  onBallotSearch = (filteredItems) => {
-    this.setState({ ballotSearchResults: filteredItems });
+  onBallotSearch = (searchText, filteredItems) => {
+    window.scrollTo(0, 0);
+    const totalNumberOfBallotItems = filteredItems.length || 0;
+    this.setState({
+      ballotSearchResults: filteredItems,
+      searchText,
+      totalNumberOfBallotItems,
+    });
   };
 
   handleToggleSearchBallot = () => {
-    const { isSearching } = this.state;
-    this.setState({ isSearching: !isSearching });
+    const { ballotWithItemsFromCompletionFilterType, isSearching } = this.state;
+    let totalNumberOfBallotItems;
+    this.setState({
+      isSearching: !isSearching,
+    });
+    if (!isSearching) {
+      // If here, we are now searching
+      totalNumberOfBallotItems = 0;
+      this.setState({
+        totalNumberOfBallotItems,
+      });
+    } else {
+      // If here, we are canceling a search
+      let raceLevelFilterType = BallotStore.getRaceLevelFilterTypeSaved();
+      console.log('raceLevelFilterType:', raceLevelFilterType);
+      if (raceLevelFilterType === '') {
+        raceLevelFilterType = 'Federal';
+      }
+      const ballotItemsByFilterType = ballotWithItemsFromCompletionFilterType.filter((item) => {
+        if (raceLevelFilterType === 'Measure') {
+          return item.kind_of_ballot_item === 'MEASURE';
+        } else {
+          return raceLevelFilterType === item.race_office_level;
+        }
+      });
+      this.setBallotItemFilterType(raceLevelFilterType, ballotItemsByFilterType.length);
+    }
   };
 
   startTimerToRetrieveVoter = () => {
@@ -760,6 +859,19 @@ class Ballot extends Component {
       });
     }, delayBeforeVoterRefreshCall);
   };
+
+  increaseNumberOfBallotItemsToDisplay = () => {
+    let { numberOfBallotItemsToDisplay } = this.state;
+    // console.log('Number of ballot items before increment: ', numberOfBallotItemsToDisplay);
+    numberOfBallotItemsToDisplay += 5;
+    // console.log('Number of ballot items after increment: ', numberOfBallotItemsToDisplay);
+
+    this.ballotItemTimer = setTimeout(() => {
+      this.setState({
+        numberOfBallotItemsToDisplay,
+      });
+    }, 500);
+  }
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
@@ -853,12 +965,14 @@ class Ballot extends Component {
     const {
       ballotWithItemsFromCompletionFilterType, showFilterTabs, doubleFilteredBallotItemsLength, completionLevelFilterType,
       ballotHeaderUnpinned, isSearching, ballotWithAllItems, ballotSearchResults, raceLevelFilterItemsInThisBallot,
+      loadingMoreItems, numberOfBallotItemsToDisplay, searchText, totalNumberOfBallotItems,
     } = this.state;
     let { raceLevelFilterType } = this.state;
     if (!raceLevelFilterType) {
       raceLevelFilterType = ''; // Make sure this is a string
     }
     // console.log(ballotWithAllItems);
+    // console.log('window.innerWidth:', window.innerWidth);
     const textForMapSearch = VoterStore.getTextForMapSearch();
 
     if (!ballotWithItemsFromCompletionFilterType) {
@@ -918,16 +1032,18 @@ class Ballot extends Component {
     // console.log('ballotWithItemsFromCompletionFilterType.length: ', ballotWithItemsFromCompletionFilterType.length);
     // Was: ballotWithItemsFromCompletionFilterType
     const emptyBallot = ballotWithAllItems.length === 0 ? (
-      <div>
-        <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
-        {emptyBallotButton}
-        <div className="container-fluid well u-stack--md u-inset--md">
-          <BallotElectionListWithFilters
-            ballotBaseUrl={ballotBaseUrl}
-            ballotElectionList={this.state.voterBallotList}
-          />
+      <DelayedLoad waitBeforeShow={2000}>
+        <div>
+          <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
+          {emptyBallotButton}
+          <div className="container-fluid well u-stack--md u-inset--md">
+            <BallotElectionListWithFilters
+              ballotBaseUrl={ballotBaseUrl}
+              ballotElectionList={this.state.voterBallotList}
+            />
+          </div>
         </div>
-      </div>
+      </DelayedLoad>
     ) : null;
 
     const electionDayTextFormatted = electionDayText ? moment(electionDayText).format('MMM Do, YYYY') : '';
@@ -939,11 +1055,7 @@ class Ballot extends Component {
       historyPush(this.state.pathname);
     }
 
-    // const isMobileScreenSize = window.innerWidth < 500;
-    // const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) &&
-    //   (BallotStore.ballotRemainingChoicesLength > 0) && !isMobileScreenSize;
-
-    let ballotItemNumber = 0;
+    let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
     return (
       <div className="ballot_root">
@@ -986,7 +1098,21 @@ class Ballot extends Component {
                                 onBallotSearch={this.onBallotSearch}
                                 alwaysOpen={!showFilterTabs}
                               />
-                              { showFilterTabs ? (
+                              { showFilterTabs && (
+                                <div
+                                  className="ballot_filter_btns"
+                                  key="filterTypeAll"
+                                  onClick={() => this.setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterType.length)}
+                                >
+                                  <Chip variant="outlined"
+                                    color={(raceLevelFilterType === 'All' && !isSearching) ? 'primary' : 'default'}
+                                    className="btn_ballot_filter"
+                                    classes={{ root: classes.chipRootAll, label: classes.chipLabel, outlinedPrimary: (raceLevelFilterType === 'All' && !isSearching) ? classes.chipOutlined : null }}
+                                    label="All"
+                                  />
+                                </div>
+                              )}
+                              { showFilterTabs && (
                                 BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
                                   const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
                                     if (oneTypeOfBallotItem === 'Measure') {
@@ -1011,39 +1137,38 @@ class Ballot extends Component {
                                         label={oneTypeOfBallotItem}
                                       />
                                     );
-                                    if (isMobileScreenSize()) {
-                                      return (
-                                        <div
-                                          className="ballot_filter_btns"
-                                          id={`ballotBadge-${oneTypeOfBallotItem}`}
-                                          key={oneTypeOfBallotItem}
-                                          onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
-                                        >
-                                          {ballotChip}
-                                        </div>
-                                      );
-                                    } else {
-                                      return (
-                                        <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
-                                          <Badge
-                                            badgeContent={ballotItemsByFilterType.length}
-                                            classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
-                                            color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
-                                            id={`ballotBadge-${oneTypeOfBallotItem}`}
-                                            invisible={ballotItemsByFilterType.length === 0}
+                                    return (
+                                      <div key={oneTypeOfBallotItem}>
+                                        <div className="u-show-mobile">
+                                          <div
+                                            className="ballot_filter_btns"
+                                            id={`ballotBadgeMobile-${oneTypeOfBallotItem}`}
                                             onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                           >
                                             {ballotChip}
-                                          </Badge>
+                                          </div>
                                         </div>
-                                      );
-                                    }
+                                        <div className="u-show-desktop-tablet">
+                                          <div className="ballot_filter_btns">
+                                            <Badge
+                                              badgeContent={ballotItemsByFilterType.length}
+                                              classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
+                                              color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                              id={`ballotBadgeDesktop-${oneTypeOfBallotItem}`}
+                                              invisible={ballotItemsByFilterType.length === 0}
+                                              onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
+                                            >
+                                              {ballotChip}
+                                            </Badge>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    );
                                   } else {
                                     return null;
                                   }
                                 })
-                              ) :
-                                null
+                              )
                             }
                             </React.Fragment>
                           ) : null
@@ -1074,22 +1199,40 @@ class Ballot extends Component {
                 ) : null
                 }
                 <div className="col-sm-12 col-lg-9">
-                  <DelayedLoad waitBeforeShow={2000}>
-                    <CompleteYourProfile />
-                  </DelayedLoad>
+                  {(isSearching && searchText) && (
+                    <SearchTitle>
+                      Searching for &quot;
+                      {searchText}
+                      &quot;
+                    </SearchTitle>
+                  )}
+                  {!isSearching && (
+                    <DelayedLoad waitBeforeShow={2000}>
+                      <CompleteYourProfile />
+                    </DelayedLoad>
+                  )}
                   <BallotListWrapper>
                     {/* The rest of the ballot items */}
                     <div className="BallotList">
-                      {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
+                      {(isSearching && ballotSearchResults && ballotSearchResults.length === 0) && (
+                        <SearchResultsEmpty>
+                          Please enter new search terms to find results.
+                        </SearchResultsEmpty>
+                      )}
+                      {(isSearching ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
                         // Ballot limited by items by race_office_level = (Federal, State, Local) or kind_of_ballot_item = (Measure)
-                        if ((raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||
+                        if ((raceLevelFilterType === 'All' || isSearching ||
                           (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
                           raceLevelFilterType === item.race_office_level)) {
                           // console.log('Ballot item for BallotItemCompressed:', item);
                           // {...item}
                           const key = item.we_vote_id;
-                          ballotItemNumber += 1;
-                          showLoadingText = ballotItemNumber === 1;
+                          if (numberOfBallotItemsDisplayed >= numberOfBallotItemsToDisplay) {
+                            return null;
+                          }
+                          numberOfBallotItemsDisplayed += 1;
+                          // console.log('numberOfBallotItemsDisplayed: ', numberOfBallotItemsDisplayed);
+                          showLoadingText = numberOfBallotItemsDisplayed === 1;
                           return (
                             <DelayedLoad
                               key={key}
@@ -1112,16 +1255,34 @@ class Ballot extends Component {
                       {doubleFilteredBallotItemsLength === 0 &&
                         this.showUserEmptyOptions()
                       }
-                      <BallotSummaryFooter
-                        activeRaceItem={raceLevelFilterType}
-                        displayTitle
-                        displaySubtitles
-                        rawUrlVariablesString={this.props.location.search}
-                        ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
-                        ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                        raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
-                        setActiveRaceItem={type => this.setRaceLevelFilterType(type)}
-                      />
+                      {!!(loadingMoreItems && totalNumberOfBallotItems) && (
+                        <LoadingItemsWheel>
+                          <CircularProgress />
+                        </LoadingItemsWheel>
+                      )}
+                      {!!(totalNumberOfBallotItems) && (
+                        <ShowMoreItems id="showMoreItemsId">
+                          Displaying
+                          {' '}
+                          {numberOfBallotItemsDisplayed}
+                          {' '}
+                          of
+                          {' '}
+                          {totalNumberOfBallotItems}
+                        </ShowMoreItems>
+                      )}
+                      {!isSearching && (
+                        <BallotSummaryFooter
+                          activeRaceItem={raceLevelFilterType}
+                          displayTitle
+                          displaySubtitles
+                          rawUrlVariablesString={this.props.location.search}
+                          ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
+                          ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
+                          raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
+                          setActiveRaceItem={type => this.setRaceLevelFilterType(type)}
+                        />
+                      )}
                     </div>
                   </BallotListWrapper>
                   {/* Show links to this candidate in the admin tools */}
@@ -1187,6 +1348,36 @@ const BallotFilterRow = styled.div`
   display: flex;
 `;
 
+const LoadingItemsWheel = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ShowMoreItems = styled.div`
+  font-size: 18px;
+  text-align: right;
+  user-select: none;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    padding-top: 5px;
+    padding-bottom: 3px;
+  }
+  @media print{
+    display: none;
+  }
+`;
+
+const SearchResultsEmpty = styled.div`
+  font-size: 20px;
+`;
+
+const SearchTitle = styled.div`
+  font-size: 24px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+`;
+
 const styles = theme => ({
   badge: {
     top: 13,
@@ -1196,7 +1387,7 @@ const styles = theme => ({
     background: 'rgba(46, 60, 93, 0.08)',
     color: '#333',
     cursor: 'pointer',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       fontSize: 9,
       width: 16,
       height: 16,
@@ -1217,6 +1408,13 @@ const styles = theme => ({
   },
   chipRoot: {
     height: 26,
+    [theme.breakpoints.down('md')]: {
+      height: 22.5,
+    },
+  },
+  chipRootAll: {
+    height: 26,
+    width: 54,
     [theme.breakpoints.down('md')]: {
       height: 22.5,
     },

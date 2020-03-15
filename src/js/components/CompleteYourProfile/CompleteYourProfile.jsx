@@ -355,6 +355,7 @@ class CompleteYourProfile extends Component {
                         {textForMapSearch && step.id === 3 &&
                           (
                             <YourLocation>
+                              {' '}
                               Our best guess for your location is
                               {' '}
                               <BestGuess>
@@ -472,9 +473,9 @@ const Separator = styled.div`
 const Description = styled.div`
   @media (min-width: 769px) {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    margin: 14px 0 8px;
+    // margin: 14px 0 8px;
   }
 `;
 
@@ -573,13 +574,13 @@ const TabletActionButton = styled.div`
 
 const NavButtons = styled.div`
   align-items: center;
-  margin-top: 12px;
+  display: flex;
+  // margin-top: 12px;
   justify-content: space-between;
-  @media(min-width: 576px) {
+  @media (min-width: 769px) {
     width: fit-content;
     margin-left: auto;
-  }
-  @media (min-width: 769px) {
+    // margin-right: auto;
     margin-top: 0;
   }
 `;
