@@ -19,8 +19,8 @@ class SearchOnGoogle extends Component {
   }
 
   generateURL (item) {
-    var temp = item.replace(/ /g,"+");
-    return "https://www.google.com/search?q=" + temp + "&oq=" + temp;
+    const temp = item.replace(/ /g, '+');
+    return `https://www.google.com/search?q=${temp}&oq=${temp}`;
   }
 
   render () {
