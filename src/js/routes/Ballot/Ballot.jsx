@@ -1032,7 +1032,7 @@ class Ballot extends Component {
     // console.log('ballotWithItemsFromCompletionFilterType.length: ', ballotWithItemsFromCompletionFilterType.length);
     // Was: ballotWithItemsFromCompletionFilterType
     const emptyBallot = ballotWithAllItems.length === 0 ? (
-      <DelayedLoad waitBeforeShow={2000}>
+      <DelayedLoad waitBeforeShow={3000}>
         <div>
           <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
           {emptyBallotButton}
@@ -1057,6 +1057,7 @@ class Ballot extends Component {
 
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
+    let searchTextString = '';
     return (
       <div className="ballot_root">
         <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}>
@@ -1233,18 +1234,51 @@ class Ballot extends Component {
                           numberOfBallotItemsDisplayed += 1;
                           // console.log('numberOfBallotItemsDisplayed: ', numberOfBallotItemsDisplayed);
                           showLoadingText = numberOfBallotItemsDisplayed === 1;
+                          // console.log('foundInArray:', item.foundInArray);
+                          let foundInItemsAlreadyShown = 0;
+                          let searchWordAlreadyShown = 0;
+                          if (searchText) {
+                            const wordsArray = searchText.split(' ');
+                            searchTextString = wordsArray.map((oneItem) => {
+                              const foundInStringItem = `${searchWordAlreadyShown ? ' or ' : ''}"${oneItem}"`;
+                              searchWordAlreadyShown += 1;
+                              return foundInStringItem;
+                            });
+                          }
                           return (
                             <DelayedLoad
                               key={key}
                               showLoadingText={showLoadingText}
                               waitBeforeShow={500}
                             >
-                              <BallotItemCompressed
-                                isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
-                                ballotItemDisplayName={item.ballot_item_display_name}
-                                candidateList={item.candidate_list}
-                                weVoteId={item.we_vote_id}
-                              />
+                              <>
+                                {!!(isSearching && searchTextString && item.foundInArray && item.foundInArray.length) && (
+                                  <SearchResultsFoundInExplanation>
+                                    {searchTextString}
+                                    {' '}
+                                    found in
+                                    {' '}
+                                    {item.foundInArray.map((oneItem) => {
+                                      const foundInStringItem = (
+                                        <span key={foundInItemsAlreadyShown}>
+                                          {foundInItemsAlreadyShown ? ', ' : ''}
+                                          {oneItem}
+                                        </span>
+                                      );
+                                      foundInItemsAlreadyShown += 1;
+                                      return foundInStringItem;
+                                    })
+                                    }
+                                  </SearchResultsFoundInExplanation>
+                                )}
+                                <BallotItemCompressed
+                                  isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
+                                  ballotItemDisplayName={item.ballot_item_display_name}
+                                  candidateList={item.candidate_list}
+                                  candidatesToShowForSearchResults={item.candidatesToShowForSearchResults}
+                                  weVoteId={item.we_vote_id}
+                                />
+                              </>
                             </DelayedLoad>
                           );
                         } else {
@@ -1255,7 +1289,7 @@ class Ballot extends Component {
                       {doubleFilteredBallotItemsLength === 0 &&
                         this.showUserEmptyOptions()
                       }
-                      {!!(loadingMoreItems && totalNumberOfBallotItems) && (
+                      {!!(loadingMoreItems && totalNumberOfBallotItems && (numberOfBallotItemsToDisplay < totalNumberOfBallotItems)) && (
                         <LoadingItemsWheel>
                           <CircularProgress />
                         </LoadingItemsWheel>
@@ -1339,13 +1373,15 @@ const BallotLoadingWrapper = styled.div`
   text-align: center;
 `;
 
-const Wrapper = styled.div`
-  padding-top: ${({ padTop }) => padTop};
-`;
-
 // If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
 const BallotFilterRow = styled.div`
   display: flex;
+`;
+
+const SearchResultsFoundInExplanation = styled.div`
+  background-color: #C2DCE8;
+  color: #0E759F;
+  padding: 12px !important;
 `;
 
 const LoadingItemsWheel = styled.div`
@@ -1376,6 +1412,10 @@ const SearchTitle = styled.div`
   font-size: 24px;
   margin-top: 12px;
   margin-bottom: 12px;
+`;
+
+const Wrapper = styled.div`
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 const styles = theme => ({

@@ -57,13 +57,18 @@ class BallotSearch extends Component {
   }
 
   filterItems = search => this.props.items.map((item) => {
-    let priority = 0;
+    let candidatesToShowForSearchResults = [];
+    let foundInArray = [];
+    let searchPriority = 0;
     if (this.props.addVoterGuideMode) {
-      priority = addVoterGuideSearchPriority(search, item);
+      searchPriority = addVoterGuideSearchPriority(search, item);
     } else {
-      priority = ballotSearchPriority(search, item);
+      const results = ballotSearchPriority(search, item);
+      ({ searchPriority } = results);
+      ({ foundInArray } = results);
+      ({ candidatesToShowForSearchResults } = results);
     }
-    return { ...item, priority };
+    return { ...item, searchPriority, foundInArray, candidatesToShowForSearchResults };
   });
 
   toggleSearch = () => {
@@ -98,7 +103,7 @@ class BallotSearch extends Component {
       if (!searchText) {
         return [];
       }
-      const sortedFiltered = sortBy(this.filterItems(searchText), ['priority']).reverse().filter(item => item.priority > 0);
+      const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter(item => item.searchPriority > 0);
       // console.log('sortedFiltered:', sortedFiltered);
       return this.props.onBallotSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
     }, delayBeforeSearchExecution);

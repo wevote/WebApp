@@ -18,7 +18,7 @@ import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import { toTitleCase } from '../../utils/textFormat';
+import { arrayContains, toTitleCase } from '../../utils/textFormat';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 4;
@@ -29,6 +29,7 @@ class OfficeItemCompressed extends Component {
     officeWeVoteId: PropTypes.string.isRequired,
     ballotItemDisplayName: PropTypes.string.isRequired,
     candidateList: PropTypes.array,
+    candidatesToShowForSearchResults: PropTypes.array,
     classes: PropTypes.object,
     externalUniqueId: PropTypes.string,
     organization: PropTypes.object,
@@ -226,10 +227,12 @@ class OfficeItemCompressed extends Component {
 
   generateCandidates () {
     const { classes, externalUniqueId, theme } = this.props;
+    let { candidatesToShowForSearchResults } = this.props;
+    candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
     const { candidateList } = this.state;
     const candidatePreviewLimit = this.state.maximumNumberOrganizationsToDisplay;
     // If voter has chosen 1+ candidates, only show those
-    const supportedCandidatesList = candidateList.filter(candidate => SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election);
+    const supportedCandidatesList = candidateList.filter(candidate => arrayContains(candidate.we_vote_id, candidatesToShowForSearchResults) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
     const hideCandidateDetails = supportedCandidatesList.length;
     return (
