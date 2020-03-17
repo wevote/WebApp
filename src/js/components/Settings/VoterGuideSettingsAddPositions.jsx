@@ -67,20 +67,25 @@ class VoterGuideSettingsAddPositions extends Component {
     this.state = {
       addNewPositionsMode: true,
       allBallotItems: [],
+      ballotSearchResults: [],
       currentSelectedBallotFilters: [], // So we know when the ballot filters change
       currentSelectedPositionFilters: [], // So we know when the position filters change
       filteredBallotItems: [],
       filteredPositionListForOneElection: [],
+      isSearching: false,
       loadingMoreItems: false,
       localAllBallotItemsHaveBeenRetrieved: {},
       localPositionListHasBeenRetrieved: {},
       numberOfBallotItemsToDisplay: 5,
       numberOfPositionItemsToDisplay: 5,
       positionListForOneElection: [],
+      positionSearchResults: [],
       stateCodeFromIpAddress: '',
       stateCodeFromVoterGuide: '',
       stateCodeToRetrieve: '',
       totalNumberOfBallotItems: 0,
+      totalNumberOfBallotSearchResults: 0,
+      totalNumberOfPositionSearchResults: 0,
     };
     this.onScroll = this.onScroll.bind(this);
   }
@@ -112,32 +117,6 @@ class VoterGuideSettingsAddPositions extends Component {
     window.addEventListener('scroll', this.onScroll);
   }
 
-  // getPosition = (el) => {
-  //   let xPos = 0;
-  //   let yPos = 0;
-
-  //   while (el) {
-  //     if (el.tagName === 'BODY') {
-  //       // deal with browser quirks with body/window/document and page scroll
-  //       const xScroll = el.scrollLeft || document.documentElement.scrollLeft;
-  //       const yScroll = el.scrollTop || document.documentElement.scrollTop;
-
-  //       xPos += (el.offsetLeft - xScroll + el.clientLeft);
-  //       yPos += (el.offsetTop - yScroll + el.clientTop);
-  //     } else {
-  //       // for all other non-BODY elements
-  //       xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
-  //       yPos += (el.offsetTop - el.scrollTop + el.clientTop);
-  //     }
-
-  //     el = el.offsetParent;
-  //   }
-  //   return {
-  //     x: xPos,
-  //     y: yPos,
-  //   };
-  // }
-
   componentWillReceiveProps (nextProps) {
     // console.log('componentWillReceiveProps addNewPositionsMode:', nextProps.addNewPositionsMode, ', nextProps.voterGuideWeVoteId:', nextProps.voterGuideWeVoteId);
     this.setState({
@@ -147,6 +126,7 @@ class VoterGuideSettingsAddPositions extends Component {
     let voterGuide;
     if (nextProps.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(nextProps.voterGuideWeVoteId)) {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.voterGuideWeVoteId);
+      // console.log('componentWillReceiveProps voterGuide.google_civic_election_id:', voterGuide.google_civic_election_id);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           localGoogleCivicElectionId: parseInt(voterGuide.google_civic_election_id, 10),
@@ -163,12 +143,14 @@ class VoterGuideSettingsAddPositions extends Component {
     // console.log('VoterGuideSettingsAddPositions componentDidUpdate');
     // Whenever a voter goes from "Add Endorsements" to "Endorsed or Opposed" we want to refresh the position list
     const { addNewPositionsMode, currentSelectedBallotFilters, currentSelectedPositionFilters } = this.state;
+    const { stateCodeToRetrieve } = this.state;
     const { addNewPositionsMode: previousAddNewPositionsMode, currentSelectedBallotFilters: previousSelectedBallotFilters, currentSelectedPositionFilters: previousSelectedPositionFilters } = prevState;
     // console.log('componentDidUpdate addNewPositionsMode:', addNewPositionsMode, ', previousAddNewPositionsMode:', previousAddNewPositionsMode);
     // If previously we were in addNewPositionsMode, and now we are NOT, update the positionListForOpinionMaker
+    const { localAllBallotItemsHaveBeenRetrieved, voterGuide } = this.state;
     if (previousAddNewPositionsMode && !addNewPositionsMode) {
       // console.log('We should retrieve positionListForOpinionMaker');
-      const { linkedOrganizationWeVoteId, voterGuide } = this.state;
+      const { linkedOrganizationWeVoteId } = this.state;
       const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (voterGuide && voterGuide.google_civic_election_id && organization && organization.organization_we_vote_id) {
         // console.log('componentDidUpdate we have what we need');
@@ -190,6 +172,24 @@ class VoterGuideSettingsAddPositions extends Component {
         this.setState({
           numberOfBallotItemsToDisplay: 5,
         });
+      }
+    }
+    // console.log('componentDidUpdate stateCodeToRetrieve:', stateCodeToRetrieve);
+    if (voterGuide && voterGuide.google_civic_election_id && stateCodeToRetrieve) {
+      if (!localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id]) {
+        localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id] = {};
+      }
+      if (!localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id][stateCodeToRetrieve]) {
+        localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id][stateCodeToRetrieve] = false;
+      }
+      const doNotRetrieveAllBallotItems = localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id][stateCodeToRetrieve] || BallotStore.allBallotItemsHaveBeenRetrievedForElection(voterGuide.google_civic_election_id, stateCodeToRetrieve);
+      if (!doNotRetrieveAllBallotItems) {
+        localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id][stateCodeToRetrieve] = true;
+        this.setState({
+          localAllBallotItemsHaveBeenRetrieved,
+        });
+        // console.log('componentDidUpdate BallotActions.allBallotItemsRetrieve:', voterGuide.google_civic_election_id, stateCodeToRetrieve);
+        BallotActions.allBallotItemsRetrieve(voterGuide.google_civic_election_id, stateCodeToRetrieve);
       }
     }
   }
@@ -242,7 +242,7 @@ class VoterGuideSettingsAddPositions extends Component {
   onBallotStoreChange () {
     const { localGoogleCivicElectionId } = this.state;
     const allBallotItemsFlattened = BallotStore.getAllBallotItemsFlattened(localGoogleCivicElectionId);
-    // console.log('VoterGuideSettingsAddPositions, onBallotStoreChange incomingBallotItemList:', incomingBallotItemList);
+    // console.log('VoterGuideSettingsAddPositions, onBallotStoreChange allBallotItemsFlattened:', allBallotItemsFlattened);
     this.setState({
       allBallotItems: allBallotItemsFlattened,
       filteredBallotItems: allBallotItemsFlattened,
@@ -431,8 +431,12 @@ class VoterGuideSettingsAddPositions extends Component {
   }
 
   onFilteredItemsChangeFromBallotItemsFilterBase = (filteredBallotItems, currentSelectedBallotFilters) => {
-    // console.log('onFilteredItemsChangeFromBallotItemsFilterBase, currentSelectedBallotFilters: ', currentSelectedBallotFilters);
-    this.setState({ currentSelectedBallotFilters, filteredBallotItems });
+    // console.log('onFilteredItemsChangeFromBallotItemsFilterBase, filteredBallotItems: ', filteredBallotItems);
+    this.setState({
+      currentSelectedBallotFilters,
+      filteredBallotItems,
+      isSearching: false,
+    });
   }
 
   onFilteredItemsChangeFromPositionItemsFilterBase = (filteredPositionListForOneElection, currentSelectedPositionFilters) => {
@@ -440,13 +444,41 @@ class VoterGuideSettingsAddPositions extends Component {
     this.setState({ currentSelectedPositionFilters, filteredPositionListForOneElection });
   }
 
+  onBallotSearch = (searchText, filteredItems) => {
+    window.scrollTo(0, 0);
+    const totalNumberOfBallotSearchResults = filteredItems.length || 0;
+    this.setState({
+      ballotSearchResults: filteredItems,
+      searchText,
+      totalNumberOfBallotSearchResults,
+    });
+  };
+
+  onPositionSearch = (searchText, filteredItems) => {
+    window.scrollTo(0, 0);
+    const totalNumberOfPositionSearchResults = filteredItems.length || 0;
+    this.setState({
+      positionSearchResults: filteredItems,
+      searchText,
+      totalNumberOfPositionSearchResults,
+    });
+  };
+
+  handleToggleSearchBallot = (isSearching) => {
+    // console.log('VoterGuideSettingsAddPositions handleToggleSearchBallot isSearching:', isSearching);
+    // const { ballotWithItemsFromCompletionFilterType } = this.state;
+    // let totalNumberOfBallotItems;
+    this.setState({
+      isSearching: !isSearching,
+    });
+  };
+
   increaseNumberOfBallotItemsToDisplay = () => {
     let { numberOfBallotItemsToDisplay } = this.state;
     // console.log('Number of ballot items before increment: ', numberOfBallotItemsToDisplay);
 
     numberOfBallotItemsToDisplay += 5;
     // console.log('Number of ballot items after increment: ', numberOfBallotItemsToDisplay);
-
 
     this.ballotItemTimer = setTimeout(() => {
       this.setState({
@@ -481,13 +513,13 @@ class VoterGuideSettingsAddPositions extends Component {
   render () {
     renderLog('VoterGuideSettingsAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { addNewPositionsMode, localGoogleCivicElectionId, stateCodeToRetrieve, loadingMoreItems } = this.state;
-    // console.log('VoterGuideSettingsAddPositions render, addNewPositionsMode:', addNewPositionsMode);
+    const { addNewPositionsMode, isSearching, loadingMoreItems, localGoogleCivicElectionId, searchText, stateCodeToRetrieve } = this.state;
+    // console.log('VoterGuideSettingsAddPositions render');
     if (!addNewPositionsMode) {
       // ////////////////////////
       // Current Positions - First Tab
       const selectedFiltersCurrentDefault = [];
-      const { filteredPositionListForOneElection, numberOfPositionItemsToDisplay, positionListForOneElection } = this.state;
+      const { filteredPositionListForOneElection, numberOfPositionItemsToDisplay, positionListForOneElection, positionSearchResults, totalNumberOfPositionSearchResults } = this.state;
       // console.log('VoterGuideSettingsAddPositions render, filteredPositionListForOneElection:', filteredPositionListForOneElection);
       const atLeastOnePositionFoundWithTheseFilters = positionListForOneElection && positionListForOneElection.length !== 0;
       let numberOfPositionItemsDisplayed = 0;
@@ -529,77 +561,114 @@ class VoterGuideSettingsAddPositions extends Component {
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
             allItems={positionListForOneElection}
+            onSearch={this.onPositionSearch}
             onFilteredItemsChange={this.onFilteredItemsChangeFromPositionItemsFilterBase}
+            onToggleSearch={this.handleToggleSearchBallot}
             selectedFiltersDefault={selectedFiltersCurrentDefault}
             totalNumberOfItemsFound={totalNumberOfPositionItems}
           >
             {/* props get added to this component in FilterBase */}
             <SettingsSeePositionsFilter />
           </FilterBase>
-          <CardChildListGroup className="card-child__list-group">
-            {filteredPositionListForOneElection.map((onePosition) => {
-              // console.log('onePosition:', onePosition);
-              ballotItemDisplayNameForPosition = (onePosition.kind_of_ballot_item === 'CANDIDATE') ? onePosition.contest_office_name : onePosition.ballot_item_display_name;
-              ballotItemWeVoteIdForPosition = (onePosition.kind_of_ballot_item === 'CANDIDATE') ? onePosition.contest_office_we_vote_id : onePosition.ballot_item_we_vote_id;
-              if (!ballotItemDisplayNameForPosition || !ballotItemWeVoteIdForPosition) {
-                return null;
-              }
-              if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
-                return null;
-              }
-              numberOfPositionItemsDisplayed += 1;
-              if (onePosition.kind_of_ballot_item === 'CANDIDATE') {
-                // We create a simulated candidateList from the positionList
-                candidateListForPosition = [{
-                  ballot_item_display_name: onePosition.ballot_item_display_name,
-                  candidate_photo_url_large: onePosition.ballot_item_image_url_https_large,
-                  candidate_photo_url_medium: onePosition.ballot_item_image_url_https_medium,
-                  candidate_photo_url_tiny: onePosition.ballot_item_image_url_https_tiny,
-                  contest_office_id: onePosition.contest_office_id,
-                  contest_office_name: onePosition.contest_office_name,
-                  contest_office_we_vote_id: onePosition.contest_office_we_vote_id,
-                  google_civic_election_id: onePosition.google_civic_election_id,
-                  is_oppose: onePosition.is_oppose,
-                  is_support: onePosition.is_support,
-                  kind_of_ballot_item: onePosition.kind_of_ballot_item,
-                  party: onePosition.ballot_item_political_party,
-                  state_code: onePosition.state_code,
-                  twitter_followers_count: onePosition.twitter_followers_count,
-                  we_vote_id: onePosition.ballot_item_we_vote_id,
-                }];
-              } else {
-                candidateListForPosition = [];
-              }
-              kindOfBallotItemForPosition = (onePosition.kind_of_ballot_item === 'CANDIDATE') ? 'OFFICE' : 'MEASURE';
-              // console.log('kindOfBallotItemForPosition:', kindOfBallotItemForPosition, ', ballotItemWeVoteIdForPosition:', ballotItemWeVoteIdForPosition, ', ballotItemDisplayNameForPosition:', ballotItemDisplayNameForPosition);
-              return (
-                <BallotItemForAddPositions
-                  key={`currentPositionKey-${ballotItemWeVoteIdForPosition}-${onePosition.position_we_vote_id}`}
-                  allBallotItemsCount={2}
-                  ballotItemDisplayName={ballotItemDisplayNameForPosition}
-                  ballotItemWeVoteId={ballotItemWeVoteIdForPosition}
-                  candidateList={candidateListForPosition}
-                  kindOfBallotItem={kindOfBallotItemForPosition}
-                  externalUniqueId={`currentPositionKey-${ballotItemWeVoteIdForPosition}-${onePosition.position_we_vote_id}`}
-                />
-              );
-            })
-            }
-          </CardChildListGroup>
-          <ShowMoreItems id="showMoreItemsId">
-            Displaying
-            {' '}
-            {numberOfPositionItemsDisplayed}
-            {' '}
-            of
-            {' '}
-            {totalNumberOfPositionItems}
-          </ShowMoreItems>
-          <LoadingItemsWheel>
-            {loadingMoreItems ? (
-              <CircularProgress />
-            ) : null}
-          </LoadingItemsWheel>
+          {((!isSearching && atLeastOnePositionFoundWithTheseFilters && filteredPositionListForOneElection && filteredPositionListForOneElection.length) || (isSearching && positionSearchResults && positionSearchResults.length)) ? (
+            <div>
+              <CardChildListGroup className="card-child__list-group">
+                {(isSearching ? positionSearchResults : filteredPositionListForOneElection).map((onePosition) => {
+                  // console.log('onePosition:', onePosition);
+                  ballotItemDisplayNameForPosition = (onePosition.kind_of_ballot_item === 'CANDIDATE') ? onePosition.contest_office_name : onePosition.ballot_item_display_name;
+                  ballotItemWeVoteIdForPosition = (onePosition.kind_of_ballot_item === 'CANDIDATE') ? onePosition.contest_office_we_vote_id : onePosition.ballot_item_we_vote_id;
+                  if (!ballotItemDisplayNameForPosition || !ballotItemWeVoteIdForPosition) {
+                    return null;
+                  }
+                  if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
+                    return null;
+                  }
+                  numberOfPositionItemsDisplayed += 1;
+                  if (onePosition.kind_of_ballot_item === 'CANDIDATE') {
+                    // We create a simulated candidateList from the positionList
+                    candidateListForPosition = [{
+                      ballot_item_display_name: onePosition.ballot_item_display_name,
+                      candidate_photo_url_large: onePosition.ballot_item_image_url_https_large,
+                      candidate_photo_url_medium: onePosition.ballot_item_image_url_https_medium,
+                      candidate_photo_url_tiny: onePosition.ballot_item_image_url_https_tiny,
+                      contest_office_id: onePosition.contest_office_id,
+                      contest_office_name: onePosition.contest_office_name,
+                      contest_office_we_vote_id: onePosition.contest_office_we_vote_id,
+                      google_civic_election_id: onePosition.google_civic_election_id,
+                      is_oppose: onePosition.is_oppose,
+                      is_support: onePosition.is_support,
+                      kind_of_ballot_item: onePosition.kind_of_ballot_item,
+                      party: onePosition.ballot_item_political_party,
+                      state_code: onePosition.state_code,
+                      twitter_followers_count: onePosition.twitter_followers_count,
+                      we_vote_id: onePosition.ballot_item_we_vote_id,
+                    }];
+                  } else {
+                    candidateListForPosition = [];
+                  }
+                  kindOfBallotItemForPosition = (onePosition.kind_of_ballot_item === 'CANDIDATE') ? 'OFFICE' : 'MEASURE';
+                  // console.log('kindOfBallotItemForPosition:', kindOfBallotItemForPosition, ', ballotItemWeVoteIdForPosition:', ballotItemWeVoteIdForPosition, ', ballotItemDisplayNameForPosition:', ballotItemDisplayNameForPosition);
+                  return (
+                    <BallotItemForAddPositions
+                      key={`currentPositionKey-${ballotItemWeVoteIdForPosition}-${onePosition.position_we_vote_id}`}
+                      allBallotItemsCount={2}
+                      ballotItemDisplayName={ballotItemDisplayNameForPosition}
+                      ballotItemWeVoteId={ballotItemWeVoteIdForPosition}
+                      candidateList={candidateListForPosition}
+                      kindOfBallotItem={kindOfBallotItemForPosition}
+                      externalUniqueId={`currentPositionKey-${ballotItemWeVoteIdForPosition}-${onePosition.position_we_vote_id}`}
+                    />
+                  );
+                })
+                }
+              </CardChildListGroup>
+              {isSearching ? (
+                <ShowMoreItems id="showMoreItemsId">
+                  Displaying
+                  {' '}
+                  {numberOfPositionItemsDisplayed}
+                  {' '}
+                  of
+                  {' '}
+                  {totalNumberOfPositionSearchResults}
+                </ShowMoreItems>
+              ) : (
+                <ShowMoreItems id="showMoreItemsId">
+                  Displaying
+                  {' '}
+                  {numberOfPositionItemsDisplayed}
+                  {' '}
+                  of
+                  {' '}
+                  {totalNumberOfPositionItems}
+                </ShowMoreItems>
+              )}
+              <LoadingItemsWheel>
+                {loadingMoreItems ? (
+                  <CircularProgress />
+                ) : null}
+              </LoadingItemsWheel>
+            </div>
+          ) : (
+            <Card>
+              <EmptyBallotMessageContainer>
+                <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                <EmptyBallotText>
+                  No results found.
+                  {' '}
+                  {isSearching ? (
+                    <span>
+                      Enter new search terms to find your existing positions.
+                    </span>
+                  ) : (
+                    <span>
+                      Try different filters to see your existing positions.
+                    </span>
+                  )}
+                </EmptyBallotText>
+              </EmptyBallotMessageContainer>
+            </Card>
+          )}
           <PreviewButtonWrapper>
             <Button
               color="primary"
@@ -616,18 +685,25 @@ class VoterGuideSettingsAddPositions extends Component {
       // ////////////////////////
       // Add New Positions - Second Tab
       const selectedFiltersAddDefault = ['showFederalRaceFilter'];
-      const { allBallotItems, filteredBallotItems, numberOfBallotItemsToDisplay } = this.state;
+      const { allBallotItems, ballotSearchResults, filteredBallotItems, numberOfBallotItemsToDisplay, totalNumberOfBallotSearchResults } = this.state;
       if (!allBallotItems) {
         return LoadingWheel;
       }
-      const atLeastOnePositionFoundWithTheseFilters = filteredBallotItems && filteredBallotItems.length !== 0;
+      const atLeastOnePositionFoundWithTheseFilters = (filteredBallotItems && filteredBallotItems.length);
       let numberOfBallotItemsDisplayed = 0;
+      let numberOfBallotSearchResultsDisplayed = 0;
       let totalNumberOfBallotItems = 0;
       if (atLeastOnePositionFoundWithTheseFilters) {
         totalNumberOfBallotItems = filteredBallotItems.length;
       }
+      // let totalNumberOfBallotSearchResults = 0;
+      // if (ballotSearchResults && ballotSearchResults.length) {
+      //   totalNumberOfBallotSearchResults = ballotSearchResults.length;
+      // }
+      let searchTextString = '';
       // const { classes } = this.props;
-      // console.log('allBallotItems: ', allBallotItems);
+      // console.log('filteredBallotItems: ', filteredBallotItems);
+      // console.log('atLeastOnePositionFoundWithTheseFilters: ', atLeastOnePositionFoundWithTheseFilters);
       return (
         <div className="container">
           <FilterBase
@@ -635,7 +711,9 @@ class VoterGuideSettingsAddPositions extends Component {
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
             allItems={allBallotItems}
+            onSearch={this.onBallotSearch}
             onFilteredItemsChange={this.onFilteredItemsChangeFromBallotItemsFilterBase}
+            onToggleSearch={this.handleToggleSearchBallot}
             selectedFiltersDefault={selectedFiltersAddDefault}
             totalNumberOfItemsFound={totalNumberOfBallotItems}
           >
@@ -645,43 +723,100 @@ class VoterGuideSettingsAddPositions extends Component {
               googleCivicElectionId={localGoogleCivicElectionId}
             />
           </FilterBase>
-          {atLeastOnePositionFoundWithTheseFilters ? (
+          {(isSearching && searchText) && (
+            <SearchTitle>
+              Searching for &quot;
+              {searchText}
+              &quot;
+            </SearchTitle>
+          )}
+          {((!isSearching && atLeastOnePositionFoundWithTheseFilters && filteredBallotItems && filteredBallotItems.length) || (isSearching && ballotSearchResults && ballotSearchResults.length)) ? (
             <div>
               <CardChildListGroup className="card-child__list-group">
-                {filteredBallotItems.map((oneBallotItem) => {
+                {(isSearching ? ballotSearchResults : filteredBallotItems).map((oneBallotItem) => {
                   // console.log('oneBallotItem: ', oneBallotItem);
                   if (!oneBallotItem.we_vote_id) {
                     return null;
                   }
-                  if (numberOfBallotItemsDisplayed >= numberOfBallotItemsToDisplay) {
-                    return null;
+                  if (isSearching) {
+                    if (numberOfBallotSearchResultsDisplayed >= totalNumberOfBallotSearchResults) {
+                      return null;
+                    }
+                    numberOfBallotSearchResultsDisplayed += 1;
+                  } else {
+                    if (numberOfBallotItemsDisplayed >= numberOfBallotItemsToDisplay) {
+                      return null;
+                    }
+                    numberOfBallotItemsDisplayed += 1;
                   }
-                  numberOfBallotItemsDisplayed += 1;
                   // console.log('numberOfBallotItemsDisplayed: ', numberOfBallotItemsDisplayed);
+                  let foundInItemsAlreadyShown = 0;
+                  let searchWordAlreadyShown = 0;
+                  if (searchText) {
+                    const wordsArray = searchText.split(' ');
+                    searchTextString = wordsArray.map((oneItem) => {
+                      const foundInStringItem = `${searchWordAlreadyShown ? ' or ' : ''}"${oneItem}"`;
+                      searchWordAlreadyShown += 1;
+                      return foundInStringItem;
+                    });
+                  }
                   return (
-                    <BallotItemForAddPositions
-                      key={`addNewPositionKey-${oneBallotItem.we_vote_id}`}
-                      externalUniqueId={`addNewPositionKey-${oneBallotItem.we_vote_id}`}
-                      allBallotItemsCount={2}
-                      // ref={(ref) => { this.ballotItems[oneBallotItem.we_vote_id] = ref; }}
-                      ballotItemDisplayName={oneBallotItem.ballot_item_display_name}
-                      candidateList={oneBallotItem.candidate_list}
-                      kindOfBallotItem={oneBallotItem.kind_of_ballot_item}
-                      ballotItemWeVoteId={oneBallotItem.we_vote_id}
-                    />
+                    <div key={`addNewPositionKey-${oneBallotItem.we_vote_id}`}>
+                      {!!(isSearching && searchTextString && oneBallotItem.foundInArray && oneBallotItem.foundInArray.length) && (
+                        <SearchResultsFoundInExplanation>
+                          {searchTextString}
+                          {' '}
+                          found in
+                          {' '}
+                          {oneBallotItem.foundInArray.map((oneItem) => {
+                            const foundInStringItem = (
+                              <span key={foundInItemsAlreadyShown}>
+                                {foundInItemsAlreadyShown ? ', ' : ''}
+                                {oneItem}
+                              </span>
+                            );
+                            foundInItemsAlreadyShown += 1;
+                            return foundInStringItem;
+                          })
+                          }
+                        </SearchResultsFoundInExplanation>
+                      )}
+                      <BallotItemForAddPositions
+                        externalUniqueId={`addNewPositionKey-${oneBallotItem.we_vote_id}`}
+                        allBallotItemsCount={2}
+                        // ref={(ref) => { this.ballotItems[oneBallotItem.we_vote_id] = ref; }}
+                        ballotItemDisplayName={oneBallotItem.ballot_item_display_name}
+                        candidateList={oneBallotItem.candidate_list}
+                        candidatesToShowForSearchResults={oneBallotItem.candidatesToShowForSearchResults}
+                        kindOfBallotItem={oneBallotItem.kind_of_ballot_item}
+                        ballotItemWeVoteId={oneBallotItem.we_vote_id}
+                      />
+                    </div>
                   );
                 })
                 }
               </CardChildListGroup>
-              <ShowMoreItems id="showMoreItemsId">
-                Displaying
-                {' '}
-                {numberOfBallotItemsDisplayed}
-                {' '}
-                of
-                {' '}
-                {totalNumberOfBallotItems}
-              </ShowMoreItems>
+              {isSearching ? (
+                <ShowMoreItems id="showMoreItemsId">
+                  Displaying
+                  {' '}
+                  {numberOfBallotSearchResultsDisplayed}
+                  {' '}
+                  of
+                  {' '}
+                  {totalNumberOfBallotSearchResults}
+                </ShowMoreItems>
+              ) : (
+                <ShowMoreItems id="showMoreItemsId">
+                  Displaying
+                  {' '}
+                  {numberOfBallotItemsDisplayed}
+                  {' '}
+                  of
+                  {' '}
+                  {totalNumberOfBallotItems}
+                </ShowMoreItems>
+              )}
               <LoadingItemsWheel>
                 {loadingMoreItems ? (
                   <CircularProgress />
@@ -702,7 +837,19 @@ class VoterGuideSettingsAddPositions extends Component {
             <Card>
               <EmptyBallotMessageContainer>
                 <BallotIcon classes={{ root: classes.ballotIconRoot }} />
-                <EmptyBallotText>No results found. Try selecting different filters to see results.</EmptyBallotText>
+                <EmptyBallotText>
+                  No results found.
+                  {' '}
+                  {isSearching ? (
+                    <span>
+                      Please enter new search terms to find results.
+                    </span>
+                  ) : (
+                    <span>
+                      Try selecting different filters to see results.
+                    </span>
+                  )}
+                </EmptyBallotText>
               </EmptyBallotMessageContainer>
             </Card>
           )
@@ -712,6 +859,10 @@ class VoterGuideSettingsAddPositions extends Component {
     }
   }
 }
+
+const CardChildListGroup = styled.ul`
+  padding: 0;
+`;
 
 const EmptyBallotMessageContainer = styled.div`
   padding: 1em 2em;
@@ -741,6 +892,18 @@ const LoadingItemsWheel = styled.div`
   justify-content: center;
 `;
 
+const SearchResultsFoundInExplanation = styled.div`
+  background-color: #C2DCE8;
+  color: #0E759F;
+  padding: 12px !important;
+`;
+
+const SearchTitle = styled.div`
+  font-size: 24px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+`;
+
 const ShowMoreItems = styled.div`
   font-size: 18px;
   text-align: right;
@@ -752,10 +915,6 @@ const ShowMoreItems = styled.div`
   @media print{
     display: none;
   }
-`;
-
-const CardChildListGroup = styled.ul`
-  padding: 0;
 `;
 
 const styles = theme => ({

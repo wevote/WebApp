@@ -23,7 +23,7 @@ export default class SearchPage extends Component {
 
   componentDidMount () {
     // When we first enter we want to retrieve values to have for a click in the search box
-    const textFromSearchField = this.props.params.encoded_search_string;
+    const textFromSearchField = this.props.params.encoded_search_string || '';
     this.setState({ textFromSearchField });
 
     // Search type one - Recent searches
@@ -43,7 +43,7 @@ export default class SearchPage extends Component {
   componentWillReceiveProps (nextProps) {
     this.onSearchAllStoreChange();
     if (nextProps.params.encoded_search_string) {
-      this.setState({ textFromSearchField: nextProps.params.encoded_search_string });
+      this.setState({ textFromSearchField: nextProps.params.encoded_search_string || '' });
     }
   }
 
@@ -84,13 +84,17 @@ export default class SearchPage extends Component {
 
   render () {
     renderLog('SearchPage');  // Set LOG_RENDER_EVENTS to log all renders
+    const { searchResults, textFromSearchField } = this.state;
+    if (!textFromSearchField) {
+      return null;
+    }
     return (
       <span>
         <Helmet title="Search Results - We Vote" />
         <SearchResultsDisplay
           links={this.links}
-          searchResults={this.state.searchResults}
-          textFromSearchField={this.state.textFromSearchField}
+          searchResults={searchResults}
+          textFromSearchField={textFromSearchField}
         />
       </span>
     );

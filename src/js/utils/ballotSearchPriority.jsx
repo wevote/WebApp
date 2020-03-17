@@ -1,7 +1,7 @@
 import React from 'react';
 import { arrayContains } from './textFormat';
 
-export default function ballotSearchPriority (originalString, item) {
+export default function ballotSearchPriority (originalString, item, ignoreDescriptionFields = false) {
   // console.log('ballotSearchPriority, originalString: ', originalString, 'item.ballot_item_display_name:', item.ballot_item_display_name);
   if (originalString === undefined) {
     return 0;
@@ -26,11 +26,11 @@ export default function ballotSearchPriority (originalString, item) {
       oneWordScore += item.ballot_item_display_name.numberOfNeedlesFoundInString(searchNeedleString) * 10;
       foundInThisOfficeOrMeasure = true;
     }
-    if (item.yes_vote_description && item.yes_vote_description.numberOfNeedlesFoundInString(searchNeedleString)) {
+    if (!ignoreDescriptionFields && item.yes_vote_description && item.yes_vote_description.numberOfNeedlesFoundInString(searchNeedleString)) {
       oneWordScore += item.yes_vote_description.numberOfNeedlesFoundInString(searchNeedleString) * 3;
       foundInThisOfficeOrMeasure = true;
     }
-    if (item.no_vote_description && item.no_vote_description.numberOfNeedlesFoundInString(searchNeedleString)) {
+    if (!ignoreDescriptionFields && item.no_vote_description && item.no_vote_description.numberOfNeedlesFoundInString(searchNeedleString)) {
       oneWordScore += item.no_vote_description.numberOfNeedlesFoundInString(searchNeedleString) * 3;
       foundInThisOfficeOrMeasure = true;
     }
@@ -54,7 +54,7 @@ export default function ballotSearchPriority (originalString, item) {
       candidateDetailsString = '';
       for (let i = 0; i < wordsArray.length; i++) {
         searchNeedleString = wordsArray[i].toString();
-        if (candidate.ballotpedia_candidate_summary && candidate.ballotpedia_candidate_summary.numberOfNeedlesFoundInString(searchNeedleString)) {
+        if (!ignoreDescriptionFields && candidate.ballotpedia_candidate_summary && candidate.ballotpedia_candidate_summary.numberOfNeedlesFoundInString(searchNeedleString)) {
           oneWordScore += candidate.ballotpedia_candidate_summary.numberOfNeedlesFoundInString(searchNeedleString);
           foundInThisCandidate = true;
           if (!arrayContains('candidate summary', candidateDetailsArray)) candidateDetailsArray.push('candidate summary');
@@ -64,7 +64,7 @@ export default function ballotSearchPriority (originalString, item) {
           foundInThisCandidate = true;
           if (!arrayContains('name', candidateDetailsArray)) candidateDetailsArray.push('name');
         }
-        if (candidate.twitter_description && candidate.twitter_description.numberOfNeedlesFoundInString(searchNeedleString)) {
+        if (!ignoreDescriptionFields && candidate.twitter_description && candidate.twitter_description.numberOfNeedlesFoundInString(searchNeedleString)) {
           oneWordScore += candidate.twitter_description.numberOfNeedlesFoundInString(searchNeedleString);
           foundInThisCandidate = true;
           if (!arrayContains('Twitter description', candidateDetailsArray)) candidateDetailsArray.push('Twitter description');

@@ -369,8 +369,10 @@ class Vote extends Component {
     }
   }
 
-  handleSearch = (filteredItems) => {
-    this.setState({ ballotSearchResults: filteredItems });
+  handleSearch = (searchText, filteredItems) => {
+    this.setState({
+      ballotSearchResults: filteredItems,
+    });
   };
 
   handleToggleSearchBallot = () => {
