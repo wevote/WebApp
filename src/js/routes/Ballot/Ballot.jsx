@@ -1093,11 +1093,11 @@ class Ballot extends Component {
                           { ballotWithItemsFromCompletionFilterType.length ? (
                             <React.Fragment>
                               <BallotSearch
+                                alwaysOpen={!showFilterTabs}
                                 isSearching={isSearching}
-                                onToggleSearch={this.handleToggleSearchBallot}
                                 items={ballotWithAllItems}
                                 onBallotSearch={this.onBallotSearch}
-                                alwaysOpen={!showFilterTabs}
+                                onToggleSearch={this.handleToggleSearchBallot}
                               />
                               { showFilterTabs && (
                                 <div

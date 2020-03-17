@@ -5,7 +5,7 @@ import { withTheme, withStyles } from '@material-ui/core/styles';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import { historyPush } from '../../utils/cordovaUtils';
-import { toTitleCase } from '../../utils/textFormat';
+import { arrayContains, toTitleCase } from '../../utils/textFormat';
 import CandidateItemForAddPositions from './CandidateItemForAddPositions';
 import CandidateStore from '../../stores/CandidateStore';
 import { renderLog } from '../../utils/logging';
@@ -15,6 +15,7 @@ class OfficeItemForAddPositions extends Component {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     ballotItemDisplayName: PropTypes.string.isRequired,
     candidateList: PropTypes.array,
+    candidatesToShowForSearchResults: PropTypes.array,
     classes: PropTypes.object,
     organization: PropTypes.object,
     organizationWeVoteId: PropTypes.string,
@@ -51,10 +52,13 @@ class OfficeItemForAddPositions extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    const candidatesToShowForSearchResults = nextProps.candidatesToShowForSearchResults || [];
+    const candidatesToShowForSearchResultsCount = candidatesToShowForSearchResults.length;
     const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organizationWeVoteId;
     // console.log('officeItemCompressed componentWillReceiveProps, organizationWeVoteId:', organizationWeVoteId);
     this.setState({
       candidateList: nextProps.candidateList,
+      candidatesToShowForSearchResultsCount,
       organizationWeVoteId,
     });
   }
@@ -65,7 +69,11 @@ class OfficeItemForAddPositions extends Component {
       return true;
     }
     if (JSON.stringify(this.state.candidateList) !== JSON.stringify(nextState.candidateList)) {
-      console.log('this.state.candidateList:', this.state.candidateList, ', nextState.candidateList:', nextState.candidateList);
+      // console.log('this.state.candidateList:', this.state.candidateList, ', nextState.candidateList:', nextState.candidateList);
+      return true;
+    }
+    if (this.state.candidatesToShowForSearchResultsCount !== nextState.candidatesToShowForSearchResultsCount) {
+      // console.log('this.state.candidatesToShowForSearchResultsCount:', this.state.candidatesToShowForSearchResultsCount, ', nextState.candidatesToShowForSearchResultsCount:', nextState.candidatesToShowForSearchResultsCount);
       return true;
     }
     if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
@@ -181,7 +189,7 @@ class OfficeItemForAddPositions extends Component {
   render () {
     renderLog('OfficeItemForAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballotItemDisplayName } = this.props;
-    const { ballotItemWeVoteId, classes, theme, externalUniqueId } = this.props;
+    const { ballotItemWeVoteId, candidatesToShowForSearchResults, classes, theme, externalUniqueId } = this.props;
     const { candidateList, showCandidates } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
 
@@ -225,7 +233,7 @@ class OfficeItemForAddPositions extends Component {
           {showCandidates && (
             <Container candidateLength={candidateList.length}>
               { candidateList.map((oneCandidate) => {
-                if (!oneCandidate || !oneCandidate.we_vote_id) {
+                if (!oneCandidate || !oneCandidate.we_vote_id || (candidatesToShowForSearchResults && candidatesToShowForSearchResults.length && !arrayContains(oneCandidate.we_vote_id, candidatesToShowForSearchResults))) {
                   return null;
                 }
                 return (

@@ -17,7 +17,10 @@ export default class SearchResultsDisplay extends Component {
   };
 
   searchHasContent () {
-    return this.props.searchResults.length > 0;
+    if (this.props.searchResults) {
+      return (this.props.searchResults.length > 0);
+    }
+    return false;
   }
 
   render () {
@@ -34,7 +37,7 @@ export default class SearchResultsDisplay extends Component {
     const seeAllResultsUrlString = encodeURIComponent(textFromSearchField);
     let seeMoreLink = null;
 
-    if (textFromSearchField.length > 0) {
+    if (textFromSearchField && textFromSearchField.length > 0) {
       seeMoreLink = <Link to={`/more/search_page/${seeAllResultsUrlString}`} className="search-container__links search-container__election-title"> See all results </Link>;
     }
 
@@ -100,7 +103,7 @@ export default class SearchResultsDisplay extends Component {
           );
         }
       });
-    } else if (textFromSearchField.length) {
+    } else if (textFromSearchField && textFromSearchField.length) {
       searchResultsDisplay = (
         <div className="search-container__results">
           <div className="search-container__election-title">

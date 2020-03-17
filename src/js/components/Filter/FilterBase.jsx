@@ -17,9 +17,10 @@ class FilterBase extends React.Component {
     classes: PropTypes.object,
     groupedFilters: PropTypes.array,
     islandFilters: PropTypes.array,
+    onSearch: PropTypes.func,
     onFilteredItemsChange: PropTypes.func,
+    onToggleSearch: PropTypes.func,
     selectedFiltersDefault: PropTypes.array,
-    totalNumberOfItemsFound: PropTypes.number,
   };
 
   constructor (props) {
@@ -27,7 +28,6 @@ class FilterBase extends React.Component {
     this.state = {
       changeTrigger: '',
       // componentDidMount: false,
-      filteredItems: [],
       isSearching: false,
       lastFilterAdded: '',
       showAllFilters: false,
@@ -43,41 +43,6 @@ class FilterBase extends React.Component {
       selectedFilters: this.props.selectedFiltersDefault || [],
     });
   }
-
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-  //   // console.log('FilterBase this.props:', this.props);
-  //   // console.log('FilterBase nextProps:', nextProps);
-  //   // console.log('FilterBase this.state:', this.state);
-  //   // console.log('FilterBase nextState:', nextState);
-  //   // console.log('shouldComponentUpdate START');
-  //   if (this.state.componentDidMount !== nextState.componentDidMount) {
-  //     // console.log('this.state.componentDidMount:', this.state.componentDidMount, ', nextState.componentDidMount:', nextState.componentDidMount);
-  //     return true;
-  //   }
-  //   if (this.state.changeTrigger !== nextState.changeTrigger) {
-  //     // console.log('this.state.changeTrigger:', this.state.changeTrigger, ', nextState.changeTrigger:', nextState.changeTrigger);
-  //     return true;
-  //   }
-  //   if (this.state.lastFilterAdded !== nextState.lastFilterAdded) {
-  //     // console.log('this.state.lastFilterAdded:', this.state.lastFilterAdded, ', nextState.lastFilterAdded:', nextState.lastFilterAdded);
-  //     return true;
-  //   }
-  //   if (this.state.showAllFilters !== nextState.showAllFilters) {
-  //     // console.log('this.state.showAllFilters:', this.state.showAllFilters, ', nextState.showAllFilters:', nextState.showAllFilters);
-  //     return true;
-  //   }
-  //   if (JSON.stringify(this.state.selectedFilters) !== JSON.stringify(nextState.selectedFilters)) {
-  //     // console.log('this.state.selectedFilters:', JSON.stringify(this.state.selectedFilters), ', nextState.selectedFilters:', JSON.stringify(nextState.selectedFilters));
-  //     return true;
-  //   }
-  //   if (JSON.stringify(this.state.filteredItems) !== JSON.stringify(nextState.filteredItems)) {
-  //     // console.log('this.state.filteredItems:', this.state.filteredItems, ', nextState.filteredItems:', nextState.filteredItems);
-  //     return true;
-  //   }
-  //   // console.log('shouldComponentUpdate no change');
-  //   return false;
-  // }
 
   toggleShowAllFilters = () => {
     const { showAllFilters } = this.state;
@@ -103,6 +68,14 @@ class FilterBase extends React.Component {
         selectedFilters: [...selectedFilters, filterName],
       });
     }
+    // And finally, cancel any search that might be underway
+    this.setState({ isSearching: false });
+    if (this.props.onToggleSearch) {
+      this.props.onToggleSearch(false);
+    }
+    if (this.props.onSearch) {
+      this.props.onSearch('', []);
+    }
   };
 
   selectSortByFilter = (filterName) => {
@@ -122,8 +95,7 @@ class FilterBase extends React.Component {
   onFilteredItemsChange = (filteredItems, currentSelectedBallotFilters) => {
     // console.log('FilterBase currentSelectedBallotFilters:', currentSelectedBallotFilters);
     this.setState({
-      filteredItems,
-    }, () => this.props.onFilteredItemsChange(this.state.filteredItems, currentSelectedBallotFilters));
+    }, () => this.props.onFilteredItemsChange(filteredItems, currentSelectedBallotFilters));
   };
 
   forceChangeTrigger = (changeTrigger) => {
@@ -203,60 +175,57 @@ class FilterBase extends React.Component {
     </div>
   ));
 
-  handleIsSearchingToggle = () => {
-    const { isSearching } = this.state;
+  handleToggleSearchBallot = (isSearching) => {
+    // console.log('FilterBase handleToggleSearchBallot isSearching:', isSearching);
     this.setState({ isSearching: !isSearching });
+    if (this.props.onToggleSearch) {
+      this.props.onToggleSearch(isSearching);
+    }
   };
 
-  onSearch = (filteredItems) => {
-    this.setState({
-      filteredItems,
-    }, () => this.props.onFilteredItemsChange(this.state.filteredItems, this.state.selectedFilters));
+  onSearch = (searchText, filteredItems) => {
+    if (this.props.onSearch) {
+      this.setState({
+      }, () => this.props.onSearch(searchText, filteredItems));
+    }
   };
 
   render () {
     renderLog('FilterBase');  // Set LOG_RENDER_EVENTS to log all renders
     const { isSearching, selectedFilters, showAllFilters } = this.state;
-    const { allItems, classes, totalNumberOfItemsFound } = this.props;
+    const { allItems, classes } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
     return (
       <Wrapper>
         <FilterTop>
-          <Badge
-            classes={{ badge: classes.badge }}
-            badgeContent={numberOfFiltersSelected}
-            invisible={numberOfFiltersSelected === 0}
-            color="primary"
-          >
-            <div
-              className={`listFilter ${showAllFilters ? 'listFilterSelected' : ''}`}
-              id="filterBaseFilters"
-              onClick={this.toggleShowAllFilters}
-            >
-              <FilterListIcon />
-              &nbsp;
-              <span className="listFilter__text">Filters</span>
-            </div>
-          </Badge>
           <BallotSearch
             addVoterGuideMode
             isSearching={isSearching}
             items={allItems}
             onBallotSearch={this.onSearch}
-            onToggleSearch={this.handleIsSearchingToggle}
+            onToggleSearch={this.handleToggleSearchBallot}
           />
-          {
-            this.generateGroupedFilters()
-          }
-          {
-            this.generateIslandFilters()
-          }
-          {totalNumberOfItemsFound > 0 && (
-            <NumberFound>
-              {totalNumberOfItemsFound > 1 ? `${totalNumberOfItemsFound} Items Found` : `${totalNumberOfItemsFound} Item Found`}
-            </NumberFound>
+          {!isSearching && (
+            <Badge
+              classes={{ badge: classes.badge }}
+              badgeContent={numberOfFiltersSelected}
+              invisible={numberOfFiltersSelected === 0}
+              color="primary"
+            >
+              <div
+                className={`listFilter ${showAllFilters ? 'listFilterSelected' : ''}`}
+                id="filterBaseFilters"
+                onClick={this.toggleShowAllFilters}
+              >
+                <FilterListIcon />
+                &nbsp;
+                <span className="listFilter__text">Filters</span>
+              </div>
+            </Badge>
           )}
+          {!isSearching && this.generateGroupedFilters()}
+          {!isSearching && this.generateIslandFilters()}
         </FilterTop>
         {
           React.cloneElement(this.props.children, {
@@ -302,12 +271,6 @@ const FilterTop = styled.div`
   flex-flow: row wrap;
   // overflow-x: scroll;
   padding: 0.7rem 0;
-`;
-
-const NumberFound = styled.div`
-  font-size: 16px;
-  font-weight: bold;
-  padding-top: 8px;
 `;
 
 export default withStyles(styles)(FilterBase);

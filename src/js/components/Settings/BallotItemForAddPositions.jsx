@@ -13,6 +13,7 @@ class BallotItemForAddPositions extends Component {
     ballotItemDisplayName: PropTypes.string.isRequired,
     ballotItemWeVoteId: PropTypes.string.isRequired,
     candidateList: PropTypes.array,
+    candidatesToShowForSearchResults: PropTypes.array,
     kindOfBallotItem: PropTypes.string.isRequired,
     measureText: PropTypes.string,
     organization: PropTypes.object,
@@ -52,12 +53,15 @@ class BallotItemForAddPositions extends Component {
     // console.log('componentDidMount, nextProps.kindOfBallotItem', nextProps.kindOfBallotItem);
     const candidateList = nextProps.candidateList || [];
     const candidateListCount = candidateList.length;
+    const candidatesToShowForSearchResults = nextProps.candidatesToShowForSearchResults || [];
+    const candidatesToShowForSearchResultsCount = candidatesToShowForSearchResults.length;
     const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organizationWeVoteId;
     this.setState({
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
       ballotItemDisplayName: nextProps.ballotItemDisplayName,
       candidateList,
       candidateListCount,
+      candidatesToShowForSearchResultsCount,
       kindOfBallotItem: nextProps.kindOfBallotItem,
       measureText: nextProps.measureText,
       organizationWeVoteId,
@@ -83,6 +87,10 @@ class BallotItemForAddPositions extends Component {
       // console.log('this.state.candidateListCount:', this.state.candidateListCount, ', nextState.candidateListCount:', nextState.candidateListCount);
       return true;
     }
+    if (this.state.candidatesToShowForSearchResultsCount !== nextState.candidatesToShowForSearchResultsCount) {
+      // console.log('this.state.candidatesToShowForSearchResultsCount:', this.state.candidatesToShowForSearchResultsCount, ', nextState.candidatesToShowForSearchResultsCount:', nextState.candidatesToShowForSearchResultsCount);
+      return true;
+    }
     if (this.state.kindOfBallotItem !== nextState.kindOfBallotItem) {
       // console.log('this.state.kindOfBallotItem:', this.state.kindOfBallotItem, ', nextState.kindOfBallotItem:', nextState.kindOfBallotItem);
       return true;
@@ -91,7 +99,7 @@ class BallotItemForAddPositions extends Component {
       // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
       return true;
     }
-    // console.log('shouldComponentUpdate no change');
+
     return false;
   }
 
@@ -130,6 +138,7 @@ class BallotItemForAddPositions extends Component {
             ballotItemWeVoteId={ballotItemWeVoteId}
             ballotItemDisplayName={ballotItemDisplayName}
             candidateList={candidateList}
+            candidatesToShowForSearchResults={this.props.candidatesToShowForSearchResults}
             key={`officeItem-${externalUniqueId}`}
             organization={organization}
             organizationWeVoteId={organizationWeVoteId}
