@@ -276,6 +276,7 @@ class Friends extends Component {
               imageUrl={imageUrl}
               testimonialAuthor={testimonialAuthor}
               testimonial={testimonial}
+              isMobile
             />
           </>
         );
@@ -383,9 +384,9 @@ class Friends extends Component {
                 )}
               </SignInOptionsWrapper>
               <FriendsPromoBox
-              imageUrl={imageUrl}
-              testimonialAuthor={testimonialAuthor}
-              testimonial={testimonial}
+                imageUrl={imageUrl}
+                testimonialAuthor={testimonialAuthor}
+                testimonial={testimonial}
               />
             </div>
           </div>
