@@ -31,6 +31,7 @@ module.exports = {
         ignore: ['DO-NOT-BUNDLE/**/*', 'welcome/partners/**/*' ],
       },
       { from: 'src/vip.html', to: '.' },
+      { from: 'src/extension.html', to: '.' },
       { from: 'src/css/', to: 'css/' },
     ]),
     // Strip from bundle.js, all moment.js locales except “en”
@@ -51,6 +52,7 @@ module.exports = {
           '**/global/svg-icons/',
           '*.test.js',
           'config-template.js',
+          'extension.html',
           'vip.html',
         ],
         // Root directory (optional)
