@@ -206,6 +206,8 @@ class FilterBase extends React.Component {
             onBallotSearch={this.onSearch}
             onToggleSearch={this.handleToggleSearchBallot}
           />
+          {!isSearching && this.generateGroupedFilters()}
+          {!isSearching && this.generateIslandFilters()}
           {!isSearching && (
             <Badge
               classes={{ badge: classes.badge }}
@@ -224,8 +226,6 @@ class FilterBase extends React.Component {
               </div>
             </Badge>
           )}
-          {!isSearching && this.generateGroupedFilters()}
-          {!isSearching && this.generateIslandFilters()}
         </FilterTop>
         {
           React.cloneElement(this.props.children, {
@@ -258,8 +258,6 @@ const styles = theme => ({
 
 const Wrapper = styled.div`
   padding-top: 10px;
-  padding-left: 15px;
-  padding-right: 15px;
   display: flex;
   flex-flow: column;
   border-top: 1px solid #eee;
@@ -269,8 +267,7 @@ const Wrapper = styled.div`
 const FilterTop = styled.div`
   display: flex;
   flex-flow: row wrap;
-  // overflow-x: scroll;
-  padding: 0.7rem 0;
+  padding: 0.5rem 0;
 `;
 
 export default withStyles(styles)(FilterBase);

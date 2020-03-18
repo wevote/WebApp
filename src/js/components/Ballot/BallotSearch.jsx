@@ -146,7 +146,7 @@ class BallotSearch extends Component {
 
 const styles = theme => ({
   searchRoot: {
-    height: 26,
+    height: 22.5,
   },
   iconButtonRoot: {
     padding: 0,
@@ -207,7 +207,7 @@ const SearchWrapper = styled.div`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: 26px;
+  height: 22.5px;
   border: 1px solid ${({ isSearching, brandBlue }) => (isSearching ? brandBlue : '#ccc')};
   padding: 0 3px 0 3px;
   margin-right: 16px;
