@@ -256,35 +256,27 @@ class Friends extends Component {
       case 'invite':
         mobileContentToDisplay = (
           <>
-            <div className="row">
-              <div className="col-sm-12 col-lg-8">
-                <>
-                  {voterIsSignedIn && (
-                  <FirstAndLastNameRequiredAlert />
-                  )}
-                  <InviteByEmail />
-                </>
-              </div>
-              <div className="col-md-12 col-lg-4">
-                <SignInOptionsWrapper>
-                  {voter.signed_in_twitter ? null : (
-                    <TwitterSignInWrapper>
-                      <TwitterSignInCard />
-                    </TwitterSignInWrapper>
-                  )}
-                  {voter.signed_in_facebook ? null : (
-                    <FacebookSignInWrapper>
-                      <FacebookSignInCard />
-                    </FacebookSignInWrapper>
-                  )}
-                </SignInOptionsWrapper>
-                <FriendsPromoBox
+            {voterIsSignedIn && (
+              <FirstAndLastNameRequiredAlert />
+            )}
+            <InviteByEmail />
+            <SignInOptionsWrapper>
+              {voter.signed_in_twitter ? null : (
+                <TwitterSignInWrapper>
+                  <TwitterSignInCard />
+                </TwitterSignInWrapper>
+              )}
+              {voter.signed_in_facebook ? null : (
+                <FacebookSignInWrapper>
+                  <FacebookSignInCard />
+                </FacebookSignInWrapper>
+              )}
+            </SignInOptionsWrapper>
+            <FriendsPromoBox
               imageUrl={imageUrl}
               testimonialAuthor={testimonialAuthor}
               testimonial={testimonial}
-                />
-              </div>
-            </div>
+            />
           </>
         );
         break;
