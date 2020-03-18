@@ -597,6 +597,6 @@ const TwitterSignInWrapper = styled.div`
   @media (min-width: 614px) and (max-width: 991px) {
     padding-right: 8px;
   }
- `;
+`;
 
 export default withStyles(styles)(Friends);
