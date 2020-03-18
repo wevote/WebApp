@@ -43,7 +43,7 @@
   margin-bottom: $space-sm !important;
   outline: none !important;
   padding: $desktop-btn-ballot-filter-padding !important;
-  @include breakpoints (small xsmall-bootstrap) {
+  @include breakpoints (0 xsmall-bootstrap) {
     font-size: 10px !important;
     padding: $mobile-btn-ballot-filter-padding !important;
     width: $mobile-btn-ballot-filter-width !important;

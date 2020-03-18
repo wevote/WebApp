@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
@@ -99,12 +100,14 @@ class SelectBallotModal extends Component {
             toggleFunction={this.props.toggleFunction}
             cancelButtonAction={this.props.toggleFunction}
           />
-          <BallotElectionListWithFilters
-            ballotBaseUrl={ballotBaseUrl}
-            organizationWeVoteId={this.props.organization_we_vote_id}
-            showPriorElectionsList
-            toggleFunction={this.props.toggleFunction}
-          />
+          <BallotElectionListWrapper>
+            <BallotElectionListWithFilters
+              ballotBaseUrl={ballotBaseUrl}
+              organizationWeVoteId={this.props.organization_we_vote_id}
+              showPriorElectionsList
+              toggleFunction={this.props.toggleFunction}
+            />
+          </BallotElectionListWrapper>
         </DialogContent>
       </Dialog>
     );
@@ -134,5 +137,9 @@ const styles = theme => ({
     top: `${theme.spacing(1)}px`,
   },
 });
+
+const BallotElectionListWrapper = styled.div`
+  margin-top: 40px;
+`;
 
 export default withTheme(withStyles(styles)(SelectBallotModal));
