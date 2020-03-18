@@ -10,6 +10,7 @@ import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
+import FacebookSignInCard from '../components/Facebook/FacebookSignInCard';
 import FirstAndLastNameRequiredAlert from '../components/Widgets/FirstAndLastNameRequiredAlert';
 import FriendActions from '../actions/FriendActions';
 import FriendInvitationsSentByMePreview from '../components/Friends/FriendInvitationsSentByMePreview';
@@ -255,16 +256,35 @@ class Friends extends Component {
       case 'invite':
         mobileContentToDisplay = (
           <>
-            {voterIsSignedIn && (
-              <FirstAndLastNameRequiredAlert />
-            )}
-            <InviteByEmail />
-            <FriendsPromoBox
+            <div className="row">
+              <div className="col-sm-12 col-lg-8">
+                <>
+                  {voterIsSignedIn && (
+                  <FirstAndLastNameRequiredAlert />
+                  )}
+                  <InviteByEmail />
+                </>
+              </div>
+              <div className="col-md-12 col-lg-4">
+                <SignInOptionsWrapper>
+                  {voter.signed_in_twitter ? null : (
+                    <TwitterSignInWrapper>
+                      <TwitterSignInCard />
+                    </TwitterSignInWrapper>
+                  )}
+                  {voter.signed_in_facebook ? null : (
+                    <FacebookSignInWrapper>
+                      <FacebookSignInCard />
+                    </FacebookSignInWrapper>
+                  )}
+                </SignInOptionsWrapper>
+                <FriendsPromoBox
               imageUrl={imageUrl}
               testimonialAuthor={testimonialAuthor}
               testimonial={testimonial}
-              isMobile
-            />
+                />
+              </div>
+            </div>
           </>
         );
         break;
@@ -348,7 +368,35 @@ class Friends extends Component {
         break;
       case 'invite':
         desktopContentToDisplay = (
-          <InviteByEmail />
+          <div className="row">
+            <div className="col-sm-12 col-lg-8">
+              <>
+                {voterIsSignedIn && (
+                <FirstAndLastNameRequiredAlert />
+                )}
+                <InviteByEmail />
+              </>
+            </div>
+            <div className="col-md-12 col-lg-4">
+              <SignInOptionsWrapper>
+                {voter.signed_in_twitter ? null : (
+                  <TwitterSignInWrapper>
+                    <TwitterSignInCard />
+                  </TwitterSignInWrapper>
+                )}
+                {voter.signed_in_facebook ? null : (
+                  <FacebookSignInWrapper>
+                    <FacebookSignInCard />
+                  </FacebookSignInWrapper>
+                )}
+              </SignInOptionsWrapper>
+              <FriendsPromoBox
+              imageUrl={imageUrl}
+              testimonialAuthor={testimonialAuthor}
+              testimonial={testimonial}
+              />
+            </div>
+          </div>
         );
         break;
       case 'current':
@@ -378,17 +426,12 @@ class Friends extends Component {
                   <FriendInvitationsSentToMePreview />
                   <SuggestedFriendsPreview />
                   <FriendsCurrentPreview />
-                  {voter.signed_in_twitter ? null : (
-                    <div className="u-show-mobile">
-                      <TwitterSignInCard />
-                    </div>
-                  )}
                   {voterIsSignedIn && (
                     <FriendInvitationsSentByMePreview />
                   )}
                 </>
               </div>
-              <div className="col-md-12 col-lg-4 d-none d-md-block">
+              <div className="col-md-12 col-lg-4">
                 {!!(voterIsSignedIn && friendActivityExists) && (
                   <section className="card">
                     <div className="card-main">
@@ -400,9 +443,18 @@ class Friends extends Component {
                     </div>
                   </section>
                 )}
-                {voter.signed_in_twitter ? null : (
-                  <TwitterSignInCard />
-                )}
+                <SignInOptionsWrapper>
+                  {voter.signed_in_twitter ? null : (
+                    <TwitterSignInWrapper>
+                      <TwitterSignInCard />
+                    </TwitterSignInWrapper>
+                  )}
+                  {voter.signed_in_facebook ? null : (
+                    <FacebookSignInWrapper>
+                      <FacebookSignInCard />
+                    </FacebookSignInWrapper>
+                  )}
+                </SignInOptionsWrapper>
                 <FriendsPromoBox
                   imageUrl={imageUrl}
                   testimonialAuthor={testimonialAuthor}
@@ -525,6 +577,13 @@ const styles = () => ({
   },
 });
 
+const FacebookSignInWrapper = styled.div`
+  flex: 1;
+  @media (min-width: 614px) and (max-width: 991px) {
+    padding-left: 8px;
+  }
+`;
+
 const SectionTitle = styled.h2`
   width: fit-content;
   font-weight: bolder;
@@ -532,5 +591,19 @@ const SectionTitle = styled.h2`
   margin-bottom: 4px;
   display: inline;
 `;
+
+const SignInOptionsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`;
+
+const TwitterSignInWrapper = styled.div`
+  flex: 1;
+  @media (min-width: 614px) and (max-width: 991px) {
+    padding-right: 8px;
+  }
+ `;
 
 export default withStyles(styles)(Friends);
