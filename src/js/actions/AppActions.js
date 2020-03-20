@@ -60,6 +60,15 @@ export default {
     Dispatcher.dispatch({ type: 'showSignInModal', payload: show });
   },
 
+  setShowOrganizationModal (show) {
+    console.log("Setting organizationModal to ", show);
+    Dispatcher.dispatch({ type: 'showOrganizationModal', payload: show });
+  },
+
+  setOrganizationModalId (id) {
+    Dispatcher.dispatch({ type: 'organizationModalId', payload: id });
+  },
+
   setShowValuesIntroModal (show) {
     Dispatcher.dispatch({ type: 'showValuesIntroModal', payload: show });
   },
