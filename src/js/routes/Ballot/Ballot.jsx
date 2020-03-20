@@ -702,7 +702,7 @@ class Ballot extends Component {
         totalNumberOfBallotItems = BallotStore.ballotLength;
       }
     }
-    // console.log('totalNumberOfBallotItems:', totalNumberOfBallotItems);
+    // console.log('setBallotItemFilterType totalNumberOfBallotItems:', totalNumberOfBallotItems);
     this.setState({
       doubleFilteredBallotItemsLength,
       isSearching: false,
@@ -818,7 +818,7 @@ class Ballot extends Component {
   };
 
   handleToggleSearchBallot = () => {
-    const { ballotWithItemsFromCompletionFilterType, isSearching } = this.state;
+    const { isSearching } = this.state;
     let totalNumberOfBallotItems;
     this.setState({
       isSearching: !isSearching,
@@ -830,20 +830,24 @@ class Ballot extends Component {
         totalNumberOfBallotItems,
       });
     } else {
-      // If here, we are canceling a search
-      let raceLevelFilterType = BallotStore.getRaceLevelFilterTypeSaved();
-      console.log('raceLevelFilterType:', raceLevelFilterType);
-      if (raceLevelFilterType === '') {
-        raceLevelFilterType = 'Federal';
-      }
-      const ballotItemsByFilterType = ballotWithItemsFromCompletionFilterType.filter((item) => {
-        if (raceLevelFilterType === 'Measure') {
-          return item.kind_of_ballot_item === 'MEASURE';
+      // // If here, we are canceling a search
+      const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || 'all';
+      const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
+      if (ballotWithItemsFromCompletionFilterType !== undefined) {
+        // console.log('ballotWithItemsFromCompletionFilterType !== undefined');
+        if (completionLevelFilterType === 'all') {
+          this.setState({
+            ballotWithAllItems: ballotWithItemsFromCompletionFilterType,
+            ballotWithItemsFromCompletionFilterType,
+          });
         } else {
-          return raceLevelFilterType === item.race_office_level;
+          const ballotWithAllItems = BallotStore.getBallotByCompletionLevelFilterType('all');
+          this.setState({
+            ballotWithAllItems,
+            ballotWithItemsFromCompletionFilterType,
+          });
         }
-      });
-      this.setBallotItemFilterType(raceLevelFilterType, ballotItemsByFilterType.length);
+      }
     }
   };
 
@@ -1047,6 +1051,7 @@ class Ballot extends Component {
     ) : null;
 
     const electionDayTextFormatted = electionDayText ? moment(electionDayText).format('MMM Do, YYYY') : '';
+    const electionDayTextObject = <span>{electionDayTextFormatted}</span>;
     // console.log('electionName: ', electionName, ', electionDayTextFormatted: ', electionDayTextFormatted);
 
     const inRemainingDecisionsMode = completionLevelFilterType === 'filterRemaining';
@@ -1068,9 +1073,10 @@ class Ballot extends Component {
                   <Helmet title="Ballot - We Vote" />
                   <header className="ballot__header__group">
                     <BallotTitleHeader
-                      scrolled={this.state.ballotHeaderUnpinned}
                       electionName={electionName}
-                      electionDayTextFormatted={electionDayTextFormatted}
+                      electionDayTextObject={electionDayTextObject}
+                      toggleSelectBallotModal={this.toggleSelectBallotModal}
+                      scrolled={this.state.ballotHeaderUnpinned}
                     />
                   </header>
 
@@ -1093,11 +1099,11 @@ class Ballot extends Component {
                           { ballotWithItemsFromCompletionFilterType.length ? (
                             <React.Fragment>
                               <BallotSearch
+                                alwaysOpen={!showFilterTabs}
                                 isSearching={isSearching}
-                                onToggleSearch={this.handleToggleSearchBallot}
                                 items={ballotWithAllItems}
                                 onBallotSearch={this.onBallotSearch}
-                                alwaysOpen={!showFilterTabs}
+                                onToggleSearch={this.handleToggleSearchBallot}
                               />
                               { showFilterTabs && (
                                 <div
@@ -1423,6 +1429,7 @@ const styles = theme => ({
     top: 13,
     minWidth: 16,
     width: 20,
+    height: 16,
     right: 14,
     background: 'rgba(46, 60, 93, 0.08)',
     color: '#333',
@@ -1430,7 +1437,6 @@ const styles = theme => ({
     [theme.breakpoints.down('lg')]: {
       fontSize: 9,
       width: 16,
-      height: 16,
       top: 11,
       right: 11,
     },
@@ -1447,17 +1453,11 @@ const styles = theme => ({
     color: '#333',
   },
   chipRoot: {
-    height: 26,
-    [theme.breakpoints.down('md')]: {
-      height: 22.5,
-    },
+    height: 22.5,
   },
   chipRootAll: {
-    height: 26,
+    height: 22.5,
     width: 54,
-    [theme.breakpoints.down('md')]: {
-      height: 22.5,
-    },
   },
   chipOutlined: {
     background: theme.palette.primary.main,

@@ -1,6 +1,7 @@
 $filter-margin-right: 1rem;
 $filter-margin-right-mobile: .5rem;
 $filter-padding: 0 8px;
+$filter-padding-small: 0 4px;
 $btn-margin-bottom: 0;
 $text-margin: auto 0;
 
@@ -18,6 +19,7 @@ $text-margin: auto 0;
   @include breakpoints (0 medium) {
     margin-right: $filter-margin-right-mobile;
     margin-bottom: $radius-md;
+    padding: $filter-padding-small;
   }
   white-space: nowrap;
   cursor: pointer;

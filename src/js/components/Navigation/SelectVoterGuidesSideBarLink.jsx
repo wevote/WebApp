@@ -57,11 +57,11 @@ export default class SelectVoterGuidesSideBarLink extends Component {
         {labelInSentenceCase && labelInSentenceCase !== '' ? (
           <Wrapper>
             <Content>
-              <Name>
+              <Name onClick={this.goToEditLink}>
                 {labelInSentenceCase}
               </Name>
               { this.props.displaySubtitles ? (
-                <Date>
+                <Date onClick={this.goToEditLink}>
                   {subtitleInSentenceCase}
                 </Date>
               ) : null }
@@ -97,10 +97,10 @@ export default class SelectVoterGuidesSideBarLink extends Component {
 }
 
 const Wrapper = styled.div`
-  width: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 16px;
+  width: 100%;
 `;
 
 const Content = styled.div`
@@ -108,26 +108,28 @@ const Content = styled.div`
 `;
 
 const Name = styled.h3`
-  font-size: 18px;
   color: black !important;
+  cursor: pointer;
+  font-size: 18px;
   font-weight: 700 !important;
   margin-bottom: 4px;
 `;
 
 const Date = styled.small`
+  color: #666;
+  cursor: pointer;
   font-size: 14px;
   font-weight: normal;
-  color: #666;
 `;
 
 const ButtonWrapper = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin-top: 16px;
   @media (min-width: 768px) and (max-width: 868px) {
     flex-direction: column;
   }
-  flex-direction: row;
-  margin-top: 16px;
 `;
 
 const ButtonContainer = styled.div`

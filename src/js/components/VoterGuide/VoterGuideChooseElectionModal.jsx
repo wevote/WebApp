@@ -63,7 +63,7 @@ class VoterGuideChooseElectionModal extends Component {
       >
         <DialogTitle>
           <Typography className="text-center">
-            Choose an election
+            Choose Upcoming Election
           </Typography>
           <IconButton
             aria-label="Close"
@@ -91,13 +91,13 @@ const styles = theme => ({
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
-      minHeight: '90%',
       maxHeight: '90%',
       height: '90%',
       margin: '0 auto',
     },
   },
   dialogContent: {
+    height: '100%',
     [theme.breakpoints.down('md')]: {
       padding: '0 8px',
     },

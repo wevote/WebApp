@@ -8,7 +8,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
 import sortBy from 'lodash-es/sortBy';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isCordova } from '../../utils/cordovaUtils';
-import addVoterGuideSearchPriority from '../../utils/addVoterGuideSearchPriority';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
 
 const delayBeforeSearchExecution = 400;
@@ -60,14 +59,11 @@ class BallotSearch extends Component {
     let candidatesToShowForSearchResults = [];
     let foundInArray = [];
     let searchPriority = 0;
-    if (this.props.addVoterGuideMode) {
-      searchPriority = addVoterGuideSearchPriority(search, item);
-    } else {
-      const results = ballotSearchPriority(search, item);
-      ({ searchPriority } = results);
-      ({ foundInArray } = results);
-      ({ candidatesToShowForSearchResults } = results);
-    }
+    const ignoreDescriptionFields = (this.props.addVoterGuideMode);
+    const results = ballotSearchPriority(search, item, ignoreDescriptionFields);
+    ({ searchPriority } = results);
+    ({ foundInArray } = results);
+    ({ candidatesToShowForSearchResults } = results);
     return { ...item, searchPriority, foundInArray, candidatesToShowForSearchResults };
   });
 
@@ -80,7 +76,7 @@ class BallotSearch extends Component {
     } else {
       this.searchInput.focus();
     }
-    this.props.onToggleSearch(!isSearching);
+    this.props.onToggleSearch(isSearching);
   };
 
   handleSearch (event) { // eslint-disable-line consistent-return
@@ -150,7 +146,7 @@ class BallotSearch extends Component {
 
 const styles = theme => ({
   searchRoot: {
-    height: 26,
+    height: 22.5,
   },
   iconButtonRoot: {
     padding: 0,
@@ -211,7 +207,7 @@ const SearchWrapper = styled.div`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: 26px;
+  height: 22.5px;
   border: 1px solid ${({ isSearching, brandBlue }) => (isSearching ? brandBlue : '#ccc')};
   padding: 0 3px 0 3px;
   margin-right: 16px;
