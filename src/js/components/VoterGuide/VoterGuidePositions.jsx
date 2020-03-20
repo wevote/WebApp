@@ -23,6 +23,7 @@ import ThisIsMeAction from '../Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
 import YourPositionsVisibilityMessage from './YourPositionsVisibilityMessage';
+import AppActions from '../../actions/AppActions';
 
 class VoterGuidePositions extends Component {
   static propTypes = {
@@ -309,6 +310,12 @@ class VoterGuidePositions extends Component {
     });
   }
 
+  onClickFunction (id) {
+    console.log("onClickFunction: VoterGuidePositions.jsx - Line 314");
+    AppActions.setShowOrganizationModal(true);
+    AppActions.setOrganizationModalId(id);
+  }
+
   render () {
     renderLog('VoterGuidePositions');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('VoterGuidePositions render');
@@ -387,6 +394,7 @@ class VoterGuidePositions extends Component {
                   {positionListForOneElection.map(item => (
                     <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
                       <VoterGuidePositionItem
+                        onClickFunction={() => this.onClickFunction(organizationWeVoteId)}
                         organizationWeVoteId={organizationWeVoteId}
                         position={item}
                       />

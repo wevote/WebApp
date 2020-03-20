@@ -389,6 +389,12 @@ class VoterGuidePositionItem extends Component {
     return false;
   }
 
+  onClickFunction () {
+    console.log("onClickFunction: VoterGuidePositionItem.jsx - Line 393");
+
+    this.props.onClickFunction();
+  }
+
   localPositionListFromFriendsHasBeenRetrievedOnce (ballotItemWeVoteId) {
     if (ballotItemWeVoteId) {
       const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
@@ -444,155 +450,157 @@ class VoterGuidePositionItem extends Component {
       }
     }
     return (
-      <Card>
-        <BallotItemPadding>
-          <BallotItemWrapper className="card-main__media-object">
-            { isCandidate ? (
-              <CandidateItemWrapper>
-                <BallotItemImageWrapper>
-                  <ImageHandler
-                    className="card-main__avatar"
-                    sizeClassName="icon-lg "
-                    imageUrl={ballotItemImageUrlHttpsLarge}
-                    alt="candidate-photo"
-                    kind_of_ballot_item={kindOfBallotItem}
+      <div onClick={this.props.onClickFunction}>
+        <Card onClick={this.props.onClickFunction ? this.onClickFunction() : null}>
+          <BallotItemPadding>
+            <BallotItemWrapper className="card-main__media-object">
+              { isCandidate ? (
+                <CandidateItemWrapper>
+                  <BallotItemImageWrapper>
+                    <ImageHandler
+                      className="card-main__avatar"
+                      sizeClassName="icon-lg "
+                      imageUrl={ballotItemImageUrlHttpsLarge}
+                      alt="candidate-photo"
+                      kind_of_ballot_item={kindOfBallotItem}
+                    />
+                  </BallotItemImageWrapper>
+                  <Candidate>
+                    <h2 className="card-main__display-name">
+                      {ballotItemDisplayName}
+                    </h2>
+                    <span className="u-show-desktop-tablet">
+                      { contestOfficeName && (
+                        <div>
+                          <OfficeNameText
+                            contestOfficeName={contestOfficeName}
+                            // politicalParty={politicalParty}
+                            showOfficeName
+                          />
+                        </div>
+                      )}
+                    </span>
+                  </Candidate>
+                </CandidateItemWrapper>
+              ) : (
+                <MeasureItemWrapper>
+                  <Title>
+                    {ballotDisplay[0]}
+                  </Title>
+                  <SubTitle>{ballotDisplay[1]}</SubTitle>
+                </MeasureItemWrapper>
+              )}
+              {/* (signedInWithThisTwitterAccount ||
+              signedInWithThisOrganization ||
+              signedInWithThisFacebookAccount) &&
+              <FriendsOnlyIndicator isFriendsOnly={!voterPositionIsPublic} />
+              */}
+              <BallotItemSupportOpposeCountDisplayWrapper>
+                <BallotItemSupportOpposeCountDisplay
+                  ballotItemWeVoteId={ballotItemWeVoteId}
+                  hideNumbersOfAllPositions
+                />
+                <VerticalSeparator />
+                <BallotItemVoterGuideSupportOpposeDisplay
+                  organizationInformationOnlyBallotItem={organizationInformationOnlyBallotItem}
+                  organizationOpposesBallotItem={organizationOpposesBallotItem}
+                  organizationSupportsBallotItem={organizationSupportsBallotItem}
+                  organizationImageUrlHttpsTiny={organizationImageUrlHttpsTiny}
+                  positionItem={position}
+                />
+              </BallotItemSupportOpposeCountDisplayWrapper>
+              {' '}
+            </BallotItemWrapper>
+            <span className="u-show-mobile">
+              { contestOfficeName && (
+                <div>
+                  <OfficeNameText
+                    contestOfficeName={contestOfficeName}
+                    // politicalParty={politicalParty}
+                    showOfficeName
                   />
-                </BallotItemImageWrapper>
-                <Candidate>
-                  <h2 className="card-main__display-name">
-                    {ballotItemDisplayName}
-                  </h2>
-                  <span className="u-show-desktop-tablet">
-                    { contestOfficeName && (
-                      <div>
-                        <OfficeNameText
-                          contestOfficeName={contestOfficeName}
-                          // politicalParty={politicalParty}
-                          showOfficeName
+                </div>
+              )}
+              {statementText && (
+                <MobileItemDescription>
+                  {organizationImageUrlHttpsTiny && (
+                    <OrganizationImageWrapper>
+                      <ImageHandler
+                        sizeClassName="image-24x24 "
+                        imageUrl={organizationImageUrlHttpsTiny}
+                        alt="organization-photo"
+                        kind_of_ballot_item="ORGANIZATION"
+                      />
+                    </OrganizationImageWrapper>
+                  )}
+                  <ReadMore
+                    textToDisplay={statementText}
+                    numberOfLines={4}
+                  />
+                  <MobileItemFooter>
+                    {moreInfoUrl ? (
+                      <SourceLink>
+                        <OpenExternalWebSite
+                          body={(
+                            <span>
+                              source
+                              {' '}
+                              <i className="fas fa-external-link-alt" aria-hidden="true" />
+                            </span>
+                          )}
+                          className="u-gray-mid"
+                          target="_blank"
+                          url={moreInfoUrl}
                         />
-                      </div>
-                    )}
-                  </span>
-                </Candidate>
-              </CandidateItemWrapper>
-            ) : (
-              <MeasureItemWrapper>
-                <Title>
-                  {ballotDisplay[0]}
-                </Title>
-                <SubTitle>{ballotDisplay[1]}</SubTitle>
-              </MeasureItemWrapper>
-            )}
-            {/* (signedInWithThisTwitterAccount ||
-             signedInWithThisOrganization ||
-             signedInWithThisFacebookAccount) &&
-             <FriendsOnlyIndicator isFriendsOnly={!voterPositionIsPublic} />
-            */}
-            <BallotItemSupportOpposeCountDisplayWrapper>
-              <BallotItemSupportOpposeCountDisplay
-                ballotItemWeVoteId={ballotItemWeVoteId}
-                hideNumbersOfAllPositions
-              />
-              <VerticalSeparator />
-              <BallotItemVoterGuideSupportOpposeDisplay
-                organizationInformationOnlyBallotItem={organizationInformationOnlyBallotItem}
-                organizationOpposesBallotItem={organizationOpposesBallotItem}
-                organizationSupportsBallotItem={organizationSupportsBallotItem}
-                organizationImageUrlHttpsTiny={organizationImageUrlHttpsTiny}
-                positionItem={position}
-              />
-            </BallotItemSupportOpposeCountDisplayWrapper>
-            {' '}
-          </BallotItemWrapper>
-          <span className="u-show-mobile">
-            { contestOfficeName && (
-              <div>
-                <OfficeNameText
-                  contestOfficeName={contestOfficeName}
-                  // politicalParty={politicalParty}
-                  showOfficeName
-                />
-              </div>
-            )}
-            {statementText && (
-              <MobileItemDescription>
-                {organizationImageUrlHttpsTiny && (
-                  <OrganizationImageWrapper>
-                    <ImageHandler
-                      sizeClassName="image-24x24 "
-                      imageUrl={organizationImageUrlHttpsTiny}
-                      alt="organization-photo"
-                      kind_of_ballot_item="ORGANIZATION"
-                    />
-                  </OrganizationImageWrapper>
-                )}
-                <ReadMore
-                  textToDisplay={statementText}
-                  numberOfLines={4}
-                />
-                <MobileItemFooter>
-                  {moreInfoUrl ? (
-                    <SourceLink>
-                      <OpenExternalWebSite
-                        body={(
-                          <span>
-                            source
-                            {' '}
-                            <i className="fas fa-external-link-alt" aria-hidden="true" />
-                          </span>
-                        )}
-                        className="u-gray-mid"
-                        target="_blank"
-                        url={moreInfoUrl}
+                      </SourceLink>
+                    ) : null
+                    }
+                  </MobileItemFooter>
+                </MobileItemDescription>
+              )}
+            </span>
+            <span className="u-show-desktop-tablet">
+              {statementText && (
+                <DesktopItemDescription>
+                  {organizationImageUrlHttpsTiny && (
+                    <OrganizationImageWrapper>
+                      <ImageHandler
+                        sizeClassName="image-24x24 "
+                        imageUrl={organizationImageUrlHttpsTiny}
+                        alt="organization-photo"
+                        kind_of_ballot_item="ORGANIZATION"
                       />
-                    </SourceLink>
-                  ) : null
-                  }
-                </MobileItemFooter>
-              </MobileItemDescription>
-            )}
-          </span>
-          <span className="u-show-desktop-tablet">
-            {statementText && (
-              <DesktopItemDescription>
-                {organizationImageUrlHttpsTiny && (
-                  <OrganizationImageWrapper>
-                    <ImageHandler
-                      sizeClassName="image-24x24 "
-                      imageUrl={organizationImageUrlHttpsTiny}
-                      alt="organization-photo"
-                      kind_of_ballot_item="ORGANIZATION"
-                    />
-                  </OrganizationImageWrapper>
-                )}
-                <ReadMore
-                  textToDisplay={statementText}
-                  numberOfLines={3}
-                />
-                <DesktopItemFooter>
-                  {moreInfoUrl ? (
-                    <SourceLink>
-                      <OpenExternalWebSite
-                        body={(
-                          <span>
-                            view source
-                            {' '}
-                            <i className="fas fa-external-link-alt" aria-hidden="true" />
-                          </span>
-                        )}
-                        className="u-gray-mid"
-                        target="_blank"
-                        url={moreInfoUrl}
-                      />
-                    </SourceLink>
-                  ) : null
-                  }
-                </DesktopItemFooter>
-              </DesktopItemDescription>
-            )}
-          </span>
-        </BallotItemPadding>
-      </Card>
+                    </OrganizationImageWrapper>
+                  )}
+                  <ReadMore
+                    textToDisplay={statementText}
+                    numberOfLines={3}
+                  />
+                  <DesktopItemFooter>
+                    {moreInfoUrl ? (
+                      <SourceLink>
+                        <OpenExternalWebSite
+                          body={(
+                            <span>
+                              view source
+                              {' '}
+                              <i className="fas fa-external-link-alt" aria-hidden="true" />
+                            </span>
+                          )}
+                          className="u-gray-mid"
+                          target="_blank"
+                          url={moreInfoUrl}
+                        />
+                      </SourceLink>
+                    ) : null
+                    }
+                  </DesktopItemFooter>
+                </DesktopItemDescription>
+              )}
+            </span>
+          </BallotItemPadding>
+        </Card>
+      </div>
     );
   }
 }
