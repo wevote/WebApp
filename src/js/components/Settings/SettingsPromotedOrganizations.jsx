@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
+import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 
 export default class SettingsPromotedOrganizations extends Component {
@@ -80,13 +81,13 @@ export default class SettingsPromotedOrganizations extends Component {
   render () {
     renderLog('SettingsPromotedOrganizations');  // Set LOG_RENDER_EVENTS to log all renders
     const { organization, organizationWeVoteId, voter, voterIsSignedIn } = this.state;
-    if (!voter || !organizationWeVoteId) {
+    if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return <SettingsAccount />;
+    } else if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
     }
 
-    if (voterIsSignedIn) {
-      // console.log('SettingsPromotedOrganizations, Signed In.');
-    }
     if (organization && organization.we_vote_custom_domain) {
       // console.log('SettingsPromotedOrganizations, Custom Domain: ', organization.we_vote_custom_domain);
     }

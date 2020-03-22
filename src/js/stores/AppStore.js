@@ -89,6 +89,10 @@ class AppStore extends ReduceStore {
     return this.getState().onChosenFullDomainUrl;
   }
 
+  showingOneCompleteYourProfileModal () {
+    return this.getState().showAdviserIntroModal || this.getState().showFirstPositionIntroModal || this.getState().showHowItWorksModal || this.getState().showPersonalizedScoreIntroModal || this.getState().showValuesIntroModal || this.getState().showSelectBallotModal;
+  }
+
   showAdviserIntroModal () {
     return this.getState().showAdviserIntroModal;
   }
@@ -120,10 +124,6 @@ class AppStore extends ReduceStore {
 
   showShareModal () {
     return this.getState().showShareModal;
-  }
-
-  showOrganizationModal () {
-    return this.getState().showOrganizationModal;
   }
 
   shareModalStep () {

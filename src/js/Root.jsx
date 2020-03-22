@@ -143,7 +143,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/settings/menu" component={SettingsMenuMobile} />
       <Route path="/settings/voterguidelist" component={VoterGuideListDashboard} />
       <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
-      {/* settings/:edit_mode includes "/settings/account", "/settings/address", "/settings/election",
+      {/* settings/:edit_mode includes "/settings/account", "/settings/address", "/settings/domain", "/settings/election",
       "/settings/issues_linked", "/settings/issues_to_link", "/settings/issues", "/settings/notifications",
       "/settings/profile", "/settings/tools" */}
       <Route path="/settings/:edit_mode" component={SettingsDashboard} />

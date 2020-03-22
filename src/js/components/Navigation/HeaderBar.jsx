@@ -22,7 +22,6 @@ import FirstPositionIntroModal from '../CompleteYourProfile/FirstPositionIntroMo
 import FriendStore from '../../stores/FriendStore';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderBarLogo from './HeaderBarLogo';
-import HowItWorksModal from '../CompleteYourProfile/HowItWorksModal';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
@@ -70,7 +69,6 @@ class HeaderBar extends Component {
       showAdviserIntroModal: false,
       showEditAddressButton: false,
       showFirstPositionIntroModal: false,
-      showHowItWorksModal: false,
       showSelectBallotModal: false,
       showShareModal: false,
       showOrganizationModal: false,
@@ -92,7 +90,6 @@ class HeaderBar extends Component {
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
     this.closeShareModal = this.closeShareModal.bind(this);
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
-    this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
   }
 
   componentDidMount () {
@@ -113,7 +110,6 @@ class HeaderBar extends Component {
       showAdviserIntroModal: AppStore.showAdviserIntroModal(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
-      showHowItWorksModal: AppStore.showHowItWorksModal(),
       showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSignInModal: AppStore.showSignInModal(),
@@ -166,9 +162,6 @@ class HeaderBar extends Component {
       return true;
     }
     if (this.state.showFirstPositionIntroModal !== nextState.showFirstPositionIntroModal) {
-      return true;
-    }
-    if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) {
       return true;
     }
     if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
@@ -260,10 +253,8 @@ class HeaderBar extends Component {
       showAdviserIntroModal: AppStore.showAdviserIntroModal(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
-      showHowItWorksModal: AppStore.showHowItWorksModal(),
       showPaidAccountUpgradeModal,
       showShareModal: AppStore.showShareModal(),
-      showOrganizationModal: AppStore.showOrganizationModal(),
       showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSignInModal: AppStore.showSignInModal(),
@@ -297,7 +288,6 @@ class HeaderBar extends Component {
         showSignInModal: AppStore.showSignInModal(),
         showShareModal: AppStore.showShareModal(),
         showOrganizationModal: AppStore.showOrganizationModal(),
-        showHowItWorksModal: AppStore.showHowItWorksModal(),
         showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       });
     }
@@ -333,10 +323,6 @@ class HeaderBar extends Component {
 
   closePaidAccountUpgradeModal () {
     AppActions.setShowPaidAccountUpgradeModal(false);
-  }
-
-  closeHowItWorksModal () {
-    AppActions.setShowHowItWorksModal(false);
   }
 
   closeShareModal () {
@@ -411,21 +397,17 @@ class HeaderBar extends Component {
 
   render () {
     renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
-
     if (!this.state.componentDidMountFinished) {
       return null;
     }
     const { classes, pathname, location } = this.props;
     const {
-      chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, shareModalStep, organizationModalId,
+      chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, shareModalStep,
       showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
-      showHowItWorksModal, showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal, showSelectBallotModal, showShareModal, showOrganizationModal,
+      showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal, showSelectBallotModal, showShareModal, showOrganizationModal,
       showSignInModal, showValuesIntroModal,
       voter, voterFirstName, voterIsSignedIn,
     } = this.state;
-
-    console.log('Share Modal: ', showShareModal);
-    console.log('Organization Modal: ', showOrganizationModal);
 
     // console.log('Header Bar, showSignInModal ', showSignInModal);
     const ballotBaseUrl = '/ballot';
@@ -652,13 +634,6 @@ class HeaderBar extends Component {
             pathname={pathname}
             show={showFirstPositionIntroModal}
             toggleFunction={this.closeFirstPositionIntroModal}
-          />
-        )}
-        {showHowItWorksModal && (
-          <HowItWorksModal
-            pathname={pathname}
-            show={showHowItWorksModal}
-            toggleFunction={this.closeHowItWorksModal}
           />
         )}
         {showPersonalizedScoreIntroModal && (

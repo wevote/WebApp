@@ -2,22 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
-// import People from '@material-ui/icons/People';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-// import Mail from '@material-ui/icons/Mail';
-// import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-// import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-// import { Button, Tooltip } from '@material-ui/core';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-// import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
-// import AppActions from '../../actions/AppActions';
 import HowItWorks from '../../routes/HowItWorks';
+import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
 
 class HowItWorksModal extends Component {
   static propTypes = {
@@ -44,10 +38,22 @@ class HowItWorksModal extends Component {
       pathname: this.props.pathname,
       currentFriendsList: FriendStore.currentFriends(),
     });
+    if (this.props.show) {
+      hideZenDeskHelpVisibility();
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.show) {
+      hideZenDeskHelpVisibility();
+    } else {
+      setZenDeskHelpVisibility(this.props.pathname);
+    }
   }
 
   componentWillUnmount () {
     this.friendStoreListener.remove();
+    setZenDeskHelpVisibility(this.props.pathname);
   }
 
   onFriendStoreChange () {

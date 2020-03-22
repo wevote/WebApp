@@ -61,7 +61,7 @@ export default {
   },
 
   setShowOrganizationModal (show) {
-    console.log("Setting organizationModal to ", show);
+    // console.log("Setting organizationModal to ", show);
     Dispatcher.dispatch({ type: 'showOrganizationModal', payload: show });
   },
 

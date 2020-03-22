@@ -14,6 +14,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import PremiumableButton from '../Widgets/PremiumableButton';
 import { renderLog } from '../../utils/logging';
+import SettingsAccount from './SettingsAccount';
 import SettingsAccountLevelChip from './SettingsAccountLevelChip';
 import { ImageDescription, LinkToDomainRow, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions } from './SettingsStyled';
 import VoterStore from '../../stores/VoterStore';
@@ -335,15 +336,15 @@ class SettingsSharing extends Component {
       chosen_logo_url_https: chosenLogoUrlHttps,
       chosen_social_share_master_image_url_https: chosenSocialShareMasterImageUrlHttps,
     } = organization;
-    if (!voter || !organizationWeVoteId) {
+    if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return <SettingsAccount />;
+    } else if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
     }
     // console.log('organization: ', organization);
     // console.log('chosenLogoUrlHttps: ', chosenLogoUrlHttps);
 
-    if (voterIsSignedIn) {
-      // console.log('SettingsSharing, Signed In.');
-    }
     if (organization && organization.we_vote_custom_domain) {
       // console.log('SettingsSharing, Custom Domain: ', organization.we_vote_custom_domain);
     }

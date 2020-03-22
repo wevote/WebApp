@@ -12,6 +12,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import Table from '@material-ui/core/Table';
 import { withStyles } from '@material-ui/core/styles';
+import AppActions from '../../actions/AppActions';
 import { isWebApp, cordovaOpenSafariView } from '../../utils/cordovaUtils';
 import DonateStore from '../../stores/DonateStore';
 import DonateActions from '../../actions/DonateActions';
@@ -19,9 +20,9 @@ import LoadingWheel from '../LoadingWheel';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
+import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 import { formatDateToYearMonthDay, stringContains } from '../../utils/textFormat';
-import AppActions from '../../actions/AppActions';
 
 class SettingsSubscriptionPlan extends Component {
   static propTypes = {
@@ -234,13 +235,13 @@ class SettingsSubscriptionPlan extends Component {
       voter, voterIsSignedIn, mobileMode,
     } = this.state;
     const { classes } = this.props;
-    if (!voter || !organizationWeVoteId) {
+    if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return <SettingsAccount />;
+    } else if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
     }
 
-    if (voterIsSignedIn) {
-      // console.log('SettingsSubscriptionPlan, Signed In.');
-    }
     if (organization && organization.we_vote_custom_domain) {
       // console.log('SettingsSubscriptionPlan, Custom Domain: ', organization.we_vote_custom_domain);
     }

@@ -193,7 +193,7 @@ class SettingsDomain extends Component {
     const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
     const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
     const voterFeaturePackageExceedsOrEqualsProfessional = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'PROFESSIONAL');
-    // console.log('onVoterStoreChange organization: ', organization);
+    // console.log('onVoterStoreChange voter: ', voter);
     this.setState({
       chosenFeaturePackage,
       organization,
@@ -334,16 +334,15 @@ class SettingsDomain extends Component {
       organizationWeVoteId, voter, voterFeaturePackageExceedsOrEqualsProfessional, voterIsSignedIn,
       radioGroupValue, chosenDomainNameBeforeErrorCheck, chosenSubdomainBeforeErrorCheck,
     } = this.state;
-    if (!voter || !organizationWeVoteId) {
+    if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return <SettingsAccount />;
+    } else if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
     }
 
     const { classes } = this.props;
 
-    if (!voterIsSignedIn) {
-      // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
-    }
     return (
       <div>
         <Helmet title="Domain Settings" />

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch, isCordova, isIOS, isWebApp, isIPad } from '../../utils/cordovaUtils';
@@ -7,6 +9,7 @@ import HeaderBackToBallot from './HeaderBackToBallot';
 import HeaderBackTo from './HeaderBackTo';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
 import HeaderBar from './HeaderBar';
+import HowItWorksModal from '../CompleteYourProfile/HowItWorksModal';
 import { stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
@@ -23,12 +26,16 @@ export default class Header extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showHowItWorksModal: false,
+    };
 
+    this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
     this.handleResize = this.handleResize.bind(this);
   }
 
   componentDidMount () {
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.setState({ windowWidth: window.innerWidth });
     window.addEventListener('resize', this.handleResize);
   }
@@ -36,12 +43,30 @@ export default class Header extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     if (this.props.pathname !== nextProps.pathname) return true;
     if (this.state.windowWidth !== nextState.windowWidth) return true;
+    if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) {
+      return true;
+    }
     return false;
+  }
+
+  componentWillUnmount () {
+    this.appStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    // console.log('Header, onAppStoreChange');
+    this.setState({
+      showHowItWorksModal: AppStore.showHowItWorksModal(),
+    });
   }
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('Header caught error: ', `${error} with info: `, info);
+  }
+
+  closeHowItWorksModal () {
+    AppActions.setShowHowItWorksModal(false);
   }
 
   handleResize () {
@@ -52,6 +77,7 @@ export default class Header extends Component {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
+    const { showHowItWorksModal } = this.state;
     const { friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
       showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
@@ -76,6 +102,7 @@ export default class Header extends Component {
           headroomWrapper = 'headroom-wrapper-webapp__voter-guide';
         }
       }
+      // console.log('Header, voterGuideMode:');
       return (
         <div id="app-header">
           {iPhoneSpacer}
@@ -93,6 +120,13 @@ export default class Header extends Component {
               }
             </div>
           </div>
+          {showHowItWorksModal && (
+            <HowItWorksModal
+              pathname={pathname}
+              show={showHowItWorksModal}
+              toggleFunction={this.closeHowItWorksModal}
+            />
+          )}
         </div>
       );
     } else if (settingsMode) {
@@ -139,6 +173,13 @@ export default class Header extends Component {
               }
             </div>
           </div>
+          {showHowItWorksModal && (
+            <HowItWorksModal
+              pathname={pathname}
+              show={showHowItWorksModal}
+              toggleFunction={this.closeHowItWorksModal}
+            />
+          )}
         </div>
       );
     } else if (valuesMode) {
@@ -161,6 +202,13 @@ export default class Header extends Component {
               }
             </div>
           </div>
+          {showHowItWorksModal && (
+            <HowItWorksModal
+              pathname={pathname}
+              show={showHowItWorksModal}
+              toggleFunction={this.closeHowItWorksModal}
+            />
+          )}
         </div>
       );
     } else if (friendsMode && this.state.windowWidth >= 769) {
@@ -178,6 +226,13 @@ export default class Header extends Component {
               }
             </div>
           </div>
+          {showHowItWorksModal && (
+            <HowItWorksModal
+              pathname={pathname}
+              show={showHowItWorksModal}
+              toggleFunction={this.closeHowItWorksModal}
+            />
+          )}
         </div>
       );
     } else if (pathname === '/for-campaigns' ||
@@ -217,6 +272,13 @@ export default class Header extends Component {
               }
             </div>
           </div>
+          {showHowItWorksModal && (
+            <HowItWorksModal
+              pathname={pathname}
+              show={showHowItWorksModal}
+              toggleFunction={this.closeHowItWorksModal}
+            />
+          )}
         </div>
       );
     }

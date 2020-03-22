@@ -35,6 +35,7 @@ class VoterPhoneVerificationEntry extends Component {
       disablePhoneVerificationButton: true,
       displayPhoneVerificationButton: false,
       hideExistingPhoneNumbers: false,
+      loading: false,
       otherSignInOptionsOff: false,
       secretCodeSystemLocked: false,
       showVerifyModal: false,
@@ -364,7 +365,8 @@ class VoterPhoneVerificationEntry extends Component {
 
   render () {
     renderLog('VoterPhoneVerificationEntry');  // Set LOG_RENDER_EVENTS to log all renders
-    if (this.state.loading) {
+    const { loading } = this.state;
+    if (loading) {
       return LoadingWheel;
     }
 

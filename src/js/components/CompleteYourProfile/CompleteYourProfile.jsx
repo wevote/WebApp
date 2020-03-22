@@ -433,16 +433,49 @@ class CompleteYourProfile extends Component {
 const styles = () => ({
 });
 
-const Info = styled.span`
-  display: none;
-  @media(min-width: 525px) {
-    display: inline;
+const BestGuess = styled.span`
+  font-weight: bold;
+`;
+
+const Completed = styled.div`
+  color: green;
+  margin-left: -2px;
+  & * {
+    width: 15px !important;
+    height: 15px !important;
+    position: relative;
+    top: -2px;
+  }
+`;
+
+const Description = styled.div`
+  @media (min-width: 769px) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    // margin: 14px 0 8px;
   }
 `;
 
 const Flex = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const Icon = styled.div`
+  cursor: pointer;
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  @media (min-width: 576px) and (max-width: 769px) {
+    margin-bottom: 12px;
+  }
+  margin-right: 8px;
+  * {
+    height: 35px !important;
+    width: 35px !important;
+    fill: #2E3C5D;
+  }
 `;
 
 const Indicators = styled.div`
@@ -463,66 +496,44 @@ const Indicator = styled.div`
   ${props => (!props.complete && !props.active ? 'background: #e1e1e1;' : '')}
 `;
 
-const Separator = styled.div`
-  background: #e1e1e1;
-  margin: 8px auto;
-  width: 100%;
-  height: 1px;
-`;
-
-const Description = styled.div`
-  @media (min-width: 769px) {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    // margin: 14px 0 8px;
+const Info = styled.span`
+  display: none;
+  @media(min-width: 525px) {
+    display: inline;
   }
 `;
 
-const Icon = styled.div`
-  cursor: pointer;
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  @media (min-width: 576px) and (max-width: 769px) {
-    margin-bottom: 12px;
+const MobileActionButton = styled.div`
+  border-bottom: 1px solid #e1e1e1;
+  margin-bottom: 0px;
+  margin-top: 8px;
+  padding-bottom: 8px;
+  @media (min-width: 576px) {
+    display: none;
   }
-  margin-right: 8px;
+`;
+
+const NavButton = styled.div`
   * {
-    height: 35px !important;
-    width: 35px !important;
-    fill: #2E3C5D;
+    font-weight: bold;
   }
 `;
 
-const Title = styled.h2`
-  display: inline-block;
-  font-weight: 600;
-  margin: 0;
-`;
-
-const TitleFlex = styled.div`
-  display: inline-block;
-  // margin: 2px 0 0 0;
-  margin-right: 8px;
-`;
-
-const Completed = styled.div`
-  color: green;
-  margin-left: -2px;
-  & * {
-    width: 15px !important;
-    height: 15px !important;
-    position: relative;
-    top: -2px;
+const NavButtons = styled.div`
+  align-items: center;
+  display: flex;
+  // margin-top: 12px;
+  justify-content: space-between;
+  @media (min-width: 769px) {
+    width: fit-content;
+    margin-left: auto;
+    // margin-right: auto;
+    margin-top: 0;
   }
 `;
 
-const BestGuess = styled.span`
-  font-weight: bold;
-`;
-
-const YourLocation = styled.span`
+const NextButtonPlaceholder = styled.div`
+  width: 64px;
 `;
 
 const PersonalizedScorePlusOne = styled.div`
@@ -541,24 +552,11 @@ const PersonalizedScorePlusOne = styled.div`
   }
 `;
 
-const TitleArea = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  @media (min-width: 576px) {
-    display: inline-block;
-    margin: auto 0;
-  }
-`;
-
-const MobileActionButton = styled.div`
-  border-bottom: 1px solid #e1e1e1;
-  margin-bottom: 0px;
-  margin-top: 8px;
-  padding-bottom: 8px;
-  @media (min-width: 576px) {
-    display: none;
-  }
+const Separator = styled.div`
+  background: #e1e1e1;
+  margin: 8px auto;
+  width: 100%;
+  height: 1px;
 `;
 
 const TabletActionButton = styled.div`
@@ -572,27 +570,30 @@ const TabletActionButton = styled.div`
   }
 `;
 
-const NavButtons = styled.div`
+const Title = styled.h2`
+  display: inline-block;
+  font-weight: 600;
+  margin: 0;
+`;
+
+const TitleArea = styled.div`
   align-items: center;
+  cursor: pointer;
   display: flex;
-  // margin-top: 12px;
-  justify-content: space-between;
-  @media (min-width: 769px) {
-    width: fit-content;
-    margin-left: auto;
-    // margin-right: auto;
-    margin-top: 0;
+  justify-content: flex-start;
+  @media (min-width: 576px) {
+    display: inline-block;
+    margin: auto 0;
   }
 `;
 
-const NavButton = styled.div`
-  * {
-    font-weight: bold;
-  }
+const TitleFlex = styled.div`
+  display: inline-block;
+  // margin: 2px 0 0 0;
+  margin-right: 8px;
 `;
 
-const NextButtonPlaceholder = styled.div`
-  width: 64px;
+const YourLocation = styled.span`
 `;
 
 export default withTheme(withStyles(styles)(CompleteYourProfile));
