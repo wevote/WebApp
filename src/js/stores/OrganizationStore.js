@@ -7,12 +7,12 @@ import VoterGuideActions from '../actions/VoterGuideActions';
 import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
 import { arrayContains } from '../utils/textFormat';
 
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
+
+const explanationOrganizationsVoterIsFollowing = ['organizationLeagueOfWomenVoters', 'organizationOprah', 'organizationSierraClub'];
 
 class OrganizationStore extends ReduceStore {
   getInitialState () {
-    const explanationOrganizationsVoterIsFollowing = ['organizationLeagueOfWomenVoters', 'organizationOprah', 'organizationSierraClub'];
     return {
       allCachedOrganizationsDict: {}, // This is a dictionary with organizationWeVoteId as key and list of organizations
       allCachedPositionsByOrganizationDict: {}, // This is a dictionary with organizationWeVoteId as key and another dictionary with contestWeVoteId as second key
@@ -461,7 +461,7 @@ class OrganizationStore extends ReduceStore {
             };
           } else {
             const organizationList = action.res.organization_list;
-            organizationWeVoteIdsVoterIsFollowing = [];
+            organizationWeVoteIdsVoterIsFollowing = explanationOrganizationsVoterIsFollowing; // Refresh this variable
             let revisedOrganization;
             organizationList.forEach((oneOrganization) => {
               organizationWeVoteId = oneOrganization.organization_we_vote_id;
@@ -515,6 +515,7 @@ class OrganizationStore extends ReduceStore {
         revisedState = Object.assign({}, revisedState, {
           allCachedOrganizationsDict,
         });
+        // console.log('allCachedOrganizationsDict:', allCachedOrganizationsDict);
         voterLinkedOrganizationWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
         if (organizationWeVoteId === voterLinkedOrganizationWeVoteId) {
           ({ features_provided_bitmap: featuresProvidedBitmap, chosen_feature_package: chosenFeaturePackage } = organization);
@@ -777,7 +778,7 @@ class OrganizationStore extends ReduceStore {
         OrganizationActions.organizationsFollowedRetrieve();
         revisedState = state;
         revisedState = Object.assign({}, revisedState, {
-          organizationWeVoteIdsVoterIsFollowing: [],
+          organizationWeVoteIdsVoterIsFollowing: explanationOrganizationsVoterIsFollowing,
           organizationWeVoteIdsVoterIsIgnoring: [],
           organizationWeVoteIdsVoterIsFollowingOnTwitter: [],
           organizationSearchResults: {

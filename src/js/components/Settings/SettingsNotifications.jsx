@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
+import SettingsAccount from './SettingsAccount';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
@@ -38,12 +38,15 @@ export default class SettingsNotifications extends Component {
   onVoterStoreChange () {
     if (VoterStore.isVoterFound()) {
       this.setState({
-        voter: VoterStore.getVoter(),
         newsletterOptIn: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
       });
-    } else {
-      this.setState({ voter: VoterStore.getVoter() });
     }
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
+    this.setState({
+      voter,
+      voterIsSignedIn,
+    });
   }
 
   updateNewsletterOptIn (event) {
@@ -62,7 +65,11 @@ export default class SettingsNotifications extends Component {
 
   render () {
     renderLog('SettingsNotifications');  // Set LOG_RENDER_EVENTS to log all renders
-    if (!this.state.voter) {
+    const { newsletterOptIn, notificationsSavedStatus, voter, voterIsSignedIn } = this.state;
+    if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return <SettingsAccount />;
+    } else if (!voter) {
       return LoadingWheel;
     }
 
@@ -72,25 +79,21 @@ export default class SettingsNotifications extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <div className="card">
           <div className="card-main">
-            {this.state.voter.is_signed_in ? (
-              <div>
-                <h1 className="h2">Notification Settings</h1>
-                <label htmlFor="newsletterOptIn">
-                  <input
-                    id="newsletterOptIn"
-                    type="checkbox"
-                    name="newsletterOptIn"
-                    onChange={this.updateNewsletterOptIn}
-                    checked={this.state.newsletterOptIn}
-                  />
-                  { ' ' }
-                  I would like to receive the We Vote newsletter
-                </label>
-                <span className="pull-right u-gray-mid">{this.state.notificationsSavedStatus}</span>
-              </div>
-            ) :
-              <div><Link to="/settings/account">Please Sign In</Link></div>
-          }
+            <div>
+              <h1 className="h2">Notification Settings</h1>
+              <label htmlFor="newsletterOptIn">
+                <input
+                  id="newsletterOptIn"
+                  type="checkbox"
+                  name="newsletterOptIn"
+                  onChange={this.updateNewsletterOptIn}
+                  checked={newsletterOptIn}
+                />
+                { ' ' }
+                I would like to receive the We Vote newsletter
+              </label>
+              <span className="pull-right u-gray-mid">{notificationsSavedStatus}</span>
+            </div>
           </div>
         </div>
       </div>

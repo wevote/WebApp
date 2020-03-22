@@ -9,6 +9,7 @@ import BallotIcon from '@material-ui/icons/Ballot';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import PeopleIcon from '@material-ui/icons/People';
 import styled from 'styled-components';
+import AppStore from '../../stores/AppStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova, cordovaOpenSafariView } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
@@ -25,20 +26,31 @@ class FooterBar extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      showingOneCompleteYourProfileModal: false,
       friendInvitationsSentToMe: 0, // eslint-disable-line react/no-unused-state
     };
   }
 
   componentDidMount () {
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-
+    const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
     this.setState({
+      showingOneCompleteYourProfileModal,
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
     });
   }
 
   componentWillUnmount () {
+    this.appStoreListener.remove();
     this.friendStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
+    this.setState({
+      showingOneCompleteYourProfileModal,
+    });
   }
 
   onFriendStoreChange () {
@@ -78,6 +90,7 @@ class FooterBar extends React.Component {
 
   render () {
     renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
+    const { showingOneCompleteYourProfileModal } = this.state;
     const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
 
     const badgeStyle = {
@@ -86,8 +99,15 @@ class FooterBar extends React.Component {
 
     return (
       <FooterBarWrapper>
-        <div className="footer-container u-show-mobile-tablet" style={{ height: `${cordovaFooterHeight()}` }}>
-          <BottomNavigation value={this.getSelectedTab()} onChange={this.handleChange} showLabels>
+        <div
+          className={`footer-container u-show-mobile-tablet ${showingOneCompleteYourProfileModal ? ' u-z-index-1000' : ' u-z-index-9000'}`}
+          style={{ height: `${cordovaFooterHeight()}` }}
+        >
+          <BottomNavigation
+            value={this.getSelectedTab()}
+            onChange={this.handleChange}
+            showLabels
+          >
             <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<BallotIcon />} />
             <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />
             <BottomNavigationAction

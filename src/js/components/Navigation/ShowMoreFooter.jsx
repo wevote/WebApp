@@ -74,13 +74,13 @@ const ShowMoreFooterStyled = styled.div`
 `;
 
 const ShowMoreFooterText = styled.div`
+  margin-top: 8px !important;
   padding: 8px !important;
+  padding-bottom: 0px !important;
   text-align: right !important;
   &:hover {
     text-decoration: underline;
   }
-  margin-bottom: 8px !important;
-  margin-top: 8px !important;
 `;
 
 export default withTheme(withStyles(styles)(ShowMoreFooter));

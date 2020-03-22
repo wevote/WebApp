@@ -61,7 +61,7 @@ $margin-zero: 0;
       top: $space-none;
       left: $space-none;
       right: $space-none;
-      z-index: 6 !important;
+      z-index: 9000 !important;
       transform: $unpinned-transform;
       transition: all 100ms ease-in-out 0s;
     }

@@ -121,7 +121,9 @@ class BallotTitleHeader extends Component {
               {electionDayTextObject && (
                 <>
                   {' '}
-                  <span className="d-none d-sm-inline">&mdash;</span>
+                  <DelayedLoad waitBeforeShow={1000}>
+                    <span className="d-none d-sm-inline">&mdash;</span>
+                  </DelayedLoad>
                   {' '}
                   <ElectionDate>{electionDayTextObject}</ElectionDate>
                 </>

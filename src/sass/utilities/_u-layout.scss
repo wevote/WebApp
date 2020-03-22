@@ -196,6 +196,22 @@
   width: 100%;
 }
 
+// Used to drop the Footer and BallotShareButtonFooter beneath the HowItWorks Modals
+.u-z-index-1000 {
+  z-index: 1000 !important;
+}
+
+// Used to keep Popovers from BallotItemSupportOpposeCountDisplay above modals
 .u-z-index-5000 {
-  z-index: 5000;
+  z-index: 5000 !important;
+}
+
+// We use z-index: 5010 for Popover descriptions over the Popovers from BallotItemSupportOpposeCountDisplay above modals
+.u-z-index-5010 {
+  z-index: 5010 !important;
+}
+
+// Used to keep the mobile footer & header above Popovers
+.u-z-index-9000 {
+  z-index: 9000 !important;
 }

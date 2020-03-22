@@ -46,7 +46,7 @@ class VoterEmailAddressEntry extends Component {
         movedInitialFocus: false,
       },
       hideExistingEmailAddresses: false,
-      loading: true,
+      loading: false,
       otherSignInOptionsOff: false,
       secretCodeSystemLocked: false,
       showVerifyModal: false,
@@ -143,9 +143,8 @@ class VoterEmailAddressEntry extends Component {
     const { signed_in_with_email: signedInWithEmail } = voter;
     // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithEmail: ${signedInWithEmail}`);
     if (signedInWithEmail) {
-      console.log('VoterEmailAddressEntry onVoterStoreChange signedInWithEmail so doing a hacky fallback close');
+      // console.log('VoterEmailAddressEntry onVoterStoreChange signedInWithEmail so doing a hacky fallback close');
       this.closeSignInModal();
-      return;
     } else if (secretCodeVerified) {
       this.setState({
         displayEmailVerificationButton: false,
@@ -189,7 +188,7 @@ class VoterEmailAddressEntry extends Component {
   }
 
   voterEmailAddressSave = (event) => {
-    console.log('VoterEmailAddressEntry this.voterEmailAddressSave');
+    // console.log('VoterEmailAddressEntry this.voterEmailAddressSave');
     event.preventDefault();
     const sendLinkToSignIn = true;
     VoterActions.voterEmailAddressSave(this.state.voterEmailAddress, sendLinkToSignIn);
@@ -360,7 +359,9 @@ class VoterEmailAddressEntry extends Component {
 
   render () {
     renderLog('VoterEmailAddressEntry');  // Set LOG_RENDER_EVENTS true to log all renders
-    if (this.state.loading) {
+    const { loading } = this.state;
+    // console.log('VoterEmailAddressEntry loading: ', this.state.loading);
+    if (loading) {
       // console.log('VoterEmailAddressEntry loading: ', this.state.loading);
       return LoadingWheel;
     }

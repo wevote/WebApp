@@ -282,7 +282,7 @@ const FollowOrganizationText = styled.div`
 `;
 
 const OrganizationAddsToYourPersonalScoreExplanation = styled.div`
-  margin-top: 4px;
+  // margin-top: 4px;
 `;
 
 const PopoverTitleIcon = styled.span`

@@ -8,6 +8,7 @@ import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpp
 import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
+import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import IssueStore from '../../stores/IssueStore';
 import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
@@ -25,6 +26,8 @@ import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 class CandidateItem extends Component {
   static propTypes = {
     candidateWeVoteId: PropTypes.string.isRequired,
+    closeSupportOpposeCountDisplayModal: PropTypes.bool,
+    controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
     expandIssuesByDefault: PropTypes.bool,
     hideBallotItemSupportOpposeComment: PropTypes.bool,
     hideCandidateText: PropTypes.bool,
@@ -33,8 +36,13 @@ class CandidateItem extends Component {
     hideShowMoreFooter: PropTypes.bool,
     linkToBallotItemPage: PropTypes.bool,
     linkToOfficePage: PropTypes.bool,
+    openAdviserMaterialUIPopover: PropTypes.bool,
+    openSupportOpposeCountDisplayModal: PropTypes.bool,
     organizationWeVoteId: PropTypes.string,
+    supportOpposeCountDisplayModalTutorialOn: PropTypes.bool,
+    supportOpposeCountDisplayModalTutorialText: PropTypes.object,
     showDownArrow: PropTypes.bool,
+    showUpArrow: PropTypes.bool,
     showHover: PropTypes.bool,
     showOfficeName: PropTypes.bool,
     showLargeImage: PropTypes.bool,
@@ -142,6 +150,9 @@ class CandidateItem extends Component {
     if (this.props.candidateWeVoteId !== nextProps.candidateWeVoteId) {
       return true;
     }
+    if (this.props.closeSupportOpposeCountDisplayModal !== nextProps.closeSupportOpposeCountDisplayModal) {
+      return true;
+    }
     if (this.state.issuesUnderThisBallotItemVoterIsFollowingLength !== nextState.issuesUnderThisBallotItemVoterIsFollowingLength) {
       return true;
     }
@@ -151,13 +162,28 @@ class CandidateItem extends Component {
     if (this.state.largeAreaHoverColorOnNow !== nextState.largeAreaHoverColorOnNow) {
       return true;
     }
+    if (this.props.openAdviserMaterialUIPopover !== nextProps.openAdviserMaterialUIPopover) {
+      return true;
+    }
+    if (this.props.openSupportOpposeCountDisplayModal !== nextProps.openSupportOpposeCountDisplayModal) {
+      return true;
+    }
     if (this.props.organizationWeVoteId !== nextProps.organizationWeVoteId) {
       return true;
     }
     if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
       return true;
     }
+    if (this.props.supportOpposeCountDisplayModalTutorialOn !== nextProps.supportOpposeCountDisplayModalTutorialOn) {
+      return true;
+    }
+    if (this.props.supportOpposeCountDisplayModalTutorialText !== nextProps.supportOpposeCountDisplayModalTutorialText) {
+      return true;
+    }
     if (this.props.showDownArrow !== nextProps.showDownArrow) {
+      return true;
+    }
+    if (this.props.showUpArrow !== nextProps.showUpArrow) {
       return true;
     }
     if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
@@ -286,9 +312,14 @@ class CandidateItem extends Component {
     }
   };
 
-  candidateRenderBlock = (candidateWeVoteId, useLinkToCandidatePage = false) => {
-    // console.log('CandidateItem candidateRenderBlock');
-    const { hideCandidateUrl, linkToBallotItemPage, linkToOfficePage, showDownArrow, showHover, showOfficeName } = this.props;
+  candidateRenderBlock = (candidateWeVoteId, useLinkToCandidatePage = false, forDesktop = false, openSupportOpposeCountDisplayModal = false) => {
+    // console.log('CandidateItem candidateRenderBlock, candidateWeVoteId:', candidateWeVoteId);
+    const {
+      controlAdviserMaterialUIPopoverFromProp, closeSupportOpposeCountDisplayModal, hideCandidateUrl, linkToBallotItemPage, linkToOfficePage,
+      openAdviserMaterialUIPopover,
+      supportOpposeCountDisplayModalTutorialOn, supportOpposeCountDisplayModalTutorialText,
+      showDownArrow, showUpArrow, showHover, showOfficeName,
+    } = this.props;
     const {
       ballotItemDisplayName,
       candidatePhotoUrl,
@@ -319,7 +350,7 @@ class CandidateItem extends Component {
               <h2 className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
                 {ballotItemDisplayName}
               </h2>
-              {!!(twitterFollowersCount) && (
+              {!!(twitterFollowersCount && forDesktop) && (
                 <span
                   className={`u-show-desktop twitter-followers__badge ${linkToBallotItemPage ? 'u-cursor--pointer' : ''}`}
                   onClick={linkToBallotItemPage ? this.goToCandidateLink : null}
@@ -328,7 +359,7 @@ class CandidateItem extends Component {
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
               )}
-              {!hideCandidateUrl && candidateUrl && (
+              {(!hideCandidateUrl && candidateUrl && forDesktop) && (
                 <ExternalWebSiteWrapper className="u-show-desktop">
                   <OpenExternalWebSite
                     url={candidateUrl}
@@ -356,23 +387,22 @@ class CandidateItem extends Component {
               )}
             </Candidate>
           </CandidateInfo>
-          <BallotItemSupportOpposeCountDisplayWrapper className="u-show-desktop">
-            <BallotItemSupportOpposeCountDisplay
-              handleLeaveCandidateCard={this.handleLeave}
-              handleEnterCandidateCard={this.handleEnter}
-              ballotItemWeVoteId={candidateWeVoteId}
-              uniqueExternalId="CandidateItem-Desktop"
-              showDownArrow={showDownArrow}
-            />
-          </BallotItemSupportOpposeCountDisplayWrapper>
-          <BallotItemSupportOpposeCountDisplayWrapper className="u-show-mobile-tablet">
+          <BallotItemSupportOpposeCountDisplayWrapper>
             <BallotItemSupportOpposeCountDisplay
               ballotItemWeVoteId={candidateWeVoteId}
-              uniqueExternalId="CandidateItem-MobileTablet"
+              closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
+              controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+              handleLeaveCandidateCard={forDesktop ? this.handleLeave : null}
+              handleEnterCandidateCard={forDesktop ? this.handleEnter : null}
+              openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
+              openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
+              supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
+              supportOpposeCountDisplayModalTutorialText={supportOpposeCountDisplayModalTutorialText}
+              uniqueExternalId={forDesktop ? 'CandidateItem-Desktop' : 'CandidateItem-MobileTablet'}
               showDownArrow={showDownArrow}
+              showUpArrow={showUpArrow}
             />
           </BallotItemSupportOpposeCountDisplayWrapper>
-          {' '}
         </CandidateWrapper>
       </div>
     );
@@ -522,14 +552,16 @@ class CandidateItem extends Component {
 
   render () {
     renderLog('CandidateItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { candidateWeVoteId, linkToBallotItemPage, showHover } = this.props;
+    const { candidateWeVoteId, linkToBallotItemPage, openSupportOpposeCountDisplayModal, showHover } = this.props;
     const { candidateText, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow } = this.state;
     if (!candidateWeVoteId) {
       // console.log('CandidateItem waiting for candidateWeVoteId');
       return null;
     }
     // console.log('CandidateItem render');
-
+    const forDesktop = true;
+    const openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize = (openSupportOpposeCountDisplayModal && isMobileAndTabletScreenSize());
+    const openSupportOpposeCountDisplayModalAtDesktopScreenSize = (openSupportOpposeCountDisplayModal && !isMobileAndTabletScreenSize());
     return (
       <CandidateItemWrapper>
         <DesktopWrapper
@@ -539,11 +571,11 @@ class CandidateItem extends Component {
         >
           {linkToBallotItemPage && largeAreaHoverLinkOnNow && showHover ? (
             <div className="card-main__no-underline">
-              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage)}
+              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, forDesktop, openSupportOpposeCountDisplayModalAtDesktopScreenSize)}
             </div>
           ) : (
             <div>
-              {this.candidateRenderBlock(candidateWeVoteId)}
+              {this.candidateRenderBlock(candidateWeVoteId, !linkToBallotItemPage, forDesktop, openSupportOpposeCountDisplayModalAtDesktopScreenSize)}
             </div>
           )}
           <div>
@@ -553,11 +585,11 @@ class CandidateItem extends Component {
         <MobileTabletWrapper className="u-show-mobile-tablet card-main candidate-card u-no-scroll">
           {linkToBallotItemPage ? (
             <div className="card-main__no-underline">
-              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage)}
+              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
             </div>
           ) : (
             <span>
-              {this.candidateRenderBlock(candidateWeVoteId)}
+              {this.candidateRenderBlock(candidateWeVoteId, !linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
             </span>
           )}
           <div>

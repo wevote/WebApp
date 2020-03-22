@@ -156,7 +156,7 @@ export function getPositionSummaryListForBallotItem (ballotItemWeVoteId, limitTo
   } else {
     return [];
   }
-  // console.log('getPositionSummaryListForBallotItem allCachedPositions: ', allCachedPositions);
+  // console.log('getPositionSummaryListForBallotItem:', ballotItemWeVoteId, allCachedPositions);
   // console.log('organizationWeVoteIdsLinkedToThisIssue: ', organizationWeVoteIdsLinkedToThisIssue);
   // console.log('showPositionsInVotersNetwork: ', showPositionsInVotersNetwork);
   // console.log('showPositionsOutOfVotersNetwork: ', showPositionsOutOfVotersNetwork);
