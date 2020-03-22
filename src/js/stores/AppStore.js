@@ -27,6 +27,8 @@ class AppStore extends ReduceStore {
       showSelectBallotModal: false,
       showShareModal: false,
       showSignInModal: false,
+      organizationModalId: '',
+      showOrganizationModal: false,
       siteConfigurationHasBeenRetrieved: false,
       siteOwnerOrganizationWeVoteId: '',
       storeSignInStartFullUrl: false,
@@ -136,6 +138,14 @@ class AppStore extends ReduceStore {
     return this.getState().showSignInModal;
   }
 
+  organizationModalId () {
+    return this.getState().organizationModalId;
+  }
+
+  showOrganizationModal () {
+    return this.getState().showOrganizationModal;
+  }
+
   showValuesIntroModal () {
     return this.getState().showValuesIntroModal;
   }
@@ -194,6 +204,10 @@ class AppStore extends ReduceStore {
         return { ...state, showSelectBallotModal: action.payload };
       case 'showSignInModal':
         return { ...state, showSignInModal: action.payload };
+      case 'showOrganizationModal':
+        return { ...state, showOrganizationModal: action.payload };
+      case 'organizationModalId':
+        return { ...state, organizationModalId: action.payload };
       case 'showValuesIntroModal':
         return { ...state, showValuesIntroModal: action.payload };
       case 'siteConfigurationRetrieve':
