@@ -292,6 +292,12 @@ class VoterGuidePositions extends Component {
     }
   }
 
+  onClickFunction (id) {
+    console.log('onClickFunction: VoterGuidePositions.jsx - Line 314');
+    AppActions.setShowOrganizationModal(true);
+    AppActions.setOrganizationModalId(id);
+  }
+
   // This function is called by BallotSearchResults and SearchBar when an API search has been cleared
   clearSearch () {
     // console.log('VoterGuidePositions, clearSearch');
@@ -308,12 +314,6 @@ class VoterGuidePositions extends Component {
       clearSearchTextNow: false,
       searchIsUnderway,
     });
-  }
-
-  onClickFunction (id) {
-    console.log("onClickFunction: VoterGuidePositions.jsx - Line 314");
-    AppActions.setShowOrganizationModal(true);
-    AppActions.setOrganizationModalId(id);
   }
 
   render () {

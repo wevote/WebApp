@@ -12,7 +12,7 @@ import CandidateStore from '../../stores/CandidateStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import BallotStore from '../../stores/BallotStore';
+// import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
 import AppStore from '../../stores/AppStore';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -21,6 +21,7 @@ import { historyPush } from '../../utils/cordovaUtils';
 // TODO: This would be better as https://localhost:3000/candidate-for-extension&candidate_name... if you can figure out the chages in Root.jsx, I Will change the extension.
 class CandidateForExtension extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     location: PropTypes.object,
   };
 
@@ -49,7 +50,7 @@ class CandidateForExtension extends Component {
     // console.log('candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
-      const { ballot_item_display_name: ballotItemDisplayName, contest_office_we_vote_id: officeWeVoteId } = candidate;
+      const { ballot_item_display_name: ballotItemDisplayName } = candidate; // , contest_office_we_vote_id: officeWeVoteId
       // console.log('candidate:', candidate);
       this.setState({
         ballotItemDisplayName,
@@ -178,7 +179,8 @@ class CandidateForExtension extends Component {
 
     const { classes } = this.props;
 
-    const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown, candidateWeVoteId, value } = this.state;
+    // const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown, candidateWeVoteId, value } = this.state;
+    const { organizationWeVoteId, candidateWeVoteId, value } = this.state;
 
     /* eslint-disable react/jsx-one-expression-per-line */
     return (
@@ -223,7 +225,7 @@ class CandidateForExtension extends Component {
                   showPositionStatementActionBar
                 />
                 <Buttons>
-                  <Button onClick={() => { historyPush('/') }} classes={{ root: classes.button }} variant="outlined" color="primary">Jump To We Vote</Button>
+                  <Button onClick={() => { historyPush('/'); }} classes={{ root: classes.button }} variant="outlined" color="primary">Jump To We Vote</Button>
                   <Button classes={{ root: classes.button }} variant="outlined" color="primary">Save</Button>
                 </Buttons>
               </Box>
