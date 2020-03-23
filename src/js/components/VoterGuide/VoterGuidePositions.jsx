@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
 import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
 import BallotActions from '../../actions/BallotActions';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
@@ -40,6 +41,8 @@ class VoterGuidePositions extends Component {
       clearSearchTextNow: false,
       currentGoogleCivicElectionId: 0,
       editMode: false,
+      numberOfPositionItemsToDisplay: 5,
+      loadingMoreItems: false,
       organization: {},
       organizationId: 0,
       organizationWeVoteId: '',
@@ -49,6 +52,7 @@ class VoterGuidePositions extends Component {
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.searchUnderway = this.searchUnderway.bind(this);
+    this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
@@ -154,6 +158,8 @@ class VoterGuidePositions extends Component {
       electionDayText,
       voter: VoterStore.getVoter(),
     });
+
+    window.addEventListener('scroll', this.onScroll);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -216,6 +222,14 @@ class VoterGuidePositions extends Component {
       // console.log('shouldComponentUpdate: this.state.electionName', this.state.electionName, ', nextState.electionName', nextState.electionName);
       return true;
     }
+    if (this.state.loadingMoreItems !== nextState.loadingMoreItems) {
+      // console.log('shouldComponentUpdate: this.state.loadingMoreItems', this.state.loadingMoreItems, ', nextState.loadingMoreItems', nextState.loadingMoreItems);
+      return true;
+    }
+    if (this.state.numberOfPositionItemsToDisplay !== nextState.numberOfPositionItemsToDisplay) {
+      // console.log('shouldComponentUpdate: this.state.numberOfPositionItemsToDisplay', this.state.numberOfPositionItemsToDisplay, ', nextState.numberOfPositionItemsToDisplay', nextState.numberOfPositionItemsToDisplay);
+      return true;
+    }
     if (this.state.organizationId !== nextState.organizationId) {
       // console.log('shouldComponentUpdate: this.state.organizationId', this.state.organizationId, ', nextState.organizationId', nextState.organizationId);
       return true;
@@ -232,6 +246,10 @@ class VoterGuidePositions extends Component {
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.positionItemTimer) {
+      clearTimeout(this.positionItemTimer);
+      this.positionItemTimer = null;
+    }
   }
 
   onOrganizationStoreChange () {
@@ -298,6 +316,44 @@ class VoterGuidePositions extends Component {
     AppActions.setOrganizationModalId(id);
   }
 
+  onScroll () {
+    const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
+    // console.log('showMoreItemsElement: ', showMoreItemsElement);
+    // console.log('Loading more: ', this.state.loadingMoreItems);
+    if (showMoreItemsElement) {
+      const { numberOfPositionItemsToDisplay, positionListForOneElectionLength } = this.state;
+
+      // console.log('window.height: ', window.innerHeight);
+      // console.log('Window Scroll: ', window.scrollY);
+      // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
+      // console.log('positionListForOneElectionLength: ', positionListForOneElectionLength);
+      // console.log('numberOfPositionItemsToDisplay: ', numberOfPositionItemsToDisplay);
+
+      if (numberOfPositionItemsToDisplay < positionListForOneElectionLength) {
+        if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
+          this.setState({ loadingMoreItems: true });
+          this.increaseNumberOfPositionItemsToDisplay();
+        }
+      } else {
+        this.setState({ loadingMoreItems: false });
+      }
+    }
+  }
+
+  increaseNumberOfPositionItemsToDisplay = () => {
+    let { numberOfPositionItemsToDisplay } = this.state;
+    // console.log('Number of position items before increment: ', numberOfPositionItemsToDisplay);
+
+    numberOfPositionItemsToDisplay += 5;
+    // console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
+
+    this.positionItemTimer = setTimeout(() => {
+      this.setState({
+        numberOfPositionItemsToDisplay,
+      });
+    }, 500);
+  }
+
   // This function is called by BallotSearchResults and SearchBar when an API search has been cleared
   clearSearch () {
     // console.log('VoterGuidePositions, clearSearch');
@@ -320,7 +376,12 @@ class VoterGuidePositions extends Component {
     renderLog('VoterGuidePositions');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('VoterGuidePositions render');
     const { classes } = this.props;
-    const { electionDayText, electionName, organization, organizationId, organizationWeVoteId, positionListForOneElection } = this.state;
+    const {
+      electionDayText, electionName, loadingMoreItems, organization,
+      organizationId, organizationWeVoteId, numberOfPositionItemsToDisplay,
+      positionListForOneElection, positionListForOneElectionLength,
+    } = this.state;
+
     if (!organization) {
       // Wait until organization has been set to render
       return null;
@@ -347,6 +408,7 @@ class VoterGuidePositions extends Component {
     const descriptionText = `See endorsements and opinions from ${organizationName} for the November election`;
     const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
+    let numberOfPositionItemsDisplayed = 0;
     return (
       <VoterGuidePositionsWrapper>
         {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
@@ -389,18 +451,41 @@ class VoterGuidePositions extends Component {
                 </div>
               )}
               { !!(atLeastOnePositionFoundForThisElection && !this.state.searchIsUnderway) && (
-                <>
-                  {lookingAtSelf && <YourPositionsVisibilityMessage positionList={positionListForOneElection} />}
-                  {positionListForOneElection.map(item => (
-                    <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
-                      <VoterGuidePositionItem
-                        onClickFunction={() => this.onClickFunction(organizationWeVoteId)}
-                        organizationWeVoteId={organizationWeVoteId}
-                        position={item}
-                      />
-                    </VoterGuidePositionItemWrapper>
-                  ))}
-                </>
+                <div>
+                  <>
+                    {lookingAtSelf && <YourPositionsVisibilityMessage positionList={positionListForOneElection} />}
+                    {positionListForOneElection.map((item) => {
+                      // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
+                      if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
+                        return null;
+                      }
+                      numberOfPositionItemsDisplayed += 1;
+                      return (
+                        <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
+                          <VoterGuidePositionItem
+                            onClickFunction={() => this.onClickFunction(organizationWeVoteId)}
+                            organizationWeVoteId={organizationWeVoteId}
+                            position={item}
+                          />
+                        </VoterGuidePositionItemWrapper>
+                      );
+                    })}
+                  </>
+                  <ShowMoreItems id="showMoreItemsId">
+                    Displaying
+                    {' '}
+                    {numberOfPositionItemsDisplayed}
+                    {' '}
+                    of
+                    {' '}
+                    {positionListForOneElectionLength}
+                  </ShowMoreItems>
+                  <LoadingItemsWheel>
+                    {loadingMoreItems ? (
+                      <CircularProgress />
+                    ) : null}
+                  </LoadingItemsWheel>
+                </div>
               )}
               {/* If the positionListForOneElection comes back empty, display a message saying that there aren't any positions for this election. */}
               { !atLeastOnePositionFoundForThisElection && (
@@ -496,6 +581,26 @@ const ExtraActionsWrapper = styled.div`
   margin-bottom: 20px;
   margin-left: -15px;
   margin-right: -15px;
+`;
+
+const LoadingItemsWheel = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ShowMoreItems = styled.div`
+  font-size: 18px;
+  text-align: right;
+  user-select: none;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    padding-top: 5px;
+    padding-bottom: 3px;
+  }
+  @media print{
+    display: none;
+  }
 `;
 
 const VoterGuideEndorsementsWrapper = styled.div`
