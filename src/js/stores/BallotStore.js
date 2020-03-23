@@ -434,7 +434,7 @@ class BallotStore extends ReduceStore {
         // Exit if we don't have a successful response
         if (action.res && action.res.success === false && stringContains('VALID_VOTER_DEVICE_ID_MISSING', action.res.status)) {
           // On the first call, we didn't have a valid voter_device_id yet. Call again.
-          console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
+          // console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
           // Add a 2 second delay
           clearTimeout(this.timer);
           this.timer = setTimeout(() => {

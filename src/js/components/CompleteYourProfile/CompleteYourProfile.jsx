@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import BallotIcon from '@material-ui/icons/Ballot';
+// import BallotIcon from '@material-ui/icons/Ballot';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import EditLocation from '@material-ui/icons/EditLocation';
 import CheckCircle from '@material-ui/icons/CheckCircle';
@@ -23,7 +23,7 @@ class CompleteYourProfile extends Component {
     this.state = {
       activeStep: 1,
       addressIntroCompleted: false,
-      firstPositionIntroCompleted: false,
+      // firstPositionIntroCompleted: false,
       howItWorksWatched: false,
       personalizedScoreIntroCompleted: false,
       valuesIntroCompleted: false,
@@ -73,15 +73,15 @@ class CompleteYourProfile extends Component {
           icon: (<PersonalizedScorePlusOne>+1</PersonalizedScorePlusOne>),
           onClick: this.openPersonalizedScoreIntroModal,
         },
-        {
-          id: 5,
-          title: 'Choose your first candidate',
-          buttonText: 'Choose Candidate',
-          completed: false,
-          description: '',
-          icon: (<BallotIcon />),
-          onClick: this.openFirstPositionIntroModal,
-        },
+        // {
+        //   id: 5,
+        //   title: 'What do you mean by \'Choose\' and \'Oppose\'?',
+        //   buttonText: 'Learn Now',
+        //   completed: false,
+        //   description: '',
+        //   icon: (<BallotIcon />),
+        //   onClick: this.openFirstPositionIntroModal,
+        // },
       ],
       textForMapSearch: '',
     };
@@ -139,14 +139,14 @@ class CompleteYourProfile extends Component {
       const personalizedScoreIntroCompletedId = 4;
       this.setItemComplete(personalizedScoreIntroCompletedId);
     }
-    const firstPositionIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED);
-    if (firstPositionIntroCompleted) {
-      const firstPositionIntroCompletedId = 5;
-      this.setItemComplete(firstPositionIntroCompletedId);
-    }
+    // const firstPositionIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED);
+    // if (firstPositionIntroCompleted) {
+    //   const firstPositionIntroCompletedId = 5;
+    //   this.setItemComplete(firstPositionIntroCompletedId);
+    // }
     this.setState({
       // adviserIntroCompleted,
-      firstPositionIntroCompleted,
+      // firstPositionIntroCompleted,
       howItWorksWatched,
       personalizedScoreIntroCompleted,
       valuesIntroCompleted,
@@ -202,10 +202,10 @@ class CompleteYourProfile extends Component {
     AppActions.setShowPersonalizedScoreIntroModal(true);
   }
 
-  openFirstPositionIntroModal = () => {
-    // console.log('Opening modal');
-    AppActions.setShowFirstPositionIntroModal(true);
-  }
+  // openFirstPositionIntroModal = () => {
+  //   // console.log('Opening modal');
+  //   AppActions.setShowFirstPositionIntroModal(true);
+  // }
 
   goToNextIncompleteStep = () => {
     const { steps } = this.state;
@@ -255,9 +255,6 @@ class CompleteYourProfile extends Component {
       const itemB = b;
 
       let comparison = 0;
-      // if (itemA.completed) {
-      //   comparison = -1;
-      // } else
       if (itemA.id > itemB.id) {
         comparison = 1;
       } else if (itemA.id < itemB.id) {
@@ -275,23 +272,14 @@ class CompleteYourProfile extends Component {
     if (notCompleted) {
       notCompleted.sort(compare);
     }
-
-    // console.log('Completed: ', completed);
-    // console.log('Not Completed: ', notCompleted);
-
     const all = [...completed, ...notCompleted];
-    // all.push(completed);
-    // all.push(notCompleted);
-
-    // console.log('All steps: ', all);
-
     this.setState({ steps: all });
   }
 
   render () {
     const {
       activeStep, addressIntroCompleted,
-      firstPositionIntroCompleted,
+      // firstPositionIntroCompleted,
       howItWorksWatched, personalizedScoreIntroCompleted, steps,
       textForMapSearch, valuesIntroCompleted,
     } = this.state;
@@ -303,8 +291,8 @@ class CompleteYourProfile extends Component {
     const showCompleteYourProfileForDebugging = false;
     if (showCompleteYourProfileForDebugging) {
       // Pass by this OFF switch so we render this component
-    } else if ((addressIntroCompleted || addressIntroCompletedByCookie) && firstPositionIntroCompleted && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted) {
-      // If we have done all of the steps, do not render CompleteYourProfile // OFF FOR NOW: adviserIntroCompleted &&
+    } else if ((addressIntroCompleted || addressIntroCompletedByCookie) && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted) {
+      // If we have done all of the steps, do not render CompleteYourProfile // OFF FOR NOW: adviserIntroCompleted && firstPositionIntroCompleted &&
       return null;
     }
 
