@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -42,7 +44,7 @@ const islandFilters = [
   },
 ];
 
-export default class PositionList extends Component {
+class PositionList extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string.isRequired,
     incomingPositionList: PropTypes.array.isRequired,
@@ -179,20 +181,22 @@ export default class PositionList extends Component {
     let positionNumber = 0;
     return (
       <div>
-        { showTitle ?
-          <span>{this.props.positionListExistsTitle}</span> :
-          null
-        }
-        <FilterBase
-          groupedFilters={groupedFilters}
-          islandFilters={islandFilters}
-          allItems={this.state.positionList}
-          onFilteredItemsChange={this.onFilteredItemsChange}
-          selectedFiltersDefault={selectedFiltersDefault}
-        >
-          {/* props get added to this component in FilterBase */}
-          <VoterGuideOrganizationFilter />
-        </FilterBase>
+        <FilterWrapper>
+          { showTitle ?
+            <span>{this.props.positionListExistsTitle}</span> :
+            null
+          }
+          <FilterBase
+            groupedFilters={groupedFilters}
+            islandFilters={islandFilters}
+            allItems={this.state.positionList}
+            onFilteredItemsChange={this.onFilteredItemsChange}
+            selectedFiltersDefault={selectedFiltersDefault}
+          >
+            {/* props get added to this component in FilterBase */}
+            <VoterGuideOrganizationFilter />
+          </FilterBase>
+        </FilterWrapper>
         <ul className="card-child__list-group">
           { this.state.filteredPositionList.map((onePosition) => {
             positionNumber += 1;
@@ -226,3 +230,15 @@ export default class PositionList extends Component {
     );
   }
 }
+
+const styles = () => ({
+  iconButton: {
+    padding: 8,
+  },
+});
+
+const FilterWrapper = styled.div`
+  margin: 0 15px;
+`;
+
+export default withStyles(styles)(PositionList);
