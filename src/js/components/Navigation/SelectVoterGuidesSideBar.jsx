@@ -22,8 +22,10 @@ export default class SelectVoterGuidesSideBar extends Component {
   componentDidMount () {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    const voterGuidesOwnedByVoter = VoterGuideStore.getAllVoterGuidesOwnedByVoter();
     this.setState({
       showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
+      voterGuidesOwnedByVoter,
     });
   }
 
@@ -39,12 +41,15 @@ export default class SelectVoterGuidesSideBar extends Component {
   }
 
   onVoterGuideStoreChange () {
+    const { linkedOrganizationWeVoteId: previousLinkedOrganizationWeVoteId } = this.state;
     const voter = VoterStore.getVoter();
     const { linked_organization_we_vote_id: linkedOrganizationWeVoteId } = voter;
     // console.log("SelectVoterGuidesSideBar onVoterGuideStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
-    if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
+    if (linkedOrganizationWeVoteId && (previousLinkedOrganizationWeVoteId !== linkedOrganizationWeVoteId)) {
       this.setState({ linkedOrganizationWeVoteId });
     }
+    const voterGuidesOwnedByVoter = VoterGuideStore.getAllVoterGuidesOwnedByVoter();
+    this.setState({ voterGuidesOwnedByVoter });
   }
 
   closeNewVoterGuideModal () {
@@ -59,8 +64,7 @@ export default class SelectVoterGuidesSideBar extends Component {
 
   render () {
     renderLog('SelectVoterGuidesSideBar');  // Set LOG_RENDER_EVENTS to log all renders
-    const { showNewVoterGuideModal } = this.state;
-    const voterGuidesOwnedByVoter = VoterGuideStore.getAllVoterGuidesOwnedByVoter();
+    const { showNewVoterGuideModal, voterGuidesOwnedByVoter } = this.state;
     let voterGuideLinksHtml = <span />;
     if (voterGuidesOwnedByVoter) {
       voterGuideLinksHtml = voterGuidesOwnedByVoter.map((voterGuide) => {

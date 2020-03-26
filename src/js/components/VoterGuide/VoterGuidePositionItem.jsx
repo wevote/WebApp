@@ -378,9 +378,9 @@ class VoterGuidePositionItem extends Component {
   }
 
   onClickFunction () {
-    console.log('onClickFunction: VoterGuidePositionItem.jsx - Line 393');
-
-    this.props.onClickFunction();
+    if (this.props.onClickFunction) {
+      this.props.onClickFunction();
+    }
   }
 
   togglePositionStatement () {

@@ -98,17 +98,17 @@ class BallotTitleHeader extends Component {
             <Title onClick={this.props.toggleSelectBallotModal}>
               <ElectionName scrolled={scrolled}>
                 <span className="u-show-mobile-iphone5-or-smaller">
-                  {shortenText(electionName, 26)}
+                  {shortenText(electionName, 22)}
                 </span>
                 <span className="u-show-mobile-bigger-than-iphone5">
                   {shortenText(electionName, 30)}
                 </span>
                 <span className="u-show-desktop-tablet">
                   {electionName}
-                  <SettingsIconWrapper className="u-show-desktop-tablet">
-                    <SettingsIcon classes={{ root: classes.settingsIcon }} />
-                  </SettingsIconWrapper>
                 </span>
+                <SettingsIconWrapper>
+                  <SettingsIcon classes={{ root: classes.settingsIcon }} />
+                </SettingsIconWrapper>
                 {!electionDayTextObject && (
                   <DelayedLoad waitBeforeShow={1000}>
                     <>

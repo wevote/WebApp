@@ -575,7 +575,7 @@ class CandidateItem extends Component {
             </div>
           ) : (
             <div>
-              {this.candidateRenderBlock(candidateWeVoteId, !linkToBallotItemPage, forDesktop, openSupportOpposeCountDisplayModalAtDesktopScreenSize)}
+              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, forDesktop, openSupportOpposeCountDisplayModalAtDesktopScreenSize)}
             </div>
           )}
           <div>
@@ -589,7 +589,7 @@ class CandidateItem extends Component {
             </div>
           ) : (
             <span>
-              {this.candidateRenderBlock(candidateWeVoteId, !linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
+              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
             </span>
           )}
           <div>

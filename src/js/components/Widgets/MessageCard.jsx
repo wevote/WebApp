@@ -10,7 +10,7 @@ export default class MessageCard extends Component {
     buttonText: PropTypes.string,
     buttonURL: PropTypes.string,
     fullWidthButton: PropTypes.bool,
-    icon: PropTypes.string,
+    icon: PropTypes.object,
     inShareModal: PropTypes.bool,
     mainText: PropTypes.string,
     noCard: PropTypes.bool,

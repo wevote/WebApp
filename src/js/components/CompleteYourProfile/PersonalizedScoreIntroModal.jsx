@@ -76,7 +76,7 @@ class PersonalizedScoreIntroModal extends Component {
           openAdviserMaterialUIPopover: false,
           openSupportOpposeCountDisplayModal: false,
           supportOpposeCountDisplayModalTutorialOn: true,
-          supportOpposeCountDisplayModalTutorialText: <>Test</>,
+          supportOpposeCountDisplayModalTutorialText: null,
           showPersonalizedScoreDownArrow: false,
           showPersonalizedScoreUpArrow: true,
           showPersonalizedScoreIntroCompletedButton: false,

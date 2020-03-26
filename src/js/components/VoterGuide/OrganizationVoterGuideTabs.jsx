@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LoadingWheel from '../LoadingWheel';
+import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SettingsAccount from '../Settings/SettingsAccount';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideBallot from './VoterGuideBallot';
+import VoterGuideChooseElectionWithPositionsModal from './VoterGuideChooseElectionWithPositionsModal';
 import VoterGuideFollowers from './VoterGuideFollowers';
 import VoterGuideFollowing from './VoterGuideFollowing';
 import VoterGuidePositions from './VoterGuidePositions';
@@ -38,10 +41,11 @@ export default class OrganizationVoterGuideTabs extends Component {
       activeRoute: '',
       organization: {},
       organizationWeVoteId: '',
+      scrollDownValue: 0,
+      showElectionsWithOrganizationVoterGuidesModal: false,
       voter: {},
       voterGuideFollowedList: [],
       voterGuideFollowersList: [],
-      scrollDownValue: 0,
     };
 
     this.voterGuideBallotReference = {};
@@ -50,6 +54,7 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   componentDidMount () {
     // console.log('OrganizationVoterGuideTabs, componentDidMount, organizationWeVoteId: ', this.props.organizationWeVoteId);
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -70,6 +75,7 @@ export default class OrganizationVoterGuideTabs extends Component {
       organizationWeVoteId: this.props.organizationWeVoteId,
       organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
       pathname: this.props.location.pathname,
+      showElectionsWithOrganizationVoterGuidesModal: AppStore.showElectionsWithOrganizationVoterGuidesModal(),
       voter: VoterStore.getVoter(),
     });
 
@@ -135,10 +141,17 @@ export default class OrganizationVoterGuideTabs extends Component {
   // }
 
   componentWillUnmount () {
+    this.appStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
     window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  onAppStoreChange () {
+    this.setState({
+      showElectionsWithOrganizationVoterGuidesModal: AppStore.showElectionsWithOrganizationVoterGuidesModal(),
+    });
   }
 
   onVoterGuideStoreChange () {
@@ -198,12 +211,18 @@ export default class OrganizationVoterGuideTabs extends Component {
     }
   }
 
+  closeShowElectionsWithOrganizationVoterGuidesModal () {
+    // console.log('VoterGuideListDashboard closeShowElectionsWithOrganizationVoterGuidesModal');
+    AppActions.setShowElectionsWithOrganizationVoterGuidesModal(false);
+  }
+
   render () {
     document.body.scrollTop = this.state.scrollDownValue;
-    const { activeRoute, organizationWeVoteId, pathname, voter } = this.state;
+    const { activeRoute, organizationWeVoteId, pathname, showElectionsWithOrganizationVoterGuidesModal, voter } = this.state;
     if (!pathname || !activeRoute || !organizationWeVoteId || !voter) {
       return <div>{LoadingWheel}</div>;
     }
+    // console.log('showElectionsWithOrganizationVoterGuidesModal:', showElectionsWithOrganizationVoterGuidesModal);
 
     let lookingAtSelf = false;
     if (this.state.voter) {
@@ -318,6 +337,14 @@ export default class OrganizationVoterGuideTabs extends Component {
           </div>
         </div>
         {voterGuideComponentToDisplay}
+        {showElectionsWithOrganizationVoterGuidesModal && (
+          <VoterGuideChooseElectionWithPositionsModal
+            ballotBaseUrl="/ballot"
+            pathname={pathname}
+            show={showElectionsWithOrganizationVoterGuidesModal}
+            toggleFunction={this.closeShowElectionsWithOrganizationVoterGuidesModal}
+          />
+        )}
       </div>
     );
   }

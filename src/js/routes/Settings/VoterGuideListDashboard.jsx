@@ -90,13 +90,14 @@ class VoterGuideListDashboard extends Component {
   }
 
   onVoterStoreChange () {
+    const { linkedOrganizationWeVoteId: previousLinkedOrganizationWeVoteId } = this.state;
     const voter = VoterStore.getVoter();
     this.setState({
       voter,
     });
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
-    if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
+    if (linkedOrganizationWeVoteId && (previousLinkedOrganizationWeVoteId !== linkedOrganizationWeVoteId)) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
       this.setState({ linkedOrganizationWeVoteId });

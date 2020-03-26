@@ -127,10 +127,17 @@ export default class SettingsAccount extends Component {
         pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
       });
     } else {
+      const isOnWeVoteRootUrl = AppStore.isOnWeVoteRootUrl();
+      const isOnWeVoteSubdomainUrl = AppStore.isOnWeVoteSubdomainUrl();
+      const isOnFacebookSupportedDomainUrl = AppStore.isOnFacebookSupportedDomainUrl();
+      let pleaseSignInSubTitle = '';
+      if (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl || isOnFacebookSupportedDomainUrl) {
+        pleaseSignInSubTitle = 'Don\'t worry, we won\'t post anything automatically.';
+      }
       AppActions.storeSignInStartFullUrl();
       this.setState({
         pleaseSignInTitle: '',
-        pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
+        pleaseSignInSubTitle,
       });
     }
     this.setState({

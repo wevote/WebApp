@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
@@ -110,12 +111,10 @@ class VoterGuidePositions extends Component {
         }
         historyPush(ballotElectionUrl2);
       }
+    } else {
+      // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
+      BallotActions.voterBallotItemsRetrieve(0, '', '');
     }
-    // DALE NOTE 2018-1-18 Commented this out because it will take voter away from voter guide. Needs further testing.
-    // else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false) { // No ballot found
-    //   // console.log('if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false');
-    //   historyPush("/settings/location");
-    // }
 
     // NOTE: voterAllPositionsRetrieve is also called in SupportStore when voterAddressRetrieve is received,
     // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
@@ -311,7 +310,6 @@ class VoterGuidePositions extends Component {
   }
 
   onClickFunction (id) {
-    console.log('onClickFunction: VoterGuidePositions.jsx - Line 314');
     AppActions.setShowOrganizationModal(true);
     AppActions.setOrganizationModalId(id);
   }
@@ -352,6 +350,11 @@ class VoterGuidePositions extends Component {
         numberOfPositionItemsToDisplay,
       });
     }, 500);
+  }
+
+  openShowElectionsWithOrganizationVoterGuidesModal () {
+    // console.log('VoterGuidePositions openShowElectionsWithOrganizationVoterGuidesModal');
+    AppActions.setShowElectionsWithOrganizationVoterGuidesModal(true);
   }
 
   // This function is called by BallotSearchResults and SearchBar when an API search has been cleared
@@ -419,20 +422,31 @@ class VoterGuidePositions extends Component {
         <div className="card">
           <div className="card-main">
             <header className="ballot__header__group">
-              <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
+              <TitleWrapper
+                className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}
+                onClick={() => this.openShowElectionsWithOrganizationVoterGuidesModal()}
+              >
                 { electionName ? (
                   <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
                     {electionName}
-                    {' '}
-                    <span className="d-none d-sm-inline">&mdash; </span>
-                    <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+                    <SettingsIconWrapper>
+                      <SettingsIcon classes={{ root: classes.settingsIcon }} />
+                    </SettingsIconWrapper>
+                    {Boolean(electionDayText) && (
+                      <>
+                        {' '}
+                        <span className="d-none d-sm-inline">&mdash;</span>
+                        {' '}
+                        <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+                      </>
+                    )}
                   </span>
                 ) : (
                   <span className="u-push--sm">
                          Loading Election...
                   </span>
                 )}
-              </h1>
+              </TitleWrapper>
             </header>
           </div>
         </div>
@@ -556,6 +570,13 @@ const styles = theme => ({
       width: '100%',
     },
   },
+  settingsIcon: {
+    color: '#999',
+    marginTop: '-5px',
+    marginLeft: '3px',
+    width: 16,
+    height: 16,
+  },
 });
 
 const EmptyBallotMessageContainer = styled.div`
@@ -590,6 +611,9 @@ const LoadingItemsWheel = styled.div`
   justify-content: center;
 `;
 
+const SettingsIconWrapper = styled.span`
+`;
+
 const ShowMoreItems = styled.div`
   font-size: 18px;
   text-align: right;
@@ -601,6 +625,10 @@ const ShowMoreItems = styled.div`
   @media print{
     display: none;
   }
+`;
+
+const TitleWrapper = styled.h1`
+  cursor: pointer;
 `;
 
 const VoterGuideEndorsementsWrapper = styled.div`

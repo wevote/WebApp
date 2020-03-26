@@ -21,10 +21,13 @@ class AppStore extends ReduceStore {
       showEditAddressButton: false,
       showHowItWorksModal: false,
       shareModalStep: 'options',
+      showElectionsWithOrganizationVoterGuidesModal: false,
       showNewVoterGuideModal: false,
       showPaidAccountUpgradeModal: false,
       showPersonalizedScoreIntroModal: false,
       showSelectBallotModal: false,
+      showSelectBallotModalHideAddress: false,
+      showSelectBallotModalHideElections: false,
       showShareModal: false,
       showSignInModal: false,
       organizationModalId: '',
@@ -101,6 +104,10 @@ class AppStore extends ReduceStore {
     return this.getState().showEditAddressButton;
   }
 
+  showElectionsWithOrganizationVoterGuidesModal () {
+    return this.getState().showElectionsWithOrganizationVoterGuidesModal;
+  }
+
   showFirstPositionIntroModal () {
     return this.getState().showFirstPositionIntroModal;
   }
@@ -132,6 +139,14 @@ class AppStore extends ReduceStore {
 
   showSelectBallotModal () {
     return this.getState().showSelectBallotModal;
+  }
+
+  showSelectBallotModalHideAddress () {
+    return this.getState().showSelectBallotModalHideAddress;
+  }
+
+  showSelectBallotModalHideElections () {
+    return this.getState().showSelectBallotModalHideElections;
   }
 
   showSignInModal () {
@@ -186,6 +201,8 @@ class AppStore extends ReduceStore {
         return { ...state, showAdviserIntroModal: action.payload };
       case 'showEditAddressButton':
         return { ...state, showEditAddressButton: action.payload };
+      case 'showElectionsWithOrganizationVoterGuidesModal':
+        return { ...state, showElectionsWithOrganizationVoterGuidesModal: action.payload };
       case 'showFirstPositionIntroModal':
         return { ...state, showFirstPositionIntroModal: action.payload };
       case 'showHowItWorksModal':
@@ -201,7 +218,12 @@ class AppStore extends ReduceStore {
       case 'shareModalStep':
         return { ...state, shareModalStep: action.payload };
       case 'showSelectBallotModal':
-        return { ...state, showSelectBallotModal: action.payload };
+        return {
+          ...state,
+          showSelectBallotModal: action.showSelectBallotModal,
+          showSelectBallotModalHideAddress: action.showSelectBallotModalHideAddress,
+          showSelectBallotModalHideElections: action.showSelectBallotModalHideElections,
+        };
       case 'showSignInModal':
         return { ...state, showSignInModal: action.payload };
       case 'showOrganizationModal':

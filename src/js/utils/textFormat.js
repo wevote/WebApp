@@ -62,6 +62,18 @@ export function calculateBallotBaseUrl (incomingBallotBaseUrl, incomingPathname)
   return ballotBaseUrl;
 }
 
+export function calculateBallotBaseUrlForVoterGuide (incomingBallotBaseUrl, incomingPathname) {
+  const incomingPathnameExists = incomingPathname && incomingPathname !== '';
+  let ballotBaseUrl = '';
+  if (incomingPathnameExists) {
+    ballotBaseUrl = incomingPathname;
+    // console.log("ballotBaseUrl:", ballotBaseUrl);
+  } else {
+    ballotBaseUrl = incomingBallotBaseUrl || '/ballot';
+  }
+  return ballotBaseUrl;
+}
+
 export function convertNameToSlug (incomingString) {
   // This is used to turn issue/value names into URL paths
   if (!incomingString) {
