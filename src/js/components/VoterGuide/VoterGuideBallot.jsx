@@ -6,6 +6,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { withStyles } from '@material-ui/core/styles';
 import AddressBox from '../AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -171,10 +172,9 @@ class VoterGuideBallot extends Component {
         }
         historyPush(ballotElectionUrl2);
       }
-    // DALE NOTE 2018-1-18 Commented this out because it will take voter away from voter guide. Needs further testing.
-    // else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false){ // No ballot found
-    //   // console.log('if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false');
-    //   historyPush('/settings/location');
+    } else {
+      // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
+      BallotActions.voterBallotItemsRetrieve(0, '', '');
     }
 
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
@@ -599,6 +599,11 @@ class VoterGuideBallot extends Component {
     this.setState({ isSearching: !isSearching });
   };
 
+  openShowElectionsWithOrganizationVoterGuidesModal () {
+    // console.log('VoterGuideBallot openShowElectionsWithOrganizationVoterGuidesModal');
+    AppActions.setShowElectionsWithOrganizationVoterGuidesModal(true);
+  }
+
   toggleBallotIntroModal () {
     const { showBallotIntroModal, location, pathname } = this.state;
     if (location.hash.includes('#')) {
@@ -753,20 +758,31 @@ class VoterGuideBallot extends Component {
             <Helmet title={`${organization.organization_name} - We Vote`} />
             <BrowserPushMessage incomingProps={this.props} />
             <header className="ballot__header__group">
-              <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
+              <TitleWrapper
+                className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}
+                onClick={() => this.openShowElectionsWithOrganizationVoterGuidesModal()}
+              >
                 { electionName ? (
-                  <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
+                  <div className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
                     {electionName}
-                    {' '}
-                    <span className="d-none d-sm-inline">&mdash; </span>
-                    <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
-                  </span>
+                    <SettingsIconWrapper>
+                      <SettingsIcon classes={{ root: classes.settingsIcon }} />
+                    </SettingsIconWrapper>
+                    {Boolean(electionDayText) && (
+                      <>
+                        {' '}
+                        <span className="d-none d-sm-inline">&mdash;</span>
+                        {' '}
+                        <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+                      </>
+                    )}
+                  </div>
                 ) : (
                   <span className="u-push--sm">
                          Loading Election...
                   </span>
                 )}
-              </h1>
+              </TitleWrapper>
             </header>
 
             {/* I think this is too heavy (interface-wise) at this time:
@@ -959,6 +975,13 @@ const styles = theme => ({
       top: 3,
     },
   },
+  settingsIcon: {
+    color: '#999',
+    marginTop: '-5px',
+    marginLeft: '3px',
+    width: 16,
+    height: 16,
+  },
 });
 
 const EmptyBallotMessageContainer = styled.div`
@@ -984,6 +1007,13 @@ const ExtraActionsWrapper = styled.div`
   margin-bottom: 20px;
   margin-left: -15px;
   margin-right: -15px;
+`;
+
+const SettingsIconWrapper = styled.span`
+`;
+
+const TitleWrapper = styled.h1`
+  cursor: pointer;
 `;
 
 const VoterGuideBallotWrapper = styled.div`

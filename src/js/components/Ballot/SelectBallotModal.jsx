@@ -21,6 +21,8 @@ class SelectBallotModal extends Component {
   static propTypes = {
     ballotBaseUrl: PropTypes.string,
     classes: PropTypes.object,
+    hideAddressEdit: PropTypes.bool,
+    hideElections: PropTypes.bool,
     organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
     pathname: PropTypes.string,
     show: PropTypes.bool,
@@ -56,6 +58,14 @@ class SelectBallotModal extends Component {
       // console.log('this.props.ballotBaseUrl:', this.props.ballotBaseUrl, ', nextProps.ballotBaseUrl:', nextProps.ballotBaseUrl);
       return true;
     }
+    if (this.props.hideAddressEdit !== nextProps.hideAddressEdit) {
+      // console.log('this.props.hideAddressEdit:', this.props.hideAddressEdit, ', nextProps.hideAddressEdit:', nextProps.hideAddressEdit);
+      return true;
+    }
+    if (this.props.hideElections !== nextProps.hideElections) {
+      // console.log('this.props.hideElections:', this.props.hideElections, ', nextProps.hideElections:', nextProps.hideElections);
+      return true;
+    }
     if (this.props.organization_we_vote_id !== nextProps.organization_we_vote_id) {
       // console.log('this.props.organization_we_vote_id:', this.props.organization_we_vote_id, ', nextProps.organization_we_vote_id:', nextProps.organization_we_vote_id);
       return true;
@@ -66,10 +76,14 @@ class SelectBallotModal extends Component {
 
   render () {
     renderLog('SelectBallotModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    const { classes, hideAddressEdit, hideElections } = this.props;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
 
     const voterAddressObject = VoterStore.getAddressObject();
+    let dialogTitleText = 'Address & Elections';
+    if (hideAddressEdit || hideElections) {
+      dialogTitleText = '';
+    }
     // console.log('SelectBallotModal render, voter_address_object: ', voter_address_object);
     return (
       <Dialog
@@ -80,7 +94,7 @@ class SelectBallotModal extends Component {
         <DialogTitle>
           <Typography className="text-center">
             <span className="h6">
-              Address & Elections
+              {dialogTitleText}
             </span>
           </Typography>
           <IconButton
@@ -93,21 +107,25 @@ class SelectBallotModal extends Component {
           </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          <EditAddressInPlace
-            address={voterAddressObject}
-            defaultIsEditingAddress
-            pathname={this.state.pathname}
-            toggleFunction={this.props.toggleFunction}
-            cancelButtonAction={this.props.toggleFunction}
-          />
-          <BallotElectionListWrapper>
-            <BallotElectionListWithFilters
-              ballotBaseUrl={ballotBaseUrl}
-              organizationWeVoteId={this.props.organization_we_vote_id}
-              showPriorElectionsList
+          {!hideAddressEdit && (
+            <EditAddressInPlace
+              address={voterAddressObject}
+              defaultIsEditingAddress
+              pathname={this.state.pathname}
               toggleFunction={this.props.toggleFunction}
+              cancelButtonAction={this.props.toggleFunction}
             />
-          </BallotElectionListWrapper>
+          )}
+          {!hideElections && (
+            <BallotElectionListWrapper addTopMargin={!hideAddressEdit}>
+              <BallotElectionListWithFilters
+                ballotBaseUrl={ballotBaseUrl}
+                organizationWeVoteId={this.props.organization_we_vote_id}
+                showPriorElectionsList
+                toggleFunction={this.props.toggleFunction}
+              />
+            </BallotElectionListWrapper>
+          )}
         </DialogContent>
       </Dialog>
     );
@@ -139,7 +157,7 @@ const styles = theme => ({
 });
 
 const BallotElectionListWrapper = styled.div`
-  margin-top: 40px;
+  margin-top: ${props => (props.addTopMargin ? '40px' : '0')};
 `;
 
 export default withTheme(withStyles(styles)(SelectBallotModal));

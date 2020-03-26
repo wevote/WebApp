@@ -413,12 +413,10 @@ export default class BallotElectionListWithFilters extends Component {
       <div className="ballot-election-list__list">
         <div className="ballot-election-list__upcoming">
           {!hideUpcomingElectionTitle && (
-            <DelayedLoad waitBeforeShow={2000}>
-              <h4 className="h4">
-                Upcoming Election
-                {(upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null }
-              </h4>
-            </DelayedLoad>
+            <h4 className="h4">
+              Upcoming Election
+              {(upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null }
+            </h4>
           )}
           { upcomingElectionList && upcomingElectionList.length ?
             upcomingElectionList : (

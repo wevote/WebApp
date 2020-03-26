@@ -13,7 +13,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
-import BallotElectionListWithFilters from '../../components/Ballot/BallotElectionListWithFilters';
+// import BallotElectionListWithFilters from '../../components/Ballot/BallotElectionListWithFilters';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotTitleHeader from './BallotTitleHeader';
@@ -877,7 +877,7 @@ class Ballot extends Component {
     }, 500);
   }
 
-  toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
+  toggleSelectBallotModal (destinationUrlForHistoryPush = '', hideAddressEdit = false, hideElections = false) {
     const { showSelectBallotModal } = this.state;
     // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
@@ -887,7 +887,7 @@ class Ballot extends Component {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
 
-    AppActions.setShowSelectBallotModal(!showSelectBallotModal);
+    AppActions.setShowSelectBallotModal(!showSelectBallotModal, hideAddressEdit, hideElections);
   }
 
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
@@ -992,7 +992,7 @@ class Ballot extends Component {
                   // since we use a button as the component, we can disable that es-lint rule
                   component="button"
                   id="ballotIfBallotDoesNotAppear"
-                  onClick={this.toggleSelectBallotModal}
+                  onClick={() => this.toggleSelectBallotModal('', false, true)}
                   style={{ color: 'rgb(6, 95, 212)' }}
                 >
                   please click here to enter an address
@@ -1040,12 +1040,12 @@ class Ballot extends Component {
         <div>
           <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
           {emptyBallotButton}
-          <div className="container-fluid well u-stack--md u-inset--md">
-            <BallotElectionListWithFilters
-              ballotBaseUrl={ballotBaseUrl}
-              ballotElectionList={this.state.voterBallotList}
-            />
-          </div>
+          {/* <div className="container-fluid well u-stack--md u-inset--md"> */}
+          {/*  <BallotElectionListWithFilters */}
+          {/*    ballotBaseUrl={ballotBaseUrl} */}
+          {/*    ballotElectionList={this.state.voterBallotList} */}
+          {/*  /> */}
+          {/* </div> */}
         </div>
       </DelayedLoad>
     ) : null;
@@ -1075,7 +1075,7 @@ class Ballot extends Component {
                     <BallotTitleHeader
                       electionName={electionName}
                       electionDayTextObject={electionDayTextObject}
-                      toggleSelectBallotModal={this.toggleSelectBallotModal}
+                      toggleSelectBallotModal={() => this.toggleSelectBallotModal('', true, false)}
                       scrolled={this.state.ballotHeaderUnpinned}
                     />
                   </header>

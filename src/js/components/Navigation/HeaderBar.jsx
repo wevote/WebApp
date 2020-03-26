@@ -70,6 +70,8 @@ class HeaderBar extends Component {
       showEditAddressButton: false,
       showFirstPositionIntroModal: false,
       showSelectBallotModal: false,
+      showSelectBallotModalHideAddress: false,
+      showSelectBallotModalHideElections: false,
       showShareModal: false,
       showOrganizationModal: false,
       showSignInModal: false,
@@ -112,6 +114,8 @@ class HeaderBar extends Component {
       showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
       showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
+      showSelectBallotModalHideAddress: AppStore.showSelectBallotModalHideAddress(),
+      showSelectBallotModalHideElections: AppStore.showSelectBallotModalHideElections(),
       showSignInModal: AppStore.showSignInModal(),
       showValuesIntroModal: AppStore.showValuesIntroModal(),
       voter: this.props.voter,
@@ -193,6 +197,12 @@ class HeaderBar extends Component {
     if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
       return true;
     }
+    if (this.state.showSelectBallotModalHideAddress !== nextState.showSelectBallotModalHideAddress) {
+      return true;
+    }
+    if (this.state.showSelectBallotModalHideElections !== nextState.showSelectBallotModalHideElections) {
+      return true;
+    }
     const currentPathnameExists = this.props.location && this.props.location.pathname;
     const nextPathnameExists = nextProps.location && nextProps.location.pathname;
     // One exists, and the other doesn't
@@ -257,6 +267,8 @@ class HeaderBar extends Component {
       showShareModal: AppStore.showShareModal(),
       showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
+      showSelectBallotModalHideAddress: AppStore.showSelectBallotModalHideAddress(),
+      showSelectBallotModalHideElections: AppStore.showSelectBallotModalHideElections(),
       showSignInModal: AppStore.showSignInModal(),
       showValuesIntroModal: AppStore.showValuesIntroModal(),
     });
@@ -338,16 +350,15 @@ class HeaderBar extends Component {
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
-  toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
+  toggleSelectBallotModal (destinationUrlForHistoryPush = '', showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
     const { showSelectBallotModal } = this.state;
-    // console.log('HeaderBar toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', prior showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
       historyPush(destinationUrlForHistoryPush);
     } else if (!showSelectBallotModal) {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
-    AppActions.setShowSelectBallotModal(!showSelectBallotModal);
+    AppActions.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
   }
 
   closeNewVoterGuideModal () {
@@ -404,7 +415,9 @@ class HeaderBar extends Component {
     const {
       chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, shareModalStep,
       showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
-      showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal, showSelectBallotModal, showShareModal, showOrganizationModal,
+      showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
+      showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
+      showShareModal, showOrganizationModal,
       showSignInModal, showValuesIntroModal,
       voter, voterFirstName, voterIsSignedIn,
     } = this.state;
@@ -420,26 +433,40 @@ class HeaderBar extends Component {
     const editAddressButtonHtml = (
       <Tooltip title="Change my location or election" aria-label="Change Address or Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
         <span>
-          <IconButton
-            classes={{ root: classes.iconButtonRoot }}
-            id="changeAddressHeaderBar"
-            onClick={this.toggleSelectBallotModal}
-          >
-            <PlaceIcon />
-          </IconButton>
-          <Button
-            color="primary"
-            classes={{ root: classes.addressButtonRoot }}
-            id="changeAddressHeaderBarText"
-            onClick={this.toggleSelectBallotModal}
-          >
-            <span className="u-show-desktop-tablet">
+          <span className="u-show-desktop-tablet">
+            <IconButton
+              classes={{ root: classes.iconButtonRoot }}
+              id="changeAddressHeaderBar"
+              onClick={() => this.toggleSelectBallotModal('', false, false)}
+            >
+              <PlaceIcon />
+            </IconButton>
+            <Button
+              color="primary"
+              classes={{ root: classes.addressButtonRoot }}
+              id="changeAddressHeaderBarText"
+              onClick={() => this.toggleSelectBallotModal('', false, false)}
+            >
               Address & Elections
-            </span>
-            <span className="u-show-mobile">
+            </Button>
+          </span>
+          <span className="u-show-mobile">
+            <IconButton
+              classes={{ root: classes.iconButtonRoot }}
+              id="changeAddressHeaderBar"
+              onClick={() => this.toggleSelectBallotModal('', false, true)}
+            >
+              <PlaceIcon />
+            </IconButton>
+            <Button
+              color="primary"
+              classes={{ root: classes.addressButtonRoot }}
+              id="changeAddressHeaderBarText"
+              onClick={() => this.toggleSelectBallotModal('', false, true)}
+            >
               Address
-            </span>
-          </Button>
+            </Button>
+          </span>
         </span>
       </Tooltip>
     );
@@ -590,6 +617,8 @@ class HeaderBar extends Component {
         {showSelectBallotModal && (
           <SelectBallotModal
             ballotBaseUrl="/ballot"
+            hideAddressEdit={showSelectBallotModalHideAddress}
+            hideElections={showSelectBallotModalHideElections}
             location={location}
             pathname={pathname}
             show={showSelectBallotModal}

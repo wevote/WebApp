@@ -38,6 +38,10 @@ export default {
     Dispatcher.dispatch({ type: 'showNewVoterGuideModal', payload: show });
   },
 
+  setShowElectionsWithOrganizationVoterGuidesModal (show) {
+    Dispatcher.dispatch({ type: 'showElectionsWithOrganizationVoterGuidesModal', payload: show });
+  },
+
   setShowPaidAccountUpgradeModal (chosenPaidAccount) {
     // The chosenPaidAccount values are: free, professional, enterprise
     Dispatcher.dispatch({ type: 'showPaidAccountUpgradeModal', payload: chosenPaidAccount });
@@ -47,8 +51,8 @@ export default {
     Dispatcher.dispatch({ type: 'showPersonalizedScoreIntroModal', payload: show });
   },
 
-  setShowSelectBallotModal (show) {
-    Dispatcher.dispatch({ type: 'showSelectBallotModal', payload: show });
+  setShowSelectBallotModal (showSelectBallotModal, showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
+    Dispatcher.dispatch({ type: 'showSelectBallotModal', showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections });
   },
 
   setShowShareModal (show) {
