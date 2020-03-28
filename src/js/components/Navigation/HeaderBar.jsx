@@ -436,7 +436,7 @@ class HeaderBar extends Component {
           <span className="u-show-desktop-tablet">
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
-              id="changeAddressOrElectionHeaderBar"
+              id="changeAddressHeaderBar"
               onClick={() => this.toggleSelectBallotModal('', false, false)}
             >
               <PlaceIcon />
@@ -444,7 +444,7 @@ class HeaderBar extends Component {
             <Button
               color="primary"
               classes={{ root: classes.addressButtonRoot }}
-              id="changeAddressOrElectionHeaderBarText"
+              id="changeAddressHeaderBarText"
               onClick={() => this.toggleSelectBallotModal('', false, false)}
             >
               Address & Elections
@@ -453,7 +453,7 @@ class HeaderBar extends Component {
           <span className="u-show-mobile">
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
-              id="changeAddressOnlyHeaderBar"
+              id="changeAddressHeaderBar"
               onClick={() => this.toggleSelectBallotModal('', false, true)}
             >
               <PlaceIcon />
@@ -461,7 +461,7 @@ class HeaderBar extends Component {
             <Button
               color="primary"
               classes={{ root: classes.addressButtonRoot }}
-              id="changeAddressOnlyHeaderBarText"
+              id="changeAddressHeaderBarText"
               onClick={() => this.toggleSelectBallotModal('', false, true)}
             >
               Address
