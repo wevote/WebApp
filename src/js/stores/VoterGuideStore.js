@@ -7,6 +7,7 @@ import VoterGuideActions from '../actions/VoterGuideActions';
 import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
 import { arrayContains } from '../utils/textFormat';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../utils/organization-functions';
+import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 
 class VoterGuideStore extends ReduceStore {
   // The store keeps nested attributes of voter guides in allCachedVoterGuides, whereas the followed, ignoring, to_follow are just lists of ids.
@@ -156,6 +157,14 @@ class VoterGuideStore extends ReduceStore {
     return allCachedVoterGuidesByVoterGuide[voterGuideWeVoteId] || {};
   }
 
+  getVoterGuideElectionList (organizationWeVoteId) {
+    // Return a list of elections that this organization has voter guides for
+    if (this.getState().voterGuideElectionListByOrganization) {
+      return this.getState().voterGuideElectionListByOrganization[organizationWeVoteId] || [];
+    }
+    return [];
+  }
+
   getVoterGuidesToFollowForBallotItemId (ballotItemWeVoteId) {
     return this.returnVoterGuidesFromListOfIds(this.getState().organizationWeVoteIdsToFollowBallotItemsDict[ballotItemWeVoteId]) || [];
   }
@@ -250,13 +259,17 @@ class VoterGuideStore extends ReduceStore {
     } = state;
     let allCachedVoterGuidesByOrganization;
     let allCachedVoterGuidesByVoterGuide;
+    let convertedElection = {};
+    let electionAlreadyStored = false;
     // let is_empty;
     let googleCivicElectionId;
     let organizationWeVoteId;
     let organizationWeVoteIdListFromVoterGuidesReturned;
     let replacedExistingVoterGuide;
     let revisedState;
+    let tempCachedVoterGuideElectionListForOrganization;
     let tempCachedVoterGuidesForOrganization;
+    let voterGuideElectionListByOrganization;
     let voterGuideWithPledgeInfo;
     let voterGuides;
     let voterLinkedOrganizationWeVoteId;
@@ -724,6 +737,7 @@ class VoterGuideStore extends ReduceStore {
         voterGuides = action.res.voter_guides;
         allCachedVoterGuidesByOrganization = state.allCachedVoterGuidesByOrganization || {};
         allCachedVoterGuidesByVoterGuide = state.allCachedVoterGuidesByVoterGuide || {};
+        voterGuideElectionListByOrganization = state.voterGuideElectionListByOrganization || {};
         voterGuides.forEach((oneVoterGuide) => {
           // Store them by organization
           if (allCachedVoterGuidesByOrganization[oneVoterGuide.organization_we_vote_id] === undefined) {
@@ -744,11 +758,33 @@ class VoterGuideStore extends ReduceStore {
           allCachedVoterGuidesByOrganization[oneVoterGuide.organization_we_vote_id] = tempCachedVoterGuidesForOrganization;
           // Store them by voter guide
           allCachedVoterGuidesByVoterGuide[oneVoterGuide.we_vote_id] = oneVoterGuide;
+
+          // Now add to voterGuideElectionListByOrganization after converting to Election format
+          if (voterGuideElectionListByOrganization[oneVoterGuide.organization_we_vote_id] === undefined) {
+            voterGuideElectionListByOrganization[oneVoterGuide.organization_we_vote_id] = [];
+          }
+          electionAlreadyStored = false;
+          tempCachedVoterGuideElectionListForOrganization = voterGuideElectionListByOrganization[oneVoterGuide.organization_we_vote_id];
+          for (let count = 0; count < tempCachedVoterGuideElectionListForOrganization.length; count++) {
+            if (tempCachedVoterGuideElectionListForOrganization[count].google_civic_election_id === oneVoterGuide.google_civic_election_id) {
+              // Election already stored - no need to update
+              electionAlreadyStored = true;
+            }
+          }
+          if (!electionAlreadyStored) {
+            convertedElection = convertVoterGuideToElection(oneVoterGuide);
+            if (convertedElection !== false) {
+              tempCachedVoterGuideElectionListForOrganization.push(convertedElection);
+            }
+          }
+          voterGuideElectionListByOrganization[oneVoterGuide.organization_we_vote_id] = tempCachedVoterGuideElectionListForOrganization;
         });
+        // console.log('voterGuideElectionListByOrganization:', voterGuideElectionListByOrganization);
         return {
           ...state,
           allCachedVoterGuidesByOrganization,
           allCachedVoterGuidesByVoterGuide,
+          voterGuideElectionListByOrganization,
         };
 
       case 'voterGuideSave':
