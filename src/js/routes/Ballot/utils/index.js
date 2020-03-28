@@ -52,6 +52,10 @@ function checkShouldUpdate (state, nextState) {
     // console.log("shouldComponentUpdate: state.completionLevelFilterType", state.completionLevelFilterType, ", nextState.completionLevelFilterType", nextState.completionLevelFilterType);
     return true;
   }
+  if (state.electionDayText !== nextState.electionDayText) {
+    // console.log("shouldComponentUpdate: state.electionDayText", state.electionDayText, ", nextState.electionDayText", nextState.electionDayText);
+    return true;
+  }
   if (state.googleCivicElectionId !== nextState.googleCivicElectionId) {
     // console.log("shouldComponentUpdate: state.googleCivicElectionId", state.googleCivicElectionId, ", nextState.googleCivicElectionId", nextState.googleCivicElectionId);
     return true;

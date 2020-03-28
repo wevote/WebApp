@@ -17,7 +17,7 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
   static propTypes = {
     ballotBaseUrl: PropTypes.string,
     classes: PropTypes.object,
-    organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
+    organizationWeVoteId: PropTypes.string, // If looking at voter guide, we pass in the parent organizationWeVoteId
     pathname: PropTypes.string,
     show: PropTypes.bool,
     toggleFunction: PropTypes.func.isRequired,
@@ -45,8 +45,8 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
       // console.log('this.props.pathname:', this.props.pathname, ', nextProps.pathname:', nextProps.pathname);
       return true;
     }
-    if (this.props.organization_we_vote_id !== nextProps.organization_we_vote_id) {
-      // console.log('this.props.organization_we_vote_id:', this.props.organization_we_vote_id, ', nextProps.organization_we_vote_id:', nextProps.organization_we_vote_id);
+    if (this.props.organizationWeVoteId !== nextProps.organizationWeVoteId) {
+      // console.log('this.props.organizationWeVoteId:', this.props.organizationWeVoteId, ', nextProps.organizationWeVoteId:', nextProps.organizationWeVoteId);
       return true;
     }
     // console.log('shouldComponentUpdate no change');
@@ -55,18 +55,18 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
 
   render () {
     renderLog('VoterGuideChooseElectionWithPositionsModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
-    const ballotBaseUrl = calculateBallotBaseUrlForVoterGuide(this.props.ballotBaseUrl, this.props.pathname);
+    const { classes, organizationWeVoteId, pathname, show } = this.props;
+    const ballotBaseUrl = calculateBallotBaseUrlForVoterGuide(this.props.ballotBaseUrl, pathname);
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
-        open={this.props.show}
+        open={show}
         onClose={() => { this.props.toggleFunction(); }}
       >
         <DialogTitle>
           <Typography className="text-center">
-            Choose Upcoming Election
+            Elections With Endorsements
           </Typography>
           <IconButton
             aria-label="Close"
@@ -80,8 +80,10 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
         <DialogContent classes={{ root: classes.dialogContent }}>
           <BallotElectionListWithFilters
             ballotBaseUrl={ballotBaseUrl}
+            displayElectionsForOrganizationVoterGuidesMode
             hideUpcomingElectionTitle
-            organizationWeVoteId={this.props.organization_we_vote_id}
+            organizationWeVoteId={organizationWeVoteId}
+            showPriorElectionsList
             toggleFunction={this.props.toggleFunction}
           />
         </DialogContent>
