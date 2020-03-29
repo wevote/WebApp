@@ -431,7 +431,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   goToBallotItemLinkLocal (ballotItemWeVoteId) {
-    // console.log('BallotItemSupportOpposeCountDisplay goToBallotItemLinkLocal');
+    // console.log('BallotItemSupportOpposeCountDisplay goToBallotItemLinkLocal, ballotItemWeVoteId:', ballotItemWeVoteId);
     if (this.props.goToBallotItem) {
       this.props.goToBallotItem(ballotItemWeVoteId);
     }
@@ -667,11 +667,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             </PopoverTitleText>
           </PopoverHeader>
           <PopoverBody>
-            There are no opinions
-            {ballotItemDisplayName ? ' about ' : ''}
-            <strong>{ballotItemDisplayName ? `${ballotItemDisplayName}` : ''}</strong>
-            {' '}
-            yet.
+            <PopoverBodyText>
+              There are no opinions
+              {ballotItemDisplayName ? ' about ' : ''}
+              <strong>{ballotItemDisplayName ? `${ballotItemDisplayName}` : ''}</strong>
+              {' '}
+              yet.
+            </PopoverBodyText>
             <ItemActionBarWrapper>
               <ItemActionBar
                 inModal={inModal}
@@ -1141,6 +1143,10 @@ const PopoverBody = styled.div`
   border-bottom: .5px solid #ddd;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+`;
+
+const PopoverBodyText = styled.div`
+  margin-bottom: 8px;
 `;
 
 const RenderedOrganizationsWrapper = styled.div`

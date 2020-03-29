@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import CandidateList from '../../components/Ballot/CandidateList';
 import { capitalizeString } from '../../utils/textFormat';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -21,7 +22,7 @@ import daleMcGrewJpm from '../../../img/global/photos/Dale_McGrew-200x200.jpg';
 
 
 // This is related to routes/VoterGuide/OrganizationVoterGuideOffice
-export default class Office extends Component {
+class Office extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
   };
@@ -253,7 +254,7 @@ export default class Office extends Component {
 
 
     return (
-      <div style={{ display: 'flex' }}>
+      <OfficeWrapper>
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
@@ -283,9 +284,15 @@ export default class Office extends Component {
           </div>
 
         </div>
-      </div>
+      </OfficeWrapper>
     );
   }
 }
 
+
+const OfficeWrapper = styled.div`
+  display: flex;
+`;
+
+export default Office;
 
