@@ -211,6 +211,11 @@
   z-index: 5010 !important;
 }
 
+// We use z-index: 5020 for menus over the Popover descriptions over the Popovers from BallotItemSupportOpposeCountDisplay above modals
+.u-z-index-5020 {
+  z-index: 5020 !important;
+}
+
 // Used to keep the mobile footer & header above Popovers
 .u-z-index-9000 {
   z-index: 9000 !important;

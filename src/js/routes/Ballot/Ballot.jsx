@@ -1114,6 +1114,7 @@ class Ballot extends Component {
                               { showFilterTabs && (
                                 <div
                                   className="ballot_filter_btns"
+                                  id="ballotBadgeMobileAndDesktop-All"
                                   key="filterTypeAll"
                                   onClick={() => this.setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterType.length)}
                                 >

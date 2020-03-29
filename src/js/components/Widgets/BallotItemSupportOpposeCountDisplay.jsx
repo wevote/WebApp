@@ -36,6 +36,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
     hideNumbersOfAllPositions: PropTypes.bool,
+    hideShowMoreLink: PropTypes.bool,
     inModal: PropTypes.bool,
     openAdviserMaterialUIPopover: PropTypes.bool,
     openSupportOpposeCountDisplayModal: PropTypes.bool,
@@ -439,7 +440,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   render () {
     renderLog('BallotItemSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      ballotItemWeVoteId, classes, closeSupportOpposeCountDisplayModal, controlAdviserMaterialUIPopoverFromProp, hideNumbersOfAllPositions, inModal,
+      ballotItemWeVoteId, classes, closeSupportOpposeCountDisplayModal, controlAdviserMaterialUIPopoverFromProp,
+      hideNumbersOfAllPositions, hideShowMoreLink, inModal,
       openAdviserMaterialUIPopover, openSupportOpposeCountDisplayModal, supportOpposeCountDisplayModalTutorialOn,
       supportOpposeCountDisplayModalTutorialText, showDownArrow, showUpArrow, uniqueExternalId,
     } = this.props;
@@ -681,13 +683,15 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 shareButtonHide
               />
             </ItemActionBarWrapper>
-            <ShowCandidateFooterWrapper>
-              <ShowMoreFooter
-                showMoreId={`noPositionsForPopoverShowAllPositions-${ballotItemWeVoteId}`}
-                showMoreLink={() => this.goToBallotItemLinkLocal(ballotItemWeVoteId)}
-                showMoreText="Show More"
-              />
-            </ShowCandidateFooterWrapper>
+            {!hideShowMoreLink && (
+              <ShowCandidateFooterWrapper>
+                <ShowMoreFooter
+                  showMoreId={`noPositionsForPopoverShowAllPositions-${ballotItemWeVoteId}`}
+                  showMoreLink={() => this.goToBallotItemLinkLocal(ballotItemWeVoteId)}
+                  showMoreText="Show More"
+                />
+              </ShowCandidateFooterWrapper>
+            )}
           </PopoverBody>
         </PopoverWrapper>
       );
