@@ -25,14 +25,15 @@ module.exports = {
       template: './src/index.html',
     }),
     new CopyPlugin([
-      { from: 'src/javascript/', to: 'javascript/' },
+      { from: 'src/extension.html', to: '.' },
+      { from: 'src/robots.txt', to: '.' },
+      { from: 'src/vip.html', to: '.' },
+      { from: 'src/css/', to: 'css/' },
       { from: 'src/img/',
         to: 'img/',
         ignore: ['DO-NOT-BUNDLE/**/*', 'welcome/partners/**/*' ],
       },
-      { from: 'src/vip.html', to: '.' },
-      { from: 'src/extension.html', to: '.' },
-      { from: 'src/css/', to: 'css/' },
+      { from: 'src/javascript/', to: 'javascript/' },
     ]),
     // Strip from bundle.js, all moment.js locales except “en”
     new MomentLocalesPlugin(),
@@ -53,6 +54,7 @@ module.exports = {
           '*.test.js',
           'config-template.js',
           'extension.html',
+          'robots.txt',
           'vip.html',
         ],
         // Root directory (optional)

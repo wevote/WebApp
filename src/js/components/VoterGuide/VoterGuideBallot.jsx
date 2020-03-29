@@ -8,12 +8,10 @@ import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { withStyles } from '@material-ui/core/styles';
-import AddressBox from '../AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
-import BallotElectionList from '../Ballot/BallotElectionList';
 import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
@@ -76,8 +74,6 @@ class VoterGuideBallot extends Component {
       positionListForOneElectionLength: 0,
       showBallotIntroModal: false,
       showSelectBallotModal: false,
-      voterBallotList: [],
-      // voterGuideOnStage: undefined,
       voterIsAdmin: false,
       voterIsVerifiedVolunteer: false,
       isSearching: false,
@@ -458,43 +454,43 @@ class VoterGuideBallot extends Component {
 
   onElectionStoreChange () {
     // console.log('Elections, onElectionStoreChange');
-    const electionsList = ElectionStore.getElectionList();
-    // const electionsLocationsList = [];
-    let voterBallot; // A different format for much of the same data
-    const voterBallotList = [];
-    let oneBallotLocation;
-    let ballotLocationShortcut;
-    let ballotReturnedWeVoteId;
-
-    for (let i = 0; i < electionsList.length; i++) {
-      const election = electionsList[i];
-      // electionsLocationsList.push(election);
-      ballotReturnedWeVoteId = '';
-      ballotLocationShortcut = '';
-      if (election.ballot_location_list && election.ballot_location_list.length) {
-        // We want to add the shortcut and we_vote_id for the first ballot location option
-        oneBallotLocation = election.ballot_location_list[0]; // eslint-disable-line prefer-destructuring
-        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || '';
-        ballotLocationShortcut = ballotLocationShortcut.trim();
-        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || '';
-        ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
-      }
-
-      voterBallot = {
-        google_civic_election_id: election.google_civic_election_id,
-        election_description_text: election.election_name,
-        election_day_text: election.election_day_text,
-        original_text_for_map_search: '',
-        ballot_location_shortcut: ballotLocationShortcut,
-        ballot_returned_we_vote_id: ballotReturnedWeVoteId,
-      };
-      voterBallotList.push(voterBallot);
-    }
-
-    this.setState({
-      // electionsLocationsList,
-      voterBallotList,
-    });
+    // const electionsList = ElectionStore.getElectionList();
+    // // const electionsLocationsList = [];
+    // let voterBallot; // A different format for much of the same data
+    // const voterBallotList = [];
+    // let oneBallotLocation;
+    // let ballotLocationShortcut;
+    // let ballotReturnedWeVoteId;
+    //
+    // for (let i = 0; i < electionsList.length; i++) {
+    //   const election = electionsList[i];
+    //   // electionsLocationsList.push(election);
+    //   ballotReturnedWeVoteId = '';
+    //   ballotLocationShortcut = '';
+    //   if (election.ballot_location_list && election.ballot_location_list.length) {
+    //     // We want to add the shortcut and we_vote_id for the first ballot location option
+    //     oneBallotLocation = election.ballot_location_list[0]; // eslint-disable-line prefer-destructuring
+    //     ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || '';
+    //     ballotLocationShortcut = ballotLocationShortcut.trim();
+    //     ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || '';
+    //     ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
+    //   }
+    //
+    //   voterBallot = {
+    //     google_civic_election_id: election.google_civic_election_id,
+    //     election_description_text: election.election_name,
+    //     election_day_text: election.election_day_text,
+    //     original_text_for_map_search: '',
+    //     ballot_location_shortcut: ballotLocationShortcut,
+    //     ballot_returned_we_vote_id: ballotReturnedWeVoteId,
+    //   };
+    //   voterBallotList.push(voterBallot);
+    // }
+    //
+    // this.setState({
+    //   // electionsLocationsList,
+    //   voterBallotList,
+    // });
   }
 
   onOrganizationStoreChange () {
@@ -688,17 +684,10 @@ class VoterGuideBallot extends Component {
                 .
               </p>
             </div>
-            <BallotElectionList
-              ballotBaseUrl={ballotBaseUrl}
-              ballotElectionList={this.state.voterBallotList}
-              organization_we_vote_id={organizationWeVoteId}
-            />
           </div>
         </DelayedLoad>
       );
     }
-
-    const voterAddressMissing = this.state.location === null;
 
     // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballotProperties might be undefined
     const electionName = BallotStore.currentBallotElectionName;
@@ -706,37 +695,6 @@ class VoterGuideBallot extends Component {
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
     const organizationAdminUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}org/${organizationWeVoteId}/pos/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}pl/${sourcePollingLocationWeVoteId}/summary/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
-
-    const emptyBallotButton = voterAddressMissing ? (
-      <div className="container-fluid well u-stack--md u-inset--md">
-        <Helmet title="Enter Your Address - We Vote" />
-        <h3 className="h3">
-          Enter address where you are registered to vote
-        </h3>
-        <div>
-          <AddressBox {...this.props} saveUrl={ballotBaseUrl} />
-        </div>
-      </div>
-    ) : (
-      <span>
-        {/* <Link to={ballotBaseUrl}>
-              <Button variant="primary">View Full Ballot</Button>
-          </Link> */}
-      </span>
-    );
-
-    const emptyBallot = ballotWithAllItems.length === 0 ? (
-      <div>
-        {emptyBallotButton}
-        <div className="container-fluid well u-stack--md u-inset--md">
-          <BallotElectionList
-            ballotBaseUrl={ballotBaseUrl}
-            ballotElectionList={this.state.voterBallotList}
-            organization_we_vote_id={organizationWeVoteId}
-          />
-        </div>
-      </div>
-    ) : null;
 
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format('MMM Do, YYYY')}</span> : <span />;
 
@@ -808,7 +766,6 @@ class VoterGuideBallot extends Component {
 
         <div className="page-content-container">
           <div className="container-fluid">
-            {emptyBallot}
             <div className="row ballot__body-vg">
               <div className="col-xs-12 col-md-12">
                 {/* The ballot items the organization wants to promote */}
