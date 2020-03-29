@@ -95,7 +95,7 @@ class BallotTitleHeader extends Component {
       return (
         <Wrapper>
           <Tooltip title="Change my election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-            <Title onClick={this.props.toggleSelectBallotModal}>
+            <Title onClick={this.props.toggleSelectBallotModal} id="ballotTitleHeaderSelectBallotModal">
               <ElectionName scrolled={scrolled}>
                 <span className="u-show-mobile-iphone5-or-smaller">
                   {shortenText(electionName, 22)}
