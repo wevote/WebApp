@@ -28,6 +28,7 @@ class CandidateItem extends Component {
     candidateWeVoteId: PropTypes.string.isRequired,
     closeSupportOpposeCountDisplayModal: PropTypes.bool,
     controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
+    goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     expandIssuesByDefault: PropTypes.bool,
     hideBallotItemSupportOpposeComment: PropTypes.bool,
     hideCandidateText: PropTypes.bool,
@@ -396,6 +397,7 @@ class CandidateItem extends Component {
               ballotItemWeVoteId={candidateWeVoteId}
               closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
               controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+              goToBallotItem={this.props.goToBallotItem}
               handleLeaveCandidateCard={forDesktop ? this.handleLeave : null}
               handleEnterCandidateCard={forDesktop ? this.handleEnter : null}
               hideShowMoreLink={!linkToBallotItemPage}
