@@ -179,7 +179,7 @@ class IssueFollowToggleButton extends Component {
             </Button>
             <Menu
               id="follow-menu"
-              // className="issues-follow-btn__menu"
+              className="u-z-index-5020"
               classes={{ list: classes.list, paper: classes.paper }}
               open={this.state.open}
               onClose={this.handleClose}

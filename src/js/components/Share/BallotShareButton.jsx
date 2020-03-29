@@ -62,6 +62,7 @@ class BallotShareButton extends Component {
         </Button>
         <Menu
           id="share-menu"
+          className="u-z-index-5020"
           classes={{ paper: classes.paper }}
           open={this.state.open}
           onClose={this.handleClose}
