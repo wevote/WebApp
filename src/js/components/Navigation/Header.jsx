@@ -13,6 +13,7 @@ import HowItWorksModal from '../CompleteYourProfile/HowItWorksModal';
 import { stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
+import OrganizationModal from '../VoterGuide/OrganizationModal';
 
 
 export default class Header extends Component {
@@ -28,9 +29,12 @@ export default class Header extends Component {
     super(props);
     this.state = {
       showHowItWorksModal: false,
+      showOrganizationModal: false,
+      organizationModalId: '',
     };
 
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
+    this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.handleResize = this.handleResize.bind(this);
   }
 
@@ -46,6 +50,12 @@ export default class Header extends Component {
     if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) {
       return true;
     }
+    if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
+      return true;
+    }
+    if (this.state.organizationModalId !== nextState.organizationModalId) {
+      return true;
+    }
     return false;
   }
 
@@ -57,6 +67,8 @@ export default class Header extends Component {
     // console.log('Header, onAppStoreChange');
     this.setState({
       showHowItWorksModal: AppStore.showHowItWorksModal(),
+      showOrganizationModal: AppStore.showOrganizationModal(),
+      organizationModalId: AppStore.organizationModalId(),
     });
   }
 
@@ -69,6 +81,10 @@ export default class Header extends Component {
     AppActions.setShowHowItWorksModal(false);
   }
 
+  closeOrganizationModal () {
+    AppActions.setShowOrganizationModal(false);
+  }
+
   handleResize () {
     this.setState({ windowWidth: window.innerWidth });
   }
@@ -77,7 +93,7 @@ export default class Header extends Component {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
-    const { showHowItWorksModal } = this.state;
+    const { showHowItWorksModal, showOrganizationModal } = this.state;
     const { friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
       showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
@@ -125,6 +141,17 @@ export default class Header extends Component {
               pathname={pathname}
               show={showHowItWorksModal}
               toggleFunction={this.closeHowItWorksModal}
+            />
+          )}
+          {showOrganizationModal && (
+            <OrganizationModal
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              candidate_we_vote_id={this.state.organizationModalId}
+  open={showOrganizationModal}
+              // step={shareModalStep}
+              toggleFunction={this.closeOrganizationModal}
             />
           )}
         </div>
@@ -180,6 +207,17 @@ export default class Header extends Component {
               toggleFunction={this.closeHowItWorksModal}
             />
           )}
+          {showOrganizationModal && (
+          <OrganizationModal
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              candidate_we_vote_id={organizationModalId}
+  open={showOrganizationModal}
+              // step={shareModalStep}
+              toggleFunction={this.closeOrganizationModal}
+          />
+          )}
         </div>
       );
     } else if (valuesMode) {
@@ -209,6 +247,17 @@ export default class Header extends Component {
               toggleFunction={this.closeHowItWorksModal}
             />
           )}
+          {showOrganizationModal && (
+          <OrganizationModal
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              candidate_we_vote_id={organizationModalId}
+  open={showOrganizationModal}
+              // step={shareModalStep}
+              toggleFunction={this.closeOrganizationModal}
+          />
+          )}
         </div>
       );
     } else if (friendsMode && this.state.windowWidth >= 769) {
@@ -232,6 +281,17 @@ export default class Header extends Component {
               show={showHowItWorksModal}
               toggleFunction={this.closeHowItWorksModal}
             />
+          )}
+          {showOrganizationModal && (
+          <OrganizationModal
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              candidate_we_vote_id={organizationModalId}
+  open={showOrganizationModal}
+              // step={shareModalStep}
+              toggleFunction={this.closeOrganizationModal}
+          />
           )}
         </div>
       );
@@ -278,6 +338,17 @@ export default class Header extends Component {
               show={showHowItWorksModal}
               toggleFunction={this.closeHowItWorksModal}
             />
+          )}
+          {showOrganizationModal && (
+          <OrganizationModal
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              candidate_we_vote_id={organizationModalId}
+  open={showOrganizationModal}
+              // step={shareModalStep}
+              toggleFunction={this.closeOrganizationModal}
+          />
           )}
         </div>
       );

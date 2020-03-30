@@ -260,6 +260,7 @@ class HeaderBar extends Component {
       scrolledDown: AppStore.getScrolledDown(),
       shareModalStep: AppStore.shareModalStep(),
       organizationModalId: AppStore.organizationModalId(),
+      showOrganizationModal: AppStore.showOrganizationModal(),
       showAdviserIntroModal: AppStore.showAdviserIntroModal(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
@@ -642,7 +643,7 @@ class HeaderBar extends Component {
             toggleFunction={this.closeShareModal}
           />
         )}
-        {showOrganizationModal && (
+        {/* {showOrganizationModal && (
           <OrganizationModal
             isSignedIn={this.state.voter.is_signed_in}
             pathname={pathname}
@@ -651,7 +652,7 @@ open={showOrganizationModal}
             // step={shareModalStep}
             toggleFunction={this.closeOrganizationModal}
           />
-        )}
+        )} */}
         {showAdviserIntroModal && (
           <AdviserIntroModal
             pathname={pathname}

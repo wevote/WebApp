@@ -10,7 +10,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 // import Mail from '@material-ui/icons/Mail';
 // import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import { Button, Tooltip } from '@material-ui/core';
+import { Button, Tooltip, Drawer } from '@material-ui/core';
 // import AppActions from '../../actions/AppActions';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
@@ -18,6 +18,17 @@ import FriendsShareList from '../Friends/FriendsShareList';
 import FriendStore from '../../stores/FriendStore';
 import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
+import CandidateForDrawer from './CandidateForDrawer';
+import CandidateItem from '../Ballot/CandidateItem';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import VoterStore from '../../stores/VoterStore';
+import IssueActions from '../../actions/IssueActions';
+import IssueStore from '../../stores/IssueStore';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import CandidateActions from '../../actions/CandidateActions';
+import CandidateStore from '../../stores/CandidateStore';
 
 class OrganizationModal extends Component {
   static propTypes = {
@@ -33,6 +44,9 @@ class OrganizationModal extends Component {
     super(props);
     this.state = {
       pathname: '',
+      open: false,
+      candidateWeVoteId: '',
+      organizationWeVoteId: '',
       // currentFriendsList: [],
       // friendsToShareWith: [],
     };
@@ -43,33 +57,77 @@ class OrganizationModal extends Component {
   // Ids: options, friends
 
   componentDidMount () {
-    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    FriendActions.currentFriends();
+    // this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    // FriendActions.currentFriends();
+    // console.log('Candidate componentDidMount');
+    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
+    const { candidate_we_vote_id: candidateWeVoteId, organization_we_vote_id: organizationWeVoteId } = this.props;
+    // console.log('candidateWeVoteId:', candidateWeVoteId);
+    if (candidateWeVoteId) {
+      this.setState({
+        candidateWeVoteId,
+      });
+      CandidateActions.candidateRetrieve(candidateWeVoteId);
+    }
+
+    OrganizationActions.organizationsFollowedRetrieve();
+
+    // We want to make sure we have all of the position information so that comments show up
+    const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidateWeVoteId);
+
+    if (voterGuidesForThisBallotItem) {
+      voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
+        // console.log('oneVoterGuide: ', oneVoterGuide);
+        if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
+          OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
+        }
+      });
+    }
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+    }
+    IssueActions.issuesFollowedRetrieve();
+    if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
+      IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
+    }
+
+    AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
+    this.setState({
+      candidateWeVoteId,
+      organizationWeVoteId,
+    });
 
     this.setState({
       pathname: this.props.pathname,
       currentFriendsList: FriendStore.currentFriends(),
+      open: this.props.open,
+      candidate_we_vote_id: this.props.candidate_we_vote_id,
     });
   }
 
   componentWillUnmount () {
-    this.friendStoreListener.remove();
+    // console.log('Candidate componentWillUnmount');
+    this.candidateStoreListener.remove();
   }
 
-  onFriendStoreChange () {
-    const { currentFriendsList } = this.state;
-    if (currentFriendsList.length !== FriendStore.currentFriends().length) {
-      this.setState({ currentFriendsList: FriendStore.currentFriends() });
-    }
+  onCandidateStoreChange () {
+    // We just want to trigger a re-render
+    this.setState();
   }
 
   closeOrganizationModal () {
-    this.props.toggleFunction(this.state.pathname);
+    this.setState({ open: false });
+    setTimeout(() => {
+      this.props.toggleFunction(this.state.pathname);
+    }, 2000);
   }
 
   render () {
     renderLog('OrganizationModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
+
+    const { organizationWeVoteId, candidateWeVoteId } = this.state;
+
     // console.log('currentSelectedPlanCostForPayment:', currentSelectedPlanCostForPayment);
     // console.log(this.state);
 
@@ -89,15 +147,19 @@ class OrganizationModal extends Component {
 
     return (
       <>
-        <Dialog classes={{ root: classes.dialogPaper }}>
-          <DialogContent classes={{ root: classes.dialogContent }}>
-            <h1>STUFF</h1>
-            <h1>STUFF</h1>
-            <h1>STUFF</h1>
-            <h1>STUFF</h1>
-            <h1>STUFF</h1>
-          </DialogContent>
-        </Dialog>
+        <Drawer id="share-menu" anchor="right" open={this.state.open} direction="left" onClose={this.closeOrganizationModal}>
+          <CandidateItem
+            inModal
+            candidateWeVoteId={candidateWeVoteId}
+            organizationWeVoteId={organizationWeVoteId}
+            hideShowMoreFooter
+            expandIssuesByDefault
+            showLargeImage
+            showTopCommentByBallotItem
+            showOfficeName
+            showPositionStatementActionBar
+          />
+        </Drawer>
       </>
     );
   }
@@ -105,7 +167,6 @@ class OrganizationModal extends Component {
 const styles = () => ({
   dialogPaper: {
     display: 'block',
-    background: 'orange',
     marginTop: hasIPhoneNotch() ? 68 : 48,
     '@media (min-width: 576px)': {
       maxWidth: '600px',

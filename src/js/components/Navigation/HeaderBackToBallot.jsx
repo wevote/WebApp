@@ -711,7 +711,7 @@ class HeaderBackToBallot extends Component {
             closeFunction={this.closeSignInModal}
           />
         )}
-        {showOrganizationModal && (
+        {/* {showOrganizationModal && (
           <OrganizationModal
             isSignedIn={this.state.voter.is_signed_in}
             pathname={this.props.location.pathname}
@@ -720,7 +720,7 @@ open={showOrganizationModal}
             // step={shareModalStep}
             toggleFunction={this.closeOrganizationModal}
           />
-        )}
+        )} */}
       </AppBar>
     );
   }
