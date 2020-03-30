@@ -12,6 +12,8 @@ describe('Basic cross-platform We Vote test',  () => {
     const { twitterUserName, twitterPassword } = driver.config;
     const { isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
+    const platform = (isDesktopScreenSize) ? 'desktop' : 'mobile';
+    const measure = 'wv02meas604';
 
     if (isCordovaFromAppStore) {
       // switch contexts and click through intro
@@ -113,7 +115,6 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('changeAddressOrElectionHeaderBar'); // Open the "Change Address" modal
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await setNewAddress('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
-      await simpleClick('changeAddressOrElectionHeaderBar'); // Open the "Change Address" modal
     } else {  //  Mobile version
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('changeAddressHeaderBar'); // Opens the "Enter Your Full Address" link
@@ -123,12 +124,16 @@ describe('Basic cross-platform We Vote test',  () => {
         await setNewAddressAndroid('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
       }
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('ballotTitleHeaderSelectBallotModal'); // Opens the Enter Your Full Address link
     }
-
+    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
     // //////////////////////
     // Switch to a known election
+    if (isDesktopScreenSize) {
+      await simpleClick('changeAddressOrElectionHeaderBar'); // Open the "Change Address" modal
+    } else {
+      await simpleClick('ballotTitleHeaderSelectBallotModal'); // Opens the Ballot modal
+    }
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('ballotElectionListWithFiltersShowPriorElections');
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -161,81 +166,45 @@ describe('Basic cross-platform We Vote test',  () => {
     // Visit Measure Page
     if (isDesktopScreenSize) {  // desktop version
       await simpleClick('ballotBadgeDesktop-Measure');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('measureItemCompressedChoiceYes-wv02meas604'); // Click on Yes on 19
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const voteYesButtonId = 'itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-wv02meas604-desktopVersion-wv02meas604';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, voteYesButtonId); // Click on Voting Yes
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // Click on Close Pop Up of Voting Yes
-      // The very first time a Yes or No option is clicked, we open a popover that explains Friends vs. Public
-      // If you try to close this popover with "profileCloseItemActionBar" later in the script, it won't be able to find this id
-      await simpleClick('profileCloseItemActionBar');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarTextArea-wv02meas604-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas604'); // Click on TextArea
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas604-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas604',''); // Clear Text on TextArea
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02meas604-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas604','Commenting in measure to check'); // Write something on TextArea
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarSave-wv02meas604-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas604'); // Click on Save Button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const voteNoButtonId = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas604-desktopVersion-wv02meas604';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, voteNoButtonId); // Click on Voting No
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarEdit-604-measureItem-desktop-fromBallotItemSupportOpposeComment-604'); // Clicks on Edit Button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await clearTextInputValue('itemPositionStatementActionBarTextArea-604-measureItem-desktop-fromBallotItemSupportOpposeComment-604',' '); // Clear Text on TextArea
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarSave-604-measureItem-desktop-fromBallotItemSupportOpposeComment-604'); // Click on Save Button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const voteNoButton = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-604-desktopVersion-604';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, voteNoButton); // Click on Voting No again (to unset)
     } else {  // mobile version
       await simpleClick('ballotBadgeMobile-Measure');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('measureItemCompressedChoiceYes-wv02meas604'); // Click on Yes on 19
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const voteYesButtonId = 'itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-wv02meas604-mobileVersion-wv02meas604';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, voteYesButtonId); // Click on Voting Yes
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // Click on Close Pop Up of Voting Yes
-      // The very first time a Yes or No option is clicked, we open a popover that explains Friends vs. Public
-      // If you try to close this popover with "profileCloseItemActionBar" later in the script, it won't be able to find this id
-      await simpleClick('profileCloseItemActionBar');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarTextArea-wv02meas604-measureItem-mobile-fromBallotItemSupportOpposeComment-wv02meas604'); // Click on TextArea
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas604-measureItem-mobile-fromBallotItemSupportOpposeComment-wv02meas604',''); // Clear Text on TextArea
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02meas604-measureItem-mobile-fromBallotItemSupportOpposeComment-wv02meas604','Commenting in measure to check'); // Write something on TextArea
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarSave-wv02meas604-measureItem-mobile-fromBallotItemSupportOpposeComment-wv02meas604'); // Click on Save Button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const voteNoButtonId = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas604-mobileVersion-wv02meas604';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, voteNoButtonId); // Click on Voting No
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarEdit-604-measureItem-mobile-fromBallotItemSupportOpposeComment-604'); // Clicks on Edit Button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await clearTextInputValue('itemPositionStatementActionBarTextArea-604-measureItem-mobile-fromBallotItemSupportOpposeComment-604',' '); // Clear Text on TextArea
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarSave-604-measureItem-mobile-fromBallotItemSupportOpposeComment-604'); // Click on Save Button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const voteNoButton = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-604-mobileVersion-604';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, voteNoButton); // Click on Voting No again (to unset)
     }
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`measureItemCompressedChoiceYes-${measure}`); // Click on Yes on 19
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    const voteYesButtonId = `itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-${measure}-${platform}Version-${measure}`;
+    browser.execute((id) => {
+      document.getElementById(id).click();
+    }, voteYesButtonId); // Click on Voting Yes
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // Click on Close Pop Up of Voting Yes
+    // The very first time a Yes or No option is clicked, we open a popover that explains Friends vs. Public
+    // If you try to close this popover with "profileCloseItemActionBar" later in the script, it won't be able to find this id
+    await simpleClick('profileCloseItemActionBar');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`itemPositionStatementActionBarTextArea-${measure}-measureItem-${platform}-fromBallotItemSupportOpposeComment-${measure}`); // Click on TextArea
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await clearTextInputValue(`itemPositionStatementActionBarTextArea-${measure}-measureItem-${platform}-fromBallotItemSupportOpposeComment-${measure}`, ''); // Clear Text on TextArea
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleTextInput(`itemPositionStatementActionBarTextArea-${measure}-measureItem-${platform}-fromBallotItemSupportOpposeComment-${measure}`, 'Commenting in measure to check'); // Write something on TextArea
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`itemPositionStatementActionBarSave-${measure}-measureItem-${platform}-fromBallotItemSupportOpposeComment-${measure}`); // Click on Save Button
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    const voteNoButtonId = `itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-${measure}-${platform}Version-${measure}`;
+    browser.execute((id) => {
+      document.getElementById(id).click();
+    }, voteNoButtonId); // Click on Voting No
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`itemPositionStatementActionBarEdit-${measure}-measureItem-${platform}-fromBallotItemSupportOpposeComment-${measure}`); // Clicks on Edit Button
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await clearTextInputValue(`itemPositionStatementActionBarTextArea-${measure}-measureItem-${platform}-fromBallotItemSupportOpposeComment-${measure}`, ' '); // Clear Text on TextArea
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`itemPositionStatementActionBarSave-${measure}-measureItem-${platform}-fromBallotItemSupportOpposeComment-${measure}`); // Click on Save Button
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    const voteNoButton = `itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-${measure}-${platform}Version-${measure}`;
+    browser.execute((id) => {
+      document.getElementById(id).click();
+    }, voteNoButton); // Click on Voting No again (to unset)
 
     // Open position display filters
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
