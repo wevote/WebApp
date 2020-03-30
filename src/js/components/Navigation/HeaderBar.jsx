@@ -636,6 +636,7 @@ class HeaderBar extends Component {
             isSignedIn={this.state.voter.is_signed_in}
             pathname={pathname}
             show={showOrganizationModal}
+open={showOrganizationModal}
             // step={shareModalStep}
             toggleFunction={this.closeOrganizationModal}
           />

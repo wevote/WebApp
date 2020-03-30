@@ -405,7 +405,7 @@ class VoterGuidePositionItem extends Component {
 
   render () {
     renderLog('VoterGuidePositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { position } = this.props;
+    const { position, onClickFunction } = this.props;
     // console.log('VoterGuidePositionItem position:', position);
     let {
       ballot_item_display_name: ballotItemDisplayName,
@@ -450,8 +450,8 @@ class VoterGuidePositionItem extends Component {
       }
     }
     return (
-      <div onClick={this.props.onClickFunction}>
-        <Card onClick={this.props.onClickFunction ? this.onClickFunction() : null}>
+      <div onClick={onClickFunction}>
+        <Card>
           <BallotItemPadding>
             <BallotItemWrapper className="card-main__media-object">
               { isCandidate ? (

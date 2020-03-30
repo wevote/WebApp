@@ -38,20 +38,16 @@ class OrganizationModal extends Component {
     };
 
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
-    this.setId = this.setId.bind(this);
   }
 
   // Ids: options, friends
 
   componentDidMount () {
-    console.log(this.props.id);
-
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
 
     this.setState({
       pathname: this.props.pathname,
-      id: this.props.id || '',
       currentFriendsList: FriendStore.currentFriends(),
     });
   }
@@ -65,10 +61,6 @@ class OrganizationModal extends Component {
     if (currentFriendsList.length !== FriendStore.currentFriends().length) {
       this.setState({ currentFriendsList: FriendStore.currentFriends() });
     }
-  }
-
-  setId (id) {
-    this.setState({ id });
   }
 
   closeOrganizationModal () {
@@ -95,166 +87,14 @@ class OrganizationModal extends Component {
     //   this.setState({ friendsToShareWith: newFriendsToShareWith, [index]: event.target.checked });
     // };
 
-    if (this.state.id === 'options') {
-      shareModalHtml = (
-        <Dialog
-          classes={{ paper: classes.dialogPaper }}
-          open={this.props.show}
-          onClose={() => { this.props.toggleFunction(this.state.pathname); }}
-        >
-          <ModalTitleArea firstSlide>
-            <div>
-              <Title>
-                Share:
-                {' '}
-                <strong>Ballot for Nov 2019 Elections</strong>
-              </Title>
-              <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
-            </div>
-            <IconButton
-              aria-label="Close"
-              className={classes.closeButtonAbsolute}
-              onClick={this.closeOrganizationModal}
-              id="profileCloseOrganizationModal"
-            >
-              <CloseIcon />
-            </IconButton>
-          </ModalTitleArea>
-          <DialogContent classes={{ root: classes.dialogContent }}>
-            <div className="full-width">
-              <Flex>
-                {/* <OrganizationModalOption
-                  noLink
-                  onClickFunction={() => {
-                    if (!this.props.isSignedIn) {
-                      AppActions.setShowSignInModal(true);
-                      this.setId('friends');
-                    } else {
-                      this.setId('friends');
-                    }
-                  }}
-                  background="#2E3C5D"
-                  icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />}
-                  title="We Vote Friends"
-                />
-                <OrganizationModalOption link="https://www.facebook.com/sharer/sharer.php?u=wevote.us&t=WeVote" target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
-                <OrganizationModalOption link={`https://twitter.com/share?text=Check out this cool ballot tool at https://wevote.us${window.location.pathname}!`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
-                <OrganizationModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
-                <OrganizationModalOption copyLink link="https://google.com" background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" /> */}
-              </Flex>
-            </div>
-          </DialogContent>
-        </Dialog>
-      );
-    } else if (this.state.id === 'friends' && !this.props.isSignedIn) {
-      // historyPush('/ballot/modal/share');
-      // AppActions.setShowSignInModal(true);
-
-
-      // cookies.setItem('sign_in_start_full_url', signInStartFullUrl, 86400, '/', 'wevote.us');
-      // shareModalHtml = (
-      //   <Dialog
-      //     classes={{ paper: classes.dialogPaper }}
-      //     open={this.props.show}
-      //     onClose={() => { this.props.toggleFunction(this.state.pathname); }}
-      //   >
-      //     <ModalTitleArea onSignInSlide>
-      //       <Title onSignInSlide bold>Sign In</Title>
-      //       <IconButton
-      //         aria-label="Close"
-      //         className={classes.closeButtonAbsolute}
-      //         onClick={this.closeOrganizationModal}
-      //         id="profileCloseOrganizationModal"
-      //       >
-      //         <CloseIcon />
-      //       </IconButton>
-      //     </ModalTitleArea>
-      //     <DialogContent classes={{ root: classes.dialogContent }}>
-      //       <SettingsAccount inOrganizationModal inModal pleaseSignInTitle="Sign in to share with your friends" />
-      //     </DialogContent>
-      //   </Dialog>
-      // );
-    } else if (this.state.id === 'friends' && this.props.isSignedIn && this.state.currentFriendsList.length > 0) {
-      shareModalHtml = (
-        <Dialog
-          classes={{ paper: classes.dialogPaper }}
-          open={this.props.show}
-          onClose={() => { this.props.toggleFunction(this.state.pathname); }}
-        >
-          <ModalTitleArea>
-            <Button className={classes.backButton} color="primary" onClick={() => { this.setId('options'); }}>
-              <ArrowBackIos className={classes.backButtonIcon} />
-              Back
-            </Button>
-            <IconButton
-              aria-label="Close"
-              className={classes.closeButton}
-              onClick={this.closeOrganizationModal}
-              id="profileCloseOrganizationModal"
-            >
-              <CloseIcon />
-            </IconButton>
-          </ModalTitleArea>
-          <DialogContent classes={{ root: classes.dialogContent }}>
-            <div className="full-width">
-              <FriendsShareTextWrapper>
-                <Title left>
-                  <strong>Share Ballot With Friends</strong>
-                  {' '}
-                  <Tooltip title="Share a link to this election so that your friends can get ready to vote. Your opinions are not included." arrow enterDelay={300}>
-                    <i className="fas fa-info-circle" />
-                  </Tooltip>
-                </Title>
-                <SubTitle larger left>
-                  Invite friends by email or phone
-                </SubTitle>
-              </FriendsShareTextWrapper>
-              <FriendsShareList list={this.state.currentFriendsList} />
-            </div>
-          </DialogContent>
-        </Dialog>
-      );
-    } else {
-      shareModalHtml = (
-        <Dialog
-          classes={{ paper: classes.dialogPaper }}
-          open={this.props.show}
-          onClose={() => { this.props.toggleFunction(this.state.pathname); }}
-        >
-          <ModalTitleArea>
-            <Button className={classes.backButton} color="primary" onClick={() => { this.setId('options'); }}>
-              <ArrowBackIos className={classes.backButtonIcon} />
-              Back
-            </Button>
-            <IconButton
-              aria-label="Close"
-              className={classes.closeButton}
-              onClick={this.closeOrganizationModal}
-              id="profileCloseOrganizationModal"
-            >
-              <CloseIcon />
-            </IconButton>
-          </ModalTitleArea>
-          <DialogContent classes={{ root: classes.dialogContent }}>
-            <MessageCard
-              mainText="You haven't added any friends yet."
-              buttonText="Add Friends"
-              buttonURL="/friends/invite"
-              noCard
-              fullWidthButton
-              secondaryText="By adding friends who you enjoy discussing politics with to We Vote, you can help eachother get ready for elections."
-              inOrganizationModal
-              icon={<People />}
-              onClickFunc={this.closeOrganizationModal}
-            />
-          </DialogContent>
-        </Dialog>
-      );
-    }
     return (
       <>
-        <Dialog>
-          <DialogContent>
+        <Dialog classes={{ root: classes.dialogPaper }}>
+          <DialogContent classes={{ root: classes.dialogContent }}>
+            <h1>STUFF</h1>
+            <h1>STUFF</h1>
+            <h1>STUFF</h1>
+            <h1>STUFF</h1>
             <h1>STUFF</h1>
           </DialogContent>
         </Dialog>
@@ -264,6 +104,8 @@ class OrganizationModal extends Component {
 }
 const styles = () => ({
   dialogPaper: {
+    display: 'block',
+    background: 'orange',
     marginTop: hasIPhoneNotch() ? 68 : 48,
     '@media (min-width: 576px)': {
       maxWidth: '600px',

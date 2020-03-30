@@ -310,10 +310,10 @@ class VoterGuidePositions extends Component {
     });
   }
 
-  onClickFunction (id) {
+  onClickFunction () {
     console.log("onClickFunction: VoterGuidePositions.jsx - Line 314");
     AppActions.setShowOrganizationModal(true);
-    AppActions.setOrganizationModalId(id);
+    // AppActions.setOrganizationModalId(id);
   }
 
   render () {
@@ -394,7 +394,7 @@ class VoterGuidePositions extends Component {
                   {positionListForOneElection.map(item => (
                     <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
                       <VoterGuidePositionItem
-                        onClickFunction={() => this.onClickFunction(organizationWeVoteId)}
+                        onClickFunction={this.onClickFunction}
                         organizationWeVoteId={organizationWeVoteId}
                         position={item}
                       />

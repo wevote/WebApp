@@ -25,6 +25,7 @@ import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
+import OrganizationModal from '../VoterGuide/OrganizationModal';
 
 class HeaderBackToBallot extends Component {
   static propTypes = {
@@ -51,6 +52,7 @@ class HeaderBackToBallot extends Component {
       organizationWeVoteId: '',
       profilePopUpOpen: false,
       showSignInModal: AppStore.showSignInModal(),
+      showOrganizationModal: AppStore.showOrganizationModal(),
       scrolledDown: AppStore.getScrolledDown(),
       voter: {},
       voterFirstName: '',
@@ -323,6 +325,10 @@ class HeaderBackToBallot extends Component {
       // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
       return true;
     }
+    if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
+      // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
+      return true;
+    }
     if (this.state.voterFirstName !== nextState.voterFirstName) {
       // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
       return true;
@@ -359,6 +365,7 @@ class HeaderBackToBallot extends Component {
     this.setState({
       scrolledDown: AppStore.getScrolledDown(),
       showSignInModal: AppStore.showSignInModal(),
+      showOrganizationModal: AppStore.showOrganizationModal(),
     });
   }
 
@@ -519,6 +526,10 @@ class HeaderBackToBallot extends Component {
     AppActions.setShowSignInModal(false);
   }
 
+  closeOrganizationModal () {
+    AppActions.setShowOrganizationModal(false);
+  }
+
   toggleSignInModal () {
     const { showSignInModal } = this.state;
     this.setState({ profilePopUpOpen: false });
@@ -547,7 +558,7 @@ class HeaderBackToBallot extends Component {
     const {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
       candidate, googleCivicElectionId, measureWeVoteId, officeName, officeWeVoteId,
-      organization, organizationWeVoteId, profilePopUpOpen, scrolledDown, showSignInModal,
+      organization, organizationWeVoteId, profilePopUpOpen, scrolledDown, showSignInModal, showOrganizationModal,
       voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
     } = this.state;
     const { classes, pathname } = this.props;
@@ -698,6 +709,16 @@ class HeaderBackToBallot extends Component {
           <SignInModal
             show={showSignInModal}
             closeFunction={this.closeSignInModal}
+          />
+        )}
+        {showOrganizationModal && (
+          <OrganizationModal
+            isSignedIn={this.state.voter.is_signed_in}
+            pathname={this.props.location.pathname}
+            show={showOrganizationModal}
+open={showOrganizationModal}
+            // step={shareModalStep}
+            toggleFunction={this.closeOrganizationModal}
           />
         )}
       </AppBar>
