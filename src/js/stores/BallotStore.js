@@ -7,6 +7,7 @@ import MeasureActions from '../actions/MeasureActions'; // eslint-disable-line i
 import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 import { stringContains } from '../utils/textFormat';
+import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -103,15 +104,27 @@ class BallotStore extends ReduceStore {
   }
 
   get currentBallotElectionName () {
-    if (!this.isLoaded()) { return 'Election'; }
+    if (!this.isLoaded()) { return ''; }
     const civicId = VoterStore.electionId();
-    return this.getState().ballots[civicId].election_name;
+    // console.log('ballots:', this.getState().ballots[civicId]);
+    // console.log('currentBallotElectionName:', this.getState().voterGuideElectionListByElectionId[civicId]);
+    if (this.getState().ballots[civicId].election_name) {
+      return this.getState().ballots[civicId].election_name;
+    } else if (this.getState().voterGuideElectionListByElectionId[civicId].election_name) {
+      return this.getState().voterGuideElectionListByElectionId[civicId].election_name;
+    }
+    return '';
   }
 
   get currentBallotElectionDate () {
     if (!this.isLoaded()) { return undefined; }
     const civicId = VoterStore.electionId();
-    return this.getState().ballots[civicId].election_day_text;
+    if (this.getState().ballots[civicId].election_day_text) {
+      return this.getState().ballots[civicId].election_day_text;
+    } else if (this.getState().voterGuideElectionListByElectionId[civicId].election_day_text) {
+      return this.getState().voterGuideElectionListByElectionId[civicId].election_day_text;
+    }
+    return '';
   }
 
   get currentBallotGoogleCivicElectionId () {
@@ -269,15 +282,18 @@ class BallotStore extends ReduceStore {
     let ballotCaveat = '';
     let ballotItemWeVoteIdList = [];
     let ballotItemWeVoteIdTemp = '';
+    let convertedElection;
     let googleCivicElectionId;
     let isCandidate = false;
     let isMeasure = false;
     let newBallots = {};
+    let positionListFromFriendsHasBeenRetrievedOnceByBallotItem = {};
     let revisedState;
     let tempBallotItemList = [];
     let textForMapSearch = '';
     let voterBallotList = [];
-    let positionListFromFriendsHasBeenRetrievedOnceByBallotItem = {};
+    let voterGuides;
+    let voterGuideElectionListByElectionId;
     const { ballotItemListCandidatesDict, ballotItemUnfurledTracker: newBallotItemUnfurledTracker } = state;
 
     switch (action.type) {
@@ -434,7 +450,7 @@ class BallotStore extends ReduceStore {
         // Exit if we don't have a successful response
         if (action.res && action.res.success === false && stringContains('VALID_VOTER_DEVICE_ID_MISSING', action.res.status)) {
           // On the first call, we didn't have a valid voter_device_id yet. Call again.
-          console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
+          // console.log('BallotStore, voterBallotItemsRetrieve response received, action.res:', action.res);
           // Add a 2 second delay
           clearTimeout(this.timer);
           this.timer = setTimeout(() => {
@@ -571,6 +587,23 @@ class BallotStore extends ReduceStore {
         return {
           ...state,
           ballotItemUnfurledTracker: action.res.ballot_item_unfurled_tracker,
+        };
+
+      case 'voterGuidesRetrieve':
+        voterGuides = action.res.voter_guides;
+        voterGuideElectionListByElectionId = state.voterGuideElectionListByElectionId || {};
+        voterGuides.forEach((oneVoterGuide) => {
+          if (voterGuideElectionListByElectionId[oneVoterGuide.google_civic_election_id] === undefined) {
+            convertedElection = convertVoterGuideToElection(oneVoterGuide);
+            if (convertedElection !== false) {
+              voterGuideElectionListByElectionId[oneVoterGuide.google_civic_election_id] = convertedElection;
+            }
+          }
+        });
+        console.log('voterGuideElectionListByElectionId:', voterGuideElectionListByElectionId);
+        return {
+          ...state,
+          voterGuideElectionListByElectionId,
         };
 
       case 'voterSignOut':

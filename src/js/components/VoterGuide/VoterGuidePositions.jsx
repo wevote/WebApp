@@ -5,7 +5,9 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
 import BallotActions from '../../actions/BallotActions';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
@@ -21,6 +23,7 @@ import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import ThisIsMeAction from '../Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import YourPositionsVisibilityMessage from './YourPositionsVisibilityMessage';
 import AppActions from '../../actions/AppActions';
@@ -39,7 +42,8 @@ class VoterGuidePositions extends Component {
     this.state = {
       clearSearchTextNow: false,
       currentGoogleCivicElectionId: 0,
-      editMode: false,
+      numberOfPositionItemsToDisplay: 10,
+      loadingMoreItems: false,
       organization: {},
       organizationId: 0,
       organizationWeVoteId: '',
@@ -49,6 +53,7 @@ class VoterGuidePositions extends Component {
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.searchUnderway = this.searchUnderway.bind(this);
+    this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
@@ -106,19 +111,19 @@ class VoterGuidePositions extends Component {
         }
         historyPush(ballotElectionUrl2);
       }
+    } else {
+      // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
+      BallotActions.voterBallotItemsRetrieve(0, '', '');
     }
-    // DALE NOTE 2018-1-18 Commented this out because it will take voter away from voter guide. Needs further testing.
-    // else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false) { // No ballot found
-    //   // console.log('if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false');
-    //   historyPush("/settings/location");
-    // }
 
     // NOTE: voterAllPositionsRetrieve is also called in SupportStore when voterAddressRetrieve is received,
     // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
     SupportActions.voterAllPositionsRetrieve();
 
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (organizationWeVoteId) {
       VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.electionId());
@@ -145,6 +150,11 @@ class VoterGuidePositions extends Component {
           positionListForOneElectionLength,
         });
       }
+      const voterGuideElectionList = VoterGuideStore.getVoterGuideElectionList(organizationWeVoteId);
+      const voterGuideElectionListCount = voterGuideElectionList.length || 0;
+      this.setState({
+        voterGuideElectionListCount,
+      });
     }
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
@@ -154,6 +164,8 @@ class VoterGuidePositions extends Component {
       electionDayText,
       voter: VoterStore.getVoter(),
     });
+
+    window.addEventListener('scroll', this.onScroll);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -202,36 +214,64 @@ class VoterGuidePositions extends Component {
     });
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.currentGoogleCivicElectionId !== nextState.currentGoogleCivicElectionId) {
-      // console.log('shouldComponentUpdate: this.state.currentGoogleCivicElectionId', this.state.currentGoogleCivicElectionId, ', nextState.currentGoogleCivicElectionId', nextState.currentGoogleCivicElectionId);
-      return true;
-    }
-    if (this.state.currentOrganizationWeVoteId !== nextState.currentOrganizationWeVoteId) {
-      // console.log('shouldComponentUpdate: this.state.currentOrganizationWeVoteId', this.state.currentOrganizationWeVoteId, ', nextState.currentOrganizationWeVoteId', nextState.currentOrganizationWeVoteId);
-      return true;
-    }
-    if (this.state.electionName !== nextState.electionName) {
-      // console.log('shouldComponentUpdate: this.state.electionName', this.state.electionName, ', nextState.electionName', nextState.electionName);
-      return true;
-    }
-    if (this.state.organizationId !== nextState.organizationId) {
-      // console.log('shouldComponentUpdate: this.state.organizationId', this.state.organizationId, ', nextState.organizationId', nextState.organizationId);
-      return true;
-    }
-    if (this.state.positionListForOneElectionLength !== nextState.positionListForOneElectionLength) {
-      // console.log('shouldComponentUpdate: this.state.positionListForOneElectionLength', this.state.positionListForOneElectionLength, ', nextState.positionListForOneElectionLength', nextState.positionListForOneElectionLength);
-      return true;
-    }
-    // console.log('shouldComponentUpdate no changes');
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   if (this.state.currentGoogleCivicElectionId !== nextState.currentGoogleCivicElectionId) {
+  //     // console.log('shouldComponentUpdate: this.state.currentGoogleCivicElectionId', this.state.currentGoogleCivicElectionId, ', nextState.currentGoogleCivicElectionId', nextState.currentGoogleCivicElectionId);
+  //     return true;
+  //   }
+  //   if (this.state.currentOrganizationWeVoteId !== nextState.currentOrganizationWeVoteId) {
+  //     // console.log('shouldComponentUpdate: this.state.currentOrganizationWeVoteId', this.state.currentOrganizationWeVoteId, ', nextState.currentOrganizationWeVoteId', nextState.currentOrganizationWeVoteId);
+  //     return true;
+  //   }
+  //   if (this.state.electionName !== nextState.electionName) {
+  //     // console.log('shouldComponentUpdate: this.state.electionName', this.state.electionName, ', nextState.electionName', nextState.electionName);
+  //     return true;
+  //   }
+  //   if (this.state.loadingMoreItems !== nextState.loadingMoreItems) {
+  //     // console.log('shouldComponentUpdate: this.state.loadingMoreItems', this.state.loadingMoreItems, ', nextState.loadingMoreItems', nextState.loadingMoreItems);
+  //     return true;
+  //   }
+  //   if (this.state.numberOfPositionItemsToDisplay !== nextState.numberOfPositionItemsToDisplay) {
+  //     // console.log('shouldComponentUpdate: this.state.numberOfPositionItemsToDisplay', this.state.numberOfPositionItemsToDisplay, ', nextState.numberOfPositionItemsToDisplay', nextState.numberOfPositionItemsToDisplay);
+  //     return true;
+  //   }
+  //   if (this.state.organizationId !== nextState.organizationId) {
+  //     // console.log('shouldComponentUpdate: this.state.organizationId', this.state.organizationId, ', nextState.organizationId', nextState.organizationId);
+  //     return true;
+  //   }
+  //   if (this.state.positionListForOneElectionLength !== nextState.positionListForOneElectionLength) {
+  //     // console.log('shouldComponentUpdate: this.state.positionListForOneElectionLength', this.state.positionListForOneElectionLength, ', nextState.positionListForOneElectionLength', nextState.positionListForOneElectionLength);
+  //     return true;
+  //   }
+  //   if (this.state.voterGuideElectionListCount !== nextState.voterGuideElectionListCount) {
+  //     // console.log('shouldComponentUpdate: this.state.voterGuideElectionListCount', this.state.voterGuideElectionListCount, ', nextState.voterGuideElectionListCount', nextState.voterGuideElectionListCount);
+  //     return true;
+  //   }
+  //   // console.log('shouldComponentUpdate no changes');
+  //   return false;
+  // }
 
   componentWillUnmount () {
+    this.ballotStoreListener.remove();
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.positionItemTimer) {
+      clearTimeout(this.positionItemTimer);
+      this.positionItemTimer = null;
+    }
+  }
+
+  onBallotStoreChange () {
+    const electionName = BallotStore.currentBallotElectionName;
+    const electionDayText = BallotStore.currentBallotElectionDate;
+    this.setState({
+      currentGoogleCivicElectionId: VoterStore.electionId(),
+      electionName,
+      electionDayText,
+    });
   }
 
   onOrganizationStoreChange () {
@@ -274,21 +314,74 @@ class VoterGuidePositions extends Component {
     }
   }
 
-  onVoterStoreChange () {
+  onVoterGuideStoreChange () {
+    const { organizationWeVoteId } = this.props;
+    const voterGuideElectionList = VoterGuideStore.getVoterGuideElectionList(organizationWeVoteId);
+    const voterGuideElectionListCount = voterGuideElectionList.length || 0;
     this.setState({
+      voterGuideElectionListCount,
+    });
+  }
+
+  onVoterStoreChange () {
+    const electionName = BallotStore.currentBallotElectionName;
+    const electionDayText = BallotStore.currentBallotElectionDate;
+    this.setState({
+      currentGoogleCivicElectionId: VoterStore.electionId(),
+      electionName,
+      electionDayText,
       voter: VoterStore.getVoter(),
     });
   }
 
-  onKeyDownEditMode (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    const scope = this;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      if (this.state.editMode) {
-        // If going from editMode == True to editMode == False, we want to refresh the positions
-        OrganizationActions.positionListForOpinionMaker(this.state.organizationWeVoteId, true, false, this.state.currentGoogleCivicElectionId);
+  onClickFunction (id) {
+    AppActions.setShowOrganizationModal(true);
+    AppActions.setOrganizationModalId(id);
+  }
+
+  onScroll () {
+    const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
+    // console.log('showMoreItemsElement: ', showMoreItemsElement);
+    // console.log('Loading more: ', this.state.loadingMoreItems);
+    if (showMoreItemsElement) {
+      const { numberOfPositionItemsToDisplay, positionListForOneElectionLength } = this.state;
+
+      // console.log('window.height: ', window.innerHeight);
+      // console.log('Window Scroll: ', window.scrollY);
+      // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
+      // console.log('positionListForOneElectionLength: ', positionListForOneElectionLength);
+      // console.log('numberOfPositionItemsToDisplay: ', numberOfPositionItemsToDisplay);
+
+      if (numberOfPositionItemsToDisplay < positionListForOneElectionLength) {
+        if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
+          this.setState({ loadingMoreItems: true });
+          this.increaseNumberOfPositionItemsToDisplay();
+        }
+      } else {
+        this.setState({ loadingMoreItems: false });
       }
-      scope.setState({ editMode: !this.state.editMode });
+    }
+  }
+
+  increaseNumberOfPositionItemsToDisplay = () => {
+    let { numberOfPositionItemsToDisplay } = this.state;
+    // console.log('Number of position items before increment: ', numberOfPositionItemsToDisplay);
+
+    numberOfPositionItemsToDisplay += 5;
+    // console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
+
+    this.positionItemTimer = setTimeout(() => {
+      this.setState({
+        numberOfPositionItemsToDisplay,
+      });
+    }, 500);
+  }
+
+  openShowElectionsWithOrganizationVoterGuidesModal () {
+    // console.log('VoterGuidePositions openShowElectionsWithOrganizationVoterGuidesModal');
+    const { voterGuideElectionListCount } = this.state;
+    if (voterGuideElectionListCount) {
+      AppActions.setShowElectionsWithOrganizationVoterGuidesModal(true);
     }
   }
 
@@ -320,7 +413,15 @@ class VoterGuidePositions extends Component {
     renderLog('VoterGuidePositions');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('VoterGuidePositions render');
     const { classes } = this.props;
-    const { electionDayText, electionName, organization, organizationId, organizationWeVoteId, positionListForOneElection } = this.state;
+    const {
+      clearSearchTextNow, currentGoogleCivicElectionId, electionDayText, electionName,
+      loadingMoreItems, organization,
+      organizationId, organizationWeVoteId, numberOfPositionItemsToDisplay,
+      positionListForOneElection, positionListForOneElectionLength, searchIsUnderway,
+      voterGuideElectionListCount,
+    } = this.state;
+    // console.log('voterGuideElectionListCount:', voterGuideElectionListCount);
+
     if (!organization) {
       // Wait until organization has been set to render
       return null;
@@ -337,7 +438,7 @@ class VoterGuidePositions extends Component {
 
     let lookingAtSelf = false;
     if (this.state.voter) {
-      lookingAtSelf = this.state.voter.linked_organization_we_vote_id === this.state.organizationWeVoteId;
+      lookingAtSelf = this.state.voter.linked_organization_we_vote_id === organizationWeVoteId;
     }
 
     // console.log("lookingAtSelf: ", lookingAtSelf);
@@ -347,6 +448,7 @@ class VoterGuidePositions extends Component {
     const descriptionText = `See endorsements and opinions from ${organizationName} for the November election`;
     const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
+    let numberOfPositionItemsDisplayed = 0;
     return (
       <VoterGuidePositionsWrapper>
         {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
@@ -357,20 +459,34 @@ class VoterGuidePositions extends Component {
         <div className="card">
           <div className="card-main">
             <header className="ballot__header__group">
-              <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
+              <TitleWrapper
+                className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}
+                onClick={() => this.openShowElectionsWithOrganizationVoterGuidesModal()}
+                showCursorPointer={voterGuideElectionListCount}
+              >
                 { electionName ? (
                   <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
                     {electionName}
-                    {' '}
-                    <span className="d-none d-sm-inline">&mdash; </span>
-                    <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+                    {!!(voterGuideElectionListCount) && (
+                      <SettingsIconWrapper>
+                        <SettingsIcon classes={{ root: classes.settingsIcon }} />
+                      </SettingsIconWrapper>
+                    )}
+                    {Boolean(electionDayText) && (
+                      <>
+                        {' '}
+                        <span className="d-none d-sm-inline">&mdash;</span>
+                        {' '}
+                        <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+                      </>
+                    )}
                   </span>
                 ) : (
                   <span className="u-push--sm">
                          Loading Election...
                   </span>
                 )}
-              </h1>
+              </TitleWrapper>
             </header>
           </div>
         </div>
@@ -381,8 +497,8 @@ class VoterGuidePositions extends Component {
               { lookingAtSelf && (
                 <div className="u-margin-left--md u-push--md">
                   <BallotSearchResults
-                    clearSearchTextNow={this.state.clearSearchTextNow}
-                    googleCivicElectionId={this.state.currentGoogleCivicElectionId}
+                    clearSearchTextNow={clearSearchTextNow}
+                    googleCivicElectionId={currentGoogleCivicElectionId}
                     organizationWeVoteId={this.state.voter.linked_organization_we_vote_id}
                     searchUnderwayFunction={this.searchUnderway}
                   />
@@ -426,7 +542,7 @@ class VoterGuidePositions extends Component {
                 </Card>
               )}
             </VoterGuideEndorsementsWrapper>
-            {this.state.searchIsUnderway ? (
+            {searchIsUnderway ? (
               <span className="d-block d-sm-none">
                 <FooterDoneBar doneFunction={this.clearSearch} doneButtonText="Clear Search" />
               </span>
@@ -471,6 +587,13 @@ const styles = theme => ({
       width: '100%',
     },
   },
+  settingsIcon: {
+    color: '#999',
+    marginTop: '-5px',
+    marginLeft: '3px',
+    width: 16,
+    height: 16,
+  },
 });
 
 const EmptyBallotMessageContainer = styled.div`
@@ -496,6 +619,33 @@ const ExtraActionsWrapper = styled.div`
   margin-bottom: 20px;
   margin-left: -15px;
   margin-right: -15px;
+`;
+
+const LoadingItemsWheel = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SettingsIconWrapper = styled.span`
+`;
+
+const ShowMoreItems = styled.div`
+  font-size: 18px;
+  text-align: right;
+  user-select: none;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    padding-top: 5px;
+    padding-bottom: 3px;
+  }
+  @media print{
+    display: none;
+  }
+`;
+
+const TitleWrapper = styled.h1`
+  ${({ showCursorPointer }) => (showCursorPointer ? 'cursor: pointer;' : '')}
 `;
 
 const VoterGuideEndorsementsWrapper = styled.div`

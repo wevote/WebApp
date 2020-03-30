@@ -16,8 +16,10 @@ import { cleanArray } from '../../utils/textFormat';
 
 class PositionSummaryListForPopover extends Component {
   static propTypes = {
-    classes: PropTypes.object,
     ballotItemWeVoteId: PropTypes.string,
+    classes: PropTypes.object,
+    controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
+    openAdviserMaterialUIPopover: PropTypes.bool,
     positionSummaryList: PropTypes.array,
     showAllPositions: PropTypes.func,
     voterPersonalNetworkScore: PropTypes.number,
@@ -34,35 +36,7 @@ class PositionSummaryListForPopover extends Component {
   }
 
   componentDidMount () {
-    // console.log('BallotItemSupportOpposeCountDisplay componentDidMount');
-    // let positionSummaryListLength = 0;
-    // if (this.props.positionSummaryList) {
-    //   positionSummaryListLength = this.props.positionSummaryList.length;
-    // }
-    // this.setState({
-    //   positionSummaryListLength,
-    // });
   }
-
-  // componentWillReceiveProps (nextProps) {
-  //   // console.log('componentWillReceiveProps, nextProps: ', nextProps);
-  //   let positionSummaryListLength = 0;
-  //   if (nextProps.positionSummaryList) {
-  //     positionSummaryListLength = nextProps.positionSummaryList.length;
-  //   }
-  //   this.setState({
-  //     positionSummaryListLength,
-  //   });
-  // }
-
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   // This lifecycle method tells the component to NOT render if not needed
-  //   if (this.state.positionSummaryListLength !== nextState.positionSummaryListLength) {
-  //     // console.log('this.state.positionSummaryListLength: ', this.state.positionSummaryListLength, ', nextState.positionSummaryListLength', nextState.positionSummaryListLength);
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   showAllPositions () {
     const { ballotItemWeVoteId } = this.props;
@@ -73,20 +47,36 @@ class PositionSummaryListForPopover extends Component {
 
   render () {
     const {
-      ballotItemWeVoteId, classes, positionSummaryList,
+      ballotItemWeVoteId, classes, controlAdviserMaterialUIPopoverFromProp, openAdviserMaterialUIPopover, positionSummaryList,
       voterPersonalNetworkScore, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive,
       voterPersonalNetworkScoreWithSign,
     } = this.props;
 
     let numberDisplayedSoFar = 0;
     let numberNotDisplayed = 0;
+    let openAdviserMaterialUIPopoverNow = false;
+    let controlAdviserMaterialUIPopoverFromPropNow = false;
     const renderedList = positionSummaryList.map((positionSummary) => {
       numberDisplayedSoFar += 1;
+      // Only show the first 5
       if (numberDisplayedSoFar > 5) {
-        // Only show the first 5
         numberNotDisplayed += 1;
         return null;
       }
+      if ((numberDisplayedSoFar === 1)) {
+        // console.log('controlAdviserMaterialUIPopoverFromProp:', controlAdviserMaterialUIPopoverFromProp);
+        // console.log('openAdviserMaterialUIPopover:', openAdviserMaterialUIPopover);
+        // console.log('numberDisplayedSoFar:', numberDisplayedSoFar);
+        if (controlAdviserMaterialUIPopoverFromProp) {
+          openAdviserMaterialUIPopoverNow = Boolean(openAdviserMaterialUIPopover);
+          controlAdviserMaterialUIPopoverFromPropNow = true;
+        }
+      } else {
+        openAdviserMaterialUIPopoverNow = false;
+        controlAdviserMaterialUIPopoverFromPropNow = false;
+      }
+      // console.log('openAdviserMaterialUIPopoverNow:', openAdviserMaterialUIPopoverNow);
+      // console.log('controlAdviserMaterialUIPopoverFromPropNow:', controlAdviserMaterialUIPopoverFromPropNow);
       return (
         <PositionSummaryWrapper
           key={`onePositionForPopover-${positionSummary.ballotItemWeVoteId}-${positionSummary.organizationWeVoteId}-${positionSummary.organizationName}`}
@@ -98,7 +88,13 @@ class PositionSummaryListForPopover extends Component {
           )}
           {positionSummary.organizationSupports && positionSummary.organizationInVotersNetwork && (
             <SupportAndPartOfScore>
-              <MaterialUIPopover popoverDisplayObject={<PositionItemScorePopoverTextOnly positionItem={positionSummary.positionObject} />}>
+              <MaterialUIPopover
+                popoverDisplayObject={(
+                  <PositionItemScorePopoverTextOnly
+                    positionItem={positionSummary.positionObject}
+                  />
+                )}
+              >
                 <span>
                   +1
                 </span>
@@ -112,7 +108,13 @@ class PositionSummaryListForPopover extends Component {
           )}
           {positionSummary.organizationOpposes && positionSummary.organizationInVotersNetwork && (
             <OpposeAndPartOfScore>
-              <MaterialUIPopover popoverDisplayObject={<PositionItemScorePopoverTextOnly positionItem={positionSummary.positionObject} />}>
+              <MaterialUIPopover
+                popoverDisplayObject={(
+                  <PositionItemScorePopoverTextOnly
+                    positionItem={positionSummary.positionObject}
+                  />
+                )}
+              >
                 <span>
                   -1
                 </span>
@@ -121,7 +123,16 @@ class PositionSummaryListForPopover extends Component {
           )}
           {positionSummary.organizationInVotersNetwork ? (
             <OrganizationNameWrapperWithPopover>
-              <MaterialUIPopover popoverDisplayObject={<PositionItemScorePopoverTextOnly positionItem={positionSummary.positionObject} />}>
+              <MaterialUIPopover
+                controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromPropNow}
+                externalUniqueId={positionSummary.organizationWeVoteId}
+                openAdviserMaterialUIPopover={openAdviserMaterialUIPopoverNow}
+                popoverDisplayObject={(
+                  <PositionItemScorePopoverTextOnly
+                    positionItem={positionSummary.positionObject}
+                  />
+                )}
+              >
                 <div>
                   {positionSummary.organizationName}
                 </div>
@@ -138,7 +149,13 @@ class PositionSummaryListForPopover extends Component {
             </FollowToggleWrapper>
           )}
           {!!(positionSummary.organizationInVotersNetwork) && (
-            <MaterialUIPopover popoverDisplayObject={<PositionItemScorePopoverTextOnly positionItem={positionSummary.positionObject} />}>
+            <MaterialUIPopover
+              popoverDisplayObject={(
+                <PositionItemScorePopoverTextOnly
+                  positionItem={positionSummary.positionObject}
+                />
+              )}
+            >
               <OrganizationPopoverWrapper>
                 {!!(positionSummary.issuesInCommonBetweenOrganizationAndVoter && positionSummary.issuesInCommonBetweenOrganizationAndVoter.length) && (
                   <VoterAndOrganizationShareTheseIssuesWrapper>
@@ -320,11 +337,13 @@ const OpposeButNotPartOfScore = styled.div`
 
 const OrganizationNameWrapper = styled.div`
   flex-grow: 8;
+  padding-right: 8px;
 `;
 
 const OrganizationNameWrapperWithPopover = styled.div`
   cursor: pointer;
   flex-grow: 8;
+  padding-right: 8px;
 `;
 
 const OrganizationPopoverWrapper = styled.div`

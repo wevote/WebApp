@@ -23,6 +23,8 @@ const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
 export default class BallotElectionListWithFilters extends Component {
   static propTypes = {
     ballotBaseUrl: PropTypes.string,
+    displayElectionsForOrganizationVoterGuidesMode: PropTypes.bool,
+    hideUpcomingElectionsList: PropTypes.bool,
     hideUpcomingElectionTitle: PropTypes.bool,
     organizationWeVoteId: PropTypes.string, // If looking at voter guide, we pass in the parent organizationWeVoteId
     showPriorElectionsList: PropTypes.bool,
@@ -53,11 +55,23 @@ export default class BallotElectionListWithFilters extends Component {
     } else if (VoterStore.electionId()) {
       priorElectionId = VoterStore.electionId();
     }
-    const ballotElectionList = BallotStore.ballotElectionList();
-    const ballotElectionListCount = ballotElectionList.length;
-    if (ballotElectionListCount === 0) {
-      BallotActions.voterBallotListRetrieve();
+    let ballotElectionList;
+    let ballotElectionListCount = 0;
+    const { displayElectionsForOrganizationVoterGuidesMode, organizationWeVoteId } = this.props;
+    if (displayElectionsForOrganizationVoterGuidesMode) {
+      ballotElectionList = VoterGuideStore.getVoterGuideElectionList(organizationWeVoteId);
+      ballotElectionListCount = ballotElectionList.length;
+      if (ballotElectionListCount === 0) {
+        VoterGuideActions.voterGuidesRetrieve(organizationWeVoteId);
+      }
+    } else {
+      ballotElectionList = BallotStore.ballotElectionList();
+      ballotElectionListCount = ballotElectionList.length;
+      if (ballotElectionListCount === 0) {
+        BallotActions.voterBallotListRetrieve();
+      }
     }
+    // console.log('componentDidMount displayElectionsForOrganizationVoterGuidesMode:', displayElectionsForOrganizationVoterGuidesMode, ', organizationWeVoteId:', organizationWeVoteId);
     this.setState({
       ballotElectionList,
       ballotElectionListCount,
@@ -125,14 +139,39 @@ export default class BallotElectionListWithFilters extends Component {
       // console.log('onBallotStoreChange--------- this.props.toggleFunction()');
       this.incomingToggleFunction(this.state.destinationUrlForHistoryPush);
     }
-    const ballotElectionList = BallotStore.ballotElectionList();
+    let ballotElectionList;
+    let ballotElectionListCount;
+    const { displayElectionsForOrganizationVoterGuidesMode, organizationWeVoteId } = this.props;
+    if (displayElectionsForOrganizationVoterGuidesMode) {
+      ballotElectionList = VoterGuideStore.getVoterGuideElectionList(organizationWeVoteId);
+      ballotElectionListCount = ballotElectionList.length;
+      if (ballotElectionListCount === 0) {
+        VoterGuideActions.voterGuidesRetrieve(organizationWeVoteId);
+      }
+    } else {
+      ballotElectionList = BallotStore.ballotElectionList();
+      ballotElectionListCount = ballotElectionList.length;
+      if (ballotElectionListCount === 0) {
+        BallotActions.voterBallotListRetrieve();
+      }
+    }
     this.setState({
       ballotElectionList,
-      ballotElectionListCount: ballotElectionList.length,
+      ballotElectionListCount,
     });
   }
 
   onVoterGuideStoreChange () {
+    const { displayElectionsForOrganizationVoterGuidesMode, organizationWeVoteId } = this.props;
+    // console.log('onVoterGuideStoreChange displayElectionsForOrganizationVoterGuidesMode:', displayElectionsForOrganizationVoterGuidesMode, ', organizationWeVoteId:', organizationWeVoteId);
+    if (displayElectionsForOrganizationVoterGuidesMode) {
+      const ballotElectionList = VoterGuideStore.getVoterGuideElectionList(organizationWeVoteId);
+      const ballotElectionListCount = ballotElectionList.length;
+      this.setState({
+        ballotElectionList,
+        ballotElectionListCount,
+      });
+    }
     const voter = VoterStore.getVoter();
     const voterGuideSaveResults = VoterGuideStore.getVoterGuideSaveResults();
     if (voterGuideSaveResults && voter && voterGuideSaveResults.organization_we_vote_id === voter.linked_organization_we_vote_id) {
@@ -166,6 +205,17 @@ export default class BallotElectionListWithFilters extends Component {
     BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, '', '');
     VoterGuideActions.voterGuideSave(googleCivicElectionId, '');
     // When the result comes back from voterGuideSave, onVoterGuideStoreChange triggers a call to goToVoterGuideForDifferentElection
+  }
+
+  switchElectionBehindTheScenes = (googleCivicElectionId) => {
+    // Load new election
+    const { organizationWeVoteId } = this.props;
+    // console.log('switchElectionBehindTheScenes, googleCivicElectionId:', googleCivicElectionId);
+    BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, '', '');
+    OrganizationActions.positionListForOpinionMaker(organizationWeVoteId, true, false, googleCivicElectionId);
+    if (this.props.toggleFunction) {
+      this.props.toggleFunction();
+    }
   }
 
   goToVoterGuideForDifferentElection = (voterGuideWeVoteId) => {
@@ -229,8 +279,10 @@ export default class BallotElectionListWithFilters extends Component {
 
   executeDifferentElection (item) {
     if (item) {
-      const { ballotBaseUrl } = this.props;
-      if (ballotBaseUrl) {
+      const { ballotBaseUrl, displayElectionsForOrganizationVoterGuidesMode } = this.props;
+      if (displayElectionsForOrganizationVoterGuidesMode) {
+        this.switchElectionBehindTheScenes(item.google_civic_election_id);
+      } else if (ballotBaseUrl) {
         this.goToBallotForDifferentElection(item.original_text_for_map_search, item.google_civic_election_id); // Removing for now: , item.ballot_location_shortcut, item.ballot_returned_we_vote_id
       } else {
         this.saveVoterGuideForElection(item.google_civic_election_id);
@@ -377,8 +429,10 @@ export default class BallotElectionListWithFilters extends Component {
       );
     }
     const currentDate = moment().format('YYYY-MM-DD');
-    const { hideUpcomingElectionTitle, showPriorElectionsList } = this.props;
-    const { priorElectionListOpen } = this.state;
+    const { hideUpcomingElectionTitle } = this.props;
+    let { showPriorElectionsList, hideUpcomingElectionsList } = this.props;
+    let { priorElectionListOpen } = this.state;
+    // console.log('this.state.ballotElectionList:', this.state.ballotElectionList);
 
     const ballotElectionListUpcomingSorted = this.state.ballotElectionList.concat();
     // We want to sort ascending so the next upcoming election is first
@@ -392,9 +446,12 @@ export default class BallotElectionListWithFilters extends Component {
       return 0; // default return value (no sorting)
     });
     const upcomingElectionList = this.renderUpcomingElectionList(ballotElectionListUpcomingSorted, currentDate);
+    if (upcomingElectionList && !upcomingElectionList.length) {
+      priorElectionListOpen = true;
+    }
 
     let priorElectionList = [];
-    if (showPriorElectionsList && priorElectionListOpen) {
+    if (showPriorElectionsList) {
       const ballotElectionListPastSorted = this.state.ballotElectionList.concat();
       // We want to sort descending so the most recent election is first
       ballotElectionListPastSorted.sort((a, b) => {
@@ -409,37 +466,51 @@ export default class BallotElectionListWithFilters extends Component {
       priorElectionList = this.renderPriorElectionList(ballotElectionListPastSorted, currentDate);
     }
 
+    if (priorElectionList && !priorElectionList.length) {
+      showPriorElectionsList = false; // Override to hide
+    }
+    if ((upcomingElectionList && !upcomingElectionList.length) && (priorElectionList && priorElectionList.length)) {
+      // If there aren't any upcoming elections, but there are prior elections, hide the whole upcoming elections block
+      hideUpcomingElectionsList = true; // Override to hide
+      priorElectionListOpen = true; // Override to show
+    }
+
     return (
       <div className="ballot-election-list__list">
-        <div className="ballot-election-list__upcoming">
-          {!hideUpcomingElectionTitle && (
-            <DelayedLoad waitBeforeShow={2000}>
+        { !hideUpcomingElectionsList && (
+          <div className="ballot-election-list__upcoming">
+            {!hideUpcomingElectionTitle && (
               <h4 className="h4">
                 Upcoming Election
                 {(upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null }
               </h4>
-            </DelayedLoad>
-          )}
-          { upcomingElectionList && upcomingElectionList.length ?
-            upcomingElectionList : (
-              <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                <>
-                  There are no upcoming elections at this time.
-                </>
-              </DelayedLoad>
-            )
-          }
-        </div>
+            )}
+            { upcomingElectionList && upcomingElectionList.length ?
+              upcomingElectionList : (
+                <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                  <>
+                    There are no upcoming elections at this time.
+                  </>
+                </DelayedLoad>
+              )
+            }
+          </div>
+        )}
+        {(!hideUpcomingElectionsList && showPriorElectionsList) && (
+          <SpaceBetweenElections>
+            &nbsp;
+          </SpaceBetweenElections>
+        )}
         { showPriorElectionsList && (
           <div>
             {priorElectionListOpen ? (
-              <div className="ballot-election-list__prior">
+              <PriorElectionsOpenWrapper>
                 <h4 className="h4">
                   Prior Election
                   {(priorElectionList && priorElectionList.length !== 1) ? 's' : null }
                 </h4>
                 {priorElectionList}
-              </div>
+              </PriorElectionsOpenWrapper>
             ) : (
               <ShowPriorElectionsWrapper>
                 <Button
@@ -482,6 +553,13 @@ const ElectionDate = styled.div`
   }
 `;
 
+const PriorElectionsOpenWrapper = styled.div`
+`;
+
 const ShowPriorElectionsWrapper = styled.div`
+  margin-bottom: 20px;
+`;
+
+const SpaceBetweenElections = styled.div`
   margin-bottom: 20px;
 `;

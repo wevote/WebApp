@@ -9,12 +9,13 @@ import { renderLog } from '../../utils/logging';
 class StickyPopover extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    classes: PropTypes.object,
+    closePopoverByProp: PropTypes.bool,
     delay: PropTypes.shape({
       show: PropTypes.number,
       hide: PropTypes.number,
     }),
     openOnClick: PropTypes.bool,
+    openPopoverByProp: PropTypes.bool,
     placement: PropTypes.string,
     popoverComponent: PropTypes.node.isRequired,
     popoverId: PropTypes.string,
@@ -32,6 +33,20 @@ class StickyPopover extends Component {
     this.closePopover = this.closePopover.bind(this);
   }
 
+  componentDidMount () {
+    if (this.props.openPopoverByProp) {
+      this.setState({ showPopover: true });
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.openPopoverByProp) {
+      this.setState({ showPopover: true });
+    } else if (nextProps.closePopoverByProp) {
+      this.setState({ showPopover: false });
+    }
+  }
+
   componentWillUnmount () {
     if (this.enterTimeoutId) {
       clearTimeout(this.enterTimeoutId);
@@ -44,8 +59,12 @@ class StickyPopover extends Component {
   }
 
   onMouseEnterTarget () {
-    const { delay } = this.props;
-    this.enterTimeoutId = setTimeout(() => this.setState({ showPopover: true }), delay.show);
+    const { delay, openPopoverByProp } = this.props;
+    if (openPopoverByProp) {
+      // When manually opening Popover, turn off the mouse hover features
+    } else {
+      this.enterTimeoutId = setTimeout(() => this.setState({ showPopover: true }), delay.show);
+    }
   }
 
   onClickTarget () {
@@ -61,11 +80,15 @@ class StickyPopover extends Component {
   }
 
   onMouseLeave () {
-    const { delay } = this.props;
-    if (this.enterTimeoutId) {
-      clearTimeout(this.enterTimeoutId);
+    const { delay, openPopoverByProp } = this.props;
+    if (openPopoverByProp) {
+      // When manually opening Popover, turn off the mouse hover features
+    } else {
+      if (this.enterTimeoutId) {
+        clearTimeout(this.enterTimeoutId);
+      }
+      this.leaveTimeoutId = setTimeout(() => this.setState({ showPopover: false }), delay.hide);
     }
-    this.leaveTimeoutId = setTimeout(() => this.setState({ showPopover: false }), delay.hide);
   }
 
   closePopover () {
@@ -74,12 +97,12 @@ class StickyPopover extends Component {
 
   render () {
     renderLog('StickyPopover');  // Set LOG_RENDER_EVENTS to log all renders
-    const { children, classes, placement, popoverComponent, popoverId } = this.props;
+    const { children, openOnClick, placement, popoverComponent, popoverId } = this.props;
     const { showPopover, target } = this.state;
     // console.log('StickyPopover render, showPopover:', showPopover);
     return (
       <React.Fragment>
-        {this.props.openOnClick ? (
+        {openOnClick ? (
           React.Children.map(children, child => React.cloneElement(child, {
             ref: this.attachRef,
             onMouseEnter: this.onMouseEnterTarget,
@@ -97,13 +120,13 @@ class StickyPopover extends Component {
           show={showPopover}
           target={target}
           placement={placement}
-          classes={{ root: classes.popoverRoot }}
-          className="u-position-relative u-z-index-5000"
+          className="u-position-relative"
         >
           <Popover
             id={popoverId}
             onMouseEnter={this.onMouseEnterPopover}
             onMouseLeave={this.onMouseLeave}
+            className="u-z-index-5000"
           >
             {popoverComponent}
             {this.props.showCloseIcon && (
@@ -120,7 +143,6 @@ class StickyPopover extends Component {
 }
 const styles = () => ({
   popoverRoot: {
-    zIndex: 5000,
   },
 });
 

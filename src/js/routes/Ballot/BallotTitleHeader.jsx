@@ -95,20 +95,20 @@ class BallotTitleHeader extends Component {
       return (
         <Wrapper>
           <Tooltip title="Change my election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-            <Title onClick={this.props.toggleSelectBallotModal}>
+            <Title onClick={this.props.toggleSelectBallotModal} id="ballotTitleHeaderSelectBallotModal">
               <ElectionName scrolled={scrolled}>
                 <span className="u-show-mobile-iphone5-or-smaller">
-                  {shortenText(electionName, 26)}
+                  {shortenText(electionName, 22)}
                 </span>
                 <span className="u-show-mobile-bigger-than-iphone5">
                   {shortenText(electionName, 30)}
                 </span>
                 <span className="u-show-desktop-tablet">
                   {electionName}
-                  <SettingsIconWrapper className="u-show-desktop-tablet">
-                    <SettingsIcon classes={{ root: classes.settingsIcon }} />
-                  </SettingsIconWrapper>
                 </span>
+                <SettingsIconWrapper>
+                  <SettingsIcon classes={{ root: classes.settingsIcon }} />
+                </SettingsIconWrapper>
                 {!electionDayTextObject && (
                   <DelayedLoad waitBeforeShow={1000}>
                     <>
@@ -121,7 +121,9 @@ class BallotTitleHeader extends Component {
               {electionDayTextObject && (
                 <>
                   {' '}
-                  <span className="d-none d-sm-inline">&mdash;</span>
+                  <DelayedLoad waitBeforeShow={1000}>
+                    <span className="d-none d-sm-inline">&mdash;</span>
+                  </DelayedLoad>
                   {' '}
                   <ElectionDate>{electionDayTextObject}</ElectionDate>
                 </>

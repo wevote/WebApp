@@ -23,6 +23,7 @@ class BallotShareButtonFooter extends Component {
     super(props);
     this.state = {
       anchorEl: null,
+      showingOneCompleteYourProfileModal: false,
       hideBallotShareButtonFooter: false,
       open: false,
       step2: false,
@@ -34,15 +35,24 @@ class BallotShareButtonFooter extends Component {
 
   componentDidMount () {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
+    this.setState({
+      showingOneCompleteYourProfileModal,
+    });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    if (this.props.pathname !== nextProps.pathname) return true;
+    if (this.state.showingOneCompleteYourProfileModal !== nextState.showingOneCompleteYourProfileModal) return true;
     if (this.state.anchorEl !== nextState.anchorEl) return true;
     if (this.state.hideBallotShareButtonFooter !== nextState.hideBallotShareButtonFooter) return true;
     if (this.state.open !== nextState.open) return true;
+    if (this.props.pathname !== nextProps.pathname) return true;
     if (this.state.step2 !== nextState.step2) return true;
     return false;
+  }
+
+  componentWillUnmount () {
+    this.appStoreListener.remove();
   }
 
   onAppStoreChange () {
@@ -50,7 +60,9 @@ class BallotShareButtonFooter extends Component {
     const scrolledDown = AppStore.getScrolledDown();
     const hideBallotShareButtonFooter = scrolledDown && !open;
     // console.log('scrolledDown:', scrolledDown, ', hideBallotShareButtonFooter:', hideBallotShareButtonFooter);
+    const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
     this.setState({
+      showingOneCompleteYourProfileModal,
       hideBallotShareButtonFooter,
     });
   }
@@ -78,7 +90,7 @@ class BallotShareButtonFooter extends Component {
 
   render () {
     const { classes, pathname } = this.props;
-    const { hideBallotShareButtonFooter } = this.state;
+    const { showingOneCompleteYourProfileModal, hideBallotShareButtonFooter } = this.state;
     const { showFooterBar } = getApplicationViewBooleans(pathname);
 
     // Hide if scrolled down the page
@@ -87,7 +99,7 @@ class BallotShareButtonFooter extends Component {
     }
 
     return (
-      <Wrapper pinToBottom={!showFooterBar}>
+      <Wrapper pinToBottom={!showFooterBar} className={showingOneCompleteYourProfileModal ? 'u-z-index-1000' : 'u-z-index-9000'}>
         <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="contained" color="primary">
           <Icon>
             <Reply

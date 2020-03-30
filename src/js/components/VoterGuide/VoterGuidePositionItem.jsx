@@ -23,6 +23,7 @@ import VoterStore from '../../stores/VoterStore';
 
 class VoterGuidePositionItem extends Component {
   static propTypes = {
+    onClickFunction: PropTypes.func,
     organizationWeVoteId: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
   };
@@ -376,6 +377,12 @@ class VoterGuidePositionItem extends Component {
     });
   }
 
+  onClickFunction () {
+    if (this.props.onClickFunction) {
+      this.props.onClickFunction();
+    }
+  }
+
   togglePositionStatement () {
     const { hidePositionStatement } = this.state;
     this.setState({ hidePositionStatement: !hidePositionStatement });
@@ -387,12 +394,6 @@ class VoterGuidePositionItem extends Component {
       return positionListHasBeenRetrievedOnce[ballotItemWeVoteId];
     }
     return false;
-  }
-
-  onClickFunction () {
-    console.log("onClickFunction: VoterGuidePositionItem.jsx - Line 393");
-
-    this.props.onClickFunction();
   }
 
   localPositionListFromFriendsHasBeenRetrievedOnce (ballotItemWeVoteId) {

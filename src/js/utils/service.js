@@ -67,7 +67,9 @@ export default function $ajax (options) {
       options.endpoint === 'measureRetrieve' ||
       // options.endpoint === 'organizationRetrieve' || // Includes data a client can update, and needs to be fresh
       options.endpoint === 'positionListForBallotItem' ||
-      options.endpoint === 'voterGuidesUpcomingRetrieve') {
+      options.endpoint === 'voterGuidesUpcomingRetrieve' ||
+      options.endpoint === 'voterGuidesRetrieve'
+  ) {
     // Retrieve API data from CDN
     options.data = assign({}, options.data || {}); // Do not pass voter_device_id
     options.url = `${url.resolve(defaults.baseCdnUrl, options.endpoint)}/`;

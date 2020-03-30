@@ -36,10 +36,12 @@ class SettingsDomain extends Component {
       organizationWeVoteId: '',
       organizationChosenDomainName: '',
       organizationChosenDomainNameAlreadyTaken: false,
+      organizationChosenDomainNameNotValid: false,
       organizationChosenDomainNameSavedValue: '',
       organizationChosenDomainNameChangedLocally: false,
       organizationChosenSubdomain: '',
       organizationChosenSubdomainAlreadyTaken: false,
+      organizationChosenSubdomainNotValid: false,
       organizationChosenSubdomainSavedValue: '',
       organizationChosenSubdomainChangedLocally: false,
       voter: {},
@@ -78,6 +80,10 @@ class SettingsDomain extends Component {
       // console.log('this.state.organizationChosenDomainNameChangedLocally', this.state.organizationChosenDomainNameChangedLocally, ', nextState.organizationChosenDomainNameChangedLocally', nextState.organizationChosenDomainNameChangedLocally);
       return true;
     }
+    if (this.state.organizationChosenDomainNameNotValid !== nextState.organizationChosenDomainNameNotValid) {
+      // console.log('this.state.organizationChosenDomainNameNotValid', this.state.organizationChosenDomainNameNotValid, ', nextState.organizationChosenDomainNameNotValid', nextState.organizationChosenDomainNameNotValid);
+      return true;
+    }
     if (this.state.organizationChosenDomainNameSavedValue !== nextState.organizationChosenDomainNameSavedValue) {
       // console.log('this.state.organizationChosenDomainNameSavedValue', this.state.organizationChosenDomainNameSavedValue, ', nextState.organizationChosenDomainNameSavedValue', nextState.organizationChosenDomainNameSavedValue);
       return true;
@@ -92,6 +98,10 @@ class SettingsDomain extends Component {
     }
     if (this.state.organizationChosenSubdomainChangedLocally !== nextState.organizationChosenSubdomainChangedLocally) {
       // console.log('this.state.organizationChosenSubdomainChangedLocally', this.state.organizationChosenSubdomainChangedLocally, ', nextState.organizationChosenSubdomainChangedLocally', nextState.organizationChosenSubdomainChangedLocally);
+      return true;
+    }
+    if (this.state.organizationChosenSubdomainNotValid !== nextState.organizationChosenSubdomainNotValid) {
+      // console.log('this.state.organizationChosenSubdomainNotValid', this.state.organizationChosenSubdomainNotValid, ', nextState.organizationChosenSubdomainNotValid', nextState.organizationChosenSubdomainNotValid);
       return true;
     }
     if (this.state.organizationChosenSubdomainSavedValue !== nextState.organizationChosenSubdomainSavedValue) {
@@ -133,13 +143,22 @@ class SettingsDomain extends Component {
 
   onOrganizationStoreChange () {
     const { organizationChosenDomainNameChangedLocally, organizationChosenSubdomainChangedLocally, organizationWeVoteId } = this.state;
-    let { organizationChosenDomainNameAlreadyTaken, organizationChosenSubdomainAlreadyTaken } = this.state;
+    let {
+      organizationChosenDomainNameAlreadyTaken, organizationChosenSubdomainAlreadyTaken,
+      organizationChosenDomainNameNotValid, organizationChosenSubdomainNotValid,
+    } = this.state;
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
     if (!organizationChosenSubdomainAlreadyTaken) {
       organizationChosenSubdomainAlreadyTaken = organization.subdomain_string_already_taken || false;
     }
     if (!organizationChosenDomainNameAlreadyTaken) {
       organizationChosenDomainNameAlreadyTaken = organization.full_domain_string_already_taken || false;
+    }
+    if (!organizationChosenSubdomainNotValid) {
+      organizationChosenSubdomainNotValid = organization.subdomain_string_not_valid || false;
+    }
+    if (!organizationChosenDomainNameNotValid) {
+      organizationChosenDomainNameNotValid = organization.full_domain_string_not_valid || false;
     }
     const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
     const organizationChosenSubdomainSavedValue = organization.chosen_subdomain_string || '';
@@ -152,8 +171,10 @@ class SettingsDomain extends Component {
       chosenFeaturePackage,
       organization,
       organizationChosenDomainNameAlreadyTaken,
+      organizationChosenDomainNameNotValid,
       organizationChosenDomainNameSavedValue,
       organizationChosenSubdomainAlreadyTaken,
+      organizationChosenSubdomainNotValid,
       organizationChosenSubdomainSavedValue,
       voterFeaturePackageExceedsOrEqualsProfessional,
     });
@@ -193,7 +214,7 @@ class SettingsDomain extends Component {
     const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
     const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
     const voterFeaturePackageExceedsOrEqualsProfessional = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'PROFESSIONAL');
-    // console.log('onVoterStoreChange organization: ', organization);
+    // console.log('onVoterStoreChange voter: ', voter);
     this.setState({
       chosenFeaturePackage,
       organization,
@@ -227,6 +248,7 @@ class SettingsDomain extends Component {
         organizationChosenSubdomain: event.target.value || '',
         organizationChosenSubdomainAlreadyTaken: false,
         organizationChosenSubdomainChangedLocally: true,
+        organizationChosenSubdomainNotValid: false,
       });
     }
   }
@@ -240,6 +262,7 @@ class SettingsDomain extends Component {
         organizationChosenDomainName: event.target.value || '',
         organizationChosenDomainNameAlreadyTaken: false,
         organizationChosenDomainNameChangedLocally: true,
+        organizationChosenDomainNameNotValid: false,
       });
     }
   }
@@ -329,21 +352,22 @@ class SettingsDomain extends Component {
       chosenFeaturePackage,
       organizationChosenDomainName, organizationChosenDomainNameAlreadyTaken,
       organizationChosenDomainNameChangedLocally, organizationChosenDomainNameSavedValue,
+      organizationChosenDomainNameNotValid,
       organizationChosenSubdomain, organizationChosenSubdomainAlreadyTaken,
       organizationChosenSubdomainChangedLocally, organizationChosenSubdomainSavedValue,
+      organizationChosenSubdomainNotValid,
       organizationWeVoteId, voter, voterFeaturePackageExceedsOrEqualsProfessional, voterIsSignedIn,
       radioGroupValue, chosenDomainNameBeforeErrorCheck, chosenSubdomainBeforeErrorCheck,
     } = this.state;
-    if (!voter || !organizationWeVoteId) {
+    if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return <SettingsAccount />;
+    } else if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
     }
 
     const { classes } = this.props;
 
-    if (!voterIsSignedIn) {
-      // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
-    }
     return (
       <div>
         <Helmet title="Domain Settings" />
@@ -425,11 +449,21 @@ class SettingsDomain extends Component {
                 {organizationChosenSubdomainAlreadyTaken ? (
                   <InputBoxHelperLabel error>
                     &quot;
+                    https://
                     {chosenSubdomainBeforeErrorCheck}
                     .WeVote.US
                     &quot;
                     {' '}
                     domain is already taken
+                  </InputBoxHelperLabel>
+                ) : null}
+                {organizationChosenSubdomainNotValid ? (
+                  <InputBoxHelperLabel error>
+                    &quot;https://
+                    {chosenSubdomainBeforeErrorCheck}
+                    .WeVote.US&quot;
+                    {' '}
+                    is not a valid domain name
                   </InputBoxHelperLabel>
                 ) : null}
                 {radioGroupValue === 'subdomainRadioButtonSelected' && (
@@ -481,7 +515,11 @@ class SettingsDomain extends Component {
                   <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="PROFESSIONAL" />
                 </InputBoxLabel>
                 <InputBoxHelperLabel>
-                  If you already own a domain, enter it here. Empty it to disconnect.
+                  If you already own a domain that you want to use, enter it here. You will need to direct this domain name to the We Vote hosted server network, using a CNAME record.
+                  {' '}
+                  You can not include folder paths, but you can use a subdomain of your primary domain.
+                  {' '}
+                  (Valid examples include: &quot;vote.sierraclub.org&quot; and &quot;MyVotingSite.org&quot;)
                 </InputBoxHelperLabel>
                 <FormControlLabel
                   classes={!organizationChosenDomainNameAlreadyTaken ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelError, label: classes.label }}
@@ -504,10 +542,20 @@ class SettingsDomain extends Component {
                 {organizationChosenDomainNameAlreadyTaken ? (
                   <InputBoxHelperLabel error>
                     &quot;
+                    https://
                     {chosenDomainNameBeforeErrorCheck}
                     &quot;
                     {' '}
                     domain is already taken
+                  </InputBoxHelperLabel>
+                ) : null}
+                {organizationChosenDomainNameNotValid ? (
+                  <InputBoxHelperLabel error>
+                    &quot;https://
+                    {chosenDomainNameBeforeErrorCheck}
+                    &quot;
+                    {' '}
+                    is not a valid domain name
                   </InputBoxHelperLabel>
                 ) : null}
                 {radioGroupValue === 'domainNameRadioButtonSelected' && (

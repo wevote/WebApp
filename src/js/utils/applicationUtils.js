@@ -1,6 +1,5 @@
 import { stringContains } from './textFormat';
 import { isCordova, isWebApp } from './cordovaUtils';
-// import displayFriendsTabs from './displayFriendsTabs';
 
 
 // We have to do all this, because we allow urls like https://wevote.us/aclu where "aclu" is a twitter account.
@@ -238,6 +237,7 @@ export function polyfillObjectEntries () {
 
 // Choose to show/hide zendesk help widget based on route
 export function setZenDeskHelpVisibility (pathname) {
+  // console.log('setZenDeskHelpVisibility true, pathname:', pathname);
   if (isWebApp()) {
     const { showFooterBar } = getApplicationViewBooleans(pathname);
     // console.log('setZenDeskHelpVisibility true, pathname:', pathname, ', showFooterBar:', showFooterBar);
@@ -261,6 +261,17 @@ export function setZenDeskHelpVisibility (pathname) {
       } catch {
         console.log('setZenDeskHelpVisibility global.zE failure hide');
       }
+    }
+  }
+}
+
+export function hideZenDeskHelpVisibility () {
+  // console.log('hideZenDeskHelpVisibility');
+  if (isWebApp()) {
+    try {
+      global.zE('webWidget', 'hide');
+    } catch {
+      console.log('hideZenDeskHelpVisibility global.zE failure hide');
     }
   }
 }

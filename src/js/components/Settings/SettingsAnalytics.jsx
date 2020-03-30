@@ -13,6 +13,7 @@ import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
+import SettingsAccount from './SettingsAccount';
 import SettingsAccountLevelChip from './SettingsAccountLevelChip';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import VoterStore from '../../stores/VoterStore';
@@ -289,13 +290,13 @@ class SettingsAnalytics extends Component {
       voterFeaturePackageExceedsOrEqualsEnterprise,
     } = this.state;
     const { classes } = this.props;
-    if (!voter || !organizationWeVoteId) {
+    if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return <SettingsAccount />;
+    } else if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
     }
 
-    if (voterIsSignedIn) {
-      // console.log('SettingsAnalytics, Signed In.');
-    }
     if (organization && organization.we_vote_custom_domain) {
       // console.log('SettingsAnalytics, Custom Domain: ', organization.we_vote_custom_domain);
     }

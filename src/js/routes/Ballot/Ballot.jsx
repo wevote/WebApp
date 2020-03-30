@@ -13,7 +13,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
-import BallotElectionListWithFilters from '../../components/Ballot/BallotElectionListWithFilters';
+// import BallotElectionListWithFilters from '../../components/Ballot/BallotElectionListWithFilters';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotTitleHeader from './BallotTitleHeader';
@@ -263,7 +263,7 @@ class Ballot extends Component {
       googleCivicElectionId: parseInt(googleCivicElectionId, 10),
       location,
       pathname,
-      raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || 'Federal',
+      raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || 'All',
     });
 
     const { hash } = location;
@@ -307,6 +307,11 @@ class Ballot extends Component {
         location: nextProps.location,
         pathname: nextProps.location.pathname,
       });
+      if (googleCivicElectionId !== this.state.googleCivicElectionId) {
+        this.setState({
+          raceLevelFilterType: 'All',
+        });
+      }
       if (googleCivicElectionId && googleCivicElectionId !== 0) {
         AnalyticsActions.saveActionBallotVisit(googleCivicElectionId);
       } else if (VoterStore.electionId()) {
@@ -529,9 +534,10 @@ class Ballot extends Component {
       mounted, isSearching, issuesRetrievedFromGoogleCivicElectionId,
       issuesRetrievedFromBallotReturnedWeVoteId, issuesRetrievedFromBallotLocationShortcut,
     } = this.state;
+    // console.log('Ballot.jsx onBallotStorechange, mounted: ', mounted);
     let { raceLevelFilterType } = this.state;
     if (!raceLevelFilterType) {
-      raceLevelFilterType = ''; // Make sure this is a string
+      raceLevelFilterType = 'All'; // Make sure this is a string
     }
 
     if (mounted) {
@@ -619,7 +625,6 @@ class Ballot extends Component {
       const { ballotLength } = BallotStore;
       this.setState({
         ballotLength,
-        // raceLevelFilterType: 'Federal',
         showFilterTabs: false,
         foundFirstRaceLevel: false,
       });
@@ -877,7 +882,7 @@ class Ballot extends Component {
     }, 500);
   }
 
-  toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
+  toggleSelectBallotModal (destinationUrlForHistoryPush = '', hideAddressEdit = false, hideElections = false) {
     const { showSelectBallotModal } = this.state;
     // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
@@ -887,7 +892,7 @@ class Ballot extends Component {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
 
-    AppActions.setShowSelectBallotModal(!showSelectBallotModal);
+    AppActions.setShowSelectBallotModal(!showSelectBallotModal, hideAddressEdit, hideElections);
   }
 
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
@@ -973,7 +978,7 @@ class Ballot extends Component {
     } = this.state;
     let { raceLevelFilterType } = this.state;
     if (!raceLevelFilterType) {
-      raceLevelFilterType = ''; // Make sure this is a string
+      raceLevelFilterType = 'All'; // Make sure this is a string
     }
     // console.log(ballotWithAllItems);
     // console.log('window.innerWidth:', window.innerWidth);
@@ -992,7 +997,7 @@ class Ballot extends Component {
                   // since we use a button as the component, we can disable that es-lint rule
                   component="button"
                   id="ballotIfBallotDoesNotAppear"
-                  onClick={this.toggleSelectBallotModal}
+                  onClick={() => this.toggleSelectBallotModal('', false, true)}
                   style={{ color: 'rgb(6, 95, 212)' }}
                 >
                   please click here to enter an address
@@ -1033,19 +1038,19 @@ class Ballot extends Component {
       </div>
     );
 
-    // console.log('ballotWithItemsFromCompletionFilterType.length: ', ballotWithItemsFromCompletionFilterType.length);
+    // console.log('ballotWithItemsFromCompletionFilterType: ', ballotWithItemsFromCompletionFilterType);
     // Was: ballotWithItemsFromCompletionFilterType
     const emptyBallot = ballotWithAllItems.length === 0 ? (
       <DelayedLoad waitBeforeShow={3000}>
         <div>
           <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
           {emptyBallotButton}
-          <div className="container-fluid well u-stack--md u-inset--md">
-            <BallotElectionListWithFilters
-              ballotBaseUrl={ballotBaseUrl}
-              ballotElectionList={this.state.voterBallotList}
-            />
-          </div>
+          {/* <div className="container-fluid well u-stack--md u-inset--md"> */}
+          {/*  <BallotElectionListWithFilters */}
+          {/*    ballotBaseUrl={ballotBaseUrl} */}
+          {/*    ballotElectionList={this.state.voterBallotList} */}
+          {/*  /> */}
+          {/* </div> */}
         </div>
       </DelayedLoad>
     ) : null;
@@ -1055,6 +1060,7 @@ class Ballot extends Component {
     // console.log('electionName: ', electionName, ', electionDayTextFormatted: ', electionDayTextFormatted);
 
     const inRemainingDecisionsMode = completionLevelFilterType === 'filterRemaining';
+    // console.log('inRemainingDecisionsMode: ', inRemainingDecisionsMode);
 
     if (ballotWithItemsFromCompletionFilterType.length === 0 && inRemainingDecisionsMode) {
       historyPush(this.state.pathname);
@@ -1075,7 +1081,7 @@ class Ballot extends Component {
                     <BallotTitleHeader
                       electionName={electionName}
                       electionDayTextObject={electionDayTextObject}
-                      toggleSelectBallotModal={this.toggleSelectBallotModal}
+                      toggleSelectBallotModal={() => this.toggleSelectBallotModal('', true, false)}
                       scrolled={this.state.ballotHeaderUnpinned}
                     />
                   </header>
@@ -1108,6 +1114,7 @@ class Ballot extends Component {
                               { showFilterTabs && (
                                 <div
                                   className="ballot_filter_btns"
+                                  id="ballotBadgeMobileAndDesktop-All"
                                   key="filterTypeAll"
                                   onClick={() => this.setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterType.length)}
                                 >
@@ -1228,12 +1235,14 @@ class Ballot extends Component {
                       )}
                       {(isSearching ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
                         // Ballot limited by items by race_office_level = (Federal, State, Local) or kind_of_ballot_item = (Measure)
+                        // console.log('raceLevelFilterType:', raceLevelFilterType, ', item:', item);
                         if ((raceLevelFilterType === 'All' || isSearching ||
                           (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
                           raceLevelFilterType === item.race_office_level)) {
                           // console.log('Ballot item for BallotItemCompressed:', item);
                           // {...item}
                           const key = item.we_vote_id;
+                          // console.log('numberOfBallotItemsDisplayed:', numberOfBallotItemsDisplayed, ', numberOfBallotItemsToDisplay:', numberOfBallotItemsToDisplay);
                           if (numberOfBallotItemsDisplayed >= numberOfBallotItemsToDisplay) {
                             return null;
                           }
@@ -1301,7 +1310,7 @@ class Ballot extends Component {
                         </LoadingItemsWheel>
                       )}
                       {!!(totalNumberOfBallotItems) && (
-                        <ShowMoreItems id="showMoreItemsId">
+                        <ShowMoreItems id="showMoreItemsId" onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>
                           Displaying
                           {' '}
                           {numberOfBallotItemsDisplayed}

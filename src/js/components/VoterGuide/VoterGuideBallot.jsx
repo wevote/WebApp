@@ -6,13 +6,12 @@ import moment from 'moment';
 import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { withStyles } from '@material-ui/core/styles';
-import AddressBox from '../AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
-import BallotElectionList from '../Ballot/BallotElectionList';
 import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
@@ -75,8 +74,6 @@ class VoterGuideBallot extends Component {
       positionListForOneElectionLength: 0,
       showBallotIntroModal: false,
       showSelectBallotModal: false,
-      voterBallotList: [],
-      // voterGuideOnStage: undefined,
       voterIsAdmin: false,
       voterIsVerifiedVolunteer: false,
       isSearching: false,
@@ -171,10 +168,9 @@ class VoterGuideBallot extends Component {
         }
         historyPush(ballotElectionUrl2);
       }
-    // DALE NOTE 2018-1-18 Commented this out because it will take voter away from voter guide. Needs further testing.
-    // else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false){ // No ballot found
-    //   // console.log('if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false');
-    //   historyPush('/settings/location');
+    } else {
+      // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
+      BallotActions.voterBallotItemsRetrieve(0, '', '');
     }
 
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
@@ -458,43 +454,43 @@ class VoterGuideBallot extends Component {
 
   onElectionStoreChange () {
     // console.log('Elections, onElectionStoreChange');
-    const electionsList = ElectionStore.getElectionList();
-    // const electionsLocationsList = [];
-    let voterBallot; // A different format for much of the same data
-    const voterBallotList = [];
-    let oneBallotLocation;
-    let ballotLocationShortcut;
-    let ballotReturnedWeVoteId;
-
-    for (let i = 0; i < electionsList.length; i++) {
-      const election = electionsList[i];
-      // electionsLocationsList.push(election);
-      ballotReturnedWeVoteId = '';
-      ballotLocationShortcut = '';
-      if (election.ballot_location_list && election.ballot_location_list.length) {
-        // We want to add the shortcut and we_vote_id for the first ballot location option
-        oneBallotLocation = election.ballot_location_list[0]; // eslint-disable-line prefer-destructuring
-        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || '';
-        ballotLocationShortcut = ballotLocationShortcut.trim();
-        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || '';
-        ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
-      }
-
-      voterBallot = {
-        google_civic_election_id: election.google_civic_election_id,
-        election_description_text: election.election_name,
-        election_day_text: election.election_day_text,
-        original_text_for_map_search: '',
-        ballot_location_shortcut: ballotLocationShortcut,
-        ballot_returned_we_vote_id: ballotReturnedWeVoteId,
-      };
-      voterBallotList.push(voterBallot);
-    }
-
-    this.setState({
-      // electionsLocationsList,
-      voterBallotList,
-    });
+    // const electionsList = ElectionStore.getElectionList();
+    // // const electionsLocationsList = [];
+    // let voterBallot; // A different format for much of the same data
+    // const voterBallotList = [];
+    // let oneBallotLocation;
+    // let ballotLocationShortcut;
+    // let ballotReturnedWeVoteId;
+    //
+    // for (let i = 0; i < electionsList.length; i++) {
+    //   const election = electionsList[i];
+    //   // electionsLocationsList.push(election);
+    //   ballotReturnedWeVoteId = '';
+    //   ballotLocationShortcut = '';
+    //   if (election.ballot_location_list && election.ballot_location_list.length) {
+    //     // We want to add the shortcut and we_vote_id for the first ballot location option
+    //     oneBallotLocation = election.ballot_location_list[0]; // eslint-disable-line prefer-destructuring
+    //     ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || '';
+    //     ballotLocationShortcut = ballotLocationShortcut.trim();
+    //     ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || '';
+    //     ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
+    //   }
+    //
+    //   voterBallot = {
+    //     google_civic_election_id: election.google_civic_election_id,
+    //     election_description_text: election.election_name,
+    //     election_day_text: election.election_day_text,
+    //     original_text_for_map_search: '',
+    //     ballot_location_shortcut: ballotLocationShortcut,
+    //     ballot_returned_we_vote_id: ballotReturnedWeVoteId,
+    //   };
+    //   voterBallotList.push(voterBallot);
+    // }
+    //
+    // this.setState({
+    //   // electionsLocationsList,
+    //   voterBallotList,
+    // });
   }
 
   onOrganizationStoreChange () {
@@ -599,6 +595,11 @@ class VoterGuideBallot extends Component {
     this.setState({ isSearching: !isSearching });
   };
 
+  openShowElectionsWithOrganizationVoterGuidesModal () {
+    // console.log('VoterGuideBallot openShowElectionsWithOrganizationVoterGuidesModal');
+    AppActions.setShowElectionsWithOrganizationVoterGuidesModal(true);
+  }
+
   toggleBallotIntroModal () {
     const { showBallotIntroModal, location, pathname } = this.state;
     if (location.hash.includes('#')) {
@@ -683,17 +684,10 @@ class VoterGuideBallot extends Component {
                 .
               </p>
             </div>
-            <BallotElectionList
-              ballotBaseUrl={ballotBaseUrl}
-              ballotElectionList={this.state.voterBallotList}
-              organization_we_vote_id={organizationWeVoteId}
-            />
           </div>
         </DelayedLoad>
       );
     }
-
-    const voterAddressMissing = this.state.location === null;
 
     // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballotProperties might be undefined
     const electionName = BallotStore.currentBallotElectionName;
@@ -701,37 +695,6 @@ class VoterGuideBallot extends Component {
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
     const organizationAdminUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}org/${organizationWeVoteId}/pos/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}pl/${sourcePollingLocationWeVoteId}/summary/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
-
-    const emptyBallotButton = voterAddressMissing ? (
-      <div className="container-fluid well u-stack--md u-inset--md">
-        <Helmet title="Enter Your Address - We Vote" />
-        <h3 className="h3">
-          Enter address where you are registered to vote
-        </h3>
-        <div>
-          <AddressBox {...this.props} saveUrl={ballotBaseUrl} />
-        </div>
-      </div>
-    ) : (
-      <span>
-        {/* <Link to={ballotBaseUrl}>
-              <Button variant="primary">View Full Ballot</Button>
-          </Link> */}
-      </span>
-    );
-
-    const emptyBallot = ballotWithAllItems.length === 0 ? (
-      <div>
-        {emptyBallotButton}
-        <div className="container-fluid well u-stack--md u-inset--md">
-          <BallotElectionList
-            ballotBaseUrl={ballotBaseUrl}
-            ballotElectionList={this.state.voterBallotList}
-            organization_we_vote_id={organizationWeVoteId}
-          />
-        </div>
-      </div>
-    ) : null;
 
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format('MMM Do, YYYY')}</span> : <span />;
 
@@ -753,20 +716,31 @@ class VoterGuideBallot extends Component {
             <Helmet title={`${organization.organization_name} - We Vote`} />
             <BrowserPushMessage incomingProps={this.props} />
             <header className="ballot__header__group">
-              <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
+              <TitleWrapper
+                className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}
+                onClick={() => this.openShowElectionsWithOrganizationVoterGuidesModal()}
+              >
                 { electionName ? (
-                  <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
+                  <div className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
                     {electionName}
-                    {' '}
-                    <span className="d-none d-sm-inline">&mdash; </span>
-                    <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
-                  </span>
+                    <SettingsIconWrapper>
+                      <SettingsIcon classes={{ root: classes.settingsIcon }} />
+                    </SettingsIconWrapper>
+                    {Boolean(electionDayText) && (
+                      <>
+                        {' '}
+                        <span className="d-none d-sm-inline">&mdash;</span>
+                        {' '}
+                        <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+                      </>
+                    )}
+                  </div>
                 ) : (
                   <span className="u-push--sm">
                          Loading Election...
                   </span>
                 )}
-              </h1>
+              </TitleWrapper>
             </header>
 
             {/* I think this is too heavy (interface-wise) at this time:
@@ -792,7 +766,6 @@ class VoterGuideBallot extends Component {
 
         <div className="page-content-container">
           <div className="container-fluid">
-            {emptyBallot}
             <div className="row ballot__body-vg">
               <div className="col-xs-12 col-md-12">
                 {/* The ballot items the organization wants to promote */}
@@ -959,6 +932,13 @@ const styles = theme => ({
       top: 3,
     },
   },
+  settingsIcon: {
+    color: '#999',
+    marginTop: '-5px',
+    marginLeft: '3px',
+    width: 16,
+    height: 16,
+  },
 });
 
 const EmptyBallotMessageContainer = styled.div`
@@ -984,6 +964,13 @@ const ExtraActionsWrapper = styled.div`
   margin-bottom: 20px;
   margin-left: -15px;
   margin-right: -15px;
+`;
+
+const SettingsIconWrapper = styled.span`
+`;
+
+const TitleWrapper = styled.h1`
+  cursor: pointer;
 `;
 
 const VoterGuideBallotWrapper = styled.div`

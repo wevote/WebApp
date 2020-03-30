@@ -12,6 +12,10 @@ describe('Basic cross-platform We Vote test',  () => {
     const { twitterUserName, twitterPassword } = driver.config;
     const { isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
+    const platformPrefixID = (isDesktopScreenSize) ? 'desktop' : 'mobile';
+    const changeAddressHeaderBarID = (isDesktopScreenSize) ? 'changeAddressOrElectionHeaderBar' : 'changeAddressOnlyHeaderBar';
+    const ballotBadgePlatformPrefixID = (isDesktopScreenSize) ? 'ballotBadgeDesktop' : 'ballotBadgeMobile';
+    const measureToTestOnBallotID = 'wv02meas604';
 
     if (isCordovaFromAppStore) {
       // switch contexts and click through intro
@@ -109,14 +113,14 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Change Address
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
+    await simpleClick(changeAddressHeaderBarID); // Open the "Change Address" modal
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('profileCloseSelectBallotModal');
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // We want to start by setting the location, which will automatically choose the next upcoming election for that address
-    await simpleClick('changeAddressHeaderBar'); // Opens the "Enter Your Full Address" link
+    await simpleClick(changeAddressHeaderBarID); // Opens the "Enter Your Full Address" link
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     if (isIOS && isCordovaFromAppStore) {
@@ -129,8 +133,12 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
     // //////////////////////
-    // Next we want to switch to a known election
-    await simpleClick('changeAddressHeaderBar'); // Opens the Enter Your Full Address link
+    // Switch to a known election
+    if (isDesktopScreenSize) {
+      await simpleClick('changeAddressOrElectionHeaderBar'); // Open the "Change Address" modal
+    } else {
+      await simpleClick('ballotTitleHeaderSelectBallotModal'); // Opens the Ballot modal
+    }
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('ballotElectionListWithFiltersShowPriorElections');
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -138,22 +146,22 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // Click on ballot filter badges at top of page
-    await simpleClick('ballotBadge-State');
+    await simpleClick(`${ballotBadgePlatformPrefixID}-State`);
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('ballotBadge-Measure');
+    await simpleClick(`${ballotBadgePlatformPrefixID}-Measure`);
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('ballotBadge-Local');
+    await simpleClick(`${ballotBadgePlatformPrefixID}-Local`);
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('ballotBadge-Federal');
+    await simpleClick(`${ballotBadgePlatformPrefixID}-Federal`);
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Visit Measure Page
-    await simpleClick('ballotBadge-Measure'); // Click on Measure Page
+    await simpleClick(`${ballotBadgePlatformPrefixID}-Measure`); // Click on Measure Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('measureItemCompressedChoiceYes-wv02meas779'); // Click on Yes on 19
+    await simpleClick(`measureItemCompressedChoiceYes-${measureToTestOnBallotID}`); // Click on Yes on 19
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const voteYesButtonId = 'itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
+    const voteYesButtonId = `itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-${measureToTestOnBallotID}-${platformPrefixID}Version-${measureToTestOnBallotID}`;
     browser.execute((id) => {
       document.getElementById(id).click();
     }, voteYesButtonId); // Click on Voting Yes
@@ -163,30 +171,33 @@ describe('Basic cross-platform We Vote test',  () => {
     // If you try to close this popover with "profileCloseItemActionBar" later in the script, it won't be able to find this id
     await simpleClick('profileCloseItemActionBar');
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on TextArea
+    await simpleClick(`itemPositionStatementActionBarTextArea-${measureToTestOnBallotID}-measureItem-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`); // Click on TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779',''); // Clear Text on TextArea
+    await clearTextInputValue(`itemPositionStatementActionBarTextArea-${measureToTestOnBallotID}-measureItem-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`, ''); // Clear Text on TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleTextInput('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779','Commenting in measure to check'); // Write something on TextArea
+    await simpleTextInput(`itemPositionStatementActionBarTextArea-${measureToTestOnBallotID}-measureItem-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`, 'Commenting in measure to check'); // Write something on TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on Save Button
+    await simpleClick(`itemPositionStatementActionBarSave-${measureToTestOnBallotID}-measureItem-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`); // Click on Save Button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const voteNoButtonId = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
+    const voteNoButtonId = `itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-${measureToTestOnBallotID}-${platformPrefixID}Version-${measureToTestOnBallotID}`;
     browser.execute((id) => {
       document.getElementById(id).click();
     }, voteNoButtonId); // Click on Voting No
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('itemPositionStatementActionBarEdit-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Clicks on Edit Button
+    await simpleClick(`itemPositionStatementActionBarEdit-${measureToTestOnBallotID}-measureItem-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`); // Clicks on Edit Button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779',' '); // Clear Text on TextArea
+    await clearTextInputValue(`itemPositionStatementActionBarTextArea-${measureToTestOnBallotID}-measureItem-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`, ' '); // Clear Text on TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on Save Button
+    await simpleClick(`itemPositionStatementActionBarSave-${measureToTestOnBallotID}-measureItem-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`); // Click on Save Button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const voteNoButton = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
+    const voteNoButton = `itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-${measureToTestOnBallotID}-${platformPrefixID}Version-${measureToTestOnBallotID}`;
     browser.execute((id) => {
       document.getElementById(id).click();
     }, voteNoButton); // Click on Voting No again (to unset)
 
+    // Stop the script here for now
+    assert(true);
+    driver.quit();
 
     // Open position display filters
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);

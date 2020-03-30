@@ -7,17 +7,17 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import Mail from '@material-ui/icons/Mail';
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+// import Mail from '@material-ui/icons/Mail';
+// import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import { Button, Tooltip } from '@material-ui/core';
+// import AppActions from '../../actions/AppActions';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
+import FriendsShareList from '../Friends/FriendsShareList';
 import FriendStore from '../../stores/FriendStore';
 import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
-import FriendsShareList from '../Friends/FriendsShareList';
-import AppActions from '../../actions/AppActions';
 
 class OrganizationModal extends Component {
   static propTypes = {

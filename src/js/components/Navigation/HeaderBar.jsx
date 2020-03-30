@@ -22,7 +22,6 @@ import FirstPositionIntroModal from '../CompleteYourProfile/FirstPositionIntroMo
 import FriendStore from '../../stores/FriendStore';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderBarLogo from './HeaderBarLogo';
-import HowItWorksModal from '../CompleteYourProfile/HowItWorksModal';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
@@ -70,8 +69,9 @@ class HeaderBar extends Component {
       showAdviserIntroModal: false,
       showEditAddressButton: false,
       showFirstPositionIntroModal: false,
-      showHowItWorksModal: false,
       showSelectBallotModal: false,
+      showSelectBallotModalHideAddress: false,
+      showSelectBallotModalHideElections: false,
       showShareModal: false,
       showOrganizationModal: false,
       showSignInModal: false,
@@ -92,7 +92,6 @@ class HeaderBar extends Component {
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
     this.closeShareModal = this.closeShareModal.bind(this);
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
-    this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
   }
 
   componentDidMount () {
@@ -113,9 +112,10 @@ class HeaderBar extends Component {
       showAdviserIntroModal: AppStore.showAdviserIntroModal(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
-      showHowItWorksModal: AppStore.showHowItWorksModal(),
       showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
+      showSelectBallotModalHideAddress: AppStore.showSelectBallotModalHideAddress(),
+      showSelectBallotModalHideElections: AppStore.showSelectBallotModalHideElections(),
       showSignInModal: AppStore.showSignInModal(),
       showValuesIntroModal: AppStore.showValuesIntroModal(),
       voter: this.props.voter,
@@ -168,9 +168,6 @@ class HeaderBar extends Component {
     if (this.state.showFirstPositionIntroModal !== nextState.showFirstPositionIntroModal) {
       return true;
     }
-    if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) {
-      return true;
-    }
     if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
       return true;
     }
@@ -198,6 +195,12 @@ class HeaderBar extends Component {
       return true;
     }
     if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
+      return true;
+    }
+    if (this.state.showSelectBallotModalHideAddress !== nextState.showSelectBallotModalHideAddress) {
+      return true;
+    }
+    if (this.state.showSelectBallotModalHideElections !== nextState.showSelectBallotModalHideElections) {
       return true;
     }
     const currentPathnameExists = this.props.location && this.props.location.pathname;
@@ -260,12 +263,12 @@ class HeaderBar extends Component {
       showAdviserIntroModal: AppStore.showAdviserIntroModal(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
-      showHowItWorksModal: AppStore.showHowItWorksModal(),
       showPaidAccountUpgradeModal,
       showShareModal: AppStore.showShareModal(),
-      showOrganizationModal: AppStore.showOrganizationModal(),
       showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
+      showSelectBallotModalHideAddress: AppStore.showSelectBallotModalHideAddress(),
+      showSelectBallotModalHideElections: AppStore.showSelectBallotModalHideElections(),
       showSignInModal: AppStore.showSignInModal(),
       showValuesIntroModal: AppStore.showValuesIntroModal(),
     });
@@ -297,7 +300,6 @@ class HeaderBar extends Component {
         showSignInModal: AppStore.showSignInModal(),
         showShareModal: AppStore.showShareModal(),
         showOrganizationModal: AppStore.showOrganizationModal(),
-        showHowItWorksModal: AppStore.showHowItWorksModal(),
         showPersonalizedScoreIntroModal: AppStore.showPersonalizedScoreIntroModal(),
       });
     }
@@ -335,10 +337,6 @@ class HeaderBar extends Component {
     AppActions.setShowPaidAccountUpgradeModal(false);
   }
 
-  closeHowItWorksModal () {
-    AppActions.setShowHowItWorksModal(false);
-  }
-
   closeShareModal () {
     AppActions.setShowShareModal(false);
   }
@@ -352,16 +350,15 @@ class HeaderBar extends Component {
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
-  toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
+  toggleSelectBallotModal (destinationUrlForHistoryPush = '', showSelectBallotModalHideAddress = false, showSelectBallotModalHideElections = false) {
     const { showSelectBallotModal } = this.state;
-    // console.log('HeaderBar toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', prior showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
       historyPush(destinationUrlForHistoryPush);
     } else if (!showSelectBallotModal) {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
-    AppActions.setShowSelectBallotModal(!showSelectBallotModal);
+    AppActions.setShowSelectBallotModal(!showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections);
   }
 
   closeNewVoterGuideModal () {
@@ -411,21 +408,19 @@ class HeaderBar extends Component {
 
   render () {
     renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
-
     if (!this.state.componentDidMountFinished) {
       return null;
     }
     const { classes, pathname, location } = this.props;
     const {
-      chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, shareModalStep, organizationModalId,
+      chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, shareModalStep,
       showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
-      showHowItWorksModal, showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal, showSelectBallotModal, showShareModal, showOrganizationModal,
+      showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
+      showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
+      showShareModal, showOrganizationModal,
       showSignInModal, showValuesIntroModal,
       voter, voterFirstName, voterIsSignedIn,
     } = this.state;
-
-    console.log('Share Modal: ', showShareModal);
-    console.log('Organization Modal: ', showOrganizationModal);
 
     // console.log('Header Bar, showSignInModal ', showSignInModal);
     const ballotBaseUrl = '/ballot';
@@ -438,26 +433,40 @@ class HeaderBar extends Component {
     const editAddressButtonHtml = (
       <Tooltip title="Change my location or election" aria-label="Change Address or Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
         <span>
-          <IconButton
-            classes={{ root: classes.iconButtonRoot }}
-            id="changeAddressHeaderBar"
-            onClick={this.toggleSelectBallotModal}
-          >
-            <PlaceIcon />
-          </IconButton>
-          <Button
-            color="primary"
-            classes={{ root: classes.addressButtonRoot }}
-            id="changeAddressHeaderBarText"
-            onClick={this.toggleSelectBallotModal}
-          >
-            <span className="u-show-desktop-tablet">
+          <span className="u-show-desktop-tablet">
+            <IconButton
+              classes={{ root: classes.iconButtonRoot }}
+              id="changeAddressOrElectionHeaderBarElection"
+              onClick={() => this.toggleSelectBallotModal('', false, false)}
+            >
+              <PlaceIcon />
+            </IconButton>
+            <Button
+              color="primary"
+              classes={{ root: classes.addressButtonRoot }}
+              id="changeAddressOrElectionHeaderBarText"
+              onClick={() => this.toggleSelectBallotModal('', false, false)}
+            >
               Address & Elections
-            </span>
-            <span className="u-show-mobile">
+            </Button>
+          </span>
+          <span className="u-show-mobile">
+            <IconButton
+              classes={{ root: classes.iconButtonRoot }}
+              id="changeAddressOnlyHeaderBar"
+              onClick={() => this.toggleSelectBallotModal('', false, true)}
+            >
+              <PlaceIcon />
+            </IconButton>
+            <Button
+              color="primary"
+              classes={{ root: classes.addressButtonRoot }}
+              id="changeAddressOnlyHeaderBarText"
+              onClick={() => this.toggleSelectBallotModal('', false, true)}
+            >
               Address
-            </span>
-          </Button>
+            </Button>
+          </span>
         </span>
       </Tooltip>
     );
@@ -608,6 +617,8 @@ class HeaderBar extends Component {
         {showSelectBallotModal && (
           <SelectBallotModal
             ballotBaseUrl="/ballot"
+            hideAddressEdit={showSelectBallotModalHideAddress}
+            hideElections={showSelectBallotModalHideElections}
             location={location}
             pathname={pathname}
             show={showSelectBallotModal}
@@ -653,13 +664,6 @@ open={showOrganizationModal}
             pathname={pathname}
             show={showFirstPositionIntroModal}
             toggleFunction={this.closeFirstPositionIntroModal}
-          />
-        )}
-        {showHowItWorksModal && (
-          <HowItWorksModal
-            pathname={pathname}
-            show={showHowItWorksModal}
-            toggleFunction={this.closeHowItWorksModal}
           />
         )}
         {showPersonalizedScoreIntroModal && (

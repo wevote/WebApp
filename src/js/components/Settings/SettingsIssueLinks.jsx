@@ -7,6 +7,8 @@ import IssueActions from '../../actions/IssueActions';
 import IssueLinkToggle from '../Values/IssueLinkToggle';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
+import SettingsAccount from './SettingsAccount';
+import VoterStore from '../../stores/VoterStore';
 
 const PROCHOICE = 'wv02issue63';
 const PROLIFE = 'wv02issue64';
@@ -40,18 +42,19 @@ export default class SettingsIssueLinks extends Component {
 
     this.state = {
       activeTab: '',
+      currentIncompatibleIssues: {},
       issuesToLinkTo: [],
       issuesLinkedTo: [],
       organizationWeVoteId: '',
-      currentIncompatibleIssues: {},
+      voterIsSignedIn: false,
     };
   }
 
   componentDidMount () {
     const newState = {};
-    this.issueStoreListener = IssueStore.addListener(
-      this.onIssueStoreChange.bind(this),
-    );
+    this.onVoterStoreChange();
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (this.props.organizationWeVoteId) {
       IssueActions.retrieveIssuesToLinkForOrganization(
         this.props.organizationWeVoteId,
@@ -90,6 +93,7 @@ export default class SettingsIssueLinks extends Component {
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onIssueStoreChange () {
@@ -118,6 +122,14 @@ export default class SettingsIssueLinks extends Component {
     });
   }
 
+  onVoterStoreChange = () => {
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
+    this.setState({
+      voterIsSignedIn,
+    });
+  }
+
   getDefaultActiveIssueTab () {
     // If the organization is linked to fewer than 3 issues, default to the "Find Issues" tab
     // After that, default to the "Linked Issues" tab
@@ -136,6 +148,11 @@ export default class SettingsIssueLinks extends Component {
 
   render () {
     renderLog('SettingsIssueLinks');  // Set LOG_RENDER_EVENTS to log all renders
+    const { voterIsSignedIn } = this.state;
+    if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return <SettingsAccount />;
+    }
     let issuesToDisplay = [];
 
     const activeTab = this.props.params.active_tab || this.state.activeTab;

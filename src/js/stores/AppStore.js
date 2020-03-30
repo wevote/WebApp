@@ -21,10 +21,13 @@ class AppStore extends ReduceStore {
       showEditAddressButton: false,
       showHowItWorksModal: false,
       shareModalStep: 'options',
+      showElectionsWithOrganizationVoterGuidesModal: false,
       showNewVoterGuideModal: false,
       showPaidAccountUpgradeModal: false,
       showPersonalizedScoreIntroModal: false,
       showSelectBallotModal: false,
+      showSelectBallotModalHideAddress: false,
+      showSelectBallotModalHideElections: false,
       showShareModal: false,
       showSignInModal: false,
       organizationModalId: '',
@@ -89,12 +92,20 @@ class AppStore extends ReduceStore {
     return this.getState().onChosenFullDomainUrl;
   }
 
+  showingOneCompleteYourProfileModal () {
+    return this.getState().showAdviserIntroModal || this.getState().showFirstPositionIntroModal || this.getState().showHowItWorksModal || this.getState().showPersonalizedScoreIntroModal || this.getState().showValuesIntroModal || this.getState().showSelectBallotModal;
+  }
+
   showAdviserIntroModal () {
     return this.getState().showAdviserIntroModal;
   }
 
   showEditAddressButton () {
     return this.getState().showEditAddressButton;
+  }
+
+  showElectionsWithOrganizationVoterGuidesModal () {
+    return this.getState().showElectionsWithOrganizationVoterGuidesModal;
   }
 
   showFirstPositionIntroModal () {
@@ -122,16 +133,20 @@ class AppStore extends ReduceStore {
     return this.getState().showShareModal;
   }
 
-  showOrganizationModal () {
-    return this.getState().showOrganizationModal;
-  }
-
   shareModalStep () {
     return this.getState().shareModalStep;
   }
 
   showSelectBallotModal () {
     return this.getState().showSelectBallotModal;
+  }
+
+  showSelectBallotModalHideAddress () {
+    return this.getState().showSelectBallotModalHideAddress;
+  }
+
+  showSelectBallotModalHideElections () {
+    return this.getState().showSelectBallotModalHideElections;
   }
 
   showSignInModal () {
@@ -186,6 +201,8 @@ class AppStore extends ReduceStore {
         return { ...state, showAdviserIntroModal: action.payload };
       case 'showEditAddressButton':
         return { ...state, showEditAddressButton: action.payload };
+      case 'showElectionsWithOrganizationVoterGuidesModal':
+        return { ...state, showElectionsWithOrganizationVoterGuidesModal: action.payload };
       case 'showFirstPositionIntroModal':
         return { ...state, showFirstPositionIntroModal: action.payload };
       case 'showHowItWorksModal':
@@ -201,7 +218,12 @@ class AppStore extends ReduceStore {
       case 'shareModalStep':
         return { ...state, shareModalStep: action.payload };
       case 'showSelectBallotModal':
-        return { ...state, showSelectBallotModal: action.payload };
+        return {
+          ...state,
+          showSelectBallotModal: action.showSelectBallotModal,
+          showSelectBallotModalHideAddress: action.showSelectBallotModalHideAddress,
+          showSelectBallotModalHideElections: action.showSelectBallotModalHideElections,
+        };
       case 'showSignInModal':
         return { ...state, showSignInModal: action.payload };
       case 'showOrganizationModal':

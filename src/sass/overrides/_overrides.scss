@@ -27,14 +27,11 @@ $white-text-color: $white;
   width: 100%;
 }
 
-// Used to change the bootstrap popover title background color to WeVote blue and the text to white.
-.popover-header {
-  background-color: $brand-blue;
-  color: $white-text-color;
-}
-
-//Used to change the bootstrap popover arrow background color to WeVote blue.
-.popover.bottom .arrow::after {
+// Used to color the arrow at top of Popovers
+.bs-popover-bottom > .arrow::after,
+.bs-popover-auto[x-placement^='bottom'] > .arrow::after {
+  top: 1px;
+  border-width: 0 .5rem .5rem .5rem;
   border-bottom-color: $brand-blue;
 }
 
