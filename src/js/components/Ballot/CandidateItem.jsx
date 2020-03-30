@@ -28,6 +28,7 @@ class CandidateItem extends Component {
     candidateWeVoteId: PropTypes.string.isRequired,
     closeSupportOpposeCountDisplayModal: PropTypes.bool,
     controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
+    goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     expandIssuesByDefault: PropTypes.bool,
     hideBallotItemSupportOpposeComment: PropTypes.bool,
     hideCandidateText: PropTypes.bool,
@@ -62,6 +63,7 @@ class CandidateItem extends Component {
       candidatePhotoUrl: '',
       candidateUrl: '',
       contestOfficeName: '',
+      candidateWeVoteId: '',
       issuesUnderThisBallotItemVoterIsFollowingLength: 0,
       issuesUnderThisBallotItemVoterIsNotFollowingLength: 0,
       largeAreaHoverColorOnNow: null,
@@ -117,6 +119,7 @@ class CandidateItem extends Component {
         candidatePhotoUrl,
         candidateText,
         candidateUrl,
+        candidateWeVoteId, // Move into state to signal that all state data is ready
         contestOfficeName: candidate.contest_office_name,
         officeWeVoteId: candidate.contest_office_we_vote_id,
         politicalParty: candidate.party,
@@ -147,7 +150,7 @@ class CandidateItem extends Component {
     if (this.state.candidateUrl !== nextState.candidateUrl) {
       return true;
     }
-    if (this.props.candidateWeVoteId !== nextProps.candidateWeVoteId) {
+    if (this.state.candidateWeVoteId !== nextState.candidateWeVoteId) {
       return true;
     }
     if (this.props.closeSupportOpposeCountDisplayModal !== nextProps.closeSupportOpposeCountDisplayModal) {
@@ -236,6 +239,7 @@ class CandidateItem extends Component {
         candidatePhotoUrl,
         candidateText,
         candidateUrl,
+        candidateWeVoteId, // Move into state to signal that all state data is ready
         contestOfficeName: candidate.contest_office_name,
         officeWeVoteId: candidate.contest_office_we_vote_id,
         politicalParty: candidate.party,
@@ -246,6 +250,7 @@ class CandidateItem extends Component {
 
   onIssueStoreChange () {
     const { candidateWeVoteId } = this.props;
+    // console.log('CandidateItem onIssueStoreChange candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
       const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(candidateWeVoteId) || [];
       const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(candidateWeVoteId) || [];
@@ -313,7 +318,6 @@ class CandidateItem extends Component {
   };
 
   candidateRenderBlock = (candidateWeVoteId, useLinkToCandidatePage = false, forDesktop = false, openSupportOpposeCountDisplayModal = false) => {
-    // console.log('CandidateItem candidateRenderBlock, candidateWeVoteId:', candidateWeVoteId);
     const {
       controlAdviserMaterialUIPopoverFromProp, closeSupportOpposeCountDisplayModal, hideCandidateUrl, linkToBallotItemPage, linkToOfficePage,
       openAdviserMaterialUIPopover,
@@ -329,6 +333,7 @@ class CandidateItem extends Component {
       politicalParty,
       twitterFollowersCount,
     } = this.state;
+    // console.log('CandidateItem candidateRenderBlock, candidateWeVoteId:', candidateWeVoteId, ', useLinkToCandidatePage:', useLinkToCandidatePage, ', forDesktop:', forDesktop, ', linkToBallotItemPage:', linkToBallotItemPage);
     // console.log('candidateRenderBlock candidatePhotoUrl: ', candidatePhotoUrl);
     return (
       <div>
@@ -392,8 +397,10 @@ class CandidateItem extends Component {
               ballotItemWeVoteId={candidateWeVoteId}
               closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
               controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+              goToBallotItem={this.props.goToBallotItem}
               handleLeaveCandidateCard={forDesktop ? this.handleLeave : null}
               handleEnterCandidateCard={forDesktop ? this.handleEnter : null}
+              hideShowMoreLink={!linkToBallotItemPage}
               openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
               openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
               supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
@@ -424,10 +431,10 @@ class CandidateItem extends Component {
               textTruncateChild={null}
             />
           </div>
-          <span className="card-main__read-more-pseudo" />
-          <span className="card-main__read-more-link">
-            &nbsp;more
-          </span>
+          {/* <span className="card-main__read-more-pseudo" /> */}
+          {/* <span className="card-main__read-more-link"> */}
+          {/*  &nbsp;more */}
+          {/* </span> */}
         </div>
       ) : null }
     </TopCommentByBallotItem>
@@ -502,10 +509,17 @@ class CandidateItem extends Component {
                 }
               </div>
               <div className="u-show-mobile-tablet">
-                <Link to={this.getCandidateLink()} className="card-main__no-underline">
-                  <br />
-                  {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
-                </Link>
+                {linkToBallotItemPage ? (
+                  <Link to={this.getCandidateLink()} className="card-main__no-underline">
+                    <br />
+                    {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
+                  </Link>
+                ) : (
+                  <div>
+                    <br />
+                    {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
+                  </div>
+                )}
               </div>
             </>
           ) : (
@@ -552,13 +566,13 @@ class CandidateItem extends Component {
 
   render () {
     renderLog('CandidateItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { candidateWeVoteId, linkToBallotItemPage, openSupportOpposeCountDisplayModal, showHover } = this.props;
-    const { candidateText, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow } = this.state;
+    const { linkToBallotItemPage, openSupportOpposeCountDisplayModal, showHover } = this.props;
+    const { candidateText, candidateWeVoteId, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow } = this.state;
     if (!candidateWeVoteId) {
-      // console.log('CandidateItem waiting for candidateWeVoteId');
+      // console.log('CandidateItem waiting for candidateWeVoteId to make it into the state variable');
       return null;
     }
-    // console.log('CandidateItem render');
+    // console.log('CandidateItem render, linkToBallotItemPage:', linkToBallotItemPage);
     const forDesktop = true;
     const openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize = (openSupportOpposeCountDisplayModal && isMobileAndTabletScreenSize());
     const openSupportOpposeCountDisplayModalAtDesktopScreenSize = (openSupportOpposeCountDisplayModal && !isMobileAndTabletScreenSize());
@@ -583,15 +597,9 @@ class CandidateItem extends Component {
           </div>
         </DesktopWrapper>
         <MobileTabletWrapper className="u-show-mobile-tablet card-main candidate-card u-no-scroll">
-          {linkToBallotItemPage ? (
-            <div className="card-main__no-underline">
-              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
-            </div>
-          ) : (
-            <span>
-              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
-            </span>
-          )}
+          <div className="card-main__no-underline">
+            {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
+          </div>
           <div>
             {this.candidateIssuesAndCommentBlock(candidateText, 'mobileIssuesComment')}
           </div>

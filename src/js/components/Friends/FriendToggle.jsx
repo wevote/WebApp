@@ -107,7 +107,7 @@ export default class FriendToggle extends Component {
               <Button
                 type="button"
                 id="dropdown-item-id"
-                className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                className="dropdown-item issues-follow-btn issues-follow-btn__menu-item u-z-index-5020"
                 disabled={unFriendSubmitted}
                 // data-toggle="dropdown"
                 onClick={this.unFriend}

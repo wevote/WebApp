@@ -6,7 +6,9 @@ import { renderLog } from '../../utils/logging';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import CandidateItem from '../../components/Ballot/CandidateItem';
-// import CandidateStore from '../../stores/CandidateStore';
+import CandidateStore from '../../stores/CandidateStore';
+import IssueActions from '../../actions/IssueActions';
+import IssueStore from '../../stores/IssueStore';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -33,6 +35,7 @@ class CandidateForExtension extends Component {
 
   componentDidMount () {
     // console.log('Candidate componentDidMount');
+    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     const { candidate_we_vote_id: candidateWeVoteId, organization_we_vote_id: organizationWeVoteId } = this.props.location.query;
     // console.log('candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
@@ -55,12 +58,29 @@ class CandidateForExtension extends Component {
         }
       });
     }
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+    }
+    IssueActions.issuesFollowedRetrieve();
+    if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
+      IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
+    }
 
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
     this.setState({
       candidateWeVoteId,
       organizationWeVoteId,
     });
+  }
+
+  componentWillUnmount () {
+    // console.log('Candidate componentWillUnmount');
+    this.candidateStoreListener.remove();
+  }
+
+  onCandidateStoreChange () {
+    // We just want to trigger a re-render
+    this.setState();
   }
 
   handleChange (event, newValue) {
@@ -71,15 +91,14 @@ class CandidateForExtension extends Component {
 
   render () {
     renderLog('CandidateForExtension');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes } = this.props;
     const {
       candidate_name: candidateName, endorsement_page_url: endorsementPageUrl, candidate_home_page: candidateHomePage,
       show_data: showDevelopmentData,
     } = this.props.location.query;
-
-    const { classes } = this.props;
-
-    // const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown, candidateWeVoteId, value } = this.state;
     const { organizationWeVoteId, candidateWeVoteId, value } = this.state;
+    // const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown, candidateWeVoteId, value } = this.state;
+    // console.log('CandidateForExtension render');
 
     /* eslint-disable react/jsx-one-expression-per-line */
     return (
