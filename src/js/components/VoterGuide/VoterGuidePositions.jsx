@@ -334,11 +334,6 @@ class VoterGuidePositions extends Component {
     });
   }
 
-  onClickFunction (id) {
-    AppActions.setShowOrganizationModal(true);
-    AppActions.setOrganizationModalId(id);
-  }
-
   onScroll () {
     const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
     // console.log('showMoreItemsElement: ', showMoreItemsElement);
@@ -442,7 +437,7 @@ class VoterGuidePositions extends Component {
     const descriptionText = `See endorsements and opinions from ${organizationName} for the November election`;
     const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
-    let numberOfPositionItemsDisplayed = 0;
+    const numberOfPositionItemsDisplayed = 0;
     return (
       <VoterGuidePositionsWrapper>
         {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
@@ -504,7 +499,7 @@ class VoterGuidePositions extends Component {
                   {positionListForOneElection.map(item => (
                     <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
                       <VoterGuidePositionItem
-                        onClickFunction={() => this.onClickFunction(item.position_we_vote_id)}
+                        // onClickFunction={this.onClickFunction}
                         organizationWeVoteId={organizationWeVoteId}
                         position={item}
                       />

@@ -19,6 +19,7 @@ import { capitalizeString, stringContains } from '../../utils/textFormat';
 import ReadMore from '../Widgets/ReadMore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
+import AppActions from '../../actions/AppActions';
 // import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 
 class VoterGuidePositionItem extends Component {
@@ -46,6 +47,7 @@ class VoterGuidePositionItem extends Component {
       voter: {},
     };
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
+    this.onClickFunction = this.onClickFunction.bind(this);
   }
 
   componentDidMount () {
@@ -377,12 +379,6 @@ class VoterGuidePositionItem extends Component {
     });
   }
 
-  onClickFunction () {
-    if (this.props.onClickFunction) {
-      this.props.onClickFunction();
-    }
-  }
-
   togglePositionStatement () {
     const { hidePositionStatement } = this.state;
     this.setState({ hidePositionStatement: !hidePositionStatement });
@@ -402,6 +398,11 @@ class VoterGuidePositionItem extends Component {
       return positionListFromFriendsHasBeenRetrievedOnce[ballotItemWeVoteId];
     }
     return false;
+  }
+
+  onClickFunction () {
+    AppActions.setShowOrganizationModal(true);
+    AppActions.setOrganizationModalId(Object.keys(this.state.positionListFromFriendsHasBeenRetrievedOnce)[0]);
   }
 
   render () {
@@ -451,7 +452,7 @@ class VoterGuidePositionItem extends Component {
       }
     }
     return (
-      <div onClick={onClickFunction}>
+      <div onClick={this.onClickFunction}>
         <Card>
           <BallotItemPadding>
             <BallotItemWrapper className="card-main__media-object">

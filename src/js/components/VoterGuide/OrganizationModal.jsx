@@ -95,13 +95,8 @@ class OrganizationModal extends Component {
     this.setState({
       candidateWeVoteId,
       organizationWeVoteId,
-    });
-
-    this.setState({
-      pathname: this.props.pathname,
-      currentFriendsList: FriendStore.currentFriends(),
       open: this.props.open,
-      candidate_we_vote_id: this.props.candidate_we_vote_id,
+      pathname: this.props.pathname,
     });
   }
 
@@ -119,14 +114,19 @@ class OrganizationModal extends Component {
     this.setState({ open: false });
     setTimeout(() => {
       this.props.toggleFunction(this.state.pathname);
-    }, 2000);
+    }, 500);
   }
 
   render () {
+    console.log(this.props.candidate_we_vote_id);
+
     renderLog('OrganizationModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
 
     const { organizationWeVoteId, candidateWeVoteId } = this.state;
+
+    console.log("organizationWeVoteId: ", organizationWeVoteId);
+    console.log("candidateWeVoteId: ", candidateWeVoteId);
 
     // console.log('currentSelectedPlanCostForPayment:', currentSelectedPlanCostForPayment);
     // console.log(this.state);
@@ -147,7 +147,7 @@ class OrganizationModal extends Component {
 
     return (
       <>
-        <Drawer id="share-menu" anchor="right" open={this.state.open} direction="left" onClose={this.closeOrganizationModal}>
+        <Drawer classes={{ root: classes.drawer }} id="share-menu" anchor="right" open={this.state.open} direction="left" onClose={this.closeOrganizationModal}>
           <CandidateItem
             inModal
             candidateWeVoteId={candidateWeVoteId}
@@ -165,6 +165,12 @@ class OrganizationModal extends Component {
   }
 }
 const styles = () => ({
+  drawer: {
+    maxWidth: '360px !important',
+    '& *': {
+      maxWidth: '360px !important',
+    },
+  },
   dialogPaper: {
     display: 'block',
     marginTop: hasIPhoneNotch() ? 68 : 48,
