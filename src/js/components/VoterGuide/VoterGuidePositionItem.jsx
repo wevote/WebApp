@@ -19,11 +19,10 @@ import { capitalizeString, stringContains } from '../../utils/textFormat';
 import ReadMore from '../Widgets/ReadMore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-// import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
+import AppActions from '../../actions/AppActions';
 
 class VoterGuidePositionItem extends Component {
   static propTypes = {
-    onClickFunction: PropTypes.func,
     organizationWeVoteId: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
   };
@@ -46,6 +45,7 @@ class VoterGuidePositionItem extends Component {
       voter: {},
     };
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
+    this.onClickFunction = this.onClickFunction.bind(this);
   }
 
   componentDidMount () {
@@ -378,9 +378,8 @@ class VoterGuidePositionItem extends Component {
   }
 
   onClickFunction () {
-    if (this.props.onClickFunction) {
-      this.props.onClickFunction();
-    }
+    AppActions.setShowOrganizationModal(true);
+    AppActions.setOrganizationModalId(Object.keys(this.state.positionListFromFriendsHasBeenRetrievedOnce)[0]);
   }
 
   togglePositionStatement () {
@@ -451,8 +450,8 @@ class VoterGuidePositionItem extends Component {
       }
     }
     return (
-      <div onClick={this.props.onClickFunction}>
-        <Card onClick={this.props.onClickFunction ? this.onClickFunction() : null}>
+      <div onClick={this.onClickFunction}>
+        <Card>
           <BallotItemPadding>
             <BallotItemWrapper className="card-main__media-object">
               { isCandidate ? (

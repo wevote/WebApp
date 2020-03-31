@@ -37,7 +37,6 @@ import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import ShareModal from '../Share/ShareModal';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
-import OrganizationModal from '../VoterGuide/OrganizationModal';
 
 // const webAppConfig = require('../../config');
 
@@ -417,8 +416,7 @@ class HeaderBar extends Component {
       showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
-      showShareModal, showOrganizationModal,
-      showSignInModal, showValuesIntroModal,
+      showShareModal, showSignInModal, showValuesIntroModal,
       voter, voterFirstName, voterIsSignedIn,
     } = this.state;
 
@@ -640,15 +638,6 @@ class HeaderBar extends Component {
             show={showShareModal}
             step={shareModalStep}
             toggleFunction={this.closeShareModal}
-          />
-        )}
-        {showOrganizationModal && (
-          <OrganizationModal
-            isSignedIn={this.state.voter.is_signed_in}
-            pathname={pathname}
-            show={showOrganizationModal}
-            // step={shareModalStep}
-            toggleFunction={this.closeOrganizationModal}
           />
         )}
         {showAdviserIntroModal && (

@@ -334,11 +334,6 @@ class VoterGuidePositions extends Component {
     });
   }
 
-  onClickFunction (id) {
-    AppActions.setShowOrganizationModal(true);
-    AppActions.setOrganizationModalId(id);
-  }
-
   onScroll () {
     const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
     // console.log('showMoreItemsElement: ', showMoreItemsElement);
@@ -511,7 +506,6 @@ class VoterGuidePositions extends Component {
                       return (
                         <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
                           <VoterGuidePositionItem
-                            onClickFunction={() => this.onClickFunction(organizationWeVoteId)}
                             organizationWeVoteId={organizationWeVoteId}
                             position={item}
                           />
