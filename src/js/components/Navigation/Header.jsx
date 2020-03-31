@@ -104,7 +104,7 @@ export default class Header extends Component {
       iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '0px' : 'undefined'}` }} />;
     }
 
-    console.log("organizationModalId: ", this.state.organizationModalId);
+    // console.log('organizationModalId: ', this.state.organizationModalId);
 
     const pageHeaderStyle = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
     // console.log(`Header href: ${window.location.href}  cordovaStyle: `, cordovaTopHeaderTopMargin());
@@ -150,9 +150,8 @@ export default class Header extends Component {
               isSignedIn={voter.is_signed_in}
               pathname={pathname}
               show={showOrganizationModal}
-              candidate_we_vote_id={this.state.organizationModalId}
-  open={showOrganizationModal}
-              // step={shareModalStep}
+              candidateWeVoteId={this.state.organizationModalId}
+              open={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
             />
           )}
@@ -214,9 +213,8 @@ export default class Header extends Component {
               isSignedIn={voter.is_signed_in}
               pathname={pathname}
               show={showOrganizationModal}
-              candidate_we_vote_id={this.state.organizationModalId}
-  open={showOrganizationModal}
-              // step={shareModalStep}
+              candidateWeVoteId={this.state.organizationModalId}
+              open={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
           />
           )}
@@ -254,9 +252,8 @@ export default class Header extends Component {
               isSignedIn={voter.is_signed_in}
               pathname={pathname}
               show={showOrganizationModal}
-              candidate_we_vote_id={this.state.organizationModalId}
-  open={showOrganizationModal}
-              // step={shareModalStep}
+              candidateWeVoteId={this.state.organizationModalId}
+              open={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
           />
           )}
@@ -289,9 +286,8 @@ export default class Header extends Component {
               isSignedIn={voter.is_signed_in}
               pathname={pathname}
               show={showOrganizationModal}
-              candidate_we_vote_id={this.state.organizationModalId}
-  open={showOrganizationModal}
-              // step={shareModalStep}
+              candidateWeVoteId={this.state.organizationModalId}
+              open={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
           />
           )}
@@ -346,9 +342,8 @@ export default class Header extends Component {
               isSignedIn={voter.is_signed_in}
               pathname={pathname}
               show={showOrganizationModal}
-              candidate_we_vote_id={this.state.organizationModalId}
-  open={showOrganizationModal}
-              // step={shareModalStep}
+              candidateWeVoteId={this.state.organizationModalId}
+              open={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
           />
           )}

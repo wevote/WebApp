@@ -37,7 +37,6 @@ import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import ShareModal from '../Share/ShareModal';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
-import OrganizationModal from '../VoterGuide/OrganizationModal';
 
 // const webAppConfig = require('../../config');
 
@@ -260,7 +259,6 @@ class HeaderBar extends Component {
       scrolledDown: AppStore.getScrolledDown(),
       shareModalStep: AppStore.shareModalStep(),
       organizationModalId: AppStore.organizationModalId(),
-      showOrganizationModal: AppStore.showOrganizationModal(),
       showAdviserIntroModal: AppStore.showAdviserIntroModal(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),
@@ -418,8 +416,7 @@ class HeaderBar extends Component {
       showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
-      showShareModal, showOrganizationModal,
-      showSignInModal, showValuesIntroModal,
+      showShareModal, showSignInModal, showValuesIntroModal,
       voter, voterFirstName, voterIsSignedIn,
     } = this.state;
 
@@ -643,16 +640,6 @@ class HeaderBar extends Component {
             toggleFunction={this.closeShareModal}
           />
         )}
-        {/* {showOrganizationModal && (
-          <OrganizationModal
-            isSignedIn={this.state.voter.is_signed_in}
-            pathname={pathname}
-            show={showOrganizationModal}
-open={showOrganizationModal}
-            // step={shareModalStep}
-            toggleFunction={this.closeOrganizationModal}
-          />
-        )} */}
         {showAdviserIntroModal && (
           <AdviserIntroModal
             pathname={pathname}

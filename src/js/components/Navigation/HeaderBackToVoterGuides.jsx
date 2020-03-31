@@ -23,7 +23,6 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import SignInModal from '../Widgets/SignInModal';
-import OrganizationModal from '../VoterGuide/OrganizationModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -43,7 +42,6 @@ class HeaderBackToVoterGuides extends Component {
       profilePopUpOpen: false,
       showNewVoterGuideModal: false,
       showSignInModal: false,
-      showOrganizationModal: false,
       voter: {},
       voterFirstName: '',
       voterIsSignedIn: false,
@@ -89,7 +87,6 @@ class HeaderBackToVoterGuides extends Component {
     this.setState({
       showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
       showSignInModal: AppStore.showSignInModal(),
-      showOrganizationModal: AppStore.showOrganizationModal(),
       voter,
       voterFirstName,
       voterIsSignedIn,
@@ -140,7 +137,6 @@ class HeaderBackToVoterGuides extends Component {
     this.setState({
       showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
       showSignInModal: AppStore.showSignInModal(),
-      showOrganizationModal: AppStore.showOrganizationModal(),
     });
   }
 
@@ -196,10 +192,6 @@ class HeaderBackToVoterGuides extends Component {
     AppActions.setShowSignInModal(false);
   }
 
-  closeOrganizationModal () {
-    AppActions.setShowOrganizationModal(false);
-  }
-
   toggleSignInModal () {
     const { showSignInModal } = this.state;
     this.setState({ profilePopUpOpen: false });
@@ -229,7 +221,7 @@ class HeaderBackToVoterGuides extends Component {
   render () {
     renderLog('HeaderBackToVoterGuides');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      profilePopUpOpen, showNewVoterGuideModal, showSignInModal, showOrganizationModal,
+      profilePopUpOpen, showNewVoterGuideModal, showSignInModal,
       voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
     } = this.state;
     const { classes, pathname } = this.props;
@@ -365,16 +357,6 @@ class HeaderBackToVoterGuides extends Component {
             closeFunction={this.closeSignInModal}
           />
         )}
-        {/* {showOrganizationModal && (
-          <OrganizationModal
-            isSignedIn={this.state.voter.is_signed_in}
-            pathname={this.props.location.pathname}
-            show={showOrganizationModal}
-open={showOrganizationModal}
-            // step={shareModalStep}
-            toggleFunction={this.closeOrganizationModal}
-          />
-        )} */}
         {showNewVoterGuideModal && (
           <VoterGuideChooseElectionModal
             show={showNewVoterGuideModal}

@@ -1,24 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import CloseIcon from '@material-ui/icons/Close';
-import People from '@material-ui/icons/People';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
+// import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-// import Mail from '@material-ui/icons/Mail';
-// import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import { Button, Tooltip, Drawer } from '@material-ui/core';
-// import AppActions from '../../actions/AppActions';
+import { Drawer } from '@material-ui/core';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import FriendActions from '../../actions/FriendActions';
-import FriendsShareList from '../Friends/FriendsShareList';
-import FriendStore from '../../stores/FriendStore';
-import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
-import CandidateForDrawer from './CandidateForDrawer';
 import CandidateItem from '../Ballot/CandidateItem';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import VoterStore from '../../stores/VoterStore';
@@ -32,11 +18,11 @@ import CandidateStore from '../../stores/CandidateStore';
 
 class OrganizationModal extends Component {
   static propTypes = {
+    candidateWeVoteId: PropTypes.string,
     classes: PropTypes.object,
-    isSignedIn: PropTypes.bool,
+    open: PropTypes.bool,
+    organizationWeVoteId: PropTypes.string,
     pathname: PropTypes.string,
-    show: PropTypes.bool,
-    id: PropTypes.string,
     toggleFunction: PropTypes.func.isRequired,
   };
 
@@ -47,8 +33,6 @@ class OrganizationModal extends Component {
       open: false,
       candidateWeVoteId: '',
       organizationWeVoteId: '',
-      // currentFriendsList: [],
-      // friendsToShareWith: [],
     };
 
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
@@ -61,7 +45,7 @@ class OrganizationModal extends Component {
     // FriendActions.currentFriends();
     // console.log('Candidate componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    const { candidate_we_vote_id: candidateWeVoteId, organization_we_vote_id: organizationWeVoteId } = this.props;
+    const { candidateWeVoteId, organizationWeVoteId } = this.props;
     // console.log('candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
       this.setState({
@@ -118,32 +102,18 @@ class OrganizationModal extends Component {
   }
 
   render () {
-    console.log(this.props.candidate_we_vote_id);
+    // console.log(this.props.candidate_we_vote_id);
 
     renderLog('OrganizationModal');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
 
     const { organizationWeVoteId, candidateWeVoteId } = this.state;
 
-    console.log("organizationWeVoteId: ", organizationWeVoteId);
-    console.log("candidateWeVoteId: ", candidateWeVoteId);
+    // console.log("organizationWeVoteId: ", organizationWeVoteId);
+    // console.log("candidateWeVoteId: ", candidateWeVoteId);
 
     // console.log('currentSelectedPlanCostForPayment:', currentSelectedPlanCostForPayment);
     // console.log(this.state);
-
-    // console.log('Friends to share with: ', this.state.friendsToShareWith);
-
-    // const handleChange = (index, item) => (event) => {
-    //   let newFriendsToShareWith = [];
-    //
-    //   if (event.target.checked) {
-    //     newFriendsToShareWith = this.state.friendsToShareWith.filter(newItem => newItem.voter_we_vote_id !== item.voter_we_vote_id);
-    //   } else {
-    //     newFriendsToShareWith = [...this.state.friendsToShareWith, item];
-    //   }
-    //
-    //   this.setState({ friendsToShareWith: newFriendsToShareWith, [index]: event.target.checked });
-    // };
 
     return (
       <>
@@ -223,49 +193,5 @@ const styles = () => ({
   },
 });
 
-/* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled.div`
-  justify-content: flex-start;
-  width: 100%;
-  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : props.onSignInSlide ? '20px 14px 10px' : '10px 14px')};
-  z-index: 999;
-  @media (min-width: 769px) {
-    border-bottom: 2px solid #f7f7f7;
-  }
-  display: ${props => (props.onSignInSlide ? 'block' : 'flex')};
-  text-align: ${props => (props.onSignInSlide ? 'center' : 'left')};
-`;
-
-const FriendsShareTextWrapper = styled.div`
-  position: relative;
-  top: -16px;
-  margin-bottom: 12px;
-`;
-
-const Title = styled.h3`
-  font-size: ${props => (props.bold ? '30px' : '24px')};
-  color: black;
-  margin: ${props => (props.onSignInSlide ? '0 auto' : '0')};
-  margin-top: 0;
-  margin-bottom: ${props => (props.bold ? '0' : '12px')};
-  font-weight: ${props => (props.bold ? 'bold' : 'initial')};
-  text-align: ${props => (props.left && 'left')};
-`;
-
-const SubTitle = styled.div`
-  margin-top: 0;
-  font-size: ${props => (props.larger ? '18px' : '14px')};
-  width: 100%;
-  text-align: ${props => (props.left && 'left')};
-  @media(min-width: 420px) {
-    width: 80%;
-  }
-`;
-
-const Flex = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  padding-top: 16px;
-`;
 
 export default withTheme(withStyles(styles)(OrganizationModal));

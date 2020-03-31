@@ -6,24 +6,23 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
-import CandidateItem from '../../components/Ballot/CandidateItem';
-import CandidateShareButton from '../../components/Share/CandidateShareButton';
-import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
+import CandidateItem from '../Ballot/CandidateItem';
+import CandidateShareButton from '../Share/CandidateShareButton';
+import CandidateStickyHeader from '../Ballot/CandidateStickyHeader';
 import CandidateStore from '../../stores/CandidateStore';
 import { capitalizeString } from '../../utils/textFormat';
-import DelayedLoad from '../../components/Widgets/DelayedLoad';
-import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import DelayedLoad from '../Widgets/DelayedLoad';
+import EndorsementCard from '../Widgets/EndorsementCard';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
-import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import PositionList from '../../components/Ballot/PositionList';
-import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
-import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
-import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
+import PositionList from '../Ballot/PositionList';
+import SearchOnGoogle from '../Widgets/SearchOnGoogle';
+import ThisIsMeAction from '../Widgets/ThisIsMeAction';
+import ViewOnBallotpedia from '../Widgets/ViewOnBallotpedia';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
@@ -34,6 +33,7 @@ const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES ===
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 class CandidateForDrawer extends Component {
   static propTypes = {
+    candidateWeVoteId: PropTypes.string,
     params: PropTypes.object.isRequired,
   };
 
@@ -57,7 +57,7 @@ class CandidateForDrawer extends Component {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
-    const { candidate_we_vote_id: candidateWeVoteId } = this.props;
+    const { candidateWeVoteId } = this.props;
 
     // console.log('candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
@@ -133,8 +133,6 @@ class CandidateForDrawer extends Component {
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
     this.setState({
       allCachedPositionsForThisCandidate,
-      candidateWeVoteId,
-      organizationWeVoteId: this.props.candidate_we_vote_id,
       scrolledDown: AppStore.getScrolledDown(),
     });
   }

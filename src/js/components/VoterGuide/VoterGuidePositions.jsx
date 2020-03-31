@@ -437,7 +437,7 @@ class VoterGuidePositions extends Component {
     const descriptionText = `See endorsements and opinions from ${organizationName} for the November election`;
     const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
-    const numberOfPositionItemsDisplayed = 0;
+    let numberOfPositionItemsDisplayed = 0;
     return (
       <VoterGuidePositionsWrapper>
         {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
@@ -493,19 +493,41 @@ class VoterGuidePositions extends Component {
                   />
                 </div>
               )}
-              { !!(atLeastOnePositionFoundForThisElection && !this.state.searchIsUnderway) && (
-                <>
-                  {lookingAtSelf && <YourPositionsVisibilityMessage positionList={positionListForOneElection} />}
-                  {positionListForOneElection.map(item => (
-                    <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
-                      <VoterGuidePositionItem
-                        // onClickFunction={this.onClickFunction}
-                        organizationWeVoteId={organizationWeVoteId}
-                        position={item}
-                      />
-                    </VoterGuidePositionItemWrapper>
-                  ))}
-                </>
+              { !!(atLeastOnePositionFoundForThisElection && !searchIsUnderway) && (
+                <div>
+                  <>
+                    {lookingAtSelf && <YourPositionsVisibilityMessage positionList={positionListForOneElection} />}
+                    {positionListForOneElection.map((item) => {
+                      // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
+                      if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
+                        return null;
+                      }
+                      numberOfPositionItemsDisplayed += 1;
+                      return (
+                        <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
+                          <VoterGuidePositionItem
+                            organizationWeVoteId={organizationWeVoteId}
+                            position={item}
+                          />
+                        </VoterGuidePositionItemWrapper>
+                      );
+                    })}
+                  </>
+                  <ShowMoreItems id="showMoreItemsId">
+                    Displaying
+                    {' '}
+                    {numberOfPositionItemsDisplayed}
+                    {' '}
+                    of
+                    {' '}
+                    {positionListForOneElectionLength}
+                  </ShowMoreItems>
+                  <LoadingItemsWheel>
+                    {loadingMoreItems ? (
+                      <CircularProgress />
+                    ) : null}
+                  </LoadingItemsWheel>
+                </div>
               )}
               {/* If the positionListForOneElection comes back empty, display a message saying that there aren't any positions for this election. */}
               { !atLeastOnePositionFoundForThisElection && (

@@ -20,11 +20,9 @@ import ReadMore from '../Widgets/ReadMore';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import AppActions from '../../actions/AppActions';
-// import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 
 class VoterGuidePositionItem extends Component {
   static propTypes = {
-    onClickFunction: PropTypes.func,
     organizationWeVoteId: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
   };
@@ -379,6 +377,11 @@ class VoterGuidePositionItem extends Component {
     });
   }
 
+  onClickFunction () {
+    AppActions.setShowOrganizationModal(true);
+    AppActions.setOrganizationModalId(Object.keys(this.state.positionListFromFriendsHasBeenRetrievedOnce)[0]);
+  }
+
   togglePositionStatement () {
     const { hidePositionStatement } = this.state;
     this.setState({ hidePositionStatement: !hidePositionStatement });
@@ -400,14 +403,9 @@ class VoterGuidePositionItem extends Component {
     return false;
   }
 
-  onClickFunction () {
-    AppActions.setShowOrganizationModal(true);
-    AppActions.setOrganizationModalId(Object.keys(this.state.positionListFromFriendsHasBeenRetrievedOnce)[0]);
-  }
-
   render () {
     renderLog('VoterGuidePositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { position, onClickFunction } = this.props;
+    const { position } = this.props;
     // console.log('VoterGuidePositionItem position:', position);
     let {
       ballot_item_display_name: ballotItemDisplayName,

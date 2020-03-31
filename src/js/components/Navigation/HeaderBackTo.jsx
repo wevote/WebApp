@@ -16,7 +16,6 @@ import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import SignInModal from '../Widgets/SignInModal';
-import OrganizationModal from '../VoterGuide/OrganizationModal';
 import { shortenText } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -38,7 +37,6 @@ class HeaderBackTo extends Component {
       backToLinkText: '',
       profilePopUpOpen: false,
       showSignInModal: AppStore.showSignInModal(),
-      showOrganizationModal: AppStore.showOrganizationModal(),
       voter: {},
       voterFirstName: '',
       voterWeVoteId: '',
@@ -118,10 +116,6 @@ class HeaderBackTo extends Component {
       // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
       return true;
     }
-    if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
-      // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
-      return true;
-    }
     if (this.state.voterFirstName !== nextState.voterFirstName) {
       // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
       return true;
@@ -156,7 +150,6 @@ class HeaderBackTo extends Component {
   onAppStoreChange () {
     this.setState({
       showSignInModal: AppStore.showSignInModal(),
-      showOrganizationModal: AppStore.showOrganizationModal(),
     });
   }
 
@@ -205,20 +198,10 @@ class HeaderBackTo extends Component {
     AppActions.setShowSignInModal(false);
   }
 
-  closeOrganizationModal () {
-    AppActions.setShowOrganizationModal(false);
-  }
-
   toggleSignInModal () {
     const { showSignInModal } = this.state;
     this.setState({ profilePopUpOpen: false });
     AppActions.setShowSignInModal(!showSignInModal);
-  }
-
-  toggleOrganizationModal () {
-    const { showOrganizationModal } = this.state;
-    this.setState({ profilePopUpOpen: false });
-    AppActions.setShowOrganizationModal(!showOrganizationModal);
   }
 
   hideProfilePopUp () {
@@ -240,7 +223,7 @@ class HeaderBackTo extends Component {
     // console.log('HeaderBackTo render');
     const { classes } = this.props;
     const {
-      backToLink, backToLinkText, profilePopUpOpen, showSignInModal, showOrganizationModal,
+      backToLink, backToLinkText, profilePopUpOpen, showSignInModal,
       voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
     } = this.state;
 
@@ -333,16 +316,6 @@ class HeaderBackTo extends Component {
             closeFunction={this.closeSignInModal}
           />
         )}
-        {/* {showOrganizationModal && (
-          <OrganizationModal
-            isSignedIn={this.state.voter.is_signed_in}
-            pathname={this.props.location.pathname}
-            show={showOrganizationModal}
-open={showOrganizationModal}
-            // step={shareModalStep}
-            toggleFunction={this.closeOrganizationModal}
-          />
-        )} */}
       </AppBar>
     );
   }
