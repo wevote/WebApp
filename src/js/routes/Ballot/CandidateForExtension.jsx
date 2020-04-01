@@ -5,6 +5,7 @@ import { Tabs, Tab, Box, Button, withStyles } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
+import CandidateItemEndorsement from '../../components/Ballot/CandidateItemEndorsement';
 import CandidateItem from '../../components/Ballot/CandidateItem';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueActions from '../../actions/IssueActions';
@@ -14,6 +15,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import OrganizationDisplayForList from '../../components/Organization/OrganizationDisplayForList';
 
 // https://localhost:3000/candidate-for-extension?candidate_name=Phil%20Ting&candidate_we_vote_id=wv02cand40131&endorsement_page_url=https%3A%2F%2Fwww.sierraclub.org%2Fcalifornia%2F2020-endorsements&candidate_home_page=https%3A%2F%2Fwww.philting.com%2F
 // TODO: This would be better as https://localhost:3000/candidate-for-extension&candidate_name... if you can figure out the chages in Root.jsx, I Will change the extension.
@@ -130,6 +132,7 @@ class CandidateForExtension extends Component {
               <Buttons>
                 <OneButton>
                   <OpenExternalWebSite
+                    className=""
                     body={(
                       <Button
                         classes={{ root: classes.oneButtonShown }}
@@ -150,6 +153,7 @@ class CandidateForExtension extends Component {
               {candidateHomePage && (
                 <OriginalLinkWrapper>
                   <OpenExternalWebSite
+                    className=""
                     body={(
                       <OriginalLinkStyle>
                         {candidateHomePage}
@@ -172,7 +176,58 @@ class CandidateForExtension extends Component {
           aria-labelledby={`simple-tab-${1}`}
           value={1}
         >
-          {value === 1 && <Box p={3}>Coming Soon</Box>}
+          {value === 1 && (
+            <Box p={3}>
+              <CandidateItemEndorsement
+                inModal
+                candidateWeVoteId={candidateWeVoteId}
+                organizationWeVoteId="wv02org1061"
+                hideShowMoreFooter
+                expandIssuesByDefault
+                showLargeImage
+                showTopCommentByBallotItem
+                showOfficeName
+                showPositionStatementActionBar
+              />
+              <Buttons>
+                <OneButton>
+                  <OpenExternalWebSite
+                    className=""
+                    body={(
+                      <Button
+                        classes={{ root: classes.oneButtonShown }}
+                        color="primary"
+                        variant="outlined"
+                      >
+                        Jump To We Vote
+                      </Button>
+                    )}
+                    target="_blank"
+                    url={`https://WeVote.US/candidate/${candidateWeVoteId}/b/btdb/`}
+                  />
+                </OneButton>
+                {/* <OneButton> */}
+                {/*  <Button classes={{ root: classes.button }} variant="outlined" color="primary">Save</Button> */}
+                {/* </OneButton> */}
+              </Buttons>
+              {candidateHomePage && (
+                <OriginalLinkWrapper>
+                  <OpenExternalWebSite
+                    className=""
+                    body={(
+                      <OriginalLinkStyle>
+                        {candidateHomePage}
+                        {' '}
+                        <i className="fas fa-external-link-alt" aria-hidden="true" />
+                      </OriginalLinkStyle>
+                    )}
+                    target="_blank"
+                    url={candidateHomePage}
+                  />
+                </OriginalLinkWrapper>
+              )}
+            </Box>
+          )}
         </div>
         {showDevelopmentData && (
           <div style={{ margin: '20px' }}>
