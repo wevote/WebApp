@@ -114,7 +114,9 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
                       sizeClassName="image-16x16 "
                     />
                   </OrganizationIconWrapper>
-                  <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
+                  <FriendsOnlyIndicatorWrapper>
+                    <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
+                  </FriendsOnlyIndicatorWrapper>
                 </OverlayImage>
               )}
             </OrganizationSupportWrapper>
@@ -140,13 +142,15 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
                 <OverlayImage className="image-border-oppose ">
                   <OrganizationIconWrapper>
                     <ImageHandler
-                    alt="organization-photo-16x16"
-                    imageUrl={organizationImageUrlHttpsTiny}
-                    kind_of_ballot_item="ORGANIZATION"
-                    sizeClassName="image-16x16 "
+                      alt="organization-photo-16x16"
+                      imageUrl={organizationImageUrlHttpsTiny}
+                      kind_of_ballot_item="ORGANIZATION"
+                      sizeClassName="image-16x16 "
                     />
                   </OrganizationIconWrapper>
-                  <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
+                  <FriendsOnlyIndicatorWrapper>
+                    <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
+                  </FriendsOnlyIndicatorWrapper>
                 </OverlayImage>
               )}
             </OrganizationOpposeWrapper>
@@ -172,13 +176,15 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
                 <OverlayImage className="image-border-gray-border ">
                   <OrganizationIconWrapper>
                     <ImageHandler
-                    alt="organization-photo-16x16"
-                    imageUrl={organizationImageUrlHttpsTiny}
-                    kind_of_ballot_item="ORGANIZATION"
-                    sizeClassName="image-16x16 "
+                      alt="organization-photo-16x16"
+                      imageUrl={organizationImageUrlHttpsTiny}
+                      kind_of_ballot_item="ORGANIZATION"
+                      sizeClassName="image-16x16 "
                     />
                   </OrganizationIconWrapper>
-                  <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
+                  <FriendsOnlyIndicatorWrapper>
+                    <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
+                  </FriendsOnlyIndicatorWrapper>
                 </OverlayImage>
               )}
             </OrganizationInformationOnlyWrapper>
@@ -219,6 +225,13 @@ const styles = theme => ({
     height: 12,
   },
 });
+
+const FriendsOnlyIndicatorWrapper = styled.div`
+  margin-top: -3px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-top: -2px !important;
+  }
+`;
 
 const Wrapper = styled.div`
   margin-top: .1rem;
@@ -267,6 +280,7 @@ const OrganizationSupportSquare = styled.div`
 
 const OrganizationSupportIconWrapper = styled.div`
   margin-left: 2px;
+  margin-top: -10px;
 `;
 
 const OrganizationOpposeWrapper = styled.div`
@@ -290,8 +304,8 @@ const OrganizationOpposeSquare = styled.div`
 `;
 
 const OrganizationOpposeIconWrapper = styled.div`
-  margin-left: 2px;
-  margin-top: -2px;
+  margin-left: 0px;
+  margin-top: -10px;
 `;
 
 const OrganizationInformationOnlyWrapper = styled.div`
@@ -315,23 +329,28 @@ const OrganizationInformationOnlySquare = styled.div`
 `;
 
 const OrganizationInfoOnlyIconWrapper = styled.div`
-  margin-left: 4px;
-  margin-top: -5px;
+  margin-left: 1px;
+  margin-top: -10px;
 `;
 
 const OverlayImage = styled.div`
-  border: 2px solid ${({ theme }) => theme.colors.supportGreenRgb};
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
+  // border: 2px solid ${({ theme }) => theme.colors.supportGreenRgb};
+  // color: ${({ theme }) => theme.colors.supportGreenRgb};
   display: flex;
   width: 36px;
+  height: 20px;
   margin-left: -2px;
-  margin-top: -15px;
+  margin-top: -12px;
   z-index: 2;
 `;
 
 const OrganizationIconWrapper = styled.div`
-  height: 16px;
+  margin-top: -3px !important;
+  padding: 0 !important;
   width: 22px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-top: -2px !important;
+  }
 `;
 
 export default withTheme(withStyles(styles)(BallotItemVoterGuideSupportOpposeDisplay));
