@@ -5,6 +5,7 @@ import Application from './Application';
 import About from './routes/More/About';
 import AbsenteeBallot from './routes/More/AbsenteeBallot';
 import Activity from './routes/Activity';
+import AddCandidateForExtension from './routes/Ballot/AddCandidateForExtension';
 import Attributions from './routes/More/Attributions';
 import Ballot from './routes/Ballot/Ballot';
 import BallotIndex from './routes/Ballot/BallotIndex';
@@ -124,6 +125,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />
 
       <Route path="/candidate-for-extension" component={CandidateForExtension} />
+      <Route path="/add-candidate-for-extension" component={AddCandidateForExtension} />
       <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
       <Route path="/for-campaigns" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForCampaigns {...props} pathname="/for-campaigns" />} />
       <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
