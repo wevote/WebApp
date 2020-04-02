@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import TextTruncate from 'react-text-truncate';
 import styled from 'styled-components';
-import { Button, MuiThemeProvider, createMuiTheme } from '@material-ui/core';
+import { Button, MuiThemeProvider, createMuiTheme, TextField, withStyles } from '@material-ui/core';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import CandidateStore from '../../stores/CandidateStore';
@@ -567,7 +567,7 @@ class CandidateItem extends Component {
 
   render () {
     renderLog('CandidateItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { linkToBallotItemPage, openSupportOpposeCountDisplayModal, showHover } = this.props;
+    const { linkToBallotItemPage, openSupportOpposeCountDisplayModal, showHover, classes } = this.props;
     const { candidateText, candidateWeVoteId, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow } = this.state;
     if (!candidateWeVoteId) {
       // console.log('CandidateItem waiting for candidateWeVoteId to make it into the state variable');
@@ -610,6 +610,15 @@ class CandidateItem extends Component {
                 <Button variant="outlined" color="primary">Oppose</Button>
                 <Button variant="outlined" color="primary">Information Only</Button>
               </Buttons>
+              <TextArea placeholder="Paste Sierra Club Endorsement" variant="outlined" fullWidth />
+              <p>If dedicated candidate page exists, enter URL here:</p>
+              <TextField placeholder="Candidate Specific Source URL..." fullWidth variant="outlined" classes={{ input: classes.input }} />
+              <FourButtons>
+                <Button variant="outlined" color="primary">Admin App</Button>
+                <Button variant="outlined" color="primary">We Vote</Button>
+                <Button variant="outlined" color="primary">Save</Button>
+                <Button variant="outlined" color="primary">Delete Endorsement</Button>
+              </FourButtons>
             </div>
           )}
         </DesktopWrapper>
@@ -625,12 +634,29 @@ class CandidateItem extends Component {
               <Button variant="outlined" color="primary">Oppose</Button>
               <Button variant="outlined" color="primary">Information Only</Button>
             </Buttons>
+            <TextArea placeholder="Paste Sierra Club Endorsement" variant="outlined" fullWidth />
+            <p>If dedicated candidate page exists, enter URL here:</p>
+            <TextField placeholder="Candidate Specific Source URL..." fullWidth variant="outlined" classes={{ input: classes.input }} />
+            <FourButtons>
+              <Button variant="outlined" color="primary">Admin App</Button>
+              <Button variant="outlined" color="primary">We Vote</Button>
+              <Button variant="outlined" color="primary">Save</Button>
+              <Button variant="outlined" color="primary">Delete Endorsement</Button>
+            </FourButtons>
           </div>
         </MobileTabletWrapper>
       </CandidateItemWrapper>
     );
   }
 }
+
+const styles = () => ({
+  input: {
+    background: 'white !important',
+    marginTop: '-10px !important',
+    padding: '6px 12px !important',
+  },
+});
 
 const Buttons = styled.div`
   display: flex;
@@ -643,6 +669,19 @@ const Buttons = styled.div`
   button {
     margin: 8px;
     width: 33.33%;
+  }
+`;
+
+const FourButtons = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: calc(100% + 16px);
+  position: relative;
+  margin: 0 -8px;
+  margin-top: 24px;
+  button {
+    width: auto;
   }
 `;
 
@@ -688,4 +727,12 @@ const ExternalWebSiteWrapper = styled.span`
 const MobileTabletWrapper = styled.div`
 `;
 
-export default CandidateItem;
+const TextArea = styled(TextField)`
+  margin-top: 16px !important;
+  margin-bottom: 16px !important;
+  input {
+    height: 125px !important;
+  }
+`;
+
+export default withStyles(styles)(CandidateItem);
