@@ -27,6 +27,7 @@ export default class OrganizationDisplayForList extends Component {
   }
 
   componentDidMount () {
+    console.log(this.props.organizationWeVoteId);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
       organizationWeVoteId: this.props.organizationWeVoteId,
