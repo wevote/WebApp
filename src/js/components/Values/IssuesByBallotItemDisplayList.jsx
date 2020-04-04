@@ -28,14 +28,13 @@ class IssuesByBallotItemDisplayList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      issuesUnderThisBallotItemVoterIsFollowing: [],
-      issuesUnderThisBallotItemVoterIsNotFollowing: [],
-      issuesUnderThisBallotItemVoterIsFollowingLength: 0,
-      issuesUnderThisBallotItemVoterIsNotFollowingLength: 0,
       maximumNumberOfIssuesToDisplay: 26,
       expandIssues: false,
       totalWidth: null,
       totalRemainingWidth: null,
+      issuesToRender: [],
+      issuesToRenderLength: 0,
+      issueRenderCount: 0,
     };
     this.issuesList = React.createRef();
     // This is meant to live outside of state.
@@ -48,17 +47,15 @@ class IssuesByBallotItemDisplayList extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(this.props.ballotItemWeVoteId) || [];
     const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(this.props.ballotItemWeVoteId) || [];
-    const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
-    const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
+    const issuesToRender = issuesUnderThisBallotItemVoterIsFollowing.concat(issuesUnderThisBallotItemVoterIsNotFollowing);
+    const issuesToRenderLength = issuesToRender.length;
     const { ballotItemDisplayName, ballotItemWeVoteId, expandIssuesByDefault } = this.props;
     this.setState({
       ballotItemDisplayName,
       ballotItemWeVoteId,
-      expandIssues: expandIssuesByDefault,
-      issuesUnderThisBallotItemVoterIsFollowing,
-      issuesUnderThisBallotItemVoterIsNotFollowing,
-      issuesUnderThisBallotItemVoterIsFollowingLength,
-      issuesUnderThisBallotItemVoterIsNotFollowingLength,
+      expandIssues: expandIssuesByDefault || false,
+      issuesToRender,
+      issuesToRenderLength,
     });
   }
 
@@ -66,16 +63,14 @@ class IssuesByBallotItemDisplayList extends Component {
     // console.log('IssuesByBallotItemDisplayList componentWillReceiveProps, nextProps.ballotItemWeVoteId:', nextProps.ballotItemWeVoteId);
     const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(nextProps.ballotItemWeVoteId) || [];
     const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(nextProps.ballotItemWeVoteId) || [];
-    const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
-    const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
+    const issuesToRender = issuesUnderThisBallotItemVoterIsFollowing.concat(issuesUnderThisBallotItemVoterIsNotFollowing);
+    const issuesToRenderLength = issuesToRender.length;
     const { ballotItemDisplayName, ballotItemWeVoteId } = nextProps;
     this.setState({
       ballotItemDisplayName,
       ballotItemWeVoteId,
-      issuesUnderThisBallotItemVoterIsFollowing,
-      issuesUnderThisBallotItemVoterIsNotFollowing,
-      issuesUnderThisBallotItemVoterIsFollowingLength,
-      issuesUnderThisBallotItemVoterIsNotFollowingLength,
+      issuesToRender,
+      issuesToRenderLength,
     });
   }
 
@@ -103,6 +98,12 @@ class IssuesByBallotItemDisplayList extends Component {
     if (this.state.totalRemainingWidth !== nextState.totalRemainingWidth) {
       return true;
     }
+    if (this.state.issuesToRender !== nextState.issuesToRender) {
+      return true;
+    }
+    if (this.state.issueRenderCount !== nextState.issueRenderCount) {
+      return true;
+    }
     return false;
   }
 
@@ -124,17 +125,20 @@ class IssuesByBallotItemDisplayList extends Component {
   onIssueStoreChange () {
     if (!signInModalGlobalState.get('textOrEmailSignInInProcess')) {
       // console.log('IssuesByBallotItemDisplayList, onIssueStoreChange');
-      const { ballotItemWeVoteId } = this.state;
+      const { ballotItemWeVoteId, issueRenderCount } = this.state;
       const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(ballotItemWeVoteId) || [];
       const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(ballotItemWeVoteId) || [];
       const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
       const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
+      const issuesToRender = issuesUnderThisBallotItemVoterIsFollowing.concat(issuesUnderThisBallotItemVoterIsNotFollowing);
       this.setState({
-        issuesUnderThisBallotItemVoterIsFollowing,
-        issuesUnderThisBallotItemVoterIsNotFollowing,
         issuesUnderThisBallotItemVoterIsFollowingLength,
         issuesUnderThisBallotItemVoterIsNotFollowingLength,
+        issuesToRender,
       });
+      if (issuesToRender.length > 0 && issueRenderCount === 0) {
+        setTimeout(this.handleDelayedIssueRender, 50);
+      }
     }
   }
 
@@ -154,8 +158,11 @@ class IssuesByBallotItemDisplayList extends Component {
   };
 
   handleExpandIssues = () => {
-    const { expandIssues } = this.state;
-    this.setState({ expandIssues: !expandIssues });
+    const { expandIssues, issuesToRenderLength } = this.state;
+    this.setState({
+      expandIssues: !expandIssues,
+      issueRenderCount: issuesToRenderLength,
+    });
   };
 
   handleLeaveHoverLocalArea = () => {
@@ -168,7 +175,7 @@ class IssuesByBallotItemDisplayList extends Component {
     const { totalWidth } = this.state;
     this.issueWidths[issueWeVoteId] = width;
     // const totalWidthOccupied = Object.values(this.issueWidths).reduce((a, b) => a + b);  This is very elegant, but did not work in cordova
-    let totalWidthOccupied;
+    let totalWidthOccupied = 0;
     Object.keys(this.issueWidths).map((key) => {  // eslint-disable-line array-callback-return
       totalWidthOccupied += this.issueWidths[key];
     });
@@ -176,31 +183,50 @@ class IssuesByBallotItemDisplayList extends Component {
     this.setState({ totalRemainingWidth: totalWidth - totalWidthOccupied });
   };
 
+  handleDelayedIssueRender = () => {
+    const { issueRenderCount, issuesToRenderLength, totalRemainingWidth } = this.state;
+    // Get the remaining width with some allowed buffer room
+    const bufferedRemainingWidth = totalRemainingWidth + 40;
+    // Estimate the minimum possible remaining width after the next chip is rendered
+    const minimumNextRemainingWidth = totalRemainingWidth - 60;
+    // Increase/decrease the issues rendered count based on the buffered remaining width
+    const change = bufferedRemainingWidth > 0 ? 1 : -1;
+    const newIssueRenderCount = issueRenderCount + change;
+    // If the rendered count < total issues to render, and
+    // If the next issue render count is higher:
+    //     Render if the minimum next remaining width is positive
+    // If the next issue render count is lower:
+    //     Render if the buffered remaining width is negative
+    const shouldDoAnotherRender = (change > 0 ? minimumNextRemainingWidth > 0 : bufferedRemainingWidth < 0) && issueRenderCount < issuesToRenderLength;
+
+    if (shouldDoAnotherRender) {
+      this.setState({ issueRenderCount: newIssueRenderCount });
+      if (change > 0) {
+        setTimeout(this.handleDelayedIssueRender, 5);
+      }
+    }
+  }
+
   render () {
     renderLog('IssuesByBallotItemDisplayList.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('IssuesByBallotItemDisplayList render');
     const { externalUniqueId } = this.props;
     const {
       ballotItemDisplayName, ballotItemWeVoteId, expandIssues,
-      issuesUnderThisBallotItemVoterIsFollowing, issuesUnderThisBallotItemVoterIsNotFollowing,
-      issuesUnderThisBallotItemVoterIsFollowingLength, issuesUnderThisBallotItemVoterIsNotFollowingLength,
       maximumNumberOfIssuesToDisplay,
-      totalRemainingWidth,
+      totalRemainingWidth, issuesToRender, issuesToRenderLength, issueRenderCount,
     } = this.state;
 
     // console.log('this.state.ballotItemWeVoteId: ', this.state.ballotItemWeVoteId);
     // console.log('issuesUnderThisBallotItemVoterIsFollowing: ', issuesUnderThisBallotItemVoterIsFollowing);
     // console.log('issuesUnderThisBallotItemVoterIsNotFollowing: ', issuesUnderThisBallotItemVoterIsNotFollowing);
-    if (
-      !issuesUnderThisBallotItemVoterIsFollowingLength &&
-      !issuesUnderThisBallotItemVoterIsNotFollowingLength
-    ) {
+    if (!issuesToRenderLength) {
       // If we don't have any endorsement text, show the alternate component passed in
       return this.props.children || null;
     }
 
     let localCounter = 0;
-    const issuesVoterIsFollowingHtml = issuesUnderThisBallotItemVoterIsFollowing.map(
+    const issuesChips = issuesToRender.slice(0, issueRenderCount).map(
       (oneIssue) => {
         if (!oneIssue) {
           return null;
@@ -225,30 +251,6 @@ class IssuesByBallotItemDisplayList extends Component {
         }
       },
     );
-    localCounter = 0;
-    const issuesVoterIsNotFollowingHtml = issuesUnderThisBallotItemVoterIsNotFollowing.map(
-      (oneIssue) => {
-        if (!oneIssue) {
-          return null;
-        }
-        localCounter++;
-        if (localCounter <= maximumNumberOfIssuesToDisplay) {
-          return (
-            <ValueIconAndText
-              key={oneIssue.issue_we_vote_id}
-              ballotItemDisplayName={ballotItemDisplayName}
-              ballotItemWeVoteId={ballotItemWeVoteId}
-              externalUniqueId={externalUniqueId}
-              issueWidths={this.issueWidths}
-              oneIssue={oneIssue}
-              subtractTotalWidth={this.handleSubtractTotalRemainingWidth}
-            />
-          );
-        } else {
-          return null;
-        }
-      },
-    );
 
     return (
       <Wrapper
@@ -260,11 +262,11 @@ class IssuesByBallotItemDisplayList extends Component {
         <Issues>
           {/* Show a break-down of the current positions in your network */}
           <div ref={this.issuesList}>
-            <IssueList key={`issuesByBallotItemDisplayList-${ballotItemWeVoteId}`} expandIssues={expandIssues}>
-              {/* Issues the voter is already following */}
-              {issuesVoterIsFollowingHtml}
-              {/* Issues the voter is not following yet */}
-              {issuesVoterIsNotFollowingHtml}
+            <IssueList
+              key={`issuesByBallotItemDisplayList-${ballotItemWeVoteId}`}
+              expandIssues={expandIssues}
+            >
+              {issuesChips}
             </IssueList>
           </div>
         </Issues>
