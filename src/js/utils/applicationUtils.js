@@ -169,6 +169,7 @@ export function getApplicationViewBooleans (pathname) {
     // We want to HIDE the footer bar on the above path patterns
     showFooterBar = false;
   } else if (pathnameLowerCase.startsWith('/candidate-for-extension') ||
+    pathnameLowerCase.startsWith('/add-candidate-for-extension') ||
     pathnameLowerCase.startsWith('/more/extensionsignin')) {
     extensionPageMode = true;
     // ///////// SHOW: The following are URLS where we want the footer to show

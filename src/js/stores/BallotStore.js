@@ -600,7 +600,7 @@ class BallotStore extends ReduceStore {
             }
           }
         });
-        console.log('voterGuideElectionListByElectionId:', voterGuideElectionListByElectionId);
+        // console.log('voterGuideElectionListByElectionId:', voterGuideElectionListByElectionId);
         return {
           ...state,
           voterGuideElectionListByElectionId,
