@@ -225,6 +225,7 @@ class IssuesByBallotItemDisplayList extends Component {
       return this.props.children || null;
     }
 
+    let issueFollowedByVoter = false;
     let localCounter = 0;
     const issuesChips = issuesToRender.slice(0, issueRenderCount).map(
       (oneIssue) => {
@@ -234,13 +235,14 @@ class IssuesByBallotItemDisplayList extends Component {
         // console.log('oneIssue.issue_name: ', oneIssue.issue_name);
         localCounter++;
         if (localCounter <= maximumNumberOfIssuesToDisplay) {
+          issueFollowedByVoter = IssueStore.isVoterFollowingThisIssue(oneIssue.issue_we_vote_id);
           return (
             <ValueIconAndText
               key={oneIssue.issue_we_vote_id}
               ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={ballotItemWeVoteId}
               externalUniqueId={externalUniqueId}
-              issueFollowedByVoter
+              issueFollowedByVoter={issueFollowedByVoter}
               issueWidths={this.issueWidths}
               oneIssue={oneIssue}
               subtractTotalWidth={this.handleSubtractTotalRemainingWidth}
