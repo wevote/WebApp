@@ -16,12 +16,14 @@ describe('Basic cross-platform We Vote test',  () => {
     const changeAddressHeaderBarID = (isDesktopScreenSize) ? 'changeAddressOrElectionHeaderBar' : 'changeAddressOnlyHeaderBar';
     const ballotBadgePlatformPrefixID = (isDesktopScreenSize) ? 'ballotBadgeDesktop' : 'ballotBadgeMobile';
     const measureToTestOnBallotID = 'wv02meas604';
+    const organizationToFollowOnMeasureBallotID = 'wv01org14';
+    const candidateToTestOnBallotID = 'wv02cand40208';
+    const organizationToFollowOnCandidateBallotID = 'wv02org11971';
 
     if (isCordovaFromAppStore) {
       // switch contexts and click through intro
       await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
       await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-
       const contexts = await driver.getContexts();
       const context = contexts.includes(ANDROID_CONTEXT) ? ANDROID_CONTEXT : IOS_CONTEXT;
       await driver.switchContext(context);
@@ -67,7 +69,6 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // // //////////////////////
     // // Check the positioning of the SignInModal when we click "Enter Email"
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('signInHeaderBar'); // Clicks on Sign in
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     if (isCordovaFromAppStore) {
@@ -87,7 +88,6 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // // //////////////////////
     // // Check the positioning of the SignInModal when we click "Enter Phone"
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('signInHeaderBar'); // Clicks on Sign in
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     if (isCordovaFromAppStore) {
@@ -111,25 +111,26 @@ describe('Basic cross-platform We Vote test',  () => {
     }
 
     // //////////////////////
-    // Change Address
+    // Test "Change Address" Modal
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick(changeAddressHeaderBarID); // Open the "Change Address" modal
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('profileCloseSelectBallotModal');
+    await simpleClick('profileCloseSelectBallotModal'); // Close the "Change Address" modal
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
-    // We want to start by setting the location, which will automatically choose the next upcoming election for that address
+    // Set the location, which will automatically choose the next upcoming election for that address
     await simpleClick(changeAddressHeaderBarID); // Opens the "Enter Your Full Address" link
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-
     if (isIOS && isCordovaFromAppStore) {
-      await setNewAddressIOS('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
+      await setNewAddressIOS('addressBoxText', 'Oakland, WA 94501'); // Sets the text for the address box and hits enter
     } else if (isAndroid && isCordovaFromAppStore) {
-      await setNewAddressAndroid('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
+      await setNewAddressAndroid('addressBoxText', 'Oakland, WA 94501'); // Sets the text for the address box and hits enter
     } else {
-      await setNewAddress('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
+      await setNewAddress('addressBoxText', 'Oakland, WA 94501'); // Sets the text for the address box and hits enter
     }
+    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+    await simpleClick('addressBoxModalSaveButton'); // Clicks "Save"
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
     // //////////////////////
@@ -140,11 +141,12 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('ballotTitleHeaderSelectBallotModal'); // Opens the Ballot modal
     }
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('ballotElectionListWithFiltersShowPriorElections');
+    await simpleClick('ballotElectionListWithFiltersShowPriorElections'); // Clicks on "Show Prior Elections"
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('ballotElectionListWithFiltersButton-6000'); // Clicks on US 2018 Midterm Election
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
+    // //////////////////////
     // Click on ballot filter badges at top of page
     await simpleClick(`${ballotBadgePlatformPrefixID}-State`);
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -157,14 +159,16 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Visit Measure Page
-    await simpleClick(`${ballotBadgePlatformPrefixID}-Measure`); // Click on Measure Page
+    if (isCordovaFromAppStore) {
+      // TODO Find how to select Measure Badge on Cordova
+    } else {
+      await simpleClick(`${ballotBadgePlatformPrefixID}-Measure`);  // Click on Measure Badge
+    }
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick(`measureItemCompressedChoiceYes-${measureToTestOnBallotID}`); // Click on Yes on 19
+    await simpleClick(`measureItemCompressedChoiceYes-${measureToTestOnBallotID}`); // Click on measure
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const voteYesButtonId = `itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-${measureToTestOnBallotID}-${platformPrefixID}Version-${measureToTestOnBallotID}`;
-    browser.execute((id) => {
-      document.getElementById(id).click();
-    }, voteYesButtonId); // Click on Voting Yes
+    const voteYesButtonId = `itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-${measureToTestOnBallotID}-${platformPrefixID}Version-${measureToTestOnBallotID}`; // ID of "Yes" button
+    await simpleClick(voteYesButtonId);     // Click on "Yes" button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // Click on Close Pop Up of Voting Yes
     // The very first time a Yes or No option is clicked, we open a popover that explains Friends vs. Public
@@ -179,10 +183,8 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick(`itemPositionStatementActionBarSave-${measureToTestOnBallotID}-measureItem-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`); // Click on Save Button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const voteNoButtonId = `itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-${measureToTestOnBallotID}-${platformPrefixID}Version-${measureToTestOnBallotID}`;
-    browser.execute((id) => {
-      document.getElementById(id).click();
-    }, voteNoButtonId); // Click on Voting No
+    const voteNoButtonId = `itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-${measureToTestOnBallotID}-${platformPrefixID}Version-${measureToTestOnBallotID}`; // ID of "No" button
+    await simpleClick(voteNoButtonId);  // Click on "No" button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick(`itemPositionStatementActionBarEdit-${measureToTestOnBallotID}-measureItem-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`); // Clicks on Edit Button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -190,288 +192,174 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick(`itemPositionStatementActionBarSave-${measureToTestOnBallotID}-measureItem-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`); // Click on Save Button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const voteNoButton = `itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-${measureToTestOnBallotID}-${platformPrefixID}Version-${measureToTestOnBallotID}`;
-    browser.execute((id) => {
-      document.getElementById(id).click();
-    }, voteNoButton); // Click on Voting No again (to unset)
+    await simpleClick(voteNoButtonId);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
-    // Stop the script here for now
-    assert(true);
-    driver.quit();
-
+    // //////////////////////
     // Open position display filters
+    await simpleClick('filterBaseFilters');
+    await simpleClick('filterBaseFilters');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+    // //////////////////////
+    // Follow an endorsing organization of measure
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick('filterBaseFilters');
+    // await simpleClick(`positionItemFollowToggleFollow-${platformPrefixID}-${organizationToFollowOnMeasureBallotID}`);
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // Scroll down the page so the sticky header appears
+
+    // //////////////////////
+    // Unfollow that endorsing organization of measure
+    // await simpleClick(`positionItemFollowToggleFollowDropdown-${platformPrefixID}-${organizationToFollowOnMeasureBallotID}`);
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick(`positionItemFollowToggleDropdown-${platformPrefixID}-${organizationToFollowOnMeasureBallotID}`);
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick(`positionItemFollowToggleUnfollow-${platformPrefixID}-${organizationToFollowOnMeasureBallotID}`);
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+    // //////////////////////
+    // Test sticky header
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // const stickyYesButton = `itemActionBarYesButton-measureStickyHeader-ballotItemSupportOpposeComment-${measureToTestOnBallotID}-${platformPrefixID}Version-${measureToTestOnBallotID}`;  // ID of sticky header "Yes" button
     // scrollThroughPage();
-    // const stickyYesButton = 'itemActionBarYesButton-measureStickyHeader-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
-    // browser.execute((id) => {
-    //   document.getElementById(id).click();
-    // }, stickyYesButton); // Click on Sticky Header Yes
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick(stickyYesButton); // Click on Sticky Header Yes
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick(`itemPositionStatementActionBarTextArea-${measureToTestOnBallotID}-measureStickyHeader-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`); // Click on TextArea
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await clearTextInputValue(`itemPositionStatementActionBarTextArea-${measureToTestOnBallotID}-measureStickyHeader-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`,' '); // Clear Text on TextArea
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleTextInput(`itemPositionStatementActionBarTextArea-${measureToTestOnBallotID}-measureStickyHeader-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`,'Commenting in measure to check'); // Write something on TextArea
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick(`itemPositionStatementActionBarSave-${measureToTestOnBallotID}-measureStickyHeader-${platformPrefixID}-fromBallotItemSupportOpposeComment-${measureToTestOnBallotID}`); // Click on Save Button
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // const stickyNoButton = `itemActionBarNoButton-measureStickyHeader-ballotItemSupportOpposeComment-${measureToTestOnBallotID}-${platformPrefixID}Version-${measureToTestOnBallotID}`;  // ID of sticky header "Yes" button
+    // scrollThroughPage();
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick(stickyNoButton); // Click on Sticky Header "No"
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick('itemPositionStatementActionBarTextArea-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on TextArea
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779',' '); // Clear Text on TextArea
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleTextInput('itemPositionStatementActionBarTextArea-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779','Commenting in measure to check'); // Write something on TextArea
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Clcik on Save Button
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // const stickyNoButton = 'itemActionBarNoButton-measureStickyHeader-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
-    // browser.execute((id) => {
-    // document.getElementById(id).click();
-    // }, stickyNoButton); // Click on Sticky Header No
-
+    // //////////////////////
     // Go back to ballot
     await simpleClick('backToLinkTabHeader');
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
-    // Visit the candidate page for Maria Cantwell
-    await simpleClick('ballotBadge-Federal');
-    await simpleClick('officeItemCompressedCandidateImageAndName-wv02cand53902'); // Clicks the candidate
-
-    // Open and close Value "Common sense gun reform"
-    await simpleClick('candidateItem-wv02cand53902-valueIconAndText-wv02issue37'); // Clicks to OPEN the issue icon
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('candidateItem-wv02cand53902-valueIconAndText-wv02issue37'); // Clicks to CLOSE the issue icon
-
-    // //////////////////////
-    // Test Following an organization endorsing this candidate
-    // await simpleClick('positionItemFollowToggleFollow-wv02org21454');
-    // await simpleClick('positionItemFollowToggleFollowDropdown-wv02org21454');
-    // await simpleClick('positionItemFollowToggleDropdown-wv02org21454');
-    // await simpleClick('positionItemFollowToggleUnfollow-wv02org21454');
-    // await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-
-    // //////////////////////
-    // Visit the candidate Maria Cantwell for choose, oppose, comment and save
-    if (isDesktopScreenSize) {
-      // await simpleClick('officeItemCompressedCandidateImageAndName-wv02cand53902'); // Clicks the candidate Maria Cantwell
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const chooseButtonId = 'itemActionBarSupportButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, chooseButtonId); // Choose the candidate
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('profileCloseItemActionBar');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const opposeButtonId = 'itemActionBarOpposeButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, opposeButtonId); // oppose the candidate
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const choosButtonId = 'itemActionBarSupportButton-candidateItem-desktopIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-desktopVersion-wv02cand53902';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, choosButtonId); // Choose the candidate
-      await simpleClick('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902', 'I am trying to comment');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902', 'Succeeded in deleting and rewriting the test');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarSave-wv02cand53902-candidateItem-desktopIssuesComment-desktop-fromBallotItemSupportOpposeComment-wv02cand53902'); // save the text
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('positionItemFollowToggleFollow-wv02org1360');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleClick('positionItemFollowToggleFollowDropdown-wv02org1360');
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleClick('positionItemFollowToggleDropdown-wv02org1360');
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleClick('positionItemFollowToggleUnfollow-wv02org1360');
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('backToLinkTabHeader');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // Visit the candidate page
+    if (isCordovaFromAppStore) {
+      // TODO find how to select ballotBadge-Federal on Cordova
     } else {
-      if (isCordovaFromAppStore) {
-        await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate Maria Cantwell
-      } else {
-        await simpleClick('officeItemCompressedCandidateImageAndName-wv02cand53902'); // Clicks the candidate Maria Cantwell
-      }
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemActionBarSupportButton-candidateItem-mobileIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-mobileVersion-wv02cand53902'); // Choose the candidate
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleClick('profileCloseItemActionBar');
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemActionBarOpposeButton-candidateItem-mobileIssuesComment-ballotItemSupportOpposeComment-wv02cand53902-mobileVersion-wv02cand53902'); // oppose the candidate
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902', 'I am trying to comment');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902', 'Successful in deleting nad rewriting the test');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const saveButtonId = 'itemPositionStatementActionBarSave-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, saveButtonId); // save the candidate
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleClick('itemPositionStatementActionBarSave-wv02cand53902-candidateItem-mobileIssuesComment-mobile-fromBallotItemSupportOpposeComment-wv02cand53902'); // save the text
-      await simpleClick('backToLinkTabHeader');
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick(`${ballotBadgePlatformPrefixID}-Federal`);
     }
+    await simpleClick(`officeItemCompressedCandidateImageAndName-${candidateToTestOnBallotID}`); // Clicks the candidate
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick(`candidateItem-${candidateToTestOnBallotID}-valueIconAndText-wv02issue4`); // Clicks to OPEN the "Climate Change" issue icon
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick(`candidateItem-${candidateToTestOnBallotID}-valueIconAndText-wv02issue4`); // Clicks to CLOSE the "Climate Change" issue icon
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    const chooseButtonId = `itemActionBarSupportButton-candidateItem-${platformPrefixID}IssuesComment-ballotItemSupportOpposeComment-${candidateToTestOnBallotID}-${platformPrefixID}Version-${candidateToTestOnBallotID}`;
+    await simpleClick(chooseButtonId);  // Choose the candidate
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('profileCloseItemActionBar');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    const opposeButtonId = `itemActionBarOpposeButton-candidateItem-${platformPrefixID}IssuesComment-ballotItemSupportOpposeComment-${candidateToTestOnBallotID}-${platformPrefixID}Version-${candidateToTestOnBallotID}`;
+    await simpleClick(opposeButtonId); // oppose the candidate
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`itemPositionStatementActionBarTextArea-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`);  // Clicks on TextArea
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await clearTextInputValue(`itemPositionStatementActionBarTextArea-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`);  // Clears TextArea
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleTextInput(`itemPositionStatementActionBarTextArea-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`, 'I am trying to comment');  // Writes in TextArea
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await clearTextInputValue(`itemPositionStatementActionBarTextArea-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`);  // Clears TextArea
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleTextInput(`itemPositionStatementActionBarTextArea-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`, 'Succeeded in deleting and rewriting the test');  // Writes to TextArea
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`itemPositionStatementActionBarSave-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`); // Saves the text
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
-    // Visit an organization Voter Guide
+    // Follow an endorsing organization of candidate
+    // await simpleClick(`positionItemFollowToggleFollow-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`);
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick('positionItemFollowToggleFollow-wv02org1360'); // Follow the Organisation
+
+    // //////////////////////
+    // Unfollow an endorsing organization of candidate
+    // await simpleClick(`positionItemFollowToggleFollowDropdown-${organizationToFollowOnCandidateBallotID}`);
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick('positionItemFollowToggleFollowDropdown-wv02org1360');
+    // await simpleClick(`positionItemFollowToggleUnfollow-${organizationToFollowOnCandidateBallotID}`);
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick('positionItemFollowToggleDropdown-wv02org1360');
+
+    // //////////////////////
+    // Visit organization page from candidate page
+    // await simpleClick(`${platformPrefixID}-LinkToEndorsingOrganization`); // Click on the link to organization's page
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick('positionItemFollowToggleUnfollow-wv02org1360');
+    // await simpleClick(`${platformPrefixID}-LinkToEndorsingOrganization-${organizationToFollowOnCandidateBallotID}`);  // Follow organization
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick(`positionItemFollowToggleIgnore-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`); // Ignore organization
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick(`positionItemFollowToggleStopIgnoring-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`); // Stop ignoring organization
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+    // //////////////////////
+    // Go back to ballot
+    await simpleClick('backToLinkTabHeader');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Visit the office page
-    // await simpleClick('officeItemCompressedShowMoreFooter-wv02off19922'); // Clicks Show More link
-    // await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
-    // await simpleClick('officeItemCompressedTopNameLink-wv02off19866'); // Clicks Office Item link
-    // await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
-
-    // Build out path that goes through a ballot
-    // await simpleClick('allItemsCompletionLevelTab'); // Go to the All Items tab
-    // await simpleClick('Embed'); // Go to the embed tab
+    await simpleClick('officeItemCompressedShowMoreFooter-wv02off19866'); // Clicks Show More link
+    await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
+    await simpleClick('officeItemCompressedTopNameLink-wv02off19913'); // Clicks Office Item link
+    await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
 
     // //////////////////////
-    // Visit Measure Page
-    await simpleClick('ballotBadge-Measure'); // Click on Measure Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    if (isDesktopScreenSize) {
-      // Measure Page Desktop
-      await simpleClick('measureItemCompressedChoiceYes-wv02meas779'); // Click on Yes on 19
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const voteYesButtonId = 'itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, voteYesButtonId); // Click on Voting Yes
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleClick('profileCloseItemActionBar'); // Click on Close Pop Up of Voting Yes // not able to find this element on web page -Poonam
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on TextArea //
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779', ' '); // Clear Text on TextArea
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleTextInput('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779', 'Commenting in measure to check'); // Write something on TextArea
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Clcik on Save Button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const voteNoButtonId = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, voteNoButtonId); // Click on Voting No
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleClick('itemPositionStatementActionBarEdit-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Clicks on Edit Button - not visible-Poonam
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779',' '); // Clear Text on TextArea
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureItem-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on Save Button
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const voteNoButton = 'itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
-      browser.execute((id) => {
-        document.getElementById(id).click();
-      }, voteNoButton); // Click on Voting No again (to unset)
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleClick('filterBaseFilters'); // was crashing because it couldn't find filterBaseFilters
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      //
-      // scrollThroughPage();   // script is failing to scroll down
-      //
-      // const stickyYesButton = 'itemActionBarYesButton-measureStickyHeader-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
-      // browser.execute((id) => {
-      //  document.getElementById(id).click();
-      // }, stickyYesButton); // Click on Sticky Header Yes
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleClick('itemPositionStatementActionBarTextArea-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Click on TextArea
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await clearTextInputValue('itemPositionStatementActionBarTextArea-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779',' '); // Clear Text on TextArea
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleTextInput('itemPositionStatementActionBarTextArea-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779','Commenting in measure to check'); // Write something on TextArea
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // await simpleClick('itemPositionStatementActionBarSave-wv02meas779-measureStickyHeader-desktop-fromBallotItemSupportOpposeComment-wv02meas779'); // Clcik on Save Button
-      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      // const stickyNoButton = 'itemActionBarNoButton-measureStickyHeader-ballotItemSupportOpposeComment-wv02meas779-desktopVersion-wv02meas779';
-      // browser.execute((id) => {
-      // document.getElementById(id).click();
-      // }, stickyNoButton); // Click on Sticky Header No
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('backToLinkTabHeader'); // Click Back to Ballot
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    } else {
-      // Measure Page Mobile
-    }
+    // Build out path that goes through a ballot
+    await simpleClick('ballotBadgeMobileAndDesktop-All'); // Go to the All Items tab
+    await simpleClick('Embed'); // Go to the embed tab
 
-    await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
-
+    // //////////////////////
     // Go to the Values tab
     if (isDesktopScreenSize) {
-      // Desktop screen size - HEADER TABS
-      await simpleClick('valuesTabHeaderBar');
-      await simpleClick('valuesToFollowPreviewShowMoreId');// Clicks on the link to show more public figures/organizations
-      await simpleClick('backToLinkTabHeader');
-      await simpleClick('publicFiguresToFollowPreviewShowMoreId');
-      await simpleClick('backToLinkTabHeader');
-      await simpleClick('organizationsToFollowPreviewShowMoreId');
-      await simpleClick('backToLinkTabHeader');
-
+      await simpleClick('valuesTabHeaderBar');  // Desktop screen size - HEADER TABS
     } else {
-      // Mobile or tablet screen size - FOOTER ICONS
-      await simpleClick('valuesTabFooterBar');
+      await simpleClick('valuesTabFooterBar');  // Mobile or tablet screen size - FOOTER ICONS
     }
-
+    await simpleClick('valuesToFollowPreviewShowMoreId'); // Clicks on the link to show more values
+    await simpleClick('backToLinkTabHeader');
+    await simpleClick('publicFiguresToFollowPreviewShowMoreId');  // Clicks on the link to show more public figures
+    await simpleClick('backToLinkTabHeader');
+    await simpleClick('organizationsToFollowPreviewShowMoreId');  // Clicks on the link to show more organizations
+    await simpleClick('backToLinkTabHeader');
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
-    //
+    // //////////////////////
     // Go to the My Friends tab // DALE: FRIENDS TEMPORARILY DISABLED
     // if (isDesktopScreenSize) {
-    //   // Desktop screen size - HEADER TABS
-    //   await simpleClick('friendsTabHeaderBar');
+    //   await simpleClick('friendsTabHeaderBar');  // Desktop screen size - HEADER TABS
     // } else {
-    //   // Mobile or tablet screen size - FOOTER ICONS
-    //   await simpleClick('friendsTabFooterBar');
+    //   await simpleClick('friendsTabFooterBar');  // Mobile or tablet screen size - FOOTER ICONS
     // }
     // await simpleTextInput('friend1EmailAddress','filipfrancetic@gmail.com');
     // await simpleClick('friendsAddAnotherInvitation');
     // await simpleClick('friendsNextButton');
-    //
     // await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
+    // //////////////////////
     // Go to the Vote tab
     if (isDesktopScreenSize) {
-      // Desktop screen size - HEADER TABS
-      await simpleClick('voteTabHeaderBar');
+      await simpleClick('voteTabHeaderBar');  // Desktop screen size - HEADER TABS
     } else {
-      // Mobile or tablet screen size - FOOTER ICONS
-      await simpleClick('voteTabFooterBar');
+      await simpleClick('voteTabFooterBar');  // Mobile screen size - FOOTER ICONS
     }
-
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
+    // //////////////////////
     // Go back to the Ballot tab
     if (isDesktopScreenSize) {
-      // Desktop screen size - HEADER TABS
-      await simpleClick('ballotTabHeaderBar');
+      await simpleClick('ballotTabHeaderBar');  // Desktop screen size - HEADER TABS
     } else {
-      // Mobile or tablet screen size - FOOTER ICONS
-      await simpleClick('ballotTabFooterBar');
+      await simpleClick('ballotTabFooterBar');  // Mobile or tablet screen size - FOOTER ICONS
     }
-
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     // //////////////////////
@@ -480,22 +368,6 @@ describe('Basic cross-platform We Vote test',  () => {
     // TODO: We will need a way to scroll back to the top of the page for the tab navigation to work in Desktop
 
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
-
-    // // Open sign in modal, then close it by pressing button
-    // await simpleClick('signInHeaderBar');
-    // await simpleClick('profileCloseSignInModal');
-    //
-    // // Open sign in modal, then close it by clicking/tapping outside of modal
-    // // NOTE: having trouble doing this with W3C Web Driver protocol, so skip for now
-    // if (!browser.isW3C) {
-    //   await simpleClick('signInHeaderBar');
-    //   await clickTopLeftCornerOfElement('div[role="document"]');
-    // }
-    // // If keyboard is available, open sign in modal and close by hitting escape key
-    // if (!isAndroid && !isIOS) {
-    //   await simpleClick('signInHeaderBar');
-    //   browser.keys(['Escape']);
-    // }
 
     assert(true);
   });
