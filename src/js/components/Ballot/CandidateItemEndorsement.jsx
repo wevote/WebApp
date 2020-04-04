@@ -1,221 +1,89 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
-import TextTruncate from 'react-text-truncate';
 import styled from 'styled-components';
 import { Button, MuiThemeProvider, createMuiTheme, TextField, withStyles } from '@material-ui/core';
-import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
-import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
-import isMobileAndTabletScreenSize from '../../utils/isMobileAndTabletScreenSize';
-import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
-import IssueStore from '../../stores/IssueStore';
-import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import ReadMore from '../Widgets/ReadMore';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
-import SupportStore from '../../stores/SupportStore';
-import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
-import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
+import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
+// import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
+
+/*
+https://localhost:3000/candidate-for-extension?candidate_we_vote_id=wv02cand62599&endorsement_page_url=https%3A%2F%2Fclimatehawksvote.com%2Fendorsements%2Fendorsements-2020%2F&candidate_specific_endorsement_url=http%3A%2F%2Fclimatehawksvote.com%2Fcandidate%2Fcathy-kunkel%2F
+*/
 
 // This is related to /js/components/VoterGuide/OrganizationVoterGuideCandidateItem.jsx
-class CandidateItem extends Component {
+class CandidateItemEndorsement extends Component {
   static propTypes = {
     candidateWeVoteId: PropTypes.string.isRequired,
-    closeSupportOpposeCountDisplayModal: PropTypes.bool,
-    controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
-    goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
-    expandIssuesByDefault: PropTypes.bool,
-    hideBallotItemSupportOpposeComment: PropTypes.bool,
-    hideCandidateText: PropTypes.bool,
+    candidateSpecificEndorsementUrlIncoming: PropTypes.string,
     hideCandidateUrl: PropTypes.bool,
-    hideIssuesRelatedToCandidate: PropTypes.bool,
-    hideShowMoreFooter: PropTypes.bool,
-    linkToBallotItemPage: PropTypes.bool,
-    linkToOfficePage: PropTypes.bool,
-    openAdviserMaterialUIPopover: PropTypes.bool,
-    openSupportOpposeCountDisplayModal: PropTypes.bool,
     organizationWeVoteId: PropTypes.string,
-    supportOpposeCountDisplayModalTutorialOn: PropTypes.bool,
-    supportOpposeCountDisplayModalTutorialText: PropTypes.object,
-    showDownArrow: PropTypes.bool,
-    showUpArrow: PropTypes.bool,
-    showHover: PropTypes.bool,
     showOfficeName: PropTypes.bool,
     showLargeImage: PropTypes.bool,
-    showPositionStatementActionBar: PropTypes.bool,
-    showTopCommentByBallotItem: PropTypes.bool,
-    inModal: PropTypes.bool,
-    hidePositionPublicToggle: PropTypes.bool,
-    showPositionPublicToggle: PropTypes.bool,
+    voterGuidePossibilityId: PropTypes.number,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      allCachedPositionsForThisCandidateLength: 0,
       ballotItemDisplayName: '',
-      // ballotpediaCandidateUrl: '',
       candidatePhotoUrl: '',
+      candidateSpecificEndorsementUrl: '',
       candidateUrl: '',
       contestOfficeName: '',
       candidateWeVoteId: '',
-      issuesUnderThisBallotItemVoterIsFollowingLength: 0,
-      issuesUnderThisBallotItemVoterIsNotFollowingLength: 0,
-      largeAreaHoverColorOnNow: null,
-      largeAreaHoverLinkOnNow: false,
+      localChangeExists: false,
       officeWeVoteId: '',
       politicalParty: '',
-      twitterFollowersCount: '',
-      voterOpposesBallotItem: false,
-      voterSupportsBallotItem: false,
-      voterTextStatement: '',
+      possibilityMoreInfoUrl: '',
+      possibilityMoreInfoUrlOriginal: '',
+      possibilityOrganizationName: '',
+      possibilityPositionIsInfoOnly: false,
+      possibilityPositionIsInfoOnlyOriginal: false,
+      possibilityPositionIsOppose: false,
+      possibilityPositionIsOpposeOriginal: false,
+      possibilityPositionIsSupport: false,
+      possibilityPositionIsSupportOriginal: false,
+      possibilityStatementText: '',
+      possibilityStatementTextOriginal: '',
+      voterGuidePossibilityPositionId: 0,
     };
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
-    this.goToOfficeLink = this.goToOfficeLink.bind(this);
+    this.updatePossibilityStatementText = this.updatePossibilityStatementText.bind(this);
   }
 
   componentDidMount () {
-    // console.log('CandidateItem componentDidMount');
+    // console.log('CandidateItemEndorsement componentDidMount');
+    this.onCandidateStoreChange();
+    this.onVoterGuidePossibilityStoreChange();
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    this.onVoterGuideStoreChange();
-    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    // console.log('CandidateItem, this.props:', this.props);
-    const { candidateWeVoteId, showLargeImage } = this.props;
-    if (candidateWeVoteId) {
-      // If here we want to get the candidate so we can get the officeWeVoteId
-      const candidate = CandidateStore.getCandidate(candidateWeVoteId);
-      // console.log('CandidateItem, componentDidMount, candidate:', candidate);
-
-      let candidatePhotoUrl;
-      if (showLargeImage && candidate.candidate_photo_url_large) {
-        candidatePhotoUrl = candidate.candidate_photo_url_large;
-      } else if (candidate.candidate_photo_url_medium) {
-        candidatePhotoUrl = candidate.candidate_photo_url_medium;
-      } else if (candidate.candidate_photo_url_tiny) {
-        candidatePhotoUrl = candidate.candidate_photo_url_tiny;
-      }
-      const candidateUrl = candidate.candidate_url;
-      const twitterDescription = candidate.twitter_description;
-      const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
-      const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
-      let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
-      ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
-      const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
-      const voterOpposesBallotItem = SupportStore.getVoterOpposesByBallotItemWeVoteId(candidateWeVoteId);
-      const voterSupportsBallotItem = SupportStore.getVoterSupportsByBallotItemWeVoteId(candidateWeVoteId);
-      const voterTextStatement = SupportStore.getVoterTextStatementByBallotItemWeVoteId(candidateWeVoteId);
-      this.setState({
-        ballotItemDisplayName: candidate.ballot_item_display_name,
-        // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
-        candidatePhotoUrl,
-        candidateText,
-        candidateUrl,
-        candidateWeVoteId, // Move into state to signal that all state data is ready
-        contestOfficeName: candidate.contest_office_name,
-        officeWeVoteId: candidate.contest_office_we_vote_id,
-        politicalParty: candidate.party,
-        twitterFollowersCount: candidate.twitter_followers_count,
-        voterOpposesBallotItem,
-        voterSupportsBallotItem,
-        voterTextStatement,
-      });
-    }
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.allCachedPositionsForThisCandidateLength !== nextState.allCachedPositionsForThisCandidateLength) {
-      return true;
-    }
-    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      return true;
-    }
-    if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
-      return true;
-    }
-    if (this.state.candidatePhotoUrl !== nextState.candidatePhotoUrl) {
-      return true;
-    }
-    if (this.state.candidateText !== nextState.candidateText) {
-      return true;
-    }
-    if (this.state.candidateUrl !== nextState.candidateUrl) {
-      return true;
-    }
-    if (this.state.candidateWeVoteId !== nextState.candidateWeVoteId) {
-      return true;
-    }
-    if (this.props.closeSupportOpposeCountDisplayModal !== nextProps.closeSupportOpposeCountDisplayModal) {
-      return true;
-    }
-    if (this.state.issuesUnderThisBallotItemVoterIsFollowingLength !== nextState.issuesUnderThisBallotItemVoterIsFollowingLength) {
-      return true;
-    }
-    if (this.state.issuesUnderThisBallotItemVoterIsNotFollowingLength !== nextState.issuesUnderThisBallotItemVoterIsNotFollowingLength) {
-      return true;
-    }
-    if (this.state.largeAreaHoverColorOnNow !== nextState.largeAreaHoverColorOnNow) {
-      return true;
-    }
-    if (this.props.openAdviserMaterialUIPopover !== nextProps.openAdviserMaterialUIPopover) {
-      return true;
-    }
-    if (this.props.openSupportOpposeCountDisplayModal !== nextProps.openSupportOpposeCountDisplayModal) {
-      return true;
-    }
-    if (this.props.organizationWeVoteId !== nextProps.organizationWeVoteId) {
-      return true;
-    }
-    if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
-      return true;
-    }
-    if (this.props.supportOpposeCountDisplayModalTutorialOn !== nextProps.supportOpposeCountDisplayModalTutorialOn) {
-      return true;
-    }
-    if (this.props.supportOpposeCountDisplayModalTutorialText !== nextProps.supportOpposeCountDisplayModalTutorialText) {
-      return true;
-    }
-    if (this.props.showDownArrow !== nextProps.showDownArrow) {
-      return true;
-    }
-    if (this.props.showUpArrow !== nextProps.showUpArrow) {
-      return true;
-    }
-    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
-      return true;
-    }
-    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
-      return true;
-    }
-    if (this.state.voterTextStatement !== nextState.voterTextStatement) {
-      return true;
-    }
-    // console.log('CandidateItem shouldComponentUpdate FALSE');
-    return false;
+    this.voterGuidePossibilityStoreListener = VoterGuidePossibilityStore.addListener(this.onVoterGuidePossibilityStoreChange.bind(this));
+    // console.log('CandidateItemEndorsement, this.props:', this.props);
+    const { candidateSpecificEndorsementUrlIncoming } = this.props;
+    this.setState({
+      candidateSpecificEndorsementUrl: candidateSpecificEndorsementUrlIncoming,
+    });
   }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
-    this.issueStoreListener.remove();
-    this.voterGuideStoreListener.remove();
-    this.supportStoreListener.remove();
+    this.voterGuidePossibilityStoreListener.remove();
   }
 
   onCandidateStoreChange () {
     const { candidateWeVoteId, showLargeImage } = this.props;
-    // console.log('CandidateItem onCandidateStoreChange, candidateWeVoteId:', candidateWeVoteId);
+    // console.log('CandidateItemEndorsement onCandidateStoreChange, candidateWeVoteId:', candidateWeVoteId);
     if (candidateWeVoteId) {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
-      // console.log('CandidateItem onCandidateStoreChange, candidate:', candidate);
+      // console.log('CandidateItemEndorsement onCandidateStoreChange, candidate:', candidate);
       let candidatePhotoUrl;
       if (showLargeImage && candidate.candidate_photo_url_large) {
         candidatePhotoUrl = candidate.candidate_photo_url_large;
@@ -225,20 +93,10 @@ class CandidateItem extends Component {
         candidatePhotoUrl = candidate.candidate_photo_url_tiny;
       }
       const candidateUrl = candidate.candidate_url;
-      const twitterDescription = candidate.twitter_description;
-      const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
-      const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
-      let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
-      ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
-      const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
-      const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
-      const allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length || 0;
       this.setState({
-        allCachedPositionsForThisCandidateLength,
         ballotItemDisplayName: candidate.ballot_item_display_name,
         // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
         candidatePhotoUrl,
-        candidateText,
         candidateUrl,
         candidateWeVoteId, // Move into state to signal that all state data is ready
         contestOfficeName: candidate.contest_office_name,
@@ -249,36 +107,31 @@ class CandidateItem extends Component {
     }
   }
 
-  onIssueStoreChange () {
+  onVoterGuidePossibilityStoreChange () {
     const { candidateWeVoteId } = this.props;
-    // console.log('CandidateItem onIssueStoreChange candidateWeVoteId:', candidateWeVoteId);
-    if (candidateWeVoteId) {
-      const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(candidateWeVoteId) || [];
-      const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(candidateWeVoteId) || [];
-      const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
-      const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
-      this.setState({
-        issuesUnderThisBallotItemVoterIsFollowingLength,
-        issuesUnderThisBallotItemVoterIsNotFollowingLength,
-      });
-    }
-  }
-
-  onVoterGuideStoreChange () {
-    // We just want to trigger a re-render
-    this.setState();
-  }
-
-  onSupportStoreChange () {
-    const { candidateWeVoteId } = this.props;
-    if (candidateWeVoteId) {
-      const voterOpposesBallotItem = SupportStore.getVoterOpposesByBallotItemWeVoteId(candidateWeVoteId);
-      const voterSupportsBallotItem = SupportStore.getVoterSupportsByBallotItemWeVoteId(candidateWeVoteId);
-      this.setState({
-        voterOpposesBallotItem,
-        voterSupportsBallotItem,
-      });
-    }
+    const voterGuidePossibilityPosition = VoterGuidePossibilityStore.getVoterGuidePossibilityPositionByCandidateId(candidateWeVoteId);
+    const possibilityMoreInfoUrl = voterGuidePossibilityPosition.more_info_url || false;
+    const possibilityOrganizationName = voterGuidePossibilityPosition.organization_name || '';
+    const possibilityPositionIsInfoOnly = (voterGuidePossibilityPosition && voterGuidePossibilityPosition.position_stance === 'NO_STANCE');
+    const possibilityPositionIsOppose = (voterGuidePossibilityPosition && voterGuidePossibilityPosition.position_stance === 'OPPOSE');
+    const possibilityPositionIsSupport = (voterGuidePossibilityPosition && voterGuidePossibilityPosition.position_stance === 'SUPPORT');
+    const possibilityStatementText = voterGuidePossibilityPosition.statement_text || '';
+    const voterGuidePossibilityPositionId = voterGuidePossibilityPosition.possibility_position_id || 0;
+    this.setState({
+      localChangeExists: false, // Reset
+      possibilityMoreInfoUrl,
+      possibilityMoreInfoUrlOriginal: possibilityMoreInfoUrl,
+      possibilityOrganizationName,
+      possibilityPositionIsInfoOnly,
+      possibilityPositionIsInfoOnlyOriginal: possibilityPositionIsInfoOnly,
+      possibilityPositionIsOppose,
+      possibilityPositionIsOpposeOriginal: possibilityPositionIsOppose,
+      possibilityPositionIsSupport,
+      possibilityPositionIsSupportOriginal: possibilityPositionIsSupport,
+      possibilityStatementText,
+      possibilityStatementTextOriginal: possibilityStatementText,
+      voterGuidePossibilityPositionId,
+    });
   }
 
   getCandidateLink () {
@@ -304,45 +157,186 @@ class CandidateItem extends Component {
     } else return '';
   }
 
-  handleEnter = () => {
-    // console.log('Handle largeAreaHoverColorOnNow', e.target);
-    if (this.props.showHover) {
-      this.setState({ largeAreaHoverColorOnNow: true, largeAreaHoverLinkOnNow: true });
-    }
-  };
-
-  handleLeave = () => {
-    // console.log('Handle leave', e.target);
-    if (this.props.showHover) {
-      this.setState({ largeAreaHoverColorOnNow: false, largeAreaHoverLinkOnNow: false });
-    }
-  };
-
-  candidateRenderBlock = (candidateWeVoteId, useLinkToCandidatePage = false, forDesktop = false, openSupportOpposeCountDisplayModal = false) => {
+  calculateLocalChangeExists = () => {
     const {
-      controlAdviserMaterialUIPopoverFromProp, closeSupportOpposeCountDisplayModal, hideCandidateUrl, linkToBallotItemPage, linkToOfficePage,
-      openAdviserMaterialUIPopover,
-      supportOpposeCountDisplayModalTutorialOn, supportOpposeCountDisplayModalTutorialText,
-      showDownArrow, showUpArrow, showHover, showOfficeName,
+      possibilityMoreInfoUrl, possibilityMoreInfoUrlOriginal,
+      possibilityPositionIsInfoOnly, possibilityPositionIsInfoOnlyOriginal,
+      possibilityPositionIsOppose, possibilityPositionIsOpposeOriginal,
+      possibilityPositionIsSupport, possibilityPositionIsSupportOriginal,
+      possibilityStatementText, possibilityStatementTextOriginal,
+    } = this.state;
+    // console.log(possibilityMoreInfoUrl, possibilityMoreInfoUrlOriginal);
+    // console.log(possibilityPositionIsInfoOnly, possibilityPositionIsInfoOnlyOriginal);
+    // console.log(possibilityPositionIsOppose, possibilityPositionIsOpposeOriginal);
+    // console.log(possibilityPositionIsSupport, possibilityPositionIsSupportOriginal);
+    // console.log('original: ', possibilityStatementTextOriginal);
+    // console.log('changed:', possibilityStatementText);
+    if (possibilityMoreInfoUrl !== possibilityMoreInfoUrlOriginal) return true;
+    if (possibilityPositionIsInfoOnly !== possibilityPositionIsInfoOnlyOriginal) return true;
+    if (possibilityPositionIsOppose !== possibilityPositionIsOpposeOriginal) return true;
+    if (possibilityPositionIsSupport !== possibilityPositionIsSupportOriginal) return true;
+    // This isn't totally working...
+    return !(possibilityStatementText && possibilityStatementText.localeCompare(possibilityStatementTextOriginal) === 0);
+  }
+
+  togglePossibilityPositionIsInfoOnly = () => {
+    const { possibilityPositionIsInfoOnly } = this.state;
+    if (!possibilityPositionIsInfoOnly) {
+      // If prior state is "off", then we are setting this to true
+      // so we need to set the other variables to false
+      this.setState({
+        possibilityPositionIsInfoOnly: !possibilityPositionIsInfoOnly,
+        possibilityPositionIsOppose: false,
+        possibilityPositionIsSupport: false,
+      }, this.updateLocalChangeExists);
+    } else {
+      this.setState({
+        possibilityPositionIsInfoOnly: !possibilityPositionIsInfoOnly,
+      }, this.updateLocalChangeExists);
+    }
+  }
+
+  togglePossibilityPositionIsOppose = () => {
+    const { possibilityPositionIsOppose } = this.state;
+    if (!possibilityPositionIsOppose) {
+      // If prior state is "off", then we are setting this to true
+      // so we need to set the other variables to false
+      this.setState({
+        possibilityPositionIsInfoOnly: false,
+        possibilityPositionIsOppose: !possibilityPositionIsOppose,
+        possibilityPositionIsSupport: false,
+      }, this.updateLocalChangeExists);
+    } else {
+      this.setState({
+        possibilityPositionIsOppose: !possibilityPositionIsOppose,
+      }, this.updateLocalChangeExists);
+    }
+  }
+
+  togglePossibilityPositionIsSupport = () => {
+    const { possibilityPositionIsSupport } = this.state;
+    if (!possibilityPositionIsSupport) {
+      // If prior state is "off", then we are setting this to true
+      // so we need to set the other variables to false
+      this.setState({
+        possibilityPositionIsInfoOnly: false,
+        possibilityPositionIsOppose: false,
+        possibilityPositionIsSupport: !possibilityPositionIsSupport,
+      }, this.updateLocalChangeExists);
+    } else {
+      this.setState({
+        possibilityPositionIsSupport: !possibilityPositionIsSupport,
+      }, this.updateLocalChangeExists);
+    }
+  }
+
+  updateLocalChangeExists = () => {
+    const localChangeExists = this.calculateLocalChangeExists();
+    // console.log('localChangeExists:', localChangeExists);
+    this.setState({
+      localChangeExists,
+    });
+  }
+
+  updatePossibilityMoreInfoUrl = (event) => {
+    this.setState({
+      possibilityMoreInfoUrl: event.target.value,
+    }, this.updateLocalChangeExists);
+  }
+
+  updatePossibilityStatementText = (event) => {
+    this.setState({
+      possibilityStatementText: event.target.value,
+    }, this.updateLocalChangeExists);
+  }
+
+  submitForReview = () => {
+    const {
+      voterGuidePossibilityId,
     } = this.props;
     const {
-      ballotItemDisplayName,
-      candidatePhotoUrl,
-      candidateUrl,
-      contestOfficeName,
-      largeAreaHoverColorOnNow,
-      politicalParty,
-      twitterFollowersCount,
+      possibilityMoreInfoUrl, possibilityOrganizationName,
+      possibilityPositionIsInfoOnly, possibilityPositionIsOppose, possibilityPositionIsSupport,
+      possibilityStatementText,
+      voterGuidePossibilityPositionId,
     } = this.state;
-    // console.log('CandidateItem candidateRenderBlock, candidateWeVoteId:', candidateWeVoteId, ', useLinkToCandidatePage:', useLinkToCandidatePage, ', forDesktop:', forDesktop, ', linkToBallotItemPage:', linkToBallotItemPage);
-    // console.log('candidateRenderBlock candidatePhotoUrl: ', candidatePhotoUrl);
+    // If missing these ids, do not proceed
+    if (!voterGuidePossibilityId || !voterGuidePossibilityPositionId) {
+      console.log('Missing voterGuidePossibilityId:', voterGuidePossibilityId, ', or voterGuidePossibilityPositionId:', voterGuidePossibilityPositionId);
+      return false;
+    }
+
+    let positionStance = 'SUPPORT';
+    if (possibilityPositionIsInfoOnly) {
+      positionStance = 'NO_STANCE';
+    } else if (possibilityPositionIsOppose) {
+      positionStance = 'OPPOSE';
+    } else if (possibilityPositionIsSupport) {
+      positionStance = 'SUPPORT';
+    }
+    const dictionaryToSave = {
+      more_info_url: possibilityMoreInfoUrl,
+      organization_name: possibilityOrganizationName,
+      position_stance: positionStance,
+      statement_text: possibilityStatementText,
+    };
+    VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(voterGuidePossibilityId, voterGuidePossibilityPositionId, dictionaryToSave);
+    return true;
+  }
+
+  goToCandidateLink () {
+    // If here, we assume the voter is on the Office page
+    historyPush(this.getCandidateLink());
+  }
+
+  render () {
+    renderLog('CandidateItemEndorsement');  // Set LOG_RENDER_EVENTS to log all renders
+    const {
+      hideCandidateUrl, showOfficeName,
+    } = this.props;
+    const {
+      ballotItemDisplayName, candidatePhotoUrl, candidateSpecificEndorsementUrl, candidateUrl, candidateWeVoteId,
+      contestOfficeName, localChangeExists, politicalParty,
+      possibilityMoreInfoUrl, possibilityOrganizationName,
+      possibilityPositionIsInfoOnly, possibilityPositionIsOppose, possibilityPositionIsSupport,
+      possibilityStatementText, twitterFollowersCount,
+    } = this.state;
+    if (!candidateWeVoteId) {
+      // console.log('CandidateItemEndorsement waiting for candidateWeVoteId to make it into the state variable');
+      return null;
+    }
+
+    const showInfoOnlyTheme = createMuiTheme({
+      palette: {
+        primary: {
+          main: '#888',
+          contrastText: '#fff',
+        },
+      },
+    });
+
+    const showOpposeTheme = createMuiTheme({
+      palette: {
+        primary: {
+          main: '#FF7031',
+          contrastText: '#fff',
+        },
+      },
+    });
+
+    const showSupportTheme = createMuiTheme({
+      palette: {
+        primary: {
+          main: '#21c06e',
+          contrastText: '#fff',
+        },
+      },
+    });
+
     return (
-      <div>
+      <CandidateItemWrapper className="card-main u-overflow-hidden candidate-card card-main__no-underline">
         <CandidateWrapper className="card-main__media-object">
-          <CandidateInfo
-            isClickable={useLinkToCandidatePage === true}
-            onClick={useLinkToCandidatePage === true ? () => this.goToCandidateLink() : null}
-          >
+          <CandidateInfo>
             <div className="card-main__media-object-anchor">
               <ImageHandler
                 className="card-main__avatar"
@@ -353,19 +347,18 @@ class CandidateItem extends Component {
               />
             </div>
             <Candidate>
-              <h2 className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
+              <h2 className="card-main__display-name">
                 {ballotItemDisplayName}
               </h2>
-              {!!(twitterFollowersCount && forDesktop) && (
+              {!!(twitterFollowersCount) && (
                 <span
-                  className={`u-show-desktop twitter-followers__badge ${linkToBallotItemPage ? 'u-cursor--pointer' : ''}`}
-                  onClick={linkToBallotItemPage ? this.goToCandidateLink : null}
+                  className="twitter-followers__badge"
                 >
                   <span className="fab fa-twitter fa-sm" />
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
               )}
-              {(!hideCandidateUrl && candidateUrl && forDesktop) && (
+              {(!hideCandidateUrl && candidateUrl) && (
                 <ExternalWebSiteWrapper className="u-show-desktop">
                   <OpenExternalWebSite
                     url={candidateUrl}
@@ -382,10 +375,9 @@ class CandidateItem extends Component {
                 </ExternalWebSiteWrapper>
               )}
               { contestOfficeName && (
-                <div className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}>
+                <div>
                   <OfficeNameText
                     contestOfficeName={contestOfficeName}
-                    officeLink={linkToOfficePage ? this.getOfficeLink() : ''}
                     politicalParty={politicalParty}
                     showOfficeName={showOfficeName}
                   />
@@ -394,257 +386,91 @@ class CandidateItem extends Component {
             </Candidate>
           </CandidateInfo>
           <BallotItemSupportOpposeCountDisplayWrapper>
-            <BallotItemSupportOpposeCountDisplay
-              ballotItemWeVoteId={candidateWeVoteId}
-              closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
-              controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
-              goToBallotItem={this.props.goToBallotItem}
-              handleLeaveCandidateCard={forDesktop ? this.handleLeave : null}
-              handleEnterCandidateCard={forDesktop ? this.handleEnter : null}
-              hideShowMoreLink={!linkToBallotItemPage}
-              openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
-              openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
-              supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
-              supportOpposeCountDisplayModalTutorialText={supportOpposeCountDisplayModalTutorialText}
-              uniqueExternalId={forDesktop ? 'CandidateItem-Desktop' : 'CandidateItem-MobileTablet'}
-              showDownArrow={showDownArrow}
-              showUpArrow={showUpArrow}
-            />
+            {/* <BallotItemVoterGuideSupportOpposeDisplay */}
+            {/*  organizationInformationOnlyBallotItem={organizationInformationOnlyBallotItem} */}
+            {/*  organizationOpposesBallotItem={organizationOpposesBallotItem} */}
+            {/*  organizationSupportsBallotItem={organizationSupportsBallotItem} */}
+            {/*  organizationImageUrlHttpsTiny={organizationImageUrlHttpsTiny} */}
+            {/*  positionItem={position} */}
+            {/* /> */}
           </BallotItemSupportOpposeCountDisplayWrapper>
         </CandidateWrapper>
-      </div>
-    );
-  };
-
-  topCommentByBallotItem = (candidateWeVoteId, candidateText) => (
-    <TopCommentByBallotItem
-      ballotItemWeVoteId={candidateWeVoteId}
-      hideMoreButton
-    >
-      {/* If there aren't any comments about the candidate, show the text description of the candidate */}
-      { (candidateText && candidateText.length) ? (
-        <div className={`u-stack--xs ${this.props.linkToBallotItemPage ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
-          <div className="card-main__description">
-            <TextTruncate
-              line={2}
-              truncateText="..."
-              text={candidateText}
-              textTruncateChild={null}
-            />
-          </div>
-          {/* <span className="card-main__read-more-pseudo" /> */}
-          {/* <span className="card-main__read-more-link"> */}
-          {/*  &nbsp;more */}
-          {/* </span> */}
-        </div>
-      ) : null }
-    </TopCommentByBallotItem>
-  );
-
-  candidateIssuesAndCommentBlock = (candidateText, localUniqueId) => {
-    const {
-      candidateWeVoteId, expandIssuesByDefault, hideBallotItemSupportOpposeComment, hideCandidateText, hideIssuesRelatedToCandidate, hideShowMoreFooter,
-      linkToBallotItemPage, showHover, showPositionStatementActionBar, showTopCommentByBallotItem, hidePositionPublicToggle, showPositionPublicToggle, inModal,
-    } = this.props;
-    const {
-      ballotItemDisplayName, largeAreaHoverColorOnNow,
-      largeAreaHoverLinkOnNow, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement,
-    } = this.state;
-    // console.log('inModal: ', inModal);
-    // console.log('showPositionStatementActionBar: ', showPositionStatementActionBar);
-
-    return (
-      <>
-        <div className="card-main__actions">
-          {hideBallotItemSupportOpposeComment ?
-            null : (
-              <BallotItemSupportOpposeComment
-                hidePositionPublicToggle={hidePositionPublicToggle}
-                inModal={inModal}
-                showPositionPublicToggle={showPositionPublicToggle}
-                ballotItemWeVoteId={candidateWeVoteId}
-                externalUniqueId={`candidateItem-${localUniqueId}`}
-                showPositionStatementActionBar={showPositionStatementActionBar}
-              />
-            )
-          }
-          {/* If there is a quote about the candidate, show that here. */}
-          {showTopCommentByBallotItem ? (
-            <>
-              <div className="u-show-desktop">
-                {linkToBallotItemPage && largeAreaHoverLinkOnNow && showHover ?
-                  (
-                    <div className="row">
-                      <div className={`card__blue ${(voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement) ? 'col col-6' : 'col col-9'}`}>
-                        <Link to={this.getCandidateLink()} className="card-main__no-underline">
-                          <br />
-                          {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
-                        </Link>
-                      </div>
-                      <div className={`${(voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement) ? 'col col-6' : 'col col-3'}`}>
-                        <ItemActionBar
-                          showPositionPublicToggle={showPositionPublicToggle}
-                          inModal={inModal}
-                          ballotItemWeVoteId={candidateWeVoteId}
-                          buttonsOnly
-                          className="u-float-right"
-                          commentButtonHide
-                          externalUniqueId={`candidateItem-ItemActionBar-${localUniqueId}`}
-                          shareButtonHide
-                        />
-                      </div>
-                    </div>
-                  ) :
-                  (
-                    <div
-                      className={linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? (
-                        'card__blue'
-                      ) : (
-                        ''
-                      )}
-                    >
-                      <br />
-                      {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
-                    </div>
-                  )
-                }
-              </div>
-              <div className="u-show-mobile-tablet">
-                {linkToBallotItemPage ? (
-                  <Link to={this.getCandidateLink()} className="card-main__no-underline">
-                    <br />
-                    {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
-                  </Link>
-                ) : (
-                  <div>
-                    <br />
-                    {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
-                  </div>
-                )}
-              </div>
-            </>
-          ) : (
-            <>
-              {(!hideCandidateText && candidateText && candidateText.length) && (
-                <CandidateTextWrapper
-                  className={`${linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
-                >
-                  <ReadMore
-                    textToDisplay={candidateText}
-                    numberOfLines={2}
-                  />
-                </CandidateTextWrapper>
-              )}
-            </>
+        <Buttons>
+          <MuiThemeProvider theme={possibilityPositionIsSupport ? showSupportTheme : {}}>
+            <Button
+              color="primary"
+              onClick={this.togglePossibilityPositionIsSupport}
+              variant={possibilityPositionIsSupport ? 'contained' : 'outlined'}
+            >
+              {possibilityPositionIsSupport ? 'Endorsed' : 'Endorse'}
+            </Button>
+          </MuiThemeProvider>
+          <MuiThemeProvider theme={possibilityPositionIsOppose ? showOpposeTheme : {}}>
+            <Button
+              color="primary"
+              onClick={this.togglePossibilityPositionIsOppose}
+              variant={possibilityPositionIsOppose ? 'contained' : 'outlined'}
+            >
+              {possibilityPositionIsOppose ? 'Opposed' : 'Oppose'}
+            </Button>
+          </MuiThemeProvider>
+          <MuiThemeProvider theme={possibilityPositionIsInfoOnly ? showInfoOnlyTheme : {}}>
+            <Button
+              color="primary"
+              onClick={this.togglePossibilityPositionIsInfoOnly}
+              variant={possibilityPositionIsInfoOnly ? 'contained' : 'outlined'}
+            >
+              Information Only
+            </Button>
+          </MuiThemeProvider>
+        </Buttons>
+        <TextArea
+          fullWidth
+          label={(
+            <span>
+              Paste the full text of the endorsement from
+              {' '}
+              {possibilityOrganizationName}
+              {' '}
+              about
+              {' '}
+              {ballotItemDisplayName}
+            </span>
           )}
-          {/* Issues related to this Candidate */}
-          {!hideIssuesRelatedToCandidate && (
-            <IssuesByBallotItemDisplayList
-              ballotItemDisplayName={ballotItemDisplayName}
-              ballotItemWeVoteId={candidateWeVoteId}
-              expandIssuesByDefault={expandIssuesByDefault}
-              externalUniqueId={`candidateItem-${candidateWeVoteId}`}
-              placement="bottom"
-            />
+          multiline
+          onChange={this.updatePossibilityStatementText}
+          placeholder={`Paste the full text of the endorsement from ${possibilityOrganizationName} (if an explanation exists about whey they are endorsing ${ballotItemDisplayName})`}
+          rows="4"
+          value={possibilityStatementText}
+          variant="outlined"
+        />
+        <TextField
+          fullWidth
+          label={(
+            <span>
+              If dedicated endorsement page for
+              {' '}
+              {ballotItemDisplayName}
+              {' '}
+              exists, enter URL here
+            </span>
           )}
-        </div>
-        {hideShowMoreFooter ?
-          null :
-          <ShowMoreFooter showMoreId="candidateItemShowMoreFooter" showMoreLink={this.goToCandidateLink} />
-        }
-      </>
-    );
-  };
-
-  goToCandidateLink () {
-    // If here, we assume the voter is on the Office page
-    historyPush(this.getCandidateLink());
-  }
-
-  goToOfficeLink () {
-    historyPush(this.getOfficeLink());
-  }
-
-  render () {
-    renderLog('CandidateItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { linkToBallotItemPage, openSupportOpposeCountDisplayModal, showHover, classes } = this.props;
-    const { candidateText, candidateWeVoteId, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow } = this.state;
-    if (!candidateWeVoteId) {
-      // console.log('CandidateItem waiting for candidateWeVoteId to make it into the state variable');
-      return null;
-    }
-
-    const newTheme = createMuiTheme({
-      palette: {
-        primary: {
-          main: '#21c06e',
-          contrastText: '#fff',
-        },
-      },
-    });
-
-    // console.log('CandidateItem render, linkToBallotItemPage:', linkToBallotItemPage);
-    const forDesktop = true;
-    const openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize = (openSupportOpposeCountDisplayModal && isMobileAndTabletScreenSize());
-    const openSupportOpposeCountDisplayModalAtDesktopScreenSize = (openSupportOpposeCountDisplayModal && !isMobileAndTabletScreenSize());
-    return (
-      <CandidateItemWrapper>
-        <DesktopWrapper
-          className={`u-show-desktop card-main u-overflow-hidden candidate-card ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? ' card-main--outline' : ''}`}
-          onMouseEnter={this.handleEnter}
-          onMouseLeave={this.handleLeave}
-        >
-          {linkToBallotItemPage && largeAreaHoverLinkOnNow && showHover ? (
-            <div className="card-main__no-underline">
-              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, forDesktop, openSupportOpposeCountDisplayModalAtDesktopScreenSize)}
-            </div>
-          ) : (
-            <div>
-              {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, forDesktop, openSupportOpposeCountDisplayModalAtDesktopScreenSize)}
-              <Buttons>
-                <MuiThemeProvider
-                  theme={newTheme}
-                >
-                  <Button variant="contained" color="primary">Endorsed</Button>
-                </MuiThemeProvider>
-                <Button variant="outlined" color="primary">Oppose</Button>
-                <Button variant="outlined" color="primary">Information Only</Button>
-              </Buttons>
-              <TextArea placeholder="Paste Sierra Club Endorsement" variant="outlined" fullWidth />
-              <p>If dedicated candidate page exists, enter URL here:</p>
-              <TextField placeholder="Candidate Specific Source URL..." fullWidth variant="outlined" classes={{ input: classes.input }} />
-              <FourButtons>
-                <Button variant="outlined" color="primary">Admin App</Button>
-                <Button variant="outlined" color="primary">We Vote</Button>
-                <Button variant="outlined" color="primary">Save</Button>
-                <Button variant="outlined" color="primary">Delete Endorsement</Button>
-              </FourButtons>
-            </div>
-          )}
-        </DesktopWrapper>
-        <MobileTabletWrapper className="u-show-mobile-tablet card-main candidate-card u-no-scroll">
-          <div className="card-main__no-underline">
-            {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, !forDesktop, openSupportOpposeCountDisplayModalAtMobileAndTabletScreenSize)}
-            <Buttons>
-              <MuiThemeProvider
-                theme={newTheme}
-              >
-                <Button variant="contained" color="primary">Endorsed</Button>
-              </MuiThemeProvider>
-              <Button variant="outlined" color="primary">Oppose</Button>
-              <Button variant="outlined" color="primary">Information Only</Button>
-            </Buttons>
-            <TextArea placeholder="Paste Sierra Club Endorsement" variant="outlined" fullWidth />
-            <p>If dedicated candidate page exists, enter URL here:</p>
-            <TextField placeholder="Candidate Specific Source URL..." fullWidth variant="outlined" classes={{ input: classes.input }} />
-            <FourButtons>
-              <Button variant="outlined" color="primary">Admin App</Button>
-              <Button variant="outlined" color="primary">We Vote</Button>
-              <Button variant="outlined" color="primary">Save</Button>
-              <Button variant="outlined" color="primary">Delete Endorsement</Button>
-            </FourButtons>
-          </div>
-        </MobileTabletWrapper>
+          onChange={this.updatePossibilityMoreInfoUrl}
+          placeholder={`If dedicated endorsement page for ${ballotItemDisplayName} exists, enter URL here...`}
+          variant="outlined"
+          value={(possibilityMoreInfoUrl !== false) ? possibilityMoreInfoUrl : candidateSpecificEndorsementUrl}
+        />
+        <FourButtons>
+          <Button variant="outlined" color="primary">Delete Endorsement</Button>
+          <Button
+            color="primary"
+            disabled={!localChangeExists}
+            onClick={this.submitForReview}
+            variant="contained"
+          >
+            Submit for Review
+          </Button>
+        </FourButtons>
       </CandidateItemWrapper>
     );
   }
@@ -712,27 +538,17 @@ const CandidateWrapper = styled.div`
   }
 `;
 
-const CandidateTextWrapper = styled.div`
-  margin: 12px 0;
-`;
-
-const DesktopWrapper = styled.div`
-`;
-
 const ExternalWebSiteWrapper = styled.span`
   padding-left: 15px;
   white-space: nowrap;
-`;
-
-const MobileTabletWrapper = styled.div`
 `;
 
 const TextArea = styled(TextField)`
   margin-top: 16px !important;
   margin-bottom: 16px !important;
   input {
-    height: 125px !important;
+    height: 100px !important;
   }
 `;
 
-export default withStyles(styles)(CandidateItem);
+export default withStyles(styles)(CandidateItemEndorsement);

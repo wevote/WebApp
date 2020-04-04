@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 
-// https://localhost:3000/add-candidate-for-extension?candidate_name=Phil%20Ting&candidate_we_vote_id=wv02cand40131&endorsement_page_url=https%3A%2F%2Fwww.sierraclub.org%2Fcalifornia%2F2020-endorsements&candidate_home_page=https%3A%2F%2Fwww.philting.com%2F&show_data=1
+// https://localhost:3000/add-candidate-for-extension?candidate_name=Phil%20Ting&candidate_we_vote_id=wv02cand40131&endorsement_page_url=https%3A%2F%2Fwww.sierraclub.org%2Fcalifornia%2F2020-endorsements&candidate_specific_endorsement_url=https%3A%2F%2Fwww.philting.com%2F&show_data=1
 class AddCandidateForExtension extends Component {
   static propTypes = {
     location: PropTypes.object,
@@ -28,7 +28,7 @@ class AddCandidateForExtension extends Component {
   render () {
     renderLog('AddCandidateForExtension');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      candidate_name: candidateName, endorsement_page_url: endorsementPageUrl, candidate_home_page: candidateHomePage,
+      candidate_name: candidateName, endorsement_page_url: endorsementPageUrl, candidate_specific_endorsement_url: candidateSpecificEndorsementUrl,
       show_data: showDevelopmentData,
     } = this.props.location.query;
     // const { organizationWeVoteId, candidateWeVoteId, value } = this.state;
@@ -41,13 +41,16 @@ class AddCandidateForExtension extends Component {
         {showDevelopmentData && (
           <div style={{ margin: '20px' }}>
             <div>
-              <b>candidateName:</b> {candidateName}
+              <strong>candidateName:</strong>
+              {candidateName}
             </div>
             <div>
-              <b>endorsementPageUrl:</b> {endorsementPageUrl}
+              <strong>endorsementPageUrl:</strong>
+              {endorsementPageUrl}
             </div>
             <div>
-              <b>candidateHomePage:</b> {candidateHomePage}
+              <strong>candidateSpecificEndorsementUrl:</strong>
+              {candidateSpecificEndorsementUrl}
             </div>
           </div>
         )}
