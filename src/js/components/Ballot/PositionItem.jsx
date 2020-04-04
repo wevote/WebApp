@@ -396,7 +396,7 @@ class PositionItem extends Component {
                     voterWeVoteIdForThisOrganization && <FriendToggle otherVoterWeVoteId={voterWeVoteIdForThisOrganization} /> */}
                   </>
                 ) : (
-                  <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft />
+                  <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft platformType="desktop" />
                 )}
               </DesktopItemLeft>
               <PositionItemDesktop className={`position-item--${supportOpposeInfo} position-item`}>
@@ -411,7 +411,7 @@ class PositionItem extends Component {
                           id="positions-popover-trigger-click-root-close"
                         >
                           <div>
-                            <Link to={speakerLink}>
+                            <Link to={speakerLink} id={`desktop-LinkToEndorsingOrganization-${organizationWeVoteId}`}>
                               { position.speaker_display_name }
                             </Link>
                           </div>
@@ -497,7 +497,7 @@ class PositionItem extends Component {
                 {/* Visible for most phones */}
                 <MobileItemNameIssuesContainer>
                   <MobileItemName>
-                    <Link to={speakerLink} className="u-break-word">
+                    <Link to={speakerLink} className="u-break-word" id={`mobile-LinkToEndorsingOrganization-${organizationWeVoteId}`}>
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
@@ -562,7 +562,7 @@ class PositionItem extends Component {
                         voterWeVoteIdForThisOrganization && <FriendToggle otherVoterWeVoteId={voterWeVoteIdForThisOrganization} /> */}
                       </>
                     ) : (
-                      <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                      <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing platformType="mobile" />
                     )}
                   </MobileItemFollowToggleDisplay>
                 </MobileItemDescriptionFollowToggleContainer>

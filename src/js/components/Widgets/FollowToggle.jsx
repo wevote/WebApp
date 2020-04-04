@@ -26,6 +26,7 @@ export default class FollowToggle extends Component {
     hideDropdownButtonUntilFollowing: PropTypes.bool,
     lightModeOn: PropTypes.bool,
     anchorLeft: PropTypes.bool,
+    platformType: PropTypes.string,
   };
 
   constructor (props) {
@@ -267,7 +268,7 @@ export default class FollowToggle extends Component {
     const {
       anchorLeft, ballotItemWeVoteId, currentBallotIdInUrl,
       hideDropdownButtonUntilFollowing, hideStopFollowingButton, hideStopIgnoringButton,
-      lightModeOn, organizationWeVoteId, showFollowingText, urlWithoutHash,
+      lightModeOn, organizationWeVoteId, showFollowingText, urlWithoutHash, platformType,
     } = this.props;
     if (!organizationWeVoteId) { return <div />; }
 
@@ -318,7 +319,7 @@ export default class FollowToggle extends Component {
               <>
                 <div className="issues-follow-btn__separator" />
                 <Button
-                  id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`}
+                  id={`positionItemFollowToggleDropdown-${platformType}-${organizationWeVoteId}`}
                   type="button"
                   className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
                   data-toggle="dropdown"
@@ -338,7 +339,7 @@ export default class FollowToggle extends Component {
                       { hideStopFollowingButton ?
                         null : (
                           <Button
-                            id={`positionItemFollowToggleUnfollow-${organizationWeVoteId}`}
+                            id={`positionItemFollowToggleUnfollow-${platformType}-${organizationWeVoteId}`}
                             type="button"
                             className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
                             onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
@@ -349,7 +350,7 @@ export default class FollowToggle extends Component {
                     </span>
                   ) : (
                     <Button
-                      id={`positionItemFollowToggleFollowDropDown-${organizationWeVoteId}`}
+                      id={`positionItemFollowToggleFollowDropDown-${platformType}-${organizationWeVoteId}`}
                       className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
                       onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
                       type="button"
@@ -363,7 +364,7 @@ export default class FollowToggle extends Component {
                       { hideStopIgnoringButton ?
                         null : (
                           <Button
-                            id={`positionItemFollowToggleStopIgnoring-${organizationWeVoteId}`}
+                            id={`positionItemFollowToggleStopIgnoring-${platformType}-${organizationWeVoteId}`}
                             type="button"
                             className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
                             onClick={() => this.stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
@@ -374,7 +375,7 @@ export default class FollowToggle extends Component {
                     </span>
                   ) : (
                     <Button
-                      id={`positionItemFollowToggleIgnore-${organizationWeVoteId}`}
+                      id={`positionItemFollowToggleIgnore-${platformType}-${organizationWeVoteId}`}
                       type="button"
                       className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
                       onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
@@ -389,7 +390,7 @@ export default class FollowToggle extends Component {
         ) : (
           <>
             <Button
-              id={`positionItemFollowToggleFollow-${organizationWeVoteId}`}
+              id={`positionItemFollowToggleFollow-${platformType}-${organizationWeVoteId}`}
               type="button"
               className={`issues-follow-btn issues-follow-btn__main ${hideDropdownButtonUntilFollowing ? ' dropdown-toggle dropdown-toggle-split issues-follow-btn__main--radius' : ''} ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
               onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
@@ -400,7 +401,7 @@ export default class FollowToggle extends Component {
               <>
                 <div className="issues-follow-btn__separator" />
                 <Button
-                  id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`}
+                  id={`positionItemFollowToggleDropdown-${platformType}-${organizationWeVoteId}`}
                   type="button"
                   className={`dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
                   data-toggle="dropdown"
@@ -411,7 +412,7 @@ export default class FollowToggle extends Component {
                 </Button>
                 <div className={`dropdown-menu issues-follow-btn__menu ${anchorLeft ? ' dropdown-menu-left' : ' dropdown-menu-right'}`}>
                   <Button
-                    id={`positionItemFollowToggleFollow-${organizationWeVoteId}`}
+                    id={`positionItemFollowToggleFollow-${platformType}-${organizationWeVoteId}`}
                     type="button"
                     className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
                     onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
@@ -423,7 +424,7 @@ export default class FollowToggle extends Component {
                     <span className="d-print-none">
                       { !hideStopIgnoringButton && (
                         <Button
-                          id={`positionItemFollowToggleStopIgnoring-${organizationWeVoteId}`}
+                          id={`positionItemFollowToggleStopIgnoring-${platformType}-${organizationWeVoteId}`}
                           type="button"
                           className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
                           onClick={() => this.stopIgnoringInstantly(stopIgnoringFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
@@ -434,7 +435,7 @@ export default class FollowToggle extends Component {
                     </span>
                   ) : (
                     <Button
-                      id={`positionItemFollowToggleIgnore-${organizationWeVoteId}`}
+                      id={`positionItemFollowToggleIgnore-${platformType}-${organizationWeVoteId}`}
                       type="button"
                       className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
                       onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
