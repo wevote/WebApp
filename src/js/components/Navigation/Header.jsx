@@ -61,6 +61,7 @@ export default class Header extends Component {
 
   componentWillUnmount () {
     this.appStoreListener.remove();
+    window.removeEventListener('resize', this.handleResize);
   }
 
   onAppStoreChange () {

@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CommentIcon from '@material-ui/icons/Comment';
 import InfoIcon from '@material-ui/icons/Info';
-import DelayedLoad from '../Widgets/DelayedLoad';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import FriendActions from '../../actions/FriendActions';
@@ -55,42 +55,84 @@ class PositionList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      positionList: [],
       filteredPositionList: [],
+      filteredPositionListLength: 0,
+      isSearching: false,
+      loadingMoreItems: false,
+      numberOfPositionItemsToDisplay: 10,
+      positionList: [],
+      positionSearchResults: [],
+      searchText: '',
+      totalNumberOfPositionSearchResults: 0,
     };
+    this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
     // console.log('PositionList componentDidMount');
-    const { incomingPositionList } = this.props;
-    this.setState({
-      positionList: incomingPositionList,
-      filteredPositionList: incomingPositionList,
-    });
+    let { incomingPositionList } = this.props;
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
 
-    // Replicate in componentWillReceiveProps
-    let oneOrganization = {};
-    const organizationWeVoteIdsNeeded = [];
-    // console.log('PositionList componentDidMount, incomingPositionList: ', incomingPositionList);
-    incomingPositionList.forEach((position) => {
-      oneOrganization = OrganizationStore.getOrganizationByWeVoteId(position.speaker_we_vote_id);
-      if (!oneOrganization || !oneOrganization.organization_we_vote_id) {
-        organizationWeVoteIdsNeeded.push(position.speaker_we_vote_id);
-      }
-      // Replace with bulk retrieve, since one call per organization is too expensive
-      // OrganizationActions.organizationRetrieve(position.speaker_we_vote_id)
+    // Replicate onOrganizationStoreChange
+    const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
+    // eslint-disable-next-line arrow-body-style
+    incomingPositionList = incomingPositionList.map((position) => {
+      // console.log('PositionList onOrganizationStoreChange, position: ', position);
+      return ({
+        ...position,
+        followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+      });
     });
-    if (organizationWeVoteIdsNeeded.length) {
-      // Add bulk Organization retrieve here
-    }
-    // console.log('PositionList componentDidMount, organizationWeVoteIdsNeeded: ', organizationWeVoteIdsNeeded);
-    OrganizationActions.organizationsFollowedRetrieve();
+    // eslint-disable-next-line arrow-body-style
+    // const filteredPositionListWithFollowedData = filteredPositionList.map((position) => {
+    //   // console.log('PositionList onOrganizationStoreChange, position: ', position);
+    //   return ({
+    //     ...position,
+    //     followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+    //   });
+    // });
+
+    // Replicate onFriendStoreChange
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
+    // console.log('PositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
+    // eslint-disable-next-line arrow-body-style
+    incomingPositionList = incomingPositionList.map((position) => {
+      // console.log('PositionList onFriendStoreChange, position: ', position);
+      return ({
+        ...position,
+        currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
+      });
+    });
+
+    // Replicate in componentWillReceiveProps
+    // let oneOrganization = {};
+    // const organizationWeVoteIdsNeeded = [];
+    // // console.log('PositionList componentDidMount, incomingPositionList: ', incomingPositionList);
+    // incomingPositionList.forEach((position) => {
+    //   oneOrganization = OrganizationStore.getOrganizationByWeVoteId(position.speaker_we_vote_id);
+    //   if (!oneOrganization || !oneOrganization.organization_we_vote_id) {
+    //     organizationWeVoteIdsNeeded.push(position.speaker_we_vote_id);
+    //   }
+    //   // Replace with bulk retrieve, since one call per organization is too expensive
+    //   // OrganizationActions.organizationRetrieve(position.speaker_we_vote_id)
+    // });
+    // if (organizationWeVoteIdsNeeded.length) {
+    //   // Add bulk Organization retrieve here
+    // }
+    // console.log('PositionList componentDidMount, organizationWeVoteIdsNeeded: ', organizationWeVoteIdsNeeded);
+
+    OrganizationActions.organizationsFollowedRetrieve();
     if (!organizationsVoterIsFriendsWith.length > 0) {
       FriendActions.currentFriends();
     }
+
+    window.addEventListener('scroll', this.onScroll);
+    this.setState({
+      positionList: incomingPositionList,
+      filteredPositionList: incomingPositionList,
+      filteredPositionListLength: incomingPositionList.length,
+    });
   }
 
   componentWillReceiveProps (nextProps) {
@@ -105,10 +147,11 @@ class PositionList extends Component {
   componentWillUnmount () {
     this.friendStoreListener.remove();
     this.organizationStoreListener.remove();
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   onFriendStoreChange () {
-    const { filteredPositionList, positionList } = this.state;
+    const { positionList } = this.state; // filteredPositionList,
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
     // console.log('PositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
     // eslint-disable-next-line arrow-body-style
@@ -120,16 +163,17 @@ class PositionList extends Component {
       });
     });
     // eslint-disable-next-line arrow-body-style
-    const filteredPositionListWithFriendData = filteredPositionList.map((position) => {
-      // console.log('PositionList onFriendStoreChange, position: ', position);
-      return ({
-        ...position,
-        currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
-      });
-    });
+    // const filteredPositionListWithFriendData = filteredPositionList.map((position) => {
+    //   // console.log('PositionList onFriendStoreChange, position: ', position);
+    //   return ({
+    //     ...position,
+    //     currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
+    //   });
+    // });
     this.setState({
       positionList: positionListWithFriendData,
-      filteredPositionList: filteredPositionListWithFriendData,
+      // filteredPositionList: filteredPositionListWithFriendData,
+      // filteredPositionListLength: filteredPositionListWithFriendData.length,
     });
   }
 
@@ -156,12 +200,81 @@ class PositionList extends Component {
     this.setState({
       positionList: positionListWithFollowedData,
       filteredPositionList: filteredPositionListWithFollowedData,
+      filteredPositionListLength: filteredPositionListWithFollowedData.length,
     });
   }
 
   onFilteredItemsChange = (filteredOrganizations) => {
     // console.log('PositionList onFilteredItemsChange, filteredOrganizations:', filteredOrganizations);
-    this.setState({ filteredPositionList: filteredOrganizations });
+    this.setState({
+      filteredPositionList: filteredOrganizations,
+      filteredPositionListLength: filteredOrganizations.length,
+      isSearching: false,
+    });
+  }
+
+  onScroll () {
+    const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
+    // console.log('showMoreItemsElement: ', showMoreItemsElement);
+    // console.log('Loading more: ', this.state.loadingMoreItems);
+    if (showMoreItemsElement) {
+      const {
+        filteredPositionListLength, isSearching, numberOfPositionItemsToDisplay,
+        numberOfSearchResultsDisplayed, totalNumberOfPositionSearchResults,
+      } = this.state;
+
+      // console.log('window.height: ', window.innerHeight);
+      // console.log('Window Scroll: ', window.scrollY);
+      // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
+      // console.log('filteredPositionListLength: ', filteredPositionListLength);
+      // console.log('numberOfPositionItemsToDisplay: ', numberOfPositionItemsToDisplay);
+
+      if ((isSearching && (numberOfSearchResultsDisplayed < totalNumberOfPositionSearchResults))
+          || (!isSearching && (numberOfPositionItemsToDisplay < filteredPositionListLength))) {
+        if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
+          this.setState({ loadingMoreItems: true });
+          this.increaseNumberOfPositionItemsToDisplay();
+        } else {
+          this.setState({ loadingMoreItems: false });
+        }
+      } else {
+        this.setState({ loadingMoreItems: false });
+      }
+    }
+  }
+
+  onPositionSearch = (searchText, filteredItems) => {
+    window.scrollTo(0, 0);
+    const totalNumberOfPositionSearchResults = filteredItems.length || 0;
+    this.setState({
+      positionSearchResults: filteredItems,
+      searchText,
+      totalNumberOfPositionSearchResults,
+    });
+  };
+
+  handleToggleSearchBallot = (isSearching) => {
+    // console.log('VoterGuideSettingsAddPositions handleToggleSearchBallot isSearching:', isSearching);
+    // When we toggle, reset numberOfPositionItemsToDisplay
+    this.setState({
+      isSearching: !isSearching,
+      loadingMoreItems: false,
+      numberOfPositionItemsToDisplay: 10,
+    });
+  };
+
+  increaseNumberOfPositionItemsToDisplay = () => {
+    let { numberOfPositionItemsToDisplay } = this.state;
+    // console.log('Number of position items before increment: ', numberOfPositionItemsToDisplay);
+
+    numberOfPositionItemsToDisplay += 5;
+    // console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
+
+    this.positionItemTimer = setTimeout(() => {
+      this.setState({
+        numberOfPositionItemsToDisplay,
+      });
+    }, 500);
   }
 
   render () {
@@ -170,6 +283,11 @@ class PositionList extends Component {
       // console.log('PositionList Loading...');
       return <div>Loading...</div>;
     }
+    const {
+      filteredPositionList, filteredPositionListLength, isSearching, loadingMoreItems,
+      numberOfPositionItemsToDisplay, positionSearchResults, searchText,
+      totalNumberOfPositionSearchResults,
+    } = this.state;
     // console.log('PositionList render');
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     let showTitle = false;
@@ -178,7 +296,9 @@ class PositionList extends Component {
       showTitle = true;
     }
     const selectedFiltersDefault = ['endorsingGroup', 'newsOrganization', 'publicFigure', 'sortByMagic', 'yourFriends'];
-    let positionNumber = 0;
+    let numberOfPositionItemsDisplayed = 0;
+    let numberOfSearchResultsDisplayed = 0;
+    let searchTextString = '';
     return (
       <div>
         <FilterWrapper>
@@ -187,45 +307,97 @@ class PositionList extends Component {
             null
           }
           <FilterBase
+            allItems={this.state.positionList}
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
-            allItems={this.state.positionList}
             onFilteredItemsChange={this.onFilteredItemsChange}
+            onSearch={this.onPositionSearch}
+            onToggleSearch={this.handleToggleSearchBallot}
+            positionSearchMode
             selectedFiltersDefault={selectedFiltersDefault}
           >
             {/* props get added to this component in FilterBase */}
             <VoterGuideOrganizationFilter />
           </FilterBase>
+          {(isSearching && searchText) && (
+            <SearchTitle>
+              Searching for &quot;
+              {searchText}
+              &quot;
+            </SearchTitle>
+          )}
         </FilterWrapper>
         <ul className="card-child__list-group">
-          { this.state.filteredPositionList.map((onePosition) => {
-            positionNumber += 1;
-            if (positionNumber < 5) {
-              return (
+          {(isSearching ? positionSearchResults : filteredPositionList).map((onePosition) => {
+            // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
+            if (isSearching) {
+              if (numberOfSearchResultsDisplayed >= numberOfPositionItemsToDisplay) {
+                return null;
+              }
+              numberOfSearchResultsDisplayed += 1;
+            } else {
+              if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
+                return null;
+              }
+              numberOfPositionItemsDisplayed += 1;
+            }
+            // console.log('numberOfBallotItemsDisplayed: ', numberOfBallotItemsDisplayed);
+            let foundInItemsAlreadyShown = 0;
+            let searchWordAlreadyShown = 0;
+            if (searchText) {
+              const wordsArray = searchText.split(' ');
+              searchTextString = wordsArray.map((oneItem) => {
+                const foundInStringItem = `${searchWordAlreadyShown ? ' or ' : ''}"${oneItem}"`;
+                searchWordAlreadyShown += 1;
+                return foundInStringItem;
+              });
+            }
+            const searchResultsNode = (isSearching && searchTextString && onePosition.foundInArray && onePosition.foundInArray.length) ? (
+              <SearchResultsFoundInExplanation>
+                {searchTextString}
+                {' '}
+                found in
+                {' '}
+                {onePosition.foundInArray.map((oneItem) => {
+                  const foundInStringItem = (
+                    <span key={foundInItemsAlreadyShown}>
+                      {foundInItemsAlreadyShown ? ', ' : ''}
+                      {oneItem}
+                    </span>
+                  );
+                  foundInItemsAlreadyShown += 1;
+                  return foundInStringItem;
+                })
+                }
+              </SearchResultsFoundInExplanation>
+            ) : null;
+            return (
+              <div key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}>
                 <PositionItem
                   ballotItemDisplayName={this.props.ballotItemDisplayName}
-                  key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}
-                  position={onePosition}
                   params={this.props.params}
+                  position={onePosition}
+                  searchResultsNode={searchResultsNode}
                 />
-              );
-            } else {
-              return (
-                <DelayedLoad
-                  key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}
-                  waitBeforeShow={1000}
-                >
-                  <PositionItem
-                    ballotItemDisplayName={this.props.ballotItemDisplayName}
-                    position={onePosition}
-                    params={this.props.params}
-                  />
-                </DelayedLoad>
-              );
-            }
+              </div>
+            );
           })
           }
         </ul>
+        <ShowMoreItems id="showMoreItemsId">
+          Displaying
+          {' '}
+          {isSearching ? numberOfSearchResultsDisplayed : numberOfPositionItemsDisplayed }
+          {' '}
+          of
+          {' '}
+          {isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
+        </ShowMoreItems>
+        <LoadingItemsWheel>
+          {loadingMoreItems ? (
+            <CircularProgress />
+          ) : null}
+        </LoadingItemsWheel>
       </div>
     );
   }
@@ -239,6 +411,44 @@ const styles = () => ({
 
 const FilterWrapper = styled.div`
   margin: 0 15px;
+`;
+
+const LoadingItemsWheel = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SearchResultsFoundInExplanation = styled.div`
+  background-color: #C2DCE8;
+  color: #0E759F;
+  padding: 12px !important;
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin-left: 12px !important;
+    margin-right: 12px !important;
+  }
+`;
+
+const SearchTitle = styled.div`
+  font-size: 24px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+`;
+
+const ShowMoreItems = styled.div`
+  font-size: 18px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: right;
+  user-select: none;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    padding-top: 5px;
+    padding-bottom: 3px;
+  }
+  @media print{
+    display: none;
+  }
 `;
 
 export default withStyles(styles)(PositionList);

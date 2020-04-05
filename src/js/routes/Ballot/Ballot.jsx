@@ -443,6 +443,7 @@ class Ballot extends Component {
       clearTimeout(this.ballotItemTimer);
       this.ballotItemTimer = null;
     }
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   // See https://reactjs.org/docs/error-boundaries.html

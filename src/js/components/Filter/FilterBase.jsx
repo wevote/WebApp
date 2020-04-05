@@ -20,6 +20,7 @@ class FilterBase extends React.Component {
     onSearch: PropTypes.func,
     onFilteredItemsChange: PropTypes.func,
     onToggleSearch: PropTypes.func,
+    positionSearchMode: PropTypes.bool,
     selectedFiltersDefault: PropTypes.array,
   };
 
@@ -192,8 +193,9 @@ class FilterBase extends React.Component {
 
   render () {
     renderLog('FilterBase');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('FilterBase render');
     const { isSearching, selectedFilters, showAllFilters } = this.state;
-    const { allItems, classes } = this.props;
+    const { allItems, classes, positionSearchMode } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
     return (
@@ -205,6 +207,7 @@ class FilterBase extends React.Component {
             items={allItems}
             onBallotSearch={this.onSearch}
             onToggleSearch={this.handleToggleSearchBallot}
+            positionSearchMode={positionSearchMode}
           />
           {!isSearching && this.generateGroupedFilters()}
           {!isSearching && this.generateIslandFilters()}

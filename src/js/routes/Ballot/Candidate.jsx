@@ -293,7 +293,6 @@ class Candidate extends Component {
             <LeftColumnWrapper>
               <CandidateItem
                 candidateWeVoteId={candidate.we_vote_id}
-                expandIssuesByDefault
                 hideShowMoreFooter
                 organizationWeVoteId={organizationWeVoteId}
                 linkToOfficePage
