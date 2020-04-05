@@ -198,23 +198,22 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Open position display filters
     await simpleClick('filterBaseFilters');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('filterBaseFilters');
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Follow an endorsing organization of measure
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick(`positionItemFollowToggleFollow-${platformPrefixID}-${organizationToFollowOnMeasureBallotID}`);
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`positionItemFollowToggleFollow-${platformPrefixID}-${organizationToFollowOnMeasureBallotID}`);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Unfollow that endorsing organization of measure
-    // await simpleClick(`positionItemFollowToggleFollowDropdown-${platformPrefixID}-${organizationToFollowOnMeasureBallotID}`);
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick(`positionItemFollowToggleDropdown-${platformPrefixID}-${organizationToFollowOnMeasureBallotID}`);
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick(`positionItemFollowToggleUnfollow-${platformPrefixID}-${organizationToFollowOnMeasureBallotID}`);
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`positionItemFollowToggleDropdown-${platformPrefixID}-${organizationToFollowOnMeasureBallotID}`);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`positionItemFollowToggleUnfollow-${platformPrefixID}-${organizationToFollowOnMeasureBallotID}`);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Test sticky header
@@ -252,15 +251,11 @@ describe('Basic cross-platform We Vote test',  () => {
     }
     await simpleClick(`officeItemCompressedCandidateImageAndName-${candidateToTestOnBallotID}`); // Clicks the candidate
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick(`candidateItem-${candidateToTestOnBallotID}-valueIconAndText-wv02issue4`); // Clicks to OPEN the "Climate Change" issue icon
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick(`candidateItem-${candidateToTestOnBallotID}-valueIconAndText-wv02issue4`); // Clicks to CLOSE the "Climate Change" issue icon
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     const chooseButtonId = `itemActionBarSupportButton-candidateItem-${platformPrefixID}IssuesComment-ballotItemSupportOpposeComment-${candidateToTestOnBallotID}-${platformPrefixID}Version-${candidateToTestOnBallotID}`;
     await simpleClick(chooseButtonId);  // Choose the candidate
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('profileCloseItemActionBar');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick('profileCloseItemActionBar');
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     const opposeButtonId = `itemActionBarOpposeButton-candidateItem-${platformPrefixID}IssuesComment-ballotItemSupportOpposeComment-${candidateToTestOnBallotID}-${platformPrefixID}Version-${candidateToTestOnBallotID}`;
     await simpleClick(opposeButtonId); // oppose the candidate
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -270,35 +265,41 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleTextInput(`itemPositionStatementActionBarTextArea-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`, 'I am trying to comment');  // Writes in TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`itemPositionStatementActionBarSave-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`); // Saves the text
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`itemPositionStatementActionBarEdit-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`); // Edit the text
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await clearTextInputValue(`itemPositionStatementActionBarTextArea-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`);  // Clears TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleTextInput(`itemPositionStatementActionBarTextArea-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`, 'Succeeded in deleting and rewriting the test');  // Writes to TextArea
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await clearTextInputValue(`itemPositionStatementActionBarTextArea-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`);  // Clears TextArea
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick(`itemPositionStatementActionBarSave-${candidateToTestOnBallotID}-candidateItem-${platformPrefixID}IssuesComment-${platformPrefixID}-fromBallotItemSupportOpposeComment-${candidateToTestOnBallotID}`); // Saves the text
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Follow an endorsing organization of candidate
-    // await simpleClick(`positionItemFollowToggleFollow-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`);
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`positionItemFollowToggleFollow-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Unfollow an endorsing organization of candidate
-    // await simpleClick(`positionItemFollowToggleFollowDropdown-${organizationToFollowOnCandidateBallotID}`);
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick(`positionItemFollowToggleUnfollow-${organizationToFollowOnCandidateBallotID}`);
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`positionItemFollowToggleDropdown-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`positionItemFollowToggleUnfollow-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Visit organization page from candidate page
-    // await simpleClick(`${platformPrefixID}-LinkToEndorsingOrganization`); // Click on the link to organization's page
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick(`${platformPrefixID}-LinkToEndorsingOrganization-${organizationToFollowOnCandidateBallotID}`);  // Follow organization
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick(`positionItemFollowToggleIgnore-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`); // Ignore organization
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick(`positionItemFollowToggleStopIgnoring-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`); // Stop ignoring organization
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`${platformPrefixID}-LinkToEndorsingOrganization-${organizationToFollowOnCandidateBallotID}`); // Click on the link to organization's page
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`positionItemFollowToggleFollow-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`); // Follow organization
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`positionItemFollowToggleIgnore-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`); // Ignore organization
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`positionItemFollowToggleStopIgnoring-${platformPrefixID}-${organizationToFollowOnCandidateBallotID}`); // Stop ignoring organization
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Go back to ballot
@@ -308,14 +309,19 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Visit the office page
     await simpleClick('officeItemCompressedShowMoreFooter-wv02off19866'); // Clicks Show More link
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('officeItemCompressedTopNameLink-wv02off19913'); // Clicks Office Item link
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
 
     // //////////////////////
     // Build out path that goes through a ballot
     await simpleClick('ballotBadgeMobileAndDesktop-All'); // Go to the All Items tab
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('Embed'); // Go to the embed tab
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Go to the Values tab
@@ -324,11 +330,17 @@ describe('Basic cross-platform We Vote test',  () => {
     } else {
       await simpleClick('valuesTabFooterBar');  // Mobile or tablet screen size - FOOTER ICONS
     }
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('valuesToFollowPreviewShowMoreId'); // Clicks on the link to show more values
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('backToLinkTabHeader');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('publicFiguresToFollowPreviewShowMoreId');  // Clicks on the link to show more public figures
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('backToLinkTabHeader');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('organizationsToFollowPreviewShowMoreId');  // Clicks on the link to show more organizations
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('backToLinkTabHeader');
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
