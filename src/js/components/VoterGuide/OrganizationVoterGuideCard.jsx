@@ -126,6 +126,7 @@ class OrganizationVoterGuideCard extends Component {
           <>
             <FollowToggleWrapper>
               <FollowToggle
+                platformType="desktop"
                 organizationWeVoteId={organizationWeVoteId}
                 otherVoterWeVoteId={linkedVoterWeVoteId}
                 showFollowingText

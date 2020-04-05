@@ -334,6 +334,7 @@ export default class OrganizationVoterGuide extends Component {
                   <>
                     <FollowToggleMobileWrapper>
                       <FollowToggle
+                        platformType="mobile"
                         organizationWeVoteId={organizationWeVoteId}
                         otherVoterWeVoteId={linkedVoterWeVoteId}
                         showFollowingText
