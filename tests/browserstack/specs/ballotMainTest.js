@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { scrollThroughPage, clickTopLeftCornerOfElement, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal, simpleTextInput, clearTextInputValue } = require('../utils');
+const { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal, simpleTextInput, stopScript } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
@@ -8,9 +8,9 @@ const PAUSE_DURATION_BALLOT_LOAD = 6000;
 const PAUSE_DURATION_REVIEW_RESULTS = 3000;
 
 describe('Basic cross-platform We Vote test',  () => {
-  it('can visit the different pages in the app', async () => {
-    const { twitterUserName, twitterPassword } = driver.config;
-    const { isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
+  it('should load the app so we can run various tests', async () => {
+    const {twitterUserName, twitterPassword} = driver.config;
+    const {isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS} = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
     const platformPrefixID = (isDesktopScreenSize) ? 'desktop' : 'mobile';
     const changeAddressHeaderBarID = (isDesktopScreenSize) ? 'changeAddressOrElectionHeaderBar' : 'changeAddressOnlyHeaderBar';
@@ -43,6 +43,30 @@ describe('Basic cross-platform We Vote test',  () => {
     }
 
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+
+    // await scrollDownPage();
+    // JavascriptExecutor js = (JavascriptExecutor) driver;
+    // js.executeScript("window.scrollBy(0,250)", "");
+    // await driver.scroll(0, 100);
+    // driver.touchScroll({
+    //   el: browser,
+    //   xOffset: 10,
+    //   yOffset: 100
+    // });
+    // await driver.scroll(0, 250);
+
+    // await scrollIntoViewSimple('ballotSummaryFooter-showMoreBallotItems'); // Scroll to the "Show More Ballot Items" header at bottom of page
+    const clickableItem = await $('ballotSummaryFooter-showMoreBallotItems');
+    await clickableItem.scrollIntoView();
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+    // ballotRoute-topOfBallot
+
+    // // Stop/Exit the script here for now
+    // assert(true);
+    // await stopScript(driver);
 
     // // //////////////////////
     // // Sign in using Twitter, when in browser
@@ -95,11 +119,6 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-
-      // Stop the script here for now
-      assert(true);
-      driver.quit();
-
       await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     } else {
@@ -123,11 +142,11 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick(changeAddressHeaderBarID); // Opens the "Enter Your Full Address" link
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     if (isIOS && isCordovaFromAppStore) {
-      await setNewAddressIOS('addressBoxText', 'Oakland, WA 94501'); // Sets the text for the address box and hits enter
+      await setNewAddressIOS('addressBoxText', 'Oakland, CA 94501'); // Sets the text for the address box and hits enter
     } else if (isAndroid && isCordovaFromAppStore) {
-      await setNewAddressAndroid('addressBoxText', 'Oakland, WA 94501'); // Sets the text for the address box and hits enter
+      await setNewAddressAndroid('addressBoxText', 'Oakland, CA 94501'); // Sets the text for the address box and hits enter
     } else {
-      await setNewAddress('addressBoxText', 'Oakland, WA 94501'); // Sets the text for the address box and hits enter
+      await setNewAddress('addressBoxText', 'Oakland, CA 94501'); // Sets the text for the address box and hits enter
     }
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     await simpleClick('addressBoxModalSaveButton'); // Clicks "Save"
