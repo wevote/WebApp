@@ -9,8 +9,8 @@ const PAUSE_DURATION_REVIEW_RESULTS = 3000;
 
 describe('Basic cross-platform We Vote test',  () => {
   it('should load the app so we can run various tests', async () => {
-    const {twitterUserName, twitterPassword} = driver.config;
-    const {isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS} = driver.config.capabilities;
+    const { twitterUserName, twitterPassword } = driver.config;
+    const { isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
     const platformPrefixID = (isDesktopScreenSize) ? 'desktop' : 'mobile';
     const changeAddressHeaderBarID = (isDesktopScreenSize) ? 'changeAddressOrElectionHeaderBar' : 'changeAddressOnlyHeaderBar';
@@ -46,6 +46,13 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
+    // ///////////////////////////////////
+    // These are a variety of tests to try to figure out scrolling down to click an element off screen
+    // 2020 President "Show More" (so we can try to click below the fold): officeItemCompressedShowMoreFooter-wv02off28320
+    // Non-clickable element below the fold: ballotSummaryFooter-showMoreBallotItems
+    // ID at top of Ballot: ballotRoute-topOfBallot
+
+    // DALE 2020-04-05 All of these failed
     // await scrollDownPage();
     // JavascriptExecutor js = (JavascriptExecutor) driver;
     // js.executeScript("window.scrollBy(0,250)", "");
@@ -56,17 +63,19 @@ describe('Basic cross-platform We Vote test',  () => {
     //   yOffset: 100
     // });
     // await driver.scroll(0, 250);
-
-    // await scrollIntoViewSimple('ballotSummaryFooter-showMoreBallotItems'); // Scroll to the "Show More Ballot Items" header at bottom of page
-    const clickableItem = await $('ballotSummaryFooter-showMoreBallotItems');
-    await clickableItem.scrollIntoView();
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-
-    // ballotRoute-topOfBallot
+    // await browser.elementClick('officeItemCompressedShowMoreFooter-wv02off28320');
+    // await scrollIntoViewSimple('officeItemCompressedShowMoreFooter-wv02off28320'); // Scroll to the "Show More Ballot Items" header at bottom of page
+    // await simpleClick('officeItemCompressedShowMoreFooter-wv02off28320');
+    // await simpleClick('ballotSummaryFooter-showMoreBallotItems');
+    // const clickableItem = await $('#ballotSummaryFooter-showMoreBallotItems');
+    // await clickableItem.scrollIntoView();
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await scrollThroughPage();
 
     // // Stop/Exit the script here for now
     // assert(true);
-    // await stopScript(driver);
+    // await stopScript(driver); // Not working
+    // await browser.pause(100000); // Pause for a long time in order to force timeout
 
     // // //////////////////////
     // // Sign in using Twitter, when in browser
