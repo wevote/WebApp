@@ -1213,7 +1213,7 @@ class Ballot extends Component {
                   />
                 ) : null
                 }
-                <div className="col-sm-12 col-lg-9">
+                <div className="col-sm-12 col-lg-9" id="ballotRoute-topOfBallot">
                   {(isSearching && searchText) && (
                     <SearchTitle>
                       Searching for &quot;

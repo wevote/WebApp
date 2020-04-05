@@ -213,7 +213,7 @@ class BallotSummaryFooter extends Component {
           <div className={classes.cardBody}>
             { this.props.displayTitle ? (
               <>
-                <Typography variant="h2" classes={{ root: classes.typography }}>
+                <Typography id="ballotSummaryFooter-showMoreBallotItems" variant="h2" classes={{ root: classes.typography }}>
                   <Ballot className={classes.icon} />
                   Show More Ballot Items
                 </Typography>
