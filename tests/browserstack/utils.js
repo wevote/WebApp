@@ -27,6 +27,7 @@ async function clickTopLeftCornerOfElement (selector) {
 }
 
 function stopScript (driver) {
+  // DALE 2020-04-05 Doesn't seem to be working
   try {
     driver.close();
   } catch (e) {
@@ -34,11 +35,6 @@ function stopScript (driver) {
   }
   try {
     driver.quit();
-  } catch (e) {
-    //
-  }
-  try {
-    browser.pause(100000);
   } catch (e) {
     //
   }
