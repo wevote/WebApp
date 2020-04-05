@@ -2,7 +2,7 @@ import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
   organizationFollow (organizationWeVoteId, organization_twitter_handle = '', organization_follow_based_on_issue = false) {
-    // console.log("OrganizationActions.organizationFollow, organization_twitter_handle: ", organization_twitter_handle);
+    // console.log('OrganizationActions.organizationFollow, organizationWeVoteId: ', organizationWeVoteId);
     Dispatcher.loadEndpoint('organizationFollow', {
       organization_we_vote_id: organizationWeVoteId,
       organization_twitter_handle,
@@ -155,7 +155,7 @@ export default {
   },
 
   organizationSearch (organizationSearchTerm, organization_twitter_handle = '', exact_match = false) {
-    // console.log("OrganizationActions.organizationSearch, organizationSearchTerm: ", organizationSearchTerm);
+    // console.log('OrganizationActions.organizationSearch, organizationSearchTerm: ', organizationSearchTerm);
     Dispatcher.loadEndpoint('organizationSearch', {
       exact_match,
       organization_search_term: organizationSearchTerm,

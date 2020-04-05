@@ -229,8 +229,8 @@ class PositionList extends Component {
       // console.log('filteredPositionListLength: ', filteredPositionListLength);
       // console.log('numberOfPositionItemsToDisplay: ', numberOfPositionItemsToDisplay);
 
-      if ((isSearching && (numberOfSearchResultsDisplayed < totalNumberOfPositionSearchResults))
-          || (!isSearching && (numberOfPositionItemsToDisplay < filteredPositionListLength))) {
+      if ((isSearching && (numberOfSearchResultsDisplayed < totalNumberOfPositionSearchResults)) ||
+          (!isSearching && (numberOfPositionItemsToDisplay < filteredPositionListLength))) {
         if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
           this.setState({ loadingMoreItems: true });
           this.increaseNumberOfPositionItemsToDisplay();
