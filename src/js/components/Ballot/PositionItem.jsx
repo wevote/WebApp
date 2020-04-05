@@ -31,6 +31,7 @@ class PositionItem extends Component {
     classes: PropTypes.object,
     position: PropTypes.object.isRequired,
     params: PropTypes.object,
+    searchResultsNode: PropTypes.object,
   };
 
   constructor (props) {
@@ -53,12 +54,16 @@ class PositionItem extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.componentDidMount !== nextState.componentDidMount) {
-      // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount', nextState.componentDidMount);
-      return true;
-    }
     if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
       // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName', nextProps.ballotItemDisplayName);
+      return true;
+    }
+    if (this.props.searchResultsNode !== nextProps.searchResultsNode) {
+      // console.log('this.props.searchResultsNode: ', this.props.searchResultsNode, ', nextProps.searchResultsNode', nextProps.searchResultsNode);
+      return true;
+    }
+    if (this.state.componentDidMount !== nextState.componentDidMount) {
+      // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount', nextState.componentDidMount);
       return true;
     }
     if (this.state.organizationInVotersNetwork !== nextState.organizationInVotersNetwork) {
@@ -356,6 +361,7 @@ class PositionItem extends Component {
       return (
         <>
           <div className="u-show-desktop-tablet">
+            {this.props.searchResultsNode}
             <DesktopContainer>
               <DesktopItemLeft>
                 <DesktopItemImage>
@@ -481,6 +487,7 @@ class PositionItem extends Component {
           </div>
           <div className="u-show-mobile">
             <PositionItemMobile className={`position-item--${supportOpposeInfo} position-item`}>
+              {this.props.searchResultsNode}
               <MobileItemHeader>
                 <MobileItemImage>
                   <Link to={speakerLink} className="u-no-underline">
@@ -737,7 +744,7 @@ const MobileItemFooter = styled.div`
 const DesktopContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 24px;
+  margin: 8px 24px 24px 24px;
 `;
 
 const DesktopItemLeft = styled.div`

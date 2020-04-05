@@ -80,6 +80,7 @@ class VoterGuideSettingsAddPositions extends Component {
       numberOfPositionItemsToDisplay: 5,
       positionListForOneElection: [],
       positionSearchResults: [],
+      searchText: '',
       stateCodeFromIpAddress: '',
       stateCodeFromVoterGuide: '',
       stateCodeToRetrieve: '',
@@ -196,32 +197,6 @@ class VoterGuideSettingsAddPositions extends Component {
 
   // NOTE FROM DALE 2019-08-12 shouldComponentUpdate gets in the way of the filtering system
   // shouldComponentUpdate (nextProps, nextState) {
-  //   if (this.state.addNewPositionsMode !== nextState.addNewPositionsMode) {
-  //     // console.log('this.state.addNewPositionsMode: ', this.state.addNewPositionsMode, ', nextState.addNewPositionsMode: ', nextState.addNewPositionsMode);
-  //     return true;
-  //   }
-  //   if (this.state.linkedOrganizationWeVoteId !== nextState.linkedOrganizationWeVoteId) {
-  //     // console.log('this.state.linkedOrganizationWeVoteId: ', this.state.linkedOrganizationWeVoteId, ', nextState.linkedOrganizationWeVoteId: ', nextState.linkedOrganizationWeVoteId);
-  //     return true;
-  //   }
-  //   if (this.state.localGoogleCivicElectionId !== nextState.localGoogleCivicElectionId) {
-  //     // console.log('this.state.localGoogleCivicElectionId: ', this.state.localGoogleCivicElectionId, ', nextState.localGoogleCivicElectionId: ', nextState.localGoogleCivicElectionId);
-  //     return true;
-  //   }
-  //   if (this.state.voterGuideWeVoteId !== nextState.voterGuideWeVoteId) {
-  //     // console.log('this.state.voterGuideWeVoteId: ', this.state.voterGuideWeVoteId, ', nextState.voterGuideWeVoteId: ', nextState.voterGuideWeVoteId);
-  //     return true;
-  //   }
-  //   if (JSON.stringify(this.state.filteredPositionListForOneElection) !== JSON.stringify(nextState.filteredPositionListForOneElection)) {
-  //     console.log('this.state.filteredPositionListForOneElection:', this.state.filteredPositionListForOneElection, ', nextState.filteredPositionListForOneElection:', nextState.filteredPositionListForOneElection);
-  //     return true;
-  //   }
-  //   if (JSON.stringify(this.state.filteredBallotItems) !== JSON.stringify(nextState.filteredBallotItems)) {
-  //     console.log('this.state.filteredBallotItems:', this.state.filteredBallotItems, ', nextState.filteredBallotItems:', nextState.filteredBallotItems);
-  //     return true;
-  //   }
-  //   console.log('shouldComponentUpdate no change');
-  //   return false;
   // }
 
   componentWillUnmount () {
@@ -237,6 +212,7 @@ class VoterGuideSettingsAddPositions extends Component {
       clearTimeout(this.positionItemTimer);
       this.positionItemTimer = null;
     }
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   onBallotStoreChange () {
@@ -557,12 +533,12 @@ class VoterGuideSettingsAddPositions extends Component {
       return (
         <div className="container">
           <FilterBase
-            key="currentPositionsFilterBase"
+            allItems={positionListForOneElection}
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
-            allItems={positionListForOneElection}
-            onSearch={this.onPositionSearch}
+            key="currentPositionsFilterBase"
             onFilteredItemsChange={this.onFilteredItemsChangeFromPositionItemsFilterBase}
+            onSearch={this.onPositionSearch}
             onToggleSearch={this.handleToggleSearchBallot}
             selectedFiltersDefault={selectedFiltersCurrentDefault}
             totalNumberOfItemsFound={totalNumberOfPositionItems}
@@ -622,27 +598,15 @@ class VoterGuideSettingsAddPositions extends Component {
                 })
                 }
               </CardChildListGroup>
-              {isSearching ? (
-                <ShowMoreItems id="showMoreItemsId">
-                  Displaying
-                  {' '}
-                  {numberOfPositionItemsDisplayed}
-                  {' '}
-                  of
-                  {' '}
-                  {totalNumberOfPositionSearchResults}
-                </ShowMoreItems>
-              ) : (
-                <ShowMoreItems id="showMoreItemsId">
-                  Displaying
-                  {' '}
-                  {numberOfPositionItemsDisplayed}
-                  {' '}
-                  of
-                  {' '}
-                  {totalNumberOfPositionItems}
-                </ShowMoreItems>
-              )}
+              <ShowMoreItems id="showMoreItemsId">
+                Displaying
+                {' '}
+                {numberOfPositionItemsDisplayed}
+                {' '}
+                of
+                {' '}
+                {isSearching ? totalNumberOfPositionSearchResults : totalNumberOfPositionItems}
+              </ShowMoreItems>
               <LoadingItemsWheel>
                 {loadingMoreItems ? (
                   <CircularProgress />

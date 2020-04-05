@@ -106,6 +106,7 @@ class SettingsVerifySecretCode extends Component {
       clearTimeout(this.timer);
       this.timer = null;
     }
+    window.removeEventListener('paste', this.onPaste);
   }
 
   onVoterStoreChange () {
