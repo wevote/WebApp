@@ -177,7 +177,7 @@ class CandidateItemEndorsement extends Component {
     if (possibilityPositionIsSupport !== possibilityPositionIsSupportOriginal) return true;
     // This isn't totally working...
     return !(possibilityStatementText && possibilityStatementText.localeCompare(possibilityStatementTextOriginal) === 0);
-  }
+  };
 
   togglePossibilityPositionIsInfoOnly = () => {
     const { possibilityPositionIsInfoOnly } = this.state;
@@ -194,7 +194,7 @@ class CandidateItemEndorsement extends Component {
         possibilityPositionIsInfoOnly: !possibilityPositionIsInfoOnly,
       }, this.updateLocalChangeExists);
     }
-  }
+  };
 
   togglePossibilityPositionIsOppose = () => {
     const { possibilityPositionIsOppose } = this.state;
@@ -211,7 +211,7 @@ class CandidateItemEndorsement extends Component {
         possibilityPositionIsOppose: !possibilityPositionIsOppose,
       }, this.updateLocalChangeExists);
     }
-  }
+  };
 
   togglePossibilityPositionIsSupport = () => {
     const { possibilityPositionIsSupport } = this.state;
@@ -228,7 +228,7 @@ class CandidateItemEndorsement extends Component {
         possibilityPositionIsSupport: !possibilityPositionIsSupport,
       }, this.updateLocalChangeExists);
     }
-  }
+  };
 
   updateLocalChangeExists = () => {
     const localChangeExists = this.calculateLocalChangeExists();
@@ -236,19 +236,19 @@ class CandidateItemEndorsement extends Component {
     this.setState({
       localChangeExists,
     });
-  }
+  };
 
   updatePossibilityMoreInfoUrl = (event) => {
     this.setState({
       possibilityMoreInfoUrl: event.target.value,
     }, this.updateLocalChangeExists);
-  }
+  };
 
   updatePossibilityStatementText = (event) => {
     this.setState({
       possibilityStatementText: event.target.value,
     }, this.updateLocalChangeExists);
-  }
+  };
 
   submitForReview = () => {
     const {
@@ -282,7 +282,7 @@ class CandidateItemEndorsement extends Component {
     };
     VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(voterGuidePossibilityId, voterGuidePossibilityPositionId, dictionaryToSave);
     return true;
-  }
+  };
 
   goToCandidateLink () {
     // If here, we assume the voter is on the Office page
@@ -493,8 +493,8 @@ const Buttons = styled.div`
   margin: 0 -8px;
   margin-top: 24px;
   button {
-    margin: 8px;
-    width: 33.33%;
+    font-size: 12px;
+    font-weight: bold;
   }
 `;
 
@@ -508,6 +508,7 @@ const FourButtons = styled.div`
   margin-top: 24px;
   button {
     width: auto;
+    font-size: 12px;
   }
 `;
 
@@ -526,6 +527,7 @@ const Candidate = styled.div`
 `;
 
 const CandidateItemWrapper = styled.div`
+  padding: 10px 16px 8px;
 `;
 
 const CandidateWrapper = styled.div`
@@ -533,6 +535,7 @@ const CandidateWrapper = styled.div`
   flex-flow: row nowrap;
   justify-content: space-between;
   width: 100%;
+  padding: 10px 16px
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 100%;
   }
