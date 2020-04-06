@@ -535,7 +535,6 @@ const CandidateWrapper = styled.div`
   flex-flow: row nowrap;
   justify-content: space-between;
   width: 100%;
-  padding: 10px 16px
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 100%;
   }
