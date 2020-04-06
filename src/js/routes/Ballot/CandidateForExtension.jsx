@@ -139,7 +139,7 @@ class CandidateForExtension extends Component {
           value={0}
         >
           {activeTabIndex === 0 && (
-            <Box p={3}>
+            <Box classes={{ root: classes.Box }} p={3}>
               <CandidateItem
                 inModal
                 candidateWeVoteId={candidateWeVoteId}
@@ -199,7 +199,7 @@ class CandidateForExtension extends Component {
           value={1}
         >
           {activeTabIndex === 1 && (
-            <Box p={3}>
+            <Box classes={{ root: classes.Box }} p={3}>
               <OrganizationNameHeader>
                 Official Endorsement from
                 {' '}
@@ -274,6 +274,9 @@ const styles = theme => ({
   twoButtonsShown: {
     width: '50%',
     margin: 16,
+  },
+  Box: {
+    padding: 2,
   },
 });
 
