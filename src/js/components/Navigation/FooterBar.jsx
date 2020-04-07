@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Badge from '@material-ui/core/Badge';
@@ -7,8 +8,8 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import BallotIcon from '@material-ui/icons/Ballot';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
+import Notifications from '@material-ui/icons/Notifications';
 import PeopleIcon from '@material-ui/icons/People';
-import styled from 'styled-components';
 import AppStore from '../../stores/AppStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova, cordovaOpenSafariView } from '../../utils/cordovaUtils';
@@ -16,6 +17,7 @@ import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import VoterStore from '../../stores/VoterStore';
 
 
 class FooterBar extends React.Component {
@@ -26,14 +28,17 @@ class FooterBar extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      showingOneCompleteYourProfileModal: false,
       friendInvitationsSentToMe: 0, // eslint-disable-line react/no-unused-state
+      showingOneCompleteYourProfileModal: false,
+      voterIsSignedIn: false,
     };
   }
 
   componentDidMount () {
+    this.onVoterStoreChange();
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
     this.setState({
       showingOneCompleteYourProfileModal,
@@ -44,6 +49,7 @@ class FooterBar extends React.Component {
   componentWillUnmount () {
     this.appStoreListener.remove();
     this.friendStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onAppStoreChange () {
@@ -62,16 +68,26 @@ class FooterBar extends React.Component {
     }
   }
 
+  onVoterStoreChange () {
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in || false;
+    this.setState({
+      voterIsSignedIn,
+    });
+  }
+
   handleChange = (event, value) => {
     switch (value) {
       case 0:
-        return historyPush('/ballot');
+        return historyPush('/ready');
       case 1:
-        return historyPush('/values');
+        return historyPush('/ballot');
       case 2:
-        return historyPush('/friends');
+        return historyPush('/values');
       case 3:
-        return historyPush('/ballot/vote');
+        return historyPush('/friends');
+      case 4:
+        return historyPush('/news');
       default:
         return null;
     }
@@ -79,10 +95,11 @@ class FooterBar extends React.Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot/vote', pathname.toLowerCase())) return 3;
-    if (stringContains('/ballot', pathname.toLowerCase())) return 0;
-    if (stringContains('/friends', pathname.toLowerCase())) return 2;
-    if (stringContains('/value', pathname.toLowerCase())) return 1; // '/values'
+    if (stringContains('/ready', pathname.toLowerCase())) return 0;
+    if (stringContains('/ballot', pathname.toLowerCase())) return 1;
+    if (stringContains('/value', pathname.toLowerCase())) return 2; // '/values'
+    if (stringContains('/friends', pathname.toLowerCase())) return 3;
+    if (stringContains('/news', pathname.toLowerCase())) return 4;
     return -1;
   };
 
@@ -90,8 +107,8 @@ class FooterBar extends React.Component {
 
   render () {
     renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
-    const { showingOneCompleteYourProfileModal } = this.state;
-    const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
+    const { friendInvitationsSentToMe, showingOneCompleteYourProfileModal, voterIsSignedIn } = this.state;
+    const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
 
     const badgeStyle = {
       display: 'inline-block',
@@ -108,8 +125,9 @@ class FooterBar extends React.Component {
             onChange={this.handleChange}
             showLabels
           >
+            <BottomNavigationAction className="no-outline" id="readyTabFooterBar" label="Ready?" showLabel icon={<HowToVoteIcon />} />
             <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<BallotIcon />} />
-            <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />
+            {!voterIsSignedIn && <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />}
             <BottomNavigationAction
               className="no-outline"
               id="friendsTabFooterBar"
@@ -121,7 +139,7 @@ class FooterBar extends React.Component {
                 </Badge>
               )}
             />
-            <BottomNavigationAction className="no-outline" id="voteTabFooterBar" label="Vote" showLabel icon={<HowToVoteIcon />} />
+            {voterIsSignedIn && <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="News" showLabel icon={<Notifications />} />}
             {isCordova() ? (
               <BottomNavigationAction
                 className="no-outline"

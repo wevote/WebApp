@@ -107,7 +107,7 @@ export default class Values extends Component {
                 </div>
               </div>
             )}
-            <ValuesToFollowPreview />
+            {(issuesFollowedCount) ? null : <ValuesToFollowPreview />}
             {publicFiguresBlockToDisplay}
             {organizationsBlockToDisplay}
           </div>
