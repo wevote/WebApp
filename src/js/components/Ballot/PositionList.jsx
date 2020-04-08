@@ -44,7 +44,7 @@ const islandFilters = [
   },
 ];
 
-const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 3;
+const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 6;
 
 class PositionList extends Component {
   static propTypes = {
@@ -150,6 +150,10 @@ class PositionList extends Component {
     this.friendStoreListener.remove();
     this.organizationStoreListener.remove();
     window.removeEventListener('scroll', this.onScroll);
+    if (this.positionItemTimer) {
+      clearTimeout(this.positionItemTimer);
+      this.positionItemTimer = null;
+    }
   }
 
   onFriendStoreChange () {
@@ -280,8 +284,9 @@ class PositionList extends Component {
   }
 
   render () {
+    const { positionList } = this.state;
     renderLog('PositionList');  // Set LOG_RENDER_EVENTS to log all renders
-    if (!this.state.positionList) {
+    if (!positionList) {
       // console.log('PositionList Loading...');
       return <div>Loading...</div>;
     }
@@ -294,7 +299,7 @@ class PositionList extends Component {
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     let showTitle = false;
     let count;
-    for (count = 0; count < this.state.positionList.length; count++) {
+    for (count = 0; count < positionList.length; count++) {
       showTitle = true;
     }
     const selectedFiltersDefault = ['endorsingGroup', 'newsOrganization', 'publicFigure', 'sortByMagic', 'yourFriends'];
@@ -309,7 +314,7 @@ class PositionList extends Component {
             null
           }
           <FilterBase
-            allItems={this.state.positionList}
+            allItems={positionList}
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
             onFilteredItemsChange={this.onFilteredItemsChange}
