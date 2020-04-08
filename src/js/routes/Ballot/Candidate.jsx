@@ -19,7 +19,6 @@ import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
 import PositionList from '../../components/Ballot/PositionList';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
@@ -105,18 +104,6 @@ class Candidate extends Component {
     // }
 
     OrganizationActions.organizationsFollowedRetrieve();
-
-    // We want to make sure we have all of the position information so that comments show up
-    const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidateWeVoteId);
-
-    if (voterGuidesForThisBallotItem) {
-      voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
-        // console.log('oneVoterGuide: ', oneVoterGuide);
-        if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
-          OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
-        }
-      });
-    }
 
     const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
     if (!IssueStore.issueDescriptionsRetrieveCalled()) {

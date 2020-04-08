@@ -14,16 +14,18 @@ import FriendStore from '../../stores/FriendStore';
 import ImageHandler from '../ImageHandler';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import IssueStore from '../../stores/IssueStore';
-import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import { numberWithCommas } from '../../utils/textFormat';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
+import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
 import ReadMore from '../Widgets/ReadMore';
 import StickyPopover from './StickyPopover';
-import { numberWithCommas } from '../../utils/textFormat';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import { renderLog } from '../../utils/logging';
 
 class PositionItem extends Component {
   static propTypes = {
@@ -41,11 +43,30 @@ class PositionItem extends Component {
   }
 
   componentDidMount () {
-    // console.log('PositionItem componentDidMount');
+    const { position } = this.props;
+    const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
+    // console.log('PositionItem componentDidMount, position:', position);
     this.onOrganizationInVotersNetworkChange();
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+
+    // We want to make sure we have all of the position information so that comments show up
+    if (ballotItemWeVoteId) {
+      const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
+
+      if (voterGuidesForThisBallotItem) {
+        voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
+          // console.log('oneVoterGuide: ', oneVoterGuide);
+          if (organizationWeVoteId === oneVoterGuide.organization_we_vote_id) {  // Request position list for the organization of this position
+            if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
+              OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
+            }
+          }
+        });
+      }
+    }
   }
 
   // shouldComponentUpdate (nextProps, nextState) {
@@ -119,6 +140,7 @@ class PositionItem extends Component {
     this.friendStoreListener.remove();
     this.issueStoreListener.remove();
     this.organizationStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   onFriendStoreChange () {
@@ -152,6 +174,27 @@ class PositionItem extends Component {
         organizationInVotersNetwork,
         voterIsFriendsWithThisOrganization,
       });
+    }
+  }
+
+  onVoterGuideStoreChange () {
+    const { position } = this.props;
+    const { ballot_item_we_vote_id: ballotItemWeVoteId, speaker_we_vote_id: organizationWeVoteId } = position;
+
+    // We want to make sure we have all of the position information so that comments show up
+    if (ballotItemWeVoteId) {
+      const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
+
+      if (voterGuidesForThisBallotItem) {
+        voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
+          // console.log('oneVoterGuide: ', oneVoterGuide);
+          if (organizationWeVoteId === oneVoterGuide.organization_we_vote_id) {  // Request position list for the organization of this position
+            if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
+              OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
+            }
+          }
+        });
+      }
     }
   }
 
