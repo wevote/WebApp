@@ -216,6 +216,11 @@
   z-index: 5020 !important;
 }
 
+// We use z-index: 5030 for Tooltips above the above
+.u-z-index-5030 {
+  z-index: 5030 !important;
+}
+
 // Used to keep the mobile footer & header above Popovers
 .u-z-index-9000 {
   z-index: 9000 !important;

@@ -77,7 +77,7 @@ class HeaderBar extends Component {
       showPaidAccountUpgradeModal: false,
       showPersonalizedScoreIntroModal: false,
       showValuesIntroModal: false,
-      shareModalStep: 'options',
+      shareModalStep: 'ballotShareOptions',
       organizationModalId: '',
       voter: {},
       voterFirstName: '',
@@ -189,7 +189,7 @@ class HeaderBar extends Component {
       // console.log('this.state.voterFirstName: ', this.state.voterFirstName, ', nextState.voterFirstName', nextState.voterFirstName);
       return true;
     }
-    if (this.state.voter && nextState.voter && this.state.voter.is_signed_in !== nextState.voter.is_signed_in) {
+    if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
       // console.log('HeaderBar voter.isSignedIn shouldComponentUpdate true');
       return true;
     }
@@ -291,7 +291,6 @@ class HeaderBar extends Component {
       const voter = VoterStore.getVoter();
       const voterFirstName = VoterStore.getFirstName();
       const voterIsSignedIn = voter.is_signed_in || false;
-
       this.setState({
         voter,
         voterFirstName,
@@ -346,6 +345,9 @@ class HeaderBar extends Component {
 
   closeShareModal () {
     AppActions.setShowShareModal(false);
+    const { pathname } = this.props;
+    const pathnameWithoutModalShare = pathname.replace('/modal/share', '');
+    historyPush(pathnameWithoutModalShare);
   }
 
   closeOrganizationModal () {
@@ -431,7 +433,7 @@ class HeaderBar extends Component {
     // console.log('Header Bar, showSignInModal ', showSignInModal);
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
+    const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
     const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     const showingBallot = stringContains(ballotBaseUrl, pathname.toLowerCase().slice(0, 7));
@@ -646,10 +648,10 @@ class HeaderBar extends Component {
         )}
         {showShareModal && (
           <ShareModal
-            isSignedIn={this.state.voter.is_signed_in}
+            voterIsSignedIn={voterIsSignedIn}
             pathname={pathname}
             show={showShareModal}
-            step={shareModalStep}
+            shareModalStep={shareModalStep}
             toggleFunction={this.closeShareModal}
           />
         )}

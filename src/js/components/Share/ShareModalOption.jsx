@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { openSnackbar } from '../Widgets/SnackNotifier';
@@ -8,6 +9,7 @@ class ShareModalOption extends Component {
   static propTypes = {
     background: PropTypes.string,
     copyLink: PropTypes.bool,
+    noLink: PropTypes.bool,
     icon: PropTypes.object,
     link: PropTypes.string,
     onClickFunction: PropTypes.func,
@@ -18,63 +20,63 @@ class ShareModalOption extends Component {
     super(props);
     this.state = {};
 
-    this.textAreaRef = React.createRef();
     this.copyLink = this.copyLink.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
   onClick = () => {
-    // To get rid of "Do not nest ternary expressions  no-nested-ternary" error, we will need to upgrade to something like this.
-    if (this.props.copyLink) {
-      this.copyLink();
-    } else if (this.props.onClickFunction) {
+    if (this.props.onClickFunction) {
       this.props.onClickFunction();
     }
   }
 
-  copyLink (event) {
-    this.textAreaRef.current.select();
-
-    document.execCommand('copy');
-    event.target.focus();
-
+  copyLink () {
     openSnackbar({ message: 'Copied!' });
   }
 
   render () {
     return (
-      // eslint-disable-next-line no-nested-ternary
-      <Wrapper onClick={this.props.copyLink ? this.copyLink : this.props.onClickFunction ? this.props.onClickFunction : null}>
-        {this.props.copyLink || this.props.onClickFunction ? (
-          <>
-            <Icon background={this.props.background}>
-              {this.props.icon}
-            </Icon>
-            <Text>
-              {this.props.title}
-            </Text>
-            {this.props.copyLink ? (
-              <TextArea ref={this.textAreaRef} value={this.props.link} />
-            ) : null}
-          </>
+      <Wrapper>
+        {this.props.copyLink ? (
+          <CopyToClipboard text={this.props.link} onCopy={this.copyLink}>
+            <div onClick={() => this.onClick}>
+              <Icon background={this.props.background}>
+                {this.props.icon}
+              </Icon>
+              <Text>
+                {this.props.title}
+              </Text>
+            </div>
+          </CopyToClipboard>
         ) : (
-          <OpenExternalWebSite
-            className="no-decoration"
-            url={this.props.link}
-            target="_blank"
-            body={(
-              <>
+          <div>
+            {this.props.noLink ? (
+              <div onClick={() => this.onClick}>
                 <Icon background={this.props.background}>
                   {this.props.icon}
                 </Icon>
                 <Text>
                   {this.props.title}
                 </Text>
-                {this.props.copyLink ? (
-                  <TextArea ref={this.textAreaRef} value={this.props.link} />
-                ) : null}
-              </>
+              </div>
+            ) : (
+              <OpenExternalWebSite
+                className="no-decoration"
+                url={this.props.link}
+                target="_blank"
+                body={(
+                  <div onClick={() => this.onClick}>
+                    <Icon background={this.props.background}>
+                      {this.props.icon}
+                    </Icon>
+                    <Text>
+                      {this.props.title}
+                    </Text>
+                  </div>
+                )}
+              />
             )}
-          />
+          </div>
         )}
       </Wrapper>
     );
@@ -139,13 +141,6 @@ const Text = styled.h3`
   font-weight: normal;
   font-size: 16px;
   color: black !important;
-`;
-
-const TextArea = styled.textarea`
-  display: none;
-  visibility: hidden;
-  position: absolute;
-  left: 999999999999999px;
 `;
 
 export default ShareModalOption;

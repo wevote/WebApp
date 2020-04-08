@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 
 let openSnackbarFn;
 
-export default class SnackNotifier extends Component {
+class SnackNotifier extends Component {
+  static propTypes = {
+    classes: PropTypes.object,
+  };
+
   state = {
     open: false,
     message: '',
@@ -25,23 +31,31 @@ export default class SnackNotifier extends Component {
   };
 
   render () {
+    const { classes } = this.props;
     const { message } = this.state;
     // console.log('SnackNotifier.jsx message: ', message);
 
     return (
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        message={<span id="message-id">{ message }</span>}
         autoHideDuration={3000}
+        message={<span id="message-id">{ message }</span>}
         onClose={this.handleSnackbarClose}
         open={this.state.open}
         ContentProps={{
           'aria-describedby': 'snackbar-message-id',
         }}
+        classes={{ anchorOriginBottomCenter: classes.anchorOriginBottomCenter }}
       />
     );
   }
 }
+
+const styles = () => ({
+  anchorOriginBottomCenter: {
+    bottom: '75px !important',
+  },
+});
 
 function isFunction (functionToCheck) {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
@@ -54,3 +68,5 @@ export function openSnackbar ({ message }) {
     console.log('*** SnackNotifier openSnackbarFn not a Function');
   }
 }
+
+export default withStyles(styles)(SnackNotifier);
