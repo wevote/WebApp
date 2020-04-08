@@ -117,7 +117,7 @@ class OrganizationModal extends Component {
 
     return (
       <>
-        <Drawer classes={{ root: classes.drawer }} id="share-menu" anchor="right" open={this.state.open} direction="left" onClose={this.closeOrganizationModal}>
+        <Drawer classes={{ paper: classes.drawer }} id="share-menu" anchor="right" open={this.state.open} direction="left" onClose={this.closeOrganizationModal}>
           <CandidateItem
             inModal
             candidateWeVoteId={candidateWeVoteId}
