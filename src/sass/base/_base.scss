@@ -9,6 +9,15 @@ body {
   background-color: $app-background-color;
 }
 
+svg {
+  width: 100%;
+}
+
+.us-state-map path:hover {
+  fill: #2e3c5d !important;
+  cursor: pointer;
+}
+
 .app-wrapper {
   height: 100%;
   min-height: 100%;
