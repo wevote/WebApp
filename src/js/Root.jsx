@@ -4,7 +4,6 @@ import cookies from './utils/cookies';
 import Application from './Application';
 import About from './routes/More/About';
 import AbsenteeBallot from './routes/More/AbsenteeBallot';
-import Activity from './routes/Activity';
 import AddCandidateForExtension from './routes/Ballot/AddCandidateForExtension';
 import Attributions from './routes/More/Attributions';
 import Ballot from './routes/Ballot/Ballot';
@@ -32,6 +31,7 @@ import Intro from './routes/Intro/Intro';
 import IntroNetwork from './routes/Intro/IntroNetwork';
 import Location from './routes/Settings/Location';
 import Measure from './routes/Ballot/Measure';
+import News from './routes/News';
 import Office from './routes/Ballot/Office';
 import Opinions from './routes/Opinions';
 import OpinionsFollowed from './routes/OpinionsFollowed';
@@ -46,6 +46,7 @@ import PollingPlaceLocatorModal from './routes/Vote/PollingPlaceLocatorModal';
 import Pricing from './routes/More/Pricing';
 import Privacy from './routes/More/Privacy';
 import ProcessingDonation from './routes/More/ProcessingDonation';
+import Ready from './routes/Ready';
 import RegisterToVote from './routes/More/RegisterToVote';
 import SampleBallot from './routes/Intro/SampleBallot';
 import ScratchPad from './routes/ScratchPad';
@@ -102,7 +103,8 @@ const routes = () => {  // eslint-disable-line arrow-body-style
         )()
       }
       <Route path="/welcome" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
-      <Route path="/activity" component={Activity} />
+      <Route path="/news" component={News} />
+      <Route path="/ready" component={Ready} />
       <Route path="/ballot" component={BallotIndex}>
         <IndexRoute component={Ballot} />
         <Route path="/ballot?voter_refresh_timer_on=:voter_refresh_timer_on" component={Ballot} />

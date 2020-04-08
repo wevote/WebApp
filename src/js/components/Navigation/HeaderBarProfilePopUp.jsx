@@ -105,6 +105,20 @@ class HeaderBarProfilePopUp extends Component {
               </ListItemWrapper>
             </li>
             {/* Desktop or Mobile */}
+            <li>
+              <ListItemWrapper>
+                <Link id="profilePopUpYourValues" onClick={this.hideProfilePopUp} to="/values">
+                  <Button
+                    variant="text"
+                    color="primary"
+                    classes={{ root: classes.signOutButton }}
+                  >
+                    <span className="header-slide-out-menu-text-left">Your Values</span>
+                  </Button>
+                </Link>
+              </ListItemWrapper>
+            </li>
+            {/* Desktop or Mobile */}
             {voter && isSignedIn ?
               null : (
                 <li>

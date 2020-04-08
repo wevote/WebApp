@@ -36,9 +36,32 @@ Copy `WebApp/src/js/config-template.js` into `WebApp/src/js/config.js`:
 You should be able to visit WebApp here:
 
     http://localhost:3000
-    
 
 (If you would like to run the WebApp on a different port follow [these instructions](CHANGE_PORT.md))
+
+## Start the WebApp in HTTPS
+
+You will need to install [OpenSSL](https://www.openssl.org/) in order to make an ssl (https) connection to the WebApp on
+your local PC/Mac.  An https connection will be required for oauth logins
+via Twitter, Facebook, or Apple connect.  It is also required for donation with Stripe.
+
+To install OpenSSL for Mac OS X, type in your terminal:  
+
+1)  `brew install openssl`
+
+1)  After installation, check the version: `openssl version`
+    
+1)  If it's not showing 1.0.2 as the most recent version, then you need to symlink to the updated openssl version like so:
+    
+    `ln -s /usr/local/Cellar/openssl/1.0.2h_1/bin/openssl /usr/local/bin/openssl `
+
+Then you should be able to start the WebApp using SSL 
+
+    (WebAppEnv) $ npm run start-https
+
+You should be able to visit WebApp via HTTPS here:
+
+    https://localhost:3000
 
 
 ## Using We Vote API server Locally: OPTIONAL

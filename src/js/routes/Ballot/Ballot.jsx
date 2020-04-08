@@ -443,6 +443,7 @@ class Ballot extends Component {
       clearTimeout(this.ballotItemTimer);
       this.ballotItemTimer = null;
     }
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -1212,7 +1213,7 @@ class Ballot extends Component {
                   />
                 ) : null
                 }
-                <div className="col-sm-12 col-lg-9">
+                <div className="col-sm-12 col-lg-9" id="ballotRoute-topOfBallot">
                   {(isSearching && searchText) && (
                     <SearchTitle>
                       Searching for &quot;

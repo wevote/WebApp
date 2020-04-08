@@ -262,6 +262,7 @@ class VoterGuidePositions extends Component {
       clearTimeout(this.positionItemTimer);
       this.positionItemTimer = null;
     }
+    window.removeEventListener('scroll', this.onScroll);
   }
 
   onBallotStoreChange () {

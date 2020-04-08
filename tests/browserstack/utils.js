@@ -14,6 +14,39 @@ async function clearTextInputValue (elementIdName) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
+async function clickTopLeftCornerOfElement (selector) {
+  const element = await $(selector);
+  if (element.isW3C) {
+    // need to figure out how to use webdriverio's performActions with BrowserStack
+  } else {
+    // JSON Wire Protocol
+    await element.moveTo(1, 1);
+    await element.positionClick();
+  }
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+function stopScript (driver) {
+  // DALE 2020-04-05 Doesn't seem to be working
+  try {
+    driver.close();
+  } catch (e) {
+    //
+  }
+  try {
+    driver.quit();
+  } catch (e) {
+    //
+  }
+}
+
+async function scrollIntoViewSimple (elementIdName) {
+  const clickableSelector = `#${elementIdName}`;
+  const clickableItem = await $(clickableSelector);
+  await clickableItem.scrollIntoView();
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
 function scrollThroughPage () {
   browser.setTimeout({ script: 60000 });
   browser.executeAsync((done) => {
@@ -111,16 +144,4 @@ function writeToLog (message) {
   });
 }
 
-async function clickTopLeftCornerOfElement (selector) {
-  const element = await $(selector);
-  if (element.isW3C) {
-    // need to figure out how to use webdriverio's performActions with BrowserStack
-  } else {
-    // JSON Wire Protocol
-    await element.moveTo(1, 1);
-    await element.positionClick();
-  }
-  await browser.pause(PAUSE_DURATION_MICROSECONDS);
-}
-
-module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, clickTopLeftCornerOfElement, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, setNewAddressAndroid, setNewAddressIOS, writeToLog };
+module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal, simpleTextInput, stopScript, writeToLog };

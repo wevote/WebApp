@@ -113,14 +113,15 @@ export default class FollowToggle extends Component {
   }
 
   onOrganizationStoreChange () {
-    // console.log('FollowToggle, onOrganizationStoreChange, organization_we_vote_id: ', this.state.organizationWeVoteId);
     const { organizationWeVoteId } = this.props;
+    // console.log('FollowToggle, onOrganizationStoreChange, organizationWeVoteId: ', organizationWeVoteId);
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       let organizationName = '';
       if (organization && organization.organization_name) {
         organizationName = organization.organization_name;
       }
+      // console.log('organizationName: ', organizationName);
       this.setState({
         isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
         isIgnoring: OrganizationStore.isVoterIgnoringThisOrganization(organizationWeVoteId),

@@ -306,10 +306,18 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot/vote', pathname.toLowerCase())) return 3;
-    if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 0;
-    if (stringContains('/value', pathname.toLowerCase())) return 1; // '/values'
-    if (stringContains('/friends', pathname.toLowerCase())) return 2;
+    const { voterIsSignedIn } = this.state;
+    if (voterIsSignedIn) {
+      if (pathname && pathname.toLowerCase().startsWith('/ready')) return 0;
+      if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 1;
+      if (stringContains('/friends', pathname.toLowerCase())) return 2;
+      if (pathname && pathname.toLowerCase().startsWith('/news')) return 3;
+    } else {
+      if (pathname && pathname.toLowerCase().startsWith('/ready')) return 0;
+      if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 1;
+      if (stringContains('/value', pathname.toLowerCase())) return 2; // '/values'
+      if (stringContains('/friends', pathname.toLowerCase())) return 3;
+    }
 
     return false;
   };
@@ -496,30 +504,35 @@ class HeaderBar extends Component {
                 classes={{ indicator: classes.indicator }}
               >
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
+                  <Tab classes={{ root: classes.tabRootReady }} id="readyTabHeaderBar" label="Ready?" onClick={() => this.handleNavigation('/ready')} />
                 )}
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRootDefault }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
+                  <Tab classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
+                )}
+                {(!voterIsSignedIn && showFullNavigation) && (
+                  <Tab classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Values" onClick={() => this.handleNavigation('/values')} />
                 )}
                 { showFullNavigation && (
                   <Tab
-                    classes={(numberOfIncomingFriendRequests > 0) ? { root: classes.tabRootIncomingFriendRequests } : { root: classes.tabRootDefault }}
+                    classes={(numberOfIncomingFriendRequests > 0) ? { root: classes.tabRootIncomingFriendRequests } : { root: classes.tabRootFriends }}
                     id="friendsTabHeaderBar"
                     label={(
-                      <Badge
-                        classes={{ badge: classes.headerBadge }}
-                        badgeContent={numberOfIncomingFriendRequests}
-                        color="primary"
-                        max={9}
-                      >
-                        My Friends
-                      </Badge>
+                      <FriendTabWrapper incomingFriendRequests={(numberOfIncomingFriendRequests > 0)}>
+                        <Badge
+                          classes={{ badge: classes.headerBadge }}
+                          badgeContent={numberOfIncomingFriendRequests}
+                          color="primary"
+                          max={9}
+                        >
+                          Friends
+                        </Badge>
+                      </FriendTabWrapper>
                     )}
                     onClick={() => this.handleNavigation('/friends')}
                   />
                 )}
-                {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRootVote }} id="voteTabHeaderBar" label="Vote" onClick={() => this.handleNavigation('/ballot/vote')} />
+                {(voterIsSignedIn && showFullNavigation) && (
+                  <Tab classes={{ root: classes.tabRootNews }} id="voteTabHeaderBar" label="News" onClick={() => this.handleNavigation('/news')} />
                 )}
               </Tabs>
             </div>
@@ -732,14 +745,20 @@ const styles = theme => ({
   tabRootBallot: {
     minWidth: 90,
   },
-  tabRootDefault: {
-    minWidth: 110,
+  tabRootFriends: {
+    minWidth: 90,
   },
   tabRootIncomingFriendRequests: {
-    minWidth: 130,
+    minWidth: 110,
   },
-  tabRootVote: {
+  tabRootReady: {
+    minWidth: 90,
+  },
+  tabRootNews: {
     minWidth: 70,
+  },
+  tabRootValues: {
+    minWidth: 90,
   },
   indicator: {
     height: 4,
@@ -755,6 +774,10 @@ const Wrapper = styled.div`
 const FirstNameWrapper = styled.div`
   font-size: 14px;
   padding-right: 4px;
+`;
+
+const FriendTabWrapper = styled.div`
+  margin-left: ${({ incomingFriendRequests }) => (incomingFriendRequests ? '-20px' : '0')};
 `;
 
 export default withStyles(styles)(HeaderBar);
