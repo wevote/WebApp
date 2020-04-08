@@ -23,10 +23,10 @@ import AppActions from '../../actions/AppActions';
 class ShareModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    isSignedIn: PropTypes.bool,
+    voterIsSignedIn: PropTypes.bool,
     pathname: PropTypes.string,
     show: PropTypes.bool,
-    step: PropTypes.string,
+    shareModalStep: PropTypes.string,
     toggleFunction: PropTypes.func.isRequired,
   };
 
@@ -36,23 +36,28 @@ class ShareModal extends Component {
       pathname: '',
       currentFriendsList: [],
       // friendsToShareWith: [],
+      shareModalStep: 'ballotShareOptions',
     };
 
     this.closeShareModal = this.closeShareModal.bind(this);
     this.setStep = this.setStep.bind(this);
   }
 
-  // Steps: options, friends
+  // Steps: ballotShareOptions, friends
 
   componentDidMount () {
-    console.log(this.props.step);
+    const { pathname, shareModalStep } = this.props;
+    console.log('shareModalStep:', shareModalStep);
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
-
+    const currentFullUrl = window.location.href;
+    const domainNameRoot = currentFullUrl.replace(pathname, '');
+    const ballotFullUrl = `${domainNameRoot}/ballot`;
     this.setState({
+      ballotFullUrl,
       pathname: this.props.pathname,
-      step: this.props.step || 'options',
+      shareModalStep: shareModalStep || 'ballotShareOptions',
       currentFriendsList: FriendStore.currentFriends(),
     });
   }
@@ -68,8 +73,8 @@ class ShareModal extends Component {
     }
   }
 
-  setStep (step) {
-    this.setState({ step });
+  setStep (shareModalStep) {
+    this.setState({ shareModalStep });
   }
 
   closeShareModal () {
@@ -78,28 +83,25 @@ class ShareModal extends Component {
 
   render () {
     renderLog('ShareModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
-    // console.log('currentSelectedPlanCostForPayment:', currentSelectedPlanCostForPayment);
-    // console.log(this.state);
-
-    // console.log('Friends to share with: ', this.state.friendsToShareWith);
-
-    // const handleChange = (index, item) => (event) => {
-    //   let newFriendsToShareWith = [];
-    //
-    //   if (event.target.checked) {
-    //     newFriendsToShareWith = this.state.friendsToShareWith.filter(newItem => newItem.voter_we_vote_id !== item.voter_we_vote_id);
-    //   } else {
-    //     newFriendsToShareWith = [...this.state.friendsToShareWith, item];
-    //   }
-    //
-    //   this.setState({ friendsToShareWith: newFriendsToShareWith, [index]: event.target.checked });
-    // };
-
+    const { classes, voterIsSignedIn } = this.props;
+    const { ballotFullUrl, shareModalStep } = this.state;
+    let linkToBeShared = '';
+    let linkToBeSharedUrlEncoded = '';
     let shareModalHtml = (
       <>Loading...</>
     );
-    if (this.state.step === 'options') {
+    console.log('shareModalStep:', shareModalStep);
+    if ((!shareModalStep) || (shareModalStep === '')) {
+      return shareModalHtml;
+    }
+
+    if ((shareModalStep === 'ballotShareOptions') || (shareModalStep === 'ballotShareOptionsWithOpinions')) {
+      if (shareModalStep === 'ballotShareOptionsWithOpinions') {
+        linkToBeShared = '';
+      } else {
+        linkToBeShared = ballotFullUrl;
+      }
+      linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
       shareModalHtml = (
         <Dialog
           classes={{ paper: classes.dialogPaper }}
@@ -113,7 +115,11 @@ class ShareModal extends Component {
                 {' '}
                 <strong>Ballot for Nov 2019 Elections</strong>
               </Title>
-              <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
+              {(shareModalStep === 'ballotShareOptions') ? (
+                <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
+              ) : (
+                <SubTitle>Share a link to all of your opinions for this election.</SubTitle>
+              )}
             </div>
             <IconButton
               aria-label="Close"
@@ -130,7 +136,7 @@ class ShareModal extends Component {
                 <ShareModalOption
                   noLink
                   onClickFunction={() => {
-                    if (!this.props.isSignedIn) {
+                    if (!voterIsSignedIn) {
                       AppActions.setShowSignInModal(true);
                       this.setStep('friends');
                     } else {
@@ -141,16 +147,16 @@ class ShareModal extends Component {
                   icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />}
                   title="We Vote Friends"
                 />
-                <ShareModalOption link="https://www.facebook.com/sharer/sharer.php?u=wevote.us&t=WeVote" target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
-                <ShareModalOption link={`https://twitter.com/share?text=Check out this cool ballot tool at https://wevote.us${window.location.pathname}!`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
+                <ShareModalOption link={`https://www.facebook.com/sharer/sharer.php?u=${linkToBeSharedUrlEncoded}&t=WeVote`} target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
+                <ShareModalOption link={`https://twitter.com/share?text=Check out this cool ballot tool at ${linkToBeShared}!`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
                 <ShareModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
-                <ShareModalOption copyLink link="https://google.com" background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
+                <ShareModalOption copyLink link={linkToBeShared} background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
               </Flex>
             </div>
           </DialogContent>
         </Dialog>
       );
-    } else if (this.state.step === 'friends' && !this.props.isSignedIn) {
+    } else if (shareModalStep === 'friends' && !voterIsSignedIn) {
       // historyPush('/ballot/modal/share');
       // AppActions.setShowSignInModal(true);
 
@@ -178,7 +184,7 @@ class ShareModal extends Component {
       //     </DialogContent>
       //   </Dialog>
       // );
-    } else if (this.state.step === 'friends' && this.props.isSignedIn && this.state.currentFriendsList.length > 0) {
+    } else if (shareModalStep === 'friends' && voterIsSignedIn && this.state.currentFriendsList.length > 0) {
       shareModalHtml = (
         <Dialog
           classes={{ paper: classes.dialogPaper }}
@@ -186,7 +192,7 @@ class ShareModal extends Component {
           onClose={() => { this.props.toggleFunction(this.state.pathname); }}
         >
           <ModalTitleArea>
-            <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('options'); }}>
+            <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('ballotShareOptions'); }}>
               <ArrowBackIos className={classes.backButtonIcon} />
               Back
             </Button>
@@ -226,7 +232,7 @@ class ShareModal extends Component {
           onClose={() => { this.props.toggleFunction(this.state.pathname); }}
         >
           <ModalTitleArea>
-            <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('options'); }}>
+            <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('ballotShareOptions'); }}>
               <ArrowBackIos className={classes.backButtonIcon} />
               Back
             </Button>

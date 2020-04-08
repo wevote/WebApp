@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
+import USAMap from 'react-usa-map';
 import Button from '@material-ui/core/Button';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
@@ -15,7 +16,6 @@ import VoterStore from '../../stores/VoterStore';
 import { cleanArray } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import USAMap from "react-usa-map";
 import MapChart from '../Widgets/MapChart';
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 30;
@@ -228,6 +228,14 @@ export default class BallotElectionListWithFilters extends Component {
     }
   }
 
+  mapHandler = (event) => {
+    console.log(event.target.dataset.name);
+  };
+
+  secondMapHandler = (event) => {
+    console.log(event.target);
+  };
+
   goToBallotForDifferentElection (originalTextForMapSearch, googleCivicElectionId, ballotLocationShortcut = '', ballotReturnedWeVoteId = '') {
     // console.log('BallotElectionListWithFilters, goToBallotForDifferentElection');
     const ballotBaseUrlClean = this.props.ballotBaseUrl || '/ballot';
@@ -298,14 +306,6 @@ export default class BallotElectionListWithFilters extends Component {
       priorElectionListOpen: !priorElectionListOpen,
     });
   }
-
-  mapHandler = (event) => {
-    console.log(event.target.dataset.name);
-  };
-
-  secondMapHandler = (event) => {
-    console.log(event.target);
-  };
 
   renderUpcomingElectionList (list, currentDate) {
     const renderedList = list.map((item) => {

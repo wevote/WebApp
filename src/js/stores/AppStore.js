@@ -20,7 +20,7 @@ class AppStore extends ReduceStore {
       scrolledDown: false,
       showEditAddressButton: false,
       showHowItWorksModal: false,
-      shareModalStep: 'options',
+      shareModalStep: '',
       showElectionsWithOrganizationVoterGuidesModal: false,
       showNewVoterGuideModal: false,
       showPaidAccountUpgradeModal: false,

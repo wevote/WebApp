@@ -163,7 +163,7 @@ class BallotShareButtonFooter extends Component {
                         <Comment />
                       </MenuIcon>
                       <MenuText>
-                        Your Ballot Opinions
+                        Ballot + Your Opinions
                       </MenuText>
                       <MenuInfo>
                         <Tooltip title="Share a link to the choices you've made for this election so that your friends can get ready to vote. This includes your public and friend's-only opinions." arrow enterDelay={300}>

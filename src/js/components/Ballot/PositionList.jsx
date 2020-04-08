@@ -44,6 +44,8 @@ const islandFilters = [
   },
 ];
 
+const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 3;
+
 class PositionList extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string.isRequired,
@@ -59,7 +61,7 @@ class PositionList extends Component {
       filteredPositionListLength: 0,
       isSearching: false,
       loadingMoreItems: false,
-      numberOfPositionItemsToDisplay: 10,
+      numberOfPositionItemsToDisplay: STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
       positionList: [],
       positionSearchResults: [],
       searchText: '',
@@ -259,7 +261,7 @@ class PositionList extends Component {
     this.setState({
       isSearching: !isSearching,
       loadingMoreItems: false,
-      numberOfPositionItemsToDisplay: 10,
+      numberOfPositionItemsToDisplay: STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
     });
   };
 
