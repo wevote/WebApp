@@ -15,6 +15,8 @@ import VoterStore from '../../stores/VoterStore';
 import { cleanArray } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import USAMap from "react-usa-map";
+import MapChart from '../Widgets/MapChart';
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 30;
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
@@ -297,6 +299,14 @@ export default class BallotElectionListWithFilters extends Component {
     });
   }
 
+  mapHandler = (event) => {
+    console.log(event.target.dataset.name);
+  };
+
+  secondMapHandler = (event) => {
+    console.log(event.target);
+  };
+
   renderUpcomingElectionList (list, currentDate) {
     const renderedList = list.map((item) => {
       // console.log('item.election_description_text: ', item.election_description_text, 'item.election_day_text: ', item.election_day_text);
@@ -527,6 +537,8 @@ export default class BallotElectionListWithFilters extends Component {
             )}
           </div>
         )}
+        <USAMap onClick={this.mapHandler} />
+        <MapChart onClickFunction={this.secondMapHandler} />
       </div>
     );
   }
