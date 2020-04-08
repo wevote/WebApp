@@ -450,12 +450,12 @@ class VoterGuidePositionItem extends Component {
       }
     }
     return (
-      <div onClick={this.onClickFunction}>
+      <div>
         <Card>
           <BallotItemPadding>
             <BallotItemWrapper className="card-main__media-object">
-              { isCandidate ? (
-                <CandidateItemWrapper>
+              {isCandidate ? (
+                <CandidateItemWrapper onClick={this.onClickFunction}>
                   <BallotItemImageWrapper>
                     <ImageHandler
                       className="card-main__avatar"
@@ -470,7 +470,7 @@ class VoterGuidePositionItem extends Component {
                       {ballotItemDisplayName}
                     </h2>
                     <span className="u-show-desktop-tablet">
-                      { contestOfficeName && (
+                      {contestOfficeName && (
                         <div>
                           <OfficeNameText
                             contestOfficeName={contestOfficeName}
@@ -512,7 +512,7 @@ class VoterGuidePositionItem extends Component {
               {' '}
             </BallotItemWrapper>
             <span className="u-show-mobile">
-              { contestOfficeName && (
+              {contestOfficeName && (
                 <div>
                   <OfficeNameText
                     contestOfficeName={contestOfficeName}
