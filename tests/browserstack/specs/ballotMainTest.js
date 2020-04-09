@@ -23,7 +23,9 @@ describe('Basic cross-platform We Vote test',  () => {
     const organizationToFollowOnCandidateBallotID = 'wv02org11971';
 
     if (isCordovaFromAppStore) {
-      // switch contexts and click through intro
+      // ///////////////////////////////
+      // For the apps downloadable from either the Apple App Store or Android Play Store,
+      // click through the onboarding screens
       await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
       await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
       const contexts = await driver.getContexts();
@@ -40,39 +42,14 @@ describe('Basic cross-platform We Vote test',  () => {
       await thirdNextButton.click();
       await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
     } else {
-      // navigate browser to WeVote QA site
+      // ///////////////////////////////
+      // For the website version, open our quality testing site
       await browser.url('https://quality.wevote.us/ballot');
     }
 
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-
-    // ///////////////////////////////////
-    // These are a variety of tests to try to figure out scrolling down to click an element off screen
-    // 2020 President "Show More" (so we can try to click below the fold): officeItemCompressedShowMoreFooter-wv02off28320
-    // Non-clickable element below the fold: ballotSummaryFooter-showMoreBallotItems
-    // ID at top of Ballot: ballotRoute-topOfBallot
-
-    // DALE 2020-04-05 All of these failed
-    // await scrollDownPage();
-    // JavascriptExecutor js = (JavascriptExecutor) driver;
-    // js.executeScript("window.scrollBy(0,250)", "");
-    // await driver.scroll(0, 100);
-    // driver.touchScroll({
-    //   el: browser,
-    //   xOffset: 10,
-    //   yOffset: 100
-    // });
-    // await driver.scroll(0, 250);
-    // await browser.elementClick('officeItemCompressedShowMoreFooter-wv02off28320');
-    // await scrollIntoViewSimple('officeItemCompressedShowMoreFooter-wv02off28320'); // Scroll to the "Show More Ballot Items" header at bottom of page
-    // await simpleClick('officeItemCompressedShowMoreFooter-wv02off28320');
-    // await simpleClick('ballotSummaryFooter-showMoreBallotItems');
-    // const clickableItem = await $('#ballotSummaryFooter-showMoreBallotItems');
-    // await clickableItem.scrollIntoView();
-    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await scrollThroughPage();
 
     // // Stop/Exit the script here for now
     // assert(true);
@@ -102,8 +79,8 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     }
 
-    // // //////////////////////
-    // // Check the positioning of the SignInModal when we click "Enter Email"
+    // //////////////////////
+    // Check the positioning of the SignInModal when we click "Enter Email"
     await simpleClick('signInHeaderBar'); // Clicks on Sign in
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     if (isCordovaFromAppStore) {
@@ -121,8 +98,8 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     }
 
-    // // //////////////////////
-    // // Check the positioning of the SignInModal when we click "Enter Phone"
+    // //////////////////////
+    // Check the positioning of the SignInModal when we click "Enter Phone"
     await simpleClick('signInHeaderBar'); // Clicks on Sign in
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     if (isCordovaFromAppStore) {
@@ -141,7 +118,8 @@ describe('Basic cross-platform We Vote test',  () => {
     }
 
     // //////////////////////
-    // Test "Change Address" Modal
+    // Open/close "Change Address" Modal in the very top header bar
+    // (as opposed to changing the election next to the election name)
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick(changeAddressHeaderBarID); // Open the "Change Address" modal
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -149,7 +127,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
-    // Set the location
+    // Open "Change Address" Modal in the very top header bar, and adjust the voter's address
     await simpleClick(changeAddressHeaderBarID); // Opens the "Enter Your Full Address" link
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     if (isIOS && isCordovaFromAppStore) {
@@ -166,7 +144,7 @@ describe('Basic cross-platform We Vote test',  () => {
     }
 
     // //////////////////////
-    // Switch to a known election
+    // Switch to a known election so we can test using existing candidates and measures
     if (isDesktopScreenSize) {
       await simpleClick('changeAddressOrElectionHeaderBarElection'); // Open the "Change Address" modal
     } else {
@@ -181,6 +159,8 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Click on ballot filter badges at top of page
+    await simpleClick('ballotBadgeMobileAndDesktop-All'); // Go to the All Items tab
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick(`${ballotBadgePlatformPrefixID}-State`);
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick(`${ballotBadgePlatformPrefixID}-Measure`);
@@ -192,11 +172,7 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Visit Measure Page
-    if (isCordovaFromAppStore) {
-      // TODO Find how to select Measure Badge on Cordova
-    } else {
-      await simpleClick(`${ballotBadgePlatformPrefixID}-Measure`);  // Click on Measure Badge
-    }
+    await simpleClick(`${ballotBadgePlatformPrefixID}-Measure`);  // Click on Measure Badge
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick(`measureItemCompressedChoiceYes-${measureToTestOnBallotID}`); // Click on measure
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -259,11 +235,7 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Visit the candidate page
-    if (isCordovaFromAppStore) {
-      // TODO find how to select ballotBadge-Federal on Cordova
-    } else {
-      await simpleClick(`${ballotBadgePlatformPrefixID}-Federal`);
-    }
+    await simpleClick(`${ballotBadgePlatformPrefixID}-Federal`);
     await simpleClick(`officeItemCompressedCandidateImageAndName-${candidateToTestOnBallotID}`); // Clicks the candidate
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     const chooseButtonId = `itemActionBarSupportButton-candidateItem-${platformPrefixID}IssuesComment-ballotItemSupportOpposeComment-${candidateToTestOnBallotID}-${platformPrefixID}Version-${candidateToTestOnBallotID}`;
@@ -327,6 +299,15 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
+    // Click on a candidate to open the right-side candidate sliding drawer, and then close the sliding drawer
+    // both 1) by clicking in the gray area of the page to the left, and 2) by clicking the "x"
+    // TODO
+
+    // TODO Click on Personalized Score and Organization's Opinion boxes (to open the modals)
+
+    // TODO Click on All endorsements page, Following, Followers
+
+    // //////////////////////
     // Go back to candidate page
     await simpleClick('backToLinkTabHeader');
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -344,6 +325,7 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Go to the Values tab
+    // TODO Only run this while NOT signed in
     if (isDesktopScreenSize) {
       await simpleClick('valuesTabHeaderBar');  // Desktop screen size - HEADER TABS
     } else {
@@ -352,7 +334,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
-    // Go to the My Friends tab // DALE: FRIENDS TEMPORARILY DISABLED
+    // Go to the My Friends tab
     if (isDesktopScreenSize) {
       await simpleClick('friendsTabHeaderBar');  // Desktop screen size - HEADER TABS
     } else {
@@ -365,12 +347,12 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Go to the Vote tab
-    if (isDesktopScreenSize) {
-      await simpleClick('voteTabHeaderBar');  // Desktop screen size - HEADER TABS
-    } else {
-      await simpleClick('voteTabFooterBar');  // Mobile screen size - FOOTER ICONS
-    }
-    await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
+    // if (isDesktopScreenSize) {
+    //   await simpleClick('voteTabHeaderBar');  // Desktop screen size - HEADER TABS
+    // } else {
+    //   await simpleClick('voteTabFooterBar');  // Mobile screen size - FOOTER ICONS
+    // }
+    // await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     // //////////////////////
     // Go back to the Ballot tab
