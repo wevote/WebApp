@@ -11,7 +11,7 @@ import Mail from '@material-ui/icons/Mail';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import { Button, Tooltip } from '@material-ui/core';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { cordovaDot, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import MessageCard from '../Widgets/MessageCard';
@@ -46,14 +46,13 @@ class ShareModal extends Component {
   // Steps: ballotShareOptions, friends
 
   componentDidMount () {
-    const { pathname, shareModalStep } = this.props;
+    const { shareModalStep } = this.props;
     console.log('shareModalStep:', shareModalStep);
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
-    const currentFullUrl = window.location.href;
-    const domainNameRoot = currentFullUrl.replace(pathname, '');
-    const ballotFullUrl = `${domainNameRoot}/ballot`;
+    const currentFullUrl = window.location.href || '';
+    const ballotFullUrl = currentFullUrl.replace('/modal/share', '');
     this.setState({
       ballotFullUrl,
       pathname: this.props.pathname,
@@ -83,10 +82,9 @@ class ShareModal extends Component {
 
   render () {
     renderLog('ShareModal');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('ShareModal render');
     const { classes, voterIsSignedIn } = this.props;
     const { ballotFullUrl, shareModalStep } = this.state;
-    let linkToBeShared = '';
-    let linkToBeSharedUrlEncoded = '';
     let shareModalHtml = (
       <>Loading...</>
     );
@@ -94,7 +92,10 @@ class ShareModal extends Component {
     if ((!shareModalStep) || (shareModalStep === '')) {
       return shareModalHtml;
     }
+    const featureStillInDevelopment = true;
 
+    let linkToBeShared = '';
+    let linkToBeSharedUrlEncoded = '';
     if ((shareModalStep === 'ballotShareOptions') || (shareModalStep === 'ballotShareOptionsWithOpinions')) {
       if (shareModalStep === 'ballotShareOptionsWithOpinions') {
         linkToBeShared = '';
@@ -102,6 +103,7 @@ class ShareModal extends Component {
         linkToBeShared = ballotFullUrl;
       }
       linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
+      const twitterTextEncoded = encodeURI('Check out this cool ballot tool!');
       shareModalHtml = (
         <Dialog
           classes={{ paper: classes.dialogPaper }}
@@ -113,7 +115,10 @@ class ShareModal extends Component {
               <Title>
                 Share:
                 {' '}
-                <strong>Ballot for Nov 2019 Elections</strong>
+                <strong>
+                  {(shareModalStep === 'ballotShareOptions') && 'Ballot for this Election'}
+                  {(shareModalStep === 'ballotShareOptionsWithOpinions') && 'Ballot + Your Opinions for this Election'}
+                </strong>
               </Title>
               {(shareModalStep === 'ballotShareOptions') ? (
                 <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
@@ -133,22 +138,24 @@ class ShareModal extends Component {
           <DialogContent classes={{ root: classes.dialogContent }}>
             <div className="full-width">
               <Flex>
-                <ShareModalOption
-                  noLink
-                  onClickFunction={() => {
-                    if (!voterIsSignedIn) {
-                      AppActions.setShowSignInModal(true);
-                      this.setStep('friends');
-                    } else {
-                      this.setStep('friends');
-                    }
-                  }}
-                  background="#2E3C5D"
-                  icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />}
-                  title="We Vote Friends"
-                />
+                {featureStillInDevelopment ? null : (
+                  <ShareModalOption
+                    noLink
+                    onClickFunction={() => {
+                      if (!voterIsSignedIn) {
+                        AppActions.setShowSignInModal(true);
+                        this.setStep('friends');
+                      } else {
+                        this.setStep('friends');
+                      }
+                    }}
+                    background="#2E3C5D"
+                    icon={<img src={cordovaDot('../../../img/global/svg-icons/we-vote-icon-square-color.svg')} />}
+                    title="We Vote Friends"
+                  />
+                )}
                 <ShareModalOption link={`https://www.facebook.com/sharer/sharer.php?u=${linkToBeSharedUrlEncoded}&t=WeVote`} target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
-                <ShareModalOption link={`https://twitter.com/share?text=Check out this cool ballot tool at ${linkToBeShared}!`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
+                <ShareModalOption link={`https://twitter.com/share?text=${twitterTextEncoded}&url=${linkToBeSharedUrlEncoded}`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
                 <ShareModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
                 <ShareModalOption copyLink link={linkToBeShared} background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
               </Flex>

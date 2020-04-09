@@ -35,42 +35,43 @@ class ShareModalOption extends Component {
   }
 
   render () {
+    const { background, copyLink, icon, link, noLink, title } = this.props;
     return (
       <Wrapper>
-        {this.props.copyLink ? (
-          <CopyToClipboard text={this.props.link} onCopy={this.copyLink}>
+        {copyLink ? (
+          <CopyToClipboard text={link} onCopy={this.copyLink}>
             <div onClick={() => this.onClick}>
-              <Icon background={this.props.background}>
-                {this.props.icon}
+              <Icon background={background}>
+                {icon}
               </Icon>
               <Text>
-                {this.props.title}
+                {title}
               </Text>
             </div>
           </CopyToClipboard>
         ) : (
           <div>
-            {this.props.noLink ? (
+            {noLink ? (
               <div onClick={() => this.onClick}>
-                <Icon background={this.props.background}>
-                  {this.props.icon}
+                <Icon background={background}>
+                  {icon}
                 </Icon>
                 <Text>
-                  {this.props.title}
+                  {title}
                 </Text>
               </div>
             ) : (
               <OpenExternalWebSite
                 className="no-decoration"
-                url={this.props.link}
+                url={link}
                 target="_blank"
                 body={(
                   <div onClick={() => this.onClick}>
-                    <Icon background={this.props.background}>
-                      {this.props.icon}
+                    <Icon background={background}>
+                      {icon}
                     </Icon>
                     <Text>
-                      {this.props.title}
+                      {title}
                     </Text>
                   </div>
                 )}

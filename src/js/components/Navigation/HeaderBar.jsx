@@ -77,7 +77,7 @@ class HeaderBar extends Component {
       showPaidAccountUpgradeModal: false,
       showPersonalizedScoreIntroModal: false,
       showValuesIntroModal: false,
-      shareModalStep: 'ballotShareOptions',
+      shareModalStep: '',
       organizationModalId: '',
       voter: {},
       voterFirstName: '',
