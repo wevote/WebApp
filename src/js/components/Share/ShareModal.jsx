@@ -150,7 +150,7 @@ class ShareModal extends Component {
                       }
                     }}
                     background="#2E3C5D"
-                    icon={<img src={cordovaDot('../../../img/global/svg-icons/we-vote-icon-square-color.svg')} />}
+                    icon={<img src={cordovaDot('../../../img/global/svg-icons/we-vote-icon-square-color.svg')} alt="" />}
                     title="We Vote Friends"
                   />
                 )}

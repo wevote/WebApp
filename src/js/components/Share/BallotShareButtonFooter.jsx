@@ -183,7 +183,7 @@ class BallotShareButtonFooter extends Component {
                 </ModalTitleArea>
                 {(isMobile() && navigator.share) ? (
                   <Flex>
-                    {featureStillInDevelopment ? null : <ShareModalOption noLink onClickFunction={() => this.openShareModal('friends')} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />}
+                    {featureStillInDevelopment ? null : <ShareModalOption noLink onClickFunction={() => this.openShareModal('friends')} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />} title="We Vote Friends" />}
                     <ShareModalOption copyLink link={linkToBeShared} background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
                     <ShareModalOption noLink onClickFunction={() => this.openNativeShare(linkToBeShared, 'Share Ballot')} background="#2E3C5D" icon={<Reply />} title="Share" />
                   </Flex>
