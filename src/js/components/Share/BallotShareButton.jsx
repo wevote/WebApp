@@ -24,12 +24,6 @@ class BallotShareButton extends Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   if (this.state.open !== nextState.open) return true;
-  //   if (this.state.anchorEl !== nextState.anchorEl) return true;
-  //   return false;
-  // }
-
   handleClick (event) {
     this.setState({ anchorEl: event.currentTarget, open: true });
   }
@@ -39,7 +33,9 @@ class BallotShareButton extends Component {
   }
 
   openShareModal (shareModalStep) {
-    historyPush('/ballot/modal/share');
+    const { pathname } = window.location;
+    const pathnameWithModalShare = `${pathname}/modal/share`;
+    historyPush(pathnameWithModalShare);
     AppActions.setShareModalStep(shareModalStep);
   }
 
@@ -55,7 +51,6 @@ class BallotShareButton extends Component {
             <Reply
               classes={{ root: classes.shareIcon }}
             />
-            {/* <i className="fas fa-share" /> */}
           </Icon>
           Share
         </Button>
@@ -189,6 +184,7 @@ const MenuIcon = styled.div`
 
 const MenuText = styled.div`
   margin-left: 12px;
+  margin-right: 12px;
 `;
 
 // const MenuInfo = styled.div`

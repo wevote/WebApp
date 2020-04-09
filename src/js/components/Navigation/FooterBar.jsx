@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Badge from '@material-ui/core/Badge';
@@ -20,8 +21,14 @@ import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import VoterStore from '../../stores/VoterStore';
 
 
+function isFriendsTabSelected () {
+  const { pathname } = window.location;
+  return (stringContains('/friends', pathname.toLowerCase()));
+}
+
 class FooterBar extends React.Component {
   static propTypes = {
+    classes: PropTypes.object,
     pathname: PropTypes.string,
   };
 
@@ -107,6 +114,7 @@ class FooterBar extends React.Component {
 
   render () {
     renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes } = this.props;
     const { friendInvitationsSentToMe, showingOneCompleteYourProfileModal, voterIsSignedIn } = this.state;
     const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
 
@@ -134,7 +142,7 @@ class FooterBar extends React.Component {
               label="Friends"
               showLabel
               icon={(
-                <Badge badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
+                <Badge badgeContent={numberOfIncomingFriendRequests} className={classes.anchorOriginTopRightRectangle} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
                   <PeopleIcon />
                 </Badge>
               )}
@@ -158,9 +166,17 @@ class FooterBar extends React.Component {
     );
   }
 }
+
+const styles = () => ({
+  anchorOriginTopRightRectangle: {
+    top: isFriendsTabSelected ? 5 : 2,
+  },
+});
+
 const FooterBarWrapper = styled.div`
   @media print{
     display: none;
   }
 `;
-export default FooterBar;
+
+export default withStyles(styles)(FooterBar);

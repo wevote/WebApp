@@ -321,6 +321,12 @@ class Ballot extends Component {
       // console.log('Ballot componentWillReceiveProps NO changes found');
     }
 
+    const modalToOpen = this.props.params.modal_to_show || '';
+
+    if (modalToOpen === 'share') {
+      AppActions.setShowShareModal(true);
+    }
+
     if (nextProps.location && nextProps.location.hash) {
       // this.hashLinkScroll();
       this.setState({ lastHashUsedInLinkScroll: nextProps.location.hash });

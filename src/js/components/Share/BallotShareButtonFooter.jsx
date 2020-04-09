@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import Button from '@material-ui/core/Button';
 import Comment from '@material-ui/icons/Comment';
-import { Drawer, Tooltip, MenuItem } from '@material-ui/core/esm';
-import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
+import { Drawer, MenuItem } from '@material-ui/core/esm';
+import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+import Mail from '@material-ui/icons/Mail';
 import Reply from '@material-ui/icons/Reply';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
+import isMobile from '../../utils/isMobile';
 import ShareModalOption from './ShareModalOption';
 import { historyPush } from '../../utils/cordovaUtils';
 
@@ -22,33 +25,22 @@ class BallotShareButtonFooter extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      anchorEl: null,
-      showingOneCompleteYourProfileModal: false,
       hideBallotShareButtonFooter: false,
-      open: false,
-      step2: false,
+      openShareButtonDrawer: false,
+      showingOneCompleteYourProfileModal: false,
+      showShareButton: true,
     };
-    this.handleClick = this.handleClick.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.toggleStep2 = this.toggleStep2.bind(this);
   }
 
   componentDidMount () {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
+    const currentFullUrl = window.location.href || '';
+    const ballotFullUrl = currentFullUrl.replace('/modal/share', '');
     this.setState({
+      ballotFullUrl,
       showingOneCompleteYourProfileModal,
     });
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.showingOneCompleteYourProfileModal !== nextState.showingOneCompleteYourProfileModal) return true;
-    if (this.state.anchorEl !== nextState.anchorEl) return true;
-    if (this.state.hideBallotShareButtonFooter !== nextState.hideBallotShareButtonFooter) return true;
-    if (this.state.open !== nextState.open) return true;
-    if (this.props.pathname !== nextProps.pathname) return true;
-    if (this.state.step2 !== nextState.step2) return true;
-    return false;
   }
 
   componentWillUnmount () {
@@ -56,9 +48,9 @@ class BallotShareButtonFooter extends Component {
   }
 
   onAppStoreChange () {
-    const { open } = this.state;
+    const { openShareButtonDrawer } = this.state;
     const scrolledDown = AppStore.getScrolledDown();
-    const hideBallotShareButtonFooter = scrolledDown && !open;
+    const hideBallotShareButtonFooter = scrolledDown && !openShareButtonDrawer;
     // console.log('scrolledDown:', scrolledDown, ', hideBallotShareButtonFooter:', hideBallotShareButtonFooter);
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
     this.setState({
@@ -67,81 +59,155 @@ class BallotShareButtonFooter extends Component {
     });
   }
 
-  handleClick (event) {
-    this.setState({ anchorEl: event.currentTarget, open: true });
+  handleShareButtonClick = () => {
+    this.setState({
+      openShareButtonDrawer: true,
+      showShareButton: false,
+    });
   }
 
-  handleClose () {
-    this.setState({ anchorEl: null, open: false });
+  handleCloseShareButtonDrawer = () => {
+    this.setState({
+      openShareButtonDrawer: false,
+      showShareButton: true,
+    });
   }
 
-  openShareModal (step) {
-    this.handleClose();
-    // AppActions.setShowShareModal(true);
-    historyPush('/ballot/modal/share');
-    AppActions.setShareModalStep(step);
-  }
-
-  toggleStep2 () {
+  handleBackButtonClick = () => {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
-    const { step2 } = this.state;
-    this.setState({ step2: !step2 });
+    this.setState({
+      ballotShareOptions: false,
+      ballotShareOptionsWithOpinions: false,
+    });
+  }
+
+  openBallotShareOptions = () => {
+    // console.log('SettingsDomain openPaidAccountUpgradeModal');
+    this.setState({
+      ballotShareOptions: true,
+      ballotShareOptionsWithOpinions: false,
+    });
+  }
+
+  openBallotShareOptionsWithOpinions = () => {
+    // console.log('SettingsDomain openPaidAccountUpgradeModal');
+    this.setState({
+      ballotShareOptions: false,
+      ballotShareOptionsWithOpinions: true,
+    });
+  }
+
+  openShareModal (shareModalStep) {
+    const { pathname } = window.location;
+    const pathnameWithModalShare = `${pathname}/modal/share`;
+    historyPush(pathnameWithModalShare);
+    AppActions.setShareModalStep(shareModalStep);
+  }
+
+  openNativeShare (linkToBeShared, shareTitle = '') {
+    if (navigator.share) {
+      navigator.share({
+        title: shareTitle,
+        url: linkToBeShared,
+      }).catch(console.error);
+    } else {
+      console.log('Could not open native share.');
+    }
   }
 
   render () {
     const { classes, pathname } = this.props;
-    const { showingOneCompleteYourProfileModal, hideBallotShareButtonFooter } = this.state;
+    const {
+      ballotFullUrl, ballotShareOptions, ballotShareOptionsWithOpinions,
+      hideBallotShareButtonFooter, openShareButtonDrawer, showingOneCompleteYourProfileModal, showShareButton,
+    } = this.state;
     const { showFooterBar } = getApplicationViewBooleans(pathname);
 
     // Hide if scrolled down the page
     if (hideBallotShareButtonFooter) {
       return null;
     }
-
+    let linkToBeShared = '';
+    let linkToBeSharedUrlEncoded = '';
+    if (ballotShareOptionsWithOpinions) {
+      linkToBeShared = '';
+    } else {
+      linkToBeShared = ballotFullUrl;
+    }
+    linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
+    const twitterTextEncoded = encodeURI('Check out this cool ballot tool!');
+    const featureStillInDevelopment = true;
     return (
       <Wrapper pinToBottom={!showFooterBar} className={showingOneCompleteYourProfileModal ? 'u-z-index-1000' : 'u-z-index-9000'}>
-        <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="contained" color="primary">
-          <Icon>
-            <Reply
-              classes={{ root: classes.shareIcon }}
-            />
-            {/* <i className="fas fa-share" /> */}
-          </Icon>
-          Share
-        </Button>
-        <Drawer id="share-menu" anchor="bottom" open={this.state.open} direction="up" onClose={this.handleClose}>
-          <Container step2={this.state.step2}>
-            <ModalTitleArea>
-              {this.state.step2 ? (
-                <Button className={classes.backButton} color="primary" onClick={this.toggleStep2}>
-                  <ArrowBackIos className={classes.backButtonIcon} />
-                  Back
-                </Button>
-              ) : null}
-              <Title>
-                Share:
-                {' '}
-                <strong>Ballot for Nov 2019 Elections</strong>
-              </Title>
-              <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
-            </ModalTitleArea>
-            {this.state.step2 ? (
+        {showShareButton && (
+          <Button
+            aria-controls="share-menu"
+            aria-haspopup="true"
+            className={classes.button}
+            color="primary"
+            onClick={this.handleShareButtonClick}
+            variant="contained"
+          >
+            <Icon>
+              <Reply
+                classes={{ root: classes.shareIcon }}
+              />
+            </Icon>
+            Share
+          </Button>
+        )}
+        <Drawer
+          id="share-menu"
+          anchor="bottom"
+          className="u-z-index-9010"
+          direction="up"
+          onClose={this.handleCloseShareButtonDrawer}
+          open={openShareButtonDrawer}
+        >
+          <Container ballotShareOptionsMode={(ballotShareOptions || ballotShareOptionsWithOpinions)}>
+            {(ballotShareOptions || ballotShareOptionsWithOpinions) ? (
               <>
-                <Flex>
-                  <ShareModalOption noLink onClickFunction={() => this.openShareModal('friends')} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" />} title="We Vote Friends" />
-                  <ShareModalOption noLink onClickFunction={() => this.openShareModal()} background="#2E3C5D" icon={<Reply />} title="Share" />
-                </Flex>
-                <Button className={classes.cancelButton} variant="contained" fullWidth color="primary">
-                  Preview
-                </Button>
-                <Button className={classes.cancelButton} fullWidth onClick={this.handleClose} variant="outlined" color="primary">
+                <ModalTitleArea>
+                  {(ballotShareOptions || ballotShareOptionsWithOpinions) ? (
+                    <Button className={classes.backButton} color="primary" onClick={this.handleBackButtonClick}>
+                      <ArrowBackIos className={classes.backButtonIcon} />
+                      Back
+                    </Button>
+                  ) : null}
+                  <Title>
+                    Share:
+                    {' '}
+                    <strong>Ballot</strong>
+                  </Title>
+                  <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
+                </ModalTitleArea>
+                {(isMobile() && navigator.share) ? (
+                  <Flex>
+                    {featureStillInDevelopment ? null : <ShareModalOption noLink onClickFunction={() => this.openShareModal('friends')} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />} title="We Vote Friends" />}
+                    <ShareModalOption copyLink link={linkToBeShared} background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
+                    <ShareModalOption noLink onClickFunction={() => this.openNativeShare(linkToBeShared, 'Share Ballot')} background="#2E3C5D" icon={<Reply />} title="Share" />
+                  </Flex>
+                ) : (
+                  <Flex>
+                    <ShareModalOption link={`https://www.facebook.com/sharer/sharer.php?u=${linkToBeSharedUrlEncoded}&t=WeVote`} target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
+                    <ShareModalOption link={`https://twitter.com/share?text=${twitterTextEncoded}&url=${linkToBeSharedUrlEncoded}`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
+                    <ShareModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
+                    <ShareModalOption copyLink link={linkToBeShared} background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
+                  </Flex>
+                )}
+                {ballotShareOptionsWithOpinions && (
+                  <Button className={classes.cancelButton} variant="contained" fullWidth color="primary">
+                    Preview
+                  </Button>
+                )}
+                <Button className={classes.cancelButton} fullWidth onClick={this.handleCloseShareButtonDrawer} variant="outlined" color="primary">
                   Cancel
                 </Button>
               </>
             ) : (
               <>
                 <MenuItemsWrapper>
-                  <MenuItem className={classes.menuItem} onClick={this.toggleStep2}>
+                  <MenuItem className={classes.menuItem} onClick={this.openBallotShareOptions}>
                     <MenuFlex>
                       <MenuIcon>
                         <i className="fas fa-list" />
@@ -149,31 +215,23 @@ class BallotShareButtonFooter extends Component {
                       <MenuText>
                         Ballot
                       </MenuText>
-                      <MenuInfo>
-                        <Tooltip title="Share a link to this election so that your friends can get ready to vote. Your opinions are not included." arrow enterDelay={300}>
-                          <i className="fas fa-info-circle" />
-                        </Tooltip>
-                      </MenuInfo>
                     </MenuFlex>
                   </MenuItem>
                   <MenuSeparator />
-                  <MenuItem className={classes.menuItem} onClick={this.toggleStep2}>
-                    <MenuFlex>
-                      <MenuIcon>
-                        <Comment />
-                      </MenuIcon>
-                      <MenuText>
-                        Ballot + Your Opinions
-                      </MenuText>
-                      <MenuInfo>
-                        <Tooltip title="Share a link to the choices you've made for this election so that your friends can get ready to vote. This includes your public and friend's-only opinions." arrow enterDelay={300}>
-                          <i className="fas fa-info-circle" />
-                        </Tooltip>
-                      </MenuInfo>
-                    </MenuFlex>
-                  </MenuItem>
+                  {featureStillInDevelopment ? null : (
+                    <MenuItem className={classes.menuItem} onClick={this.openBallotShareOptionsWithOpinions}>
+                      <MenuFlex>
+                        <MenuIcon>
+                          <Comment />
+                        </MenuIcon>
+                        <MenuText>
+                          Ballot + Your Opinions
+                        </MenuText>
+                      </MenuFlex>
+                    </MenuItem>
+                  )}
                 </MenuItemsWrapper>
-                <Button className={classes.cancelButton} fullWidth onClick={this.handleClose} variant="outlined" color="primary">
+                <Button className={classes.cancelButton} fullWidth onClick={this.handleCloseShareButtonDrawer} variant="outlined" color="primary">
                   Cancel
                 </Button>
               </>
@@ -237,7 +295,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   margin: 0 auto;
   max-width: 576px;
-  padding: ${props => (props.step2 ? '16px 16px 32px' : '24px 16px 32px')};
+  padding: ${props => (props.ballotShareOptionsMode ? '16px 16px 32px' : '24px 16px 32px')};
 `;
 
 const ModalTitleArea = styled.div`
@@ -262,7 +320,7 @@ const Title = styled.h3`
 const SubTitle = styled.div`
   margin-top: 0;
   font-size: 14px;
-  width: 80%;
+  width: 100%;
 `;
 
 const MenuItemsWrapper = styled.div`
@@ -312,11 +370,11 @@ const MenuText = styled.div`
   margin-left: 12px;
 `;
 
-const MenuInfo = styled.div`
-  margin-left: auto;
-  margin-top: 1px;
-  padding-left: 10px;
-`;
+// const MenuInfo = styled.div`
+//   margin-left: auto;
+//   margin-top: 1px;
+//   padding-left: 10px;
+// `;
 
 const MenuSeparator = styled.div`
   height: 2px;
