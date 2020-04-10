@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import OpenExternalWebSite from './OpenExternalWebSite';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import ballotpediaIcon from '../../../img/global/logos/ballotpedia-initials-67x48.png';
+import ballotpediaIcon from '../../../img/global/logos/ballotpedia-initials-57x33.png';
 import SplitIconButton from './SplitIconButton';
 
 
@@ -26,6 +26,7 @@ class ViewOnBallotpedia extends Component {
           title="BALLOTPEDIA"
           body={(
             <SplitIconButton
+              adjustedIconWidth={50}
               buttonText="Ballotpedia"
               backgroundColor="#fff"
               compressedSize

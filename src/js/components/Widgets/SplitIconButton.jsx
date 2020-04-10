@@ -7,6 +7,7 @@ import { getTextColorFromBackground } from '../../utils/color';
 
 class SplitIconButton extends PureComponent {
   static propTypes = {
+    adjustedIconWidth: PropTypes.number,
     backgroundColor: PropTypes.string,
     buttonText: PropTypes.string,
     classes: PropTypes.object,
@@ -47,7 +48,7 @@ class SplitIconButton extends PureComponent {
         onClick={this.props.onClick}
         onKeyDown={this.props.onKeyDown}
       >
-        <SplitButtonIcon>
+        <SplitButtonIcon adjustedIconWidth={this.props.adjustedIconWidth}>
           {icon}
         </SplitButtonIcon>
         {this.props.iconRight ? (
@@ -117,12 +118,12 @@ const SplitButtonSeparatorRight = styled.div`
 `;
 
 const SplitButtonIcon = styled.span`
-  width: 44px;
   flex: none;
   display: flex;
   align-items: center;
   height: 100%;
   padding: 0 13.3px;
+  ${({ adjustedIconWidth }) => ((adjustedIconWidth) ? `width: ${adjustedIconWidth}px;` : 'width: 44px;')}
   * {
     width: 100%;
     font-size: 22px;

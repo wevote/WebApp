@@ -24,7 +24,7 @@ import webAppConfig from './config';
 import { stringContains } from './utils/textFormat';
 import SnackNotifier from './components/Widgets/SnackNotifier';
 import displayFriendsTabs from './utils/displayFriendsTabs';
-import BallotShareButtonFooter from './components/Share/BallotShareButtonFooter';
+import ShareButtonFooter from './components/Share/ShareButtonFooter';
 import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
 
 class Application extends Component {
@@ -336,8 +336,8 @@ class Application extends Component {
 
     routingLog(pathname);
 
-    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, showBallotShareButtonFooter, voterGuideCreatorMode, voterGuideMode, extensionPageMode } = getApplicationViewBooleans(pathname);
-    // console.log('showBallotShareButtonFooter:', showBallotShareButtonFooter);
+    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, showShareButtonFooter, voterGuideCreatorMode, voterGuideMode, extensionPageMode } = getApplicationViewBooleans(pathname);
+    // console.log('showShareButtonFooter:', showShareButtonFooter);
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     if (extensionPageMode) {
@@ -413,8 +413,8 @@ class Application extends Component {
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )}
-          {showBallotShareButtonFooter && nextReleaseFeaturesEnabled && (
-            <BallotShareButtonFooter pathname={pathname} />
+          {showShareButtonFooter && nextReleaseFeaturesEnabled && (
+            <ShareButtonFooter pathname={pathname} />
           )}
         </div>
       );
@@ -461,8 +461,8 @@ class Application extends Component {
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>
         )}
-        {showBallotShareButtonFooter && nextReleaseFeaturesEnabled && (
-          <BallotShareButtonFooter pathname={pathname} />
+        {showShareButtonFooter && nextReleaseFeaturesEnabled && (
+          <ShareButtonFooter pathname={pathname} />
         )}
       </div>
     );

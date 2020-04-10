@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Comment from '@material-ui/icons/Comment';
-import { Menu, MenuItem, Tooltip } from '@material-ui/core/esm';
-import { withStyles } from '@material-ui/core/styles';
+import { Menu, MenuItem } from '@material-ui/core/esm'; // , Tooltip
 import Reply from '@material-ui/icons/Reply';
+import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
 import { historyPush } from '../../utils/cordovaUtils';
+import { stringContains } from '../../utils/textFormat';
 
-class CandidateShareButton extends Component {
+class ShareButtonDesktopTablet extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    candidateShare: PropTypes.bool,
   };
 
   constructor (props) {
@@ -24,12 +26,6 @@ class CandidateShareButton extends Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   if (this.state.open !== nextState.open) return true;
-  //   if (this.state.anchorEl !== nextState.anchorEl) return true;
-  //   return false;
-  // }
-
   handleClick (event) {
     this.setState({ anchorEl: event.currentTarget, open: true });
   }
@@ -38,25 +34,28 @@ class CandidateShareButton extends Component {
     this.setState({ anchorEl: null, open: false });
   }
 
-  openShareModal () {
-    // console.log('SettingsDomain openPaidAccountUpgradeModal');
-    historyPush('/ballot/modal/share');
-    AppActions.setShareModalStep('options');
-    // AppActions.setShowShareModal(true);
+  openShareModal (shareModalStep) {
+    AppActions.setShowShareModal(true);
+    AppActions.setShareModalStep(shareModalStep);
+    const { pathname } = window.location;
+    if (!stringContains('/modal/share', pathname)) {
+      const pathnameWithModalShare = `${pathname}/modal/share`;
+      historyPush(pathnameWithModalShare);
+    }
   }
 
   render () {
-    const { classes } = this.props;
+    const { candidateShare, classes } = this.props;
     const { anchorEl } = this.state;
 
+    const featureStillInDevelopment = true;
     return (
       <>
-        <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={classes.button} variant="contained" color="primary">
+        <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={candidateShare ? classes.buttonCandidate : classes.buttonDefault} variant="contained" color="primary">
           <Icon>
             <Reply
               classes={{ root: classes.shareIcon }}
             />
-            {/* <i className="fas fa-share" /> */}
           </Icon>
           Share
         </Button>
@@ -79,37 +78,46 @@ class CandidateShareButton extends Component {
           }}
         >
           <MenuArrow />
-          <MenuItem className={classes.menuItem} onClick={this.openShareModal}>
+          <MenuItem className={classes.menuItem} onClick={() => this.openShareModal('ballotShareOptions')}>
             <MenuFlex>
               <MenuIcon>
                 <i className="fas fa-list" />
               </MenuIcon>
               <MenuText>
-                Candidate
+                Ballot
               </MenuText>
-              <MenuInfo>
-                <Tooltip title="Share a link to this election so that your friends can get ready to vote. Your opinions are not included." arrow enterDelay={300}>
-                  <i className="fas fa-info-circle" />
-                </Tooltip>
-              </MenuInfo>
+              {/* <MenuInfo> - TURNED OFF BECAUSE OF TOOLTIP Z-INDEX PROBLEM */}
+              {/*  <Tooltip */}
+              {/*    arrow */}
+              {/*    // classes={{ root: classes.toolTip }} */}
+              {/*    // className="u-z-index-5030" */}
+              {/*    enterDelay={300} */}
+              {/*    // style={{ zIndex: '20000 !important' }} */}
+              {/*    title="Share a link to this election so that your friends can get ready to vote. Your opinions are not included." */}
+              {/*  > */}
+              {/*    <i className="fas fa-info-circle" /> */}
+              {/*  </Tooltip> */}
+              {/* </MenuInfo> */}
             </MenuFlex>
           </MenuItem>
           <MenuSeparator />
-          <MenuItem className={classes.menuItem} onClick={this.openShareModal}>
-            <MenuFlex>
-              <MenuIcon>
-                <Comment />
-              </MenuIcon>
-              <MenuText>
-                Your Opinion
-              </MenuText>
-              <MenuInfo>
-                <Tooltip title="Share a link to the choices you've made for this election so that your friends can get ready to vote. This includes your public and friend's-only opinions." arrow enterDelay={300}>
-                  <i className="fas fa-info-circle" />
-                </Tooltip>
-              </MenuInfo>
-            </MenuFlex>
-          </MenuItem>
+          {featureStillInDevelopment ? null : (
+            <MenuItem className={classes.menuItem} onClick={() => this.openShareModal('ballotShareOptionsWithOpinions')}>
+              <MenuFlex>
+                <MenuIcon>
+                  <Comment />
+                </MenuIcon>
+                <MenuText>
+                  Ballot + Your Opinions
+                </MenuText>
+                {/* <MenuInfo> - TURNED OFF BECAUSE OF TOOLTIP Z-INDEX PROBLEM */}
+                {/*  <Tooltip title="Share a link to the choices you've made for this election so that your friends can get ready to vote. This includes your public and friend's-only opinions." arrow enterDelay={300}> */}
+                {/*    <i className="fas fa-info-circle" /> */}
+                {/*  </Tooltip> */}
+                {/* </MenuInfo> */}
+              </MenuFlex>
+            </MenuItem>
+          )}
         </Menu>
       </>
     );
@@ -123,7 +131,10 @@ const styles = () => ({
     overflowX: 'visible !important',
     overflowY: 'visible !important',
   },
-  button: {
+  buttonDefault: {
+    padding: '2px 12px',
+  },
+  buttonCandidate: {
     padding: '2px 12px',
     width: 160,
   },
@@ -144,6 +155,9 @@ const styles = () => ({
     transform: 'scaleX(-1)',
     position: 'relative',
     top: -1,
+  },
+  toolTip: {
+    zIndex: '5030 !important',
   },
 });
 
@@ -179,13 +193,15 @@ const MenuIcon = styled.div`
 
 const MenuText = styled.div`
   margin-left: 12px;
+  margin-right: 12px;
 `;
 
-const MenuInfo = styled.div`
-  margin-left: auto;
-  margin-top: 1px;
-  padding-left: 10px;
-`;
+// const MenuInfo = styled.div`
+//   margin-left: auto;
+//   margin-top: 1px;
+//   padding-left: 10px;
+//   // z-index: 5030 !important;
+// `;
 
 const MenuSeparator = styled.div`
   height: 2px;
@@ -209,4 +225,4 @@ const MenuArrow = styled.div`
   border-left: 1px solid #e7e7e7;
 `;
 
-export default withStyles(styles)(CandidateShareButton);
+export default withStyles(styles)(ShareButtonDesktopTablet);

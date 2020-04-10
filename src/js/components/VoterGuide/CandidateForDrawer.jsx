@@ -7,7 +7,7 @@ import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
 import CandidateItem from '../Ballot/CandidateItem';
-import CandidateShareButton from '../Share/CandidateShareButton';
+import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import CandidateStickyHeader from '../Ballot/CandidateStickyHeader';
 import CandidateStore from '../../stores/CandidateStore';
 import { capitalizeString } from '../../utils/textFormat';
@@ -305,7 +305,7 @@ class CandidateForDrawer extends Component {
             <RightColumnWrapper className="u-show-desktop-tablet">
               {nextReleaseFeaturesEnabled && (
                 <CandidateShareWrapper>
-                  <CandidateShareButton />
+                  <ShareButtonDesktopTablet />
                 </CandidateShareWrapper>
               )}
               {candidate.ballotpedia_candidate_url && (

@@ -15,8 +15,9 @@ import AppStore from '../../stores/AppStore';
 import isMobile from '../../utils/isMobile';
 import ShareModalOption from './ShareModalOption';
 import { historyPush } from '../../utils/cordovaUtils';
+import { stringContains } from '../../utils/textFormat';
 
-class BallotShareButtonFooter extends Component {
+class ShareButtonFooter extends Component {
   static propTypes = {
     classes: PropTypes.object,
     pathname: PropTypes.string,
@@ -25,7 +26,7 @@ class BallotShareButtonFooter extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      hideBallotShareButtonFooter: false,
+      hideShareButtonFooter: false,
       openShareButtonDrawer: false,
       showingOneCompleteYourProfileModal: false,
       showShareButton: true,
@@ -50,12 +51,12 @@ class BallotShareButtonFooter extends Component {
   onAppStoreChange () {
     const { openShareButtonDrawer } = this.state;
     const scrolledDown = AppStore.getScrolledDown();
-    const hideBallotShareButtonFooter = scrolledDown && !openShareButtonDrawer;
-    // console.log('scrolledDown:', scrolledDown, ', hideBallotShareButtonFooter:', hideBallotShareButtonFooter);
+    const hideShareButtonFooter = scrolledDown && !openShareButtonDrawer;
+    // console.log('scrolledDown:', scrolledDown, ', hideShareButtonFooter:', hideShareButtonFooter);
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
     this.setState({
       showingOneCompleteYourProfileModal,
-      hideBallotShareButtonFooter,
+      hideShareButtonFooter,
     });
   }
 
@@ -81,7 +82,7 @@ class BallotShareButtonFooter extends Component {
     });
   }
 
-  openBallotShareOptions = () => {
+  openShareOptions = () => {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
     this.setState({
       ballotShareOptions: true,
@@ -89,7 +90,7 @@ class BallotShareButtonFooter extends Component {
     });
   }
 
-  openBallotShareOptionsWithOpinions = () => {
+  openShareOptionsWithOpinions = () => {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
     this.setState({
       ballotShareOptions: false,
@@ -98,10 +99,13 @@ class BallotShareButtonFooter extends Component {
   }
 
   openShareModal (shareModalStep) {
-    const { pathname } = window.location;
-    const pathnameWithModalShare = `${pathname}/modal/share`;
-    historyPush(pathnameWithModalShare);
+    AppActions.setShowShareModal(true);
     AppActions.setShareModalStep(shareModalStep);
+    const { pathname } = window.location;
+    if (!stringContains('/modal/share', pathname)) {
+      const pathnameWithModalShare = `${pathname}/modal/share`;
+      historyPush(pathnameWithModalShare);
+    }
   }
 
   openNativeShare (linkToBeShared, shareTitle = '') {
@@ -119,12 +123,12 @@ class BallotShareButtonFooter extends Component {
     const { classes, pathname } = this.props;
     const {
       ballotFullUrl, ballotShareOptions, ballotShareOptionsWithOpinions,
-      hideBallotShareButtonFooter, openShareButtonDrawer, showingOneCompleteYourProfileModal, showShareButton,
+      hideShareButtonFooter, openShareButtonDrawer, showingOneCompleteYourProfileModal, showShareButton,
     } = this.state;
     const { showFooterBar } = getApplicationViewBooleans(pathname);
 
     // Hide if scrolled down the page
-    if (hideBallotShareButtonFooter) {
+    if (hideShareButtonFooter) {
       return null;
     }
     let linkToBeShared = '';
@@ -164,7 +168,7 @@ class BallotShareButtonFooter extends Component {
           onClose={this.handleCloseShareButtonDrawer}
           open={openShareButtonDrawer}
         >
-          <Container ballotShareOptionsMode={(ballotShareOptions || ballotShareOptionsWithOpinions)}>
+          <Container shareOptionsMode={(ballotShareOptions || ballotShareOptionsWithOpinions)}>
             {(ballotShareOptions || ballotShareOptionsWithOpinions) ? (
               <>
                 <ModalTitleArea>
@@ -181,7 +185,7 @@ class BallotShareButtonFooter extends Component {
                   </Title>
                   <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
                 </ModalTitleArea>
-                {(isMobile() && navigator.share) ? (
+                {(!featureStillInDevelopment && isMobile() && navigator.share) ? (
                   <Flex>
                     {featureStillInDevelopment ? null : <ShareModalOption noLink onClickFunction={() => this.openShareModal('friends')} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />} title="We Vote Friends" />}
                     <ShareModalOption copyLink link={linkToBeShared} background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
@@ -207,7 +211,7 @@ class BallotShareButtonFooter extends Component {
             ) : (
               <>
                 <MenuItemsWrapper>
-                  <MenuItem className={classes.menuItem} onClick={this.openBallotShareOptions}>
+                  <MenuItem className={classes.menuItem} onClick={this.openShareOptions}>
                     <MenuFlex>
                       <MenuIcon>
                         <i className="fas fa-list" />
@@ -219,7 +223,7 @@ class BallotShareButtonFooter extends Component {
                   </MenuItem>
                   <MenuSeparator />
                   {featureStillInDevelopment ? null : (
-                    <MenuItem className={classes.menuItem} onClick={this.openBallotShareOptionsWithOpinions}>
+                    <MenuItem className={classes.menuItem} onClick={this.openShareOptionsWithOpinions}>
                       <MenuFlex>
                         <MenuIcon>
                           <Comment />
@@ -295,7 +299,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   margin: 0 auto;
   max-width: 576px;
-  padding: ${props => (props.ballotShareOptionsMode ? '16px 16px 32px' : '24px 16px 32px')};
+  padding: ${props => (props.shareOptionsMode ? '16px 16px 32px' : '24px 16px 32px')};
 `;
 
 const ModalTitleArea = styled.div`
@@ -390,4 +394,4 @@ const MenuSeparator = styled.div`
   }
 `;
 
-export default withStyles(styles)(BallotShareButtonFooter);
+export default withStyles(styles)(ShareButtonFooter);

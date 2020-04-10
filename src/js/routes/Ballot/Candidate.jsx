@@ -7,7 +7,7 @@ import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
 import CandidateItem from '../../components/Ballot/CandidateItem';
-import CandidateShareButton from '../../components/Share/CandidateShareButton';
+import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import CandidateStore from '../../stores/CandidateStore';
 import { capitalizeString } from '../../utils/textFormat';
@@ -291,7 +291,7 @@ class Candidate extends Component {
             <RightColumnWrapper className="u-show-desktop-tablet">
               {nextReleaseFeaturesEnabled && (
                 <CandidateShareWrapper>
-                  <CandidateShareButton />
+                  <ShareButtonDesktopTablet candidateShare />
                 </CandidateShareWrapper>
               )}
               {candidate.ballotpedia_candidate_url && (
@@ -353,6 +353,7 @@ class Candidate extends Component {
 
 const CandidateShareWrapper = styled.div`
   margin-bottom: 12px;
+  padding-left: 2px;
 `;
 
 const LeftColumnWrapper = styled.div`
