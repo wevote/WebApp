@@ -190,12 +190,12 @@ export function getApplicationViewBooleans (pathname) {
     showFooterBar = true;
   }
 
-  let showBallotShareButtonFooter = false;
+  let showShareButtonFooter = false;
   if (pathnameLowerCase.startsWith('/ballot') ||
     pathnameLowerCase.startsWith('/candidate') ||
     pathnameLowerCase.startsWith('/measure') ||
     pathnameLowerCase.startsWith('/office')) {
-    showBallotShareButtonFooter = true;
+    showShareButtonFooter = true;
   }
 
   // console.log('applicationUtils, showFooterBar: ', showFooterBar, ', pathnameLowerCase:', pathnameLowerCase, ', showBackToSettingsMobile:', showBackToSettingsMobile);
@@ -217,7 +217,7 @@ export function getApplicationViewBooleans (pathname) {
     showBackToValues,
     showBackToVoterGuides,
     showFooterBar,
-    showBallotShareButtonFooter,
+    showShareButtonFooter,
   };
 }
 

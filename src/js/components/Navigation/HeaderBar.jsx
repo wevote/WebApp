@@ -345,9 +345,12 @@ class HeaderBar extends Component {
 
   closeShareModal () {
     AppActions.setShowShareModal(false);
+    AppActions.setShareModalStep('');
     const { pathname } = this.props;
-    const pathnameWithoutModalShare = pathname.replace('/modal/share', '');
-    historyPush(pathnameWithoutModalShare);
+    if (stringContains('/modal/share', pathname)) {
+      const pathnameWithoutModalShare = pathname.replace('/modal/share', '');
+      historyPush(pathnameWithoutModalShare);
+    }
   }
 
   closeOrganizationModal () {

@@ -275,6 +275,7 @@ class Ballot extends Component {
     const modalToOpen = this.props.params.modal_to_show || '';
 
     if (modalToOpen === 'share') {
+      // console.log('Ballot componentDidMount modalToOpen:', modalToOpen);
       AppActions.setShowShareModal(true);
     }
     window.addEventListener('scroll', this.onScroll);
@@ -321,9 +322,10 @@ class Ballot extends Component {
       // console.log('Ballot componentWillReceiveProps NO changes found');
     }
 
-    const modalToOpen = this.props.params.modal_to_show || '';
+    const modalToOpen = nextProps.params.modal_to_show || '';
 
     if (modalToOpen === 'share') {
+      // console.log('Ballot componentWillReceiveProps modalToOpen:', modalToOpen);
       AppActions.setShowShareModal(true);
     }
 

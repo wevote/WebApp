@@ -5,7 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { isCordova, isIOsSmallerThanPlus } from '../../utils/cordovaUtils';
-import BallotShareButton from '../../components/Share/BallotShareButton';
+import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { shortenText } from '../../utils/textFormat';
 
@@ -86,7 +86,7 @@ class BallotTitleHeader extends Component {
           </Title>
           {electionDayTextObject && nextReleaseFeaturesEnabled && (
             <ShareButtonWrapper>
-              <BallotShareButton />
+              <ShareButtonDesktopTablet />
             </ShareButtonWrapper>
           )}
         </Wrapper>
@@ -132,7 +132,7 @@ class BallotTitleHeader extends Component {
           </Tooltip>
           {electionDayTextObject && nextReleaseFeaturesEnabled && (
             <ShareButtonWrapper>
-              <BallotShareButton />
+              <ShareButtonDesktopTablet />
             </ShareButtonWrapper>
           )}
         </Wrapper>
