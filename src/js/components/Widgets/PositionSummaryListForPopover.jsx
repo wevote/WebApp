@@ -158,15 +158,28 @@ class PositionSummaryListForPopover extends Component {
             >
               <OrganizationPopoverWrapper>
                 {!!(positionSummary.issuesInCommonBetweenOrganizationAndVoter && positionSummary.issuesInCommonBetweenOrganizationAndVoter.length) && (
+                  // Limits the number of displayed Issue icons
+                  // The popover isn't big enough to accommodate more than 4 icons without making them too small!
                   <VoterAndOrganizationShareTheseIssuesWrapper>
-                    {positionSummary.issuesInCommonBetweenOrganizationAndVoter.map(issue => (
-                      <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
-                        <ReactSVG
+                    {(positionSummary.issuesInCommonBetweenOrganizationAndVoter.length > 4) ? (
+                      positionSummary.issuesInCommonBetweenOrganizationAndVoter.slice(0, 3).map(issue => (
+                        <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
+                          <ReactSVG
                           src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
                           svgStyle={{ fill: '#555', padding: '1px 1px 1px 0px' }}
-                        />
-                      </IssueIcon>
-                    ))}
+                          />
+                        </IssueIcon>
+                      ))
+                    ) : (
+                      positionSummary.issuesInCommonBetweenOrganizationAndVoter.map(issue => (
+                        <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
+                          <ReactSVG
+                            src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
+                            svgStyle={{ fill: '#555', padding: '1px 1px 1px 0px' }}
+                          />
+                        </IssueIcon>
+                      ))
+                    )}
                   </VoterAndOrganizationShareTheseIssuesWrapper>
                 )}
                 {positionSummary.voterIsFriendsWithThisOrganization ? (
