@@ -24,11 +24,11 @@ class ShareButtonDesktopTablet extends Component {
       open: false,
       anchorEl: null,
     };
-    this.handleClickShareButton = this.handleClickShareButton.bind(this);
+    this.handleShareButtonClick = this.handleShareButtonClick.bind(this);
     this.handleCloseMenu = this.handleCloseMenu.bind(this);
   }
 
-  handleClickShareButton (event) {
+  handleShareButtonClick (event) {
     this.setState({ anchorEl: event.currentTarget, open: true });
   }
 
@@ -102,12 +102,12 @@ class ShareButtonDesktopTablet extends Component {
     return (
       <>
         <Button
-          aria-controls="share-menu"
+          aria-controls="shareMenuDesktopTablet"
           aria-haspopup="true"
           classes={{ root: shareButtonClasses }}
           color="primary"
           id="shareButtonDesktopTablet"
-          onClick={this.handleClickShareButton}
+          onClick={this.handleShareButtonClick}
           variant="contained"
         >
           <Icon>
@@ -118,18 +118,18 @@ class ShareButtonDesktopTablet extends Component {
           Share
         </Button>
         <Menu
-          id="share-menu"
-          className="u-z-index-5020"
-          classes={{ paper: classes.paper }}
-          open={this.state.open}
-          onClose={this.handleCloseMenu}
-          elevation={2}
-          getContentAnchorEl={null}
           anchorEl={anchorEl}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
           }}
+          className="u-z-index-5020"
+          classes={{ paper: classes.paper }}
+          id="shareMenuDesktopTablet"
+          elevation={2}
+          getContentAnchorEl={null}
+          onClose={this.handleCloseMenu}
+          open={this.state.open}
           transformOrigin={{
             horizontal: 'right',
             vertical: 'top',

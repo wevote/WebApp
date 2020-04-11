@@ -164,25 +164,25 @@ class ShareModal extends Component {
                 </strong>
               </Title>
               {(shareModalStep === 'ballotShareOptions') && (
-                <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
+                <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are NOT included.</SubTitle>
               )}
               {(shareModalStep === 'ballotShareOptionsWithOpinions') && (
                 <SubTitle>Share a link to all of your opinions for this election.</SubTitle>
               )}
               {(shareModalStep === 'candidateShareOptions') && (
-                <SubTitle>Share a link to this candidate. Your opinions are not included.</SubTitle>
+                <SubTitle>Share a link to this candidate. Your opinions are NOT included.</SubTitle>
               )}
               {(shareModalStep === 'candidateShareOptionsWithOpinions') && (
                 <SubTitle>Share a link to this candidate. All of your opinions for this election are included.</SubTitle>
               )}
               {(shareModalStep === 'measureShareOptions') && (
-                <SubTitle>Share a link to this measure/proposition. Your opinions are not included.</SubTitle>
+                <SubTitle>Share a link to this measure/proposition. Your opinions are NOT included.</SubTitle>
               )}
               {(shareModalStep === 'measureShareOptionsWithOpinions') && (
                 <SubTitle>Share a link to this measure/proposition. All of your opinions for this election are included.</SubTitle>
               )}
               {(shareModalStep === 'officeShareOptions') && (
-                <SubTitle>Share a link to this office. Your opinions are not included.</SubTitle>
+                <SubTitle>Share a link to this office. Your opinions are NOT included.</SubTitle>
               )}
               {(shareModalStep === 'officeShareOptionsWithOpinions') && (
                 <SubTitle>Share a link to this office. All of your opinions for this election are included.</SubTitle>
@@ -307,7 +307,7 @@ class ShareModal extends Component {
                 <Title left>
                   <strong>Share Ballot With Friends</strong>
                   {' '}
-                  <Tooltip title="Share a link to this election so that your friends can get ready to vote. Your opinions are not included." arrow enterDelay={300}>
+                  <Tooltip title="Share a link to this election so that your friends can get ready to vote. Your opinions are NOT included." arrow enterDelay={300}>
                     <i className="fas fa-info-circle" />
                   </Tooltip>
                 </Title>
