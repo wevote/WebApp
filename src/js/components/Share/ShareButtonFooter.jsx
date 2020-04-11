@@ -26,20 +26,32 @@ class ShareButtonFooter extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      candidateShare: false,
+      currentFullUrlToShare: '',
       hideShareButtonFooter: false,
+      measureShare: false,
+      officeShare: false,
       openShareButtonDrawer: false,
+      shareFooterStep: '',
       showingOneCompleteYourProfileModal: false,
       showShareButton: true,
     };
   }
 
   componentDidMount () {
+    const { pathname } = this.props;
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
     const currentFullUrl = window.location.href || '';
-    const ballotFullUrl = currentFullUrl.replace('/modal/share', '');
+    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '');
+    const candidateShare = pathname.startsWith('/candidate');
+    const measureShare = pathname.startsWith('/measure');
+    const officeShare = pathname.startsWith('/office');
     this.setState({
-      ballotFullUrl,
+      candidateShare,
+      currentFullUrlToShare,
+      measureShare,
+      officeShare,
       showingOneCompleteYourProfileModal,
     });
   }
@@ -61,8 +73,19 @@ class ShareButtonFooter extends Component {
   }
 
   handleShareButtonClick = () => {
+    const { pathname } = this.props;
+    const currentFullUrl = window.location.href || '';
+    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '');
+    const candidateShare = pathname.startsWith('/candidate');
+    const measureShare = pathname.startsWith('/measure');
+    const officeShare = pathname.startsWith('/office');
     this.setState({
+      candidateShare,
+      currentFullUrlToShare,
+      measureShare,
+      officeShare,
       openShareButtonDrawer: true,
+      shareFooterStep: '',
       showShareButton: false,
     });
   }
@@ -70,37 +93,57 @@ class ShareButtonFooter extends Component {
   handleCloseShareButtonDrawer = () => {
     this.setState({
       openShareButtonDrawer: false,
+      shareFooterStep: '',
       showShareButton: true,
     });
   }
 
   handleBackButtonClick = () => {
-    // console.log('SettingsDomain openPaidAccountUpgradeModal');
     this.setState({
       ballotShareOptions: false,
       ballotShareOptionsWithOpinions: false,
+      shareFooterStep: '',
     });
   }
 
-  openShareOptions = () => {
+  openShareOptions = (withOpinions = false) => {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
+    const { candidateShare, measureShare, officeShare } = this.state;
+    let shareFooterStep;
+    if (candidateShare) {
+      if (withOpinions) {
+        shareFooterStep = 'candidateShareOptionsWithOpinions';
+      } else {
+        shareFooterStep = 'candidateShareOptions';
+      }
+    } else if (measureShare) {
+      if (withOpinions) {
+        shareFooterStep = 'measureShareOptionsWithOpinions';
+      } else {
+        shareFooterStep = 'measureShareOptions';
+      }
+    } else if (officeShare) {
+      if (withOpinions) {
+        shareFooterStep = 'officeShareOptionsWithOpinions';
+      } else {
+        shareFooterStep = 'officeShareOptions';
+      }
+      // Default to ballot
+    } else if (withOpinions) {
+      shareFooterStep = 'ballotShareOptionsWithOpinions';
+    } else {
+      shareFooterStep = 'ballotShareOptions';
+    }
     this.setState({
       ballotShareOptions: true,
       ballotShareOptionsWithOpinions: false,
+      shareFooterStep,
     });
   }
 
-  openShareOptionsWithOpinions = () => {
-    // console.log('SettingsDomain openPaidAccountUpgradeModal');
-    this.setState({
-      ballotShareOptions: false,
-      ballotShareOptionsWithOpinions: true,
-    });
-  }
-
-  openShareModal (shareModalStep) {
+  openShareModal (shareFooterStep) {
     AppActions.setShowShareModal(true);
-    AppActions.setShareModalStep(shareModalStep);
+    AppActions.setShareModalStep(shareFooterStep);
     const { pathname } = window.location;
     if (!stringContains('/modal/share', pathname)) {
       const pathnameWithModalShare = `${pathname}/modal/share`;
@@ -122,8 +165,10 @@ class ShareButtonFooter extends Component {
   render () {
     const { classes, pathname } = this.props;
     const {
-      ballotFullUrl, ballotShareOptions, ballotShareOptionsWithOpinions,
-      hideShareButtonFooter, openShareButtonDrawer, showingOneCompleteYourProfileModal, showShareButton,
+      ballotShareOptions, ballotShareOptionsWithOpinions,
+      candidateShare, currentFullUrlToShare,
+      hideShareButtonFooter, measureShare, officeShare, openShareButtonDrawer, shareFooterStep,
+      showingOneCompleteYourProfileModal, showShareButton,
     } = this.state;
     const { showFooterBar } = getApplicationViewBooleans(pathname);
 
@@ -131,24 +176,70 @@ class ShareButtonFooter extends Component {
     if (hideShareButtonFooter) {
       return null;
     }
+    let emailSubjectEncoded = '';
+    let emailBodyEncoded = '';
     let linkToBeShared = '';
     let linkToBeSharedUrlEncoded = '';
-    if (ballotShareOptionsWithOpinions) {
+    if (stringContains('WithOpinions', shareFooterStep)) {
       linkToBeShared = '';
     } else {
-      linkToBeShared = ballotFullUrl;
+      linkToBeShared = currentFullUrlToShare;
     }
     linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
     const twitterTextEncoded = encodeURI('Check out this cool ballot tool!');
+    if (shareFooterStep === 'ballotShareOptions') {
+      emailSubjectEncoded = encodeURI('Ready to vote?');
+      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    } else if (shareFooterStep === 'ballotShareOptionsWithOpinions') {
+      emailSubjectEncoded = encodeURI('Ready to vote?');
+      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    } else if (shareFooterStep === 'candidateShareOptions') {
+      emailSubjectEncoded = encodeURI('Ready to vote?');
+      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    } else if (shareFooterStep === 'candidateShareOptionsWithOpinions') {
+      emailSubjectEncoded = encodeURI('Ready to vote?');
+      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    } else if (shareFooterStep === 'measureShareOptions') {
+      emailSubjectEncoded = encodeURI('Ready to vote?');
+      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    } else if (shareFooterStep === 'measureShareOptionsWithOpinions') {
+      emailSubjectEncoded = encodeURI('Ready to vote?');
+      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    } else if (shareFooterStep === 'officeShareOptions') {
+      emailSubjectEncoded = encodeURI('Ready to vote?');
+      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    } else if (shareFooterStep === 'officeShareOptionsWithOpinions') {
+      emailSubjectEncoded = encodeURI('Ready to vote?');
+      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    }
+    const shareButtonClasses = classes.buttonDefault;
+    let shareMenuTextDefault;
+    let shareMenuTextWithOpinions;
+    if (candidateShare) {
+      shareMenuTextDefault = 'Candidate';
+      shareMenuTextWithOpinions = 'Candidate + Your Opinions';
+    } else if (measureShare) {
+      shareMenuTextDefault = 'Measure';
+      shareMenuTextWithOpinions = 'Measure + Your Opinions';
+    } else if (officeShare) {
+      shareMenuTextDefault = 'Office';
+      shareMenuTextWithOpinions = 'Office + Your Opinions';
+    } else {
+      // Default to ballot
+      shareMenuTextDefault = 'Ballot';
+      shareMenuTextWithOpinions = 'Ballot + Your Opinions';
+    }
+    linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
     const featureStillInDevelopment = true;
     return (
       <Wrapper pinToBottom={!showFooterBar} className={showingOneCompleteYourProfileModal ? 'u-z-index-1000' : 'u-z-index-9000'}>
         {showShareButton && (
           <Button
-            aria-controls="share-menu"
+            aria-controls="shareMenuFooter"
             aria-haspopup="true"
-            className={classes.button}
+            classes={{ root: shareButtonClasses }}
             color="primary"
+            id="shareButtonFooter"
             onClick={this.handleShareButtonClick}
             variant="contained"
           >
@@ -161,85 +252,183 @@ class ShareButtonFooter extends Component {
           </Button>
         )}
         <Drawer
-          id="share-menu"
           anchor="bottom"
           className="u-z-index-9010"
           direction="up"
+          id="shareMenuFooter"
           onClose={this.handleCloseShareButtonDrawer}
           open={openShareButtonDrawer}
         >
-          <Container shareOptionsMode={(ballotShareOptions || ballotShareOptionsWithOpinions)}>
-            {(ballotShareOptions || ballotShareOptionsWithOpinions) ? (
-              <>
-                <ModalTitleArea>
-                  {(ballotShareOptions || ballotShareOptionsWithOpinions) ? (
-                    <Button className={classes.backButton} color="primary" onClick={this.handleBackButtonClick}>
-                      <ArrowBackIos className={classes.backButtonIcon} />
-                      Back
+          <Container
+            shareOptionsMode={(
+              (shareFooterStep === 'ballotShareOptions') ||
+              (shareFooterStep === 'ballotShareOptionsWithOpinions') ||
+              (shareFooterStep === 'candidateShareOptions') ||
+              (shareFooterStep === 'candidateShareOptionsWithOpinions') ||
+              (shareFooterStep === 'measureShareOptions') ||
+              (shareFooterStep === 'measureShareOptionsWithOpinions') ||
+              (shareFooterStep === 'officeShareOptions') ||
+              (shareFooterStep === 'officeShareOptionsWithOpinions')
+            )}
+          >
+            {(shareFooterStep === 'ballotShareOptions') ||
+              (shareFooterStep === 'ballotShareOptionsWithOpinions') ||
+              (shareFooterStep === 'candidateShareOptions') ||
+              (shareFooterStep === 'candidateShareOptionsWithOpinions') ||
+              (shareFooterStep === 'measureShareOptions') ||
+              (shareFooterStep === 'measureShareOptionsWithOpinions') ||
+              (shareFooterStep === 'officeShareOptions') ||
+              (shareFooterStep === 'officeShareOptionsWithOpinions') ? (
+                <>
+                  <ModalTitleArea>
+                    {(ballotShareOptions || ballotShareOptionsWithOpinions) ? (
+                      <Button
+                        className={classes.backButton}
+                        color="primary"
+                        id="shareButtonFooterBack"
+                        onClick={this.handleBackButtonClick}
+                      >
+                        <ArrowBackIos className={classes.backButtonIcon} />
+                        Back
+                      </Button>
+                    ) : null}
+                    <Title>
+                      Share:
+                      {' '}
+                      <strong>
+                        {(shareFooterStep === 'ballotShareOptions') && 'Ballot for this Election'}
+                        {(shareFooterStep === 'ballotShareOptionsWithOpinions') && 'Ballot + Your Opinions for this Election'}
+                        {(shareFooterStep === 'candidateShareOptions') && 'Candidate'}
+                        {(shareFooterStep === 'candidateShareOptionsWithOpinions') && 'Candidate + Your Opinions'}
+                        {(shareFooterStep === 'measureShareOptions') && 'Measure'}
+                        {(shareFooterStep === 'measureShareOptionsWithOpinions') && 'Measure + Your Opinions'}
+                        {(shareFooterStep === 'officeShareOptions') && 'Office'}
+                        {(shareFooterStep === 'officeShareOptionsWithOpinions') && 'Office + Your Opinions'}
+                      </strong>
+                    </Title>
+                    {(shareFooterStep === 'ballotShareOptions') && (
+                      <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are NOT included.</SubTitle>
+                    )}
+                    {(shareFooterStep === 'ballotShareOptionsWithOpinions') && (
+                      <SubTitle>Share a link to all of your opinions for this election.</SubTitle>
+                    )}
+                    {(shareFooterStep === 'candidateShareOptions') && (
+                      <SubTitle>Share a link to this candidate. Your opinions are NOT included.</SubTitle>
+                    )}
+                    {(shareFooterStep === 'candidateShareOptionsWithOpinions') && (
+                      <SubTitle>Share a link to this candidate. All of your opinions for this election are included.</SubTitle>
+                    )}
+                    {(shareFooterStep === 'measureShareOptions') && (
+                      <SubTitle>Share a link to this measure/proposition. Your opinions are NOT included.</SubTitle>
+                    )}
+                    {(shareFooterStep === 'measureShareOptionsWithOpinions') && (
+                      <SubTitle>Share a link to this measure/proposition. All of your opinions for this election are included.</SubTitle>
+                    )}
+                    {(shareFooterStep === 'officeShareOptions') && (
+                      <SubTitle>Share a link to this office. Your opinions are NOT included.</SubTitle>
+                    )}
+                    {(shareFooterStep === 'officeShareOptionsWithOpinions') && (
+                      <SubTitle>Share a link to this office. All of your opinions for this election are included.</SubTitle>
+                    )}
+                  </ModalTitleArea>
+                  {(!featureStillInDevelopment && isMobile() && navigator.share) ? (
+                    <Flex>
+                      {featureStillInDevelopment ? null : (
+                        <ShareModalOption
+                          noLink
+                          onClickFunction={() => this.openShareModal('friends')}
+                          background="#2E3C5D"
+                          icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />}
+                          title="We Vote Friends"
+                        />
+                      )}
+                      <ShareModalOption
+                        copyLink
+                        link={linkToBeShared}
+                        background="#2E3C5D"
+                        icon={<FileCopyOutlinedIcon />}
+                        title="Copy Link"
+                      />
+                      <ShareModalOption
+                        noLink
+                        onClickFunction={() => this.openNativeShare(linkToBeShared, 'Open Share')}
+                        background="#2E3C5D"
+                        icon={<Reply />}
+                        title="Share"
+                      />
+                    </Flex>
+                  ) : (
+                    <Flex>
+                      <ShareModalOption
+                        background="#3b5998"
+                        icon={<i className="fab fa-facebook-f" />}
+                        link={`https://www.facebook.com/sharer/sharer.php?u=${linkToBeSharedUrlEncoded}&t=WeVote`}
+                        target="_blank"
+                        title="Facebook"
+                      />
+                      <ShareModalOption
+                        background="#38A1F3"
+                        icon={<i className="fab fa-twitter" />}
+                        link={`https://twitter.com/share?text=${twitterTextEncoded}&url=${linkToBeSharedUrlEncoded}`}
+                        title="Twitter"
+                      />
+                      <ShareModalOption
+                        background="#2E3C5D"
+                        icon={<Mail />}
+                        link={`mailto:?subject=${emailSubjectEncoded}&body=${emailBodyEncoded}`}
+                        title="Email"
+                      />
+                      <ShareModalOption
+                        background="#2E3C5D"
+                        copyLink
+                        icon={<FileCopyOutlinedIcon />}
+                        link={linkToBeShared}
+                        title="Copy Link"
+                      />
+                    </Flex>
+                  )}
+                  {ballotShareOptionsWithOpinions && (
+                    <Button className={classes.cancelButton} variant="contained" fullWidth color="primary">
+                      Preview
                     </Button>
-                  ) : null}
-                  <Title>
-                    Share:
-                    {' '}
-                    <strong>Ballot</strong>
-                  </Title>
-                  <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
-                </ModalTitleArea>
-                {(!featureStillInDevelopment && isMobile() && navigator.share) ? (
-                  <Flex>
-                    {featureStillInDevelopment ? null : <ShareModalOption noLink onClickFunction={() => this.openShareModal('friends')} background="#2E3C5D" icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />} title="We Vote Friends" />}
-                    <ShareModalOption copyLink link={linkToBeShared} background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
-                    <ShareModalOption noLink onClickFunction={() => this.openNativeShare(linkToBeShared, 'Share Ballot')} background="#2E3C5D" icon={<Reply />} title="Share" />
-                  </Flex>
-                ) : (
-                  <Flex>
-                    <ShareModalOption link={`https://www.facebook.com/sharer/sharer.php?u=${linkToBeSharedUrlEncoded}&t=WeVote`} target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
-                    <ShareModalOption link={`https://twitter.com/share?text=${twitterTextEncoded}&url=${linkToBeSharedUrlEncoded}`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
-                    <ShareModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
-                    <ShareModalOption copyLink link={linkToBeShared} background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
-                  </Flex>
-                )}
-                {ballotShareOptionsWithOpinions && (
-                  <Button className={classes.cancelButton} variant="contained" fullWidth color="primary">
-                    Preview
+                  )}
+                  <Button className={classes.cancelButton} fullWidth onClick={this.handleCloseShareButtonDrawer} variant="outlined" color="primary">
+                    Cancel
                   </Button>
-                )}
-                <Button className={classes.cancelButton} fullWidth onClick={this.handleCloseShareButtonDrawer} variant="outlined" color="primary">
-                  Cancel
-                </Button>
-              </>
-            ) : (
-              <>
-                <MenuItemsWrapper>
-                  <MenuItem className={classes.menuItem} onClick={this.openShareOptions}>
-                    <MenuFlex>
-                      <MenuIcon>
-                        <i className="fas fa-list" />
-                      </MenuIcon>
-                      <MenuText>
-                        Ballot
-                      </MenuText>
-                    </MenuFlex>
-                  </MenuItem>
-                  <MenuSeparator />
-                  {featureStillInDevelopment ? null : (
-                    <MenuItem className={classes.menuItem} onClick={this.openShareOptionsWithOpinions}>
+                </>
+              ) : (
+                <>
+                  <MenuItemsWrapper>
+                    <MenuItem className={classes.menuItem} onClick={() => this.openShareOptions()}>
                       <MenuFlex>
                         <MenuIcon>
-                          <Comment />
+                          <i className="fas fa-list" />
                         </MenuIcon>
                         <MenuText>
-                          Ballot + Your Opinions
+                          {shareMenuTextDefault}
                         </MenuText>
                       </MenuFlex>
                     </MenuItem>
-                  )}
-                </MenuItemsWrapper>
-                <Button className={classes.cancelButton} fullWidth onClick={this.handleCloseShareButtonDrawer} variant="outlined" color="primary">
-                  Cancel
-                </Button>
-              </>
-            )}
+                    <MenuSeparator />
+                    {featureStillInDevelopment ? null : (
+                      <MenuItem className={classes.menuItem} onClick={() => this.openShareOptions(true)}>
+                        <MenuFlex>
+                          <MenuIcon>
+                            <Comment />
+                          </MenuIcon>
+                          <MenuText>
+                            {shareMenuTextWithOpinions}
+                          </MenuText>
+                        </MenuFlex>
+                      </MenuItem>
+                    )}
+                  </MenuItemsWrapper>
+                  <Button className={classes.cancelButton} fullWidth onClick={this.handleCloseShareButtonDrawer} variant="outlined" color="primary">
+                    Cancel
+                  </Button>
+                </>
+              )
+            }
           </Container>
         </Drawer>
       </Wrapper>
@@ -248,7 +437,7 @@ class ShareButtonFooter extends Component {
 }
 
 const styles = () => ({
-  button: {
+  buttonDefault: {
     padding: '0 12px',
     width: '100%',
     boxShadow: 'none !important',
