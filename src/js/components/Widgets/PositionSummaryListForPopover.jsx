@@ -182,6 +182,7 @@ class PositionSummaryListForPopover extends Component {
                     )}
                   </VoterAndOrganizationShareTheseIssuesWrapper>
                 )}
+                {(positionSummary.issuesInCommonBetweenOrganizationAndVoter.length > 4) ? ('...') : null}
                 {positionSummary.voterIsFriendsWithThisOrganization ? (
                   <FollowingWrapper>
                     {/* <CheckCircle className="friends-icon" /> */}
