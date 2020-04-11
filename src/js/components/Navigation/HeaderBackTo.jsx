@@ -213,11 +213,6 @@ class HeaderBackTo extends Component {
     this.setState({ profilePopUpOpen: false });
   }
 
-  signOutAndHideAccountMenu () {
-    VoterSessionActions.voterSignOut();
-    this.setState({ profilePopUpOpen: false });
-  }
-
   render () {
     renderLog('HeaderBackTo');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('HeaderBackTo render');

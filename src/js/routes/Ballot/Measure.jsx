@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import { capitalizeString } from '../../utils/textFormat';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
+import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
@@ -20,7 +22,7 @@ import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 
 // The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
-export default class Measure extends Component {
+class Measure extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
   };
@@ -92,9 +94,17 @@ export default class Measure extends Component {
       allCachedPositionsForThisMeasure,
       allCachedPositionsForThisMeasureLength,
     });
+    const modalToOpen = this.props.params.modal_to_show || '';
+    if (modalToOpen === 'share') {
+      AppActions.setShowShareModal(true);
+    }
   }
 
   componentWillReceiveProps (nextProps) {
+    const modalToOpen = nextProps.params.modal_to_show || '';
+    if (modalToOpen === 'share') {
+      AppActions.setShowShareModal(true);
+    }
     // When a new measure is passed in, update this component to show the new data
     // console.log('componentWillReceiveProps nextProps.params.measure_we_vote_id:', nextProps.params.measure_we_vote_id, ', this.state.measureWeVoteId:', this.state.measureWeVoteId);
     if (nextProps.params.measure_we_vote_id !== this.state.measureWeVoteId) {
@@ -292,3 +302,24 @@ export default class Measure extends Component {
     );
   }
 }
+
+const MeasureShareWrapper = styled.div`
+  margin-bottom: 12px;
+  padding-left: 2px;
+`;
+
+const LeftColumnWrapper = styled.div`
+  flex: 1 1 0;
+`;
+
+const RightColumnWrapper = styled.div`
+  padding: 16px 16px 16px 0;
+  width: fit-content;
+`;
+
+const TwoColumns = styled.div`
+  display: flex;
+  margin: 0 -8px 0 -8px;
+`;
+
+export default Measure;
