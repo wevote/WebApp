@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import CandidateList from '../../components/Ballot/CandidateList';
 import { capitalizeString } from '../../utils/textFormat';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppActions from '../../actions/AppActions';
 import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
 import CandidateStore from '../../stores/CandidateStore';
@@ -93,20 +94,19 @@ class Office extends Component {
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }
+    const modalToOpen = this.props.params.modal_to_show || '';
+    if (modalToOpen === 'share') {
+      AppActions.setShowShareModal(true);
+    }
     AnalyticsActions.saveActionOffice(VoterStore.electionId(), this.props.params.office_we_vote_id);
   }
 
-  // componentWillReceiveProps (nextProps) {
-  //   // When a new office is passed in, update this component to show the new data
-  //   const office = OfficeStore.getOffice(nextProps.params.office_we_vote_id);
-  //
-  //   if (!office || !office.ballot_item_display_name) {
-  //     this.setState({ officeWeVoteId: nextProps.params.office_we_vote_id });
-  //     OfficeActions.officeRetrieve(nextProps.params.office_we_vote_id);
-  //   } else {
-  //     this.setState({ office, officeWeVoteId: nextProps.params.office_we_vote_id });
-  //   }
-  // }
+  componentWillReceiveProps (nextProps) {
+    const modalToOpen = nextProps.params.modal_to_show || '';
+    if (modalToOpen === 'share') {
+      AppActions.setShowShareModal(true);
+    }
+  }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();

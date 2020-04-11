@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
@@ -122,41 +123,17 @@ class Candidate extends Component {
       organizationWeVoteId,
       scrolledDown: AppStore.getScrolledDown(),
     });
+    const modalToOpen = this.props.params.modal_to_show || '';
+    if (modalToOpen === 'share') {
+      AppActions.setShowShareModal(true);
+    }
   }
 
   componentWillReceiveProps (nextProps) {
-    // DALE 2019-12-30 I suspect this isn't used. Commented out now, but we can delete as soon as 100% sure.
     // console.log('Candidate componentWillReceiveProps');
-    // When a new candidate is passed in, update this component to show the new data
-    if (nextProps.params.candidate_we_vote_id !== this.state.candidateWeVoteId) {
-      console.log('Candidate componentWillReceiveProps candidate_we_vote_id CHANGED');
-      // const { candidate_we_vote_id: candidateWeVoteId } = nextProps.params;
-      // CandidateActions.candidateRetrieve(candidateWeVoteId);
-      // if (candidateWeVoteId &&
-      //   !this.localPositionListHasBeenRetrievedOnce(candidateWeVoteId) &&
-      //   !BallotStore.positionListHasBeenRetrievedOnce(candidateWeVoteId)
-      // ) {
-      //   CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
-      //   const { positionListHasBeenRetrievedOnce } = this.state;
-      //   positionListHasBeenRetrievedOnce[candidateWeVoteId] = true;
-      //   this.setState({
-      //     positionListHasBeenRetrievedOnce,
-      //   });
-      // }
-      // // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateWeVoteId, 'CANDIDATE');
-      //
-      // // getAllCachedPositionsByCandidateWeVoteId returns a dict with organization_we_vote_id as the key
-      // // We convert to a simple list..
-      // const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
-      // let allCachedPositionsForThisCandidateLength = 0;
-      // if (allCachedPositionsForThisCandidate) {
-      //   allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length;
-      // }
-      // this.setState({
-      //   candidateWeVoteId,
-      //   allCachedPositionsForThisCandidate,
-      //   allCachedPositionsForThisCandidateLength,
-      // });
+    const modalToOpen = nextProps.params.modal_to_show || '';
+    if (modalToOpen === 'share') {
+      AppActions.setShowShareModal(true);
     }
   }
 

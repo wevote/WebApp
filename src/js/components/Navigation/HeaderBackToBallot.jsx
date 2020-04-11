@@ -7,11 +7,11 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
-import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
-import { isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import MeasureStore from '../../stores/MeasureStore';
@@ -20,6 +20,8 @@ import OfficeStore from '../../stores/OfficeStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
+import ShareModal from '../Share/ShareModal';
+import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
@@ -50,8 +52,10 @@ class HeaderBackToBallot extends Component {
       organizationHasBeenRetrievedOnce: {},
       organizationWeVoteId: '',
       profilePopUpOpen: false,
-      showSignInModal: AppStore.showSignInModal(),
-      scrolledDown: AppStore.getScrolledDown(),
+      shareModalStep: '',
+      showShareModal: false,
+      showSignInModal: false,
+      scrolledDown: false,
       voter: {},
       voterFirstName: '',
     };
@@ -163,6 +167,10 @@ class HeaderBackToBallot extends Component {
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
+      scrolledDown: AppStore.getScrolledDown(),
+      shareModalStep: AppStore.shareModalStep(),
+      showShareModal: AppStore.showShareModal(),
+      showSignInModal: AppStore.showSignInModal(),
       voter,
       voterFirstName,
       voterIsSignedIn,
@@ -265,6 +273,8 @@ class HeaderBackToBallot extends Component {
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
+      shareModalStep: AppStore.shareModalStep(),
+      showShareModal: AppStore.showShareModal(),
       voter,
       voterFirstName,
       voterIsSignedIn,
@@ -319,6 +329,14 @@ class HeaderBackToBallot extends Component {
       // console.log('this.state.scrolledDown: ', this.state.scrolledDown, ', nextState.scrolledDown', nextState.scrolledDown);
       return true;
     }
+    if (this.state.showModalStep !== nextState.showModalStep) {
+      // console.log('this.state.showModalStep: ', this.state.showModalStep, ', nextState.showModalStep', nextState.showModalStep);
+      return true;
+    }
+    if (this.state.showShareModal !== nextState.showShareModal) {
+      // console.log('this.state.showShareModal: ', this.state.showShareModal, ', nextState.showShareModal', nextState.showShareModal);
+      return true;
+    }
     if (this.state.showSignInModal !== nextState.showSignInModal) {
       // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
       return true;
@@ -358,6 +376,8 @@ class HeaderBackToBallot extends Component {
   onAppStoreChange () {
     this.setState({
       scrolledDown: AppStore.getScrolledDown(),
+      shareModalStep: AppStore.shareModalStep(),
+      showShareModal: AppStore.showShareModal(),
       showSignInModal: AppStore.showSignInModal(),
     });
   }
@@ -483,9 +503,18 @@ class HeaderBackToBallot extends Component {
     return `/voterguide/${organizationWeVoteId}/ballot/election/${googleCivicElectionId}`;
   }
 
-  signOutAndHideAccountMenu () {
-    VoterSessionActions.voterSignOut();
-    this.setState({ profilePopUpOpen: false });
+  closeShareModal = () => {
+    AppActions.setShowShareModal(false);
+    AppActions.setShareModalStep('');
+    const { pathname } = this.props;
+    if (stringContains('/modal/share', pathname)) {
+      const pathnameWithoutModalShare = pathname.replace('/modal/share', '');
+      historyPush(pathnameWithoutModalShare);
+    }
+  }
+
+  closeSignInModal () {
+    AppActions.setShowSignInModal(false);
   }
 
   transitionToYourVoterGuide () {
@@ -513,10 +542,6 @@ class HeaderBackToBallot extends Component {
   toggleProfilePopUp () {
     const { profilePopUpOpen } = this.state;
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
-  }
-
-  closeSignInModal () {
-    AppActions.setShowSignInModal(false);
   }
 
   toggleSignInModal () {
@@ -548,7 +573,7 @@ class HeaderBackToBallot extends Component {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
       candidate, googleCivicElectionId, measureWeVoteId, officeName, officeWeVoteId,
       organization, organizationWeVoteId, profilePopUpOpen, scrolledDown, showSignInModal,
-      voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
+      shareModalStep, showShareModal, voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
     } = this.state;
     const { classes, pathname } = this.props;
     // console.log('HeaderBackToBallot googleCivicElectionId:', googleCivicElectionId);
@@ -692,12 +717,24 @@ class HeaderBackToBallot extends Component {
               weVoteId={officeWeVoteId}
               ballotItemDisplayName={officeName}
             />
+            <OfficeShareWrapper className="u-show-desktop-tablet">
+              <ShareButtonDesktopTablet officeShare />
+            </OfficeShareWrapper>
           </OfficeNameWrapper>
         )}
         {showSignInModal && (
           <SignInModal
             show={showSignInModal}
             closeFunction={this.closeSignInModal}
+          />
+        )}
+        {showShareModal && (
+          <ShareModal
+            voterIsSignedIn={voterIsSignedIn}
+            pathname={pathname}
+            show={showShareModal}
+            shareModalStep={shareModalStep}
+            toggleFunction={this.closeShareModal}
           />
         )}
       </AppBar>
@@ -733,7 +770,12 @@ const styles = theme => ({
 });
 
 const OfficeNameWrapper = styled.div`
+  display: flex;
   margin-left: 30px;
+`;
+
+const OfficeShareWrapper = styled.div`
+  margin-bottom: 12px;
 `;
 
 const FirstNameWrapper = styled.div`

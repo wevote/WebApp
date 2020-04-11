@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { capitalizeString } from '../../utils/textFormat';
-import GuideList from '../../components/VoterGuide/GuideList';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import MeasureItem from '../../components/Ballot/MeasureItem';
@@ -16,7 +15,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 
-// This is based on routes/Ballot/Measure
+// This is based on routes/Ballot/Measure - TO BE DEPRECATED?
 export default class OrganizationVoterGuideMeasure extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
@@ -99,7 +98,6 @@ export default class OrganizationVoterGuideMeasure extends Component {
   render () {
     renderLog('OrganizationVoterGuideMeasure');  // Set LOG_RENDER_EVENTS to log all renders
 
-    const electionId = VoterStore.electionId();
     const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this measure.';
 
     if (!this.state.measure || !this.state.measure.ballot_item_display_name) {
@@ -138,12 +136,12 @@ export default class OrganizationVoterGuideMeasure extends Component {
           {this.state.voterGuidesToFollowForLatestBallotItem.length === 0 ?
             <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
               <div>
-                <h3 className="card__additional-heading">{`More opinions about ${this.state.measure.ballot_item_display_name}`}</h3>
-                <GuideList
-                  id={electionId}
-                  ballotItemWeVoteId={this.state.measureWeVoteId}
-                  incomingVoterGuideList={this.state.voterGuidesToFollowForLatestBallotItem}
-                />
+                {/* <h3 className="card__additional-heading">{`More opinions about ${this.state.measure.ballot_item_display_name}`}</h3> */}
+                {/* <GuideList */}
+                {/*  id={electionId} */}
+                {/*  ballotItemWeVoteId={this.state.measureWeVoteId} */}
+                {/*  incomingVoterGuideList={this.state.voterGuidesToFollowForLatestBallotItem} */}
+                {/* /> */}
               </div>
             )
           }

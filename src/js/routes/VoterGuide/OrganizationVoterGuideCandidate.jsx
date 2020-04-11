@@ -6,7 +6,6 @@ import CandidateActions from '../../actions/CandidateActions';
 import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
 import CandidateStore from '../../stores/CandidateStore';
 import { capitalizeString } from '../../utils/textFormat';
-import GuideList from '../../components/VoterGuide/GuideList';
 import LoadingWheel from '../../components/LoadingWheel';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -19,7 +18,7 @@ import webAppConfig from '../../config';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import { renderLog } from '../../utils/logging';
 
-// This is based on routes/Ballot/Candidate
+// This is based on routes/Ballot/Candidate - TO BE DEPRECATED?
 export default class OrganizationVoterGuideCandidate extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
@@ -113,9 +112,8 @@ export default class OrganizationVoterGuideCandidate extends Component {
 
   render () {
     renderLog('OrganizationVoterGuideCandidate');  // Set LOG_RENDER_EVENTS to log all renders
-    const electionId = VoterStore.electionId();
     const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
-    const { allCachedPositionsForThisCandidate, candidate, candidateWeVoteId, organizationWeVoteId } = this.state;
+    const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId } = this.state;
     if (!candidate || !candidate.ballot_item_display_name) {
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
       return (
@@ -160,12 +158,12 @@ export default class OrganizationVoterGuideCandidate extends Component {
             {this.state.voterGuidesToFollowForLatestBallotItem.length === 0 ?
               <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
                 <div>
-                  <h3 className="card__additional-heading">{`More opinions about ${candidate.ballot_item_display_name}`}</h3>
-                  <GuideList
-                    id={electionId}
-                    ballotItemWeVoteId={candidateWeVoteId}
-                    incomingVoterGuideList={this.state.voterGuidesToFollowForLatestBallotItem}
-                  />
+                  {/* <h3 className="card__additional-heading">{`More opinions about ${candidate.ballot_item_display_name}`}</h3> */}
+                  {/* <GuideList */}
+                  {/*  id={electionId} */}
+                  {/*  ballotItemWeVoteId={candidateWeVoteId} */}
+                  {/*  incomingVoterGuideList={this.state.voterGuidesToFollowForLatestBallotItem} */}
+                  {/* /> */}
                 </div>
               )
             }

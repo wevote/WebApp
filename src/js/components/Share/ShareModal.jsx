@@ -11,14 +11,15 @@ import Mail from '@material-ui/icons/Mail';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import { Button, Tooltip } from '@material-ui/core';
+import AppActions from '../../actions/AppActions';
 import { cordovaDot, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
+import FriendsShareList from '../Friends/FriendsShareList';
 import FriendStore from '../../stores/FriendStore';
 import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
+import { stringContains } from '../../utils/textFormat';
 import ShareModalOption from './ShareModalOption';
-import FriendsShareList from '../Friends/FriendsShareList';
-import AppActions from '../../actions/AppActions';
 
 class ShareModal extends Component {
   static propTypes = {
@@ -34,9 +35,10 @@ class ShareModal extends Component {
     super(props);
     this.state = {
       pathname: '',
+      currentFullUrlToShare: '',
       currentFriendsList: [],
       // friendsToShareWith: [],
-      shareModalStep: 'ballotShareOptions',
+      shareModalStep: '',
     };
 
     this.closeShareModal = this.closeShareModal.bind(this);
@@ -47,14 +49,14 @@ class ShareModal extends Component {
 
   componentDidMount () {
     const { shareModalStep } = this.props;
-    console.log('shareModalStep:', shareModalStep);
+    console.log('shareModalStep componentDidMount this.props:', shareModalStep);
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
     const currentFullUrl = window.location.href || '';
-    const ballotFullUrl = currentFullUrl.replace('/modal/share', '');
+    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '');
     this.setState({
-      ballotFullUrl,
+      currentFullUrlToShare,
       pathname: this.props.pathname,
       shareModalStep: shareModalStep || 'ballotShareOptions',
       currentFriendsList: FriendStore.currentFriends(),
@@ -84,7 +86,7 @@ class ShareModal extends Component {
     renderLog('ShareModal');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ShareModal render');
     const { classes, voterIsSignedIn } = this.props;
-    const { ballotFullUrl, shareModalStep } = this.state;
+    const { currentFullUrlToShare, shareModalStep } = this.state;
     let shareModalHtml = (
       <>Loading...</>
     );
@@ -94,16 +96,51 @@ class ShareModal extends Component {
     }
     const featureStillInDevelopment = true;
 
+    let emailSubjectEncoded = '';
+    let emailBodyEncoded = '';
     let linkToBeShared = '';
     let linkToBeSharedUrlEncoded = '';
-    if ((shareModalStep === 'ballotShareOptions') || (shareModalStep === 'ballotShareOptionsWithOpinions')) {
-      if (shareModalStep === 'ballotShareOptionsWithOpinions') {
+    if ((shareModalStep === 'ballotShareOptions') ||
+        (shareModalStep === 'ballotShareOptionsWithOpinions') ||
+        (shareModalStep === 'candidateShareOptions') ||
+        (shareModalStep === 'candidateShareOptionsWithOpinions') ||
+        (shareModalStep === 'measureShareOptions') ||
+        (shareModalStep === 'measureShareOptionsWithOpinions') ||
+        (shareModalStep === 'officeShareOptions') ||
+        (shareModalStep === 'officeShareOptionsWithOpinions')
+    ) {
+      if (stringContains('WithOpinions', shareModalStep)) {
         linkToBeShared = '';
       } else {
-        linkToBeShared = ballotFullUrl;
+        linkToBeShared = currentFullUrlToShare;
       }
       linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
       const twitterTextEncoded = encodeURI('Check out this cool ballot tool!');
+      if (shareModalStep === 'ballotShareOptions') {
+        emailSubjectEncoded = encodeURI('Ready to vote?');
+        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      } else if (shareModalStep === 'ballotShareOptionsWithOpinions') {
+        emailSubjectEncoded = encodeURI('Ready to vote?');
+        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      } else if (shareModalStep === 'candidateShareOptions') {
+        emailSubjectEncoded = encodeURI('Ready to vote?');
+        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      } else if (shareModalStep === 'candidateShareOptionsWithOpinions') {
+        emailSubjectEncoded = encodeURI('Ready to vote?');
+        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      } else if (shareModalStep === 'measureShareOptions') {
+        emailSubjectEncoded = encodeURI('Ready to vote?');
+        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      } else if (shareModalStep === 'measureShareOptionsWithOpinions') {
+        emailSubjectEncoded = encodeURI('Ready to vote?');
+        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      } else if (shareModalStep === 'officeShareOptions') {
+        emailSubjectEncoded = encodeURI('Ready to vote?');
+        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      } else if (shareModalStep === 'officeShareOptionsWithOpinions') {
+        emailSubjectEncoded = encodeURI('Ready to vote?');
+        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      }
       shareModalHtml = (
         <Dialog
           classes={{ paper: classes.dialogPaper }}
@@ -118,19 +155,44 @@ class ShareModal extends Component {
                 <strong>
                   {(shareModalStep === 'ballotShareOptions') && 'Ballot for this Election'}
                   {(shareModalStep === 'ballotShareOptionsWithOpinions') && 'Ballot + Your Opinions for this Election'}
+                  {(shareModalStep === 'candidateShareOptions') && 'Candidate for this Election'}
+                  {(shareModalStep === 'candidateShareOptionsWithOpinions') && 'Candidate + Your Opinions'}
+                  {(shareModalStep === 'measureShareOptions') && 'Measure for this Election'}
+                  {(shareModalStep === 'measureShareOptionsWithOpinions') && 'Measure + Your Opinions'}
+                  {(shareModalStep === 'officeShareOptions') && 'Office for this Election'}
+                  {(shareModalStep === 'officeShareOptionsWithOpinions') && 'Office + Your Opinions'}
                 </strong>
               </Title>
-              {(shareModalStep === 'ballotShareOptions') ? (
+              {(shareModalStep === 'ballotShareOptions') && (
                 <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are not included.</SubTitle>
-              ) : (
+              )}
+              {(shareModalStep === 'ballotShareOptionsWithOpinions') && (
                 <SubTitle>Share a link to all of your opinions for this election.</SubTitle>
+              )}
+              {(shareModalStep === 'candidateShareOptions') && (
+                <SubTitle>Share a link to this candidate. Your opinions are not included.</SubTitle>
+              )}
+              {(shareModalStep === 'candidateShareOptionsWithOpinions') && (
+                <SubTitle>Share a link to this candidate. All of your opinions for this election are included.</SubTitle>
+              )}
+              {(shareModalStep === 'measureShareOptions') && (
+                <SubTitle>Share a link to this measure/proposition. Your opinions are not included.</SubTitle>
+              )}
+              {(shareModalStep === 'measureShareOptionsWithOpinions') && (
+                <SubTitle>Share a link to this measure/proposition. All of your opinions for this election are included.</SubTitle>
+              )}
+              {(shareModalStep === 'officeShareOptions') && (
+                <SubTitle>Share a link to this office. Your opinions are not included.</SubTitle>
+              )}
+              {(shareModalStep === 'officeShareOptionsWithOpinions') && (
+                <SubTitle>Share a link to this office. All of your opinions for this election are included.</SubTitle>
               )}
             </div>
             <IconButton
               aria-label="Close"
               className={classes.closeButtonAbsolute}
               onClick={this.closeShareModal}
-              id="profileCloseShareModal"
+              id="closeShareModal"
             >
               <CloseIcon />
             </IconButton>
@@ -140,6 +202,9 @@ class ShareModal extends Component {
               <Flex>
                 {featureStillInDevelopment ? null : (
                   <ShareModalOption
+                    background="#2E3C5D"
+                    icon={<img src={cordovaDot('../../../img/global/svg-icons/we-vote-icon-square-color.svg')} alt="" />}
+                    id="shareWithFriends"
                     noLink
                     onClickFunction={() => {
                       if (!voterIsSignedIn) {
@@ -149,15 +214,39 @@ class ShareModal extends Component {
                         this.setStep('friends');
                       }
                     }}
-                    background="#2E3C5D"
-                    icon={<img src={cordovaDot('../../../img/global/svg-icons/we-vote-icon-square-color.svg')} alt="" />}
                     title="We Vote Friends"
                   />
                 )}
-                <ShareModalOption link={`https://www.facebook.com/sharer/sharer.php?u=${linkToBeSharedUrlEncoded}&t=WeVote`} target="_blank" background="#3b5998" icon={<i className="fab fa-facebook-f" />} title="Facebook" />
-                <ShareModalOption link={`https://twitter.com/share?text=${twitterTextEncoded}&url=${linkToBeSharedUrlEncoded}`} background="#38A1F3" icon={<i className="fab fa-twitter" />} title="Twitter" />
-                <ShareModalOption link="mailto:" background="#2E3C5D" icon={<Mail />} title="Email" />
-                <ShareModalOption copyLink link={linkToBeShared} background="#2E3C5D" icon={<FileCopyOutlinedIcon />} title="Copy Link" />
+                <ShareModalOption
+                  background="#3b5998"
+                  icon={<i className="fab fa-facebook-f" />}
+                  id="shareViaFacebook"
+                  link={`https://www.facebook.com/sharer/sharer.php?u=${linkToBeSharedUrlEncoded}&t=WeVote`}
+                  target="_blank"
+                  title="Facebook"
+                />
+                <ShareModalOption
+                  background="#38A1F3"
+                  icon={<i className="fab fa-twitter" />}
+                  id="shareViaTwitter"
+                  link={`https://twitter.com/share?text=${twitterTextEncoded}&url=${linkToBeSharedUrlEncoded}`}
+                  title="Twitter"
+                />
+                <ShareModalOption
+                  background="#2E3C5D"
+                  icon={<Mail />}
+                  id="shareViaEmail"
+                  link={`mailto:?subject=${emailSubjectEncoded}&body=${emailBodyEncoded}`}
+                  title="Email"
+                />
+                <ShareModalOption
+                  background="#2E3C5D"
+                  copyLink
+                  icon={<FileCopyOutlinedIcon />}
+                  id="copyShareLink"
+                  link={linkToBeShared}
+                  title="Copy Link"
+                />
               </Flex>
             </div>
           </DialogContent>
@@ -362,7 +451,7 @@ const SubTitle = styled.div`
   width: 100%;
   text-align: ${props => (props.left && 'left')};
   @media(min-width: 420px) {
-    width: 80%;
+    // width: 80%;
   }
 `;
 

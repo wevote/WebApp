@@ -255,10 +255,10 @@ class HeaderBar extends Component {
     this.setState({
       chosenSiteLogoUrl: AppStore.getChosenSiteLogoUrl(),
       hideWeVoteLogo: AppStore.getHideWeVoteLogo(),
+      organizationModalId: AppStore.organizationModalId(),
       paidAccountUpgradeMode,
       scrolledDown: AppStore.getScrolledDown(),
       shareModalStep: AppStore.shareModalStep(),
-      organizationModalId: AppStore.organizationModalId(),
       showAdviserIntroModal: AppStore.showAdviserIntroModal(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showFirstPositionIntroModal: AppStore.showFirstPositionIntroModal(),

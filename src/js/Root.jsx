@@ -109,15 +109,24 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/ballot" component={BallotIndex}>
         <IndexRoute component={Ballot} />
         <Route path="/ballot?voter_refresh_timer_on=:voter_refresh_timer_on" component={Ballot} />
+        <Route path="/office/:office_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={Office} />
         <Route path="/office/:office_we_vote_id/b/:back_to_variable/" component={Office} />
+        <Route path="/office/:office_we_vote_id/b/:back_to_variable" component={Office} />
+        <Route path="/office/:office_we_vote_id/modal/:modal_to_show" component={Office} />
         <Route path="/office/:office_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideOffice} />
         <Route path="/office/:office_we_vote_id/:organization_we_vote_id" component={OrganizationVoterGuideOffice} />
         <Route path="/office/:office_we_vote_id" component={Office} />
+        <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={Candidate} />
         <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/" component={Candidate} />
+        <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable" component={Candidate} />
+        <Route path="/candidate/:candidate_we_vote_id/modal/:modal_to_show" component={Candidate} />
         <Route path="/candidate/:candidate_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideCandidate} />
         <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" component={OrganizationVoterGuideCandidate} />
         <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
+        <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={Measure} />
         <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/" component={Measure} />
+        <Route path="/measure/:measure_we_vote_id/b/:back_to_variable" component={Measure} />
+        <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show" component={Measure} />
         <Route path="/measure/:measure_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideMeasure} />
         <Route path="/measure/:measure_we_vote_id" component={Measure} />
       </Route>
