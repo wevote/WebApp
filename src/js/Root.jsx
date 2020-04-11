@@ -41,6 +41,7 @@ import OrganizationVoterGuideCandidate from './routes/VoterGuide/OrganizationVot
 import OrganizationVoterGuideEdit from './routes/VoterGuide/OrganizationVoterGuideEdit';
 import OrganizationVoterGuideMeasure from './routes/VoterGuide/OrganizationVoterGuideMeasure';
 import OrganizationVoterGuideOffice from './routes/VoterGuide/OrganizationVoterGuideOffice';
+import OrganizationVoterGuideMobileDetails from './routes/VoterGuide/OrganizationVoterGuideMobileDetails';
 import PageNotFound from './routes/PageNotFound';
 import PollingPlaceLocatorModal from './routes/Vote/PollingPlaceLocatorModal';
 import Pricing from './routes/More/Pricing';
@@ -108,15 +109,24 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/ballot" component={BallotIndex}>
         <IndexRoute component={Ballot} />
         <Route path="/ballot?voter_refresh_timer_on=:voter_refresh_timer_on" component={Ballot} />
+        <Route path="/office/:office_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={Office} />
         <Route path="/office/:office_we_vote_id/b/:back_to_variable/" component={Office} />
+        <Route path="/office/:office_we_vote_id/b/:back_to_variable" component={Office} />
+        <Route path="/office/:office_we_vote_id/modal/:modal_to_show" component={Office} />
         <Route path="/office/:office_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideOffice} />
         <Route path="/office/:office_we_vote_id/:organization_we_vote_id" component={OrganizationVoterGuideOffice} />
         <Route path="/office/:office_we_vote_id" component={Office} />
+        <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={Candidate} />
         <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/" component={Candidate} />
+        <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable" component={Candidate} />
+        <Route path="/candidate/:candidate_we_vote_id/modal/:modal_to_show" component={Candidate} />
         <Route path="/candidate/:candidate_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideCandidate} />
         <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" component={OrganizationVoterGuideCandidate} />
         <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
+        <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={Measure} />
         <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/" component={Measure} />
+        <Route path="/measure/:measure_we_vote_id/b/:back_to_variable" component={Measure} />
+        <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show" component={Measure} />
         <Route path="/measure/:measure_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideMeasure} />
         <Route path="/measure/:measure_we_vote_id" component={Measure} />
       </Route>
@@ -264,6 +274,9 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path=":twitter_handle/followers" component={props => <TwitterHandleLanding {...props} activeRoute="followers" />} />
       <Route path=":twitter_handle/following" component={props => <TwitterHandleLanding {...props} activeRoute="following" />} />
       <Route path=":twitter_handle/positions" component={props => <TwitterHandleLanding {...props} activeRoute="positions" />} />
+      <Route path=":twitter_handle/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />}  />
+      <Route path=":twitter_handle/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
+      <Route path=":twitter_handle/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
       <Route path=":twitter_handle/:action_variable" component={TwitterHandleLanding} />
       <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable" component={TwitterHandleLanding} />
       <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/followers" component={props => <TwitterHandleLanding {...props} activeRoute="followers" />} />

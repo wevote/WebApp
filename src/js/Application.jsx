@@ -424,11 +424,12 @@ class Application extends Component {
     return (
       <div className={this.getAppBaseClass()} id="app-base-id">
         <ToastContainer closeButton={false} className={getToastClass()} />
-        <Header params={this.props.params}
-                location={this.props.location}
-                pathname={pathname}
-                voter={this.state.voter}
-                weVoteBrandingOff={this.state.weVoteBrandingOff}
+        <Header
+          params={this.props.params}
+          location={this.props.location}
+          pathname={pathname}
+          voter={this.state.voter}
+          weVoteBrandingOff={this.state.weVoteBrandingOff}
         />
         <SnackNotifier />
         { String(pathname) === '/for-campaigns' ||

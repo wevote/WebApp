@@ -14,6 +14,8 @@ class ShareButtonDesktopTablet extends Component {
   static propTypes = {
     classes: PropTypes.object,
     candidateShare: PropTypes.bool,
+    measureShare: PropTypes.bool,
+    officeShare: PropTypes.bool,
   };
 
   constructor (props) {
@@ -22,36 +24,92 @@ class ShareButtonDesktopTablet extends Component {
       open: false,
       anchorEl: null,
     };
-    this.handleClick = this.handleClick.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this.handleShareButtonClick = this.handleShareButtonClick.bind(this);
+    this.handleCloseMenu = this.handleCloseMenu.bind(this);
   }
 
-  handleClick (event) {
+  handleShareButtonClick (event) {
     this.setState({ anchorEl: event.currentTarget, open: true });
   }
 
-  handleClose () {
+  handleCloseMenu () {
     this.setState({ anchorEl: null, open: false });
   }
 
-  openShareModal (shareModalStep) {
+  openShareModal (withOpinions = false) {
+    const { candidateShare, measureShare, officeShare } = this.props;
+    let shareModalStep;
+    if (candidateShare) {
+      if (withOpinions) {
+        shareModalStep = 'candidateShareOptionsWithOpinions';
+      } else {
+        shareModalStep = 'candidateShareOptions';
+      }
+    } else if (measureShare) {
+      if (withOpinions) {
+        shareModalStep = 'measureShareOptionsWithOpinions';
+      } else {
+        shareModalStep = 'measureShareOptions';
+      }
+    } else if (officeShare) {
+      if (withOpinions) {
+        shareModalStep = 'officeShareOptionsWithOpinions';
+      } else {
+        shareModalStep = 'officeShareOptions';
+      }
+      // Default to ballot
+    } else if (withOpinions) {
+      shareModalStep = 'ballotShareOptionsWithOpinions';
+    } else {
+      shareModalStep = 'ballotShareOptions';
+    }
+
     AppActions.setShowShareModal(true);
     AppActions.setShareModalStep(shareModalStep);
     const { pathname } = window.location;
     if (!stringContains('/modal/share', pathname)) {
-      const pathnameWithModalShare = `${pathname}/modal/share`;
+      const pathnameWithModalShare = `${pathname}${pathname.endsWith('/') ? '' : '/'}modal/share`;
       historyPush(pathnameWithModalShare);
     }
   }
 
   render () {
-    const { candidateShare, classes } = this.props;
+    const { candidateShare, classes, measureShare, officeShare } = this.props;
     const { anchorEl } = this.state;
 
+    let shareButtonClasses;
+    let shareMenuTextDefault;
+    let shareMenuTextWithOpinions;
+    if (candidateShare) {
+      shareButtonClasses = classes.buttonCandidate;
+      shareMenuTextDefault = 'Candidate';
+      shareMenuTextWithOpinions = 'Candidate + Your Opinions';
+    } else if (measureShare) {
+      shareButtonClasses = classes.buttonCandidate;
+      shareMenuTextDefault = 'Measure';
+      shareMenuTextWithOpinions = 'Measure + Your Opinions';
+    } else if (officeShare) {
+      shareButtonClasses = classes.buttonCandidate;
+      shareMenuTextDefault = 'Office';
+      shareMenuTextWithOpinions = 'Office + Your Opinions';
+    } else {
+      // Default to ballot
+      shareButtonClasses = classes.buttonDefault;
+      shareMenuTextDefault = 'Ballot';
+      shareMenuTextWithOpinions = 'Ballot + Your Opinions';
+    }
     const featureStillInDevelopment = true;
     return (
       <>
-        <Button aria-controls="share-menu" onClick={this.handleClick} aria-haspopup="true" className={candidateShare ? classes.buttonCandidate : classes.buttonDefault} variant="contained" color="primary">
+        <Button
+          aria-controls="shareMenuDesktopTablet"
+          aria-haspopup="true"
+          classes={{ root: shareButtonClasses }}
+          color="primary"
+          id="shareButtonDesktopTablet"
+          onClick={this.handleShareButtonClick}
+          variant="contained"
+        >
           <Icon>
             <Reply
               classes={{ root: classes.shareIcon }}
@@ -60,31 +118,31 @@ class ShareButtonDesktopTablet extends Component {
           Share
         </Button>
         <Menu
-          id="share-menu"
-          className="u-z-index-5020"
-          classes={{ paper: classes.paper }}
-          open={this.state.open}
-          onClose={this.handleClose}
-          elevation={2}
-          getContentAnchorEl={null}
           anchorEl={anchorEl}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
           }}
+          className="u-z-index-5020"
+          classes={{ paper: classes.paper }}
+          id="shareMenuDesktopTablet"
+          elevation={2}
+          getContentAnchorEl={null}
+          onClose={this.handleCloseMenu}
+          open={this.state.open}
           transformOrigin={{
             horizontal: 'right',
             vertical: 'top',
           }}
         >
           <MenuArrow />
-          <MenuItem className={classes.menuItem} onClick={() => this.openShareModal('ballotShareOptions')}>
+          <MenuItem className={classes.menuItem} onClick={() => this.openShareModal()}>
             <MenuFlex>
               <MenuIcon>
                 <i className="fas fa-list" />
               </MenuIcon>
               <MenuText>
-                Ballot
+                {shareMenuTextDefault}
               </MenuText>
               {/* <MenuInfo> - TURNED OFF BECAUSE OF TOOLTIP Z-INDEX PROBLEM */}
               {/*  <Tooltip */}
@@ -102,13 +160,13 @@ class ShareButtonDesktopTablet extends Component {
           </MenuItem>
           <MenuSeparator />
           {featureStillInDevelopment ? null : (
-            <MenuItem className={classes.menuItem} onClick={() => this.openShareModal('ballotShareOptionsWithOpinions')}>
+            <MenuItem className={classes.menuItem} onClick={() => this.openShareModal(true)}>
               <MenuFlex>
                 <MenuIcon>
                   <Comment />
                 </MenuIcon>
                 <MenuText>
-                  Ballot + Your Opinions
+                  {shareMenuTextWithOpinions}
                 </MenuText>
                 {/* <MenuInfo> - TURNED OFF BECAUSE OF TOOLTIP Z-INDEX PROBLEM */}
                 {/*  <Tooltip title="Share a link to the choices you've made for this election so that your friends can get ready to vote. This includes your public and friend's-only opinions." arrow enterDelay={300}> */}

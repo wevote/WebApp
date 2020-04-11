@@ -207,11 +207,6 @@ class HeaderBackToVoterGuides extends Component {
     this.setState({ profilePopUpOpen: false });
   }
 
-  signOutAndHideAccountMenu () {
-    VoterSessionActions.voterSignOut();
-    this.setState({ profilePopUpOpen: false });
-  }
-
   toggleVoterGuideModal () {
     // console.log('toggleVoterGuideModal');
     const { showNewVoterGuideModal } = this.state;

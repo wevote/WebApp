@@ -34,13 +34,15 @@ export default class OrganizationVoterGuide extends Component {
     this.state = {
       activeRoute: '',
       autoFollowRedirectHappening: false,
-      linkedOrganizationWeVoteId: '',
+      // linkedOrganizationWeVoteId: '',
       organizationBannerUrl: '',
       organizationWeVoteId: '',
       organization: {},
       organizationHasBeenRetrievedOnce: {},
       voter: {},
       voterGuideAnalyticsHasBeenSavedOnce: {},
+      voterGuideFollowedList: [],
+      voterGuideFollowersList: [],
     };
     this.organizationVoterGuideTabsReference = {};
     this.onEdit = this.onEdit.bind(this);
@@ -53,6 +55,10 @@ export default class OrganizationVoterGuide extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.setState({
+      voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(this.props.params.organization_we_vote_id),
+      voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.props.params.organization_we_vote_id),
+    });
     const { organization_we_vote_id: organizationWeVoteId } = this.props.params;
     const { organizationHasBeenRetrievedOnce, voterGuideAnalyticsHasBeenSavedOnce } = this.state;
     if (organizationWeVoteId) {
@@ -90,7 +96,7 @@ export default class OrganizationVoterGuide extends Component {
     const voter = VoterStore.getVoter();
     this.setState({
       activeRoute: this.props.activeRoute || '',
-      linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
+      // linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
       organizationWeVoteId,
       voter,
     });
@@ -111,6 +117,8 @@ export default class OrganizationVoterGuide extends Component {
       this.setState({
         organizationWeVoteId,
         autoFollowRedirectHappening: false,
+        voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(nextProps.params.organization_we_vote_id),
+        voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(nextProps.params.organization_we_vote_id),
       });
 
       // We refresh the data for all three tabs here on the top level
@@ -143,34 +151,34 @@ export default class OrganizationVoterGuide extends Component {
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.activeRoute !== nextState.activeRoute) {
-      // console.log('shouldComponentUpdate: this.state.activeRoute', this.state.activeRoute, ', nextState.activeRoute', nextState.activeRoute);
-      return true;
-    }
-    if (this.state.autoFollowRedirectHappening !== nextState.autoFollowRedirectHappening) {
-      // console.log('shouldComponentUpdate: this.state.autoFollowRedirectHappening', this.state.autoFollowRedirectHappening, ', nextState.autoFollowRedirectHappening', nextState.autoFollowRedirectHappening);
-      return true;
-    }
-    if (this.state.linkedOrganizationWeVoteId !== nextState.linkedOrganizationWeVoteId) {
-      // console.log('shouldComponentUpdate: this.state.linkedOrganizationWeVoteId', this.state.linkedOrganizationWeVoteId, ', nextState.linkedOrganizationWeVoteId', nextState.linkedOrganizationWeVoteId);
-      return true;
-    }
-    if (this.state.organizationBannerUrl !== nextState.organizationBannerUrl) {
-      // console.log('shouldComponentUpdate: this.state.organizationBannerUrl', this.state.organizationBannerUrl, ', nextState.organizationBannerUrl', nextState.organizationBannerUrl);
-      return true;
-    }
-    if (this.state.organizationId !== nextState.organizationId) {
-      // console.log('shouldComponentUpdate: this.state.organizationId', this.state.organizationId, ', nextState.organizationId', nextState.organizationId);
-      return true;
-    }
-    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-      // console.log('shouldComponentUpdate: this.state.organizationWeVoteId', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
-      return true;
-    }
-    // console.log('shouldComponentUpdate no changes');
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   if (this.state.activeRoute !== nextState.activeRoute) {
+  //     // console.log('shouldComponentUpdate: this.state.activeRoute', this.state.activeRoute, ', nextState.activeRoute', nextState.activeRoute);
+  //     return true;
+  //   }
+  //   if (this.state.autoFollowRedirectHappening !== nextState.autoFollowRedirectHappening) {
+  //     // console.log('shouldComponentUpdate: this.state.autoFollowRedirectHappening', this.state.autoFollowRedirectHappening, ', nextState.autoFollowRedirectHappening', nextState.autoFollowRedirectHappening);
+  //     return true;
+  //   }
+  //   if (this.state.linkedOrganizationWeVoteId !== nextState.linkedOrganizationWeVoteId) {
+  //     // console.log('shouldComponentUpdate: this.state.linkedOrganizationWeVoteId', this.state.linkedOrganizationWeVoteId, ', nextState.linkedOrganizationWeVoteId', nextState.linkedOrganizationWeVoteId);
+  //     return true;
+  //   }
+  //   if (this.state.organizationBannerUrl !== nextState.organizationBannerUrl) {
+  //     // console.log('shouldComponentUpdate: this.state.organizationBannerUrl', this.state.organizationBannerUrl, ', nextState.organizationBannerUrl', nextState.organizationBannerUrl);
+  //     return true;
+  //   }
+  //   if (this.state.organizationId !== nextState.organizationId) {
+  //     // console.log('shouldComponentUpdate: this.state.organizationId', this.state.organizationId, ', nextState.organizationId', nextState.organizationId);
+  //     return true;
+  //   }
+  //   if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
+  //     // console.log('shouldComponentUpdate: this.state.organizationWeVoteId', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
+  //     return true;
+  //   }
+  //   // console.log('shouldComponentUpdate no changes');
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.voterGuideStoreListener.remove();
@@ -193,6 +201,8 @@ export default class OrganizationVoterGuide extends Component {
           organizationId: organization.organization_id,
           linkedVoterWeVoteId: organization.linked_voter_we_vote_id,
           organizationType: organization.organization_type,
+          voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(organizationWeVoteId),
+          voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(organizationWeVoteId),
         });
         if (organization.organization_banner_url) {
           this.setState({
@@ -226,7 +236,7 @@ export default class OrganizationVoterGuide extends Component {
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
     this.setState({
-      linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
+      // linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
       voter,
     });
   }
@@ -257,6 +267,11 @@ export default class OrganizationVoterGuide extends Component {
     return false;
   }
 
+  switchNav (destinationTab) {
+    const editLink = this.props.location.pathname.replace(`/${this.state.activeRoute}`, '');
+    historyPush(`${editLink}/m/${destinationTab}`);
+  }
+
   render () {
     renderLog('OrganizationVoterGuide');  // Set LOG_RENDER_EVENTS to log all renders
     const { activeRoute, linkedVoterWeVoteId, organizationBannerUrl, organizationId, organizationType, organizationWeVoteId } = this.state;
@@ -266,6 +281,13 @@ export default class OrganizationVoterGuide extends Component {
 
     const isVoterOwner = this.state.organization.organization_we_vote_id !== undefined &&
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
+
+    let voterGuideFollowersList = this.state.voterGuideFollowersList || [];
+    const friendsList = []; // Dummy placeholder till the actual logic is in place
+    if (this.state.voter.linked_organization_we_vote_id === organizationWeVoteId) {
+      // If looking at your own voter guide, filter out your own entry as a follower
+      voterGuideFollowersList = voterGuideFollowersList.filter(oneVoterGuide => (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id ? oneVoterGuide : null));
+    }
 
     if (!organizationId) {
       return (
@@ -351,6 +373,43 @@ export default class OrganizationVoterGuide extends Component {
                     )}
                   </>
                 )}
+                <div className="tabs-container d-print-none">
+                  <ul className="nav tabs">
+                    <li className="tab-default">
+                      <a // eslint-disable-line
+                        style={{ padding: '5px 5px' }}
+                        onClick={() => this.switchNav('friends')}
+                      >
+                        <span className="u-show-mobile u-bold">
+                          {friendsList.length}
+                          <TabText>{' Friends'}</TabText>
+                        </span>
+                      </a>
+                    </li>
+                    <li className="tab-default">
+                      <a // eslint-disable-line
+                        style={{ padding: '5px 5px' }}
+                        onClick={() => this.switchNav('following')}
+                      >
+                        <span className="u-show-mobile u-bold">
+                          {this.state.voterGuideFollowedList.length}
+                          <TabText>{' Following'}</TabText>
+                        </span>
+                      </a>
+                    </li>
+                    <li className="tab-default">
+                      <a // eslint-disable-line
+                        style={{ padding: '5px 5px' }}
+                        onClick={() => this.switchNav('followers')}
+                      >
+                        <span className="u-show-mobile u-bold">
+                          {voterGuideFollowersList.length}
+                          <TabText>{' Followers'}</TabText>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -418,4 +477,9 @@ const FollowToggleMobileWrapper = styled.div`
 
 const FriendToggleMobileWrapper = styled.div`
   margin-top: 4px;
+`;
+
+const TabText = styled.span`
+  color: #999;
+  font-weight: 500;
 `;
