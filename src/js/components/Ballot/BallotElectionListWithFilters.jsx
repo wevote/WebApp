@@ -537,7 +537,6 @@ export default class BallotElectionListWithFilters extends Component {
             )}
           </div>
         )}
-        <USAMap onClick={this.mapHandler} />
         <MapChart onClickFunction={this.secondMapHandler} />
       </div>
     );
