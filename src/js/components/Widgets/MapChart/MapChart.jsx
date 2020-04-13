@@ -1,15 +1,15 @@
 import React from 'react';
 import { geoCentroid } from 'd3-geo';
+import styled from 'styled-components';
 import {
   ComposableMap,
   Geographies,
   Geography,
   Marker,
   Annotation,
-} from 'react-simple-maps';
+} from './index';
 
-import styled from 'styled-components';
-import allStates from '../../../json/allStates.json';
+import allStates from '../../../../json/allStates.json';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json';
 
@@ -26,12 +26,13 @@ const offsets = {
 };
 
 const MapChart = props => (
-  <ComposableMap projection="geoAlbersUsa">
-    <Geographies geography={geoUrl}>
+  <ComposableMap className="map-svg" projection="geoAlbersUsa">
+    <Geographies className="map-svg" geography={geoUrl}>
       {({ geographies }) => (
         <>
           {geographies.map(geo => (
             <StyledGeography
+              className="map-svg"
               onClick={props.onClickFunction}
               key={geo.rsmKey}
               stroke="#FFF"
