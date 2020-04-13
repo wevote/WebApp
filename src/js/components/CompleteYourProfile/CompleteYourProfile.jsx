@@ -319,6 +319,7 @@ class CompleteYourProfile extends Component {
                     active={step.id === activeStep}
                     complete={step.completed}
                     key={`completeYourProfileIndicator-${step.id}`}
+                    id={`completeYourProfileIndicator-${step.id}`}
                     onClick={() => this.goToStep(step.id)}
                   />
                 ))}
@@ -329,10 +330,10 @@ class CompleteYourProfile extends Component {
               if (step.id === activeStep) {
                 return (
                   <Description key={`completeYourProfileDescription-${step.id}`}>
-                    <Icon className="u-show-desktop-tablet" onClick={() => { step.onClick(); }}>
+                    <Icon className="u-show-desktop-tablet" id="completeYourProfileDescriptionIcon" onClick={() => { step.onClick(); }}>
                       {step.icon}
                     </Icon>
-                    <TitleArea onClick={() => { step.onClick(); }}>
+                    <TitleArea id="completeYourProfileTitleArea" onClick={() => { step.onClick(); }}>
                       <Icon className="u-show-mobile">
                         {step.icon}
                       </Icon>
@@ -369,6 +370,7 @@ class CompleteYourProfile extends Component {
                     <TabletActionButton>
                       <Button
                         className="u-no-break"
+                        id="completeYourProfileTabletActionButton"
                         color="primary"
                         fullWidth
                         onClick={() => { step.onClick(); }}
@@ -380,6 +382,7 @@ class CompleteYourProfile extends Component {
                     <MobileActionButton>
                       <Button
                         className="u-no-break"
+                        id="completeYourProfileMobileActionButton"
                         color="primary"
                         fullWidth
                         onClick={() => { step.onClick(); }}
@@ -391,14 +394,14 @@ class CompleteYourProfile extends Component {
                     <NavButtons>
                       <NavButton>
                         {index !== 0 && (
-                          <Button onClick={this.previousStep} className="u-no-break" color="primary">
+                          <Button id="completeYourProfilePreviousButton" onClick={this.previousStep} className="u-no-break" color="primary">
                             {'< Previous'}
                           </Button>
                         )}
                       </NavButton>
                       <NavButton>
                         {index < (steps.length - 1) ? (
-                          <Button onClick={this.nextStep} className="u-no-break" color="primary">
+                          <Button id="completeYourProfileNextButton" onClick={this.nextStep} className="u-no-break" color="primary">
                             {'Next >'}
                           </Button>
                         ) : (
