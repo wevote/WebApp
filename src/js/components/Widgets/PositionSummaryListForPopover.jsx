@@ -77,6 +77,12 @@ class PositionSummaryListForPopover extends Component {
       }
       // console.log('openAdviserMaterialUIPopoverNow:', openAdviserMaterialUIPopoverNow);
       // console.log('controlAdviserMaterialUIPopoverFromPropNow:', controlAdviserMaterialUIPopoverFromPropNow);
+      let issuesInCommonForIconDisplayArray;
+      if (positionSummary.issuesInCommonBetweenOrganizationAndVoter.length > 4) {
+        issuesInCommonForIconDisplayArray = positionSummary.issuesInCommonBetweenOrganizationAndVoter.slice(0, 3);
+      } else {
+        issuesInCommonForIconDisplayArray = positionSummary.issuesInCommonBetweenOrganizationAndVoter;
+      }
       return (
         <PositionSummaryWrapper
           key={`onePositionForPopover-${positionSummary.ballotItemWeVoteId}-${positionSummary.organizationWeVoteId}-${positionSummary.organizationName}`}
@@ -161,25 +167,14 @@ class PositionSummaryListForPopover extends Component {
                   // Limits the number of displayed Issue icons
                   // The popover isn't big enough to accommodate more than 4 icons without making them too small!
                   <VoterAndOrganizationShareTheseIssuesWrapper>
-                    {(positionSummary.issuesInCommonBetweenOrganizationAndVoter.length > 4) ? (
-                      positionSummary.issuesInCommonBetweenOrganizationAndVoter.slice(0, 3).map(issue => (
-                        <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
-                          <ReactSVG
+                    {issuesInCommonForIconDisplayArray.map(issue => (
+                      <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
+                        <ReactSVG
                           src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
                           svgStyle={{ fill: '#555', padding: '1px 1px 1px 0px' }}
-                          />
-                        </IssueIcon>
-                      ))
-                    ) : (
-                      positionSummary.issuesInCommonBetweenOrganizationAndVoter.map(issue => (
-                        <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
-                          <ReactSVG
-                            src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
-                            svgStyle={{ fill: '#555', padding: '1px 1px 1px 0px' }}
-                          />
-                        </IssueIcon>
-                      ))
-                    )}
+                        />
+                      </IssueIcon>
+                    ))}
                   </VoterAndOrganizationShareTheseIssuesWrapper>
                 )}
                 {(positionSummary.issuesInCommonBetweenOrganizationAndVoter.length > 4) ? ('...') : null}
