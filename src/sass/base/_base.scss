@@ -5,6 +5,14 @@ html {
   box-sizing: border-box;
 }
 
+svg.map-svg, path.map-svg {
+  fill: #2E3C5D70;
+  text {
+    pointer-events: none;
+    fill: white !important;
+  }
+}
+
 body {
   background-color: $app-background-color;
 }
