@@ -85,7 +85,7 @@
     "font-awesome": "^4.7.0",
     "history": "^3.2.1",
     "iframe-resizer": "^3.6.6",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "keymirror": "^0.1.1",
     "lodash-es": "^4.17.15",
     "lodash.assign": "^4.2.0",
