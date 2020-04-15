@@ -1,6 +1,12 @@
 import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
+  /**
+   * Retrieve a Voter Guide Position Possibility
+   * @param voterGuidePossibilityId, id of the Guide possibility
+   * @param voterGuidePossibilityPositionId, id of the Position possibility, an integer
+   * @returns {*}
+   */
   voterGuidePossibilityPositionsRetrieve (voterGuidePossibilityId, voterGuidePossibilityPositionId = 0) {
     // We have migrated to a newer API call that we cache by CDN: voterGuidesUpcomingRetrieve
     return Dispatcher.loadEndpoint('voterGuidePossibilityPositionsRetrieve', {
@@ -9,6 +15,12 @@ export default {
     });
   },
 
+  /**
+   * Save a Voter Guide Position Possibility
+   * @param voterGuidePossibilityId, id of the Guide possibility
+   * @param voterGuidePossibilityPositionId, id of the Position possibility. Untyped.  If zero, create a new position.  Otherwise a number or ''.
+   * @param dictionaryToSave, dictionary of the data to be saved
+   */
   voterGuidePossibilityPositionSave (voterGuidePossibilityId, voterGuidePossibilityPositionId, dictionaryToSave = {}) {
     let dispatchDictionary = {
       voter_guide_possibility_id: voterGuidePossibilityId,
