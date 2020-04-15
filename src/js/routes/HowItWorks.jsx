@@ -297,6 +297,7 @@ class HowItWorks extends Component {
               <BackButtonWrapper>
                 <Button
                   classes={{ root: classes.nextButtonRoot }}
+                  id="howItWorksBackDesktopButton"
                   color="primary"
                   fullWidth
                   onClick={() => this.handleChangeSlideGoBack()}
@@ -308,10 +309,10 @@ class HowItWorks extends Component {
               <NextButtonWrapper>
                 <Button
                   classes={{ root: classes.getStartedButtonRoot }}
+                  id="howItWorksGetStartedDesktopButton"
                   color="primary"
                   variant="contained"
                   onClick={() => this.howItWorksGetStarted()}
-                  id="howItWorksGetStarted"
                 >
                   Get Started
                 </Button>
@@ -355,6 +356,7 @@ class HowItWorks extends Component {
                 <BackButtonWrapper className="u-show-mobile-tablet">
                   <Button
                     classes={{ root: classes.nextButtonRoot }}
+                    id="howItWorksBackMobileButton"
                     color="primary"
                     fullWidth
                     onClick={() => this.handleChangeSlideGoBack()}
@@ -366,10 +368,10 @@ class HowItWorks extends Component {
                 <NextButtonWrapper>
                   <Button
                     classes={{ root: classes.getStartedButtonRoot }}
+                    id="howItWorksGetStartedMobileButton"
                     color="primary"
                     variant="contained"
                     onClick={() => this.howItWorksGetStarted()}
-                    id="howItWorksGetStarted"
                   >
                     Get Started
                   </Button>
