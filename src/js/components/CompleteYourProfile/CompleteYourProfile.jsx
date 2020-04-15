@@ -370,7 +370,7 @@ class CompleteYourProfile extends Component {
                     <TabletActionButton>
                       <Button
                         className="u-no-break"
-                        id={`completeYourProfile${step.buttonText}DesktopButton`}
+                        id="completeYourProfileDesktopButton"
                         color="primary"
                         fullWidth
                         onClick={() => { step.onClick(); }}
@@ -382,7 +382,7 @@ class CompleteYourProfile extends Component {
                     <MobileActionButton>
                       <Button
                         className="u-no-break"
-                        id={`completeYourProfile${step.buttonText}MobileButton`}
+                        id="completeYourProfileMobileButton"
                         color="primary"
                         fullWidth
                         onClick={() => { step.onClick(); }}
