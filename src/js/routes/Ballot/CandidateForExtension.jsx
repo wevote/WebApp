@@ -164,7 +164,7 @@ class CandidateForExtension extends Component {
                       </Button>
                     )}
                     target="_blank"
-                    url={`https://WeVote.US/candidate/${candidateWeVoteId}/b/btdb/`}
+                    url={`https://WeVote.US/candidate/${candidateWeVoteId}/b/btdb`}
                   />
                 </OneButton>
                 {/* <OneButton> */}

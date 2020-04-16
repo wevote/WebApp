@@ -22,7 +22,7 @@ export default class CandidateList extends Component {
 
   getCandidateLink (candidateWeVoteId) {
     // If no organizationWeVoteId, signal that we want to link back to default ballot
-    return `/candidate/${candidateWeVoteId}/b/btdb/`; // back-to-default-ballot
+    return `/candidate/${candidateWeVoteId}/b/btdb`; // back-to-default-ballot
   }
 
   goToCandidateLink (candidateWeVoteId) {

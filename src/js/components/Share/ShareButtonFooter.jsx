@@ -230,7 +230,7 @@ class ShareButtonFooter extends Component {
       shareMenuTextWithOpinions = 'Ballot + Your Opinions';
     }
     linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
-    const featureStillInDevelopment = true;
+    const featureStillInDevelopment = false;
     return (
       <Wrapper pinToBottom={!showFooterBar} className={showingOneCompleteYourProfileModal ? 'u-z-index-1000' : 'u-z-index-9000'}>
         {showShareButton && (
