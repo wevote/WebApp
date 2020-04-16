@@ -95,7 +95,7 @@ export default class CandidateItemCompressed extends Component {
       return `/candidate/${oneCandidateWeVoteId}/btvg/${this.state.organization.organization_we_vote_id}`;
     } else {
       // If no organization_we_vote_id, signal that we want to link back to default ballot
-      return `/candidate/${oneCandidateWeVoteId}/b/btdb/`; // back-to-default-ballot
+      return `/candidate/${oneCandidateWeVoteId}/b/btdb`; // back-to-default-ballot
     }
   }
 

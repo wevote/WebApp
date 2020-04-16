@@ -141,7 +141,7 @@ class CandidateItemEndorsement extends Component {
       if (organizationWeVoteId) {
         return `/candidate/${candidateWeVoteId}/bto/${organizationWeVoteId}`; // back-to-office
       } else {
-        return `/candidate/${candidateWeVoteId}/b/btdo/`; // back-to-default-office
+        return `/candidate/${candidateWeVoteId}/b/btdo`; // back-to-default-office
       }
     }
     return '';
@@ -153,7 +153,7 @@ class CandidateItemEndorsement extends Component {
     if (organizationWeVoteId && organizationWeVoteId !== '') {
       return `/office/${officeWeVoteId}/btvg/${organizationWeVoteId}`; // back-to-voter-guide
     } else if (officeWeVoteId) {
-      return `/office/${officeWeVoteId}/b/btdb/`; // back-to-default-ballot
+      return `/office/${officeWeVoteId}/b/btdb`; // back-to-default-ballot
     } else return '';
   }
 

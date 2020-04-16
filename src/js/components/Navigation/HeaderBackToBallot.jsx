@@ -494,7 +494,7 @@ class HeaderBackToBallot extends Component {
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
       return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
-      return `/office/${this.state.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
+      return `/office/${this.state.officeWeVoteId}/b/btdb`; // back-to-default-ballot
     }
   }
 
@@ -581,9 +581,9 @@ class HeaderBackToBallot extends Component {
     let backToLink;
     let backToLinkText;
     if (backToCandidateWeVoteId) {
-      backToLink = `/candidate/${backToCandidateWeVoteId}/b/${backToVariable}/`;
+      backToLink = `/candidate/${backToCandidateWeVoteId}/b/${backToVariable}`;
     } else if (backToMeasureWeVoteId) {
-      backToLink = `/measure/${backToMeasureWeVoteId}/b/${backToVariable}/`;
+      backToLink = `/measure/${backToMeasureWeVoteId}/b/${backToVariable}`;
     } else if ((backToVariable === 'bto' || backToVariable === 'btdo') && !backToCandidateWeVoteId) { // back-to-default-office
       backToLink = this.getOfficeLink();
     } else if (organizationWeVoteId && candidate && candidate.google_civic_election_id) {

@@ -196,7 +196,7 @@ class OfficeItemCompressed extends Component {
       return `/candidate/${candidateWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
       // If no organizationWeVoteId, signal that we want to link back to default ballot
-      return `/candidate/${candidateWeVoteId}/b/btdb/`; // back-to-default-ballot
+      return `/candidate/${candidateWeVoteId}/b/btdb`; // back-to-default-ballot
     }
   }
 
@@ -206,7 +206,7 @@ class OfficeItemCompressed extends Component {
       return `/office/${this.props.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
       // If no organizationWeVoteId, signal that we want to link back to default ballot
-      return `/office/${this.props.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
+      return `/office/${this.props.officeWeVoteId}/b/btdb`; // back-to-default-ballot
     }
   }
 

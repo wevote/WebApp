@@ -19,7 +19,10 @@ import FriendStore from '../../stores/FriendStore';
 import MessageCard from '../Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
+import ShareActions from '../../actions/ShareActions';
 import ShareModalOption from './ShareModalOption';
+import ShareStore from '../../stores/ShareStore';
+
 
 class ShareModal extends Component {
   static propTypes = {
@@ -39,6 +42,8 @@ class ShareModal extends Component {
       currentFriendsList: [],
       // friendsToShareWith: [],
       shareModalStep: '',
+      urlWithSharedItemCode: '',
+      urlWithSharedItemCodeWithOpinions: '',
     };
 
     this.closeShareModal = this.closeShareModal.bind(this);
@@ -53,18 +58,27 @@ class ShareModal extends Component {
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
+    this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     const currentFullUrl = window.location.href || '';
-    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '');
+    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
+    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
+    const urlWithSharedItemCodeWithOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
+    if (!urlWithSharedItemCode || !urlWithSharedItemCodeWithOpinions) {
+      ShareActions.sharedItemRetrieveByFullUrl(currentFullUrlToShare);
+    }
     this.setState({
+      currentFriendsList: FriendStore.currentFriends(),
       currentFullUrlToShare,
       pathname: this.props.pathname,
       shareModalStep: shareModalStep || 'ballotShareOptions',
-      currentFriendsList: FriendStore.currentFriends(),
+      urlWithSharedItemCode,
+      urlWithSharedItemCodeWithOpinions,
     });
   }
 
   componentWillUnmount () {
     this.friendStoreListener.remove();
+    this.shareStoreListener.remove();
   }
 
   onFriendStoreChange () {
@@ -72,6 +86,20 @@ class ShareModal extends Component {
     if (currentFriendsList.length !== FriendStore.currentFriends().length) {
       this.setState({ currentFriendsList: FriendStore.currentFriends() });
     }
+  }
+
+  onShareStoreChange () {
+    // console.log('SharedModal onShareStoreChange');
+    const currentFullUrl = window.location.href || '';
+    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
+    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
+    const urlWithSharedItemCodeWithOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
+    // console.log('SharedModal onShareStoreChange urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeWithOpinions:', urlWithSharedItemCodeWithOpinions);
+    this.setState({
+      currentFullUrlToShare,
+      urlWithSharedItemCode,
+      urlWithSharedItemCodeWithOpinions,
+    });
   }
 
   setStep (shareModalStep) {
@@ -86,7 +114,7 @@ class ShareModal extends Component {
     renderLog('ShareModal');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ShareModal render');
     const { classes, voterIsSignedIn } = this.props;
-    const { currentFullUrlToShare, shareModalStep } = this.state;
+    const { currentFullUrlToShare, shareModalStep, urlWithSharedItemCode, urlWithSharedItemCodeWithOpinions } = this.state;
     let shareModalHtml = (
       <>Loading...</>
     );
@@ -110,7 +138,13 @@ class ShareModal extends Component {
         (shareModalStep === 'officeShareOptionsWithOpinions')
     ) {
       if (stringContains('WithOpinions', shareModalStep)) {
-        linkToBeShared = '';
+        if (urlWithSharedItemCodeWithOpinions) {
+          linkToBeShared = urlWithSharedItemCodeWithOpinions;
+        } else {
+          linkToBeShared = currentFullUrlToShare;
+        }
+      } else if (urlWithSharedItemCode) {
+        linkToBeShared = urlWithSharedItemCode;
       } else {
         linkToBeShared = currentFullUrlToShare;
       }

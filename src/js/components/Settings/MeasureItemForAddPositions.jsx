@@ -150,7 +150,7 @@ class MeasureItemForAddPositions extends Component {
   //     return `/measure/${oneMeasureWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
   //   } else {
   //     // If no organization_we_vote_id, signal that we want to link back to default ballot
-  //     return `/measure/${oneMeasureWeVoteId}/b/btdb/`; // back-to-default-ballot
+  //     return `/measure/${oneMeasureWeVoteId}/b/btdb`; // back-to-default-ballot
   //   }
   // }
 
