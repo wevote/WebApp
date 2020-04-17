@@ -207,6 +207,7 @@ class IssueFollowToggleButton extends Component {
         ) : (
           <Button
             type="button"
+            id="issueFollowButton"
             className={`issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius${lightModeOn ? '' : ' issues-follow-btn--blue'}`}
             onClick={this.onIssueFollow}
           >

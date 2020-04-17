@@ -425,6 +425,7 @@ class PersonalizedScoreIntroModal extends Component {
                     color="primary"
                     disabled={!(previousStep)}
                     fullWidth
+                    id="personalizedScoreIntroModalBackButton"
                     onClick={this.clickPreviousStepButton}
                     variant="outlined"
                   >
@@ -439,10 +440,10 @@ class PersonalizedScoreIntroModal extends Component {
                   <Button
                     classes={{ root: classes.nextButtonRoot }}
                     color="primary"
+                    id="personalizedScoreIntroModalNextButton"
                     disabled={!(nextStep || showPersonalizedScoreIntroCompletedButton)}
                     variant="contained"
                     onClick={showPersonalizedScoreIntroCompletedButton ? this.personalizedScoreIntroCompleted : this.clickNextStepButton}
-                    id="howItWorksGetStarted"
                   >
                     {actionButtonText}
                   </Button>

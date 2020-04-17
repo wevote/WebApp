@@ -8,6 +8,7 @@ import Reply from '@material-ui/icons/Reply';
 import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
 import { historyPush } from '../../utils/cordovaUtils';
+import ShareActions from '../../actions/ShareActions';
 import { stringContains } from '../../utils/textFormat';
 
 class ShareButtonDesktopTablet extends Component {
@@ -29,6 +30,17 @@ class ShareButtonDesktopTablet extends Component {
   }
 
   handleShareButtonClick (event) {
+    const { candidateShare, measureShare, officeShare } = this.props;
+    const { href: destinationFullUrl } = window.location;
+    let kindOfShare = 'BALLOT';
+    if (candidateShare) {
+      kindOfShare = 'CANDIDATE';
+    } else if (measureShare) {
+      kindOfShare = 'MEASURE';
+    } else if (officeShare) {
+      kindOfShare = 'OFFICE';
+    }
+    ShareActions.sharedItemSave(destinationFullUrl, kindOfShare);
     this.setState({ anchorEl: event.currentTarget, open: true });
   }
 
@@ -98,7 +110,7 @@ class ShareButtonDesktopTablet extends Component {
       shareMenuTextDefault = 'Ballot';
       shareMenuTextWithOpinions = 'Ballot + Your Opinions';
     }
-    const featureStillInDevelopment = true;
+    const featureStillInDevelopment = false;
     return (
       <>
         <Button

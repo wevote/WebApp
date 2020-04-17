@@ -76,7 +76,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     if (this.state.organizationWeVoteId) {
       return `/candidate/${this.state.candidateWeVoteId}/bto/${this.state.organizationWeVoteId}`; // back-to-office
     } else {
-      return `/candidate/${this.state.candidateWeVoteId}/b/btdb/`; // back-to-default-ballot
+      return `/candidate/${this.state.candidateWeVoteId}/b/btdb`; // back-to-default-ballot
     }
   }
 
@@ -84,7 +84,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
       return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`; // back-to-voter-guide
     } else if (this.state.officeWeVoteId) {
-      return `/office/${this.state.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
+      return `/office/${this.state.officeWeVoteId}/b/btdb`; // back-to-default-ballot
     } else return '';
   }
 

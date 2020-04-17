@@ -180,8 +180,8 @@ class BallotSummaryFooter extends Component {
   }
 
   renderUrl (ballotItemWeVoteId) {
-    if (ballotItemWeVoteId.indexOf('meas') > -1) return `/measure/${ballotItemWeVoteId}/b/btdb/`;
-    return `/office/${ballotItemWeVoteId}/b/btdb/`;
+    if (ballotItemWeVoteId.indexOf('meas') > -1) return `/measure/${ballotItemWeVoteId}/b/btdb`;
+    return `/office/${ballotItemWeVoteId}/b/btdb`;
   }
 
   render () {

@@ -65,6 +65,7 @@ class AnnotatedSlideshow extends PureComponent {
               <BackButtonWrapper>
                 <Button
                   classes={{ root: this.props.inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
+                  id={`annotatedSlideShowStep${selectedStepIndex + 1}Back`}
                   color="primary"
                   disabled={selectedStepIndex === 0}
                   fullWidth
@@ -77,7 +78,7 @@ class AnnotatedSlideshow extends PureComponent {
               <NextButtonWrapper>
                 <Button
                   color="primary"
-                  id="howItWorksNext"
+                  id={`annotatedSlideShowStep${selectedStepIndex + 1}Next`}
                   variant="contained"
                   classes={{ root: this.props.inModal ? classes.nextButtonRootModal : classes.nextButtonRoot }}
                   onClick={() => this.handleChangeSlide(true)}

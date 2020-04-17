@@ -150,7 +150,7 @@ class OfficeItemForAddPositions extends Component {
       return `/candidate/${candidateWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
       // If no organizationWeVoteId, signal that we want to link back to default ballot
-      return `/candidate/${candidateWeVoteId}/b/btdb/`; // back-to-default-ballot
+      return `/candidate/${candidateWeVoteId}/b/btdb`; // back-to-default-ballot
     }
   }
 
@@ -160,7 +160,7 @@ class OfficeItemForAddPositions extends Component {
       return `/office/${this.props.ballotItemWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
       // If no organizationWeVoteId, signal that we want to link back to default ballot
-      return `/office/${this.props.ballotItemWeVoteId}/b/btdb/`; // back-to-default-ballot
+      return `/office/${this.props.ballotItemWeVoteId}/b/btdb`; // back-to-default-ballot
     }
   }
 

@@ -11,7 +11,8 @@ import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import VoterGuidePossibilityActions from '../../actions/VoterGuidePossibilityActions';
 import VoterGuidePossibilityStore from '../../stores/VoterGuidePossibilityStore';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
-// import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
+
+/* global $ */
 
 /*
 https://localhost:3000/candidate-for-extension?candidate_we_vote_id=wv02cand62599&endorsement_page_url=https%3A%2F%2Fclimatehawksvote.com%2Fendorsements%2Fendorsements-2020%2F&candidate_specific_endorsement_url=http%3A%2F%2Fclimatehawksvote.com%2Fcandidate%2Fcathy-kunkel%2F
@@ -26,7 +27,7 @@ class CandidateItemEndorsement extends Component {
     organizationWeVoteId: PropTypes.string,
     showOfficeName: PropTypes.bool,
     showLargeImage: PropTypes.bool,
-    voterGuidePossibilityId: PropTypes.number,
+    voterGuidePossibilityId: PropTypes.node,     // Untyped.  A db id for an existing possibility, 0 for creating a new one on save, and '' for don't create a new one.
   };
 
   constructor (props) {
@@ -52,7 +53,7 @@ class CandidateItemEndorsement extends Component {
       possibilityPositionIsSupportOriginal: false,
       possibilityStatementText: '',
       possibilityStatementTextOriginal: '',
-      voterGuidePossibilityPositionId: 0,
+      voterGuidePossibilityPositionId: '',
     };
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
@@ -116,7 +117,7 @@ class CandidateItemEndorsement extends Component {
     const possibilityPositionIsOppose = (voterGuidePossibilityPosition && voterGuidePossibilityPosition.position_stance === 'OPPOSE');
     const possibilityPositionIsSupport = (voterGuidePossibilityPosition && voterGuidePossibilityPosition.position_stance === 'SUPPORT');
     const possibilityStatementText = voterGuidePossibilityPosition.statement_text || '';
-    const voterGuidePossibilityPositionId = voterGuidePossibilityPosition.possibility_position_id || 0;
+    const voterGuidePossibilityPositionId = voterGuidePossibilityPosition.possibility_position_id;
     this.setState({
       localChangeExists: false, // Reset
       possibilityMoreInfoUrl,
@@ -141,7 +142,7 @@ class CandidateItemEndorsement extends Component {
       if (organizationWeVoteId) {
         return `/candidate/${candidateWeVoteId}/bto/${organizationWeVoteId}`; // back-to-office
       } else {
-        return `/candidate/${candidateWeVoteId}/b/btdo/`; // back-to-default-office
+        return `/candidate/${candidateWeVoteId}/b/btdo`; // back-to-default-office
       }
     }
     return '';
@@ -153,7 +154,7 @@ class CandidateItemEndorsement extends Component {
     if (organizationWeVoteId && organizationWeVoteId !== '') {
       return `/office/${officeWeVoteId}/btvg/${organizationWeVoteId}`; // back-to-voter-guide
     } else if (officeWeVoteId) {
-      return `/office/${officeWeVoteId}/b/btdb/`; // back-to-default-ballot
+      return `/office/${officeWeVoteId}/b/btdb`; // back-to-default-ballot
     } else return '';
   }
 
@@ -259,11 +260,16 @@ class CandidateItemEndorsement extends Component {
       possibilityPositionIsInfoOnly, possibilityPositionIsOppose, possibilityPositionIsSupport,
       possibilityStatementText,
       voterGuidePossibilityPositionId,
+      ballotItemDisplayName, candidateUrl, candidateWeVoteId,
     } = this.state;
-    // If missing these ids, do not proceed
-    if (!voterGuidePossibilityId || !voterGuidePossibilityPositionId) {
-      console.log('Missing voterGuidePossibilityId:', voterGuidePossibilityId, ', or voterGuidePossibilityPositionId:', voterGuidePossibilityPositionId);
-      return false;
+    // // If missing these ids, do not proceed
+    // if (!voterGuidePossibilityId || !voterGuidePossibilityPositionId) {
+    //   console.log('Missing voterGuidePossibilityId:', voterGuidePossibilityId, ', or voterGuidePossibilityPositionId:', voterGuidePossibilityPositionId);
+    //   return false;
+    // }
+    let voterGuidePossibilityPositionIdPythonStyle = voterGuidePossibilityPositionId;
+    if (!voterGuidePossibilityPositionId || !Number.isInteger(voterGuidePossibilityPositionId)) {
+      voterGuidePossibilityPositionIdPythonStyle = '';
     }
 
     let positionStance = 'SUPPORT';
@@ -275,14 +281,38 @@ class CandidateItemEndorsement extends Component {
       positionStance = 'SUPPORT';
     }
     const dictionaryToSave = {
-      more_info_url: possibilityMoreInfoUrl,
+      more_info_url: candidateUrl && candidateUrl.length ? candidateUrl : possibilityMoreInfoUrl,
       organization_name: possibilityOrganizationName,
       position_stance: positionStance,
       statement_text: possibilityStatementText,
+      ballot_item_name: ballotItemDisplayName,
+      candidate_we_vote_id: candidateWeVoteId,
     };
-    VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(voterGuidePossibilityId, voterGuidePossibilityPositionId, dictionaryToSave);
+    VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(voterGuidePossibilityId,
+      voterGuidePossibilityPositionIdPythonStyle, dictionaryToSave);
+    this.doneDisplay('The endorsement has been saved', 1500);
     return true;
   };
+
+  deleteEndorsement = () => {
+    const { voterGuidePossibilityId } = this.props;
+    const { voterGuidePossibilityPositionId } = this.state;
+
+    let voterGuidePossibilityPositionIdPythonStyle = voterGuidePossibilityPositionId;
+    if (!voterGuidePossibilityPositionId || !Number.isInteger(voterGuidePossibilityPositionId)) {
+      voterGuidePossibilityPositionIdPythonStyle = '';
+    }
+    VoterGuidePossibilityActions.voterGuidePossibilityPositionSave(voterGuidePossibilityId,
+      voterGuidePossibilityPositionIdPythonStyle, { possibility_should_be_deleted: true });
+    this.doneDisplay('This possible endorsement has been removed', 1500);
+    return true;
+  };
+
+  doneDisplay = (msg, delay) => {
+    setTimeout(() => {}, delay);  // Don't immediately dismiss the dialog
+    // I spent many hours trying to send a message to the parent, asking it to close the iFrame, but was not successful
+    $('#app').replaceWith(`<div style="position: hidden; text-align: center; top: 40%; margin: 50px"><span style="display: inline-block">${msg}</span></div>`);
+  }
 
   goToCandidateLink () {
     // If here, we assume the voter is on the Office page
@@ -297,7 +327,7 @@ class CandidateItemEndorsement extends Component {
     const {
       ballotItemDisplayName, candidatePhotoUrl, candidateSpecificEndorsementUrl, candidateUrl, candidateWeVoteId,
       contestOfficeName, localChangeExists, politicalParty,
-      possibilityMoreInfoUrl, possibilityOrganizationName,
+      possibilityMoreInfoUrl, possibilityOrganizationName, voterGuidePossibilityPositionId,
       possibilityPositionIsInfoOnly, possibilityPositionIsOppose, possibilityPositionIsSupport,
       possibilityStatementText, twitterFollowersCount,
     } = this.state;
@@ -332,6 +362,10 @@ class CandidateItemEndorsement extends Component {
         },
       },
     });
+
+    const enableDeletion = voterGuidePossibilityPositionId &&
+      parseInt(voterGuidePossibilityPositionId, 10) &&
+      parseInt(voterGuidePossibilityPositionId, 10) > 0;
 
     return (
       <CandidateItemWrapper className="card-main u-overflow-hidden candidate-card card-main__no-underline">
@@ -461,12 +495,19 @@ class CandidateItemEndorsement extends Component {
           value={(possibilityMoreInfoUrl !== false) ? possibilityMoreInfoUrl : candidateSpecificEndorsementUrl}
         />
         <FourButtons>
-          <Button variant="outlined" color="primary">Delete Endorsement</Button>
           <Button
+            variant="outlined"
+            color="primary"
+            disabled={!enableDeletion}
+            onClick={this.deleteEndorsement}
+          >
+            Delete Endorsement
+          </Button>
+          <Button
+            variant="contained"
             color="primary"
             disabled={!localChangeExists}
             onClick={this.submitForReview}
-            variant="contained"
           >
             Submit for Review
           </Button>

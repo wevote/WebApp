@@ -17,6 +17,11 @@ class VoterGuidePossibilityStore extends ReduceStore {
     return this.getState().voterGuidePossibility || {};
   }
 
+  /**
+   * Get a Position
+   * @param voterGuidePossibilityPositionId, an integer
+   * @returns {*|{}}
+   */
   getVoterGuidePossibilityPositionById (voterGuidePossibilityPositionId) {
     const allCachedVoterGuidePossibilityPositions = this.getState().allCachedVoterGuidePossibilityPositions || [];
     return allCachedVoterGuidePossibilityPositions[voterGuidePossibilityPositionId] || {};
