@@ -30,42 +30,57 @@ const MapChart = props => (
     <Geographies className="map-svg" geography={geoUrl}>
       {({ geographies }) => (
         <>
-          {geographies.map(geo => (
-            <StyledGeography
-              className="map-svg"
-              onClick={props.onClickFunction}
-              key={geo.rsmKey}
-              stroke="#FFF"
-              geography={geo}
-              fill="#DDD"
-            />
-          ))}
+          {geographies.map((geo) => {
+            const cur = allStates.find(s => s.val === geo.id);
+
+            console.log(cur);
+
+            return (
+              <StyledGeography
+                className="map-svg"
+                onClick={props.onClickFunction}
+onMouseDown={props.onClickFunction}
+                key={geo.rsmKey}
+                stroke="#FFF"
+                geography={geo}
+                fill="#DDD"
+              />
+            );
+          })}
           {geographies.map((geo) => {
             const centroid = geoCentroid(geo);
             const cur = allStates.find(s => s.val === geo.id);
             return (
-              <g key={`${geo.rsmKey}-name`}>
+              <StyledG style={{ cursor: 'pointer' }} onClick={props.onClickFunction} onMouseDown={props.onClickFunction} key={`${geo.rsmKey}-name`}>
                 {cur &&
                     centroid[0] > -160 &&
                     centroid[0] < -67 &&
                     (Object.keys(offsets).indexOf(cur.id) === -1 ? (
-                      <Marker coordinates={centroid}>
-                        <text y="2" fontSize={14} textAnchor="middle">
-                          {cur.id}
-                        </text>
-                      </Marker>
+                      <>
+                        <StyledMarker onClick={props.onClickFunction} onMouseDown={props.onClickFunction} coordinates={centroid}>
+                          <text onClick={props.onClickFunction} onMouseDown={props.onClickFunction} stroke={cur.color} y="2" fontSize={14} textAnchor="middle">
+                            {cur.id}
+                          </text>
+                        </StyledMarker>
+                        
+                      </>
                     ) : (
-                      <Annotation
+                      <>
+                        <StyledAnnotation
+                        onClick={props.onClickFunction}
+onMouseDown={props.onClickFunction}
                         subject={centroid}
                         dx={offsets[cur.id][0]}
                         dy={offsets[cur.id][1]}
-                      >
-                        <text x={4} fontSize={14} alignmentBaseline="middle">
-                          {cur.id}
-                        </text>
-                      </Annotation>
+                        >
+                          <text onClick={props.onClickFunction} onMouseDown={props.onClickFunction} stroke={cur.color} x={4} fontSize={14} alignmentBaseline="middle">
+                            {cur.id}
+                          </text>
+                        </StyledAnnotation>
+                        
+                      </>
                     ))}
-              </g>
+              </StyledG>
             );
           })}
         </>
@@ -82,6 +97,27 @@ const StyledGeography = styled(Geography)`
     cursor: pointer !important;
     stroke: white !important;
   }
+`;
+
+const StyledG = styled.g`
+  background: orange !important;
+  display: block !important;
+  width: 10px !important;
+  height: 10px !important;
+`;
+
+const StyledMarker = styled(Marker)`
+  background: orange !important;
+  display: block !important;
+  width: 10px !important;
+  height: 10px !important;
+`;
+
+const StyledAnnotation = styled(Annotation)`
+  background: orange !important;
+  display: block !important;
+  width: 10px !important;
+  height: 10px !important;
 `;
 
 export default MapChart;
