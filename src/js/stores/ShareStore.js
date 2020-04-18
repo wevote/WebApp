@@ -27,7 +27,7 @@ class ShareStore extends ReduceStore {
     const sharedItem = this.getState().allCachedSharedItemsByFullUrl[destinationFullUrlLowerCase] || {};
     // console.log('getUrlWithSharedItemCodeByFullUrl destinationFullUrl:', destinationFullUrl, ', sharedItem:', sharedItem, ', withOpinions:', withOpinions);
     if (withOpinions) {
-      return sharedItem.url_with_shared_item_code_with_opinions;
+      return sharedItem.url_with_shared_item_code_all_opinions;
     } else {
       return sharedItem.url_with_shared_item_code_no_opinions;
     }
@@ -49,8 +49,8 @@ class ShareStore extends ReduceStore {
         if (action.res.shared_item_code_no_opinions) {
           allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_no_opinions] = sharedItem;
         }
-        if (action.res.shared_item_code_with_opinions) {
-          allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_with_opinions] = sharedItem;
+        if (action.res.shared_item_code_all_opinions) {
+          allCachedSharedItemsBySharedItemCode[action.res.shared_item_code_all_opinions] = sharedItem;
         }
         return {
           ...state,

@@ -14,6 +14,7 @@ class ShareModalOption extends Component {
     link: PropTypes.string,
     onClickFunction: PropTypes.func,
     title: PropTypes.string,
+    uniqueExternalId: PropTypes.string,
   };
 
   constructor (props) {
@@ -31,16 +32,18 @@ class ShareModalOption extends Component {
   }
 
   copyLink () {
+    console.log('ShareModalOption copyLink');
     openSnackbar({ message: 'Copied!' });
   }
 
   render () {
-    const { background, copyLink, icon, link, noLink, title } = this.props;
+    const { background, copyLink, icon, link, noLink, title, uniqueExternalId } = this.props;
+    console.log('ShareModalOption copyLink:', copyLink, ', link:', link);
     return (
       <Wrapper>
         {copyLink ? (
           <CopyToClipboard text={link} onCopy={this.copyLink}>
-            <div onClick={() => this.onClick}>
+            <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
               <Icon background={background}>
                 {icon}
               </Icon>
@@ -52,7 +55,7 @@ class ShareModalOption extends Component {
         ) : (
           <div>
             {noLink ? (
-              <div onClick={() => this.onClick}>
+              <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
                 <Icon background={background}>
                   {icon}
                 </Icon>
@@ -66,7 +69,7 @@ class ShareModalOption extends Component {
                 url={link}
                 target="_blank"
                 body={(
-                  <div onClick={() => this.onClick}>
+                  <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
                     <Icon background={background}>
                       {icon}
                     </Icon>
