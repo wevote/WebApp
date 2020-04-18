@@ -80,12 +80,13 @@ class ShareModal extends Component {
       urlWithSharedItemCodeAllOpinions,
       voterIsSignedIn,
     });
-    this.openSignInModalIfWeShould(shareModalStep);
+    this.openSignInModalIfWeShould(shareModalStep, voterIsSignedIn);
   }
 
   componentWillUnmount () {
     this.friendStoreListener.remove();
     this.shareStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onFriendStoreChange () {
@@ -127,17 +128,19 @@ class ShareModal extends Component {
     });
   }
 
-  setStep (shareModalStep) {
+  setStep (shareModalStep, voterIsSignedInIncoming = null) {
+    let { voterIsSignedIn } = this.state;
+    if (voterIsSignedInIncoming !== null) {
+      voterIsSignedIn = voterIsSignedInIncoming;
+    }
     this.setState({ shareModalStep });
-    this.openSignInModalIfWeShould(shareModalStep);
+    this.openSignInModalIfWeShould(shareModalStep, voterIsSignedIn);
   }
 
-  openSignInModalIfWeShould = (shareModalStep) => {
-    const { signInModalOpenedOnce, voterIsSignedIn } = this.state;
+  openSignInModalIfWeShould = (shareModalStep, voterIsSignedIn) => {
     if (stringContains('AllOpinions', shareModalStep)) {
-      if (!voterIsSignedIn && !signInModalOpenedOnce) {
+      if (!voterIsSignedIn) {
         AppActions.setShowSignInModal(true);
-        this.setState({ signInModalOpenedOnce: true });
       }
     }
   }
@@ -242,7 +245,7 @@ class ShareModal extends Component {
                 Share:
                 {' '}
                 <strong>
-                  {(shareModalStep === 'ballotShareOptions') && 'Ballot for this Election'}
+                  {(shareModalStep === 'ballotShareOptions') && 'Ballot'}
                   {(shareModalStep === 'ballotShareOptionsAllOpinions') && 'Ballot + Your Opinions'}
                   {(shareModalStep === 'candidateShareOptions') && 'Candidate for this Election'}
                   {(shareModalStep === 'candidateShareOptionsAllOpinions') && 'Candidate + Your Opinions'}
@@ -257,7 +260,7 @@ class ShareModal extends Component {
                   <>Share a link to this election so that your friends can get ready to vote.</>
                 )}
                 {(shareModalStep === 'ballotShareOptionsAllOpinions') && (
-                  <>Share a link to all of your opinions for this election. </>
+                  <>Share a link to all of your opinions for this year. </>
                 )}
                 {(shareModalStep === 'candidateShareOptions') && (
                   <>Share a link to this candidate. </>
@@ -280,7 +283,7 @@ class ShareModal extends Component {
                 {stringContains('AllOpinions', shareModalStep) ? (
                   <>
                     {' '}
-                    All of your opinions for this election are included.
+                    All of your opinions for this year are included.
                     {' '}
                     <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.doNotIncludeOpinions(shareModalStep)}>
                       Don&apos;t include your opinions.
