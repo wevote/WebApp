@@ -498,7 +498,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             </PopoverHeader>
             <PopoverBody>
               {voterSupportsBallotItem && (
-                <div>
+                <YourOpinion>
                   <DecidedIconWrapper>
                     <NetworkScoreSmall className={classes.voterSupports} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
                       <DoneIcon classes={{ root: classes.decidedIconSmall }} />
@@ -512,10 +512,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                       .
                     </>
                   )}
-                </div>
+                </YourOpinion>
               )}
               {voterOpposesBallotItem && (
-                <span>
+                <YourOpinion>
                   <DecidedIconWrapper>
                     <NetworkScoreSmall className={classes.voterOpposes} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
                       <NotInterestedIcon classes={{ root: classes.decidedIconSmall }} />
@@ -529,7 +529,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                       .
                     </>
                   )}
-                </span>
+                </YourOpinion>
               )}
               <ItemActionBarWrapper>
                 <ItemActionBar

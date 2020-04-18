@@ -336,11 +336,15 @@ class Application extends Component {
 
     routingLog(pathname);
 
-    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, showShareButtonFooter, voterGuideCreatorMode, voterGuideMode, extensionPageMode } = getApplicationViewBooleans(pathname);
+    const {
+      inTheaterMode, contentFullWidthMode, extensionPageMode, settingsMode, sharedItemLandingPage,
+      showFooterBar, showShareButtonFooter, twitterSignInMode, voterGuideCreatorMode,
+      voterGuideMode,
+    } = getApplicationViewBooleans(pathname);
     // console.log('showShareButtonFooter:', showShareButtonFooter);
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
-    if (extensionPageMode) {
+    if (extensionPageMode || sharedItemLandingPage || twitterSignInMode) {
       return (
         <div>
           { this.props.children }

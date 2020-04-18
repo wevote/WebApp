@@ -22,6 +22,7 @@ import { stringContains } from '../../utils/textFormat';
 import ShareActions from '../../actions/ShareActions';
 import ShareModalOption from './ShareModalOption';
 import ShareStore from '../../stores/ShareStore';
+import VoterStore from '../../stores/VoterStore';
 
 
 class ShareModal extends Component {
@@ -42,8 +43,10 @@ class ShareModal extends Component {
       currentFriendsList: [],
       // friendsToShareWith: [],
       shareModalStep: '',
+      signInModalOpenedOnce: false,
       urlWithSharedItemCode: '',
-      urlWithSharedItemCodeWithOpinions: '',
+      urlWithSharedItemCodeAllOpinions: '',
+      voterIsSignedIn: false,
     };
 
     this.closeShareModal = this.closeShareModal.bind(this);
@@ -53,18 +56,20 @@ class ShareModal extends Component {
   // Steps: ballotShareOptions, friends
 
   componentDidMount () {
-    const { shareModalStep } = this.props;
-    console.log('shareModalStep componentDidMount this.props:', shareModalStep);
+    const { shareModalStep, voterIsSignedIn } = this.props;
+    // console.log('shareModalStep componentDidMount this.props:', shareModalStep);
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const currentFullUrl = window.location.href || '';
     const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
-    const urlWithSharedItemCodeWithOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
-    if (!urlWithSharedItemCode || !urlWithSharedItemCodeWithOpinions) {
-      ShareActions.sharedItemRetrieveByFullUrl(currentFullUrlToShare);
+    const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
+    // console.log('ShareModal componentDidMount urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
+    if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
+      ShareActions.sharedItemSave(currentFullUrlToShare);
     }
     this.setState({
       currentFriendsList: FriendStore.currentFriends(),
@@ -72,8 +77,10 @@ class ShareModal extends Component {
       pathname: this.props.pathname,
       shareModalStep: shareModalStep || 'ballotShareOptions',
       urlWithSharedItemCode,
-      urlWithSharedItemCodeWithOpinions,
+      urlWithSharedItemCodeAllOpinions,
+      voterIsSignedIn,
     });
+    this.openSignInModalIfWeShould(shareModalStep);
   }
 
   componentWillUnmount () {
@@ -93,17 +100,65 @@ class ShareModal extends Component {
     const currentFullUrl = window.location.href || '';
     const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
-    const urlWithSharedItemCodeWithOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
-    // console.log('SharedModal onShareStoreChange urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeWithOpinions:', urlWithSharedItemCodeWithOpinions);
+    const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
+    // console.log('SharedModal onShareStoreChange urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
     this.setState({
       currentFullUrlToShare,
       urlWithSharedItemCode,
-      urlWithSharedItemCodeWithOpinions,
+      urlWithSharedItemCodeAllOpinions,
+    });
+  }
+
+  onVoterStoreChange () {
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
+    const currentFullUrl = window.location.href || '';
+    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
+    const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
+    const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
+    if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
+      ShareActions.sharedItemRetrieveByFullUrl(currentFullUrlToShare);
+    }
+    this.setState({
+      currentFullUrlToShare,
+      urlWithSharedItemCode,
+      urlWithSharedItemCodeAllOpinions,
+      voterIsSignedIn,
     });
   }
 
   setStep (shareModalStep) {
     this.setState({ shareModalStep });
+    this.openSignInModalIfWeShould(shareModalStep);
+  }
+
+  openSignInModalIfWeShould = (shareModalStep) => {
+    const { signInModalOpenedOnce, voterIsSignedIn } = this.state;
+    if (stringContains('AllOpinions', shareModalStep)) {
+      if (!voterIsSignedIn && !signInModalOpenedOnce) {
+        AppActions.setShowSignInModal(true);
+        this.setState({ signInModalOpenedOnce: true });
+      }
+    }
+  }
+
+  doNotIncludeOpinions (shareModalStep) {
+    if (stringContains('AllOpinions', shareModalStep)) {
+      const newShareModalStep = shareModalStep.replace('AllOpinions', '');
+      this.setStep(newShareModalStep);
+    }
+  }
+
+  includeOpinions (shareModalStep) {
+    const { voterIsSignedIn } = this.state;
+    if (!stringContains('AllOpinions', shareModalStep)) {
+      if (voterIsSignedIn) {
+        const newShareModalStep = `${shareModalStep}AllOpinions`;
+        this.setStep(newShareModalStep);
+      } else {
+        AppActions.setShowSignInModal(true);
+      }
+    }
   }
 
   closeShareModal () {
@@ -113,12 +168,12 @@ class ShareModal extends Component {
   render () {
     renderLog('ShareModal');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ShareModal render');
-    const { classes, voterIsSignedIn } = this.props;
-    const { currentFullUrlToShare, shareModalStep, urlWithSharedItemCode, urlWithSharedItemCodeWithOpinions } = this.state;
+    const { classes } = this.props;
+    const { currentFullUrlToShare, shareModalStep, urlWithSharedItemCode, urlWithSharedItemCodeAllOpinions, voterIsSignedIn } = this.state;
     let shareModalHtml = (
       <>Loading...</>
     );
-    console.log('shareModalStep:', shareModalStep);
+    // console.log('shareModalStep:', shareModalStep);
     if ((!shareModalStep) || (shareModalStep === '')) {
       return shareModalHtml;
     }
@@ -129,17 +184,17 @@ class ShareModal extends Component {
     let linkToBeShared = '';
     let linkToBeSharedUrlEncoded = '';
     if ((shareModalStep === 'ballotShareOptions') ||
-        (shareModalStep === 'ballotShareOptionsWithOpinions') ||
+        (shareModalStep === 'ballotShareOptionsAllOpinions') ||
         (shareModalStep === 'candidateShareOptions') ||
-        (shareModalStep === 'candidateShareOptionsWithOpinions') ||
+        (shareModalStep === 'candidateShareOptionsAllOpinions') ||
         (shareModalStep === 'measureShareOptions') ||
-        (shareModalStep === 'measureShareOptionsWithOpinions') ||
+        (shareModalStep === 'measureShareOptionsAllOpinions') ||
         (shareModalStep === 'officeShareOptions') ||
-        (shareModalStep === 'officeShareOptionsWithOpinions')
+        (shareModalStep === 'officeShareOptionsAllOpinions')
     ) {
-      if (stringContains('WithOpinions', shareModalStep)) {
-        if (urlWithSharedItemCodeWithOpinions) {
-          linkToBeShared = urlWithSharedItemCodeWithOpinions;
+      if (stringContains('AllOpinions', shareModalStep)) {
+        if (urlWithSharedItemCodeAllOpinions) {
+          linkToBeShared = urlWithSharedItemCodeAllOpinions;
         } else {
           linkToBeShared = currentFullUrlToShare;
         }
@@ -153,25 +208,25 @@ class ShareModal extends Component {
       if (shareModalStep === 'ballotShareOptions') {
         emailSubjectEncoded = encodeURI('Ready to vote?');
         emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      } else if (shareModalStep === 'ballotShareOptionsWithOpinions') {
+      } else if (shareModalStep === 'ballotShareOptionsAllOpinions') {
         emailSubjectEncoded = encodeURI('Ready to vote?');
         emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
       } else if (shareModalStep === 'candidateShareOptions') {
         emailSubjectEncoded = encodeURI('Ready to vote?');
         emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      } else if (shareModalStep === 'candidateShareOptionsWithOpinions') {
+      } else if (shareModalStep === 'candidateShareOptionsAllOpinions') {
         emailSubjectEncoded = encodeURI('Ready to vote?');
         emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
       } else if (shareModalStep === 'measureShareOptions') {
         emailSubjectEncoded = encodeURI('Ready to vote?');
         emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      } else if (shareModalStep === 'measureShareOptionsWithOpinions') {
+      } else if (shareModalStep === 'measureShareOptionsAllOpinions') {
         emailSubjectEncoded = encodeURI('Ready to vote?');
         emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
       } else if (shareModalStep === 'officeShareOptions') {
         emailSubjectEncoded = encodeURI('Ready to vote?');
         emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      } else if (shareModalStep === 'officeShareOptionsWithOpinions') {
+      } else if (shareModalStep === 'officeShareOptionsAllOpinions') {
         emailSubjectEncoded = encodeURI('Ready to vote?');
         emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
       }
@@ -188,39 +243,61 @@ class ShareModal extends Component {
                 {' '}
                 <strong>
                   {(shareModalStep === 'ballotShareOptions') && 'Ballot for this Election'}
-                  {(shareModalStep === 'ballotShareOptionsWithOpinions') && 'Ballot + Your Opinions for this Election'}
+                  {(shareModalStep === 'ballotShareOptionsAllOpinions') && 'Ballot + Your Opinions'}
                   {(shareModalStep === 'candidateShareOptions') && 'Candidate for this Election'}
-                  {(shareModalStep === 'candidateShareOptionsWithOpinions') && 'Candidate + Your Opinions'}
+                  {(shareModalStep === 'candidateShareOptionsAllOpinions') && 'Candidate + Your Opinions'}
                   {(shareModalStep === 'measureShareOptions') && 'Measure for this Election'}
-                  {(shareModalStep === 'measureShareOptionsWithOpinions') && 'Measure + Your Opinions'}
+                  {(shareModalStep === 'measureShareOptionsAllOpinions') && 'Measure + Your Opinions'}
                   {(shareModalStep === 'officeShareOptions') && 'Office for this Election'}
-                  {(shareModalStep === 'officeShareOptionsWithOpinions') && 'Office + Your Opinions'}
+                  {(shareModalStep === 'officeShareOptionsAllOpinions') && 'Office + Your Opinions'}
                 </strong>
               </Title>
-              {(shareModalStep === 'ballotShareOptions') && (
-                <SubTitle>Share a link to this election so that your friends can get ready to vote. Your opinions are NOT included.</SubTitle>
-              )}
-              {(shareModalStep === 'ballotShareOptionsWithOpinions') && (
-                <SubTitle>Share a link to all of your opinions for this election.</SubTitle>
-              )}
-              {(shareModalStep === 'candidateShareOptions') && (
-                <SubTitle>Share a link to this candidate. Your opinions are NOT included.</SubTitle>
-              )}
-              {(shareModalStep === 'candidateShareOptionsWithOpinions') && (
-                <SubTitle>Share a link to this candidate. All of your opinions for this election are included.</SubTitle>
-              )}
-              {(shareModalStep === 'measureShareOptions') && (
-                <SubTitle>Share a link to this measure/proposition. Your opinions are NOT included.</SubTitle>
-              )}
-              {(shareModalStep === 'measureShareOptionsWithOpinions') && (
-                <SubTitle>Share a link to this measure/proposition. All of your opinions for this election are included.</SubTitle>
-              )}
-              {(shareModalStep === 'officeShareOptions') && (
-                <SubTitle>Share a link to this office. Your opinions are NOT included.</SubTitle>
-              )}
-              {(shareModalStep === 'officeShareOptionsWithOpinions') && (
-                <SubTitle>Share a link to this office. All of your opinions for this election are included.</SubTitle>
-              )}
+              <SubTitle>
+                {(shareModalStep === 'ballotShareOptions') && (
+                  <>Share a link to this election so that your friends can get ready to vote.</>
+                )}
+                {(shareModalStep === 'ballotShareOptionsAllOpinions') && (
+                  <>Share a link to all of your opinions for this election. </>
+                )}
+                {(shareModalStep === 'candidateShareOptions') && (
+                  <>Share a link to this candidate. </>
+                )}
+                {(shareModalStep === 'candidateShareOptionsAllOpinions') && (
+                  <>Share a link to this candidate. </>
+                )}
+                {(shareModalStep === 'measureShareOptions') && (
+                  <>Share a link to this measure/proposition. </>
+                )}
+                {(shareModalStep === 'measureShareOptionsAllOpinions') && (
+                  <>Share a link to this measure/proposition. </>
+                )}
+                {(shareModalStep === 'officeShareOptions') && (
+                  <>Share a link to this office. </>
+                )}
+                {(shareModalStep === 'officeShareOptionsAllOpinions') && (
+                  <>Share a link to this office. </>
+                )}
+                {stringContains('AllOpinions', shareModalStep) ? (
+                  <>
+                    {' '}
+                    All of your opinions for this election are included.
+                    {' '}
+                    <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.doNotIncludeOpinions(shareModalStep)}>
+                      Don&apos;t include your opinions.
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    {' '}
+                    Your opinions are NOT included.
+                    {' '}
+                    <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.includeOpinions(shareModalStep)}>
+                      Include your opinions.
+                    </span>
+                  </>
+                )
+                }
+              </SubTitle>
             </div>
             <IconButton
               aria-label="Close"

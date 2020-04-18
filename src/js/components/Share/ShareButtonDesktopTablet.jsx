@@ -22,7 +22,7 @@ class ShareButtonDesktopTablet extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      open: false,
+      openShareMenu: false,
       anchorEl: null,
     };
     this.handleShareButtonClick = this.handleShareButtonClick.bind(this);
@@ -41,11 +41,11 @@ class ShareButtonDesktopTablet extends Component {
       kindOfShare = 'OFFICE';
     }
     ShareActions.sharedItemSave(destinationFullUrl, kindOfShare);
-    this.setState({ anchorEl: event.currentTarget, open: true });
+    this.setState({ anchorEl: event.currentTarget, openShareMenu: true });
   }
 
   handleCloseMenu () {
-    this.setState({ anchorEl: null, open: false });
+    this.setState({ anchorEl: null, openShareMenu: false });
   }
 
   openShareModal (withOpinions = false) {
@@ -53,25 +53,25 @@ class ShareButtonDesktopTablet extends Component {
     let shareModalStep;
     if (candidateShare) {
       if (withOpinions) {
-        shareModalStep = 'candidateShareOptionsWithOpinions';
+        shareModalStep = 'candidateShareOptionsAllOpinions';
       } else {
         shareModalStep = 'candidateShareOptions';
       }
     } else if (measureShare) {
       if (withOpinions) {
-        shareModalStep = 'measureShareOptionsWithOpinions';
+        shareModalStep = 'measureShareOptionsAllOpinions';
       } else {
         shareModalStep = 'measureShareOptions';
       }
     } else if (officeShare) {
       if (withOpinions) {
-        shareModalStep = 'officeShareOptionsWithOpinions';
+        shareModalStep = 'officeShareOptionsAllOpinions';
       } else {
         shareModalStep = 'officeShareOptions';
       }
       // Default to ballot
     } else if (withOpinions) {
-      shareModalStep = 'ballotShareOptionsWithOpinions';
+      shareModalStep = 'ballotShareOptionsAllOpinions';
     } else {
       shareModalStep = 'ballotShareOptions';
     }
@@ -83,6 +83,7 @@ class ShareButtonDesktopTablet extends Component {
       const pathnameWithModalShare = `${pathname}${pathname.endsWith('/') ? '' : '/'}modal/share`;
       historyPush(pathnameWithModalShare);
     }
+    this.setState({ openShareMenu: false });
   }
 
   render () {
@@ -91,24 +92,24 @@ class ShareButtonDesktopTablet extends Component {
 
     let shareButtonClasses;
     let shareMenuTextDefault;
-    let shareMenuTextWithOpinions;
+    let shareMenuTextAllOpinions;
     if (candidateShare) {
       shareButtonClasses = classes.buttonCandidate;
       shareMenuTextDefault = 'Candidate';
-      shareMenuTextWithOpinions = 'Candidate + Your Opinions';
+      shareMenuTextAllOpinions = 'Candidate + Your Opinions';
     } else if (measureShare) {
       shareButtonClasses = classes.buttonCandidate;
       shareMenuTextDefault = 'Measure';
-      shareMenuTextWithOpinions = 'Measure + Your Opinions';
+      shareMenuTextAllOpinions = 'Measure + Your Opinions';
     } else if (officeShare) {
       shareButtonClasses = classes.buttonCandidate;
       shareMenuTextDefault = 'Office';
-      shareMenuTextWithOpinions = 'Office + Your Opinions';
+      shareMenuTextAllOpinions = 'Office + Your Opinions';
     } else {
       // Default to ballot
       shareButtonClasses = classes.buttonDefault;
       shareMenuTextDefault = 'Ballot';
-      shareMenuTextWithOpinions = 'Ballot + Your Opinions';
+      shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
     const featureStillInDevelopment = false;
     return (
@@ -141,7 +142,7 @@ class ShareButtonDesktopTablet extends Component {
           elevation={2}
           getContentAnchorEl={null}
           onClose={this.handleCloseMenu}
-          open={this.state.open}
+          open={this.state.openShareMenu}
           transformOrigin={{
             horizontal: 'right',
             vertical: 'top',
@@ -178,7 +179,7 @@ class ShareButtonDesktopTablet extends Component {
                   <Comment />
                 </MenuIcon>
                 <MenuText>
-                  {shareMenuTextWithOpinions}
+                  {shareMenuTextAllOpinions}
                 </MenuText>
                 {/* <MenuInfo> - TURNED OFF BECAUSE OF TOOLTIP Z-INDEX PROBLEM */}
                 {/*  <Tooltip title="Share a link to the choices you've made for this election so that your friends can get ready to vote. This includes your public and friend's-only opinions." arrow enterDelay={300}> */}

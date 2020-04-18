@@ -37,6 +37,7 @@ class FooterBar extends React.Component {
     this.state = {
       friendInvitationsSentToMe: 0, // eslint-disable-line react/no-unused-state
       showingOneCompleteYourProfileModal: false,
+      showSignInModal: false,
       voterIsSignedIn: false,
     };
   }
@@ -47,9 +48,13 @@ class FooterBar extends React.Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
+    const showSignInModal = AppStore.showSignInModal();
+    const showShareModal = AppStore.showShareModal();
     this.setState({
-      showingOneCompleteYourProfileModal,
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
+      showingOneCompleteYourProfileModal,
+      showShareModal,
+      showSignInModal,
     });
   }
 
@@ -61,8 +66,12 @@ class FooterBar extends React.Component {
 
   onAppStoreChange () {
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
+    const showShareModal = AppStore.showShareModal();
+    const showSignInModal = AppStore.showSignInModal();
     this.setState({
       showingOneCompleteYourProfileModal,
+      showShareModal,
+      showSignInModal,
     });
   }
 
@@ -115,7 +124,7 @@ class FooterBar extends React.Component {
   render () {
     renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { friendInvitationsSentToMe, showingOneCompleteYourProfileModal, voterIsSignedIn } = this.state;
+    const { friendInvitationsSentToMe, showingOneCompleteYourProfileModal, showShareModal, showSignInModal, voterIsSignedIn } = this.state;
     const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
 
     const badgeStyle = {
@@ -125,7 +134,7 @@ class FooterBar extends React.Component {
     return (
       <FooterBarWrapper>
         <div
-          className={`footer-container u-show-mobile-tablet ${showingOneCompleteYourProfileModal ? ' u-z-index-1000' : ' u-z-index-9000'}`}
+          className={`footer-container u-show-mobile-tablet ${showingOneCompleteYourProfileModal || showShareModal || showSignInModal ? ' u-z-index-1000' : ' u-z-index-9000'}`}
           style={{ height: `${cordovaFooterHeight()}` }}
         >
           <BottomNavigation
