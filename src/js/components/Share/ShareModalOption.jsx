@@ -32,13 +32,13 @@ class ShareModalOption extends Component {
   }
 
   copyLink () {
-    console.log('ShareModalOption copyLink');
+    // console.log('ShareModalOption copyLink');
     openSnackbar({ message: 'Copied!' });
   }
 
   render () {
     const { background, copyLink, icon, link, noLink, title, uniqueExternalId } = this.props;
-    console.log('ShareModalOption copyLink:', copyLink, ', link:', link);
+    // console.log('ShareModalOption copyLink:', copyLink, ', link:', link);
     return (
       <Wrapper>
         {copyLink ? (
