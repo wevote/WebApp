@@ -146,6 +146,7 @@ const TimeSection = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  color: #2E3C5D !important;
 `;
 
 const Time = styled.h1`

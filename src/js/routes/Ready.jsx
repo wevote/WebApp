@@ -8,6 +8,7 @@ import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
 import VoterStore from '../stores/VoterStore';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
+import PledgeToVote from '../components/Ready/PledgeToVote';
 
 class Ready extends Component {
   static propTypes = {};
@@ -15,10 +16,7 @@ class Ready extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      electionDate: new Date('10/07/2020'),
     };
-
-    this.setNewTime = this.setNewTime.bind(this);
   }
 
   componentDidMount () {
@@ -59,11 +57,7 @@ class Ready extends Component {
               <Paragraph>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</Paragraph>
             </div>
             <div className="col-md-4 d-none d-md-block">
-              <div className="card">
-                <div className="card-main">
-                Hello
-                </div>
-              </div>
+              <PledgeToVote />
             </div>
           </div>
         </PageContainer>
