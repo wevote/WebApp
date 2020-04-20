@@ -7,15 +7,17 @@ import { isCordova, isWebApp } from './cordovaUtils';
 export function getApplicationViewBooleans (pathname) {
   let inTheaterMode = false;
   let contentFullWidthMode = false;
+  let extensionPageMode = false;
   let friendsMode = false;
   const pathnameLowerCase = pathname.toLowerCase() || '';
   // console.log('applicationUtils, pathnameLowerCase:', pathnameLowerCase);
   let settingsMode = false;
+  let sharedItemLandingPage = false;
+  let twitterSignInMode = false;
   let voteMode = false;
   let valuesMode = false;
   let voterGuideMode = false;
   let voterGuideCreatorMode = false;
-  let extensionPageMode = false;
   if (pathnameLowerCase === '/intro/story' ||
     pathnameLowerCase === '/intro/sample_ballot' ||
     pathnameLowerCase === '/intro/get_started' ||
@@ -69,6 +71,14 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/opinions_ignored') {
     contentFullWidthMode = true;
     valuesMode = true;
+  } else if (pathnameLowerCase.startsWith('/candidate-for-extension') ||
+    pathnameLowerCase.startsWith('/add-candidate-for-extension') ||
+    pathnameLowerCase.startsWith('/more/extensionsignin')) {
+    extensionPageMode = true;
+  } else if (pathnameLowerCase.startsWith('/-')) {
+    sharedItemLandingPage = true;
+  } else if (pathnameLowerCase.startsWith('/twitter_sign_in')) {
+    twitterSignInMode = true;
   } else if (pathnameLowerCase.startsWith('/friends') ||
     pathnameLowerCase === '/facebook_invitable_friends') {
     contentFullWidthMode = true;
@@ -168,10 +178,6 @@ export function getApplicationViewBooleans (pathname) {
   ) {
     // We want to HIDE the footer bar on the above path patterns
     showFooterBar = false;
-  } else if (pathnameLowerCase.startsWith('/candidate-for-extension') ||
-    pathnameLowerCase.startsWith('/add-candidate-for-extension') ||
-    pathnameLowerCase.startsWith('/more/extensionsignin')) {
-    extensionPageMode = true;
     // ///////// SHOW: The following are URLS where we want the footer to show
   } else if (pathnameLowerCase.startsWith('/ballot') ||
       pathnameLowerCase.startsWith('/candidate') || // Show Footer if back to not specified above
@@ -203,13 +209,10 @@ export function getApplicationViewBooleans (pathname) {
   return {
     inTheaterMode,
     contentFullWidthMode,
+    extensionPageMode,
     friendsMode,
     settingsMode,
-    voteMode,
-    valuesMode,
-    voterGuideCreatorMode,
-    voterGuideMode,
-    extensionPageMode,
+    sharedItemLandingPage,
     showBackToFriends,
     showBackToBallotHeader,
     showBackToSettingsDesktop,
@@ -218,6 +221,11 @@ export function getApplicationViewBooleans (pathname) {
     showBackToVoterGuides,
     showFooterBar,
     showShareButtonFooter,
+    twitterSignInMode,
+    voteMode,
+    valuesMode,
+    voterGuideCreatorMode,
+    voterGuideMode,
   };
 }
 
