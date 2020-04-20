@@ -7,6 +7,7 @@ import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
 import VoterStore from '../stores/VoterStore';
+import { cordovaBallotFilterTopMargin } from '../utils/cordovaOffsets';
 
 class Ready extends Component {
   static propTypes = {};
@@ -42,31 +43,65 @@ class Ready extends Component {
     }
 
     return (
-      <span>
-        <Helmet title="Ready to Vote? - We Vote" />
-        <BrowserPushMessage incomingProps={this.props} />
-        <PageTitle>
-          Get Ready to Vote in Minutes
-        </PageTitle>
-        <div className="row">
-          <div className="col-sm-12 col-md-8">
-            233 Days
-          </div>
-          <div className="col-md-4 d-none d-md-block">
-            <div className="card">
-              <div className="card-main">
+      <div className="page-content-container">
+        <div className="container-fluid">
+          <Helmet title="Ready to Vote? - We Vote" />
+          <BrowserPushMessage incomingProps={this.props} />
+          <div className="row">
+            <div className="col-sm-12 col-md-8">
+              <Card className="card">
+                <div className="card-main">
+                  {' '}
+                  <CardTitle>214 Days</CardTitle>
+                  <CardSubTitle>until your next election on November 2, 2020.</CardSubTitle>
+                </div>
+              </Card>
+              <Title>Get Ready to Vote in Minutes!</Title>
+              <Paragraph>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</Paragraph>
+            </div>
+            <div className="col-md-4 d-none d-md-block">
+              <div className="card">
+                <div className="card-main">
                 Hello
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </span>
+      </div>
     );
   }
 }
 
-const PageTitle = styled.div`
-  margin: 20px 0;
+const Card = styled.div`
+  margin-top: 26px;
+`;
+
+const CardTitle = styled.h1`
+  font-size: 64px;
+  color: #2E3C5D !important;
+  font-weight: 900;
+  margin-top: 0;
+  margin-bottom: 8px;
+`;
+
+const CardSubTitle = styled.h3`
+  font-size: 22px;
+  font-weight: 700;
+  color: #2E3C5D !important;
+  width: fit-content;
+  padding-bottom: 16px;
+  // border-bottom: 1px solid #2E3C5D;
+`;
+
+const Title = styled.h2`
+  font-size: 26px;
+  margin: 36px 0 16px;
+  font-weight: 800;
+`;
+
+const Paragraph = styled.p`
+
 `;
 
 const styles = theme => ({
