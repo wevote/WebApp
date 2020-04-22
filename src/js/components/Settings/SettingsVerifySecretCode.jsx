@@ -570,6 +570,9 @@ const styles = theme => ({
       margin: '0 auto',
     },
   },
+  dialogRoot: {
+    zIndex: '9010 !important',
+  },
   codeVerifyCordova: {
     top: '9%',
     bottom: 'unset',

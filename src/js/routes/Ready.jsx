@@ -7,6 +7,8 @@ import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
 import VoterStore from '../stores/VoterStore';
+import ElectionCountdown from '../components/Ready/ElectionCountdown';
+import PledgeToVote from '../components/Ready/PledgeToVote';
 
 class Ready extends Component {
   static propTypes = {};
@@ -41,32 +43,42 @@ class Ready extends Component {
       return LoadingWheel;
     }
 
+    const { days, hours, minutes, seconds, electionDate } = this.state;
+
     return (
-      <span>
-        <Helmet title="Ready to Vote? - We Vote" />
-        <BrowserPushMessage incomingProps={this.props} />
-        <PageTitle>
-          Get Ready to Vote in Minutes
-        </PageTitle>
-        <div className="row">
-          <div className="col-sm-12 col-md-8">
-            233 Days
-          </div>
-          <div className="col-md-4 d-none d-md-block">
-            <div className="card">
-              <div className="card-main">
-                Hello
-              </div>
+      <div className="page-content-container">
+        <PageContainer className="container-fluid">
+          <Helmet title="Ready to Vote? - We Vote" />
+          <BrowserPushMessage incomingProps={this.props} />
+          <div className="row">
+            <div className="col-sm-12 col-md-8">
+              <ElectionCountdown />
+              <Title>Get Ready to Vote in Minutes!</Title>
+              <Paragraph>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</Paragraph>
+            </div>
+            <div className="col-md-4 d-none d-md-block">
+              <PledgeToVote />
             </div>
           </div>
-        </div>
-      </span>
+        </PageContainer>
+      </div>
     );
   }
 }
 
-const PageTitle = styled.div`
-  margin: 20px 0;
+const PageContainer = styled.div`
+  padding-top: 26px !important;;
+`;
+
+const Title = styled.h2`
+  font-size: 26px;
+  margin: 36px 0 16px;
+  font-weight: 800;
+`;
+
+
+const Paragraph = styled.p`
+
 `;
 
 const styles = theme => ({

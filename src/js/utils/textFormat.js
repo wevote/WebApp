@@ -151,6 +151,10 @@ export function cleanArray (actual) {
   return newArray;
 }
 
+export function convertToInteger (incomingNumber) {
+  return parseInt(incomingNumber, 10) || 0;
+}
+
 export function elipses (name, mobile) {
   function cut (position) {
     return name.length < position ? name : `${name.slice(0, position)}...`;

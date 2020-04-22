@@ -217,6 +217,7 @@ const styles = theme => ({
     right: 'unset !important',
     bottom: 'unset !important',
     width: '100%',
+    zIndex: '9010 !important',
   } : {
     height: '100%',
     position: 'absolute !important',
@@ -225,6 +226,7 @@ const styles = theme => ({
     right: 'unset !important',
     bottom: 'unset !important',
     width: '100%',
+    zIndex: '9010 !important',
   },
   dialogPaper: isWebApp() ? {
     [theme.breakpoints.down('sm')]: {
