@@ -81,16 +81,20 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Check the positioning of the SignInModal when we click "Enter Email"
-    await simpleClick('signInHeaderBar'); // Clicks on Sign in
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     if (isCordovaFromAppStore) {
+      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('emailSignIn-splitIconButton'); // Clicks "Sign in with an email" button
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('cancelEmailButton'); // Clicks the cancel button
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    } else if (!isSamsung && !isMobileScreenSize) { // Samsung mobile browsers can't slick this element without scrolling
+    } else if (isSamsung && isMobileScreenSize) { // Samsung mobile browsers can't click this element without scrolling 
+      // Don't test
+    } else {
+      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -100,16 +104,20 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Check the positioning of the SignInModal when we click "Enter Phone"
-    await simpleClick('signInHeaderBar'); // Clicks on Sign in
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     if (isCordovaFromAppStore) {
+      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('smsSignIn-splitIconButton'); // Clicks "Sign in with a text" button
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    } else  if (!isSamsung && !isMobileScreenSize) {  // Samsung mobile browsers can't slick this element without scrolling
+    } else  if (isSamsung && isMobileScreenSize) {  // Samsung mobile browsers can't click this element without scrolling
+      // Don't test
+    } else {
+      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('enterVoterPhone'); // Puts cursor in Phone text input
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
