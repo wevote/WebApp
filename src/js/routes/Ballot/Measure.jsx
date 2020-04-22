@@ -20,6 +20,8 @@ import PositionList from '../../components/Ballot/PositionList';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
+import ShareButtonDesktopTablet
+  from '../../components/Share/ShareButtonDesktopTablet';
 
 // The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
 class Measure extends Component {
@@ -258,7 +260,16 @@ class Measure extends Component {
           )
         }
         <section className="card">
-          <MeasureItem measureWeVoteId={measure.we_vote_id} />
+          <TwoColumns>
+            <LeftColumnWrapper>
+              <MeasureItem measureWeVoteId={measure.we_vote_id} />
+            </LeftColumnWrapper>
+            <RightColumnWrapper className="u-show-desktop-tablet">
+              <MeasureShareWrapper>
+                <ShareButtonDesktopTablet measureShare />
+              </MeasureShareWrapper>
+            </RightColumnWrapper>
+          </TwoColumns>
         </section>
         { !!(allCachedPositionsForThisMeasure.length) && (
           <section className="card">
