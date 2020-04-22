@@ -5,7 +5,7 @@ import OrganizationStore from './OrganizationStore';  // eslint-disable-line imp
 import SupportActions from '../actions/SupportActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
 import VoterStore from './VoterStore';  // eslint-disable-line import/no-cycle
-import { arrayContains } from '../utils/textFormat';
+import { arrayContains, convertToInteger } from '../utils/textFormat';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../utils/organization-functions';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 
@@ -240,14 +240,18 @@ class VoterGuideStore extends ReduceStore {
 
   voterGuidesUpcomingFromFriendsStopped (googleCivicElectionId) {
     // While this is set to true, don't allow any more calls to this API
-    return this.getState().voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId.includes(googleCivicElectionId);
+    const googleCivicElectionIdInteger = convertToInteger(googleCivicElectionId);
+    // console.log('voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId:', this.getState().voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId);
+    // console.log('voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId, googleCivicElectionId:', googleCivicElectionIdInteger, arrayContains(googleCivicElectionIdInteger, this.getState().voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId));
+    return arrayContains(googleCivicElectionIdInteger, this.getState().voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId);
   }
 
   voterGuidesUpcomingStopped (googleCivicElectionId) {
     // While this is set to true, don't allow any more calls to this API
+    const googleCivicElectionIdInteger = convertToInteger(googleCivicElectionId);
     // console.log('voterGuidesUpcomingStoppedByGoogleCivicElectionId:', this.getState().voterGuidesUpcomingStoppedByGoogleCivicElectionId);
-    // console.log('voterGuidesUpcomingStopped, googleCivicElectionId:', googleCivicElectionId, (googleCivicElectionId in this.getState().voterGuidesUpcomingStoppedByGoogleCivicElectionId));
-    return this.getState().voterGuidesUpcomingStoppedByGoogleCivicElectionId.includes(googleCivicElectionId);
+    // console.log('voterGuidesUpcomingStopped, googleCivicElectionIdInteger:', googleCivicElectionIdInteger, (googleCivicElectionId in this.getState().voterGuidesUpcomingStoppedByGoogleCivicElectionId));
+    return this.getState().voterGuidesUpcomingStoppedByGoogleCivicElectionId.includes(googleCivicElectionIdInteger);
   }
 
   reduce (state, action) {
@@ -256,6 +260,10 @@ class VoterGuideStore extends ReduceStore {
     const {
       allCachedVoterGuides, allCachedVoterGuidesByElection, organizationWeVoteIdsByIssueWeVoteId,
       organizationWeVoteIdsToFollowOrganizationRecommendationDict, organizationWeVoteIdsToFollowBallotItemsDict,
+    } = state;
+    let {
+      voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId,
+      voterGuidesUpcomingStoppedByGoogleCivicElectionId,
     } = state;
     let allCachedVoterGuidesByOrganization;
     let allCachedVoterGuidesByVoterGuide;
@@ -274,7 +282,7 @@ class VoterGuideStore extends ReduceStore {
     let voterGuides;
     let voterLinkedOrganizationWeVoteId;
     const searchTermExists = action.res.search_string !== '';
-    const electionIdExists = action.res.google_civic_election_id !== 0;
+    const electionIdExists = convertToInteger(action.res.google_civic_election_id) !== 0;
     const ballotItemWeVoteIdExists = action.res.ballot_item_we_vote_id !== '';
     const filterVoterGuidesByIssue = action.res.filter_voter_guides_by_issue;
     const ballotHasGuides = voterGuides && voterGuides.length !== 0;
@@ -288,8 +296,6 @@ class VoterGuideStore extends ReduceStore {
     // We might want to only use one of these following variables...
     // ...although a recommendation might only want to include voter guides from this election
     const voterGuideSaveResults = action.res;
-    let voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId = [];
-    let voterGuidesUpcomingStoppedByGoogleCivicElectionId = [];
 
     switch (action.type) {
       case 'pledgeToVoteWithVoterGuide':
@@ -304,11 +310,11 @@ class VoterGuideStore extends ReduceStore {
           if (allCachedVoterGuidesByElection[action.res.organization_we_vote_id] === undefined) {
             allCachedVoterGuidesByElection[action.res.organization_we_vote_id] = [];
           }
-          voterGuideWithPledgeInfo = allCachedVoterGuidesByElection[action.res.organization_we_vote_id][action.res.google_civic_election_id] || {};
+          voterGuideWithPledgeInfo = allCachedVoterGuidesByElection[action.res.organization_we_vote_id][convertToInteger(action.res.google_civic_election_id)] || {};
           voterGuideWithPledgeInfo.pledge_goal = action.res.pledge_goal;
           voterGuideWithPledgeInfo.pledge_count = action.res.pledge_count;
           voterGuideWithPledgeInfo.voter_has_pledged = action.res.voter_has_pledged;
-          allCachedVoterGuidesByElection[action.res.organization_we_vote_id][action.res.google_civic_election_id] = voterGuideWithPledgeInfo;
+          allCachedVoterGuidesByElection[action.res.organization_we_vote_id][convertToInteger(action.res.google_civic_election_id)] = voterGuideWithPledgeInfo;
           OrganizationActions.organizationsFollowedRetrieve();
           SupportActions.voterAllPositionsRetrieve();
           // VoterGuideActions.voterGuidesToFollowRetrieve(action.res.google_civic_election_id); // DEBUG=1
@@ -328,7 +334,7 @@ class VoterGuideStore extends ReduceStore {
           return state;
         } else {
           revisedState = state;
-          googleCivicElectionId = action.res.google_civic_election_id;
+          googleCivicElectionId = convertToInteger(action.res.google_civic_election_id);
           if (!this.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId)) {
             VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
             voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId || [];
@@ -347,7 +353,7 @@ class VoterGuideStore extends ReduceStore {
         }
 
       case 'voterAddressRetrieve': // refresh guides when you change address
-        googleCivicElectionId = action.res.google_civic_election_id;
+        googleCivicElectionId = convertToInteger(action.res.google_civic_election_id);
         revisedState = state;
         // This is to prevent the same call from going out multiple times
         if (!this.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId)) {
@@ -372,7 +378,7 @@ class VoterGuideStore extends ReduceStore {
 
       case 'voterBallotItemsRetrieve':
         // console.log("VoterGuideStore, voterBallotItemsRetrieve response received.");
-        googleCivicElectionId = action.res.google_civic_election_id || 0;
+        googleCivicElectionId = convertToInteger(action.res.google_civic_election_id) || 0;
         googleCivicElectionId = parseInt(googleCivicElectionId, 10);
         revisedState = state;
         if (googleCivicElectionId !== 0) {
@@ -434,7 +440,7 @@ class VoterGuideStore extends ReduceStore {
           if (allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] === undefined) {
             allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] = [];
           }
-          allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][oneVoterGuide.google_civic_election_id] = oneVoterGuide;
+          allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][convertToInteger(oneVoterGuide.google_civic_election_id)] = oneVoterGuide;
           organizationWeVoteIdListFromVoterGuidesReturned.push(oneVoterGuide.organization_we_vote_id);
         });
 
@@ -564,13 +570,15 @@ class VoterGuideStore extends ReduceStore {
         voterGuides = action.res.voter_guides;
         // is_empty = voter_guides.length === 0;
         organizationWeVoteIdListFromVoterGuidesReturned = state.organizationWeVoteIdsToFollowAll;
+        voterGuidesUpcomingStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingStoppedByGoogleCivicElectionId || [];
+        voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId || [];
         voterGuides.forEach((oneVoterGuide) => {
           // console.log("VoterGuideStore voterGuidesToFollowRetrieve oneVoterGuide.google_civic_election_id: ", oneVoterGuide.google_civic_election_id);
           allCachedVoterGuides[oneVoterGuide.organization_we_vote_id] = oneVoterGuide;
           if (allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] === undefined) {
             allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] = [];
           }
-          allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][oneVoterGuide.google_civic_election_id] = oneVoterGuide;
+          allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][convertToInteger(oneVoterGuide.google_civic_election_id)] = oneVoterGuide;
           if (!arrayContains(oneVoterGuide.organization_we_vote_id, organizationWeVoteIdListFromVoterGuidesReturned)) {
             // console.log('Adding to organizationWeVoteIdsToFollowAll');
             organizationWeVoteIdListFromVoterGuidesReturned.push(oneVoterGuide.organization_we_vote_id);
@@ -634,16 +642,28 @@ class VoterGuideStore extends ReduceStore {
               organizationWeVoteIdsByIssueWeVoteId[oneVoterGuideIssueWeVoteId].push(oneVoterGuide.organization_we_vote_id);
             });
           }
+          if (oneVoterGuide.google_civic_election_id) {
+            if (action.type === 'voterGuidesUpcomingRetrieve') {
+              if (!arrayContains(convertToInteger(oneVoterGuide.google_civic_election_id), voterGuidesUpcomingStoppedByGoogleCivicElectionId)) {
+                voterGuidesUpcomingStoppedByGoogleCivicElectionId.push(convertToInteger(oneVoterGuide.google_civic_election_id));
+              }
+            } else if (action.type === 'voterGuidesFromFriendsUpcomingRetrieve') {
+              if (!arrayContains(convertToInteger(oneVoterGuide.google_civic_election_id), voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId)) {
+                voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId.push(convertToInteger(oneVoterGuide.google_civic_election_id));
+              }
+            }
+          }
         });
 
         return {
           ...state,
+          allCachedVoterGuides,
           ballotHasGuides,
           organizationWeVoteIdsByIssueWeVoteId,
           organizationWeVoteIdsToFollowAll: organizationWeVoteIdListFromVoterGuidesReturned,
           organizationWeVoteIdsToFollowBallotItemsDict,
-          allCachedVoterGuides,
-          // voterGuidesUpcomingRetrieveStopped: false, // We only ever want to retrieve voterGuidesUpcoming once
+          voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId,
+          voterGuidesUpcomingStoppedByGoogleCivicElectionId,
         };
 
       case 'voterGuidesFollowedRetrieve':
@@ -656,7 +676,7 @@ class VoterGuideStore extends ReduceStore {
           if (allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] === undefined) {
             allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] = [];
           }
-          allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][oneVoterGuide.google_civic_election_id] = oneVoterGuide;
+          allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][convertToInteger(oneVoterGuide.google_civic_election_id)] = oneVoterGuide;
           organizationWeVoteIdsVoterIsFollowing.push(oneVoterGuide.organization_we_vote_id);
         });
         return {
@@ -676,7 +696,7 @@ class VoterGuideStore extends ReduceStore {
           if (allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] === undefined) {
             allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] = [];
           }
-          allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][oneVoterGuide.google_civic_election_id] = oneVoterGuide;
+          allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][convertToInteger(oneVoterGuide.google_civic_election_id)] = oneVoterGuide;
         });
         return {
           ...state,
@@ -692,7 +712,7 @@ class VoterGuideStore extends ReduceStore {
           if (allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] === undefined) {
             allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] = [];
           }
-          allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][oneVoterGuide.google_civic_election_id] = oneVoterGuide;
+          allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][convertToInteger(oneVoterGuide.google_civic_election_id)] = oneVoterGuide;
         });
         return {
           ...state,
@@ -722,7 +742,7 @@ class VoterGuideStore extends ReduceStore {
             if (allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] === undefined) {
               allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id] = [];
             }
-            allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][oneVoterGuide.google_civic_election_id] = oneVoterGuide;
+            allCachedVoterGuidesByElection[oneVoterGuide.organization_we_vote_id][convertToInteger(oneVoterGuide.google_civic_election_id)] = oneVoterGuide;
             organizationWeVoteIdsToFollowOrganizationRecommendationDict[organizationWeVoteIdForVoterGuideOwner].push(oneVoterGuide.organization_we_vote_id);
           });
           return {
@@ -766,7 +786,7 @@ class VoterGuideStore extends ReduceStore {
           electionAlreadyStored = false;
           tempCachedVoterGuideElectionListForOrganization = voterGuideElectionListByOrganization[oneVoterGuide.organization_we_vote_id];
           for (let count = 0; count < tempCachedVoterGuideElectionListForOrganization.length; count++) {
-            if (tempCachedVoterGuideElectionListForOrganization[count].google_civic_election_id === oneVoterGuide.google_civic_election_id) {
+            if (convertToInteger(tempCachedVoterGuideElectionListForOrganization[count].google_civic_election_id) === convertToInteger(oneVoterGuide.google_civic_election_id)) {
               // Election already stored - no need to update
               electionAlreadyStored = true;
             }

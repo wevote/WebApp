@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
+import AppActions from './actions/AppActions';
+import AppStore from './stores/AppStore';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
 import {
@@ -9,23 +11,21 @@ import {
   prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard,
 } from './utils/cordovaUtils';
 import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
+import displayFriendsTabs from './utils/displayFriendsTabs';
 import ElectionActions from './actions/ElectionActions';
 import FooterBar from './components/Navigation/FooterBar';
 import FriendActions from './actions/FriendActions';
 import Header from './components/Navigation/Header';
-import AppActions from './actions/AppActions';
-import AppStore from './stores/AppStore';
-import { renderLog, routingLog } from './utils/logging';
 import OrganizationActions from './actions/OrganizationActions';
+import { renderLog, routingLog } from './utils/logging';
+import ShareButtonFooter from './components/Share/ShareButtonFooter';
+import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
+import SnackNotifier from './components/Widgets/SnackNotifier';
+import { stringContains } from './utils/textFormat';
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import VoterActions from './actions/VoterActions';
 import VoterStore from './stores/VoterStore';
 import webAppConfig from './config';
-import { stringContains } from './utils/textFormat';
-import SnackNotifier from './components/Widgets/SnackNotifier';
-import displayFriendsTabs from './utils/displayFriendsTabs';
-import ShareButtonFooter from './components/Share/ShareButtonFooter';
-import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
 
 class Application extends Component {
   static propTypes = {
@@ -342,7 +342,7 @@ class Application extends Component {
       voterGuideMode,
     } = getApplicationViewBooleans(pathname);
     // console.log('showShareButtonFooter:', showShareButtonFooter);
-    const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     if (extensionPageMode || sharedItemLandingPage || twitterSignInMode) {
       return (
@@ -417,7 +417,7 @@ class Application extends Component {
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )}
-          {showShareButtonFooter && nextReleaseFeaturesEnabled && (
+          {showShareButtonFooter && (
             <ShareButtonFooter pathname={pathname} />
           )}
         </div>
@@ -466,7 +466,7 @@ class Application extends Component {
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>
         )}
-        {showShareButtonFooter && nextReleaseFeaturesEnabled && (
+        {showShareButtonFooter && (
           <ShareButtonFooter pathname={pathname} />
         )}
       </div>

@@ -63,7 +63,15 @@ class ShareButtonFooter extends Component {
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('ShareButtonFooter componentDidMount urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
     if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
-      ShareActions.sharedItemSave(currentFullUrlToShare);
+      let kindOfShare = 'BALLOT';
+      if (candidateShare) {
+        kindOfShare = 'CANDIDATE';
+      } else if (measureShare) {
+        kindOfShare = 'MEASURE';
+      } else if (officeShare) {
+        kindOfShare = 'OFFICE';
+      }
+      ShareActions.sharedItemSave(currentFullUrlToShare, kindOfShare);
     }
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
@@ -160,6 +168,15 @@ class ShareButtonFooter extends Component {
     const candidateShare = pathname.startsWith('/candidate');
     const measureShare = pathname.startsWith('/measure');
     const officeShare = pathname.startsWith('/office');
+    let kindOfShare = 'BALLOT';
+    if (candidateShare) {
+      kindOfShare = 'CANDIDATE';
+    } else if (measureShare) {
+      kindOfShare = 'MEASURE';
+    } else if (officeShare) {
+      kindOfShare = 'OFFICE';
+    }
+    ShareActions.sharedItemSave(currentFullUrl, kindOfShare);
     this.setState({
       candidateShare,
       currentFullUrlToShare,
@@ -222,7 +239,7 @@ class ShareButtonFooter extends Component {
 
   openSignInModalIfWeShould = (shareFooterStep) => {
     const { voterIsSignedIn } = this.state;
-    console.log('ShareButtonFooter openSignInModalIfWeShould, shareFooterStep:', shareFooterStep, ', voterIsSignedIn:', voterIsSignedIn);
+    // console.log('ShareButtonFooter openSignInModalIfWeShould, shareFooterStep:', shareFooterStep, ', voterIsSignedIn:', voterIsSignedIn);
     if (stringContains('AllOpinions', shareFooterStep)) {
       if (!voterIsSignedIn) {
         AppActions.setShowSignInModal(true);
