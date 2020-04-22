@@ -27,8 +27,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 
-
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 class CandidateForDrawer extends Component {
@@ -303,11 +302,9 @@ class CandidateForDrawer extends Component {
               />
             </LeftColumnWrapper>
             <RightColumnWrapper className="u-show-desktop-tablet">
-              {nextReleaseFeaturesEnabled && (
-                <CandidateShareWrapper>
-                  <ShareButtonDesktopTablet />
-                </CandidateShareWrapper>
-              )}
+              <CandidateShareWrapper>
+                <ShareButtonDesktopTablet />
+              </CandidateShareWrapper>
               {candidate.ballotpedia_candidate_url && (
                 <ViewOnBallotpedia externalLinkUrl={candidate.ballotpedia_candidate_url} />
               )}
