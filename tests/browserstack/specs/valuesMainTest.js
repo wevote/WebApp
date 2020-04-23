@@ -1,9 +1,17 @@
 const assert = require('assert');
 const { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal, simpleTextInput, stopScript } = require('../utils');
 
-async function follow() {
-		href="/value/affordable_housing"
-
+async function search(clearSearchIconSelector, searchButtonSelector, searchBarSelector, searchValue) {
+    await simpleTextInput(searchBarSelector, searchValue); // Input text into search bar
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	clearSearchIcon = await $(clearSearchIconSelector);
+	await clearSearchIcon.click(); // Clear search bar
+    await simpleTextInput(searchBarSelector, searchValue); // Input text into search bar
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	serachButton = await $(searchButtonSelector);
+    await searchButton.click(); // Clicks search 
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
 const PAUSE_DURATION_MICROSECONDS = 1250; describe('Basic cross-platform We Vote test',  () => {
@@ -14,10 +22,12 @@ const PAUSE_DURATION_MICROSECONDS = 1250; describe('Basic cross-platform We Vote
     const platformPrefixID = (isDesktopScreenSize) ? 'desktop' : 'mobile';
     const isOnePlus = device.includes('OnePlus');
     const isSamsung = device.includes('Samsung');
-	const organizationToFollowID = 'wv02org57143';
+	const rollingStoneId = 'wv02org57143';
 	const publicFigureToFollowID = 'wv02org62651';
-	const publicFigure2ToFollowID = 'wv02org53184';
-	const sqlInjectionTest = await '\' or 1=1 -- -';
+	const johnLegendId = 'wv02org53184';
+	const sqlInjectionTest = '\' or 1=1 -- -';
+    const clearSearchIconSelector = 'img[src="/img/glyphicons-halflings-88-remove-circle.svg"]';
+	const searchButtonSelector = 'i.fas.fa-search';
 
     if (isCordovaFromAppStore) {
       // ///////////////////////////////
@@ -40,7 +50,7 @@ const PAUSE_DURATION_MICROSECONDS = 1250; describe('Basic cross-platform We Vote
     } else {
       // ///////////////////////////////
       // For the website version, open our quality testing site
-      await browser.url('https://localhost:3000/values');
+      await browser.url('https://quality.wevote.us/values');
     }
 
     await browser.pause(PAUSE_DURATION_MICROSECONDS * 3);
@@ -66,24 +76,18 @@ const PAUSE_DURATION_MICROSECONDS = 1250; describe('Basic cross-platform We Vote
     await unfollowButton.click(); // Clicks on "Unfollow"
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
-    await simpleTextInput('search_input', `${sqlInjectionTest}`); // Input text into search bar
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    var clearSearchIcon = await $('img[src="/img/glyphicons-halflings-88-remove-circle.svg"]');
-    await clearSearchIcon.click(); // Clicks on clear icon
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-
-    await simpleTextInput('search_input', `${sqlInjectionTest}`); // Input text into search bar
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-	var searchButton = await $('i.fas.fa-search');
-    await searchButton.click(); // Clicks on search button
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await search(clearSearchIconSelector, searchButtonSelector, 'search_input', `${sqlInjectionTest}`); // tests search functionality
 
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     
-	var valueLink = await $('a[href="/value/affordable_housing"');
+	var valueLink = await $('a.u-no-underline');
 	await valueLink.click(); // Click link to value
 	
+    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Test "Public Figures to Follow" section 
@@ -116,22 +120,22 @@ const PAUSE_DURATION_MICROSECONDS = 1250; describe('Basic cross-platform We Vote
 
     // //////////////////////
     // Tests organizations to follow
-	await scrollIntoViewSimple(`positionItemFollowToggleFollow-undefined-${organizationToFollowID}`); // Scrolls to organization
-    await simpleClick(`positionItemFollowToggleFollow-undefined-${organizationToFollowID}`); // Clicks on "Follow"
+	await scrollIntoViewSimple(`positionItemFollowToggleFollow-undefined-${rollingStoneId}`); // Scrolls to organization
+    await simpleClick(`positionItemFollowToggleFollow-undefined-${rollingStoneId}`); // Clicks on "Follow"
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick(`positionItemFollowToggleDropdown-undefined-${organizationToFollowID}`); // Clicks on dropdown menu
+    await simpleClick(`positionItemFollowToggleDropdown-undefined-${rollingStoneId}`); // Clicks on dropdown menu
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick(`positionItemFollowToggleUnfollow-undefined-${organizationToFollowID}`); // Clicks on "Unfollow"
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-
-    await simpleClick(`positionItemFollowToggleDropdown-undefined-${organizationToFollowID}`); // Clicks on dropdown menu
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick(`positionItemFollowToggleIgnore-undefined-${organizationToFollowID}`); // Clicks on "Ignore"
+    await simpleClick(`positionItemFollowToggleUnfollow-undefined-${rollingStoneId}`); // Clicks on "Unfollow"
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
-    await simpleClick(`positionItemFollowToggleDropdown-undefined-${organizationToFollowID}`); // Clicks on dropdown menu
+    await simpleClick(`positionItemFollowToggleDropdown-undefined-${rollingStoneId}`); // Clicks on dropdown menu
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick(`positionItemFollowToggleStopIgnoring-undefined-${organizationToFollowID}`); // Clicks on "Stop Ignoring"
+    await simpleClick(`positionItemFollowToggleIgnore-undefined-${rollingStoneId}`); // Clicks on "Ignore"
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+    await simpleClick(`positionItemFollowToggleDropdown-undefined-${rollingStoneId}`); // Clicks on dropdown menu
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`positionItemFollowToggleStopIgnoring-undefined-${rollingStoneId}`); // Clicks on "Stop Ignoring"
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
@@ -139,31 +143,24 @@ const PAUSE_DURATION_MICROSECONDS = 1250; describe('Basic cross-platform We Vote
     await simpleClick('organizationsToFollowPreviewShowMoreId'); // Clicks on "Explore more organizations"
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 	
-    await simpleClick(`positionItemFollowToggleFollow-undefined-${publicFigure2ToFollowID}`); // Clicks on "Follow"
+    await simpleClick(`positionItemFollowToggleFollow-undefined-${johnLegendId}`); // Clicks on "Follow"
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick(`positionItemFollowToggleDropdown-undefined-${publicFigure2ToFollowID}`); // clicks on dropdown menu
-    await browser.pause(pause_duration_microseconds);
-    await simpleClick(`positionItemFollowToggleUnfollow-undefined-${publicFigure2ToFollowID}`); // clicks on "Unfollow" 
-    await browser.pause(pause_duration_microseconds);
-
-    await simpleClick(`positionItemFollowToggleDropdown-undefined-${publicFigure2ToFollowID}`); // clicks on dropdown menu
-    await browser.pause(pause_duration_microseconds);
-    await simpleClick(`positionItemFollowToggleIgnore-undefined-${publicFigure2ToFollowID}`); // clicks on "Ignore" 
-    await browser.pause(pause_duration_microseconds);
-
-    await simpleClick(`positionItemFollowToggleDropdown-undefined-${publicFigure2ToFollowID}`); // clicks on dropdown menu
-    await browser.pause(pause_duration_microseconds);
-    await simpleClick(`positionItemFollowToggleStopIgnoring-undefined-${publicFigure2ToFollowID}`); // clicks on "Stop Ignoring" 
-    await browser.pause(pause_duration_microseconds);
-
-    await simpleTextInput('search_input', `${sqlInjectionTest}`); // Input text into search bar
+    await simpleClick(`positionItemFollowToggleDropdown-undefined-${johnLegendId}`); // clicks on dropdown menu
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-	await clearSearchIcon.click(); // Clear search bar
+    await simpleClick(`positionItemFollowToggleUnfollow-undefined-${johnLegendId}`); // clicks on "Unfollow" 
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
-    await simpleTextInput('search_input', `${sqlInjectionTest}`); // Input text into search bar
+    await simpleClick(`positionItemFollowToggleDropdown-undefined-${johnLegendId}`); // clicks on dropdown menu
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await searchButton.click(); // Clicks search 
+    await simpleClick(`positionItemFollowToggleIgnore-undefined-${johnLegendId}`); // clicks on "Ignore" 
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+    await simpleClick(`positionItemFollowToggleDropdown-undefined-${johnLegendId}`); // clicks on dropdown menu
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick(`positionItemFollowToggleStopIgnoring-undefined-${johnLegendId}`); // clicks on "Stop Ignoring" 
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+	await search(clearSearchIconSelector, searchButtonSelector, 'search_input', `${sqlInjectionTest}`); // tests search functionality
 
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
