@@ -1,17 +1,16 @@
 const assert = require('assert');
 const { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal, simpleTextInput, stopScript } = require('../utils');
 
-async function search(clearSearchIconSelector, searchButtonSelector, searchBarSelector, searchValue) {
-    await simpleTextInput(searchBarSelector, searchValue); // Input text into search bar
-	clearSearchIcon = await $(clearSearchIconSelector);
+async function search(clearSearchIcon, searchButton, searchBarId, searchValue) {
+    await simpleTextInput(searchBarId, searchValue); // Input text into search bar
 	await clearSearchIcon.click(); // Clear search bar
-    await simpleTextInput(searchBarSelector, searchValue); // Input text into search bar
-	serachButton = await $(searchButtonSelector);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleTextInput(searchBarId, searchValue); // Input text into search bar
     await searchButton.click(); // Clicks search 
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
-async function followValue(followButtonId, dropdownMenuId, unfollowButtonSelector) {
+async function followValue(followButtonId, dropDownMenuId, unfollowButtonSelector) {
     await simpleClick(followButtonId); // Clicks on "Follow"
     await simpleClick(dropDownMenuId); // Clicks on dropdown menu 
 	unfollowButton = await $(unfollowButtonSelector);
@@ -22,12 +21,21 @@ async function followValue(followButtonId, dropdownMenuId, unfollowButtonSelecto
 async function followOrganizationOrPublicFigure(elementId) {
 	await simpleClick(`positionItemFollowToggleFollow-undefined-${elementId}`); // Clicks on Follow
 	await simpleClick(`positionItemFollowToggleDropdown-undefined-${elementId}`); // Clicks on dropdown menu
-	await simpleClick(`positionItemUnfollowToggle-undefined-${elementId}`); // Clicks on Unfollow
+	await simpleClick(`positionItemFollowToggleUnfollow-undefined-${elementId}`); // Clicks on Unfollow
+}
+
+async function ignore(elementId) {
+    await simpleClick(`positionItemFollowToggleDropdown-undefined-${elementId}`); // Clicks on dropdown menu
+    await simpleClick(`positionItemFollowToggleIgnore-undefined-${elementId}`); // Clicks on "Ignore"
+    await simpleClick(`positionItemFollowToggleDropdown-undefined-${elementId}`); // Clicks on dropdown menu
+    await simpleClick(`positionItemFollowToggleStopIgnoring-undefined-${elementId}`); // Clicks on "Stop Ignoring"
 }
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
-const PAUSE_DURATION_MICROSECONDS = 1250; describe('Basic cross-platform We Vote test',  () => {
+const PAUSE_DURATION_MICROSECONDS = 5000; 
+
+describe('Basic cross-platform We Vote test',  () => {
   it('should load the app so we can run various tests', async () => {
     const { twitterUserName, twitterPassword } = driver.config;
     const { device, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
@@ -39,8 +47,6 @@ const PAUSE_DURATION_MICROSECONDS = 1250; describe('Basic cross-platform We Vote
 	const elonMuskId = 'wv02org62651';
 	const johnLegendId = 'wv02org53184';
 	const sqlInjectionTest = '\' or 1=1 -- -';
-    const clearSearchIconSelector = 'img[src="/img/glyphicons-halflings-88-remove-circle.svg"]';
-	const searchButtonSelector = 'i.fas.fa-search';
 	const unfollowButtonSelector = 'li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiListItem-gutters';
 
     if (isCordovaFromAppStore) {
@@ -67,26 +73,40 @@ const PAUSE_DURATION_MICROSECONDS = 1250; describe('Basic cross-platform We Vote
       await browser.url('https://quality.wevote.us/values');
     }
 
+    await browser.pause(PAUSE_DURATION_MICROSECONDS * 3);
+
     // //////////////////////
     // Test "Values to Follow" section 
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 	await followValue('issueFollowButton', 'toggle-button', unfollowButtonSelector); // Follows and unfollows value
     await simpleClick('valuesToFollowPreviewShowMoreId'); // Clicks on "Explore all values"
 	await followValue('issueFollowButton', 'toggle-button', unfollowButtonSelector); // Follows and unfollows value
-	await search(clearSearchIconSelector, searchButtonSelector, 'search_input', `${sqlInjectionTest}`); // tests search functionality
+	var searchButton = await $('i.fas.fa-search');
+    var clearSearchIcon = await $('img[src="/img/glyphicons-halflings-88-remove-circle.svg"]');
+	await search(clearSearchIcon, searchButton, 'search_input', `${sqlInjectionTest}`); // tests search functionality
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 	var valueLink = await $('a.u-no-underline');
 	await valueLink.click(); // Click link to value
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await followValue('issueFollowButton', 'toggle-button', unfollowButtonSelector); // Follows and unfollows value
+
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 
     // //////////////////////
     // Test "Public Figures to Follow" section 
-	await followOrganizationOrPublicFigure(`${elonMuskId}`); // Follows and unfollows Elon Musk
-    await simpleClick(`${dropDownButtonIdPrefix}${elonMuskId}`); // Clicks on dropdown menu
-    await simpleClick(`positionItemFollowToggleIgnore-undefined-${elonMuskId}`); // Clicks on "Ignore"
-    await simpleClick(`${dropDownButtonIdPrefix}${elonMuskId}`); // Clicks on dropdown menu
-    await simpleClick(`positionItemFollowToggleStopIgnoring-undefined-${elonMuskId}`); // Clicks on "Stop Ignoring"
+	await scrollIntoViewSimple('valuesToFollowPreviewShowMoreId'); // Scrolls to organization
+	await followOrganizationOrPublicFigure(elonMuskId); // Follows and unfollows Elon Musk
+	await ignore(elonMuskId); // Ignore and unignore Elon Musk
+	var publicFigureLink = await $('a[href="/elonmusk"]');
+	await publicFigureLink.click();
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+	var more = await $('a[href="#"]');
+	await more.click();
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	var showLess = await $('a[href="#"]');
+	await moreLink.click();
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // //////////////////////
     // Tests endorsements and twitter sign in 
@@ -97,26 +117,13 @@ const PAUSE_DURATION_MICROSECONDS = 1250; describe('Basic cross-platform We Vote
 
     // //////////////////////
     // Tests organizations to follow
-	await scrollIntoViewSimple(`${followButtonIdPrefix}${rollingStoneId}`); // Scrolls to organization
+	await scrollIntoViewSimple(`positionItemFollowToggleFollow-undefined-${rollingStoneId}`); // Scrolls to organization
 	await followOrganizationOrPublicFigure(`${rollingStoneId}`); // Follows and unfollows Elon Musk
-    await simpleClick(`${dropDownButtonIdPrefix}${rollingStoneId}`); // Clicks on dropdown menu
-    await simpleClick(`positionItemFollowToggleIgnore-undefined-${rollingStoneId}`); // Clicks on "Ignore"
-    await simpleClick(`${dropDownButtonIdPrefix}${rollingStoneId}`); // Clicks on dropdown menu
-    await simpleClick(`positionItemFollowToggleStopIgnoring-undefined-${rollingStoneId}`); // Clicks on "Stop Ignoring"
-
-    // //////////////////////
-    // Tests "Explore more organizations" page
+	await ignore(rollingStoneId); // Ignore and unignore Rolling Stone
     await simpleClick('organizationsToFollowPreviewShowMoreId'); // Clicks on "Explore more organizations"
-    await simpleClick(`${followButtonIdPrefix}${johnLegendId}`); // Clicks on "Follow"
-    await simpleClick(`${dropDownButtonIdPrefix}${johnLegendId}`); // clicks on dropdown menu
-    await simpleClick(`positionItemFollowToggleUnfollow-undefined-${johnLegendId}`); // clicks on "Unfollow" 
-    await simpleClick(`${dropDownButtonIdPrefix}${johnLegendId}`); // clicks on dropdown menu
-    await simpleClick(`positionItemFollowToggleIgnore-undefined-${johnLegendId}`); // clicks on "Ignore" 
-    await simpleClick(`${dropDownButtonIdPrefix}${johnLegendId}`); // clicks on dropdown menu
-    await simpleClick(`positionItemFollowToggleStopIgnoring-undefined-${johnLegendId}`); // clicks on "Stop Ignoring" 
-	await search(clearSearchIconSelector, searchButtonSelector, 'search_input', `${sqlInjectionTest}`); // tests search functionality
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 
     assert(true);
   });
 });
+
