@@ -1,21 +1,19 @@
 const assert = require('assert');
 const { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal, simpleTextInput, stopScript } = require('../utils');
 
-async function search(clearSearchIcon, searchButton, searchBarId, searchValue) {
+async function search(clearSearchIconSelector, searchButtonSelector, searchBarId, searchValue) {
     await simpleTextInput(searchBarId, searchValue); // Input text into search bar
-	await clearSearchIcon.click(); // Clear search bar
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await selectClick(clearSearchIconSelector); // Clear search bar
     await simpleTextInput(searchBarId, searchValue); // Input text into search bar
-    await searchButton.click(); // Clicks search 
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await selectClick(searchButtonSelector); // Clicks search
 }
 
 async function followValue(followButtonId, dropDownMenuId, unfollowButtonSelector) {
     await simpleClick(followButtonId); // Clicks on "Follow"
     await simpleClick(dropDownMenuId); // Clicks on dropdown menu 
-	unfollowButton = await $(unfollowButtonSelector);
-    await unfollowButton.click(); // Clicks on "Unfollow"
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	var unfollowButton = await $(unfollowButtonSelector);
+ 	await unfollowButton.click(); // Clicks on "Unfollow"
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
 async function followOrganizationOrPublicFigure(elementId) {
@@ -32,14 +30,11 @@ async function ignore(elementId) {
 }
 
 async function readMore() {
-	var more = await $('a[href="#"]');
-	await more.click(); // Click more
-	await browser.pause(PAUSE_DURATION_MICROSECONDS);
-	await more.click(); // Click show less
-	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await selectClick('a[href="#"]');
+	await selectClick('a[href="#"]');
 }
 
-async function selectedClick(selector) {
+async function selectClick(selector) {
 	var selected = await $(selector);
 	await selected.click();
 	await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -60,8 +55,10 @@ describe('Basic cross-platform We Vote test',  () => {
 	const rollingStoneId = 'wv02org57143';
 	const elonMuskId = 'wv02org62651';
 	const johnLegendId = 'wv02org53184';
+	const repFredericaWilsonId = 'wv02org54001';
 	const sqlInjectionTest = '\' or 1=1 -- -';
-	const unfollowButtonSelector = 'li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiListItem-gutters';
+	const unfollowButtonSelector = 'li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters';
+    const clearSearchIconSelector = 'img[src="/img/glyphicons-halflings-88-remove-circle.svg"]';
 
     if (isCordovaFromAppStore) {
       // ///////////////////////////////
@@ -87,22 +84,24 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.url('https://quality.wevote.us/values');
     }
 
-    await browser.pause(PAUSE_DURATION_MICROSECONDS * 3);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS * 4);
 
     // //////////////////////
     // Test "Values to Follow" section 
 	await followValue('issueFollowButton', 'toggle-button', unfollowButtonSelector); // Follows and unfollows value
     await simpleClick('valuesToFollowPreviewShowMoreId'); // Clicks on "Explore all values"
 	await followValue('issueFollowButton', 'toggle-button', unfollowButtonSelector); // Follows and unfollows value
-	var searchButton = await $('i.fas.fa-search');
-    var clearSearchIcon = await $('img[src="/img/glyphicons-halflings-88-remove-circle.svg"]');
-	await search(clearSearchIcon, searchButton, 'search_input', `${sqlInjectionTest}`); // tests search functionality
+	await search(clearSearchIconSelector, 'i.fas.fa-search', 'search_input', sqlInjectionTest); // tests search functionality
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
-	var valueLink = await $('a.u-no-underline');
-	await valueLink.click(); // Click link to value
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await selectClick('a.u-no-underline'); // Clicks on value
 	await followValue('issueFollowButton', 'toggle-button', unfollowButtonSelector); // Follows and unfollows value
-
+//	await selectClick('a[href="repwilson"]'); // Clicks on Rep. Frederica Wilson
+//  await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+//	await followOrganizationOrPublicFigure(repFredericaWilsonId); // Follows and unfollows Rep. Frederica Wilson
+//	await ignore(repfredericawilsonid); // ignore and unignore rep. frederica wilson 
+//	await scrollIntoViewSimple(`positionItemFollowToggleFollow-undefined-${repFredericaWilsonId}`); // Scrolls to organization
+//  await selectClick('div.ValuesList__Column-sc-6mkcdy-1.hvFIIz.col.col-12.col-md-6.u-stack--lg'); // Follows value
+//	await selectClick('a.u-no-underline'); // Clicks on value
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 
@@ -111,13 +110,12 @@ describe('Basic cross-platform We Vote test',  () => {
 	await scrollIntoViewSimple('valuesToFollowPreviewShowMoreId'); // Scrolls to organization
 	await followOrganizationOrPublicFigure(elonMuskId); // Follows and unfollows Elon Musk
 	await ignore(elonMuskId); // Ignore and unignore Elon Musk
-	var publicFigureLink = await $('a[href="/elonmusk"]');
-	await publicFigureLink.click();
-	await browser.pause(PAUSE_DURATION_MICROSECONDS);
-	readMore(); // Clicks more and show less
-    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+	await readMore(); // Clicks more and show less
 	await simpleClick('publicFiguresToFollowPreviewShowMoreId'); // Click "Explore more public figures"
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+	await scrollIntoViewSimple('valuesToFollowPreviewShowMoreId'); // Scrolls to organization
+	await selectClick('a[href="/johnlegend"]'); // Click John Legend 
+    await browser.url('https://quality.wevote.us/values'); // Return to values page
 
     // //////////////////////
     // Tests endorsements and twitter sign in 
@@ -135,8 +133,9 @@ describe('Basic cross-platform We Vote test',  () => {
 	await ignore(rollingStoneId); // Ignore and unignore Rolling Stone
     await simpleClick('organizationsToFollowPreviewShowMoreId'); // Clicks on "Explore more organizations"
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
-	
-	readMore(); // Clicks more and show less
+	await readMore(); // Clicks more and show less
+	await selectClick('a[href="/rollingstone"]'); // Click on Rolling Stone
+    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 
     assert(true);
   });
