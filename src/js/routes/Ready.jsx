@@ -9,6 +9,7 @@ import { renderLog } from '../utils/logging';
 import VoterStore from '../stores/VoterStore';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import PledgeToVote from '../components/Ready/PledgeToVote';
+import ReadyTaskCard from '../components/Ready/ReadyTaskCard';
 
 class Ready extends Component {
   static propTypes = {};
@@ -55,6 +56,7 @@ class Ready extends Component {
               <ElectionCountdown />
               <Title>Get Ready to Vote in Minutes!</Title>
               <Paragraph>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</Paragraph>
+              <ReadyTaskCard title="When Will You Vote?" subtitle="Write your own adventure and cast your vote." buttonText="Make a Plan Now" completedTitle="Your Voting Plan" />
             </div>
             <div className="col-md-4 d-none d-md-block">
               <PledgeToVote />
