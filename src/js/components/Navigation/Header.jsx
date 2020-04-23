@@ -2,18 +2,26 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
-import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
-import { hasIPhoneNotch, isCordova, isIOS, isWebApp, isIPad } from '../../utils/cordovaUtils';
+import displayFriendsTabs from '../../utils/displayFriendsTabs';
+import { getApplicationViewBooleans } from '../../utils/applicationUtils';
+import {
+  hasIPhoneNotch,
+  isCordova,
+  isIOS,
+  isWebApp,
+  isIPad,
+  historyPush,
+} from '../../utils/cordovaUtils';
 import HeaderBackToBallot from './HeaderBackToBallot';
 import HeaderBackTo from './HeaderBackTo';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
 import HeaderBar from './HeaderBar';
 import HowItWorksModal from '../CompleteYourProfile/HowItWorksModal';
+import OrganizationModal from '../VoterGuide/OrganizationModal';
+import SharedItemModal from '../Share/SharedItemModal';
 import { stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
-import displayFriendsTabs from '../../utils/displayFriendsTabs';
-import OrganizationModal from '../VoterGuide/OrganizationModal';
 
 
 export default class Header extends Component {
@@ -28,13 +36,16 @@ export default class Header extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      organizationModalId: '',
+      sharedItemCode: '',
       showHowItWorksModal: false,
       showOrganizationModal: false,
-      organizationModalId: '',
+      showSharedItemModal: false,
     };
 
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
+    this.closeSharedItemModal = this.closeSharedItemModal.bind(this);
     this.handleResize = this.handleResize.bind(this);
   }
 
@@ -45,17 +56,13 @@ export default class Header extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.organizationModalId !== nextState.organizationModalId) return true;
     if (this.props.pathname !== nextProps.pathname) return true;
+    if (this.state.sharedItemCode !== nextState.sharedItemCode) return true;
+    if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) return true;
+    if (this.state.showOrganizationModal !== nextState.showOrganizationModal) return true;
+    if (this.state.showSharedItemModal !== nextState.showSharedItemModal) return true;
     if (this.state.windowWidth !== nextState.windowWidth) return true;
-    if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) {
-      return true;
-    }
-    if (this.state.showOrganizationModal !== nextState.showOrganizationModal) {
-      return true;
-    }
-    if (this.state.organizationModalId !== nextState.organizationModalId) {
-      return true;
-    }
     return false;
   }
 
@@ -67,9 +74,11 @@ export default class Header extends Component {
   onAppStoreChange () {
     // console.log('Header, onAppStoreChange');
     this.setState({
+      organizationModalId: AppStore.organizationModalId(),
+      sharedItemCode: AppStore.getSharedItemCode(),
       showHowItWorksModal: AppStore.showHowItWorksModal(),
       showOrganizationModal: AppStore.showOrganizationModal(),
-      organizationModalId: AppStore.organizationModalId(),
+      showSharedItemModal: AppStore.showSharedItemModal(),
     });
   }
 
@@ -86,6 +95,15 @@ export default class Header extends Component {
     AppActions.setShowOrganizationModal(false);
   }
 
+  closeSharedItemModal () {
+    AppActions.setShowSharedItemModal('');
+    const { pathname } = this.props;
+    if (stringContains('/modal/sic/', pathname)) {
+      const pathnameWithoutModalSharedItem = pathname.substring(0, pathname.indexOf('/modal/sic/'));
+      historyPush(pathnameWithoutModalSharedItem);
+    }
+  }
+
   handleResize () {
     this.setState({ windowWidth: window.innerWidth });
   }
@@ -94,7 +112,7 @@ export default class Header extends Component {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
-    const { showHowItWorksModal, showOrganizationModal } = this.state;
+    const { sharedItemCode, showHowItWorksModal, showOrganizationModal, showSharedItemModal } = this.state;
     const { friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
       showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
@@ -156,6 +174,14 @@ export default class Header extends Component {
               toggleFunction={this.closeOrganizationModal}
             />
           )}
+          {showSharedItemModal && (
+            <SharedItemModal
+              pathname={pathname}
+              sharedItemCode={sharedItemCode}
+              show={showSharedItemModal}
+              closeSharedItemModal={this.closeSharedItemModal}
+            />
+          )}
         </div>
       );
     } else if (settingsMode) {
@@ -210,14 +236,22 @@ export default class Header extends Component {
             />
           )}
           {showOrganizationModal && (
-          <OrganizationModal
-              isSignedIn={voter.is_signed_in}
+            <OrganizationModal
+                isSignedIn={voter.is_signed_in}
+                pathname={pathname}
+                show={showOrganizationModal}
+                candidateWeVoteId={this.state.organizationModalId}
+                open={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
+            />
+          )}
+          {showSharedItemModal && (
+            <SharedItemModal
               pathname={pathname}
-              show={showOrganizationModal}
-              candidateWeVoteId={this.state.organizationModalId}
-              open={showOrganizationModal}
-              toggleFunction={this.closeOrganizationModal}
-          />
+              sharedItemCode={sharedItemCode}
+              show={showSharedItemModal}
+              closeSharedItemModal={this.closeSharedItemModal}
+            />
           )}
         </div>
       );
@@ -249,14 +283,22 @@ export default class Header extends Component {
             />
           )}
           {showOrganizationModal && (
-          <OrganizationModal
-              isSignedIn={voter.is_signed_in}
+            <OrganizationModal
+                isSignedIn={voter.is_signed_in}
+                pathname={pathname}
+                show={showOrganizationModal}
+                candidateWeVoteId={this.state.organizationModalId}
+                open={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
+            />
+          )}
+          {showSharedItemModal && (
+            <SharedItemModal
               pathname={pathname}
-              show={showOrganizationModal}
-              candidateWeVoteId={this.state.organizationModalId}
-              open={showOrganizationModal}
-              toggleFunction={this.closeOrganizationModal}
-          />
+              sharedItemCode={sharedItemCode}
+              show={showSharedItemModal}
+              closeSharedItemModal={this.closeSharedItemModal}
+            />
           )}
         </div>
       );
@@ -283,14 +325,22 @@ export default class Header extends Component {
             />
           )}
           {showOrganizationModal && (
-          <OrganizationModal
-              isSignedIn={voter.is_signed_in}
+            <OrganizationModal
+                isSignedIn={voter.is_signed_in}
+                pathname={pathname}
+                show={showOrganizationModal}
+                candidateWeVoteId={this.state.organizationModalId}
+                open={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
+            />
+          )}
+          {showSharedItemModal && (
+            <SharedItemModal
               pathname={pathname}
-              show={showOrganizationModal}
-              candidateWeVoteId={this.state.organizationModalId}
-              open={showOrganizationModal}
-              toggleFunction={this.closeOrganizationModal}
-          />
+              sharedItemCode={sharedItemCode}
+              show={showSharedItemModal}
+              closeSharedItemModal={this.closeSharedItemModal}
+            />
           )}
         </div>
       );
@@ -339,14 +389,22 @@ export default class Header extends Component {
             />
           )}
           {showOrganizationModal && (
-          <OrganizationModal
-              isSignedIn={voter.is_signed_in}
+            <OrganizationModal
+                isSignedIn={voter.is_signed_in}
+                pathname={pathname}
+                show={showOrganizationModal}
+                candidateWeVoteId={this.state.organizationModalId}
+                open={showOrganizationModal}
+                toggleFunction={this.closeOrganizationModal}
+            />
+          )}
+          {showSharedItemModal && (
+            <SharedItemModal
               pathname={pathname}
-              show={showOrganizationModal}
-              candidateWeVoteId={this.state.organizationModalId}
-              open={showOrganizationModal}
-              toggleFunction={this.closeOrganizationModal}
-          />
+              sharedItemCode={sharedItemCode}
+              show={showSharedItemModal}
+              closeSharedItemModal={this.closeSharedItemModal}
+            />
           )}
         </div>
       );

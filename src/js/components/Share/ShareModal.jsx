@@ -32,7 +32,7 @@ class ShareModal extends Component {
     pathname: PropTypes.string,
     show: PropTypes.bool,
     shareModalStep: PropTypes.string,
-    toggleFunction: PropTypes.func.isRequired,
+    closeShareModal: PropTypes.func.isRequired,
   };
 
   constructor (props) {
@@ -165,7 +165,7 @@ class ShareModal extends Component {
   }
 
   closeShareModal () {
-    this.props.toggleFunction(this.state.pathname);
+    this.props.closeShareModal(this.state.pathname);
   }
 
   render () {
@@ -237,7 +237,7 @@ class ShareModal extends Component {
         <Dialog
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
-          onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+          onClose={() => { this.props.closeShareModal(this.state.pathname); }}
         >
           <ModalTitleArea firstSlide>
             <div>
@@ -376,7 +376,7 @@ class ShareModal extends Component {
       //   <Dialog
       //     classes={{ paper: classes.dialogPaper }}
       //     open={this.props.show}
-      //     onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+      //     onClose={() => { this.props.closeShareModal(this.state.pathname); }}
       //   >
       //     <ModalTitleArea onSignInSlide>
       //       <Title onSignInSlide bold>Sign In</Title>
@@ -399,7 +399,7 @@ class ShareModal extends Component {
         <Dialog
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
-          onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+          onClose={() => { this.props.closeShareModal(this.state.pathname); }}
         >
           <ModalTitleArea>
             <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('ballotShareOptions'); }}>
@@ -439,7 +439,7 @@ class ShareModal extends Component {
         <Dialog
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
-          onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+          onClose={() => { this.props.closeShareModal(this.state.pathname); }}
         >
           <ModalTitleArea>
             <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('ballotShareOptions'); }}>

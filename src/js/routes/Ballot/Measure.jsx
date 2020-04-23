@@ -97,6 +97,11 @@ class Measure extends Component {
     const modalToOpen = this.props.params.modal_to_show || '';
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
+    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+      const sharedItemCode = this.props.params.shared_item_code || '';
+      if (sharedItemCode) {
+        AppActions.setShowSharedItemModal(sharedItemCode);
+      }
     }
   }
 
@@ -104,6 +109,11 @@ class Measure extends Component {
     const modalToOpen = nextProps.params.modal_to_show || '';
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
+    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+      const sharedItemCode = nextProps.params.shared_item_code || '';
+      if (sharedItemCode) {
+        AppActions.setShowSharedItemModal(sharedItemCode);
+      }
     }
     // When a new measure is passed in, update this component to show the new data
     // console.log('componentWillReceiveProps nextProps.params.measure_we_vote_id:', nextProps.params.measure_we_vote_id, ', this.state.measureWeVoteId:', this.state.measureWeVoteId);

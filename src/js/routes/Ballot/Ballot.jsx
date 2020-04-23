@@ -275,6 +275,11 @@ class Ballot extends Component {
     const modalToOpen = this.props.params.modal_to_show || '';
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
+    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+      const sharedItemCode = this.props.params.shared_item_code || '';
+      if (sharedItemCode) {
+        AppActions.setShowSharedItemModal(sharedItemCode);
+      }
     }
     window.addEventListener('scroll', this.onScroll);
   }
@@ -323,6 +328,11 @@ class Ballot extends Component {
     const modalToOpen = nextProps.params.modal_to_show || '';
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
+    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+      const sharedItemCode = nextProps.params.shared_item_code || '';
+      if (sharedItemCode) {
+        AppActions.setShowSharedItemModal(sharedItemCode);
+      }
     }
 
     if (nextProps.location && nextProps.location.hash) {

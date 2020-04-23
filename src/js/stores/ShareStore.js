@@ -1,5 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
+import { arrayContains } from "../utils/textFormat";
 
 
 class ShareStore extends ReduceStore {
@@ -10,7 +11,22 @@ class ShareStore extends ReduceStore {
       allCachedSharedItemsBySharedItemCode: {}, // This is a dictionary with sharedItemCode as key and the sharedItem as the value
       allCachedSharedItemsBySharedItemId: {}, // This is a dictionary with sharedItemId as key and the sharedItem as the value
       allCachedSharedItemsByYear: {}, // This is a dictionary with year as key and the list of shared items as the value
+      currentSharedItemOrganizationWeVoteIds: [],
     };
+  }
+
+  currentSharedItemOrganizationWeVoteIDList () {
+    // We track the organizationWeVoteIds that have shared with this voter
+    const { currentSharedItemOrganizationWeVoteIds } = this.getState();
+    return currentSharedItemOrganizationWeVoteIds || [];
+  }
+
+  getCurrentSharedItemOrganizationWeVoteIdsLength () {
+    // console.log('OrganizationStore.getCurrentSharedItemOrganizationWeVoteIdsLength, currentSharedItemOrganizationWeVoteIds: ', this.getState().currentSharedItemOrganizationWeVoteIds);
+    if (this.getState().currentSharedItemOrganizationWeVoteIds) {
+      return this.getState().currentSharedItemOrganizationWeVoteIds.length;
+    }
+    return 0;
   }
 
   getSharedItemByCode (sharedItemCode) {
@@ -33,8 +49,23 @@ class ShareStore extends ReduceStore {
     }
   }
 
+  voterHasAccessToSharedItemFromThisOrganization (organizationWeVoteId) {
+    const { currentSharedItemOrganizationWeVoteIds } = this.getState();
+    // console.log('ShareStore, voterHasAccessToSharedItemFromThisOrganization, currentSharedItemOrganizationWeVoteIds: ', currentSharedItemOrganizationWeVoteIds);
+    if (currentSharedItemOrganizationWeVoteIds.length) {
+      const hasAccessToSharedItem = arrayContains(organizationWeVoteId, currentSharedItemOrganizationWeVoteIds);
+      // console.log('ShareStore, hasAccessToSharedItem:', hasAccessToSharedItem, ', organizationWeVoteId:', organizationWeVoteId);
+      return hasAccessToSharedItem;
+    } else {
+      // console.log('ShareStore, hasAccessToSharedItem: NO currentSharedItemOrganizationWeVoteIds, organizationWeVoteId: ', organizationWeVoteId);
+      return false;
+    }
+  }
+
   reduce (state, action) {
     const { allCachedSharedItemsByFullUrl, allCachedSharedItemsBySharedItemCode } = state;
+    let count = 0;
+    let currentSharedItemOrganizationWeVoteIds = [];
     let sharedItem = {};
     let sharedItemDestinationFullUrl = '';
     let sharedItemDestinationFullUrlLowerCase = '';
@@ -67,6 +98,22 @@ class ShareStore extends ReduceStore {
         return {
           ...state,
           allCachedSharedItemsByFullUrl,
+        };
+
+      case 'voterGuidesFromFriendsUpcomingRetrieve':
+        // console.log('ShareStore voterGuidesFromFriendsUpcomingRetrieve, action.res:', action.res);
+        ({ currentSharedItemOrganizationWeVoteIds } = state);
+        if (action.res.voter_guides) {
+          for (count = 0; count < action.res.voter_guides.length; count++) {
+            if (action.res.voter_guides[count].from_shared_item && !arrayContains(action.res.voter_guides[count].organization_we_vote_id, currentSharedItemOrganizationWeVoteIds)) {
+              currentSharedItemOrganizationWeVoteIds.push(action.res.voter_guides[count].organization_we_vote_id);
+            }
+          }
+        }
+        // console.log('currentSharedItemOrganizationWeVoteIds:', currentSharedItemOrganizationWeVoteIds);
+        return {
+          ...state,
+          currentSharedItemOrganizationWeVoteIds,
         };
 
       default:

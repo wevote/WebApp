@@ -339,7 +339,9 @@ class FriendStore extends ReduceStore {
         ({ currentFriendsOrganizationWeVoteIds } = state);
         if (action.res.voter_guides) {
           for (count = 0; count < action.res.voter_guides.length; count++) {
-            if (!arrayContains(action.res.voter_guides[count].organization_we_vote_id, currentFriendsOrganizationWeVoteIds)) {
+            if (action.res.voter_guides[count].from_shared_item) {
+              // Do not store in currentFriendsOrganizationWeVoteIds
+            } else if (!arrayContains(action.res.voter_guides[count].organization_we_vote_id, currentFriendsOrganizationWeVoteIds)) {
               // console.log('NOT arrayContains');
               currentFriendsOrganizationWeVoteIds.push(action.res.voter_guides[count].organization_we_vote_id);
             }
