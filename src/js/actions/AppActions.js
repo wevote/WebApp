@@ -60,6 +60,10 @@ export default {
     Dispatcher.dispatch({ type: 'showShareModal', payload: show });
   },
 
+  setShowSharedItemModal (sharedItemCode) {
+    Dispatcher.dispatch({ type: 'showSharedItemModal', payload: sharedItemCode });
+  },
+
   setShowSignInModal (show) {
     Dispatcher.dispatch({ type: 'showSignInModal', payload: show });
   },

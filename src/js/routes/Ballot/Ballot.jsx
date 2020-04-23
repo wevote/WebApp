@@ -24,6 +24,7 @@ import BallotStore from '../../stores/BallotStore';
 import BallotSummaryFooter from '../../components/Navigation/BallotSummaryFooter';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
+import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 import { cordovaBallotFilterTopMargin, cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
@@ -40,12 +41,11 @@ import { renderLog } from '../../utils/logging';
 import showBallotDecisionsTabs from '../../utils/showBallotDecisionsTabs';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
+import { checkShouldUpdate, formatVoterBallotList } from './utils';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
-import { formatVoterBallotList, checkShouldUpdate } from './utils';
-import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 
 const TYPES = require('keymirror')({
   OFFICE: null,
@@ -275,6 +275,11 @@ class Ballot extends Component {
     const modalToOpen = this.props.params.modal_to_show || '';
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
+    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+      const sharedItemCode = this.props.params.shared_item_code || '';
+      if (sharedItemCode) {
+        AppActions.setShowSharedItemModal(sharedItemCode);
+      }
     }
     window.addEventListener('scroll', this.onScroll);
   }
@@ -323,6 +328,11 @@ class Ballot extends Component {
     const modalToOpen = nextProps.params.modal_to_show || '';
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
+    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+      const sharedItemCode = nextProps.params.shared_item_code || '';
+      if (sharedItemCode) {
+        AppActions.setShowSharedItemModal(sharedItemCode);
+      }
     }
 
     if (nextProps.location && nextProps.location.hash) {
