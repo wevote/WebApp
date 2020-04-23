@@ -31,6 +31,20 @@ async function ignore(elementId) {
     await simpleClick(`positionItemFollowToggleStopIgnoring-undefined-${elementId}`); // Clicks on "Stop Ignoring"
 }
 
+async function readMore() {
+	var more = await $('a[href="#"]');
+	await more.click(); // Click more
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await more.click(); // Click show less
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+async function selectedClick(selector) {
+	var selected = await $(selector);
+	await selected.click();
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
 const PAUSE_DURATION_MICROSECONDS = 5000; 
@@ -100,19 +114,18 @@ describe('Basic cross-platform We Vote test',  () => {
 	var publicFigureLink = await $('a[href="/elonmusk"]');
 	await publicFigureLink.click();
 	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	readMore(); // Clicks more and show less
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
-	var more = await $('a[href="#"]');
-	await more.click();
-	await browser.pause(PAUSE_DURATION_MICROSECONDS);
-	var showLess = await $('a[href="#"]');
-	await moreLink.click();
-	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await simpleClick('publicFiguresToFollowPreviewShowMoreId'); // Click "Explore more public figures"
+    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 
     // //////////////////////
     // Tests endorsements and twitter sign in 
 	if (isDesktopScreenSize) { 								// Only for desktop
 		await simpleClick('twitterSignIn-splitIconButton'); // Clicks on "Find Public Opinions"
+        await browser.url('https://quality.wevote.us/values'); // Return to values page
 		await simpleClick('undefined-splitIconButton'); // Clicks on "Add Endorsements"
+        await browser.url('https://quality.wevote.us/values'); // Return to values page
 	}
 
     // //////////////////////
@@ -122,6 +135,8 @@ describe('Basic cross-platform We Vote test',  () => {
 	await ignore(rollingStoneId); // Ignore and unignore Rolling Stone
     await simpleClick('organizationsToFollowPreviewShowMoreId'); // Clicks on "Explore more organizations"
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+	
+	readMore(); // Clicks more and show less
 
     assert(true);
   });
