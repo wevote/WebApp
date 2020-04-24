@@ -531,39 +531,39 @@ class ShareButtonFooter extends Component {
                     <Flex>
                       <ShareWrapper>
                         <FacebookShareButton
-                        className="no-decoration"
-                        id="shareFooterFacebookButton"
-                        quote={titleText}
-                        url={`${linkToBeSharedUrlEncoded}&t=WeVote`}
-                        windowWidth={750}
-                        windowHeight={600}
+                          className="no-decoration"
+                          id="shareFooterFacebookButton"
+                          quote={titleText}
+                          url={`${linkToBeSharedUrlEncoded}&t=WeVote`}
+                          windowWidth={750}
+                          windowHeight={600}
                         >
                           <FacebookIcon
-                          bgStyle={{ background: '#3b5998' }}
-                          round="True"
-                          size={68}
+                            bgStyle={{ background: '#3b5998' }}
+                            round="True"
+                            size={68}
                           />
                           <Text>
-                          Facebook
+                            Facebook
                           </Text>
                         </FacebookShareButton>
                       </ShareWrapper>
                       <ShareWrapper>
                         <TwitterShareButton
-                        className="no-decoration"
-                        id="shareFooterTwitterButton"
-                        title={titleText}
-                        url={`${linkToBeSharedUrlEncoded}`}
-                        windowWidth={750}
-                        windowHeight={600}
+                          className="no-decoration"
+                          id="shareFooterTwitterButton"
+                          title={titleText}
+                          url={`${linkToBeSharedUrlEncoded}`}
+                          windowWidth={750}
+                          windowHeight={600}
                         >
                           <TwitterIcon
-                          bgStyle={{ background: '#38A1F3' }}
-                          round="True"
-                          size={68}
+                            bgStyle={{ background: '#38A1F3' }}
+                            round="True"
+                            size={68}
                           />
                           <Text>
-                          Twitter
+                            Twitter
                           </Text>
                         </TwitterShareButton>
                       </ShareWrapper>
