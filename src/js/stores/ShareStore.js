@@ -1,6 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
-import { arrayContains } from "../utils/textFormat";
+import { arrayContains } from '../utils/textFormat';
 
 
 class ShareStore extends ReduceStore {
