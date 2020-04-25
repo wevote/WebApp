@@ -44,8 +44,6 @@ class Ready extends Component {
       return LoadingWheel;
     }
 
-    const { days, hours, minutes, seconds, electionDate } = this.state;
-
     return (
       <div className="page-content-container">
         <PageContainer className="container-fluid">
