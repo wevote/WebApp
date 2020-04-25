@@ -8,28 +8,33 @@ async function search(clearSearchIconSelector, searchButtonSelector, searchBarId
 	await selectClick(searchButtonSelector); // Clicks search
 }
 
-async function followValue(followButtonId, dropDownMenuId, unfollowButtonSelector) {
-    await simpleClick(followButtonId); // Clicks on "Follow"
-    await simpleClick(dropDownMenuId); // Clicks on dropdown menu 
-	var unfollowButton = await $(unfollowButtonSelector);
- 	await unfollowButton.click(); // Clicks on "Unfollow"
+async function readMore(selector) {
+	const selected = await $(selector);	
+	const more = await selected.$('=More');
+	if(await more.isClickable()) {
+		await more.click();
+	}
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	const showLess = await selected.$('=Show Less');
+	if(await showLess.isClickable()) {
+		await browser.pause(PAUSE_DURATION_MICROSECONDS);
+		await showLess.click();
+	}
 	await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
-async function readMore() {
-	await selectClick('=More');
-	await selectClick('=Show Less');
-}
-
 async function selectClick(selector) {
-	var selected = await $(selector);
-	await selected.click();
+	const element = await $(selector);
+	if(await element.isClickable()) {
+		await browser.pause(PAUSE_DURATION_MICROSECONDS);
+		await element.click();
+	}
 	await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
-const PAUSE_DURATION_MICROSECONDS = 3000; 
+const PAUSE_DURATION_MICROSECONDS = 1250; 
 describe('Basic cross-platform We Vote test',  () => { it('should load the app so we can run various tests', async () => {
     const { twitterUserName, twitterPassword } = driver.config;
     const { device, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
@@ -64,120 +69,147 @@ describe('Basic cross-platform We Vote test',  () => { it('should load the app s
 
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
-	const dropDown = 'button.issues-follow-btn__dropdown.issues-follow-btn--white:first-of-type';
-	const follow = 'button.issues-follow-btn__main.issues-follow-btn--blue:first-of-type'; 
-	const unfollow = 'button.dropdown-item.issues-follow-btn.issues-follow-btn__menu-item:first-of-type';
-	const ignore = 'button.dropdown-item.issues-follow-btn.issues-follow-btn__menu-item:nth-child(2)';
+	const dropDownButton = 'button.dropdown-toggle.issues-follow-btn__dropdown';
+	const followButton = 'button.issues-follow-btn__main.issues-follow-btn--blue'; 
+	const unfollow = 'button.dropdown-item.issues-follow-btn__menu-item:first-child';
+	const ignore = 'button.dropdown-item.issues-follow-btn__menu-item:nth-of-type(2)';
+	const unignore = 'span.d-print-none button';
+	const link = 'a.u-no-underline';
+	const mainContentColumn = 'div.col-sm-12.col-md-8';
+	const mainContainer = 'div.opinions-followed__container';
+	const childCard = 'div.card-child.card-child--not-followed';
+    const clearSearchIconSelector = 'img[src="/img/glyphicons-halflings-88-remove-circle.svg"]';
+	const sqlInjectionTest = '\' or 1=1 -- -';
+
+	const section = mainContentColumn + ' ' + mainContainer;
+
+	const valueSection = section + ':nth-child(2) ';
+	const publicFigureSection = section + ':nth-last-child(2) ';
+	const organizationSection = section + ':last-child ';
+
+	const publicFigureCards = publicFigureSection + childCard; 
+	const organizationCards = organizationSection + childCard;
+
+	const firstPublicFigureCard = publicFigureCards + ':first-child '; 
+	const firstOrganizationCard = organizationCards + ':first-child '; 
+
+	const firstPublicFigureFollowButton = firstPublicFigureCard + followButton;
+	const firstOrganizationFollowButton = firstOrganizationCard + followButton;
+	const firstPublicFigureDropDownButton = firstPublicFigureCard + dropDownButton;
+	const firstOrganizationDropDownButton = firstOrganizationCard + dropDownButton;
+	const firstPublicFigureUnfollow = firstPublicFigureCard + unfollow;
+	const firstOrganizationUnfollow = firstOrganizationCard + unfollow;
+	const firstPublicFigureIgnore = firstPublicFigureCard + ignore;
+	const firstOrganizationIgnore = firstOrganizationCard + ignore;
+	const firstPublicFigureUnignore = firstPublicFigureCard + unignore;
+	const firstOrganizationUnignore = firstOrganizationCard + unignore;
+	const firstPublicFigureLink = firstPublicFigureCard + link;
+	const firstOrganizationLink = firstOrganizationCard + link;
 
     // //////////////////////
     // Test "Values to Follow" section 
-	const unfollowButtonSelector = 'li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters';
-	await followValue('issueFollowButton', 'toggle-button', unfollowButtonSelector); // Follows and unfollows value
-    await simpleClick('valuesToFollowPreviewShowMoreId'); // Clicks on "Explore all values"
-	await followValue('issueFollowButton', 'toggle-button', unfollowButtonSelector); // Follows and unfollows value
-    const clearSearchIconSelector = 'img[src="/img/glyphicons-halflings-88-remove-circle.svg"]';
-	const sqlInjectionTest = '\' or 1=1 -- -';
+	await simpleClick('issueFollowButton'); // Follow value
+	await simpleClick('toggle-button');
+	await selectClick('li=Unfollow'); // Unfollow value
+	await selectClick('a.u-no-underline'); // Clicks on value
+	await simpleClick('issueFollowButton'); // Follow value
+	await simpleClick('toggle-button');
+	await selectClick('li=Unfollow'); // Unfollow value
+	const noEndorsementsCheck = await $('p*=no endorsements');
+	if(await noEndorsementsCheck.getText()) { // Check for Endorsements
+		const valueSelector = await $('div.ValuesList__Column-sc-6mkcdy-1:first-child button');
+		await valueSelector.click(); // Follows first value
+		await browser.pause(PAUSE_DURATION_MICROSECONDS);
+		const valueLink = await $('div.ValuesList__Column-sc-6mkcdy-1:first-child a');
+		await valueLink.click(); // Clicks on first value
+		await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	} else {
+		const firstEndorsementFollowButton = await $(followButton);
+		await firstEndorsementFollowButton.click(); // Follows first endorsement
+		const firstEndorsementDropDownButton = await $(dropDownButton);
+		await firstEndorsementDropDownButton.click(); // Clicks drop down button 
+		const firstEndorsementUnfollowButton = await $(unfollow);
+		await firstEndorsementUnfollowButton.click(); // Unfollows first endorsement
+		await firstEndorsementDropDownButton.click(); // Clicks drop down button 
+		const firstEndorsementIgnoreButton = await $(ignore);
+		await firstEndorsementIgnoreButton.click(); // Ignores first endorsement
+		await firstEndorsementDropDownButton.click(); // Clicks drop down button 
+		await firstEndorsementIgnoreButton.click(); // Unignores first endorsement
+		const valueSelector = await $('.ValuesList__Row-sc-6mkcdy-0 .ValuesList__Column-sc-6mkcdy-1:first-child').$('button');
+		await valueSelector.click(); // Follows first value
+		const valueLink = await $('.ValuesList__Row-sc-6mkcdy-0 .ValuesList__Column-sc-6mkcdy-1:first-child').$('<a>');
+		await valueLink.click(); // Clicks on first value
+	}
+	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+	await simpleClick('valuesFollowedPreviewShowMoreId'); // Clicks on "Explore all values"
+	await simpleClick('issueFollowButton'); // Follow value
+	await simpleClick('toggle-button');
+	await selectClick('li=Unfollow'); // Unfollow value
 	await search(clearSearchIconSelector, 'i.fas.fa-search', 'search_input', sqlInjectionTest); // tests search functionality
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
-	await selectClick('a.u-no-underline'); // Clicks on value
-	await followValue('issueFollowButton', 'toggle-button', unfollowButtonSelector); // Follows and unfollows value
-	const noEndorsementsCheck = await $('p*=no endorsements');
-	if(noEndorsementsCheck.getText()) { // Check for Endorsements
-			const valueSelector = await $('div.ValuesList__Column-sc-6mkcdy-1:first-child button');
-			await valueSelector.click(); // Follows first value
-			await browser.pause(PAUSE_DURATION_MICROSECONDS);
-			const valueLink = await $('div.ValuesList__Column-sc-6mkcdy-1:first-child a');
-			await valueLink.click(); // Clicks on first value
-			await browser.pause(PAUSE_DURATION_MICROSECONDS);
-			await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
-			await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
-	} else {
-			const firstEndorsementFollowButton = await $(follow);
-			await firstEndorsementFollowButton.click(); // Follows first endorsement
-			const firstEndorsementDropDownButton = await $(dropDown);
-			await firstEndorsementDropDownButton.click(); // Clicks drop down button 
-			const firstEndorsementUnfollowButton = await $(unfollow);
-			await firstEndorsementUnfollowButton.click(); // Unfollows first endorsement
-			await firstEndorsementDropDownButton.click(); // Clicks drop down button 
-			const firstEndorsementIgnoreButton = await $(ignore);
-			await firstEndorsementIgnoreButton.click(); // Ignores first endorsement
-			await firstEndorsementDropDownButton.click(); // Clicks drop down button 
-			await firstEndorsementIgnoreButton.click(); // Unignores first endorsement
-			const valueSelector = await $('.ValuesList__Row-sc-6mkcdy-0 .ValuesList__Column-sc-6mkcdy-1:first-child').$('button');
-			await valueSelector.click(); // Follows first value
-			const valueLink = await $('.ValuesList__Row-sc-6mkcdy-0 .ValuesList__Column-sc-6mkcdy-1:first-child').$('<a>');
-			await valueLink.click(); // Clicks on first value
-			await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
-			await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
-			await simpleClick('toggle-button'); // Clicks on dropdown menu 
-			unfollowButton = await $(unfollowButtonSelector);
-			await unfollowButton.click(); // Clicks on "Unfollow"
-			await browser.pause(PAUSE_DURATION_MICROSECONDS);
-	}
 
     // //////////////////////
     // Test "Public Figures to Follow" section 
-	const publicFigureHeader = await $('h2=Public Figures to Follow');
-	publicFigureHeader.scrollIntoView(); // Scrolls to "Public Figures to Follow"
+	var publicFigureHeader = await $('h2=Public Figures to Follow');
+	await publicFigureHeader.scrollIntoView(); // Scrolls to "Public Figures to Follow"
 	await browser.pause(PAUSE_DURATION_MICROSECONDS);
-	if (browser.findElements('css selector', follow)) { // Check for recommendations 
-			await browser.pause(PAUSE_DURATION_MICROSECONDS);
-			const publicFigureFollowButton = await $(follow);
-			await publicFigureFollowButton.click(); // Follow first public figure
-			const publicFigureDropDownButton = await $(dropDown);
-			await publicFigureDropDownButton.click(); // Click dropdown button
-			const publicFigureUnfollowButton = await $(unfollow);
-			await publicFigureUnfollowButton.click(); // Unfollows first public figure 
-			await publicFigureDropDownButton.click(); // Click dropdown button
-			const publicFigureIgnoreButton = await $(ignore);
-			await publicFigureIgnoreButton.click(); // Ignores first public figure
-			await publicFigureDropDownButton.click(); // Click dropdown button
-			await publicFigureIgnoreButton.click(); // Unignores first public figure
-			await readMore(); // Clicks more and show less
-	}
 	await simpleClick('publicFiguresToFollowPreviewShowMoreId'); // Click "Explore more public figures"
 	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
-	await scrollIntoViewSimple('valuesToFollowPreviewShowMoreId'); // Scrolls to organization
-	const firstPublicFigureLink = await $('h2.PublicFiguresToFollowPreview__SectionTitle-sc-1ked900-0 a:first-of-type');
-	await firstPublicFigureLink.click(); // Click first public profile link
-	await simpleClick('valuesTabFooterBar'); // Return to values tab
-
+	publicFigureHeader = await $('h2=Public Figures to Follow');
+	await publicFigureHeader.scrollIntoView(); // Scrolls to "Public Figures to Follow"
+	var publicFigureRecommendations = await $(publicFigureCards);
+	if (await publicFigureRecommendations.waitForExist({timeout: 5000})) { // Check for recommendations 
+			await browser.pause(PAUSE_DURATION_MICROSECONDS);
+			await selectClick(firstPublicFigureFollowButton); // Follow first public figure
+			await selectClick(firstPublicFigureDropDownButton); 
+			await selectClick(firstPublicFigureUnfollow); // Unfollow first public figure
+			await selectClick(firstPublicFigureDropDownButton); 
+			await selectClick(firstPublicFigureIgnore); // Ignore first public figure
+			await selectClick(firstPublicFigureDropDownButton);
+			await selectClick(firstPublicFigureUnignore); // Unignore first public figure
+			await readMore(publicFigureSection); // Clicks more and show less
+			await selectClick(firstPublicFigureLink); // Clicks first public figure's link
+			await browser.url('https://quality.wevote.us/values');
+	}
 
     // //////////////////////
     // Tests endorsements and twitter sign in 
 	if (isDesktopScreenSize) { 								// Only for desktop
 		await simpleClick('twitterSignIn-splitIconButton'); // Clicks on "Find Public Opinions"
-		await simpleClick('valuesTabFooterBar'); // Return to values tab
+		await browser.url('https://quality.wevote.us/values');
 		await simpleClick('undefined-splitIconButton'); // Clicks on "Add Endorsements"
-		await simpleClick('valuesTabFooterBar'); // Return to values tab
+		await browser.url('https://quality.wevote.us/values');
 	}
 
     // //////////////////////
     // Tests organizations to follow
-	const organizationsHeader = await $('h2=Organizations to Follow');
-	organizationsHeader.scrollIntoView(); // Scrolls to "Organizations to Follow"
+	var organizationsHeader = await $('h2=Organizations to Follow');
+	await organizationsHeader.scrollIntoView(); // Scrolls to "Organizations to Follow"
 	await browser.pause(PAUSE_DURATION_MICROSECONDS);
-	if (browser.findElements('css selector', follow)) { // Checks if there are recommendations
-			const firstOrganizationFollowButton = await $('button.MuiButton-root.MuiButton-text:first-of-type');
-			await firstOrganizationFollowButton.click(); // Follow first organization 
-			const firstOrganizationDropDownButton = await $('button.MuiButton-root.MuiButton-text.dropdown-toggle:first-of-type');
-			await firstOrganizationDropDownButton.click(); // Click dropdown button
-			const firstOrganizationUnfollowButton = await $('button.MuiButton-root.MuiButton-text.dropdown-item:first-of-type'); 
-			await firstOrganizationUnfollowButton.click(); // Unfollows first organization 
-			await firstOrganizationDropDownButton.click(); // Click dropdown button
-			const firstOrganizationIgnoreButton = await $('button.MuiButton-root.MuiButton-text.dropdown-toggle:nth-child(2)');
-			await firstOrganizationIgnoreButton.click(); // Clicks ignore button
-			await firstOrganizationDropDownButton.click(); // Click dropdown button
-			await firstOrganizationIgnoreButton.click(); // Clicks "Stop Ignoring"
+	var organizationRecommendations = await $(organizationCards);
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	if (await organizationRecommendations.isExisting()) { // Check for recommendations
+		await browser.pause(PAUSE_DURATION_MICROSECONDS);
+		await readMore(organizationSection); // Clicks more and show less
+		await selectClick(firstOrganizationFollowButton); // Follow first organization
+		await selectClick(firstOrganizationDropDownButton); 
+		await selectClick(firstOrganizationUnfollow); // Unfollow first organization
+		await selectClick(firstOrganizationDropDownButton); 
+		await selectClick(firstOrganizationIgnore); // Ignore first organization
+		await selectClick(firstOrganizationDropDownButton);
+		await selectClick(firstOrganizationUnignore); // Unignore first organization
+		await selectClick(firstOrganizationLink); // Clicks first organization's link
+		await browser.url('https://quality.wevote.us/values');
+		publicFigureHeader = await $('h2=Public Figures to Follow');
+		await publicFigureHeader.scrollIntoView(); // Scrolls to "Public Figures to Follow"
+		organizationsHeader = await $('h2=Organizations to Follow');
+		await organizationsHeader.scrollIntoView(); // Scrolls to "Organizations to Follow"
 	}
-    await simpleClick('organizationsToFollowPreviewShowMoreId'); // Clicks on "Explore more organizations"
-    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
-	await readMore(); // Clicks more and show less
-	const firstOrganizationLink = await $('h2.OrganizationsToFollowPreview__SectionTitle-lnpgt8-0.eWxngq a:first-of-type');
-	await firstOrganizationLink.click(); // Click first organization's link
-    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+	await simpleClick('organizationsToFollowPreviewShowMoreId'); // Clicks on "Explore more organizations"
+	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 
-    assert(true);
+	assert(true);
   });
 });
 
