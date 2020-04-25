@@ -82,29 +82,23 @@ describe('Basic cross-platform We Vote test',  () => { it('should load the app s
 	const sqlInjectionTest = '\' or 1=1 -- -';
 
 	const section = mainContentColumn + ' ' + mainContainer;
-
 	const valueSection = section + ':nth-child(2) ';
 	const publicFigureSection = section + ':nth-last-child(2) ';
 	const organizationSection = section + ':last-child ';
-
-	const publicFigureCards = publicFigureSection + childCard; 
+	const publicFigureCards = publicFigureSection + childCard;
 	const organizationCards = organizationSection + childCard;
-
-	const firstPublicFigureCard = publicFigureCards + ':first-child '; 
-	const firstOrganizationCard = organizationCards + ':first-child '; 
-
-	const firstPublicFigureFollowButton = firstPublicFigureCard + followButton;
-	const firstOrganizationFollowButton = firstOrganizationCard + followButton;
-	const firstPublicFigureDropDownButton = firstPublicFigureCard + dropDownButton;
-	const firstOrganizationDropDownButton = firstOrganizationCard + dropDownButton;
-	const firstPublicFigureUnfollow = firstPublicFigureCard + unfollow;
-	const firstOrganizationUnfollow = firstOrganizationCard + unfollow;
-	const firstPublicFigureIgnore = firstPublicFigureCard + ignore;
-	const firstOrganizationIgnore = firstOrganizationCard + ignore;
-	const firstPublicFigureUnignore = firstPublicFigureCard + unignore;
-	const firstOrganizationUnignore = firstOrganizationCard + unignore;
-	const firstPublicFigureLink = firstPublicFigureCard + link;
-	const firstOrganizationLink = firstOrganizationCard + link;
+	const publicFigureFollowButton = publicFigureSection + followButton;
+	const organizationFollowButton = organizationSection + followButton;
+	const publicFigureDropDownButton = publicFigureSection + dropDownButton;
+	const organizationDropDownButton = organizationSection + dropDownButton;
+	const publicFigureUnfollow = publicFigureSection + unfollow;
+	const organizationUnfollow = organizationSection + unfollow;
+	const publicFigureIgnore = publicFigureSection + ignore;
+	const organizationIgnore = organizationSection + ignore;
+	const publicFigureUnignore = publicFigureSection + unignore;
+	const organizationUnignore = organizationSection + unignore;
+	const publicFigureLink = publicFigureSection + link;
+	const organizationLink = organizationSection + link;
 
     // //////////////////////
     // Test "Values to Follow" section 
@@ -161,15 +155,15 @@ describe('Basic cross-platform We Vote test',  () => { it('should load the app s
 	var publicFigureRecommendations = await $(publicFigureCards);
 	if (await publicFigureRecommendations.waitForExist({timeout: 5000})) { // Check for recommendations 
 			await browser.pause(PAUSE_DURATION_MICROSECONDS);
-			await selectClick(firstPublicFigureFollowButton); // Follow first public figure
-			await selectClick(firstPublicFigureDropDownButton); 
-			await selectClick(firstPublicFigureUnfollow); // Unfollow first public figure
-			await selectClick(firstPublicFigureDropDownButton); 
-			await selectClick(firstPublicFigureIgnore); // Ignore first public figure
-			await selectClick(firstPublicFigureDropDownButton);
-			await selectClick(firstPublicFigureUnignore); // Unignore first public figure
+			await selectClick(publicFigureFollowButton); // Follow first public figure
+			await selectClick(publicFigureDropDownButton); 
+			await selectClick(publicFigureUnfollow); // Unfollow first public figure
+			await selectClick(publicFigureDropDownButton); 
+			await selectClick(publicFigureIgnore); // Ignore first public figure
+			await selectClick(publicFigureDropDownButton);
+			await selectClick(publicFigureUnignore); // Unignore first public figure
 			await readMore(publicFigureSection); // Clicks more and show less
-			await selectClick(firstPublicFigureLink); // Clicks first public figure's link
+			await selectClick(publicFigureLink); // Clicks first public figure's link
 			await browser.url('https://quality.wevote.us/values');
 	}
 
@@ -184,6 +178,10 @@ describe('Basic cross-platform We Vote test',  () => { it('should load the app s
 
     // //////////////////////
     // Tests organizations to follow
+	await simpleClick('organizationsToFollowPreviewShowMoreId'); // Clicks on "Explore more organizations"
+	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+	publicFigureHeader = await $('h2=Public Figures to Follow');
+	await publicFigureHeader.scrollIntoView(); // Scrolls to "Public Figures to Follow"
 	var organizationsHeader = await $('h2=Organizations to Follow');
 	await organizationsHeader.scrollIntoView(); // Scrolls to "Organizations to Follow"
 	await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -192,22 +190,24 @@ describe('Basic cross-platform We Vote test',  () => { it('should load the app s
 	if (await organizationRecommendations.isExisting()) { // Check for recommendations
 		await browser.pause(PAUSE_DURATION_MICROSECONDS);
 		await readMore(organizationSection); // Clicks more and show less
-		await selectClick(firstOrganizationFollowButton); // Follow first organization
-		await selectClick(firstOrganizationDropDownButton); 
-		await selectClick(firstOrganizationUnfollow); // Unfollow first organization
-		await selectClick(firstOrganizationDropDownButton); 
-		await selectClick(firstOrganizationIgnore); // Ignore first organization
-		await selectClick(firstOrganizationDropDownButton);
-		await selectClick(firstOrganizationUnignore); // Unignore first organization
-		await selectClick(firstOrganizationLink); // Clicks first organization's link
-		await browser.url('https://quality.wevote.us/values');
-		publicFigureHeader = await $('h2=Public Figures to Follow');
-		await publicFigureHeader.scrollIntoView(); // Scrolls to "Public Figures to Follow"
-		organizationsHeader = await $('h2=Organizations to Follow');
-		await organizationsHeader.scrollIntoView(); // Scrolls to "Organizations to Follow"
+		await selectClick(organizationFollowButton); // Follow first organization
+		if (await organizationRecommendations.isExisting()) { // Check for recommendations
+			await selectClick(organizationDropDownButton); 
+			await selectClick(organizationUnfollow); // Unfollow first organization
+			if (await organizationRecommendations.isExisting()) { // Check for recommendations
+				await selectClick(organizationDropDownButton); 
+				await selectClick(organizationIgnore); // Ignore first organization
+				await selectClick(organizationDropDownButton);
+				await selectClick(organizationUnignore); // Unignore first organization
+				await selectClick(organizationLink); // Clicks first organization's link
+				await browser.url('https://quality.wevote.us/values');
+				publicFigureHeader = await $('h2=Public Figures to Follow');
+				await publicFigureHeader.scrollIntoView(); // Scrolls to "Public Figures to Follow"
+				organizationsHeader = await $('h2=Organizations to Follow');
+				await organizationsHeader.scrollIntoView(); // Scrolls to "Organizations to Follow"
+			}
+		}
 	}
-	await simpleClick('organizationsToFollowPreviewShowMoreId'); // Clicks on "Explore more organizations"
-	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 
 	assert(true);
   });
