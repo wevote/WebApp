@@ -381,7 +381,7 @@ class SettingsDomain extends Component {
                   {' '}
                   {!(organizationChosenSubdomainSavedValue || organizationChosenDomainNameSavedValue) && (
                     <>
-                      Start by entering your own Subdomain or Custom Domain.
+                      Start by entering your own Subdomain or Custom Domain below.
                       {' '}
                     </>
                   )}

@@ -2,11 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Tabs, Tab, Box } from '@material-ui/core';
 import clsx from 'clsx';
+import Button from '@material-ui/core/Button';
+import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
-import { renderLog } from '../../utils/logging';
-import { hasIPhoneNotch, isIPhone4in, isIOS, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import IconButton from '@material-ui/core/IconButton';
+import { hasIPhoneNotch, isIPhone4in, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import FollowToggle from '../Widgets/FollowToggle';
+import ImageHandler from '../ImageHandler';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import ShareActions from '../../actions/ShareActions';
+import SharedItemIntroduction from './SharedItemIntroduction';
+import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
 
 class SharedItemModal extends Component {
   static propTypes = {
@@ -19,21 +30,21 @@ class SharedItemModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      activeTabIndex: 0,
       condensed: false,
       errorToDisplay: false,
       errorMessageToDisplay: '',
-      incorrectSecretCodeEntered: false,
-      numberOfTriesRemaining: 5,
-      secretCodeVerified: false,
-      voterMustRequestNewCode: false,
-      voterPhoneNumber: '',
-      voterSecretCodeRequestsLocked: false,
-      voterVerifySecretCodeSubmitted: false,
+      organizationName: '',
+      organizationPhotoUrlLarge: '',
+      sharedByOrganizationWeVoteId: '',
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount () {
     // console.log('SharedItemModal componentDidMount');
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { sharedItemCode } = this.props;
     // const newVoterPhoneNumber = voterPhoneNumber.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
@@ -41,23 +52,53 @@ class SharedItemModal extends Component {
     this.setState({
       sharedItemCode,
     });
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.incorrectSecretCodeEntered !== nextState.incorrectSecretCodeEntered) return true;
-    if (this.state.numberOfTriesRemaining !== nextState.numberOfTriesRemaining) return true;
-    if (this.state.secretCodeVerified !== nextState.secretCodeVerified) return true;
-    if (this.state.sharedItemCode !== nextState.sharedItemCode) return true;
-    if (this.state.voterMustRequestNewCode !== nextState.voterMustRequestNewCode) return true;
-    if (this.state.voterSecretCodeRequestsLocked !== nextState.voterSecretCodeRequestsLocked) return true;
-    if (this.state.condensed !== nextState.condensed) return true;
-    // console.log('shouldComponentUpdate return false');
-    return false;
+    ShareActions.sharedItemRetrieveByCode(sharedItemCode);
   }
 
   componentWillUnmount () {
     // console.log('SharedItemModal componentWillUnmount');
+    this.organizationStoreListener.remove();
+    this.shareStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onOrganizationStoreChange () {
+    const { sharedByOrganizationWeVoteId } = this.state;
+    const organization = OrganizationStore.getOrganizationByWeVoteId(sharedByOrganizationWeVoteId);
+    if (organization && organization.organization_name) {
+      // While typing 'Tom Smith' in the org field, without the following line, when you get to 'Tom ', autosaving trims and overwrites it to 'Tom' before you can type the 'S'
+      // console.log('onOrganizationStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
+      if (organization.organization_name.trim() !== this.state.organizationName.trim()) {
+        this.setState({
+          organizationName: organization.organization_name,
+          organizationPhotoUrlLarge: organization.organization_photo_url_large,
+        });
+      }
+    }
+  }
+
+  onShareStoreChange () {
+    // console.log('SharedItemLanding onShareStoreChange');
+    const { sharedItemCode } = this.state;
+    if (sharedItemCode) {
+      const sharedItem = ShareStore.getSharedItemByCode(sharedItemCode);
+      const { shared_by_organization_we_vote_id: sharedByOrganizationWeVoteId } = sharedItem;
+      const organization = OrganizationStore.getOrganizationByWeVoteId(sharedByOrganizationWeVoteId);
+      if (organization && organization.organization_name) {
+        // console.log('onOrganizationStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
+        if (organization.organization_name.trim() !== this.state.organizationName.trim()) {
+          this.setState({
+            organizationName: organization.organization_name,
+            organizationPhotoUrlLarge: organization.organization_photo_url_large,
+          });
+        }
+      } else {
+        OrganizationActions.organizationRetrieve(sharedByOrganizationWeVoteId);
+      }
+      this.setState({
+        sharedByOrganizationWeVoteId,
+      });
+    }
   }
 
   onVoterStoreChange () {
@@ -107,25 +148,198 @@ class SharedItemModal extends Component {
     }
   };
 
+  clickNextStepButton = () => {
+    const {
+      nextStep,
+    } = this.state;
+    console.log('clickNextStepButton, nextStep:', nextStep);
+    // if (nextStep) {
+    //   this.setState(personalizedScoreSteps[nextStep]);
+    // }
+  };
+
+  clickPreviousStepButton = () => {
+    const {
+      previousStep,
+    } = this.state;
+    console.log('clickPreviousStepButton, previousStep:', previousStep);
+    // if (previousStep) {
+    //   this.setState(personalizedScoreSteps[previousStep]);
+    // }
+  };
+
+  handleChange (event, newActiveTabIndex) {
+    this.setState({
+      activeTabIndex: newActiveTabIndex,
+    });
+  }
+
   render () {
     renderLog('SharedItemModal');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('SharedItemModal render');
     const { classes } = this.props;
     const {
-      condensed, errorMessageToDisplay, errorToDisplay,
-      digit1, digit2, digit3, digit4, digit5, digit6,
-      sharedItemCode, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked,
-      voterVerifySecretCodeSubmitted,
+      activeTabIndex, condensed, errorMessageToDisplay, errorToDisplay,
+      organizationName, organizationPhotoUrlLarge,
+      sharedByOrganizationWeVoteId,
+      sharedItemCode,
     } = this.state;
+    const showIntroduction = true;
 
     if (!sharedItemCode) {
-      // We get a weird extra ghost version of SharedItemModal, and this is how we block it.
       return null;
+    }
+
+    let modalContentToDisplay;
+    if (showIntroduction) {
+      // Introduction
+      modalContentToDisplay = (
+        <span>
+          <ModalTitleArea condensed={condensed}>
+            <div>
+              &nbsp;
+            </div>
+            <IconButton
+              aria-label="Close"
+              className={classes.closeButtonAbsolute}
+              onClick={this.closeSharedItemModalLocal}
+              id="closeSharedItemModal"
+            >
+              <CloseIcon />
+            </IconButton>
+          </ModalTitleArea>
+          <ModalContent condensed={condensed} style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }}>
+            <SharedItemIntroduction />
+            <ContinueButtonWrapper>
+              <TwoButtonsWrapper>
+                <div
+                  style={{
+                    width: '100%',
+                  }}
+                >
+                  <Button
+                    classes={{ root: classes.backButtonRoot }}
+                    color="primary"
+                    // disabled={!(previousStep)}
+                    fullWidth
+                    id="personalizedScoreIntroModalBackButton"
+                    onClick={this.clickPreviousStepButton}
+                    variant="outlined"
+                  >
+                    Back
+                  </Button>
+                </div>
+                <div
+                  style={{
+                    width: '100%',
+                  }}
+                >
+                  <Button
+                    classes={{ root: classes.nextButtonRoot }}
+                    color="primary"
+                    fullWidth
+                    id="personalizedScoreIntroModalNextButton"
+                    // disabled={!(nextStep || showPersonalizedScoreIntroCompletedButton)}
+                    variant="contained"
+                    onClick={this.clickNextStepButton}
+                  >
+                    Next
+                  </Button>
+                </div>
+              </TwoButtonsWrapper>
+            </ContinueButtonWrapper>
+          </ModalContent>
+        </span>
+      );
+    } else {
+      modalContentToDisplay = (
+        <span>
+          <ModalTitleArea condensed={condensed}>
+            <SharedByOrganizationWrapper>
+              {organizationPhotoUrlLarge && (
+                <OrganizationImageWrapper>
+                  <ImageHandler
+                    imageUrl={organizationPhotoUrlLarge}
+                    hidePlaceholder
+                    sizeClassName="icon-lg "
+                  />
+                </OrganizationImageWrapper>
+              )}
+              <OrganizationNameWrapper>
+                {organizationName}
+              </OrganizationNameWrapper>
+            </SharedByOrganizationWrapper>
+            <FollowToggleWrapper className="u-show-desktop-tablet">
+              <FollowToggle
+                platformType="mobile"
+                organizationWeVoteId={sharedByOrganizationWeVoteId}
+                showFollowingText
+              />
+            </FollowToggleWrapper>
+            <IconButton
+              aria-label="Close"
+              className={classes.closeButtonAbsolute}
+              onClick={this.closeSharedItemModalLocal}
+              id="closeSharedItemModal"
+            >
+              <CloseIcon />
+            </IconButton>
+          </ModalTitleArea>
+          <ModalContent condensed={condensed} style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }}>
+            <Tabs variant="fullWidth" classes={{ indicator: classes.indicator }} value={activeTabIndex} onChange={this.handleChange}>
+              <Tab
+                classes={{ root: classes.tabStyle }}
+                variant="fullWidth"
+                color="primary"
+                label={(
+                  <span>
+                    <span className="u-show-desktop-tablet">Positions From Your Ballot</span>
+                    <span className="u-show-mobile">Your Ballot</span>
+                  </span>
+                )}
+              />
+              <Tab classes={{ root: classes.tabStyle }} variant="fullWidth" color="primary" label="All Positions" />
+            </Tabs>
+            <div
+              role="tabpanel"
+              hidden={activeTabIndex !== 0}
+              id={`simple-tabpanel-${0}`}
+              aria-labelledby={`simple-tab-${0}`}
+              value={0}
+            >
+              {activeTabIndex === 0 && (
+                <Box classes={{ root: classes.Box }} p={3}>
+                  <TextContainer condensed={condensed}>
+                    <Subtitle>The shared item code is:</Subtitle>
+                    <PhoneSubtitle>{sharedItemCode}</PhoneSubtitle>
+                    {errorToDisplay && (
+                      <ErrorMessage>{errorMessageToDisplay}</ErrorMessage>
+                    )}
+                  </TextContainer>
+                </Box>
+              )}
+            </div>
+            <div
+              role="tabpanel"
+              hidden={activeTabIndex !== 1}
+              id={`simple-tabpanel-${1}`}
+              aria-labelledby={`simple-tab-${1}`}
+              value={1}
+            >
+              {activeTabIndex === 1 && (
+                <Box classes={{ root: classes.Box }} p={3}>
+                  <Title condensed={condensed}>All Positions</Title>
+                </Box>
+              )}
+            </div>
+          </ModalContent>
+        </span>
+      );
     }
 
     return (
       <Dialog
-        id="codeVerificationDialog"
+        id="sharedItemModal"
         open={this.props.show}
         onClose={this.closeSharedItemModalLocal}
         classes={{
@@ -135,20 +349,7 @@ class SharedItemModal extends Component {
           root: classes.dialogRoot,
         }}
       >
-        <ModalTitleArea condensed={condensed}>
-        </ModalTitleArea>
-        <ModalContent condensed={condensed} style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }}>
-          <TextContainer condensed={condensed}>
-            <Title condensed={condensed}>Code Verification</Title>
-            <Subtitle>A 6-digit code has been sent to</Subtitle>
-            <PhoneSubtitle>{sharedItemCode}</PhoneSubtitle>
-            <InputContainer condensed={condensed}>
-            </InputContainer>
-            {errorToDisplay && (
-              <ErrorMessage>{errorMessageToDisplay}</ErrorMessage>
-            )}
-          </TextContainer>
-        </ModalContent>
+        {modalContentToDisplay}
       </Dialog>
     );
   }
@@ -176,7 +377,14 @@ const styles = theme => ({
     },
   },
   dialogRoot: {
-    zIndex: '9010 !important',
+    [theme.breakpoints.down('sm')]: {
+      zIndex: '9010 !important',
+    },
+  },
+  closeButtonAbsolute: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
   },
   codeVerifyCordova: {
     top: '9%',
@@ -185,45 +393,48 @@ const styles = theme => ({
     minHeight: 'unset',
     margin: '5px',
   },
-  inputBase: {
-    alignContent: 'center',
-    display: 'flex',
-    // flex: '0 0 1',
-    justifyContent: 'center',
-    margin: '0 4px',
-    // maintain aspect ratio
-    width: '10vw',
-    height: '10vw',
-    maxWidth: 53,
-    maxHeight: 53,
-    fontSize: 22,
-    '@media(min-width: 569px)': {
-      margin: '0 8px',
-      fontSize: 35,
-    },
-    '&:first-child': {
-      marginLeft: 0,
-    },
-    '&:last-child': {
-      marginRight: 0,
-    },
-    background: '#f7f7f7',
+  indicator: {
+    backgroundColor: theme.palette.primary.main,
+    height: 2.5,
   },
-  input: {
-    textAlign: 'center',
-    padding: '8px 0',
-
+  tabStyle: {
+    fontWeight: 600,
   },
-  button: {
+  Box: {
+    padding: 2,
+  },
+  backButtonRoot: {
+    width: '95%',
+  },
+  nextButtonRoot: {
     width: '100%',
-    border: '1px solid #ddd',
-    fontWeight: 'bold',
-    margin: '6px 0',
-  },
-  verifyButton: {
-    margin: '6px 0',
   },
 });
+
+const ContinueButtonWrapper = styled.div`
+  align-items: center;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  position: absolute;
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  margin: 12px 0;
+  text-align: center;
+  font-size: 14px;
+`;
+
+const FollowToggleWrapper = styled.div`
+`;
+
+const OrganizationImageWrapper = styled.div`
+`;
+
+const OrganizationNameWrapper = styled.div`
+`;
 
 const ModalTitleArea = styled.div`
   width: 100%;
@@ -237,22 +448,29 @@ const ModalTitleArea = styled.div`
 `;
 
 const ModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: ${props => (props.condensed ? 'flex-start' : 'space-evenly')};
   height: isWebApp() ? 100% : 'unset';
-  width: 80%;
-  max-width: 400px;
+  width: 100%;
   margin: 0 auto;
-  padding: 86px 0 72px 0;
-  padding: ${props => (props.condensed ? '66px 0 0 0' : '86px 0 72px 0')};
+  padding: 55px 0 12px 0;
+`;
+
+const PhoneSubtitle = styled.h4`
+  color: black;
+  font-weight: bold;
+  text-align: center;
+`;
+
+const SharedByOrganizationWrapper = styled.div`
+  margin-right: 12px;
+`;
+
+const Subtitle = styled.h4`
+  color: #ccc;
+  font-weight: bold;
+  text-align: center;
 `;
 
 const TextContainer = styled.div`
-`;
-
-const ButtonsContainer = styled.div`
-  margin-top: ${props => (props.condensed ? '16px' : 'auto')};
 `;
 
 const Title = styled.h3`
@@ -267,31 +485,12 @@ const Title = styled.h3`
   }
 `;
 
-const Subtitle = styled.h4`
-  color: #ccc;
-  font-weight: bold;
-  text-align: center;
-`;
-
-const PhoneSubtitle = styled.h4`
-  color: black;
-  font-weight: bold;
-  text-align: center;
-`;
-
-const InputContainer = styled.div`
+const TwoButtonsWrapper = styled.div`
+  align-items: center;
   display: flex;
   justify-content: space-between;
-  margin: auto;
+  margin: 0;
   width: 100%;
-  margin-top: ${props => (props.condensed ? '16px' : '32px')};
-`;
-
-const ErrorMessage = styled.div`
-  color: red;
-  margin: 12px 0;
-  text-align: center;
-  font-size: 14px;
 `;
 
 export default withTheme(withStyles(styles)(SharedItemModal));

@@ -138,8 +138,11 @@ class BallotTitleHeader extends Component {
       );
     } else {
       return (
-        <span className="u-push--sm">
+        <span className="u-push--sm" onClick={this.props.toggleSelectBallotModal} id="ballotTitleHeaderSelectBallotModalLoadingElection">
           Loading Election...
+          <SettingsIconWrapper>
+            <SettingsIcon classes={{ root: classes.settingsIcon }} />
+          </SettingsIconWrapper>
         </span>
       );
     }

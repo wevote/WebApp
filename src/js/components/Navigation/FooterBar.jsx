@@ -9,7 +9,7 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import BallotIcon from '@material-ui/icons/Ballot';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
-import Notifications from '@material-ui/icons/Notifications';
+// import Notifications from '@material-ui/icons/Notifications';
 import PeopleIcon from '@material-ui/icons/People';
 import AppStore from '../../stores/AppStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
@@ -38,7 +38,7 @@ class FooterBar extends React.Component {
       friendInvitationsSentToMe: 0, // eslint-disable-line react/no-unused-state
       showingOneCompleteYourProfileModal: false,
       showSignInModal: false,
-      voterIsSignedIn: false,
+      // voterIsSignedIn: false,
     };
   }
 
@@ -85,11 +85,11 @@ class FooterBar extends React.Component {
   }
 
   onVoterStoreChange () {
-    const voter = VoterStore.getVoter();
-    const voterIsSignedIn = voter.is_signed_in || false;
-    this.setState({
-      voterIsSignedIn,
-    });
+    // const voter = VoterStore.getVoter();
+    // const voterIsSignedIn = voter.is_signed_in || false;
+    // this.setState({
+    //   voterIsSignedIn,
+    // });
   }
 
   handleChange = (event, value) => {
@@ -124,7 +124,10 @@ class FooterBar extends React.Component {
   render () {
     renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { friendInvitationsSentToMe, showingOneCompleteYourProfileModal, showShareModal, showSignInModal, voterIsSignedIn } = this.state;
+    const {
+      friendInvitationsSentToMe, showingOneCompleteYourProfileModal, showShareModal, showSignInModal,
+      // voterIsSignedIn,
+    } = this.state;
     const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
 
     const badgeStyle = {
@@ -144,7 +147,8 @@ class FooterBar extends React.Component {
           >
             <BottomNavigationAction className="no-outline" id="readyTabFooterBar" label="Ready?" showLabel icon={<HowToVoteIcon />} />
             <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<BallotIcon />} />
-            {!voterIsSignedIn && <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />}
+            {/* OFF FOR NOW !voterIsSignedIn && () */}
+            <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />
             <BottomNavigationAction
               className="no-outline"
               id="friendsTabFooterBar"
@@ -156,7 +160,7 @@ class FooterBar extends React.Component {
                 </Badge>
               )}
             />
-            {voterIsSignedIn && <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="News" showLabel icon={<Notifications />} />}
+            {/* OFF FOR NOW voterIsSignedIn && <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="News" showLabel icon={<Notifications />} /> */}
             {isCordova() ? (
               <BottomNavigationAction
                 className="no-outline"

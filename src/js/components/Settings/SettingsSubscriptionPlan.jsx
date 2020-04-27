@@ -14,10 +14,10 @@ import Table from '@material-ui/core/Table';
 import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
 import { isWebApp, cordovaOpenSafariView } from '../../utils/cordovaUtils';
+import CreateConfiguredVersion from './CreateConfiguredVersion';
 import DonateStore from '../../stores/DonateStore';
 import DonateActions from '../../actions/DonateActions';
 import LoadingWheel from '../LoadingWheel';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import SettingsAccount from './SettingsAccount';
@@ -255,19 +255,12 @@ class SettingsSubscriptionPlan extends Component {
             <SectionTitle>
               Your Plan
             </SectionTitle>
-            <Introduction>
-              {chosenFeaturePackage === 'FREE' && (
-                <>
-                  Want to create a configured version of We Vote you can send out to your followers?
-                  {' '}
-                  <OpenExternalWebSite
-                    url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
-                    target="_blank"
-                    body={(<span>Learn more here.</span>)}
-                  />
-                </>
-              )}
-            </Introduction>
+            {chosenFeaturePackage === 'FREE' && (
+              <>
+                <CreateConfiguredVersion />
+                <Separator />
+              </>
+            )}
             <h4 className="h4">
               <strong>
                 {activePaidPlanChosenDisplay}
@@ -440,19 +433,12 @@ class SettingsSubscriptionPlan extends Component {
         <Card className="card">
           <CardMain className="card-main">
             <h1 className="h2">Subscription Plan</h1>
-            <Introduction>
-              {chosenFeaturePackage === 'FREE' && (
-                <>
-                  Want to create a configured version of We Vote you can send out to your followers?
-                  {' '}
-                  <OpenExternalWebSite
-                    url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
-                    target="_blank"
-                    body={(<span>Learn more here.</span>)}
-                  />
-                </>
-              )}
-            </Introduction>
+            {chosenFeaturePackage === 'FREE' && (
+              <>
+                <CreateConfiguredVersion />
+                <Separator />
+              </>
+            )}
             <SectionCard className="u-position-relative">
               <SectionTitle>
                 Your Plan
@@ -904,11 +890,6 @@ const FlexOne = styled.div`
 const FlexTwo = styled.div`
   font-weight: 500;
   color: black;
-`;
-
-const Introduction = styled.p`
-  margin: 0 0 16px 0;
-  font-size: 14px;
 `;
 
 export default withStyles(styles)(SettingsSubscriptionPlan);

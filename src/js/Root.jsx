@@ -97,7 +97,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       {                       // 12/4/18: Not sure why we need the following disabled
         (function redir () {  // eslint-disable-line wrap-iife
           if (isWebApp()) {
-            return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/welcome" />;
+            return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/ready" />;
           } else {
             return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />;
           }
@@ -172,7 +172,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
       {/* settings/:edit_mode includes "/settings/account", "/settings/address", "/settings/domain", "/settings/election",
       "/settings/issues_linked", "/settings/issues_to_link", "/settings/issues", "/settings/notifications",
-      "/settings/profile", "/settings/tools" */}
+      "/settings/profile", "/settings/text", "/settings/tools" */}
       <Route path="/settings/:edit_mode" component={SettingsDashboard} />
       <Route path="/settings/issues/:edit_mode" component={SettingsDashboard} />
       <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" component={SettingsDashboard} />

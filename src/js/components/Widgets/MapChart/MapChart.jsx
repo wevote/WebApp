@@ -25,14 +25,15 @@ const offsets = {
   DC: [49, 21],
 };
 
+/* eslint-disable react/prop-types */
 const MapChart = props => (
   <ComposableMap className="map-svg" projection="geoAlbersUsa">
     <Geographies className="map-svg" geography={geoUrl}>
       {({ geographies }) => (
         <>
+          {/* eslint-disable-next-line arrow-body-style */}
           {geographies.map((geo) => {
-            const cur = allStates.find(s => s.val === geo.id);
-
+            // const cur = allStates.find(s => s.val === geo.id);
             // console.log(cur);
 
             return (
