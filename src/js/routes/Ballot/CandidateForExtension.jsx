@@ -280,8 +280,9 @@ const styles = theme => ({
 });
 
 const Wrapper = styled.div`
-  height: 100vh;
   background: white;
+  overflow-x: hidden !important;
+  overflow-y
 `;
 
 const Buttons = styled.div`

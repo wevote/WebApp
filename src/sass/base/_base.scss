@@ -1,5 +1,25 @@
 // stylelint-disable selector-max-type
+#comments-wrapper {
+  // scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  .comment {
+    // scroll-snap-align: start;
+  }
+}
 
+#comments-wrapper::-webkit-scrollbar {
+  width: 0em;
+}
+
+#comments-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#comments-wrapper::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  z-index: 9999;
+  border-radius: 50px;
+}
 
 html {
   box-sizing: border-box;
