@@ -20,11 +20,13 @@ class BallotStore extends ReduceStore {
       allBallotItemsFlattened: [],
       allBallotItemsFlattenedDict: {},
       allBallotItemsHaveBeenRetrievedForElection: {},
+      ballots: {},
       ballotItemSearchResultsList: [],
       ballotItemUnfurledTracker: {},
       ballotItemListCandidatesDict: {}, // Dictionary with ballot_item_we_vote_id as key and list of candidate we_vote_ids as value
       positionListHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
       positionListFromFriendsHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
+      voterGuideElectionListByElectionId: {}, // Dictionary with google_civic_election_id as key and list of voter guides for this voter for this election as value
     };
   }
 
@@ -108,9 +110,9 @@ class BallotStore extends ReduceStore {
     const civicId = VoterStore.electionId();
     // console.log('ballots:', this.getState().ballots[civicId]);
     // console.log('currentBallotElectionName:', this.getState().voterGuideElectionListByElectionId[civicId]);
-    if (this.getState().ballots[civicId].election_name) {
+    if (this.getState().ballots[civicId] && this.getState().ballots[civicId].election_name) {
       return this.getState().ballots[civicId].election_name;
-    } else if (this.getState().voterGuideElectionListByElectionId[civicId].election_name) {
+    } else if (this.getState().voterGuideElectionListByElectionId[civicId] && this.getState().voterGuideElectionListByElectionId[civicId].election_name) {
       return this.getState().voterGuideElectionListByElectionId[civicId].election_name;
     }
     return '';
@@ -119,9 +121,9 @@ class BallotStore extends ReduceStore {
   get currentBallotElectionDate () {
     if (!this.isLoaded()) { return undefined; }
     const civicId = VoterStore.electionId();
-    if (this.getState().ballots[civicId].election_day_text) {
+    if (this.getState().ballots[civicId] && this.getState().ballots[civicId].election_day_text) {
       return this.getState().ballots[civicId].election_day_text;
-    } else if (this.getState().voterGuideElectionListByElectionId[civicId].election_day_text) {
+    } else if (this.getState().voterGuideElectionListByElectionId[civicId] && this.getState().voterGuideElectionListByElectionId[civicId].election_day_text) {
       return this.getState().voterGuideElectionListByElectionId[civicId].election_day_text;
     }
     return '';

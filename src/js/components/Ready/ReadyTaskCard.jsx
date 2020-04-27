@@ -1,17 +1,35 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import EventAvailable from '@material-ui/icons/EventAvailable';
 import EventBusy from '@material-ui/icons/EventBusy';
 import { Checkbox, Button } from '@material-ui/core';
+import { historyPush } from '../../utils/cordovaUtils';
 
 class ReadyTaskCard extends React.Component {
-  static propTypes = {};
+  static propTypes = {
+    ballotMode: PropTypes.bool,
+    buttonText: PropTypes.string,
+    completedTitle: PropTypes.string,
+    completedSubtitle: PropTypes.string,
+    completedButtonText: PropTypes.string,
+    makeAPlanMode: PropTypes.bool,
+    title: PropTypes.string,
+    subtitle: PropTypes.string,
+  };
 
   constructor (props) {
     super(props);
     this.state = {
-      completed: true,
+      completed: false,
     };
+  }
+
+  goToNextStep = () => {
+    const { ballotMode, makeAPlanMode } = this.props;
+    if (ballotMode) {
+      historyPush('/ballot');
+    }
   }
 
   render () {
@@ -19,14 +37,14 @@ class ReadyTaskCard extends React.Component {
     const { completed } = this.state;
     return (
       <Card completed={completed} className="card">
-        <Icon completed={completed}>
+        <Icon className="u-cursor--pointer" completed={completed} onClick={this.goToNextStep}>
           {/* <Hexagon /> */}
           {completed ? <EventAvailable /> : <EventBusy />}
         </Icon>
         <div>
-          <Title>{completed ? completedTitle : title}</Title>
-          <SubTitle>{subtitle}</SubTitle>
-          <StyledButton disabled={completed} completed={completed} variant="outlined" color="primary">
+          <Title className="u-cursor--pointer" onClick={this.goToNextStep}>{completed ? completedTitle : title}</Title>
+          <SubTitle className="u-cursor--pointer" onClick={this.goToNextStep}>{subtitle}</SubTitle>
+          <StyledButton className="u-cursor--pointer" onClick={this.goToNextStep} completed={completed || undefined} variant="outlined" color="primary">
             <StyledCheckbox completed={completed} />
             {completed ? 'Completed' : buttonText}
           </StyledButton>
@@ -78,7 +96,7 @@ const Icon = styled.div`
 
 const Hexagon = styled.div`
 position: relative;
-width: 50px; 
+width: 50px;
 height: 28.87px;
 background-color: #bed1fb;
 margin: 14.43px 0;
