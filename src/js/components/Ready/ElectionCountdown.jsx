@@ -22,7 +22,10 @@ class ElectionCountdown extends React.Component {
 
   componentWillUnmount () {
     this.ballotStoreListener.remove();
-    clearInterval(this.setNewTime);
+    if (this.timeInterval) {
+      clearInterval(this.timeInterval);
+      this.timeInterval = null;
+    }
   }
 
   onBallotStoreChange () {
@@ -36,7 +39,11 @@ class ElectionCountdown extends React.Component {
       this.setState({
         electionDate,
       });
-      setInterval(() => this.setNewTime(electionDate), 1000);
+      if (this.timeInterval) {
+        clearInterval(this.timeInterval);
+        this.timeInterval = null;
+      }
+      this.timeInterval = setInterval(() => this.setNewTime(electionDate), 1000);
     }
   }
 
