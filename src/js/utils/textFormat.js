@@ -151,6 +151,10 @@ export function cleanArray (actual) {
   return newArray;
 }
 
+export function convertToInteger (incomingNumber) {
+  return parseInt(incomingNumber, 10) || 0;
+}
+
 export function elipses (name, mobile) {
   function cut (position) {
     return name.length < position ? name : `${name.slice(0, position)}...`;
@@ -172,6 +176,12 @@ export function extractTwitterHandleFromTextString (rawString) {
   lowerCaseString = lowerCaseString.replace('@', '');
   lowerCaseString = lowerCaseString.replace('/', '');
   return lowerCaseString;
+}
+
+export function formatDateToMonthDayYear (dateString) {
+  // console.log('dateString:', dateString);
+  const momentDate = moment(dateString, 'YYYY-MM-DD');
+  return momentDate.format('MMM Do, YYYY');
 }
 
 export function formatDateToYearMonthDay (dateString) {

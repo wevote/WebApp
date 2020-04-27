@@ -7,8 +7,14 @@ import Button from '@material-ui/core/Button';
 import Comment from '@material-ui/icons/Comment';
 import { Drawer, MenuItem } from '@material-ui/core/esm';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-import Mail from '@material-ui/icons/Mail';
 import Reply from '@material-ui/icons/Reply';
+import {
+  EmailIcon,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton, TwitterIcon,
+  TwitterShareButton,
+} from 'react-share';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
@@ -63,7 +69,15 @@ class ShareButtonFooter extends Component {
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('ShareButtonFooter componentDidMount urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
     if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
-      ShareActions.sharedItemSave(currentFullUrlToShare);
+      let kindOfShare = 'BALLOT';
+      if (candidateShare) {
+        kindOfShare = 'CANDIDATE';
+      } else if (measureShare) {
+        kindOfShare = 'MEASURE';
+      } else if (officeShare) {
+        kindOfShare = 'OFFICE';
+      }
+      ShareActions.sharedItemSave(currentFullUrlToShare, kindOfShare);
     }
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
@@ -160,6 +174,15 @@ class ShareButtonFooter extends Component {
     const candidateShare = pathname.startsWith('/candidate');
     const measureShare = pathname.startsWith('/measure');
     const officeShare = pathname.startsWith('/office');
+    let kindOfShare = 'BALLOT';
+    if (candidateShare) {
+      kindOfShare = 'CANDIDATE';
+    } else if (measureShare) {
+      kindOfShare = 'MEASURE';
+    } else if (officeShare) {
+      kindOfShare = 'OFFICE';
+    }
+    ShareActions.sharedItemSave(currentFullUrl, kindOfShare);
     this.setState({
       candidateShare,
       currentFullUrlToShare,
@@ -188,7 +211,7 @@ class ShareButtonFooter extends Component {
 
   openShareOptions = (allOpinions = false) => {
     // console.log('ShareButtonFooter openShareOptions');
-    const { candidateShare, measureShare, officeShare, voterIsSignedIn } = this.state;
+    const { candidateShare, measureShare, officeShare } = this.state;
     let shareFooterStep;
     if (candidateShare) {
       if (allOpinions) {
@@ -222,7 +245,7 @@ class ShareButtonFooter extends Component {
 
   openSignInModalIfWeShould = (shareFooterStep) => {
     const { voterIsSignedIn } = this.state;
-    console.log('ShareButtonFooter openSignInModalIfWeShould, shareFooterStep:', shareFooterStep, ', voterIsSignedIn:', voterIsSignedIn);
+    // console.log('ShareButtonFooter openSignInModalIfWeShould, shareFooterStep:', shareFooterStep, ', voterIsSignedIn:', voterIsSignedIn);
     if (stringContains('AllOpinions', shareFooterStep)) {
       if (!voterIsSignedIn) {
         AppActions.setShowSignInModal(true);
@@ -290,8 +313,9 @@ class ShareButtonFooter extends Component {
     if (hideShareButtonFooter) {
       return null;
     }
-    let emailSubjectEncoded = '';
-    let emailBodyEncoded = '';
+    const titleText = 'Check out this cool ballot tool!';
+    // let emailSubjectEncoded = '';
+    // let emailBodyEncoded = '';
     let linkToBeShared = '';
     let linkToBeSharedUrlEncoded = '';
     if (stringContains('AllOpinions', shareFooterStep)) {
@@ -305,33 +329,33 @@ class ShareButtonFooter extends Component {
     } else {
       linkToBeShared = currentFullUrlToShare;
     }
-    linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
-    const twitterTextEncoded = encodeURI('Check out this cool ballot tool!');
-    if (shareFooterStep === 'ballotShareOptions') {
-      emailSubjectEncoded = encodeURI('Ready to vote?');
-      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-    } else if (shareFooterStep === 'ballotShareOptionsAllOpinions') {
-      emailSubjectEncoded = encodeURI('Ready to vote?');
-      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-    } else if (shareFooterStep === 'candidateShareOptions') {
-      emailSubjectEncoded = encodeURI('Ready to vote?');
-      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-    } else if (shareFooterStep === 'candidateShareOptionsAllOpinions') {
-      emailSubjectEncoded = encodeURI('Ready to vote?');
-      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-    } else if (shareFooterStep === 'measureShareOptions') {
-      emailSubjectEncoded = encodeURI('Ready to vote?');
-      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-    } else if (shareFooterStep === 'measureShareOptionsAllOpinions') {
-      emailSubjectEncoded = encodeURI('Ready to vote?');
-      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-    } else if (shareFooterStep === 'officeShareOptions') {
-      emailSubjectEncoded = encodeURI('Ready to vote?');
-      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-    } else if (shareFooterStep === 'officeShareOptionsAllOpinions') {
-      emailSubjectEncoded = encodeURI('Ready to vote?');
-      emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-    }
+    // linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
+    // const twitterTextEncoded = encodeURI('Check out this cool ballot tool!');
+    // if (shareFooterStep === 'ballotShareOptions') {
+    //   emailSubjectEncoded = encodeURI('Ready to vote?');
+    //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    // } else if (shareFooterStep === 'ballotShareOptionsAllOpinions') {
+    //   emailSubjectEncoded = encodeURI('Ready to vote?');
+    //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    // } else if (shareFooterStep === 'candidateShareOptions') {
+    //   emailSubjectEncoded = encodeURI('Ready to vote?');
+    //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    // } else if (shareFooterStep === 'candidateShareOptionsAllOpinions') {
+    //   emailSubjectEncoded = encodeURI('Ready to vote?');
+    //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    // } else if (shareFooterStep === 'measureShareOptions') {
+    //   emailSubjectEncoded = encodeURI('Ready to vote?');
+    //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    // } else if (shareFooterStep === 'measureShareOptionsAllOpinions') {
+    //   emailSubjectEncoded = encodeURI('Ready to vote?');
+    //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    // } else if (shareFooterStep === 'officeShareOptions') {
+    //   emailSubjectEncoded = encodeURI('Ready to vote?');
+    //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    // } else if (shareFooterStep === 'officeShareOptionsAllOpinions') {
+    //   emailSubjectEncoded = encodeURI('Ready to vote?');
+    //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+    // }
     const shareButtonClasses = classes.buttonDefault;
     let shareMenuTextDefault;
     let shareMenuTextAllOpinions;
@@ -505,28 +529,64 @@ class ShareButtonFooter extends Component {
                     </Flex>
                   ) : (
                     <Flex>
-                      <ShareModalOption
-                        background="#3b5998"
-                        icon={<i className="fab fa-facebook-f" />}
-                        link={`https://www.facebook.com/sharer/sharer.php?u=${linkToBeSharedUrlEncoded}&t=WeVote`}
-                        target="_blank"
-                        title="Facebook"
-                        uniqueExternalId="shareButtonFooter-Facebook"
-                      />
-                      <ShareModalOption
-                        background="#38A1F3"
-                        icon={<i className="fab fa-twitter" />}
-                        link={`https://twitter.com/share?text=${twitterTextEncoded}&url=${linkToBeSharedUrlEncoded}`}
-                        title="Twitter"
-                        uniqueExternalId="shareButtonFooter-Twitter"
-                      />
-                      <ShareModalOption
-                        background="#2E3C5D"
-                        icon={<Mail />}
-                        link={`mailto:?subject=${emailSubjectEncoded}&body=${emailBodyEncoded}`}
-                        title="Email"
-                        uniqueExternalId="shareButtonFooter-Email"
-                      />
+                      <ShareWrapper>
+                        <FacebookShareButton
+                          className="no-decoration"
+                          id="shareFooterFacebookButton"
+                          quote={titleText}
+                          url={`${linkToBeSharedUrlEncoded}&t=WeVote`}
+                          windowWidth={750}
+                          windowHeight={600}
+                        >
+                          <FacebookIcon
+                            bgStyle={{ background: '#3b5998' }}
+                            round="True"
+                            size={68}
+                          />
+                          <Text>
+                            Facebook
+                          </Text>
+                        </FacebookShareButton>
+                      </ShareWrapper>
+                      <ShareWrapper>
+                        <TwitterShareButton
+                          className="no-decoration"
+                          id="shareFooterTwitterButton"
+                          title={titleText}
+                          url={`${linkToBeSharedUrlEncoded}`}
+                          windowWidth={750}
+                          windowHeight={600}
+                        >
+                          <TwitterIcon
+                            bgStyle={{ background: '#38A1F3' }}
+                            round="True"
+                            size={68}
+                          />
+                          <Text>
+                            Twitter
+                          </Text>
+                        </TwitterShareButton>
+                      </ShareWrapper>
+                      <ShareWrapper>
+                        <EmailShareButton
+                          className="no-decoration"
+                          id="shareFooterEmailButton"
+                          url={`${linkToBeShared}`}
+                          body={titleText}
+                          subject="Ready to vote?"
+                          windowWidth={750}
+                          windowHeight={600}
+                        >
+                          <EmailIcon
+                            bgStyle={{ fill: '#2E3C5D' }}
+                            round="True"
+                            size={68}
+                          />
+                          <Text>
+                            Email
+                          </Text>
+                        </EmailShareButton>
+                      </ShareWrapper>
                       <ShareModalOption
                         background="#2E3C5D"
                         copyLink
@@ -737,6 +797,39 @@ const MenuSeparator = styled.div`
     width: 448px !important;
     margin: 0 auto;
   }
+`;
+
+const ShareWrapper = styled.div`
+  cursor: pointer;
+  display: block !important;
+  margin-bottom: 12px;
+  @media (min-width: 600px) {
+    flex: 1 1 0;
+  }
+  height: 100%;
+  text-align: center;
+  text-decoration: none !important;
+  color: black !important;
+  transition-duration: .25s;
+  &:hover {
+    text-decoration: none !important;
+    color: black !important;
+    transform: scale(1.05);
+    transition-duration: .25s;
+  }
+  @media (max-width: 600px) {
+    width: 33.333%;
+  }
+  @media (max-width: 476px) {
+    width: 50%;
+  }
+`;
+
+const Text = styled.h3`
+  font-weight: normal;
+  font-size: 16px;
+  color: black !important;
+  padding: 6px;
 `;
 
 export default withStyles(styles)(ShareButtonFooter);

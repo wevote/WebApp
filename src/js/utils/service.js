@@ -77,7 +77,7 @@ export default function $ajax (options) {
     options.url = `${url.resolve(defaults.baseCdnUrl, options.endpoint)}/`;
   } else {
     // Retrieve API from API Server Pool
-    options.data = assign({}, defaults.data(), options.data || {});
+    options.data = assign({}, options.data || {}, defaults.data());
     options.url = `${url.resolve(defaults.baseUrl, options.endpoint)}/`;
   }
 

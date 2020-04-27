@@ -11,7 +11,7 @@ import CandidateItem from '../../components/Ballot/CandidateItem';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import CandidateStore from '../../stores/CandidateStore';
-import { capitalizeString } from '../../utils/textFormat';
+import { capitalizeString, convertToInteger } from '../../utils/textFormat';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import IssueActions from '../../actions/IssueActions';
@@ -24,12 +24,12 @@ import PositionList from '../../components/Ballot/PositionList';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
+import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 
-
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 class Candidate extends Component {
@@ -48,6 +48,7 @@ class Candidate extends Component {
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
       scrolledDown: false,
+      voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce: {},
     };
   }
 
@@ -109,12 +110,12 @@ class Candidate extends Component {
     const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
     if (!IssueStore.issueDescriptionsRetrieveCalled()) {
       IssueActions.issueDescriptionsRetrieve();
-      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+      // IssueActions.issueDescriptionsRetrieveCalled(); // TODO: Move this to AppActions? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
     }
     IssueActions.issuesFollowedRetrieve();
     if (VoterStore.electionId() && !IssueStore.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId())) {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
-      // IssueActions.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId()); // TODO: Move this to AppActions? Currently throws error: "Cannot dispatch in the middle of a dispatch"
+      // IssueActions.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId()); // TODO: Move this to AppActions? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
     }
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
     this.setState({
@@ -126,6 +127,11 @@ class Candidate extends Component {
     const modalToOpen = this.props.params.modal_to_show || '';
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
+    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+      const sharedItemCode = this.props.params.shared_item_code || '';
+      if (sharedItemCode) {
+        AppActions.setShowSharedItemModal(sharedItemCode);
+      }
     }
   }
 
@@ -134,6 +140,11 @@ class Candidate extends Component {
     const modalToOpen = nextProps.params.modal_to_show || '';
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
+    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+      const sharedItemCode = nextProps.params.shared_item_code || '';
+      if (sharedItemCode) {
+        AppActions.setShowSharedItemModal(sharedItemCode);
+      }
     }
   }
 
@@ -186,7 +197,19 @@ class Candidate extends Component {
       allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length;
     }
     const candidate = CandidateStore.getCandidate(candidateWeVoteId);
-    const ballotItemDisplayName = candidate.ballot_item_display_name;
+    const { ballot_item_display_name: ballotItemDisplayName, google_civic_election_id: googleCivicElectionId } = candidate;
+    if (googleCivicElectionId &&
+      !VoterGuideStore.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId) &&
+      !this.localVoterGuidesFromFriendsUpcomingHasBeenRetrievedOnce(googleCivicElectionId)
+    ) {
+      VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
+      const { voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce } = this.state;
+      const googleCivicElectionIdInteger = convertToInteger(googleCivicElectionId);
+      voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce[googleCivicElectionIdInteger] = true;
+      this.setState({
+        voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce,
+      });
+    }
     this.setState({
       ballotItemDisplayName,
       candidate,
@@ -214,6 +237,15 @@ class Candidate extends Component {
     if (candidateWeVoteId) {
       const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
       return positionListFromFriendsHasBeenRetrievedOnce[candidateWeVoteId];
+    }
+    return false;
+  }
+
+  localVoterGuidesFromFriendsUpcomingHasBeenRetrievedOnce (googleCivicElectionId) {
+    const googleCivicElectionIdInteger = convertToInteger(googleCivicElectionId);
+    if (googleCivicElectionIdInteger) {
+      const { voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce } = this.state;
+      return voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce[googleCivicElectionIdInteger];
     }
     return false;
   }
@@ -266,11 +298,9 @@ class Candidate extends Component {
               />
             </LeftColumnWrapper>
             <RightColumnWrapper className="u-show-desktop-tablet">
-              {nextReleaseFeaturesEnabled && (
-                <CandidateShareWrapper>
-                  <ShareButtonDesktopTablet candidateShare />
-                </CandidateShareWrapper>
-              )}
+              <CandidateShareWrapper>
+                <ShareButtonDesktopTablet candidateShare />
+              </CandidateShareWrapper>
               {candidate.ballotpedia_candidate_url && (
                 <ViewOnBallotpedia externalLinkUrl={candidate.ballotpedia_candidate_url} />
               )}

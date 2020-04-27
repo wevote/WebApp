@@ -97,7 +97,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       {                       // 12/4/18: Not sure why we need the following disabled
         (function redir () {  // eslint-disable-line wrap-iife
           if (isWebApp()) {
-            return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/welcome" />;
+            return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/ready" />;
           } else {
             return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />;
           }
@@ -113,30 +113,39 @@ const routes = () => {  // eslint-disable-line arrow-body-style
         <Route path="/office/:office_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={Office} />
         <Route path="/office/:office_we_vote_id/b/:back_to_variable/" component={Office} />
         <Route path="/office/:office_we_vote_id/b/:back_to_variable" component={Office} />
+        <Route path="/office/:office_we_vote_id/modal/:modal_to_show/:shared_item_code" component={Office} />
         <Route path="/office/:office_we_vote_id/modal/:modal_to_show" component={Office} />
         <Route path="/office/:office_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideOffice} />
         <Route path="/office/:office_we_vote_id/:organization_we_vote_id" component={OrganizationVoterGuideOffice} />
         <Route path="/office/:office_we_vote_id" component={Office} />
+        <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={Candidate} />
         <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={Candidate} />
         <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/" component={Candidate} />
         <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable" component={Candidate} />
+        <Route path="/candidate/:candidate_we_vote_id/modal/:modal_to_show/:shared_item_code" component={Candidate} />
         <Route path="/candidate/:candidate_we_vote_id/modal/:modal_to_show" component={Candidate} />
         <Route path="/candidate/:candidate_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideCandidate} />
         <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" component={OrganizationVoterGuideCandidate} />
         <Route path="/candidate/:candidate_we_vote_id" component={Candidate} />
+        <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={Measure} />
         <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={Measure} />
         <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/" component={Measure} />
         <Route path="/measure/:measure_we_vote_id/b/:back_to_variable" component={Measure} />
+        <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show/:shared_item_code" component={Measure} />
         <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show" component={Measure} />
         <Route path="/measure/:measure_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideMeasure} />
         <Route path="/measure/:measure_we_vote_id" component={Measure} />
       </Route>
       <Route path="/ballot/vote" component={Vote} />
+      <Route path="/ballot/modal/:modal_to_show/:shared_item_code" component={Ballot} />
       <Route path="/ballot/modal/:modal_to_show" component={Ballot} />
+      <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show/:shared_item_code" component={Ballot} />
       <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show" component={Ballot} />
       <Route path="/ballot/:ballot_location_shortcut" component={Ballot} />
+      <Route path="/ballot/id/:ballot_returned_we_vote_id/modal/:modal_to_show/:shared_item_code" component={Ballot} />
       <Route path="/ballot/id/:ballot_returned_we_vote_id/modal/:modal_to_show" component={Ballot} />
       <Route path="/ballot/id/:ballot_returned_we_vote_id" component={Ballot} />
+      <Route path="/ballot/election/:google_civic_election_id/modal/:modal_to_show/:shared_item_code" component={Ballot} />
       <Route path="/ballot/election/:google_civic_election_id/modal/:modal_to_show" component={Ballot} />
       <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />
 
@@ -163,7 +172,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
       {/* settings/:edit_mode includes "/settings/account", "/settings/address", "/settings/domain", "/settings/election",
       "/settings/issues_linked", "/settings/issues_to_link", "/settings/issues", "/settings/notifications",
-      "/settings/profile", "/settings/tools" */}
+      "/settings/profile", "/settings/text", "/settings/tools" */}
       <Route path="/settings/:edit_mode" component={SettingsDashboard} />
       <Route path="/settings/issues/:edit_mode" component={SettingsDashboard} />
       <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" component={SettingsDashboard} />

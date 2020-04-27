@@ -25,21 +25,22 @@ const offsets = {
   DC: [49, 21],
 };
 
+/* eslint-disable react/prop-types */
 const MapChart = props => (
   <ComposableMap className="map-svg" projection="geoAlbersUsa">
     <Geographies className="map-svg" geography={geoUrl}>
       {({ geographies }) => (
         <>
+          {/* eslint-disable-next-line arrow-body-style */}
           {geographies.map((geo) => {
-            const cur = allStates.find(s => s.val === geo.id);
-
-            console.log(cur);
+            // const cur = allStates.find(s => s.val === geo.id);
+            // console.log(cur);
 
             return (
               <StyledGeography
                 className="map-svg"
                 onClick={props.onClickFunction}
-onMouseDown={props.onClickFunction}
+                onMouseDown={props.onClickFunction}
                 key={geo.rsmKey}
                 stroke="#FFF"
                 geography={geo}
@@ -62,22 +63,22 @@ onMouseDown={props.onClickFunction}
                             {cur.id}
                           </text>
                         </StyledMarker>
-                        
+
                       </>
                     ) : (
                       <>
                         <StyledAnnotation
-                        onClick={props.onClickFunction}
-onMouseDown={props.onClickFunction}
-                        subject={centroid}
-                        dx={offsets[cur.id][0]}
-                        dy={offsets[cur.id][1]}
+                          onClick={props.onClickFunction}
+                          onMouseDown={props.onClickFunction}
+                          subject={centroid}
+                          dx={offsets[cur.id][0]}
+                          dy={offsets[cur.id][1]}
                         >
                           <text onClick={props.onClickFunction} onMouseDown={props.onClickFunction} stroke={cur.color} x={4} fontSize={14} alignmentBaseline="middle">
                             {cur.id}
                           </text>
                         </StyledAnnotation>
-                        
+
                       </>
                     ))}
               </StyledG>

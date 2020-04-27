@@ -176,6 +176,16 @@ export default class HamburgerMenu extends Component {
 
             {isSignedIn && (
               <HamburgerMenuRow
+                icon="fa fa-file-alt"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Site Text"
+                onClickAction={null}
+                to="/settings/text"
+              />
+            )}
+
+            {isSignedIn && (
+              <HamburgerMenuRow
                 icon="fa fa-share"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
                 linkText="Sharing"

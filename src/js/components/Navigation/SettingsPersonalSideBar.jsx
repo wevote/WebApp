@@ -126,7 +126,7 @@ export default class SettingsPersonalSideBar extends Component {
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
-                  Notifications
+                    Notifications
                   </span>
                 </Link>
               </div>
@@ -144,9 +144,27 @@ export default class SettingsPersonalSideBar extends Component {
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
-                  Domain
+                    Domain
                   </span>
                   <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {isSignedIn && !isOnPartnerUrlAndNotAdmin && (
+            <div className={String(editMode) === 'text' ?
+              'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
+              'SettingsItem__summary__item-container '}
+            >
+              <div>
+                <Link to="/settings/text" className="SettingsItem__summary__item">
+                  <span className={String(editMode) === 'text' ?
+                    'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
+                    'SettingsItem__summary__item__display-name'}
+                  >
+                    Site Text
+                  </span>
                 </Link>
               </div>
             </div>
@@ -163,7 +181,7 @@ export default class SettingsPersonalSideBar extends Component {
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
-                  Sharing
+                    Sharing
                   </span>
                   <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>
@@ -182,7 +200,7 @@ export default class SettingsPersonalSideBar extends Component {
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
-                  Subscription Plan
+                    Subscription Plan
                   </span>
                   <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>
@@ -201,7 +219,7 @@ export default class SettingsPersonalSideBar extends Component {
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
-                  Analytics
+                    Analytics
                   </span>
                   <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>
@@ -239,7 +257,7 @@ export default class SettingsPersonalSideBar extends Component {
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
-                  Promoted Organizations
+                    Promoted Organizations
                   </span>
                   <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>
@@ -258,7 +276,7 @@ export default class SettingsPersonalSideBar extends Component {
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
-                  Tools for Your Website
+                    Tools for Your Website
                   </span>
                   <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>

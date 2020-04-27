@@ -12,16 +12,19 @@ import { stringContains } from '../utils/textFormat';
 class AppStore extends ReduceStore {
   getInitialState () {
     return {
+      chosenReadyIntroductionText: '',
+      chosenReadyIntroductionTitle: '',
       chosenSiteLogoUrl: '',
       getVoterGuideSettingsDashboardEditMode: '',
       getStartedMode: '',
       hideWeVoteLogo: false,
       hostname: '',
       scrolledDown: false,
-      showEditAddressButton: false,
-      showHowItWorksModal: false,
+      sharedItemCode: '',
       shareModalStep: '',
+      showEditAddressButton: false,
       showElectionsWithOrganizationVoterGuidesModal: false,
+      showHowItWorksModal: false,
       showNewVoterGuideModal: false,
       showPaidAccountUpgradeModal: false,
       showPersonalizedScoreIntroModal: false,
@@ -29,6 +32,7 @@ class AppStore extends ReduceStore {
       showSelectBallotModalHideAddress: false,
       showSelectBallotModalHideElections: false,
       showShareModal: false,
+      showSharedItemModal: false,
       showSignInModal: false,
       organizationModalId: '',
       showOrganizationModal: false,
@@ -37,6 +41,14 @@ class AppStore extends ReduceStore {
       storeSignInStartFullUrl: false,
       voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
     };
+  }
+
+  getChosenReadyIntroductionText () {
+    return this.getState().chosenReadyIntroductionText;
+  }
+
+  getChosenReadyIntroductionTitle () {
+    return this.getState().chosenReadyIntroductionTitle;
   }
 
   getChosenSiteLogoUrl () {
@@ -53,6 +65,10 @@ class AppStore extends ReduceStore {
 
   getScrolledDown () {
     return this.getState().scrolledDown;
+  }
+
+  getSharedItemCode () {
+    return this.getState().sharedItemCode;
   }
 
   getSiteOwnerOrganizationWeVoteId () {
@@ -133,6 +149,10 @@ class AppStore extends ReduceStore {
     return this.getState().showShareModal;
   }
 
+  showSharedItemModal () {
+    return this.getState().showSharedItemModal;
+  }
+
   shareModalStep () {
     return this.getState().shareModalStep;
   }
@@ -184,6 +204,8 @@ class AppStore extends ReduceStore {
   reduce (state, action) {
     let apiStatus;
     let apiSuccess;
+    let chosenReadyIntroductionText;
+    let chosenReadyIntroductionTitle;
     let chosenSiteLogoUrl;
     let externalVoterId;
     let hideWeVoteLogo;
@@ -215,6 +237,8 @@ class AppStore extends ReduceStore {
         return { ...state, showPersonalizedScoreIntroModal: action.payload };
       case 'showShareModal':
         return { ...state, showShareModal: action.payload };
+      case 'showSharedItemModal':
+        return { ...state, sharedItemCode: action.payload, showSharedItemModal: (action.payload !== '') };
       case 'shareModalStep':
         return { ...state, shareModalStep: action.payload };
       case 'showSelectBallotModal':
@@ -240,6 +264,8 @@ class AppStore extends ReduceStore {
           organization_we_vote_id: siteOwnerOrganizationWeVoteId,
           chosen_hide_we_vote_logo: hideWeVoteLogo,
           chosen_logo_url_https: chosenSiteLogoUrl,
+          chosen_ready_introduction_text: chosenReadyIntroductionText,
+          chosen_ready_introduction_title: chosenReadyIntroductionTitle,
         } = action.res);
         if (apiSuccess) {
           let onWeVoteRootUrl = false;
@@ -283,6 +309,8 @@ class AppStore extends ReduceStore {
             ...state,
             apiStatus,
             apiSuccess,
+            chosenReadyIntroductionText,
+            chosenReadyIntroductionTitle,
             chosenSiteLogoUrl,
             hideWeVoteLogo,
             hostname,

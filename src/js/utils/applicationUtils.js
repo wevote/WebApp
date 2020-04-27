@@ -11,6 +11,7 @@ export function getApplicationViewBooleans (pathname) {
   let friendsMode = false;
   const pathnameLowerCase = pathname.toLowerCase() || '';
   // console.log('applicationUtils, pathnameLowerCase:', pathnameLowerCase);
+  let readyMode = false;
   let settingsMode = false;
   let sharedItemLandingPage = false;
   let twitterSignInMode = false;
@@ -60,6 +61,9 @@ export function getApplicationViewBooleans (pathname) {
   } else if (stringContains('/settings/positions', pathnameLowerCase)) {
     // contentFullWidthMode = true;
     voterGuideCreatorMode = true;
+  } else if (pathnameLowerCase.startsWith('/ready')) {
+    contentFullWidthMode = true;
+    readyMode = true;
   } else if (stringContains('/settings', pathnameLowerCase) ||
     pathnameLowerCase === '/settings/voterguidesmenu' ||
     pathnameLowerCase === '/settings/voterguidelist') {
@@ -211,6 +215,7 @@ export function getApplicationViewBooleans (pathname) {
     contentFullWidthMode,
     extensionPageMode,
     friendsMode,
+    readyMode,
     settingsMode,
     sharedItemLandingPage,
     showBackToFriends,

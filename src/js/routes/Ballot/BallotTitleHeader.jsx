@@ -8,8 +8,7 @@ import { isCordova, isIOsSmallerThanPlus } from '../../utils/cordovaUtils';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { shortenText } from '../../utils/textFormat';
-
-const webAppConfig = require('../../config');
+// import webAppConfig from '../../config';
 
 class BallotTitleHeader extends Component {
   static propTypes = {
@@ -21,7 +20,7 @@ class BallotTitleHeader extends Component {
   };
 
   render () {
-    const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+    // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
     const { classes, electionName, electionDayTextObject, scrolled } = this.props;
 
     if (isCordova() && isIOsSmallerThanPlus() && electionName) {
@@ -84,7 +83,7 @@ class BallotTitleHeader extends Component {
               </>
             )}
           </Title>
-          {electionDayTextObject && nextReleaseFeaturesEnabled && (
+          {electionDayTextObject && (
             <ShareButtonWrapper>
               <ShareButtonDesktopTablet />
             </ShareButtonWrapper>
@@ -130,7 +129,7 @@ class BallotTitleHeader extends Component {
               )}
             </Title>
           </Tooltip>
-          {electionDayTextObject && nextReleaseFeaturesEnabled && (
+          {electionDayTextObject && (
             <ShareButtonWrapper>
               <ShareButtonDesktopTablet />
             </ShareButtonWrapper>
@@ -139,8 +138,11 @@ class BallotTitleHeader extends Component {
       );
     } else {
       return (
-        <span className="u-push--sm">
+        <span className="u-push--sm" onClick={this.props.toggleSelectBallotModal} id="ballotTitleHeaderSelectBallotModalLoadingElection">
           Loading Election...
+          <SettingsIconWrapper>
+            <SettingsIcon classes={{ root: classes.settingsIcon }} />
+          </SettingsIconWrapper>
         </span>
       );
     }
