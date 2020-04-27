@@ -90,6 +90,16 @@ export default {
       });
   },
 
+  organizationChosenReadyIntroductionSave (organizationWeVoteId, organizationReadyIntroductionTitle, organizationReadyIntroductionText) {
+    // console.log('OrganizationActions, organizationChosenReadyIntroductionSave, organizationReadyIntroductionText:', organizationReadyIntroductionText, ', organizationReadyIntroductionTitle:', organizationReadyIntroductionTitle);
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_ready_introduction_text: organizationReadyIntroductionText,
+        chosen_ready_introduction_title: organizationReadyIntroductionTitle,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
   organizationChosenSocialShareMasterImageDelete (organizationWeVoteId) {
     Dispatcher.loadEndpoint('organizationPhotosSave',
       {

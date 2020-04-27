@@ -514,9 +514,8 @@ class HeaderBar extends Component {
                 {showFullNavigation && (
                   <Tab classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                 )}
-                {(!voterIsSignedIn && showFullNavigation) && (
-                  <Tab classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Values" onClick={() => this.handleNavigation('/values')} />
-                )}
+                {/* OFF FOR NOW (!voterIsSignedIn && showFullNavigation) && () */}
+                <Tab classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Values" onClick={() => this.handleNavigation('/values')} />
                 { showFullNavigation && (
                   <Tab
                     classes={(numberOfIncomingFriendRequests > 0) ? { root: classes.tabRootIncomingFriendRequests } : { root: classes.tabRootFriends }}
@@ -536,9 +535,9 @@ class HeaderBar extends Component {
                     onClick={() => this.handleNavigation('/friends')}
                   />
                 )}
-                {(voterIsSignedIn && showFullNavigation) && (
+                {/* OFF FOR NOW (voterIsSignedIn && showFullNavigation) && (
                   <Tab classes={{ root: classes.tabRootNews }} id="voteTabHeaderBar" label="News" onClick={() => this.handleNavigation('/news')} />
-                )}
+                ) */}
               </Tabs>
             </div>
             {
