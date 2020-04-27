@@ -21,6 +21,7 @@ describe('Basic cross-platform We Vote test',  () => {
     const organizationToFollowOnMeasureBallotID = 'wv01org14';
     const candidateToTestOnBallotID = 'wv02cand40208';
     const organizationToFollowOnCandidateBallotID = 'wv02org11971';
+    const personalizedScoreSteps = 7;
 
     if (isCordovaFromAppStore) {
       // ///////////////////////////////
@@ -56,8 +57,107 @@ describe('Basic cross-platform We Vote test',  () => {
     // await stopScript(driver); // Not working
     // await browser.pause(100000); // Pause for a long time in order to force timeout
 
-    // // //////////////////////
-    // // Sign in using Twitter, when in browser
+    // //////////////////////
+    // Click through the How It Works
+    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+    if (isDesktopScreenSize) {
+      await simpleClick('completeYourProfileDesktopButton');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('annotatedSlideShowStep1Next');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('annotatedSlideShowStep2Next');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('annotatedSlideShowStep3Next');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('annotatedSlideShowStep4Next');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('howItWorksGetStartedDesktopButton'); // End of How it Works Modal
+      await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('completeYourProfileDesktopButton'); // Clicks on Choose Interests
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('issueFollowButton');  // select an interest to enable the next button on the modal
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await scrollThroughPage(); // Scroll to the bottom of the Page
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('valuesIntroModalNext'); // Close the Interests modal
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('completeYourProfileDesktopButton'); // Clicks on Confirm Address
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('addressBoxModalSaveButton'); // clicks on save button
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('profileCloseSelectBallotModal'); // Clicks on close
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('completeYourProfileDesktopButton'); // Clicks on Learn More
+      for (let step = 0; step < personalizedScoreSteps; step++) {
+        // eslint-disable-next-line no-await-in-loop
+        await browser.pause(PAUSE_DURATION_MICROSECONDS);
+        // eslint-disable-next-line no-await-in-loop
+        await simpleClick('personalizedScoreIntroModalNextButton'); // Personalized Score Modal - 7 steps */
+      }
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('popoverCloseButton'); // Close the popover before clicking on Next
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
+    } else {
+      await simpleClick('completeYourProfileMobileButton'); // clicks on How it works
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('annotatedSlideShowStep1Next');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('annotatedSlideShowStep2Next');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('annotatedSlideShowStep3Next');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('annotatedSlideShowStep4Next');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('howItWorksGetStartedDesktopButton'); // End of How it Works Modal
+      await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('completeYourProfileMobileButton'); // Clicks on Choose Interests
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('issueFollowButton');  // select an interest to enable the next button on the modal
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await scrollThroughPage(); // Scroll to the bottom of the Page
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('valuesIntroModalNext'); // Close the Interests modal
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('completeYourProfileMobileButton'); // Clicks on Confirm Address
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('addressBoxModalSaveButton'); // clicks on save button
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('profileCloseSelectBallotModal'); // Clicks on close
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('completeYourProfileMobileButton'); // Clicks on Learn More
+      for (let step = 0; step < personalizedScoreSteps; step++) {
+        // eslint-disable-next-line no-await-in-loop
+        await browser.pause(PAUSE_DURATION_MICROSECONDS);
+        // eslint-disable-next-line no-await-in-loop
+        await simpleClick('personalizedScoreIntroModalNextButton'); // Personalized Score Modal - 7 steps */
+      }
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('popoverCloseButton'); // Close the popover before clicking on next
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
+    }
+
+    // //////////////////////
+    // Sign in using Twitter, when in browser
     if (!isCordovaFromAppStore && twitterUserName && twitterPassword) {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('signInHeaderBar'); // Clicks on Sign in
@@ -90,7 +190,7 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await simpleClick('cancelEmailButton'); // Clicks the cancel button
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    } else if (isSamsung && isMobileScreenSize) { // Samsung mobile browsers can't click this element without scrolling 
+    } else if (isSamsung && isMobileScreenSize) { // Samsung mobile browsers can't click this element without scrolling
       // Don't test
     } else {
       await simpleClick('signInHeaderBar'); // Clicks on Sign in
