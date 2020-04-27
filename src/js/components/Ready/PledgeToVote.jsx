@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TextField } from '@material-ui/core';
+import { TextField, Checkbox, FormControlLabel, withStyles, Button } from '@material-ui/core';
 import { formatDateToYearMonthDay } from '../../utils/textFormat';
 
 class PledgeToVote extends React.Component {
@@ -11,8 +11,14 @@ class PledgeToVote extends React.Component {
     this.state = {
       goal: 10000,
       total: 7237,
+      shareNameAndEmail: false,
       comments: [
         {
+          name: 'Annie Brown',
+          time: new Date(new Date().getTime() + 27 * 60000),
+          comment: 'I vote because I care.',
+        },
+        {
           name: 'Tony Shapiro',
           time: new Date(new Date().getTime() + 30 * 60000),
           comment: "I'm a voter because this is OUR country.",
@@ -38,9 +44,19 @@ class PledgeToVote extends React.Component {
           comment: 'I vote because the country needs to change. All this stuff is awesome. A great voter always votes. Dummy content.',
         },
         {
+          name: 'Annie Brown',
+          time: new Date(new Date().getTime() + 27 * 60000),
+          comment: 'I vote because I care.',
+        },
+        {
           name: 'Tony Shapiro',
           time: new Date(new Date().getTime() + 30 * 60000),
           comment: "I'm a voter because this is OUR country.",
+        },
+        {
+          name: 'Annie Brown',
+          time: new Date(new Date().getTime() + 27 * 60000),
+          comment: 'I vote because I care.',
         },
         {
           name: 'Annie Brown',
@@ -49,6 +65,7 @@ class PledgeToVote extends React.Component {
         },
       ],
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount () {
@@ -65,17 +82,24 @@ class PledgeToVote extends React.Component {
   setCommentsToDisplay () {
     const commentsWrapper = document.getElementById('comments-wrapper');
 
-    if (this.state.commentsToDisplay.length === this.state.comments.length) {
+    let lastScroll;
 
+    if (this.state.commentsToDisplay.length >= this.state.comments.length - 2) {
     } else {
       const newArray = [...this.state.commentsToDisplay];
 
       if (this.state.comments[this.state.commentsToDisplay.length]) {
         newArray.push(this.state.comments[this.state.commentsToDisplay.length]);
+
+        // commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 64;
       }
 
       if (this.state.comments[this.state.commentsToDisplay.length + 1]) {
         newArray.push(this.state.comments[this.state.commentsToDisplay.length + 1]);
+
+        // commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 32;
+      } else {
+        lastScroll = true;
       }
 
       this.setState({ commentsToDisplay: [...newArray]});
@@ -88,7 +112,13 @@ class PledgeToVote extends React.Component {
 
       console.log(height);
 
-      commentsWrapper.scrollTop = height;
+      if (lastScroll) {
+        commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 9999;
+      } else {
+        commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 32;
+      }
+
+      // commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight;
     }
 
     commentsWrapper.style.maxHeight = `${commentsWrapper.lastElementChild.clientHeight + commentsWrapper.lastElementChild.previousElementSibling.clientHeight + 16}px`;
@@ -96,14 +126,22 @@ class PledgeToVote extends React.Component {
     commentsWrapper.style.height = `${commentsWrapper.lastElementChild.clientHeight + commentsWrapper.lastElementChild.previousElementSibling.clientHeight + 16}px`;
   }
 
+  handleChange () {
+    this.setState({ shareNameAndEmail: !this.state.shareNameAndEmail });
+  }
+
   render () {
-    const { goal, total, comments, commentsToDisplay } = this.state;
+    const { goal, total, comments, shareNameAndEmail, commentsToDisplay } = this.state;
+    const { classes } = this.props;
 
     return (
       <Card className="card">
         <div className="card-main">
           <CardTitle>2,678</CardTitle>
           <CardSubTitle>confirmed or pledged voters</CardSubTitle>
+          <ProgressBar percentage={total / goal * 100}>
+            <span />
+          </ProgressBar>
           {commentsToDisplay && commentsToDisplay.length > 0 ? (
             <CommentsWrapper id="comments-wrapper">
               {commentsToDisplay.map(comment => (
@@ -122,15 +160,36 @@ pledged
           ) : (
             null
           )}
-          <ProgressBar percentage={total / goal * 100}>
-            <span />
-          </ProgressBar>
           <Input variant="outlined" placeholder="I am a voter because..." />
+          <CheckboxLabel
+            classes={{ label: classes.label }}
+            control={(
+              <Checkbox
+                classes={{ root: classes.checkbox }}
+                shareNameAndEmail={shareNameAndEmail}
+                onChange={this.handleChange}
+                name="shareNameAndEmailB"
+                color="primary"
+              />
+            )}
+            label="Please share my name and email with New King Dems"
+          />
+          <Button variant="contained" color="primary" fullWidth>Pledge To Vote Now</Button>
         </div>
       </Card>
     );
   }
 }
+
+const styles = () => ({
+  label: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+  checkbox: {
+    marginTop: '-9px !important',
+  },
+});
 
 const Card = styled.div`
 `;
@@ -154,7 +213,7 @@ const ProgressBar = styled.div`
   width: 100%;
   height: 12px;
   border-radius: 50px;
-  margin: 12px 0;
+  margin: 0px 0 12px;
   span {
     width: ${props => props.percentage}%;
     display: block;
@@ -196,6 +255,12 @@ const CommentName = styled.div`
 
 const Input = styled(TextField)`
   width: 100%;
+  margin: 10px 0 12px !important;
+  display: block
 `;
 
-export default PledgeToVote;
+const CheckboxLabel = styled(FormControlLabel)`
+  margin-bottom: 16px !important;
+`;
+
+export default withStyles(styles)(PledgeToVote);
