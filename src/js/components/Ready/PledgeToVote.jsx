@@ -174,7 +174,7 @@ pledged
             )}
             label="Please share my name and email with New King Dems"
           />
-          <Button variant="contained" color="primary" fullWidth>Pledge To Vote Now</Button>
+          <Button variant="contained" color="primary" classes={{ root: classes.button }} fullWidth>Pledge To Vote Now</Button>
         </div>
       </Card>
     );
@@ -189,6 +189,9 @@ const styles = () => ({
   checkbox: {
     marginTop: '-9px !important',
   },
+  button: {
+    marginBottom: 12,
+  }
 });
 
 const Card = styled.div`
