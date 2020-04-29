@@ -94,12 +94,14 @@ export default class SearchBar extends Component {
             className={this.props.clearButton && this.state.searchString && this.state.searchString.length > 0 ? 'search-options-btn' : 'hidden'}
             onClick={this.clearQuery}
             type="button"
+			id="search-clear"
           >
             <img src={cordovaDot(removeCircleIcon)} width="28" height="28" color="#ccc" alt="clear query" />
           </button>
           <button
             className={this.props.searchButton ? 'search-options-btn' : 'hidden'}
             type="button"
+			id="search"
           >
             <i className="fas fa-search" />
           </button>

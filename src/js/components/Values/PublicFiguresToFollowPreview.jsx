@@ -44,10 +44,10 @@ export default class PublicFiguresToFollowPreview extends Component {
     const { voterGuidesToFollow } = this.state;
 
     return (
-      <div className="opinions-followed__container">
+      <div id="mainContainer" className="opinions-followed__container">
         <section className="card">
           <div className="card-main">
-            <SectionTitle>Public Figures to Follow</SectionTitle>
+            <SectionTitle id="publicFiguresSection">Public Figures to Follow</SectionTitle>
             <Suspense fallback={<span>Loading...</span>}>
               <GuideList incomingVoterGuideList={voterGuidesToFollow} instantRefreshOn />
             </Suspense>

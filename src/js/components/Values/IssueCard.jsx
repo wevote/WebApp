@@ -170,7 +170,7 @@ class IssueCard extends Component {
           </div>
           <>
             {includeLinkToIssue ? (
-              <Link to={this.getIssueLink}
+              <Link id="valueListLink" to={this.getIssueLink}
                     className="u-no-underline"
               >
                 <IssueName>

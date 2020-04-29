@@ -129,10 +129,11 @@ class VoterGuidesUnderOneValue extends Component {
             <>
               <br />
               <Card>
-                <EmptyValueMessageContainer>
+                <EmptyValueMessageContainer id="noEndorsements">
                   <BallotIcon classes={{ root: classes.ballotIconRoot }} />
                   <EmptyValueText>There are no endorsements for this issue yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyValueText>
                   <Button
+					id="addEndorsements"
                     classes={{ root: classes.ballotButtonRoot }}
                     color="primary"
                     onClick={() => historyPush('/settings/voterguidelist')}
@@ -156,7 +157,7 @@ class VoterGuidesUnderOneValue extends Component {
         )}
         <DelayedLoad waitBeforeShow={2000}>
           <>
-            <Title>Explore More Values</Title>
+            <Title id="valuesListTitle">Explore More Values</Title>
             <ValuesList displayOnlyIssuesNotFollowedByVoter currentIssue={issue} />
           </>
         </DelayedLoad>

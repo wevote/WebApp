@@ -91,7 +91,7 @@ export default class Values extends Component {
         <Helmet title="Values, Public Figures & Organizations - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="row">
-          <div className="col-sm-12 col-md-8">
+          <div id="mainContentColumn" className="col-sm-12 col-md-8">
             {issuesFollowedCount ? (
               <ValuesFollowedPreview />
             ) : (
