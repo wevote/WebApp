@@ -120,7 +120,7 @@ export default class ReadMore extends Component {
               <a // eslint-disable-line
                 tabIndex="0"
                 href="#"
-				id="readMore"
+                id="readMore"
                 onClick={this.toggleLines}
                 onKeyDown={this.onKeyDown.bind(this)}
               >
@@ -139,7 +139,7 @@ export default class ReadMore extends Component {
           <a // eslint-disable-line
             tabIndex="0"
             href="#"
-			id="showLess"
+            id="showLess"
             onClick={this.toggleLines}
             onKeyDown={this.onKeyDown.bind(this)}
           >

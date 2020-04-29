@@ -142,7 +142,7 @@ class IssueCardCompressed extends Component {
             </div>
             <IssueName>
               <Link to={this.getIssueLink}
-				id="valueLink"
+                id="valueLink"
                 className="u-no-underline"
               >
                 {issueDisplayName}
