@@ -73,7 +73,7 @@ class Ready extends Component {
       return LoadingWheel;
     }
 
-    const globalCompleted = false;
+    const globalCompleted = true;
 
     return (
       <div className="page-content-container">

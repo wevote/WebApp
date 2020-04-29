@@ -113,9 +113,9 @@ class PledgeToVote extends React.Component {
       console.log(height);
 
       if (lastScroll) {
-        commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 9999;
+        commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 64;
       } else {
-        commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 32;
+        commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 64;
       }
 
       // commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight;
@@ -191,7 +191,7 @@ const styles = () => ({
   },
   button: {
     marginBottom: 12,
-  }
+  },
 });
 
 const Card = styled.div`
