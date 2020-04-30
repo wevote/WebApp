@@ -82,7 +82,7 @@ import YourPage from './routes/YourPage';
 import { isWebApp } from './utils/cordovaUtils';
 
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
-const ballotHasBeenVisited = cookies.getItem('ballot_has_been_visited');
+// const ballotHasBeenVisited = cookies.getItem('ballot_has_been_visited');
 const firstVisit = !cookies.getItem('voter_device_id');
 const { hostname } = window.location;
 const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', ''];   // localhost on Cordova is a ''
@@ -97,7 +97,8 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       {                       // 12/4/18: Not sure why we need the following disabled
         (function redir () {  // eslint-disable-line wrap-iife
           if (isWebApp()) {
-            return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/ready" />;
+            // return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/ready" />;
+            return <IndexRedirect to="/ready" />;
           } else {
             return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />;
           }
