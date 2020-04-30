@@ -24,7 +24,7 @@ class ShareButtonDesktopTablet extends Component {
     super(props);
     this.state = {
       anchorEl: null,
-      chosenPreventSharingOptions: false,
+      chosenPreventSharingOpinions: false,
       openShareMenu: false,
     };
     this.handleShareButtonClick = this.handleShareButtonClick.bind(this);
@@ -33,9 +33,9 @@ class ShareButtonDesktopTablet extends Component {
 
   componentDidMount () {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
-    const chosenPreventSharingOptions = AppStore.getChosenPreventSharingOpinions();
+    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
     this.setState({
-      chosenPreventSharingOptions,
+      chosenPreventSharingOpinions,
     });
   }
 
@@ -44,9 +44,9 @@ class ShareButtonDesktopTablet extends Component {
   }
 
   onAppStoreChange () {
-    const chosenPreventSharingOptions = AppStore.getChosenPreventSharingOpinions();
+    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
     this.setState({
-      chosenPreventSharingOptions,
+      chosenPreventSharingOpinions,
     });
   }
 
@@ -109,7 +109,7 @@ class ShareButtonDesktopTablet extends Component {
 
   render () {
     const { candidateShare, classes, measureShare, officeShare } = this.props;
-    const { anchorEl, chosenPreventSharingOptions, openShareMenu } = this.state;
+    const { anchorEl, chosenPreventSharingOpinions, openShareMenu } = this.state;
 
     let shareButtonClasses;
     let shareMenuTextDefault;
@@ -192,7 +192,7 @@ class ShareButtonDesktopTablet extends Component {
             </MenuFlex>
           </MenuItem>
           <MenuSeparator />
-          {chosenPreventSharingOptions ? null : (
+          {chosenPreventSharingOpinions ? null : (
             <MenuItem className={classes.menuItem} onClick={() => this.openShareModal(true)}>
               <MenuFlex>
                 <MenuIcon>

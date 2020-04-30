@@ -38,7 +38,7 @@ class ShareButtonFooter extends Component {
     this.state = {
       allOpinions: false,
       candidateShare: false,
-      chosenPreventSharingOptions: false,
+      chosenPreventSharingOpinions: false,
       currentFullUrlToShare: '',
       hideShareButtonFooter: false,
       measureShare: false,
@@ -61,7 +61,7 @@ class ShareButtonFooter extends Component {
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
     const showShareModal = AppStore.showShareModal();
     const showSignInModal = AppStore.showSignInModal();
-    const chosenPreventSharingOptions = AppStore.getChosenPreventSharingOpinions();
+    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
     const currentFullUrl = window.location.href || '';
     const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '');
     const candidateShare = pathname.startsWith('/candidate');
@@ -85,7 +85,7 @@ class ShareButtonFooter extends Component {
     const voterIsSignedIn = voter.is_signed_in;
     this.setState({
       candidateShare,
-      chosenPreventSharingOptions,
+      chosenPreventSharingOpinions,
       currentFullUrlToShare,
       measureShare,
       officeShare,
@@ -106,7 +106,7 @@ class ShareButtonFooter extends Component {
 
   onAppStoreChange () {
     const { openShareButtonDrawer } = this.state;
-    const chosenPreventSharingOptions = AppStore.getChosenPreventSharingOpinions();
+    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
     const scrolledDown = AppStore.getScrolledDown();
     const hideShareButtonFooter = scrolledDown && !openShareButtonDrawer;
     // console.log('scrolledDown:', scrolledDown, ', hideShareButtonFooter:', hideShareButtonFooter);
@@ -114,7 +114,7 @@ class ShareButtonFooter extends Component {
     const showShareModal = AppStore.showShareModal();
     const showSignInModal = AppStore.showSignInModal();
     this.setState({
-      chosenPreventSharingOptions,
+      chosenPreventSharingOpinions,
       hideShareButtonFooter,
       showingOneCompleteYourProfileModal,
       showShareModal,
@@ -306,7 +306,7 @@ class ShareButtonFooter extends Component {
     const { classes, pathname } = this.props;
     const {
       allOpinions,
-      candidateShare, chosenPreventSharingOptions, currentFullUrlToShare,
+      candidateShare, chosenPreventSharingOpinions, currentFullUrlToShare,
       hideShareButtonFooter, measureShare, officeShare, openShareButtonDrawer,
       shareFooterStep, showingOneCompleteYourProfileModal, showShareButton,
       showShareModal, showSignInModal,
@@ -495,7 +495,7 @@ class ShareButtonFooter extends Component {
                           {' '}
                           Your opinions are NOT included.
                           {' '}
-                          {!chosenPreventSharingOptions && (
+                          {!chosenPreventSharingOpinions && (
                             <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.includeOpinions(shareFooterStep)}>
                               Include your opinions.
                             </span>
@@ -634,7 +634,7 @@ class ShareButtonFooter extends Component {
                         </MenuText>
                       </MenuFlex>
                     </MenuItem>
-                    {!chosenPreventSharingOptions && (
+                    {!chosenPreventSharingOpinions && (
                       <>
                         <MenuSeparator />
                         <MenuItem className={classes.menuItem} onClick={() => this.openShareOptions(true)}>

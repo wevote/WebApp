@@ -45,7 +45,7 @@ class ShareModal extends Component {
     super(props);
     this.state = {
       pathname: '',
-      chosenPreventSharingOptions: false,
+      chosenPreventSharingOpinions: false,
       currentFullUrlToShare: '',
       currentFriendsList: [],
       // friendsToShareWith: [],
@@ -70,7 +70,7 @@ class ShareModal extends Component {
     FriendActions.currentFriends();
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    const chosenPreventSharingOptions = AppStore.getChosenPreventSharingOpinions();
+    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
     const currentFullUrl = window.location.href || '';
     const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
@@ -80,7 +80,7 @@ class ShareModal extends Component {
       ShareActions.sharedItemSave(currentFullUrlToShare);
     }
     this.setState({
-      chosenPreventSharingOptions,
+      chosenPreventSharingOpinions,
       currentFriendsList: FriendStore.currentFriends(),
       currentFullUrlToShare,
       pathname: this.props.pathname,
@@ -100,9 +100,9 @@ class ShareModal extends Component {
   }
 
   onAppStoreChange () {
-    const chosenPreventSharingOptions = AppStore.getChosenPreventSharingOpinions();
+    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
     this.setState({
-      chosenPreventSharingOptions,
+      chosenPreventSharingOpinions,
     });
   }
 
@@ -190,7 +190,7 @@ class ShareModal extends Component {
     // console.log('ShareModal render');
     const { classes } = this.props;
     const {
-      chosenPreventSharingOptions, currentFullUrlToShare, shareModalStep,
+      chosenPreventSharingOpinions, currentFullUrlToShare, shareModalStep,
       urlWithSharedItemCode, urlWithSharedItemCodeAllOpinions,
       voterIsSignedIn,
     } = this.state;
@@ -316,7 +316,7 @@ class ShareModal extends Component {
                     {' '}
                     Your opinions are NOT included.
                     {' '}
-                    {!chosenPreventSharingOptions && (
+                    {!chosenPreventSharingOpinions && (
                       <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.includeOpinions(shareModalStep)}>
                         Include your opinions.
                       </span>

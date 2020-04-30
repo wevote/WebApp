@@ -31,7 +31,7 @@ class SettingsSharing extends Component {
       chosenFeaturePackage: 'FREE',
       chosenFaviconFromFileReader: null,
       chosenLogoFromFileReader: null,
-      chosenPreventSharingOptions: false,
+      chosenPreventSharingOpinions: false,
       chosenSocialShareDescription: '',
       chosenSocialShareDescriptionChangedLocally: false,
       chosenSocialShareDescriptionSavedValue: '',
@@ -77,7 +77,7 @@ class SettingsSharing extends Component {
       const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
       this.setState({
         chosenFeaturePackage,
-        chosenPreventSharingOptions: organization.chosen_prevent_sharing_opinions || false,
+        chosenPreventSharingOpinions: organization.chosen_prevent_sharing_opinions || false,
         chosenSocialShareDescriptionSavedValue,
         hideLogo: organization.chosen_hide_we_vote_logo || false,
         organization,
@@ -133,11 +133,11 @@ class SettingsSharing extends Component {
   };
 
   handleTogglePreventSharingOpinions = (event) => {
-    const { chosenPreventSharingOptions, organizationWeVoteId } = this.state;
-    // console.log('chosenPreventSharingOptions', !chosenPreventSharingOptions);
-    OrganizationActions.organizationPreventSharingOpinions(organizationWeVoteId, !chosenPreventSharingOptions);
+    const { chosenPreventSharingOpinions, organizationWeVoteId } = this.state;
+    // console.log('chosenPreventSharingOpinions', !chosenPreventSharingOpinions);
+    OrganizationActions.organizationPreventSharingOpinions(organizationWeVoteId, !chosenPreventSharingOpinions);
     this.setState({
-      chosenPreventSharingOptions: !chosenPreventSharingOptions,
+      chosenPreventSharingOpinions: !chosenPreventSharingOpinions,
     });
     event.preventDefault();
   };
@@ -256,7 +256,7 @@ class SettingsSharing extends Component {
       chosenFaviconFromFileReader,
       chosenFeaturePackage,
       chosenLogoFromFileReader,
-      chosenPreventSharingOptions,
+      chosenPreventSharingOpinions,
       chosenSocialShareDescription,
       chosenSocialShareDescriptionChangedLocally,
       chosenSocialShareMasterImageFromFileReader,
@@ -527,10 +527,10 @@ class SettingsSharing extends Component {
               <SharingColumn alignRight>
                 <Switch
                   color="primary"
-                  checked={chosenPreventSharingOptions}
-                  id="chosenPreventSharingOptions"
+                  checked={chosenPreventSharingOpinions}
+                  id="chosenPreventSharingOpinions"
                   onChange={this.handleTogglePreventSharingOpinions}
-                  value="chosenPreventSharingOptions"
+                  value="chosenPreventSharingOpinions"
                   inputProps={{ 'aria-label': 'Prevent sharing opinions switch' }}
                 />
               </SharingColumn>
