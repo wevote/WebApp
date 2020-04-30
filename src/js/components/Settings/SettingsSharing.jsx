@@ -31,13 +31,14 @@ class SettingsSharing extends Component {
       chosenFeaturePackage: 'FREE',
       chosenFaviconFromFileReader: null,
       chosenLogoFromFileReader: null,
+      chosenPreventSharingOptions: false,
+      chosenSocialShareDescription: '',
+      chosenSocialShareDescriptionChangedLocally: false,
+      chosenSocialShareDescriptionSavedValue: '',
       chosenSocialShareMasterImageFromFileReader: null,
       hideLogo: false,
       organization: {},
       organizationWeVoteId: '',
-      chosenSocialShareDescription: '',
-      chosenSocialShareDescriptionChangedLocally: false,
-      chosenSocialShareDescriptionSavedValue: '',
       uploadImageType: 'headerLogo',
       voter: {},
       voterFeaturePackageExceedsOrEqualsEnterprise: false,
@@ -76,6 +77,7 @@ class SettingsSharing extends Component {
       const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
       this.setState({
         chosenFeaturePackage,
+        chosenPreventSharingOptions: organization.chosen_prevent_sharing_opinions || false,
         chosenSocialShareDescriptionSavedValue,
         hideLogo: organization.chosen_hide_we_vote_logo || false,
         organization,
@@ -126,6 +128,16 @@ class SettingsSharing extends Component {
     OrganizationActions.organizationChosenHideWeVoteLogoSave(organizationWeVoteId, !hideLogo);
     this.setState({
       hideLogo: !hideLogo,
+    });
+    event.preventDefault();
+  };
+
+  handleTogglePreventSharingOpinions = (event) => {
+    const { chosenPreventSharingOptions, organizationWeVoteId } = this.state;
+    // console.log('chosenPreventSharingOptions', !chosenPreventSharingOptions);
+    OrganizationActions.organizationPreventSharingOpinions(organizationWeVoteId, !chosenPreventSharingOptions);
+    this.setState({
+      chosenPreventSharingOptions: !chosenPreventSharingOptions,
     });
     event.preventDefault();
   };
@@ -244,6 +256,7 @@ class SettingsSharing extends Component {
       chosenFaviconFromFileReader,
       chosenFeaturePackage,
       chosenLogoFromFileReader,
+      chosenPreventSharingOptions,
       chosenSocialShareDescription,
       chosenSocialShareDescriptionChangedLocally,
       chosenSocialShareMasterImageFromFileReader,
@@ -336,6 +349,7 @@ class SettingsSharing extends Component {
                 <Button
                   color="primary"
                   classes={{ root: classes.uploadButton }}
+                  id="uploadHeaderLogo"
                   variant="contained"
                   onClick={this.handleUploadHeaderLogo}
                 >
@@ -346,6 +360,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
+                      id="organizationChosenLogoDelete"
                       variant="outlined"
                       onClick={() => this.organizationChosenLogoDelete()}
                     >
@@ -492,6 +507,25 @@ class SettingsSharing extends Component {
                     )}
                   </PremiumableButton>
                 </Actions>
+              </SharingColumn>
+            </SharingRow>
+            <SharingRow>
+              <SharingColumn>
+                <InputBoxLabel>Prohibit Sharing With Opinions</InputBoxLabel>
+                <DescriptionText>
+                  Turn off the ability for voters to share their opinions from the &quot;Share&quot; buttons.
+                  {' '}
+                  If you are a 501(c)(3) nonprofit organization, this option must be turned on because the IRS does not allow you to provide voters with a way to share their opinions with other voters from a website you manage.
+                </DescriptionText>
+              </SharingColumn>
+              <SharingColumn alignRight>
+                <Switch
+                  color="primary"
+                  checked={chosenPreventSharingOptions}
+                  onChange={this.handleTogglePreventSharingOpinions}
+                  value="chosenPreventSharingOptions"
+                  inputProps={{ 'aria-label': 'Prevent sharing opinions switch' }}
+                />
               </SharingColumn>
             </SharingRow>
           </CardMain>

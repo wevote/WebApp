@@ -156,6 +156,14 @@ export default {
       });
   },
 
+  organizationPreventSharingOpinions (organizationWeVoteId, organizationPreventSharingOpinions) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_prevent_sharing_opinions: organizationPreventSharingOpinions,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
   organizationNameSave (organizationWeVoteId, organizationName) {
     Dispatcher.loadEndpoint('organizationSave',
       {

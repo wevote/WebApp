@@ -169,14 +169,7 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/welcome') ||
       pathnameLowerCase.startsWith('/value/') ||
       pathnameLowerCase.startsWith('/values/') ||
-      pathnameLowerCase.startsWith('/settings/account') ||
-      pathnameLowerCase.startsWith('/settings/domain') ||
-      pathnameLowerCase.startsWith('/settings/notifications') ||
       stringContains('/settings/positions', pathnameLowerCase) ||
-      pathnameLowerCase.startsWith('/settings/profile') ||
-      pathnameLowerCase.startsWith('/settings/sharing') ||
-      pathnameLowerCase.startsWith('/settings/subscription') ||
-      pathnameLowerCase.startsWith('/settings/tools') ||
       pathnameLowerCase.startsWith('/settings/voterguidelist') ||
       pathnameLowerCase.startsWith('/settings/voterguidesmenu')
   ) {
@@ -192,6 +185,14 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/more/terms') ||
       pathnameLowerCase.startsWith('/office') || // Show Footer if back to not specified above
       pathnameLowerCase.startsWith('/values') ||
+      pathnameLowerCase.startsWith('/settings/account') ||
+      pathnameLowerCase.startsWith('/settings/domain') ||
+      pathnameLowerCase.startsWith('/settings/notifications') ||
+      pathnameLowerCase.startsWith('/settings/profile') ||
+      pathnameLowerCase.startsWith('/settings/sharing') ||
+      pathnameLowerCase.startsWith('/settings/subscription') ||
+      pathnameLowerCase.startsWith('/settings/text') ||
+      pathnameLowerCase.startsWith('/settings/tools') ||
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = true;

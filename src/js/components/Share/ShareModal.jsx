@@ -18,6 +18,7 @@ import {
   TwitterShareButton,
 } from 'react-share';
 import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import { cordovaDot, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
 import FriendsShareList from '../Friends/FriendsShareList';
@@ -44,6 +45,7 @@ class ShareModal extends Component {
     super(props);
     this.state = {
       pathname: '',
+      chosenPreventSharingOptions: false,
       currentFullUrlToShare: '',
       currentFriendsList: [],
       // friendsToShareWith: [],
@@ -63,10 +65,12 @@ class ShareModal extends Component {
     const { shareModalStep, voterIsSignedIn } = this.props;
     // console.log('shareModalStep componentDidMount this.props:', shareModalStep);
 
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    const chosenPreventSharingOptions = AppStore.getChosenPreventSharingOpinions();
     const currentFullUrl = window.location.href || '';
     const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
@@ -76,6 +80,7 @@ class ShareModal extends Component {
       ShareActions.sharedItemSave(currentFullUrlToShare);
     }
     this.setState({
+      chosenPreventSharingOptions,
       currentFriendsList: FriendStore.currentFriends(),
       currentFullUrlToShare,
       pathname: this.props.pathname,
@@ -88,9 +93,17 @@ class ShareModal extends Component {
   }
 
   componentWillUnmount () {
+    this.appStoreListener.remove();
     this.friendStoreListener.remove();
     this.shareStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    const chosenPreventSharingOptions = AppStore.getChosenPreventSharingOpinions();
+    this.setState({
+      chosenPreventSharingOptions,
+    });
   }
 
   onFriendStoreChange () {
@@ -176,7 +189,11 @@ class ShareModal extends Component {
     renderLog('ShareModal');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ShareModal render');
     const { classes } = this.props;
-    const { currentFullUrlToShare, shareModalStep, urlWithSharedItemCode, urlWithSharedItemCodeAllOpinions, voterIsSignedIn } = this.state;
+    const {
+      chosenPreventSharingOptions, currentFullUrlToShare, shareModalStep,
+      urlWithSharedItemCode, urlWithSharedItemCodeAllOpinions,
+      voterIsSignedIn,
+    } = this.state;
     let shareModalHtml = (
       <>Loading...</>
     );
@@ -299,9 +316,11 @@ class ShareModal extends Component {
                     {' '}
                     Your opinions are NOT included.
                     {' '}
-                    <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.includeOpinions(shareModalStep)}>
-                      Include your opinions.
-                    </span>
+                    {!chosenPreventSharingOptions && (
+                      <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.includeOpinions(shareModalStep)}>
+                        Include your opinions.
+                      </span>
+                    )}
                   </>
                 )
                 }
