@@ -388,8 +388,9 @@ class SettingsSharing extends Component {
               <SharingColumn alignRight>
                 <PremiumableButton
                   classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
-                  premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
+                  id="handleUploadFavicon"
                   onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleUploadFavicon : () => this.openPaidAccountUpgradeModal('enterprise')}
+                  premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                 >
                   {voterFeaturePackageExceedsOrEqualsEnterprise ? (
                     'Upload'
@@ -409,6 +410,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
+                      id="organizationChosenFaviconDelete"
                       variant="outlined"
                       onClick={() => this.organizationChosenFaviconDelete()}
                     >
@@ -436,6 +438,7 @@ class SettingsSharing extends Component {
               <SharingColumn alignRight>
                 <PremiumableButton
                   classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
+                  id="handleUploadShareImage"
                   premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                   onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleUploadShareImage : () => this.openPaidAccountUpgradeModal('enterprise')}
                 >
@@ -457,6 +460,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
+                      id="organizationChosenSocialShareMasterImageDelete"
                       variant="outlined"
                       onClick={() => this.organizationChosenSocialShareMasterImageDelete()}
                     >
@@ -483,6 +487,7 @@ class SettingsSharing extends Component {
                     color="primary"
                     classes={{ root: classes.button }}
                     disabled={!chosenSocialShareDescriptionChangedLocally}
+                    id="cancelChosenSocialShareDescriptionButton"
                     onClick={this.onCancelChosenSocialShareDescriptionButton}
                   >
                     Cancel
@@ -490,6 +495,7 @@ class SettingsSharing extends Component {
                   <PremiumableButton
                     classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
                     disabled={voterFeaturePackageExceedsOrEqualsEnterprise ? !chosenSocialShareDescriptionChangedLocally : false}
+                    id="onSaveChosenSocialShareDescriptionButton"
                     premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                     onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.onSaveChosenSocialShareDescriptionButton : () => this.openPaidAccountUpgradeModal('enterprise')}
                   >
@@ -522,6 +528,7 @@ class SettingsSharing extends Component {
                 <Switch
                   color="primary"
                   checked={chosenPreventSharingOptions}
+                  id="chosenPreventSharingOptions"
                   onChange={this.handleTogglePreventSharingOpinions}
                   value="chosenPreventSharingOptions"
                   inputProps={{ 'aria-label': 'Prevent sharing opinions switch' }}
