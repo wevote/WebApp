@@ -73,6 +73,8 @@ class Ready extends Component {
       return LoadingWheel;
     }
 
+    const globalCompleted = true;
+
     return (
       <div className="page-content-container">
         <PageContainer className="container-fluid">
@@ -116,7 +118,39 @@ class Ready extends Component {
                   </Paragraph>
                 </div>
               </Card>
-              <div className="u-show-mobile">
+              <ReadyTaskCard
+                ballotMode
+                completed={globalCompleted}
+                buttonText="Get Started"
+                completedTitle="Your Ballot"
+                completedSubtitle="Review your decisions"
+                completedButtonText="Your Ballot"
+                title="Voting?"
+                subtitle="Start deciding how you are going to vote."
+              />
+              <ReadyTaskCard
+                              completed={globalCompleted}
+
+                makeAPlanMode
+                buttonText="Make a Plan Now"
+                completedTitle="Your Voting Plan"
+                completedSubtitle="Review your plans"
+                completedButtonText="Your Plans"
+                title="When Will You Vote?"
+                subtitle="Write your own adventure and cast your vote."
+              />
+              <ReadyTaskCard
+                              completed={globalCompleted}
+
+                registerToVotePlan
+                buttonText="Register Now"
+                completedTitle="You've Registered!"
+                completedSubtitle="You are successfully registered to vote."
+                completedButtonText="Your Plans"
+                title="Registered to Vote Yet?"
+                subtitle="Register to vote to cast your ballot."
+              />
+              {/* <div className="u-show-mobile">
                 <ReadyTaskCard
                   ballotMode
                   buttonText="Get Started"
@@ -137,7 +171,7 @@ class Ready extends Component {
                   title="When Will You Vote?"
                   subtitle="Write your own adventure and cast your vote."
                 />
-              )}
+              )} */}
             </div>
             <div className="col-md-4 d-none d-md-block">
               {nextReleaseFeaturesEnabled && <PledgeToVote />}

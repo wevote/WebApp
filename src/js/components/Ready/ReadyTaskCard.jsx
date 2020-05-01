@@ -3,17 +3,22 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import EventAvailable from '@material-ui/icons/EventAvailable';
 import EventBusy from '@material-ui/icons/EventBusy';
+import ViewListOutlined from '@material-ui/icons/ViewListOutlined';
+import ViewListRounded from '@material-ui/icons/ViewListRounded';
+import AccountBoxOutlined from '@material-ui/icons/AccountBoxOutlined';
+import AccountBoxFilled from '@material-ui/icons/AccountBox';
 import { Checkbox, Button } from '@material-ui/core';
 import { historyPush } from '../../utils/cordovaUtils';
 
 class ReadyTaskCard extends React.Component {
   static propTypes = {
     ballotMode: PropTypes.bool,
+    registerToVoteMode: PropTypes.bool,
+    makeAPlanMode: PropTypes.bool,
     buttonText: PropTypes.string,
     completedTitle: PropTypes.string,
     completedSubtitle: PropTypes.string,
     completedButtonText: PropTypes.string,
-    makeAPlanMode: PropTypes.bool,
     title: PropTypes.string,
     subtitle: PropTypes.string,
   };
@@ -26,24 +31,37 @@ class ReadyTaskCard extends React.Component {
   }
 
   goToNextStep = () => {
-    const { ballotMode, makeAPlanMode } = this.props;
+    const { ballotMode, makeAPlanMode, registerToVoteMode } = this.props;
     if (ballotMode) {
       historyPush('/ballot');
     }
   }
 
   render () {
-    const { completedTitle, title, subtitle, buttonText } = this.props;
-    const { completed } = this.state;
+    const { completed, completedTitle, title, completedSubtitle, subtitle, buttonText, ballotMode, registerToVoteMode, makeAPlanMode } = this.props;
+    // const { completed } = this.state;
     return (
       <Card completed={completed} className="card">
         <Icon className="u-cursor--pointer" completed={completed} onClick={this.goToNextStep}>
           {/* <Hexagon /> */}
-          {completed ? <EventAvailable /> : <EventBusy />}
+          {
+            makeAPlanMode ? (
+              <>{completed ? <EventAvailable /> : <EventBusy />}</>
+            ) : (
+              <>
+                {ballotMode ? (
+                  <>{completed ? <ViewListOutlined /> : <ViewListRounded />}</>
+                ) : (
+                  <>{completed ? <AccountBoxOutlined /> : <AccountBoxFilled />}</>
+                )}
+              </>
+            )
+          }
+
         </Icon>
         <div>
-          <Title className="u-cursor--pointer" onClick={this.goToNextStep}>{completed ? completedTitle : title}</Title>
-          <SubTitle className="u-cursor--pointer" onClick={this.goToNextStep}>{subtitle}</SubTitle>
+          <Title className="u-cursor--pointer" onClick={this.goToNextStep}>{completed ? completedTitle || title : title}</Title>
+          <SubTitle className="u-cursor--pointer" onClick={this.goToNextStep}>{completed ? completedSubtitle || subtitle : subtitle}</SubTitle>
           <StyledButton className="u-cursor--pointer" onClick={this.goToNextStep} completed={completed || undefined} variant="outlined" color="primary">
             <StyledCheckbox completed={completed} />
             {completed ? 'Completed' : buttonText}
