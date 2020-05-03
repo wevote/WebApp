@@ -102,44 +102,46 @@ class MeasureItem extends Component {
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     return (
-      <Card classes={{ root: classes.cardRoot }}>
-        <InfoRow>
-          <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
-            <Title>
-              {ballotItemDisplayName}
-            </Title>
-            { electionDisplayName || regionalDisplayName || stateDisplayName ?
-              (
-                <SubTitle>
-                  { electionDisplayName || 'Appearing on the ballot in ' }
-                  { electionDisplayName ? <span> &middot; </span> : null }
-                  { regionalDisplayName || null }
-                  { regionalDisplayName && stateDisplayName ? ', ' : null }
-                  { stateDisplayName }
-                </SubTitle>
-              ) :
-              null
-            }
-            {/* <SubTitle>{measureSubtitle}</SubTitle> */}
-          </MeasureInfoWrapper>
-          <BallotItemSupportOpposeCountDisplayWrapper>
-            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
-          </BallotItemSupportOpposeCountDisplayWrapper>
-        </InfoRow>
-        <BallotItemSupportOpposeComment
-          ballotItemWeVoteId={measureWeVoteId}
-          externalUniqueId="measureItem"
-          showPositionStatementActionBar={this.state.showPositionStatementActionBar}
-        />
-        { measureText && (
-          <MeasureTextWrapper>
-            <ReadMore
-              numberOfLines={numberOfLines}
-              textToDisplay={measureText}
-            />
-          </MeasureTextWrapper>
-        )}
-      </Card>
+      <div>
+        <MeasureItemWrapper>
+          <InfoRow>
+            <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
+              <Title>
+                {ballotItemDisplayName}
+              </Title>
+              { electionDisplayName || regionalDisplayName || stateDisplayName ?
+                (
+                  <SubTitle>
+                    { electionDisplayName || 'Appearing on the ballot in ' }
+                    { electionDisplayName ? <span> &middot; </span> : null }
+                    { regionalDisplayName || null }
+                    { regionalDisplayName && stateDisplayName ? ', ' : null }
+                    { stateDisplayName }
+                  </SubTitle>
+                ) :
+                null
+              }
+              {/* <SubTitle>{measureSubtitle}</SubTitle> */}
+            </MeasureInfoWrapper>
+            <BallotItemSupportOpposeCountDisplayWrapper>
+              <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+            </BallotItemSupportOpposeCountDisplayWrapper>
+          </InfoRow>
+          <BallotItemSupportOpposeComment
+            ballotItemWeVoteId={measureWeVoteId}
+            externalUniqueId="measureItem"
+            showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+          />
+          { measureText && (
+            <MeasureTextWrapper>
+              <ReadMore
+                numberOfLines={numberOfLines}
+                textToDisplay={measureText}
+              />
+            </MeasureTextWrapper>
+          )}
+        </MeasureItemWrapper>
+      </div>
     );
   }
 }
@@ -177,8 +179,8 @@ const InfoRow = styled.div`
 `;
 
 const MeasureInfoWrapper = styled.div`
-  display: flex;
-  flex-flow: column;
+  // display: flex;
+  // flex-flow: column;
   max-width: 75%;
   cursor: pointer;
   user-select: none;
@@ -186,6 +188,9 @@ const MeasureInfoWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     max-width: 70%;
   }
+`;
+
+const MeasureItemWrapper = styled.div`
 `;
 
 const MeasureTextWrapper = styled.div`
