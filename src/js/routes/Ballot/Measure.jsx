@@ -283,8 +283,8 @@ class Measure extends Component {
               {measure.ballotpedia_measure_url && (
                 <ViewOnBallotpedia externalLinkUrl={measure.ballotpedia_measure_url} />
               )}
-              {measure.contest_office_name && (
-                <SearchOnGoogle googleQuery={`${measureName} ${measure.contest_office_name}`} />
+              {measureName && (
+                <SearchOnGoogle googleQuery={`${measureName}`} />
               )}
             </RightColumnWrapper>
           </TwoColumns>
