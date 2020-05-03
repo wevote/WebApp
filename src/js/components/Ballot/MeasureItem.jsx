@@ -102,7 +102,7 @@ class MeasureItem extends Component {
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     return (
-      <Card classes={{ root: classes.cardRoot }}>
+      <MeasureItemWrapper className="card-main">
         <InfoRow>
           <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
             <Title>
@@ -139,7 +139,7 @@ class MeasureItem extends Component {
             />
           </MeasureTextWrapper>
         )}
-      </Card>
+      </MeasureItemWrapper>
     );
   }
 }
@@ -186,6 +186,9 @@ const MeasureInfoWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     max-width: 70%;
   }
+`;
+
+const MeasureItemWrapper = styled.div`
 `;
 
 const MeasureTextWrapper = styled.div`
