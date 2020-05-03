@@ -7,6 +7,7 @@ import { Menu, MenuItem } from '@material-ui/core/esm'; // , Tooltip
 import Reply from '@material-ui/icons/Reply';
 import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ShareActions from '../../actions/ShareActions';
 import { stringContains } from '../../utils/textFormat';
@@ -22,11 +23,31 @@ class ShareButtonDesktopTablet extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      openShareMenu: false,
       anchorEl: null,
+      chosenPreventSharingOpinions: false,
+      openShareMenu: false,
     };
     this.handleShareButtonClick = this.handleShareButtonClick.bind(this);
     this.handleCloseMenu = this.handleCloseMenu.bind(this);
+  }
+
+  componentDidMount () {
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
+    this.setState({
+      chosenPreventSharingOpinions,
+    });
+  }
+
+  componentWillUnmount () {
+    this.appStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
+    this.setState({
+      chosenPreventSharingOpinions,
+    });
   }
 
   handleShareButtonClick (event) {
@@ -88,7 +109,7 @@ class ShareButtonDesktopTablet extends Component {
 
   render () {
     const { candidateShare, classes, measureShare, officeShare } = this.props;
-    const { anchorEl } = this.state;
+    const { anchorEl, chosenPreventSharingOpinions, openShareMenu } = this.state;
 
     let shareButtonClasses;
     let shareMenuTextDefault;
@@ -111,7 +132,6 @@ class ShareButtonDesktopTablet extends Component {
       shareMenuTextDefault = 'Ballot';
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
-    const featureStillInDevelopment = false;
     return (
       <>
         <Button
@@ -142,7 +162,7 @@ class ShareButtonDesktopTablet extends Component {
           elevation={2}
           getContentAnchorEl={null}
           onClose={this.handleCloseMenu}
-          open={this.state.openShareMenu}
+          open={openShareMenu}
           transformOrigin={{
             horizontal: 'right',
             vertical: 'top',
@@ -172,7 +192,7 @@ class ShareButtonDesktopTablet extends Component {
             </MenuFlex>
           </MenuItem>
           <MenuSeparator />
-          {featureStillInDevelopment ? null : (
+          {chosenPreventSharingOpinions ? null : (
             <MenuItem className={classes.menuItem} onClick={() => this.openShareModal(true)}>
               <MenuFlex>
                 <MenuIcon>

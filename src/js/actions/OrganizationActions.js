@@ -90,6 +90,16 @@ export default {
       });
   },
 
+  organizationChosenReadyIntroductionSave (organizationWeVoteId, organizationReadyIntroductionTitle, organizationReadyIntroductionText) {
+    // console.log('OrganizationActions, organizationChosenReadyIntroductionSave, organizationReadyIntroductionText:', organizationReadyIntroductionText, ', organizationReadyIntroductionTitle:', organizationReadyIntroductionTitle);
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_ready_introduction_text: organizationReadyIntroductionText,
+        chosen_ready_introduction_title: organizationReadyIntroductionTitle,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
   organizationChosenSocialShareMasterImageDelete (organizationWeVoteId) {
     Dispatcher.loadEndpoint('organizationPhotosSave',
       {
@@ -142,6 +152,14 @@ export default {
     Dispatcher.loadEndpoint('organizationSave',
       {
         chosen_hide_we_vote_logo: organizationChosenHideWeVoteLogo,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationPreventSharingOpinions (organizationWeVoteId, organizationPreventSharingOpinions) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_prevent_sharing_opinions: organizationPreventSharingOpinions,
         organization_we_vote_id: organizationWeVoteId,
       });
   },

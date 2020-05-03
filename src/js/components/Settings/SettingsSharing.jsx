@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -8,15 +7,16 @@ import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import AppActions from '../../actions/AppActions';
 import { cordovaDot, cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
+import CreateConfiguredVersion from './CreateConfiguredVersion';
 import LoadingWheel from '../LoadingWheel';
-import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import PremiumableButton from '../Widgets/PremiumableButton';
 import { renderLog } from '../../utils/logging';
+import SeeTheseSettingsInAction from './SeeTheseSettingsInAction';
 import SettingsAccount from './SettingsAccount';
 import SettingsAccountLevelChip from './SettingsAccountLevelChip';
-import { ImageDescription, LinkToDomainRow, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions } from './SettingsStyled';
+import { ImageDescription, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions } from './SettingsStyled';
 import VoterStore from '../../stores/VoterStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 
@@ -30,17 +30,15 @@ class SettingsSharing extends Component {
     this.state = {
       chosenFeaturePackage: 'FREE',
       chosenFaviconFromFileReader: null,
-      chosenFaviconUrlHttps: null,
       chosenLogoFromFileReader: null,
-      chosenLogoUrlHttps: null,
-      chosenSocialShareMasterImageFromFileReader: null,
-      chosenSocialShareMasterImageUrlHttps: null,
-      hideLogo: false,
-      organization: {},
-      organizationWeVoteId: '',
+      chosenPreventSharingOpinions: false,
       chosenSocialShareDescription: '',
       chosenSocialShareDescriptionChangedLocally: false,
       chosenSocialShareDescriptionSavedValue: '',
+      chosenSocialShareMasterImageFromFileReader: null,
+      hideLogo: false,
+      organization: {},
+      organizationWeVoteId: '',
       uploadImageType: 'headerLogo',
       voter: {},
       voterFeaturePackageExceedsOrEqualsEnterprise: false,
@@ -53,64 +51,6 @@ class SettingsSharing extends Component {
     this.onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.chosenFeaturePackage !== nextState.chosenFeaturePackage) {
-      // console.log('this.state.chosenFeaturePackage', this.state.chosenFeaturePackage, ', nextState.chosenFeaturePackage', nextState.chosenFeaturePackage);
-      return true;
-    }
-    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-      // console.log('this.state.organizationWeVoteId', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
-      return true;
-    }
-    if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
-      // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
-      return true;
-    }
-    if (this.state.hideLogo !== nextState.hideLogo) {
-      return true;
-    }
-    if (this.state.chosenSocialShareDescription !== nextState.chosenSocialShareDescription) {
-      return true;
-    }
-    if (this.state.chosenFaviconFromFileReader !== nextState.chosenFaviconFromFileReader) {
-      return true;
-    }
-    if (this.state.chosenFaviconUrlHttps !== nextState.chosenFaviconUrlHttps) {
-      // console.log('this.state.chosenFaviconUrlHttps', this.state.chosenFaviconUrlHttps, ', nextState.chosenFaviconUrlHttps', nextState.chosenFaviconUrlHttps);
-      return true;
-    }
-    if (this.state.chosenLogoFromFileReader !== nextState.chosenLogoFromFileReader) {
-      // console.log('this.state.chosenLogoFromFileReader', this.state.chosenLogoFromFileReader, ', nextState.chosenLogoFromFileReader', nextState.chosenLogoFromFileReader);
-      return true;
-    }
-    if (this.state.chosenLogoUrlHttps !== nextState.chosenLogoUrlHttps) {
-      // console.log('this.state.chosenLogoUrlHttps', this.state.chosenLogoUrlHttps, ', nextState.chosenLogoUrlHttps', nextState.chosenLogoUrlHttps);
-      return true;
-    }
-    if (this.state.chosenSocialShareMasterImageFromFileReader !== nextState.chosenSocialShareMasterImageFromFileReader) {
-      return true;
-    }
-    if (this.state.chosenSocialShareMasterImageUrlHttps !== nextState.chosenSocialShareMasterImageUrlHttps) {
-      // console.log('this.state.chosenSocialShareMasterImageUrlHttps', this.state.chosenSocialShareMasterImageUrlHttps, ', nextState.chosenSocialShareMasterImageUrlHttps', nextState.chosenSocialShareMasterImageUrlHttps);
-      return true;
-    }
-    if (this.state.voterFeaturePackageExceedsOrEqualsEnterprise !== nextState.voterFeaturePackageExceedsOrEqualsEnterprise) {
-      return true;
-    }
-    const priorOrganization = this.state.organization;
-    const nextOrganization = nextState.organization;
-
-    const priorWeVoteCustomDomain = priorOrganization.we_vote_custom_domain || '';
-    const nextWeVoteCustomDomain = nextOrganization.we_vote_custom_domain || '';
-
-    if (priorWeVoteCustomDomain !== nextWeVoteCustomDomain) {
-      // console.log('priorWeVoteCustomDomain', priorWeVoteCustomDomain, ', nextWeVoteCustomDomain', nextWeVoteCustomDomain);
-      return true;
-    }
-    // console.log('shouldComponentUpdate false');
-    return false;
   }
 
   componentWillUnmount () {
@@ -132,21 +72,15 @@ class SettingsSharing extends Component {
     }
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      const organizationChosenSubdomain = organization.chosen_subdomain_string || '';
-      const organizationChosenDomainName = organization.chosen_domain_string || '';
       const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
       const chosenSocialShareDescriptionSavedValue = organization.chosen_social_share_description || '';
       const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
       this.setState({
         chosenFeaturePackage,
-        chosenFaviconUrlHttps: organization.chosen_favicon_url_https,
-        chosenLogoUrlHttps: organization.chosen_logo_url_https,
+        chosenPreventSharingOpinions: organization.chosen_prevent_sharing_opinions || false,
         chosenSocialShareDescriptionSavedValue,
-        chosenSocialShareMasterImageUrlHttps: organization.chosen_social_share_master_image_url_https,
         hideLogo: organization.chosen_hide_we_vote_logo || false,
         organization,
-        organizationChosenSubdomain,
-        organizationChosenDomainName,
         voterFeaturePackageExceedsOrEqualsEnterprise,
       });
       // If it hasn't been changed locally, then use the one saved in the API server
@@ -169,20 +103,13 @@ class SettingsSharing extends Component {
     const organizationWeVoteId = voter.linked_organization_we_vote_id;
     if (organizationWeVoteId) {
       const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      const organizationChosenSubdomain = organization.chosen_subdomain_string || '';
-      const organizationChosenDomainName = organization.chosen_domain_string || '';
       const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
       const chosenSocialShareDescriptionSavedValue = organization.chosen_social_share_description || '';
       const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
       this.setState({
         chosenFeaturePackage,
-        chosenFaviconUrlHttps: organization.chosen_favicon_url_https,
-        chosenLogoUrlHttps: organization.chosen_logo_url_https,
         chosenSocialShareDescriptionSavedValue,
-        chosenSocialShareMasterImageUrlHttps: organization.chosen_social_share_master_image_url_https,
         organization,
-        organizationChosenDomainName,
-        organizationChosenSubdomain,
         organizationWeVoteId,
         voterFeaturePackageExceedsOrEqualsEnterprise,
       });
@@ -201,6 +128,16 @@ class SettingsSharing extends Component {
     OrganizationActions.organizationChosenHideWeVoteLogoSave(organizationWeVoteId, !hideLogo);
     this.setState({
       hideLogo: !hideLogo,
+    });
+    event.preventDefault();
+  };
+
+  handleTogglePreventSharingOpinions = (event) => {
+    const { chosenPreventSharingOpinions, organizationWeVoteId } = this.state;
+    // console.log('chosenPreventSharingOpinions', !chosenPreventSharingOpinions);
+    OrganizationActions.organizationPreventSharingOpinions(organizationWeVoteId, !chosenPreventSharingOpinions);
+    this.setState({
+      chosenPreventSharingOpinions: !chosenPreventSharingOpinions,
     });
     event.preventDefault();
   };
@@ -319,13 +256,12 @@ class SettingsSharing extends Component {
       chosenFaviconFromFileReader,
       chosenFeaturePackage,
       chosenLogoFromFileReader,
+      chosenPreventSharingOpinions,
       chosenSocialShareDescription,
       chosenSocialShareDescriptionChangedLocally,
       chosenSocialShareMasterImageFromFileReader,
       hideLogo,
       organization,
-      organizationChosenDomainName,
-      organizationChosenSubdomain,
       organizationWeVoteId,
       voter,
       voterFeaturePackageExceedsOrEqualsEnterprise,
@@ -354,51 +290,13 @@ class SettingsSharing extends Component {
         <Card className="card">
           <CardMain className="card-main">
             <h1 className="h2">Sharing Information</h1>
-            <Introduction>
-              {chosenFeaturePackage === 'FREE' && (
-                <>
-                  Want to create a configured version of We Vote you can send out to your followers?
-                  {' '}
-                  <OpenExternalWebSite
-                    url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
-                    target="_blank"
-                    body={(<span>Learn more here.</span>)}
-                  />
-                </>
-              )}
-            </Introduction>
-            {organizationChosenSubdomain || organizationChosenDomainName ? (
-              <LinkToDomainRow>
-                To see the changes you make on this page, please visit:
-                {' '}
-                {organizationChosenSubdomain && (
-                  <OpenExternalWebSite
-                    url={`https://${organizationChosenSubdomain}.WeVote.US`}
-                    target="_blank"
-                    body={(<span>{`https://${organizationChosenSubdomain}.WeVote.US`}</span>)}
-                  />
-                )}
-                {organizationChosenDomainName && (
-                  <OpenExternalWebSite
-                    url={`https://${organizationChosenDomainName}`}
-                    target="_blank"
-                    body={(<span>{`https://${organizationChosenDomainName}`}</span>)}
-                  />
-                )}
-              </LinkToDomainRow>
-            ) : (
-              <LinkToDomainRow>
-                To see these settings in action, enter a subdomain or domain name on the
-                {' '}
-                <Link to="/settings/domain">
-                  <strong>
-                    Your Settings &gt; Domain
-                  </strong>
-                </Link>
-                {' '}
-                page.
-              </LinkToDomainRow>
+            {chosenFeaturePackage === 'FREE' && (
+              <>
+                <CreateConfiguredVersion />
+                <Separator />
+              </>
             )}
+            <SeeTheseSettingsInAction />
             <SharingRow>
               <SharingColumn>
                 <InputBoxLabel>Hide We Vote Logo</InputBoxLabel>
@@ -451,6 +349,7 @@ class SettingsSharing extends Component {
                 <Button
                   color="primary"
                   classes={{ root: classes.uploadButton }}
+                  id="uploadHeaderLogo"
                   variant="contained"
                   onClick={this.handleUploadHeaderLogo}
                 >
@@ -461,6 +360,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
+                      id="organizationChosenLogoDelete"
                       variant="outlined"
                       onClick={() => this.organizationChosenLogoDelete()}
                     >
@@ -488,8 +388,9 @@ class SettingsSharing extends Component {
               <SharingColumn alignRight>
                 <PremiumableButton
                   classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
-                  premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
+                  id="handleUploadFavicon"
                   onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleUploadFavicon : () => this.openPaidAccountUpgradeModal('enterprise')}
+                  premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                 >
                   {voterFeaturePackageExceedsOrEqualsEnterprise ? (
                     'Upload'
@@ -509,6 +410,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
+                      id="organizationChosenFaviconDelete"
                       variant="outlined"
                       onClick={() => this.organizationChosenFaviconDelete()}
                     >
@@ -536,6 +438,7 @@ class SettingsSharing extends Component {
               <SharingColumn alignRight>
                 <PremiumableButton
                   classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
+                  id="handleUploadShareImage"
                   premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                   onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleUploadShareImage : () => this.openPaidAccountUpgradeModal('enterprise')}
                 >
@@ -557,6 +460,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
+                      id="organizationChosenSocialShareMasterImageDelete"
                       variant="outlined"
                       onClick={() => this.organizationChosenSocialShareMasterImageDelete()}
                     >
@@ -583,6 +487,7 @@ class SettingsSharing extends Component {
                     color="primary"
                     classes={{ root: classes.button }}
                     disabled={!chosenSocialShareDescriptionChangedLocally}
+                    id="cancelChosenSocialShareDescriptionButton"
                     onClick={this.onCancelChosenSocialShareDescriptionButton}
                   >
                     Cancel
@@ -590,6 +495,7 @@ class SettingsSharing extends Component {
                   <PremiumableButton
                     classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
                     disabled={voterFeaturePackageExceedsOrEqualsEnterprise ? !chosenSocialShareDescriptionChangedLocally : false}
+                    id="onSaveChosenSocialShareDescriptionButton"
                     premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                     onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.onSaveChosenSocialShareDescriptionButton : () => this.openPaidAccountUpgradeModal('enterprise')}
                   >
@@ -607,6 +513,26 @@ class SettingsSharing extends Component {
                     )}
                   </PremiumableButton>
                 </Actions>
+              </SharingColumn>
+            </SharingRow>
+            <SharingRow>
+              <SharingColumn>
+                <InputBoxLabel>Prohibit Sharing With Opinions</InputBoxLabel>
+                <DescriptionText>
+                  Turn off the ability for voters to share their opinions from the &quot;Share&quot; buttons.
+                  {' '}
+                  If you are a 501(c)(3) nonprofit organization, this option must be turned on because the IRS does not allow you to provide voters with a way to share their opinions with other voters from a website you manage.
+                </DescriptionText>
+              </SharingColumn>
+              <SharingColumn alignRight>
+                <Switch
+                  color="primary"
+                  checked={chosenPreventSharingOpinions}
+                  id="chosenPreventSharingOpinions"
+                  onChange={this.handleTogglePreventSharingOpinions}
+                  value="chosenPreventSharingOpinions"
+                  inputProps={{ 'aria-label': 'Prevent sharing opinions switch' }}
+                />
               </SharingColumn>
             </SharingRow>
           </CardMain>
@@ -657,9 +583,11 @@ const MobileTabletView = styled.div`
   display: inherit;
 `;
 
-const Introduction = styled.p`
-  margin: 0 0 16px 0;
-  font-size: 14px;
+const Separator = styled.div`
+  width: 100%;
+  height: 2px;
+  background: #eee;
+  margin: 16px 0;
 `;
 
 export default withStyles(styles)(SettingsSharing);

@@ -5,10 +5,11 @@ import uniqBy from 'lodash-es/uniqBy';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
-import IssueStore from '../../stores/IssueStore';
-import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
-import { renderLog } from '../../utils/logging';
 import FriendStore from '../../stores/FriendStore';
+import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
+import IssueStore from '../../stores/IssueStore';
+import { renderLog } from '../../utils/logging';
+import ShareStore from '../../stores/ShareStore';
 
 const groupTypeIdentifiers = ['C', 'C3', 'C4', 'G', 'NP', 'O', 'P'];
 const privateCitizenIdentifiers = ['I', 'V'];
@@ -30,23 +31,30 @@ class VoterGuideOrganizationFilter extends Component {
       issues: IssueStore.getAllIssues(),
       currentFriendsOrganizationWeVoteIds: [],
       currentFriendsOrganizationWeVoteIdsLength: 0,
+      currentSharedItemOrganizationWeVoteIds: [],
+      currentSharedItemOrganizationWeVoteIdsLength: 0,
       sortedBy: '',
     };
   }
 
   componentDidMount () {
     const currentFriendsOrganizationWeVoteIds = FriendStore.currentFriendsOrganizationWeVoteIDList();
+    const currentSharedItemOrganizationWeVoteIds = ShareStore.currentSharedItemOrganizationWeVoteIDList();
     this.setState({
       currentFriendsOrganizationWeVoteIds,
       currentFriendsOrganizationWeVoteIdsLength: currentFriendsOrganizationWeVoteIds.length,
+      currentSharedItemOrganizationWeVoteIds,
+      currentSharedItemOrganizationWeVoteIdsLength: currentSharedItemOrganizationWeVoteIds.length,
     });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
   }
 
   componentDidUpdate (prevProps, prevState) {
     // console.log('VoterGuideOrganizationFilter componentDidUpdate:', prevProps.selectedFilters, this.props.selectedFilters);
     if ((JSON.stringify(prevProps.selectedFilters) !== JSON.stringify(this.props.selectedFilters)) ||
       (prevState.currentFriendsOrganizationWeVoteIdsLength !== this.state.currentFriendsOrganizationWeVoteIdsLength) ||
+      (prevState.currentSharedItemOrganizationWeVoteIdsLength !== this.state.currentSharedItemOrganizationWeVoteIdsLength) ||
       (prevState.sortedBy !== this.state.sortedBy)
     ) {
       this.props.onFilteredItemsChange(this.getNewFilteredItems());
@@ -56,6 +64,7 @@ class VoterGuideOrganizationFilter extends Component {
 
   componentWillUnmount () {
     this.friendStoreListener.remove();
+    this.shareStoreListener.remove();
   }
 
   onFriendStoreChange () {
@@ -63,6 +72,14 @@ class VoterGuideOrganizationFilter extends Component {
     this.setState({
       currentFriendsOrganizationWeVoteIds,
       currentFriendsOrganizationWeVoteIdsLength: currentFriendsOrganizationWeVoteIds.length,
+    });
+  }
+
+  onShareStoreChange () {
+    const currentSharedItemOrganizationWeVoteIds = ShareStore.currentSharedItemOrganizationWeVoteIDList();
+    this.setState({
+      currentSharedItemOrganizationWeVoteIds,
+      currentSharedItemOrganizationWeVoteIdsLength: currentSharedItemOrganizationWeVoteIds.length,
     });
   }
 
@@ -90,7 +107,7 @@ class VoterGuideOrganizationFilter extends Component {
   getNewFilteredItems = () => {
     const { allItems, selectedFilters } = this.props;
     // console.log('allItems:', allItems);
-    const { currentFriendsOrganizationWeVoteIds } = this.state;
+    const { currentFriendsOrganizationWeVoteIds, currentSharedItemOrganizationWeVoteIds } = this.state;
     // console.log('currentFriendsOrganizationWeVoteIds:', currentFriendsOrganizationWeVoteIds);
     let filteredItems = [];
     if (!selectedFilters || !selectedFilters.length) return allItems;
@@ -101,7 +118,7 @@ class VoterGuideOrganizationFilter extends Component {
           filteredItems = [...filteredItems, ...allItems.filter(item => groupTypeIdentifiers.includes(item.speaker_type))];
           break;
         case 'individualVoter':
-          filteredItems = [...filteredItems, ...allItems.filter(item => privateCitizenIdentifiers.includes(item.speaker_type))];
+          filteredItems = [...filteredItems, ...allItems.filter(item => privateCitizenIdentifiers.includes(item.speaker_type) && !currentSharedItemOrganizationWeVoteIds.includes(item.speaker_we_vote_id))];
           break;
         case 'newsOrganization':
           filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'NW')];
@@ -110,7 +127,7 @@ class VoterGuideOrganizationFilter extends Component {
           filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'PF')];
           break;
         case 'yourFriends':
-          filteredItems = [...filteredItems, ...allItems.filter(item => currentFriendsOrganizationWeVoteIds.includes(item.speaker_we_vote_id))];
+          filteredItems = [...filteredItems, ...allItems.filter(item => currentFriendsOrganizationWeVoteIds.includes(item.speaker_we_vote_id) || currentSharedItemOrganizationWeVoteIds.includes(item.speaker_we_vote_id))];
           break;
         default:
           break;

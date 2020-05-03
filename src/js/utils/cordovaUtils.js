@@ -495,6 +495,8 @@ export function pageEnumeration () {
     return enums.friends;
   } else if (href.indexOf('/index.html#/opinions') > 0) {
     return enums.opinions;
+  } else if (href.indexOf('/index.html#/ready') > 0) {
+    return enums.values; // Use /value setting
   } else if (href.indexOf('/index.html#/values') > 0) {
     return enums.values;
   } else if (href.indexOf('/index.html#/welcome') > 0 ||

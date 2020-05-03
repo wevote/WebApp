@@ -7,11 +7,18 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import Mail from '@material-ui/icons/Mail';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import { Button, Tooltip } from '@material-ui/core';
+import {
+  EmailIcon,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton, TwitterIcon,
+  TwitterShareButton,
+} from 'react-share';
 import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import { cordovaDot, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
 import FriendsShareList from '../Friends/FriendsShareList';
@@ -24,7 +31,6 @@ import ShareModalOption from './ShareModalOption';
 import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 
-
 class ShareModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
@@ -32,18 +38,18 @@ class ShareModal extends Component {
     pathname: PropTypes.string,
     show: PropTypes.bool,
     shareModalStep: PropTypes.string,
-    toggleFunction: PropTypes.func.isRequired,
+    closeShareModal: PropTypes.func.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       pathname: '',
+      chosenPreventSharingOpinions: false,
       currentFullUrlToShare: '',
       currentFriendsList: [],
       // friendsToShareWith: [],
       shareModalStep: '',
-      signInModalOpenedOnce: false,
       urlWithSharedItemCode: '',
       urlWithSharedItemCodeAllOpinions: '',
       voterIsSignedIn: false,
@@ -59,10 +65,12 @@ class ShareModal extends Component {
     const { shareModalStep, voterIsSignedIn } = this.props;
     // console.log('shareModalStep componentDidMount this.props:', shareModalStep);
 
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     FriendActions.currentFriends();
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
     const currentFullUrl = window.location.href || '';
     const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
@@ -72,6 +80,7 @@ class ShareModal extends Component {
       ShareActions.sharedItemSave(currentFullUrlToShare);
     }
     this.setState({
+      chosenPreventSharingOpinions,
       currentFriendsList: FriendStore.currentFriends(),
       currentFullUrlToShare,
       pathname: this.props.pathname,
@@ -84,9 +93,17 @@ class ShareModal extends Component {
   }
 
   componentWillUnmount () {
+    this.appStoreListener.remove();
     this.friendStoreListener.remove();
     this.shareStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
+    this.setState({
+      chosenPreventSharingOpinions,
+    });
   }
 
   onFriendStoreChange () {
@@ -165,14 +182,18 @@ class ShareModal extends Component {
   }
 
   closeShareModal () {
-    this.props.toggleFunction(this.state.pathname);
+    this.props.closeShareModal(this.state.pathname);
   }
 
   render () {
     renderLog('ShareModal');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ShareModal render');
     const { classes } = this.props;
-    const { currentFullUrlToShare, shareModalStep, urlWithSharedItemCode, urlWithSharedItemCodeAllOpinions, voterIsSignedIn } = this.state;
+    const {
+      chosenPreventSharingOpinions, currentFullUrlToShare, shareModalStep,
+      urlWithSharedItemCode, urlWithSharedItemCodeAllOpinions,
+      voterIsSignedIn,
+    } = this.state;
     let shareModalHtml = (
       <>Loading...</>
     );
@@ -181,9 +202,10 @@ class ShareModal extends Component {
       return shareModalHtml;
     }
     const featureStillInDevelopment = true;
+    const titleText = 'Check out this cool Ballot tool !!';
 
-    let emailSubjectEncoded = '';
-    let emailBodyEncoded = '';
+    // let emailSubjectEncoded = '';
+    // let emailBodyEncoded = '';
     let linkToBeShared = '';
     let linkToBeSharedUrlEncoded = '';
     if ((shareModalStep === 'ballotShareOptions') ||
@@ -207,37 +229,37 @@ class ShareModal extends Component {
         linkToBeShared = currentFullUrlToShare;
       }
       linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
-      const twitterTextEncoded = encodeURI('Check out this cool ballot tool!');
-      if (shareModalStep === 'ballotShareOptions') {
-        emailSubjectEncoded = encodeURI('Ready to vote?');
-        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      } else if (shareModalStep === 'ballotShareOptionsAllOpinions') {
-        emailSubjectEncoded = encodeURI('Ready to vote?');
-        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      } else if (shareModalStep === 'candidateShareOptions') {
-        emailSubjectEncoded = encodeURI('Ready to vote?');
-        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      } else if (shareModalStep === 'candidateShareOptionsAllOpinions') {
-        emailSubjectEncoded = encodeURI('Ready to vote?');
-        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      } else if (shareModalStep === 'measureShareOptions') {
-        emailSubjectEncoded = encodeURI('Ready to vote?');
-        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      } else if (shareModalStep === 'measureShareOptionsAllOpinions') {
-        emailSubjectEncoded = encodeURI('Ready to vote?');
-        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      } else if (shareModalStep === 'officeShareOptions') {
-        emailSubjectEncoded = encodeURI('Ready to vote?');
-        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      } else if (shareModalStep === 'officeShareOptionsAllOpinions') {
-        emailSubjectEncoded = encodeURI('Ready to vote?');
-        emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
-      }
+      // const twitterTextEncoded = encodeURI('Check out this cool ballot tool!');
+      // if (shareModalStep === 'ballotShareOptions') {
+      //   emailSubjectEncoded = encodeURI('Ready to vote?');
+      //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      // } else if (shareModalStep === 'ballotShareOptionsAllOpinions') {
+      //   emailSubjectEncoded = encodeURI('Ready to vote?');
+      //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      // } else if (shareModalStep === 'candidateShareOptions') {
+      //   emailSubjectEncoded = encodeURI('Ready to vote?');
+      //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      // } else if (shareModalStep === 'candidateShareOptionsAllOpinions') {
+      //   emailSubjectEncoded = encodeURI('Ready to vote?');
+      //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      // } else if (shareModalStep === 'measureShareOptions') {
+      //   emailSubjectEncoded = encodeURI('Ready to vote?');
+      //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      // } else if (shareModalStep === 'measureShareOptionsAllOpinions') {
+      //   emailSubjectEncoded = encodeURI('Ready to vote?');
+      //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      // } else if (shareModalStep === 'officeShareOptions') {
+      //   emailSubjectEncoded = encodeURI('Ready to vote?');
+      //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      // } else if (shareModalStep === 'officeShareOptionsAllOpinions') {
+      //   emailSubjectEncoded = encodeURI('Ready to vote?');
+      //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
+      // }
       shareModalHtml = (
         <Dialog
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
-          onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+          onClose={() => { this.props.closeShareModal(this.state.pathname); }}
         >
           <ModalTitleArea firstSlide>
             <div>
@@ -294,9 +316,11 @@ class ShareModal extends Component {
                     {' '}
                     Your opinions are NOT included.
                     {' '}
-                    <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.includeOpinions(shareModalStep)}>
-                      Include your opinions.
-                    </span>
+                    {!chosenPreventSharingOpinions && (
+                      <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.includeOpinions(shareModalStep)}>
+                        Include your opinions.
+                      </span>
+                    )}
                   </>
                 )
                 }
@@ -331,28 +355,64 @@ class ShareModal extends Component {
                     title="We Vote Friends"
                   />
                 )}
-                <ShareModalOption
-                  background="#3b5998"
-                  icon={<i className="fab fa-facebook-f" />}
-                  id="shareViaFacebook"
-                  link={`https://www.facebook.com/sharer/sharer.php?u=${linkToBeSharedUrlEncoded}&t=WeVote`}
-                  target="_blank"
-                  title="Facebook"
-                />
-                <ShareModalOption
-                  background="#38A1F3"
-                  icon={<i className="fab fa-twitter" />}
-                  id="shareViaTwitter"
-                  link={`https://twitter.com/share?text=${twitterTextEncoded}&url=${linkToBeSharedUrlEncoded}`}
-                  title="Twitter"
-                />
-                <ShareModalOption
-                  background="#2E3C5D"
-                  icon={<Mail />}
-                  id="shareViaEmail"
-                  link={`mailto:?subject=${emailSubjectEncoded}&body=${emailBodyEncoded}`}
-                  title="Email"
-                />
+                <Wrapper>
+                  <FacebookShareButton
+                    className="no-decoration"
+                    id="shareModalFacebookButton"
+                    quote={titleText}
+                    url={`${linkToBeSharedUrlEncoded}`}
+                    windowWidth={750}
+                    windowHeight={600}
+                  >
+                    <FacebookIcon
+                      bgStyle={{ background: '#3b5998' }}
+                      round="True"
+                      size={68}
+                    />
+                    <Text>
+                      Facebook
+                    </Text>
+                  </FacebookShareButton>
+                </Wrapper>
+                <Wrapper>
+                  <TwitterShareButton
+                    className="no-decoration"
+                    id="shareModalTwitterButton"
+                    title={titleText}
+                    url={`${linkToBeSharedUrlEncoded}`}
+                    windowWidth={750}
+                    windowHeight={600}
+                  >
+                    <TwitterIcon
+                      bgStyle={{ background: '#38A1F3' }}
+                      round="True"
+                      size={68}
+                    />
+                    <Text>
+                      Twitter
+                    </Text>
+                  </TwitterShareButton>
+                </Wrapper>
+                <Wrapper>
+                  <EmailShareButton
+                    className="no-decoration"
+                    id="shareModalEmailButton"
+                    url={`${linkToBeShared}`}
+                    body={titleText}
+                    subject="Ready to vote?"
+                    windowWidth={750}
+                    windowHeight={600}
+                  >
+                    <EmailIcon
+                      bgStyle={{ fill: '#2E3C5D' }}
+                      round="True"
+                      size={68}
+                    />
+                    <Text>
+                      Email
+                    </Text>
+                  </EmailShareButton>
+                </Wrapper>
                 <ShareModalOption
                   background="#2E3C5D"
                   copyLink
@@ -376,7 +436,7 @@ class ShareModal extends Component {
       //   <Dialog
       //     classes={{ paper: classes.dialogPaper }}
       //     open={this.props.show}
-      //     onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+      //     onClose={() => { this.props.closeShareModal(this.state.pathname); }}
       //   >
       //     <ModalTitleArea onSignInSlide>
       //       <Title onSignInSlide bold>Sign In</Title>
@@ -399,7 +459,7 @@ class ShareModal extends Component {
         <Dialog
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
-          onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+          onClose={() => { this.props.closeShareModal(this.state.pathname); }}
         >
           <ModalTitleArea>
             <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('ballotShareOptions'); }}>
@@ -439,7 +499,7 @@ class ShareModal extends Component {
         <Dialog
           classes={{ paper: classes.dialogPaper }}
           open={this.props.show}
-          onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+          onClose={() => { this.props.closeShareModal(this.state.pathname); }}
         >
           <ModalTitleArea>
             <Button className={classes.backButton} color="primary" onClick={() => { this.setStep('ballotShareOptions'); }}>
@@ -549,14 +609,10 @@ const FriendsShareTextWrapper = styled.div`
   margin-bottom: 12px;
 `;
 
-const Title = styled.h3`
-  font-size: ${props => (props.bold ? '30px' : '24px')};
-  color: black;
-  margin: ${props => (props.onSignInSlide ? '0 auto' : '0')};
-  margin-top: 0;
-  margin-bottom: ${props => (props.bold ? '0' : '12px')};
-  font-weight: ${props => (props.bold ? 'bold' : 'initial')};
-  text-align: ${props => (props.left && 'left')};
+const Flex = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 16px;
 `;
 
 const SubTitle = styled.div`
@@ -569,10 +625,48 @@ const SubTitle = styled.div`
   }
 `;
 
-const Flex = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  padding-top: 16px;
+const Text = styled.h3`
+  font-weight: normal;
+  font-size: 16px;
+  color: black !important;
+  padding: 6px;
 `;
+
+const Title = styled.h3`
+  font-size: ${props => (props.bold ? '30px' : '24px')};
+  color: black;
+  margin: ${props => (props.onSignInSlide ? '0 auto' : '0')};
+  margin-top: 0;
+  margin-bottom: ${props => (props.bold ? '0' : '12px')};
+  font-weight: ${props => (props.bold ? 'bold' : 'initial')};
+  text-align: ${props => (props.left && 'left')};
+`;
+
+const Wrapper = styled.div`
+  cursor: pointer;
+  display: block !important;
+  margin-bottom: 12px;
+  @media (min-width: 600px) {
+    flex: 1 1 0;
+  }
+  height: 100%;
+  text-align: center;
+  text-decoration: none !important;
+  color: black !important;
+  transition-duration: .25s;
+  &:hover {
+    text-decoration: none !important;
+    color: black !important;
+    transform: scale(1.05);
+    transition-duration: .25s;
+  }
+  @media (max-width: 600px) {
+    width: 33.333%;
+  }
+  @media (max-width: 476px) {
+    width: 50%;
+  }
+`;
+
 
 export default withTheme(withStyles(styles)(ShareModal));

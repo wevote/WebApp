@@ -20,6 +20,7 @@ import SettingsPersonalSideBar from '../../components/Navigation/SettingsPersona
 import SettingsProfile from '../../components/Settings/SettingsProfile';
 import SettingsPromotedOrganizations from '../../components/Settings/SettingsPromotedOrganizations';
 import SettingsSharing from '../../components/Settings/SettingsSharing';
+import SettingsSiteText from '../../components/Settings/SettingsSiteText';
 import SettingsSubscriptionPlan from '../../components/Settings/SettingsSubscriptionPlan';
 import ToolsToShareOnOtherWebsites from '../../components/Settings/ToolsToShareOnOtherWebsites';
 import VoterGuideActions from '../../actions/VoterGuideActions';
@@ -211,6 +212,9 @@ export default class SettingsDashboard extends Component {
         break;
       case 'subscription':
         settingsComponentToDisplay = <SettingsSubscriptionPlan />;
+        break;
+      case 'text':
+        settingsComponentToDisplay = <SettingsSiteText />;
         break;
       case 'tools':
         settingsComponentToDisplay = <ToolsToShareOnOtherWebsites />;

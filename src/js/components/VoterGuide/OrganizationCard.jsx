@@ -164,7 +164,7 @@ export default class OrganizationCard extends Component {
     }
 
     return (
-      <div className="card-main__media-object">
+      <OrganizationCardWrapper className="card-main__media-object">
         <div className="card-main__media-object-anchor">
           {turnOffLogo ?
             null : (
@@ -273,10 +273,13 @@ export default class OrganizationCard extends Component {
           ) : null
           }
         </div>
-      </div>
+      </OrganizationCardWrapper>
     );
   }
 }
+
+const OrganizationCardWrapper = styled.div`
+`;
 
 const TwitterFollowersIcon = styled.span`
   font-size: 1.25rem;

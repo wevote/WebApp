@@ -734,7 +734,7 @@ class HeaderBackToBallot extends Component {
             pathname={pathname}
             show={showShareModal}
             shareModalStep={shareModalStep}
-            toggleFunction={this.closeShareModal}
+            closeShareModal={this.closeShareModal}
           />
         )}
       </AppBar>
