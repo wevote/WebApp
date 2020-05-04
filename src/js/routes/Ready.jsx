@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-// import AnalyticsActions from '../actions/AnalyticsActions';
 import AppStore from '../stores/AppStore';
 import BallotActions from '../actions/BallotActions';
 import BallotStore from '../stores/BallotStore';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import { historyPush } from '../utils/cordovaUtils';
-import LoadingWheel from '../components/LoadingWheel';
-import { renderLog } from '../utils/logging';
-import VoterStore from '../stores/VoterStore';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
+import { historyPush } from '../utils/cordovaUtils';
+import LoadingWheel from '../components/LoadingWheel';
 import PledgeToVote from '../components/Ready/PledgeToVote';
-import ReadyTaskCard from '../components/Ready/ReadyTaskCard';
+import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
+import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
+import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
+import { renderLog } from '../utils/logging';
+import VoterStore from '../stores/VoterStore';
 import webAppConfig from '../config';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -73,8 +73,6 @@ class Ready extends Component {
       return LoadingWheel;
     }
 
-    const globalCompleted = true;
-
     return (
       <div className="page-content-container">
         <PageContainer className="container-fluid">
@@ -99,91 +97,55 @@ class Ready extends Component {
                         <div>
                           We&apos;ve all been there. Election day is almost here,
                           {' '}
-                          but besides the President and a few other choices we&apos;ve made,
+                          but besides the President and a few other decisions,
                           {' '}
                           we don&apos;t know how we&apos;re going to vote.
                           {' '}
                           There has to be a better way. Now, there is!
-                        </div>
-                        <div>
-                          <br />
-                          <Link to="/ballot">
-                            <span className="u-link-color u-underline u-cursor--pointer">
-                              View Your Ballot
-                            </span>
-                          </Link>
                         </div>
                       </>
                     )}
                   </Paragraph>
                 </div>
               </Card>
-              <ReadyTaskCard
-                ballotMode
-                completed={globalCompleted}
-                buttonText="Get Started"
-                completedTitle="Your Ballot"
-                completedSubtitle="Review your decisions"
-                completedButtonText="Your Ballot"
-                title="Voting?"
-                subtitle="Start deciding how you are going to vote."
-              />
-              <ReadyTaskCard
-                              completed={globalCompleted}
-
-                makeAPlanMode
-                buttonText="Make a Plan Now"
-                completedTitle="Your Voting Plan"
-                completedSubtitle="Review your plans"
-                completedButtonText="Your Plans"
-                title="When Will You Vote?"
-                subtitle="Write your own adventure and cast your vote."
-              />
-              <ReadyTaskCard
-                              completed={globalCompleted}
-
-                registerToVotePlan
-                buttonText="Register Now"
-                completedTitle="You've Registered!"
-                completedSubtitle="You are successfully registered to vote."
-                completedButtonText="Your Plans"
-                title="Registered to Vote Yet?"
-                subtitle="Register to vote to cast your ballot."
-              />
-              {/* <div className="u-show-mobile">
-                <ReadyTaskCard
-                  ballotMode
-                  buttonText="Get Started"
+              <div className="u-show-mobile">
+                <ReadyTaskBallot
+                  arrowsOn
+                  title="Voting?"
+                  subtitle="Start deciding how you'll vote."
+                  buttonText="Your Ballot"
                   completedTitle="Your Ballot"
                   completedSubtitle="Review your decisions"
                   completedButtonText="Your Ballot"
-                  title="Voting?"
-                  subtitle="Start deciding how you are going to vote."
                 />
               </div>
               {nextReleaseFeaturesEnabled && (
-                <ReadyTaskCard
-                  makeAPlanMode
-                  buttonText="Make a Plan Now"
-                  completedTitle="Your Voting Plan"
-                  completedSubtitle="Review your decisions"
-                  completedButtonText="Your Ballot"
-                  title="When Will You Vote?"
-                  subtitle="Write your own adventure and cast your vote."
+                <ReadyTaskPlan
+                  arrowsOn
                 />
-              )} */}
+              )}
+              {nextReleaseFeaturesEnabled && (
+                <ReadyTaskRegister
+                  arrowsOn
+                  title="Registered to Vote?"
+                  subtitle="Register to vote to cast your ballot."
+                  buttonText="Register Now"
+                  completedTitle="You've Registered!"
+                  completedSubtitle="You are successfully registered to vote."
+                  completedButtonText="Your Plans"
+                />
+              )}
             </div>
             <div className="col-md-4 d-none d-md-block">
-              {nextReleaseFeaturesEnabled && <PledgeToVote />}
-              <ReadyTaskCard
-                ballotMode
+              <ReadyTaskBallot
+                title="Voting?"
+                subtitle="Start deciding how you are going to vote."
                 buttonText="Your Ballot"
                 completedTitle="Your Ballot"
                 completedSubtitle="Review your decisions"
                 completedButtonText="Your Ballot"
-                subtitle="Start deciding how you are going to vote."
-                title="Voting?"
               />
+              {nextReleaseFeaturesEnabled && <PledgeToVote />}
             </div>
           </div>
         </PageContainer>
@@ -193,6 +155,7 @@ class Ready extends Component {
 }
 
 const Card = styled.div`
+  padding-bottom: 4px;
 `;
 
 const EditAddressWrapper = styled.div`
@@ -209,12 +172,11 @@ const PageContainer = styled.div`
 const Title = styled.h2`
   font-size: 26px;
   font-weight: 800;
-  margin: 0 0 16px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 20px;
+  margin: 0 0 12px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 18px;
   }
 `;
-
 
 const Paragraph = styled.div`
 

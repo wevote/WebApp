@@ -1,10 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { TextField, Checkbox, FormControlLabel, withStyles, Button } from '@material-ui/core';
 import { formatDateToYearMonthDay } from '../../utils/textFormat';
 
 class PledgeToVote extends React.Component {
-  static propTypes = {};
+  static propTypes = {
+    classes: PropTypes.object,
+  };
 
   constructor (props) {
     super(props);
@@ -85,6 +88,7 @@ class PledgeToVote extends React.Component {
     let lastScroll;
 
     if (this.state.commentsToDisplay.length >= this.state.comments.length - 2) {
+      //
     } else {
       const newArray = [...this.state.commentsToDisplay];
 
@@ -127,11 +131,12 @@ class PledgeToVote extends React.Component {
   }
 
   handleChange () {
-    this.setState({ shareNameAndEmail: !this.state.shareNameAndEmail });
+    const { shareNameAndEmail } = this.state;
+    this.setState({ shareNameAndEmail: !shareNameAndEmail });
   }
 
   render () {
-    const { goal, total, comments, shareNameAndEmail, commentsToDisplay } = this.state;
+    const { goal, total, shareNameAndEmail, commentsToDisplay } = this.state;
     const { classes } = this.props;
 
     return (
@@ -150,16 +155,14 @@ class PledgeToVote extends React.Component {
                   <CommentName>
                     {comment.name}
                     {' '}
-pledged
+                    pledged
                     {' '}
                     {formatDateToYearMonthDay(comment.time)}
                   </CommentName>
                 </CommentWrapper>
               ))}
             </CommentsWrapper>
-          ) : (
-            null
-          )}
+          ) : null }
           <Input variant="outlined" placeholder="I am a voter because..." />
           <CheckboxLabel
             classes={{ label: classes.label }}
