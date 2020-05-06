@@ -102,7 +102,7 @@ $toggle-icon-margin-top: 3px;
 }
 
 .position-item {
-  border-left: 4px solid #e8e8e8;
+  border-left: 4px solid #e8e8e8;  // Replace with $gray-border #ddd?
   &--support {
     border-left: 4px solid rgb(31, 192, 111);
   }

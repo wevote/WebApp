@@ -1,6 +1,19 @@
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 
+const ButtonLeft = styled.div`
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+`;
+
+const ButtonText = styled.div`
+  font-size: 14px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 12px;
+  }
+`;
+
 const Card = styled.div`
   padding: 16px;
   padding-left: 82px;
@@ -57,31 +70,31 @@ const Icon = styled.div`
 `;
 
 const Hexagon = styled.div`
-position: relative;
-width: 50px;
-height: 28.87px;
-background-color: #bed1fb;
-margin: 14.43px 0;
+  position: relative;
+  width: 50px;
+  height: 28.87px;
+  background-color: #bed1fb;
+  margin: 14.43px 0;
 
-::before,
-::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
-}
+  ::before,
+  ::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+  }
 
-::before {
-  bottom: 100%;
-  border-bottom: 14.43px solid #bed1fb;
-}
+  ::before {
+    bottom: 100%;
+    border-bottom: 14.43px solid #bed1fb;
+  }
 
-::after {
-  top: 100%;
-  width: 0;
-  border-top: 14.43px solid #bed1fb;
-}
+  ::after {
+    top: 100%;
+    width: 0;
+    border-top: 14.43px solid #bed1fb;
+  }
 `;
 
 const PercentComplete = styled.div`
@@ -121,11 +134,11 @@ const SubTitle = styled.small`
 `;
 
 const StyledButton = styled(Button)`
-  border: 1.5px solid ${props => (props.completed ? 'rgb(31,192,111)' : '#e8e8e8')} !important;
-  padding: 8px 16px !important;
+  border: 1.5px solid ${props => (props.completed ? 'rgb(31,192,111)' : '#ddd')} !important;
+  padding: 8px 12px !important;
   margin-top: 12px !important;
   border-radius: 5px !important;
-  font-weight: bold !important;
+  ${props => (props.completed ? '' : 'font-weight: bold !important;')}
   font-size: 16px !important;
   width: 100% !important;
   color: ${props => (props.completed ? 'rgb(31,192,111)' : 'inherit')} !important;
@@ -134,25 +147,42 @@ const StyledButton = styled(Button)`
     padding: 0 !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: flex-start !important;
+    justify-content: ${props => (props.completed || props.withoutSteps ? 'flex-start' : 'space-between')} !important;
   }
   :hover {
     background: #f7f7f7 !important;
   }
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 8px 8px !important;
+  }
 `;
 
 const StyledCheckbox = styled.div`
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border-radius: 40px;
+  margin: 0;
+  margin-right: 12px;
+  border: 1.5px solid #ddd;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin-right: 8px;
+  }
+`;
+
+const StyledCheckboxCompleted = styled.div`
   width: 25px;
   height: 25px;
-  background: ${props => (props.completed ? 'rgb(31,192,111)' : 'transparent')};
   border-radius: 50px;
   margin: 0;
   margin-right: 12px;
-  border: 1.5px solid #e8e8e8;
-
+  margin-top: -5px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin-right: 8px;
+  }
 `;
 
 export {
-  Card, Hexagon, Icon, PercentComplete, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper,
+  ButtonLeft, ButtonText, Card, Hexagon, Icon, PercentComplete, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper,
 };
 

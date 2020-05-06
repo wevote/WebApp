@@ -11,6 +11,7 @@ import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import { historyPush } from '../utils/cordovaUtils';
 import LoadingWheel from '../components/LoadingWheel';
 import PledgeToVote from '../components/Ready/PledgeToVote';
+import ReadMore from '../components/Widgets/ReadMore';
 import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
@@ -72,6 +73,7 @@ class Ready extends Component {
     if (!voter) {
       return LoadingWheel;
     }
+    const defaultIntroductionText = "We've all been there. Election day is almost here, but besides the President and a few other decisions, we don't know how we're going to vote. There has to be a better way. Now, there is!";
 
     return (
       <div className="page-content-container">
@@ -86,6 +88,36 @@ class Ready extends Component {
               <div className="u-cursor--pointer" onClick={this.goToBallot}>
                 <ElectionCountdown />
               </div>
+              <div className="u-show-mobile">
+                <Card className="card">
+                  <div className="card-main">
+                    <Title>
+                      {chosenReadyIntroductionTitle || 'Get Ready to Vote in Minutes!'}
+                    </Title>
+                    <Paragraph>
+                      <ReadMore
+                        textToDisplay={chosenReadyIntroductionText || defaultIntroductionText}
+                        numberOfLines={2}
+                      />
+                    </Paragraph>
+                  </div>
+                </Card>
+              </div>
+              <ReadyTaskBallot
+                arrowsOn
+              />
+              {nextReleaseFeaturesEnabled && (
+                <ReadyTaskPlan
+                  arrowsOn
+                />
+              )}
+              {nextReleaseFeaturesEnabled && (
+                <ReadyTaskRegister
+                  arrowsOn
+                />
+              )}
+            </div>
+            <div className="col-md-4 d-none d-md-block">
               <Card className="card">
                 <div className="card-main">
                   <Title>
@@ -108,43 +140,6 @@ class Ready extends Component {
                   </Paragraph>
                 </div>
               </Card>
-              <div className="u-show-mobile">
-                <ReadyTaskBallot
-                  arrowsOn
-                  title="Voting?"
-                  subtitle="Start deciding how you'll vote."
-                  buttonText="Your Ballot"
-                  completedTitle="Your Ballot"
-                  completedSubtitle="Review your decisions"
-                  completedButtonText="Your Ballot"
-                />
-              </div>
-              {nextReleaseFeaturesEnabled && (
-                <ReadyTaskPlan
-                  arrowsOn
-                />
-              )}
-              {nextReleaseFeaturesEnabled && (
-                <ReadyTaskRegister
-                  arrowsOn
-                  title="Registered to Vote?"
-                  subtitle="Register to vote to cast your ballot."
-                  buttonText="Register Now"
-                  completedTitle="You've Registered!"
-                  completedSubtitle="You are successfully registered to vote."
-                  completedButtonText="Your Plans"
-                />
-              )}
-            </div>
-            <div className="col-md-4 d-none d-md-block">
-              <ReadyTaskBallot
-                title="Voting?"
-                subtitle="Start deciding how you are going to vote."
-                buttonText="Your Ballot"
-                completedTitle="Your Ballot"
-                completedSubtitle="Review your decisions"
-                completedButtonText="Your Ballot"
-              />
               {nextReleaseFeaturesEnabled && <PledgeToVote />}
             </div>
           </div>

@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import EventAvailable from '@material-ui/icons/EventAvailable';
 import EventBusy from '@material-ui/icons/EventBusy';
 import { historyPush } from '../../utils/cordovaUtils';
-import { Card, Icon, PercentComplete, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
+import { ButtonLeft, ButtonText, Card, Icon, PercentComplete, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
 // Hexagon,
 
 class ReadyTaskPlan extends React.Component {
   static propTypes = {
-    arrowsOn: PropTypes.bool,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -24,7 +25,7 @@ class ReadyTaskPlan extends React.Component {
   }
 
   render () {
-    const { arrowsOn } = this.props;
+    const { classes } = this.props;
     const { completed } = this.state;
 
     return (
@@ -54,22 +55,26 @@ class ReadyTaskPlan extends React.Component {
               <SubTitle className="u-cursor--pointer" onClick={this.goToNextStep}>
                 Write your own adventure and cast your vote!
               </SubTitle>
-              <StyledButton className="u-cursor--pointer" onClick={this.goToNextStep} completed={completed || undefined} variant="outlined" color="primary">
-                <StyledCheckbox completed={completed} />
-                <span>
-                  <span className="u-show-mobile">
-                    Make A Plan
-                  </span>
-                  <span className="u-show-desktop-tablet">
-                    Make A Plan Now
-                  </span>
-                  {arrowsOn && (
-                    <>
-                      &nbsp;
-                      <ArrowForwardIcon />
-                    </>
-                  )}
-                </span>
+              <StyledButton
+                className="u-cursor--pointer"
+                color="primary"
+                completed={completed || undefined}
+                onClick={this.goToNextStep}
+                variant="outlined"
+                withoutSteps
+              >
+                <ButtonLeft>
+                  <StyledCheckbox />
+                  <ButtonText>
+                    <span className="u-show-mobile">
+                      Make A Plan
+                    </span>
+                    <span className="u-show-desktop-tablet">
+                      Make A Plan Now
+                    </span>
+                    <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                  </ButtonText>
+                </ButtonLeft>
               </StyledButton>
             </>
           )}
@@ -79,4 +84,15 @@ class ReadyTaskPlan extends React.Component {
   }
 }
 
-export default ReadyTaskPlan;
+const styles = theme => ({
+  arrowRoot: {
+    fontSize: 14,
+    marginBottom: 3,
+    marginLeft: 4,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 14,
+    },
+  },
+});
+
+export default withTheme(withStyles(styles)(ReadyTaskPlan));
