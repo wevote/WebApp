@@ -1,21 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import AccountBoxOutlined from '@material-ui/icons/AccountBoxOutlined';
 import AccountBoxFilled from '@material-ui/icons/AccountBox';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { historyPush } from '../../utils/cordovaUtils';
-import { Card, Icon, PercentComplete, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
+import { ButtonLeft, ButtonText, Card, Icon, PercentComplete, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
 // Hexagon,
 
 class ReadyTaskRegister extends React.Component {
   static propTypes = {
-    arrowsOn: PropTypes.bool,
-    buttonText: PropTypes.string,
-    completedTitle: PropTypes.string,
-    completedSubtitle: PropTypes.string,
-    completedButtonText: PropTypes.string,
-    title: PropTypes.string,
-    subtitle: PropTypes.string,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -30,7 +25,7 @@ class ReadyTaskRegister extends React.Component {
   }
 
   render () {
-    const { arrowsOn, completedButtonText, completedTitle, title, completedSubtitle, subtitle, buttonText } = this.props;
+    const { classes } = this.props;
     const { completed } = this.state;
 
     return (
@@ -45,26 +40,73 @@ class ReadyTaskRegister extends React.Component {
               className="u-cursor--pointer"
               onClick={this.goToNextStep}
             >
-              {completed ? completedTitle || title : title}
+              {completed ? (
+                <>
+                  <span className="u-show-mobile">
+                    You are Registered
+                  </span>
+                  <span className="u-show-desktop-tablet">
+                    You are Registered to Vote
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="u-show-mobile">
+                    Registered to Vote?
+                  </span>
+                  <span className="u-show-desktop-tablet">
+                    Registered to Vote?
+                  </span>
+                </>
+              )}
             </Title>
             <PercentComplete completed={completed || undefined}>
               {completed ? '100%' : '0%'}
             </PercentComplete>
           </TitleRowWrapper>
-          <SubTitle className="u-cursor--pointer" onClick={this.goToNextStep}>{completed ? completedSubtitle || subtitle : subtitle}</SubTitle>
-          <StyledButton className="u-cursor--pointer" onClick={this.goToNextStep} completed={completed || undefined} variant="outlined" color="primary">
-            <StyledCheckbox completed={completed} />
-            {completed ? completedButtonText : (
-              <span>
-                {buttonText}
-                {arrowsOn && <ArrowForwardIcon />}
-              </span>
-            )}
-          </StyledButton>
+          <SubTitle className="u-cursor--pointer" onClick={this.goToNextStep}>
+            {completed ? 'You have verified with your state that you are registered to vote.' : 'If you\'re voter registration isn\'t current, you won\'t be able to cast your ballot.'}
+          </SubTitle>
+          {!completed && (
+            <StyledButton
+              className="u-cursor--pointer"
+              color="primary"
+              completed={completed || undefined}
+              onClick={this.goToNextStep}
+              variant="outlined"
+              withoutSteps
+            >
+              <ButtonLeft>
+                <StyledCheckbox />
+                <ButtonText>
+                  <>
+                    <span className="u-show-mobile">
+                      Verify Now
+                    </span>
+                    <span className="u-show-desktop-tablet">
+                      Verify You Are Registered in your State
+                    </span>
+                  </>
+                  <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                </ButtonText>
+              </ButtonLeft>
+            </StyledButton>
+          )}
         </div>
       </Card>
     );
   }
 }
 
-export default ReadyTaskRegister;
+const styles = theme => ({
+  arrowRoot: {
+    fontSize: 14,
+    marginBottom: 3,
+    marginLeft: 4,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 14,
+    },
+  },
+});
+
+export default withTheme(withStyles(styles)(ReadyTaskRegister));
