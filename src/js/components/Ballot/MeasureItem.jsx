@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
@@ -14,7 +13,6 @@ import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeCo
 
 class MeasureItem extends Component {
   static propTypes = {
-    classes: PropTypes.object,
     measureWeVoteId: PropTypes.string.isRequired,
     // theme: PropTypes.object,
   };
@@ -86,7 +84,6 @@ class MeasureItem extends Component {
   render () {
     renderLog('MeasureItem');  // Set LOG_RENDER_EVENTS to log all renders
     // const { supportProps, transitioning } = this.state;
-    const { classes } = this.props;
     let {
       ballotItemDisplayName, stateDisplayName,
     } = this.state;
@@ -102,7 +99,7 @@ class MeasureItem extends Component {
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     return (
-      <Card classes={{ root: classes.cardRoot }}>
+      <MeasureItemWrapper className="card-main">
         <InfoRow>
           <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
             <Title>
@@ -139,7 +136,7 @@ class MeasureItem extends Component {
             />
           </MeasureTextWrapper>
         )}
-      </Card>
+      </MeasureItemWrapper>
     );
   }
 }
@@ -186,6 +183,9 @@ const MeasureInfoWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     max-width: 70%;
   }
+`;
+
+const MeasureItemWrapper = styled.div`
 `;
 
 const MeasureTextWrapper = styled.div`

@@ -20,6 +20,10 @@ import PositionList from '../../components/Ballot/PositionList';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
+import ShareButtonDesktopTablet
+  from '../../components/Share/ShareButtonDesktopTablet';
+import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
+import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
 
 // The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
 class Measure extends Component {
@@ -267,9 +271,24 @@ class Measure extends Component {
             <MeasureStickyHeader measureWeVoteId={measure.we_vote_id} />
           )
         }
-        <section className="card">
-          <MeasureItem measureWeVoteId={measure.we_vote_id} />
-        </section>
+        <div className="card">
+          <TwoColumns>
+            <LeftColumnWrapper>
+              <MeasureItem measureWeVoteId={measure.we_vote_id} />
+            </LeftColumnWrapper>
+            <RightColumnWrapper className="u-show-desktop-tablet">
+              <MeasureShareWrapper>
+                <ShareButtonDesktopTablet measureShare />
+              </MeasureShareWrapper>
+              {measure.ballotpedia_measure_url && (
+                <ViewOnBallotpedia externalLinkUrl={measure.ballotpedia_measure_url} />
+              )}
+              {measureName && (
+                <SearchOnGoogle googleQuery={`${measureName}`} />
+              )}
+            </RightColumnWrapper>
+          </TwoColumns>
+        </div>
         { !!(allCachedPositionsForThisMeasure.length) && (
           <section className="card">
             <DelayedLoad showLoadingText waitBeforeShow={500}>

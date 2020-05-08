@@ -31,13 +31,14 @@ class SettingsSharing extends Component {
       chosenFeaturePackage: 'FREE',
       chosenFaviconFromFileReader: null,
       chosenLogoFromFileReader: null,
+      chosenPreventSharingOpinions: false,
+      chosenSocialShareDescription: '',
+      chosenSocialShareDescriptionChangedLocally: false,
+      chosenSocialShareDescriptionSavedValue: '',
       chosenSocialShareMasterImageFromFileReader: null,
       hideLogo: false,
       organization: {},
       organizationWeVoteId: '',
-      chosenSocialShareDescription: '',
-      chosenSocialShareDescriptionChangedLocally: false,
-      chosenSocialShareDescriptionSavedValue: '',
       uploadImageType: 'headerLogo',
       voter: {},
       voterFeaturePackageExceedsOrEqualsEnterprise: false,
@@ -76,6 +77,7 @@ class SettingsSharing extends Component {
       const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
       this.setState({
         chosenFeaturePackage,
+        chosenPreventSharingOpinions: organization.chosen_prevent_sharing_opinions || false,
         chosenSocialShareDescriptionSavedValue,
         hideLogo: organization.chosen_hide_we_vote_logo || false,
         organization,
@@ -126,6 +128,16 @@ class SettingsSharing extends Component {
     OrganizationActions.organizationChosenHideWeVoteLogoSave(organizationWeVoteId, !hideLogo);
     this.setState({
       hideLogo: !hideLogo,
+    });
+    event.preventDefault();
+  };
+
+  handleTogglePreventSharingOpinions = (event) => {
+    const { chosenPreventSharingOpinions, organizationWeVoteId } = this.state;
+    // console.log('chosenPreventSharingOpinions', !chosenPreventSharingOpinions);
+    OrganizationActions.organizationPreventSharingOpinions(organizationWeVoteId, !chosenPreventSharingOpinions);
+    this.setState({
+      chosenPreventSharingOpinions: !chosenPreventSharingOpinions,
     });
     event.preventDefault();
   };
@@ -244,6 +256,7 @@ class SettingsSharing extends Component {
       chosenFaviconFromFileReader,
       chosenFeaturePackage,
       chosenLogoFromFileReader,
+      chosenPreventSharingOpinions,
       chosenSocialShareDescription,
       chosenSocialShareDescriptionChangedLocally,
       chosenSocialShareMasterImageFromFileReader,
@@ -336,6 +349,7 @@ class SettingsSharing extends Component {
                 <Button
                   color="primary"
                   classes={{ root: classes.uploadButton }}
+                  id="uploadHeaderLogo"
                   variant="contained"
                   onClick={this.handleUploadHeaderLogo}
                 >
@@ -346,6 +360,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
+                      id="organizationChosenLogoDelete"
                       variant="outlined"
                       onClick={() => this.organizationChosenLogoDelete()}
                     >
@@ -373,8 +388,9 @@ class SettingsSharing extends Component {
               <SharingColumn alignRight>
                 <PremiumableButton
                   classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
-                  premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
+                  id="handleUploadFavicon"
                   onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleUploadFavicon : () => this.openPaidAccountUpgradeModal('enterprise')}
+                  premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                 >
                   {voterFeaturePackageExceedsOrEqualsEnterprise ? (
                     'Upload'
@@ -394,6 +410,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
+                      id="organizationChosenFaviconDelete"
                       variant="outlined"
                       onClick={() => this.organizationChosenFaviconDelete()}
                     >
@@ -421,6 +438,7 @@ class SettingsSharing extends Component {
               <SharingColumn alignRight>
                 <PremiumableButton
                   classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
+                  id="handleUploadShareImage"
                   premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                   onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleUploadShareImage : () => this.openPaidAccountUpgradeModal('enterprise')}
                 >
@@ -442,6 +460,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
+                      id="organizationChosenSocialShareMasterImageDelete"
                       variant="outlined"
                       onClick={() => this.organizationChosenSocialShareMasterImageDelete()}
                     >
@@ -468,6 +487,7 @@ class SettingsSharing extends Component {
                     color="primary"
                     classes={{ root: classes.button }}
                     disabled={!chosenSocialShareDescriptionChangedLocally}
+                    id="cancelChosenSocialShareDescriptionButton"
                     onClick={this.onCancelChosenSocialShareDescriptionButton}
                   >
                     Cancel
@@ -475,6 +495,7 @@ class SettingsSharing extends Component {
                   <PremiumableButton
                     classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
                     disabled={voterFeaturePackageExceedsOrEqualsEnterprise ? !chosenSocialShareDescriptionChangedLocally : false}
+                    id="onSaveChosenSocialShareDescriptionButton"
                     premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                     onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.onSaveChosenSocialShareDescriptionButton : () => this.openPaidAccountUpgradeModal('enterprise')}
                   >
@@ -492,6 +513,26 @@ class SettingsSharing extends Component {
                     )}
                   </PremiumableButton>
                 </Actions>
+              </SharingColumn>
+            </SharingRow>
+            <SharingRow>
+              <SharingColumn>
+                <InputBoxLabel>Prohibit Sharing With Opinions</InputBoxLabel>
+                <DescriptionText>
+                  Turn off the ability for voters to share their opinions from the &quot;Share&quot; buttons.
+                  {' '}
+                  If you are a 501(c)(3) nonprofit organization, this option must be turned on because the IRS does not allow you to provide voters with a way to share their opinions with other voters from a website you manage.
+                </DescriptionText>
+              </SharingColumn>
+              <SharingColumn alignRight>
+                <Switch
+                  color="primary"
+                  checked={chosenPreventSharingOpinions}
+                  id="chosenPreventSharingOpinions"
+                  onChange={this.handleTogglePreventSharingOpinions}
+                  value="chosenPreventSharingOpinions"
+                  inputProps={{ 'aria-label': 'Prevent sharing opinions switch' }}
+                />
               </SharingColumn>
             </SharingRow>
           </CardMain>

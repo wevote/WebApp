@@ -1,10 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { TextField, Checkbox, FormControlLabel, withStyles, Button } from '@material-ui/core';
 import { formatDateToYearMonthDay } from '../../utils/textFormat';
 
 class PledgeToVote extends React.Component {
-  static propTypes = {};
+  static propTypes = {
+    classes: PropTypes.object,
+  };
 
   constructor (props) {
     super(props);
@@ -14,51 +17,61 @@ class PledgeToVote extends React.Component {
       shareNameAndEmail: false,
       comments: [
         {
+          id: 1,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
         },
         {
+          id: 2,
           name: 'Tony Shapiro',
           time: new Date(new Date().getTime() + 30 * 60000),
           comment: "I'm a voter because this is OUR country.",
         },
         {
+          id: 3,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
         },
         {
+          id: 4,
           name: 'Ben White',
           time: new Date(new Date().getTime() + 17 * 60000),
           comment: 'I vote because the country needs to change. All this stuff is awesome. A great voter always votes. Dummy content.',
         },
         {
+          id: 5,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
         },
         {
+          id: 6,
           name: 'Ben White',
           time: new Date(new Date().getTime() + 17 * 60000),
           comment: 'I vote because the country needs to change. All this stuff is awesome. A great voter always votes. Dummy content.',
         },
         {
+          id: 7,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
         },
         {
+          id: 8,
           name: 'Tony Shapiro',
           time: new Date(new Date().getTime() + 30 * 60000),
           comment: "I'm a voter because this is OUR country.",
         },
         {
+          id: 9,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
         },
         {
+          id: 10,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
@@ -76,7 +89,18 @@ class PledgeToVote extends React.Component {
       comments[1] ? comments[1] : null,
     ]});
 
-    setInterval(() => this.setCommentsToDisplay(), 3000);
+    if (this.timeInterval) {
+      clearInterval(this.timeInterval);
+      this.timeInterval = null;
+    }
+    this.timeInterval = setInterval(() => this.setCommentsToDisplay(), 3000);
+  }
+
+  componentWillUnmount () {
+    if (this.timeInterval) {
+      clearInterval(this.timeInterval);
+      this.timeInterval = null;
+    }
   }
 
   setCommentsToDisplay () {
@@ -85,6 +109,7 @@ class PledgeToVote extends React.Component {
     let lastScroll;
 
     if (this.state.commentsToDisplay.length >= this.state.comments.length - 2) {
+      //
     } else {
       const newArray = [...this.state.commentsToDisplay];
 
@@ -104,18 +129,16 @@ class PledgeToVote extends React.Component {
 
       this.setState({ commentsToDisplay: [...newArray]});
 
-      let height = 0;
-
-      commentsWrapper.childNodes.forEach((node) => {
-        height += node.clientHeight;
-      });
-
-      console.log(height);
+      // let height = 0;
+      // commentsWrapper.childNodes.forEach((node) => {
+      //   height += node.clientHeight;
+      // });
+      // console.log('pledge height: ', height);
 
       if (lastScroll) {
-        commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 9999;
+        commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 64;
       } else {
-        commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 32;
+        commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 64;
       }
 
       // commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight;
@@ -127,11 +150,12 @@ class PledgeToVote extends React.Component {
   }
 
   handleChange () {
-    this.setState({ shareNameAndEmail: !this.state.shareNameAndEmail });
+    const { shareNameAndEmail } = this.state;
+    this.setState({ shareNameAndEmail: !shareNameAndEmail });
   }
 
   render () {
-    const { goal, total, comments, shareNameAndEmail, commentsToDisplay } = this.state;
+    const { goal, total, shareNameAndEmail, commentsToDisplay } = this.state;
     const { classes } = this.props;
 
     return (
@@ -145,28 +169,26 @@ class PledgeToVote extends React.Component {
           {commentsToDisplay && commentsToDisplay.length > 0 ? (
             <CommentsWrapper id="comments-wrapper">
               {commentsToDisplay.map(comment => (
-                <CommentWrapper className="comment">
+                <CommentWrapper className="comment" key={comment.id}>
                   <Comment>{comment.comment}</Comment>
                   <CommentName>
                     {comment.name}
                     {' '}
-pledged
+                    pledged
                     {' '}
                     {formatDateToYearMonthDay(comment.time)}
                   </CommentName>
                 </CommentWrapper>
               ))}
             </CommentsWrapper>
-          ) : (
-            null
-          )}
+          ) : null }
           <Input variant="outlined" placeholder="I am a voter because..." />
           <CheckboxLabel
             classes={{ label: classes.label }}
             control={(
               <Checkbox
                 classes={{ root: classes.checkbox }}
-                shareNameAndEmail={shareNameAndEmail}
+                checked={shareNameAndEmail}
                 onChange={this.handleChange}
                 name="shareNameAndEmailB"
                 color="primary"
@@ -174,7 +196,7 @@ pledged
             )}
             label="Please share my name and email with New King Dems"
           />
-          <Button variant="contained" color="primary" fullWidth>Pledge To Vote Now</Button>
+          <Button variant="contained" color="primary" classes={{ root: classes.button }} fullWidth>Pledge To Vote Now</Button>
         </div>
       </Card>
     );
@@ -188,6 +210,9 @@ const styles = () => ({
   },
   checkbox: {
     marginTop: '-9px !important',
+  },
+  button: {
+    marginBottom: 12,
   },
 });
 
