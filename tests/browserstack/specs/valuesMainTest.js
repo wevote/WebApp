@@ -6,10 +6,10 @@ const IOS_CONTEXT = 'WEBVIEW_1';
 const PAUSE_DURATION_MICROSECONDS = 1250;
 
 describe('Basic cross-platform We Vote test',  () => {
-  it('should load the app so we can run letious tests', async () => {
+  it('should load the app so we can run tests', async () => {
     const { isCordovaFromAppStore, isMobileScreenSize } = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
-    const sqlInjectionTest = '\' or 1=1 -- -';
+    const xssTest = '<script>alert(\'1\')</script>';
 
     if (isCordovaFromAppStore) {
     // ///////////////////////////////
