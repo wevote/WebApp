@@ -108,9 +108,7 @@ class PledgeToVote extends React.Component {
 
     let lastScroll;
 
-    if (this.state.commentsToDisplay.length >= this.state.comments.length - 2) {
-      //
-    } else {
+    if (this.state.commentsToDisplay.length < this.state.comments.length - 2) {
       const newArray = [...this.state.commentsToDisplay];
 
       if (this.state.comments[this.state.commentsToDisplay.length]) {
