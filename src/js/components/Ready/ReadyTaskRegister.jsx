@@ -4,9 +4,10 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import AccountBoxOutlined from '@material-ui/icons/AccountBoxOutlined';
 import AccountBoxFilled from '@material-ui/icons/AccountBox';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { historyPush } from '../../utils/cordovaUtils';
-import { ButtonLeft, ButtonText, Card, Icon, PercentComplete, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
-// Hexagon,
+import {cordovaDot, historyPush} from '../../utils/cordovaUtils';
+import register0Percent from '../../../img/global/svg-icons/ready/register-0-percent.svg';
+import register100Percent from '../../../img/global/svg-icons/ready/register-100-percent.svg';
+import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
 
 class ReadyTaskRegister extends React.Component {
   static propTypes = {
@@ -29,10 +30,23 @@ class ReadyTaskRegister extends React.Component {
     const { completed } = this.state;
 
     return (
-      <Card completed={completed} className="card">
-        <Icon className="u-cursor--pointer" completed={completed} onClick={this.goToNextStep}>
-          {/* <Hexagon /> */}
-          {completed ? <AccountBoxOutlined /> : <AccountBoxFilled />}
+      <ReadyCard showprogresscolor={completed} className="card">
+        <Icon className="u-cursor--pointer" onClick={this.goToNextStep}>
+          {completed ?  (
+            <img
+              src={cordovaDot(register100Percent)}
+              width="50"
+              height="50"
+              alt="Registered to Vote"
+            />
+          ) : (
+            <img
+              src={cordovaDot(register0Percent)}
+              width="50"
+              height="50"
+              alt="Register to Vote"
+            />
+          )}
         </Icon>
         <div>
           <TitleRowWrapper>
@@ -60,7 +74,7 @@ class ReadyTaskRegister extends React.Component {
                 </>
               )}
             </Title>
-            <PercentComplete completed={completed || undefined}>
+            <PercentComplete showprogresscolor={completed || undefined}>
               {completed ? '100%' : '0%'}
             </PercentComplete>
           </TitleRowWrapper>
@@ -74,7 +88,7 @@ class ReadyTaskRegister extends React.Component {
               completed={completed || undefined}
               onClick={this.goToNextStep}
               variant="outlined"
-              withoutSteps
+              withoutsteps="1"
             >
               <ButtonLeft>
                 <StyledCheckbox />
@@ -93,7 +107,7 @@ class ReadyTaskRegister extends React.Component {
             </StyledButton>
           )}
         </div>
-      </Card>
+      </ReadyCard>
     );
   }
 }

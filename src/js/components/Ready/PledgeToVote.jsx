@@ -17,51 +17,61 @@ class PledgeToVote extends React.Component {
       shareNameAndEmail: false,
       comments: [
         {
+          id: 1,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
         },
         {
+          id: 2,
           name: 'Tony Shapiro',
           time: new Date(new Date().getTime() + 30 * 60000),
           comment: "I'm a voter because this is OUR country.",
         },
         {
+          id: 3,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
         },
         {
+          id: 4,
           name: 'Ben White',
           time: new Date(new Date().getTime() + 17 * 60000),
           comment: 'I vote because the country needs to change. All this stuff is awesome. A great voter always votes. Dummy content.',
         },
         {
+          id: 5,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
         },
         {
+          id: 6,
           name: 'Ben White',
           time: new Date(new Date().getTime() + 17 * 60000),
           comment: 'I vote because the country needs to change. All this stuff is awesome. A great voter always votes. Dummy content.',
         },
         {
+          id: 7,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
         },
         {
+          id: 8,
           name: 'Tony Shapiro',
           time: new Date(new Date().getTime() + 30 * 60000),
           comment: "I'm a voter because this is OUR country.",
         },
         {
+          id: 9,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
         },
         {
+          id: 10,
           name: 'Annie Brown',
           time: new Date(new Date().getTime() + 27 * 60000),
           comment: 'I vote because I care.',
@@ -79,7 +89,18 @@ class PledgeToVote extends React.Component {
       comments[1] ? comments[1] : null,
     ]});
 
-    setInterval(() => this.setCommentsToDisplay(), 3000);
+    if (this.timeInterval) {
+      clearInterval(this.timeInterval);
+      this.timeInterval = null;
+    }
+    this.timeInterval = setInterval(() => this.setCommentsToDisplay(), 3000);
+  }
+
+  componentWillUnmount () {
+    if (this.timeInterval) {
+      clearInterval(this.timeInterval);
+      this.timeInterval = null;
+    }
   }
 
   setCommentsToDisplay () {
@@ -108,13 +129,11 @@ class PledgeToVote extends React.Component {
 
       this.setState({ commentsToDisplay: [...newArray]});
 
-      let height = 0;
-
-      commentsWrapper.childNodes.forEach((node) => {
-        height += node.clientHeight;
-      });
-
-      console.log(height);
+      // let height = 0;
+      // commentsWrapper.childNodes.forEach((node) => {
+      //   height += node.clientHeight;
+      // });
+      // console.log('pledge height: ', height);
 
       if (lastScroll) {
         commentsWrapper.scrollTop = commentsWrapper.scrollHeight - commentsWrapper.clientHeight + 64;
@@ -150,7 +169,7 @@ class PledgeToVote extends React.Component {
           {commentsToDisplay && commentsToDisplay.length > 0 ? (
             <CommentsWrapper id="comments-wrapper">
               {commentsToDisplay.map(comment => (
-                <CommentWrapper className="comment">
+                <CommentWrapper className="comment" key={comment.id}>
                   <Comment>{comment.comment}</Comment>
                   <CommentName>
                     {comment.name}
@@ -169,7 +188,7 @@ class PledgeToVote extends React.Component {
             control={(
               <Checkbox
                 classes={{ root: classes.checkbox }}
-                shareNameAndEmail={shareNameAndEmail}
+                checked={shareNameAndEmail}
                 onChange={this.handleChange}
                 name="shareNameAndEmailB"
                 color="primary"

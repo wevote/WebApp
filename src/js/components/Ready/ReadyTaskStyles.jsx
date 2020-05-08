@@ -14,7 +14,7 @@ const ButtonText = styled.div`
   }
 `;
 
-const Card = styled.div`
+const ReadyCard = styled.div`
   padding: 16px;
   padding-left: 82px;
   position: relative;
@@ -22,7 +22,7 @@ const Card = styled.div`
     content: "";
     display: block;
     position: absolute;
-    background: ${props => (props.completed ? 'rgb(31,192,111)' : '#bed1fb')};
+    background: ${props => (props.showprogresscolor ? 'rgb(31,192,111)' : '#bed1fb')};
     width: 4px;
     z-index: 0;
     height: calc(100% - 32px);
@@ -39,7 +39,6 @@ const Card = styled.div`
 
 const Icon = styled.div`
   align-items: center;
-  background: ${props => (props.completed ? 'rgb(31,192,111)' : '#bed1fb')};
   border-radius: 50px;
   display: flex;
   position: absolute;
@@ -51,54 +50,14 @@ const Icon = styled.div`
   width: 50px;
   height: 50px;
   justify-content: center;
-  svg, path, * {
-    color: white;
-    width: 35px !important;
-    display: block !important;
-    height: 35px !important;
-    font-size: 35px !important;
-  }
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 30px;
     height: 30px;
-    svg, path, * {
-      width: 25px !important;
-      height: 25px !important;
-      font-size: 25px !important;
-    }
-  }
-`;
-
-const Hexagon = styled.div`
-  position: relative;
-  width: 50px;
-  height: 28.87px;
-  background-color: #bed1fb;
-  margin: 14.43px 0;
-
-  ::before,
-  ::after {
-    content: "";
-    position: absolute;
-    width: 0;
-    border-left: 25px solid transparent;
-    border-right: 25px solid transparent;
-  }
-
-  ::before {
-    bottom: 100%;
-    border-bottom: 14.43px solid #bed1fb;
-  }
-
-  ::after {
-    top: 100%;
-    width: 0;
-    border-top: 14.43px solid #bed1fb;
   }
 `;
 
 const PercentComplete = styled.div`
-  color: ${props => (props.completed ? 'green' : 'black')};
+  color: ${props => (props.showprogresscolor ? 'green' : 'black')};
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 6px;
@@ -147,7 +106,7 @@ const StyledButton = styled(Button)`
     padding: 0 !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: ${props => (props.completed || props.withoutSteps ? 'flex-start' : 'space-between')} !important;
+    justify-content: ${props => (props.completed || props.withoutsteps ? 'flex-start' : 'space-between')} !important;
   }
   :hover {
     background: #f7f7f7 !important;
@@ -183,6 +142,6 @@ const StyledCheckboxCompleted = styled.div`
 `;
 
 export {
-  ButtonLeft, ButtonText, Card, Hexagon, Icon, PercentComplete, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper,
+  ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper,
 };
 

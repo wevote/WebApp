@@ -58,6 +58,7 @@ class OfficeItemCompressed extends Component {
 
   componentDidMount () {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.onCandidateStoreChange();
     const { candidateList, officeWeVoteId } = this.props;
     const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organizationWeVoteId;
@@ -114,6 +115,7 @@ class OfficeItemCompressed extends Component {
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
+    this.supportStoreListener.remove();
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -188,6 +190,11 @@ class OfficeItemCompressed extends Component {
         });
       }
     }
+  }
+
+  onSupportStoreChange () {
+    // Trigger a re-render so we show/hide candidates as voter support changes
+    this.setState({});
   }
 
   getCandidateLink (candidateWeVoteId) {

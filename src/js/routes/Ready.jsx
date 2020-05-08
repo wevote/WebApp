@@ -84,11 +84,11 @@ class Ready extends Component {
             <EditAddressWrapper className="col-12">
               <EditAddressOneHorizontalRow saveUrl="/ready" />
             </EditAddressWrapper>
-            <div className="col-sm-12 col-md-8">
+            <div className="col-sm-12 col-lg-8">
               <div className="u-cursor--pointer" onClick={this.goToBallot}>
                 <ElectionCountdown />
               </div>
-              <div className="u-show-mobile">
+              <div className="u-show-mobile-tablet">
                 <Card className="card">
                   <div className="card-main">
                     <Title>
@@ -117,29 +117,31 @@ class Ready extends Component {
                 />
               )}
             </div>
-            <div className="col-md-4 d-none d-md-block">
-              <Card className="card">
-                <div className="card-main">
-                  <Title>
-                    {chosenReadyIntroductionTitle || 'Get Ready to Vote in Minutes!'}
-                  </Title>
-                  <Paragraph>
-                    {chosenReadyIntroductionText || (
-                      <>
-                        <div>
-                          We&apos;ve all been there. Election day is almost here,
-                          {' '}
-                          but besides the President and a few other decisions,
-                          {' '}
-                          we don&apos;t know how we&apos;re going to vote.
-                          {' '}
-                          There has to be a better way. Now, there is!
-                        </div>
-                      </>
-                    )}
-                  </Paragraph>
-                </div>
-              </Card>
+            <div className="col-lg-4 d-none d-lg-block">
+              <div className="u-show-desktop">
+                <Card className="card">
+                  <div className="card-main">
+                    <Title>
+                      {chosenReadyIntroductionTitle || 'Get Ready to Vote in Minutes!'}
+                    </Title>
+                    <Paragraph>
+                      {chosenReadyIntroductionText || (
+                        <>
+                          <div>
+                            We&apos;ve all been there. Election day is almost here,
+                            {' '}
+                            but besides the President and a few other decisions,
+                            {' '}
+                            we don&apos;t know how we&apos;re going to vote.
+                            {' '}
+                            There has to be a better way. Now, there is!
+                          </div>
+                        </>
+                      )}
+                    </Paragraph>
+                  </div>
+                </Card>
+              </div>
               {nextReleaseFeaturesEnabled && <PledgeToVote />}
             </div>
           </div>
