@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import EventAvailable from '@material-ui/icons/EventAvailable';
-import EventBusy from '@material-ui/icons/EventBusy';
-import { historyPush } from '../../utils/cordovaUtils';
-import { ButtonLeft, ButtonText, Card, Icon, PercentComplete, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
-// Hexagon,
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import plan0Percent from '../../../img/global/svg-icons/ready/plan-0-percent.svg';
+import plan100Percent from '../../../img/global/svg-icons/ready/plan-100-percent.svg';
+import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
 
 class ReadyTaskPlan extends React.Component {
   static propTypes = {
@@ -29,10 +28,23 @@ class ReadyTaskPlan extends React.Component {
     const { completed } = this.state;
 
     return (
-      <Card completed={completed} className="card">
-        <Icon className="u-cursor--pointer" completed={completed} onClick={this.goToNextStep}>
-          {/* <Hexagon /> */}
-          {completed ? <EventAvailable /> : <EventBusy />}
+      <ReadyCard showprogresscolor={completed} className="card">
+        <Icon className="u-cursor--pointer" onClick={this.goToNextStep}>
+          {completed ?  (
+            <img
+              src={cordovaDot(plan100Percent)}
+              width="50"
+              height="50"
+              alt="Made a Plan to Vote"
+            />
+          ) : (
+            <img
+              src={cordovaDot(plan0Percent)}
+              width="50"
+              height="50"
+              alt="Make a Plan to Vote"
+            />
+          )}
         </Icon>
         <div>
           <TitleRowWrapper>
@@ -40,9 +52,27 @@ class ReadyTaskPlan extends React.Component {
               className="u-cursor--pointer"
               onClick={this.goToNextStep}
             >
-              {completed ? 'Your Voting Plan' : 'When Will You Vote?'}
+              {completed ? (
+                <>
+                  <span className="u-show-mobile">
+                    Your Voting Plan
+                  </span>
+                  <span className="u-show-desktop-tablet">
+                    Your Voting Plan
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="u-show-mobile">
+                    When Will You Vote?
+                  </span>
+                  <span className="u-show-desktop-tablet">
+                    When and Where Will You Vote?
+                  </span>
+                </>
+              )}
             </Title>
-            <PercentComplete completed={completed || undefined}>
+            <PercentComplete showprogresscolor={completed || undefined}>
               {completed ? '100%' : '0%'}
             </PercentComplete>
           </TitleRowWrapper>
@@ -61,7 +91,7 @@ class ReadyTaskPlan extends React.Component {
                 completed={completed || undefined}
                 onClick={this.goToNextStep}
                 variant="outlined"
-                withoutSteps
+                withoutsteps="1"
               >
                 <ButtonLeft>
                   <StyledCheckbox />
@@ -79,7 +109,7 @@ class ReadyTaskPlan extends React.Component {
             </>
           )}
         </div>
-      </Card>
+      </ReadyCard>
     );
   }
 }
