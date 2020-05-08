@@ -4,7 +4,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import AccountBoxOutlined from '@material-ui/icons/AccountBoxOutlined';
 import AccountBoxFilled from '@material-ui/icons/AccountBox';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import {cordovaDot, historyPush} from '../../utils/cordovaUtils';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import register0Percent from '../../../img/global/svg-icons/ready/register-0-percent.svg';
 import register100Percent from '../../../img/global/svg-icons/ready/register-100-percent.svg';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
