@@ -118,7 +118,7 @@
     "react-toggle": "^4.1.1",
     "react-transition-group": "^2.9.0",
     "react-usa-map": "^1.4.0",
-    "snyk": "^1.290.1",
+    "snyk": "^1.316.1",
     "styled-components": "^4.4.1",
     "superagent": "^3.8.3",
     "unused-webpack-plugin": "^2.4.0"

@@ -7,8 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import BallotStore from '../../stores/BallotStore';
-// import BallotActions from '../../actions/BallotActions';
-import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { historyPush, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
@@ -17,7 +16,6 @@ import cookies from '../../utils/cookies';
 class EditAddressOneHorizontalRow extends Component {
   static propTypes = {
     saveUrl: PropTypes.string,
-    disableAutoFocus: PropTypes.bool,
     classes: PropTypes.object,
   };
 
@@ -187,7 +185,6 @@ class EditAddressOneHorizontalRow extends Component {
                 inputProps={{
                   onChange: this.updateVoterAddress,
                   onKeyDown: this.handleKeyPress,
-                  autoFocus: (!isCordova() && !this.props.disableAutoFocus),
                 }}
                 id="editAddressOneHorizontalRowTextForMapSearch"
               />

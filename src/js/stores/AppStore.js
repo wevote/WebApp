@@ -12,6 +12,7 @@ import { stringContains } from '../utils/textFormat';
 class AppStore extends ReduceStore {
   getInitialState () {
     return {
+      chosenPreventSharingOpinions: false,
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
       chosenSiteLogoUrl: '',
@@ -41,6 +42,10 @@ class AppStore extends ReduceStore {
       storeSignInStartFullUrl: false,
       voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
     };
+  }
+
+  getChosenPreventSharingOpinions () {
+    return this.getState().chosenPreventSharingOpinions;
   }
 
   getChosenReadyIntroductionText () {
@@ -204,6 +209,7 @@ class AppStore extends ReduceStore {
   reduce (state, action) {
     let apiStatus;
     let apiSuccess;
+    let chosenPreventSharingOpinions;
     let chosenReadyIntroductionText;
     let chosenReadyIntroductionTitle;
     let chosenSiteLogoUrl;
@@ -264,6 +270,7 @@ class AppStore extends ReduceStore {
           organization_we_vote_id: siteOwnerOrganizationWeVoteId,
           chosen_hide_we_vote_logo: hideWeVoteLogo,
           chosen_logo_url_https: chosenSiteLogoUrl,
+          chosen_prevent_sharing_opinions: chosenPreventSharingOpinions,
           chosen_ready_introduction_text: chosenReadyIntroductionText,
           chosen_ready_introduction_title: chosenReadyIntroductionTitle,
         } = action.res);
@@ -309,6 +316,7 @@ class AppStore extends ReduceStore {
             ...state,
             apiStatus,
             apiSuccess,
+            chosenPreventSharingOpinions,
             chosenReadyIntroductionText,
             chosenReadyIntroductionTitle,
             chosenSiteLogoUrl,

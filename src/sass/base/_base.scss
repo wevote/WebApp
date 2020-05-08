@@ -1,4 +1,5 @@
 // stylelint-disable selector-max-type
+// stylelint-disable selector-max-id
 #comments-wrapper {
   // scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
@@ -8,25 +9,28 @@
 }
 
 #comments-wrapper::-webkit-scrollbar {
-  width: 0em;
+  width: 0;
 }
 
 #comments-wrapper::-webkit-scrollbar-track {
   background: transparent;
 }
 
+$comments-background-color: transparent;
+$comments-border-radius: 50px;
 #comments-wrapper::-webkit-scrollbar-thumb {
-  background-color: transparent;
+  background-color: $comments-background-color;
   z-index: 9999;
-  border-radius: 50px;
+  border-radius: $comments-border-radius;
 }
 
 html {
   box-sizing: border-box;
 }
 
-svg.map-svg, path.map-svg {
-  fill: #2E3C5D70;
+svg.map-svg,
+path.map-svg {
+  fill: #2e3c5d70;
   text {
     pointer-events: none;
     fill: white !important;

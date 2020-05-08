@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-// import AnalyticsActions from '../actions/AnalyticsActions';
 import AppStore from '../stores/AppStore';
 import BallotActions from '../actions/BallotActions';
 import BallotStore from '../stores/BallotStore';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import { historyPush } from '../utils/cordovaUtils';
-import LoadingWheel from '../components/LoadingWheel';
-import { renderLog } from '../utils/logging';
-import VoterStore from '../stores/VoterStore';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
+import { historyPush } from '../utils/cordovaUtils';
+import LoadingWheel from '../components/LoadingWheel';
 import PledgeToVote from '../components/Ready/PledgeToVote';
-import ReadyTaskCard from '../components/Ready/ReadyTaskCard';
+import ReadMore from '../components/Widgets/ReadMore';
+import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
+import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
+import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
+import { renderLog } from '../utils/logging';
+import VoterStore from '../stores/VoterStore';
 import webAppConfig from '../config';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -72,6 +73,7 @@ class Ready extends Component {
     if (!voter) {
       return LoadingWheel;
     }
+    const defaultIntroductionText = "We've all been there. Election day is almost here, but besides the President and a few other decisions, we don't know how we're going to vote. There has to be a better way. Now, there is!";
 
     return (
       <div className="page-content-container">
@@ -82,74 +84,65 @@ class Ready extends Component {
             <EditAddressWrapper className="col-12">
               <EditAddressOneHorizontalRow saveUrl="/ready" />
             </EditAddressWrapper>
-            <div className="col-sm-12 col-md-8">
+            <div className="col-sm-12 col-lg-8">
               <div className="u-cursor--pointer" onClick={this.goToBallot}>
                 <ElectionCountdown />
               </div>
-              <Card className="card">
-                <div className="card-main">
-                  <Title>
-                    {chosenReadyIntroductionTitle || 'Get Ready to Vote in Minutes!'}
-                  </Title>
-                  <Paragraph>
-                    {chosenReadyIntroductionText || (
-                      <>
-                        <div>
-                          We&apos;ve all been there. Election day is almost here,
-                          {' '}
-                          but besides the President and a few other choices we&apos;ve made,
-                          {' '}
-                          we don&apos;t know how we&apos;re going to vote.
-                          {' '}
-                          There has to be a better way. Now, there is!
-                        </div>
-                        <div>
-                          <br />
-                          <Link to="/ballot">
-                            <span className="u-link-color u-underline u-cursor--pointer">
-                              View Your Ballot
-                            </span>
-                          </Link>
-                        </div>
-                      </>
-                    )}
-                  </Paragraph>
-                </div>
-              </Card>
-              <div className="u-show-mobile">
-                <ReadyTaskCard
-                  ballotMode
-                  buttonText="Get Started"
-                  completedTitle="Your Ballot"
-                  completedSubtitle="Review your decisions"
-                  completedButtonText="Your Ballot"
-                  title="Voting?"
-                  subtitle="Start deciding how you are going to vote."
-                />
+              <div className="u-show-mobile-tablet">
+                <Card className="card">
+                  <div className="card-main">
+                    <Title>
+                      {chosenReadyIntroductionTitle || 'Get Ready to Vote in Minutes!'}
+                    </Title>
+                    <Paragraph>
+                      <ReadMore
+                        textToDisplay={chosenReadyIntroductionText || defaultIntroductionText}
+                        numberOfLines={2}
+                      />
+                    </Paragraph>
+                  </div>
+                </Card>
               </div>
+              <ReadyTaskBallot
+                arrowsOn
+              />
               {nextReleaseFeaturesEnabled && (
-                <ReadyTaskCard
-                  makeAPlanMode
-                  buttonText="Make a Plan Now"
-                  completedTitle="Your Voting Plan"
-                  completedSubtitle="Review your decisions"
-                  completedButtonText="Your Ballot"
-                  title="When Will You Vote?"
-                  subtitle="Write your own adventure and cast your vote."
+                <ReadyTaskPlan
+                  arrowsOn
+                />
+              )}
+              {nextReleaseFeaturesEnabled && (
+                <ReadyTaskRegister
+                  arrowsOn
                 />
               )}
             </div>
-            <div className="col-md-4 d-none d-md-block">
+            <div className="col-lg-4 d-none d-lg-block">
+              <div className="u-show-desktop">
+                <Card className="card">
+                  <div className="card-main">
+                    <Title>
+                      {chosenReadyIntroductionTitle || 'Get Ready to Vote in Minutes!'}
+                    </Title>
+                    <Paragraph>
+                      {chosenReadyIntroductionText || (
+                        <>
+                          <div>
+                            We&apos;ve all been there. Election day is almost here,
+                            {' '}
+                            but besides the President and a few other decisions,
+                            {' '}
+                            we don&apos;t know how we&apos;re going to vote.
+                            {' '}
+                            There has to be a better way. Now, there is!
+                          </div>
+                        </>
+                      )}
+                    </Paragraph>
+                  </div>
+                </Card>
+              </div>
               {nextReleaseFeaturesEnabled && <PledgeToVote />}
-              <ReadyTaskCard
-                ballotMode
-                buttonText="Your Ballot"
-                completedTitle="Your Ballot"
-                completedSubtitle="Review your decisions"
-                completedButtonText="Your Ballot"
-                subtitle="Start deciding how you are going to vote."
-                title="Voting?"
-              />
             </div>
           </div>
         </PageContainer>
@@ -159,6 +152,7 @@ class Ready extends Component {
 }
 
 const Card = styled.div`
+  padding-bottom: 4px;
 `;
 
 const EditAddressWrapper = styled.div`
@@ -175,12 +169,11 @@ const PageContainer = styled.div`
 const Title = styled.h2`
   font-size: 26px;
   font-weight: 800;
-  margin: 0 0 16px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 20px;
+  margin: 0 0 12px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 18px;
   }
 `;
-
 
 const Paragraph = styled.div`
 

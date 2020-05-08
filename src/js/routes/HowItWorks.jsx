@@ -121,6 +121,7 @@ class HowItWorks extends Component {
           index: 4,
         },
       },
+      howItWorksWatched: false,
       selectedCategoryIndex: 0,
       selectedStepIndex: 0,
       voter: {},
@@ -161,6 +162,10 @@ class HowItWorks extends Component {
         selectedStepIndex: 0,
       });
     }
+    const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
+    this.setState({
+      howItWorksWatched,
+    });
   }
 
   componentWillReceiveProps (nextProps) {
@@ -195,6 +200,10 @@ class HowItWorks extends Component {
         selectedStepIndex: 0,
       });
     }
+    const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
+    this.setState({
+      howItWorksWatched,
+    });
   }
 
   componentWillUnmount () {
@@ -208,6 +217,13 @@ class HowItWorks extends Component {
   }
 
   handleChangeSlide = (selectedStepIndex) => {
+    const { howItWorksWatched } = this.state;
+    const minimumStepIndexForCompletion = 2;
+    if (!howItWorksWatched && selectedStepIndex >= minimumStepIndexForCompletion) {
+      // Mark this so we know to show 'How it Works' as completed
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);
+      this.setState({ howItWorksWatched: true });
+    }
     this.setState({ selectedStepIndex });
   };
 
@@ -235,14 +251,16 @@ class HowItWorks extends Component {
   };
 
   howItWorksGetStarted () {
-    const { getStartedMode, getStartedUrl, voter } = this.state;
+    const { getStartedMode, getStartedUrl, howItWorksWatched, voter } = this.state;
     let isSignedIn = false;
     if (voter) {
       ({ is_signed_in: isSignedIn } = voter);
       isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
     }
-    // Mark this so we know to show 'How it Works' as completed
-    VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);
+    if (!howItWorksWatched) {
+      // Mark this so we know to show 'How it Works' as completed
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);
+    }
     if (isSignedIn) {
       historyPush(getStartedUrl);
       AppActions.setShowHowItWorksModal(false);
