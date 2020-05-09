@@ -33,7 +33,7 @@ export default class OrganizationDisplayForListCompressed extends Component {
     const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
 
     return (
-      <div className="card-child card-child--not-followed">
+      <div id="childCard" className="card-child card-child--not-followed">
         <div className="card-child__media-object-anchor">
           <Link to={voterGuideLink} className="u-no-underline">
             <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={organizationPhotoUrlMedium} />
