@@ -1229,9 +1229,11 @@ class Ballot extends Component {
                     </SearchTitle>
                   )}
                   {!isSearching && (
-                    <DelayedLoad waitBeforeShow={2000}>
-                      <CompleteYourProfile />
-                    </DelayedLoad>
+                    <span className="u-show-desktop-tablet">
+                      <DelayedLoad waitBeforeShow={2000}>
+                        <CompleteYourProfile />
+                      </DelayedLoad>
+                    </span>
                   )}
                   <BallotListWrapper>
                     {/* The rest of the ballot items */}
