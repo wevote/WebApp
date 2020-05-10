@@ -75,9 +75,10 @@ class BallotStore extends ReduceStore {
   get ballotProperties () {
     if (!this.isLoaded()) { return undefined; }
     const civicId = VoterStore.electionId();
-    const props = assign({}, this.getState().ballots[civicId]);
-    props.ballot_item_list = null;
-    return props;
+    const ballotProperties = assign({}, this.getState().ballots[civicId]);
+    // console.log('ballotProperties:', ballotProperties);
+    ballotProperties.ballot_item_list = null;
+    return ballotProperties;
   }
 
   get ballotFound () {
@@ -131,10 +132,7 @@ class BallotStore extends ReduceStore {
 
   get currentBallotGoogleCivicElectionId () {
     if (!this.isLoaded()) { return undefined; }
-    const googleCivicElectionId = VoterStore.electionId();
-    // return this.getState().ballots[civicId].google_civic_election_id;
-    // We want to return the current googleCivicElectionId even if there aren't any ballot items
-    return googleCivicElectionId;
+    return VoterStore.electionId();
   }
 
   get currentBallotPollingLocationSource () {
@@ -151,13 +149,124 @@ class BallotStore extends ReduceStore {
     if (!this.isLoaded()) { return undefined; }
     return this.ballot.filter((item) => {
       const { kind_of_ballot_item: kindOfBallot, we_vote_id: weVoteId, candidate_list: candidateList } = item;
-      // console.log('BallotStore ballotRemainingChoices, kindOfBallot: ', kindOfBallot);
+      // console.log('BallotStore ballotRemainingChoices, kindOfBallot: ', kindOfBallot, ', weVoteId:', weVoteId);
       if (kindOfBallot === 'OFFICE') { // OFFICE - you are undecided if you haven't supported anyone
         return candidateList.filter(candidate => SupportStore.voterSupportsList[candidate.we_vote_id]).length === 0;
       } else { // MEASURES - you haven't decided if you neither support nor oppose
         return !SupportStore.voterSupportsList[weVoteId] && !SupportStore.voterOpposesList[weVoteId];
       }
     });
+  }
+
+  getBallotItemsStatusCounts () {
+    const ballotItemsStatusCounts = {
+      allCandidatesAllCompleted: false,
+      allCandidatesNumberCompleted: 0,
+      allCandidatesButtonNeeded: false,
+      allCandidatesTotalNumber: 0,
+      federalAllCompleted: false,
+      federalNumberCompleted: 0,
+      federalButtonNeeded: false,
+      federalTotalNumber: 0,
+      localAllCompleted: false,
+      localNumberCompleted: 0,
+      localButtonNeeded: false,
+      localTotalNumber: 0,
+      measureAllCompleted: false,
+      measureNumberCompleted: 0,
+      measureButtonNeeded: false,
+      measureTotalNumber: 0,
+      stateAllCompleted: false,
+      stateNumberCompleted: 0,
+      stateButtonNeeded: false,
+      stateTotalNumber: 0,
+    };
+    if (!this.isLoaded()) { return ballotItemsStatusCounts; }
+    let allCandidatesNumberCompleted = 0;
+    let allCandidatesTotalNumber = 0;
+    let ballotItem;
+    let candidateIndex;
+    let candidateWeVote;
+    let choicesMadeForThisOffice = 0;
+    let federalNumberCompleted = 0;
+    let federalTotalNumber = 0;
+    let index;
+    let localNumberCompleted = 0;
+    let localTotalNumber = 0;
+    let measureNumberCompleted = 0;
+    let measureTotalNumber = 0;
+    let stateNumberCompleted = 0;
+    let stateTotalNumber = 0;
+    for (index = 0; index < this.ballot.length; index++) {
+      ballotItem = this.ballot[index];
+      const {
+        candidate_list: candidateList, kind_of_ballot_item: kindOfBallot,
+        race_office_level: raceOfficeLevel, we_vote_id: weVoteId,
+      } = ballotItem;
+      // console.log('BallotStore getBallotItemStatusCounts, ballotItem: ', ballotItem);
+      if (kindOfBallot === 'OFFICE') { // OFFICE - you are undecided if you haven't supported anyone
+        // return candidateList.filter(candidate => SupportStore.voterSupportsList[candidate.we_vote_id]).length === 0;
+        // console.log('BallotStore getBallotItemStatusCounts, ballotItem: ', ballotItem);
+        // TODO ADD number_to_choose to the ballot item return from API server
+        // For now we assume one candidate to choose per race
+        allCandidatesTotalNumber += 1;
+        federalTotalNumber += (raceOfficeLevel === 'Federal') ? 1 : 0;
+        localTotalNumber += (raceOfficeLevel === 'Local') ? 1 : 0;
+        stateTotalNumber += (raceOfficeLevel === 'State') ? 1 : 0;
+        choicesMadeForThisOffice = 0;
+        for (candidateIndex = 0; candidateIndex < candidateList.length; candidateIndex++) {
+          candidateWeVote = candidateList[candidateIndex].we_vote_id;
+          if (SupportStore.voterSupportsList[candidateWeVote] && SupportStore.voterSupportsList[candidateWeVote].length !== 0) {
+            choicesMadeForThisOffice += 1;
+          }
+        }
+        if (choicesMadeForThisOffice) {
+          allCandidatesNumberCompleted += 1;
+          federalNumberCompleted += (raceOfficeLevel === 'Federal') ? 1 : 0;
+          localNumberCompleted += (raceOfficeLevel === 'Local') ? 1 : 0;
+          stateNumberCompleted += (raceOfficeLevel === 'State') ? 1 : 0;
+        }
+      } else { // MEASURES - you haven't decided if you neither support nor oppose
+        // return ! && !SupportStore.voterOpposesList[weVoteId];
+        measureTotalNumber += 1;
+        if ((SupportStore.voterSupportsList[weVoteId] && SupportStore.voterSupportsList[weVoteId].length !== 0) ||
+            (SupportStore.voterOpposesList[weVoteId] && SupportStore.voterOpposesList[weVoteId].length !== 0)) {
+          measureNumberCompleted += 1;
+        }
+      }
+    }
+    // console.log('measureNumberCompleted:', measureNumberCompleted, ', measureTotalNumber:', measureTotalNumber);
+    if (allCandidatesTotalNumber > 0) {
+      ballotItemsStatusCounts.allCandidatesButtonNeeded = true;
+      ballotItemsStatusCounts.allCandidatesAllCompleted = (allCandidatesNumberCompleted >= allCandidatesTotalNumber);
+      ballotItemsStatusCounts.allCandidatesNumberCompleted = allCandidatesNumberCompleted;
+      ballotItemsStatusCounts.allCandidatesTotalNumber = allCandidatesTotalNumber;
+    }
+    if (federalTotalNumber > 0) {
+      ballotItemsStatusCounts.federalButtonNeeded = true;
+      ballotItemsStatusCounts.federalAllCompleted = (federalNumberCompleted >= federalTotalNumber);
+      ballotItemsStatusCounts.federalNumberCompleted = federalNumberCompleted;
+      ballotItemsStatusCounts.federalTotalNumber = federalTotalNumber;
+    }
+    if (localTotalNumber > 0) {
+      ballotItemsStatusCounts.localButtonNeeded = true;
+      ballotItemsStatusCounts.localAllCompleted = (localNumberCompleted >= localTotalNumber);
+      ballotItemsStatusCounts.localNumberCompleted = localNumberCompleted;
+      ballotItemsStatusCounts.localTotalNumber = localTotalNumber;
+    }
+    if (measureTotalNumber > 0) {
+      ballotItemsStatusCounts.measureButtonNeeded = true;
+      ballotItemsStatusCounts.measureAllCompleted = (measureNumberCompleted >= measureTotalNumber);
+      ballotItemsStatusCounts.measureNumberCompleted = measureNumberCompleted;
+      ballotItemsStatusCounts.measureTotalNumber = measureTotalNumber;
+    }
+    if (stateTotalNumber > 0) {
+      ballotItemsStatusCounts.stateButtonNeeded = true;
+      ballotItemsStatusCounts.stateAllCompleted = (stateNumberCompleted >= stateTotalNumber);
+      ballotItemsStatusCounts.stateNumberCompleted = stateNumberCompleted;
+      ballotItemsStatusCounts.stateTotalNumber = stateTotalNumber;
+    }
+    return ballotItemsStatusCounts;
   }
 
   get ballotRemainingChoicesLength () {
