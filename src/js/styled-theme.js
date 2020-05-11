@@ -11,6 +11,7 @@ const theme = {
   colors: {
     grayPale: '#f8f8f8', // $gray-pale:    #f8f8f8 !default;
     grayLighter: '#eee', // $gray-lighter: #eee !default;
+    grayLighter2: '#e7e7e7',
     grayBorder: '#ddd', // $gray-border:  #ddd !default;
     grayChip: '#dee2eb',
     grayLight: '#ccc', // $gray-light:   #ccc !default;

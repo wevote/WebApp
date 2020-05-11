@@ -8,7 +8,6 @@ import AddCandidateForExtension from './routes/Ballot/AddCandidateForExtension';
 import Attributions from './routes/More/Attributions';
 import Ballot from './routes/Ballot/Ballot';
 import BallotIndex from './routes/Ballot/BallotIndex';
-import BallotRedirect from './routes/Ballot/BallotRedirect';
 import Candidate from './routes/Ballot/Candidate';
 import CandidateForExtension from './routes/Ballot/CandidateForExtension';
 import ClaimYourPage from './routes/Settings/ClaimYourPage';
@@ -51,6 +50,7 @@ import Pricing from './routes/More/Pricing';
 import Privacy from './routes/More/Privacy';
 import ProcessingDonation from './routes/More/ProcessingDonation';
 import Ready from './routes/Ready';
+import ReadyRedirect from './routes/ReadyRedirect';
 import RegisterToVote from './routes/More/RegisterToVote';
 import SampleBallot from './routes/Intro/SampleBallot';
 import ScratchPad from './routes/ScratchPad';
@@ -105,7 +105,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
         }
         )()
       }
-      <Route path="/welcome" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
+      <Route path="/welcome" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
       <Route path="/news" component={News} />
       <Route path="/ready" component={Ready} />
       <Route path="/ballot" component={BallotIndex}>
@@ -153,10 +153,10 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/candidate-for-extension" component={CandidateForExtension} />
       <Route path="/add-candidate-for-extension" component={AddCandidateForExtension} />
       <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
-      <Route path="/for-campaigns" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForCampaigns {...props} pathname="/for-campaigns" />} />
-      <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
-      <Route path="/how" component={isNotWeVoteMarketingSite ? BallotRedirect : HowItWorks} />
-      <Route path="/how/:category_string" component={isNotWeVoteMarketingSite ? BallotRedirect : HowItWorks} />
+      <Route path="/for-campaigns" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForCampaigns {...props} pathname="/for-campaigns" />} />
+      <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
+      <Route path="/how" component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
+      <Route path="/how/:category_string" component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
       <Route path="/intro" component={Intro} />
       <Route path="/wevoteintro/network" component={IntroNetwork} />
       <Route path="/intro/sample_ballot" component={SampleBallot} />
@@ -190,14 +190,14 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendInvitationOnboarding} />
 
       {/* More Menu Pages */}
-      <Route path="/more/about" component={isNotWeVoteMarketingSite ? BallotRedirect : About} />
+      <Route path="/more/about" component={isNotWeVoteMarketingSite ? ReadyRedirect : About} />
       <Route path="/more/absentee" component={AbsenteeBallot} />
       <Route path="/more/alerts" component={ElectionReminder} />
       <Route path="/more/attributions" component={Attributions} />
       <Route path="/more/connect" component={Connect} />
       <Route path="/more/credits" component={Credits} />
-      <Route path="/more/donate" component={isNotWeVoteMarketingSite ? BallotRedirect : Donate} />
-      <Route path="/more/donate_thank_you" component={isNotWeVoteMarketingSite ? BallotRedirect : DonateThankYou} />
+      <Route path="/more/donate" component={isNotWeVoteMarketingSite ? ReadyRedirect : Donate} />
+      <Route path="/more/donate_thank_you" component={isNotWeVoteMarketingSite ? ReadyRedirect : DonateThankYou} />
       <Route path="/more/extensionsignin" component={ExtensionSignIn} />
       <Route path="/more/stripe_elements_test" component={StripeElementsTest} />
       <Route path="/more/elections" component={Elections} />
@@ -212,8 +212,8 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       {/* Redirecting old URLs to new components */}
       <Route path="/more/network/friends" component={Friends} />
       <Route path="/more/network/organizations" component={Values} />
-      <Route path="/more/pricing" component={isNotWeVoteMarketingSite ? BallotRedirect : Pricing} />
-      <Route path="/more/pricing/:pricing_choice" component={isNotWeVoteMarketingSite ? BallotRedirect : Pricing} />
+      <Route path="/more/pricing" component={isNotWeVoteMarketingSite ? ReadyRedirect : Pricing} />
+      <Route path="/more/pricing/:pricing_choice" component={isNotWeVoteMarketingSite ? ReadyRedirect : Pricing} />
       <Route path="/more/privacy" component={Privacy} />
       <Route path="/more/processing_donation" component={ProcessingDonation} />
       <Route path="/more/register" component={RegisterToVote} />
@@ -274,7 +274,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/-:shared_item_code" component={SharedItemLanding} />
 
       {/* Temporary scratchpad for component testing */}
-      <Route path="/testing/scratchpad" component={isNotWeVoteMarketingSite ? BallotRedirect : ScratchPad} />
+      <Route path="/testing/scratchpad" component={isNotWeVoteMarketingSite ? ReadyRedirect : ScratchPad} />
 
       <Route path=":twitter_handle/ballot/empty" component={TwitterHandleLanding} />
       <Route path=":twitter_handle/ballot/:ballot_location_shortcut" component={TwitterHandleLanding} />

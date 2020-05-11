@@ -129,7 +129,7 @@ class WelcomeFooter extends Component {
               variant="outlined"
               classes={{ root: classes.buttonOutlined }}
               id="footerLinkGetStarted"
-              onClick={() => historyPush('/ballot')}
+              onClick={() => historyPush('/ready')}
             >
               Get Started
             </Button>
