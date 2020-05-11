@@ -43,7 +43,7 @@ import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 class HeaderBar extends Component {
   static goToGetStarted () {
-    const getStartedNow = '/ballot';
+    const getStartedNow = '/ready';
     historyPush(getStartedNow);
   }
 

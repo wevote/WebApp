@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import AccountBoxOutlined from '@material-ui/icons/AccountBoxOutlined';
-import AccountBoxFilled from '@material-ui/icons/AccountBox';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import register0Percent from '../../../img/global/svg-icons/ready/register-0-percent.svg';
@@ -76,6 +74,12 @@ class ReadyTaskRegister extends React.Component {
             </Title>
             <PercentComplete showprogresscolor={completed || undefined}>
               {completed ? '100%' : '0%'}
+              {!!(completed) && (
+                <span className="u-show-desktop-tablet">
+                  {' '}
+                  Complete
+                </span>
+              )}
             </PercentComplete>
           </TitleRowWrapper>
           <SubTitle className="u-cursor--pointer" onClick={this.goToNextStep}>

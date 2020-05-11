@@ -74,6 +74,12 @@ class ReadyTaskPlan extends React.Component {
             </Title>
             <PercentComplete showprogresscolor={completed || undefined}>
               {completed ? '100%' : '0%'}
+              {!!(completed) && (
+                <span className="u-show-desktop-tablet">
+                  {' '}
+                  Complete
+                </span>
+              )}
             </PercentComplete>
           </TitleRowWrapper>
           {completed ? (

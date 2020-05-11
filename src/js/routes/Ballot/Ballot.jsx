@@ -13,7 +13,6 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
-// import BallotElectionListWithFilters from '../../components/Ballot/BallotElectionListWithFilters';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotTitleHeader from './BallotTitleHeader';
@@ -1060,12 +1059,6 @@ class Ballot extends Component {
         <div>
           <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
           {emptyBallotButton}
-          {/* <div className="container-fluid well u-stack--md u-inset--md"> */}
-          {/*  <BallotElectionListWithFilters */}
-          {/*    ballotBaseUrl={ballotBaseUrl} */}
-          {/*    ballotElectionList={this.state.voterBallotList} */}
-          {/*  /> */}
-          {/* </div> */}
         </div>
       </DelayedLoad>
     ) : null;
@@ -1236,9 +1229,11 @@ class Ballot extends Component {
                     </SearchTitle>
                   )}
                   {!isSearching && (
-                    <DelayedLoad waitBeforeShow={2000}>
-                      <CompleteYourProfile />
-                    </DelayedLoad>
+                    <span className="u-show-desktop-tablet">
+                      <DelayedLoad waitBeforeShow={2000}>
+                        <CompleteYourProfile />
+                      </DelayedLoad>
+                    </span>
                   )}
                   <BallotListWrapper>
                     {/* The rest of the ballot items */}

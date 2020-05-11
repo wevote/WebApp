@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-// import BallotIcon from '@material-ui/icons/Ballot';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import EditLocation from '@material-ui/icons/EditLocation';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import AppActions from '../../actions/AppActions';
+import BallotStore from '../../stores/BallotStore';
+import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import VoterConstants from '../../constants/VoterConstants';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import cookies from '../../utils/cookies';
+// import BallotIcon from '@material-ui/icons/Ballot';
 // import ThumbUp from '@material-ui/icons/ThumbUp';
 
 class CompleteYourProfile extends Component {
@@ -23,6 +25,7 @@ class CompleteYourProfile extends Component {
     this.state = {
       activeStep: 1,
       addressIntroCompleted: false,
+      ballotRemainingChoicesLength: 0, // If there aren't any remaining ballot choices, hide the onboarding.
       // firstPositionIntroCompleted: false,
       howItWorksWatched: false,
       personalizedScoreIntroCompleted: false,
@@ -92,16 +95,37 @@ class CompleteYourProfile extends Component {
 
   // Steps: options, friends
   componentDidMount () {
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.setCompletedStatus();
     this.sortSteps();
     this.setState({
+      ballotLength: BallotStore.ballotLength,
+      ballotRemainingChoicesLength: BallotStore.ballotRemainingChoicesLength,
       textForMapSearch: VoterStore.getTextForMapSearch(),
     });
   }
 
   componentWillUnmount () {
+    this.ballotStoreListener.remove();
+    this.supportStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  onBallotStoreChange () {
+    this.setState({
+      ballotLength: BallotStore.ballotLength,
+      ballotRemainingChoicesLength: BallotStore.ballotRemainingChoicesLength,
+    });
+  }
+
+  onSupportStoreChange () {
+    // ballotRemainingChoicesLength does a lookup from the SupportStore
+    this.setState({
+      ballotLength: BallotStore.ballotLength,
+      ballotRemainingChoicesLength: BallotStore.ballotRemainingChoicesLength,
+    });
   }
 
   onVoterStoreChange () {
@@ -278,7 +302,7 @@ class CompleteYourProfile extends Component {
 
   render () {
     const {
-      activeStep, addressIntroCompleted,
+      activeStep, addressIntroCompleted, ballotLength, ballotRemainingChoicesLength,
       // firstPositionIntroCompleted,
       howItWorksWatched, personalizedScoreIntroCompleted, steps,
       textForMapSearch, valuesIntroCompleted,
@@ -293,6 +317,8 @@ class CompleteYourProfile extends Component {
       // Pass by this OFF switch so we render this component
     } else if ((addressIntroCompleted || addressIntroCompletedByCookie) && howItWorksWatched && personalizedScoreIntroCompleted && valuesIntroCompleted) {
       // If we have done all of the steps, do not render CompleteYourProfile // OFF FOR NOW: adviserIntroCompleted && firstPositionIntroCompleted &&
+      return null;
+    } else if (ballotLength > 0 && ballotRemainingChoicesLength === 0) {
       return null;
     }
 
