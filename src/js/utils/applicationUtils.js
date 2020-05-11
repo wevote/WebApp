@@ -126,6 +126,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/settings/promoted' ||
     pathnameLowerCase === '/settings/sharing' ||
     pathnameLowerCase === '/settings/subscription' ||
+    pathnameLowerCase === '/settings/text' ||
     pathnameLowerCase === '/settings/tools') {
     showBackToSettingsMobile = true;
   } else if (pathnameLowerCase.startsWith('/value/') ||

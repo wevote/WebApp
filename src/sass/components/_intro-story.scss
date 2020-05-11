@@ -14,9 +14,9 @@ $top-header-padding-top: 6px;
   font-size: 24px;
   font-weight: 600;
   padding-top: $space-lg;
-  padding-bottom: $space-md;
+  padding-bottom: $space-none;
   @include breakpoints(max mid-small) {
-    font-size: 24px;
+    font-size: 22px;
   }
 }
 

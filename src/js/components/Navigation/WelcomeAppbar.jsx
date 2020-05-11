@@ -301,7 +301,7 @@ class WelcomeAppbar extends Component {
               { (showHowItWorksForVoters || showHowItWorksForCampaigns || showHowItWorksForOrganizations) &&
                 <Divider />
               }
-              <NavLink id="welcomeYourBallot" to="/ballot">Your Ballot</NavLink>
+              <NavLink id="welcomeYourBallot" to="/ready">Your Ballot</NavLink>
               <Divider />
               {!voterIsSignedIn && <NavLink id="welcomeSignIn" to="" onClick={() => this.toggleSignInModal()}>Sign In</NavLink> }
               {voterIsSignedIn && (
@@ -352,7 +352,7 @@ class WelcomeAppbar extends Component {
               )}
             </DesktopView>
             <MobileTabletView>
-              <NavLink id="welcomeYourBallotMobile" to="/ballot">Your Ballot</NavLink>
+              <NavLink id="welcomeYourBallotMobile" to="/ready">Your Ballot</NavLink>
               {voterIsSignedIn && (
                 <div>
                   {voterPhotoUrlMedium ? (
@@ -434,7 +434,7 @@ class WelcomeAppbar extends Component {
                         variant="outlined"
                         classes={{ root: classes.navButtonOutlined }}
                         id="welcomeYourBallotMobile"
-                        onClick={() => this.handleToPageFromMobileNav('/ballot')}
+                        onClick={() => this.handleToPageFromMobileNav('/ready')}
                       >
                         Your Ballot
                       </Button>
