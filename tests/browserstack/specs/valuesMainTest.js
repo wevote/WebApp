@@ -9,7 +9,7 @@ describe('Basic cross-platform We Vote test',  () => {
   it('should load the app so we can run tests', async () => {
     const { isCordovaFromAppStore, isMobileScreenSize } = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
-    const xssTest = '<script>alert(\'1\')</script>';
+    const xssTest = '<script>alert(1)</script>';
 	const publicFigureOrOrganizationFollowSelector = '[id*=positionItemFollowToggleFollow-undefined-wv02org]';
 	const publicFigureOrOrganizationDropDownSelector = '[id*=positionItemFollowToggleDropdown-undefined-wv02org]';
 	const publicFigureOrOrganizationUnfollowSelector = '[id*=positionItemFollowToggleUnfollow-undefined-wv02org]';
@@ -51,35 +51,52 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('issueFollowButton'); // Follow value
     await simpleClick('toggle-button'); // Click dropdown button
     await simpleClick('unfollowValue'); // Unfollow value
-    const noEndorsementsCheck = await $('noEndorsements');
+    const noEndorsementsCheck = await $('#noEndorsements');
     if (await noEndorsementsCheck.isExisting()) { // Check for Endorsements
 	  let returnUrl = await browser.getUrl(); // Get current url
 	  await simpleClick('addEndorsements'); // Click "Add Endorsements" 
 	  await browser.url(returnUrl); // Return to previous page
     } else {
-	  await publicFigureOrOrganizationFollow = $(publicFigureOrOrganizationFollowSelector);
-	  await browser.click(publicFigureOrOrganizationFollow); // Follow endorsement
-	  await publicFigureOrOrganizationDropDown = $(publicFigureOrOrganizationDropDownSelector);
-	  await browser.click(publicFigureOrOrganizationDropDown); // Click dropdown button
-	  await publicFigureOrOrganizationUnfollow = $(publicFigureOrOrganizationUnfollowSelector);
-	  await browser.click(publicFigureOrOrganizationUnfollow); // Unfollow endorsement
-	  await browser.click(publicFigureOrOrganizationDropDown); // Click dropdown button
-	  await browser.click(publicFigureOrOrganizationFollow); // Follow endorsement
-	  await browser.click(publicFigureOrOrganizationDropDown); // Click dropdown button
-	  await browser.click(publicFigureOrOrganizationUnfollow); // Unfollow endorsement
-	  await browser.click(publicFigureOrOrganizationDropDown); // Click dropdown button
-	  await publicFigureOrOrganizationIgnore = $(publicFigureOrOrganizationIgnoreSelector);
-	  await browser.click(publicFigureOrOrganizationIgnore); // Click ignore button
-	  await browser.click(publicFigureOrOrganizationDropDown); // Click dropdown button
-	  await publicFigureOrOrganizationUnignore = $(publicFigureOrOrganizationUnignoreSelector);
-	  await browser.click(publicFigureOrOrganizationUnignore); // Click "Unignore"
+	  publicFigureOrOrganizationFollow = await $(publicFigureOrOrganizationFollowSelector);
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  await publicFigureOrOrganizationFollow.click(); // Follow endorsement
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  publicFigureOrOrganizationDropDown = await $(publicFigureOrOrganizationDropDownSelector);
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+	  publicFigureOrOrganizationUnfollow = await $(publicFigureOrOrganizationUnfollowSelector);
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+	  await publicFigureOrOrganizationUnfollow.click() // Unfollow endorsement
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  await publicFigureOrOrganizationFollow.click() // Follow endorsement
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+	  await publicFigureOrOrganizationUnfollow.click() // Unfollow endorsement
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+	  await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  publicFigureOrOrganizationIgnore = await $(publicFigureOrOrganizationIgnoreSelector);
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  await publicFigureOrOrganizationIgnore.click() // Click ignore button
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  publicFigureOrOrganizationUnignore = await $(publicFigureOrOrganizationUnignoreSelector);
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  await publicFigureOrOrganizationUnignore.click() // Click "Unignore"
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  await simpleClick('readMore'); // Clicks "More"
+	  await simpleClick('showLess'); // Clicks "Show Less"
     }
-	assert(false);
 	await scrollIntoViewSimple('valuesListTitle'); // Scrolls to "Explore More Values"
-	await simpleClick('issueFollowButton'); // Follow value
-	await simpleClick('toggle-button'); // Click dropdown button // click dropdown button
-	await simpleClick('unfollowValue'); // Unfollow value
-	await simpleClick('valuesListLink'); // Clicks on value 
+	valueFollow = await $$('#issueFollowButton')[1];
+	await valueFollow.click(); // Follow value
+	assert(false);
+	await simpleClick('valueListLink'); // Clicks on value 
 	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
     await simpleClick('valuesFollowedPreviewShowMoreId'); // Clicks on "Explore all values"
@@ -87,10 +104,10 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('toggle-button'); // Click dropdown button
 	await simpleClick('unfollowValue'); // Unfollow value
 	await simpleClick('search_input'); // Focus on search bar 
-	await simpleTextInput(sqlInjectionTest); // Test for sql injection 
+	await simpleTextInput(xssTest); // Test for xss
 	await simpleClick('search-clear'); // Clear search
 	await simpleClick('search_input'); // Focus on search bar 
-	await simpleTextInput(sqlInjectionTest); // Test for sql injection 
+	await simpleTextInput(xssTest); // Test for xss
 	await simpleClick('search'); // Click search icon  
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 
