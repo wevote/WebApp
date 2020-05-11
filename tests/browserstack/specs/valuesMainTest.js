@@ -10,6 +10,11 @@ describe('Basic cross-platform We Vote test',  () => {
     const { isCordovaFromAppStore, isMobileScreenSize } = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
     const xssTest = '<script>alert(\'1\')</script>';
+	const publicFigureOrOrganizationFollowSelector = '[id*=positionItemFollowToggleFollow-undefined-wv02org]';
+	const publicFigureOrOrganizationDropDownSelector = '[id*=positionItemFollowToggleDropdown-undefined-wv02org]';
+	const publicFigureOrOrganizationUnfollowSelector = '[id*=positionItemFollowToggleUnfollow-undefined-wv02org]';
+	const publicFigureOrOrganizationIgnoreSelector = '[id*=positionItemFollowToggleIgnore-undefined-wv02org]';
+	const publicFigureOrOrganizationUnignoreSelector = '[id*=positionItemFollowToggleStopIgnoring-undefined-wv02org]';
 
     if (isCordovaFromAppStore) {
     // ///////////////////////////////
@@ -52,18 +57,24 @@ describe('Basic cross-platform We Vote test',  () => {
 	  await simpleClick('addEndorsements'); // Click "Add Endorsements" 
 	  await browser.url(returnUrl); // Return to previous page
     } else {
-	  await simpleClick('organizationOrPublicFigureFollow'); // Follow endorsement
-	  await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	  await simpleClick('organizationOrPublicFigureUnfollow'); // Unfollow endorsement
-	  await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	  await simpleClick('organizationOrPublicFigureFollowDropDown'); // Click "Follow" 
-	  await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	  await simpleClick('organizationOrPublicFigureUnfollow'); // Unfollow endorsement
-	  await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	  await simpleClick('organizationOrPublicFigureIgnore'); // Ignore endorsement
-	  await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	  await simpleClick('organizationOrPublicFigureUnignore'); // Unignore endorsement 
+	  await publicFigureOrOrganizationFollow = $(publicFigureOrOrganizationFollowSelector);
+	  await browser.click(publicFigureOrOrganizationFollow); // Follow endorsement
+	  await publicFigureOrOrganizationDropDown = $(publicFigureOrOrganizationDropDownSelector);
+	  await browser.click(publicFigureOrOrganizationDropDown); // Click dropdown button
+	  await publicFigureOrOrganizationUnfollow = $(publicFigureOrOrganizationUnfollowSelector);
+	  await browser.click(publicFigureOrOrganizationUnfollow); // Unfollow endorsement
+	  await browser.click(publicFigureOrOrganizationDropDown); // Click dropdown button
+	  await browser.click(publicFigureOrOrganizationFollow); // Follow endorsement
+	  await browser.click(publicFigureOrOrganizationDropDown); // Click dropdown button
+	  await browser.click(publicFigureOrOrganizationUnfollow); // Unfollow endorsement
+	  await browser.click(publicFigureOrOrganizationDropDown); // Click dropdown button
+	  await publicFigureOrOrganizationIgnore = $(publicFigureOrOrganizationIgnoreSelector);
+	  await browser.click(publicFigureOrOrganizationIgnore); // Click ignore button
+	  await browser.click(publicFigureOrOrganizationDropDown); // Click dropdown button
+	  await publicFigureOrOrganizationUnignore = $(publicFigureOrOrganizationUnignoreSelector);
+	  await browser.click(publicFigureOrOrganizationUnignore); // Click "Unignore"
     }
+	assert(false);
 	await scrollIntoViewSimple('valuesListTitle'); // Scrolls to "Explore More Values"
 	await simpleClick('issueFollowButton'); // Follow value
 	await simpleClick('toggle-button'); // Click dropdown button // click dropdown button
@@ -86,6 +97,7 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Test "Public Figures to Follow" section
     await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
+	/*
 	await simpleClick('organizationOrPublicFigureFollow'); // Follow public figure
 	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
 	await simpleClick('organizationOrPublicFigureUnfollow'); // Unfollow public figure
@@ -97,6 +109,7 @@ describe('Basic cross-platform We Vote test',  () => {
 	await simpleClick('organizationOrPublicFigureIgnore'); // Ignore public figure
 	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
 	await simpleClick('organizationOrPublicFigureUnignore'); // Unignore public figure 
+	*/
 	await simpleClick('readMore'); // Clicks "More"
 	await simpleClick('showLess'); // Clicks "Show Less"
 	await simpleClick('organizationOrPublicFigureLink'); // Click public figure link
