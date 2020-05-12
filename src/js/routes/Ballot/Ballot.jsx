@@ -1349,15 +1349,15 @@ class Ballot extends Component {
                     <span className="u-wrap-links d-print-none">
                       <span>Admin:</span>
                       <OpenExternalWebSite
-                      url={ballotReturnedAdminEditUrl}
-                      target="_blank"
-                      body={(
-                        <span>
-                          Ballot copied from polling location &quot;
-                          {sourcePollingLocationWeVoteId}
-                          &quot;
-                        </span>
-                      )}
+                        url={ballotReturnedAdminEditUrl}
+                        target="_blank"
+                        body={(
+                          <span>
+                            Ballot copied from polling location &quot;
+                            {sourcePollingLocationWeVoteId}
+                            &quot;
+                          </span>
+                        )}
                       />
                     </span>
                   ) : null

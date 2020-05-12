@@ -486,7 +486,7 @@ class ReadyTaskBallot extends React.Component {
                         Personalized Score?
                       </span>
                       <span className="u-show-desktop-tablet">
-                        What is a Personalized Score?
+                        What&apos;s a Personalized Score?
                       </span>
                       <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
                     </>

@@ -20,11 +20,6 @@ import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
 
 class FriendInvitationOnboarding extends Component {
-  static goToReadyLink () {
-    const ballotLink = '/ready';
-    historyPush(ballotLink);
-  }
-
   static propTypes = {
     classes: PropTypes.object,
     params: PropTypes.object,
@@ -34,6 +29,7 @@ class FriendInvitationOnboarding extends Component {
     super(props);
     this.state = {
       activeSlideBefore: 0,
+      howItWorksWatchedThisSession: false,
       imageDecideUrl: '/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif',
       imageDecideReloadUrl: '/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif',
       imageFollowUrl: '/img/how-it-works/HowItWorksForVoters-Follow-20190507.gif',
@@ -118,9 +114,18 @@ class FriendInvitationOnboarding extends Component {
       setTimeout(() => {
         this.setState({ imageDecideReloadUrl: imageDecideUrl });
       }, 0);
-      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);
+      this.setState({ howItWorksWatchedThisSession: true });
     }
     this.slider.current.slickGoTo(index);
+  }
+
+  onExitOnboarding = () => {
+    const { howItWorksWatchedThisSession } = this.state;
+    if (howItWorksWatchedThisSession) {
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);
+    }
+    const ballotLink = '/ready';
+    historyPush(ballotLink);
   }
 
   nextSlide () {
@@ -146,7 +151,7 @@ class FriendInvitationOnboarding extends Component {
       setTimeout(() => {
         this.setState({ imageDecideReloadUrl: imageDecideUrl });
       }, 0);
-      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);
+      this.setState({ howItWorksWatchedThisSession: true });
     }
     this.slider.current.slickNext();
   }
@@ -220,7 +225,7 @@ class FriendInvitationOnboarding extends Component {
       <div>
         <Helmet title="Invitation Accepted!" />
         <div className="intro-story container-fluid well u-inset--md" style={this.overrideMediaQueryForAndroidTablets()}>
-          <span onClick={FriendInvitationOnboarding.goToReadyLink}>
+          <span onClick={this.onExitOnboarding}>
             <img
               src={cordovaDot(closeIcon)}
               className={`x-close x-close__black ${isWebApp() ? '' : 'x-close__cordova'}`}
@@ -332,7 +337,7 @@ class FriendInvitationOnboarding extends Component {
                   id="howItWorksNext"
                   variant="contained"
                   classes={{ root: classes.nextButtonRoot }}
-                  onClick={activeSlideBefore === showReadyNextTextOnThisSlide ? FriendInvitationOnboarding.goToReadyLink : this.nextSlide}
+                  onClick={activeSlideBefore === showReadyNextTextOnThisSlide ? this.onExitOnboarding : this.nextSlide}
                 >
                   {activeSlideBefore === showReadyNextTextOnThisSlide ? 'Done!' : 'Next'}
                 </Button>
@@ -377,7 +382,7 @@ const FooterBarWrapper = styled.div`
   background: #fff;
   border-top: 1px solid #eee;
   bottom: 0;
-  box-shadow: 0 -4px 4px -1px rgba(0, 0, 0, .2), 0 -4px 5px 0 rgba(0, 0, 0, .14), 0 -1px 10px 0 rgba(0, 0, 0, .12);
+  // box-shadow: 0 -4px 4px -1px rgba(0, 0, 0, .2), 0 -4px 5px 0 rgba(0, 0, 0, .14), 0 -1px 10px 0 rgba(0, 0, 0, .12);
   max-width: 750px;
   padding-bottom: env(safe-area-inset-bottom);
   position: fixed;
