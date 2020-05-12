@@ -9,7 +9,6 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import BallotIcon from '@material-ui/icons/Ballot';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
-// import Notifications from '@material-ui/icons/Notifications';
 import PeopleIcon from '@material-ui/icons/People';
 import AppStore from '../../stores/AppStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
@@ -19,6 +18,7 @@ import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import VoterStore from '../../stores/VoterStore';
+// import Notifications from '@material-ui/icons/Notifications';
 
 
 function isFriendsTabSelected () {
@@ -48,12 +48,14 @@ class FooterBar extends React.Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
-    const showSignInModal = AppStore.showSignInModal();
     const showShareModal = AppStore.showShareModal();
+    const showSharedItemModal = AppStore.showSharedItemModal();
+    const showSignInModal = AppStore.showSignInModal();
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
       showingOneCompleteYourProfileModal,
       showShareModal,
+      showSharedItemModal,
       showSignInModal,
     });
   }
@@ -67,10 +69,12 @@ class FooterBar extends React.Component {
   onAppStoreChange () {
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
     const showShareModal = AppStore.showShareModal();
+    const showSharedItemModal = AppStore.showSharedItemModal();
     const showSignInModal = AppStore.showSignInModal();
     this.setState({
       showingOneCompleteYourProfileModal,
       showShareModal,
+      showSharedItemModal,
       showSignInModal,
     });
   }
@@ -125,7 +129,7 @@ class FooterBar extends React.Component {
     renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
-      friendInvitationsSentToMe, showingOneCompleteYourProfileModal, showShareModal, showSignInModal,
+      friendInvitationsSentToMe, showingOneCompleteYourProfileModal, showShareModal, showSharedItemModal, showSignInModal,
       // voterIsSignedIn,
     } = this.state;
     const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
@@ -137,7 +141,7 @@ class FooterBar extends React.Component {
     return (
       <FooterBarWrapper>
         <div
-          className={`footer-container u-show-mobile-tablet ${showingOneCompleteYourProfileModal || showShareModal || showSignInModal ? ' u-z-index-1000' : ' u-z-index-9000'}`}
+          className={`footer-container u-show-mobile-tablet ${showingOneCompleteYourProfileModal || showShareModal || showSharedItemModal || showSignInModal ? ' u-z-index-1000' : ' u-z-index-9000'}`}
           style={{ height: `${cordovaFooterHeight()}` }}
         >
           <BottomNavigation
