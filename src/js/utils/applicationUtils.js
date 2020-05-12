@@ -261,7 +261,7 @@ export function setZenDeskHelpVisibility (pathname) {
       ['/ballot', '/ballot/vote', '/friends', '/more/network', '/office', '/opinions', '/settings', '/value'].some(
         match => pathname.toLowerCase().startsWith(match),
       )) &&
-      !['/wevoteintro', '/how'].some(
+      !['/wevoteintro', '/how', '/candidate-for-extension'].some(
         match => pathname.toLowerCase().startsWith(match),
       )
     ) { // '/values'
