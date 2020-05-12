@@ -130,7 +130,7 @@ class Application extends Component {
           appId: webAppConfig.FACEBOOK_APP_ID,
           autoLogAppEvents: true,
           xfbml: true,
-          version: 'v3.3',
+          version: 'v7.0', // Facebook JavaScript SDK - Facebook Version
           status: true, // set this status to true, this will fix the popup blocker issue
         });
       };
