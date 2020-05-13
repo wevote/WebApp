@@ -143,12 +143,13 @@ export default class OrganizationVoterGuide extends Component {
     }
 
     // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
-    if (nextProps.activeRoute) {
-      // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.activeRoute: ', nextProps.activeRoute);
-      this.setState({
-        activeRoute: nextProps.activeRoute || '',
-      });
-    }
+    // DALE 2020-05-13 We only use activeRoute from the props on the first entry
+    // if (nextProps.activeRoute) {
+    //   console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.activeRoute: ', nextProps.activeRoute);
+    //   this.setState({
+    //     activeRoute: nextProps.activeRoute || '',
+    //   });
+    // }
   }
 
   // shouldComponentUpdate (nextProps, nextState) {
@@ -241,6 +242,12 @@ export default class OrganizationVoterGuide extends Component {
     });
   }
 
+  changeActiveRoute = (newActiveRoute) => {
+    this.setState({
+      activeRoute: newActiveRoute,
+    });
+  }
+
   ballotItemLinkHasBeenClicked (selectedBallotItemId) {
     if (this.organizationVoterGuideTabsReference &&
         this.organizationVoterGuideTabsReference.voterGuideBallotReference &&
@@ -268,7 +275,8 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   switchNav (destinationTab) {
-    const editLink = this.props.location.pathname.replace(`/${this.state.activeRoute}`, '');
+    const { activeRoute } = this.state;
+    const editLink = this.props.location.pathname.replace(`/${activeRoute}`, '');
     historyPush(`${editLink}/m/${destinationTab}`);
   }
 
@@ -430,10 +438,11 @@ export default class OrganizationVoterGuide extends Component {
 
             <div className="col-12 col-md-8">
               <OrganizationVoterGuideTabs
-                organizationWeVoteId={organizationWeVoteId}
-                location={this.props.location}
-                params={this.props.params}
                 activeRoute={activeRoute}
+                activeRouteChanged={this.changeActiveRoute}
+                location={this.props.location}
+                organizationWeVoteId={organizationWeVoteId}
+                params={this.props.params}
                 ref={(ref) => { this.organizationVoterGuideTabsReference = ref; }}
               />
             </div>

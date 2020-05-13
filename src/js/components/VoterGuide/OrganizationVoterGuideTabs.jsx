@@ -19,6 +19,7 @@ import { arrayContains } from '../../utils/textFormat';
 export default class OrganizationVoterGuideTabs extends Component {
   static propTypes = {
     activeRoute: PropTypes.string,
+    activeRouteChanged: PropTypes.func,
     organizationWeVoteId: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
@@ -186,6 +187,7 @@ export default class OrganizationVoterGuideTabs extends Component {
   }
 
   switchTab (destinationTab) {
+    // console.log('OrganizationVoterGuideTabs switchTab, destinationTab:', destinationTab);
     const availableTabsArray = ['ballot', 'following', 'followers', 'positions'];
     if (arrayContains(destinationTab, availableTabsArray)) {
       this.setState({
@@ -207,6 +209,8 @@ export default class OrganizationVoterGuideTabs extends Component {
         }
       }
       modifiedUrl = `${modifiedUrl}/${destinationTab}`;
+      // console.log('modifiedUrl:', modifiedUrl);
+      this.props.activeRouteChanged(destinationTab);
       // eslint-disable-next-line no-restricted-globals
       history.pushState({
         id: `tabs-${modifiedUrl}`,
@@ -284,10 +288,10 @@ export default class OrganizationVoterGuideTabs extends Component {
         );
         break;
       case 'following':
-        voterGuideComponentToDisplay = <VoterGuideFollowing organization={this.state.organization} />;
+        voterGuideComponentToDisplay = <VoterGuideFollowing organizationWeVoteId={organizationWeVoteId} />;
         break;
       case 'followers':
-        voterGuideComponentToDisplay = <VoterGuideFollowers organization={this.state.organization} />;
+        voterGuideComponentToDisplay = <VoterGuideFollowers organizationWeVoteId={organizationWeVoteId} />;
         break;
     }
 
@@ -301,8 +305,7 @@ export default class OrganizationVoterGuideTabs extends Component {
                   onClick={() => this.switchTab('ballot')}
                   className={activeRoute === 'ballot' ? 'tab tab-active' : 'tab tab-default'}
                 >
-                  <span className="u-show-mobile">Your Ballot</span>
-                  <span className="u-show-desktop-tablet">From Your Ballot</span>
+                  Your Ballot
                 </a>
               </li>
 
@@ -311,12 +314,11 @@ export default class OrganizationVoterGuideTabs extends Component {
                   onClick={() => this.switchTab('positions')}
                   className={activeRoute === 'positions' ? 'tab tab-active' : 'tab tab-default'}
                 >
-                  <span className="u-show-mobile">All</span>
-                  <span className="u-show-desktop-tablet">All Endorsements</span>
+                  All Endorsements
                 </a>
               </li>
 
-              <li className="tab-item">
+              <li className="tab-item u-show-desktop-tablet">
                 <a // eslint-disable-line
                   onClick={() => this.switchTab('following')}
                   className={activeRoute === 'following' ? 'tab tab-active' : 'tab tab-default'}
@@ -328,7 +330,7 @@ export default class OrganizationVoterGuideTabs extends Component {
                 </a>
               </li>
 
-              <li className="tab-item">
+              <li className="tab-item u-show-desktop-tablet">
                 <a // eslint-disable-line
                   onClick={() => this.switchTab('followers')}
                   className={activeRoute === 'followers' ? 'tab tab-active' : 'tab tab-default'}
