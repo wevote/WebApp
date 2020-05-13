@@ -34,6 +34,11 @@ export default {
     Dispatcher.dispatch({ type: 'showHowItWorksModal', payload: show });
   },
 
+  setShowVoterPlanModal (show) {
+    // The chosenPaidAccount values are: free, professional, enterprise
+    Dispatcher.dispatch({ type: 'showVoterPlanModal', payload: show });
+  },
+
   setShowNewVoterGuideModal (show) {
     Dispatcher.dispatch({ type: 'showNewVoterGuideModal', payload: show });
   },
