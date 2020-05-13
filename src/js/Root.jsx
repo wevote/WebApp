@@ -285,7 +285,6 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       {/* view_mode not taken in yet */}
 
       {/* Any route that is not found -> @return TwitterHandleLanding component */}
-      <Route path=":twitter_handle" component={TwitterHandleLanding} />
       <Route path=":twitter_handle/followers" component={props => <TwitterHandleLanding {...props} activeRoute="followers" />} />
       <Route path=":twitter_handle/following" component={props => <TwitterHandleLanding {...props} activeRoute="following" />} />
       <Route path=":twitter_handle/positions" component={props => <TwitterHandleLanding {...props} activeRoute="positions" />} />
@@ -303,6 +302,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/following" component={props => <TwitterHandleLanding {...props} activeRoute="following" />} />
       <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/positions" component={props => <TwitterHandleLanding {...props} activeRoute="positions" />} />
       <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable" component={TwitterHandleLanding} />
+      <Route path=":twitter_handle" component={TwitterHandleLanding} />
       <Route path="*" component={PageNotFound} />
     </Route>
   );
