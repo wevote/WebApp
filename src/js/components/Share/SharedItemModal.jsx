@@ -8,12 +8,15 @@ import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
+import InfoIcon from '@material-ui/icons/Info';
 import BallotStore from '../../stores/BallotStore';
 import BallotActions from '../../actions/BallotActions';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { hasIPhoneNotch, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import FollowToggle from '../Widgets/FollowToggle';
+import FriendToggle from '../Friends/FriendToggle';
 import ImageHandler from '../ImageHandler';
+import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
@@ -35,7 +38,7 @@ class SharedItemModal extends Component {
     super(props);
     this.state = {
       organizationName: '',
-      organizationPhotoUrlLarge: '',
+      organizationPhotoUrlMedium: '',
       sharedByOrganizationWeVoteId: '',
     };
   }
@@ -48,6 +51,35 @@ class SharedItemModal extends Component {
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { sharedItemCode } = this.props;
+    if (sharedItemCode) {
+      const sharedItem = ShareStore.getSharedItemByCode(sharedItemCode);
+      const {
+        shared_by_organization_type: sharedByOrganizationType,
+        shared_by_organization_we_vote_id: sharedByOrganizationWeVoteId,
+        shared_by_voter_we_vote_id: sharedByVoterWeVoteId,
+      } = sharedItem;
+      if (sharedByOrganizationWeVoteId) {
+        this.setState({
+          sharedByOrganizationType,
+          sharedByOrganizationWeVoteId,
+          sharedByVoterWeVoteId,
+        });
+        const organization = OrganizationStore.getOrganizationByWeVoteId(sharedByOrganizationWeVoteId);
+        // console.log('SharedItemModal onOrganizationStoreChange organization:', organization);
+        if (organization && organization.organization_name) {
+          // While typing 'Tom Smith' in the org field, without the following line, when you get to 'Tom ', autosaving trims and overwrites it to 'Tom' before you can type the 'S'
+          // console.log('onOrganizationStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
+          if (!organization.organization_name.startsWith('Voter-wv') && organization.organization_name.trim() !== this.state.organizationName.trim()) {
+            this.setState({
+              organizationName: organization.organization_name,
+              organizationPhotoUrlMedium: organization.organization_photo_url_medium,
+            });
+          }
+        }
+      } else {
+        ShareActions.sharedItemRetrieveByCode(sharedItemCode);
+      }
+    }
     // console.log('sharedItemCode:', sharedItemCode);
     const electionDayText = BallotStore.currentBallotElectionDate;
     if (!electionDayText) {
@@ -56,7 +88,6 @@ class SharedItemModal extends Component {
     this.setState({
       sharedItemCode,
     });
-    ShareActions.sharedItemRetrieveByCode(sharedItemCode);
   }
 
   componentWillUnmount () {
@@ -93,38 +124,46 @@ class SharedItemModal extends Component {
   onOrganizationStoreChange () {
     const { sharedByOrganizationWeVoteId } = this.state;
     const organization = OrganizationStore.getOrganizationByWeVoteId(sharedByOrganizationWeVoteId);
+    // console.log('SharedItemModal onOrganizationStoreChange organization:', organization);
     if (organization && organization.organization_name) {
       // While typing 'Tom Smith' in the org field, without the following line, when you get to 'Tom ', autosaving trims and overwrites it to 'Tom' before you can type the 'S'
       // console.log('onOrganizationStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
-      if (organization.organization_name.trim() !== this.state.organizationName.trim()) {
+      if (!organization.organization_name.startsWith('Voter-wv') && organization.organization_name.trim() !== this.state.organizationName.trim()) {
         this.setState({
           organizationName: organization.organization_name,
-          organizationPhotoUrlLarge: organization.organization_photo_url_large,
+          organizationPhotoUrlMedium: organization.organization_photo_url_medium,
         });
       }
     }
   }
 
   onShareStoreChange () {
-    // console.log('SharedItemLanding onShareStoreChange');
+    // console.log('SharedItemModal onShareStoreChange');
     const { sharedItemCode } = this.state;
     if (sharedItemCode) {
       const sharedItem = ShareStore.getSharedItemByCode(sharedItemCode);
-      const { shared_by_organization_we_vote_id: sharedByOrganizationWeVoteId } = sharedItem;
+      const {
+        shared_by_organization_type: sharedByOrganizationType,
+        shared_by_organization_we_vote_id: sharedByOrganizationWeVoteId,
+        shared_by_voter_we_vote_id: sharedByVoterWeVoteId,
+      } = sharedItem;
       const organization = OrganizationStore.getOrganizationByWeVoteId(sharedByOrganizationWeVoteId);
+      // console.log('SharedItemModal onShareStoreChange sharedItem:', sharedItem, ', organization:', organization);
       if (organization && organization.organization_name) {
         // console.log('onOrganizationStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
-        if (organization.organization_name.trim() !== this.state.organizationName.trim()) {
+        if (!organization.organization_name.startsWith('Voter-wv') && organization.organization_name.trim() !== this.state.organizationName.trim()) {
           this.setState({
             organizationName: organization.organization_name,
-            organizationPhotoUrlLarge: organization.organization_photo_url_large,
+            organizationPhotoUrlMedium: organization.organization_photo_url_medium,
           });
         }
       } else {
         OrganizationActions.organizationRetrieve(sharedByOrganizationWeVoteId);
       }
       this.setState({
+        sharedByOrganizationType,
         sharedByOrganizationWeVoteId,
+        sharedByVoterWeVoteId,
       });
     }
   }
@@ -145,8 +184,8 @@ class SharedItemModal extends Component {
     const { classes } = this.props;
     const {
       days, electionDate,
-      organizationName, organizationPhotoUrlLarge,
-      sharedByOrganizationWeVoteId,
+      organizationName, organizationPhotoUrlMedium,
+      sharedByOrganizationType, sharedByOrganizationWeVoteId, sharedByVoterWeVoteId,
       sharedItemCode,
     } = this.state;
 
@@ -154,6 +193,8 @@ class SharedItemModal extends Component {
       return null;
     }
 
+    const sharingContextText = 'has shared this page with you.';
+    // console.log('sharedByOrganizationType:', sharedByOrganizationType, ', sharedByVoterWeVoteId:', sharedByVoterWeVoteId);
     return (
       <Dialog
         id="sharedItemModal"
@@ -194,28 +235,69 @@ class SharedItemModal extends Component {
             </IconButton>
           </ModalTitleArea>
           <ModalContent style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }}>
-            <SharedByOrganizationWrapper>
-              {organizationPhotoUrlLarge && (
-                <OrganizationImageWrapper>
-                  <ImageHandler
-                    imageUrl={organizationPhotoUrlLarge}
-                    hidePlaceholder
-                    sizeClassName="icon-lg "
-                  />
-                </OrganizationImageWrapper>
-              )}
-              <OrganizationNameWrapper>
-                {organizationName}
-              </OrganizationNameWrapper>
-            </SharedByOrganizationWrapper>
-            <FollowToggleWrapper className="u-show-desktop-tablet">
-              <FollowToggle
-                platformType="mobile"
-                organizationWeVoteId={sharedByOrganizationWeVoteId}
-                showFollowingText
-              />
-            </FollowToggleWrapper>
+            {!!(sharedByOrganizationWeVoteId && organizationName) && (
+              <SharedByOrganizationOuterWrapper>
+                <SharedByOrganizationInnerWrapper>
+                  <SharedByOrganizationTopRow>
+                    <SharedByOrganization
+                      id={`sharedByOrganizationWeVoteId-${sharedByOrganizationWeVoteId}`}
+                    >
+                      {/* SharedByOrganization Image */}
+                      <OrganizationImageWrapper>
+                        <ImageHandler
+                          className="card-main__avatar-compressed"
+                          sizeClassName="icon-candidate-small u-push--sm "
+                          imageUrl={organizationPhotoUrlMedium}
+                          alt={`${organizationName}`}
+                          kind_of_ballot_item="CANDIDATE"
+                        />
+                      </OrganizationImageWrapper>
+                      {/* SharedByOrganization Name */}
+                      <OrganizationNameColumn>
+                        <OrganizationNameText>
+                          {!organizationName ? 'Loading name...' : organizationName}
+                        </OrganizationNameText>
+                        <SharedContextText>{sharingContextText}</SharedContextText>
+                      </OrganizationNameColumn>
+                    </SharedByOrganization>
+                    {!!(organizationName) && (
+                      <OpinionsAddedToPersonalizedScore>
+                        <InfoIcon classes={{ root: classes.informationIcon }} />
+                        <OpinionsAddedText>
+                          {organizationName}
+                          &apos;s opinions will be added to your personalized scores.
+                        </OpinionsAddedText>
+                      </OpinionsAddedToPersonalizedScore>
+                    )}
+                  </SharedByOrganizationTopRow>
+                  <SharedByOrganizationBottomRow>
+                    <ActionButtonsRow>
+                      { !!(!isSpeakerTypeOrganization(sharedByOrganizationType) && !isSpeakerTypePublicFigure(sharedByOrganizationType)) && (
+                        <FriendToggleWrapper>
+                          <FriendToggle
+                            lightModeOn
+                            otherVoterWeVoteId={sharedByVoterWeVoteId}
+                            showFriendsText
+                          />
+                        </FriendToggleWrapper>
+                      )}
+                      <FollowToggleWrapper>
+                        <FollowToggle
+                          lightModeOn
+                          organizationWeVoteId={sharedByOrganizationWeVoteId}
+                          platformType="allPlatforms"
+                          showFollowingText
+                        />
+                      </FollowToggleWrapper>
+                    </ActionButtonsRow>
+                  </SharedByOrganizationBottomRow>
+                </SharedByOrganizationInnerWrapper>
+              </SharedByOrganizationOuterWrapper>
+            )}
             <SharedItemIntroduction />
+            <br />
+            <br />
+            <br />
           </ModalContent>
         </ContentWrapper>
         <FooterBarWrapper style={{ height: `${cordovaFooterHeight()}` }}>
@@ -290,30 +372,28 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.main,
     height: 2.5,
   },
-  tabStyle: {
-    fontWeight: 600,
-  },
-  Box: {
-    padding: 2,
-  },
-  backButtonRoot: {
-    width: '95%',
-  },
-  nextButtonRoot: {
-    width: '100%',
+  informationIcon: {
+    width: 16,
+    height: 16,
   },
 });
+
+const ActionButtonsRow = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  // margin-top: 10px;
+`;
 
 const ContentWrapper = styled.div`
   overflow-y: auto;
 `;
 
 const ElectionCountdownDays = styled.span`
-  font-size: 32px;
+  font-size: 24px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 24px;
+    font-size: 18px;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     font-size: 13px;
   }
 `;
@@ -332,7 +412,7 @@ const ElectionCountdownText = styled.h3`
     margin-top: 2px;
     text-align: center;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     font-size: 10px;
     margin-left: 2px;
     margin-top: 2px;
@@ -340,34 +420,26 @@ const ElectionCountdownText = styled.h3`
   }
 `;
 
-const FollowToggleWrapper = styled.div`
-`;
-
 const FooterBarWrapper = styled.div`
   background: #fff;
   border-top: 1px solid #eee;
   bottom: 0;
-  // box-shadow: 0 -4px 4px -1px rgba(0, 0, 0, .2), 0 -4px 5px 0 rgba(0, 0, 0, .14), 0 -1px 10px 0 rgba(0, 0, 0, .12);
   height: 45px;
   position: absolute;
   width: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    box-shadow: 0 -4px 4px -1px rgba(0, 0, 0, .2), 0 -4px 5px 0 rgba(0, 0, 0, .14), 0 -1px 10px 0 rgba(0, 0, 0, .12);
+  }
   @media print{
     display: none;
   }
 `;
 
-const OneButtonWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding: 4px 8px 0 8px;
-  width: 100%;
+const FollowToggleWrapper = styled.div`
 `;
 
-const OrganizationImageWrapper = styled.div`
-`;
-
-const OrganizationNameWrapper = styled.div`
+const FriendToggleWrapper = styled.div`
+  padding-right: 8px;
 `;
 
 const ModalTitleArea = styled.div`
@@ -389,13 +461,84 @@ const ModalTitleArea = styled.div`
 const ModalContent = styled.div`
   height: ${isWebApp() ? '100%' : 'unset'};
   width: 100%;
-  margin: 0 auto;
-  padding: 35px 0 77px 0;
+  margin: 50px 0 0 0 !important;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin: 40px 0 0 0 !important;
+  }
 `;
 
-const SharedByOrganizationWrapper = styled.div`
-  margin-right: 12px;
+const OneButtonWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 4px 8px 0 8px;
+  width: 100%;
 `;
 
+const OpinionsAddedToPersonalizedScore = styled.div`
+  color: ${({ theme }) => theme.colors.grayMid};
+  display: flex;
+  font-size: 12px;
+  justify-content: flex-start;
+  margin-bottom: 4px;
+  margin-top: 4px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 10px;
+  }
+`;
+
+const OpinionsAddedText = styled.div`
+  margin-left: 4px;
+`;
+
+const OrganizationImageWrapper = styled.div`
+  margin-top: 6px !important;
+`;
+
+const OrganizationNameColumn = styled.div`
+`;
+
+const OrganizationNameText = styled.div`
+  font-size: 22px;
+  font-weight: 600;
+`;
+
+const SharedByOrganizationOuterWrapper = styled.div`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
+  display: flex;
+  justify-content: center;
+  width: 100% !important;
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    position: relative;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  }
+`;
+
+const SharedByOrganizationInnerWrapper = styled.div`
+  margin: 0 !important;
+  max-width: 450px;
+  padding: 0 12px 12px 12px !important;
+  transition: all 200ms ease-in;
+`;
+
+const SharedByOrganization = styled.div`
+  display: flex;
+  flex-grow: 8;
+`;
+
+const SharedByOrganizationTopRow = styled.div`
+`;
+
+const SharedByOrganizationBottomRow = styled.div`
+  // padding-bottom: 10px;
+`;
+
+const SharedContextText = styled.div`
+  color: #555;
+  font-size: 14px;
+`;
 export default withTheme(withStyles(styles)(SharedItemModal));
 

@@ -16,9 +16,10 @@ class SharedItemIntroduction extends Component {
         <InnerWrapper>
           <IntroHeader>
             We Vote makes
-            <span className="u-show-mobile"><br /></span>
-            <span className="u-show-desktop-tablet">{' '}</span>
-            being a voter easier:
+            {' '}
+            <span className="u-no-break">
+              being a voter easier:
+            </span>
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
@@ -85,13 +86,14 @@ const InnerWrapper = styled.div`
 
 const IntroHeader = styled.div`
   color: #2e3c5d;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
-  padding-top: 32px;
+  padding-top: 20px;
   padding-bottom: 0;
-  text-align: center;
-  @include breakpoints(max mid-small) {
-    font-size: 22px;
+  text-align: left;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 16px;
+    padding-top: 20px;
   }
 `;
 

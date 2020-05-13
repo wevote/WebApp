@@ -19,7 +19,10 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     super(props);
     this.state = {
       friendInvitationByEmailVerifyCalled: false,
+      friendInvitationInformationCalled: false,
+      friendInvitationInformation: undefined,
       hostname: '',
+      invitationStatus: undefined,
       saving: false,
       yesPleaseMergeAccounts: false,
     };
@@ -31,7 +34,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     const { invitation_secret_key: invitationSecretKey } = this.props.params;
     // console.log('FriendInvitationByEmailVerifyProcess, componentDidMount, this.props.params.invitation_secret_key: ', invitationSecretKey);
     const hostname = AppStore.getHostname();
-    if (hostname && hostname !== '') {
+    if (invitationSecretKey && hostname && hostname !== '') {
       this.friendInvitationByEmailVerify(invitationSecretKey);
       this.setState({
         friendInvitationByEmailVerifyCalled: true,
@@ -46,29 +49,58 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   }
 
   onAppStoreChange () {
-    const { friendInvitationByEmailVerifyCalled } = this.state;
+    const { invitation_secret_key: invitationSecretKey } = this.props.params;
+    const { friendInvitationByEmailVerifyCalled, friendInvitationInformationCalled } = this.state;
     const hostname = AppStore.getHostname();
-    if (!friendInvitationByEmailVerifyCalled && hostname && hostname !== '') {
-      const { invitation_secret_key: invitationSecretKey } = this.props.params;
-      // console.log('FriendInvitationByEmailVerifyProcess, onAppStoreChange, this.props.params.invitation_secret_key: ', invitationSecretKey);
+    if (!friendInvitationByEmailVerifyCalled && invitationSecretKey && hostname && hostname !== '') {
+      // console.log('onAppStoreChange, calling friendInvitationByEmailVerify');
       this.friendInvitationByEmailVerify(invitationSecretKey);
       this.setState({
         friendInvitationByEmailVerifyCalled: true,
         hostname,
       });
     }
+    // If we know the verification API call has been called...
+    if (friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
+      // console.log('onAppStoreChange, calling friendInvitationInformation');
+      FriendActions.friendInvitationInformation(invitationSecretKey);
+      this.setState({
+        friendInvitationInformationCalled: true,
+        hostname,
+      });
+    }
   }
 
   onFriendStoreChange () {
-    this.setState({
-      invitationStatus: FriendStore.getInvitationStatus(),
-      saving: false,
-    });
+    const { invitation_secret_key: invitationSecretKey } = this.props.params;
+    const { friendInvitationByEmailVerifyCalled, friendInvitationInformationCalled } = this.state;
+    const hostname = AppStore.getHostname();
+    if (friendInvitationByEmailVerifyCalled && !friendInvitationInformationCalled && invitationSecretKey && hostname && hostname !== '') {
+      // console.log('onFriendStoreChange, calling friendInvitationInformation');
+      FriendActions.friendInvitationInformation(invitationSecretKey);
+      this.setState({
+        friendInvitationInformationCalled: true,
+        hostname,
+      });
+    }
+    if (friendInvitationByEmailVerifyCalled) {
+      // console.log('onFriendStoreChange, listening to getInvitationStatus');
+      this.setState({
+        invitationStatus: FriendStore.getInvitationStatus(),
+        saving: false,
+      });
+    }
+    if (friendInvitationInformationCalled) {
+      // console.log('onFriendStoreChange, listening to getFriendInvitationInformation');
+      this.setState({
+        friendInvitationInformation: FriendStore.getFriendInvitationInformation(),
+      });
+    }
   }
 
   cancelMergeFunction = () => {
     historyPush({
-      pathname: '/ballot',
+      pathname: '/ready',
       state: {
       },
     });
@@ -99,7 +131,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   render () {
     renderLog('FriendInvitationByEmailVerifyProcess');  // Set LOG_RENDER_EVENTS to log all renders
     const { invitation_secret_key: invitationSecretKey } = this.props.params;
-    const { hostname, invitationStatus, saving, yesPleaseMergeAccounts } = this.state;
+    const { friendInvitationInformation, hostname, invitationStatus, saving, yesPleaseMergeAccounts } = this.state;
     // console.log('FriendInvitationByEmailVerifyProcess, invitationStatus:', invitationStatus);
 
     if (yesPleaseMergeAccounts) {
@@ -113,7 +145,8 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     // console.log('FriendInvitationByEmailVerifyProcess, invitation_secret_key:', invitationSecretKey);
     // console.log('FriendInvitationByEmailVerifyProcess, invitationStatus:', invitationStatus);
-    if (saving || !invitationStatus || !hostname || hostname === '') {
+    // console.log('friendInvitationInformation:', friendInvitationInformation);
+    if (saving || !invitationStatus || !friendInvitationInformation || !hostname || hostname === '') {
       // console.log('FriendInvitationByEmailVerifyProcess, saving:', saving, ', or waiting for invitationStatus:', invitationStatus);
       return (
         <div>
@@ -138,7 +171,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       );
     } else if (!invitationSecretKey) {
       historyPush({
-        pathname: '/ballot',
+        pathname: '/ready',
         state: {
           message: 'Invitation secret key not found. Invitation not accepted.',
           message_type: 'warning',
@@ -151,15 +184,6 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     if (!invitationStatus.voterDeviceId) {
       // console.log('voterDeviceId Missing');
       return LoadingWheel;
-    } else if (!invitationStatus.invitationFound) {
-      historyPush({
-        pathname: '/ballot',
-        state: {
-          message: 'Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.',
-          message_type: 'warning',
-        },
-      });
-      return LoadingWheel;
     } else if (invitationStatus.attemptedToApproveOwnInvitation) {
       historyPush({
         pathname: '/friends',
@@ -169,13 +193,22 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         },
       });
       return LoadingWheel;
-    } else if (invitationStatus.invitationSecretKeyBelongsToThisVoter) {
-      // We don't need to do anything more except redirect to the email management page
+    } else if (friendInvitationInformation.invitationSecretKeyBelongsToThisVoter) {
+      // We don't need to do anything more except redirect to the introduction page
       historyPush({
         pathname: `/wevoteintro/newfriend/${invitationSecretKey}`,
         state: {
           message: 'You have accepted your friend\'s invitation. See what your friends are supporting or opposing!',
           message_type: 'success',
+        },
+      });
+      return LoadingWheel;
+    } else if (!invitationStatus.invitationThatCanBeAcceptedFound) {
+      historyPush({
+        pathname: '/ready',
+        state: {
+          message: 'You may have already accepted this invitation. Invitation links may only be used once.',
+          message_type: 'warning',
         },
       });
       return LoadingWheel;

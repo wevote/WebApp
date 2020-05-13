@@ -119,7 +119,7 @@ class WelcomeForVoters extends PureComponent {
     const { classes, pathname } = this.props;
     // console.log('WelcomeForVoters, pathname: ', pathname);
     const { voter, newsletterOptInTrue } = this.state;
-    const isVoterSignedIn = voter.is_signed_in;
+    const voterIsSignedIn = voter.is_signed_in;
 
     const testimonialAuthor = 'Alissa B., Oakland, California';
     const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
@@ -227,7 +227,7 @@ class WelcomeForVoters extends PureComponent {
             */}
           </DescriptionContainer>
         </Section>
-        <Section variant="dark" rounded={!isVoterSignedIn}>
+        <Section variant="dark" rounded={!voterIsSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
             <NetworkImage src={cordovaDot(ffwdLogo)} alt="Fast Forward" />
@@ -238,7 +238,7 @@ class WelcomeForVoters extends PureComponent {
           </NetworkContainer>
         </Section>
         {
-          !isVoterSignedIn && (
+          !voterIsSignedIn && (
             <Section>
               <SectionTitle>Sign up to get updates about We Vote</SectionTitle>
               <SignUpContainer>

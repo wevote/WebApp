@@ -12,6 +12,7 @@ import { renderLog } from '../../utils/logging';
 export default class FriendToggle extends Component {
   static propTypes = {
     displayFullWidth: PropTypes.bool,
+    lightModeOn: PropTypes.bool,
     otherVoterWeVoteId: PropTypes.string.isRequired,
     showFriendsText: PropTypes.bool,
   };
@@ -66,7 +67,7 @@ export default class FriendToggle extends Component {
   render () {
     renderLog('FriendToggle');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
-    const { displayFullWidth, otherVoterWeVoteId, showFriendsText } = this.props;
+    const { displayFullWidth, lightModeOn, otherVoterWeVoteId, showFriendsText } = this.props;
     const { isFriend, unFriendSubmitted } = this.state;
     const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
     // You should not be able to friend yourself
@@ -118,7 +119,11 @@ export default class FriendToggle extends Component {
           </InnerButtonContainer>
         ) : (
           <InnerButtonContainer>
-            <SuggestedFriendToggle displayFullWidth={displayFullWidth} otherVoterWeVoteId={otherVoterWeVoteId} />
+            <SuggestedFriendToggle
+              displayFullWidth={displayFullWidth}
+              lightModeOn={lightModeOn}
+              otherVoterWeVoteId={otherVoterWeVoteId}
+            />
           </InnerButtonContainer>
         )}
       </ButtonContainer>
@@ -133,10 +138,9 @@ const Menu = styled.div`
 
 const ButtonContainer = styled.div`
   width: 100%;
-  margin-top: 18px;
+  margin-top: 0;
   @media(min-width: 400px) {
     ${({ displayFullWidth }) => (displayFullWidth ? 'width: 100%;' : 'width: fit-content;')}
-    margin-top: 0;
     margin-left: auto;
   }
 `;
