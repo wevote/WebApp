@@ -58,7 +58,7 @@ export default class FacebookLandingProcess extends Component {
 
     if (this.state.appRequestAlreadyProcessed) {
       historyPush({
-        pathname: '/ballot',
+        pathname: '/ready',
       });
       return LoadingWheel;
     }
@@ -85,9 +85,9 @@ export default class FacebookLandingProcess extends Component {
 
     console.log('Invitation status:', this.state.facebookInvitationStatus);
     // This process starts when we return from attempting friendInvitationByFacebookVerify
-    if (!this.state.facebookInvitationStatus.invitationFound) {
+    if (!this.state.facebookInvitationStatus.invitationThatCanBeAcceptedFound) {
       historyPush({
-        pathname: '/friends',
+        pathname: '/ready',
         state: {
           message: 'Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.',
           message_type: 'warning',
@@ -107,10 +107,10 @@ export default class FacebookLandingProcess extends Component {
       return LoadingWheel;
     }
 
-    if (this.state.facebookInvitationStatus.invitationFound) {
+    if (this.state.facebookInvitationStatus.invitationThatCanBeAcceptedFound) {
       FacebookActions.deleteFacebookAppRequest(this.state.facebookInvitationStatus.facebookRequestId);
       historyPush({
-        pathname: '/friends',
+        pathname: '/ready',
         state: {
           message: "You have accepted your friend's invitation. Visit your ballot to see what your friends are supporting or opposing.",
           message_type: 'success',

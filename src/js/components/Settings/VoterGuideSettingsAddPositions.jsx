@@ -6,21 +6,22 @@ import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
+import AppActions from '../../actions/AppActions';
 import BallotItemForAddPositions from './BallotItemForAddPositions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
+import { historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../LoadingWheel';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
 import SettingsAddBallotItemsFilter from '../Filter/SettingsAddBallotItemsFilter';
 import SettingsSeePositionsFilter from '../Filter/SettingsSeePositionsFilter';
-import LoadingWheel from '../LoadingWheel';
-import AppActions from '../../actions/AppActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import VoterStore from '../../stores/VoterStore';
-import OrganizationActions from '../../actions/OrganizationActions';
-import VoterGuideStore from '../../stores/VoterGuideStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import ShowMoreItems from '../Widgets/ShowMoreItems';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+import VoterStore from '../../stores/VoterStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 
 const groupedFilters = [
@@ -73,7 +74,8 @@ class VoterGuideSettingsAddPositions extends Component {
       filteredBallotItems: [],
       filteredPositionListForOneElection: [],
       isSearching: false,
-      loadingMoreItems: false,
+      loadingMoreBallotItems: false,
+      loadingMorePositionItems: false,
       localAllBallotItemsHaveBeenRetrieved: {},
       localPositionListHasBeenRetrieved: {},
       numberOfBallotItemsToDisplay: 5,
@@ -86,6 +88,7 @@ class VoterGuideSettingsAddPositions extends Component {
       stateCodeToRetrieve: '',
       totalNumberOfBallotItems: 0,
       totalNumberOfBallotSearchResults: 0,
+      totalNumberOfPositionItems: 0,
       totalNumberOfPositionSearchResults: 0,
     };
     this.onScroll = this.onScroll.bind(this);
@@ -253,10 +256,14 @@ class VoterGuideSettingsAddPositions extends Component {
       }
     } else {
       const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+      let totalNumberOfPositionItems = 0;
+      if (organization && organization.position_list_for_one_election) {
+        totalNumberOfPositionItems = organization.position_list_for_one_election.length;
+      }
       this.setState({
         positionListForOneElection: organization.position_list_for_one_election,
         filteredPositionListForOneElection: organization.position_list_for_one_election,
-        // totalNumberOfPositionItems: organization.position_list_for_one_election.length,
+        totalNumberOfPositionItems,
       });
       // Positions for this organization, for this election
       // console.log('onOrganizationStoreChange, voterGuide: ', voterGuide, ', organization:', organization);
@@ -369,31 +376,37 @@ class VoterGuideSettingsAddPositions extends Component {
   onScroll () {
     const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
     // console.log('showMoreItemsElement: ', showMoreItemsElement);
-    // console.log('Loading more: ', this.state.loadingMoreItems);
+    // console.log('loadingMoreBallotItems: ', this.state.loadingMoreBallotItems);
+    // console.log('loadingMorePositionItems: ', this.state.loadingMorePositionItems);
     if (showMoreItemsElement) {
-      const { numberOfBallotItemsToDisplay, numberOfPositionItemsToDisplay, totalNumberOfBallotItems, totalNumberOfPositionItems } = this.state;
+      const {
+        numberOfBallotItemsToDisplay, totalNumberOfBallotItems,
+        numberOfPositionItemsToDisplay, totalNumberOfPositionItems,
+      } = this.state;
 
       // console.log('window.height: ', window.innerHeight);
       // console.log('Window Scroll: ', window.scrollY);
       // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
-      // console.log('Number to display: ', numberOfBallotItemsToDisplay);
-      // console.log('Total number to display: ', totalNumberOfBallotItems);
+      // console.log('numberOfBallotItemsToDisplay: ', numberOfBallotItemsToDisplay);
+      // console.log('totalNumberOfBallotItems: ', totalNumberOfBallotItems);
+      // console.log('numberOfPositionItemsToDisplay: ', numberOfPositionItemsToDisplay);
+      // console.log('totalNumberOfPositionItems: ', totalNumberOfPositionItems);
       if (numberOfBallotItemsToDisplay < totalNumberOfBallotItems) {
         if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
-          this.setState({ loadingMoreItems: true });
+          this.setState({ loadingMoreBallotItems: true });
           this.increaseNumberOfBallotItemsToDisplay();
         }
       } else {
-        this.setState({ loadingMoreItems: false });
+        this.setState({ loadingMoreBallotItems: false });
       }
 
       if (numberOfPositionItemsToDisplay < totalNumberOfPositionItems) {
         if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
-          this.setState({ loadingMoreItems: true });
+          this.setState({ loadingMorePositionItems: true });
           this.increaseNumberOfPositionItemsToDisplay();
         }
       } else {
-        this.setState({ loadingMoreItems: false });
+        this.setState({ loadingMorePositionItems: false });
       }
     }
   }
@@ -465,10 +478,10 @@ class VoterGuideSettingsAddPositions extends Component {
 
   increaseNumberOfPositionItemsToDisplay = () => {
     let { numberOfPositionItemsToDisplay } = this.state;
-    console.log('Number of position items before increment: ', numberOfPositionItemsToDisplay);
+    // console.log('Number of position items before increment: ', numberOfPositionItemsToDisplay);
 
     numberOfPositionItemsToDisplay += 5;
-    console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
+    // console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
 
     this.positionItemTimer = setTimeout(() => {
       this.setState({
@@ -489,7 +502,7 @@ class VoterGuideSettingsAddPositions extends Component {
   render () {
     renderLog('VoterGuideSettingsAddPositions');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { addNewPositionsMode, isSearching, loadingMoreItems, localGoogleCivicElectionId, searchText, stateCodeToRetrieve } = this.state;
+    const { addNewPositionsMode, isSearching, loadingMoreBallotItems, loadingMorePositionItems, localGoogleCivicElectionId, searchText, stateCodeToRetrieve } = this.state;
     // console.log('VoterGuideSettingsAddPositions render');
     if (!addNewPositionsMode) {
       // ////////////////////////
@@ -598,17 +611,15 @@ class VoterGuideSettingsAddPositions extends Component {
                 })
                 }
               </CardChildListGroup>
-              <ShowMoreItems id="showMoreItemsId">
-                Displaying
-                {' '}
-                {numberOfPositionItemsDisplayed}
-                {' '}
-                of
-                {' '}
-                {isSearching ? totalNumberOfPositionSearchResults : totalNumberOfPositionItems}
-              </ShowMoreItems>
+              <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
+                <ShowMoreItems
+                  loadingMoreItemsNow={loadingMorePositionItems}
+                  numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
+                  numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : totalNumberOfPositionItems}
+                />
+              </ShowMoreItemsWrapper>
               <LoadingItemsWheel>
-                {loadingMoreItems ? (
+                {loadingMorePositionItems ? (
                   <CircularProgress />
                 ) : null}
               </LoadingItemsWheel>
@@ -655,7 +666,6 @@ class VoterGuideSettingsAddPositions extends Component {
       }
       const atLeastOnePositionFoundWithTheseFilters = (filteredBallotItems && filteredBallotItems.length);
       let numberOfBallotItemsDisplayed = 0;
-      let numberOfBallotSearchResultsDisplayed = 0;
       let totalNumberOfBallotItems = 0;
       if (atLeastOnePositionFoundWithTheseFilters) {
         totalNumberOfBallotItems = filteredBallotItems.length;
@@ -703,10 +713,10 @@ class VoterGuideSettingsAddPositions extends Component {
                     return null;
                   }
                   if (isSearching) {
-                    if (numberOfBallotSearchResultsDisplayed >= totalNumberOfBallotSearchResults) {
+                    if (numberOfBallotItemsDisplayed >= totalNumberOfBallotSearchResults) {
                       return null;
                     }
-                    numberOfBallotSearchResultsDisplayed += 1;
+                    numberOfBallotItemsDisplayed += 1;
                   } else {
                     if (numberOfBallotItemsDisplayed >= numberOfBallotItemsToDisplay) {
                       return null;
@@ -760,29 +770,15 @@ class VoterGuideSettingsAddPositions extends Component {
                 })
                 }
               </CardChildListGroup>
-              {isSearching ? (
-                <ShowMoreItems id="showMoreItemsId">
-                  Displaying
-                  {' '}
-                  {numberOfBallotSearchResultsDisplayed}
-                  {' '}
-                  of
-                  {' '}
-                  {totalNumberOfBallotSearchResults}
-                </ShowMoreItems>
-              ) : (
-                <ShowMoreItems id="showMoreItemsId">
-                  Displaying
-                  {' '}
-                  {numberOfBallotItemsDisplayed}
-                  {' '}
-                  of
-                  {' '}
-                  {totalNumberOfBallotItems}
-                </ShowMoreItems>
-              )}
+              <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfBallotItemsToDisplay}>
+                <ShowMoreItems
+                  loadingMoreItemsNow={loadingMoreBallotItems}
+                  numberOfItemsDisplayed={numberOfBallotItemsDisplayed}
+                  numberOfItemsTotal={isSearching ? totalNumberOfBallotSearchResults : totalNumberOfBallotItems}
+                />
+              </ShowMoreItemsWrapper>
               <LoadingItemsWheel>
-                {loadingMoreItems ? (
+                {loadingMoreBallotItems ? (
                   <CircularProgress />
                 ) : null}
               </LoadingItemsWheel>
@@ -868,17 +864,7 @@ const SearchTitle = styled.div`
   margin-bottom: 12px;
 `;
 
-const ShowMoreItems = styled.div`
-  font-size: 18px;
-  text-align: right;
-  user-select: none;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding-top: 5px;
-    padding-bottom: 3px;
-  }
-  @media print{
-    display: none;
-  }
+const ShowMoreItemsWrapper = styled.div`
 `;
 
 const styles = theme => ({

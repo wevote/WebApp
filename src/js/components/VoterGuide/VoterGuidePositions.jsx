@@ -19,6 +19,7 @@ import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuidePositionItem from './VoterGuidePositionItem';
+import ShowMoreItems from '../Widgets/ShowMoreItems';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import ThisIsMeAction from '../Widgets/ThisIsMeAction';
@@ -514,15 +515,13 @@ class VoterGuidePositions extends Component {
                       );
                     })}
                   </>
-                  <ShowMoreItems id="showMoreItemsId">
-                    Displaying
-                    {' '}
-                    {numberOfPositionItemsDisplayed}
-                    {' '}
-                    of
-                    {' '}
-                    {positionListForOneElectionLength}
-                  </ShowMoreItems>
+                  <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
+                    <ShowMoreItems
+                      loadingMoreItemsNow={loadingMoreItems}
+                      numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
+                      numberOfItemsTotal={positionListForOneElectionLength}
+                    />
+                  </ShowMoreItemsWrapper>
                   <LoadingItemsWheel>
                     {loadingMoreItems ? (
                       <CircularProgress />
@@ -643,17 +642,7 @@ const LoadingItemsWheel = styled.div`
 const SettingsIconWrapper = styled.span`
 `;
 
-const ShowMoreItems = styled.div`
-  font-size: 18px;
-  text-align: right;
-  user-select: none;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding-top: 5px;
-    padding-bottom: 3px;
-  }
-  @media print{
-    display: none;
-  }
+const ShowMoreItemsWrapper = styled.div`
 `;
 
 const TitleWrapper = styled.h1`

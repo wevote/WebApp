@@ -21,7 +21,7 @@ export default class SharedItemLanding extends Component {
   }
 
   componentDidMount () {
-    // console.log('SharedItemLanding componentDidMount, this.props.params.shared_item_code: ' + this.props.params.shared_item_code);
+    // console.log('SharedItemLanding componentDidMount, this.props.params.shared_item_code: ', this.props.params.shared_item_code);
     const customLinkString = this.props.params.custom_link_string;
     const sharedItemCode = this.props.params.shared_item_code;
     this.setState({
@@ -97,7 +97,7 @@ export default class SharedItemLanding extends Component {
       const hrefHostname = `https://${hostname}`;
       let destinationLocalUrl = destinationFullUrl.replace(hrefHostname, '');
       destinationLocalUrl = destinationLocalUrl.replace(':3000', ''); // For local development machines
-      const destinationLocalUrlWithModal = `${destinationLocalUrl}/modal/sic/-${sharedItemCode}`;
+      const destinationLocalUrlWithModal = `${destinationLocalUrl}/modal/sic/${sharedItemCode}`;
       historyPush(destinationLocalUrlWithModal);
       return LoadingWheel;
     }

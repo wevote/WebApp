@@ -14,6 +14,7 @@ import FriendStore from '../../stores/FriendStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import PositionItem from './PositionItem';
+import ShowMoreItems from '../Widgets/ShowMoreItems';
 import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter';
 
 
@@ -226,7 +227,7 @@ class PositionList extends Component {
     if (showMoreItemsElement) {
       const {
         filteredPositionListLength, isSearching, numberOfPositionItemsToDisplay,
-        numberOfSearchResultsDisplayed, totalNumberOfPositionSearchResults,
+        totalNumberOfPositionSearchResults,
       } = this.state;
 
       // console.log('window.height: ', window.innerHeight);
@@ -235,7 +236,7 @@ class PositionList extends Component {
       // console.log('filteredPositionListLength: ', filteredPositionListLength);
       // console.log('numberOfPositionItemsToDisplay: ', numberOfPositionItemsToDisplay);
 
-      if ((isSearching && (numberOfSearchResultsDisplayed < totalNumberOfPositionSearchResults)) ||
+      if ((isSearching && (numberOfPositionItemsToDisplay < totalNumberOfPositionSearchResults)) ||
           (!isSearching && (numberOfPositionItemsToDisplay < filteredPositionListLength))) {
         if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
           this.setState({ loadingMoreItems: true });
@@ -304,7 +305,6 @@ class PositionList extends Component {
     }
     const selectedFiltersDefault = ['endorsingGroup', 'newsOrganization', 'publicFigure', 'sortByMagic', 'yourFriends'];
     let numberOfPositionItemsDisplayed = 0;
-    let numberOfSearchResultsDisplayed = 0;
     let searchTextString = '';
     return (
       <div>
@@ -338,10 +338,10 @@ class PositionList extends Component {
           {(isSearching ? positionSearchResults : filteredPositionList).map((onePosition) => {
             // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
             if (isSearching) {
-              if (numberOfSearchResultsDisplayed >= numberOfPositionItemsToDisplay) {
+              if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
                 return null;
               }
-              numberOfSearchResultsDisplayed += 1;
+              numberOfPositionItemsDisplayed += 1;
             } else {
               if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
                 return null;
@@ -391,15 +391,13 @@ class PositionList extends Component {
           })
           }
         </ul>
-        <ShowMoreItems id="showMoreItemsId">
-          Displaying
-          {' '}
-          {isSearching ? numberOfSearchResultsDisplayed : numberOfPositionItemsDisplayed }
-          {' '}
-          of
-          {' '}
-          {isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
-        </ShowMoreItems>
+        <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
+          <ShowMoreItems
+            loadingMoreItemsNow={loadingMoreItems}
+            numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
+            numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
+          />
+        </ShowMoreItemsWrapper>
         <LoadingItemsWheel>
           {loadingMoreItems ? (
             <CircularProgress />
@@ -443,15 +441,12 @@ const SearchTitle = styled.div`
   margin-bottom: 12px;
 `;
 
-const ShowMoreItems = styled.div`
-  font-size: 18px;
+const ShowMoreItemsWrapper = styled.div`
+  margin-bottom: 16px;
   padding-left: 16px;
-  padding-right: 16px;
-  text-align: right;
-  user-select: none;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding-top: 5px;
-    padding-bottom: 3px;
+  padding-right: 26px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding-right: 16px;
   }
   @media print{
     display: none;

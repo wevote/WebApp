@@ -232,7 +232,7 @@ class FriendStore extends ReduceStore {
       case 'friendInvitationInformation':
         if (action.res.voter_device_id === '') {
           // The first time it was called there was no voter_device_id, so we want to call it again
-          console.log('FriendStore, friendInvitationInformation, voter_device_id missing, invitation_secret_key:', action.res.invitation_secret_key);
+          // console.log('FriendStore, friendInvitationInformation, voter_device_id missing, invitation_secret_key:', action.res.invitation_secret_key);
           FriendActions.friendInvitationInformation(action.res.invitation_secret_key);
         }
         return {
@@ -244,6 +244,7 @@ class FriendStore extends ReduceStore {
             friendIssueWeVoteIdList: action.res.friend_issue_we_vote_id_list,
             friendOrganizationWeVoteId: action.res.friend_organization_we_vote_id,
             friendWeVoteId: action.res.friend_we_vote_id,
+            invitationSecretKeyBelongsToThisVoter: action.res.invitation_secret_key_belongs_to_this_voter,
             invitationFound: action.res.invitation_found,
             invitationMessage: action.res.invitation_message,
           },
@@ -252,7 +253,7 @@ class FriendStore extends ReduceStore {
       case 'friendInvitationByEmailVerify':
         if (action.res.voter_device_id === '') {
           // The first time it was called there was no voter_device_id, so we want to call it again
-          console.log('FriendStore, friendInvitationByEmailVerify, voter_device_id missing, invitation_secret_key:', action.res.invitation_secret_key);
+          // console.log('FriendStore, friendInvitationByEmailVerify, voter_device_id missing, invitation_secret_key:', action.res.invitation_secret_key);
           FriendActions.friendInvitationByEmailVerify(action.res.invitation_secret_key);
         } else {
           // console.log('FriendStore, voterDeviceId present');
@@ -262,11 +263,10 @@ class FriendStore extends ReduceStore {
         return {
           ...state,
           invitationStatus: {
+            attemptedToApproveOwnInvitation: action.res.attempted_to_approve_own_invitation,
+            invitationThatCanBeAcceptedFound: action.res.invitation_found,
             voterDeviceId: action.res.voter_device_id,
             voterHasDataToPreserve: action.res.voter_has_data_to_preserve,
-            invitationFound: action.res.invitation_found,
-            attemptedToApproveOwnInvitation: action.res.attempted_to_approve_own_invitation,
-            invitationSecretKeyBelongsToThisVoter: action.res.invitation_secret_key_belongs_to_this_voter,
           },
         };
 
@@ -274,11 +274,11 @@ class FriendStore extends ReduceStore {
         return {
           ...state,
           facebookInvitationStatus: {
-            voterDeviceId: action.res.voter_device_id,
-            voterHasDataToPreserve: action.res.voter_has_data_to_preserve,
-            invitationFound: action.res.invitation_found,
             attemptedToApproveOwnInvitation: action.res.attempted_to_approve_own_invitation,
             facebookRequestId: action.res.facebook_request_id,
+            invitationThatCanBeAcceptedFound: action.res.invitation_found,
+            voterDeviceId: action.res.voter_device_id,
+            voterHasDataToPreserve: action.res.voter_has_data_to_preserve,
           },
         };
 

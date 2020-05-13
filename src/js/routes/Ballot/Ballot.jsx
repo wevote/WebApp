@@ -38,6 +38,7 @@ import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import showBallotDecisionsTabs from '../../utils/showBallotDecisionsTabs';
+import ShowMoreItems from '../../components/Widgets/ShowMoreItems';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import { checkShouldUpdate, formatVoterBallotList } from './utils';
@@ -1314,21 +1315,19 @@ class Ballot extends Component {
                       {doubleFilteredBallotItemsLength === 0 &&
                         this.showUserEmptyOptions()
                       }
+                      {!!(totalNumberOfBallotItems) && (
+                        <ShowMoreItemsWrapper id="showMoreItemsId" onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>
+                          <ShowMoreItems
+                            loadingMoreItemsNow={loadingMoreItems}
+                            numberOfItemsDisplayed={numberOfBallotItemsDisplayed}
+                            numberOfItemsTotal={totalNumberOfBallotItems}
+                          />
+                        </ShowMoreItemsWrapper>
+                      )}
                       {!!(loadingMoreItems && totalNumberOfBallotItems && (numberOfBallotItemsToDisplay < totalNumberOfBallotItems)) && (
                         <LoadingItemsWheel>
                           <CircularProgress />
                         </LoadingItemsWheel>
-                      )}
-                      {!!(totalNumberOfBallotItems) && (
-                        <ShowMoreItems id="showMoreItemsId" onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>
-                          Displaying
-                          {' '}
-                          {numberOfBallotItemsDisplayed}
-                          {' '}
-                          of
-                          {' '}
-                          {totalNumberOfBallotItems}
-                        </ShowMoreItems>
                       )}
                       {!isSearching && (
                         <BallotSummaryFooter
@@ -1416,17 +1415,8 @@ const LoadingItemsWheel = styled.div`
   justify-content: center;
 `;
 
-const ShowMoreItems = styled.div`
-  font-size: 18px;
-  text-align: right;
-  user-select: none;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding-top: 5px;
-    padding-bottom: 3px;
-  }
-  @media print{
-    display: none;
-  }
+const ShowMoreItemsWrapper = styled.div`
+  margin-bottom: 16px;
 `;
 
 const SearchResultsEmpty = styled.div`

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
+import AppActions from '../../actions/AppActions';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import VoterStore from '../../stores/VoterStore';
@@ -10,6 +11,7 @@ import { renderLog } from '../../utils/logging';
 export default class SuggestedFriendToggle extends Component {
   static propTypes = {
     displayFullWidth: PropTypes.bool,
+    lightModeOn: PropTypes.bool,
     otherVoterWeVoteId: PropTypes.string.isRequired,
   };
 
@@ -20,6 +22,7 @@ export default class SuggestedFriendToggle extends Component {
       voter: {
         we_vote_id: '',
       },
+      voterIsSignedIn: false,
     };
   }
 
@@ -42,26 +45,34 @@ export default class SuggestedFriendToggle extends Component {
   }
 
   onVoterStoreChange () {
+    const voter = VoterStore.getVoter();
     this.setState({
-      voter: VoterStore.getVoter(),
+      voterIsSignedIn: voter.is_signed_in,
+      voter,
     });
   }
 
   addSuggestedFriend = () => {
+    const { otherVoterWeVoteId } = this.props;
+    const { voterIsSignedIn } = this.state;
     // console.log('addSuggestedFriend');
-    FriendActions.friendInvitationByWeVoteIdSend(this.props.otherVoterWeVoteId);
-    this.setState({
-      addSuggestedFriendSent: true,
-    });
+    if (voterIsSignedIn) {
+      FriendActions.friendInvitationByWeVoteIdSend(otherVoterWeVoteId);
+      this.setState({
+        addSuggestedFriendSent: true,
+      });
+    } else {
+      AppActions.setShowSignInModal(true);
+    }
   }
 
   render () {
     renderLog('SuggestedFriendToggle');  // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state) { return <div />; }
-    const { displayFullWidth, otherVoterWeVoteId } = this.props;
-    const { addSuggestedFriendSent, isFriend } = this.state;
+    const { displayFullWidth, lightModeOn, otherVoterWeVoteId } = this.props;
+    const { addSuggestedFriendSent, isFriend, voter } = this.state;
     // console.log('SuggestedFriendToggle, otherVoterWeVoteId:', otherVoterWeVoteId, ', isFriend:', isFriend);
-    const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
+    const isLookingAtSelf = voter.we_vote_id === otherVoterWeVoteId;
     if (isLookingAtSelf) {
       // You should not be able to friend yourself
       // console.log('SuggestedFriendToggle, isLookingAtSelf');
@@ -71,11 +82,12 @@ export default class SuggestedFriendToggle extends Component {
     return (
       <ButtonContainer displayFullWidth={displayFullWidth}>
         <Button
+          className={`issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius ${lightModeOn ? ' issues-follow-btn--white' : ' issues-follow-btn--blue'}`}
           color="primary"
           disabled={addSuggestedFriendSent || isFriend}
           fullWidth
           onClick={this.addSuggestedFriend}
-          variant="contained"
+          variant={`${lightModeOn ? 'outlined' : 'contained'}`}
         >
           {isFriend ? 'Already Friends' : (
             <>
