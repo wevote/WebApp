@@ -37,14 +37,15 @@ describe('Basic cross-platform We Vote test',  () => {
     } else {
     // ///////////////////////////////
     // For the website version, open our quality testing site
-      await browser.url('https://quality.wevote.us/values');
+      await browser.url('http://localhost:3000/values');
     }
 
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS * 5);
 
     // //////////////////////
     // Test "Values to Follow" section
     await simpleClick('issueFollowButton'); // Follow value
+	assert(false);
     await simpleClick('toggle-button'); // Click dropdown button
     await simpleClick('unfollowValue'); // Unfollow value
     await simpleClick('valueLink'); // Clicks on value
@@ -93,10 +94,13 @@ describe('Basic cross-platform We Vote test',  () => {
 	  await simpleClick('showLess'); // Clicks "Show Less"
     }
 	await scrollIntoViewSimple('valuesListTitle'); // Scrolls to "Explore More Values"
-	valueFollow = await $$('#issueFollowButton')[1];
+	valueFollow = await $$('issueFollowButton')[1];
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
 	await valueFollow.click(); // Follow value
-	assert(false);
-	await simpleClick('valueListLink'); // Clicks on value 
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await simpleClick('toggle-button'); // Click dropdown button // click dropdown button
+	await simpleClick('unfollowValue'); // Unfollow value
+	await simpleClick('valuesListLink'); // Clicks on value 
 	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
     await simpleClick('valuesFollowedPreviewShowMoreId'); // Clicks on "Explore all values"
