@@ -195,6 +195,7 @@ class SharedItemModal extends Component {
 
     const sharingContextText = 'has shared this page with you.';
     // console.log('sharedByOrganizationType:', sharedByOrganizationType, ', sharedByVoterWeVoteId:', sharedByVoterWeVoteId);
+    const developmentFeatureTurnedOn = false;
     return (
       <Dialog
         id="sharedItemModal"
@@ -260,7 +261,7 @@ class SharedItemModal extends Component {
                         <SharedContextText>{sharingContextText}</SharedContextText>
                       </OrganizationNameColumn>
                     </SharedByOrganization>
-                    {!!(organizationName) && (
+                    {!!(organizationName && developmentFeatureTurnedOn) && (
                       <OpinionsAddedToPersonalizedScore>
                         <InfoIcon classes={{ root: classes.informationIcon }} />
                         <OpinionsAddedText>

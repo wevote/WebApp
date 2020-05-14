@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 import filter from 'lodash-es/filter';
 import DelayedLoad from '../Widgets/DelayedLoad';
@@ -8,12 +9,13 @@ import GuideList from './GuideList';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
+import SearchBar from '../Search/SearchBar';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
-export default class VoterGuideFollowing extends Component {
+class VoterGuideFollowing extends Component {
   static propTypes = {
     organizationWeVoteId: PropTypes.string.isRequired,
   };
@@ -24,7 +26,6 @@ export default class VoterGuideFollowing extends Component {
       editMode: false,
       linkedOrganizationWeVoteId: '',
       organizationName: '',
-      searchFilter: false,
       searchTerm: '',
       voterGuideFollowedList: [],
       voterGuideFollowedListFilteredBySearch: [],
@@ -59,7 +60,6 @@ export default class VoterGuideFollowing extends Component {
     const { organizationWeVoteId: nextOrganizationWeVoteId } = nextProps;
     // When a new organization is passed in, update this component to show the new data
     this.onOrganizationStoreChange();
-    // console.log('componentWillReceiveProps organizationWeVoteId:', organizationWeVoteId, ', nextOrganizationWeVoteId:', nextOrganizationWeVoteId);
     if (organizationWeVoteId && nextOrganizationWeVoteId && organizationWeVoteId !== nextOrganizationWeVoteId) {
       OrganizationActions.organizationsFollowedRetrieve();
       VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextOrganizationWeVoteId);
@@ -118,12 +118,9 @@ export default class VoterGuideFollowing extends Component {
     VoterGuideActions.voterFollowAllOrganizationsFollowedByOrganization(this.state.organization.organization_we_vote_id);
   }
 
-  searchFollowingVoterGuides (event) {
-    console.log('searchFollowingVoterGuides');
-    const searchTerm = event.target.value;
+  searchFollowingVoterGuides = (searchTerm) => {
     if (searchTerm.length === 0) {
       this.setState({
-        searchFilter: false,
         searchTerm: '',
         voterGuideFollowedListFilteredBySearch: [],
       });
@@ -134,11 +131,17 @@ export default class VoterGuideFollowing extends Component {
         user => user.voter_guide_display_name.toLowerCase().includes(searchTermLowerCase));
 
       this.setState({
-        searchFilter: true,
         searchTerm,
         voterGuideFollowedListFilteredBySearch: searchedFollowedList,
       });
     }
+  }
+
+  clearSearchBarFunction = () => {
+    this.setState({
+      searchTerm: '',
+      voterGuideFollowedListFilteredBySearch: [],
+    });
   }
 
   toggleEditMode () {
@@ -148,14 +151,12 @@ export default class VoterGuideFollowing extends Component {
 
   render () {
     renderLog('VoterGuideFollowing');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('VoterGuideFollowing render');
     const { organizationWeVoteId } = this.props;
     const {
-      linkedOrganizationWeVoteId, organizationName, searchFilter, searchTerm,
-      voterGuideFollowedListFilteredBySearch,
+      linkedOrganizationWeVoteId, organizationName, searchTerm,
+      voterGuideFollowedList, voterGuideFollowedListFilteredBySearch,
     } = this.state;
-    let { voterGuideFollowedList } = this.state;
-    // console.log('render searchFilter:', searchFilter);
-    // console.log('render voterGuideFollowedList:', voterGuideFollowedList);
     if (!organizationWeVoteId) {
       return <div>{LoadingWheel}</div>;
     }
@@ -164,52 +165,34 @@ export default class VoterGuideFollowing extends Component {
       lookingAtSelf = linkedOrganizationWeVoteId === organizationWeVoteId;
     }
 
-    if (searchFilter) {
-      voterGuideFollowedList = voterGuideFollowedListFilteredBySearch;
-    }
-    const showSearchWhenMoreThanThisNumber = 3;
-
     return (
-      <div className="opinions-followed__container">
+      <Wrapper>
         {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
         <Helmet title={`${organizationName} - We Vote`} />
         <div className="card">
           <ul className="card-child__list-group">
-            { voterGuideFollowedList && voterGuideFollowedList.length > 0 ? (
-              <span>
-                { lookingAtSelf ? (
-                  <a // eslint-disable-line
-                    className="fa-pull-right u-push--md"
-                    onKeyDown={this.onKeyDownEditMode.bind(this)}
-                    onClick={this.toggleEditMode.bind(this)}
-                  >
-                    {this.state.editMode ? 'Done Editing' : 'Edit'}
-                  </a>
-                ) : (
-                  <Button
-                    variant="success"
-                    size="small"
-                    bsPrefix="fa-pull-right u-push--md"
-                    onClick={this.followAllOrganizations}
-                  >
-                    <span>Follow All</span>
-                  </Button>
-                )}
-                {/* ***************** */}
-                {/* Results Not Found */}
-                {(searchFilter) && (
-                  <span>
-                    { (voterGuideFollowedList.length === 0) && (
-                      <h4 className="card__additional-heading">
-                        &quot;
-                        {searchTerm}
-                        &quot; not found
-                      </h4>
-                    )}
-                  </span>
-                )}
-                { !searchFilter ? (
-                  <span>
+            {((voterGuideFollowedList && voterGuideFollowedList.length > 0) ||
+              (voterGuideFollowedListFilteredBySearch && voterGuideFollowedListFilteredBySearch.length > 0)) ? (
+                <span>
+                  { lookingAtSelf ? (
+                    <a // eslint-disable-line
+                      className="fa-pull-right u-push--md"
+                      onKeyDown={this.onKeyDownEditMode.bind(this)}
+                      onClick={this.toggleEditMode.bind(this)}
+                    >
+                      {this.state.editMode ? 'Done Editing' : 'Edit'}
+                    </a>
+                  ) : (
+                    <Button
+                      variant="success"
+                      size="small"
+                      bsPrefix="fa-pull-right u-push--md"
+                      onClick={this.followAllOrganizations}
+                    >
+                      <span>Follow All</span>
+                    </Button>
+                  )}
+                  <TitleWrapper>
                     {lookingAtSelf ? (
                       <h4 className="card__additional-heading">
                         You Are Following
@@ -227,41 +210,82 @@ export default class VoterGuideFollowing extends Component {
                         is Following
                       </h4>
                     )}
-                  </span>
-                ) : <h4 className="card__additional-heading">Search Results</h4>}
-                {/* ********** */}
-                {/* Search Box */}
-                {(voterGuideFollowedList && ((voterGuideFollowedList.length > showSearchWhenMoreThanThisNumber) || searchTerm)) && (
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="search_following_voter_guides_text"
-                    placeholder="Search these voter guides"
-                    onChange={this.searchFollowingVoterGuides.bind(this)}
-                  />
-                )}
-                <span>
-                  <GuideList
-                    incomingVoterGuideList={voterGuideFollowedList}
-                    instantRefreshOn
-                  />
+                  </TitleWrapper>
                 </span>
-              </span>
-            ) : (
-              <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                {lookingAtSelf ?
-                  <h4 className="card__additional-heading">You&apos;re not following anyone.</h4> : (
-                    <h4 className="card__additional-heading">
-                      {organizationName}
-                      {' '}
-                      is not following anyone.
-                    </h4>
-                  )}
-              </DelayedLoad>
+              ) : (
+                <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                  {lookingAtSelf ?
+                    <h4 className="card__additional-heading">You&apos;re not following anyone.</h4> : (
+                      <h4 className="card__additional-heading">
+                        {organizationName}
+                        {' '}
+                        is not following anyone.
+                      </h4>
+                    )}
+                </DelayedLoad>
+              )
+            }
+            {/* ********** */}
+            {/* Search Box */}
+            {voterGuideFollowedList && voterGuideFollowedList.length > 0 && (
+              <SearchInputWrapper>
+                <SearchBar
+                  clearButton
+                  clearFunction={this.clearSearchBarFunction}
+                  placeholder="Search these voter guides"
+                  searchButton
+                  searchFunction={this.searchFollowingVoterGuides}
+                  searchUpdateDelayTime={200}
+                />
+              </SearchInputWrapper>
             )}
+            {/* ***************** */}
+            {/* Results Not Found */}
+            {(searchTerm && (voterGuideFollowedListFilteredBySearch && voterGuideFollowedListFilteredBySearch.length === 0)) && (
+              <SearchResultsWrapper>
+                <h4 className="card__additional-heading">
+                  &quot;
+                  {searchTerm}
+                  &quot; not found
+                </h4>
+              </SearchResultsWrapper>
+            )}
+            <span>
+              <GuideList
+                incomingVoterGuideList={searchTerm ? voterGuideFollowedListFilteredBySearch : voterGuideFollowedList}
+                instantRefreshOn
+              />
+            </span>
           </ul>
         </div>
-      </div>
+      </Wrapper>
     );
   }
 }
+
+const SearchInputWrapper = styled.div`
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 8px;
+`;
+
+const SearchResultsWrapper = styled.div`
+  margin-left: 15px;
+  margin-right: 15px;
+`;
+
+const TitleWrapper = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+`;
+
+const Wrapper = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    // margin-left: 15px;
+    // margin-right: 15px;
+  }
+`;
+
+export default (VoterGuideFollowing);
