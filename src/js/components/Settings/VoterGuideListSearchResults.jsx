@@ -194,7 +194,7 @@ class VoterGuideListSearchResults extends Component {
                     return null;
                   }
                   return (
-                    <>
+                    <div key={`candidate-list-${item.we_vote_id}`}>
                       {!!(searchString && foundInArray && foundInArray.length && searchPriority > 0) && (
                       <SearchResultsFoundInExplanation>
                         {searchTextString}
@@ -216,7 +216,7 @@ class VoterGuideListSearchResults extends Component {
                       )}
                       { searchPriority > 0  && (
                       <BallotItemForAddPositions
-                        externalUniqueId={`addNewPositionKey-${item.we_vote_id}`}
+                        externalUniqueId={`voterGuideKey-${item.we_vote_id}`}
                         allBallotItemsCount={2}
                         // ref={(ref) => { this.ballotItems[oneBallotItem.we_vote_id] = ref; }}
                         ballotItemDisplayName={ballotItemDisplayNameForPosition}
@@ -226,7 +226,7 @@ class VoterGuideListSearchResults extends Component {
                         ballotItemWeVoteId={item.we_vote_id}
                       />
                       )}
-                    </>
+                    </div>
                   );
                 })
                 }
