@@ -201,7 +201,7 @@ class ShareModal extends Component {
     if ((!shareModalStep) || (shareModalStep === '')) {
       return shareModalHtml;
     }
-    const featureStillInDevelopment = true;
+    const developmentFeatureTurnedOn = false;
     const titleText = 'Check out this cool Ballot tool !!';
 
     // let emailSubjectEncoded = '';
@@ -338,7 +338,7 @@ class ShareModal extends Component {
           <DialogContent classes={{ root: classes.dialogContent }}>
             <div className="full-width">
               <Flex>
-                {featureStillInDevelopment ? null : (
+                {developmentFeatureTurnedOn && (
                   <ShareModalOption
                     background="#2E3C5D"
                     icon={<img src={cordovaDot('../../../img/global/svg-icons/we-vote-icon-square-color.svg')} alt="" />}
