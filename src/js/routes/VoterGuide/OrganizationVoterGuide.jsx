@@ -274,9 +274,8 @@ export default class OrganizationVoterGuide extends Component {
     return false;
   }
 
-  switchNav (destinationTab) {
-    const { activeRoute } = this.state;
-    const editLink = this.props.location.pathname.replace(`/${activeRoute}`, '');
+  goToVoterGuideDetailsPage (destinationTab) {
+    const { pathname: editLink } = window.location;
     historyPush(`${editLink}/m/${destinationTab}`);
   }
 
@@ -388,7 +387,7 @@ export default class OrganizationVoterGuide extends Component {
                       <li className="tab-default">
                         <a // eslint-disable-line
                           style={{ padding: '5px 5px' }}
-                          onClick={() => this.switchNav('friends')}
+                          onClick={() => this.goToVoterGuideDetailsPage('friends')}
                         >
                           <span className="u-show-mobile u-bold">
                             {friendsList.length}
@@ -400,7 +399,7 @@ export default class OrganizationVoterGuide extends Component {
                     <li className="tab-default">
                       <a // eslint-disable-line
                         style={{ padding: '5px 5px' }}
-                        onClick={() => this.switchNav('following')}
+                        onClick={() => this.goToVoterGuideDetailsPage('following')}
                       >
                         <span className="u-show-mobile u-bold">
                           {this.state.voterGuideFollowedList.length}
@@ -411,7 +410,7 @@ export default class OrganizationVoterGuide extends Component {
                     <li className="tab-default">
                       <a // eslint-disable-line
                         style={{ padding: '5px 5px' }}
-                        onClick={() => this.switchNav('followers')}
+                        onClick={() => this.goToVoterGuideDetailsPage('followers')}
                       >
                         <span className="u-show-mobile u-bold">
                           {voterGuideFollowersList.length}

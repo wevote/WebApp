@@ -16,11 +16,18 @@ $space-1px: 1px; // shifting image to fit inside search bar's border
     border-radius: $search-bar-border-radius;
     overflow: hidden;
 
-    .search-options-btn {
+    .search-clear-btn {
       height: inherit;
       border: none;
       background-color: $transparent;
       line-height: 30px;
+    }
+
+    .search-options-btn {
+      height: inherit;
+      border: none;
+      background-color: $transparent;
+      line-height: 32px;
       width: 32px;
 
       &:hover {

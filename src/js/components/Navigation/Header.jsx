@@ -113,9 +113,11 @@ export default class Header extends Component {
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
     const { sharedItemCode, showHowItWorksModal, showOrganizationModal, showSharedItemModal } = this.state;
-    const { friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
+    const {
+      friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
       showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
-      showBackToSettingsMobile, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
+      showBackToSettingsMobile, showBackToValues, showBackToVoterGuide, showBackToVoterGuides,
+    } = getApplicationViewBooleans(pathname);
     let iPhoneSpacer = '';
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
@@ -130,7 +132,7 @@ export default class Header extends Component {
 
 
     if (voterGuideMode || voterGuideCreatorMode) {
-      // console.log('Header in voterGuideMode');
+      // console.log('Header in voterGuideMode, showBackToVoterGuide:', showBackToVoterGuide);
       let headroomWrapper = '';
       if (isWebApp) {
         if (voterGuideCreatorMode) {
@@ -139,22 +141,24 @@ export default class Header extends Component {
           headroomWrapper = 'headroom-wrapper-webapp__voter-guide';
         }
       }
-      // console.log('Header, voterGuideMode:');
+      let headerBarObject;
+      if (showBackToVoterGuide) {
+        const backToVoterGuideLinkDesktop = pathname.substring(0, pathname.indexOf('/m/')); // Remove the "/m/followers", "/m/following", or "/m/friends" from the end of the string
+        // console.log('pathname:', pathname, ', backToVoterGuideLinkDesktop:', backToVoterGuideLinkDesktop);
+        headerBarObject = <HeaderBackTo backToLink={backToVoterGuideLinkDesktop} backToLinkText="Back" location={location} params={params} />;
+      } else if (showBackToBallotHeader) {
+        headerBarObject = <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} />;
+      } else if (showBackToVoterGuides) {
+        headerBarObject = <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} />;
+      } else {
+        headerBarObject = <HeaderBar location={location} pathname={pathname} voter={voter} />;
+      }
       return (
         <div id="app-header">
           {iPhoneSpacer}
           <div className={headroomWrapper}>
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
-              {showBackToBallotHeader ?
-                <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> : (
-                  <span>
-                    {showBackToVoterGuides ?
-                      <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} /> :
-                      <HeaderBar location={location} pathname={pathname} voter={voter} />
-                    }
-                  </span>
-                )
-              }
+              {headerBarObject}
             </div>
           </div>
           {showHowItWorksModal && (

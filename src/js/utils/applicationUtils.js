@@ -96,8 +96,12 @@ export function getApplicationViewBooleans (pathname) {
   let showBackToSettingsDesktop = false;
   let showBackToSettingsMobile = false;
   let showBackToValues = false;
+  let showBackToVoterGuide = false;
   let showBackToVoterGuides = false;
-  if (stringContains('/btdb/', pathnameLowerCase) || // back-to-default-ballot
+  if (stringContains('/m/', pathnameLowerCase)) {
+    // Even though we might have a back-to-default... variable in the URL, we want to go back to a voter guide first
+    showBackToVoterGuide = true;
+  } else if (stringContains('/btdb/', pathnameLowerCase) || // back-to-default-ballot
     stringContains('/btdo/', pathnameLowerCase) || // back-to-default-office
     stringContains('/bto/', pathnameLowerCase) ||
     stringContains('/btdb', pathnameLowerCase) || // back-to-default-ballot
@@ -225,6 +229,7 @@ export function getApplicationViewBooleans (pathname) {
     showBackToSettingsDesktop,
     showBackToSettingsMobile,
     showBackToValues,
+    showBackToVoterGuide,
     showBackToVoterGuides,
     showFooterBar,
     showShareButtonFooter,

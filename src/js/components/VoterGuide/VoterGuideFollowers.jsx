@@ -2,17 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import filter from 'lodash-es/filter';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import DelayedLoad from '../Widgets/DelayedLoad';
-import OrganizationActions from '../../actions/OrganizationActions';
-import OrganizationStore from '../../stores/OrganizationStore';
-import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 import GuideList from './GuideList';
 import LoadingWheel from '../LoadingWheel';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SearchBar from '../Search/SearchBar';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
-export default class VoterGuideFollowers extends Component {
+class VoterGuideFollowers extends Component {
   static propTypes = {
     organizationWeVoteId: PropTypes.string.isRequired,
   };
@@ -22,7 +24,6 @@ export default class VoterGuideFollowers extends Component {
     this.state = {
       linkedOrganizationWeVoteId: '',
       organizationName: '',
-      searchFilter: false,
       searchTerm: '',
       voterGuideFollowersList: [],
       voterGuideFollowersListFilteredBySearch: [],
@@ -52,11 +53,17 @@ export default class VoterGuideFollowers extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    const { organizationWeVoteId } = this.props;
+    const { organizationWeVoteId: nextOrganizationWeVoteId } = nextProps;
     // When a new organization is passed in, update this component to show the new data
     this.onOrganizationStoreChange();
-    this.setState({
-      voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(nextProps.organizationWeVoteId),
-    });
+    if (organizationWeVoteId && nextOrganizationWeVoteId && organizationWeVoteId !== nextOrganizationWeVoteId) {
+      VoterGuideActions.voterGuideFollowersRetrieve(nextOrganizationWeVoteId);
+      VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextOrganizationWeVoteId);
+      this.setState({
+        voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(nextProps.organizationWeVoteId),
+      });
+    }
   }
 
   componentWillUnmount () {
@@ -75,6 +82,8 @@ export default class VoterGuideFollowers extends Component {
         organizationName,
       });
     }
+    // We also want to update voterGuideFollowersList from the VoterGuideStore when there is a change in the OrganizationStore
+    this.onVoterGuideStoreChange();
   }
 
   onVoterGuideStoreChange () {
@@ -87,15 +96,15 @@ export default class VoterGuideFollowers extends Component {
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
     if (voter) {
-      this.setState({ linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id });
+      this.setState({
+        linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
+      });
     }
   }
 
-  searchFollowers (event) {
-    const searchTerm = event.target.value;
+  searchFollowers = (searchTerm) => {
     if (searchTerm.length === 0) {
       this.setState({
-        searchFilter: false,
         searchTerm: '',
         voterGuideFollowersListFilteredBySearch: [],
       });
@@ -106,18 +115,25 @@ export default class VoterGuideFollowers extends Component {
         oneVoterGuide => oneVoterGuide.voter_guide_display_name.toLowerCase().includes(searchTermLowerCase));
 
       this.setState({
-        searchFilter: true,
         searchTerm,
         voterGuideFollowersListFilteredBySearch: searchedFollowersList,
       });
     }
   }
 
+  clearSearchBarFunction = () => {
+    this.setState({
+      searchTerm: '',
+      voterGuideFollowersListFilteredBySearch: [],
+    });
+  }
+
   render () {
     renderLog('VoterGuideFollowers');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('VoterGuideFollowers render');
     const { organizationWeVoteId } = this.props;
     const {
-      linkedOrganizationWeVoteId, organizationName, searchFilter, searchTerm,
+      linkedOrganizationWeVoteId, organizationName, searchTerm,
       voterGuideFollowersListFilteredBySearch,
     } = this.state;
     let { voterGuideFollowersList } = this.state;
@@ -129,9 +145,7 @@ export default class VoterGuideFollowers extends Component {
       lookingAtSelf = linkedOrganizationWeVoteId === organizationWeVoteId;
     }
 
-    if (searchFilter) {
-      voterGuideFollowersList = voterGuideFollowersListFilteredBySearch;
-    } else if (linkedOrganizationWeVoteId === organizationWeVoteId) {
+    if (lookingAtSelf) {
       // If looking at your own voter guide, filter out your own entry as a follower
       voterGuideFollowersList = voterGuideFollowersList.filter((oneVoterGuide) => {
         if (oneVoterGuide.organization_we_vote_id !== linkedOrganizationWeVoteId) {
@@ -141,74 +155,102 @@ export default class VoterGuideFollowers extends Component {
         }
       });
     }
-    const showSearchWhenMoreThanThisNumber = 3;
 
     return (
-      <div className="opinions-followed__container">
+      <Wrapper>
         {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
         <Helmet title={`${organizationName} - We Vote`} />
         <div className="card">
           <ul className="card-child__list-group">
-            { voterGuideFollowersList && voterGuideFollowersList.length > 0 ? (
-              <span>
-                <span>
-                  {lookingAtSelf ?
-                    <h4 className="card__additional-heading">Your Followers</h4> : (
-                      <h4 className="card__additional-heading">
-                        Followers of
-                        {' '}
-                        {organizationName}
-                      </h4>
-                    )}
-                </span>
-                {/* ***************** */}
-                {/* Results Not Found */}
-                {(searchFilter) && (
-                  <span>
-                    { (voterGuideFollowersList.length === 0) && (
-                      <h4 className="card__additional-heading">
-                        &quot;
-                        {searchTerm}
-                        &quot; not found
-                      </h4>
-                    )}
-                  </span>
-                )}
-                {/* ********** */}
-                {/* Search Box */}
-                {(voterGuideFollowersList && ((voterGuideFollowersList.length > showSearchWhenMoreThanThisNumber) || searchTerm)) && (
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="search_followers_voter_guides_text"
-                    placeholder="Search these followers"
-                    onChange={this.searchFollowers.bind(this)}
-                  />
-                )}
-                <span>
-                  <GuideList
-                    incomingVoterGuideList={voterGuideFollowersList}
-                    instantRefreshOn
-                  />
-                </span>
-              </span>
-            ) : (
-              <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                {lookingAtSelf ?
-                  <h4 className="card__additional-heading">No followers can be found.</h4> : (
+            {((voterGuideFollowersList && voterGuideFollowersList.length > 0) ||
+              (voterGuideFollowersListFilteredBySearch && voterGuideFollowersListFilteredBySearch.length > 0)) ? (
+                <TitleWrapper>
+                  {lookingAtSelf ? (
+                    <h4 className="card__additional-heading">Your Followers</h4>
+                  ) : (
                     <h4 className="card__additional-heading">
-                      No followers of
+                      Followers of
                       {' '}
                       {organizationName}
-                      {' '}
-                      can be found.
                     </h4>
                   )}
-              </DelayedLoad>
+                </TitleWrapper>
+              ) : (
+                <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                  {lookingAtSelf ?
+                    <h4 className="card__additional-heading">No followers can be found.</h4> : (
+                      <h4 className="card__additional-heading">
+                        No followers of
+                        {' '}
+                        {organizationName}
+                        {' '}
+                        can be found.
+                      </h4>
+                    )}
+                </DelayedLoad>
+              )
+            }
+            {/* ********** */}
+            {/* Search Box */}
+            {voterGuideFollowersList && voterGuideFollowersList.length > 0 && (
+              <SearchInputWrapper>
+                <SearchBar
+                  clearButton
+                  clearFunction={this.clearSearchBarFunction}
+                  placeholder="Search these followers"
+                  searchButton
+                  searchFunction={this.searchFollowers}
+                  searchUpdateDelayTime={200}
+                />
+              </SearchInputWrapper>
             )}
+            {/* ***************** */}
+            {/* Results Not Found */}
+            {(searchTerm && (voterGuideFollowersListFilteredBySearch && voterGuideFollowersListFilteredBySearch.length === 0)) && (
+              <SearchResultsWrapper>
+                <h4 className="card__additional-heading">
+                  &quot;
+                  {searchTerm}
+                  &quot; not found
+                </h4>
+              </SearchResultsWrapper>
+            )}
+            <span>
+              <GuideList
+                incomingVoterGuideList={searchTerm ? voterGuideFollowersListFilteredBySearch : voterGuideFollowersList}
+                instantRefreshOn
+              />
+            </span>
           </ul>
         </div>
-      </div>
+      </Wrapper>
     );
   }
 }
+
+const SearchInputWrapper = styled.div`
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 8px;
+`;
+
+const SearchResultsWrapper = styled.div`
+  margin-left: 15px;
+  margin-right: 15px;
+`;
+
+const TitleWrapper = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+`;
+
+const Wrapper = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    // margin-left: 15px;
+    // margin-right: 15px;
+  }
+`;
+
+export default (VoterGuideFollowers);
