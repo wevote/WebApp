@@ -296,6 +296,7 @@ export default class OrganizationVoterGuide extends Component {
       // If looking at your own voter guide, filter out your own entry as a follower
       voterGuideFollowersList = voterGuideFollowersList.filter(oneVoterGuide => (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id ? oneVoterGuide : null));
     }
+    const developmentFeatureTurnedOn = false;
 
     if (!organizationId) {
       return (
@@ -383,17 +384,19 @@ export default class OrganizationVoterGuide extends Component {
                 )}
                 <div className="tabs-container d-print-none">
                   <ul className="nav tabs">
-                    <li className="tab-default">
-                      <a // eslint-disable-line
-                        style={{ padding: '5px 5px' }}
-                        onClick={() => this.switchNav('friends')}
-                      >
-                        <span className="u-show-mobile u-bold">
-                          {friendsList.length}
-                          <TabText>{' Friends'}</TabText>
-                        </span>
-                      </a>
-                    </li>
+                    {developmentFeatureTurnedOn && (
+                      <li className="tab-default">
+                        <a // eslint-disable-line
+                          style={{ padding: '5px 5px' }}
+                          onClick={() => this.switchNav('friends')}
+                        >
+                          <span className="u-show-mobile u-bold">
+                            {friendsList.length}
+                            <TabText>{' Friends'}</TabText>
+                          </span>
+                        </a>
+                      </li>
+                    )}
                     <li className="tab-default">
                       <a // eslint-disable-line
                         style={{ padding: '5px 5px' }}
