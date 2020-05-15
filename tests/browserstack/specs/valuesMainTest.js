@@ -118,6 +118,10 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Test "Public Figures to Follow" section
     await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
+    await browser.pause(PAUSE_DURATION_MICROSECONDS * 10);
+    await simpleClick('publicFiguresToFollowPreviewShowMoreId'); // Click "Explore more public figures"
+    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+    await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
     let publicFigureOrOrganizationFollow = await $(publicFigureOrOrganizationFollowSelector);
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await publicFigureOrOrganizationFollow.click(); // Follow endorsement
@@ -154,9 +158,6 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('showLess'); // Clicks "Show Less"
     await simpleClick('organizationOrPublicFigureLink'); // Click public figure link
     await browser.url(`${WEB_APP_ROOT_URL}/values`); // Return to values page
-    await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
-    await simpleClick('publicFiguresToFollowPreviewShowMoreId'); // Click "Explore more public figures"
-    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
     await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
 
     // //////////////////////
