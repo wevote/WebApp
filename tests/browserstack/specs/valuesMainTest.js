@@ -7,6 +7,7 @@ const PAUSE_DURATION_MICROSECONDS = 250;
 describe('Basic cross-platform We Vote test',  () => {
   it('should load the app so we can run tests', async () => {
     const { isCordovaFromAppStore, isMobileScreenSize } = driver.config.capabilities;
+    const WEB_APP_ROOT_URL = driver.config.webAppRootUrl;
     const isDesktopScreenSize = !isMobileScreenSize;
     const xssTest = '<script>alert(1)</script>';
     const publicFigureOrOrganizationFollowSelector = '[id^=positionItemFollowToggleFollow-undefined-wv02org]';
@@ -37,7 +38,7 @@ describe('Basic cross-platform We Vote test',  () => {
     } else {
     // ///////////////////////////////
     // For the website version, open our quality testing site
-      await browser.url('http://localhost:3000/values');
+      await browser.url(`${WEB_APP_ROOT_URL}/values`);
     }
 
     await browser.pause(PAUSE_DURATION_MICROSECONDS * 5);
@@ -152,7 +153,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('readMore'); // Clicks "More"
     await simpleClick('showLess'); // Clicks "Show Less"
     await simpleClick('organizationOrPublicFigureLink'); // Click public figure link
-    await browser.url('http://localhost:3000/values'); // Return to values page
+    await browser.url(`${WEB_APP_ROOT_URL}/values`); // Return to values page
     await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
     await simpleClick('publicFiguresToFollowPreviewShowMoreId'); // Click "Explore more public figures"
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
@@ -162,9 +163,9 @@ describe('Basic cross-platform We Vote test',  () => {
     // Tests endorsements and twitter sign in
     if (isDesktopScreenSize) {                 // Only for desktop
       await simpleClick('twitterSignIn-splitIconButton'); // Clicks on "Find Public Opinions"
-      await browser.url('http://localhost:3000/values'); // Return to values page
+      await browser.url(`${WEB_APP_ROOT_URL}/values`); // Return to values page
       await simpleClick('undefined-splitIconButton'); // Clicks on "Add Endorsements"
-      await browser.url('http://localhost:3000/values'); // Return to values page
+      await browser.url(`${WEB_APP_ROOT_URL}/values`); // Return to values page
     }
 
     // //////////////////////
@@ -175,7 +176,7 @@ describe('Basic cross-platform We Vote test',  () => {
     const organizationOrPublicFigureLink = await $(`${organizationSection} #organizationOrPublicFigureLink`);
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await organizationOrPublicFigureLink.click(); // Click organization link
-    await browser.url('http://localhost:3000/values'); // Return to values page
+    await browser.url(`${WEB_APP_ROOT_URL}/values`); // Return to values page
     await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
     await scrollIntoViewSimple('organizationsSection'); // Scrolls to "Organizations to Follow"
     publicFigureOrOrganizationFollow = await $(`${organizationSection} ${publicFigureOrOrganizationFollowSelector}`);
