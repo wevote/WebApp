@@ -159,6 +159,10 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('organizationOrPublicFigureLink'); // Click public figure link
     await browser.url(`${WEB_APP_ROOT_URL}/values`); // Return to values page
     await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
+    /* Used to circumvent odd behavior in which web page does not load recommendations */
+    await simpleClick('publicFiguresToFollowPreviewShowMoreId'); // Click "Explore more public figures"
+    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+    await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
 
     // //////////////////////
     // Tests endorsements and twitter sign in
@@ -174,18 +178,24 @@ describe('Basic cross-platform We Vote test',  () => {
     await scrollIntoViewSimple('organizationsSection'); // Scrolls to "Organizations to Follow"
     await simpleClick('readMore'); // Clicks "More"
     await simpleClick('showLess'); // Clicks "Show Less"
+    await simpleClick('organizationsToFollowPreviewShowMoreId'); // Clicks on "Explore more organizations"
+    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+    await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
+    await scrollIntoViewSimple('organizationsSection'); // Scrolls to "Organizations to Follow"
     const organizationOrPublicFigureLink = await $(`${organizationSection} #organizationOrPublicFigureLink`);
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await organizationOrPublicFigureLink.click(); // Click organization link
     await browser.url(`${WEB_APP_ROOT_URL}/values`); // Return to values page
+    await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
+    /* Used to circumvent odd behavior in which web page does not load recommendations */
+    await simpleClick('publicFiguresToFollowPreviewShowMoreId'); // Click "Explore more public figures"
+    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
     await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
     await scrollIntoViewSimple('organizationsSection'); // Scrolls to "Organizations to Follow"
     publicFigureOrOrganizationFollow = await $(`${organizationSection} ${publicFigureOrOrganizationFollowSelector}`);
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await publicFigureOrOrganizationFollow.click(); // Follow endorsement
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('organizationsToFollowPreviewShowMoreId'); // Clicks on "Explore more organizations"
-    await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
     /*  Use if organization does not disappear after clicking follow */
     //  publicFigureOrOrganizationDropDown = await $(`${organizationSection} ${publicFigureOrOrganizationDropDownSelector}`);
     //  await browser.pause(PAUSE_DURATION_MICROSECONDS);
