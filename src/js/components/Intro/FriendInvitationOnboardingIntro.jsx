@@ -76,9 +76,13 @@ class FriendInvitationOnboardingIntro extends Component {
         </WeVoteLogoWrapper>
         {!!(days && electionDate) && (
           <ElectionCountdownText>
-            {days}
+            <ElectionCountdownDays>
+              {days}
+              {' '}
+              days
+            </ElectionCountdownDays>
             {' '}
-            days until your next election on
+            until your next election on
             {' '}
             <span className="u-no-break">
               {formatDateToMonthDayYear(electionDate)}
@@ -145,7 +149,7 @@ class FriendInvitationOnboardingIntro extends Component {
           <FriendInvitationList>
             <FriendInvitationListTitleRow>
               <Dot><StepNumber>1</StepNumber></Dot>
-              <StepTitle>Make sure you&apos;re ready</StepTitle>
+              <StepTitle>Make sure you&apos;re ready to vote</StepTitle>
             </FriendInvitationListTitleRow>
             <FriendInvitationListRow>
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
@@ -198,8 +202,18 @@ const Wrapper = styled.div`
   padding-right: 12px;
 `;
 
+const ElectionCountdownDays = styled.span`
+  font-size: 32px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 24px;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 13px;
+  }
+`;
+
 const ElectionCountdownText = styled.h3`
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   color: #2E3C5D !important;
   width: fit-content;
@@ -208,10 +222,10 @@ const ElectionCountdownText = styled.h3`
   width: 100%;
   text-align: center;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 14px;
+    font-size: 12px;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    font-size: 13px;
+    font-size: 10px;
   }
 `;
 
@@ -299,7 +313,7 @@ const StepTitle = styled.div`
   text-align: left;
   vertical-align: top;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: 20px;
+    font-size: 17px;
   }
 `;
 

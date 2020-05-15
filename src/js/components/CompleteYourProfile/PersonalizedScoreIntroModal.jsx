@@ -343,81 +343,83 @@ class PersonalizedScoreIntroModal extends Component {
         </ModalTitleArea>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <div className="full-width">
-            <CandidateItemOuterWrapper>
-              <CandidateItem
-                candidateWeVoteId="candidateAlexanderHamilton"
-                closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
-                controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
-                hideBallotItemSupportOpposeComment
-                hideCandidateText
-                hideCandidateUrl
-                hideIssuesRelatedToCandidate
-                hideShowMoreFooter
-                openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
-                openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
-                supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
-                supportOpposeCountDisplayModalTutorialText={supportOpposeCountDisplayModalTutorialText}
-                showDownArrow={showPersonalizedScoreDownArrow}
-                showUpArrow={showPersonalizedScoreUpArrow}
-                showLargeImage
-                showOfficeName
-              />
-            </CandidateItemOuterWrapper>
-            <ExplanationTextTop>
-              {explanationTextTopBlue && (
-                <div
-                  style={{
-                    color: '#2e3c5d',
-                    fontSize: '18px',
-                    fontWeight: 600,
-                    margin: '6px 0 0 0',
-                  }}
-                >
-                  {explanationTextTopBlue}
-                </div>
-              )}
-              {explanationTextTopPlain && (
-                <div
-                  style={{
-                    fontSize: '16px',
-                    fontWeight: 200,
-                    margin: '6px 0 0 0',
-                  }}
-                >
-                  {explanationTextTopPlain}
-                </div>
-              )}
-            </ExplanationTextTop>
-            <ExplanationTextBottom>
-              {explanationTextBottomBlue && (
-                <div
-                  style={{
-                    color: '#2e3c5d',
-                    fontSize: '18px',
-                    fontWeight: 600,
-                    margin: '6px 0 0 0',
-                  }}
-                >
-                  {explanationTextBottomBlue}
-                </div>
-              )}
-              {explanationTextBottomPlain && (
-                <div
-                  style={{
-                    fontSize: '16px',
-                    fontWeight: 200,
-                    margin: '6px 0 0 0',
-                  }}
-                >
-                  {explanationTextBottomPlain}
-                </div>
-              )}
-            </ExplanationTextBottom>
+            <ScrollableContentWrapper>
+              <CandidateItemOuterWrapper>
+                <CandidateItem
+                  candidateWeVoteId="candidateAlexanderHamilton"
+                  closeSupportOpposeCountDisplayModal={closeSupportOpposeCountDisplayModal}
+                  controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+                  hideBallotItemSupportOpposeComment
+                  hideCandidateText
+                  hideCandidateUrl
+                  hideIssuesRelatedToCandidate
+                  hideShowMoreFooter
+                  openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
+                  openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}
+                  supportOpposeCountDisplayModalTutorialOn={supportOpposeCountDisplayModalTutorialOn}
+                  supportOpposeCountDisplayModalTutorialText={supportOpposeCountDisplayModalTutorialText}
+                  showDownArrow={showPersonalizedScoreDownArrow}
+                  showUpArrow={showPersonalizedScoreUpArrow}
+                  showLargeImage
+                  showOfficeName
+                />
+              </CandidateItemOuterWrapper>
+              <ExplanationTextTop>
+                {explanationTextTopBlue && (
+                  <div
+                    style={{
+                      color: '#2e3c5d',
+                      fontSize: '18px',
+                      fontWeight: 600,
+                      margin: '6px 0 0 0',
+                    }}
+                  >
+                    {explanationTextTopBlue}
+                  </div>
+                )}
+                {explanationTextTopPlain && (
+                  <div
+                    style={{
+                      fontSize: '16px',
+                      fontWeight: 200,
+                      margin: '6px 0 0 0',
+                    }}
+                  >
+                    {explanationTextTopPlain}
+                  </div>
+                )}
+              </ExplanationTextTop>
+              <ExplanationTextBottom>
+                {explanationTextBottomBlue && (
+                  <div
+                    style={{
+                      color: '#2e3c5d',
+                      fontSize: '18px',
+                      fontWeight: 600,
+                      margin: '6px 0 0 0',
+                    }}
+                  >
+                    {explanationTextBottomBlue}
+                  </div>
+                )}
+                {explanationTextBottomPlain && (
+                  <div
+                    style={{
+                      fontSize: '16px',
+                      fontWeight: 200,
+                      margin: '6px 0 0 0',
+                    }}
+                  >
+                    {explanationTextBottomPlain}
+                  </div>
+                )}
+              </ExplanationTextBottom>
+            </ScrollableContentWrapper>
             <ContinueButtonWrapper>
               <TwoButtonsWrapper>
                 <div
                   style={{
-                    width: '100%',
+                    width: '90%',
                   }}
                 >
                   <Button
@@ -434,7 +436,7 @@ class PersonalizedScoreIntroModal extends Component {
                 </div>
                 <div
                   style={{
-                    width: '100%',
+                    width: '90%',
                   }}
                 >
                   <Button
@@ -479,9 +481,6 @@ const styles = () => ({
   },
   dialogContent: {
     background: 'white',
-    margin: '0 20px 20px 20px',
-    padding: '0 !important',
-    position: 'relative',
   },
   explanationTextMain: {
     color: '#2e3c5d',
@@ -495,10 +494,10 @@ const styles = () => ({
     margin: 'auto',
   },
   backButtonRoot: {
-    width: '95%',
+    width: '85%',
   },
   nextButtonRoot: {
-    width: '100%',
+    width: '90%',
   },
 });
 
@@ -507,11 +506,15 @@ const CandidateItemOuterWrapper = styled.div`
 
 const ContinueButtonWrapper = styled.div`
   align-items: center;
+  background: #fff;
+  border-top: 1px solid #eee;
   bottom: 0;
   display: flex;
-  width: 100%;
   justify-content: space-between;
+  margin: 0 !important;
   position: absolute;
+  width: 90%;
+  height: 50px;
 `;
 
 const ExplanationTextBottom = styled.div`
@@ -534,6 +537,11 @@ const ModalTitleArea = styled.div`
   }
 `;
 
+const ScrollableContentWrapper = styled.div`
+  padding-bottom: 60px;
+  overflow-y: auto;
+`;
+
 const Title = styled.div`
   color: black;
   font-size: 24px;
@@ -550,6 +558,7 @@ const TwoButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0;
+  padding: 4px 0 0 0;
   width: 100%;
 `;
 

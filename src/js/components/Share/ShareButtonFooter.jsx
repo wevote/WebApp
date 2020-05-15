@@ -379,7 +379,7 @@ class ShareButtonFooter extends Component {
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
     linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
-    const featureStillInDevelopment = true;
+    const developmentFeatureTurnedOn = false;
     return (
       <Wrapper
         className={showingOneCompleteYourProfileModal || showShareModal || showSignInModal ? 'u-z-index-1000' : 'u-z-index-9000'}
@@ -505,9 +505,9 @@ class ShareButtonFooter extends Component {
                       }
                     </SubTitle>
                   </ModalTitleArea>
-                  {(!featureStillInDevelopment && isMobile() && navigator.share) ? (
+                  {(developmentFeatureTurnedOn && isMobile() && navigator.share) ? (
                     <Flex>
-                      {featureStillInDevelopment ? null : (
+                      {developmentFeatureTurnedOn && (
                         <ShareModalOption
                           noLink
                           onClickFunction={() => this.openShareModal('friends')}

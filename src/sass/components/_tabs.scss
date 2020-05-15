@@ -87,7 +87,7 @@ $tab-margin-mobile: (-$space-md);
     }
 
     .tab {
-      font-size: 1.1rem; // Adjust $tab-height if you change this
+      font-size: 1rem; // Adjust $tab-height if you change this
       padding: $space-none $space-none $space-xs;
       margin-right: $tab-spacing-desktop;
       @include breakpoints (small mid-small) {

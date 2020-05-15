@@ -143,12 +143,13 @@ export default class OrganizationVoterGuide extends Component {
     }
 
     // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
-    if (nextProps.activeRoute) {
-      // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.activeRoute: ', nextProps.activeRoute);
-      this.setState({
-        activeRoute: nextProps.activeRoute || '',
-      });
-    }
+    // DALE 2020-05-13 We only use activeRoute from the props on the first entry
+    // if (nextProps.activeRoute) {
+    //   console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.activeRoute: ', nextProps.activeRoute);
+    //   this.setState({
+    //     activeRoute: nextProps.activeRoute || '',
+    //   });
+    // }
   }
 
   // shouldComponentUpdate (nextProps, nextState) {
@@ -241,6 +242,12 @@ export default class OrganizationVoterGuide extends Component {
     });
   }
 
+  changeActiveRoute = (newActiveRoute) => {
+    this.setState({
+      activeRoute: newActiveRoute,
+    });
+  }
+
   ballotItemLinkHasBeenClicked (selectedBallotItemId) {
     if (this.organizationVoterGuideTabsReference &&
         this.organizationVoterGuideTabsReference.voterGuideBallotReference &&
@@ -267,8 +274,8 @@ export default class OrganizationVoterGuide extends Component {
     return false;
   }
 
-  switchNav (destinationTab) {
-    const editLink = this.props.location.pathname.replace(`/${this.state.activeRoute}`, '');
+  goToVoterGuideDetailsPage (destinationTab) {
+    const { pathname: editLink } = window.location;
     historyPush(`${editLink}/m/${destinationTab}`);
   }
 
@@ -288,6 +295,7 @@ export default class OrganizationVoterGuide extends Component {
       // If looking at your own voter guide, filter out your own entry as a follower
       voterGuideFollowersList = voterGuideFollowersList.filter(oneVoterGuide => (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id ? oneVoterGuide : null));
     }
+    const developmentFeatureTurnedOn = false;
 
     if (!organizationId) {
       return (
@@ -375,21 +383,23 @@ export default class OrganizationVoterGuide extends Component {
                 )}
                 <div className="tabs-container d-print-none">
                   <ul className="nav tabs">
+                    {developmentFeatureTurnedOn && (
+                      <li className="tab-default">
+                        <a // eslint-disable-line
+                          style={{ padding: '5px 5px' }}
+                          onClick={() => this.goToVoterGuideDetailsPage('friends')}
+                        >
+                          <span className="u-show-mobile u-bold">
+                            {friendsList.length}
+                            <TabText>{' Friends'}</TabText>
+                          </span>
+                        </a>
+                      </li>
+                    )}
                     <li className="tab-default">
                       <a // eslint-disable-line
                         style={{ padding: '5px 5px' }}
-                        onClick={() => this.switchNav('friends')}
-                      >
-                        <span className="u-show-mobile u-bold">
-                          {friendsList.length}
-                          <TabText>{' Friends'}</TabText>
-                        </span>
-                      </a>
-                    </li>
-                    <li className="tab-default">
-                      <a // eslint-disable-line
-                        style={{ padding: '5px 5px' }}
-                        onClick={() => this.switchNav('following')}
+                        onClick={() => this.goToVoterGuideDetailsPage('following')}
                       >
                         <span className="u-show-mobile u-bold">
                           {this.state.voterGuideFollowedList.length}
@@ -400,7 +410,7 @@ export default class OrganizationVoterGuide extends Component {
                     <li className="tab-default">
                       <a // eslint-disable-line
                         style={{ padding: '5px 5px' }}
-                        onClick={() => this.switchNav('followers')}
+                        onClick={() => this.goToVoterGuideDetailsPage('followers')}
                       >
                         <span className="u-show-mobile u-bold">
                           {voterGuideFollowersList.length}
@@ -430,10 +440,11 @@ export default class OrganizationVoterGuide extends Component {
 
             <div className="col-12 col-md-8">
               <OrganizationVoterGuideTabs
-                organizationWeVoteId={organizationWeVoteId}
-                location={this.props.location}
-                params={this.props.params}
                 activeRoute={activeRoute}
+                activeRouteChanged={this.changeActiveRoute}
+                location={this.props.location}
+                organizationWeVoteId={organizationWeVoteId}
+                params={this.props.params}
                 ref={(ref) => { this.organizationVoterGuideTabsReference = ref; }}
               />
             </div>

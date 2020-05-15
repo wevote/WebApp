@@ -31,27 +31,35 @@ export default class TwitterHandleLanding extends Component {
   }
 
   componentDidMount () {
-    // console.log('TwitterHandleLanding componentDidMount, this.props.params.twitter_handle: ' + this.props.params.twitter_handle);
-    this.setState({
-      activeRoute: this.props.activeRoute,
-      twitterHandle: this.props.params.twitter_handle,
-    });
-    TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
-
-    this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    const { activeRoute, params } = this.props;
+    const { twitter_handle: twitterHandle } = params;
+    // console.log(`TwitterHandleLanding componentDidMount, twitterHandle: ${twitterHandle}`);
+    this.setState({
+      activeRoute,
+      twitterHandle,
+    });
+    TwitterActions.twitterIdentityRetrieve(twitterHandle);
+    this.onVoterStoreChange();
   }
 
   componentWillReceiveProps (nextProps) {
     // console.log('TwitterHandleLanding componentWillReceiveProps');
+    const { activeRoute, params } = nextProps;
+    const { twitter_handle: nextTwitterHandle } = params;
+    const { twitterHandle } = this.state;
     this.setState({
-      activeRoute: nextProps.activeRoute,
+      activeRoute,
     });
-    if (nextProps.params.twitter_handle && this.state.twitterHandle.toLowerCase() !== nextProps.params.twitter_handle.toLowerCase()) {
+    // console.log('TwitterHandleLanding componentWillReceiveProps activeRoute:', activeRoute);
+    if (nextTwitterHandle && twitterHandle.toLowerCase() !== nextTwitterHandle.toLowerCase()) {
       // We need this test to prevent an infinite loop
       // console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', nextProps.params.twitter_handle);
-      TwitterActions.twitterIdentityRetrieve(nextProps.params.twitter_handle);
+      TwitterActions.twitterIdentityRetrieve(nextTwitterHandle);
+      this.setState({
+        twitterHandle: nextTwitterHandle,
+      });
     }
   }
 
@@ -118,7 +126,6 @@ export default class TwitterHandleLanding extends Component {
       // If we want to give people a way to only see the positions that are only visible to their friends, this is how
       lookingAtPositionsForFriendsOnly = false;
     }
-
     // If signedInWithThisTwitterAccount AND not an ORGANIZATION or POLITICIAN, then create ORGANIZATION
     // We *may* eventually have a 'VOTER' type, but for now ORGANIZATION is all we need for both orgs and voters
     const isNeitherOrganizationNorPolitician = kindOfOwner !== 'ORGANIZATION' && kindOfOwner !== 'POLITICIAN';
@@ -136,10 +143,10 @@ export default class TwitterHandleLanding extends Component {
     //   // this.organizationCreateFromTwitter(voter.twitter_screen_name);
     // }
 
-    if (this.state.kindOfOwner === 'CANDIDATE') {
+    if (kindOfOwner === 'CANDIDATE') {
       this.props.params.candidate_we_vote_id = ownerWeVoteId;
       return <Candidate candidate_we_vote_id {...this.props} />;
-    } else if (this.state.kindOfOwner === 'ORGANIZATION') {
+    } else if (kindOfOwner === 'ORGANIZATION') {
       this.props.params.organization_we_vote_id = ownerWeVoteId;
       if (lookingAtPositionsForFriendsOnly) {
         return <PositionListForFriends {...this.props} />;
@@ -153,11 +160,11 @@ export default class TwitterHandleLanding extends Component {
           />
         );
       }
-    } else if (this.state.kindOfOwner === 'TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE') {
+    } else if (kindOfOwner === 'TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE') {
       // console.log('TwitterHandleLanding TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE calling UnknownTwitterAccount');
       return <UnknownTwitterAccount {...this.state} />;
     } else {
-      // console.log('render in TwitterHandleLanding  else, this.state.kindOfOwner');
+      // console.log('render in TwitterHandleLanding  else, kindOfOwner');
       return (
         <DelayedLoad showLoadingText waitBeforeShow={2000}>
           <div className="container-fluid well u-stack--md u-inset--md">
@@ -166,11 +173,11 @@ export default class TwitterHandleLanding extends Component {
             <div className="medium">
               We were not able to find an account for this
               Twitter Handle
-              { this.state.twitterHandle ? (
+              { twitterHandle ? (
                 <span>
                   {' '}
                   &quot;
-                  {this.state.twitterHandle}
+                  {twitterHandle}
                   &quot;
                 </span>
               ) :

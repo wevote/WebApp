@@ -1,21 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 import { renderLog } from '../../utils/logging';
-import ImageHandler from '../ImageHandler';
-import ReadMore from '../Widgets/ReadMore';
 
 class SharedItemIntroduction extends Component {
-  static propTypes = {
-    friendFirstName: PropTypes.string,
-    friendLastName: PropTypes.string,
-    friendImageUrlHttpsTiny: PropTypes.string,
-    invitationMessage: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -23,93 +11,48 @@ class SharedItemIntroduction extends Component {
 
   render () {
     renderLog('SharedItemIntroduction');  // Set LOG_RENDER_EVENTS to log all renders
-    const { friendFirstName, friendLastName, invitationMessage, friendImageUrlHttpsTiny } = this.props;
     return (
-      <Wrapper>
-        <WeVoteLogoWrapper>
-          <img
-            className="header-logo-img"
-            alt="We Vote logo"
-            src={cordovaDot(logoDark)}
-          />
-        </WeVoteLogoWrapper>
-        <FriendInvitationTopHeader>
-          {friendFirstName ? (
-            <>
-              <div>
-                Invitation from friend
-                {friendFirstName && (
-                  <>
-                    {' '}
-                    from
-                    {' '}
-                    {friendFirstName}
-                    {friendLastName && (
-                      <>
-                        {' '}
-                        {friendLastName}
-                      </>
-                    )}
-                  </>
-                )}
-                {' '}
-                accepted!
-              </div>
-              {invitationMessage && (
-                <InvitationMessageWrapper>
-                  <InvitationMessageDescription>
-                    {friendImageUrlHttpsTiny && (
-                      <OrganizationImageWrapper>
-                        <ImageHandler
-                          sizeClassName="image-24x24 "
-                          imageUrl={friendImageUrlHttpsTiny}
-                          alt="organization-photo"
-                          kind_of_ballot_item="ORGANIZATION"
-                        />
-                      </OrganizationImageWrapper>
-                    )}
-                    <ReadMore
-                      textToDisplay={invitationMessage}
-                      numberOfLines={3}
-                    />
-                  </InvitationMessageDescription>
-                </InvitationMessageWrapper>
-              )}
-            </>
-          ) : (
-            <>
-              Welcome!
-            </>
-          )}
-        </FriendInvitationTopHeader>
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
-          <div>
-            <FriendInvitationIntroHeader>
-              <>
-                We Vote makes being a voter easier:
-              </>
-            </FriendInvitationIntroHeader>
-            <FriendInvitationListOuterWrapper>
-              <div>
-                <FriendInvitationList>
-                  <FriendInvitationListRow>
-                    <Dot>&bull;</Dot>
-                    <ListText>See what&apos;s on your ballot</ListText>
-                  </FriendInvitationListRow>
-                  <FriendInvitationListRow>
-                    <Dot>&bull;</Dot>
-                    <ListText>Learn about the candidates and issues from friends you trust</ListText>
-                  </FriendInvitationListRow>
-                  <FriendInvitationListRow>
-                    <Dot>&bull;</Dot>
-                    <ListText>Help your other friends be empowered voters</ListText>
-                  </FriendInvitationListRow>
-                </FriendInvitationList>
-              </div>
-            </FriendInvitationListOuterWrapper>
-          </div>
-        </div>
-      </Wrapper>
+      <OuterWrapper>
+        <InnerWrapper>
+          <IntroHeader>
+            We Vote makes
+            {' '}
+            <span className="u-no-break">
+              being a voter easier:
+            </span>
+          </IntroHeader>
+          <ListWrapper>
+            <ListMaxWidth>
+              <ListTitleRow>
+                <Dot><StepNumber>1</StepNumber></Dot>
+                <StepTitle>Make sure you&apos;re ready to vote</StepTitle>
+              </ListTitleRow>
+              <ListRow>
+                <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
+                <StepText>Verify your registration. Make a plan for casting your vote. Find your polling location.</StepText>
+              </ListRow>
+
+              <ListTitleRow>
+                <Dot><StepNumber>2</StepNumber></Dot>
+                <StepTitle>See what&apos;s on your ballot</StepTitle>
+              </ListTitleRow>
+              <ListRow>
+                <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
+                <StepText>Who&apos;s running for office? What do they stand for? With over 12,400 candidates running for 3,600 offices this year, We Vote helps you make sense of your choices.</StepText>
+              </ListRow>
+
+              <ListTitleRow>
+                <Dot><StepNumber>3</StepNumber></Dot>
+                <StepTitle>Learn from friends you trust</StepTitle>
+              </ListTitleRow>
+              <ListRow>
+                <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
+                <StepText>Between the nonstop misleading TV ads, texts, calls and overflowing mailboxes, who has time to make sense of the madness? Get help from people you trust.</StepText>
+              </ListRow>
+            </ListMaxWidth>
+          </ListWrapper>
+        </InnerWrapper>
+      </OuterWrapper>
     );
   }
 }
@@ -131,81 +74,107 @@ const styles = theme => ({
   },
 });
 
-const Wrapper = styled.div`
+const OuterWrapper = styled.div`
+  display: flex;
+  justify-content: center;
   padding-left: 12px;
   padding-right: 12px;
 `;
 
-const InvitationMessageWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+const InnerWrapper = styled.div`
 `;
 
-const InvitationMessageDescription = styled.div`
-  background: #eee;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  color: #808080;
-  flex: 1 1 0;
-  font-size: 16px;
-  font-weight: 400;
-  list-style: none;
-  margin-top: 8px;
-  max-width: 400px;
-  padding: 12px 6px;
-`;
-
-const FriendInvitationTopHeader = styled.div`
-  display: flex;
-  justify-content: center;
-  font-size: 24px;
+const IntroHeader = styled.div`
+  color: #2e3c5d;
+  font-size: 20px;
   font-weight: 600;
-  padding-top: 6px;
+  padding-top: 20px;
   padding-bottom: 0;
-  @include breakpoints (max mid-small) {
-    font-size: 20px;
+  text-align: left;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 16px;
+    padding-top: 20px;
   }
 `;
 
-// Styled divs are not working in react-slick environment, so I put these styles in _intro-story.scss
-const FriendInvitationIntroHeader = styled.div`
+const ListWrapper = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
-const FriendInvitationListOuterWrapper = styled.div`
-  display: flex !important;
-  justify-content: center !important;
+const ListMaxWidth = styled.div`
+  max-width: 450px;
 `;
 
-const FriendInvitationList = styled.div`
-  max-width: 350px;
-`;
-
-const FriendInvitationListRow = styled.div`
+const ListTitleRow = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
-  text-align: left;
+  padding-top: 14px;
+`;
+
+const ListRow = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
 `;
 
 const Dot = styled.div`
-  padding: 6px 8px;
+  padding-top: 2px;
+  text-align: center;
   vertical-align: top;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding-top: 3px;
+  }
 `;
 
-const ListText = styled.div`
+const StepNumber = styled.div`
+  background: ${props => props.theme.colors.brandBlue};
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  width: 22px;
+  height: 22px;
+  padding-top: 1px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 14px;
+    min-width: 20px;
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+const StepTitle = styled.div`
+  font-size: 20px;
   font-weight: 600;
-  padding: 6px 8px;
+  padding: 0 8px;
+  text-align: left;
   vertical-align: top;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 17px;
+  }
 `;
 
-const OrganizationImageWrapper = styled.span`
-  padding-right: 4px;
+const StepText = styled.div`
+  color: #555;
+  font-size: 16px;
+  font-weight: 200;
+  padding: 0 8px;
+  text-align: left;
+  vertical-align: top;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 16px;
+  }
 `;
 
-const WeVoteLogoWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 12px;
+const StepNumberPlaceholder = styled.div`
+  width: 22px;
+  height: 22px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+  }
 `;
 
 export default withTheme(withStyles(styles)(SharedItemIntroduction));
