@@ -3,18 +3,19 @@ const { simpleClick, simpleTextInput, scrollIntoViewSimple } = require('../utils
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
-const PAUSE_DURATION_MICROSECONDS = 1250;
+const PAUSE_DURATION_MICROSECONDS = 250;
 
 describe('Basic cross-platform We Vote test',  () => {
   it('should load the app so we can run tests', async () => {
     const { isCordovaFromAppStore, isMobileScreenSize } = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
     const xssTest = '<script>alert(1)</script>';
-	const publicFigureOrOrganizationFollowSelector = '[id*=positionItemFollowToggleFollow-undefined-wv02org]';
-	const publicFigureOrOrganizationDropDownSelector = '[id*=positionItemFollowToggleDropdown-undefined-wv02org]';
-	const publicFigureOrOrganizationUnfollowSelector = '[id*=positionItemFollowToggleUnfollow-undefined-wv02org]';
-	const publicFigureOrOrganizationIgnoreSelector = '[id*=positionItemFollowToggleIgnore-undefined-wv02org]';
-	const publicFigureOrOrganizationUnignoreSelector = '[id*=positionItemFollowToggleStopIgnoring-undefined-wv02org]';
+	const publicFigureOrOrganizationFollowSelector = '[id^=positionItemFollowToggleFollow-undefined-wv02org]';
+	const publicFigureOrOrganizationDropDownSelector = '[id^=positionItemFollowToggleDropdown-undefined-wv02org]';
+	const publicFigureOrOrganizationUnfollowSelector = '[id^=positionItemFollowToggleUnfollow-undefined-wv02org]';
+	const publicFigureOrOrganizationIgnoreSelector = '[id^=positionItemFollowToggleIgnore-undefined-wv02org]';
+	const publicFigureOrOrganizationUnignoreSelector = '[id^=positionItemFollowToggleStopIgnoring-undefined-wv02org]';
+	const organizationSection = '#mainContainer:nth-child(4)';
 
     if (isCordovaFromAppStore) {
     // ///////////////////////////////
@@ -45,7 +46,6 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Test "Values to Follow" section
     await simpleClick('issueFollowButton'); // Follow value
-	assert(false);
     await simpleClick('toggle-button'); // Click dropdown button
     await simpleClick('unfollowValue'); // Unfollow value
     await simpleClick('valueLink'); // Clicks on value
@@ -96,45 +96,64 @@ describe('Basic cross-platform We Vote test',  () => {
 	await scrollIntoViewSimple('valuesListTitle'); // Scrolls to "Explore More Values"
 	valueFollow = await $$('issueFollowButton')[1];
 	await browser.pause(PAUSE_DURATION_MICROSECONDS);
-	await valueFollow.click(); // Follow value
-	await browser.pause(PAUSE_DURATION_MICROSECONDS);
-	await simpleClick('toggle-button'); // Click dropdown button // click dropdown button
-	await simpleClick('unfollowValue'); // Unfollow value
-	await simpleClick('valuesListLink'); // Clicks on value 
+	if (valueFollow) {
+	  await valueFollow.click(); // Follow value
+	  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	  await simpleClick('toggle-button'); // Click dropdown button // click dropdown button
+	  await simpleClick('unfollowValue'); // Unfollow value
+	}
+	await simpleClick('valueListLink'); // Clicks on value 
 	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 	await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
-    await simpleClick('valuesFollowedPreviewShowMoreId'); // Clicks on "Explore all values"
+    await simpleClick('valuesToFollowPreviewShowMoreId'); // Clicks on "Explore all values"
     await simpleClick('issueFollowButton'); // Follow value
     await simpleClick('toggle-button'); // Click dropdown button
 	await simpleClick('unfollowValue'); // Unfollow value
-	await simpleClick('search_input'); // Focus on search bar 
-	await simpleTextInput(xssTest); // Test for xss
+	await simpleTextInput('search_input', xssTest); // Test for xss
 	await simpleClick('search-clear'); // Clear search
-	await simpleClick('search_input'); // Focus on search bar 
-	await simpleTextInput(xssTest); // Test for xss
+	await simpleTextInput('search_input', xssTest); // Test for xss
 	await simpleClick('search'); // Click search icon  
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
 
     // //////////////////////
     // Test "Public Figures to Follow" section
     await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
-	/*
-	await simpleClick('organizationOrPublicFigureFollow'); // Follow public figure
-	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	await simpleClick('organizationOrPublicFigureUnfollow'); // Unfollow public figure
-	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	await simpleClick('organizationOrPublicFigureFollowDropDown'); // Click "Follow" 
-	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	await simpleClick('organizationOrPublicFigureUnfollow'); // Unfollow public figure
-	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	await simpleClick('organizationOrPublicFigureIgnore'); // Ignore public figure
-	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	await simpleClick('organizationOrPublicFigureUnignore'); // Unignore public figure 
-	*/
+	publicFigureOrOrganizationFollow = await $(publicFigureOrOrganizationFollowSelector);
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await publicFigureOrOrganizationFollow.click(); // Follow endorsement
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	publicFigureOrOrganizationDropDown = await $(publicFigureOrOrganizationDropDownSelector);
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+	await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+	publicFigureOrOrganizationUnfollow = await $(publicFigureOrOrganizationUnfollowSelector);
+	await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+	await publicFigureOrOrganizationUnfollow.click() // Unfollow endorsement
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await publicFigureOrOrganizationFollow.click() // Follow endorsement
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+	await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+	await publicFigureOrOrganizationUnfollow.click() // Unfollow endorsement
+	await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+	await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	publicFigureOrOrganizationIgnore = await $(publicFigureOrOrganizationIgnoreSelector);
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await publicFigureOrOrganizationIgnore.click() // Click ignore button
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	publicFigureOrOrganizationUnignore = await $(publicFigureOrOrganizationUnignoreSelector);
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await publicFigureOrOrganizationUnignore.click() // Click "Unignore"
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
 	await simpleClick('readMore'); // Clicks "More"
 	await simpleClick('showLess'); // Clicks "Show Less"
 	await simpleClick('organizationOrPublicFigureLink'); // Click public figure link
-	await browser.url('https://quality.wevote.us/values'); // Return to values page
+	await browser.url('http://localhost:3000/values'); // Return to values page
     await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
     await simpleClick('publicFiguresToFollowPreviewShowMoreId'); // Click "Explore more public figures"
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
@@ -144,32 +163,57 @@ describe('Basic cross-platform We Vote test',  () => {
     // Tests endorsements and twitter sign in
     if (isDesktopScreenSize) {                 // Only for desktop
       await simpleClick('twitterSignIn-splitIconButton'); // Clicks on "Find Public Opinions"
-      await browser.url('https://quality.wevote.us/values'); // Return to values page 
+	  await browser.url('http://localhost:3000/values'); // Return to values page
       await simpleClick('undefined-splitIconButton'); // Clicks on "Add Endorsements"
-      await browser.url('https://quality.wevote.us/values'); // Return to values page
+	  await browser.url('http://localhost:3000/values'); // Return to values page
     }
 
     // //////////////////////
     // Tests organizations to follow
-    await scrollIntoViewSimple('organizationSection'); // Scrolls to "Organizations to Follow"
-	await simpleClick('organizationOrPublicFigureFollow'); // Follow organization
-	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	await simpleClick('organizationOrPublicFigureUnfollow'); // Unfollow organization
-	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	await simpleClick('organizationOrPublicFigureFollowDropDown'); // Click "Follow" 
-	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	await simpleClick('organizationOrPublicFigureUnfollow'); // Unfollow organization
-	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	await simpleClick('organizationOrPublicFigureIgnore'); // Ignore organization
-	await simpleClick('organizationOrPublicFigureDropDown'); // Click dropdown button
-	await simpleClick('organizationOrPublicFigureUnignore'); // Unignore organization 
+    await scrollIntoViewSimple('organizationsSection'); // Scrolls to "Organizations to Follow"
 	await simpleClick('readMore'); // Clicks "More"
 	await simpleClick('showLess'); // Clicks "Show Less"
-	await simpleClick('organizationOrPublicFigureLink'); // Click organization link
-	await browser.url('https://quality.wevote.us/values'); // Return to values page
-    await scrollIntoViewSimple('organizationSection'); // Scrolls to "Organizations to Follow"
+	organizationOrPublicFigureLink = await $(`${organizationSection} #organizationOrPublicFigureLink`);
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await organizationOrPublicFigureLink.click() // Click organization link
+	await browser.url('http://localhost:3000/values'); // Return to values page
+    await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
+    await scrollIntoViewSimple('organizationsSection'); // Scrolls to "Organizations to Follow"
+	publicFigureOrOrganizationFollow = await $(`${organizationSection} ${publicFigureOrOrganizationFollowSelector}`);
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+	await publicFigureOrOrganizationFollow.click(); // Follow endorsement
+	await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('organizationsToFollowPreviewShowMoreId'); // Clicks on "Explore more organizations"
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
+/*	Use if organization does not disappear after clicking follow */
+//	publicFigureOrOrganizationDropDown = await $(`${organizationSection} ${publicFigureOrOrganizationDropDownSelector}`);
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//	await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+//	publicFigureOrOrganizationUnfollow = await $(`${organizationSection} ${publicFigureOrOrganizationUnfollowSelector}`);
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+//	await publicFigureOrOrganizationUnfollow.click() // Unfollow endorsement
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//	await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//	await publicFigureOrOrganizationFollow.click() // Follow endorsement
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//	await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+//	await publicFigureOrOrganizationUnfollow.click() // Unfollow endorsement
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+//	await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//	publicFigureOrOrganizationIgnore = await $(`${organizationSection} ${publicFigureOrOrganizationIgnoreSelector}`);
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//	await publicFigureOrOrganizationIgnore.click() // Click ignore button
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//	await publicFigureOrOrganizationDropDown.click() // Click dropdown button
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//	publicFigureOrOrganizationUnignore = await $(`${organizationSection} ${publicFigureOrOrganizationUnignoreSelector}`);
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//	await publicFigureOrOrganizationUnignore.click() // Click "Unignore"
+//	await browser.pause(PAUSE_DURATION_MICROSECONDS);
   });
 });
 
