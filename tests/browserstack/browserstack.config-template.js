@@ -7,4 +7,5 @@ module.exports = {
   BROWSERSTACK_IPA_URL: '',
   TWITTER_USER_NAME: '',
   TWITTER_PASSWORD: '',
+  WEB_APP_ROOT_URL: 'https://quality.wevote.us',
 };

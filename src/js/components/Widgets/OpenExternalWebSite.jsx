@@ -31,6 +31,7 @@ export default class OpenExternalWebSite extends Component {
           href={this.props.url}
           className={classNameString}
           target={this.props.target ? this.props.target : ''}
+          rel='noopener noreferrer'
           title={this.props.title ? this.props.title : ''}
         >
           {this.props.body ? this.props.body : ''}
