@@ -25,7 +25,6 @@ export default function startReactApp () {
     // eslint-disable-next-line react/jsx-filename-extension
     <MuiThemeProvider theme={muiTheme}>
       <ThemeProvider theme={styledTheme}>
-        <div>Hello mommy Im off to bag a commie</div>
         <Router
           history={isCordova() ? hashHistory : browserHistory}
           render={applyRouterMiddleware(useScroll(() => true))}
