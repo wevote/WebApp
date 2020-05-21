@@ -1,3 +1,4 @@
+import React from 'react';
 import { stringContains } from './textFormat';
 import { isCordova, isWebApp } from './cordovaUtils';
 
@@ -253,6 +254,11 @@ export function polyfillObjectEntries () {
       while (i--) resArray[i] = [localProps[i], obj[localProps[i]]];
       return resArray;
     };
+  }
+
+  // And another for ObjectAssign
+  if (!Object.assign) {
+    Object.assign = React.__spread;
   }
 }
 
