@@ -345,6 +345,16 @@ class HeaderBackToVoterGuides extends Component {
         </VoterGuideTitle>
         <EndorsementModeSwitch className="header-toolbar">
           <EndorsementModeTabs />
+          <PreviewButtonWrapper>
+            <Button
+              color="primary"
+              id="voterGuideSettingsPositionsSeeFullBallot"
+              onClick={this.goToVoterGuideDisplay}
+              variant="contained"
+            >
+              See Preview&nbsp;&nbsp;&gt;
+            </Button>
+          </PreviewButtonWrapper>
         </EndorsementModeSwitch>
         {showSignInModal && (
           <SignInModal
@@ -431,6 +441,12 @@ const styles = theme => ({
 const FirstNameWrapper = styled.div`
   font-size: 14px;
   padding-right: 4px;
+`;
+
+const PreviewButtonWrapper = styled.div`
+  text-align: right;
+  padding-top: 10px;
+  margin: 20px 0;
 `;
 
 const VoterGuideTitle = styled.div`

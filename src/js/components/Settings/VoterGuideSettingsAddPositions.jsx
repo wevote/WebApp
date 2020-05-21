@@ -644,16 +644,6 @@ class VoterGuideSettingsAddPositions extends Component {
               </EmptyBallotMessageContainer>
             </Card>
           )}
-          <PreviewButtonWrapper>
-            <Button
-              color="primary"
-              id="voterGuideSettingsPositionsSeeFullBallot"
-              onClick={this.goToVoterGuideDisplay}
-              variant="contained"
-            >
-              See Preview&nbsp;&nbsp;&gt;
-            </Button>
-          </PreviewButtonWrapper>
         </div>
       );
     } else {
@@ -782,16 +772,6 @@ class VoterGuideSettingsAddPositions extends Component {
                   <CircularProgress />
                 ) : null}
               </LoadingItemsWheel>
-              <PreviewButtonWrapper>
-                <Button
-                  color="primary"
-                  id="voterGuideSettingsPositionsSeeFullBallot"
-                  onClick={this.goToVoterGuideDisplay}
-                  variant="contained"
-                >
-                  See Preview&nbsp;&nbsp;&gt;
-                </Button>
-              </PreviewButtonWrapper>
             </div>
           ) : (
             <Card>
@@ -838,11 +818,6 @@ const EmptyBallotText = styled.p`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin: 1em;
   }
-`;
-
-const PreviewButtonWrapper = styled.div`
-  text-align: right;
-  margin: 20px 0;
 `;
 
 const LoadingItemsWheel = styled.div`
