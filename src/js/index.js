@@ -16,8 +16,8 @@ String.prototype.numberOfNeedlesFoundInString = numberOfNeedlesFoundInString; //
 function startApp () {
   // http://harrymoreno.com/2015/07/14/Deploying-a-React-App-to-Cordova.html
   // eslint-disable-next-line no-undef
-  const { device, device: { platform }, Keyboard, Keyboard: { shrinkView, disableScrollingInShrinkView }, screen } = window;
-  if (device && platform === 'iOS') {
+  if (window.device && window.device.platform === 'iOS') {
+    const { device, Keyboard, Keyboard: { shrinkView, disableScrollingInShrinkView }, screen } = window;
     // eslint-disable-next-line no-undef
     console.log('cordova startup device: ', device);
     console.log('cordova startup window.screen: ', screen);
