@@ -30,7 +30,7 @@ if [[ $remove -ne 1 ]]; then
     
 
     # Create .wdio.config.js file
-    [[ "$test_type" == "browser" ]] && name="${script_name}MainTest-%deviceBrowser" || name="${script_name}MainTest-$test_type%device";
+    [[ "$test_type" == "browser" ]] && name="${script_name}MainTest-%nameBrowser" || name="${script_name}MainTest-$test_type%name";
     sed "s/%name/$name/g;s/%scriptName/$script_name/g" $configFilePath/template.wdio.config.js > $configFilePath/${script_name}${test_type}.wdio.config.js
     # Create main script
     cp -n $scriptFilePath/exampleTest.js $scriptFilePath/${script_name}MainTest.js
