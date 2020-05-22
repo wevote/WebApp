@@ -1,0 +1,69 @@
+#!/bin/bash
+usage () { echo -e "Usage: $0 -f <path to configuration file> -o <os_version> [-d <device name>] [-p <project>] [-b <browser>] [-c <console>] [--os <os>] [--debug] [--ssl] [--localTest]\n\nExample: $0 -f /opt/MyProjects/WebApp/tests/browserstack/test.wdio.conf.js -o 10.0 --os Windows"; exit; }
+error () { echo $1; exit; }
+
+[[ $# -lt 4 ]] && usage
+
+# Option Strings
+SHORT=f:o:d:p::b::c::
+LONG=os::,debug,ssl,localTest
+
+# Read the options
+OPTS=$(getopt --options $SHORT --long $LONG --name "$0" -- "$@")
+[ $? -ne 0 ] && error 'Failed to parse options.' >&2 
+eval set -- "$OPTS"
+
+# Set initial values
+device=''
+project=''
+browser=''
+console='error'
+os=''
+debug=false
+ssl=false
+localTest=false
+
+# Extract options 
+while true; do 
+    case "$1" in 
+        -f)
+            filepath="$2"
+            shift 2;;
+        -o)
+            os_version="$2" 
+            shift 2;;
+        -d)
+            device="$2"
+            shift 2;;
+        -p)
+            project="$2"
+            shift 2;;
+        -b)
+            browser="$2"
+            shift 2;;
+        -c)
+            console="$2"
+            shift 2;;
+        --os)
+            os="$2"
+            shift 2;;
+        --debug)
+            debug=true
+            shift;;
+        --ssl)
+            ssl=true
+            shift;;
+        --localTest)
+            localTest=true
+            shift;;
+        --)
+            shift
+            break;;
+        *)
+            usage;;
+    esac
+done
+
+echo $filepath
+echo $device
+sed -i "s/%device/$device/g;s/%project/$project/g;s/%os_version/$os_version/g;s/%browser/$browser/g;s/%ssl/$ssl/g;s/%local/$localTest/g;s/%console/$console/g;s/%debug/$debug/g" $filepath

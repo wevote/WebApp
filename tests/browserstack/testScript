@@ -1,0 +1,47 @@
+#!/bin/bash
+usage () { echo -e "Usage: $0 [-r (remove)] -f <path to web app> -s <script name> -t <Android/iOS/Browser>\n\nExample: $0 -f /opt/MyProjects/WebApp/ -s ballot -t Android"; exit; }
+error () { echo $1; exit; }
+
+[[ $# -lt 6 ]] && usage
+while getopts "rs:f:t:" opt; 
+do
+    case $opt in
+    r)
+        remove=1;;
+    f)
+        filepath=$OPTARG;;
+    s)
+        script_name=$OPTARG;;
+    t)
+        test_type=$OPTARG;;
+    \?)
+        usage;;
+    esac
+done
+
+insertString="\"${script_name}Test-${test_type}\": \"./node_modules/.bin/wdio ./tests/browserstack/${script_name}${test_type}.wdio.config.js\",";
+configFilePath=${filepath}tests/browserstack
+scriptFilePath=$configFilePath/specs
+
+if [[ $remove -ne 1 ]]; then
+    # Insert the script into package.json
+    [[ -z "`grep -n "$" ${filepath}package.json`" ]] && lineNumber=`grep -n "exampleTest" ${filepath}package.json | cut -d':' -f 1`;
+    [[ ! -z "$lineNumber" ]] && sed -i "${lineNumber}i\ \ \ \ ${insertString}" ${filepath}package.json;
+    
+
+    # Create .wdio.config.js file
+    [[ "$test_type" == "browser" ]] && name="${script_name}MainTest-%deviceBrowser" || name="${script_name}MainTest-$test_type%device";
+    sed "s/%name/$name/g;s/%scriptName/$script_name/g" $configFilePath/template.wdio.config.js > $configFilePath/${script_name}${test_type}.wdio.config.js
+    # Create main script
+    cp -n $scriptFilePath/exampleTest.js $scriptFilePath/${script_name}MainTest.js
+else
+    # Remove script from package.json
+    lineNumber=`grep -n "$insertString" ${filepath}package.json | cut -d':' -f 1`;
+    [[ ! -z "$linenumber" ]] && sed -i "${linenumber}d" ${filepath}package.json;
+    
+    # Remove .wdio.config.js file
+    rm $configFilePath/${script_name}${test_type}.wdio.config.js;
+
+    # Remove main script
+    rm $scriptFilePath/${script_name}MainTest.js
+fi
