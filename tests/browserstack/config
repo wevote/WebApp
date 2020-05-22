@@ -1,12 +1,12 @@
 #!/bin/bash
-usage () { echo -e "Usage: $0 -f <path to configuration file> -o <os_version> [-w <write to file>] [-d <device name>] [-p <project>] [-b <browser>] [-c <console>] [--os <os>] [--debug] [--ssl] [--localtest] [--ios] [--android] [--cordova] [--mobile-screen] [--real-mobile]\n\nExample: $0 -f /opt/MyProjects/WebApp/tests/browserstack/test.wdio.conf.js -o 10.0 --os Windows"; exit; }
+usage () { echo -e "Usage: $0 -f <path to configuration file> -o <os_version> [-w <write to file>] [-d <device name>] [-b <browser>] [-c <console>] [-l (local)] [-u (updateJob)] [--os <os>] [--debug] [--ssl] [--loglevel <log level>] [--ios] [--android] [--cordova] [--mobile-screen] [--real-mobile] [--colored-logs] [--wait-for-timeout <length>] [--connection-retry-timeout <length>] [--connection-retry-count <count>]\n\nExample: $0 -f /opt/MyProjects/WebApp/tests/browserstack/test.wdio.conf.js -o 10.0 --os Windows"; exit; }
 error () { echo $1; exit; }
 
 [[ $# -lt 4 ]] && usage
 
 # Option Strings
-SHORT=f:o:d:p:b:c:hw
-LONG=os:,debug,ssl,localtest,ios,android,cordova,mobile-screen,real-mobile
+SHORT=f:o:d:b:c:hwlu
+LONG=os:,debug,ssl,localtest,ios,android,cordova,mobile-screen,real-mobile,loglevel:,colored-logs,wait-for-timeout:,connection-retry-timeout:,connection-retry-count:
 
 # Read the options
 OPTS=$(getopt --options $SHORT --long $LONG --name "$0" -- "$@")
@@ -15,7 +15,6 @@ eval set -- "$OPTS"
 
 # Set initial values
 var_device=''
-var_project=''
 var_browser=''
 var_console='errors'
 var_os=''
@@ -26,7 +25,13 @@ var_isIOS=false
 var_isMobileScreenSize=false
 var_debug=false
 var_ssl=false
+var_log_level=trace
 var_localTest=false
+var_updateJob=false
+var_colored_logs=false
+var_wait_timeout=180000
+var_connection_retry_timeout=90000
+var_connection_retry_count=3
 
 # Extract options 
 while true; do 
@@ -40,9 +45,6 @@ while true; do
         -d)
             var_device="$2"
             shift 2;;
-        -p)
-            var_project="$2"
-            shift 2;;
         -b)
             var_browser="$2"
             shift 2;;
@@ -52,6 +54,12 @@ while true; do
         -w)
             write=1
             shift 1;;
+        -l)
+            var_localTest=true
+            shift;;
+        -u)
+            var_updateJob=true
+            shift;;
         --os)
             var_os="$2"
             shift 2;;
@@ -60,9 +68,6 @@ while true; do
             shift;;
         --ssl)
             var_ssl=true
-            shift;;
-        --localtest)
-            var_localTest=true
             shift;;
         --ios)
             var_isIOS=true
@@ -79,6 +84,21 @@ while true; do
         --real-mobile)
             var_real_mobile=true
             shift;;
+        --loglevel)
+            var_log_level="$2"
+            shift 2;;
+        --colored-logs)
+            var_colored_logs=true
+            shift;;
+        --wait-for-timeout)
+            var_wait_timeout=$2
+            shift 2;;
+        --connection-retry-timeout)
+            var_connection_retry_timeout=$2
+            shift 2;;
+        --connection-retry-count)
+            var_connection_retry_count=$2
+            shift 2;;
         -h)
             usage;;
         --)
