@@ -114,13 +114,60 @@ class Application extends Component {
   }
 
   initializationForCordova () { // eslint-disable-line
+    // Load the Sign In With Apple Script
+    // this.initializeSignInWithApple();
     if (isCordova()) {
       console.log('Application initializationForCordova ------------');
       window.handleOpenURL = (url) => {
         TwitterSignIn.handleTwitterOpenURL(url);
       };
+      // window.cordova.plugins.SignInWithApple.signin(
+      //   { requestedScopes: [0, 1]},
+      //   (succ) => {
+      //     console.log(`SignInWithApple: ${JSON.stringify(succ)}`);
+      //     // alert(JSON.stringify(succ));
+      //   },
+      //   (err) => {
+      //     console.error(err);
+      //     console.log(`SignInWithApple: ${JSON.stringify(err)}`);
+      //   },
+      // );
     }
   }
+
+  // https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_js/configuring_your_webpage_for_sign_in_with_apple
+  // initializeSignInWithApple () {
+  //   const head = document.getElementsByTagName('head')[0];
+  //   const script = document.createElement('script');
+  //   script.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js';
+  //   script.type = 'text/javascript';
+  //   head.appendChild(script);
+  //   // <meta name="appleid-signin-client-id" content="[CLIENT_ID]">
+  //   let meta = document.createElement('meta');
+  //   meta.name = 'appleid-signin-client-id';
+  //   meta.content = 'org.wevote.cordova';  // https://developer.apple.com/account/resources/identifiers/list
+  //   head.appendChild(meta);
+  //   // <meta name="appleid-signin-scope" content="[SCOPES]">
+  //   meta = document.createElement('meta');
+  //   meta.name = 'appleid-signin-scope';
+  //   meta.content = 'email';
+  //   head.appendChild(meta);
+  //   // <meta name="appleid-signin-redirect-uri" content="[REDIRECT_URI]">
+  //   meta = document.createElement('meta');
+  //   meta.name = 'appleid-signin-redirect-uri';
+  //   meta.content = 'wevotetwitterscheme://sign_in_with_apple';  // The doc says no scheme, so this won't work, I guess the server will need to be involved
+  //   head.appendChild(meta);
+  //   // <meta name="appleid-signin-state" content="[STATE]">
+  //   meta = document.createElement('meta');
+  //   meta.name = 'aappleid-signin-state';
+  //   meta.content = 'NonGuessableValueThatShouldNotBeCheckedIntoGitLikeThisOneIS'; // TODO: ADD ME
+  //   head.appendChild(meta);
+  //   // <meta name="appleid-signin-use-popup" content="true"> <!-- or false defaults to false -->
+  //   meta = document.createElement('meta');
+  //   meta.name = 'appleid-signin-use-popup';
+  //   meta.content = 'true';
+  //   head.appendChild(meta);
+  // }
 
   initializeFacebookSdkForJavascript () { // eslint-disable-line
     if (webAppConfig.ENABLE_FACEBOOK) {

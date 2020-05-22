@@ -5,13 +5,10 @@ import Card from '@material-ui/core/Card';
 import { renderLog } from '../../utils/logging';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import LoadingWheel from '../../components/LoadingWheel';
-import OrganizationStore from '../../stores/OrganizationStore';
 import TwitterActions from '../../actions/TwitterActions';
 import TwitterStore from '../../stores/TwitterStore';
-import VoterGuideFollowing
-  from '../../components/VoterGuide/VoterGuideFollowing';
-import VoterGuideFollowers
-  from '../../components/VoterGuide/VoterGuideFollowers';
+import VoterGuideFollowing from '../../components/VoterGuide/VoterGuideFollowing';
+import VoterGuideFollowers from '../../components/VoterGuide/VoterGuideFollowers';
 
 class OrganizationVoterGuideMobileDetails extends Component {
   static propTypes = {
@@ -22,31 +19,31 @@ class OrganizationVoterGuideMobileDetails extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      activeRoute: '',
-      organization: {},
-      twitterHandle: '',
+      incomingTwitterHandle: '',
+      organizationWeVoteId: '',
     };
   }
 
   componentDidMount () {
-    this.setState({
-      activeRoute: this.props.activeRoute,
-    });
-    TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
-    this.onOrganizationStoreChange();
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    const { params } = this.props;
+    const { twitter_handle: incomingTwitterHandle } = params;
+    // console.log('OrganizationVoterGuideMobileDetails, twitter_handle:', incomingTwitterHandle);
+    TwitterActions.twitterIdentityRetrieve(incomingTwitterHandle);
+    this.setState({
+      incomingTwitterHandle,
+    });
   }
 
   componentWillReceiveProps (nextProps) {
     // console.log('OrganizationVoterGuideMobileDetails componentWillReceiveProps');
-    this.setState({
-      activeRoute: nextProps.activeRoute,
-    });
-    if (nextProps.params.twitter_handle && this.state.twitterHandle.toLowerCase() !== nextProps.params.twitter_handle.toLowerCase()) {
+    const { params } = nextProps;
+    const { incomingTwitterHandle } = this.state;
+    const { twitter_handle: nextIncomingTwitterHandle } = params;
+    if (incomingTwitterHandle && nextIncomingTwitterHandle && incomingTwitterHandle.toLowerCase() !== nextIncomingTwitterHandle.toLowerCase()) {
       // We need this test to prevent an infinite loop
       // console.log('OrganizationVoterGuideMobileDetails componentWillReceiveProps, different twitterHandle: ', nextProps.params.twitter_handle);
-      TwitterActions.twitterIdentityRetrieve(nextProps.params.twitter_handle);
+      TwitterActions.twitterIdentityRetrieve(nextIncomingTwitterHandle);
     }
   }
 
@@ -55,25 +52,18 @@ class OrganizationVoterGuideMobileDetails extends Component {
   }
 
   onTwitterStoreChange () {
-    // console.log('OrganizationVoterGuideMobileDetails onTwitterStoreChange');
-    const { owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle } = TwitterStore.get();
+    const { owner_we_vote_id: organizationWeVoteId } = TwitterStore.get();
+    // console.log('OrganizationVoterGuideMobileDetails onTwitterStoreChange organizationWeVoteId:', organizationWeVoteId);
     this.setState({
-      ownerWeVoteId,
-      twitterHandle,
-    });
-  }
-
-  onOrganizationStoreChange () {
-    const { ownerWeVoteId } = this.state;
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(ownerWeVoteId),
+      organizationWeVoteId,
     });
   }
 
   render () {
     renderLog('OrganizationVoterGuideMobileDetails');  // Set LOG_RENDER_EVENTS to log all renders
-    const {  activeRoute, organization, ownerWeVoteId } = this.state;
-    if (!activeRoute || !organization || !ownerWeVoteId) {
+    const {  activeRoute } = this.props;
+    const {  organizationWeVoteId } = this.state;
+    if (!organizationWeVoteId) {
       return <div>{LoadingWheel}</div>;
     }
     let DisplayContent = null;
@@ -93,10 +83,10 @@ class OrganizationVoterGuideMobileDetails extends Component {
         );
         break;
       case 'following':
-        DisplayContent = <VoterGuideFollowing organization={this.state.organization} />;
+        DisplayContent = <VoterGuideFollowing organizationWeVoteId={organizationWeVoteId} />;
         break;
       case 'followers':
-        DisplayContent = <VoterGuideFollowers organization={this.state.organization} />;
+        DisplayContent = <VoterGuideFollowers organizationWeVoteId={organizationWeVoteId} />;
         break;
     }
     return (

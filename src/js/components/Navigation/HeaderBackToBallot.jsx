@@ -684,17 +684,17 @@ class HeaderBackToBallot extends Component {
                 )
                 }
                 {profilePopUpOpen && (
-                <HeaderBarProfilePopUp
-                  hideProfilePopUp={this.hideProfilePopUp}
-                  onClick={this.toggleProfilePopUp}
-                  profilePopUpOpen={profilePopUpOpen}
-                  signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-                  toggleProfilePopUp={this.toggleProfilePopUp}
-                  toggleSignInModal={this.toggleSignInModal}
-                  transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                  voter={voter}
-                  weVoteBrandingOff={this.state.we_vote_branding_off}
-                />
+                  <HeaderBarProfilePopUp
+                    hideProfilePopUp={this.hideProfilePopUp}
+                    onClick={this.toggleProfilePopUp}
+                    profilePopUpOpen={profilePopUpOpen}
+                    signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                    toggleProfilePopUp={this.toggleProfilePopUp}
+                    toggleSignInModal={this.toggleSignInModal}
+                    transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                    voter={voter}
+                    weVoteBrandingOff={this.state.we_vote_branding_off}
+                  />
                 )}
               </span>
             ) : (

@@ -1,19 +1,19 @@
 import { browserHistory, hashHistory } from 'react-router';
-import { cordovaOffsetLog, oAuthLog } from './logging';
 import showBallotDecisionsTabs from './showBallotDecisionsTabs'; // eslint-disable-line import/no-cycle
-import { stringContains } from './textFormat';
 import webAppConfig from '../config';
+import { cordovaOffsetLog, oAuthLog } from './logging';
+import { stringContains } from './textFormat';
 
 /* global $  */
 
-export function isWebApp () {
-  const { cordova } = window;
-  return cordova === undefined;
-}
 
 export function isCordova () {
-  const { cordova } = window;
-  return cordova !== undefined;
+  const { isCordovaGlobal } = window;
+  return isCordovaGlobal === true;
+}
+
+export function isWebApp () {
+  return !isCordova();
 }
 
 // see https://github.com/ReactTraining/react-router/blob/v3/docs/guides/Histories.md
@@ -32,7 +32,8 @@ export function historyPush (route) {
 // images that are not yet on the production servers
 export function cordovaDot (path) {
   if (isCordova()) {
-    return `${webAppConfig.WE_VOTE_IMAGE_PATH_FOR_CORDOVA}${path}`;
+    const { WE_VOTE_IMAGE_PATH_FOR_CORDOVA: imgPath } = webAppConfig;
+    return `${imgPath}${path}`;
   } else {
     return path;
   }
@@ -528,6 +529,7 @@ export function getToastClass () {
 export function prepareForCordovaKeyboard (callerString) {
   if (callerString && isCordova()) {
     const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
+    console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
     cordovaOffsetLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
     $('#app').removeClass('app-wrapper').addClass('app-wrapper__cordova');
     $('body').css('height', '');
