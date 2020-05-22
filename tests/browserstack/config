@@ -1,11 +1,11 @@
 #!/bin/bash
-usage () { echo -e "Usage: $0 -f <path to configuration file> -o <os_version> [-w <write to file>] [-d <device name>] [-b <browser>] [-c <console>] [-l (local)] [-u (updateJob)] [--os <os>] [--debug] [--ssl] [--loglevel <log level>] [--ios] [--android] [--cordova] [--mobile-screen] [--real-mobile] [--colored-logs] [--wait-for-timeout <length>] [--connection-retry-timeout <length>] [--connection-retry-count <count>]\n\nExample: $0 -f /opt/MyProjects/WebApp/tests/browserstack/test.wdio.conf.js -o 10.0 --os Windows"; exit; }
+usage () { echo -e "Usage: $0 -f <path to configuration file> -o <os_version> [-w <file to write>] [-d <device name>] [-b <browser>] [-c <console>] [-l (local)] [-u (updateJob)] [--os <os>] [--debug] [--ssl] [--loglevel <log level>] [--ios] [--android] [--cordova] [--mobile-screen] [--real-mobile] [--colored-logs] [--wait-for-timeout <length>] [--connection-retry-timeout <length>] [--connection-retry-count <count>]\n\nExample: $0 -f /opt/MyProjects/WebApp/tests/browserstack/test.wdio.conf.js -o 10.0 --os Windows"; exit; }
 error () { echo $1; exit; }
 
 [[ $# -lt 4 ]] && usage
 
 # Option Strings
-SHORT=f:o:d:b:c:hwlu
+SHORT=f:o:d:b:c:hw:lu
 LONG=os:,debug,ssl,localtest,ios,android,cordova,mobile-screen,real-mobile,loglevel:,colored-logs,wait-for-timeout:,connection-retry-timeout:,connection-retry-count:
 
 # Read the options
@@ -52,8 +52,8 @@ while true; do
             var_console="$2"
             shift 2;;
         -w)
-            write=1
-            shift 1;;
+            write="$2"
+            shift 2;;
         -l)
             var_localTest=true
             shift;;
@@ -118,4 +118,4 @@ do
     [[ ! -z "$variable" ]] && var=`echo $variable | cut -c 5-` && replaceString+="s/%$var/${!variable}/g;"
 done;
 
-[[ $write -eq 1 ]] && sed -i "$replaceString" $filepath || sed "$replaceString" $filepath;
+[[ "$write" != "" ]] && sed "$replaceString" $filepath > $write || sed "$replaceString" $filepath;
