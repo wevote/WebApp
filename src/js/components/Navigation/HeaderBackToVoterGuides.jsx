@@ -444,9 +444,8 @@ const FirstNameWrapper = styled.div`
 `;
 
 const PreviewButtonWrapper = styled.div`
-  text-align: right;
-  padding-top: 10px;
-  margin: 20px 0;
+ margin-left: 30px;
+ margin-bottom: 10px;
 `;
 
 const VoterGuideTitle = styled.div`
@@ -456,6 +455,7 @@ const VoterGuideTitle = styled.div`
 `;
 
 const EndorsementModeSwitch = styled.div`
+  display: flex;
   align-items: left;
   margin-left: 30px;
   width: 100%;
