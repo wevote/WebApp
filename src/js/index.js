@@ -1,27 +1,12 @@
-import React from 'react';
-import { render } from 'react-dom';
-import {
-  browserHistory, hashHistory, Router, applyRouterMiddleware,
-} from 'react-router';
-import { MuiThemeProvider } from '@material-ui/core/styles';
-import { ThemeProvider } from 'styled-components';
-import { useScroll } from 'react-router-scroll';
-import { isCordova, setGlobalScreenSize } from './utils/cordovaUtils';
-import routes from './Root';
-import muiTheme from './mui-theme';
-import styledTheme from './styled-theme';
-import { numberOfNeedlesFoundInString } from './utils/search-functions';
 import webAppConfig from './config';
+import startReactApp from './startReactApp';
+import { numberOfNeedlesFoundInString } from './utils/search-functions';
 
-
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
-/* eslint global-require: 1 */
-/* eslint no-undef: 1 */
-/* eslint react/jsx-filename-extension: 1 */
-
-// polyfill
-if (!Object.assign) {
-  Object.assign = React.__spread;
+// If in Cordova, need this function before cordovaUtils might be loaded
+function localIsCordova () {
+  const { cordova } = window;
+  window.isCordovaGlobal = cordova !== undefined;    // So now we set a global
+  return cordova !== undefined;
 }
 
 // Adding functions to the String prototype will make stuff like `for (char in str)` break, because it will loop over the substringOccurences property.
@@ -31,41 +16,31 @@ String.prototype.numberOfNeedlesFoundInString = numberOfNeedlesFoundInString; //
 function startApp () {
   // http://harrymoreno.com/2015/07/14/Deploying-a-React-App-to-Cordova.html
   // eslint-disable-next-line no-undef
-  if (window.device && device.platform === 'iOS') {
+  if (window.device && window.device.platform === 'iOS') {
+    const { device, Keyboard, Keyboard: { shrinkView, disableScrollingInShrinkView }, screen } = window;
     // eslint-disable-next-line no-undef
-    console.log(`cordova startup device: ${device}`);
-    console.log('cordova startup window.screen: ', window.screen);
+    console.log('cordova startup device: ', device);
+    console.log('cordova startup window.screen: ', screen);
 
     // eslint-disable-next-line global-require
     window.$ = require('jquery');
 
     // prevent keyboard scrolling our view, https://www.npmjs.com/package/cordova-plugin-keyboard
-    if (window.Keyboard) {
+    if (Keyboard) {
       console.log('Cordova startupApp keyboard plugin found');
-      Keyboard.shrinkView(true); // eslint-disable-line no-undef
-      Keyboard.disableScrollingInShrinkView(true); // eslint-disable-line no-undef
+      shrinkView(true); // eslint-disable-line no-undef
+      disableScrollingInShrinkView(true); // eslint-disable-line no-undef
     } else console.log('ERROR: Cordova index.js startApp keyboard plugin WAS NOT found');
   }
-
-  render(
-    // eslint-disable-next-line react/jsx-filename-extension
-    <MuiThemeProvider theme={muiTheme}>
-      <ThemeProvider theme={styledTheme}>
-        <Router
-          history={isCordova() ? hashHistory : browserHistory}
-          render={applyRouterMiddleware(useScroll(() => true))}
-        >
-          {routes()}
-        </Router>
-      </ThemeProvider>
-    </MuiThemeProvider>, document.getElementById('app'),
-  );
+  startReactApp();
 }
 
 // ServiceWorker setup for Workbox Progressive Web App (PWA)
 if ('ENABLE_WORKBOX_SERVICE_WORKER' in webAppConfig &&
     webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER &&
     'serviceWorker' in navigator) {
+  // console.log('Cordova index.js ENABLE_WORKBOX_SERVICE_WORKER');
+
   window.addEventListener('load', () => {
     // Preload /ballot/vote so that it will be in cache even if the first visit is while offline
     caches.open('WeVoteSVGCache').then((cache) => {
@@ -80,17 +55,20 @@ if ('ENABLE_WORKBOX_SERVICE_WORKER' in webAppConfig &&
 }
 
 // If Apache Cordova is available, wait for it to be ready, otherwise start the WebApp
-if (isCordova()) {
+if (localIsCordova()) {
   document.addEventListener('deviceready', (id) => {
+    window.isDeviceReady = true;
     console.log('Received Cordova Event: ', id.type);
     navigator.splashscreen.hide();
     window.plugins.screensize.get((result) => {
-      setGlobalScreenSize(result);
+      console.log('screensize.get: ', result);
+      window.pbakondyScreenSize = result;
       startApp();
     }, (result) => {
       console.log('pbakondy/cordova-plugin-screensize FAILURE result: ', result);
     });
   }, false);
 } else { // browser
+  // console.log('startApp for the WebApp (not for Cordova)');
   startApp();
 }
