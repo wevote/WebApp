@@ -1,12 +1,12 @@
 #!/bin/bash
-usage () { echo -e "Usage: $0 -f <path to configuration file> -o <os_version> [-w <file to write>] [-d <device name>] [-b <browser>] [-c <console>] [-l (local)] [-u (updateJob)] [--os <os>] [--debug] [--ssl] [--loglevel <log level>] [--ios] [--android] [--cordova] [--mobile-screen] [--real-mobile] [--colored-logs] [--wait-for-timeout <length>] [--connection-retry-timeout <length>] [--connection-retry-count <count>]\n\nExample: $0 -f /opt/MyProjects/WebApp/tests/browserstack/test.wdio.conf.js -o 10.0 --os Windows"; exit; }
+usage () { echo -e "Usage: $0 -f <path to configuration file> -o <os_version> [-w <write to file>] [-d <device name>] [-l (local)] [--os <os>] [-b <browser name>] [--browser-version <browser version>] [--debug] [--ssl] [--ios] [--android] [--cordova] [--mobile-screen] [--real-mobile] [--wait-for-timeout <length>] [--connection-retry-timeout <length>] [--connection-retry-count <count>]\n\nExample: $0 -f /opt/MyProjects/WebApp/tests/browserstack/test.wdio.conf.js -o 10.0 --os Windows"; exit; }
 error () { echo $1; exit; }
 
-[[ $# -lt 4 ]] && usage
+[[ $# -lt 4 ]] && error 'Needs at least 4 arguments.' 
 
 # Option Strings
-SHORT=f:o:d:b:c:hw:lu
-LONG=os:,debug,ssl,localtest,ios,android,cordova,mobile-screen,real-mobile,loglevel:,colored-logs,wait-for-timeout:,connection-retry-timeout:,connection-retry-count:
+SHORT=f:o:d:b:c:hwlb:
+LONG=os:,debug,ssl,localtest,ios,android,cordova,mobile-screen,real-mobile,wait-for-timeout:,connection-retry-timeout:,connection-retry-count:,browser-version:
 
 # Read the options
 OPTS=$(getopt --options $SHORT --long $LONG --name "$0" -- "$@")
@@ -15,8 +15,8 @@ eval set -- "$OPTS"
 
 # Set initial values
 var_device=''
-var_browser=''
-var_console='errors'
+var_browserName=''
+var_browser_version=''
 var_os=''
 var_real_mobile=false
 var_isAndroid=false
@@ -25,13 +25,10 @@ var_isIOS=false
 var_isMobileScreenSize=false
 var_debug=false
 var_ssl=false
-var_log_level=trace
 var_localTest=false
-var_updateJob=false
-var_colored_logs=false
-var_wait_timeout=180000
-var_connection_retry_timeout=90000
-var_connection_retry_count=3
+var_waitForTimeout=180000
+var_connectionRetryTimeout=90000
+var_connectionRetryCount=3
 
 # Extract options 
 while true; do 
@@ -46,22 +43,19 @@ while true; do
             var_device="$2"
             shift 2;;
         -b)
-            var_browser="$2"
-            shift 2;;
-        -c)
-            var_console="$2"
+            var_browserName="$2"
             shift 2;;
         -w)
-            write="$2"
-            shift 2;;
+            write=1
+            shift;;
         -l)
             var_localTest=true
             shift;;
-        -u)
-            var_updateJob=true
-            shift;;
         --os)
             var_os="$2"
+            shift 2;;
+        --browser-version)
+            var_BROWSER_VERSION="$2"
             shift 2;;
         --debug)
             var_debug=true
@@ -84,20 +78,14 @@ while true; do
         --real-mobile)
             var_real_mobile=true
             shift;;
-        --loglevel)
-            var_log_level="$2"
-            shift 2;;
-        --colored-logs)
-            var_colored_logs=true
-            shift;;
         --wait-for-timeout)
-            var_wait_timeout=$2
+            var_waitForTimeout=$2
             shift 2;;
         --connection-retry-timeout)
-            var_connection_retry_timeout=$2
+            var_connectionRetryTimeout=$2
             shift 2;;
         --connection-retry-count)
-            var_connection_retry_count=$2
+            var_connectionRetryCount=$2
             shift 2;;
         -h)
             usage;;
@@ -118,4 +106,4 @@ do
     [[ ! -z "$variable" ]] && var=`echo $variable | cut -c 5-` && replaceString+="s/%$var/${!variable}/g;"
 done;
 
-[[ "$write" != "" ]] && sed "$replaceString" $filepath > $write || sed "$replaceString" $filepath;
+[ $write -eq 1 ] && sed -i "$replaceString" $filepath || sed "$replaceString" $filepath;

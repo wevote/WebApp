@@ -1,13 +1,15 @@
 #!/bin/bash
-usage () { echo -e "Usage: $0 [-r (remove)] -f <path to web app> -s <script name> -t <Android/iOS/Browser>\n\nExample: $0 -f /opt/MyProjects/WebApp/ -s ballot -t Android"; exit; }
+usage () { echo -e "Usage: $0 [-r (remove)] -c <config filename> -f <path to web app> -s <script name> -t <Android/iOS/Browser>\n\nExample: $0 -f /opt/MyProjects/WebApp/ -s ballot -t Android"; exit; }
 error () { echo $1; exit; }
 
-[[ $# -lt 6 ]] && usage
-while getopts "rs:f:t:" opt; 
+[[ $# -lt 8 ]] && usage
+while getopts "rs:f:t:c:" opt; 
 do
     case $opt in
     r)
         remove=1;;
+    c)
+        configFileName=$OPTARG;;
     f)
         filepath=$OPTARG;;
     s)
@@ -31,7 +33,8 @@ if [[ $remove -ne 1 ]]; then
 
     # Create .wdio.config.js file
     [[ "$test_type" == "browser" ]] && name="${script_name}MainTest-%nameBrowser" || name="${script_name}MainTest-$test_type%name";
-    sed "s/%name/$name/g;s/%scriptName/$script_name/g" $configFilePath/template.wdio.config.js > $configFilePath/${script_name}${test_type}.wdio.config.js
+    sed "s/%name/$name/g;s/%scriptName/$script_name/g" $configFilePath/$configFileName > $configFilePath/${script_name}${test_type}.wdio.config.js 
+
     # Create main script
     cp -n $scriptFilePath/exampleTest.js $scriptFilePath/${script_name}MainTest.js
 else
