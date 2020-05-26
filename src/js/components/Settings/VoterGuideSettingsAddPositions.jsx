@@ -411,14 +411,6 @@ class VoterGuideSettingsAddPositions extends Component {
     }
   }
 
-  goToVoterGuideDisplay = () => {
-    let voterGuideDisplay = '/ballot';
-    if (this.state.voterGuide) {
-      voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/positions`;
-    }
-    historyPush(voterGuideDisplay);
-  }
-
   onFilteredItemsChangeFromBallotItemsFilterBase = (filteredBallotItems, currentSelectedBallotFilters) => {
     // console.log('onFilteredItemsChangeFromBallotItemsFilterBase, filteredBallotItems: ', filteredBallotItems);
     this.setState({
