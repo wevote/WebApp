@@ -12,7 +12,6 @@ import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
-import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
