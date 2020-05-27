@@ -77,7 +77,7 @@ export default class EditAddressInPlace extends Component {
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
 
-    if (this.state.editingAddress) {
+    // if (this.state.editingAddress) {
       return (
         <span>
           <h4 className="h4">Your Address</h4>
@@ -85,29 +85,30 @@ export default class EditAddressInPlace extends Component {
             cancelEditAddress={this.incomingCancelButtonAction ? this.incomingCancelButtonAction : this.toggleEditingAddress}
             saveUrl={ballotBaseUrl}
             toggleSelectAddressModal={this.props.toggleFunction}
+            editingAddress={this.state.editingAddress}
           />
         </span>
       );
-    } else {
-      return (
-        <span>
-          <h4 className="h4">Your Address</h4>
-          <span className="ballot__edit-address-preview">
-            { this.state.textForMapSearch.length ? shortenText(this.state.textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }
-            {' '}
-          </span>
-          <span className="d-print-none ballot__edit-address-preview-link u-padding-left--sm">
-            <Button
-              variant="contained"
-              color="primary"
-              id="editAddressInPlaceModalEditButton"
-              onClick={this.toggleEditingAddress}
-            >
-              Edit
-            </Button>
-          </span>
-        </span>
-      );
-    }
+    // } else {
+    //   return (
+    //     <span>
+    //       <h4 className="h4">Your Address</h4>
+    //       <span className="ballot__edit-address-preview">
+    //         { this.state.textForMapSearch.length ? shortenText(this.state.textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }
+    //         {' '}
+    //       </span>
+    //       <span className="d-print-none ballot__edit-address-preview-link u-padding-left--sm">
+    //         <Button
+    //           variant="contained"
+    //           color="primary"
+    //           id="editAddressInPlaceModalEditButton"
+    //           onClick={this.toggleEditingAddress}
+    //         >
+    //           Edit
+    //         </Button>
+    //       </span>
+    //     </span>
+    //   );
+    // }
   }
 }

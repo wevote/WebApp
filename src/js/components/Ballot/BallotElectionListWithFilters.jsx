@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -88,6 +89,11 @@ export default class BallotElectionListWithFilters extends Component {
       // console.log('this.state.ballotElectionListCount', this.state.ballotElectionListCount, ', nextState.ballotElectionListCount', nextState.ballotElectionListCount);
       return true;
     }
+    if (this.props.stateToShow !== nextProps.stateToShow) {
+      return true;
+    }
+    if (this.props.hideUpcomingElectionsList !== nextProps.hideUpcomingElectionsList) return true;
+    if (this.props.showPriorElectionsList !== nextProps.showPriorElectionsList) return true;
     if (this.state.destinationUrlForHistoryPush !== nextState.destinationUrlForHistoryPush) {
       // console.log('this.state.destinationUrlForHistoryPush', this.state.destinationUrlForHistoryPush, ', nextState.destinationUrlForHistoryPush', nextState.destinationUrlForHistoryPush);
       return true;
@@ -230,14 +236,6 @@ export default class BallotElectionListWithFilters extends Component {
     }
   }
 
-  mapHandler = (event) => {
-    console.log(event.target.dataset.name);
-  };
-
-  secondMapHandler = (event) => {
-    console.log(event.target);
-  };
-
   goToBallotForDifferentElection (originalTextForMapSearch, googleCivicElectionId, ballotLocationShortcut = '', ballotReturnedWeVoteId = '') {
     // console.log('BallotElectionListWithFilters, goToBallotForDifferentElection');
     const ballotBaseUrlClean = this.props.ballotBaseUrl || '/ballot';
@@ -317,8 +315,8 @@ export default class BallotElectionListWithFilters extends Component {
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       return electionDateTomorrow > currentDate ? (
         <div key={`upcoming-election-${item.google_civic_election_id}`}>
-          <dl className="list-unstyled">
-            <Button
+          <div className="list-unstyled">
+            <ElectionButton
               color="primary"
               fullWidth
               href=""
@@ -327,48 +325,128 @@ export default class BallotElectionListWithFilters extends Component {
               variant="contained"
             >
               <ButtonContentsWrapper>
-                <ElectionName>
-                  {/* Mobile */}
-                  <span className="d-block d-sm-none">
-                    { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
-                      <span>
-                        {item.election_description_text}
-                        &nbsp;
-                      </span>
-                    ) : (
-                      <span>
-                        {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
-                        ...&nbsp;
-                      </span>
-                    )}
-                  </span>
-                  {/* Desktop */}
-                  <span className="d-none d-sm-block">
-                    { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
-                      <span>
-                        {item.election_description_text}
-                        &nbsp;
-                      </span>
-                    ) : (
-                      <span>
-                        {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
-                        ...&nbsp;
-                      </span>
-                    )}
-                  </span>
-                </ElectionName>
-                <ElectionDate>
+                <ElectionTitle>
                   {moment(item.election_day_text).format('MMM Do, YYYY')}
-                </ElectionDate>
+                  {' - '}
+                  {item.election_description_text.split('in')[0]}
+                </ElectionTitle>
+                <ElectionStates>
+                  {item.state_code_list.map((stateAbbrev, index) => {
+                    if (index < 5) {
+                      return (
+                        <ElectionState>{stateAbbrev}</ElectionState>
+                      );
+                    } else if (index === 6) {
+                      return (
+                        <>
+                          <span>{`+${item.state_code_list.length - 6}`}</span>
+
+                        </>
+                      );
+                    }
+                  })}
+                </ElectionStates>
               </ButtonContentsWrapper>
-            </Button>
-          </dl>
+            </ElectionButton>
+          </div>
         </div>
       ) :
         null;
     });
     return cleanArray(renderedList);
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  renderUpcomingElectionListByState (list, currentDate) {
+    const renderedList = list.filter(filterItem => filterItem.state_code_list.includes(this.props.stateToShow)).map((item) => {
+      console.log(item);
+      // console.log('item.election_description_text: ', item.election_description_text, 'item.election_day_text: ', item.election_day_text);
+      if (!item.election_description_text || item.election_description_text === '') return null;
+      const electionDateTomorrowMoment = moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days');
+      const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
+      return electionDateTomorrow > currentDate ? (
+        <div key={`upcoming-election-${item.google_civic_election_id}`}>
+          <div className="list-unstyled">
+            <ElectionButton
+              color="primary"
+              fullWidth
+              href=""
+              id={`ballotElectionListWithFiltersButton-${item.google_civic_election_id}`}
+              onClick={() => this.executeDifferentElection(item)}
+              variant="contained"
+            >
+              <ButtonContentsWrapper>
+                <ElectionTitle>
+                  {moment(item.election_day_text).format('MMM Do, YYYY')}
+                  {' - '}
+                  {item.election_description_text.split('in')[0]}
+                </ElectionTitle>
+                <ElectionStates>
+                  {item.state_code_list.map((stateAbbrev, index) => {
+                    if (index < 5) {
+                      return (
+                        <ElectionState>{stateAbbrev}</ElectionState>
+                      );
+                    } else if (index === 6) {
+                      return (
+                        <>
+                          <span>{`+${item.state_code_list.length - 6}`}</span>
+
+                        </>
+                      );
+                    }
+                  })}
+                </ElectionStates>
+              </ButtonContentsWrapper>
+            </ElectionButton>
+          </div>
+        </div>
+      ) :
+        null;
+    });
+    return cleanArray(renderedList);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   renderPriorElectionList (list, currentDate) {
     const renderedList = list.map((item) => {
@@ -377,8 +455,8 @@ export default class BallotElectionListWithFilters extends Component {
       return electionDateTomorrow > currentDate ?
         null : (
           <div key={`prior-election-${item.google_civic_election_id}`}>
-            <dl className="list-unstyled prior-election-list">
-              <Button
+            <div className="list-unstyled prior-election-list">
+              <ElectionButton
                 color="primary"
                 fullWidth
                 href=""
@@ -387,47 +465,99 @@ export default class BallotElectionListWithFilters extends Component {
                 variant="contained"
               >
                 <ButtonContentsWrapper>
-                  <ElectionName>
-                    {/* Mobile */}
-                    <span className="d-block d-sm-none">
-                      { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
-                        <span>
-                          {item.election_description_text}
-                          &nbsp;
-                        </span>
-                      ) : (
-                        <span>
-                          {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
-                          ...&nbsp;
-                        </span>
-                      )}
-                    </span>
-                    {/* Desktop */}
-                    <span className="d-none d-sm-block">
-                      { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
-                        <span>
-                          {item.election_description_text}
-                          &nbsp;
-                        </span>
-                      ) : (
-                        <span>
-                          {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
-                          ...&nbsp;
-                        </span>
-                      )}
-                    </span>
-                  </ElectionName>
-                  <ElectionDate>
+                  <ElectionTitle>
                     {moment(item.election_day_text).format('MMM Do, YYYY')}
-                  </ElectionDate>
+                    {' - '}
+                    {item.election_description_text.split('in')[0]}
+                  </ElectionTitle>
+                  <ElectionStates>
+                    {item.state_code_list.map((stateAbbrev, index) => {
+                      if (index < 5) {
+                        return (
+                          <ElectionState>{stateAbbrev}</ElectionState>
+                        );
+                      } else if (index === 6) {
+                        return (
+                          <>
+                            <span>{`+${item.state_code_list.length - 6}`}</span>
+
+                          </>
+                        );
+                      }
+                    })}
+                  </ElectionStates>
                 </ButtonContentsWrapper>
-              </Button>
-            </dl>
+              </ElectionButton>
+            </div>
           </div>
         );
     });
     return cleanArray(renderedList);
   }
+
+
+
+
+
+  renderPriorElectionListByState (list, currentDate) {
+    const renderedList = list.filter(filterItem => filterItem.state_code_list.includes(this.props.stateToShow)).map((item) => {
+      const electionDateTomorrowMoment = moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days');
+      const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
+      return electionDateTomorrow > currentDate ?
+        null : (
+          <div key={`prior-election-${item.google_civic_election_id}`}>
+            <div className="list-unstyled prior-election-list">
+              <ElectionButton
+                color="primary"
+                fullWidth
+                href=""
+                id={`ballotElectionListWithFiltersButton-${item.google_civic_election_id}`}
+                onClick={() => this.executeDifferentElection(item)}
+                variant="contained"
+              >
+                {' '}
+                <ButtonContentsWrapper>
+                  <ElectionTitle>
+                    {moment(item.election_day_text).format('MMM Do, YYYY')}
+                    {' - '}
+                    {item.election_description_text.split('in')[0]}
+                  </ElectionTitle>
+                  <ElectionStates>
+                    {item.state_code_list.map((stateAbbrev, index) => {
+                      if (index < 5) {
+                        return (
+                          <ElectionState>{stateAbbrev}</ElectionState>
+                        );
+                      } else if (index === 6) {
+                        return (
+                          <>
+                            <span>{`+${item.state_code_list.length - 6}`}</span>
+
+                          </>
+                        );
+                      }
+                    })}
+                  </ElectionStates>
+                </ButtonContentsWrapper>
+              </ElectionButton>
+            </div>
+          </div>
+        );
+    });
+    return cleanArray(renderedList);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
   render () {
     renderLog('BallotElectionListWithFilters');  // Set LOG_RENDER_EVENTS to log all renders
@@ -462,9 +592,11 @@ export default class BallotElectionListWithFilters extends Component {
       priorElectionListOpen = true;
     }
 
+    const upcomingElectionListByState = this.renderUpcomingElectionListByState(ballotElectionListUpcomingSorted, currentDate);
+
     let priorElectionList = [];
+    const ballotElectionListPastSorted = this.state.ballotElectionList.concat();
     if (showPriorElectionsList) {
-      const ballotElectionListPastSorted = this.state.ballotElectionList.concat();
       // We want to sort descending so the most recent election is first
       ballotElectionListPastSorted.sort((a, b) => {
         const electionDayTextA = a.election_day_text.toLowerCase();
@@ -478,6 +610,9 @@ export default class BallotElectionListWithFilters extends Component {
       priorElectionList = this.renderPriorElectionList(ballotElectionListPastSorted, currentDate);
     }
 
+    const priorElectionListByState = this.renderPriorElectionListByState(ballotElectionListPastSorted, currentDate);
+
+
     if (priorElectionList && !priorElectionList.length) {
       showPriorElectionsList = false; // Override to hide
     }
@@ -487,22 +622,31 @@ export default class BallotElectionListWithFilters extends Component {
       priorElectionListOpen = true; // Override to show
     }
 
+    console.log(hideUpcomingElectionsList, showPriorElectionsList);
+
     return (
       <div className="ballot-election-list__list">
         { !hideUpcomingElectionsList && (
           <div className="ballot-election-list__upcoming">
             {!hideUpcomingElectionTitle && (
-              <h4 className="h4">
+              <strong>
+                <h4 className="h4">
                 Upcoming Election
-                {(upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null }
-              </h4>
+                  {(upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null }
+                </h4>
+              </strong>
             )}
             { upcomingElectionList && upcomingElectionList.length ?
-              upcomingElectionList : (
+              (
+                <>
+                  {this.props.stateToShow === 'all' ? upcomingElectionList :
+                    upcomingElectionListByState.length > 0 ? upcomingElectionListByState :
+                      'There are no upcoming elections for this state.'
+                  }
+                </>
+              ) : (
                 <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                  <>
-                    There are no upcoming elections at this time.
-                  </>
+                  {this.props.stateToShow !== 'all' ? 'There are no upcoming elections at this time for this state.' : 'There are no upcoming elections at this time.'}
                 </DelayedLoad>
               )
             }
@@ -515,15 +659,26 @@ export default class BallotElectionListWithFilters extends Component {
         )}
         { showPriorElectionsList && (
           <div>
-            {priorElectionListOpen ? (
-              <PriorElectionsOpenWrapper>
-                <h4 className="h4">
-                  Prior Election
-                  {(priorElectionList && priorElectionList.length !== 1) ? 's' : null }
-                </h4>
-                {priorElectionList}
-              </PriorElectionsOpenWrapper>
-            ) : (
+            { priorElectionList && priorElectionList.length ?
+              (
+                <>
+                  <strong><h4 className="h4">Prior Elections</h4></strong>
+                  {this.props.stateToShow === 'all' ? priorElectionList :
+                    priorElectionListByState.length > 0 ? priorElectionListByState :
+                      'There are no prior elections for this state.'
+                  }
+                </>
+              ) : (
+                <DelayedLoad showLoadingText waitBeforeShow={2000}>
+                  {this.props.stateToShow !== 'all' ? 'There are no prior elections at this time for this state.' : 'There are no prior elections at this time.'}
+                </DelayedLoad>
+              )
+            }
+            {/* {priorElectionListOpen ? ( */}
+            {/* <PriorElectionsOpenWrapper>
+              {priorElectionList}
+            </PriorElectionsOpenWrapper> */}
+            {/* }) : (
               <ShowPriorElectionsWrapper>
                 <Button
                   color="primary"
@@ -536,38 +691,59 @@ export default class BallotElectionListWithFilters extends Component {
                   Show Prior Elections
                 </Button>
               </ShowPriorElectionsWrapper>
-            )}
+            )} */}
           </div>
         )}
-        {nextReleaseFeaturesEnabled && (
-          <div className="u-show-desktop-tablet">
-            <MapChart onClickFunction={this.secondMapHandler} />
-          </div>
-        )}
+        {/* {nextReleaseFeaturesEnabled && (
+
+        )} */}
       </div>
     );
   }
 }
 
+const ElectionButton = styled(Button)`
+  background: white !important;
+  border: 1px solid #e8e8e8 !important;
+  box-shadow: none !important;
+  color:#2e3c5d !important;
+  text-transform: none !important;
+  margin: 8px 0 !important;
+  padding: 10px !important;
+`;
+
+const ElectionTitle = styled.h3`
+  margin: 0 !important;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left !important;
+  margin-bottom: 6px !important;
+`;
+
 const ButtonContentsWrapper = styled.div`
   display: flex;
-  flex-flow: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   width: 100%;
+  align-items: flex-start;
+`;
+
+const ElectionStates = styled.div`
+  display: flex;
   align-items: center;
+  justify-content: flex-start;
+  margin-top: 4px;
 `;
 
-const ElectionName = styled.div`
-  margin-right: auto;
-`;
-
-const ElectionDate = styled.div`
-  margin-left: auto;
-  font-size: 12px;
-  font-weight: 100;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 12px;
-  }
+const ElectionState = styled.div`
+  border-radius: 50px;
+  height: 20px;
+  width: fit-content;
+  padding: 2px 8px;
+  background: #e8e8e8;
+  display: flex;
+  align-items: center;
+  margin: 0 2px;
 `;
 
 const PriorElectionsOpenWrapper = styled.div`
