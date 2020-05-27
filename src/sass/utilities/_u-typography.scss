@@ -9,6 +9,13 @@
 
 // !!! These font size helpers are a work in progress. Please avoid using or use sparingly for now.
 
+.emphasize {
+  font-style: italic !important;
+  * {
+    font-style: italic !important;
+  }
+}
+
 .u-f1,
 .u-f2,
 .u-f3,

@@ -6,6 +6,7 @@ import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import plan0Percent from '../../../img/global/svg-icons/ready/plan-0-percent.svg';
 import plan100Percent from '../../../img/global/svg-icons/ready/plan-100-percent.svg';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
+import AppActions from '../../actions/AppActions';
 
 class ReadyTaskPlan extends React.Component {
   static propTypes = {
@@ -20,7 +21,7 @@ class ReadyTaskPlan extends React.Component {
   }
 
   goToNextStep = () => {
-    historyPush('/ballot');
+    AppActions.setShowVoterPlanModal(true);
   }
 
   render () {

@@ -22,6 +22,7 @@ import OrganizationModal from '../VoterGuide/OrganizationModal';
 import SharedItemModal from '../Share/SharedItemModal';
 import { stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
+import VoterPlanModal from '../Ready/VoterPlanModal';
 
 
 export default class Header extends Component {
@@ -39,11 +40,13 @@ export default class Header extends Component {
       organizationModalId: '',
       sharedItemCode: '',
       showHowItWorksModal: false,
+      showVoterPlanModal: false,
       showOrganizationModal: false,
       showSharedItemModal: false,
     };
 
     this.closeHowItWorksModal = this.closeHowItWorksModal.bind(this);
+    this.closeVoterPlanModal = this.closeVoterPlanModal.bind(this);
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
     this.closeSharedItemModal = this.closeSharedItemModal.bind(this);
     this.handleResize = this.handleResize.bind(this);
@@ -60,6 +63,7 @@ export default class Header extends Component {
     if (this.props.pathname !== nextProps.pathname) return true;
     if (this.state.sharedItemCode !== nextState.sharedItemCode) return true;
     if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) return true;
+    if (this.state.showVoterPlanModal !== nextState.showVoterPlanModal) return true;
     if (this.state.showOrganizationModal !== nextState.showOrganizationModal) return true;
     if (this.state.showSharedItemModal !== nextState.showSharedItemModal) return true;
     if (this.state.windowWidth !== nextState.windowWidth) return true;
@@ -77,6 +81,7 @@ export default class Header extends Component {
       organizationModalId: AppStore.organizationModalId(),
       sharedItemCode: AppStore.getSharedItemCode(),
       showHowItWorksModal: AppStore.showHowItWorksModal(),
+      showVoterPlanModal: AppStore.showVoterPlanModal(),
       showOrganizationModal: AppStore.showOrganizationModal(),
       showSharedItemModal: AppStore.showSharedItemModal(),
     });
@@ -89,6 +94,10 @@ export default class Header extends Component {
 
   closeHowItWorksModal () {
     AppActions.setShowHowItWorksModal(false);
+  }
+
+  closeVoterPlanModal () {
+    AppActions.setShowVoterPlanModal(false);
   }
 
   closeOrganizationModal () {
@@ -112,9 +121,8 @@ export default class Header extends Component {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
-    const { sharedItemCode, showHowItWorksModal, showOrganizationModal, showSharedItemModal } = this.state;
-    const {
-      friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
+    const { sharedItemCode, showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal } = this.state;
+    const { friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
       showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuide, showBackToVoterGuides,
     } = getApplicationViewBooleans(pathname);
@@ -166,6 +174,13 @@ export default class Header extends Component {
               pathname={pathname}
               show={showHowItWorksModal}
               toggleFunction={this.closeHowItWorksModal}
+            />
+          )}
+          {showVoterPlanModal && (
+            <VoterPlanModal
+              pathname={pathname}
+              show={showVoterPlanModal}
+              toggleFunction={this.closeVoterPlanModal}
             />
           )}
           {showOrganizationModal && (
@@ -239,6 +254,13 @@ export default class Header extends Component {
               toggleFunction={this.closeHowItWorksModal}
             />
           )}
+          {showVoterPlanModal && (
+            <VoterPlanModal
+              pathname={pathname}
+              show={showVoterPlanModal}
+              toggleFunction={this.closeVoterPlanModal}
+            />
+          )}
           {showOrganizationModal && (
             <OrganizationModal
                 isSignedIn={voter.is_signed_in}
@@ -286,6 +308,13 @@ export default class Header extends Component {
               toggleFunction={this.closeHowItWorksModal}
             />
           )}
+          {showVoterPlanModal && (
+            <VoterPlanModal
+              pathname={pathname}
+              show={showVoterPlanModal}
+              toggleFunction={this.closeVoterPlanModal}
+            />
+          )}
           {showOrganizationModal && (
             <OrganizationModal
                 isSignedIn={voter.is_signed_in}
@@ -326,6 +355,13 @@ export default class Header extends Component {
               pathname={pathname}
               show={showHowItWorksModal}
               toggleFunction={this.closeHowItWorksModal}
+            />
+          )}
+          {showVoterPlanModal && (
+            <VoterPlanModal
+              pathname={pathname}
+              show={showVoterPlanModal}
+              toggleFunction={this.closeVoterPlanModal}
             />
           )}
           {showOrganizationModal && (
@@ -390,6 +426,13 @@ export default class Header extends Component {
               pathname={pathname}
               show={showHowItWorksModal}
               toggleFunction={this.closeHowItWorksModal}
+            />
+          )}
+          {showVoterPlanModal && (
+            <VoterPlanModal
+              pathname={pathname}
+              show={showVoterPlanModal}
+              toggleFunction={this.closeVoterPlanModal}
             />
           )}
           {showOrganizationModal && (
