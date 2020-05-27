@@ -50,12 +50,10 @@ const Wrapper = styled.div`
   flex-flow: row;
   height: 44px;
   width: 100%;
-  margin: 16px 0;
-  background: ${({ theme }) => theme.colors.grayPale};
+  background: ${({ theme }) => theme.colors.grayLighter2};
   justify-content: space-between;
   border-radius: 64px;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    background: rgba(255, 255, 255, 0.1);
     height: 32px;
     margin: auto 0;
     padding: 0 4px;
@@ -71,7 +69,7 @@ const Chip = styled.div`
   height: 36px;
   cursor: pointer;
   background: ${({ selected, theme }) => (selected ? theme.colors.brandBlue : theme.colors.grayChip)};
-  color: ${({ selected, theme }) => (selected ? 'white' : theme.colors.brandBlue)};
+  color: ${({ selected, theme }) => (selected ? '#fff' : theme.colors.brandBlue)};
   border-radius: 64px;
   margin: auto 6px;
   transition: all 150ms ease-in;
@@ -86,17 +84,18 @@ const Chip = styled.div`
 const ChipIndex = styled.p`
   margin: auto 6px;
   background: ${({ selected, theme }) => (selected ? theme.colors.brandBlue : theme.colors.grayPale)};
+  ${({ selected, theme }) => (selected ? '' : `border: 1px solid ${theme.colors.grayBorder};`)}
   border-radius: 64px;
+  color: ${({ selected, theme }) => (selected ? '#fff' : theme.colors.brandBlue)};
+  cursor: pointer;
   padding: 2px 9px;
   font-weight: bold;
   transition: all 150ms ease-in;
-  cursor: pointer;
   filter: ${({ selected }) => (selected ? 'brightness(150%)' : 'brightness(100%)')};
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    color: ${({ theme }) => theme.colors.brandBlue};
-    background: ${({ selected }) => (selected ? 'white' : 'rgba(255, 255, 255, 0.2)')};
-    margin: auto 2px;
+    // background: ${({ selected }) => (selected ? 'white' : 'rgba(255, 255, 255, 0.2)')};
     font-size: 14px;
+    margin: auto 2px;
     padding: 2px 8px;
   }
 `;

@@ -1,3 +1,4 @@
+import React from 'react';
 import { stringContains } from './textFormat';
 import { isCordova, isWebApp } from './cordovaUtils';
 
@@ -96,8 +97,12 @@ export function getApplicationViewBooleans (pathname) {
   let showBackToSettingsDesktop = false;
   let showBackToSettingsMobile = false;
   let showBackToValues = false;
+  let showBackToVoterGuide = false;
   let showBackToVoterGuides = false;
-  if (stringContains('/btdb/', pathnameLowerCase) || // back-to-default-ballot
+  if (stringContains('/m/', pathnameLowerCase)) {
+    // Even though we might have a back-to-default... variable in the URL, we want to go back to a voter guide first
+    showBackToVoterGuide = true;
+  } else if (stringContains('/btdb/', pathnameLowerCase) || // back-to-default-ballot
     stringContains('/btdo/', pathnameLowerCase) || // back-to-default-office
     stringContains('/bto/', pathnameLowerCase) ||
     stringContains('/btdb', pathnameLowerCase) || // back-to-default-ballot
@@ -126,6 +131,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/settings/promoted' ||
     pathnameLowerCase === '/settings/sharing' ||
     pathnameLowerCase === '/settings/subscription' ||
+    pathnameLowerCase === '/settings/text' ||
     pathnameLowerCase === '/settings/tools') {
     showBackToSettingsMobile = true;
   } else if (pathnameLowerCase.startsWith('/value/') ||
@@ -224,6 +230,7 @@ export function getApplicationViewBooleans (pathname) {
     showBackToSettingsDesktop,
     showBackToSettingsMobile,
     showBackToValues,
+    showBackToVoterGuide,
     showBackToVoterGuides,
     showFooterBar,
     showShareButtonFooter,
@@ -248,6 +255,11 @@ export function polyfillObjectEntries () {
       return resArray;
     };
   }
+
+  // And another for ObjectAssign
+  if (!Object.assign) {
+    Object.assign = React.__spread;
+  }
 }
 
 // Choose to show/hide zendesk help widget based on route
@@ -260,7 +272,7 @@ export function setZenDeskHelpVisibility (pathname) {
       ['/ballot', '/ballot/vote', '/friends', '/more/network', '/office', '/opinions', '/settings', '/value'].some(
         match => pathname.toLowerCase().startsWith(match),
       )) &&
-      !['/wevoteintro', '/how'].some(
+      !['/wevoteintro', '/how', '/candidate-for-extension'].some(
         match => pathname.toLowerCase().startsWith(match),
       )
     ) { // '/values'

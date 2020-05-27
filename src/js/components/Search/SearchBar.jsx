@@ -90,19 +90,25 @@ export default class SearchBar extends Component {
           onBlur={blurTextFieldAndroid}
         />
         <div className="search-bar-options">
-          <button
-            className={this.props.clearButton && this.state.searchString && this.state.searchString.length > 0 ? 'search-options-btn' : 'hidden'}
-            onClick={this.clearQuery}
-            type="button"
-          >
-            <img src={cordovaDot(removeCircleIcon)} width="28" height="28" color="#ccc" alt="clear query" />
-          </button>
-          <button
-            className={this.props.searchButton ? 'search-options-btn' : 'hidden'}
-            type="button"
-          >
-            <i className="fas fa-search" />
-          </button>
+          {(this.props.clearButton && this.state.searchString && this.state.searchString.length > 0) && (
+            <button
+              className="search-clear-btn"
+              onClick={this.clearQuery}
+              type="button"
+              id="search-clear"
+            >
+              <img src={cordovaDot(removeCircleIcon)} width="26" height="26" color="#ccc" alt="clear query" />
+            </button>
+          )}
+          {(this.props.searchButton) && (
+            <button
+              className="search-options-btn"
+              type="button"
+              id="search"
+            >
+              <i className="fas fa-search" />
+            </button>
+          )}
         </div>
       </div>
     );

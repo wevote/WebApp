@@ -13,7 +13,6 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
-// import BallotElectionListWithFilters from '../../components/Ballot/BallotElectionListWithFilters';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotTitleHeader from './BallotTitleHeader';
@@ -39,6 +38,7 @@ import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import showBallotDecisionsTabs from '../../utils/showBallotDecisionsTabs';
+import ShowMoreItems from '../../components/Widgets/ShowMoreItems';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import { checkShouldUpdate, formatVoterBallotList } from './utils';
@@ -1060,12 +1060,6 @@ class Ballot extends Component {
         <div>
           <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
           {emptyBallotButton}
-          {/* <div className="container-fluid well u-stack--md u-inset--md"> */}
-          {/*  <BallotElectionListWithFilters */}
-          {/*    ballotBaseUrl={ballotBaseUrl} */}
-          {/*    ballotElectionList={this.state.voterBallotList} */}
-          {/*  /> */}
-          {/* </div> */}
         </div>
       </DelayedLoad>
     ) : null;
@@ -1236,9 +1230,11 @@ class Ballot extends Component {
                     </SearchTitle>
                   )}
                   {!isSearching && (
-                    <DelayedLoad waitBeforeShow={2000}>
-                      <CompleteYourProfile />
-                    </DelayedLoad>
+                    <span className="u-show-desktop-tablet">
+                      <DelayedLoad waitBeforeShow={2000}>
+                        <CompleteYourProfile />
+                      </DelayedLoad>
+                    </span>
                   )}
                   <BallotListWrapper>
                     {/* The rest of the ballot items */}
@@ -1319,21 +1315,19 @@ class Ballot extends Component {
                       {doubleFilteredBallotItemsLength === 0 &&
                         this.showUserEmptyOptions()
                       }
+                      {!!(totalNumberOfBallotItems) && (
+                        <ShowMoreItemsWrapper id="showMoreItemsId" onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>
+                          <ShowMoreItems
+                            loadingMoreItemsNow={loadingMoreItems}
+                            numberOfItemsDisplayed={numberOfBallotItemsDisplayed}
+                            numberOfItemsTotal={totalNumberOfBallotItems}
+                          />
+                        </ShowMoreItemsWrapper>
+                      )}
                       {!!(loadingMoreItems && totalNumberOfBallotItems && (numberOfBallotItemsToDisplay < totalNumberOfBallotItems)) && (
                         <LoadingItemsWheel>
                           <CircularProgress />
                         </LoadingItemsWheel>
-                      )}
-                      {!!(totalNumberOfBallotItems) && (
-                        <ShowMoreItems id="showMoreItemsId" onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>
-                          Displaying
-                          {' '}
-                          {numberOfBallotItemsDisplayed}
-                          {' '}
-                          of
-                          {' '}
-                          {totalNumberOfBallotItems}
-                        </ShowMoreItems>
                       )}
                       {!isSearching && (
                         <BallotSummaryFooter
@@ -1354,15 +1348,15 @@ class Ballot extends Component {
                     <span className="u-wrap-links d-print-none">
                       <span>Admin:</span>
                       <OpenExternalWebSite
-                      url={ballotReturnedAdminEditUrl}
-                      target="_blank"
-                      body={(
-                        <span>
-                          Ballot copied from polling location &quot;
-                          {sourcePollingLocationWeVoteId}
-                          &quot;
-                        </span>
-                      )}
+                        url={ballotReturnedAdminEditUrl}
+                        target="_blank"
+                        body={(
+                          <span>
+                            Ballot copied from polling location &quot;
+                            {sourcePollingLocationWeVoteId}
+                            &quot;
+                          </span>
+                        )}
                       />
                     </span>
                   ) : null
@@ -1421,17 +1415,8 @@ const LoadingItemsWheel = styled.div`
   justify-content: center;
 `;
 
-const ShowMoreItems = styled.div`
-  font-size: 18px;
-  text-align: right;
-  user-select: none;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding-top: 5px;
-    padding-bottom: 3px;
-  }
-  @media print{
-    display: none;
-  }
+const ShowMoreItemsWrapper = styled.div`
+  margin-bottom: 16px;
 `;
 
 const SearchResultsEmpty = styled.div`

@@ -75,7 +75,7 @@ export default class VoterGuideDisplayForList extends PureComponent {
     const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
 
     return (
-      <div className="card-child card-child--not-followed">
+      <div id="childCard" className="card-child card-child--not-followed">
         <div className="card-child__media-object-anchor">
           <StickyPopover
             delay={{ show: 700, hide: 100 }}
@@ -96,7 +96,7 @@ export default class VoterGuideDisplayForList extends PureComponent {
               placement="auto"
               id="organization-sticky-popover"
             >
-              <Link to={voterGuideLink}>
+              <Link id="organizationOrPublicFigureLink" to={voterGuideLink}>
                 <h4 className="card-child__display-name">{voterGuideDisplayName}</h4>
               </Link>
             </StickyPopover>

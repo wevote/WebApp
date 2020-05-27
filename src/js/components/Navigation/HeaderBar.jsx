@@ -43,7 +43,7 @@ import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 class HeaderBar extends Component {
   static goToGetStarted () {
-    const getStartedNow = '/ballot';
+    const getStartedNow = '/ready';
     historyPush(getStartedNow);
   }
 
@@ -309,8 +309,11 @@ class HeaderBar extends Component {
     if (voterIsSignedIn) {
       if (pathname && pathname.toLowerCase().startsWith('/ready')) return 0;
       if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 1;
-      if (stringContains('/friends', pathname.toLowerCase())) return 2;
-      if (pathname && pathname.toLowerCase().startsWith('/news')) return 3;
+      if (stringContains('/value', pathname.toLowerCase())) return 2; // '/values'
+      if (stringContains('/friends', pathname.toLowerCase())) return 3;
+      // OFF FOR NOW
+      // if (stringContains('/friends', pathname.toLowerCase())) return 2;
+      // if (pathname && pathname.toLowerCase().startsWith('/news')) return 3;
     } else {
       if (pathname && pathname.toLowerCase().startsWith('/ready')) return 0;
       if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 1;

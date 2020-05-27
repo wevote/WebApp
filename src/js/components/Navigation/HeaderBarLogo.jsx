@@ -16,7 +16,7 @@ const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
       />
     ) : (
       <WeVoteLogoWrapper>
-        <Link to={`${isCordova() ? '/ballot' : '/welcome'}`} className="page-logo page-logo-full-size" id="logoHeaderBar">
+        <Link to={`${isCordova() ? '/ready' : '/welcome'}`} className="page-logo page-logo-full-size" id="logoHeaderBar">
           <img
             className="header-logo-img"
             alt="We Vote logo"

@@ -99,7 +99,7 @@ class WelcomeForOrganizations extends Component {
     const { classes, pathname } = this.props;
     // console.log('WelcomeForOrganizations, pathname: ', pathname);
     const { voter, animateTextArray, currentAnimateTextIndex } = this.state;
-    const isVoterSignedIn = voter.is_signed_in;
+    const voterIsSignedIn = voter.is_signed_in;
 
     const currentTitleTextToDisplay = animateTextArray[currentAnimateTextIndex];
     // console.log(currentTitleTextToDisplay);
@@ -275,7 +275,7 @@ class WelcomeForOrganizations extends Component {
             </Description>
           </DescriptionContainer>
         </Section>
-        <Section variant="dark" rounded={!isVoterSignedIn}>
+        <Section variant="dark" rounded={!voterIsSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
             <NetworkImage src={cordovaDot(ffwdLogo)} alt="Fast Forward" />

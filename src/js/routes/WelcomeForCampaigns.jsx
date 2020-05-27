@@ -120,7 +120,7 @@ class WelcomeForCampaigns extends PureComponent {
     const { classes, pathname } = this.props;
     // console.log('WelcomeForCampaigns, pathname: ', pathname);
     const { voter } = this.state;
-    const isVoterSignedIn = voter.is_signed_in;
+    const voterIsSignedIn = voter.is_signed_in;
 
     const testimonialAuthor = 'Neelam J., Columbus, Ohio';
     const imageUrl = cordovaDot('/img/global/photos/Neelam_Joshi-200x200.jpg');
@@ -273,7 +273,7 @@ class WelcomeForCampaigns extends PureComponent {
             */}
           </DescriptionContainer>
         </Section>
-        <Section variant="dark" rounded={!isVoterSignedIn}>
+        <Section variant="dark" rounded={!voterIsSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
             <NetworkImage src={cordovaDot(ffwdLogo)} alt="Fast Forward" />

@@ -8,7 +8,6 @@ import AddCandidateForExtension from './routes/Ballot/AddCandidateForExtension';
 import Attributions from './routes/More/Attributions';
 import Ballot from './routes/Ballot/Ballot';
 import BallotIndex from './routes/Ballot/BallotIndex';
-import BallotRedirect from './routes/Ballot/BallotRedirect';
 import Candidate from './routes/Ballot/Candidate';
 import CandidateForExtension from './routes/Ballot/CandidateForExtension';
 import ClaimYourPage from './routes/Settings/ClaimYourPage';
@@ -51,6 +50,7 @@ import Pricing from './routes/More/Pricing';
 import Privacy from './routes/More/Privacy';
 import ProcessingDonation from './routes/More/ProcessingDonation';
 import Ready from './routes/Ready';
+import ReadyRedirect from './routes/ReadyRedirect';
 import RegisterToVote from './routes/More/RegisterToVote';
 import SampleBallot from './routes/Intro/SampleBallot';
 import ScratchPad from './routes/ScratchPad';
@@ -105,7 +105,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
         }
         )()
       }
-      <Route path="/welcome" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
+      <Route path="/welcome" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
       <Route path="/news" component={News} />
       <Route path="/ready" component={Ready} />
       <Route path="/ballot" component={BallotIndex}>
@@ -153,10 +153,10 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/candidate-for-extension" component={CandidateForExtension} />
       <Route path="/add-candidate-for-extension" component={AddCandidateForExtension} />
       <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
-      <Route path="/for-campaigns" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForCampaigns {...props} pathname="/for-campaigns" />} />
-      <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
-      <Route path="/how" component={isNotWeVoteMarketingSite ? BallotRedirect : HowItWorks} />
-      <Route path="/how/:category_string" component={isNotWeVoteMarketingSite ? BallotRedirect : HowItWorks} />
+      <Route path="/for-campaigns" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForCampaigns {...props} pathname="/for-campaigns" />} />
+      <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
+      <Route path="/how" component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
+      <Route path="/how/:category_string" component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />
       <Route path="/intro" component={Intro} />
       <Route path="/wevoteintro/network" component={IntroNetwork} />
       <Route path="/intro/sample_ballot" component={SampleBallot} />
@@ -190,14 +190,14 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendInvitationOnboarding} />
 
       {/* More Menu Pages */}
-      <Route path="/more/about" component={isNotWeVoteMarketingSite ? BallotRedirect : About} />
+      <Route path="/more/about" component={isNotWeVoteMarketingSite ? ReadyRedirect : About} />
       <Route path="/more/absentee" component={AbsenteeBallot} />
       <Route path="/more/alerts" component={ElectionReminder} />
       <Route path="/more/attributions" component={Attributions} />
       <Route path="/more/connect" component={Connect} />
       <Route path="/more/credits" component={Credits} />
-      <Route path="/more/donate" component={isNotWeVoteMarketingSite ? BallotRedirect : Donate} />
-      <Route path="/more/donate_thank_you" component={isNotWeVoteMarketingSite ? BallotRedirect : DonateThankYou} />
+      <Route path="/more/donate" component={isNotWeVoteMarketingSite ? ReadyRedirect : Donate} />
+      <Route path="/more/donate_thank_you" component={isNotWeVoteMarketingSite ? ReadyRedirect : DonateThankYou} />
       <Route path="/more/extensionsignin" component={ExtensionSignIn} />
       <Route path="/more/stripe_elements_test" component={StripeElementsTest} />
       <Route path="/more/elections" component={Elections} />
@@ -212,8 +212,8 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       {/* Redirecting old URLs to new components */}
       <Route path="/more/network/friends" component={Friends} />
       <Route path="/more/network/organizations" component={Values} />
-      <Route path="/more/pricing" component={isNotWeVoteMarketingSite ? BallotRedirect : Pricing} />
-      <Route path="/more/pricing/:pricing_choice" component={isNotWeVoteMarketingSite ? BallotRedirect : Pricing} />
+      <Route path="/more/pricing" component={isNotWeVoteMarketingSite ? ReadyRedirect : Pricing} />
+      <Route path="/more/pricing/:pricing_choice" component={isNotWeVoteMarketingSite ? ReadyRedirect : Pricing} />
       <Route path="/more/privacy" component={Privacy} />
       <Route path="/more/processing_donation" component={ProcessingDonation} />
       <Route path="/more/register" component={RegisterToVote} />
@@ -233,23 +233,41 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/voterguide/:organization_we_vote_id/ballot/id/:ballot_returned_we_vote_id" component={props => <OrganizationVoterGuide {...props} activeRoute="ballot" />} />
       <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id" component={props => <OrganizationVoterGuide {...props} activeRoute="ballot" />} />
       <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/ballot" component={props => <OrganizationVoterGuide {...props} activeRoute="ballot" />} />
+      <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
       <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/following" component={props => <OrganizationVoterGuide {...props} activeRoute="following" />} />
+      <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
       <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/followers" component={props => <OrganizationVoterGuide {...props} activeRoute="followers" />} />
+      <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
       <Route path="/voterguide/:organization_we_vote_id/ballot/election/:google_civic_election_id/positions" component={props => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
+      <Route path="/voterguide/:organization_we_vote_id/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
       <Route path="/voterguide/:organization_we_vote_id/followers" component={props => <OrganizationVoterGuide {...props} activeRoute="followers" />} />
+      <Route path="/voterguide/:organization_we_vote_id/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
       <Route path="/voterguide/:organization_we_vote_id/following" component={props => <OrganizationVoterGuide {...props} activeRoute="following" />} />
+      <Route path="/voterguide/:organization_we_vote_id/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
       <Route path="/voterguide/:organization_we_vote_id/positions" component={props => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
       <Route path="/voterguide/:organization_we_vote_id/:action_variable" component={OrganizationVoterGuide} />
       <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable" component={OrganizationVoterGuide} />
+      <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
       <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/followers" component={props => <OrganizationVoterGuide {...props} activeRoute="followers" />} />
+      <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
       <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/following" component={props => <OrganizationVoterGuide {...props} activeRoute="following" />} />
+      <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
       <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/positions" component={props => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
       <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable" component={OrganizationVoterGuide} />
+      <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
+      <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
+      <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
       <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable" component={OrganizationVoterGuide} />
+      <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
       <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/followers" component={props => <OrganizationVoterGuide {...props} activeRoute="followers" />} />
+      <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
       <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/following" component={props => <OrganizationVoterGuide {...props} activeRoute="following" />} />
+      <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
       <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/positions" component={props => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
       <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable" component={OrganizationVoterGuide} />
+      <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
+      <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
+      <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
       <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
       <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" component={OrganizationVoterGuideEdit} />
 
@@ -269,12 +287,12 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/verifythisisme/:twitter_handle" component={VerifyThisIsMe} />
       <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
 
-      {/* Custom link. "/-/" is controlled by customer and tied to hostname, "/l/" is generated by software */}
+      {/* Custom link. "/-/" is controlled by customer and tied to hostname, "/-" is generated by software */}
       <Route path="/-/:custom_link_string" component={SharedItemLanding} />
       <Route path="/-:shared_item_code" component={SharedItemLanding} />
 
       {/* Temporary scratchpad for component testing */}
-      <Route path="/testing/scratchpad" component={isNotWeVoteMarketingSite ? BallotRedirect : ScratchPad} />
+      <Route path="/testing/scratchpad" component={isNotWeVoteMarketingSite ? ReadyRedirect : ScratchPad} />
 
       <Route path=":twitter_handle/ballot/empty" component={TwitterHandleLanding} />
       <Route path=":twitter_handle/ballot/:ballot_location_shortcut" component={TwitterHandleLanding} />
@@ -285,7 +303,6 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       {/* view_mode not taken in yet */}
 
       {/* Any route that is not found -> @return TwitterHandleLanding component */}
-      <Route path=":twitter_handle" component={TwitterHandleLanding} />
       <Route path=":twitter_handle/followers" component={props => <TwitterHandleLanding {...props} activeRoute="followers" />} />
       <Route path=":twitter_handle/following" component={props => <TwitterHandleLanding {...props} activeRoute="following" />} />
       <Route path=":twitter_handle/positions" component={props => <TwitterHandleLanding {...props} activeRoute="positions" />} />
@@ -294,15 +311,28 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path=":twitter_handle/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
       <Route path=":twitter_handle/:action_variable" component={TwitterHandleLanding} />
       <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable" component={TwitterHandleLanding} />
+      <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
       <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/followers" component={props => <TwitterHandleLanding {...props} activeRoute="followers" />} />
+      <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
       <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/following" component={props => <TwitterHandleLanding {...props} activeRoute="following" />} />
+      <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
       <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/positions" component={props => <TwitterHandleLanding {...props} activeRoute="positions" />} />
       <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable" component={TwitterHandleLanding} />
+      <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
+      <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
+      <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
       <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable" component={TwitterHandleLanding} />
+      <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
       <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/followers" component={props => <TwitterHandleLanding {...props} activeRoute="followers" />} />
+      <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
       <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/following" component={props => <TwitterHandleLanding {...props} activeRoute="following" />} />
+      <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
       <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/positions" component={props => <TwitterHandleLanding {...props} activeRoute="positions" />} />
       <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable" component={TwitterHandleLanding} />
+      <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
+      <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
+      <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
+      <Route path=":twitter_handle" component={TwitterHandleLanding} />
       <Route path="*" component={PageNotFound} />
     </Route>
   );
