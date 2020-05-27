@@ -13,7 +13,7 @@ import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import BallotStore from '../../stores/BallotStore';
 import cookies from '../../utils/cookies';
-import { isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp, historyPush } from '../../utils/cordovaUtils';
 import EndorsementModeTabs from './EndorsementModeTabs';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
@@ -21,12 +21,17 @@ import isMobile from '../../utils/isMobile';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
-import { shortenText, stringContains } from '../../utils/textFormat';
+import {
+  isProperlyFormattedVoterGuideWeVoteId,
+  shortenText,
+  stringContains,
+} from '../../utils/textFormat';
 import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 class HeaderBackToVoterGuides extends Component {
   static propTypes = {
@@ -58,11 +63,26 @@ class HeaderBackToVoterGuides extends Component {
 
   componentDidMount () {
     // console.log('HeaderBackToVoterGuides componentDidMount, this.props: ', this.props);
+    this.setState({
+      voterGuideWeVoteId: this.props.params.voter_guide_we_vote_id,
+    });
+    let voterGuide;
+    if (this.state.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
+      voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
+      if (voterGuide && voterGuide.we_vote_id) {
+        this.setState({
+          voterGuide,
+        });
+      }
+    }
+    this.onVoterStoreChange();
+    this.onOrganizationStoreChange();
     this.onBallotStoreChange();
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
     // let officeName;
     let organization = {};
@@ -123,7 +143,18 @@ class HeaderBackToVoterGuides extends Component {
       voterIsSignedIn,
       voterPhotoUrlMedium,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
+      voterGuideWeVoteId: nextProps.params.voter_guide_we_vote_id,
     });
+
+    let voterGuide;
+    if (nextProps.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextProps.params.voter_guide_we_vote_id)) {
+      voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.params.voter_guide_we_vote_id);
+      if (voterGuide && voterGuide.we_vote_id) {
+        this.setState({
+          voterGuide,
+        });
+      }
+    }
   }
 
   componentWillUnmount () {
@@ -131,6 +162,15 @@ class HeaderBackToVoterGuides extends Component {
     this.ballotStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
+    this.voterGuideStoreListener.remove();
+  }
+
+  goToVoterGuideDisplay = () => {
+    let voterGuideDisplay = '/ballot';
+    if (this.state.voterGuide) {
+      voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/positions`;
+    }
+    historyPush(voterGuideDisplay);
   }
 
   onAppStoreChange () {
@@ -148,8 +188,20 @@ class HeaderBackToVoterGuides extends Component {
     this.setState();
   }
 
+  onVoterGuideStoreChange () {
+    if (this.state.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
+      if (voterGuide && voterGuide.we_vote_id) {
+        this.setState({
+          voterGuide,
+        });
+      }
+    }
+  }
+
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
@@ -158,6 +210,7 @@ class HeaderBackToVoterGuides extends Component {
       voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
+      linkedOrganizationWeVoteId,
     });
   }
 
@@ -345,6 +398,16 @@ class HeaderBackToVoterGuides extends Component {
         </VoterGuideTitle>
         <EndorsementModeSwitch className="header-toolbar">
           <EndorsementModeTabs />
+          <PreviewButtonWrapper>
+            <Button
+              color="primary"
+              id="voterGuideSettingsPositionsSeeFullBallot"
+              onClick={this.goToVoterGuideDisplay}
+              variant="contained"
+            >
+              See Preview&nbsp;&nbsp;&gt;
+            </Button>
+          </PreviewButtonWrapper>
         </EndorsementModeSwitch>
         {showSignInModal && (
           <SignInModal
@@ -433,6 +496,10 @@ const FirstNameWrapper = styled.div`
   padding-right: 4px;
 `;
 
+const PreviewButtonWrapper = styled.div`
+ margin-left: 30px;
+`;
+
 const VoterGuideTitle = styled.div`
   align-items: left;
   margin-left: 30px;
@@ -440,6 +507,7 @@ const VoterGuideTitle = styled.div`
 `;
 
 const EndorsementModeSwitch = styled.div`
+  display: flex;
   align-items: left;
   margin-left: 30px;
   width: 100%;
