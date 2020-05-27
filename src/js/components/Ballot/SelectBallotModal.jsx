@@ -115,10 +115,10 @@ class SelectBallotModal extends Component {
         {!hideAddressEdit && (
         <EditAddressInPlace
               address={voterAddressObject}
-              defaultIsEditingAddress
+              // defaultIsEditingAddress
               pathname={this.state.pathname}
               toggleFunction={this.props.toggleFunction}
-              cancelButtonAction={this.props.toggleFunction}
+              // cancelButtonAction={this.props.toggleFunction}
         />
         )}
         <br />
@@ -254,8 +254,8 @@ const styles = theme => ({
     minHeight: '80%',
     maxHeight: '90%',
     height: '80%',
-    width: '90%',
-    minWidth: '90%',
+    width: '70%',
+    maxWidth: '1200px',
     [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
@@ -298,12 +298,13 @@ const Title = styled.h2`
 const Row = styled.div`
   margin-top: -8px;
   margin-bottom: -8px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
   @media(min-width: 860px) {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-right: -8px;
-    margin-left: -8px;
   }
 `;
 
