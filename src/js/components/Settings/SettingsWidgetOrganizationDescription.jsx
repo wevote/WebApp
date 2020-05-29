@@ -8,11 +8,13 @@ import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
+import styled from 'styled-components';
+import { TextField, FormControl, withStyles } from '@material-ui/core';
 
 const delayBeforeApiUpdateCall = 1200;
 const delayBeforeRemovingSavedStatus = 4000;
 
-export default class SettingsWidgetOrganizationDescription extends Component {
+class SettingsWidgetOrganizationDescription extends Component {
   static propTypes = {
     voterHasMadeChangesFunction: PropTypes.func,
   };
@@ -118,23 +120,66 @@ export default class SettingsWidgetOrganizationDescription extends Component {
       return LoadingWheel;
     }
 
+    const { classes } = this.props;
+
     return (
       <div className="">
         <form onSubmit={(e) => { e.preventDefault(); }}>
-          <label htmlFor="organizationDescriptionTextArea">{ this.state.isOrganization ? 'Description Shown with Endorsements' : 'Description Shown with Endorsements'}</label>
-          <Textarea
-            id="organizationDescriptionTextArea"
-            name="organizationDescription"
-            className="form-control"
-            minRows={2}
-            placeholder={this.state.isOrganization ? 'Type Organization Description...' : 'Type Description of Yourself...'}
-            value={this.state.organizationDescription}
-            onKeyDown={this.handleKeyPress}
-            onChange={this.updateOrganizationDescription}
-          />
+          <Row>
+            <Column>
+              <FormControl classes={{ root: classes.formControl }}>
+                <Label htmlFor="organizationDescriptionTextArea">{ this.state.isOrganization ? 'Description Shown with Endorsements' : 'Description Shown with Endorsements'}</Label>
+                <TextField
+                  id="organizationDescriptionTextArea"
+                  name="organizationDescription"
+                  rows={4}
+                  multiline
+                  fullWidth
+                  margin="dense"
+                  variant="outlined"
+                  placeholder={this.state.isOrganization ? 'Type Organization Description...' : 'Type Description of Yourself...'}
+                  value={this.state.organizationDescription}
+                  onKeyDown={this.handleKeyPress}
+                  onChange={this.updateOrganizationDescription}
+                />
+              </FormControl>
+            </Column>
+          </Row>
         </form>
         <div className="u-gray-mid">{this.state.organizationDescriptionSavedStatus}</div>
       </div>
     );
   }
 }
+
+const styles = () => ({
+  formControl: {
+    // width: '50%',
+    // margin: '12px',
+    // marginBottom: '12px',
+    width: '100%',
+  },
+  input: {
+    padding: '12px',
+  },
+});
+
+const Row = styled.div`
+  width: calc(100% + 24px);
+  margin-left: -12px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Column = styled.div`
+  padding: 8px 12px;
+  width: 100%;
+`;
+
+const Label = styled.label`
+  margin-bottom: 4px;
+  display: block;
+`;
+
+export default withStyles(styles)(SettingsWidgetOrganizationDescription);
+

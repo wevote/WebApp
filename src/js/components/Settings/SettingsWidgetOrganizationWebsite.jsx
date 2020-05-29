@@ -7,11 +7,13 @@ import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
+import styled from 'styled-components';
+import { TextField, FormControl, withStyles } from '@material-ui/core';
 
 const delayBeforeApiUpdateCall = 1200;
 const delayBeforeRemovingSavedStatus = 4000;
 
-export default class SettingsWidgetOrganizationWebsite extends Component {
+class SettingsWidgetOrganizationWebsite extends Component {
   static propTypes = {
     voterHasMadeChangesFunction: PropTypes.func,
   };
@@ -118,22 +120,63 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
       return LoadingWheel;
     }
 
+    const { classes } = this.props;
+
     return (
       <div className="">
         <form onSubmit={(e) => { e.preventDefault(); }}>
-          <label htmlFor="organizationWebsiteTextArea">{ this.state.isOrganization ? 'Organization Website' : 'Your Website'}</label>
-          <input
-            id="organizationWebsiteTextArea"
-            name="organizationWebsite"
-            className="form-control"
-            placeholder={this.state.isOrganization ? 'Type Organization\'s Website, www...' : 'Type Your Website Address, www...'}
-            value={this.state.organizationWebsite}
-            onKeyDown={this.handleKeyPress}
-            onChange={this.updateOrganizationWebsite}
-          />
+          <Row>
+            <Column>
+              <FormControl classes={{ root: classes.formControl }}>
+                <Label htmlFor="organizationWebsiteTextArea">{ this.state.isOrganization ? 'Organization Website' : 'Your Website'}</Label>
+                <TextField
+                  id="organizationWebsiteTextArea"
+                  name="organizationWebsite"
+                  margin="dense"
+                  variant="outlined"
+                  placeholder={this.state.isOrganization ? 'Type Organization\'s Website, www...' : 'Type Your Website Address, www...'}
+                  value={this.state.organizationWebsite}
+                  onKeyDown={this.handleKeyPress}
+                  onChange={this.updateOrganizationWebsite}
+                />                
+              </FormControl>
+            </Column>
+            <Column></Column>
+          </Row>
         </form>
         <div className="u-gray-mid">{this.state.organizationWebsiteSavedStatus}</div>
       </div>
     );
   }
 }
+
+const styles = () => ({
+  formControl: {
+    // width: '50%',
+    // margin: '12px',
+    // marginBottom: '12px',
+    width: '100%',
+  },
+  input: {
+    padding: '12px',
+  },
+});
+
+const Row = styled.div`
+  width: calc(100% + 24px);
+  margin-left: -12px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Column = styled.div`
+  padding: 8px 12px;
+  width: 50%;
+`;
+
+const Label = styled.label`
+  margin-bottom: 4px;
+  display: block;
+`;
+
+export default withStyles(styles)(SettingsWidgetOrganizationWebsite);
