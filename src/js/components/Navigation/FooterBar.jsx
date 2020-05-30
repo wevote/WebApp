@@ -51,12 +51,14 @@ class FooterBar extends React.Component {
     const showShareModal = AppStore.showShareModal();
     const showSharedItemModal = AppStore.showSharedItemModal();
     const showSignInModal = AppStore.showSignInModal();
+    const showVoterPlanModal = AppStore.showVoterPlanModal();
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
       showingOneCompleteYourProfileModal,
       showShareModal,
       showSharedItemModal,
       showSignInModal,
+      showVoterPlanModal,
     });
   }
 
@@ -71,11 +73,13 @@ class FooterBar extends React.Component {
     const showShareModal = AppStore.showShareModal();
     const showSharedItemModal = AppStore.showSharedItemModal();
     const showSignInModal = AppStore.showSignInModal();
+    const showVoterPlanModal = AppStore.showVoterPlanModal();
     this.setState({
       showingOneCompleteYourProfileModal,
       showShareModal,
       showSharedItemModal,
       showSignInModal,
+      showVoterPlanModal,
     });
   }
 
@@ -130,18 +134,18 @@ class FooterBar extends React.Component {
     const { classes } = this.props;
     const {
       friendInvitationsSentToMe, showingOneCompleteYourProfileModal, showShareModal, showSharedItemModal, showSignInModal,
-      // voterIsSignedIn,
+      showVoterPlanModal,
     } = this.state;
     const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
 
     const badgeStyle = {
       display: 'inline-block',
     };
-
+    const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSharedItemModal || showSignInModal || showVoterPlanModal;
     return (
       <FooterBarWrapper>
         <div
-          className={`footer-container u-show-mobile-tablet ${showingOneCompleteYourProfileModal || showShareModal || showSharedItemModal || showSignInModal ? ' u-z-index-1000' : ' u-z-index-9000'}`}
+          className={`footer-container u-show-mobile-tablet ${hideFooterBehindModal ? ' u-z-index-1000' : ' u-z-index-9000'}`}
           style={{ height: `${cordovaFooterHeight()}` }}
         >
           <BottomNavigation

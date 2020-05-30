@@ -165,14 +165,6 @@ class HeaderBackToVoterGuides extends Component {
     this.voterGuideStoreListener.remove();
   }
 
-  goToVoterGuideDisplay = () => {
-    let voterGuideDisplay = '/ballot';
-    if (this.state.voterGuide) {
-      voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/positions`;
-    }
-    historyPush(voterGuideDisplay);
-  }
-
   onAppStoreChange () {
     this.setState({
       showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
@@ -201,7 +193,6 @@ class HeaderBackToVoterGuides extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
-    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
@@ -210,8 +201,15 @@ class HeaderBackToVoterGuides extends Component {
       voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
-      linkedOrganizationWeVoteId,
     });
+  }
+
+  goToVoterGuideDisplay = () => {
+    let voterGuideDisplay = '/ballot';
+    if (this.state.voterGuide) {
+      voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/positions`;
+    }
+    historyPush(voterGuideDisplay);
   }
 
   transitionToYourVoterGuide () {

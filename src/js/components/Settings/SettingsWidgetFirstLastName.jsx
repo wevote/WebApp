@@ -23,6 +23,7 @@ const delayBeforeRemovingSavedStatus = 4000;
 
 class SettingsWidgetFirstLastName extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     displayOnly: PropTypes.bool,
     hideFirstLastName: PropTypes.bool,
     hideNameShownWithEndorsements: PropTypes.bool,
@@ -384,9 +385,7 @@ class SettingsWidgetFirstLastName extends Component {
                           />
                         </FormControl>
                       </Column>
-                      <Column>
-                      
-                      </Column>
+                      <Column />
                       <div className="u-gray-mid">
                         {organizationNameSavedStatus}
                       </div>

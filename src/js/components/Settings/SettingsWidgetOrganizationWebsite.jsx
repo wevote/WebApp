@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { TextField, FormControl, withStyles } from '@material-ui/core';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import LoadingWheel from '../LoadingWheel';
@@ -7,14 +9,13 @@ import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import styled from 'styled-components';
-import { TextField, FormControl, withStyles } from '@material-ui/core';
 
 const delayBeforeApiUpdateCall = 1200;
 const delayBeforeRemovingSavedStatus = 4000;
 
 class SettingsWidgetOrganizationWebsite extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     voterHasMadeChangesFunction: PropTypes.func,
   };
 
@@ -138,10 +139,10 @@ class SettingsWidgetOrganizationWebsite extends Component {
                   value={this.state.organizationWebsite}
                   onKeyDown={this.handleKeyPress}
                   onChange={this.updateOrganizationWebsite}
-                />                
+                />
               </FormControl>
             </Column>
-            <Column></Column>
+            <Column />
           </Row>
         </form>
         <div className="u-gray-mid">{this.state.organizationWebsiteSavedStatus}</div>

@@ -67,7 +67,7 @@ class VoterGuideListSearchResults extends Component {
 
   searchFunction (searchString) {
     if (searchString && searchString !== '') {
-      BallotActions.ballotItemOptionsRetrieve(this.props.googleCivicElectionId, searchString);
+      BallotActions.ballotItemOptionsRetrieve('', searchString);
       if (this.props.searchUnderwayFunction) {
         this.props.searchUnderwayFunction(true);
       }

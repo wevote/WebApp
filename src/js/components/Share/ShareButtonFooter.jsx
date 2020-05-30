@@ -49,6 +49,7 @@ class ShareButtonFooter extends Component {
       showShareButton: true,
       showShareModal: false,
       showSignInModal: false,
+      showVoterPlanModal: false,
       voterIsSignedIn: false,
     };
   }
@@ -61,6 +62,7 @@ class ShareButtonFooter extends Component {
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
     const showShareModal = AppStore.showShareModal();
     const showSignInModal = AppStore.showSignInModal();
+    const showVoterPlanModal = AppStore.showVoterPlanModal();
     const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
     const currentFullUrl = window.location.href || '';
     const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '');
@@ -92,6 +94,7 @@ class ShareButtonFooter extends Component {
       showingOneCompleteYourProfileModal,
       showShareModal,
       showSignInModal,
+      showVoterPlanModal,
       urlWithSharedItemCode,
       urlWithSharedItemCodeAllOpinions,
       voterIsSignedIn,
@@ -113,12 +116,14 @@ class ShareButtonFooter extends Component {
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
     const showShareModal = AppStore.showShareModal();
     const showSignInModal = AppStore.showSignInModal();
+    const showVoterPlanModal = AppStore.showVoterPlanModal();
     this.setState({
       chosenPreventSharingOpinions,
       hideShareButtonFooter,
       showingOneCompleteYourProfileModal,
       showShareModal,
       showSignInModal,
+      showVoterPlanModal,
     });
   }
 
@@ -130,9 +135,11 @@ class ShareButtonFooter extends Component {
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('SharedModal onShareStoreChange urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
     const showSignInModal = AppStore.showSignInModal();
+    const showVoterPlanModal = AppStore.showVoterPlanModal();
     this.setState({
       currentFullUrlToShare,
       showSignInModal,
+      showVoterPlanModal,
       urlWithSharedItemCode,
       urlWithSharedItemCodeAllOpinions,
     });
@@ -309,7 +316,7 @@ class ShareButtonFooter extends Component {
       candidateShare, chosenPreventSharingOpinions, currentFullUrlToShare,
       hideShareButtonFooter, measureShare, officeShare, openShareButtonDrawer,
       shareFooterStep, showingOneCompleteYourProfileModal, showShareButton,
-      showShareModal, showSignInModal,
+      showShareModal, showSignInModal, showVoterPlanModal,
       urlWithSharedItemCode, urlWithSharedItemCodeAllOpinions,
     } = this.state;
     const { showFooterBar } = getApplicationViewBooleans(pathname);
@@ -379,10 +386,11 @@ class ShareButtonFooter extends Component {
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
     linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
+    const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSignInModal || showVoterPlanModal;
     const developmentFeatureTurnedOn = false;
     return (
       <Wrapper
-        className={showingOneCompleteYourProfileModal || showShareModal || showSignInModal ? 'u-z-index-1000' : 'u-z-index-9000'}
+        className={hideFooterBehindModal ? 'u-z-index-1000' : 'u-z-index-9000'}
         pinToBottom={!showFooterBar}
       >
         {showShareButton && (
