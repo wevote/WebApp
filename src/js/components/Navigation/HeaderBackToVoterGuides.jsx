@@ -396,8 +396,9 @@ class HeaderBackToVoterGuides extends Component {
         </VoterGuideTitle>
         <EndorsementModeSwitch className="header-toolbar">
           <EndorsementModeTabs />
-          <PreviewButtonWrapper>
+          <PreviewButtonWrapper className="u-show-desktop-tablet">
             <Button
+              classes={{ root: classes.previewButton }}
               color="primary"
               id="voterGuideSettingsPositionsSeeFullBallot"
               onClick={this.goToVoterGuideDisplay}
@@ -471,6 +472,11 @@ const styles = theme => ({
       backgroundColor: 'transparent',
     },
   },
+  previewButton: {
+    height: 27,
+    marginBottom: 3,
+    padding: '2px 16px',
+  },
   tooltipPlacementBottom: {
     marginTop: 0,
   },
@@ -495,7 +501,7 @@ const FirstNameWrapper = styled.div`
 `;
 
 const PreviewButtonWrapper = styled.div`
- margin-left: 30px;
+  margin-right: 30px;
 `;
 
 const VoterGuideTitle = styled.div`
@@ -506,7 +512,8 @@ const VoterGuideTitle = styled.div`
 
 const EndorsementModeSwitch = styled.div`
   display: flex;
-  align-items: left;
+  align-items: flex-end;
+  justify-content: space-between;
   margin-left: 30px;
   width: 100%;
 `;

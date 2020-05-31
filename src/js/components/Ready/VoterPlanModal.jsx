@@ -30,23 +30,23 @@ class VoterPlanModal extends Component {
     super(props);
     this.state = {
       approximateTime: '8:00 AM',
-      approximateTimeSavedValue: '8:00 AM',
+      // approximateTimeSavedValue: '8:00 AM',
       electionDateMonthYear: '',
       locationToDeliverBallot: 'polling place',
-      locationToDeliverBallotSavedValue: 'polling place',
+      // locationToDeliverBallotSavedValue: 'polling place',
       modeOfTransport: 'walk',
-      modeOfTransportSavedValue: 'walk',
+      // modeOfTransportSavedValue: 'walk',
       pathname: '',
       showToPublic: false,
-      showToPublicSavedValue: false,
+      // showToPublicSavedValue: false,
       voterPlanChangedLocally: false,
       voterPlanDataSerialized: '',
       voterPlanDataSerializedCalculatedFirstTime: false,
       voterPlanText: '',
       votingLocationAddress: '',
-      votingLocationAddressSavedValue: '',
+      // votingLocationAddressSavedValue: '',
       votingRoughDate: 'on-day',
-      votingRoughDateSavedValue: 'on-day',
+      // votingRoughDateSavedValue: 'on-day',
     };
 
     this.closeVoterPlanModal = this.closeVoterPlanModal.bind(this);
@@ -194,15 +194,15 @@ class VoterPlanModal extends Component {
         try {
           const voterPlanDataAsDict = JSON.parse(voterPlanDataSerialized);
           const { voterPlanChangedLocally } = this.state;
-          this.setState({
-            approximateTimeSavedValue: voterPlanDataAsDict.approximateTime,
-            electionDateMonthYearSavedValue: voterPlanDataAsDict.electionDateMonthYear,
-            locationToDeliverBallotSavedValue: voterPlanDataAsDict.locationToDeliverBallot,
-            modeOfTransportSavedValue: voterPlanDataAsDict.modeOfTransport,
-            showToPublicSavedValue: voterPlanDataAsDict.showToPublic,
-            votingLocationAddressSavedValue: voterPlanDataAsDict.votingLocationAddress,
-            votingRoughDateSavedValue: voterPlanDataAsDict.votingRoughDate,
-          });
+          // this.setState({
+          //   approximateTimeSavedValue: voterPlanDataAsDict.approximateTime,
+          //   electionDateMonthYearSavedValue: voterPlanDataAsDict.electionDateMonthYear,
+          //   locationToDeliverBallotSavedValue: voterPlanDataAsDict.locationToDeliverBallot,
+          //   modeOfTransportSavedValue: voterPlanDataAsDict.modeOfTransport,
+          //   showToPublicSavedValue: voterPlanDataAsDict.showToPublic,
+          //   votingLocationAddressSavedValue: voterPlanDataAsDict.votingLocationAddress,
+          //   votingRoughDateSavedValue: voterPlanDataAsDict.votingRoughDate,
+          // });
           const updateFormValues = firstTime || !voterPlanChangedLocally;
           if (updateFormValues) {
             this.setState({

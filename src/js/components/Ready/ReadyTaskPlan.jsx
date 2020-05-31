@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import AppActions from '../../actions/AppActions';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import plan0Percent from '../../../img/global/svg-icons/ready/plan-0-percent.svg';
 import plan100Percent from '../../../img/global/svg-icons/ready/plan-100-percent.svg';
+import ReadyStore from '../../stores/ReadyStore';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
-import AppActions from '../../actions/AppActions';
-import ReadyStore from "../../stores/ReadyStore";
-import VoterStore from "../../stores/VoterStore";
+import VoterStore from '../../stores/VoterStore';
 
 class ReadyTaskPlan extends React.Component {
   static propTypes = {
