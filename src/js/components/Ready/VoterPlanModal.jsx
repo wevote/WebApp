@@ -313,8 +313,7 @@ class VoterPlanModal extends Component {
               )}
               <Select
                 id="selectVotingRoughDate"
-                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} />}
-                label="What day will you fill out ballot?"
+                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} label="What day will you fill out ballot?" />}
                 native
                 value={votingRoughDate}
                 onChange={this.handleVotingRoughDateChange}
@@ -335,8 +334,7 @@ class VoterPlanModal extends Component {
               {' '}
               <Select
                 id="selectApproximateTime"
-                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} />}
-                label="What time will you fill out ballot?"
+                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} label="What time will you fill out ballot?" />}
                 native
                 value={approximateTime}
                 onChange={this.handleApproximateTimeChange}
@@ -364,8 +362,7 @@ class VoterPlanModal extends Component {
               {' '}
               <Select
                 id="selectModeOfTransport"
-                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} />}
-                label="Mode of transport for delivering your ballot?"
+                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} label="Mode of transport for delivering your ballot?" />}
                 native
                 value={modeOfTransport}
                 onChange={this.handleModeOfTransportChange}
@@ -390,8 +387,7 @@ class VoterPlanModal extends Component {
               {' '}
               <Select
                 id="selectLocationToDeliverBallot"
-                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} />}
-                label="Where will you deliver your ballot?"
+                input={<InputBase classes={{ root: classes.selectDefault, input: classes.selectInput }} label="Where will you deliver your ballot?" />}
                 native
                 value={locationToDeliverBallot}
                 onChange={this.handleLocationToDeliverBallotChange}
