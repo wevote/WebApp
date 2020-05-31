@@ -12,6 +12,7 @@ import { historyPush } from '../utils/cordovaUtils';
 import LoadingWheel from '../components/LoadingWheel';
 import PledgeToVote from '../components/Ready/PledgeToVote';
 import ReadMore from '../components/Widgets/ReadMore';
+import ReadyActions from '../actions/ReadyActions';
 import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
@@ -40,7 +41,9 @@ class Ready extends Component {
     if (!BallotStore.ballotFound) {
       // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
       BallotActions.voterBallotItemsRetrieve(0, '', '');
-    }    // AnalyticsActions.saveActionNetwork(VoterStore.electionId());
+    }
+    ReadyActions.voterPlansForVoterRetrieve();
+    // AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 
   componentWillUnmount () {
@@ -106,11 +109,9 @@ class Ready extends Component {
               <ReadyTaskBallot
                 arrowsOn
               />
-              {nextReleaseFeaturesEnabled && (
-                <ReadyTaskPlan
-                  arrowsOn
-                />
-              )}
+              <ReadyTaskPlan
+                arrowsOn
+              />
               {nextReleaseFeaturesEnabled && (
                 <ReadyTaskRegister
                   arrowsOn

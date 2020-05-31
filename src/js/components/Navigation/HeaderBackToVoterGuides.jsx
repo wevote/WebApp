@@ -165,14 +165,6 @@ class HeaderBackToVoterGuides extends Component {
     this.voterGuideStoreListener.remove();
   }
 
-  goToVoterGuideDisplay = () => {
-    let voterGuideDisplay = '/ballot';
-    if (this.state.voterGuide) {
-      voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/positions`;
-    }
-    historyPush(voterGuideDisplay);
-  }
-
   onAppStoreChange () {
     this.setState({
       showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
@@ -201,7 +193,6 @@ class HeaderBackToVoterGuides extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
-    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
@@ -210,8 +201,15 @@ class HeaderBackToVoterGuides extends Component {
       voterFirstName,
       voterIsSignedIn,
       voterPhotoUrlMedium,
-      linkedOrganizationWeVoteId,
     });
+  }
+
+  goToVoterGuideDisplay = () => {
+    let voterGuideDisplay = '/ballot';
+    if (this.state.voterGuide) {
+      voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/positions`;
+    }
+    historyPush(voterGuideDisplay);
   }
 
   transitionToYourVoterGuide () {
@@ -398,8 +396,9 @@ class HeaderBackToVoterGuides extends Component {
         </VoterGuideTitle>
         <EndorsementModeSwitch className="header-toolbar">
           <EndorsementModeTabs />
-          <PreviewButtonWrapper>
+          <PreviewButtonWrapper className="u-show-desktop-tablet">
             <Button
+              classes={{ root: classes.previewButton }}
               color="primary"
               id="voterGuideSettingsPositionsSeeFullBallot"
               onClick={this.goToVoterGuideDisplay}
@@ -473,6 +472,11 @@ const styles = theme => ({
       backgroundColor: 'transparent',
     },
   },
+  previewButton: {
+    height: 27,
+    marginBottom: 3,
+    padding: '2px 16px',
+  },
   tooltipPlacementBottom: {
     marginTop: 0,
   },
@@ -497,7 +501,7 @@ const FirstNameWrapper = styled.div`
 `;
 
 const PreviewButtonWrapper = styled.div`
- margin-left: 30px;
+  margin-right: 30px;
 `;
 
 const VoterGuideTitle = styled.div`
@@ -508,7 +512,8 @@ const VoterGuideTitle = styled.div`
 
 const EndorsementModeSwitch = styled.div`
   display: flex;
-  align-items: left;
+  align-items: flex-end;
+  justify-content: space-between;
   margin-left: 30px;
   width: 100%;
 `;

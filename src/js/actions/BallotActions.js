@@ -22,7 +22,7 @@ export default {
     });
   },
 
-  ballotItemOptionsRetrieve (googleCivicElectionId, search_string = '', state_code = '') {
+  ballotItemOptionsRetrieve (googleCivicElectionId = 0, search_string = '', state_code = '') {
     Dispatcher.loadEndpoint('ballotItemOptionsRetrieve', {
       google_civic_election_id: googleCivicElectionId,
       search_string,

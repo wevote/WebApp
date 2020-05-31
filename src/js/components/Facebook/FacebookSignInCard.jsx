@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import FacebookSignIn from './FacebookSignIn';
 import { renderLog } from '../../utils/logging';
 
-const facebookText = 'By adding Facebook to you We Vote profile, it is easier to invite friends.';
+const facebookText = 'By adding Facebook to your We Vote profile, it is easier to invite friends.';
 
 const facebookInfoText = (
   <span className="social-btn-description">

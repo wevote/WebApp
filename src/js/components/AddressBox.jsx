@@ -16,9 +16,10 @@ import cookies from '../utils/cookies';
 
 class AddressBox extends Component {
   static propTypes = {
-    cancelEditAddress: PropTypes.func,
+    showCancelEditAddressButton: PropTypes.bool,
     disableAutoFocus: PropTypes.bool,
     manualFocus: PropTypes.bool,
+    toggleEditingAddress: PropTypes.func,
     toggleSelectAddressModal: PropTypes.func,
     saveUrl: PropTypes.string.isRequired,
     waitingMessage: PropTypes.string,
@@ -219,11 +220,11 @@ class AddressBox extends Component {
               id="addressBoxText"
             />
           </Paper>
-          { this.props.cancelEditAddress ? (
+          { this.props.showCancelEditAddressButton ? (
             <Button
               color="primary"
               id="addressBoxModalCancelButton"
-              onClick={this.props.cancelEditAddress}
+              onClick={this.props.toggleEditingAddress}
               classes={{ root: classes.cancelButton }}
             >
               Cancel
@@ -236,8 +237,8 @@ class AddressBox extends Component {
             id="addressBoxModalSaveButton"
             onClick={this.voterAddressSave}
             variant="contained"
-            classes={this.props.cancelEditAddress ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
-            fullWidth={!this.props.cancelEditAddress}
+            classes={this.props.showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
+            fullWidth={!this.props.showCancelEditAddressButton}
           >
             Save
           </Button>
@@ -258,14 +259,6 @@ const styles = {
     marginBottom: '1rem',
     // marginRight: '1rem',
   },
-  // button: {
-  //   width: '50%',
-  //   margin: 0,
-  // },
-  // fullWidthButton: {
-  //   width: '100%',
-  //   margin: 0,
-  // },
   saveButton: {
     // marginRight: '.3rem',
     height: 'fit-content',

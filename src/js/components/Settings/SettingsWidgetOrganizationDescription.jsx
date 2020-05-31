@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Textarea from 'react-textarea-autosize';
+import styled from 'styled-components';
+import { TextField, FormControl, withStyles } from '@material-ui/core';
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import LoadingWheel from '../LoadingWheel';
@@ -8,14 +9,14 @@ import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterStore from '../../stores/VoterStore';
-import styled from 'styled-components';
-import { TextField, FormControl, withStyles } from '@material-ui/core';
+// import Textarea from 'react-textarea-autosize';
 
 const delayBeforeApiUpdateCall = 1200;
 const delayBeforeRemovingSavedStatus = 4000;
 
 class SettingsWidgetOrganizationDescription extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     voterHasMadeChangesFunction: PropTypes.func,
   };
 

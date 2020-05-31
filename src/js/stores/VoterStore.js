@@ -49,7 +49,7 @@ class VoterStore extends ReduceStore {
   }
 
   electionId () {
-    return this.getState().latestGoogleCivicElectionId;
+    return this.getState().latestGoogleCivicElectionId || 0;
   }
 
   getTextForMapSearch () {
