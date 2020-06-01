@@ -6,16 +6,18 @@ import styled from 'styled-components';
 import cookies from '../../utils/cookies';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
+import AppleSignIn from '../Apple/AppleSignIn';
 import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, isWebApp,
-  restoreStylesAfterCordovaKeyboard,
+  restoreStylesAfterCordovaKeyboard, isIOS,
 } from '../../utils/cordovaUtils';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
 import LoadingWheel from '../LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
+import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import { stringContains } from '../../utils/textFormat';
 import TwitterActions from '../../actions/TwitterActions';
 import TwitterSignIn from '../Twitter/TwitterSignIn';
@@ -25,7 +27,6 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
 import VoterPhoneEmailCordovaEntryModal from './VoterPhoneEmailCordovaEntryModal';
-import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 /* global $ */
 
@@ -311,7 +312,7 @@ export default class SettingsAccount extends Component {
     const {
       is_signed_in: voterIsSignedIn, signed_in_facebook: voterIsSignedInFacebook,
       signed_in_twitter: voterIsSignedInTwitter, signed_in_with_email: voterIsSignedInWithEmail,
-      twitter_screen_name: twitterScreenName,
+      twitter_screen_name: twitterScreenName, signed_in_with_apple: voterIsSignedInWithApple,
     } = voter;
     // console.log("SettingsAccount.jsx facebookAuthResponse:", facebookAuthResponse);
     // console.log("SettingsAccount.jsx voter:", voter);
@@ -336,6 +337,11 @@ export default class SettingsAccount extends Component {
         yourAccountExplanation = 'By adding Facebook to your We Vote profile, it is easier to invite friends.';
       }
     }
+
+    // console.log('SettingsAccount hideDialogForCordova', hideDialogForCordova, 'hideCurrentlySignedInHeader', hideCurrentlySignedInHeader,
+    //   'voterIsSignedInTwitter', voterIsSignedInTwitter, 'voterIsSignedInFacebook', voterIsSignedInFacebook, 'hideTwitterSignInButton', hideTwitterSignInButton,
+    //   'hideFacebookSignInButton', hideFacebookSignInButton, 'voterIsSignedIn', voterIsSignedIn, 'hideDialogForCordova', hideDialogForCordova,
+    //   'isOnFacebookSupportedDomainUrl', isOnFacebookSupportedDomainUrl, 'isOnWeVoteRootUrl', isOnWeVoteRootUrl);
 
     return (
       <>
@@ -471,6 +477,24 @@ export default class SettingsAccount extends Component {
               </div>
             ) : null
             }
+            {isIOS() && voterIsSignedInWithApple && (
+              <div className="u-stack--md">
+                {!hideCurrentlySignedInHeader && (
+                  <div className="u-stack--sm">
+                    <span className="h3">Currently Signed In</span>
+                    <span className="u-margin-left--sm" />
+                    <span className="account-edit-action" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
+                      <span className="pull-right" onClick={this.signOut.bind(this)}>
+                        sign out
+                      </span>
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+            {isIOS() && (
+              <AppleSignIn signedIn={voterIsSignedInWithApple} closeSignInModal={this.localCloseSignInModal} />
+            )}
             {!hideVoterPhoneEntry && isWebApp() && (
               <VoterPhoneVerificationEntry
                 closeSignInModal={this.localCloseSignInModal}

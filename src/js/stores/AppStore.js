@@ -90,7 +90,7 @@ class AppStore extends ReduceStore {
   }
 
   isOnWeVoteRootUrl () {
-    return this.getState().onWeVoteRootUrl || isCordova();
+    return this.getState().onWeVoteRootUrl || isCordova() || stringContains('localhost:', window.location.href);
   }
 
   isOnWeVoteSubdomainUrl () {

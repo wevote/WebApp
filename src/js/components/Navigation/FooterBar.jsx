@@ -101,6 +101,12 @@ class FooterBar extends React.Component {
   }
 
   handleChange = (event, value) => {
+    if (isCordova()) {
+      const { impact } = window.TapticEngine;
+      impact({
+        style: 'heavy', // light | medium | heavy
+      });
+    }
     switch (value) {
       case 0:
         return historyPush('/ready');
