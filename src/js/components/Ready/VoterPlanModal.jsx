@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Select, InputBase, Button, Paper, FormControlLabel, Checkbox } from '@material-ui/core';
 import EditLocationIcon from '@material-ui/icons/EditLocation';
+import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotStore from '../../stores/BallotStore';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
@@ -17,6 +18,9 @@ import { renderLog } from '../../utils/logging';
 import { formatDateToMonthDayYear } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
 import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
+import webAppConfig from '../../config';
+
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class VoterPlanModal extends Component {
   static propTypes = {
@@ -36,7 +40,6 @@ class VoterPlanModal extends Component {
       // locationToDeliverBallotSavedValue: 'polling place',
       modeOfTransport: 'walk',
       // modeOfTransportSavedValue: 'walk',
-      pathname: '',
       showToPublic: false,
       // showToPublicSavedValue: false,
       voterPlanChangedLocally: false,
@@ -70,20 +73,21 @@ class VoterPlanModal extends Component {
     const ballotElectionDate = BallotStore.currentBallotElectionDate;
     this.setState({
       electionDateMonthYear: formatDateToMonthDayYear(ballotElectionDate),
-      pathname: this.props.pathname,
       voterPlan,
     });
     this.setVoterPlanSavedStates(voterPlan, true);
     if (this.props.show) {
       hideZenDeskHelpVisibility();
     }
+    AnalyticsActions.saveActionModalVoterPlan(VoterStore.electionId());
   }
 
   componentWillReceiveProps (nextProps) {
+    const { pathname } = this.props;
     if (nextProps.show) {
       hideZenDeskHelpVisibility();
     } else {
-      setZenDeskHelpVisibility(this.props.pathname);
+      setZenDeskHelpVisibility(pathname);
     }
   }
 
@@ -137,9 +141,10 @@ class VoterPlanModal extends Component {
   }
 
   componentWillUnmount () {
+    const { pathname } = this.props;
     this.ballotStoreListener.remove();
     this.readyStoreListener.remove();
-    setZenDeskHelpVisibility(this.props.pathname);
+    setZenDeskHelpVisibility(pathname);
   }
 
   onBallotStoreChange () {
@@ -177,6 +182,7 @@ class VoterPlanModal extends Component {
 
   onSaveVoterPlanButton = (event) => {
     // console.log('onSaveVoterPlanButton');
+    const { pathname } = this.props;
     const { showToPublic, stateCode, voterPlanDataSerialized, voterPlanText } = this.state;
     const googleCivicElectionId = VoterStore.electionId();
     ReadyActions.voterPlanSave(googleCivicElectionId, showToPublic, stateCode, voterPlanDataSerialized, voterPlanText);
@@ -184,6 +190,7 @@ class VoterPlanModal extends Component {
       voterPlanChangedLocally: false,
     });
     event.preventDefault();
+    this.props.toggleFunction(pathname);
   }
 
   setVoterPlanSavedStates = (voterPlan, firstTime = false) => {
@@ -264,12 +271,13 @@ class VoterPlanModal extends Component {
   }
 
   closeVoterPlanModal () {
-    this.props.toggleFunction(this.state.pathname);
+    const { pathname } = this.props;
+    this.props.toggleFunction(pathname);
   }
 
   render () {
     renderLog('VoterPlanModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    const { classes, pathname } = this.props;
     const {
       approximateTime, electionDateMonthYear, locationToDeliverBallot, modeOfTransport,
       voterPlan, voterPlanChangedLocally, votingLocationAddress, votingRoughDate,
@@ -277,12 +285,11 @@ class VoterPlanModal extends Component {
     const getPollingLocationUrl = 'https://gttp.votinginfoproject.org/';
     const voterPlanText = this.generateVoterPlanText(voterPlan);
 
-    const showFeatureStillInDevelopment = false;
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+        onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <ModalTitleArea>
           <div>
@@ -453,90 +460,74 @@ class VoterPlanModal extends Component {
               {voterPlanText}
             </VoterPlanPreview>
 
-            {showFeatureStillInDevelopment && (
-              <div style={{
+            {nextReleaseFeaturesEnabled && (
+              <HowWillIRememberWrapper style={{
                 marginTop: 48,
               }}
               >
                 <Bold>How will I remember to do this?</Bold>
-                <FormControlLabel
-                  classes={{ root: classes.formControlLabel }}
-                  control={(
-                    <Checkbox
-                      // checked={state.checkedB}
-                      // onChange={handleChange}
-                      name="addedToCalendar"
-                      color="primary"
-                    />
-                  )}
-                  label="I added this to my calendar for"
-                />
-                <InputFlex>
-                  <InputItem>
-                    <Paper className={classes.paperInputForm} elevation={2}>
-                      <InputBase
-                        className={classes.inputBase}
-                        name="reminderDate"
-                        aria-label="date"
-                        placeholder="Reminder Date"
+                <AddToMyCalendarWrapper>
+                  <FormControlLabel
+                    classes={{ root: classes.formControlLabel }}
+                    control={(
+                      <Checkbox
+                        // checked={state.checkedB}
+                        // onChange={handleChange}
+                        name="addedToCalendar"
+                        color="primary"
                       />
-                    </Paper>
-                  </InputItem>
-                  <InputItem>
-                    <Paper className={classes.paperInputForm} elevation={2}>
-                      <InputBase
-                        className={classes.inputBase}
-                        name="reminderTime"
-                        aria-label="time"
-                        placeholder="Reminder Time"
+                    )}
+                    label="I added this to my calendar."
+                  />
+                </AddToMyCalendarWrapper>
+                <TextReminderWrapper>
+                  <FormControlLabel
+                    classes={{ root: classes.formControlLabel }}
+                    control={(
+                      <Checkbox
+                        // checked={state.checkedB}
+                        // onChange={handleChange}
+                        name="textMeReminder"
+                        color="primary"
                       />
-                    </Paper>
-                  </InputItem>
-                </InputFlex>
-                <FormControlLabel
-                  classes={{ root: classes.formControlLabel }}
-                  control={(
-                    <Checkbox
-                      // checked={state.checkedB}
-                      // onChange={handleChange}
-                      name="textMeReminder"
-                      color="primary"
-                    />
-                  )}
-                  label="Please text me a reminder at:"
-                />
-                {/* <InputItem> */}
-                <Paper className={classes.paperInputForm} elevation={2}>
-                  <InputBase
-                    className={classes.inputBase}
-                    name="textMeReminderPhoneNumber"
-                    aria-label="phone"
-                    placeholder="Phone Number"
+                    )}
+                    label="Please text me a reminder at:"
                   />
-                </Paper>
-                {/* </InputItem> */}
-                <FormControlLabel
-                  classes={{ root: classes.formControlLabel }}
-                  control={(
-                    <Checkbox
-                      // checked={state.checkedB}
-                      // onChange={handleChange}
-                      name="emailMeReminder"
-                      color="primary"
+                  {/* <InputItem> */}
+                  <Paper className={classes.paperInputForm} elevation={2}>
+                    <InputBase
+                      className={classes.inputBase}
+                      name="textMeReminderPhoneNumber"
+                      aria-label="phone"
+                      placeholder="Phone Number"
                     />
-                  )}
-                  label="Please email me a reminder at:"
-                />
-                {/* <InputItem> */}
-                <Paper className={classes.paperInputForm} elevation={2}>
-                  <InputBase
-                    className={classes.inputBase}
-                    name="emailMeReminderEmailAddress"
-                    aria-label="email"
-                    placeholder="Email Address"
+                  </Paper>
+                </TextReminderWrapper>
+                <EmailReminderWrapper>
+                  {/* </InputItem> */}
+                  <FormControlLabel
+                    classes={{ root: classes.formControlLabel }}
+                    control={(
+                      <Checkbox
+                        // checked={state.checkedB}
+                        // onChange={handleChange}
+                        name="emailMeReminder"
+                        color="primary"
+                      />
+                    )}
+                    label="Please email me a reminder at:"
                   />
-                </Paper>
-              </div>
+                  {/* <InputItem> */}
+                  <Paper className={classes.paperInputForm} elevation={2}>
+                    <InputBase
+                      className={classes.inputBase}
+                      name="emailMeReminderEmailAddress"
+                      aria-label="email"
+                      placeholder="Email Address"
+                    />
+                  </Paper>
+                </EmailReminderWrapper>
+              </HowWillIRememberWrapper>
             )}
           </div>
         </DialogContent>
@@ -652,8 +643,20 @@ const styles = theme => ({
   },
 });
 
+const AddToMyCalendarWrapper = styled.div`
+`;
+
 const CreatePlanWrapper = styled.div`
   line-height: 2;
+`;
+
+const HowWillIRememberWrapper = styled.div`
+`;
+
+const EmailReminderWrapper = styled.div`
+`;
+
+const TextReminderWrapper = styled.div`
 `;
 
 const VoterPlanPreview = styled.div`
@@ -708,20 +711,6 @@ const Title = styled.h3`
   margin-top: 0;
   margin-bottom: 0;
   font-weight: bold;
-`;
-
-const InputFlex = styled.div`
-  @media(min-width: 769px) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-items: center;
-    margin: -12px;
-  }
-`;
-
-const InputItem = styled.div`
-  padding: 12px;
 `;
 
 export default withTheme(withStyles(styles)(VoterPlanModal));

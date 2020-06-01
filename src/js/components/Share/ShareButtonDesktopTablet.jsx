@@ -6,11 +6,13 @@ import Comment from '@material-ui/icons/Comment';
 import { Menu, MenuItem } from '@material-ui/core/esm'; // , Tooltip
 import Reply from '@material-ui/icons/Reply';
 import { withStyles } from '@material-ui/core/styles';
+import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ShareActions from '../../actions/ShareActions';
 import { stringContains } from '../../utils/textFormat';
+import VoterStore from '../../stores/VoterStore';
 
 class ShareButtonDesktopTablet extends Component {
   static propTypes = {
@@ -75,26 +77,34 @@ class ShareButtonDesktopTablet extends Component {
     if (candidateShare) {
       if (withOpinions) {
         shareModalStep = 'candidateShareOptionsAllOpinions';
+        AnalyticsActions.saveActionShareCandidateAllOpinions(VoterStore.electionId());
       } else {
         shareModalStep = 'candidateShareOptions';
+        AnalyticsActions.saveActionShareCandidate(VoterStore.electionId());
       }
     } else if (measureShare) {
       if (withOpinions) {
         shareModalStep = 'measureShareOptionsAllOpinions';
+        AnalyticsActions.saveActionShareMeasureAllOpinions(VoterStore.electionId());
       } else {
         shareModalStep = 'measureShareOptions';
+        AnalyticsActions.saveActionShareMeasure(VoterStore.electionId());
       }
     } else if (officeShare) {
       if (withOpinions) {
         shareModalStep = 'officeShareOptionsAllOpinions';
+        AnalyticsActions.saveActionShareOfficeAllOpinions(VoterStore.electionId());
       } else {
         shareModalStep = 'officeShareOptions';
+        AnalyticsActions.saveActionShareOffice(VoterStore.electionId());
       }
       // Default to ballot
     } else if (withOpinions) {
       shareModalStep = 'ballotShareOptionsAllOpinions';
+      AnalyticsActions.saveActionShareBallotAllOpinions(VoterStore.electionId());
     } else {
       shareModalStep = 'ballotShareOptions';
+      AnalyticsActions.saveActionShareBallot(VoterStore.electionId());
     }
 
     AppActions.setShowShareModal(true);
