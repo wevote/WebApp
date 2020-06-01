@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
+import AnalyticsActions from '../actions/AnalyticsActions';
 import AppStore from '../stores/AppStore';
 import BallotActions from '../actions/BallotActions';
 import BallotStore from '../stores/BallotStore';
@@ -43,7 +44,7 @@ class Ready extends Component {
       BallotActions.voterBallotItemsRetrieve(0, '', '');
     }
     ReadyActions.voterPlansForVoterRetrieve();
-    // AnalyticsActions.saveActionNetwork(VoterStore.electionId());
+    AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
   }
 
   componentWillUnmount () {

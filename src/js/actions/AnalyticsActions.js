@@ -41,7 +41,25 @@ import AppStore from '../stores/AppStore'; // eslint-disable-line import/no-cycl
 // ACTION_TWITTER_AUTHENTICATION_EXISTS = 38
 // ACTION_EMAIL_AUTHENTICATION_EXISTS = 39
 // ACTION_ELECTIONS = 40
-
+// ACTION_ORGANIZATION_STOP_IGNORING = 41
+// ACTION_MODAL_VOTER_PLAN = 42
+// ACTION_READY_VISIT = 43
+// ACTION_SELECT_BALLOT_MODAL = 44
+// ACTION_SHARE_BUTTON_COPY = 45
+// ACTION_SHARE_BUTTON_EMAIL = 46
+// ACTION_SHARE_BUTTON_FACEBOOK = 47
+// ACTION_SHARE_BUTTON_FRIENDS = 48
+// ACTION_SHARE_BUTTON_TWITTER = 49
+// ACTION_SHARE_BALLOT = 50
+// ACTION_SHARE_BALLOT_ALL_OPINIONS = 51
+// ACTION_SHARE_CANDIDATE = 52
+// ACTION_SHARE_CANDIDATE_ALL_OPINIONS = 53
+// ACTION_SHARE_MEASURE = 54
+// ACTION_SHARE_MEASURE_ALL_OPINIONS = 55
+// ACTION_SHARE_OFFICE = 56
+// ACTION_SHARE_OFFICE_ALL_OPINIONS = 57
+// ACTION_SHARE_READY = 58
+// ACTION_SHARE_READY_ALL_OPINIONS = 59
 
 export default {
 
@@ -166,6 +184,11 @@ export default {
     this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
+  saveActionModalVoterPlan (googleCivicElectionId) {
+    const actionConstant = 42; // ACTION_MODAL_VOTER_PLAN
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
   saveActionNetwork (googleCivicElectionId) {
     const actionConstant = 23; // ACTION_NETWORK
     this.saveActionWrapper(actionConstant, googleCivicElectionId);
@@ -174,6 +197,91 @@ export default {
   saveActionOffice (googleCivicElectionId, ballotItemWeVoteId) {
     const actionConstant = 33; // ACTION_OFFICE
     this.saveActionWrapperWithBallotItem(actionConstant, googleCivicElectionId, ballotItemWeVoteId);
+  },
+
+  saveActionReadyVisit (googleCivicElectionId) {
+    const actionConstant = 43; // ACTION_READY_VISIT
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionSelectBallotModal (googleCivicElectionId) {
+    const actionConstant = 44; // ACTION_SELECT_BALLOT_MODAL
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareBallot (googleCivicElectionId) {
+    const actionConstant = 50; // ACTION_SHARE_BALLOT
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareBallotAllOpinions (googleCivicElectionId) {
+    const actionConstant = 51; // ACTION_SHARE_BALLOT_ALL_OPINIONS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareButtonCopy (googleCivicElectionId) {
+    const actionConstant = 45; // ACTION_SHARE_BUTTON_COPY
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareButtonEmail (googleCivicElectionId) {
+    const actionConstant = 46; // ACTION_SHARE_BUTTON_EMAIL
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareButtonFacebook (googleCivicElectionId) {
+    const actionConstant = 47; // ACTION_SHARE_BUTTON_FACEBOOK
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareButtonFriends (googleCivicElectionId) {
+    const actionConstant = 48; // ACTION_SHARE_BUTTON_FRIENDS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareButtonTwitter (googleCivicElectionId) {
+    const actionConstant = 49; // ACTION_SHARE_BUTTON_TWITTER
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareCandidate (googleCivicElectionId) {
+    const actionConstant = 52; // ACTION_SHARE_CANDIDATE
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareCandidateAllOpinions (googleCivicElectionId) {
+    const actionConstant = 53; // ACTION_SHARE_CANDIDATE_ALL_OPINIONS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareMeasure (googleCivicElectionId) {
+    const actionConstant = 54; // ACTION_SHARE_MEASURE
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareMeasureAllOpinions (googleCivicElectionId) {
+    const actionConstant = 55; // ACTION_SHARE_MEASURE_ALL_OPINIONS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareOffice (googleCivicElectionId) {
+    const actionConstant = 56; // ACTION_SHARE_OFFICE
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareOfficeAllOpinions (googleCivicElectionId) {
+    const actionConstant = 57; // ACTION_SHARE_OFFICE_ALL_OPINIONS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareReady (googleCivicElectionId) {
+    const actionConstant = 58; // ACTION_SHARE_READY
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareReadyAllOpinions (googleCivicElectionId) {
+    const actionConstant = 59; // ACTION_SHARE_READY_ALL_OPINIONS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
   saveActionVoterGuideAutoFollow (organizationWeVoteId, googleCivicElectionId) {

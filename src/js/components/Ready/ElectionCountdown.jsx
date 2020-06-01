@@ -274,7 +274,7 @@ class ElectionCountdown extends React.Component {
           <div className="u-show-mobile">
             <div>
               <CardTitlePast>
-                This Election Has Passed
+                Election Completed
               </CardTitlePast>
             </div>
             <div>
@@ -298,9 +298,9 @@ class ElectionCountdown extends React.Component {
             <div>
               <TimeFlex>
                 <TimeSection>
-                  <Time>
-                    Election Has Passed
-                  </Time>
+                  <CardTitlePast>
+                    Election Completed
+                  </CardTitlePast>
                   <Small>Choose Next Election</Small>
                 </TimeSection>
               </TimeFlex>
@@ -365,13 +365,16 @@ const CardTitleToday = styled.h1`
 
 const CardTitlePast = styled.h1`
   color: #2E3C5D !important;
-  font-size: 64px;
+  font-size: 48px;
   font-weight: 900;
   margin-bottom: 8px;
   margin-top: 0;
   text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 30px;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 20px;
   }
 `;
 

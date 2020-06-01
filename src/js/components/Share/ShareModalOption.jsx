@@ -26,6 +26,7 @@ class ShareModalOption extends Component {
   }
 
   onClick = () => {
+    // console.log('ShareModalOption onClick function');
     if (this.props.onClickFunction) {
       this.props.onClickFunction();
     }
@@ -34,6 +35,9 @@ class ShareModalOption extends Component {
   copyLink () {
     // console.log('ShareModalOption copyLink');
     openSnackbar({ message: 'Copied!' });
+    if (this.props.onClickFunction) {
+      this.props.onClickFunction();
+    }
   }
 
   render () {
@@ -43,7 +47,7 @@ class ShareModalOption extends Component {
       <Wrapper>
         {copyLink ? (
           <CopyToClipboard text={link} onCopy={this.copyLink}>
-            <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
+            <div id={`shareModalOption-${uniqueExternalId}`}>
               <Icon background={background}>
                 {icon}
               </Icon>

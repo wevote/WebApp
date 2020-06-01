@@ -8,13 +8,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import DialogContent from '@material-ui/core/DialogContent';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button, Select, FormControl, InputLabel } from '@material-ui/core';
-import VoterStore from '../../stores/VoterStore';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import BallotElectionListWithFilters from './BallotElectionListWithFilters';
+import EditAddressInPlace from '../Widgets/EditAddressInPlace';
+import MapChart from '../Widgets/MapChart/MapChart';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
-import EditAddressInPlace from '../Widgets/EditAddressInPlace';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import BallotElectionListWithFilters from './BallotElectionListWithFilters';
-import MapChart from '../Widgets/MapChart/MapChart';
+import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -50,6 +51,7 @@ class SelectBallotModal extends Component {
     this.setState({
       pathname: this.props.pathname,
     });
+    AnalyticsActions.saveActionSelectBallotModal(VoterStore.electionId());
   }
 
   componentWillReceiveProps (nextProps) {
