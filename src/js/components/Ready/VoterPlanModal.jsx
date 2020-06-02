@@ -40,6 +40,7 @@ class VoterPlanModal extends Component {
       // locationToDeliverBallotSavedValue: 'polling place',
       modeOfTransport: 'walk',
       // modeOfTransportSavedValue: 'walk',
+      savedVoterPlanFound: false,
       showToPublic: false,
       // showToPublicSavedValue: false,
       voterPlanChangedLocally: false,
@@ -64,18 +65,21 @@ class VoterPlanModal extends Component {
     this.readyStoreListener = ReadyStore.addListener(this.onReadyStoreChange.bind(this));
 
     const googleCivicElectionId = VoterStore.electionId();
-    const voterPlan = ReadyStore.getVoterPlanForVoterByElectionId(googleCivicElectionId);
-    // console.log('componentDidMount voterPlan: ', voterPlan);
-    if (voterPlan.google_civic_election_id === undefined) {
+    const savedVoterPlan = ReadyStore.getVoterPlanForVoterByElectionId(googleCivicElectionId);
+    // console.log('componentDidMount savedVoterPlan: ', savedVoterPlan);
+    let savedVoterPlanFound = false;
+    if (savedVoterPlan.google_civic_election_id === undefined) {
       ReadyActions.voterPlansForVoterRetrieve();
+    } else {
+      savedVoterPlanFound = true;
     }
 
     const ballotElectionDate = BallotStore.currentBallotElectionDate;
     this.setState({
       electionDateMonthYear: formatDateToMonthDayYear(ballotElectionDate),
-      voterPlan,
+      savedVoterPlanFound,
     });
-    this.setVoterPlanSavedStates(voterPlan, true);
+    this.setVoterPlanSavedStates(savedVoterPlan, true);
     if (this.props.show) {
       hideZenDeskHelpVisibility();
     }
@@ -156,11 +160,17 @@ class VoterPlanModal extends Component {
 
   onReadyStoreChange () {
     const googleCivicElectionId = VoterStore.electionId();
-    const voterPlan = ReadyStore.getVoterPlanForVoterByElectionId(googleCivicElectionId);
+    const savedVoterPlan = ReadyStore.getVoterPlanForVoterByElectionId(googleCivicElectionId);
+    this.setVoterPlanSavedStates(savedVoterPlan);
+    let savedVoterPlanFound = false;
+    if (savedVoterPlan.google_civic_election_id === undefined) {
+      ReadyActions.voterPlansForVoterRetrieve();
+    } else {
+      savedVoterPlanFound = true;
+    }
     this.setState({
-      voterPlan,
+      savedVoterPlanFound,
     });
-    this.setVoterPlanSavedStates(voterPlan);
   }
 
   getVotingRoughDateString (votingRoughDate) {
@@ -280,11 +290,11 @@ class VoterPlanModal extends Component {
     const { classes, pathname } = this.props;
     const {
       approximateTime, electionDateMonthYear, locationToDeliverBallot, modeOfTransport,
-      voterPlan, voterPlanChangedLocally, votingLocationAddress, votingRoughDate,
+      savedVoterPlanFound, voterPlanChangedLocally, votingLocationAddress, votingRoughDate,
     } = this.state;
     const getPollingLocationUrl = 'https://gttp.votinginfoproject.org/';
-    const voterPlanText = this.generateVoterPlanText(voterPlan);
-
+    const voterPlanText = this.generateVoterPlanText();
+    const showSaveButton = voterPlanChangedLocally || !savedVoterPlanFound;
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
@@ -534,7 +544,7 @@ class VoterPlanModal extends Component {
         <ModalFooter>
           <Button
             color="primary"
-            disabled={!voterPlanChangedLocally}
+            disabled={!showSaveButton}
             fullWidth
             onClick={this.onSaveVoterPlanButton}
             variant="contained"
