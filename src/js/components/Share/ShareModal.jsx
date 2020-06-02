@@ -375,6 +375,7 @@ class ShareModal extends Component {
                     noLink
                     onClickFunction={this.saveActionShareButtonFriends}
                     title="We Vote Friends"
+                    uniqueExternalId="shareModalOption-shareWithFriends"
                   />
                 )}
                 <Wrapper>
@@ -447,6 +448,7 @@ class ShareModal extends Component {
                   link={linkToBeShared}
                   onClickFunction={this.saveActionShareButtonCopy}
                   title="Copy Link"
+                  uniqueExternalId="shareModalOption-copyShareLink"
                 />
               </Flex>
             </div>

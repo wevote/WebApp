@@ -22,6 +22,7 @@ import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { historyPush } from '../../utils/cordovaUtils';
 import isMobile from '../../utils/isMobile';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+import { openSnackbar } from '../Widgets/SnackNotifier';
 import ShareActions from '../../actions/ShareActions';
 import ShareModalOption from './ShareModalOption';
 import ShareStore from '../../stores/ShareStore';
@@ -278,6 +279,7 @@ class ShareButtonFooter extends Component {
   }
 
   saveActionShareButtonCopy = () => {
+    openSnackbar({ message: 'Copied!' });
     AnalyticsActions.saveActionShareButtonCopy(VoterStore.electionId());
   }
 
