@@ -16,9 +16,7 @@ import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import VoterStore from '../../stores/VoterStore';
-import webAppConfig from '../../config';
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class SelectBallotModal extends Component {
   // This modal will show a users ballot guides from previous and current elections.
@@ -139,127 +137,125 @@ class SelectBallotModal extends Component {
           </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          {nextReleaseFeaturesEnabled && (
-            <Row>
-              <div className="u-show-mobile">
+          <Row>
+            <div className="u-show-mobile">
+              {!hideAddressEdit && (
+                <EditAddressInPlaceWrapperMobile>
+                  <EditAddressInPlace
+                    address={voterAddressObject}
+                    defaultIsEditingAddress={editingAddress}
+                    pathname={this.state.pathname}
+                    toggleFunction={this.props.toggleFunction}
+                    toggleEditingAddress={this.toggleEditingAddress}
+                  />
+                </EditAddressInPlaceWrapperMobile>
+              )}
+            </div>
+            {!editingAddress && (
+              <MapChartWrapper>
+                <MapChart onClickFunction={this.mapHandler} />
+              </MapChartWrapper>
+            )}
+            <SidebarWrapper>
+              <div className="u-show-desktop-tablet">
                 {!hideAddressEdit && (
-                  <EditAddressInPlaceWrapperMobile>
-                    <EditAddressInPlace
-                      address={voterAddressObject}
-                      defaultIsEditingAddress={editingAddress}
-                      pathname={this.state.pathname}
-                      toggleFunction={this.props.toggleFunction}
-                      toggleEditingAddress={this.toggleEditingAddress}
-                    />
-                  </EditAddressInPlaceWrapperMobile>
+                  <EditAddressInPlace
+                    address={voterAddressObject}
+                    defaultIsEditingAddress={editingAddress}
+                    pathname={this.state.pathname}
+                    toggleFunction={this.props.toggleFunction}
+                    toggleEditingAddress={this.toggleEditingAddress}
+                  />
                 )}
               </div>
               {!editingAddress && (
-                <MapChartWrapper>
-                  <MapChart onClickFunction={this.mapHandler} />
-                </MapChartWrapper>
-              )}
-              <SidebarWrapper>
-                <div className="u-show-desktop-tablet">
-                  {!hideAddressEdit && (
-                    <EditAddressInPlace
-                      address={voterAddressObject}
-                      defaultIsEditingAddress={editingAddress}
-                      pathname={this.state.pathname}
-                      toggleFunction={this.props.toggleFunction}
-                      toggleEditingAddress={this.toggleEditingAddress}
+                <ElectionChoiceWrapper>
+                  <ToggleGroup>
+                    <PriorButton onClick={() => this.setState({ prior: true, upcoming: false })} variant={this.state.prior ? 'contained' : 'outlined'} color="primary">Prior</PriorButton>
+                    <UpcomingButton onClick={() => this.setState({ prior: false, upcoming: true })} variant={this.state.upcoming ? 'contained' : 'outlined'} color="primary">Upcoming</UpcomingButton>
+                  </ToggleGroup>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel htmlFor="outlined-age-native-simple" />
+                    <Select
+                      classes={{ select: classes.select }}
+                      native
+                      value={this.state.selectedState}
+                      onChange={this.handleChooseStateChange}
+                      label=""
+                      inputProps={{
+                        name: 'age',
+                        id: 'outlined-age-native-simple',
+                      }}
+                    >
+                      <option aria-label="-- show all states --" value="all">-- show all states --</option>
+                      <option value="AL">Alabama</option>
+                      <option value="AK">Alaska</option>
+                      <option value="AZ">Arizona</option>
+                      <option value="AR">Arkansas</option>
+                      <option value="CA">California</option>
+                      <option value="CO">Colorado</option>
+                      <option value="CT">Connecticut</option>
+                      <option value="DE">Delaware</option>
+                      <option value="DC">District Of Columbia</option>
+                      <option value="FL">Florida</option>
+                      <option value="GA">Georgia</option>
+                      <option value="HI">Hawaii</option>
+                      <option value="ID">Idaho</option>
+                      <option value="IL">Illinois</option>
+                      <option value="IN">Indiana</option>
+                      <option value="IA">Iowa</option>
+                      <option value="KS">Kansas</option>
+                      <option value="KY">Kentucky</option>
+                      <option value="LA">Louisiana</option>
+                      <option value="ME">Maine</option>
+                      <option value="MD">Maryland</option>
+                      <option value="MA">Massachusetts</option>
+                      <option value="MI">Michigan</option>
+                      <option value="MN">Minnesota</option>
+                      <option value="MS">Mississippi</option>
+                      <option value="MO">Missouri</option>
+                      <option value="MT">Montana</option>
+                      <option value="NE">Nebraska</option>
+                      <option value="NV">Nevada</option>
+                      <option value="NH">New Hampshire</option>
+                      <option value="NJ">New Jersey</option>
+                      <option value="NM">New Mexico</option>
+                      <option value="NY">New York</option>
+                      <option value="NC">North Carolina</option>
+                      <option value="ND">North Dakota</option>
+                      <option value="OH">Ohio</option>
+                      <option value="OK">Oklahoma</option>
+                      <option value="OR">Oregon</option>
+                      <option value="PA">Pennsylvania</option>
+                      <option value="RI">Rhode Island</option>
+                      <option value="SC">South Carolina</option>
+                      <option value="SD">South Dakota</option>
+                      <option value="TN">Tennessee</option>
+                      <option value="TX">Texas</option>
+                      <option value="UT">Utah</option>
+                      <option value="VT">Vermont</option>
+                      <option value="VA">Virginia</option>
+                      <option value="WA">Washington</option>
+                      <option value="WV">West Virginia</option>
+                      <option value="WI">Wisconsin</option>
+                      <option value="WY">Wyoming</option>
+                    </Select>
+                  </FormControl>
+                  <BallotElectionListWrapper addTopMargin={!hideAddressEdit}>
+                    <BallotElectionListWithFilters
+                        ballotBaseUrl={ballotBaseUrl}
+                        organizationWeVoteId={this.props.organization_we_vote_id}
+                        showPriorElectionsList={this.state.prior}
+                        hideUpcomingElectionsList={this.state.prior}
+                        stateToShow={this.state.selectedState}
+                        toggleFunction={this.props.toggleFunction}
+                        mode={this.state.upcoming ? 'upcoming' : 'prior'}
                     />
-                  )}
-                </div>
-                {!editingAddress && (
-                  <ElectionChoiceWrapper>
-                    <ToggleGroup>
-                      <PriorButton onClick={() => this.setState({ prior: true, upcoming: false })} variant={this.state.prior ? 'contained' : 'outlined'} color="primary">Prior</PriorButton>
-                      <UpcomingButton onClick={() => this.setState({ prior: false, upcoming: true })} variant={this.state.upcoming ? 'contained' : 'outlined'} color="primary">Upcoming</UpcomingButton>
-                    </ToggleGroup>
-                    <FormControl variant="outlined" className={classes.formControl}>
-                      <InputLabel htmlFor="outlined-age-native-simple" />
-                      <Select
-                        classes={{ select: classes.select }}
-                        native
-                        value={this.state.selectedState}
-                        onChange={this.handleChooseStateChange}
-                        label=""
-                        inputProps={{
-                          name: 'age',
-                          id: 'outlined-age-native-simple',
-                        }}
-                      >
-                        <option aria-label="-- show all states --" value="all">-- show all states --</option>
-                        <option value="AL">Alabama</option>
-                        <option value="AK">Alaska</option>
-                        <option value="AZ">Arizona</option>
-                        <option value="AR">Arkansas</option>
-                        <option value="CA">California</option>
-                        <option value="CO">Colorado</option>
-                        <option value="CT">Connecticut</option>
-                        <option value="DE">Delaware</option>
-                        <option value="DC">District Of Columbia</option>
-                        <option value="FL">Florida</option>
-                        <option value="GA">Georgia</option>
-                        <option value="HI">Hawaii</option>
-                        <option value="ID">Idaho</option>
-                        <option value="IL">Illinois</option>
-                        <option value="IN">Indiana</option>
-                        <option value="IA">Iowa</option>
-                        <option value="KS">Kansas</option>
-                        <option value="KY">Kentucky</option>
-                        <option value="LA">Louisiana</option>
-                        <option value="ME">Maine</option>
-                        <option value="MD">Maryland</option>
-                        <option value="MA">Massachusetts</option>
-                        <option value="MI">Michigan</option>
-                        <option value="MN">Minnesota</option>
-                        <option value="MS">Mississippi</option>
-                        <option value="MO">Missouri</option>
-                        <option value="MT">Montana</option>
-                        <option value="NE">Nebraska</option>
-                        <option value="NV">Nevada</option>
-                        <option value="NH">New Hampshire</option>
-                        <option value="NJ">New Jersey</option>
-                        <option value="NM">New Mexico</option>
-                        <option value="NY">New York</option>
-                        <option value="NC">North Carolina</option>
-                        <option value="ND">North Dakota</option>
-                        <option value="OH">Ohio</option>
-                        <option value="OK">Oklahoma</option>
-                        <option value="OR">Oregon</option>
-                        <option value="PA">Pennsylvania</option>
-                        <option value="RI">Rhode Island</option>
-                        <option value="SC">South Carolina</option>
-                        <option value="SD">South Dakota</option>
-                        <option value="TN">Tennessee</option>
-                        <option value="TX">Texas</option>
-                        <option value="UT">Utah</option>
-                        <option value="VT">Vermont</option>
-                        <option value="VA">Virginia</option>
-                        <option value="WA">Washington</option>
-                        <option value="WV">West Virginia</option>
-                        <option value="WI">Wisconsin</option>
-                        <option value="WY">Wyoming</option>
-                      </Select>
-                    </FormControl>
-                    <BallotElectionListWrapper addTopMargin={!hideAddressEdit}>
-                      <BallotElectionListWithFilters
-                          ballotBaseUrl={ballotBaseUrl}
-                          organizationWeVoteId={this.props.organization_we_vote_id}
-                          showPriorElectionsList={this.state.prior}
-                          hideUpcomingElectionsList={this.state.prior}
-                          stateToShow={this.state.selectedState}
-                          toggleFunction={this.props.toggleFunction}
-                          mode={this.state.upcoming ? 'upcoming' : 'prior'}
-                      />
-                    </BallotElectionListWrapper>
-                  </ElectionChoiceWrapper>
-                )}
-              </SidebarWrapper>
-            </Row>
-          )}
+                  </BallotElectionListWrapper>
+                </ElectionChoiceWrapper>
+              )}
+            </SidebarWrapper>
+          </Row>
           {/* )} */}
         </DialogContent>
       </Dialog>

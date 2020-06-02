@@ -26,7 +26,7 @@ class GuideList extends Component {
       voterGuideListCount: 0,
       ballotItemWeVoteId: '',
       loadingMoreItems: false,
-      numberOfItemsToDisplay: 5,
+      numberOfItemsToDisplay: 10,
     };
     this.onScroll = this.onScroll.bind(this);
   }
