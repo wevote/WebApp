@@ -356,7 +356,7 @@ class BallotStore extends ReduceStore {
 
   getRaceLevelFilterTypeSaved () {
     // console.log('getRaceLevelFilterTypeSaved:', this.getState().raceLevelFilterTypeSaved);
-    return this.getState().raceLevelFilterTypeSaved || '';
+    return this.getState().raceLevelFilterTypeSaved || 'All';
   }
 
   getTopLevelBallotItemWeVoteIds () {

@@ -349,8 +349,8 @@ class Ballot extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    // console.log('Ballot componentDidUpdate');
     const { ballotWithAllItems, foundFirstRaceLevel, raceLevelFilterType } = this.state;
+    // console.log('Ballot componentDidUpdate foundFirstRaceLevel: ', foundFirstRaceLevel);
     if (!foundFirstRaceLevel) {
       // We only need to be here if we haven't found the first Race level we are going to show, or we don't have a raceLevelFilterType identified
       let { newRaceLevelFilterType } = this.state;
@@ -394,6 +394,7 @@ class Ballot extends Component {
               return null;
             }
           }
+          // console.log('lowestIndexFound:', lowestIndexFound);
           return null;
         }).map((ballotItem) => {
           raceLevelCapitalized = '';
@@ -408,6 +409,7 @@ class Ballot extends Component {
           }
           return raceLevelCapitalized;
         });
+        raceLevelFilterItemsInThisBallot.unshift('All');
 
         // We must have a raceLevelFilterType that matches this ballot
         const currentRaceLevelFilterTypeNotFoundInBallot = raceLevelFilterItemsInThisBallot.indexOf(raceLevelFilterType) === -1;
@@ -419,7 +421,7 @@ class Ballot extends Component {
 
       this.setState({ raceLevelFilterItemsInThisBallot });
       // console.log('Ballot, componentDidUpdate raceLevelFilterType AFTER:', raceLevelFilterType, ', newRaceLevelFilterType: ', newRaceLevelFilterType);
-      // console.log('Ballot, componentDidUpdate raceLevelFilterItemsInThisBallot:', raceLevelFilterItemsInThisBallot);
+      // console.log('Ballot, componentDidUpdate raceLevelFilterItemsInThisBallot AFTER:', raceLevelFilterItemsInThisBallot);
 
       if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
         this.hashLinkScroll();
@@ -1096,7 +1098,7 @@ class Ballot extends Component {
                     <BallotTitleHeader
                       electionName={electionName}
                       electionDayTextObject={electionDayTextObject}
-                      toggleSelectBallotModal={() => this.toggleSelectBallotModal('', true, false)}
+                      toggleSelectBallotModal={() => this.toggleSelectBallotModal('', false, false)}
                       scrolled={this.state.ballotHeaderUnpinned}
                     />
                   </header>
