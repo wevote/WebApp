@@ -6,10 +6,7 @@ import AppActions from './actions/AppActions';
 import AppStore from './stores/AppStore';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
-import {
-  getToastClass, historyPush, isCordova, isIOS, isWebApp,
-  prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard,
-} from './utils/cordovaUtils';
+import { getToastClass, historyPush, isCordova, isWebApp } from './utils/cordovaUtils';
 import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
 import displayFriendsTabs from './utils/displayFriendsTabs';
 import ElectionActions from './actions/ElectionActions';
@@ -22,7 +19,7 @@ import ShareButtonFooter from './components/Share/ShareButtonFooter';
 import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
 import SnackNotifier from './components/Widgets/SnackNotifier';
 import { stringContains } from './utils/textFormat';
-import TwitterSignIn from './components/Twitter/TwitterSignIn';
+import { initializationForCordova, removeCordovaSpecificListeners } from './startCordova';
 import VoterActions from './actions/VoterActions';
 import VoterStore from './stores/VoterStore';
 import webAppConfig from './config';
@@ -48,7 +45,9 @@ class Application extends Component {
     console.log('React Application ---------------   componentDidMount () hostname: ', hostname);
     polyfillObjectEntries();
     this.initializeFacebookSdkForJavascript();
-    this.initializationForCordova();
+    if (isCordova()) {
+      initializationForCordova();
+    }
 
     const voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
@@ -62,16 +61,7 @@ class Application extends Component {
 
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    if (isWebApp()) {
-      // disabled for cordova June 2019, see note in https://github.com/wevote/WebApp/pull/2303
-      window.addEventListener('scroll', this.handleWindowScroll);
-    }
-
-    if (isIOS()) {
-      // Unfortunately this event only works on iOS, but fortunately it is most needed on iOS
-      window.addEventListener('keyboardWillShow', this.localPrepareForCordovaKeyboard);
-      window.addEventListener('keyboardDidHide', this.localRestoreStylesAfterCordovaKeyboard);
-    }
+    window.addEventListener('scroll', this.handleWindowScroll);
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -107,67 +97,10 @@ class Application extends Component {
     this.appStoreListener.remove();
     this.voterStoreListener.remove();
     window.removeEventListener('scroll', this.handleWindowScroll);
-    if (isIOS()) {
-      window.removeEventListener('keyboardWillShow', this.localPrepareForCordovaKeyboard);
-      window.removeEventListener('keyboardDidHide', this.localRestoreStylesAfterCordovaKeyboard);
-    }
-  }
-
-  initializationForCordova () { // eslint-disable-line
-    // Load the Sign In With Apple Script
-    // this.initializeSignInWithApple();
     if (isCordova()) {
-      console.log('Application initializationForCordova ------------');
-      window.handleOpenURL = (url) => {
-        TwitterSignIn.handleTwitterOpenURL(url);
-      };
-      // window.cordova.plugins.SignInWithApple.signin(
-      //   { requestedScopes: [0, 1]},
-      //   (succ) => {
-      //     console.log(`SignInWithApple: ${JSON.stringify(succ)}`);
-      //     // alert(JSON.stringify(succ));
-      //   },
-      //   (err) => {
-      //     console.error(err);
-      //     console.log(`SignInWithApple: ${JSON.stringify(err)}`);
-      //   },
-      // );
+      removeCordovaSpecificListeners();
     }
   }
-
-  // https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_js/configuring_your_webpage_for_sign_in_with_apple
-  // initializeSignInWithApple () {
-  //   const head = document.getElementsByTagName('head')[0];
-  //   const script = document.createElement('script');
-  //   script.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js';
-  //   script.type = 'text/javascript';
-  //   head.appendChild(script);
-  //   // <meta name="appleid-signin-client-id" content="[CLIENT_ID]">
-  //   let meta = document.createElement('meta');
-  //   meta.name = 'appleid-signin-client-id';
-  //   meta.content = 'org.wevote.cordova';  // https://developer.apple.com/account/resources/identifiers/list
-  //   head.appendChild(meta);
-  //   // <meta name="appleid-signin-scope" content="[SCOPES]">
-  //   meta = document.createElement('meta');
-  //   meta.name = 'appleid-signin-scope';
-  //   meta.content = 'email';
-  //   head.appendChild(meta);
-  //   // <meta name="appleid-signin-redirect-uri" content="[REDIRECT_URI]">
-  //   meta = document.createElement('meta');
-  //   meta.name = 'appleid-signin-redirect-uri';
-  //   meta.content = 'wevotetwitterscheme://sign_in_with_apple';  // The doc says no scheme, so this won't work, I guess the server will need to be involved
-  //   head.appendChild(meta);
-  //   // <meta name="appleid-signin-state" content="[STATE]">
-  //   meta = document.createElement('meta');
-  //   meta.name = 'aappleid-signin-state';
-  //   meta.content = 'NonGuessableValueThatShouldNotBeCheckedIntoGitLikeThisOneIS'; // TODO: ADD ME
-  //   head.appendChild(meta);
-  //   // <meta name="appleid-signin-use-popup" content="true"> <!-- or false defaults to false -->
-  //   meta = document.createElement('meta');
-  //   meta.name = 'appleid-signin-use-popup';
-  //   meta.content = 'true';
-  //   head.appendChild(meta);
-  // }
 
   initializeFacebookSdkForJavascript () { // eslint-disable-line
     if (webAppConfig.ENABLE_FACEBOOK) {
@@ -264,14 +197,6 @@ class Application extends Component {
       AppActions.setScrolled(false);
     }
   };
-
-  localPrepareForCordovaKeyboard () {
-    prepareForCordovaKeyboard('ballot');
-  }
-
-  localRestoreStylesAfterCordovaKeyboard () {
-    restoreStylesAfterCordovaKeyboard('ballot');
-  }
 
   incomingVariableManagement () {
     // console.log('Application, incomingVariableManagement, this.props.location.query: ', this.props.location.query);

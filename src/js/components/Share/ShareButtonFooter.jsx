@@ -28,6 +28,7 @@ import ShareModalOption from './ShareModalOption';
 import ShareStore from '../../stores/ShareStore';
 import { stringContains } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
+import { shareBottomOffset } from '../../utils/cordovaOffsets';
 
 class ShareButtonFooter extends Component {
   static propTypes = {
@@ -430,7 +431,7 @@ class ShareButtonFooter extends Component {
     return (
       <Wrapper
         className={hideFooterBehindModal ? 'u-z-index-1000' : 'u-z-index-9000'}
-        pinToBottom={!showFooterBar}
+        shareBottomValue={() => shareBottomOffset(!showFooterBar)}
       >
         {showShareButton && (
           <Button
@@ -758,7 +759,7 @@ const styles = () => ({
 const Wrapper = styled.div`
   position: fixed;
   width: 100%;
-  bottom: ${props => (props.pinToBottom ? '0' : '57px')};
+  bottom:  ${props => (props.shareBottomValue)};
   display: block;
   @media (min-width: 576px) {
     display: none;
@@ -842,12 +843,6 @@ const MenuIcon = styled.div`
 const MenuText = styled.div`
   margin-left: 12px;
 `;
-
-// const MenuInfo = styled.div`
-//   margin-left: auto;
-//   margin-top: 1px;
-//   padding-left: 10px;
-// `;
 
 const MenuSeparator = styled.div`
   height: 2px;

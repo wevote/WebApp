@@ -310,4 +310,19 @@ export default {
       code_sent_to_sms_phone_number: codeSentToSMSPhoneNumber,
     });
   },
+
+  voterAppleSignInSave (email, givenName, middleName, familyName, user) {
+    // eslint-disable-next-line camelcase
+    const { device: { platform: apple_platform, version: apple_os_version, model: apple_model } } = window;
+    Dispatcher.loadEndpoint('appleSignInSave', {
+      email,
+      first_name: givenName,
+      middle_name: middleName,
+      last_name: familyName,
+      user_code: user,
+      apple_platform,
+      apple_os_version,
+      apple_model,
+    });
+  },
 };

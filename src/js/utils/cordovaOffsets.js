@@ -601,6 +601,17 @@ export function cordovaSignInModalTopPosition (collapsed) {
   return '';
 }
 
+export function shareBottomOffset (pinToBottom) {
+  if (isIOS()) {
+    if (hasIPhoneNotch()) {
+      return pinToBottom ? '0' : '66px';
+    }
+  }
+
+  // Default for all other devices, including desktop and mobile browsers
+  return pinToBottom ? '0' : '57px';
+}
+
 export function cordovaFriendsWrapper () {
   if (isIOS()) {
     if (isIPhone5p8in()) {
