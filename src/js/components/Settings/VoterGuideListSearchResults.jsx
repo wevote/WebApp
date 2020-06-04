@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
-import ballotSearchPriority from '../../utils/ballotSearchPriority';
+import voterGuideSearchPriority from '../../utils/voterGuideSearchPriority';
 import BallotItemForAddPositions from './BallotItemForAddPositions';
 import DelayedLoad from '../Widgets/DelayedLoad';
 import OrganizationActions from '../../actions/OrganizationActions';
 import SearchBar from '../Search/SearchBar';
+import ShowMoreItems from '../Widgets/ShowMoreItems';
 
 
 class VoterGuideListSearchResults extends Component {
@@ -25,7 +26,10 @@ class VoterGuideListSearchResults extends Component {
       ballotItemSearchResultsList: [],
       clearSearchTextNow: false,
       searchString: '',
+      loadingMoreItems: false,
+      numberOfItemsToDisplay: 5,
     };
+    this.onScroll = this.onScroll.bind(this);
     this.searchFunction = this.searchFunction.bind(this);
     this.clearFunction = this.clearFunction.bind(this);
   }
@@ -38,6 +42,7 @@ class VoterGuideListSearchResults extends Component {
     });
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     // this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    window.addEventListener('scroll', this.onScroll);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -52,6 +57,35 @@ class VoterGuideListSearchResults extends Component {
     this.ballotStoreListener.remove();
     // this.voterGuideStoreListener.remove();
     // Cannot call in componentWillUnmount: BallotActions.ballotItemOptionsClear();
+    if (this.ballotItemTimer) {
+      clearTimeout(this.ballotItemTimer);
+      this.ballotItemTimer = null;
+    }
+    window.removeEventListener('scroll', this.onScroll);
+  }
+
+  onScroll () {
+    const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
+    // console.log('showMoreItemsElement: ', showMoreItemsElement);
+    // console.log('loadingMoreItems: ', this.state.loadingMoreItems);
+    if (showMoreItemsElement) {
+      const {
+        numberOfItemsToDisplay, ballotItemSearchResultsList,
+      } = this.state;
+
+      // console.log('window.height: ', window.innerHeight);
+      // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
+      // console.log('numberOfItemsToDisplay: ', numberOfItemsToDisplay);
+      // console.log('totalNumberOfBallotItems: ', ballotItemSearchResultsList.length);
+      if (numberOfItemsToDisplay < ballotItemSearchResultsList.length) {
+        if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
+          this.setState({ loadingMoreItems: true });
+          this.increaseNumberOfItemsToDisplay();
+        }
+      } else {
+        this.setState({ loadingMoreItems: false });
+      }
+    }
   }
 
   onBallotStoreChange () {
@@ -63,6 +97,20 @@ class VoterGuideListSearchResults extends Component {
 
   onVoterGuideStoreChange () { // eslint-disable-line
     // console.log("VoterGuideListSearchResults onVoterGuideStoreChange");
+  }
+
+  increaseNumberOfItemsToDisplay = () => {
+    let { numberOfItemsToDisplay } = this.state;
+    // console.log('Number of ballot items before increment: ', numberOfItemsToDisplay);
+
+    numberOfItemsToDisplay += 5;
+    // console.log('Number of ballot items after increment: ', numberOfItemsToDisplay);
+
+    this.ballotItemTimer = setTimeout(() => {
+      this.setState({
+        numberOfItemsToDisplay,
+      });
+    }, 500);
   }
 
   searchFunction (searchString) {
@@ -94,9 +142,10 @@ class VoterGuideListSearchResults extends Component {
 
   render () {
     renderLog('VoterGuideListSearchResults.jsx');  // Set LOG_RENDER_EVENTS to log all renders
-    const { ballotItemSearchResultsList, searchString, clearSearchTextNow } = this.state;
+    const { ballotItemSearchResultsList, searchString, clearSearchTextNow, loadingMoreItems, numberOfItemsToDisplay } = this.state;
 
     let searchTextString = '';
+    let numberOfItemsDisplayed = 0;
 
     if (!ballotItemSearchResultsList) {
       return null;
@@ -114,7 +163,7 @@ class VoterGuideListSearchResults extends Component {
     //   />
     // ));
     let ballotItemDisplayNameForPosition;
-    let ballotItemWeVoteIdForPosition;
+    let ballotItemWeVoteId;
     let candidateListForPosition;
 
     return (
@@ -125,7 +174,7 @@ class VoterGuideListSearchResults extends Component {
               clearButton
               clearFunction={this.clearFunction}
               clearSearchTextNow={clearSearchTextNow}
-              placeholder="Search for Candidates"
+              placeholder="Search for Candidates or Measures"
               searchButton
               searchFunction={this.searchFunction}
               searchUpdateDelayTime={500}
@@ -153,7 +202,6 @@ class VoterGuideListSearchResults extends Component {
                       contest_office_name: item.contest_office_name,
                       contest_office_we_vote_id: item.contest_office_we_vote_id,
                       google_civic_election_id: item.google_civic_election_id,
-                      // is_oppose: item.is_oppose,
                       twitter_handle: item.twitter_handle,
                       kind_of_ballot_item: item.kind_of_ballot_item,
                       party: item.party,
@@ -166,13 +214,13 @@ class VoterGuideListSearchResults extends Component {
                   } else {
                     candidateListForPosition = [];
                   }
-                  // eslint-disable-next-line no-param-reassign
-                  item.candidate_list = candidateListForPosition; // comes in handy for ballotSearchPriority
+                  // item.candidate_list = candidateListForPosition; necessary only for ballotsearchpriority
                   let foundInArray = [];
                   let searchPriority = 0;
                   const candidatesToShowForSearchResults = [];
                   // console.log('VoterGuideListSearchResults > item', item);
-                  const results = ballotSearchPriority(searchString, item, false);
+
+                  const results = voterGuideSearchPriority(searchString, item, false);
                   ({ searchPriority } = results);
                   ({ foundInArray } = results);
                   // console.log('VoterGuideListSearchResults > results', results);
@@ -187,14 +235,22 @@ class VoterGuideListSearchResults extends Component {
                       return foundInStringItem;
                     });
                   }
+
                   candidatesToShowForSearchResults.push(item.we_vote_id);
                   ballotItemDisplayNameForPosition = (item.kind_of_ballot_item === 'CANDIDATE') ? item.contest_office_name : item.ballot_item_display_name;
-                  ballotItemWeVoteIdForPosition = (item.kind_of_ballot_item === 'CANDIDATE') ? item.contest_office_we_vote_id : item.ballot_item_we_vote_id;
-                  if (!ballotItemDisplayNameForPosition || !ballotItemWeVoteIdForPosition) {
+                  ballotItemWeVoteId = (item.kind_of_ballot_item === 'CANDIDATE') ? item.we_vote_id : item.measure_we_vote_id;
+                  if (!ballotItemDisplayNameForPosition || !ballotItemWeVoteId) {
                     return null;
                   }
+                  if (item) {
+                    if (numberOfItemsDisplayed >= numberOfItemsToDisplay) {
+                      return null;
+                    }
+                    numberOfItemsDisplayed += 1;
+                  }
+                  // console.log('render', numberOfItemsDisplayed, numberOfItemsToDisplay);
                   return (
-                    <div key={`candidate-list-${item.we_vote_id}`}>
+                    <div key={`candidate-list-${ballotItemWeVoteId}`}>
                       {!!(searchString && foundInArray && foundInArray.length && searchPriority > 0) && (
                       <SearchResultsFoundInExplanation>
                         {searchTextString}
@@ -216,14 +272,15 @@ class VoterGuideListSearchResults extends Component {
                       )}
                       { searchPriority > 0  && (
                       <BallotItemForAddPositions
-                        externalUniqueId={`voterGuideKey-${item.we_vote_id}`}
+                        externalUniqueId={`voterGuideKey-${ballotItemWeVoteId}`}
                         allBallotItemsCount={2}
                         // ref={(ref) => { this.ballotItems[oneBallotItem.we_vote_id] = ref; }}
                         ballotItemDisplayName={ballotItemDisplayNameForPosition}
                         candidateList={candidateListForPosition}
                         candidatesToShowForSearchResults={candidatesToShowForSearchResults}
                         kindOfBallotItem={item.kind_of_ballot_item}
-                        ballotItemWeVoteId={item.we_vote_id}
+                        // ballotItemWeVoteId={item.we_vote_id} will not work for measures
+                        ballotItemWeVoteId={ballotItemWeVoteId}
                       />
                       )}
                     </div>
@@ -233,6 +290,15 @@ class VoterGuideListSearchResults extends Component {
               </CardChildListGroup>
             ) : (
               <span>{ noSearchResultsPossibility }</span>
+            )}
+            {ballotItemSearchResultsList.length > 0 && (
+            <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfItemsToDisplay}>
+              <ShowMoreItems
+                loadingMoreItemsNow={loadingMoreItems}
+                numberOfItemsDisplayed={numberOfItemsDisplayed}
+                numberOfItemsTotal={ballotItemSearchResultsList.length}
+              />
+            </ShowMoreItemsWrapper>
             )}
           </div>
         </div>
@@ -255,6 +321,9 @@ const SearchResultsFoundInExplanation = styled.div`
   background-color: #C2DCE8;
   color: #0E759F;
   padding: 12px !important;
+`;
+
+const ShowMoreItemsWrapper = styled.div`
 `;
 
 export default (VoterGuideListSearchResults);
