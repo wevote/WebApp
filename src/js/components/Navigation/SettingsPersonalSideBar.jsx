@@ -90,7 +90,7 @@ export default class SettingsPersonalSideBar extends Component {
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
-                  General
+                    General
                   </span>
                 </Link>
               </div>

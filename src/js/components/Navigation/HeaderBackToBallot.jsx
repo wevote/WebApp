@@ -706,7 +706,7 @@ class HeaderBackToBallot extends Component {
                 onClick={this.toggleSignInModal}
                 variant="text"
               >
-              Sign In
+                Sign In
               </Button>
             )}
           </div>

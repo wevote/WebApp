@@ -37,8 +37,8 @@ export default class About extends Component {
 
           <strong>Who’s behind We Vote?</strong>
           <br />
-        We Vote is a 501(c)(3) and 501(c)(4) nonprofit
-            based in Oakland, CA.
+          We Vote is a 501(c)(3) and 501(c)(4) nonprofit
+          based in Oakland, CA.
           <br />
           <br />
 
@@ -108,7 +108,7 @@ export default class About extends Component {
 
           <strong>What does We Vote cost?</strong>
           <br />
-            It’s free! If you like We Vote,
+          It’s free! If you like We Vote,
           {' '}
           <Link to="/more/donate">please donate</Link>
           {' '}

@@ -64,7 +64,7 @@ export default class YourPositionsVisibilityMessage extends Component {
       return (
         <div className="u-margin-left-right--md u-stack--xs d-print-none">
           <div className={`alert ${alertClass}`}>
-          You have
+            You have
             {' '}
             {this.state.visibleToFriendsOnlyCount}
             {' '}
@@ -91,7 +91,7 @@ export default class YourPositionsVisibilityMessage extends Component {
       return (
         <div className="u-margin-left-right--md u-stack--xs d-print-none">
           <div className={`alert ${alertClass}`}>
-          You have
+            You have
             {' '}
             {this.state.visibleToFriendsOnlyCount}
             {' '}

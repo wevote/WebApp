@@ -239,14 +239,14 @@ class ItemActionBar extends PureComponent {
             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
               'item-actionbar__position-btn-label--at-state'}
           >
-              Opposed
+            Opposed
           </span>
         ) : (
           <span
             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
               'item-actionbar__position-btn-label'}
           >
-              Oppose
+            Oppose
           </span>
         )}
       </Button>
@@ -287,14 +287,14 @@ class ItemActionBar extends PureComponent {
              className={shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label--at-state' :
                'item-actionbar__position-choose-btn-label--at-state'}
           >
-              Chosen
+            Chosen
           </span>
         ) : (
           <span
              className={shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label' :
                'item-actionbar__position-choose-btn-label'}
           >
-              Choose
+            Choose
           </span>
         )}
       </Button>

@@ -737,7 +737,7 @@ class VoterGuideBallot extends Component {
                   </div>
                 ) : (
                   <span className="u-push--sm">
-                         Loading Election...
+                    Loading Election...
                   </span>
                 )}
               </TitleWrapper>
@@ -849,7 +849,7 @@ class VoterGuideBallot extends Component {
                         target="_blank"
                         body={(
                           <span>
-                          This ballot copied from polling location &quot;
+                            This ballot copied from polling location &quot;
                             {sourcePollingLocationWeVoteId}
                             &quot;
                           </span>

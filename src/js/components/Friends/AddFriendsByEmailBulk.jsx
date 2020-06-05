@@ -184,7 +184,7 @@ export default class AddFriendsByEmailBulk extends Component {
       <div>
         {this.state.onFriendInvitationSentStep ? (
           <div className="alert alert-success">
-          Invitations sent. Is there anyone else you&apos;d like to invite?
+            Invitations sent. Is there anyone else you&apos;d like to invite?
           </div>
         ) : null
         }
