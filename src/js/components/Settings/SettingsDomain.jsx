@@ -435,6 +435,7 @@ class SettingsDomain extends Component {
                       <InputBase
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
                         onChange={this.handleOrganizationChosenSubdomainChange}
+                        id="subdomainInputBox"
                         placeholder="Subdomain..."
                         value={organizationChosenSubdomainAlreadyTaken ? chosenSubdomainBeforeErrorCheck : organizationChosenSubdomain || ''}
                       />
@@ -532,6 +533,7 @@ class SettingsDomain extends Component {
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
                         onChange={this.handleOrganizationChosenDomainNameChange}
                         placeholder="Type Full Domain..."
+                        id="customDomainInputBox"
                         value={organizationChosenDomainNameAlreadyTaken ? chosenDomainNameBeforeErrorCheck : organizationChosenDomainName || ''}
                       />
                     </IconInputContainer>

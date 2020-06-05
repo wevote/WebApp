@@ -1,5 +1,5 @@
 #!/bin/bash
-usage () { echo -e "Usage: $0 [-r (remove)] -c <config filename> -f <path to web app> -s <script name> -t <Android/iOS/Browser>\n\nExample: $0 -f /opt/MyProjects/WebApp/ -s ballot -t Android"; exit; }
+usage () { echo -e "Usage: $0 [-r (remove)] -c <config template> -s <script name> -t <Android/iOS/Browser> -f <path to web app>\n\nExample: $0 -c parallel.wdio.config.js -f /opt/MyProjects/WebApp/ -s ballot -t Android"; exit; }
 error () { echo $1; exit; }
 
 [[ $# -lt 8 ]] && usage
@@ -27,13 +27,12 @@ scriptFilePath=$configFilePath/specs
 
 if [[ $remove -ne 1 ]]; then
     # Insert the script into package.json
-    [[ -z "`grep -n "$" ${filepath}package.json`" ]] && lineNumber=`grep -n "exampleTest" ${filepath}package.json | cut -d':' -f 1`;
+    [[ -z "`grep -n "${script_name}Test-${test_type}" ${filepath}package.json`" ]] && lineNumber=`grep -n "exampleTest" ${filepath}package.json | cut -d':' -f 1`;
     [[ ! -z "$lineNumber" ]] && sed -i "${lineNumber}i\ \ \ \ ${insertString}" ${filepath}package.json;
     
 
     # Create .wdio.config.js file
-    [[ "$test_type" == "browser" ]] && name="${script_name}MainTest-%nameBrowser" || name="${script_name}MainTest-$test_type%name";
-    sed "s/%name/$name/g;s/%scriptName/$script_name/g" $configFilePath/$configFileName > $configFilePath/${script_name}${test_type}.wdio.config.js 
+    sed "s/%name/${script_name}MainTest-$test_type%name/g;s/%scriptName/$script_name/g" $configFilePath/$configFileName > $configFilePath/${script_name}${test_type}.wdio.config.template
 
     # Create main script
     cp -n $scriptFilePath/exampleTest.js $scriptFilePath/${script_name}MainTest.js
@@ -42,8 +41,8 @@ else
     lineNumber=`grep -n "$insertString" ${filepath}package.json | cut -d':' -f 1`;
     [[ ! -z "$linenumber" ]] && sed -i "${linenumber}d" ${filepath}package.json;
     
-    # Remove .wdio.config.js file
-    rm $configFilePath/${script_name}${test_type}.wdio.config.js;
+    # Remove .wdio.config.template file
+    rm $configFilePath/${script_name}${test_type}.wdio.config.template;
 
     # Remove main script
     rm $scriptFilePath/${script_name}MainTest.js

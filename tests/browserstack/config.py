@@ -9,13 +9,17 @@ def template(filename):
     return filename
 
 parser = argparse.ArgumentParser(description='Generate configuration file')
-parser.add_argument('-g', '--group', required=True, type=str, choices=['Android', 'iOS', 'Browser'], help='test group to test')
+command_group = parser.add_mutually_exclusive_group() 
+# Can not set browser.geoLocation and browser.local simultaneously 
+command_group.add_argument('-g', '--browserstack.geoLocation', default='', type=str, help='set browser geolocation')
+command_group.add_argument('-l', '--browserstack.local', action='store_true', help='do not test on localhost')
+parser.add_argument('-b', '--batch', required=True, type=str, choices=['Android', 'iOS', 'Browser'], help='test batch to test')
 parser.add_argument('-f', '--file', type=template, required=True, help='path to template configuration file (.template)')
 parser.add_argument('-j', '--json', default='devices_to_test.json', type=str, help='path to json file')
-parser.add_argument('-n', '--numberOfTests', default=10, choices=range(1, 11), type=int, help='run first n number of tests')
+parser.add_argument('-n', '--numberOfTests', default=5, choices=range(1, 6), type=int, help='run first n number of tests')
+parser.add_argument('-a', '--app', action='store_true', help='test app instead of web app')
 parser.add_argument('-i', '--interchange', action='store_true', help='select specific test cases')
 parser.add_argument('-w', '--write', action='store_true', help='write to configuration file')
-parser.add_argument('-l', '--browserstack.local', action='store_false', help='do not test on localhost')
 parser.add_argument('-d', '--browserstack.debug', action='store_false', help='turn debugging off')
 parser.add_argument('-c', '--isCordova', action='store_true', help='set isCordovaFromAppStore to true')
 parser.add_argument('-s', '--acceptSslCerts', action='store_false', help='do not use https')
@@ -37,14 +41,16 @@ for key, value in args.items():
 replace = {}
 replace.update(args)
 
-if args['group'] == 'Android':
+if args['batch'] == 'Android':
     replace['real_mobile'] = 'true'
-    replace['app'] = 'browserStackConfig.BROWSERSTACK_APK_URL'
+    if args['app'] == 'true':
+        replace['app'] = 'browserStackConfig.BROWSERSTACK_APK_URL'
     replace['isAndroid'] = 'true'
     replace['isIOS'] = 'false'
-elif args['group'] == 'iOS':
+elif args['batch'] == 'iOS':
     replace['real_mobile'] = 'true'
-    replace['app'] = 'browserStackConfig.BROWSERSTACK_IPA_URL'
+    if args['app'] == 'true':
+        replace['app'] = 'browserStackConfig.BROWSERSTACK_IPA_URL'
     replace['isAndroid'] = 'false'
     replace['isIOS'] = 'true'
 else:
@@ -53,7 +59,7 @@ else:
     replace['isAndroid'] = 'false'
     replace['isIOS'] = 'false'
 
-del replace['group']
+del replace['batch']
 del replace['file']
 del replace['json']
 del replace['write']
@@ -64,14 +70,14 @@ with open(args['json'], 'r') as f:
     if args['interchange'] == 'true':
         while True:
             print('First %d test case(s) will be run.' % args['numberOfTests'])
-            for key, value in devices[args['group']].items():
+            for key, value in devices[args['batch']].items():
                 print("%s: %s" % (key, value))
             try:
                 testNumber1, testNumber2 = map(int, input('Enter two tests to swap. (-1 -1 to exit)').split())
             except:
                 break
             if testNumber1 != -1 or testNumber2 != -1:
-                devices[args['group']][str(testNumber1)], devices[args['group']][str(testNumber2)] = devices[args['group']][str(testNumber2)], devices[args['group']][str(testNumber1)]
+                devices[args['batch']][str(testNumber1)], devices[args['batch']][str(testNumber2)] = devices[args['batch']][str(testNumber2)], devices[args['batch']][str(testNumber1)]
             else: 
                 break
           
@@ -80,7 +86,7 @@ with open(args['json'], 'r') as f:
         replace['os%d' % i] = ''
         replace['browser_version%d' % i] = ''
         # import from json file
-        for key, value in devices[args['group']][str(i)].items():
+        for key, value in devices[args['batch']][str(i)].items():
             if key == 'device' or key == 'os':
                 #generate name
               replace['name%d' % i] = value.replace(' ', '')
@@ -107,10 +113,14 @@ with open(args['file'], 'r') as config:
                 replaced = False
                 # create output file with configuration values
                 for key, value in replace.items():
-                    if args['group'] == 'Browser':
-                        if 'device' in line or 'app' in line:
+                    if args['batch'] == 'Browser':
+                        if '%device' in line or '%app' in line:
                             replaced = True
                             break 
+                    if args['app'] != 'true':
+                        if '%app' in line: 
+                            replaced = True
+                            break
                     replacedString, numberOfSubstitutions = re.subn(r'%%%s' % key, str(value), line, count=1)
                     if numberOfSubstitutions == 1: 
                         if args['write'] == 'true':

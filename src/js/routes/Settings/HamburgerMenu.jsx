@@ -243,7 +243,7 @@ export default class HamburgerMenu extends Component {
               <td className="hamburger-terms__td" colSpan={3}>
                 <div>
                   <span className="hamburger-terms__text">
-                    <Link to="/more/terms">
+                    <Link to="/more/terms" id="termsOfService">
                       <span className="u-no-break">Terms of Service</span>
                     </Link>
                   </span>
