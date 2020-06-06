@@ -38,6 +38,8 @@ export default class BallotElectionListWithFilters extends Component {
       ballotElectionListCount: 0,
       loadingNewBallotItems: false,
       updatedElectionId: '',
+      voterBallotListHasBeenRetrievedOnce: false,
+      voterGuideHasBeenRetrievedOnce: {},
     };
     this.executeDifferentElection = this.executeDifferentElection.bind(this);
     this.goToBallotForDifferentElection = this.goToBallotForDifferentElection.bind(this);
@@ -53,20 +55,28 @@ export default class BallotElectionListWithFilters extends Component {
     } else if (VoterStore.electionId()) {
       priorElectionId = VoterStore.electionId();
     }
+    const { voterBallotListHasBeenRetrievedOnce, voterGuideHasBeenRetrievedOnce } = this.state;
     let ballotElectionList;
     let ballotElectionListCount = 0;
     const { displayElectionsForOrganizationVoterGuidesMode, organizationWeVoteId } = this.props;
     if (displayElectionsForOrganizationVoterGuidesMode) {
       ballotElectionList = VoterGuideStore.getVoterGuideElectionList(organizationWeVoteId);
       ballotElectionListCount = ballotElectionList.length;
-      if (ballotElectionListCount === 0) {
+      if (ballotElectionListCount === 0 && !this.localVoterGuideHasBeenRetrievedOnce(organizationWeVoteId)) {
         VoterGuideActions.voterGuidesRetrieve(organizationWeVoteId);
+        voterGuideHasBeenRetrievedOnce[organizationWeVoteId] = true;
+        this.setState({
+          voterGuideHasBeenRetrievedOnce,
+        });
       }
     } else {
       ballotElectionList = BallotStore.ballotElectionList();
       ballotElectionListCount = ballotElectionList.length;
-      if (ballotElectionListCount === 0) {
+      if (ballotElectionListCount === 0 && !voterBallotListHasBeenRetrievedOnce) {
         BallotActions.voterBallotListRetrieve();
+        this.setState({
+          voterBallotListHasBeenRetrievedOnce: true,
+        });
       }
     }
     // console.log('componentDidMount displayElectionsForOrganizationVoterGuidesMode:', displayElectionsForOrganizationVoterGuidesMode, ', organizationWeVoteId:', organizationWeVoteId);
@@ -141,17 +151,25 @@ export default class BallotElectionListWithFilters extends Component {
     let ballotElectionList;
     let ballotElectionListCount;
     const { displayElectionsForOrganizationVoterGuidesMode, organizationWeVoteId } = this.props;
+    const { voterBallotListHasBeenRetrievedOnce, voterGuideHasBeenRetrievedOnce } = this.state;
     if (displayElectionsForOrganizationVoterGuidesMode) {
       ballotElectionList = VoterGuideStore.getVoterGuideElectionList(organizationWeVoteId);
       ballotElectionListCount = ballotElectionList.length;
-      if (ballotElectionListCount === 0) {
+      if (ballotElectionListCount === 0 && !this.localVoterGuideHasBeenRetrievedOnce(organizationWeVoteId)) {
         VoterGuideActions.voterGuidesRetrieve(organizationWeVoteId);
+        voterGuideHasBeenRetrievedOnce[organizationWeVoteId] = true;
+        this.setState({
+          voterGuideHasBeenRetrievedOnce,
+        });
       }
     } else {
       ballotElectionList = BallotStore.ballotElectionList();
       ballotElectionListCount = ballotElectionList.length;
-      if (ballotElectionListCount === 0) {
+      if (ballotElectionListCount === 0 && !voterBallotListHasBeenRetrievedOnce) {
         BallotActions.voterBallotListRetrieve();
+        this.setState({
+          voterBallotListHasBeenRetrievedOnce: true,
+        });
       }
     }
     this.setState({
@@ -198,6 +216,14 @@ export default class BallotElectionListWithFilters extends Component {
     if (this.props.toggleFunction) {
       this.props.toggleFunction(destinationUrlForHistoryPush);
     }
+  }
+
+  localVoterGuideHasBeenRetrievedOnce = (organizationWeVoteId) => {
+    if (organizationWeVoteId) {
+      const { voterGuideHasBeenRetrievedOnce } = this.state;
+      return voterGuideHasBeenRetrievedOnce[organizationWeVoteId] || false;
+    }
+    return false;
   }
 
   saveVoterGuideForElection = (googleCivicElectionId) => {
@@ -291,11 +317,19 @@ export default class BallotElectionListWithFilters extends Component {
   }
 
   renderUpcomingElectionList (list, currentDate) {
+    if (!list || !Array.isArray(list)) {
+      return null;
+    }
     const renderedList = list.map((election) => {
       // console.log('election: ', election);
       if (!election.election_description_text || election.election_description_text === '') return null;
       const electionDateTomorrowMoment = moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days');
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
+      let electionStateCodeList = [];
+      if (election && election.state_code_list) {
+        electionStateCodeList = election.state_code_list || [];
+      }
+      const electionId = election.google_civic_election_id || 0;
       return (electionDateTomorrow > currentDate) && (
         <div key={`upcoming-election-${election.google_civic_election_id}`}>
           <div className="list-unstyled">
@@ -314,16 +348,14 @@ export default class BallotElectionListWithFilters extends Component {
                   {election.election_description_text.split(' in')[0]}
                 </ElectionTitle>
                 <ElectionStates>
-                  {election.state_code_list.map((stateAbbrev, index) => {
+                  {electionStateCodeList.map((stateAbbrev, index) => {
                     if (index < 5) {
                       return (
-                        <ElectionState key={stateAbbrev}>{stateAbbrev}</ElectionState>
+                        <ElectionState key={`upcomingElection-${electionId}-${stateAbbrev}`}>{stateAbbrev}</ElectionState>
                       );
                     } else if (index === 6) {
                       return (
-                        <>
-                          <span>{`+${election.state_code_list.length - 6}`}</span>
-                        </>
+                        <span key="upcomingElectionPlus">{`+${electionStateCodeList.length - 6}`}</span>
                       );
                     } else {
                       return null;
@@ -340,19 +372,27 @@ export default class BallotElectionListWithFilters extends Component {
   }
 
   renderUpcomingElectionListByState (list, currentDate) {
-    const renderedList = list.filter(filterItem => filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
+    if (!list || !Array.isArray(list)) {
+      return null;
+    }
+    const renderedList = list.filter(filterItem => filterItem.state_code_list && filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
       // console.log('election.election_description_text: ', election.election_description_text, 'election.election_day_text: ', election.election_day_text);
       if (!election.election_description_text || election.election_description_text === '') return null;
       const electionDateTomorrowMoment = moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days');
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
+      let electionStateCodeList = [];
+      if (election && election.state_code_list) {
+        electionStateCodeList = election.state_code_list || [];
+      }
+      const electionId = election.google_civic_election_id || 0;
       return electionDateTomorrow > currentDate ? (
-        <div key={`upcoming-election-${election.google_civic_election_id}`}>
+        <div key={`upcoming-election-${electionId}`}>
           <div className="list-unstyled">
             <ElectionButton
               color="primary"
               fullWidth
               href=""
-              id={`ballotElectionListWithFiltersButton-${election.google_civic_election_id}`}
+              id={`ballotElectionListWithFiltersButton-${electionId}`}
               onClick={() => this.executeDifferentElection(election)}
               variant="contained"
             >
@@ -363,16 +403,14 @@ export default class BallotElectionListWithFilters extends Component {
                   {election.election_description_text.split(' in')[0]}
                 </ElectionTitle>
                 <ElectionStates>
-                  {election.state_code_list.map((stateAbbrev, index) => {
+                  {electionStateCodeList.map((stateAbbrev, index) => {
                     if (index < 5) {
                       return (
-                        <ElectionState key={stateAbbrev}>{stateAbbrev}</ElectionState>
+                        <ElectionState key={`upcomingElectionByState-${electionId}-${stateAbbrev}`}>{stateAbbrev}</ElectionState>
                       );
                     } else if (index === 6) {
                       return (
-                        <>
-                          <span>{`+${election.state_code_list.length - 6}`}</span>
-                        </>
+                        <span key="upcomingElectionByStatePlus">{`+${electionStateCodeList.length - 6}`}</span>
                       );
                     } else {
                       return null;
@@ -390,18 +428,26 @@ export default class BallotElectionListWithFilters extends Component {
   }
 
   renderPriorElectionList (list, currentDate) {
+    if (!list || !Array.isArray(list)) {
+      return null;
+    }
     const renderedList = list.map((election) => {
       const electionDateTomorrowMoment = moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days');
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
+      let electionStateCodeList = [];
+      if (election && election.state_code_list) {
+        electionStateCodeList = election.state_code_list || [];
+      }
+      const electionId = election.google_civic_election_id || 0;
       return electionDateTomorrow > currentDate ?
         null : (
-          <div key={`prior-election-${election.google_civic_election_id}`}>
+          <div key={`prior-election-${electionId}`}>
             <div className="list-unstyled prior-election-list">
               <ElectionButton
                 color="primary"
                 fullWidth
                 href=""
-                id={`ballotElectionListWithFiltersButton-${election.google_civic_election_id}`}
+                id={`ballotElectionListWithFiltersButton-${electionId}`}
                 onClick={() => this.executeDifferentElection(election)}
                 variant="contained"
               >
@@ -412,16 +458,14 @@ export default class BallotElectionListWithFilters extends Component {
                     {election.election_description_text.split(' in')[0]}
                   </ElectionTitle>
                   <ElectionStates>
-                    {election.state_code_list.map((stateAbbrev, index) => {
+                    {electionStateCodeList.map((stateAbbrev, index) => {
                       if (index < 5) {
                         return (
-                          <ElectionState key={stateAbbrev}>{stateAbbrev}</ElectionState>
+                          <ElectionState key={`priorElection-${electionId}-${stateAbbrev}`}>{stateAbbrev}</ElectionState>
                         );
                       } else if (index === 6) {
                         return (
-                          <>
-                            <span>{`+${election.state_code_list.length - 6}`}</span>
-                          </>
+                          <span key="priorElectionPlus">{`+${electionStateCodeList.length - 6}`}</span>
                         );
                       } else {
                         return null;
@@ -438,18 +482,26 @@ export default class BallotElectionListWithFilters extends Component {
   }
 
   renderPriorElectionListByState (list, currentDate) {
-    const renderedList = list.filter(filterItem => filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
+    if (!list || !Array.isArray(list)) {
+      return null;
+    }
+    const renderedList = list.filter(filterItem => filterItem.state_code_list && filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
       const electionDateTomorrowMoment = moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days');
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
+      let electionStateCodeList = [];
+      if (election && election.state_code_list) {
+        electionStateCodeList = election.state_code_list || [];
+      }
+      const electionId = election.google_civic_election_id || 0;
       return electionDateTomorrow > currentDate ?
         null : (
-          <div key={`prior-election-${election.google_civic_election_id}`}>
+          <div key={`prior-election-${electionId}`}>
             <div className="list-unstyled prior-election-list">
               <ElectionButton
                 color="primary"
                 fullWidth
                 href=""
-                id={`ballotElectionListWithFiltersButton-${election.google_civic_election_id}`}
+                id={`ballotElectionListWithFiltersButton-${electionId}`}
                 onClick={() => this.executeDifferentElection(election)}
                 variant="contained"
               >
@@ -461,16 +513,14 @@ export default class BallotElectionListWithFilters extends Component {
                     {election.election_description_text.split(' in')[0]}
                   </ElectionTitle>
                   <ElectionStates>
-                    {election.state_code_list.map((stateAbbrev, index) => {
+                    {electionStateCodeList.map((stateAbbrev, index) => {
                       if (index < 5) {
                         return (
-                          <ElectionState key={stateAbbrev}>{stateAbbrev}</ElectionState>
+                          <ElectionState key={`priorElectionByState-${electionId}-${stateAbbrev}`}>{stateAbbrev}</ElectionState>
                         );
                       } else if (index === 6) {
                         return (
-                          <>
-                            <span>{`+${election.state_code_list.length - 6}`}</span>
-                          </>
+                          <span key="priorElectionByStatePlus">{`+${electionStateCodeList.length - 6}`}</span>
                         );
                       } else {
                         return null;
