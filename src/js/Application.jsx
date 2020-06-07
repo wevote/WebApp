@@ -359,7 +359,7 @@ class Application extends Component {
             </div>
           </Wrapper>
           {showFooterBar && (
-            <div className="footroom-wrapper">
+            <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )}
@@ -385,7 +385,7 @@ class Application extends Component {
             </div>
           </Wrapper>
           {showFooterBar && (
-            <div className="footroom-wrapper">
+            <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )}
@@ -434,7 +434,7 @@ class Application extends Component {
             </Wrapper>
           )}
         {showFooterBar && (
-          <div className="footroom-wrapper">
+          <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>
         )}

@@ -3,6 +3,7 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 
 if (window.cordova) { // Static constants are initialized before the app starts
   webAppConfig.IS_CORDOVA = true;
+  window.isCordovaGlobal = true;
 }
 
 const photoPath = cordovaDot('/img/global/photos/');

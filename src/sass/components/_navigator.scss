@@ -165,6 +165,10 @@ $pop-up-menu-cordova-padding: 10px;
   }
 }
 
+.footroom-wrapper-cordova {
+  padding-bottom: $header-height;
+}
+
 .headroom-secondary-nav__margin {
   @include print {
     margin-top: $space-none;

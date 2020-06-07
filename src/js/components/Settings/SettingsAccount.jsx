@@ -160,7 +160,7 @@ export default class SettingsAccount extends Component {
       const sendButtonEmail = $('#voterEmailAddressEntrySendCode');
       const cont = $('.MuiDialog-container');
       const styleWorking = cont.length ? $(cont).attr('style') : '';
-      const translate = isIPhone4in() || isIPhone4p7in() ? 'transform: translateY(10%); height: unset;' : 'transform: translateY(27%); height: unset;';
+      const translate = isIPhone4in() || isIPhone4p7in() ? 'transform: translateY(10%); height: unset;' : 'transform: translateY(40%); height: unset;';
 
       // The VoterPhoneEmailCordovaEntryModal dialog gets pushed out of the way when the virtual keyboard appears,
       // so we wait for it to be rendered, then move it into place
@@ -338,9 +338,10 @@ export default class SettingsAccount extends Component {
       }
     }
 
-    // console.log('SettingsAccount hideDialogForCordova', hideDialogForCordova, 'hideCurrentlySignedInHeader', hideCurrentlySignedInHeader,
-    //   'voterIsSignedInTwitter', voterIsSignedInTwitter, 'voterIsSignedInFacebook', voterIsSignedInFacebook, 'hideTwitterSignInButton', hideTwitterSignInButton,
-    //   'hideFacebookSignInButton', hideFacebookSignInButton, 'voterIsSignedIn', voterIsSignedIn, 'hideDialogForCordova', hideDialogForCordova,
+    // console.log('SettingsAccount voterIsSignedIn', voterIsSignedIn, 'signedInTwitter', voterIsSignedInTwitter, 'signedInFacebook', voterIsSignedInFacebook,
+    //   'signedInWithApple', voterIsSignedInWithApple, '\nhideDialogForCordova', hideDialogForCordova, 'hideCurrentlySignedInHeader', hideCurrentlySignedInHeader,
+    //   'hideTwitterSignInButton', hideTwitterSignInButton,
+    //   'hideFacebookSignInButton', hideFacebookSignInButton, 'hideDialogForCordova', hideDialogForCordova,
     //   'isOnFacebookSupportedDomainUrl', isOnFacebookSupportedDomainUrl, 'isOnWeVoteRootUrl', isOnWeVoteRootUrl);
 
     return (
@@ -408,7 +409,7 @@ export default class SettingsAccount extends Component {
               <div className="u-stack--md">
                 {!hideCurrentlySignedInHeader && (
                   <div className="u-stack--sm">
-                    <span className="h3">Currently Signed In</span>
+                    <span className="h3 voterIsSignedIn">Currently Signed In</span>
                     <span className="u-margin-left--sm" />
                     <span className="account-edit-action" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
                       <span className="pull-right" onClick={this.signOut.bind(this)}>sign out</span>
@@ -477,21 +478,6 @@ export default class SettingsAccount extends Component {
               </div>
             ) : null
             }
-            {isIOS() && voterIsSignedInWithApple && (
-              <div className="u-stack--md">
-                {!hideCurrentlySignedInHeader && (
-                  <div className="u-stack--sm">
-                    <span className="h3">Currently Signed In</span>
-                    <span className="u-margin-left--sm" />
-                    <span className="account-edit-action" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
-                      <span className="pull-right" onClick={this.signOut.bind(this)}>
-                        sign out
-                      </span>
-                    </span>
-                  </div>
-                )}
-              </div>
-            )}
             {isIOS() && (
               <AppleSignIn signedIn={voterIsSignedInWithApple} closeSignInModal={this.localCloseSignInModal} />
             )}
