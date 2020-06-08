@@ -119,8 +119,8 @@ export function getIOSSizeString () {
   const iPhone3p5inPhones = ['iPhone1,1', 'iPhone1,2', 'iPhone2,1', 'iPhone3,1', 'iPhone3,2', 'iPhone3,3', 'iPhone4,1'];
   //    iPhone:             5            5            5C           5C           5S           5S           SE
   const iPhone4inPhones = ['iPhone5,1', 'iPhone5,2', 'iPhone5,3', 'iPhone5,4', 'iPhone6,1', 'iPhone6,2', 'iPhone8,4'];
-  //    iPhone:               6            6S           7            7            8             8
-  const iPhone4p7inPhones = ['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4'];
+  //    iPhone:               6            6S           7            7            8             8             SE 2nd Gen
+  const iPhone4p7inPhones = ['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4', 'iPhone12,8'];
   //    iPhone:                 6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus
   const isIPhone5p5inPhones = ['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4', 'iPhone10,2', 'iPhone10,5'];
   //    iPhone:               X             X             XS            11 Pro
@@ -152,7 +152,7 @@ export function getIOSSizeString () {
     return 'isIPhone3p5in';
   } else if (size.height === '1136' && size.width === '640') {  // iPhone 5, 5c, 5s, SE
     return 'isIPhone4in';
-  } else if (size.height === '1334' && size.width === '750') {  // iPhone 6, 6s, 7, 8
+  } else if (size.height === '1334' && size.width === '750') {  // iPhone 6, 6s, 7, 8, SE (2nd Gen)
     return 'isIPhone4p7in';
   } else if ((size.height === '1920' && size.width === '1080') ||  // iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
             (size.height === '2208' && size.width === '1242')) {   // iPhone 8 Plus in simulator
@@ -194,7 +194,7 @@ export function isIPhone4in () {
 export function isIPhone4p7in () {
   if (isIOS()) {
     if (getIOSSizeString() === 'isIPhone4p7in') {
-      logMatch('isIPhone4p7in: iPhone 678 (4.7")', true);
+      logMatch('isIPhone4p7in: iPhone 678 & SE2 (4.7")', true);
       return true;
     }
   }
