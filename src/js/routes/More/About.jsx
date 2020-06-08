@@ -19,7 +19,7 @@ import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayFor
 import ToolBar from './ToolBar';
 import VoterStore from '../../stores/VoterStore';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
-import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
+// import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import { Title } from '../../components/Welcome/HeaderWelcome';
 
 class About extends Component {
@@ -36,7 +36,7 @@ class About extends Component {
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="About We Vote" />
-        <WelcomeAppbar pathname="/more/about" />
+        {/* <WelcomeAppbar pathname="/more/about" /> */}
         <HeaderForAbout>
           <Title>About We Vote</Title>
           <ToolBar />

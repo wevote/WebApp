@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
+import { isWebApp } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 let openSnackbarFn;
 
@@ -26,26 +28,32 @@ class SnackNotifier extends Component {
     });
   };
 
-  openSnackbar = ({ message }) => {
-    this.setState({ open: true, message });
+  openSnackbar = ({ message, duration }) => {
+    let autoHideDuration = 3000;
+    if (duration) {
+      autoHideDuration = duration;
+    }
+
+    this.setState({ open: true, message, autoHideDuration  });
   };
 
   render () {
+    renderLog('SnackNotifier');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { message } = this.state;
+    const { message, autoHideDuration } = this.state;
     // console.log('SnackNotifier.jsx message: ', message);
 
     return (
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        autoHideDuration={3000}
+        autoHideDuration={autoHideDuration}
         message={<span id="message-id">{ message }</span>}
         onClose={this.handleSnackbarClose}
         open={this.state.open}
         ContentProps={{
           'aria-describedby': 'snackbar-message-id',
         }}
-        classes={{ anchorOriginBottomCenter: classes.anchorOriginBottomCenter }}
+        classes={{ anchorOriginBottomCenter: isWebApp() ? classes.anchorOriginBottomCenter : classes.anchorOriginBottomCenterCordova }}
       />
     );
   }
@@ -55,15 +63,18 @@ const styles = () => ({
   anchorOriginBottomCenter: {
     bottom: '75px !important',
   },
+  anchorOriginBottomCenterCordova: {
+    bottom: '118px !important',
+  },
 });
 
 function isFunction (functionToCheck) {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
 }
 
-export function openSnackbar ({ message }) {
+export function openSnackbar ({ message, duration }) {
   if (isFunction(openSnackbarFn)) {
-    openSnackbarFn({ message });
+    openSnackbarFn({ message, duration });
   } else {
     console.log('*** SnackNotifier openSnackbarFn not a Function');
   }

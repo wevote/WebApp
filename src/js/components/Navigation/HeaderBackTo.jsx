@@ -18,6 +18,7 @@ import { renderLog } from '../../utils/logging';
 import SignInModal from '../Widgets/SignInModal';
 import { shortenText } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import { voterPhoto } from '../../utils/voterPhoto';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 
@@ -27,7 +28,7 @@ class HeaderBackTo extends Component {
     backToLinkText: PropTypes.string,
     classes: PropTypes.object,
     location: PropTypes.object,
-    voterWeVoteId: PropTypes.string,
+    // voterWeVoteId: PropTypes.string,
   };
 
   constructor (props) {
@@ -74,7 +75,9 @@ class HeaderBackTo extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
+    // WARN: Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
     // console.log('HeaderBackTo componentWillReceiveProps, nextProps: ', nextProps);
     const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
@@ -219,8 +222,9 @@ class HeaderBackTo extends Component {
     const { classes } = this.props;
     const {
       backToLink, backToLinkText, profilePopUpOpen, showSignInModal,
-      voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
+      voter, voterFirstName, voterIsSignedIn,
     } = this.state;
+    const voterPhotoUrlMedium = voterPhoto(voter);
 
     const headerClassName = (function header () {
       if (isWebApp()) {

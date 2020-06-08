@@ -116,8 +116,8 @@ class FooterBar extends React.Component {
         return historyPush('/values');
       case 3:
         return historyPush('/friends');
-      case 4:
-        return historyPush('/news');
+      // case 4:
+      //   return historyPush('/news');
       default:
         return null;
     }

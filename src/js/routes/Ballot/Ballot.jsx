@@ -25,7 +25,7 @@ import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 import { cordovaBallotFilterTopMargin, cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
-import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { chipLabelText, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ElectionActions from '../../actions/ElectionActions';
@@ -286,7 +286,9 @@ class Ballot extends Component {
     window.addEventListener('scroll', this.onScroll);
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
+    // WARN: Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
     // console.log('Ballot componentWillReceiveProps');
 
     // We don't want to let the googleCivicElectionId disappear
@@ -1164,7 +1166,7 @@ class Ballot extends Component {
                                         color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
                                         className="btn_ballot_filter"
                                         classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
-                                        label={oneTypeOfBallotItem}
+                                        label={chipLabelText(oneTypeOfBallotItem)}
                                       />
                                     );
                                     return (

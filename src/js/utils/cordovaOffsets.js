@@ -59,12 +59,15 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return isSignedIn ? '144px' : '160px';
         case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '52px' : '36px';
         case enums.moreAbout:       return '22px';
+        case enums.moreAccount:     return '71px';
         case enums.moreTerms:       return '40px';
         case enums.welcomeWild:     return '10px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.moreHamburger:   return '66px';
         case enums.moreTools:       return '44px';
+        case enums.settingsSubscription: return '72px';
+        case enums.settingsVoterGuideList: return '73px';
         case enums.settingsWild:    return '76px';
         case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
@@ -87,6 +90,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.moreHamburger:   return '10px';
         case enums.moreTools:       return '44px';
+        case enums.settingsVoterGuideList: return '75px';
         case enums.settingsWild:    return '16px';
         case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
@@ -126,14 +130,17 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotVote:      return isSignedIn ? '165px' : '173px';
         case enums.ballotSmHdrWild: return '170px';
         case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '58px' : '42px';
+        case enums.moreAccount:     return '84px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '22px';
-        case enums.moreHamburger:   return '35px';
+        case enums.moreHamburger:   return '81px';
+        case enums.settingsSubscription: return '90px';
+        case enums.settingsVoterGuideList: return '98px';
         case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '32px';
+        case enums.settingsWild:    return '63px';
         case enums.twitterSignIn:   return '20px';
         default:                    return '0px';
       }
@@ -156,6 +163,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
         case enums.moreTools:       return '44px';
+        case enums.settingsVoterGuideList: return '72px';
         case enums.settingsWild:    return '32px';
         default:                    return '0px';
       }
@@ -527,10 +535,12 @@ export function cordovaTopHeaderTopMargin () {
           case enums.ballotSmHdrWild: style.marginTop = '16px'; break;
           case enums.ballotLgHdrWild: style.marginTop = '16px'; break;
           case enums.ballotVote:      style.marginTop = '16px'; break;
-          case enums.settingsWild:    style.marginTop = '38px'; break;
+          case enums.moreAccount:     style.marginTop = '31px'; break;
+          case enums.settingsSubscription: style.marginTop = '34px'; break;
+          case enums.settingsWild:     style.marginTop = '38px'; break;
           case enums.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp-voter-guide-creator
-          case enums.voterGuideWild: style.marginTop = '38px'; break; // Any page with btcand or btmeas
-          default:                    style.marginTop = '16px'; break;
+          case enums.voterGuideWild:   style.marginTop = '38px'; break; // Any page with btcand or btmeas
+          default:                     style.marginTop = '16px'; break;
         }
       } else if (isIPad()) {
         style.marginTop = '0px';

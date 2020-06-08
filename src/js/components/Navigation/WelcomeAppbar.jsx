@@ -26,6 +26,7 @@ import { shortenText } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import { voterPhoto } from '../../utils/voterPhoto';
 
 class WelcomeAppbar extends Component {
   static propTypes = {
@@ -99,6 +100,12 @@ class WelcomeAppbar extends Component {
   componentWillUnmount () {
     this.appStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  // See https://reactjs.org/docs/error-boundaries.html boundary
+  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    return { hasError: true };
   }
 
   onAppStoreChange () {
@@ -194,7 +201,8 @@ class WelcomeAppbar extends Component {
   render () {
     renderLog('WelcomeAppbar');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
-    const { paidAccountUpgradeMode, showMobileNavigationMenu, showPaidAccountUpgradeModal, showSignInModal, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
+    const { paidAccountUpgradeMode, showMobileNavigationMenu, showPaidAccountUpgradeModal, showSignInModal, voterFirstName, voterIsSignedIn, voter } = this.state;
+    const voterPhotoUrlMedium = voterPhoto(voter);
     let showWelcomeForVoters = false;
     let showWelcomeForOrganizations = false;
     let showWelcomeForCampaigns = false;
