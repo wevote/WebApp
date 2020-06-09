@@ -301,7 +301,7 @@ class SettingsVerifySecretCode extends Component {
       this.setState({ digit1: '' });
     }
   }
-      
+
   handleKeyDown3 (e) {
     if (e.keyCode === 8 && this.state.digit3 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.value = '';
@@ -417,7 +417,6 @@ class SettingsVerifySecretCode extends Component {
     const { classes } = this.props;
     const {
       condensed, errorMessageToDisplay, errorToDisplay,
-      digit1, digit2, digit3, digit4, digit5, digit6,
       voterEmailAddress, voterMustRequestNewCode, voterPhoneNumber, voterSecretCodeRequestsLocked,
       voterVerifySecretCodeSubmitted,
     } = this.state;
@@ -545,7 +544,7 @@ class SettingsVerifySecretCode extends Component {
             <Button
               classes={{ root: classes.verifyButton }}
               color="primary"
-              disabled={this.state.digit1 === '' || this.state.digit2 === '' || this.state.digit3 === '' || this.state.digit4 === '' || digit5 === '' || this.state.digit6 === '' || voterMustRequestNewCode || voterSecretCodeRequestsLocked || voterVerifySecretCodeSubmitted}
+              disabled={this.state.digit1 === '' || this.state.digit2 === '' || this.state.digit3 === '' || this.state.digit4 === '' || this.state.digit5 === '' || this.state.digit6 === '' || voterMustRequestNewCode || voterSecretCodeRequestsLocked || voterVerifySecretCodeSubmitted}
               fullWidth
               onClick={this.voterVerifySecretCode}
               variant="contained"
