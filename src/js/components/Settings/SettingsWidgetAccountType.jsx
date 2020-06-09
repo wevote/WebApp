@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import {
+  prepareForCordovaKeyboard,
+  restoreStylesAfterCordovaKeyboard,
+} from '../../utils/cordovaUtils';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -9,7 +13,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 const delayBeforeRemovingSavedStatus = 2000;
-
 
 export default class SettingsWidgetAccountType extends Component {
   static propTypes = {
@@ -40,8 +43,12 @@ export default class SettingsWidgetAccountType extends Component {
 
   componentDidMount () {
     this.onVoterStoreChange();
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(
+      this.onOrganizationStoreChange.bind(this),
+    );
+    this.voterStoreListener = VoterStore.addListener(
+      this.onVoterStoreChange.bind(this),
+    );
     if (VoterStore.electionId()) {
       AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
     }
@@ -63,7 +70,9 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   onOrganizationStoreChange () {
-    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    const organization = OrganizationStore.getOrganizationByWeVoteId(
+      this.state.linkedOrganizationWeVoteId,
+    );
     if (organization && organization.organization_we_vote_id) {
       this.setState({
         organization,
@@ -82,15 +91,22 @@ export default class SettingsWidgetAccountType extends Component {
         this.setState({
           linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
         });
-        if (voter.linked_organization_we_vote_id !== this.state.linkedOrganizationWeVoteId) {
-          const organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
+        if (
+          voter.linked_organization_we_vote_id !==
+          this.state.linkedOrganizationWeVoteId
+        ) {
+          const organization = OrganizationStore.getOrganizationByWeVoteId(
+            voter.linked_organization_we_vote_id,
+          );
           if (organization && organization.organization_we_vote_id) {
             this.setState({
               organization,
               organizationType: organization.organization_type,
             });
           } else {
-            OrganizationActions.organizationRetrieve(voter.linked_organization_we_vote_id);
+            OrganizationActions.organizationRetrieve(
+              voter.linked_organization_we_vote_id,
+            );
           }
         }
       }
@@ -133,7 +149,10 @@ export default class SettingsWidgetAccountType extends Component {
 
   updateOrganizationType (event) {
     if (event.target.name === 'organizationType') {
-      OrganizationActions.organizationTypeSave(this.state.linkedOrganizationWeVoteId, event.target.value);
+      OrganizationActions.organizationTypeSave(
+        this.state.linkedOrganizationWeVoteId,
+        event.target.value,
+      );
       this.setState({
         organizationType: event.target.value,
         organizationTypeSavedStatus: 'Saved',
@@ -152,10 +171,20 @@ export default class SettingsWidgetAccountType extends Component {
     }
   }
 
-  renderOrganizationType (organizationType, organizationTypeCurrentState, organizationTypeLabel, organizationTypeId) {
-    const organizationTypeTrimmed = organizationType ? organizationType.trim() : '';
-    const organizationTypeCurrentStateTrimmed = organizationTypeCurrentState ? organizationTypeCurrentState.trim() : '';
-    const organizationTypeChecked = organizationTypeCurrentStateTrimmed === organizationTypeTrimmed;
+  renderOrganizationType (
+    organizationType,
+    organizationTypeCurrentState,
+    organizationTypeLabel,
+    organizationTypeId,
+  ) {
+    const organizationTypeTrimmed = organizationType ?
+      organizationType.trim() :
+      '';
+    const organizationTypeCurrentStateTrimmed = organizationTypeCurrentState ?
+      organizationTypeCurrentState.trim() :
+      '';
+    const organizationTypeChecked =
+      organizationTypeCurrentStateTrimmed === organizationTypeTrimmed;
     return (
       <div className="form-check create-voter-guide__radio">
         <input
@@ -167,7 +196,10 @@ export default class SettingsWidgetAccountType extends Component {
           type="radio"
           value={organizationType}
         />
-        <label className="form-check-label create-voter-guide__radio-label" htmlFor={organizationTypeId}>
+        <label
+          className="form-check-label create-voter-guide__radio-label"
+          htmlFor={organizationTypeId}
+        >
           {organizationTypeLabel}
         </label>
       </div>
@@ -175,17 +207,19 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   render () {
-    renderLog('SettingsWidgetAccountType');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('SettingsWidgetAccountType'); // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter || !this.state.organization) {
       return LoadingWheel;
     }
 
     return (
-      <div className="">
+      <Wrapper className="">
         <div>
           <h3 className="h3">Type of Profile</h3>
-          <div className="u-gray-mid">{this.state.organizationTypeSavedStatus}</div>
-          { this.state.editFormOpen ? (
+          <div className="u-gray-mid">
+            {this.state.organizationTypeSavedStatus}
+          </div>
+          {this.state.editFormOpen ? (
             <span>
               <div className="create-voter-guide__organization-container">
                 <div className="">
@@ -202,21 +236,73 @@ export default class SettingsWidgetAccountType extends Component {
                     </span>
                   ) : null}
                 </div>
-                {this.renderOrganizationType('I', this.state.organizationType, 'Individual', 'organizationTypeIdIndividual')}
-                {this.renderOrganizationType('C3', this.state.organizationType, 'Nonprofit 501(c)(3)', 'organizationTypeIdC3')}
-                {this.renderOrganizationType('C4', this.state.organizationType, 'Nonprofit 501(c)(4)', 'organizationTypeIdC4')}
-                {this.renderOrganizationType('P', this.state.organizationType, 'Political Action Committee', 'organizationTypeIdPAC')}
-                {this.renderOrganizationType('NP', this.state.organizationType, 'Other Nonprofit', 'organizationTypeIdNonprofit')}
-                {this.renderOrganizationType('G', this.state.organizationType, 'Other Group or Club (10+ people)', 'organizationTypeIdGroup')}
-                {this.renderOrganizationType('PF', this.state.organizationType, 'Politician', 'organizationTypeIdPolitician')}
-                {this.renderOrganizationType('NW', this.state.organizationType, 'News Organization', 'organizationTypeIdNews')}
-                {this.renderOrganizationType('C', this.state.organizationType, 'Company', 'organizationTypeIdCompany')}
-                {this.renderOrganizationType('U', this.state.organizationType, 'Other', 'organizationTypeIdUnknown')}
+                {this.renderOrganizationType(
+                  'I',
+                  this.state.organizationType,
+                  'Individual',
+                  'organizationTypeIdIndividual',
+                )}
+                {this.renderOrganizationType(
+                  'C3',
+                  this.state.organizationType,
+                  'Nonprofit 501(c)(3)',
+                  'organizationTypeIdC3',
+                )}
+                {this.renderOrganizationType(
+                  'C4',
+                  this.state.organizationType,
+                  'Nonprofit 501(c)(4)',
+                  'organizationTypeIdC4',
+                )}
+                {this.renderOrganizationType(
+                  'P',
+                  this.state.organizationType,
+                  'Political Action Committee',
+                  'organizationTypeIdPAC',
+                )}
+                {this.renderOrganizationType(
+                  'NP',
+                  this.state.organizationType,
+                  'Other Nonprofit',
+                  'organizationTypeIdNonprofit',
+                )}
+                {this.renderOrganizationType(
+                  'G',
+                  this.state.organizationType,
+                  'Other Group or Club (10+ people)',
+                  'organizationTypeIdGroup',
+                )}
+                {this.renderOrganizationType(
+                  'PF',
+                  this.state.organizationType,
+                  'Politician',
+                  'organizationTypeIdPolitician',
+                )}
+                {this.renderOrganizationType(
+                  'NW',
+                  this.state.organizationType,
+                  'News Organization',
+                  'organizationTypeIdNews',
+                )}
+                {this.renderOrganizationType(
+                  'C',
+                  this.state.organizationType,
+                  'Company',
+                  'organizationTypeIdCompany',
+                )}
+                {this.renderOrganizationType(
+                  'U',
+                  this.state.organizationType,
+                  'Other',
+                  'organizationTypeIdUnknown',
+                )}
               </div>
             </span>
           ) : (
             <div className="">
-              <span className="u-f4 u-bold">{this.displayOrganizationType(this.state.organizationType)}</span>
+              <span className="u-f4 u-bold">
+                {this.displayOrganizationType(this.state.organizationType)}
+              </span>
               {this.state.showEditToggleOption ? (
                 <span className="">
                   {' '}
@@ -230,12 +316,15 @@ export default class SettingsWidgetAccountType extends Component {
                   </a>
                   )
                 </span>
-              ) : null
-              }
+              ) : null}
             </div>
           )}
         </div>
-      </div>
+      </Wrapper>
     );
   }
 }
+
+const Wrapper = styled.div`
+  margin-top: 20px;
+`;

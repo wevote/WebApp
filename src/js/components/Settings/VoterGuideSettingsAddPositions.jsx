@@ -545,20 +545,33 @@ class VoterGuideSettingsAddPositions extends Component {
       let kindOfBallotItemForPosition;
       return (
         <div className="container">
-          <FilterBase
-            allItems={positionListForOneElection}
-            groupedFilters={groupedFilters}
-            islandFilters={islandFilters}
-            key="currentPositionsFilterBase"
-            onFilteredItemsChange={this.onFilteredItemsChangeFromPositionItemsFilterBase}
-            onSearch={this.onPositionSearch}
-            onToggleSearch={this.handleToggleSearchBallot}
-            selectedFiltersDefault={selectedFiltersCurrentDefault}
-            totalNumberOfItemsFound={totalNumberOfPositionItems}
-          >
-            {/* props get added to this component in FilterBase */}
-            <SettingsSeePositionsFilter />
-          </FilterBase>
+          <PreviewButtonWrapper className="u-show-mobile">
+            <Button
+              classes={{ root: classes.previewButton }}
+              color="primary"
+              id="voterGuideSettingsPositionsSeeFullBallot"
+              onClick={this.goToVoterGuideDisplay}
+              variant="contained"
+            >
+              See Preview&nbsp;&nbsp;&gt;
+            </Button>
+          </PreviewButtonWrapper>
+          <FilterBaseWrapper>
+            <FilterBase
+              allItems={positionListForOneElection}
+              groupedFilters={groupedFilters}
+              islandFilters={islandFilters}
+              key="currentPositionsFilterBase"
+              onFilteredItemsChange={this.onFilteredItemsChangeFromPositionItemsFilterBase}
+              onSearch={this.onPositionSearch}
+              onToggleSearch={this.handleToggleSearchBallot}
+              selectedFiltersDefault={selectedFiltersCurrentDefault}
+              totalNumberOfItemsFound={totalNumberOfPositionItems}
+            >
+              {/* props get added to this component in FilterBase */}
+              <SettingsSeePositionsFilter />
+            </FilterBase>
+          </FilterBaseWrapper>
           {((!isSearching && atLeastOnePositionFoundWithTheseFilters && filteredPositionListForOneElection && filteredPositionListForOneElection.length) || (isSearching && positionSearchResults && positionSearchResults.length)) ? (
             <div>
               <CardChildListGroup className="card-child__list-group">
@@ -644,16 +657,6 @@ class VoterGuideSettingsAddPositions extends Component {
               </EmptyBallotMessageContainer>
             </Card>
           )}
-          <PreviewButtonWrapper>
-            <Button
-              color="primary"
-              id="voterGuideSettingsPositionsSeeFullBallot"
-              onClick={this.goToVoterGuideDisplay}
-              variant="contained"
-            >
-              See Preview&nbsp;&nbsp;&gt;
-            </Button>
-          </PreviewButtonWrapper>
         </div>
       );
     } else {
@@ -680,23 +683,36 @@ class VoterGuideSettingsAddPositions extends Component {
       // console.log('atLeastOnePositionFoundWithTheseFilters: ', atLeastOnePositionFoundWithTheseFilters);
       return (
         <div className="container">
-          <FilterBase
-            key="addPositionsFilterBase"
-            groupedFilters={groupedFilters}
-            islandFilters={islandFilters}
-            allItems={allBallotItems}
-            onSearch={this.onBallotSearch}
-            onFilteredItemsChange={this.onFilteredItemsChangeFromBallotItemsFilterBase}
-            onToggleSearch={this.handleToggleSearchBallot}
-            selectedFiltersDefault={selectedFiltersAddDefault}
-            totalNumberOfItemsFound={totalNumberOfBallotItems}
-          >
-            {/* props get added to this component in FilterBase */}
-            <SettingsAddBallotItemsFilter
-              filtersPassedInOnce={stateCodeToRetrieve ? [stateCodeToRetrieve.toUpperCase()] : []}
-              googleCivicElectionId={localGoogleCivicElectionId}
-            />
-          </FilterBase>
+          <PreviewButtonWrapper className="u-show-mobile">
+            <Button
+              classes={{ root: classes.previewButton }}
+              color="primary"
+              id="voterGuideSettingsPositionsSeeFullBallot"
+              onClick={this.goToVoterGuideDisplay}
+              variant="contained"
+            >
+              See Preview&nbsp;&nbsp;&gt;
+            </Button>
+          </PreviewButtonWrapper>
+          <FilterBaseWrapper>
+            <FilterBase
+              key="addPositionsFilterBase"
+              groupedFilters={groupedFilters}
+              islandFilters={islandFilters}
+              allItems={allBallotItems}
+              onSearch={this.onBallotSearch}
+              onFilteredItemsChange={this.onFilteredItemsChangeFromBallotItemsFilterBase}
+              onToggleSearch={this.handleToggleSearchBallot}
+              selectedFiltersDefault={selectedFiltersAddDefault}
+              totalNumberOfItemsFound={totalNumberOfBallotItems}
+            >
+              {/* props get added to this component in FilterBase */}
+              <SettingsAddBallotItemsFilter
+                filtersPassedInOnce={stateCodeToRetrieve ? [stateCodeToRetrieve.toUpperCase()] : []}
+                googleCivicElectionId={localGoogleCivicElectionId}
+              />
+            </FilterBase>
+          </FilterBaseWrapper>
           {(isSearching && searchText) && (
             <SearchTitle>
               Searching for &quot;
@@ -782,16 +798,6 @@ class VoterGuideSettingsAddPositions extends Component {
                   <CircularProgress />
                 ) : null}
               </LoadingItemsWheel>
-              <PreviewButtonWrapper>
-                <Button
-                  color="primary"
-                  id="voterGuideSettingsPositionsSeeFullBallot"
-                  onClick={this.goToVoterGuideDisplay}
-                  variant="contained"
-                >
-                  See Preview&nbsp;&nbsp;&gt;
-                </Button>
-              </PreviewButtonWrapper>
             </div>
           ) : (
             <Card>
@@ -840,9 +846,13 @@ const EmptyBallotText = styled.p`
   }
 `;
 
+const FilterBaseWrapper = styled.div`
+  margin-top: -12px;
+`;
+
 const PreviewButtonWrapper = styled.div`
   text-align: right;
-  margin: 20px 0;
+  margin-bottom: 2px;
 `;
 
 const LoadingItemsWheel = styled.div`
@@ -881,6 +891,11 @@ const styles = theme => ({
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
+  },
+  previewButton: {
+    height: 27,
+    marginBottom: 3,
+    padding: '2px 16px',
   },
 });
 

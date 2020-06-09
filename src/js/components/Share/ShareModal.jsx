@@ -17,6 +17,7 @@ import {
   FacebookShareButton, TwitterIcon,
   TwitterShareButton,
 } from 'react-share';
+import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { cordovaDot, hasIPhoneNotch } from '../../utils/cordovaUtils';
@@ -90,6 +91,7 @@ class ShareModal extends Component {
       voterIsSignedIn,
     });
     this.openSignInModalIfWeShould(shareModalStep, voterIsSignedIn);
+    AnalyticsActions.saveActionModalShare(VoterStore.electionId());
   }
 
   componentWillUnmount () {
@@ -162,6 +164,33 @@ class ShareModal extends Component {
     }
   }
 
+  saveActionShareButtonCopy = () => {
+    AnalyticsActions.saveActionShareButtonCopy(VoterStore.electionId());
+  }
+
+  saveActionShareButtonEmail = () => {
+    AnalyticsActions.saveActionShareButtonEmail(VoterStore.electionId());
+  }
+
+  saveActionShareButtonFacebook = () => {
+    AnalyticsActions.saveActionShareButtonFacebook(VoterStore.electionId());
+  }
+
+  saveActionShareButtonFriends = () => {
+    const { voterIsSignedIn } = this.state;
+    if (!voterIsSignedIn) {
+      AppActions.setShowSignInModal(true);
+      this.setStep('friends');
+    } else {
+      this.setStep('friends');
+    }
+    AnalyticsActions.saveActionShareButtonFriends(VoterStore.electionId());
+  }
+
+  saveActionShareButtonTwitter = () => {
+    AnalyticsActions.saveActionShareButtonTwitter(VoterStore.electionId());
+  }
+
   doNotIncludeOpinions (shareModalStep) {
     if (stringContains('AllOpinions', shareModalStep)) {
       const newShareModalStep = shareModalStep.replace('AllOpinions', '');
@@ -202,7 +231,7 @@ class ShareModal extends Component {
       return shareModalHtml;
     }
     const developmentFeatureTurnedOn = false;
-    const titleText = 'Check out this cool Ballot tool !!';
+    const titleText = 'This is a website I am using to get ready to vote.';
 
     // let emailSubjectEncoded = '';
     // let emailBodyEncoded = '';
@@ -344,21 +373,16 @@ class ShareModal extends Component {
                     icon={<img src={cordovaDot('../../../img/global/svg-icons/we-vote-icon-square-color.svg')} alt="" />}
                     id="shareWithFriends"
                     noLink
-                    onClickFunction={() => {
-                      if (!voterIsSignedIn) {
-                        AppActions.setShowSignInModal(true);
-                        this.setStep('friends');
-                      } else {
-                        this.setStep('friends');
-                      }
-                    }}
+                    onClickFunction={this.saveActionShareButtonFriends}
                     title="We Vote Friends"
+                    uniqueExternalId="shareModalOption-shareWithFriends"
                   />
                 )}
                 <Wrapper>
                   <FacebookShareButton
                     className="no-decoration"
                     id="shareModalFacebookButton"
+                    onClick={this.saveActionShareButtonFacebook}
                     quote={titleText}
                     url={`${linkToBeSharedUrlEncoded}`}
                     windowWidth={750}
@@ -378,6 +402,7 @@ class ShareModal extends Component {
                   <TwitterShareButton
                     className="no-decoration"
                     id="shareModalTwitterButton"
+                    onClick={this.saveActionShareButtonTwitter}
                     title={titleText}
                     url={`${linkToBeSharedUrlEncoded}`}
                     windowWidth={750}
@@ -395,11 +420,13 @@ class ShareModal extends Component {
                 </Wrapper>
                 <Wrapper>
                   <EmailShareButton
+                    body={`${titleText}`}
                     className="no-decoration"
                     id="shareModalEmailButton"
-                    url={`${linkToBeShared}`}
-                    body={titleText}
+                    beforeOnClick={this.saveActionShareButtonEmail}
+                    openShareDialogOnClick
                     subject="Ready to vote?"
+                    url={`${linkToBeShared}`}
                     windowWidth={750}
                     windowHeight={600}
                   >
@@ -419,7 +446,9 @@ class ShareModal extends Component {
                   icon={<FileCopyOutlinedIcon />}
                   id="copyShareLink"
                   link={linkToBeShared}
+                  onClickFunction={this.saveActionShareButtonCopy}
                   title="Copy Link"
+                  uniqueExternalId="shareModalOption-copyShareLink"
                 />
               </Flex>
             </div>

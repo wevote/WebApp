@@ -307,6 +307,7 @@ class SharedItemModal extends Component {
               classes={{ root: classes.buttonRoot }}
               color="primary"
               id="sharedItemModalContinueButton"
+              onClick={this.closeSharedItemModalLocal}
               style={{ top: `${cordovaNetworkNextButtonTop()}` }}
               variant="contained"
             >

@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { isCordova, isWebApp, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import styled from 'styled-components';
+import { TextField, FormControl, withStyles } from '@material-ui/core';
+import {
+  isCordova,
+  isWebApp,
+  prepareForCordovaKeyboard,
+  restoreStylesAfterCordovaKeyboard,
+} from '../../utils/cordovaUtils';
 import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import LoadingWheel from '../LoadingWheel';
 import FriendActions from '../../actions/FriendActions';
@@ -14,9 +21,9 @@ import { renderLog } from '../../utils/logging';
 const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;
 
-
-export default class SettingsWidgetFirstLastName extends Component {
+class SettingsWidgetFirstLastName extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     displayOnly: PropTypes.bool,
     hideFirstLastName: PropTypes.bool,
     hideNameShownWithEndorsements: PropTypes.bool,
@@ -38,7 +45,9 @@ export default class SettingsWidgetFirstLastName extends Component {
       voterNameSavedStatus: '',
     };
 
-    this.handleKeyPressOrganizationName = this.handleKeyPressOrganizationName.bind(this);
+    this.handleKeyPressOrganizationName = this.handleKeyPressOrganizationName.bind(
+      this,
+    );
     this.handleKeyPressVoterName = this.handleKeyPressVoterName.bind(this);
     this.updateOrganizationName = this.updateOrganizationName.bind(this);
     this.updateVoterName = this.updateVoterName.bind(this);
@@ -47,8 +56,12 @@ export default class SettingsWidgetFirstLastName extends Component {
 
   componentDidMount () {
     this.onVoterStoreChange();
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(
+      this.onOrganizationStoreChange.bind(this),
+    );
+    this.voterStoreListener = VoterStore.addListener(
+      this.onVoterStoreChange.bind(this),
+    );
     const displayOnly = this.props.displayOnly || false;
     this.setState({ displayOnly });
     if (!displayOnly) {
@@ -77,13 +90,20 @@ export default class SettingsWidgetFirstLastName extends Component {
   }
 
   onOrganizationStoreChange () {
-    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    const organization = OrganizationStore.getOrganizationByWeVoteId(
+      this.state.linkedOrganizationWeVoteId,
+    );
     if (organization && organization.organization_type) {
       // While typing 'Tom Smith' in the org field, without the following line, when you get to 'Tom ', autosaving trims and overwrites it to 'Tom' before you can type the 'S'
       // console.log('onOrganizationStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
-      if (organization.organization_name.trim() !== this.state.organizationName.trim()) {
+      if (
+        organization.organization_name.trim() !==
+        this.state.organizationName.trim()
+      ) {
         this.setState({
-          isOrganization: isSpeakerTypeOrganization(organization.organization_type),
+          isOrganization: isSpeakerTypeOrganization(
+            organization.organization_type,
+          ),
           organizationName: organization.organization_name,
         });
       }
@@ -99,7 +119,10 @@ export default class SettingsWidgetFirstLastName extends Component {
         voter,
         voterIsSignedIn,
       });
-      if (!this.state.initialNameLoaded || priorVoterIsSignedIn !== voterIsSignedIn) {
+      if (
+        !this.state.initialNameLoaded ||
+        priorVoterIsSignedIn !== voterIsSignedIn
+      ) {
         this.setState({
           firstName: VoterStore.getFirstName(),
           lastName: VoterStore.getLastName(),
@@ -110,14 +133,24 @@ export default class SettingsWidgetFirstLastName extends Component {
         this.setState({
           linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
         });
-        if (voter.linked_organization_we_vote_id !== this.state.linkedOrganizationWeVoteId) {
-          const organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
+        if (
+          voter.linked_organization_we_vote_id !==
+          this.state.linkedOrganizationWeVoteId
+        ) {
+          const organization = OrganizationStore.getOrganizationByWeVoteId(
+            voter.linked_organization_we_vote_id,
+          );
           if (organization && organization.organization_type) {
             // While typing 'Tom Smith' in the org field, without the following line, when you get to 'Tom ', autosaving trims and overwrites it to 'Tom' before you can type the 'S'
             // console.log('onVoterStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
-            if (organization.organization_name.trim() !== this.state.organizationName.trim()) {
+            if (
+              organization.organization_name.trim() !==
+              this.state.organizationName.trim()
+            ) {
               this.setState({
-                isOrganization: isSpeakerTypeOrganization(organization.organization_type),
+                isOrganization: isSpeakerTypeOrganization(
+                  organization.organization_type,
+                ),
                 organizationName: organization.organization_name,
               });
             }
@@ -136,7 +169,10 @@ export default class SettingsWidgetFirstLastName extends Component {
     }
     if (isWebApp()) {
       this.organizationNameTimer = setTimeout(() => {
-        OrganizationActions.organizationNameSave(this.state.linkedOrganizationWeVoteId, this.state.organizationName);
+        OrganizationActions.organizationNameSave(
+          this.state.linkedOrganizationWeVoteId,
+          this.state.organizationName,
+        );
         this.setState({ organizationNameSavedStatus: 'Saved' });
       }, delayBeforeApiUpdateCall);
     }
@@ -162,7 +198,9 @@ export default class SettingsWidgetFirstLastName extends Component {
     if (event.target.name === 'organizationName') {
       this.setState({
         organizationName: event.target.value,
-        organizationNameSavedStatus: isWebApp() ? 'Saving Organization Name...' : '',
+        organizationNameSavedStatus: isWebApp() ?
+          'Saving Organization Name...' :
+          '',
       });
     }
     if (isWebApp()) {
@@ -177,8 +215,14 @@ export default class SettingsWidgetFirstLastName extends Component {
   saveNameCordova () {
     restoreStylesAfterCordovaKeyboard('SettingsWidgetFirstLastName');
     VoterActions.voterNameSave(this.state.firstName, this.state.lastName);
-    if (!this.props.hideNameShownWithEndorsements && this.state.organizationName.length) {
-      OrganizationActions.organizationNameSave(this.state.linkedOrganizationWeVoteId, this.state.organizationName);
+    if (
+      !this.props.hideNameShownWithEndorsements &&
+      this.state.organizationName.length
+    ) {
+      OrganizationActions.organizationNameSave(
+        this.state.linkedOrganizationWeVoteId,
+        this.state.organizationName,
+      );
     }
     this.setState({
       voterNameSavedStatus: 'Saved',
@@ -208,12 +252,21 @@ export default class SettingsWidgetFirstLastName extends Component {
   }
 
   render () {
-    renderLog('SettingsWidgetFirstLastName');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('SettingsWidgetFirstLastName'); // Set LOG_RENDER_EVENTS to log all renders
     if (!this.state.voter) {
       return LoadingWheel;
     }
 
-    const { displayOnly, firstName, isOrganization, lastName, organizationName, organizationNameSavedStatus, voterNameSavedStatus } = this.state;
+    const {
+      displayOnly,
+      firstName,
+      isOrganization,
+      lastName,
+      organizationName,
+      organizationNameSavedStatus,
+      voterNameSavedStatus,
+    } = this.state;
+    const { classes } = this.props;
 
     return (
       <div className="">
@@ -225,7 +278,11 @@ export default class SettingsWidgetFirstLastName extends Component {
                   <div>{organizationName}</div>
                 </div>
               ) : (
-                <form onSubmit={(e) => { e.preventDefault(); }}>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                  }}
+                >
                   <label htmlFor="organization-name">
                     Organization Name as Shown on Your Voter Guides
                     <input
@@ -240,7 +297,9 @@ export default class SettingsWidgetFirstLastName extends Component {
                       value={organizationName}
                     />
                   </label>
-                  <div className="u-gray-mid">{organizationNameSavedStatus}</div>
+                  <div className="u-gray-mid">
+                    {organizationNameSavedStatus}
+                  </div>
                 </form>
               )}
             </span>
@@ -258,60 +317,81 @@ export default class SettingsWidgetFirstLastName extends Component {
                   )}
                 </div>
               ) : (
-                <form onSubmit={(e) => { e.preventDefault(); }}>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                  }}
+                >
                   {!this.props.hideFirstLastName && (
                     <span>
-                      <label htmlFor="first-name">
-                        First Name
-                        <input
-                          type="text"
-                          autoComplete="given-name"
-                          className="form-control"
-                          id="first-name"
-                          name="firstName"
-                          placeholder="First Name"
-                          onKeyDown={this.handleKeyPressVoterName}
-                          onChange={this.updateVoterName}
-                          value={firstName}
-                        />
-                      </label>
-                      <label htmlFor="last-name">
-                        Last Name
-                        <input
-                          type="text"
-                          autoComplete="family-name"
-                          className="form-control"
-                          id="last-name"
-                          name="lastName"
-                          placeholder="Last Name"
-                          onKeyDown={this.handleKeyPressVoterName}
-                          onChange={this.updateVoterName}
-                          value={lastName}
-                        />
-                      </label>
+                      <Row>
+                        <Column>
+                          <FormControl classes={{ root: classes.formControl }}>
+                            <Label>First Name</Label>
+                            <StyledTextField
+                              type="text"
+                              // className={classes.input}
+                              margin="dense"
+                              variant="outlined"
+                              autoComplete="given-name"
+                              id="first-name"
+                              name="firstName"
+                              placeholder="First Name"
+                              onKeyDown={this.handleKeyPressVoterName}
+                              onChange={this.updateVoterName}
+                              value={firstName}
+                            />
+                          </FormControl>
+                        </Column>
+                        <Column>
+                          <FormControl classes={{ root: classes.formControl }}>
+                            <Label>Last Name</Label>
+                            <StyledTextField
+                              type="text"
+                              margin="dense"
+                              variant="outlined"
+                              autoComplete="family-name"
+                              id="last-name"
+                              name="lastName"
+                              placeholder="Last Name"
+                              onKeyDown={this.handleKeyPressVoterName}
+                              onChange={this.updateVoterName}
+                              value={lastName}
+                            />
+                          </FormControl>
+                        </Column>
+                      </Row>
                       <div className="u-gray-mid">{voterNameSavedStatus}</div>
                     </span>
                   )}
                   {!this.props.hideNameShownWithEndorsements && (
-                    <>
-                      <label htmlFor="organization-name">
-                        Name Shown with Endorsements
-                        <input
-                          type="text"
-                          autoComplete="organization"
-                          className="form-control"
-                          id="organization-name"
-                          name="organizationName"
-                          placeholder="How would you like your name displayed publicly?"
-                          onKeyDown={this.handleKeyPressOrganizationName}
-                          onChange={this.updateOrganizationName}
-                          value={organizationName}
-                        />
-                      </label>
-                      <div className="u-gray-mid">{organizationNameSavedStatus}</div>
-                    </>
+                    <Row>
+                      <Column>
+                        <FormControl classes={{ root: classes.formControl }}>
+                          <Label htmlFor="organization-name">
+                            Name Shown with Endorsements
+                          </Label>
+                          <StyledTextField
+                            type="text"
+                            margin="dense"
+                            autoComplete="organization"
+                            variant="outlined"
+                            id="organization-name"
+                            name="organizationName"
+                            placeholder="How would you like your name displayed publicly?"
+                            onKeyDown={this.handleKeyPressOrganizationName}
+                            onChange={this.updateOrganizationName}
+                            value={organizationName}
+                          />
+                        </FormControl>
+                      </Column>
+                      <Column />
+                      <div className="u-gray-mid">
+                        {organizationNameSavedStatus}
+                      </div>
+                    </Row>
                   )}
-                  { isCordova() && (
+                  {isCordova() && (
                     <Button
                       color="primary"
                       id="firstLastSaveButton"
@@ -331,3 +411,41 @@ export default class SettingsWidgetFirstLastName extends Component {
     );
   }
 }
+
+const styles = () => ({
+  formControl: {
+    // width: '50%',
+    // margin: '12px',
+    // marginBottom: '12px',
+    width: '100%',
+  },
+  input: {
+    padding: '12px',
+  },
+});
+
+const Row = styled.div`
+  width: calc(100% + 24px);
+  margin-left: -12px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Column = styled.div`
+  padding: 6px 12px;
+  width: 50%;
+`;
+
+const Label = styled.label`
+  margin-bottom: 4px;
+  display: block;
+`;
+
+const StyledTextField = styled(TextField)`
+  * {
+    margin: 0 !important;
+  }
+  margin: 0 !important;
+`;
+
+export default withStyles(styles)(SettingsWidgetFirstLastName);

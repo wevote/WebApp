@@ -6,10 +6,7 @@ import AppActions from './actions/AppActions';
 import AppStore from './stores/AppStore';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
-import {
-  getToastClass, historyPush, isCordova, isIOS, isWebApp,
-  prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard,
-} from './utils/cordovaUtils';
+import { getToastClass, historyPush, isCordova, isWebApp } from './utils/cordovaUtils';
 import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
 import displayFriendsTabs from './utils/displayFriendsTabs';
 import ElectionActions from './actions/ElectionActions';
@@ -22,7 +19,7 @@ import ShareButtonFooter from './components/Share/ShareButtonFooter';
 import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
 import SnackNotifier from './components/Widgets/SnackNotifier';
 import { stringContains } from './utils/textFormat';
-import TwitterSignIn from './components/Twitter/TwitterSignIn';
+import { initializationForCordova, removeCordovaSpecificListeners } from './startCordova';
 import VoterActions from './actions/VoterActions';
 import VoterStore from './stores/VoterStore';
 import webAppConfig from './config';
@@ -48,7 +45,9 @@ class Application extends Component {
     console.log('React Application ---------------   componentDidMount () hostname: ', hostname);
     polyfillObjectEntries();
     this.initializeFacebookSdkForJavascript();
-    this.initializationForCordova();
+    if (isCordova()) {
+      initializationForCordova();
+    }
 
     const voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
@@ -62,16 +61,7 @@ class Application extends Component {
 
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    if (isWebApp()) {
-      // disabled for cordova June 2019, see note in https://github.com/wevote/WebApp/pull/2303
-      window.addEventListener('scroll', this.handleWindowScroll);
-    }
-
-    if (isIOS()) {
-      // Unfortunately this event only works on iOS, but fortunately it is most needed on iOS
-      window.addEventListener('keyboardWillShow', this.localPrepareForCordovaKeyboard);
-      window.addEventListener('keyboardDidHide', this.localRestoreStylesAfterCordovaKeyboard);
-    }
+    window.addEventListener('scroll', this.handleWindowScroll);
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -107,18 +97,8 @@ class Application extends Component {
     this.appStoreListener.remove();
     this.voterStoreListener.remove();
     window.removeEventListener('scroll', this.handleWindowScroll);
-    if (isIOS()) {
-      window.removeEventListener('keyboardWillShow', this.localPrepareForCordovaKeyboard);
-      window.removeEventListener('keyboardDidHide', this.localRestoreStylesAfterCordovaKeyboard);
-    }
-  }
-
-  initializationForCordova () { // eslint-disable-line
     if (isCordova()) {
-      console.log('Application initializationForCordova ------------');
-      window.handleOpenURL = (url) => {
-        TwitterSignIn.handleTwitterOpenURL(url);
-      };
+      removeCordovaSpecificListeners();
     }
   }
 
@@ -217,14 +197,6 @@ class Application extends Component {
       AppActions.setScrolled(false);
     }
   };
-
-  localPrepareForCordovaKeyboard () {
-    prepareForCordovaKeyboard('ballot');
-  }
-
-  localRestoreStylesAfterCordovaKeyboard () {
-    restoreStylesAfterCordovaKeyboard('ballot');
-  }
 
   incomingVariableManagement () {
     // console.log('Application, incomingVariableManagement, this.props.location.query: ', this.props.location.query);
@@ -387,7 +359,7 @@ class Application extends Component {
             </div>
           </Wrapper>
           {showFooterBar && (
-            <div className="footroom-wrapper">
+            <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )}
@@ -413,7 +385,7 @@ class Application extends Component {
             </div>
           </Wrapper>
           {showFooterBar && (
-            <div className="footroom-wrapper">
+            <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )}
@@ -462,7 +434,7 @@ class Application extends Component {
             </Wrapper>
           )}
         {showFooterBar && (
-          <div className="footroom-wrapper">
+          <div className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>
         )}

@@ -1,19 +1,19 @@
 import { browserHistory, hashHistory } from 'react-router';
-import { cordovaOffsetLog, oAuthLog } from './logging';
 import showBallotDecisionsTabs from './showBallotDecisionsTabs'; // eslint-disable-line import/no-cycle
-import { stringContains } from './textFormat';
 import webAppConfig from '../config';
+import { cordovaOffsetLog, oAuthLog } from './logging';
+import { stringContains } from './textFormat';
 
 /* global $  */
 
-export function isWebApp () {
-  const { cordova } = window;
-  return cordova === undefined;
-}
 
 export function isCordova () {
-  const { cordova } = window;
-  return cordova !== undefined;
+  const { isCordovaGlobal } = window;
+  return isCordovaGlobal === true;
+}
+
+export function isWebApp () {
+  return !isCordova();
 }
 
 // see https://github.com/ReactTraining/react-router/blob/v3/docs/guides/Histories.md
@@ -32,7 +32,8 @@ export function historyPush (route) {
 // images that are not yet on the production servers
 export function cordovaDot (path) {
   if (isCordova()) {
-    return `${webAppConfig.WE_VOTE_IMAGE_PATH_FOR_CORDOVA}${path}`;
+    const { WE_VOTE_IMAGE_PATH_FOR_CORDOVA: imgPath } = webAppConfig;
+    return `${imgPath}${path}`;
   } else {
     return path;
   }
@@ -419,11 +420,14 @@ if (isSimulator()) {
 
 export const enums = {
   ballotVote: 1,
-  moreAbout: 2,
-  moreHamburger: 3,
-  moreTools: 4,
-  moreTerms: 5,
-  valuesList: 6,
+  moreAccount: 2,
+  moreAbout: 3,
+  moreHamburger: 4,
+  settingsSubscription: 5,
+  settingsVoterGuideList: 6,
+  moreTools: 7,
+  moreTerms: 8,
+  valuesList: 9,
   officeWild: 100,
   settingsWild: 101,
   wevoteintroWild: 102,
@@ -455,10 +459,16 @@ export function pageEnumeration () {
   } else if (href.indexOf('/index.html#/more/privacy') > 0 ||
              href.indexOf('/index.html#/more/terms') > 0) {
     return enums.moreTerms;
+  } else if (href.indexOf('/index.html#/settings/account') > 0) {
+    return enums.moreAccount;
   } else if (href.indexOf('/index.html#/settings/hamburger') > 0) {
     return enums.moreHamburger;
   } else if (href.indexOf('/index.html#/settings/tools') > 0) {
     return enums.moreTools;
+  } else if (href.indexOf('/index.html#/settings/subscription') > 0) {
+    return enums.settingsSubscription;
+  } else if (href.indexOf('/index.html#/settings/voterguidelist') > 0) {
+    return enums.settingsVoterGuideList;
   } else if (href.indexOf('/index.html#/values/list') > 0) {
     return enums.valuesList;
 
@@ -528,6 +538,7 @@ export function getToastClass () {
 export function prepareForCordovaKeyboard (callerString) {
   if (callerString && isCordova()) {
     const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
+    console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
     cordovaOffsetLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
     $('#app').removeClass('app-wrapper').addClass('app-wrapper__cordova');
     $('body').css('height', '');
@@ -562,3 +573,28 @@ export function blurTextFieldAndroid () {
     restoreStylesAfterCordovaKeyboard('AddFriendsByEmail');
   }
 }
+
+
+export function chipLabelText (fullLabel) {
+  if (isWebApp() && window.innerWidth < 350) { // iPhone SE/SE2/5 in Web Browser
+    if (fullLabel === 'Federal') {
+      return 'Fed';
+    } else if (fullLabel === 'State') {
+      return 'St';
+    } else if (fullLabel === 'Measure') {
+      return 'Meas';
+    } else if (fullLabel === 'Local') {
+      return 'Loc';
+    }
+  } else if (isWebApp() && window.innerWidth < 400) { // iPhone 6/7/8 in Web Browser
+    if (fullLabel === 'Federal') {
+      return 'Fed';
+    }
+  } else if (isCordova() && window.innerWidth < 400) { // iPhone SE/SE2/5 in Cordova
+    if (fullLabel === 'Federal') {
+      return 'Fed';
+    }
+  }
+  return fullLabel;
+}
+

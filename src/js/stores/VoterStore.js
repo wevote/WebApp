@@ -49,7 +49,7 @@ class VoterStore extends ReduceStore {
   }
 
   electionId () {
-    return this.getState().latestGoogleCivicElectionId;
+    return this.getState().latestGoogleCivicElectionId || 0;
   }
 
   getTextForMapSearch () {
@@ -647,6 +647,15 @@ class VoterStore extends ReduceStore {
         if (incomingVoter.linked_organization_we_vote_id) {
           OrganizationActions.organizationRetrieve(incomingVoter.linked_organization_we_vote_id);
         }
+        if (incomingVoter.signed_in_with_apple) {
+          // Completing the logical OR that can't be conveniently made in the server, since Sign in with Apple is device_id specific
+          incomingVoter.is_signed_in = incomingVoter.signed_in_with_apple;
+          const { voter_photo_url_medium: statePhotoMed } = state.voter;
+          const { voter_photo_url_medium: incomingPhotoMed } = incomingVoter;
+          if (!statePhotoMed && !incomingPhotoMed) {
+            incomingVoter.voter_photo_url_medium = 'https://quality.wevote.us/img/global/logos/Apple-01.svg';  // TODO: Switch over to wevote.us once PR is in
+          }
+        }
 
         return {
           ...state,
@@ -747,6 +756,27 @@ class VoterStore extends ReduceStore {
             voterSecretCodeRequestsLocked,
           },
         };
+
+      case 'appleSignInSave':
+        if (action.res.success) {
+          // eslint-disable-next-line camelcase
+          const { first_name, middle_name, last_name, email, user_code: appleUserCode } = action.res;
+          VoterActions.voterRetrieve();
+          return {
+            ...state,
+            voter: {
+              first_name,
+              middle_name,
+              last_name,
+              email,
+              appleUserCode,
+              signed_in_with_apple: true,
+            },
+          };
+        } else {
+          console.log('Received a bad response from appleSignInSave API call');
+          return state;
+        }
 
       case 'error-voterRetrieve' || 'error-voterAddressRetrieve' || 'error-voterAddressSave':
         // console.log('VoterStore action', action);

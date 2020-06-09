@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import FollowToggle from '../Widgets/FollowToggle';
 import MeasureStore from '../../stores/MeasureStore';
@@ -8,8 +9,9 @@ import VoterGuideDisplayForList from './VoterGuideDisplayForList';
 import { renderLog } from '../../utils/logging';
 import EndorsementCard from '../Widgets/EndorsementCard';
 import { openSnackbar } from '../Widgets/SnackNotifier';
+import ShowMoreItems from '../Widgets/ShowMoreItems';
 
-export default class GuideList extends Component {
+class GuideList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     incomingVoterGuideList: PropTypes.array,
@@ -23,7 +25,10 @@ export default class GuideList extends Component {
       voterGuideList: [],
       voterGuideListCount: 0,
       ballotItemWeVoteId: '',
+      loadingMoreItems: false,
+      numberOfItemsToDisplay: 10,
     };
+    this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
@@ -49,6 +54,7 @@ export default class GuideList extends Component {
         filteredOrganizationsWithPositionsCount,
       });
     });
+    window.addEventListener('scroll', this.onScroll);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -77,17 +83,49 @@ export default class GuideList extends Component {
     });
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.filteredOrganizationsWithPositionsCount !== nextState.filteredOrganizationsWithPositionsCount) {
-      return true;
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   if (this.state.filteredOrganizationsWithPositionsCount !== nextState.filteredOrganizationsWithPositionsCount) {
+  //     return true;
+  //   }
+  //   if (this.state.voterGuideListCount !== nextState.voterGuideListCount) {
+  //     return true;
+  //   }
+  //   if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  componentWillUnmount () {
+    if (this.ballotItemTimer) {
+      clearTimeout(this.ballotItemTimer);
+      this.ballotItemTimer = null;
     }
-    if (this.state.voterGuideListCount !== nextState.voterGuideListCount) {
-      return true;
+    window.removeEventListener('scroll', this.onScroll);
+  }
+
+  onScroll () {
+    const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
+    // console.log('showMoreItemsElement: ', showMoreItemsElement);
+    // console.log('loadingMoreItems: ', this.state.loadingMoreItems);
+    if (showMoreItemsElement) {
+      const {
+        numberOfItemsToDisplay, filteredOrganizationsWithPositionsCount,
+      } = this.state;
+
+      // console.log('window.height: ', window.innerHeight);
+      // console.log('Bottom: ', showMoreItemsElement.getBoundingClientRect().bottom);
+      // console.log('numberOfItemsToDisplay: ', numberOfItemsToDisplay);
+      // console.log('totalNumberOfBallotItems: ', filteredOrganizationsWithPositionsCount);
+      if (numberOfItemsToDisplay < filteredOrganizationsWithPositionsCount) {
+        if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
+          this.setState({ loadingMoreItems: true });
+          this.increaseNumberOfItemsToDisplay();
+        }
+      } else {
+        this.setState({ loadingMoreItems: false });
+      }
     }
-    if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
-      return true;
-    }
-    return false;
   }
 
   getOrganizationsWithPositions = () => this.state.voterGuideList.map((organization) => {
@@ -100,6 +138,20 @@ export default class GuideList extends Component {
     }
     return { ...organizationPositionForThisBallotItem, ...organization };
   });
+
+  increaseNumberOfItemsToDisplay = () => {
+    let { numberOfItemsToDisplay } = this.state;
+    // console.log('Number of ballot items before increment: ', numberOfItemsToDisplay);
+
+    numberOfItemsToDisplay += 5;
+    // console.log('Number of ballot items after increment: ', numberOfItemsToDisplay);
+
+    this.ballotItemTimer = setTimeout(() => {
+      this.setState({
+        numberOfItemsToDisplay,
+      });
+    }, 500);
+  }
 
   sortOrganizations (organizationsList, ballotItemWeVoteId) {
     // console.log('sortOrganizations: ', organizationsList, 'ballotItemWeVoteId: ', ballotItemWeVoteId);
@@ -151,14 +203,14 @@ export default class GuideList extends Component {
 
   render () {
     renderLog('GuideList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { filteredOrganizationsWithPositions } = this.state;
+    const { filteredOrganizationsWithPositions, filteredOrganizationsWithPositionsCount, loadingMoreItems, numberOfItemsToDisplay, voterGuideListCount } = this.state;
     if (filteredOrganizationsWithPositions === undefined) {
       // console.log('GuideList this.state.organizations_to_follow === undefined');
       return null;
     }
 
-    // console.log('GuideList voterGuideList: ', this.state.voterGuideList);
-
+    // console.log('GuideList voterGuideList: ', voterGuideListCount, filteredOrganizationsWithPositionsCount, loadingMoreItems);
+    let numberOfItemsDisplayed = 0;
     if (!filteredOrganizationsWithPositions) {
       return (
         <div className="guidelist card-child__list-group">
@@ -178,26 +230,48 @@ export default class GuideList extends Component {
       );
     }
     return (
-      <div className="guidelist card-child__list-group">
-        {filteredOrganizationsWithPositions.map((organization) => {
-          const handleIgnoreFunc = () => {
-            this.handleIgnore(organization.organization_we_vote_id);
-          };
-
-          return (
-            <VoterGuideDisplayForList
-              key={organization.organization_we_vote_id}
-              {...organization}
-            >
-              <FollowToggle
-                  organizationWeVoteId={organization.organization_we_vote_id}
-                  handleIgnore={handleIgnoreFunc}
+      <div>
+        {(filteredOrganizationsWithPositions.length && voterGuideListCount) ? (
+          <div className="guidelist card-child__list-group">
+            {filteredOrganizationsWithPositions.map((organization) => {
+              const handleIgnoreFunc = () => {
+                this.handleIgnore(organization.organization_we_vote_id);
+              };
+              if (organization) {
+                if (numberOfItemsDisplayed >= numberOfItemsToDisplay) {
+                  return null;
+                }
+                numberOfItemsDisplayed += 1;
+              }
+              // console.log('GuideList render', numberOfItemsDisplayed, numberOfItemsToDisplay);
+              return (
+                <VoterGuideDisplayForList
+                  key={organization.organization_we_vote_id}
+                  {...organization}
+                >
+                  <FollowToggle
+                    organizationWeVoteId={organization.organization_we_vote_id}
+                    handleIgnore={handleIgnoreFunc}
+                  />
+                </VoterGuideDisplayForList>
+              );
+            })
+            }
+            <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfItemsToDisplay}>
+              <ShowMoreItems
+                loadingMoreItemsNow={loadingMoreItems}
+                numberOfItemsDisplayed={numberOfItemsDisplayed}
+                numberOfItemsTotal={filteredOrganizationsWithPositionsCount}
               />
-            </VoterGuideDisplayForList>
-          );
-        })
-        }
+            </ShowMoreItemsWrapper>
+          </div>
+        ) : null}
       </div>
     );
   }
 }
+
+const ShowMoreItemsWrapper = styled.div`
+`;
+
+export default (GuideList);

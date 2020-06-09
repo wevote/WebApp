@@ -226,7 +226,7 @@ const styles = theme => ({
     right: 'unset !important',
     bottom: 'unset !important',
     width: '100%',
-    zIndex: '9010 !important',
+    // zIndex: '9010 !important',
   },
   dialogPaper: isWebApp() ? {
     [theme.breakpoints.down('sm')]: {
@@ -292,7 +292,7 @@ const styles = theme => ({
   },
   signInModalDialogLarger: {
     bottom: 'unset',
-    top: 'unset',
+    top: '180px',
   },
   dialogContent: {
     [theme.breakpoints.down('md')]: {

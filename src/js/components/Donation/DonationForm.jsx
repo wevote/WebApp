@@ -25,11 +25,6 @@ export default class DonationForm extends Component {
     this.configureStripe();
   }
 
-  // componentWillReceiveProps (nextProps) {
-  //   // console.log('DonationForm componentWillReceiveProps');
-  //   this.configureStripe();
-  // }
-
   componentWillUnmount () {
     if (this.stripeHandler) {
       this.stripeHandler.close();

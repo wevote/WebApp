@@ -116,39 +116,6 @@ class MeasureItemCompressed extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
-  // componentWillReceiveProps (nextProps) {
-  //   // console.log('componentWillReceiveProps, measureWeVoteId: ', nextProps.measureWeVoteId);
-  //   const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organizationWeVoteId;
-  //   const measure = MeasureStore.getMeasure(nextProps.measureWeVoteId);
-  //   if (nextProps.measureWeVoteId && !this.localPositionListHasBeenRetrievedOnce(nextProps.measureWeVoteId) && !BallotStore.positionListHasBeenRetrievedOnce(nextProps.measureWeVoteId)) {
-  //     MeasureActions.positionListForBallotItemPublic(nextProps.measureWeVoteId);
-  //     const { positionListHasBeenRetrievedOnce } = this.state;
-  //     positionListHasBeenRetrievedOnce[nextProps.measureWeVoteId] = true;
-  //     this.setState({
-  //       positionListHasBeenRetrievedOnce,
-  //     });
-  //   }
-  //   this.setState({
-  //     ballotItemDisplayName: measure.ballot_item_display_name,
-  //     localUniqueId: nextProps.measureWeVoteId,
-  //     measure,
-  //     // measureSubtitle: measure.measure_subtitle,
-  //     measureText: measure.measure_text,
-  //     measureWeVoteId: nextProps.measureWeVoteId,
-  //     noVoteDescription: measure.no_vote_description,
-  //     yesVoteDescription: measure.yes_vote_description,
-  //     organizationWeVoteId,
-  //   });
-  //   const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(nextProps.measureWeVoteId);
-  //   if (ballotItemStatSheet) {
-  //     const { numberOfOpposePositionsForScore, numberOfSupportPositionsForScore } = ballotItemStatSheet;
-  //     this.setState({
-  //       numberOfOpposePositionsForScore,
-  //       numberOfSupportPositionsForScore,
-  //     });
-  //   }
-  // }
-
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {

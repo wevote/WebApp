@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import SettingsIcon from '@material-ui/icons/Settings';
+import { withStyles } from '@material-ui/core/styles';
+import styled from 'styled-components';
 import AddressBox from '../AddressBox';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
-export default class EditAddressInPlace extends Component {
+class EditAddressInPlace extends Component {
   static propTypes = {
     address: PropTypes.object.isRequired,
     ballotBaseUrl: PropTypes.string,
+    classes: PropTypes.object,
+    defaultIsEditingAddress: PropTypes.bool,
     noAddressMessage: PropTypes.string,
     pathname: PropTypes.string,
+    toggleEditingAddress: PropTypes.func,
     toggleFunction: PropTypes.func.isRequired,
-    defaultIsEditingAddress: PropTypes.bool,
-    cancelButtonAction: PropTypes.func,
   };
 
   constructor (props, context) {
@@ -27,7 +30,7 @@ export default class EditAddressInPlace extends Component {
   }
 
   componentDidMount () {
-    // console.log("In EditAddressInPlace componentDidMount");
+    // console.log('In EditAddressInPlace componentDidMount');
     this.setState({
       editingAddress: this.props.defaultIsEditingAddress,
       textForMapSearch: this.props.address.text_for_map_search || '',
@@ -35,18 +38,10 @@ export default class EditAddressInPlace extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("EditAddressInPlace componentWillReceiveProps");
+    // console.log('EditAddressInPlace componentWillReceiveProps');
     this.setState({
       textForMapSearch: nextProps.address.text_for_map_search || '',
     });
-  }
-
-  incomingCancelButtonAction = () => {
-    if (this.props.cancelButtonAction) {
-      this.props.cancelButtonAction(this.props.pathname);
-      return true;
-    }
-    return false;
   }
 
   incomingToggleFunction = () => {
@@ -57,12 +52,15 @@ export default class EditAddressInPlace extends Component {
 
   toggleEditingAddress () {
     const { editingAddress } = this.state;
+    if (this.props.toggleEditingAddress) {
+      this.props.toggleEditingAddress();
+    }
     if (isWebApp()) {
       this.setState({
         editingAddress: !editingAddress,
       });
     } else {
-      // The scrolling pane within the Modal causes an "[LayoutConstraints] Unable to simultaneously satisfy constraints."
+      // The scrolling pane within the Modal causes an '[LayoutConstraints] Unable to simultaneously satisfy constraints.'
       // error in Cordova, when you try to expand it to fit for entering text in the address box, and Cordova messes up
       // the display as in https://github.com/wevote/WeVoteCordova/issues/52  So instead use the non modal version in
       // the settings/location route.
@@ -73,41 +71,63 @@ export default class EditAddressInPlace extends Component {
 
   render () {
     renderLog('EditAddressInPlace');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes } = this.props;
+    const { editingAddress, textForMapSearch } = this.state;
     const noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : '- no address entered -';
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
 
-    if (this.state.editingAddress) {
+    if (editingAddress) {
       return (
         <span>
           <h4 className="h4">Your Address</h4>
           <AddressBox
-            cancelEditAddress={this.incomingCancelButtonAction ? this.incomingCancelButtonAction : this.toggleEditingAddress}
+            showCancelEditAddressButton
+            toggleEditingAddress={this.toggleEditingAddress}
             saveUrl={ballotBaseUrl}
             toggleSelectAddressModal={this.props.toggleFunction}
+            editingAddress={editingAddress}
           />
         </span>
       );
     } else {
       return (
-        <span>
-          <h4 className="h4">Your Address</h4>
-          <span className="ballot__edit-address-preview">
-            { this.state.textForMapSearch.length ? shortenText(this.state.textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }
+        <SettingsIconWrapper
+          id="editAddressInPlaceModalEditButton"
+          onClick={this.toggleEditingAddress}
+        >
+          <EditAddressPreview>
+            { textForMapSearch.length ? shortenText(textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }
             {' '}
-          </span>
-          <span className="d-print-none ballot__edit-address-preview-link u-padding-left--sm">
-            <Button
-              variant="contained"
-              color="primary"
-              id="editAddressInPlaceModalEditButton"
-              onClick={this.toggleEditingAddress}
-            >
-              Edit
-            </Button>
-          </span>
-        </span>
+          </EditAddressPreview>
+          <SettingsIcon classes={{ root: classes.settingsIcon }} />
+        </SettingsIconWrapper>
       );
     }
   }
 }
+
+const styles = {
+  settingsIcon: {
+    color: '#999',
+    marginTop: '-5px',
+    marginLeft: '3px',
+    width: 16,
+    height: 16,
+  },
+  tooltipPlacementBottom: {
+    marginTop: 0,
+  },
+};
+
+const EditAddressPreview = styled.span`
+  font-size: 1.1rem;
+  font-weight: bold;
+`;
+
+const SettingsIconWrapper = styled.div`
+  margin-left: 15px;
+  margin-right: 15px;
+`;
+
+export default withStyles(styles)(EditAddressInPlace);

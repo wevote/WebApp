@@ -136,42 +136,6 @@ class CandidateForDrawer extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
-    // DALE 2019-12-30 I suspect this isn't used. Commented out now, but we can delete as soon as 100% sure.
-    // console.log('Candidate componentWillReceiveProps');
-    // When a new candidate is passed in, update this component to show the new data
-    if (nextProps.params.candidate_we_vote_id !== this.state.candidateWeVoteId) {
-      console.log('Candidate componentWillReceiveProps candidate_we_vote_id CHANGED');
-      // const { candidate_we_vote_id: candidateWeVoteId } = nextProps.params;
-      // CandidateActions.candidateRetrieve(candidateWeVoteId);
-      // if (candidateWeVoteId &&
-      //   !this.localPositionListHasBeenRetrievedOnce(candidateWeVoteId) &&
-      //   !BallotStore.positionListHasBeenRetrievedOnce(candidateWeVoteId)
-      // ) {
-      //   CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
-      //   const { positionListHasBeenRetrievedOnce } = this.state;
-      //   positionListHasBeenRetrievedOnce[candidateWeVoteId] = true;
-      //   this.setState({
-      //     positionListHasBeenRetrievedOnce,
-      //   });
-      // }
-      // // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateWeVoteId, 'CANDIDATE');
-      //
-      // // getAllCachedPositionsByCandidateWeVoteId returns a dict with organization_we_vote_id as the key
-      // // We convert to a simple list..
-      // const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
-      // let allCachedPositionsForThisCandidateLength = 0;
-      // if (allCachedPositionsForThisCandidate) {
-      //   allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length;
-      // }
-      // this.setState({
-      //   candidateWeVoteId,
-      //   allCachedPositionsForThisCandidate,
-      //   allCachedPositionsForThisCandidateLength,
-      // });
-    }
-  }
-
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.allCachedPositionsForThisCandidateLength !== nextState.allCachedPositionsForThisCandidateLength) {

@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
+import AnalyticsActions from '../actions/AnalyticsActions';
 import AppStore from '../stores/AppStore';
 import BallotActions from '../actions/BallotActions';
 import BallotStore from '../stores/BallotStore';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
-import { historyPush } from '../utils/cordovaUtils';
+import { historyPush, isWebApp } from '../utils/cordovaUtils';
 import LoadingWheel from '../components/LoadingWheel';
 import PledgeToVote from '../components/Ready/PledgeToVote';
 import ReadMore from '../components/Widgets/ReadMore';
+import ReadyActions from '../actions/ReadyActions';
 import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
@@ -40,7 +42,9 @@ class Ready extends Component {
     if (!BallotStore.ballotFound) {
       // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
       BallotActions.voterBallotItemsRetrieve(0, '', '');
-    }    // AnalyticsActions.saveActionNetwork(VoterStore.electionId());
+    }
+    ReadyActions.voterPlansForVoterRetrieve();
+    AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
   }
 
   componentWillUnmount () {
@@ -77,7 +81,7 @@ class Ready extends Component {
 
     return (
       <div className="page-content-container">
-        <PageContainer className="container-fluid">
+        <PageContainer className="container-fluid" isWeb={isWebApp()}>
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
@@ -106,11 +110,9 @@ class Ready extends Component {
               <ReadyTaskBallot
                 arrowsOn
               />
-              {nextReleaseFeaturesEnabled && (
-                <ReadyTaskPlan
-                  arrowsOn
-                />
-              )}
+              <ReadyTaskPlan
+                arrowsOn
+              />
               {nextReleaseFeaturesEnabled && (
                 <ReadyTaskRegister
                   arrowsOn
@@ -163,7 +165,7 @@ const EditAddressWrapper = styled.div`
 `;
 
 const PageContainer = styled.div`
-  padding-top: 0 !important;
+  padding-top: ${({ isWeb }) => (isWeb ? '0 !important' : '56px !important')};  // SE2: 56px, 11 Pro Max: 56px
 `;
 
 const Title = styled.h2`

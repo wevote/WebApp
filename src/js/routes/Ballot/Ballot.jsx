@@ -25,8 +25,9 @@ import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 import { cordovaBallotFilterTopMargin, cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
-import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { chipLabelText, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
+import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import isMobile from '../../utils/isMobile';
@@ -123,6 +124,7 @@ class Ballot extends Component {
 
     this.setState({
       componentDidMountFinished: true,
+      locationGuessClosed: cookies.getItem('location_guess_closed'),
       mounted: true,
     });
 
@@ -284,7 +286,9 @@ class Ballot extends Component {
     window.addEventListener('scroll', this.onScroll);
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
+    // WARN: Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
     // console.log('Ballot componentWillReceiveProps');
 
     // We don't want to let the googleCivicElectionId disappear
@@ -347,8 +351,8 @@ class Ballot extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    // console.log('Ballot componentDidUpdate');
     const { ballotWithAllItems, foundFirstRaceLevel, raceLevelFilterType } = this.state;
+    // console.log('Ballot componentDidUpdate foundFirstRaceLevel: ', foundFirstRaceLevel);
     if (!foundFirstRaceLevel) {
       // We only need to be here if we haven't found the first Race level we are going to show, or we don't have a raceLevelFilterType identified
       let { newRaceLevelFilterType } = this.state;
@@ -392,6 +396,7 @@ class Ballot extends Component {
               return null;
             }
           }
+          // console.log('lowestIndexFound:', lowestIndexFound);
           return null;
         }).map((ballotItem) => {
           raceLevelCapitalized = '';
@@ -406,6 +411,7 @@ class Ballot extends Component {
           }
           return raceLevelCapitalized;
         });
+        raceLevelFilterItemsInThisBallot.unshift('All');
 
         // We must have a raceLevelFilterType that matches this ballot
         const currentRaceLevelFilterTypeNotFoundInBallot = raceLevelFilterItemsInThisBallot.indexOf(raceLevelFilterType) === -1;
@@ -417,7 +423,7 @@ class Ballot extends Component {
 
       this.setState({ raceLevelFilterItemsInThisBallot });
       // console.log('Ballot, componentDidUpdate raceLevelFilterType AFTER:', raceLevelFilterType, ', newRaceLevelFilterType: ', newRaceLevelFilterType);
-      // console.log('Ballot, componentDidUpdate raceLevelFilterItemsInThisBallot:', raceLevelFilterItemsInThisBallot);
+      // console.log('Ballot, componentDidUpdate raceLevelFilterItemsInThisBallot AFTER:', raceLevelFilterItemsInThisBallot);
 
       if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
         this.hashLinkScroll();
@@ -519,6 +525,7 @@ class Ballot extends Component {
         // console.log('Ballot.jsx onVoterStoreChange VoterStore.getVoter: ', VoterStore.getVoter());
         this.setState({
           googleCivicElectionId: parseInt(VoterStore.electionId(), 10),
+          locationGuessClosed: cookies.getItem('location_guess_closed'),
           textForMapSearch: VoterStore.getTextForMapSearch(),
           voter: VoterStore.getVoter(),
         });
@@ -634,6 +641,7 @@ class Ballot extends Component {
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
       completionLevelFilterType,
+      locationGuessClosed: cookies.getItem('location_guess_closed'),
     });
 
     if (this.state.ballotLength !== BallotStore.ballotLength) {
@@ -661,6 +669,7 @@ class Ballot extends Component {
   onElectionStoreChange () {
     // console.log('Elections, onElectionStoreChange');
     this.setState({
+      locationGuessClosed: cookies.getItem('location_guess_closed'),
       voterBallotList: formatVoterBallotList(ElectionStore.getElectionList()),
     });
   }
@@ -987,9 +996,10 @@ class Ballot extends Component {
     const ballotBaseUrl = '/ballot';
     const { classes } = this.props;
     const {
-      ballotWithItemsFromCompletionFilterType, showFilterTabs, doubleFilteredBallotItemsLength, completionLevelFilterType,
-      ballotHeaderUnpinned, isSearching, ballotWithAllItems, ballotSearchResults, raceLevelFilterItemsInThisBallot,
-      loadingMoreItems, numberOfBallotItemsToDisplay, searchText, totalNumberOfBallotItems,
+      ballotHeaderUnpinned, ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
+      completionLevelFilterType, doubleFilteredBallotItemsLength, isSearching,
+      loadingMoreItems, locationGuessClosed, numberOfBallotItemsToDisplay,
+      raceLevelFilterItemsInThisBallot, searchText, showFilterTabs, totalNumberOfBallotItems,
     } = this.state;
     let { raceLevelFilterType } = this.state;
     if (!raceLevelFilterType) {
@@ -1090,11 +1100,10 @@ class Ballot extends Component {
                     <BallotTitleHeader
                       electionName={electionName}
                       electionDayTextObject={electionDayTextObject}
-                      toggleSelectBallotModal={() => this.toggleSelectBallotModal('', true, false)}
+                      toggleSelectBallotModal={() => this.toggleSelectBallotModal('', false, false)}
                       scrolled={this.state.ballotHeaderUnpinned}
                     />
                   </header>
-
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
                       { showBallotDecisionsTabs() && (
@@ -1157,7 +1166,7 @@ class Ballot extends Component {
                                         color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
                                         className="btn_ballot_filter"
                                         classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
-                                        label={oneTypeOfBallotItem}
+                                        label={chipLabelText(oneTypeOfBallotItem)}
                                       />
                                     );
                                     return (
@@ -1230,11 +1239,19 @@ class Ballot extends Component {
                     </SearchTitle>
                   )}
                   {!isSearching && (
-                    <span className="u-show-desktop-tablet">
-                      <DelayedLoad waitBeforeShow={2000}>
-                        <CompleteYourProfile />
-                      </DelayedLoad>
-                    </span>
+                    <DelayedLoad waitBeforeShow={2000}>
+                      <>
+                        {locationGuessClosed ? (
+                          <span className="u-show-desktop-tablet">
+                            <CompleteYourProfile />
+                          </span>
+                        ) : (
+                          <EditAddressWrapper>
+                            <EditAddressOneHorizontalRow saveUrl="/ballot" />
+                          </EditAddressWrapper>
+                        )}
+                      </>
+                    </DelayedLoad>
                   )}
                   <BallotListWrapper>
                     {/* The rest of the ballot items */}
@@ -1400,6 +1417,13 @@ const BallotLoadingWrapper = styled.div`
 // If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
 const BallotFilterRow = styled.div`
   display: flex;
+`;
+
+const EditAddressWrapper = styled.div`
+  margin-bottom: 0 !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 `;
 
 const SearchResultsFoundInExplanation = styled.div`
