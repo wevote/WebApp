@@ -118,8 +118,20 @@ async function setNewAddressIOS (elementIdName, addressValue) {
 async function simpleClick (elementIdName) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
-  await clickableItem.click();
-  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+  if(await clickableItem.isClickable())
+  {
+    await clickableItem.click();
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+  }
+}
+
+async function selectClick (selector) {
+  const clickableItem = await $(selector);
+  if(await clickableItem.isClickable())
+  {
+    await clickableItem.click();
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+  }
 }
 
 async function simpleCloseBootstrapModal () {
@@ -136,6 +148,12 @@ async function simpleTextInput (elementIdName, textValue) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
+async function selectTextInput (selector, textValue) {
+  const clickableItem = await $(selector);
+  await clickableItem.setValue(textValue);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
 function writeToLog (message) {
   const time = (new Date(Date.now())).toISOString();
   const { name } = driver.config.capabilities;
@@ -144,4 +162,4 @@ function writeToLog (message) {
   });
 }
 
-module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal, simpleTextInput, stopScript, writeToLog };
+module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog };

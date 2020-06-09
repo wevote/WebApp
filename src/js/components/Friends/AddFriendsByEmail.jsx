@@ -256,7 +256,7 @@ class AddFriendsByEmail extends Component {
           <div>
             {onFriendInvitationsSentStep && (
               <div className="alert alert-success">
-              Invitations sent. Is there anyone else you&apos;d like to invite?
+                Invitations sent. Is there anyone else you&apos;d like to invite?
               </div>
             )}
           </div>

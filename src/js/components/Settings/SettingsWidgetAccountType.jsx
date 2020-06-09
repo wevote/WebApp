@@ -309,6 +309,7 @@ export default class SettingsWidgetAccountType extends Component {
                   (
                   <a // eslint-disable-line
                     className=""
+                    id="edit"
                     onClick={() => this.toggleEditForm()}
                   >
                     edit

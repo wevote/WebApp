@@ -1,4 +1,4 @@
-const { simpleClick, simpleTextInput, scrollIntoViewSimple } = require('../utils');
+const { simpleClick, selectClick, simpleTextInput, selectTextInput, scrollIntoViewSimple } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
@@ -41,7 +41,7 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.url(`${WEB_APP_ROOT_URL}/values`);
     }
 
-    await browser.pause(PAUSE_DURATION_MICROSECONDS * 5);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS * 15);
 
     // //////////////////////
     // Test "Values to Follow" section
@@ -58,38 +58,16 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('addEndorsements'); // Click "Add Endorsements"
       await browser.url(returnUrl); // Return to previous page
     } else {
-      const publicFigureOrOrganizationFollow = await $(publicFigureOrOrganizationFollowSelector);
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await publicFigureOrOrganizationFollow.click(); // Follow endorsement
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const publicFigureOrOrganizationDropDown = await $(publicFigureOrOrganizationDropDownSelector);
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await publicFigureOrOrganizationDropDown.click(); // Click dropdown button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
-      const publicFigureOrOrganizationUnfollow = await $(publicFigureOrOrganizationUnfollowSelector);
-      await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
-      await publicFigureOrOrganizationUnfollow.click(); // Unfollow endorsement
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await publicFigureOrOrganizationDropDown.click(); // Click dropdown button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await publicFigureOrOrganizationFollow.click(); // Follow endorsement
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await publicFigureOrOrganizationDropDown.click(); // Click dropdown button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
-      await publicFigureOrOrganizationUnfollow.click(); // Unfollow endorsement
-      await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
-      await publicFigureOrOrganizationDropDown.click(); // Click dropdown button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const publicFigureOrOrganizationIgnore = await $(publicFigureOrOrganizationIgnoreSelector);
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await publicFigureOrOrganizationIgnore.click(); // Click ignore button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await publicFigureOrOrganizationDropDown.click(); // Click dropdown button
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const publicFigureOrOrganizationUnignore = await $(publicFigureOrOrganizationUnignoreSelector);
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await publicFigureOrOrganizationUnignore.click(); // Click "Unignore"
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await selectClick(publicFigureOrOrganizationFollowSelector); // Follow endorsement
+      await selectClick(publicFigureOrOrganizationDropDownSelector); // Click dropdown button
+      await selectClick(publicFigureOrOrganizationUnfollowSelector); // Unfollow endorsement
+      await selectClick(publicFigureOrOrganizationDropDownSelector); // Click dropdown button
+      await selectClick(publicFigureOrOrganizationFollowSelector); // Follow endorsement
+      await selectClick(publicFigureOrOrganizationUnfollowSelector); // Unfollow endorsement
+      await selectClick(publicFigureOrOrganizationDropDownSelector); // Click dropdown button
+      await selectClick(publicFigureOrOrganizationIgnoreSelector); // Click ignore button
+      await selectClick(publicFigureOrOrganizationDropDownSelector); // Click dropdown button
+      await selectClick(publicFigureOrOrganizationUnignoreSelector); // Click unignore button
       await simpleClick('readMore'); // Clicks "More"
       await simpleClick('showLess'); // Clicks "Show Less"
     }
@@ -122,38 +100,17 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('publicFiguresToFollowPreviewShowMoreId'); // Click "Explore more public figures"
     await simpleClick('backToLinkTabHeader'); // Clicks on "Back"
     await scrollIntoViewSimple('publicFiguresSection'); // Scrolls to "Public Figures to Follow"
-    let publicFigureOrOrganizationFollow = await $(publicFigureOrOrganizationFollowSelector);
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await publicFigureOrOrganizationFollow.click(); // Follow endorsement
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const publicFigureOrOrganizationDropDown = await $(publicFigureOrOrganizationDropDownSelector);
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await publicFigureOrOrganizationDropDown.click(); // Click dropdown button
-    await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
-    const publicFigureOrOrganizationUnfollow = await $(publicFigureOrOrganizationUnfollowSelector);
-    await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
-    await publicFigureOrOrganizationUnfollow.click(); // Unfollow endorsement
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await publicFigureOrOrganizationDropDown.click(); // Click dropdown button
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await publicFigureOrOrganizationFollow.click(); // Follow endorsement
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await publicFigureOrOrganizationDropDown.click(); // Click dropdown button
-    await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
-    await publicFigureOrOrganizationUnfollow.click(); // Unfollow endorsement
-    await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
-    await publicFigureOrOrganizationDropDown.click(); // Click dropdown button
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const publicFigureOrOrganizationIgnore = await $(publicFigureOrOrganizationIgnoreSelector);
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await publicFigureOrOrganizationIgnore.click(); // Click ignore button
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await publicFigureOrOrganizationDropDown.click(); // Click dropdown button
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    const publicFigureOrOrganizationUnignore = await $(publicFigureOrOrganizationUnignoreSelector);
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await publicFigureOrOrganizationUnignore.click(); // Click "Unignore"
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await selectClick(publicFigureOrOrganizationFollowSelector); // Follow endorsement
+    await selectClick(publicFigureOrOrganizationDropDownSelector); // Click dropdown button
+    await selectClick(publicFigureOrOrganizationUnfollowSelector); // Unfollow endorsement
+    await selectClick(publicFigureOrOrganizationDropDownSelector); // Click dropdown button
+    await selectClick(publicFigureOrOrganizationFollowSelector); // Follow endorsement
+    await selectClick(publicFigureOrOrganizationDropDownSelector); // Click dropdown button
+    await selectClick(publicFigureOrOrganizationUnfollowSelector); // Unfollow endorsement
+    await selectClick(publicFigureOrOrganizationDropDownSelector); // Click dropdown button
+    await selectClick(publicFigureOrOrganizationIgnoreSelector); // Click ignore button
+    await selectClick(publicFigureOrOrganizationDropDownSelector); // Click dropdown button
+    await selectClick(publicFigureOrOrganizationUnignoreSelector); // Click unignore button
     await simpleClick('readMore'); // Clicks "More"
     await simpleClick('showLess'); // Clicks "Show Less"
     await simpleClick('organizationOrPublicFigureLink'); // Click public figure link

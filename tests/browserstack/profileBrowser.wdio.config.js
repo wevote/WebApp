@@ -10,14 +10,14 @@ exports.config = {
   webAppRootUrl: browserStackConfig.WEB_APP_ROOT_URL,
   updateJob: false,
   specs: [
-    './tests/browserstack/specs/valuesMainTest.js',
+    './tests/browserstack/specs/profileMainTest.js',
   ],
   twitterUserName: browserStackConfig.TWITTER_USER_NAME,
   twitterPassword: browserStackConfig.TWITTER_PASSWORD,
   exclude: [],
   capabilities: [
     {
-        name: 'valuesMainTest-BrowserWindowsChrome80.0',
+        name: 'profileMainTest-BrowserWindowsChrome80.0',
         build: buildNameForDisplay,
         os: 'Windows',
         os_version: '10',
@@ -27,8 +27,9 @@ exports.config = {
         acceptSslCerts: true,
         'browserstack.console': 'info',
         'browserstack.debug': true,
-        'browserstack.local': false,
-        'browserstack.geoLocation': 'US',
+        'browserstack.appium_version': '1.17.0',
+        'browserstack.local': true,
+        'browserstack.geoLocation': '',
         isAndroid: false,
         isCordovaFromAppStore: false,
         isIOS: false,
@@ -42,6 +43,6 @@ exports.config = {
   framework: 'mocha',
   mochaOpts: {
     ui: 'bdd',
-    timeout: 360000,
+    timeout: 180000,
   },
 }

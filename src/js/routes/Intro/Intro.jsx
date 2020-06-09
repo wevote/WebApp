@@ -70,10 +70,10 @@ export default class Intro extends Component {
           <label // eslint-disable-line
             htmlFor="address"
           >
-              Your Address.&nbsp;
+            Your Address.&nbsp;
           </label>
           <span className="medium">
-              This is our best guess - feel free to change.
+            This is our best guess - feel free to change.
           </span>
           <AddressBox {...this.props} saveUrl="/ballot" />
           <br />

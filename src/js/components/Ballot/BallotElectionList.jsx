@@ -352,7 +352,7 @@ export default class BallotElectionList extends Component {
         <div className="ballot-election-list__list">
           <div className="ballot-election-list__upcoming DEPRECATED">
             <h4 className="h4">
-            Upcoming Election
+              Upcoming Election
               { (upcomingElectionListInState && upcomingElectionListInState.length !== 1 && !this.state.showMoreUpcomingElections) ||
                 (upcomingElectionList && upcomingElectionList.length !== 1 && this.state.showMoreUpcomingElections) ? 's' : null
               }
@@ -399,7 +399,7 @@ export default class BallotElectionList extends Component {
             <div className="ballot-election-list__prior">
               { priorElectionListInState && priorElectionListInState.length ? (
                 <h4 className="h4">
-                Prior Election
+                  Prior Election
                   { (priorElectionListInState.length > 1 ||
                     (priorElectionList && priorElectionList.length > 1)) ?
                     's' :

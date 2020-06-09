@@ -10,14 +10,14 @@ exports.config = {
   webAppRootUrl: browserStackConfig.WEB_APP_ROOT_URL,
   updateJob: false,
   specs: [
-    './tests/browserstack/specs/valuesMainTest.js',
+    './tests/browserstack/specs/readyMainTest.js',
   ],
   twitterUserName: browserStackConfig.TWITTER_USER_NAME,
   twitterPassword: browserStackConfig.TWITTER_PASSWORD,
   exclude: [],
   capabilities: [
     {
-        name: 'valuesMainTest-BrowserWindowsChrome80.0',
+        name: 'readyMainTest-BrowserWindowsChrome80.0',
         build: buildNameForDisplay,
         os: 'Windows',
         os_version: '10',

@@ -4,6 +4,7 @@
 # Ignore build files
 build
 build-live
+package-lock.json
 
 # TernJS
 ###################

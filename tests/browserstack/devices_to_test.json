@@ -1,0 +1,24 @@
+{
+  "Android": {
+  "0": {"os_version": "8.0", "device": "Samsung Galaxy S9 Plus", "browserName": "Android", "browserstack.appium_version": "1.17.0"}, 
+  "1": {"os_version": "8.1", "device": "Samsung Galaxy J7 Prime", "browserName": "Android", "browserstack.appium_version": "1.17.0"}, 
+  "2": {"os_version": "7.0", "device": "Samsung Galaxy S8", "browserName": "Android", "browserstack.appium_version": "1.17.0"}, 
+  "3": {"os_version": "10.0", "device": "Google Pixel 4", "browserName": "Android", "browserstack.appium_version": "1.17.0"},
+  "4": {"os_version": "10.0", "device": "Google Pixel 3", "browserName": "Android", "browserstack.appium_version": "1.17.0"} 
+  },
+  "iOS": {
+  "0": {"os_version": "12", "device": "iPhone XR", "browserName": "iPhone", "browserstack.appium_version": "1.17.0"}, 
+  "1": {"os_version": "13", "device": "iPhone 8", "browserName": "iPhone", "browserstack.appium_version": "1.17.0"}, 
+  "2": {"os_version": "12", "device": "iPhone 8 Plus", "browserName": "iPhone", "browserstack.appium_version": "1.17.0"}, 
+  "3": {"os_version": "12", "device": "iPhone 6S", "browserName": "iPhone", "browserstack.appium_version": "1.17.0"}, 
+  "4": {"os_version": "11", "device": "iPad 6th", "browserName": "iPad", "browserstack.appium_version": "1.16.0"}
+  },
+  "Browser": {
+  "0": {"os": "Windows", "os_version": "10", "browserName": "Chrome", "browser_version": "80.0"}, 
+  "1": {"os": "Windows", "os_version": "8.1", "browserName": "Chrome", "browser_version": "79.0"}, 
+  "2": {"os": "Windows", "os_version": "7", "browserName": "Chrome", "browser_version": "81.0"}, 
+  "3": {"os": "OS X", "os_version": "Catalina", "browserName": "Safari", "browser_version": "13.0"}, 
+  "4": {"os": "OS X", "os_version": "Mojave", "browserName": "Chrome", "browser_version": "70.0"}
+  }
+}
+
