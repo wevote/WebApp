@@ -52,7 +52,6 @@
   },
   "scripts": {
     "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
-    "lint-fix": "eslint --format stylish --ext .jsx --ext .js src/js --fix",
     "lint-css": "gulp lint-css",
     "test": "npm run lint && npm run lint-css",
     "ballotTest-Android": "./node_modules/.bin/wdio ./tests/browserstack/ballotAndroid.wdio.config.js",
