@@ -29,15 +29,16 @@ class SearchOnGoogle extends Component {
         <OpenExternalWebSite
           url={this.generateURL(this.props.googleQuery)}
           target="_blank"
-          title="GOOGLE"
+          title="Search on Google"
           body={(
             <SplitIconButton
-              buttonText="Google"
+              buttonText="Search on Google"
               backgroundColor="#fff"
               compressedSize
               fontColor="#000"
+              fontSize="10px"
               icon={<img src={cordovaDot(googleIcon)} alt="" />}
-              title="Google"
+              title="Search on Google"
             />
           )}
         />

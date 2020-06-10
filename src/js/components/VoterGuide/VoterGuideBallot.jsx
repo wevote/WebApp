@@ -737,7 +737,7 @@ class VoterGuideBallot extends Component {
                   </div>
                 ) : (
                   <span className="u-push--sm">
-                    Loading Election...
+                    Choose Election...
                   </span>
                 )}
               </TitleWrapper>

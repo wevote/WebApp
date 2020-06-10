@@ -34,7 +34,7 @@ class CompleteYourProfile extends Component {
         {
           id: 1,
           title: 'Watch how it works (no sound)',
-          buttonText: 'How It Works',
+          buttonText: 'How We Vote Works',
           completed: false,
           description: '',
           icon: (<PlayCircleFilled />),

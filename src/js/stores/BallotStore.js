@@ -661,7 +661,7 @@ class BallotStore extends ReduceStore {
         // console.log('BallotStore, voterBallotListRetrieve response received, voterBallotList: ', voterBallotList);
         return {
           ...state,
-          ballotElectionList: voterBallotList,
+          ballotElectionList: voterBallotList || [],
         };
 
       case 'voterAddressSave':
