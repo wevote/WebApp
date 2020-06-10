@@ -60,6 +60,9 @@ function checkShouldUpdate (state, nextState) {
     // console.log("shouldComponentUpdate: state.googleCivicElectionId", state.googleCivicElectionId, ", nextState.googleCivicElectionId", nextState.googleCivicElectionId);
     return true;
   }
+  // issuesFollowedCount: We don't update when this changes on the page because
+  // we don't want the FriendInvitationOnboardingValuesList to disappear
+  // while they are interacting with it
   if (state.lastHashUsedInLinkScroll !== nextState.lastHashUsedInLinkScroll) {
     // console.log("shouldComponentUpdate: state.lastHashUsedInLinkScroll", state.lastHashUsedInLinkScroll, ", nextState.lastHashUsedInLinkScroll", nextState.lastHashUsedInLinkScroll);
     return true;

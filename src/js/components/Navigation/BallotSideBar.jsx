@@ -214,7 +214,7 @@ class BallotSideBar extends Component {
         <div className="card">
           { this.props.displayTitle ? (
             <>
-              <Typography variant="h3" classes={{ root: classes.typography }}>Summary Of Ballot Items</Typography>
+              <Typography variant="h3" classes={{ root: classes.typography }}>Summary of Ballot Items</Typography>
               <Separator />
             </>
           ) :

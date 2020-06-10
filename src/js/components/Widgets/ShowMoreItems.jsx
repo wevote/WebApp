@@ -17,6 +17,10 @@ class ShowMoreItems extends Component {
   render () {
     const { loadingMoreItemsNow, numberOfItemsDisplayed, numberOfItemsTotal } = this.props;
 
+    if (numberOfItemsDisplayed === 0) {
+      return null;
+    }
+
     return (
       <Wrapper>
         Displaying

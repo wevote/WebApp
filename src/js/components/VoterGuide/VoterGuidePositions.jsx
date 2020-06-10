@@ -474,7 +474,7 @@ class VoterGuidePositions extends Component {
                   </span>
                 ) : (
                   <span className="u-push--sm">
-                    Loading Election...
+                    Choose Election...
                   </span>
                 )}
               </TitleWrapper>

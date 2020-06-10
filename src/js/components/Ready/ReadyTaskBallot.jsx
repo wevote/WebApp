@@ -106,27 +106,32 @@ class ReadyTaskBallot extends React.Component {
   }
 
   goToFederalRaces = () => {
+    BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('Federal');
     historyPush('/ballot');
   }
 
   goToLocalRaces = () => {
+    BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('Local');
     historyPush('/ballot');
   }
 
   goToMeasureRaces = () => {
+    BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('Measure');
     historyPush('/ballot');
   }
 
   goToStateRaces = () => {
+    BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('State');
     historyPush('/ballot');
   }
 
   goToBallot = () => {
-    BallotActions.raceLevelFilterTypeSave('All'); // Not working
+    BallotActions.completionLevelFilterTypeSave('All');
+    BallotActions.raceLevelFilterTypeSave('All');
     historyPush('/ballot');
   }
 
@@ -434,15 +439,15 @@ class ReadyTaskBallot extends React.Component {
                   {howItWorksCompleted ? (
                     <>
                       <span className="u-show-mobile">
-                        How It Works
+                        How We Vote Works
                       </span>
                       <span className="u-show-desktop-tablet">
-                        How It Works Completed
+                        How We Vote Works Completed
                       </span>
                     </>
                   ) : (
                     <span>
-                      How It Works
+                      How We Vote Works
                       <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
                     </span>
                   )}

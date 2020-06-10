@@ -12,7 +12,9 @@ import { arrayContains } from '../../utils/textFormat';
 export default class FriendInvitationOnboardingValuesList extends Component {
   static propTypes = {
     displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
+    followToggleOnItsOwnLine: PropTypes.bool,
     friendIssueWeVoteIdList: PropTypes.array,
+    oneColumn: PropTypes.bool,
   };
 
   constructor (props) {
@@ -82,6 +84,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
 
   render () {
     renderLog('FriendInvitationOnboardingValuesList');  // Set LOG_RENDER_EVENTS to log all renders
+    const { followToggleOnItsOwnLine, oneColumn } = this.props;
     const { allIssuesNoLean, allLeftIssues, allRightIssues } = this.state;
 
     // console.log('All issues:', issuesList);
@@ -95,12 +98,13 @@ export default class FriendInvitationOnboardingValuesList extends Component {
       totalIssuesRenderedCount += 1;
       issueCardHtml = (
         <Column
-          className="col col-12 col-md-6 u-stack--lg"
+          className={`col col-12 ${oneColumn ? '' : ' u-stack--lg col-md-6'}`}
           key={`column-issue-list-key-${issue.issue_we_vote_id}`}
         >
           <IssueCard
             condensed
             followToggleOn
+            followToggleOnItsOwnLine={followToggleOnItsOwnLine}
             hideAdvocatesCount
             issue={issue}
             issueImageSize="SMALL"
@@ -120,12 +124,13 @@ export default class FriendInvitationOnboardingValuesList extends Component {
       totalIssuesRenderedCount += 1;
       issueCardHtml = (
         <Column
-          className="col col-12 col-md-6 u-stack--lg"
+          className={`col col-12 ${oneColumn ? '' : 'u-stack--lg col-md-6'}`}
           key={`column-issue-list-key-${issue.issue_we_vote_id}`}
         >
           <IssueCard
             condensed
             followToggleOn
+            followToggleOnItsOwnLine={followToggleOnItsOwnLine}
             hideAdvocatesCount
             issue={issue}
             issueImageSize="SMALL"
@@ -145,12 +150,13 @@ export default class FriendInvitationOnboardingValuesList extends Component {
       totalIssuesRenderedCount += 1;
       issueCardHtml = (
         <Column
-          className="col col-12 col-md-6 u-stack--lg"
+          className={`col col-12 ${oneColumn ? '' : ' u-stack--lg col-md-6'}`}
           key={`column-issue-list-key-${issue.issue_we_vote_id}`}
         >
           <IssueCard
             condensed
             followToggleOn
+            followToggleOnItsOwnLine={followToggleOnItsOwnLine}
             hideAdvocatesCount
             issue={issue}
             issueImageSize="SMALL"
