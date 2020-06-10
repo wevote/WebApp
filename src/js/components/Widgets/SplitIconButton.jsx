@@ -15,6 +15,7 @@ class SplitIconButton extends PureComponent {
     disabled: PropTypes.bool,
     externalUniqueId: PropTypes.string,
     fontColor: PropTypes.string,
+    fontSize: PropTypes.string,
     icon: PropTypes.node,
     iconRight: PropTypes.bool,
     onClick: PropTypes.func,
@@ -24,10 +25,11 @@ class SplitIconButton extends PureComponent {
   };
 
   render () {
-    const { backgroundColor, buttonText, classes, compressedSize, fontColor, icon, title } = this.props;
+    const { backgroundColor, buttonText, classes, compressedSize, fontColor, fontSize, icon, title } = this.props;
     const buttonStyle = {
       background: backgroundColor || '#2e3c5d',
       color: fontColor || getTextColorFromBackground(backgroundColor || '#2e3c5d'),
+      fontSize: fontSize || '13px',
     };
     if (compressedSize) {
       buttonStyle.border = '1px solid rgba(46, 60, 93, .5)';
@@ -135,7 +137,7 @@ const SplitButtonText = styled.span`
   text-align: center;
   flex: 1 1 0;
   font-weight: 500;
-  font-size: 13px;
+  // font-size: 13px;
 `;
 
 export default withStyles(styles)(SplitIconButton);

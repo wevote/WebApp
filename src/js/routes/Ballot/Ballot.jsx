@@ -725,7 +725,8 @@ class Ballot extends Component {
 
   setBallotItemFilterTypeToAll = () => {
     const { ballotWithItemsFromCompletionFilterType } = this.state;
-    this.setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterType.length);
+    const ballotWithItemsFromCompletionFilterTypeLength = (ballotWithItemsFromCompletionFilterType) ? ballotWithItemsFromCompletionFilterType.length : 0;
+    this.setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterTypeLength);
   }
 
   setBallotItemFilterType (raceLevelFilterType, doubleFilteredBallotItemsLength) {

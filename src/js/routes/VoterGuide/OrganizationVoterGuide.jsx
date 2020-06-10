@@ -381,45 +381,39 @@ export default class OrganizationVoterGuide extends Component {
                     )}
                   </>
                 )}
-                <div className="tabs-container d-print-none">
-                  <ul className="nav tabs">
+                <FriendsFollowingFollowersMobileWrapper className="d-print-none">
+                  <ul className="nav">
                     {developmentFeatureTurnedOn && (
-                      <li className="tab-default">
+                      <li>
                         <a // eslint-disable-line
                           style={{ padding: '5px 5px' }}
                           onClick={() => this.goToVoterGuideDetailsPage('friends')}
                         >
-                          <span className="u-show-mobile u-bold">
-                            {friendsList.length}
-                            <TabText>{' Friends'}</TabText>
-                          </span>
+                          <TabNumber>{friendsList.length}</TabNumber>
+                          <TabText>{' Friends'}</TabText>
                         </a>
                       </li>
                     )}
-                    <li className="tab-default">
+                    <li>
                       <a // eslint-disable-line
                         style={{ padding: '5px 5px' }}
                         onClick={() => this.goToVoterGuideDetailsPage('following')}
                       >
-                        <span className="u-show-mobile u-bold">
-                          {this.state.voterGuideFollowedList.length}
-                          <TabText>{' Following'}</TabText>
-                        </span>
+                        <TabNumber>{this.state.voterGuideFollowedList.length}</TabNumber>
+                        <TabText>{' Following'}</TabText>
                       </a>
                     </li>
-                    <li className="tab-default">
+                    <li>
                       <a // eslint-disable-line
                         style={{ padding: '5px 5px' }}
                         onClick={() => this.goToVoterGuideDetailsPage('followers')}
                       >
-                        <span className="u-show-mobile u-bold">
-                          {voterGuideFollowersList.length}
-                          <TabText>{' Followers'}</TabText>
-                        </span>
+                        <TabNumber>{voterGuideFollowersList.length}</TabNumber>
+                        <TabText>{' Followers'}</TabText>
                       </a>
                     </li>
                   </ul>
-                </div>
+                </FriendsFollowingFollowersMobileWrapper>
               </div>
             </div>
           </div>
@@ -486,8 +480,20 @@ const FollowToggleMobileWrapper = styled.div`
   margin-top: 4px;
 `;
 
+const FriendsFollowingFollowersMobileWrapper = styled.div`
+  margin-top: 6px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+`;
+
 const FriendToggleMobileWrapper = styled.div`
   margin-top: 4px;
+`;
+
+const TabNumber = styled.span`
+  color: #333;
+  font-weight: bold;
 `;
 
 const TabText = styled.span`

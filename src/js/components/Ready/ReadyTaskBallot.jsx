@@ -438,15 +438,15 @@ class ReadyTaskBallot extends React.Component {
                   {howItWorksCompleted ? (
                     <>
                       <span className="u-show-mobile">
-                        How It Works
+                        How We Vote Works
                       </span>
                       <span className="u-show-desktop-tablet">
-                        How It Works Completed
+                        How We Vote Works Completed
                       </span>
                     </>
                   ) : (
                     <span>
-                      How It Works
+                      How We Vote Works
                       <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
                     </span>
                   )}
