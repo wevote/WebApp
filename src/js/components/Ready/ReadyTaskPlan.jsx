@@ -129,7 +129,7 @@ class ReadyTaskPlan extends React.Component {
                 Write your own adventure and cast your vote!
               </SubTitle>
               <StyledButton
-                id='makeYourPlanNowButton'
+                id="makeYourPlanNowButton"
                 className="u-cursor--pointer"
                 color="primary"
                 completed={completed || undefined}

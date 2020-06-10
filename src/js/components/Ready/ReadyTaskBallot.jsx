@@ -460,7 +460,7 @@ class ReadyTaskBallot extends React.Component {
           {/* ************************ */}
           {personalizedScoreIntroShowButton && (
             <StyledButton
-              id='whatsAPersonalizedScoreButton'
+              id="whatsAPersonalizedScoreButton"
               className="u-cursor--pointer"
               color="primary"
               completed={personalizedScoreIntroCompleted ? 'true' : undefined}
@@ -507,7 +507,7 @@ class ReadyTaskBallot extends React.Component {
           {/* ************* */}
           {(allCandidatesShowButton && allCandidatesButtonNeeded) && (
             <StyledButton
-              id='decideOnCandidatesButton'
+              id="decideOnCandidatesButton"
               className="u-cursor--pointer"
               color="primary"
               completed={allCandidatesAllCompleted ? 'true' : undefined}

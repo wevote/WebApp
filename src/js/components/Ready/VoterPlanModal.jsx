@@ -546,7 +546,7 @@ class VoterPlanModal extends Component {
         </DialogContent>
         <ModalFooter>
           <Button
-            id='yourPlanForVotingSaveButton'
+            id="yourPlanForVotingSaveButton"
             color="primary"
             disabled={!showSaveButton}
             fullWidth
