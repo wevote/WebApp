@@ -44,13 +44,13 @@ if [[ $remove -ne 1 ]]; then
     [[ ! -z $lineNumber ]] && sed -i "${lineNumber%%:*}i${insert}" ${filepath}package.json
     
     # Create .wdio.config.template file
+    substitute="s/%name/${script}MainTest-$testType%name/g;s/%scriptName/$script/g"
     if [[ $numberTests -ne 5 ]]; then  
         name0LineNumber=`grep -n "name0" $configFilePath/parallel.wdio.config.js`
         name1LineNumber=`grep -n "name1" $configFilePath/parallel.wdio.config.js`
         codeBlockLength=$(( ${name1LineNumber%%:*} - ${name0LineNumber%%:*} )) 
         end=`grep -n "name4" $configFilePath/parallel.wdio.config.js` 
         comment="$(( ${end%%:*} - 1 - (4 - $numberTests) * $codeBlockLength )),$(( ${end%%:*} + 19 ))s/^/\/\//"
-        substitute="s/%name/${script}MainTest-$testType%name/g;s/%scriptName/$script/g"
     fi
     sed -e "$comment" -e "$substitute" $configFilePath/parallel.wdio.config.js > $configFilePath/$script$testType.wdio.config.template
 
