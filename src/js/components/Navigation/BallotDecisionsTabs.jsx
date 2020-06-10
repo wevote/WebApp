@@ -10,10 +10,11 @@ import { renderLog } from '../../utils/logging';
 
 class BallotDecisionsTabs extends Component {
   static propTypes = {
-    completionLevelFilterType: PropTypes.string,
     ballotLength: PropTypes.number,
     ballotLengthRemaining: PropTypes.number,
     classes: PropTypes.object,
+    completionLevelFilterType: PropTypes.string,
+    setBallotItemFilterTypeToAll: PropTypes.func,
   };
 
   shouldComponentUpdate (nextProps) {
@@ -60,6 +61,9 @@ class BallotDecisionsTabs extends Component {
   };
 
   goToDifferentCompletionLevelTab (completionLevelFilterType = '') {
+    if (this.props.setBallotItemFilterTypeToAll) {
+      this.props.setBallotItemFilterTypeToAll();
+    }
     BallotActions.completionLevelFilterTypeSave(completionLevelFilterType);
   }
 

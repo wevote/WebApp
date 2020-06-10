@@ -30,6 +30,7 @@ import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
+import FriendInvitationOnboardingValuesList from '../../components/Values/FriendInvitationOnboardingValuesList';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
@@ -61,10 +62,10 @@ const delayBeforeVoterRefreshCall = 1000;
 
 class Ballot extends Component {
   static propTypes = {
-    location: PropTypes.object,
-    pathname: PropTypes.string,
-    params: PropTypes.object,
     classes: PropTypes.object,
+    location: PropTypes.object,
+    params: PropTypes.object,
+    pathname: PropTypes.string,
   };
 
   constructor (props) {
@@ -117,7 +118,8 @@ class Ballot extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
+    this.electionStoreListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -263,6 +265,7 @@ class Ballot extends Component {
       ballotReturnedWeVoteId,
       ballotLocationShortcut,
       googleCivicElectionId: parseInt(googleCivicElectionId, 10),
+      issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
       location,
       pathname,
       raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || 'All',
@@ -451,7 +454,8 @@ class Ballot extends Component {
 
     this.appStoreListener.remove();
     this.ballotStoreListener.remove();
-    this.electionListListener.remove();
+    this.electionStoreListener.remove();
+    this.issueStoreListener.remove();
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
@@ -674,6 +678,13 @@ class Ballot extends Component {
     });
   }
 
+  onIssueStoreChange () {
+    // console.log('Elections, onElectionStoreChange');
+    this.setState({
+      issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
+    });
+  }
+
   onVoterGuideStoreChange () {
     // console.log('Ballot onVoterGuideStoreChange');
     // Update the data for the modal to include the position of the organization related to this ballot item
@@ -710,6 +721,11 @@ class Ballot extends Component {
         this.setState({ loadingMoreItems: false });
       }
     }
+  }
+
+  setBallotItemFilterTypeToAll = () => {
+    const { ballotWithItemsFromCompletionFilterType } = this.state;
+    this.setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterType.length);
   }
 
   setBallotItemFilterType (raceLevelFilterType, doubleFilteredBallotItemsLength) {
@@ -997,7 +1013,7 @@ class Ballot extends Component {
     const { classes } = this.props;
     const {
       ballotHeaderUnpinned, ballotSearchResults, ballotWithAllItems, ballotWithItemsFromCompletionFilterType,
-      completionLevelFilterType, doubleFilteredBallotItemsLength, isSearching,
+      completionLevelFilterType, doubleFilteredBallotItemsLength, isSearching, issuesFollowedCount,
       loadingMoreItems, locationGuessClosed, numberOfBallotItemsToDisplay,
       raceLevelFilterItemsInThisBallot, searchText, showFilterTabs, totalNumberOfBallotItems,
     } = this.state;
@@ -1113,6 +1129,7 @@ class Ballot extends Component {
                               completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
                               ballotLength={BallotStore.ballotLength}
                               ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
+                              setBallotItemFilterTypeToAll={this.setBallotItemFilterTypeToAll}
                             />
                           </div>
                           <hr className="ballot-header-divider" />
@@ -1392,6 +1409,17 @@ class Ballot extends Component {
                         ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
                         raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
                       />
+                      {(issuesFollowedCount <= 3) && (
+                        <ValuesListWrapper>
+                          <div className="card">
+                            <FriendInvitationOnboardingValuesList
+                              displayOnlyIssuesNotFollowedByVoter
+                              followToggleOnItsOwnLine
+                              oneColumn
+                            />
+                          </div>
+                        </ValuesListWrapper>
+                      )}
                     </div>
                   )
                 }
@@ -1449,6 +1477,11 @@ const SearchResultsEmpty = styled.div`
 
 const SearchTitle = styled.div`
   font-size: 24px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+`;
+
+const ValuesListWrapper = styled.div`
   margin-top: 12px;
   margin-bottom: 12px;
 `;

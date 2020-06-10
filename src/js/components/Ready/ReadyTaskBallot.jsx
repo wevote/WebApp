@@ -106,27 +106,32 @@ class ReadyTaskBallot extends React.Component {
   }
 
   goToFederalRaces = () => {
+    BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('Federal');
     historyPush('/ballot');
   }
 
   goToLocalRaces = () => {
+    BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('Local');
     historyPush('/ballot');
   }
 
   goToMeasureRaces = () => {
+    BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('Measure');
     historyPush('/ballot');
   }
 
   goToStateRaces = () => {
+    BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('State');
     historyPush('/ballot');
   }
 
   goToBallot = () => {
-    BallotActions.raceLevelFilterTypeSave('All'); // Not working
+    BallotActions.completionLevelFilterTypeSave('All');
+    BallotActions.raceLevelFilterTypeSave('All');
     historyPush('/ballot');
   }
 
