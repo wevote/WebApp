@@ -65,7 +65,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.switchToWindow(parentWindowHandle); // Switch back to ready page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('addedToCalendar'); // Click "I added this to my calendar"
-    await selectClick('textMeReminder'); // Click "Please text me a reminder at:
+    await simpleClick('textMeReminder'); // Click "Please text me a reminder at:
     await selectTextInput('input[name="textMeReminderPhoneNumber"]',xssTest); // Enter in address
     await simpleClick('emailMeReminder'); // Click "Please email me a reminder at:"
     await selectTextInput('input[name="emailMeReminderEmailAddress"]',xssTest); // Enter in email address
