@@ -438,7 +438,7 @@ class ReadyTaskBallot extends React.Component {
                   {howItWorksCompleted ? (
                     <>
                       <span className="u-show-mobile">
-                        How It Works
+                        How We Vote Works
                       </span>
                       <span className="u-show-desktop-tablet">
                         How We Vote Works Completed
