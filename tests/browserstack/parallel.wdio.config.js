@@ -7,7 +7,6 @@ const buildNameForDisplay = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
 exports.config = {
   user: browserStackConfig.BROWSERSTACK_USER,
   key: browserStackConfig.BROWSERSTACK_KEY,
-  webAppRootUrl: browserStackConfig.WEB_APP_ROOT_URL,
   updateJob: false,
   specs: [
     './tests/browserstack/specs/%scriptNameMainTest.js',
@@ -122,6 +121,7 @@ exports.config = {
       isMobileScreenSize: %isMobileScreenSize,
     },
   ],
+  baseUrl: browserStackConfig.WEB_APP_ROOT_URL,
   waitforTimeout: %waitForTimeout,
   connectionRetryTimeout: %connectionRetryTimeout,
   connectionRetryCount: %connectionRetryCount,

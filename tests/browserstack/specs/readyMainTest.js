@@ -1,55 +1,74 @@
-const { simpleClick, simpleTextInput, scrollIntoViewSimple } = require('../utils');
-const PAUSE_DURATION_MICROSECONDS = 250;
+const { simpleClick, selectClick, simpleTextInput, selectTextInput, scrollIntoViewSimple } = require('../utils');
+const PAUSE_DURATION_MICROSECONDS = 1500;
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
 
 describe('Basic cross-platform We Vote test',  () => {
   it('should load the app so we can run tests', async () => {
     const { isCordova, isMobile } = driver.config.capabilities;
-    const WEB_APP_ROOT_URL = driver.config.webAppRootUrl;
+    const xssTest = '<img src=javascript:alert("1")>'
+    
     if (isCordova) {
       // switch contexts and click through intro
       const contexts = await driver.getContexts();
       const context = contexts.includes(ANDROID_CONTEXT) ? ANDROID_CONTEXT : IOS_CONTEXT;
       await driver.switchContext(context);
-      const firstNextButton = await $('div[data-index="0"] .intro-story__btn--bottom');
-      await browser.pause(1000);
-      await firstNextButton.click();
-      const secondNextButton = await $('div[data-index="1"] .intro-story__btn--bottom');
-      await browser.pause(1000);
-      await secondNextButton.click();
-      const thirdNextButton = await $('div[data-index="2"] .intro-story__btn--bottom');
-      await browser.pause(1000);
-      await thirdNextButton.click();
-      await browser.pause(1000);
+      await selectClick('div[data-index="0"] .intro-story__btn--bottom'); // Click first next button
+      await selectClick('div[data-index="1"] .intro-story__btn--bottom'); // Click second next button
+      await selectClick('div[data-index="2"] .intro-story__btn--bottom'); // Click third next button
     } else {
       // navigate browser to WeVote QA site
-      await browser.url(`${WEB_APP_ROOT_URL}/ready`);
+      await browser.url('ready');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await simpleClick('signInHeaderBar'); // Click Sign In 
-      await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com'); // Enter test email in input box
-      await simpleClick('voterEmailAddressEntrySendCode'); // Click on Send Code
-      await simpleClick('digit1'); // Focus on first input box for verification code
-      await simpleTextInput('digit1', '0'); // Set value to 0-9
-      await simpleClick('digit2'); // Focus on second input box for verification code
-      await simpleTextInput('digit2', '1'); // Set value to 0-9
-      await simpleClick('digit3'); // Focus on third input box for verification code
-      await simpleTextInput('digit3', '2'); // Set value to 0-9
-      await simpleClick('digit4'); // Focus on fourth input box for verification code
-      await simpleTextInput('digit4', '3'); // Set value to 0-9
-      await simpleClick('digit5'); // Focus on fifth input box for verification code
-      await simpleTextInput('digit5', '4'); // Set value to 0-9
-      await simpleClick('digit6'); // Focus on sixth input box for verification code
-      await simpleTextInput('digit6', '5'); // Set value to 0-9
-//      const verifyButton = $('button.MuiButtonBase-root.MuiButton-root.jss415');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await verifyButton.click(); // Click verify
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      const changeEmailAddress = $('button.MuiButtonBase-root.MuiButton-root.jss359.MuiButton-outlined.MuiButton-outlinedPrimary');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await changeEmailAddress.click(); // Click Change Email Address
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await simpleClick('profileCloseSignInModal'); // Close Sign In Modal 
-   }
+    }
+      
+    // //////////////////////
+    // Test "Voting?" Section
+    const parentWindowHandle = await browser.getWindowHandle(); // Get window handle
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('howItWorksButton'); // Click "How It Works" Button
+    await simpleClick('annotatedSlideShowStep1Next'); // Click next
+    await simpleClick('annotatedSlideShowStep2Next'); // Click next
+    await simpleClick('annotatedSlideShowStep3Next'); // Click next
+    await simpleClick('annotatedSlideShowStep4Next'); // Click next
+    await simpleClick('howItWorksGetStartedDesktopButton'); // Click "Get Started"
+    await simpleClick('profileCloseSignInModal'); // Click "X"
+    await simpleClick('whatsAPersonalizedScoreButton'); // Click "What's a personalized score?" Button
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Say What?"
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Next"
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Tell Me!"
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Click "I'll Pretend"
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Next"
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Show"
+    await simpleClick('closeYourPersonalizedScorePopover'); // Close personalized popover
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Next"
+    await simpleClick('popoverCloseButton'); // Close popover
+    await simpleClick('closeYourPersonalizedScorePopover'); // Close personalized popover
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Next"
+    await simpleClick('closeYourPersonalizedScorePopover'); // Close personalized popover
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Got it!"
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Click "All done!"
+    await simpleClick('decideOnCandidatesButton'); // Click "Decide on candidates" Button
+    await browser.back(); // Go back 
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('makeYourPlanNowButton'); // Click "Make Your Plan Now" Button
+    await simpleClick('selectVotingRoughDate'); // Choose voting date
+    await selectClick('option[value="day-before"]'); // Choose "The day before election day"
+    await simpleClick('selectApproximateTime'); // Choose time
+    await selectClick('option[value="9:00 AM"]'); // Click "9:00 AM"
+    await simpleClick('selectModeOfTransport'); // Choose mode of transport
+    await selectClick('option[value="drive"]'); // Choose "drive"
+    await simpleClick('selectLocationToDeliverBallot'); // Choose location to deliver ballot
+    await selectClick('option[value="voting center"]'); // Choose "voting center"
+    await simpleTextInput('enterVotingLocationAddress',xssTest); // Enter in address
+    await simpleClick('findPollingLocationButton'); // Click "Find Voting Center"
+    await browser.switchToWindow(parentWindowHandle); // Switch back to ready page
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('addedToCalendar'); // Click "I added this to my calendar"
+    await selectClick('textMeReminder'); // Click "Please text me a reminder at:
+    await selectTextInput('input[name="textMeReminderPhoneNumber"]',xssTest); // Enter in address
+    await simpleClick('emailMeReminder'); // Click "Please email me a reminder at:"
+    await selectTextInput('input[name="emailMeReminderEmailAddress"]',xssTest); // Enter in email address
+    await simpleClick('yourPlanForVotingSaveButton'); // Click save
   });
 });

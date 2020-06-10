@@ -439,7 +439,7 @@ class SettingsVerifySecretCode extends Component {
         }}
       >
         <ModalTitleArea condensed={condensed}>
-          <Button onClick={this.closeVerifyModalLocal}>
+          <Button onClick={this.closeVerifyModalLocal} id="emailVerificationBackButton">
             {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
             {' '}
             Back
@@ -543,6 +543,7 @@ class SettingsVerifySecretCode extends Component {
           <ButtonsContainer condensed={condensed}>
             <Button
               classes={{ root: classes.verifyButton }}
+              id="emailVerifyButton"
               color="primary"
               disabled={this.state.digit1 === '' || this.state.digit2 === '' || this.state.digit3 === '' || this.state.digit4 === '' || this.state.digit5 === '' || this.state.digit6 === '' || voterMustRequestNewCode || voterSecretCodeRequestsLocked || voterVerifySecretCodeSubmitted}
               fullWidth

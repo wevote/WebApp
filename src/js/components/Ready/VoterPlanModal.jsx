@@ -437,12 +437,12 @@ class VoterPlanModal extends Component {
                           value={votingLocationAddress}
                         />
                         <OpenExternalWebSite
-                          id="findPollingLocationButton"
                           url={getPollingLocationUrl}
                           target="_blank"
                           className="u-gray-mid"
                           body={(
                             <Button
+                              id="findPollingLocationButton"
                               classes={{ root: classes.saveButton }}
                               color="primary"
                               fullWidth
@@ -479,6 +479,7 @@ class VoterPlanModal extends Component {
                 <AddToMyCalendarWrapper>
                   <FormControlLabel
                     classes={{ root: classes.formControlLabel }}
+                    id="addedToCalendar"
                     control={(
                       <Checkbox
                         // checked={state.checkedB}
@@ -493,6 +494,7 @@ class VoterPlanModal extends Component {
                 <TextReminderWrapper>
                   <FormControlLabel
                     classes={{ root: classes.formControlLabel }}
+                    id="textMeReminder"
                     control={(
                       <Checkbox
                         // checked={state.checkedB}
@@ -517,6 +519,7 @@ class VoterPlanModal extends Component {
                   {/* </InputItem> */}
                   <FormControlLabel
                     classes={{ root: classes.formControlLabel }}
+                    id="emailMeReminder"
                     control={(
                       <Checkbox
                         // checked={state.checkedB}
@@ -543,6 +546,7 @@ class VoterPlanModal extends Component {
         </DialogContent>
         <ModalFooter>
           <Button
+            id='yourPlanForVotingSaveButton'
             color="primary"
             disabled={!showSaveButton}
             fullWidth

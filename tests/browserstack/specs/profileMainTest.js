@@ -51,5 +51,26 @@ describe('Basic cross-platform We Vote test',  () => {
 //      await simpleClick('allow'); // Clicks on Authorize App
       await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting
     }
+
+    // //////////////////////
+    // Test verification code for email
+    await simpleClick('signInHeaderBar'); // Click Sign In 
+    await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com'); // Enter test email in input box
+    await simpleClick('voterEmailAddressEntrySendCode'); // Click on Send Code
+    await simpleClick('digit1'); // Focus on first input box for verification code
+    await simpleTextInput('digit1', '0'); // Set value to 0-9
+    await simpleClick('digit2'); // Focus on second input box for verification code
+    await simpleTextInput('digit2', '1'); // Set value to 0-9
+    await simpleClick('digit3'); // Focus on third input box for verification code
+    await simpleTextInput('digit3', '2'); // Set value to 0-9
+    await simpleClick('digit4'); // Focus on fourth input box for verification code
+    await simpleTextInput('digit4', '3'); // Set value to 0-9
+    await simpleClick('digit5'); // Focus on fifth input box for verification code
+    await simpleTextInput('digit5', '4'); // Set value to 0-9
+    await simpleClick('digit6'); // Focus on sixth input box for verification code
+    await simpleTextInput('digit6', '5'); // Set value to 0-9
+    await simpleClick('emailVerifyButton'); // Click verify
+    await simpleClick('emailVerificationBackButton'); // Click back
+    await simpleClick('profileCloseSignInModal'); // Click "X"
   });
 });

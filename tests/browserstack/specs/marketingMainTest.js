@@ -3,7 +3,7 @@ const { clearTextInputValue, scrollThroughPage, simpleClick, simpleTextInput } =
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
-const PAUSE_DURATION_MICROSECONDS = 1250;
+const PAUSE_DURATION_MICROSECONDS = 2500;
 const PAUSE_DURATION_BALLOT_LOAD = 6000;
 const PAUSE_DURATION_REVIEW_RESULTS = 3000;
 
@@ -30,77 +30,53 @@ describe('Basic cross-platform WeVote test',  () => {
     // How it Works
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkForVoters'); // Open For Voters Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkForOrganizations'); // Open For Organizations Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkForCampaigns'); // Open For Campaigns Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkForPricing'); // Open Pricing Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // Elections
     await simpleClick('footerLinkSupportedElections'); // Open Supported Elections Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('logoHeaderBar'); // Open Welcome Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkRegisterToVote'); // Open Register to Vote Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await scrollThroughPage(); // Scroll to the bottom of the Page // after scrolling page doesnt go back
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('logoHeaderBar'); // Open Welcome Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkGetYourAbsenteeBallot'); // Open Get Your Absentee Ballot Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await scrollThroughPage(); // Scroll to the bottom of the Page // abstentee page is not working with scroll
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('logoHeaderBar'); // Open Welcome Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkSeeYourBallot'); // Open See Your Ballot Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await scrollThroughPage(); // Scroll to the bottom of the Page // not able to scroll up
     await simpleClick('logoHeaderBar'); // Open Welcome Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkPollingPlaceLocator'); // Open Polling Place Locator Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await scrollThroughPage(); // Scroll to the bottom of the Page // not able to scroll 
     await simpleCloseBootstrapModal(); // Close Bootstrap Modal
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('logoHeaderBar'); // Open Welcome Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkFreeOnlineTools'); // Open Free Online Tools Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('logoHeaderBar'); // Open Welcome Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkPremiumOnlineTools'); // Open Premium Online Tools Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
     // About We Vote
     await simpleClick('logoHeaderBar'); // Open Welcome Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkAbout'); // Open About & Team Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkDonate'); // Open Donate Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('logoHeaderBar');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await simpleClick('footerLinkBlog'); // Open Blog Page in new window
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -159,36 +135,24 @@ describe('Basic cross-platform WeVote test',  () => {
     // Support
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await simpleClick('footerLinkWeVoteHelp'); // Go to  We Vote Help tab
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkPrivacy'); // Go to  Privacy tab
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('logoHeaderBar');
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkTermsOfUse'); // Go to Terms of Use tab
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await simpleClick('logoHeaderBar'); // Open Welcome Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkAttributions'); // Go to  Attributions tab
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await scrollThroughPage(); // Scroll to the bottom of the Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('logoHeaderBar'); // Open Welcome Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkGetStarted'); // Go to  Get Started tab
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);     
     await simpleClick('logoHeaderBar'); // Open Welcome Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);     
     // await simpleClick('footerLinkContactSales'); // Go to Contact Sales tab
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);   
     // await scrollThroughPage(); // Scroll to the bottom of the Page
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);     
     // await simpleClick('footerLinkOpenSource'); // Go to  Open Source tab
     // await scrollThroughPage(); // Scroll to the bottom of the Page
-
-    assert(true);
   });
 });

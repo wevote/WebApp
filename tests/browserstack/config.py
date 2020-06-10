@@ -11,13 +11,13 @@ def template(filename):
 parser = argparse.ArgumentParser(description='Generate configuration file')
 command_group = parser.add_mutually_exclusive_group() 
 # Can not set browser.geoLocation and browser.local simultaneously 
-command_group.add_argument('-g', '--browserstack.geoLocation', default='', type=str, help='set browser geolocation')
+command_group.add_argument('-g', '--browserstack.geoLocation', default=None, type=str, help='set browser geolocation')
 command_group.add_argument('-l', '--browserstack.local', action='store_true', help='do not test on localhost')
 parser.add_argument('-b', '--batch', required=True, type=str, choices=['Android', 'iOS', 'Browser'], help='test batch to test')
 parser.add_argument('-f', '--file', type=template, required=True, help='path to template configuration file (.template)')
 parser.add_argument('-j', '--json', default='devices_to_test.json', type=str, help='path to json file')
 parser.add_argument('-n', '--numberOfTests', default=5, choices=range(1, 6), type=int, help='run first n number of tests')
-parser.add_argument('-a', '--app', action='store_true', help='test app instead of web app')
+parser.add_argument('-a', '--app', action='store_true', default=None, help='test app instead of web app')
 parser.add_argument('-i', '--interchange', action='store_true', help='select specific test cases')
 parser.add_argument('-w', '--write', action='store_true', help='write to configuration file')
 parser.add_argument('-d', '--browserstack.debug', action='store_false', help='turn debugging off')
@@ -113,14 +113,14 @@ with open(args['file'], 'r') as config:
                 replaced = False
                 # create output file with configuration values
                 for key, value in replace.items():
+                    if replace[key] == None:
+                        if '%%%s' % key in line: 
+                            replaced = True
+                            break
                     if args['batch'] == 'Browser':
                         if '%device' in line or '%app' in line:
                             replaced = True
                             break 
-                    if args['app'] != 'true':
-                        if '%app' in line: 
-                            replaced = True
-                            break
                     replacedString, numberOfSubstitutions = re.subn(r'%%%s' % key, str(value), line, count=1)
                     if numberOfSubstitutions == 1: 
                         if args['write'] == 'true':
