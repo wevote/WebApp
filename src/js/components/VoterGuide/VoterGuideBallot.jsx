@@ -35,7 +35,8 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 
-
+// DALE 2020-06-10 We are deprecating the ballot on the Voter Guide page
+// We can delete after 2020-08-31
 // Related to WebApp/src/js/routes/Ballot/Ballot.jsx
 class VoterGuideBallot extends Component {
   static propTypes = {

@@ -53,7 +53,7 @@
 $tab-spacing-desktop: 24px;
 $tab-spacing-mobile: $space-md;
 $scrollbar-height: 20px;
-$tab-height: 52px;
+$tab-height: 50px;
 $tab-height-visible: $tab-height - $scrollbar-height;
 $tab-margin-mobile: (-$space-md);
 
@@ -96,7 +96,7 @@ $tab-margin-mobile: (-$space-md);
     }
 
     .tab-active {
-      border-bottom: 6px solid $black;
+      border-bottom: 4px solid $black;
       color: $black;
     }
 

@@ -166,27 +166,34 @@ class VoterGuideFollowers extends Component {
               (voterGuideFollowersListFilteredBySearch && voterGuideFollowersListFilteredBySearch.length > 0)) ? (
                 <TitleWrapper>
                   {lookingAtSelf ? (
-                    <h4 className="card__additional-heading">Your Followers</h4>
+                    <>
+                      Your Followers
+                    </>
                   ) : (
-                    <h4 className="card__additional-heading">
+                    <>
                       Followers of
                       {' '}
                       {organizationName}
-                    </h4>
+                    </>
                   )}
                 </TitleWrapper>
               ) : (
                 <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                  {lookingAtSelf ?
-                    <h4 className="card__additional-heading">No followers can be found.</h4> : (
-                      <h4 className="card__additional-heading">
+                  <TitleWrapper>
+                    {lookingAtSelf ? (
+                      <>
+                        No followers can be found.
+                      </>
+                    ) : (
+                      <>
                         No followers of
                         {' '}
                         {organizationName}
                         {' '}
                         can be found.
-                      </h4>
+                      </>
                     )}
+                  </TitleWrapper>
                 </DelayedLoad>
               )
             }
@@ -208,11 +215,9 @@ class VoterGuideFollowers extends Component {
             {/* Results Not Found */}
             {(searchTerm && (voterGuideFollowersListFilteredBySearch && voterGuideFollowersListFilteredBySearch.length === 0)) && (
               <SearchResultsWrapper>
-                <h4 className="card__additional-heading">
-                  &quot;
-                  {searchTerm}
-                  &quot; not found
-                </h4>
+                &quot;
+                {searchTerm}
+                &quot; not found
               </SearchResultsWrapper>
             )}
             <span>
@@ -240,10 +245,7 @@ const SearchResultsWrapper = styled.div`
 `;
 
 const TitleWrapper = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
+  margin: 15px;
 `;
 
 const Wrapper = styled.div`
