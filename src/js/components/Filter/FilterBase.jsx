@@ -8,7 +8,7 @@ import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import BallotSearch from '../Ballot/BallotSearch';
 import { renderLog } from '../../utils/logging';
 
-const sortFilters = ['sortByMagic', 'sortByNetwork', 'sortByReach'];
+const defaultSortFilters = ['sortByMagic', 'sortByNetwork', 'sortByReach'];
 
 class FilterBase extends React.Component {
   static propTypes = {
@@ -22,6 +22,7 @@ class FilterBase extends React.Component {
     onToggleSearch: PropTypes.func,
     positionSearchMode: PropTypes.bool,
     selectedFiltersDefault: PropTypes.array,
+    sortFilters: PropTypes.array,
   };
 
   constructor (props) {
@@ -42,6 +43,7 @@ class FilterBase extends React.Component {
     this.setState({
       // componentDidMount: true,
       selectedFilters: this.props.selectedFiltersDefault || [],
+      sortFilters: this.props.sortFilters || defaultSortFilters,
     });
   }
 
@@ -80,7 +82,7 @@ class FilterBase extends React.Component {
   };
 
   selectSortByFilter = (filterName) => {
-    const { selectedFilters } = this.state;
+    const { selectedFilters, sortFilters } = this.state;
     let updatedFilters = selectedFilters;
     // Figure out which other filters to remove when we switch to a new sortBy filter
     const remainingSortFiltersToRemove = sortFilters.filter(item => item !== filterName);
@@ -194,7 +196,7 @@ class FilterBase extends React.Component {
   render () {
     renderLog('FilterBase');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('FilterBase render');
-    const { isSearching, selectedFilters, showAllFilters } = this.state;
+    const { isSearching, selectedFilters, showAllFilters, sortFilters } = this.state;
     const { allItems, classes, positionSearchMode } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;

@@ -14,6 +14,7 @@ import LoadingWheel from '../components/LoadingWheel';
 import PledgeToVote from '../components/Ready/PledgeToVote';
 import ReadMore from '../components/Widgets/ReadMore';
 import ReadyActions from '../actions/ReadyActions';
+import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
 import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
@@ -77,7 +78,10 @@ class Ready extends Component {
     if (!voter) {
       return LoadingWheel;
     }
-    const defaultIntroductionText = "We've all been there. Election day is almost here, but besides the President and a few other decisions, we don't know how we're going to vote. There has to be a better way. Now, there is!";
+    const defaultIntroductionText = 'Make sure you\'re ready to vote ' +
+      '(registered to vote, have a plan, etc.) ' +
+      'See who\'s running for office. What do they stand for? ' +
+      'Learn from people you trust.';
 
     return (
       <div className="page-content-container">
@@ -96,12 +100,12 @@ class Ready extends Component {
                 <Card className="card">
                   <div className="card-main">
                     <Title>
-                      {chosenReadyIntroductionTitle || 'Get Ready to Vote in Minutes!'}
+                      {chosenReadyIntroductionTitle || 'We Vote makes being a voter easier'}
                     </Title>
                     <Paragraph>
                       <ReadMore
                         textToDisplay={chosenReadyIntroductionText || defaultIntroductionText}
-                        numberOfLines={2}
+                        numberOfLines={3}
                       />
                     </Paragraph>
                   </div>
@@ -120,30 +124,23 @@ class Ready extends Component {
               )}
             </div>
             <div className="col-lg-4 d-none d-lg-block">
-              <div className="u-show-desktop">
+              {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card">
                   <div className="card-main">
                     <Title>
-                      {chosenReadyIntroductionTitle || 'Get Ready to Vote in Minutes!'}
+                      {chosenReadyIntroductionTitle}
                     </Title>
                     <Paragraph>
-                      {chosenReadyIntroductionText || (
-                        <>
-                          <div>
-                            We&apos;ve all been there. Election day is almost here,
-                            {' '}
-                            but besides the President and a few other decisions,
-                            {' '}
-                            we don&apos;t know how we&apos;re going to vote.
-                            {' '}
-                            There has to be a better way. Now, there is!
-                          </div>
-                        </>
-                      )}
+                      {chosenReadyIntroductionText}
                     </Paragraph>
                   </div>
                 </Card>
-              </div>
+              )}
+              <Card className="card">
+                <div className="card-main">
+                  <ReadyIntroduction />
+                </div>
+              </Card>
               {nextReleaseFeaturesEnabled && <PledgeToVote />}
             </div>
           </div>
@@ -173,7 +170,8 @@ const Title = styled.h2`
   font-weight: 800;
   margin: 0 0 12px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: 18px;
+    font-size: 14px;
+    margin: 0 0 4px;
   }
 `;
 

@@ -7,14 +7,14 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SettingsAccount from '../Settings/SettingsAccount';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterGuideBallot from './VoterGuideBallot';
 import VoterGuideChooseElectionWithPositionsModal from './VoterGuideChooseElectionWithPositionsModal';
 import VoterGuideFollowers from './VoterGuideFollowers';
 import VoterGuideFollowing from './VoterGuideFollowing';
-import VoterGuidePositions from './VoterGuidePositions';
+import VoterGuideEndorsements from './VoterGuideEndorsements';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { arrayContains } from '../../utils/textFormat';
+// import VoterGuideBallot from './VoterGuideBallot';  // We can delete after 2020-08-31
 
 export default class OrganizationVoterGuideTabs extends Component {
   static propTypes = {
@@ -40,6 +40,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     super(props);
     this.state = {
       activeRoute: '',
+      allOrganizationPositionsLength: 0,
       organization: {},
       organizationWeVoteId: '',
       scrollDownValue: 0,
@@ -54,7 +55,7 @@ export default class OrganizationVoterGuideTabs extends Component {
   }
 
   componentDidMount () {
-    const { organizationWeVoteId } = this.props;
+    const { activeRoute, organizationWeVoteId } = this.props;
     // console.log('OrganizationVoterGuideTabs, componentDidMount, organizationWeVoteId: ', this.props.organizationWeVoteId);
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -72,10 +73,13 @@ export default class OrganizationVoterGuideTabs extends Component {
     OrganizationActions.positionListForOpinionMaker(organizationWeVoteId, false, false);
     // Get all of this organization's voter guides so we know which elections to offer
     VoterGuideActions.voterGuidesRetrieve(organizationWeVoteId);
+    const allOrganizationPositions = OrganizationStore.getAllOrganizationPositions(organizationWeVoteId);
+    const allOrganizationPositionsLength = allOrganizationPositions.length || 0;
 
-    // console.log('OrganizationVoterGuideTabs, componentDidMount, this.props.activeRoute: ', this.props.activeRoute);
+    // console.log('OrganizationVoterGuideTabs, componentDidMount, this.props.activeRoute: ', activeRoute);
     this.setState({
-      activeRoute: this.props.activeRoute || 'ballot',
+      activeRoute: activeRoute || 'positions',
+      allOrganizationPositionsLength,
       organizationWeVoteId,
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
       pathname: this.props.location.pathname,
@@ -170,7 +174,10 @@ export default class OrganizationVoterGuideTabs extends Component {
   onOrganizationStoreChange () {
     const { organizationWeVoteId } = this.state;
     // console.log('OrganizationVoterGuideTabs onOrganizationStoreChange, organizationWeVoteId: ', organizationWeVoteId);
+    const allOrganizationPositions = OrganizationStore.getAllOrganizationPositions(organizationWeVoteId);
+    const allOrganizationPositionsLength = allOrganizationPositions.length || 0;
     this.setState({
+      allOrganizationPositionsLength,
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
     });
   }
@@ -188,7 +195,7 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   switchTab (destinationTab) {
     // console.log('OrganizationVoterGuideTabs switchTab, destinationTab:', destinationTab);
-    const availableTabsArray = ['ballot', 'following', 'followers', 'positions'];
+    const availableTabsArray = ['following', 'followers', 'positions']; // 'ballot' removed
     if (arrayContains(destinationTab, availableTabsArray)) {
       this.setState({
         activeRoute: destinationTab,
@@ -225,11 +232,14 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   render () {
     document.body.scrollTop = this.state.scrollDownValue;
-    const { activeRoute, organizationWeVoteId, pathname, showElectionsWithOrganizationVoterGuidesModal, voter } = this.state;
+    const {
+      activeRoute, allOrganizationPositionsLength, organizationWeVoteId,
+      pathname, showElectionsWithOrganizationVoterGuidesModal, voter,
+    } = this.state;
     if (!pathname || !activeRoute || !organizationWeVoteId || !voter) {
       return <div>{LoadingWheel}</div>;
     }
-    // console.log('showElectionsWithOrganizationVoterGuidesModal:', showElectionsWithOrganizationVoterGuidesModal);
+    // console.log('allOrganizationPositionsLength:', allOrganizationPositionsLength);
 
     let lookingAtSelf = false;
     if (this.state.voter) {
@@ -260,25 +270,26 @@ export default class OrganizationVoterGuideTabs extends Component {
     let voterGuideComponentToDisplay = null;
     // console.log('activeRoute:', activeRoute);
     switch (activeRoute) {
+      // case 'ballot':
+      //   voterGuideComponentToDisplay = (
+      //     <VoterGuideBallot
+      //       organizationWeVoteId={organizationWeVoteId}
+      //       activeRoute={activeRoute}
+      //       location={this.props.location}
+      //       params={this.props.params}
+      //       ref={(ref) => { this.voterGuideBallotReference = ref; }}
+      //     />
+      //   );
+      //   break;
       default:
-      case 'ballot':
-        voterGuideComponentToDisplay = (
-          <VoterGuideBallot
-            organizationWeVoteId={organizationWeVoteId}
-            activeRoute={activeRoute}
-            location={this.props.location}
-            params={this.props.params}
-            ref={(ref) => { this.voterGuideBallotReference = ref; }}
-          />
-        );
-        break;
       case 'positions':
+        // Was <VoterGuidePositions
         voterGuideComponentToDisplay = (
           <>
             { lookingAtSelf && !this.state.voter.is_signed_in ?
               <SettingsAccount /> :
               null }
-            <VoterGuidePositions
+            <VoterGuideEndorsements
               activeRoute={activeRoute}
               location={this.props.location}
               organizationWeVoteId={organizationWeVoteId}
@@ -297,28 +308,34 @@ export default class OrganizationVoterGuideTabs extends Component {
 
     return (
       <div className="">
-        <div className="tabs__tabs-container-wrap">
-          <div className="tabs__tabs-container d-print-none">
+        <div className="tabs__tabs-container-wrap u-show-desktop-tablet d-print-none">
+          <div className="tabs__tabs-container">
             <ul className="nav tabs__tabs">
-              <li className="tab-item">
-                <a // eslint-disable-line
-                  onClick={() => this.switchTab('ballot')}
-                  className={activeRoute === 'ballot' ? 'tab tab-active' : 'tab tab-default'}
-                >
-                  Your Ballot
-                </a>
-              </li>
+              {/* <li className="tab-item"> */}
+              {/*  <a // eslint-disable-line */}
+              {/*    onClick={() => this.switchTab('ballot')} */}
+              {/*    className={activeRoute === 'ballot' ? 'tab tab-active' : 'tab tab-default'} */}
+              {/*  > */}
+              {/*    Your Ballot */}
+              {/*  </a> */}
+              {/* </li> */}
 
               <li className="tab-item">
                 <a // eslint-disable-line
                   onClick={() => this.switchTab('positions')}
                   className={activeRoute === 'positions' ? 'tab tab-active' : 'tab tab-default'}
                 >
-                  All Endorsements
+                  {(allOrganizationPositionsLength > 0) && (
+                    <>
+                      {allOrganizationPositionsLength}
+                      &nbsp;
+                    </>
+                  )}
+                  Endorsements
                 </a>
               </li>
 
-              <li className="tab-item u-show-desktop-tablet">
+              <li className="tab-item">
                 <a // eslint-disable-line
                   onClick={() => this.switchTab('following')}
                   className={activeRoute === 'following' ? 'tab tab-active' : 'tab tab-default'}
@@ -330,7 +347,7 @@ export default class OrganizationVoterGuideTabs extends Component {
                 </a>
               </li>
 
-              <li className="tab-item u-show-desktop-tablet">
+              <li className="tab-item">
                 <a // eslint-disable-line
                   onClick={() => this.switchTab('followers')}
                   className={activeRoute === 'followers' ? 'tab tab-active' : 'tab tab-default'}
