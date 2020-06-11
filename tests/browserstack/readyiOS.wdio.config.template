@@ -9,14 +9,14 @@ exports.config = {
   key: browserStackConfig.BROWSERSTACK_KEY,
   updateJob: false,
   specs: [
-    './tests/browserstack/specs/%scriptNameMainTest.js',
+    './tests/browserstack/specs/readyMainTest.js',
   ],
   twitterUserName: browserStackConfig.TWITTER_USER_NAME,
   twitterPassword: browserStackConfig.TWITTER_PASSWORD,
   exclude: [],
   capabilities: [
     {
-      name: '%name0',
+      name: 'readyMainTest-iOS%name0',
       build: buildNameForDisplay,
       device: '%device0',
       os: '%os0',
@@ -37,7 +37,7 @@ exports.config = {
       isMobileScreenSize: %isMobileScreenSize,
     },
     {
-      name: '%name1',
+      name: 'readyMainTest-iOS%name1',
       build: buildNameForDisplay,
       device: '%device1',
       os: '%os1',
@@ -58,7 +58,7 @@ exports.config = {
       isMobileScreenSize: %isMobileScreenSize,
     },
     {
-      name: '%name2',
+      name: 'readyMainTest-iOS%name2',
       build: buildNameForDisplay,
       device: '%device2',
       os: '%os2',
@@ -79,7 +79,7 @@ exports.config = {
       isMobileScreenSize: %isMobileScreenSize,
     },
     {
-      name: '%name3',
+      name: 'readyMainTest-iOS%name3',
       build: buildNameForDisplay,
       device: '%device3',
       os: '%os3',
@@ -100,7 +100,7 @@ exports.config = {
       isMobileScreenSize: %isMobileScreenSize,
     },
     {
-      name: '%name4',
+      name: 'readyMainTest-iOS%name4',
       build: buildNameForDisplay,
       device: '%device4',
       os: '%os4',

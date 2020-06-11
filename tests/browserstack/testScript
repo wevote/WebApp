@@ -1,49 +1,69 @@
 #!/bin/bash
-usage () { echo -e "Usage: $0 [-r (remove)] -c <config template> -s <script name> -t <Android/iOS/Browser> -f <path to web app>\n\nExample: $0 -c parallel.wdio.config.js -f /opt/MyProjects/WebApp/ -s ballot -t Android"; exit; }
 error () { echo $1; exit; }
+usage () { 
+  echo -e "Usage: $0 [-r remove] -s <script name> -t <test type Android/iOS/Browser> -f <web app path> [-n number of tests]\n" 
+  echo "Example: $0 -f /opt/MyProjects/WebApp/ -s ballot -t Android"; 
+  exit
+}
 
-[[ $# -lt 8 ]] && usage
-while getopts "rs:f:t:c:" opt; 
+numberTests=5
+
+while getopts "rs:f:t:n:" opt; 
 do
     case $opt in
     r)
         remove=1;;
-    c)
-        configFileName=$OPTARG;;
     f)
         filepath=$OPTARG;;
     s)
-        script_name=$OPTARG;;
+        script=$OPTARG;;
     t)
-        test_type=$OPTARG;;
+        testType=$OPTARG;;
+    n)
+        numberTests=$OPTARG;;
     \?)
         usage;;
     esac
 done
 
-insertString="\"${script_name}Test-${test_type}\": \"./node_modules/.bin/wdio ./tests/browserstack/${script_name}${test_type}.wdio.config.js\",";
+[[ -z $filepath || -z $script || -z $testType ]] && usage
+[[ $numberTests -gt 5 || $numberTests -lt 1 ]] && error 'Number of tests must be between 1 and 5'
+
+insert="    \"${script}Test-$testType\": \"./node_modules/.bin/wdio ./tests/browserstack/$script$testType.wdio.config.js\","
 configFilePath=${filepath}tests/browserstack
 scriptFilePath=$configFilePath/specs
 
-if [[ $remove -ne 1 ]]; then
-    # Insert the script into package.json
-    [[ -z "`grep -n "${script_name}Test-${test_type}" ${filepath}package.json`" ]] && lineNumber=`grep -n "exampleTest" ${filepath}package.json | cut -d':' -f 1`;
-    [[ ! -z "$lineNumber" ]] && sed -i "${lineNumber}i\ \ \ \ ${insertString}" ${filepath}package.json;
-    
+[ ! -d $configFilePath ] && error 'File path is not a directory'
+[ ! -r $configFilePath/parallel.wdio.config.js ] && error 'Parallel.wdio.config.js does not exist or your file path is incorrect'
 
-    # Create .wdio.config.js file
-    sed "s/%name/${script_name}MainTest-$test_type%name/g;s/%scriptName/$script_name/g" $configFilePath/$configFileName > $configFilePath/${script_name}${test_type}.wdio.config.template
+if [[ $remove -ne 1 ]]; then
+    # Check for duplicates
+    [[ -z `grep -n "$insert" ${filepath}package.json` ]] && lineNumber=`grep -n "exampleTest" ${filepath}package.json`
+
+    # Insert the script into package.json
+    [[ ! -z $lineNumber ]] && sed -i "${lineNumber%%:*}i${insert}" ${filepath}package.json
+    
+    # Create .wdio.config.template file
+    substitute="s/%name/${script}MainTest-$testType%name/g;s/%scriptName/$script/g"
+    if [[ $numberTests -ne 5 ]]; then  
+        name0LineNumber=`grep -n "name0" $configFilePath/parallel.wdio.config.js`
+        name1LineNumber=`grep -n "name1" $configFilePath/parallel.wdio.config.js`
+        codeBlockLength=$(( ${name1LineNumber%%:*} - ${name0LineNumber%%:*} )) 
+        end=`grep -n "name4" $configFilePath/parallel.wdio.config.js` 
+        comment="$(( ${end%%:*} - 1 - (4 - $numberTests) * $codeBlockLength )),$(( ${end%%:*} + 19 ))s/^/\/\//"
+    fi
+    sed -e "$comment" -e "$substitute" $configFilePath/parallel.wdio.config.js > $configFilePath/$script$testType.wdio.config.template
 
     # Create main script
-    cp -n $scriptFilePath/exampleTest.js $scriptFilePath/${script_name}MainTest.js
+    cp -n $scriptFilePath/exampleTest.js $scriptFilePath/${script}MainTest.js
 else
     # Remove script from package.json
-    lineNumber=`grep -n "$insertString" ${filepath}package.json | cut -d':' -f 1`;
-    [[ ! -z "$linenumber" ]] && sed -i "${linenumber}d" ${filepath}package.json;
+    lineNumber=`grep -n "$insert" ${filepath}package.json`
+    [[ ! -z $lineNumber ]] && sed -i "${lineNumber%%:*}d" ${filepath}package.json
     
     # Remove .wdio.config.template file
-    rm $configFilePath/${script_name}${test_type}.wdio.config.template;
+    rm $configFilePath/${script}${testType}.wdio.config.template
 
     # Remove main script
-    rm $scriptFilePath/${script_name}MainTest.js
+    rm $scriptFilePath/${script}MainTest.js
 fi
