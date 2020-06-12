@@ -10,6 +10,7 @@ import sortBy from 'lodash-es/sortBy';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isCordova } from '../../utils/cordovaUtils';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
 import positionSearchPriority from '../../utils/positionSearchPriority';
+import voterGuidePositionSearchPriority from '../../utils/voterGuidePositionSearchPriority';
 
 const delayBeforeSearchExecution = 400;
 
@@ -24,6 +25,7 @@ class BallotSearch extends Component {
     onToggleSearch: PropTypes.func,
     positionSearchMode: PropTypes.bool,
     theme: PropTypes.object,
+    voterGuidePositionSearchMode: PropTypes.bool,
   };
 
   constructor (props) {
@@ -58,7 +60,7 @@ class BallotSearch extends Component {
   }
 
   filterItems = search => this.props.items.map((item) => {
-    const { positionSearchMode } = this.props;
+    const { positionSearchMode, voterGuidePositionSearchMode } = this.props;
     let candidatesToShowForSearchResults = [];
     let foundInArray = [];
     let searchPriority = 0;
@@ -66,6 +68,11 @@ class BallotSearch extends Component {
       const positionResults = positionSearchPriority(search, item);
       ({ searchPriority } = positionResults);
       ({ foundInArray } = positionResults);
+      return { ...item, searchPriority, foundInArray, candidatesToShowForSearchResults };
+    } else if (voterGuidePositionSearchMode) {
+      const voterGuidePositionResults = voterGuidePositionSearchPriority(search, item);
+      ({ searchPriority } = voterGuidePositionResults);
+      ({ foundInArray } = voterGuidePositionResults);
       return { ...item, searchPriority, foundInArray, candidatesToShowForSearchResults };
     } else {
       const ignoreDescriptionFields = (this.props.addVoterGuideMode);

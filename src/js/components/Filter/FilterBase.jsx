@@ -23,6 +23,7 @@ class FilterBase extends React.Component {
     positionSearchMode: PropTypes.bool,
     selectedFiltersDefault: PropTypes.array,
     sortFilters: PropTypes.array,
+    voterGuidePositionSearchMode: PropTypes.bool,
   };
 
   constructor (props) {
@@ -197,7 +198,7 @@ class FilterBase extends React.Component {
     renderLog('FilterBase');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('FilterBase render');
     const { isSearching, selectedFilters, showAllFilters, sortFilters } = this.state;
-    const { allItems, classes, positionSearchMode } = this.props;
+    const { allItems, classes, positionSearchMode, voterGuidePositionSearchMode } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
     return (
@@ -210,6 +211,7 @@ class FilterBase extends React.Component {
             onBallotSearch={this.onSearch}
             onToggleSearch={this.handleToggleSearchBallot}
             positionSearchMode={positionSearchMode}
+            voterGuidePositionSearchMode={voterGuidePositionSearchMode}
           />
           {!isSearching && this.generateGroupedFilters()}
           {!isSearching && this.generateIslandFilters()}

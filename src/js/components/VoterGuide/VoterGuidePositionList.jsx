@@ -49,10 +49,8 @@ const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 6;
 
 class VoterGuidePositionList extends Component {
   static propTypes = {
-    ballotItemDisplayName: PropTypes.string,
     incomingPositionList: PropTypes.array.isRequired,
     organizationWeVoteId: PropTypes.string.isRequired,
-    params: PropTypes.object,
     positionListExistsTitle: PropTypes.object,
   };
 
@@ -298,7 +296,7 @@ class VoterGuidePositionList extends Component {
     for (count = 0; count < positionList.length; count++) {
       showTitle = true;
     }
-    const selectedFiltersDefault = ['endorsingGroup', 'newsOrganization', 'publicFigure', 'sortByAlphabetical', 'yourFriends'];
+    const selectedFiltersDefault = ['sortByAlphabetical', 'thisYear', 'federalRaces', 'stateRaces', 'measureRaces', 'localRaces'];
     let numberOfPositionItemsDisplayed = 0;
     let searchTextString = '';
     return (
@@ -315,7 +313,7 @@ class VoterGuidePositionList extends Component {
             onFilteredItemsChange={this.onFilteredItemsChange}
             onSearch={this.onPositionSearch}
             onToggleSearch={this.handleToggleSearchBallot}
-            positionSearchMode
+            voterGuidePositionSearchMode
             selectedFiltersDefault={selectedFiltersDefault}
             sortFilters={['sortByAlphabetical']}
           >
@@ -331,6 +329,33 @@ class VoterGuidePositionList extends Component {
           )}
         </FilterWrapper>
         <ul className="card-child__list-group">
+          {isSearching ? (
+            <>
+              {(positionSearchResults && !positionSearchResults.length) && (
+                <NoResultsText>
+                  {searchText ? (
+                    <>
+                      We couldn&apos;t find any endorsements containing the search term &quot;
+                      {searchText}
+                      &quot;.
+                    </>
+                  ) : (
+                    <>
+                      Please enter a search term.
+                    </>
+                  )}
+                </NoResultsText>
+              )}
+            </>
+          ) : (
+            <>
+              {(filteredPositionList && !filteredPositionListLength) && (
+                <NoResultsText>
+                  Please change the filters to see endorsements.
+                </NoResultsText>
+              )}
+            </>
+          )}
           {(isSearching ? positionSearchResults : filteredPositionList).map((onePosition) => {
             // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
             if (isSearching) {
@@ -377,11 +402,10 @@ class VoterGuidePositionList extends Component {
             return (
               <div key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}>
                 <VoterGuidePositionItem
-                  // ballotItemDisplayName={this.props.ballotItemDisplayName}
-                  // params={this.props.params}
+                  ballotItemDisplayName={onePosition.ballot_item_display_name}
                   organizationWeVoteId={organizationWeVoteId}
                   position={onePosition}
-                  // searchResultsNode={searchResultsNode}
+                  searchResultsNode={searchResultsNode}
                 />
               </div>
             );
@@ -422,14 +446,16 @@ const LoadingItemsWheel = styled.div`
   justify-content: center;
 `;
 
+const NoResultsText = styled.div`
+  margin: 15px;
+`;
+
 const SearchResultsFoundInExplanation = styled.div`
   background-color: #C2DCE8;
   color: #0E759F;
-  padding: 12px !important;
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    margin-left: 12px !important;
-    margin-right: 12px !important;
-  }
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 8px !important;
 `;
 
 const SearchTitle = styled.div`

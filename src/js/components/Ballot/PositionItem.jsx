@@ -200,7 +200,7 @@ class PositionItem extends Component {
 
   render () {
     renderLog('PositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, position } = this.props;
+    const { classes, position, searchResultsNode } = this.props;
     if (!position) {
       return null;
     }
@@ -399,7 +399,7 @@ class PositionItem extends Component {
       return (
         <>
           <div className="u-show-desktop-tablet">
-            {this.props.searchResultsNode}
+            {searchResultsNode}
             <DesktopContainer>
               <DesktopItemLeft>
                 <DesktopItemImage>
