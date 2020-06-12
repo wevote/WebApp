@@ -2,7 +2,7 @@ const { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, 
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
-const PAUSE_DURATION_MICROSECONDS = 1250;
+const PAUSE_DURATION_MICROSECONDS = 3000;
 const PAUSE_DURATION_BALLOT_LOAD = 6000;
 const PAUSE_DURATION_REVIEW_RESULTS = 3000;
 
@@ -55,7 +55,7 @@ describe('Basic cross-platform We Vote test',  () => {
     } else {
       // ///////////////////////////////
       // For the website version, open our quality testing site
-      await browser.url(`${WEB_APP_ROOT_URL}/ballot`);
+      await browser.url('ballot');
     }
 
     // //////////////////////
@@ -63,6 +63,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     await clearTextInputValue('editAddressOneHorizontalRowTextForMapSearch'); // Clear location
     await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', `Oakland, CA 94501${enter}`); // Focus on Location Input Box
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     if (isDesktopScreenSize) {
       await simpleClick('completeYourProfileDesktopButton'); // Click 'How it works'
       await simpleClick('annotatedSlideShowStep1Next'); // Click Next
@@ -73,17 +74,9 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
       await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
       await simpleClick('completeYourProfileDesktopButton'); // Clicks on Choose Interests
-      await simpleClick('issueFollowButton');  // select an interest to enable the next button on the modal
+      await selectClick('#valuesIntroModalValueList button'); // select an interest
       await simpleClick('valuesIntroModalNext'); // Close the Interests modal
       await simpleClick('completeYourProfileDesktopButton'); // Clicks on Learn More
-      for (let step = 0; step < personalizedScoreSteps; step++) {
-        // eslint-disable-next-line no-await-in-loop
-        await simpleClick('personalizedScoreIntroModalNextButton'); // Personalized Score Modal - 7 steps */
-      }
-      await simpleClick('popoverCloseButton'); // Close the popover before clicking on Next
-      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
-      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
-      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
     } else if (!isAndroid) {
       await simpleClick('completeYourProfileMobileButton'); // clicks on How it works
       await simpleClick('annotatedSlideShowStep1Next');
@@ -94,22 +87,22 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
       await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
       await simpleClick('completeYourProfileMobileButton'); // Clicks on Choose Interests
-      await simpleClick('issueFollowButton');  // select an interest to enable the next button on the modal
+      await selectClick('#valuesIntroModalValueList button'); // select an interest
       await simpleClick('valuesIntroModalNext'); // Close the Interests modal
       await scrollIntoViewSimple('completeYourProfileMobileButton'); // Scrolls to Confirm Address
       await simpleClick('completeYourProfileMobileButton'); // Clicks on Confirm Address
       await simpleClick('addressBoxModalSaveButton'); // clicks on save button
       await simpleClick('profileCloseSelectBallotModal'); // Clicks on close
       await simpleClick('completeYourProfileMobileButton'); // Clicks on Learn More
-      for (let step = 0; step < personalizedScoreSteps; step++) {
-        // eslint-disable-next-line no-await-in-loop
-        await simpleClick('personalizedScoreIntroModalNextButton'); // Personalized Score Modal - 7 steps */
       }
-      await simpleClick('popoverCloseButton'); // Close the popover before clicking on next
-      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
-      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
-      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
+    for (let step = 0; step < personalizedScoreSteps; step++) {
+      // eslint-disable-next-line no-await-in-loop
+      await simpleClick('personalizedScoreIntroModalNextButton'); // Personalized Score Modal - 7 steps */
     }
+    await simpleClick('popoverCloseButton'); // Close the popover before clicking on Next
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
+    await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
 
     // //////////////////////
     // Sign in using Twitter, when in browser
@@ -248,6 +241,7 @@ describe('Basic cross-platform We Vote test',  () => {
   // //////////////////////
   // Go back to ballot
     await simpleClick('backToLinkTabHeader');
+    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     // //////////////////////
     // Visit the federal page
     await simpleClick(`${ballotBadgePlatformPrefixID}-Federal`); // Go to federal 
@@ -262,6 +256,7 @@ describe('Basic cross-platform We Vote test',  () => {
       await selectClick('[id^=itemPositionStatementActionBarTextArea-]') // Clicks on text area
       await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
       await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       if (!isSafari) { // accommodates a bug in Safari --> "Save" button isn't working as intended
         await selectClick('[id^=itemPositionStatementActionBarEdit-]'); // Click on edit button
       }
@@ -347,26 +342,5 @@ describe('Basic cross-platform We Vote test',  () => {
     } else {
       await simpleClick('ballotTabFooterBar');  // Mobile or tablet screen size - FOOTER ICONS
     }
-
-    // //////////////////////
-    // Test verification code for email
-    await simpleClick('signInHeaderBar'); // Click Sign In 
-    await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com'); // Enter test email in input box
-    await simpleClick('voterEmailAddressEntrySendCode'); // Click on Send Code
-    await simpleClick('digit1'); // Focus on first input box for verification code
-    await simpleTextInput('digit1', '0'); // Set value to 0-9
-    await simpleClick('digit2'); // Focus on second input box for verification code
-    await simpleTextInput('digit2', '1'); // Set value to 0-9
-    await simpleClick('digit3'); // Focus on third input box for verification code
-    await simpleTextInput('digit3', '2'); // Set value to 0-9
-    await simpleClick('digit4'); // Focus on fourth input box for verification code
-    await simpleTextInput('digit4', '3'); // Set value to 0-9
-    await simpleClick('digit5'); // Focus on fifth input box for verification code
-    await simpleTextInput('digit5', '4'); // Set value to 0-9
-    await simpleClick('digit6'); // Focus on sixth input box for verification code
-    await simpleTextInput('digit6', '5'); // Set value to 0-9
-    await simpleClick('emailVerifyButton'); // Click verify
-    await simpleClick('emailVerificationBackButton'); // Click back
-    await simpleClick('profileCloseSignInModal'); // Click "X"
   });
 });
