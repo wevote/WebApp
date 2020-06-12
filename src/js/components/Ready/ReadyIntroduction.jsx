@@ -57,7 +57,7 @@ class ReadyIntroduction extends Component {
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                 <StepText>
                   <ReadMore
-                    textToDisplay={'Between the nonstop misleading TV ads, texts, calls and overflowing mailboxes, who has time to make sense of the madness? Get help from people you trust.'}
+                    textToDisplay="Between the nonstop misleading TV ads, texts, calls and overflowing mailboxes, who has time to make sense of the madness? Get help from people you trust."
                     numberOfLines={3}
                   />
                 </StepText>

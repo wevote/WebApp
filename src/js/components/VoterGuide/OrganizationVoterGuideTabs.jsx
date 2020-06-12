@@ -13,7 +13,7 @@ import VoterGuideFollowing from './VoterGuideFollowing';
 import VoterGuideEndorsements from './VoterGuideEndorsements';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { arrayContains } from '../../utils/textFormat';
+import { abbreviateNumber, arrayContains } from '../../utils/textFormat';
 // import VoterGuideBallot from './VoterGuideBallot';  // We can delete after 2020-08-31
 
 export default class OrganizationVoterGuideTabs extends Component {
@@ -327,7 +327,7 @@ export default class OrganizationVoterGuideTabs extends Component {
                 >
                   {(allOrganizationPositionsLength > 0) && (
                     <>
-                      {allOrganizationPositionsLength}
+                      {abbreviateNumber(allOrganizationPositionsLength)}
                       &nbsp;
                     </>
                   )}

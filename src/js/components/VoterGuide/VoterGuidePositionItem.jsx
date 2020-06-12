@@ -23,8 +23,10 @@ import AppActions from '../../actions/AppActions';
 
 class VoterGuidePositionItem extends Component {
   static propTypes = {
+    ballotItemDisplayName: PropTypes.string,
     organizationWeVoteId: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
+    searchResultsNode: PropTypes.object,
   };
 
   constructor (props) {
@@ -90,6 +92,8 @@ class VoterGuidePositionItem extends Component {
       voterSupportsBallotItem = position.is_support;
       voterTextStatement = position.statement_text;
     }
+    // const today = new Date();
+    // const thisYearInteger = today.getFullYear();
     this.setState({
       componentDidMountFinished: true,
       voterOpposesBallotItem,
@@ -99,6 +103,7 @@ class VoterGuidePositionItem extends Component {
       signedInWithThisFacebookAccount,
       signedInWithThisOrganization,
       signedInWithThisTwitterAccount,
+      // thisYearInteger,
       voterTextStatement,
       voter,
     });
@@ -166,59 +171,59 @@ class VoterGuidePositionItem extends Component {
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      return true;
-    }
-    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
-      return true;
-    }
-    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-      // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
-      return true;
-    }
-    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
-      // console.log('this.state.voterOpposesBallotItem:', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem:', nextState.voterOpposesBallotItem);
-      return true;
-    }
-    if (this.state.voterPositionIsPublic !== nextState.voterPositionIsPublic) {
-      // console.log('this.state.voterPositionIsPublic:', this.state.voterPositionIsPublic, ', nextState.voterPositionIsPublic:', nextState.voterPositionIsPublic);
-      return true;
-    }
-    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
-      // console.log('this.state.voterSupportsBallotItem:', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem:', nextState.voterSupportsBallotItem);
-      return true;
-    }
-    if (this.state.organizationFacebookIdBeingViewed !== nextState.organizationFacebookIdBeingViewed) {
-      // console.log('this.state.organizationFacebookIdBeingViewed:', this.state.organizationFacebookIdBeingViewed, ', nextState.organizationFacebookIdBeingViewed:', nextState.organizationFacebookIdBeingViewed);
-      return true;
-    }
-    if (this.state.organizationTwitterHandleBeingViewed !== nextState.organizationTwitterHandleBeingViewed) {
-      // console.log('this.state.organizationTwitterHandleBeingViewed:', this.state.organizationTwitterHandleBeingViewed, ', nextState.organizationTwitterHandleBeingViewed:', nextState.organizationTwitterHandleBeingViewed);
-      return true;
-    }
-    if (this.state.signedInWithThisFacebookAccount !== nextState.signedInWithThisFacebookAccount) {
-      // console.log('this.state.signedInWithThisFacebookAccount:', this.state.signedInWithThisFacebookAccount, ', nextState.signedInWithThisFacebookAccount:', nextState.signedInWithThisFacebookAccount);
-      return true;
-    }
-    if (this.state.signedInWithThisOrganization !== nextState.signedInWithThisOrganization) {
-      // console.log('this.state.signedInWithThisOrganization:', this.state.signedInWithThisOrganization, ', nextState.signedInWithThisOrganization:', nextState.signedInWithThisOrganization);
-      return true;
-    }
-    if (this.state.signedInWithThisTwitterAccount !== nextState.signedInWithThisTwitterAccount) {
-      // console.log('this.state.signedInWithThisTwitterAccount:', this.state.signedInWithThisTwitterAccount, ', nextState.signedInWithThisTwitterAccount:', nextState.signedInWithThisTwitterAccount);
-      return true;
-    }
-    if (this.state.voterTextStatement !== nextState.voterTextStatement) {
-      // console.log('this.state.voterTextStatement:', this.state.voterTextStatement, ', nextState.voterTextStatement:', nextState.voterTextStatement);
-      return true;
-    }
-    // console.log('shouldComponentUpdate no change');
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   if (this.state.componentDidMountFinished === false) {
+  //     // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+  //     return true;
+  //   }
+  //   if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
+  //     // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
+  //     return true;
+  //   }
+  //   if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
+  //     // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
+  //     return true;
+  //   }
+  //   if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
+  //     // console.log('this.state.voterOpposesBallotItem:', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem:', nextState.voterOpposesBallotItem);
+  //     return true;
+  //   }
+  //   if (this.state.voterPositionIsPublic !== nextState.voterPositionIsPublic) {
+  //     // console.log('this.state.voterPositionIsPublic:', this.state.voterPositionIsPublic, ', nextState.voterPositionIsPublic:', nextState.voterPositionIsPublic);
+  //     return true;
+  //   }
+  //   if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
+  //     // console.log('this.state.voterSupportsBallotItem:', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem:', nextState.voterSupportsBallotItem);
+  //     return true;
+  //   }
+  //   if (this.state.organizationFacebookIdBeingViewed !== nextState.organizationFacebookIdBeingViewed) {
+  //     // console.log('this.state.organizationFacebookIdBeingViewed:', this.state.organizationFacebookIdBeingViewed, ', nextState.organizationFacebookIdBeingViewed:', nextState.organizationFacebookIdBeingViewed);
+  //     return true;
+  //   }
+  //   if (this.state.organizationTwitterHandleBeingViewed !== nextState.organizationTwitterHandleBeingViewed) {
+  //     // console.log('this.state.organizationTwitterHandleBeingViewed:', this.state.organizationTwitterHandleBeingViewed, ', nextState.organizationTwitterHandleBeingViewed:', nextState.organizationTwitterHandleBeingViewed);
+  //     return true;
+  //   }
+  //   if (this.state.signedInWithThisFacebookAccount !== nextState.signedInWithThisFacebookAccount) {
+  //     // console.log('this.state.signedInWithThisFacebookAccount:', this.state.signedInWithThisFacebookAccount, ', nextState.signedInWithThisFacebookAccount:', nextState.signedInWithThisFacebookAccount);
+  //     return true;
+  //   }
+  //   if (this.state.signedInWithThisOrganization !== nextState.signedInWithThisOrganization) {
+  //     // console.log('this.state.signedInWithThisOrganization:', this.state.signedInWithThisOrganization, ', nextState.signedInWithThisOrganization:', nextState.signedInWithThisOrganization);
+  //     return true;
+  //   }
+  //   if (this.state.signedInWithThisTwitterAccount !== nextState.signedInWithThisTwitterAccount) {
+  //     // console.log('this.state.signedInWithThisTwitterAccount:', this.state.signedInWithThisTwitterAccount, ', nextState.signedInWithThisTwitterAccount:', nextState.signedInWithThisTwitterAccount);
+  //     return true;
+  //   }
+  //   if (this.state.voterTextStatement !== nextState.voterTextStatement) {
+  //     // console.log('this.state.voterTextStatement:', this.state.voterTextStatement, ', nextState.voterTextStatement:', nextState.voterTextStatement);
+  //     return true;
+  //   }
+  //   // console.log('shouldComponentUpdate no change');
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
@@ -405,7 +410,8 @@ class VoterGuidePositionItem extends Component {
 
   render () {
     renderLog('VoterGuidePositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { position } = this.props;
+    const { position, searchResultsNode } = this.props;
+    // const { thisYearInteger } = this.state;
     // console.log('VoterGuidePositionItem position:', position);
     let {
       ballot_item_display_name: ballotItemDisplayName,
@@ -418,6 +424,7 @@ class VoterGuidePositionItem extends Component {
       is_oppose: organizationOpposesBallotItem,
       is_support: organizationSupportsBallotItem,
       kind_of_ballot_item: kindOfBallotItem,
+      position_year: positionYear,
       speaker_image_url_https_tiny: organizationImageUrlHttpsTiny,
       statement_text: statementText,
     } = position;
@@ -453,6 +460,9 @@ class VoterGuidePositionItem extends Component {
       <div>
         <Card>
           <BallotItemPadding>
+            <SearchResultsNodeWrapper>
+              {searchResultsNode}
+            </SearchResultsNodeWrapper>
             <BallotItemWrapper className="card-main__media-object">
               {isCandidate ? (
                 <CandidateItemWrapper onClick={this.onClickFunction}>
@@ -469,17 +479,23 @@ class VoterGuidePositionItem extends Component {
                     <h2 className="card-main__display-name">
                       {ballotItemDisplayName}
                     </h2>
-                    <span className="u-show-desktop-tablet">
-                      {contestOfficeName && (
-                        <div>
-                          <OfficeNameText
-                            contestOfficeName={contestOfficeName}
-                            // politicalParty={politicalParty}
-                            showOfficeName
-                          />
-                        </div>
+                    <div className="u-show-desktop-tablet">
+                      {(contestOfficeName) && (
+                        <OfficeNameText
+                          contestOfficeName={contestOfficeName}
+                          // politicalParty={politicalParty}
+                          showOfficeName
+                        />
                       )}
-                    </span>
+                      {(positionYear) && (
+                        <PositionYearText>
+                          {' '}
+                          (
+                          {positionYear}
+                          )
+                        </PositionYearText>
+                      )}
+                    </div>
                   </Candidate>
                 </CandidateItemWrapper>
               ) : (
@@ -497,6 +513,7 @@ class VoterGuidePositionItem extends Component {
               */}
               <BallotItemSupportOpposeCountDisplayWrapper>
                 <BallotItemSupportOpposeCountDisplay
+                  ballotItemDisplayName={this.props.ballotItemDisplayName}
                   ballotItemWeVoteId={ballotItemWeVoteId}
                   hideNumbersOfAllPositions
                 />
@@ -520,6 +537,14 @@ class VoterGuidePositionItem extends Component {
                     showOfficeName
                   />
                 </div>
+              )}
+              {(positionYear) && (
+                <PositionYearText>
+                  {' '}
+                  (
+                  {positionYear}
+                  )
+                </PositionYearText>
               )}
               {statementText && (
                 <MobileItemDescription>
@@ -696,9 +721,18 @@ const OrganizationImageWrapper = styled.span`
   padding-right: 4px;
 `;
 
+const PositionYearText = styled.div`
+  font-weight: 200;
+  color: #999;
+`;
+
 const SourceLink = styled.div`
   float: right;
   margin-bottom: -4px;
+`;
+
+const SearchResultsNodeWrapper = styled.div`
+  margin-bottom: 2px !important;
 `;
 
 const SubTitle = styled.h3`

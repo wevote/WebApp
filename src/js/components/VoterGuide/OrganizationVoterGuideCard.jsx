@@ -50,7 +50,7 @@ class OrganizationVoterGuideCard extends Component {
       organization_website: organizationWebsiteRaw,
       twitter_description: twitterDescriptionRaw,
       twitter_followers_count: twitterFollowersCount,
-      linked_voter_we_vote_id: linkedVoterWeVoteId,
+      linked_voter_we_vote_id: organizationLinkedVoterWeVoteId,
     } = this.props.organization;
     const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== 'http' ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
@@ -60,7 +60,7 @@ class OrganizationVoterGuideCard extends Component {
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
     const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
 
-    // console.log('OrganizationVoterGuideCard linkedVoterWeVoteId:', linkedVoterWeVoteId);
+    // console.log('OrganizationVoterGuideCard organizationLinkedVoterWeVoteId:', organizationLinkedVoterWeVoteId);
     return (
       <CardMain>
         { organizationPhotoUrlLarge ? (
@@ -128,15 +128,15 @@ class OrganizationVoterGuideCard extends Component {
               <FollowToggle
                 platformType="desktop"
                 organizationWeVoteId={organizationWeVoteId}
-                otherVoterWeVoteId={linkedVoterWeVoteId}
+                otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
                 showFollowingText
               />
             </FollowToggleWrapper>
-            { isSpeakerTypePrivateCitizen(organizationType) && (
+            { (isSpeakerTypePrivateCitizen(organizationType) && organizationLinkedVoterWeVoteId) && (
               <FriendToggleWrapper>
                 <FriendToggle
                   displayFullWidth
-                  otherVoterWeVoteId={linkedVoterWeVoteId}
+                  otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
                   showFriendsText
                 />
               </FriendToggleWrapper>
