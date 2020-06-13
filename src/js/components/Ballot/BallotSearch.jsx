@@ -125,6 +125,14 @@ class BallotSearch extends Component {
   render () {
     const { classes, theme, isSearching, alwaysOpen } = this.props;
     const { searchText } = this.state;
+    let searchClasses;
+    if (isSearching) {
+      searchClasses = classes.inputSearching;
+    } else if (alwaysOpen) {
+      searchClasses = classes.input;
+    } else {
+      searchClasses = classes.inputHidden;
+    }
     return (
       <SearchWrapper
         searchOpen={isSearching || alwaysOpen}
@@ -140,7 +148,7 @@ class BallotSearch extends Component {
         </IconButton>
         <Separator isSearching={isSearching} alwaysOpen={alwaysOpen} />
         <InputBase
-          classes={{ input: (isSearching || alwaysOpen) ? classes.input : classes.inputHidden }}
+          classes={{ input: searchClasses }}
           inputRef={(input) => { this.searchInput = input; }}
           onChange={this.handleSearch}
           value={searchText}
@@ -163,7 +171,7 @@ class BallotSearch extends Component {
 
 const styles = theme => ({
   searchRoot: {
-    height: 22.5,
+    height: 26,
   },
   iconButtonRoot: {
     padding: 0,
@@ -185,14 +193,14 @@ const styles = theme => ({
   input: {
     padding: 0,
     marginLeft: 8,
-    width: 350,
+    width: 100,
     transition: 'all ease-in 150ms',
     [theme.breakpoints.down('md')]: {
       width: '50%',
       fontSize: 'inherit',
     },
     [theme.breakpoints.down('sm')]: {
-      width: '68vw',
+      width: 75,
       fontSize: 'inherit',
     },
   },
@@ -200,6 +208,20 @@ const styles = theme => ({
     padding: 0,
     width: 0,
     transition: 'all ease-in 150ms',
+  },
+  inputSearching: {
+    padding: 0,
+    marginLeft: 8,
+    width: 350,
+    transition: 'all ease-in 150ms',
+    [theme.breakpoints.down('md')]: {
+      width: '50%',
+      fontSize: 'inherit',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: 150,
+      fontSize: 'inherit',
+    },
   },
 });
 
@@ -224,7 +246,7 @@ const SearchWrapper = styled.div`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: 22.5px;
+  height: 26px;
   border: 1px solid ${({ isSearching, brandBlue }) => (isSearching ? brandBlue : '#ccc')};
   padding: 0 3px 0 3px;
   margin-right: 16px;

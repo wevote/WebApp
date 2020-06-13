@@ -679,7 +679,7 @@ class Ballot extends Component {
   }
 
   onIssueStoreChange () {
-    // console.log('Elections, onElectionStoreChange');
+    // console.log('Ballot, onIssueStoreChange');
     this.setState({
       issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
     });
@@ -1410,7 +1410,7 @@ class Ballot extends Component {
                         ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
                         raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
                       />
-                      {(issuesFollowedCount <= 3) && (
+                      {(issuesFollowedCount < 3) && (
                         <ValuesListWrapper>
                           <div className="card">
                             <FriendInvitationOnboardingValuesList

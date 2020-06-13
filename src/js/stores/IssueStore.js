@@ -18,6 +18,7 @@ class IssueStore extends ReduceStore {
       issueOpposeScoreForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: oppose_score
       issueSupportScoreForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: support_score
       issueScoreForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: calculated score
+      issuesFollowedLoadedFromAPIServer: false,
       issuesUnderBallotItemsRetrieveCalled: {}, // Dictionary with key: electionId, value: true if issuesUnderBallotItems has been retrieved for that election
       issueWeVoteIdsBySlug: {}, // Dictionary with key: slug, lower case, value: issue_we_vote_id
       issueWeVoteIdsLinkedToByOrganizationDict: {}, // Dictionary with key: organizationWeVoteId, list: issueWeVoteId that the organization is linked to
@@ -39,6 +40,7 @@ class IssueStore extends ReduceStore {
     const state = this.getState();
     return {
       ...state,
+      issuesFollowedLoadedFromAPIServer: false,
       issueSupportScoreForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: support_score
       issueOpposeScoreForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: oppose_score
       organizationWeVoteIdSupportListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
@@ -62,6 +64,15 @@ class IssueStore extends ReduceStore {
     // List of all issue objects
     const allIssueKeys = Object.keys(this.getState().allCachedIssues);
     return this.getIssuesFromListOfWeVoteIds(allIssueKeys, includeOrganizationsCount);
+  }
+
+  areIssuesFollowedLoadedFromAPIServer () {
+    return this.getState().issuesFollowedLoadedFromAPIServer;
+  }
+
+  areIssuesLoadedFromAPIServer () {
+    const allIssueKeys = Object.keys(this.getState().allCachedIssues);
+    return (allIssueKeys && allIssueKeys.length);
   }
 
   getIssuesVoterIsFollowing () {
@@ -290,66 +301,6 @@ class IssueStore extends ReduceStore {
     return VoterGuideStore.returnVoterGuidesFromListOfIds(organizationWeVoteIdsLinkedToIssue);
   }
 
-  // getPositionsForBallotItemForOneIssue (ballotItemWeVoteId, issueWeVoteId) {
-  //   // We want a list of positions about this candidate or measure, where the org taking the position
-  //   // is tagged with this issue
-  // }
-
-  // getVoterGuidesForElectionForOneIssue (google_civic_election_id, issueWeVoteId) {
-  //   // We want a list of all voterGuides/organizations tagged with this issue that have a position in this election
-  //
-  // }
-
-  // getOrganizationWeVoteIdSupportListUnderThisBallotItem (ballotItemWeVoteId) {
-  //   // What are the issues that have positions for this election under this ballot item?
-  //   // console.log('getIssuesUnderThisBallotItem, ballotItemWeVoteId:', ballotItemWeVoteId);
-  //   if (ballotItemWeVoteId && this.getState().organizationWeVoteIdSupportListForEachBallotItem) {
-  //     return this.getState().organizationWeVoteIdSupportListForEachBallotItem[ballotItemWeVoteId] || [];
-  //   } else {
-  //     return [];
-  //   }
-  // }
-
-  // getOrganizationNameSupportListUnderThisBallotItem (ballotItemWeVoteId) {
-  //   if (ballotItemWeVoteId && this.getState().organizationNameSupportListForEachBallotItem) {
-  //     return this.getState().organizationNameSupportListForEachBallotItem[ballotItemWeVoteId] || [];
-  //   } else {
-  //     return [];
-  //   }
-  // }
-
-  // getOrganizationNameOpposeListUnderThisBallotItem (ballotItemWeVoteId) {
-  //   if (ballotItemWeVoteId && this.getState().organizationNameOpposeListForEachBallotItem) {
-  //     return this.getState().organizationNameOpposeListForEachBallotItem[ballotItemWeVoteId] || [];
-  //   } else {
-  //     return [];
-  //   }
-  // }
-
-  // getIssuesUnderThisBallotItem (ballotItemWeVoteId) {
-  //   // What are the issues that have positions for this election under this ballot item?
-  //   // console.log('getIssuesUnderThisBallotItem, ballotItemWeVoteId:', ballotItemWeVoteId);
-  //   if (ballotItemWeVoteId && this.getState().issueWeVoteIdsUnderEachBallotItem) {
-  //     const issuesForThisBallotItem = this.getState().issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteId] || [];
-  //     // console.log('getIssuesUnderThisBallotItem, issuesForThisBallotItem: ', issuesForThisBallotItem);
-  //     return this.getIssuesFromListOfWeVoteIds(issuesForThisBallotItem);
-  //   } else {
-  //     return [];
-  //   }
-  // }
-
-  // getIssuesCountUnderThisBallotItem (ballotItemWeVoteId) {
-  //   // What are the issues that have positions for this election under this ballot item?
-  //   // console.log('getIssuesUnderThisBallotItem, ballotItemWeVoteId:', ballotItemWeVoteId);
-  //   if (ballotItemWeVoteId && this.getState().issueWeVoteIdsUnderEachBallotItem) {
-  //     const issuesForThisBallotItem = this.getState().issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteId] || [];
-  //     // console.log('getIssuesUnderThisBallotItem, issuesForThisBallotItem: ', issuesForThisBallotItem);
-  //     return issuesForThisBallotItem.length;
-  //   } else {
-  //     return 0;
-  //   }
-  // }
-
   getIssuesUnderThisBallotItemVoterIsFollowing (ballotItemWeVoteId) {
     // What are the issues that have positions for this election under this ballot item?
     // console.log('getIssuesUnderThisBallotItemVoterIsFollowing, ballotItemWeVoteId:', ballotItemWeVoteId);
@@ -370,23 +321,6 @@ class IssueStore extends ReduceStore {
       return [];
     }
   }
-
-  // getIssuesCountUnderThisBallotItemVoterIsFollowing (ballotItemWeVoteId) {
-  //   // What is the number of issues that have positions for this election under this ballot item?
-  //   const issuesUnderThisBallotItemVoterIsFollowing = [];
-  //   if (ballotItemWeVoteId && this.getState().issueWeVoteIdsUnderEachBallotItem && this.getState().issueWeVoteIdsVoterIsFollowing) {
-  //     const issuesForThisBallotItem = this.getState().issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteId] || [];
-  //     // Remove issues the voter is not following
-  //     issuesForThisBallotItem.forEach((issueWeVoteId) => {
-  //       if (arrayContains(issueWeVoteId, this.getState().issueWeVoteIdsVoterIsFollowing)) {
-  //         issuesUnderThisBallotItemVoterIsFollowing.push(issueWeVoteId);
-  //       }
-  //     });
-  //     return issuesUnderThisBallotItemVoterIsFollowing.length;
-  //   } else {
-  //     return 0;
-  //   }
-  // }
 
   getIssuesUnderThisBallotItemVoterNotFollowing (ballotItemWeVoteId) {
     // What are the issues that have positions for this election under this ballot item?
@@ -538,6 +472,7 @@ class IssueStore extends ReduceStore {
           }
         });
         revisedState = Object.assign({}, revisedState, {
+          issuesFollowedLoadedFromAPIServer: true,
           issueWeVoteIdsVoterCanFollow,
           issueWeVoteIdsVoterIsFollowing,
         });

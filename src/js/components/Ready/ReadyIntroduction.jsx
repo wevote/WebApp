@@ -21,14 +21,14 @@ class ReadyIntroduction extends Component {
             We Vote makes
             {' '}
             <span className="u-no-break">
-              being a voter easier:
+              being a voter easier.
             </span>
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
               <ListTitleRow>
                 <Dot><StepNumber>1</StepNumber></Dot>
-                <StepTitle>Make sure you&apos;re ready to vote</StepTitle>
+                <StepTitle>Be ready to vote in 6 minutes</StepTitle>
               </ListTitleRow>
               <ListRow>
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
@@ -37,13 +37,13 @@ class ReadyIntroduction extends Component {
 
               <ListTitleRow>
                 <Dot><StepNumber>2</StepNumber></Dot>
-                <StepTitle>See what&apos;s on your ballot</StepTitle>
+                <StepTitle>Be confident in your choices</StepTitle>
               </ListTitleRow>
               <ListRow>
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                 <StepText>
                   <ReadMore
-                    textToDisplay={`Who's running for office? What do they stand for? With over ${numberOfCandidates} candidates running for ${numberOfOffices} offices this year, We Vote helps you make sense of your choices.`}
+                    textToDisplay={`Who's running for office? What do they stand for? With over ${numberOfCandidates} candidates running for ${numberOfOffices} offices this year, We Vote helps you make sense of your options.`}
                     numberOfLines={3}
                   />
                 </StepText>
@@ -51,13 +51,13 @@ class ReadyIntroduction extends Component {
 
               <ListTitleRow>
                 <Dot><StepNumber>3</StepNumber></Dot>
-                <StepTitle>Learn from friends you trust</StepTitle>
+                <StepTitle>Be the change you want to see in the world</StepTitle>
               </ListTitleRow>
               <ListRow>
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                 <StepText>
                   <ReadMore
-                    textToDisplay="Between the nonstop misleading TV ads, texts, calls and overflowing mailboxes, who has time to make sense of the madness? Get help from people you trust."
+                    textToDisplay="You've done your homework deciding how to vote. Now show your friends how to make sense of their decisions, so they can vote their values."
                     numberOfLines={3}
                   />
                 </StepText>

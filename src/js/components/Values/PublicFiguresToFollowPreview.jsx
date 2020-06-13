@@ -48,6 +48,9 @@ export default class PublicFiguresToFollowPreview extends Component {
         <section className="card">
           <div className="card-main">
             <SectionTitle id="publicFiguresSection">Public Figures to Follow</SectionTitle>
+            <SectionDescription>
+              Follow a public figure to see what they think.
+            </SectionDescription>
             <Suspense fallback={<span>Loading...</span>}>
               <GuideList incomingVoterGuideList={voterGuidesToFollow} instantRefreshOn />
             </Suspense>
@@ -59,8 +62,16 @@ export default class PublicFiguresToFollowPreview extends Component {
   }
 }
 
-const SectionTitle = styled.h2`
-  width: fit-content;  font-weight: bold;
-  font-size: 18px;
+const SectionDescription = styled.h2`
+  font-weight: 200;
+  font-size: 14px;
   margin-bottom: 16px;
+  width: fit-content;
+`;
+
+const SectionTitle = styled.h2`
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 4px;
+  width: fit-content;
 `;
