@@ -22,17 +22,31 @@ class SplitIconButton extends PureComponent {
     onKeyDown: PropTypes.func,
     separatorColor: PropTypes.string,
     title: PropTypes.string,
+    whiteOnBlue: PropTypes.bool,
   };
 
-  render () {
-    const { backgroundColor, buttonText, classes, compressedSize, fontColor, fontSize, icon, title } = this.props;
+  render() {
+    const {
+      backgroundColor,
+      buttonText,
+      classes,
+      compressedSize,
+      fontColor,
+      fontSize,
+      icon,
+      title,
+      whiteOnBlue,
+    } = this.props;
     const buttonStyle = {
-      background: backgroundColor || '#2e3c5d',
-      color: fontColor || getTextColorFromBackground(backgroundColor || '#2e3c5d'),
-      fontSize: fontSize || '13px',
+      background: backgroundColor || "#fff",
+      color:
+        fontColor || "#2e3c5d",
+      // getTextColorFromBackground(backgroundColor || "#2e3c5d"),
+      fontSize: fontSize || "13px",
+      border: "1px solid rgba(46, 60, 93, .5)",
     };
     if (compressedSize) {
-      buttonStyle.border = '1px solid rgba(46, 60, 93, .5)';
+      buttonStyle.border = "1px solid rgba(46, 60, 93, .5)";
       buttonStyle.padding = 4;
       buttonStyle.width = 160;
       buttonStyle.height = 32;
@@ -44,35 +58,37 @@ class SplitIconButton extends PureComponent {
         classes={{ root: classes.splitButton, label: classes.label }}
         disabled={this.props.disabled}
         id={`${this.props.externalUniqueId}-splitIconButton`}
-        variant="contained"
         title={title}
         style={buttonStyle}
         onClick={this.props.onClick}
         onKeyDown={this.props.onKeyDown}
+        variant={whiteOnBlue ? "outlined" : "contained"}
       >
         <SplitButtonIcon adjustedIconWidth={this.props.adjustedIconWidth}>
           {icon}
         </SplitButtonIcon>
         {this.props.iconRight ? (
           <SplitButtonSeparatorRight
-            style={this.props.separatorColor ? (
-              {
-                backgroundColor: this.props.separatorColor,
-              }
-            ) : null}
+            style={
+              this.props.separatorColor
+                ? {
+                  backgroundColor: this.props.separatorColor,
+                }
+                : null
+            }
           />
         ) : (
-          <SplitButtonSeparatorLeft
-            style={this.props.separatorColor ? (
-              {
-                backgroundColor: this.props.separatorColor,
+            <SplitButtonSeparatorLeft
+              style={
+                this.props.separatorColor
+                  ? {
+                    backgroundColor: this.props.separatorColor
+                  }
+                  : null
               }
-            ) : null}
-          />
-        )}
-        <SplitButtonText>
-          {buttonText}
-        </SplitButtonText>
+            />
+          )}
+        <SplitButtonText>{buttonText}</SplitButtonText>
       </Button>
     );
   }
@@ -81,20 +97,20 @@ class SplitIconButton extends PureComponent {
 const styles = () => ({
   label: {
     // padding: '10px 0 !important',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
+    height: "100%",
+    display: "flex",
+    alignItems: "center"
   },
   splitButton: {
-    boxShadow: 'none !important',
-    padding: '12px 0',
-    width: '100%',
-    whiteSpace: 'nowrap',
-    transition: '150ms ease-in',
-    '&:hover': {
-      filter: 'brightness(92%)',
-    },
-  },
+    boxShadow: "none !important",
+    padding: "12px 0",
+    width: "100%",
+    whiteSpace: "nowrap",
+    transition: "150ms ease-in",
+    "&:hover": {
+      filter: "brightness(92%)"
+    }
+  }
 });
 
 const SplitButtonSeparatorLeft = styled.div`
@@ -102,7 +118,7 @@ const SplitButtonSeparatorLeft = styled.div`
   height: 100%;
   width: 1.5px !important;
   flex: none;
-  background: rgba(204, 204, 204, .425);
+  background: rgba(204, 204, 204, 0.425);
   z-index: 1;
   position: absolute;
   left: 44px;
@@ -113,7 +129,7 @@ const SplitButtonSeparatorRight = styled.div`
   height: 100%;
   width: 1.5px !important;
   flex: none;
-  background: rgba(204, 204, 204, .425);
+  background: rgba(204, 204, 204, 0.425);
   z-index: 1;
   position: absolute;
   right: 44px;
@@ -125,7 +141,8 @@ const SplitButtonIcon = styled.span`
   align-items: center;
   height: 100%;
   padding: 0 13.3px;
-  ${({ adjustedIconWidth }) => ((adjustedIconWidth) ? `width: ${adjustedIconWidth}px;` : 'width: 44px;')}
+  ${({ adjustedIconWidth }) =>
+    adjustedIconWidth ? `width: ${adjustedIconWidth}px;` : "width: 44px;"}
   * {
     width: 100%;
     font-size: 22px;

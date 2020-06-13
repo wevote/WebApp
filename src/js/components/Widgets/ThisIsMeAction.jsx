@@ -13,33 +13,33 @@ class ThisIsMeAction extends Component {
     twitterHandleBeingViewed: PropTypes.string,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.voterStoreListener.remove();
   }
 
-  onVoterStoreChange () {
+  onVoterStoreChange() {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  render () {
+  render() {
     renderLog('ThisIsMeAction');  // Set LOG_RENDER_EVENTS to log all renders
     const { twitterHandleBeingViewed } = this.props;
     if (!twitterHandleBeingViewed) {
       // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization
       return <span />;
     }
-    const { kindOfOwner, nameBeingViewed } = this.props;
+    const { kindOfOwner, nameBeingViewed, whiteOnBlue } = this.props;
     // Manage the control over this organization voter guide
     const { voter } = this.state;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
@@ -77,6 +77,7 @@ class ThisIsMeAction extends Component {
                       id="candidateVerifyThisIsMeAction"
                       icon={<i className="fab fa-twitter-square" />}
                       buttonText={`Claim @${this.props.twitterHandleBeingViewed}`}
+                      whiteOnBlue={whiteOnBlue}
                     />
                   </Link>
                   <div className="endorsement-card__text">
@@ -96,4 +97,4 @@ const Container = styled.div`
   padding: 16px;
 `;
 
-export default  ThisIsMeAction;
+export default ThisIsMeAction;

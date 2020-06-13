@@ -13,29 +13,30 @@ class EndorsementCard extends PureComponent {
     organizationWeVoteId: PropTypes.string,
     title: PropTypes.string,
     text: PropTypes.string,
+    whiteOnBlue: PropTypes.bool,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.voterStoreListener.remove();
   }
 
-  onVoterStoreChange () {
+  onVoterStoreChange() {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  render () {
-    const { organizationWeVoteId } = this.props;
+  render() {
+    const { organizationWeVoteId, whiteOnBlue } = this.props;
     const { voter } = this.state;
     if (!voter) {
       return null;
@@ -63,6 +64,7 @@ class EndorsementCard extends PureComponent {
                     id="endorsementCardAddEndorsementsToWeVote"
                     icon={<img src={cordovaDot(positionIcon)} alt="" />}
                     buttonText={this.props.buttonText}
+                    whiteOnBlue={whiteOnBlue}
                   />
                 )}
               />

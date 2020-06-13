@@ -31,7 +31,7 @@ class Measure extends Component {
     params: PropTypes.object.isRequired,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       allCachedPositionsForThisMeasure: [],
@@ -45,7 +45,7 @@ class Measure extends Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // console.log('Measure componentDidMount');
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
@@ -109,7 +109,7 @@ class Measure extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const modalToOpen = nextProps.params.modal_to_show || '';
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
@@ -165,7 +165,7 @@ class Measure extends Component {
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.allCachedPositionsForThisMeasureLength !== nextState.allCachedPositionsForThisMeasureLength) {
       // console.log('this.state.allCachedPositionsForThisMeasureLength:', this.state.allCachedPositionsForThisMeasureLength, ', nextState.allCachedPositionsForThisMeasureLength:', nextState.allCachedPositionsForThisMeasureLength);
@@ -186,19 +186,19 @@ class Measure extends Component {
     return false;
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.measureStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.appStoreListener.remove();
   }
 
-  onAppStoreChange () {
+  onAppStoreChange() {
     this.setState({
       scrolledDown: AppStore.getScrolledDown(),
     });
   }
 
-  onMeasureStoreChange () {
+  onMeasureStoreChange() {
     const { measureWeVoteId } = this.state;
     // console.log('Measure, onMeasureStoreChange');
     const measure = MeasureStore.getMeasure(measureWeVoteId);
@@ -219,13 +219,13 @@ class Measure extends Component {
     });
   }
 
-  onVoterGuideStoreChange () {
+  onVoterGuideStoreChange() {
     // console.log('Measure onVoterGuideStoreChange');
     // MeasureActions.measureRetrieve(this.state.measureWeVoteId);
     // MeasureActions.positionListForBallotItemPublic(this.state.measureWeVoteId);
   }
 
-  localPositionListHasBeenRetrievedOnce (measureWeVoteId) {
+  localPositionListHasBeenRetrievedOnce(measureWeVoteId) {
     if (measureWeVoteId) {
       const { positionListHasBeenRetrievedOnce } = this.state;
       return positionListHasBeenRetrievedOnce[measureWeVoteId];
@@ -233,7 +233,7 @@ class Measure extends Component {
     return false;
   }
 
-  localPositionListFromFriendsHasBeenRetrievedOnce (measureWeVoteId) {
+  localPositionListFromFriendsHasBeenRetrievedOnce(measureWeVoteId) {
     if (measureWeVoteId) {
       const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
       return positionListFromFriendsHasBeenRetrievedOnce[measureWeVoteId];
@@ -241,7 +241,7 @@ class Measure extends Component {
     return false;
   }
 
-  render () {
+  render() {
     renderLog('Measure');  // Set LOG_RENDER_EVENTS to log all renders
     const { allCachedPositionsForThisMeasure, measure, scrolledDown } = this.state;
 
@@ -289,7 +289,7 @@ class Measure extends Component {
             </RightColumnWrapper>
           </TwoColumns>
         </div>
-        { !!(allCachedPositionsForThisMeasure.length) && (
+        {!!(allCachedPositionsForThisMeasure.length) && (
           <section className="card">
             <DelayedLoad showLoadingText waitBeforeShow={500}>
               <PositionList
@@ -310,7 +310,7 @@ class Measure extends Component {
         />
         <br />
         {/* Show links to this candidate in the admin tools */}
-        { (voter.is_admin || voter.is_verified_volunteer) && (
+        {(voter.is_admin || voter.is_verified_volunteer) && (
           <span className="u-wrap-links d-print-none">
             Admin only:
             <OpenExternalWebSite
