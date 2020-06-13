@@ -206,6 +206,7 @@ class FilterBase extends React.Component {
         <FilterTop>
           <BallotSearch
             addVoterGuideMode
+            alwaysOpen={voterGuidePositionSearchMode}
             isSearching={isSearching}
             items={allItems}
             onBallotSearch={this.onSearch}

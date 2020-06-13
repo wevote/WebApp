@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
 import logoLight from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-200x66.svg';
 import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
+import DelayedLoad from '../Widgets/DelayedLoad';
 
 const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
   <HeaderBarWrapper>
@@ -22,7 +23,13 @@ const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
             alt="We Vote logo"
             src={light ? cordovaDot(logoLight) : cordovaDot(logoDark)}
           />
-          {isBeta && <span className="beta-marker"><BetaMarkerInner light={light}>beta</BetaMarkerInner></span>}
+          {isBeta && (
+            <span className="beta-marker">
+              <DelayedLoad waitBeforeShow={200}>
+                <BetaMarkerInner light={light}>beta</BetaMarkerInner>
+              </DelayedLoad>
+            </span>
+          )}
         </Link>
       </WeVoteLogoWrapper>
     )}

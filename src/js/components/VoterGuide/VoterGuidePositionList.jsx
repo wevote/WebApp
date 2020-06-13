@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import CommentIcon from '@material-ui/icons/Comment';
+// import CommentIcon from '@material-ui/icons/Comment';
 import InfoIcon from '@material-ui/icons/Info';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
@@ -18,6 +18,7 @@ import VoterGuidePositionItem from './VoterGuidePositionItem';
 import ShowMoreItems from '../Widgets/ShowMoreItems';
 
 
+// Thumbs up/down needs to be fixed
 const groupedFilters = [
   {
     filterName: 'showSupportFilter',
@@ -36,13 +37,14 @@ const groupedFilters = [
   },
 ];
 
+// We are planning to add a sort where the comments are at the top, so a show comment button isn't needed
 const islandFilters = [
-  {
-    filterName: 'showCommentFilter',
-    icon: <CommentIcon />,
-    filterDisplayName: 'Has Comment',
-    filterId: 'islandFilterCommented',
-  },
+  // {
+  //   filterName: 'showCommentFilter',
+  //   icon: <CommentIcon />,
+  //   filterDisplayName: 'Has Comment',
+  //   filterId: 'islandFilterCommented',
+  // },
 ];
 
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 6;
@@ -99,23 +101,6 @@ class VoterGuidePositionList extends Component {
       });
     });
 
-    // Replicate in componentWillReceiveProps
-    // let oneOrganization = {};
-    // const organizationWeVoteIdsNeeded = [];
-    // // console.log('PositionList componentDidMount, incomingPositionList: ', incomingPositionList);
-    // incomingPositionList.forEach((position) => {
-    //   oneOrganization = OrganizationStore.getOrganizationByWeVoteId(position.speaker_we_vote_id);
-    //   if (!oneOrganization || !oneOrganization.organization_we_vote_id) {
-    //     organizationWeVoteIdsNeeded.push(position.speaker_we_vote_id);
-    //   }
-    //   // Replace with bulk retrieve, since one call per organization is too expensive
-    //   // OrganizationActions.organizationRetrieve(position.speaker_we_vote_id)
-    // });
-    // if (organizationWeVoteIdsNeeded.length) {
-    //   // Add bulk Organization retrieve here
-    // }
-    // console.log('PositionList componentDidMount, organizationWeVoteIdsNeeded: ', organizationWeVoteIdsNeeded);
-
     OrganizationActions.organizationsFollowedRetrieve();
     if (!organizationsVoterIsFriendsWith.length > 0) {
       FriendActions.currentFriends();
@@ -160,18 +145,8 @@ class VoterGuidePositionList extends Component {
         currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
       });
     });
-    // eslint-disable-next-line arrow-body-style
-    // const filteredPositionListWithFriendData = filteredPositionList.map((position) => {
-    //   // console.log('PositionList onFriendStoreChange, position: ', position);
-    //   return ({
-    //     ...position,
-    //     currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
-    //   });
-    // });
     this.setState({
       positionList: positionListWithFriendData,
-      // filteredPositionList: filteredPositionListWithFriendData,
-      // filteredPositionListLength: filteredPositionListWithFriendData.length,
     });
   }
 

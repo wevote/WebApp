@@ -9,9 +9,10 @@ import BallotStore from '../stores/BallotStore';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
+import FriendInvitationOnboardingValuesList from '../components/Values/FriendInvitationOnboardingValuesList';
 import { historyPush, isWebApp } from '../utils/cordovaUtils';
+import IssueStore from '../stores/IssueStore';
 import LoadingWheel from '../components/LoadingWheel';
-import PledgeToVote from '../components/Ready/PledgeToVote';
 import ReadMore from '../components/Widgets/ReadMore';
 import ReadyActions from '../actions/ReadyActions';
 import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
@@ -21,6 +22,8 @@ import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import { renderLog } from '../utils/logging';
 import VoterStore from '../stores/VoterStore';
 import webAppConfig from '../config';
+import IssueActions from "../actions/IssueActions";
+// import PledgeToVote from '../components/Ready/PledgeToVote';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -32,14 +35,22 @@ class Ready extends Component {
     this.state = {
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
+      issuesDisplayDecisionHasBeenMade: false,
+      issuesShouldBeDisplayed: false,
     };
   }
 
   componentDidMount () {
-    this.onAppStoreChange();
-    this.onVoterStoreChange();
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.onAppStoreChange();
+    this.onIssueStoreChange();
+    this.onVoterStoreChange();
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+    }
+    IssueActions.issuesFollowedRetrieve();
     if (!BallotStore.ballotFound) {
       // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
       BallotActions.voterBallotItemsRetrieve(0, '', '');
@@ -50,6 +61,7 @@ class Ready extends Component {
 
   componentWillUnmount () {
     this.appStoreListener.remove();
+    this.issueStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
@@ -58,6 +70,24 @@ class Ready extends Component {
       chosenReadyIntroductionText: AppStore.getChosenReadyIntroductionText(),
       chosenReadyIntroductionTitle: AppStore.getChosenReadyIntroductionTitle(),
     });
+  }
+
+  onIssueStoreChange () {
+    const { issuesDisplayDecisionHasBeenMade } = this.state;
+    // console.log('Ready, onIssueStoreChange, issuesDisplayDecisionHasBeenMade: ', issuesDisplayDecisionHasBeenMade);
+    if (!issuesDisplayDecisionHasBeenMade) {
+      const areIssuesLoadedFromAPIServer = IssueStore.areIssuesLoadedFromAPIServer();
+      const areIssuesFollowedLoadedFromAPIServer = IssueStore.areIssuesFollowedLoadedFromAPIServer();
+      // console.log('areIssuesLoadedFromAPIServer: ', areIssuesLoadedFromAPIServer, ', areIssuesFollowedLoadedFromAPIServer:', areIssuesFollowedLoadedFromAPIServer);
+      if (areIssuesLoadedFromAPIServer && areIssuesFollowedLoadedFromAPIServer) {
+        const issuesFollowedCount = IssueStore.getIssuesVoterIsFollowingLength();
+        // console.log('issuesFollowedCount: ', issuesFollowedCount);
+        this.setState({
+          issuesDisplayDecisionHasBeenMade: true,
+          issuesShouldBeDisplayed: (issuesFollowedCount < 3),
+        });
+      }
+    }
   }
 
   onVoterStoreChange () {
@@ -74,7 +104,7 @@ class Ready extends Component {
 
   render () {
     renderLog('Ready');  // Set LOG_RENDER_EVENTS to log all renders
-    const { chosenReadyIntroductionText, chosenReadyIntroductionTitle, voter } = this.state;
+    const { chosenReadyIntroductionText, chosenReadyIntroductionTitle, issuesShouldBeDisplayed, voter } = this.state;
     if (!voter) {
       return LoadingWheel;
     }
@@ -114,14 +144,14 @@ class Ready extends Component {
               <ReadyTaskBallot
                 arrowsOn
               />
-              <ReadyTaskPlan
-                arrowsOn
-              />
               {nextReleaseFeaturesEnabled && (
                 <ReadyTaskRegister
                   arrowsOn
                 />
               )}
+              <ReadyTaskPlan
+                arrowsOn
+              />
             </div>
             <div className="col-lg-4 d-none d-lg-block">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
@@ -141,7 +171,18 @@ class Ready extends Component {
                   <ReadyIntroduction />
                 </div>
               </Card>
-              {nextReleaseFeaturesEnabled && <PledgeToVote />}
+              {(issuesShouldBeDisplayed) && (
+                <ValuesListWrapper>
+                  <div className="card">
+                    <FriendInvitationOnboardingValuesList
+                      displayOnlyIssuesNotFollowedByVoter
+                      followToggleOnItsOwnLine
+                      oneColumn
+                    />
+                  </div>
+                </ValuesListWrapper>
+              )}
+              {/* {nextReleaseFeaturesEnabled && <PledgeToVote />} */}
             </div>
           </div>
         </PageContainer>
@@ -177,6 +218,11 @@ const Title = styled.h2`
 
 const Paragraph = styled.div`
 
+`;
+
+const ValuesListWrapper = styled.div`
+  margin-top: 12px;
+  margin-bottom: 12px;
 `;
 
 const styles = theme => ({
