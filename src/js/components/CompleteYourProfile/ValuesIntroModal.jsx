@@ -95,7 +95,7 @@ class ValuesIntroModal extends Component {
             <ExplanationText>
               Choose from some popular options:
             </ExplanationText>
-            <ValuesListWrapper>
+            <ValuesListWrapper id="valuesIntroModalValueList">
               <FriendInvitationOnboardingValuesList
                 displayOnlyIssuesNotFollowedByVoter
               />
