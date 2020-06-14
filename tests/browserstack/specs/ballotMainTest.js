@@ -75,7 +75,7 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
       await simpleClick('completeYourProfileDesktopButton'); // Clicks on Choose Interests
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await selectClick('#valuesIntroModalValueList button'); // select an interest
+      await selectClick('#valuesIntroModalValueList #issues-follow-container'); // select an interest
       await simpleClick('valuesIntroModalNext'); // Close the Interests modal
       await simpleClick('completeYourProfileDesktopButton'); // Clicks on Learn More
     } else if (!isAndroid) {
@@ -89,7 +89,7 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
       await simpleClick('completeYourProfileMobileButton'); // Clicks on Choose Interests
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await selectClick('#valuesIntroModalValueList button'); // select an interest
+      await selectClick('#valuesIntroModalValueList #issues-follow-container'); // select an interest
       await simpleClick('valuesIntroModalNext'); // Close the Interests modal
       await scrollIntoViewSimple('completeYourProfileMobileButton'); // Scrolls to Confirm Address
       await simpleClick('completeYourProfileMobileButton'); // Clicks on Confirm Address
