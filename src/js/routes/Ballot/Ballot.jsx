@@ -20,7 +20,7 @@ import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import BallotSearch from '../../components/Ballot/BallotSearch';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
 import BallotStore from '../../stores/BallotStore';
-import BallotSummaryFooter from '../../components/Navigation/BallotSummaryFooter';
+import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
@@ -679,7 +679,7 @@ class Ballot extends Component {
   }
 
   onIssueStoreChange () {
-    // console.log('Elections, onElectionStoreChange');
+    // console.log('Ballot, onIssueStoreChange');
     this.setState({
       issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
     });
@@ -771,6 +771,12 @@ class Ballot extends Component {
   setRaceLevelFilterType (raceLevelFilterType) {
     BallotActions.raceLevelFilterTypeSave(raceLevelFilterType);
     this.setState({ raceLevelFilterType });
+  }
+
+  showAllBallotItems = () => {
+    BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
+    BallotActions.raceLevelFilterTypeSave('All');
+    this.setState({ raceLevelFilterType: 'All' });
   }
 
   memberViewedBallotHasBeenSavedOnce = (membershipOrganizationWeVoteId, googleCivicElectionId) => {
@@ -1364,16 +1370,9 @@ class Ballot extends Component {
                           <CircularProgress />
                         </LoadingItemsWheel>
                       )}
-                      {!isSearching && (
-                        <BallotSummaryFooter
-                          activeRaceItem={raceLevelFilterType}
-                          displayTitle
-                          displaySubtitles
-                          rawUrlVariablesString={this.props.location.search}
-                          ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
-                          ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                          raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
-                          setActiveRaceItem={type => this.setRaceLevelFilterType(type)}
+                      {(!isSearching && raceLevelFilterType !== 'All') && (
+                        <BallotShowAllItemsFooter
+                          setActiveRaceItem={this.showAllBallotItems}
                         />
                       )}
                     </div>
@@ -1410,7 +1409,7 @@ class Ballot extends Component {
                         ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
                         raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
                       />
-                      {(issuesFollowedCount <= 3) && (
+                      {(issuesFollowedCount < 3) && (
                         <ValuesListWrapper>
                           <div className="card">
                             <FriendInvitationOnboardingValuesList

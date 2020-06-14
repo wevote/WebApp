@@ -162,7 +162,7 @@ class FooterBar extends React.Component {
             <BottomNavigationAction className="no-outline" id="readyTabFooterBar" label="Ready?" showLabel icon={<HowToVoteIcon />} />
             <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<BallotIcon />} />
             {/* OFF FOR NOW !voterIsSignedIn && () */}
-            <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />
+            <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Opinions" showLabel icon={<QuestionAnswerIcon />} />
             <BottomNavigationAction
               className="no-outline"
               id="friendsTabFooterBar"

@@ -152,6 +152,43 @@ class VoterGuidePositionFilter extends Component {
         }
       });
     }
+    // Which showSupportFilter/showOpposeFilter/showCommentFilter to show?
+    // Make sure one of them is chosen. If not, do not limit by support/oppose/comment
+    let containsAtLeastOneSupportOpposeComment = false;
+    selectedFilters.forEach((filter) => {
+      switch (filter) {
+        case 'showSupportFilter':
+          containsAtLeastOneSupportOpposeComment = true;
+          break;
+        case 'showOpposeFilter':
+          containsAtLeastOneSupportOpposeComment = true;
+          break;
+        case 'showInformationOnlyFilter':
+          containsAtLeastOneSupportOpposeComment = true;
+          break;
+        default:
+          break;
+      }
+    });
+    if (containsAtLeastOneSupportOpposeComment) {
+      const filterItemsSnapshot = filteredItems;
+      filteredItems = [];
+      selectedFilters.forEach((filter) => {
+        switch (filter) {
+          case 'showSupportFilter':
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.is_support_or_positive_rating)];
+            break;
+          case 'showOpposeFilter':
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.is_oppose_or_negative_rating)];
+            break;
+          case 'showInformationOnlyFilter':
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.is_information_only)];
+            break;
+          default:
+            break;
+        }
+      });
+    }
     // Comment or no comment?
     let containsCommentFilter = false;
     selectedFilters.forEach((filter) => {
