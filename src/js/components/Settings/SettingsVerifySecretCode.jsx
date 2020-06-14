@@ -294,46 +294,6 @@ class SettingsVerifySecretCode extends Component {
     }
   }
 
-  handleKeyDown2 (e) {
-    if (e.keyCode === 8 && this.state.digit2 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.focus();
-      this.setState({ digit1: '' });
-    }
-  }
-
-  handleKeyDown3 (e) {
-    if (e.keyCode === 8 && this.state.digit3 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.focus();
-      this.setState({ digit2: '' });
-    }
-  }
-
-  handleKeyDown4 (e) {
-    if (e.keyCode === 8 && this.state.digit4 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.focus();
-      this.setState({ digit3: '' });
-    }
-  }
-
-  handleKeyDown5 (e) {
-    if (e.keyCode === 8 && this.state.digit5 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.focus();
-      this.setState({ digit4: '' });
-    }
-  }
-
-  handleKeyDown6 (e) {
-    if (e.keyCode === 8 && this.state.digit6 === '') {
-      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
-      e.target.parentElement.previousElementSibling.firstElementChild.focus();
-      this.setState({ digit5: '' });
-    }
-  }
-
   // eslint-disable-next-line react/sort-comp
   onPaste (e) {
     // console.log(e.clipboardData.getData('Text'));
@@ -399,6 +359,46 @@ class SettingsVerifySecretCode extends Component {
       VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
     }
   };
+
+  handleKeyDown2 (e) {
+    if (e.keyCode === 8 && this.state.digit2 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit1: '' });
+    }
+  }
+
+  handleKeyDown3 (e) {
+    if (e.keyCode === 8 && this.state.digit3 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit2: '' });
+    }
+  }
+
+  handleKeyDown4 (e) {
+    if (e.keyCode === 8 && this.state.digit4 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit3: '' });
+    }
+  }
+
+  handleKeyDown5 (e) {
+    if (e.keyCode === 8 && this.state.digit5 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit4: '' });
+    }
+  }
+
+  handleKeyDown6 (e) {
+    if (e.keyCode === 8 && this.state.digit6 === '') {
+      e.target.parentElement.previousElementSibling.firstElementChild.value = '';
+      e.target.parentElement.previousElementSibling.firstElementChild.focus();
+      this.setState({ digit5: '' });
+    }
+  }
 
   handleBlur () {
     this.setState({ condensed: false });

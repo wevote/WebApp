@@ -4,6 +4,7 @@ import AddEndorsements from '../components/Widgets/AddEndorsements';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { cordovaDot } from '../utils/cordovaUtils';
+import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
@@ -17,13 +18,12 @@ import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import ValuesFollowedPreview from '../components/Values/ValuesFollowedPreview';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import VoterStore from '../stores/VoterStore';
-import IssueActions from "../actions/IssueActions";
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = cordovaDot(TestimonialPhoto);
-const testimonial = 'Following values that are important to me lets me see the opinions of other people who share my values.';
+const testimonial = 'I like seeing the opinions of people who share my values.';
 
 export default class Values extends Component {
   static propTypes = {};
@@ -68,7 +68,7 @@ export default class Values extends Component {
         // console.log('issuesFollowedCount: ', issuesFollowedCount);
         this.setState({
           issuesDisplayDecisionHasBeenMade: true,
-          issuesToFollowShouldBeDisplayed: true,
+          issuesToFollowShouldBeDisplayed: (issuesFollowedCount <= 3),
         });
       }
     }
@@ -126,7 +126,9 @@ export default class Values extends Component {
                     />
                   </div>
                 </div>
-                <ValuesToFollowPreview />
+                <ValuesToFollowPreview
+                  includeLinkToIssue
+                />
               </div>
             )}
             {!!(issuesFollowedCount) && <ValuesFollowedPreview /> }
@@ -135,20 +137,19 @@ export default class Values extends Component {
             {this.state.voter.signed_in_twitter ? null : (
               <TwitterSignInCard />
             )}
-            {!!(issuesToFollowShouldBeDisplayed) && (
-              <>
-                <div className="card">
-                  <div className="card-main">
-                    <Testimonial
-                      imageUrl={imageUrl}
-                      testimonialAuthor={testimonialAuthor}
-                      testimonial={testimonial}
-                    />
-                  </div>
-                </div>
-                <ValuesToFollowPreview />
-              </>
-            )}
+            <div className="card">
+              <div className="card-main">
+                <Testimonial
+                  imageUrl={imageUrl}
+                  testimonialAuthor={testimonialAuthor}
+                  testimonial={testimonial}
+                />
+              </div>
+            </div>
+            <ValuesToFollowPreview
+              followToggleOnItsOwnLine
+              includeLinkToIssue
+            />
             <AddEndorsements />
           </div>
         </div>

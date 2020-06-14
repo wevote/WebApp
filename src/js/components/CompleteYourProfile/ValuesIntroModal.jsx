@@ -140,7 +140,7 @@ const styles = () => ({
   },
   dialogContent: {
     margin: '0 auto',
-    padding: '24px',
+    paddingBottom: '24px',
     background: 'white',
     display: 'flex',
     justifyContent: 'center',

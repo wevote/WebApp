@@ -24,20 +24,20 @@ describe('Basic cross-platform We Vote test',  () => {
     let isiPhone6S = false;
     // Check if device capability is used
     if (browserName) {
-      isChrome = browserName.includes('Chrome'); 
+      isChrome = browserName.includes('Chrome');
       isSafari = browserName.includes('Safari');
     }
     if (device) {
       isJ7Prime = device.includes('Samsung Galaxy J7 Prime');
-      isS8 = device.includes('Samsung Galaxy S8'); 
+      isS8 = device.includes('Samsung Galaxy S8');
       isGooglePixel3 = device.includes('Google Pixel 3');
       isiPad6 = device.includes('iPad 6th');
       isiPhone6S = device.includes('iPhone 6S');
     }
     const personalizedScoreSteps = 7;
-    const xssTest = '<script>alert(1)</script>'
-    const backspace = '\uE003'
-    const enter = '\uE007'
+    const xssTest = '<script>alert(1)</script>';
+    const backspace = '\uE003';
+    const enter = '\uE007';
 
     if (isCordovaFromAppStore) {
       // ///////////////////////////////
@@ -74,7 +74,8 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
       await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
       await simpleClick('completeYourProfileDesktopButton'); // Clicks on Choose Interests
-      await selectClick('#valuesIntroModalValueList button'); // select an interest
+      await simpleClick('issueFollowButton-wv02issue4'); // select an interest (Climate Change)
+      await scrollIntoViewSimple('valuesIntroModalNext'); // Scrolls to Next button
       await simpleClick('valuesIntroModalNext'); // Close the Interests modal
       await simpleClick('completeYourProfileDesktopButton'); // Clicks on Learn More
     } else if (!isAndroid) {
@@ -87,14 +88,15 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
       await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
       await simpleClick('completeYourProfileMobileButton'); // Clicks on Choose Interests
-      await selectClick('#valuesIntroModalValueList button'); // select an interest
+      await simpleClick('issueFollowButton-wv02issue4'); // select an interest (Climate Change)
+      await scrollIntoViewSimple('valuesIntroModalNext'); // Scrolls to Next button
       await simpleClick('valuesIntroModalNext'); // Close the Interests modal
       await scrollIntoViewSimple('completeYourProfileMobileButton'); // Scrolls to Confirm Address
       await simpleClick('completeYourProfileMobileButton'); // Clicks on Confirm Address
       await simpleClick('addressBoxModalSaveButton'); // clicks on save button
       await simpleClick('profileCloseSelectBallotModal'); // Clicks on close
       await simpleClick('completeYourProfileMobileButton'); // Clicks on Learn More
-      }
+    }
     for (let step = 0; step < personalizedScoreSteps; step++) {
       // eslint-disable-next-line no-await-in-loop
       await simpleClick('personalizedScoreIntroModalNextButton'); // Personalized Score Modal - 7 steps */
@@ -107,28 +109,28 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Sign in using Twitter, when in browser
     if (!isCordovaFromAppStore && twitterUserName && twitterPassword) {
-//      await simpleClick('signInHeaderBar'); // Clicks on Sign in
-//      await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
-//      await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
-//      await simpleTextInput('password', twitterPassword); // Enter Password
-//      await simpleClick('allow'); // Clicks on Authorize App
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS); 
-//      const unusualLoginUsernameInput = await $('input[name="session[username_or_email]"]');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await unusualLoginUsernameInput.setValue(twitterUserName);
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      const unusualLoginPasswordInput = await $('input[name="session[password]"]');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await unusualLoginPasswordInput.setValue(twitterPassword);
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      const unusualLoginSubmit = await $('[data-testid="LoginForm_Login_Button"]');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await unusualLoginSubmit.click();
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await simpleTextInput('challenge_response', ''); // Clicks on 'Confirmation Code'
-//      await simpleClick('allow'); // Clicks on Authorize App
-//      await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting
-//      await simpleClick('profilePopUpSignOut'); // Clicks on Sign Out
+      // await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      // await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
+      // await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
+      // await simpleTextInput('password', twitterPassword); // Enter Password
+      // await simpleClick('allow'); // Clicks on Authorize App
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // const unusualLoginUsernameInput = await $('input[name="session[username_or_email]"]');
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // await unusualLoginUsernameInput.setValue(twitterUserName);
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // const unusualLoginPasswordInput = await $('input[name="session[password]"]');
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // await unusualLoginPasswordInput.setValue(twitterPassword);
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // const unusualLoginSubmit = await $('[data-testid="LoginForm_Login_Button"]');
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // await unusualLoginSubmit.click();
+      // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      // await simpleTextInput('challenge_response', ''); // Clicks on 'Confirmation Code'
+      // await simpleClick('allow'); // Clicks on Authorize App
+      // await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting
+      // await simpleClick('profilePopUpSignOut'); // Clicks on Sign Out
     }
 
     // //////////////////////
@@ -156,7 +158,7 @@ describe('Basic cross-platform We Vote test',  () => {
     } else {
       await simpleClick('signInHeaderBar'); // Clicks on Sign in
       await simpleClick('enterVoterPhone'); // Puts cursor in Phone text input
-      await simpleClick('profileCloseSignInModal'); // Clicks on X 
+      await simpleClick('profileCloseSignInModal'); // Clicks on X
     }
 
     // //////////////////////
@@ -171,17 +173,17 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Open "Change Address" Modal in the very top header bar, and adjust the voter's address
-//    await simpleClick(changeAddressHeaderBarID); // Opens the "Enter Your Full Address" link
-//    await simpleClick('span.EditAddressInPlace__EditAddressPreview-sc-34r5yb-0.gxSnRd'); // Click Address
-//    if (isIOS && isCordovaFromAppStore) {
-//      await setNewAddressIOS('addressBoxText', 'Oakland, CA 94501'); // Sets the text for the address box and hits enter
-//    } else if (isAndroid && isCordovaFromAppStore) {
-//      await setNewAddressAndroid('addressBoxText', 'Oakland, CA 94501'); // Sets the text for the address box and hits enter
-//    } else {
-//      await setNewAddress('addressBoxText', 'Oakland, CA 94501'); // Sets the text for the address box and hits enter
-//    }
-//    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-//    await simpleClick('addressBoxModalSaveButton'); // Clicks "Save"
+    // await simpleClick(changeAddressHeaderBarID); // Opens the "Enter Your Full Address" link
+    // await simpleClick('span.EditAddressInPlace__EditAddressPreview-sc-34r5yb-0.gxSnRd'); // Click Address
+    // if (isIOS && isCordovaFromAppStore) {
+    //   await setNewAddressIOS('addressBoxText', 'Oakland, CA 94501'); // Sets the text for the address box and hits enter
+    // } else if (isAndroid && isCordovaFromAppStore) {
+    //   await setNewAddressAndroid('addressBoxText', 'Oakland, CA 94501'); // Sets the text for the address box and hits enter
+    // } else {
+    //   await setNewAddress('addressBoxText', 'Oakland, CA 94501'); // Sets the text for the address box and hits enter
+    // }
+    // await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+    // await simpleClick('addressBoxModalSaveButton'); // Clicks "Save"
 
     // //////////////////////
     // Switch to a known election so we can test using existing candidates and measures
@@ -207,8 +209,8 @@ describe('Basic cross-platform We Vote test',  () => {
     await selectClick('[id^=measureItemCompressedChoiceYes-]'); // Click on first measure
     if (!isChrome && !isAndroid && !isIOS) { // Element not interactable on Chrome or Android
       await selectClick('[id^=itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-]'); // Click on vote yes
-      await simpleClick('profileCloseItemActionBar'); // Click close for pop up 
-      await selectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-]'); // Click on vote no 
+      await simpleClick('profileCloseItemActionBar'); // Click close for pop up
+      await selectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-]'); // Click on vote no
       await selectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-]'); // Undo opposition
     }
     if (!isAndroid && !isIOS) { // measure text area is not interactable in android
@@ -222,45 +224,45 @@ describe('Basic cross-platform We Vote test',  () => {
       await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
     }
 
-  // //////////////////////
-  // Open position display filters
+    // //////////////////////
+    // Open position display filters
     await simpleClick('filterBaseFilters');
     await simpleClick('filterBaseFilters');
 
-  // //////////////////////
-  // Follow and unfollow an endorsing organization of measure 
+    // //////////////////////
+    // Follow and unfollow an endorsing organization of measure
     if (!isSafari && !isJ7Prime) { // bug on OS X
       await selectClick(`[id^=positionItemFollowToggleFollow-${platformPrefixID}-]`); // Follow organization
-      if (isS8 || isGooglePixel3) { 
+      if (isS8 || isGooglePixel3) {
         await scrollIntoViewSimple('readMore'); // Scroll down slightly
       }
       await selectClick(`[id^=positionItemFollowToggleDropdown-${platformPrefixID}-]`);
       await selectClick(`[id^=positionItemFollowToggleUnfollow-${platformPrefixID}-]`); // Unfollow organization
     }
 
-  // //////////////////////
-  // Go back to ballot
+    // //////////////////////
+    // Go back to ballot
     await simpleClick('backToLinkTabHeader');
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     // //////////////////////
     // Visit the federal page
-    await simpleClick(`${ballotBadgePlatformPrefixID}-Federal`); // Go to federal 
+    await simpleClick(`${ballotBadgePlatformPrefixID}-Federal`); // Go to federal
     await selectClick('[id^=officeItemCompressedCandidateImageAndName-]'); // Clicks the first candidate
     if (!isChrome && !isAndroid && !isIOS) { // Support and oppose button are not interactable on Chrome and Android
       await selectClick(`[id^=itemActionBarSupportButton-candidateItem-${platformPrefixID}IssuesComment-]`); // Support the candidate
-//      await simpleClick('profileCloseItemActionBar'); // Click close for pop up 
+      // await simpleClick('profileCloseItemActionBar'); // Click close for pop up
       await selectClick(`[id^=itemActionBarOpposeButton-candidateItem-${platformPrefixID}IssuesComment-]`); // Oppose the candidate
       await selectClick(`[id^=itemActionBarOpposeButton-candidateItem-${platformPrefixID}IssuesComment-]`); // Undo opposition
     }
     if (!isAndroid && !isIOS) { // text area not interactable on Android
-      await selectClick('[id^=itemPositionStatementActionBarTextArea-]') // Clicks on text area
+      await selectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Clicks on text area
       await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
       await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       if (!isSafari) { // accommodates a bug in Safari --> "Save" button isn't working as intended
         await selectClick('[id^=itemPositionStatementActionBarEdit-]'); // Click on edit button
       }
-      await selectClick('[id^=itemPositionStatementActionBarTextArea-]') // Clicks on text area
+      await selectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Clicks on text area
       await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', `${backspace}`.repeat(30)); // clear text area
       await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
     }
@@ -272,7 +274,7 @@ describe('Basic cross-platform We Vote test',  () => {
       if (isChrome || isiPhone6S) {
         await selectClick(`[id^=positionItemFollowToggleFollow-${platformPrefixID}-]`); // Need to click twice on Chrome
       }
-      if (isS8 || isGooglePixel3) { 
+      if (isS8 || isGooglePixel3) {
         await scrollIntoViewSimple('readMore'); // Scroll down slightly
       }
       await selectClick(`[id^=positionItemFollowToggleDropdown-${platformPrefixID}-]`);
