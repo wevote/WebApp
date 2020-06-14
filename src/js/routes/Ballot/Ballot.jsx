@@ -20,7 +20,7 @@ import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import BallotSearch from '../../components/Ballot/BallotSearch';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
 import BallotStore from '../../stores/BallotStore';
-import BallotSummaryFooter from '../../components/Navigation/BallotSummaryFooter';
+import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
@@ -773,6 +773,12 @@ class Ballot extends Component {
     this.setState({ raceLevelFilterType });
   }
 
+  showAllBallotItems = () => {
+    BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
+    BallotActions.raceLevelFilterTypeSave('All');
+    this.setState({ raceLevelFilterType: 'All' });
+  }
+
   memberViewedBallotHasBeenSavedOnce = (membershipOrganizationWeVoteId, googleCivicElectionId) => {
     if (!membershipOrganizationWeVoteId || !googleCivicElectionId) {
       return false;
@@ -1364,16 +1370,9 @@ class Ballot extends Component {
                           <CircularProgress />
                         </LoadingItemsWheel>
                       )}
-                      {!isSearching && (
-                        <BallotSummaryFooter
-                          activeRaceItem={raceLevelFilterType}
-                          displayTitle
-                          displaySubtitles
-                          rawUrlVariablesString={this.props.location.search}
-                          ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
-                          ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                          raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
-                          setActiveRaceItem={type => this.setRaceLevelFilterType(type)}
+                      {(!isSearching && raceLevelFilterType !== 'All') && (
+                        <BallotShowAllItemsFooter
+                          setActiveRaceItem={this.showAllBallotItems}
                         />
                       )}
                     </div>

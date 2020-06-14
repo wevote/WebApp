@@ -434,101 +434,6 @@ class ReadyTaskBallot extends React.Component {
           <SubTitle className="u-cursor--pointer" onClick={this.goToBallot}>
             {yourBallotSubtitle}
           </SubTitle>
-          {/* ************ */}
-          {/* How It Works */}
-          {/* ************ */}
-          {howItWorksShowButton && (
-            <StyledButton
-              id="howItWorksButton"
-              className="u-cursor--pointer"
-              color="primary"
-              completed={howItWorksCompleted ? 'true' : undefined}
-              onClick={this.openHowItWorksModal}
-              variant="outlined"
-            >
-              <ButtonLeft>
-                {howItWorksCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
-                <ButtonText>
-                  {howItWorksCompleted ? (
-                    <>
-                      <span className="u-show-mobile">
-                        How We Vote Works
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        How We Vote Works Completed
-                      </span>
-                    </>
-                  ) : (
-                    <span>
-                      <span className="u-show-mobile-iphone5-or-smaller">
-                        How We Vote Works
-                      </span>
-                      <span className="u-show-mobile-bigger-than-iphone5">
-                        How We Vote Works
-                        <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        How We Vote Works
-                        <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
-                      </span>
-                    </span>
-                  )}
-                </ButtonText>
-              </ButtonLeft>
-              {!howItWorksCompleted && (
-                <NumberComplete>
-                  (0/1)
-                </NumberComplete>
-              )}
-            </StyledButton>
-          )}
-          {/* ************************ */}
-          {/* Personalized Score Intro */}
-          {/* ************************ */}
-          {personalizedScoreIntroShowButton && (
-            <StyledButton
-              id="whatsAPersonalizedScoreButton"
-              className="u-cursor--pointer"
-              color="primary"
-              completed={personalizedScoreIntroCompleted ? 'true' : undefined}
-              onClick={this.openPersonalizedScoreIntroModal}
-              variant="outlined"
-            >
-              <ButtonLeft>
-                {personalizedScoreIntroCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
-                <ButtonText>
-                  {personalizedScoreIntroCompleted ? (
-                    <>
-                      <span className="u-show-mobile">
-                        Personalized Score
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        Personalized Score Completed
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="u-show-mobile-iphone5-or-smaller">
-                        My Score?
-                      </span>
-                      <span className="u-show-mobile-bigger-than-iphone5">
-                        Personalized Score?
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        What&apos;s a Personalized Score?
-                      </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
-                    </>
-                  )}
-                </ButtonText>
-              </ButtonLeft>
-              {!personalizedScoreIntroCompleted && (
-                <NumberComplete>
-                  (0/1)
-                </NumberComplete>
-              )}
-            </StyledButton>
-          )}
           {/* ************* */}
           {/* Decide on All Candidates */}
           {/* ************* */}
@@ -761,6 +666,101 @@ class ReadyTaskBallot extends React.Component {
                   /
                   {localTotalNumber}
                   )
+                </NumberComplete>
+              )}
+            </StyledButton>
+          )}
+          {/* ************ */}
+          {/* How It Works */}
+          {/* ************ */}
+          {howItWorksShowButton && (
+            <StyledButton
+              id="howItWorksButton"
+              className="u-cursor--pointer"
+              color="primary"
+              completed={howItWorksCompleted ? 'true' : undefined}
+              onClick={this.openHowItWorksModal}
+              variant="outlined"
+            >
+              <ButtonLeft>
+                {howItWorksCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
+                <ButtonText>
+                  {howItWorksCompleted ? (
+                    <>
+                      <span className="u-show-mobile">
+                        How We Vote Works
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        How We Vote Works Completed
+                      </span>
+                    </>
+                  ) : (
+                    <span>
+                      <span className="u-show-mobile-iphone5-or-smaller">
+                        How We Vote Works
+                      </span>
+                      <span className="u-show-mobile-bigger-than-iphone5">
+                        How We Vote Works
+                        <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        How We Vote Works
+                        <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                      </span>
+                    </span>
+                  )}
+                </ButtonText>
+              </ButtonLeft>
+              {!howItWorksCompleted && (
+                <NumberComplete>
+                  (0/1)
+                </NumberComplete>
+              )}
+            </StyledButton>
+          )}
+          {/* ************************ */}
+          {/* Personalized Score Intro */}
+          {/* ************************ */}
+          {personalizedScoreIntroShowButton && (
+            <StyledButton
+              id="whatsAPersonalizedScoreButton"
+              className="u-cursor--pointer"
+              color="primary"
+              completed={personalizedScoreIntroCompleted ? 'true' : undefined}
+              onClick={this.openPersonalizedScoreIntroModal}
+              variant="outlined"
+            >
+              <ButtonLeft>
+                {personalizedScoreIntroCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
+                <ButtonText>
+                  {personalizedScoreIntroCompleted ? (
+                    <>
+                      <span className="u-show-mobile">
+                        Personalized Score
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Personalized Score Completed
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="u-show-mobile-iphone5-or-smaller">
+                        My Score?
+                      </span>
+                      <span className="u-show-mobile-bigger-than-iphone5">
+                        Personalized Score?
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        What&apos;s a Personalized Score?
+                      </span>
+                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                    </>
+                  )}
+                </ButtonText>
+              </ButtonLeft>
+              {!personalizedScoreIntroCompleted && (
+                <NumberComplete>
+                  (0/1)
                 </NumberComplete>
               )}
             </StyledButton>

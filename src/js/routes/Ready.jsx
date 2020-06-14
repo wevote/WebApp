@@ -7,10 +7,11 @@ import AppStore from '../stores/AppStore';
 import BallotActions from '../actions/BallotActions';
 import BallotStore from '../stores/BallotStore';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
+import cookies from '../utils/cookies';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
-import FriendInvitationOnboardingValuesList from '../components/Values/FriendInvitationOnboardingValuesList';
 import { historyPush, isWebApp } from '../utils/cordovaUtils';
+import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
 import LoadingWheel from '../components/LoadingWheel';
 import ReadMore from '../components/Widgets/ReadMore';
@@ -20,9 +21,9 @@ import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import { renderLog } from '../utils/logging';
+import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import VoterStore from '../stores/VoterStore';
 import webAppConfig from '../config';
-import IssueActions from "../actions/IssueActions";
 // import PledgeToVote from '../components/Ready/PledgeToVote';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -57,6 +58,9 @@ class Ready extends Component {
     }
     ReadyActions.voterPlansForVoterRetrieve();
     AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
+    this.setState({
+      locationGuessClosed: cookies.getItem('location_guess_closed'),
+    });
   }
 
   componentWillUnmount () {
@@ -104,43 +108,54 @@ class Ready extends Component {
 
   render () {
     renderLog('Ready');  // Set LOG_RENDER_EVENTS to log all renders
-    const { chosenReadyIntroductionText, chosenReadyIntroductionTitle, issuesShouldBeDisplayed, voter } = this.state;
+    const {
+      chosenReadyIntroductionText, chosenReadyIntroductionTitle, issuesShouldBeDisplayed,
+      locationGuessClosed, voter,
+    } = this.state;
     if (!voter) {
       return LoadingWheel;
     }
-    const defaultIntroductionText = 'Make sure you\'re ready to vote ' +
-      '(registered to vote, have a plan, etc.) ' +
-      'See who\'s running for office. What do they stand for? ' +
-      'Learn from people you trust.';
+    // const defaultIntroductionText = 'Make sure you\'re ready to vote ' +
+    //   '(registered to vote, have a plan, etc.) ' +
+    //   'See who\'s running for office. What do they stand for? ' +
+    //   'Learn from people you trust.';
 
     return (
-      <div className="page-content-container">
+      <Wrapper className="page-content-container">
         <PageContainer className="container-fluid" isWeb={isWebApp()}>
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
-            <EditAddressWrapper className="col-12">
-              <EditAddressOneHorizontalRow saveUrl="/ready" />
-            </EditAddressWrapper>
+            {!(locationGuessClosed) && (
+              <EditAddressWrapper className="col-12">
+                <EditAddressOneHorizontalRow saveUrl="/ready" />
+              </EditAddressWrapper>
+            )}
             <div className="col-sm-12 col-lg-8">
               <div className="u-cursor--pointer" onClick={this.goToBallot}>
                 <ElectionCountdown />
               </div>
-              <div className="u-show-mobile-tablet">
-                <Card className="card">
+              {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) ? (
+                <Card className="card u-show-mobile-tablet">
                   <div className="card-main">
                     <Title>
-                      {chosenReadyIntroductionTitle || 'We Vote makes being a voter easier'}
+                      {chosenReadyIntroductionTitle}
                     </Title>
                     <Paragraph>
                       <ReadMore
-                        textToDisplay={chosenReadyIntroductionText || defaultIntroductionText}
+                        textToDisplay={chosenReadyIntroductionText}
                         numberOfLines={3}
                       />
                     </Paragraph>
                   </div>
                 </Card>
-              </div>
+              ) : (
+                <Card className="card u-show-mobile">
+                  <div className="card-main">
+                    <ReadyIntroduction />
+                  </div>
+                </Card>
+              )}
               <ReadyTaskBallot
                 arrowsOn
               />
@@ -168,25 +183,23 @@ class Ready extends Component {
               )}
               <Card className="card">
                 <div className="card-main">
-                  <ReadyIntroduction />
+                  <ReadyIntroduction
+                    showStep3WhenCompressed
+                  />
                 </div>
               </Card>
               {(issuesShouldBeDisplayed) && (
                 <ValuesListWrapper>
-                  <div className="card">
-                    <FriendInvitationOnboardingValuesList
-                      displayOnlyIssuesNotFollowedByVoter
-                      followToggleOnItsOwnLine
-                      oneColumn
-                    />
-                  </div>
+                  <ValuesToFollowPreview
+                    followToggleOnItsOwnLine
+                  />
                 </ValuesListWrapper>
               )}
               {/* {nextReleaseFeaturesEnabled && <PledgeToVote />} */}
             </div>
           </div>
         </PageContainer>
-      </div>
+      </Wrapper>
     );
   }
 }
@@ -223,6 +236,9 @@ const Paragraph = styled.div`
 const ValuesListWrapper = styled.div`
   margin-top: 12px;
   margin-bottom: 12px;
+`;
+
+const Wrapper = styled.div`
 `;
 
 const styles = theme => ({
