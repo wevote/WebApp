@@ -118,14 +118,14 @@ async function setNewAddressIOS (elementIdName, addressValue) {
 async function simpleClick (elementIdName) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
-  await browser.waitUntil(function () { return clickableItem.isClickable(); });
+  await browser.waitUntil(() => clickableItem.isClickable());
   await clickableItem.click();
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
 async function selectClick (selector) {
   const clickableItem = await $(selector);
-  await browser.waitUntil(function () { return clickableItem.isClickable(); });
+  await browser.waitUntil(() => clickableItem.isClickable());
   await clickableItem.click();
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }

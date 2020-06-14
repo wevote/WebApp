@@ -74,6 +74,8 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
       await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
       await simpleClick('completeYourProfileDesktopButton'); // Clicks on Choose Interests
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await selectClick('#valuesIntroModalValueList #issues-follow-container'); // select an interest
       await simpleClick('issueFollowButton-wv02issue4'); // select an interest (Climate Change)
       await scrollIntoViewSimple('valuesIntroModalNext'); // Scrolls to Next button
       await simpleClick('valuesIntroModalNext'); // Close the Interests modal
@@ -88,6 +90,8 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
       await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
       await simpleClick('completeYourProfileMobileButton'); // Clicks on Choose Interests
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await selectClick('#valuesIntroModalValueList #issues-follow-container'); // select an interest
       await simpleClick('issueFollowButton-wv02issue4'); // select an interest (Climate Change)
       await scrollIntoViewSimple('valuesIntroModalNext'); // Scrolls to Next button
       await simpleClick('valuesIntroModalNext'); // Close the Interests modal

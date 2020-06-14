@@ -25,7 +25,7 @@ parser.add_argument('-c', '--isCordova', action='store_true', help='set isCordov
 parser.add_argument('-s', '--acceptSslCerts', action='store_false', help='do not use https')
 parser.add_argument('-t', '--timeout', default=180000, type=int, help='time before test ends')
 parser.add_argument('-m', '--isMobileScreenSize', action='store_true', help='set mobile-screen to true')
-parser.add_argument('--waitForTimeout', default=180000, type=int, help='time before connection is times out')
+parser.add_argument('--waitForTimeout', default=360000, type=int, help='time before connection is times out')
 parser.add_argument('--connectionRetryTimeout', default=90000, type=int, help='time before connection is retried')
 parser.add_argument('--connectionRetryCount', default=3, type=int, help='number of times connection is retried')
 args = vars(parser.parse_args())

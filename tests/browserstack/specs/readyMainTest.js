@@ -1,5 +1,5 @@
 const { simpleClick, selectClick, simpleTextInput, selectTextInput, scrollIntoViewSimple } = require('../utils');
-const PAUSE_DURATION_MICROSECONDS = 1500;
+const PAUSE_DURATION_MICROSECONDS = 1250;
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
 
@@ -7,6 +7,7 @@ describe('Basic cross-platform We Vote test',  () => {
   it('should load the app so we can run tests', async () => {
     const { isCordova, isMobile } = driver.config.capabilities;
     const xssTest = '<img src=javascript:alert("1")>'
+    const enter = '\uE007'
     
     if (isCordova) {
       // switch contexts and click through intro
@@ -22,8 +23,10 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     }
       
+    await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', `Oakland, CA 94501${enter}`); // Focus on Location Input Box
+
     // //////////////////////
-    // Test "Voting?" Section
+    // Test "Your Ballot Progress" Section
     const parentWindowHandle = await browser.getWindowHandle(); // Get window handle
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('howItWorksButton'); // Click "How It Works" Button
@@ -40,17 +43,17 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('personalizedScoreIntroModalNextButton'); // Click "I'll Pretend"
     await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Next"
     await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Show"
-    await simpleClick('closeYourPersonalizedScorePopover'); // Close personalized popover
     await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Next"
     await simpleClick('popoverCloseButton'); // Close popover
-    await simpleClick('closeYourPersonalizedScorePopover'); // Close personalized popover
     await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Next"
-    await simpleClick('closeYourPersonalizedScorePopover'); // Close personalized popover
     await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Got it!"
     await simpleClick('personalizedScoreIntroModalNextButton'); // Click "All done!"
     await simpleClick('decideOnCandidatesButton'); // Click "Decide on candidates" Button
     await browser.back(); // Go back 
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+    // //////////////////////
+    // Test "When and Where Will You Vote?" Section
     await simpleClick('makeYourPlanNowButton'); // Click "Make Your Plan Now" Button
     await simpleClick('selectVotingRoughDate'); // Choose voting date
     await selectClick('option[value="day-before"]'); // Choose "The day before election day"
@@ -70,5 +73,12 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('emailMeReminder'); // Click "Please email me a reminder at:"
     await selectTextInput('input[name="emailMeReminderEmailAddress"]',xssTest); // Enter in email address
     await simpleClick('yourPlanForVotingSaveButton'); // Click save
+
+    // //////////////////////
+    // Test "We Vote makes being a voter easier:"
+    await simpleClick('readMore'); // Click "More"
+    await simpleClick('readMore'); // Click "More"
+    await simpleClick('showLess'); // Click "Show Less"
+    await simpleClick('showLess'); // Click "Show Less"
   });
 });
