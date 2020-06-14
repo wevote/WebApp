@@ -151,7 +151,7 @@ class IssueFollowToggleButton extends Component {
       followButtonText = shortenText(`Follow ${issueName}`, 27);
     }
     return (
-      <div className="issues-follow-container">
+      <div className="issues-follow-container" id=`issues-follow-container${issueName}`>
         {isFollowing ? (
           <React.Fragment>
             <Button
