@@ -653,7 +653,7 @@ class VoterStore extends ReduceStore {
           const { voter_photo_url_medium: statePhotoMed } = state.voter;
           const { voter_photo_url_medium: incomingPhotoMed } = incomingVoter;
           if (!statePhotoMed && !incomingPhotoMed) {
-            incomingVoter.voter_photo_url_medium = 'https://quality.wevote.us/img/global/logos/Apple-01.svg';  // TODO: Switch over to wevote.us once PR is in
+            incomingVoter.voter_photo_url_medium = 'https://wevote.us/img/global/logos/Apple_logo_grey.svg';  // TODO: Switch over to wevote.us once live server is updated
           }
         }
 
