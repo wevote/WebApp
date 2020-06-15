@@ -41,7 +41,16 @@ class HeaderBarProfilePopUp extends Component {
   render () {
     renderLog('HeaderBarProfilePopUp');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, isWelcomeMobilePage, voter, profilePopUpOpen } = this.props;
-    const isSignedIn = voter && voter.is_signed_in;
+    let isSignedIn = false;
+    let voterOrganizationWeVoteId = '';
+    let voterTwitterScreenName = '';
+    if (voter) {
+      ({
+        is_signed_in: isSignedIn,
+        linked_organization_we_vote_id: voterOrganizationWeVoteId,
+        twitter_screen_name: voterTwitterScreenName,
+      } = voter);
+    }
 
     /* eslint-disable no-extra-parens */
     const popUpOpen = (function opener () {
@@ -50,6 +59,10 @@ class HeaderBarProfilePopUp extends Component {
       }
       return '';
     }());
+
+    const yourVoterGuideLink = voterTwitterScreenName ?
+      `/${voterTwitterScreenName}` :
+      `/voterguide/${voterOrganizationWeVoteId}`;
 
     return (
       <div className={popUpOpen}>
@@ -93,7 +106,7 @@ class HeaderBarProfilePopUp extends Component {
             {/* Desktop or Mobile */}
             <li>
               <ListItemWrapper>
-                <Link id="profilePopUpYourEndorsements" onClick={this.hideProfilePopUp} to="/settings/voterguidelist">
+                <Link id="profilePopUpYourEndorsements" onClick={this.hideProfilePopUp} to={yourVoterGuideLink}>
                   <Button
                     variant="text"
                     color="primary"

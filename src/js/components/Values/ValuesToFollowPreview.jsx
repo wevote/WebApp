@@ -72,7 +72,7 @@ class ValuesToFollowPreview extends Component {
             </SectionTitle>
             <SectionInformation>
               <i className="fas fa-info-circle" />
-              See opinions from people who share your values.
+              Follow values/issues to see opinions from people who share your values.
             </SectionInformation>
             <Row className="row">
               <FriendInvitationOnboardingValuesList

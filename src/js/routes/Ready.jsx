@@ -135,7 +135,7 @@ class Ready extends Component {
               <div className="u-cursor--pointer" onClick={this.goToBallot}>
                 <ElectionCountdown />
               </div>
-              {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) ? (
+              {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card u-show-mobile-tablet">
                   <div className="card-main">
                     <Title>
@@ -149,13 +149,12 @@ class Ready extends Component {
                     </Paragraph>
                   </div>
                 </Card>
-              ) : (
-                <Card className="card u-show-mobile">
-                  <div className="card-main">
-                    <ReadyIntroduction />
-                  </div>
-                </Card>
               )}
+              <Card className="card u-show-mobile-tablet">
+                <div className="card-main">
+                  <ReadyIntroduction />
+                </div>
+              </Card>
               <ReadyTaskBallot
                 arrowsOn
               />
