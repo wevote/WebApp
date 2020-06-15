@@ -12,6 +12,7 @@ function localRestoreStylesAfterCordovaKeyboard () {
   restoreStylesAfterCordovaKeyboard('ballot');
 }
 
+// for wevotetwitterscheme
 export function initializationForCordova () { // eslint-disable-line
   console.log('Application initializationForCordova ------------');
 

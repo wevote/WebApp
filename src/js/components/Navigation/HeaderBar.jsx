@@ -559,6 +559,7 @@ class HeaderBar extends Component {
                       src={voterPhotoUrlMedium}
                       style={{
                         marginLeft: 16,
+                        marginBottom: 10,
                       }}
                       height={34}
                       width={34}
