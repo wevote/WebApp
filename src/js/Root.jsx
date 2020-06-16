@@ -80,6 +80,7 @@ import WelcomeForOrganizations from './routes/WelcomeForOrganizations';
 import WeVoteBallotEmbed from './routes/More/WeVoteBallotEmbed';
 import YourPage from './routes/YourPage';
 import { isWebApp } from './utils/cordovaUtils';
+import Register from './routes/Register';
 
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
 // const ballotHasBeenVisited = cookies.getItem('ballot_has_been_visited');
@@ -108,6 +109,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Route path="/welcome" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
       <Route path="/news" component={News} />
       <Route path="/ready" component={Ready} />
+      <Route path="/register" component={Register} />
       <Route path="/ballot" component={BallotIndex}>
         <IndexRoute component={Ballot} />
         <Route path="/ballot?voter_refresh_timer_on=:voter_refresh_timer_on" component={Ballot} />
