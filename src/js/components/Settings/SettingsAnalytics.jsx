@@ -309,6 +309,7 @@ class SettingsAnalytics extends Component {
               </InputLabel>
               <InputLabelHelperText>Add your tracking code (e.g., UA-XXXXXXX-X) so you can see which parts of your site voters like the best.</InputLabelHelperText>
               <TextField
+                id="googleAnalyticsTrackerInput"
                 onChange={this.handleOrganizationChosenGoogleAnalyticsTrackerChange}
                 onClick={this.showChosenGoogleAnalyticsTrackerButtons}
                 label="Paste Google Analytics ID Here..."
@@ -319,6 +320,7 @@ class SettingsAnalytics extends Component {
             {analyticsButtonsActive === 'organizationChosenGoogleAnalyticsTrackerButtonsActive' && (
               <ButtonsContainer>
                 <Button
+                  id="googleAnalyticsTrackerInputCancel"
                   classes={{ root: classes.button }}
                   color="primary"
                   disabled={!organizationChosenGoogleAnalyticsTrackerChangedLocally}
@@ -362,6 +364,7 @@ class SettingsAnalytics extends Component {
                 Add your entire HTML verification meta tag (e.g., &lt;meta name=&quot;google-site-verification&quot; content=&quot;your verification string&quot;&gt;) to prove that you control this website.
               </InputLabelHelperText>
               <TextField
+                id="verifyWebmasterToolInput"
                 onChange={this.handleOrganizationChosenHtmlVerificationChange}
                 onClick={this.showHtmlVerificationButtons}
                 label="Paste the HTML Meta Tag Here..."
@@ -372,6 +375,7 @@ class SettingsAnalytics extends Component {
             {analyticsButtonsActive === 'organizationChosenHtmlVerificationButtonsActive' ? (
               <ButtonsContainer>
                 <Button
+                  id="verifyWebmasterToolCancelButton"
                   classes={{ root: classes.button }}
                   color="primary"
                   disabled={!organizationChosenHtmlVerificationChangedLocally}
@@ -381,6 +385,7 @@ class SettingsAnalytics extends Component {
                   Cancel
                 </Button>
                 <Button
+                  id="verifyWebmasterToolSaveButton"
                   color="primary"
                   disabled={!organizationChosenHtmlVerificationChangedLocally}
                   onClick={this.onSaveHtmlVerificationButton}

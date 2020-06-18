@@ -205,6 +205,7 @@ class SettingsSiteText extends Component {
                 Add introduction title and text to welcome people visiting your site&apos;s &quot;Ready?&quot; page.
               </InputLabelHelperText>
               <TextField
+                id="addTitleHereInput"
                 onChange={this.handleOrganizationReadyIntroductionTitleChange}
                 onClick={this.showReadyIntroductionButtons}
                 label="Add Title here..."
@@ -212,6 +213,7 @@ class SettingsSiteText extends Component {
                 value={organizationReadyIntroductionTitle}
               />
               <TextField
+                id="addIntroductionHereInput"
                 onChange={this.handleOrganizationReadyIntroductionTextChange}
                 onClick={this.showReadyIntroductionButtons}
                 label="Add introduction text here..."
@@ -231,6 +233,7 @@ class SettingsSiteText extends Component {
                   Cancel
                 </Button>
                 <Button
+                  id="siteTextSaveButton"
                   color="primary"
                   disabled={!organizationReadyIntroductionTextChangedLocally && !organizationReadyIntroductionTitleChangedLocally}
                   onClick={this.onSaveReadyIntroductionButton}

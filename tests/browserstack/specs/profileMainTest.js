@@ -1,4 +1,4 @@
-const { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleTextInput, selectTextInput } = require('../utils');
+const { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleTextInput, selectTextInput } = require('../utils');
 
 const assert = require('assert');
 
@@ -24,7 +24,7 @@ describe('Basic cross-platform We Vote test',  () => {
       await selectClick('div[data-index="2"] .intro-story__btn--bottom'); // Click third next button
     } else {
       // navigate browser to WeVote QA site
-      await browser.url(`${WEB_APP_ROOT_URL}/ballot`);
+      await browser.url('ready');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     }
     // //////////////////////
@@ -49,28 +49,92 @@ describe('Basic cross-platform We Vote test',  () => {
 //      await browser.pause(PAUSE_DURATION_MICROSECONDS);
 //      await simpleTextInput('challenge_response', ''); // Clicks on 'Confirmation Code'
 //      await simpleClick('allow'); // Clicks on Authorize App
+      await browser.pause(PAUSE_DURATION_MICROSECONDS * 9);
       await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting
     }
+    await selectClick('#profilePopUpYourSettings .header-slide-out-menu-text-left');
+    await simpleTextInput("first-name", "Hello how are you");
+    await simpleTextInput("last-name", "I am great thanks");
+    await simpleTextInput("organization-name", "I am really cool");
+    await simpleTextInput("organizationWebsiteTextArea", "aHahahaha ");
+    await simpleTextInput("organizationDescriptionTextArea", "Sup I'm gangsta");
+    await simpleClick("edit");
+    await selectClick('#securityAndSignIn span');
+    await simpleTextInput("enterVoterPhone", "9723591212");
+    await simpleClick('voterPhoneSendSMS');
+    await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com');
+    await simpleClick('voterEmailAddressEntrySendCode');
+    await simpleTextInput("digit1", "0");
+    await simpleTextInput("digit2", "1");
+    await simpleTextInput("digit3", "2");
+    await simpleTextInput("digit4", "3");
+    await simpleTextInput("digit5", "4");
+    await simpleTextInput("digit6", "5");
+    await simpleClick("emailVerifyButton");
+    await simpleClick('codeVerificationDialog');
+    await simpleClick('changeEmailAddressButton');
+    await selectClick('=Send Verification Again');
+    await simpleClick('emailVerificationBackButton');
+    await simpleClick('notifications');
+    await simpleClick('newsletterOptIn');
+    await simpleClick('domain');
+    await selectClick('=Site Text');
+    await simpleTextInput('addTitleHereInput', '>script>alert("1")>/script>');
+    await simpleTextInput("addIntroductionHereInput", "' or 1=1 -- -");
+    await simpleClick('siteTextSaveButton');
+    await simpleClick('sharing');
+//    await simpleClick('hideWeVoteLogoSwitch'); // Switch is not clickable
+    await scrollIntoViewSimple("settingsSharingInputBox");
+    await simpleTextInput("settingsSharingInputBox", "' or 1=1 -- -");
+    await simpleClick('cancelChosenSocialShareDescriptionButton');
+//    await simpleClick('chosenPreventSharingOpinions'); // Switch is not clickable
+    await scrollIntoViewSimple("subscriptionPlan");
+    await simpleClick('subscriptionPlan');
+    await simpleClick('changePlanButton');
+    await simpleClick("profileClosePaidAccountUpgradeModal");
+    await simpleClick('analytics');
+    await simpleTextInput("googleAnalyticsTrackerInput", ">script>alert('1')>/script>");
+    await simpleClick('googleAnalyticsTrackerInputCancel');
+    await simpleTextInput("verifyWebmasterToolInput", ">meta name='>script>alert(1)>/script>'>");
+    await simpleClick('verifyWebmasterToolCancelButton');
+    await simpleTextInput("verifyWebmasterToolInput", ">meta name='>script>alert(1)>/script>'>");
+    await simpleClick('verifyWebmasterToolSaveButton');
+    await simpleClick('toolsForYourWebsite');
+    await simpleClick('codeCopierInteractiveBallotTool');
+    await selectClick('=Show Code');
+    await selectClick('=Hide Code');
+    await simpleTextInput("enterTwitterHandleInput", "@>script>alert('1')>/script>");
+    await scrollIntoViewSimple('codeCopierVoterRegistrationTool');
+    await simpleClick('codeCopierVoterRegistrationTool');
 
-    // //////////////////////
-    // Test verification code for email
-    await simpleClick('signInHeaderBar'); // Click Sign In 
-    await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com'); // Enter test email in input box
-    await simpleClick('voterEmailAddressEntrySendCode'); // Click on Send Code
-    await simpleClick('digit1'); // Focus on first input box for verification code
-    await simpleTextInput('digit1', '0'); // Set value to 0-9
-    await simpleClick('digit2'); // Focus on second input box for verification code
-    await simpleTextInput('digit2', '1'); // Set value to 0-9
-    await simpleClick('digit3'); // Focus on third input box for verification code
-    await simpleTextInput('digit3', '2'); // Set value to 0-9
-    await simpleClick('digit4'); // Focus on fourth input box for verification code
-    await simpleTextInput('digit4', '3'); // Set value to 0-9
-    await simpleClick('digit5'); // Focus on fifth input box for verification code
-    await simpleTextInput('digit5', '4'); // Set value to 0-9
-    await simpleClick('digit6'); // Focus on sixth input box for verification code
-    await simpleTextInput('digit6', '5'); // Set value to 0-9
-    await simpleClick('emailVerifyButton'); // Click verify
-    await simpleClick('emailVerificationBackButton'); // Click back
-    await simpleClick('profileCloseSignInModal'); // Click "X"
+    await selectClick('=Show Code');
+    await selectClick('=Hide Code');
+
+    await simpleClick('codeCopierAbsenteeBallotTool');
+    await selectClick('=Show Code');
+    await selectClick('=Hide Code');
+    await simpleClick('codeCopierCheckRegistrationStatusTool');
+    await selectClick('=Show Code');
+    await selectClick('=Hide Code');
+    await simpleClick('codeCopierElectionReminderTool');
+    await selectClick('=Show Code');
+    await selectClick('=Hide Code');
+    await scrollIntoViewSimple('selectVoterGuidesSideBarNewVoterGuide');
+    await simpleClick('selectVoterGuidesSideBarNewVoterGuide');
+    await simpleClick('profileCloseVoterGuideChooseElectionModal'); 
+    await simpleClick('selectVotingGuidesSideBarLinkEdit');
+    await browser.back();
+    await simpleClick('selectVotingGuidesSideBarLinkPreview');
+    await browser.back();
+    await scrollIntoViewSelect('=Click to view example');
+    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(2) #selectVotingGuidesSideBarLinkEdit > .MuiButton-label');
+    await browser.back();
+    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(2) #selectVotingGuidesSideBarLinkPreview > .MuiButton-label');
+    await browser.back();
+
+    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(3) #selectVotingGuidesSideBarLinkEdit > .MuiButton-label');
+    await browser.back();
+    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(3) #selectVotingGuidesSideBarLinkPreview > .MuiButton-label');
+    await browser.back();
   });
 });
