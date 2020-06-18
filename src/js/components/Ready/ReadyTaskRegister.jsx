@@ -20,7 +20,7 @@ class ReadyTaskRegister extends React.Component {
   }
 
   goToNextStep = () => {
-    historyPush('/ballot');
+    historyPush('/register');
   }
 
   render () {

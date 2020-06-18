@@ -285,6 +285,7 @@ class VoterStore extends ReduceStore {
     let incorrectSecretCodeEntered;
     let membershipOrganizationWeVoteId;
     let numberOfTriesRemaining;
+    let revisedState;
     let secretCodeVerified;
     let voterDeviceId;
     let voterExternalIdHasBeenSavedOnce;
@@ -669,7 +670,9 @@ class VoterStore extends ReduceStore {
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
         VoterActions.voterSMSPhoneNumberRetrieve();
-        return this.resetState();
+        revisedState = state;
+        revisedState = Object.assign({}, revisedState, this.getInitialState());
+        return revisedState;
 
       case 'voterSMSPhoneNumberRetrieve':
         // console.log('VoterStore  voterSMSPhoneNumberRetrieve: ', action.res.sms_phone_number_list);
