@@ -148,21 +148,23 @@ export default class BallotSearchResults extends Component {
       />
     ));
 
+    const featureTurnedOff = true;
     return (
       <div className="ballot_search">
         <div>
-          <div className="u-padding-bottom--sm">
-            <SearchBar
-              clearButton
-              clearFunction={this.clearFunction}
-              clearSearchTextNow={clearSearchTextNow}
-              placeholder="Search to add Candidates or Measures"
-              searchButton
-              searchFunction={this.searchFunction}
-              searchUpdateDelayTime={500}
-            />
-
-          </div>
+          {featureTurnedOff ? null : (
+            <div className="u-padding-bottom--sm">
+              <SearchBar
+                clearButton
+                clearFunction={this.clearFunction}
+                clearSearchTextNow={clearSearchTextNow}
+                placeholder="Search to add Candidates or Measures"
+                searchButton
+                searchFunction={this.searchFunction}
+                searchUpdateDelayTime={500}
+              />
+            </div>
+          )}
           <div className="ballot_search__results_list">
             {ballotItemSearchResultsList && ballotItemSearchResultsList.length ? (
               <div>

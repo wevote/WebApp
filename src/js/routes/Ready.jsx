@@ -203,6 +203,23 @@ class Ready extends Component {
   }
 }
 
+const styles = theme => ({
+  ballotIconRoot: {
+    width: 150,
+    height: 150,
+    color: 'rgb(171, 177, 191)',
+  },
+  ballotButtonIconRoot: {
+    marginRight: 8,
+  },
+  ballotButtonRoot: {
+    width: 250,
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
+});
+
 const Card = styled.div`
   padding-bottom: 4px;
 `;
@@ -239,22 +256,5 @@ const ValuesListWrapper = styled.div`
 
 const Wrapper = styled.div`
 `;
-
-const styles = theme => ({
-  ballotIconRoot: {
-    width: 150,
-    height: 150,
-    color: 'rgb(171, 177, 191)',
-  },
-  ballotButtonIconRoot: {
-    marginRight: 8,
-  },
-  ballotButtonRoot: {
-    width: 250,
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-    },
-  },
-});
 
 export default withStyles(styles)(Ready);

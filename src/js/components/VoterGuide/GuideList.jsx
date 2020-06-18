@@ -14,6 +14,7 @@ import ShowMoreItems from '../Widgets/ShowMoreItems';
 class GuideList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
+    hideShowMoreItems: PropTypes.bool,
     incomingVoterGuideList: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
   };
@@ -203,7 +204,11 @@ class GuideList extends Component {
 
   render () {
     renderLog('GuideList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { filteredOrganizationsWithPositions, filteredOrganizationsWithPositionsCount, loadingMoreItems, numberOfItemsToDisplay, voterGuideListCount } = this.state;
+    const { hideShowMoreItems } = this.props;
+    const {
+      filteredOrganizationsWithPositions, filteredOrganizationsWithPositionsCount,
+      loadingMoreItems, numberOfItemsToDisplay, voterGuideListCount,
+    } = this.state;
     if (filteredOrganizationsWithPositions === undefined) {
       // console.log('GuideList this.state.organizations_to_follow === undefined');
       return null;
@@ -257,13 +262,15 @@ class GuideList extends Component {
               );
             })
             }
-            <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfItemsToDisplay}>
-              <ShowMoreItems
-                loadingMoreItemsNow={loadingMoreItems}
-                numberOfItemsDisplayed={numberOfItemsDisplayed}
-                numberOfItemsTotal={filteredOrganizationsWithPositionsCount}
-              />
-            </ShowMoreItemsWrapper>
+            {!hideShowMoreItems && (
+              <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfItemsToDisplay}>
+                <ShowMoreItems
+                  loadingMoreItemsNow={loadingMoreItems}
+                  numberOfItemsDisplayed={numberOfItemsDisplayed}
+                  numberOfItemsTotal={filteredOrganizationsWithPositionsCount}
+                />
+              </ShowMoreItemsWrapper>
+            )}
           </div>
         ) : null}
       </div>

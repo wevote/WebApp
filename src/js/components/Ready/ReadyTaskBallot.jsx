@@ -420,7 +420,11 @@ class ReadyTaskBallot extends React.Component {
             >
               {yourBallotTitle}
             </Title>
-            <PercentComplete showprogresscolor={percentCompleted > 0}>
+            <PercentComplete
+              className="u-cursor--pointer"
+              onClick={() => this.showMoreButtonsLink()}
+              showprogresscolor={percentCompleted > 0}
+            >
               {percentCompleted}
               %
               {!!(percentCompleted) && (
