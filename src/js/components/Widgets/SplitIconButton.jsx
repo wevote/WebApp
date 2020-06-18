@@ -25,7 +25,7 @@ class SplitIconButton extends PureComponent {
     whiteOnBlue: PropTypes.bool,
   };
 
-  render() {
+  render () {
     const {
       backgroundColor,
       buttonText,
@@ -38,15 +38,15 @@ class SplitIconButton extends PureComponent {
       whiteOnBlue,
     } = this.props;
     const buttonStyle = {
-      background: backgroundColor || "#fff",
+      background: backgroundColor || '#fff',
       color:
-        fontColor || "#2e3c5d",
+        fontColor || '#2e3c5d',
       // getTextColorFromBackground(backgroundColor || "#2e3c5d"),
-      fontSize: fontSize || "13px",
-      border: "1px solid rgba(46, 60, 93, .5)",
+      fontSize: fontSize || '13px',
+      border: '1px solid rgba(46, 60, 93, .5)',
     };
     if (compressedSize) {
-      buttonStyle.border = "1px solid rgba(46, 60, 93, .5)";
+      buttonStyle.border = '1px solid rgba(46, 60, 93, .5)';
       buttonStyle.padding = 4;
       buttonStyle.width = 160;
       buttonStyle.height = 32;
@@ -62,7 +62,7 @@ class SplitIconButton extends PureComponent {
         style={buttonStyle}
         onClick={this.props.onClick}
         onKeyDown={this.props.onKeyDown}
-        variant={whiteOnBlue ? "outlined" : "contained"}
+        variant={whiteOnBlue ? 'outlined' : 'contained'}
       >
         <SplitButtonIcon adjustedIconWidth={this.props.adjustedIconWidth}>
           {icon}
@@ -70,24 +70,20 @@ class SplitIconButton extends PureComponent {
         {this.props.iconRight ? (
           <SplitButtonSeparatorRight
             style={
-              this.props.separatorColor
-                ? {
-                  backgroundColor: this.props.separatorColor,
-                }
-                : null
+              this.props.separatorColor ? {
+                backgroundColor: this.props.separatorColor,
+              } : null
             }
           />
         ) : (
-            <SplitButtonSeparatorLeft
+          <SplitButtonSeparatorLeft
               style={
-                this.props.separatorColor
-                  ? {
-                    backgroundColor: this.props.separatorColor
-                  }
-                  : null
+                this.props.separatorColor ? {
+                  backgroundColor: this.props.separatorColor,
+                } : null
               }
-            />
-          )}
+          />
+        )}
         <SplitButtonText>{buttonText}</SplitButtonText>
       </Button>
     );
@@ -97,20 +93,20 @@ class SplitIconButton extends PureComponent {
 const styles = () => ({
   label: {
     // padding: '10px 0 !important',
-    height: "100%",
-    display: "flex",
-    alignItems: "center"
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
   },
   splitButton: {
-    boxShadow: "none !important",
-    padding: "12px 0",
-    width: "100%",
-    whiteSpace: "nowrap",
-    transition: "150ms ease-in",
-    "&:hover": {
-      filter: "brightness(92%)"
-    }
-  }
+    boxShadow: 'none !important',
+    padding: '12px 0',
+    width: '100%',
+    whiteSpace: 'nowrap',
+    transition: '150ms ease-in',
+    '&:hover': {
+      filter: 'brightness(92%)',
+    },
+  },
 });
 
 const SplitButtonSeparatorLeft = styled.div`
@@ -141,8 +137,7 @@ const SplitButtonIcon = styled.span`
   align-items: center;
   height: 100%;
   padding: 0 13.3px;
-  ${({ adjustedIconWidth }) =>
-    adjustedIconWidth ? `width: ${adjustedIconWidth}px;` : "width: 44px;"}
+  ${({ adjustedIconWidth }) => (adjustedIconWidth ? `width: ${adjustedIconWidth}px;` : 'width: 44px;')}
   * {
     width: 100%;
     font-size: 22px;

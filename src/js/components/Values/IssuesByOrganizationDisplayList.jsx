@@ -14,7 +14,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByOrganizationDisplayList extends Component {
-  static closePopover() {
+  static closePopover () {
     document.body.click();
   }
 
@@ -27,7 +27,7 @@ class IssuesByOrganizationDisplayList extends Component {
     classes: PropTypes.object,
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       componentDidMount: false,
@@ -39,7 +39,7 @@ class IssuesByOrganizationDisplayList extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     const { organizationWeVoteId } = this.props;
@@ -55,7 +55,7 @@ class IssuesByOrganizationDisplayList extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     const issuesUnderThisOrganization = IssueStore.getIssuesLinkedToByOrganization(nextProps.organizationWeVoteId) || [];
     const issuesUnderThisOrganizationLength = issuesUnderThisOrganization.length;
     const { organizationWeVoteId } = nextProps;
@@ -68,7 +68,7 @@ class IssuesByOrganizationDisplayList extends Component {
     });
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if not needed
     if (this.state.componentDidMount !== nextState.componentDidMount) {
       // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount', nextState.componentDidMount);
@@ -89,12 +89,12 @@ class IssuesByOrganizationDisplayList extends Component {
     return false;
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.issueStoreListener.remove();
     this.voterGuideStoreListener.remove();
   }
 
-  onIssueStoreChange() {
+  onIssueStoreChange () {
     const { organizationWeVoteId } = this.state;
     const issuesUnderThisOrganization = IssueStore.getIssuesLinkedToByOrganization(organizationWeVoteId) || [];
     const issuesUnderThisOrganizationLength = issuesUnderThisOrganization.length;
@@ -107,7 +107,7 @@ class IssuesByOrganizationDisplayList extends Component {
     });
   }
 
-  onVoterGuideStoreChange() {
+  onVoterGuideStoreChange () {
     const { organizationWeVoteId } = this.props;
     const voterGuide = VoterGuideStore.getVoterGuideForOrganizationId(organizationWeVoteId);
     this.setState({
@@ -226,7 +226,7 @@ class IssuesByOrganizationDisplayList extends Component {
     }
   };
 
-  render() {
+  render () {
     renderLog('IssuesByOrganizationDisplayList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       issuesUnderThisOrganization, issuesUnderThisOrganizationLength, organizationWeVoteId,

@@ -11,28 +11,29 @@ class ThisIsMeAction extends Component {
     kindOfOwner: PropTypes.string,
     nameBeingViewed: PropTypes.string,
     twitterHandleBeingViewed: PropTypes.string,
+    whiteOnBlue: PropTypes.bool,
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
-  onVoterStoreChange() {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  render() {
+  render () {
     renderLog('ThisIsMeAction');  // Set LOG_RENDER_EVENTS to log all renders
     const { twitterHandleBeingViewed } = this.props;
     if (!twitterHandleBeingViewed) {

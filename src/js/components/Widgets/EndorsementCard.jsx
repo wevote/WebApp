@@ -16,26 +16,26 @@ class EndorsementCard extends PureComponent {
     whiteOnBlue: PropTypes.bool,
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
-  onVoterStoreChange() {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  render() {
+  render () {
     const { organizationWeVoteId, whiteOnBlue } = this.props;
     const { voter } = this.state;
     if (!voter) {

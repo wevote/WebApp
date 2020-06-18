@@ -48,7 +48,7 @@ class VoterGuideBallot extends Component {
     pathname: PropTypes.string,
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       ballotElectionList: [],
@@ -88,7 +88,7 @@ class VoterGuideBallot extends Component {
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { organizationWeVoteId } = this.props;
     // console.log('VoterGuideBallot componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
@@ -224,7 +224,7 @@ class VoterGuideBallot extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     // console.log('VoterGuideBallot componentWillReceiveProps, nextProps: ', nextProps);
 
     // We don't want to let the googleCivicElectionId disappear
@@ -271,7 +271,7 @@ class VoterGuideBallot extends Component {
     this.onVoterStoreChange();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
       // console.log('shouldComponentUpdate: componentDidMountFinished === false');
@@ -347,14 +347,14 @@ class VoterGuideBallot extends Component {
     return false;
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     // console.log('VoterGuideBallot componentDidUpdate');
     if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
       this.hashLinkScroll();
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     // console.log('VoterGuideBallot componentWillUnmount');
     this.setState({
       mounted: false,
@@ -374,19 +374,19 @@ class VoterGuideBallot extends Component {
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
-  static getDerivedStateFromError(error) { // eslint-disable-line no-unused-vars
+  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have a 'Oh snap' page
     return { hasError: true };
   }
 
-  onAppStoreChange() {
+  onAppStoreChange () {
     this.setState({
       // ballotHeaderUnpinned: AppStore.headroomIsUnpinned(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
     });
   }
 
-  onBallotStoreChange() {
+  onBallotStoreChange () {
     // console.log('VoterGuideBallot.jsx onBallotStoreChange, BallotStore.ballotProperties: ', BallotStore.ballotProperties);
     const { ballot, ballotProperties } = BallotStore;
     const {
@@ -431,7 +431,7 @@ class VoterGuideBallot extends Component {
     }
   }
 
-  onVoterStoreChange() {
+  onVoterStoreChange () {
     // console.log('VoterGuideBallot.jsx onVoterStoreChange');
     if (this.state.mounted) {
       if (this.state.waitUntilVoterSignInCompletes) {
@@ -453,7 +453,7 @@ class VoterGuideBallot extends Component {
     }
   }
 
-  onElectionStoreChange() {
+  onElectionStoreChange () {
     // console.log('Elections, onElectionStoreChange');
     // const electionsList = ElectionStore.getElectionList();
     // // const electionsLocationsList = [];
@@ -494,7 +494,7 @@ class VoterGuideBallot extends Component {
     // });
   }
 
-  onOrganizationStoreChange() {
+  onOrganizationStoreChange () {
     const { organizationWeVoteId } = this.state;
     // console.log('VoterGuideBallot onOrganizationStoreChange, organizationWeVoteId: ', organizationWeVoteId);
     if (organizationWeVoteId) {
@@ -512,7 +512,7 @@ class VoterGuideBallot extends Component {
     }
   }
 
-  onSupportStoreChange() {
+  onSupportStoreChange () {
     // Whenever positions change, we want to make sure to get the latest organization, because it has
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
     const { organizationWeVoteId } = this.state;
@@ -532,7 +532,7 @@ class VoterGuideBallot extends Component {
     }
   }
 
-  onVoterGuideStoreChange() {
+  onVoterGuideStoreChange () {
     // console.log('VoterGuideBallot onVoterGuideStoreChange');
     // Update the data for the modal to include the position of the organization related to this ballot item
     const { candidateForModal, measureForModal } = this.state; // organizationWeVoteId
@@ -596,12 +596,12 @@ class VoterGuideBallot extends Component {
     this.setState({ isSearching: !isSearching });
   };
 
-  openShowElectionsWithOrganizationVoterGuidesModal() {
+  openShowElectionsWithOrganizationVoterGuidesModal () {
     // console.log('VoterGuideBallot openShowElectionsWithOrganizationVoterGuidesModal');
     AppActions.setShowElectionsWithOrganizationVoterGuidesModal(true);
   }
 
-  toggleBallotIntroModal() {
+  toggleBallotIntroModal () {
     const { showBallotIntroModal, location, pathname } = this.state;
     if (location.hash.includes('#')) {
       // Clear out any # from anchors in the URL
@@ -611,7 +611,7 @@ class VoterGuideBallot extends Component {
     this.setState({ showBallotIntroModal: !showBallotIntroModal });
   }
 
-  toggleSelectBallotModal(destinationUrlForHistoryPush = '') {
+  toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
     if (showSelectBallotModal) {
       if (destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
@@ -625,7 +625,7 @@ class VoterGuideBallot extends Component {
   }
 
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
-  hashLinkScroll() {
+  hashLinkScroll () {
     const { hash } = window.location;
     if (hash !== '') {
       // Push onto callback queue so it runs after the DOM is updated,
@@ -647,12 +647,12 @@ class VoterGuideBallot extends Component {
     }
   }
 
-  componentDidCatch(error, info) {
+  componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('VoterGuideBallot caught error: ', `${error} with info: `, info);
   }
 
-  localDoesOrganizationHavePositionOnBallotItem(contestWeVoteId) {
+  localDoesOrganizationHavePositionOnBallotItem (contestWeVoteId) {
     const { organizationWeVoteId } = this.state;
     // console.log('localDoesOrganizationHavePositionOnBallotItem organizationWeVoteId: ', organizationWeVoteId, ', contestWeVoteId: ', contestWeVoteId);
     return OrganizationStore.doesOrganizationHavePositionOnBallotItem(organizationWeVoteId, contestWeVoteId);
@@ -665,7 +665,7 @@ class VoterGuideBallot extends Component {
   //   openSnackbar({ message: toastMessage });
   // }
 
-  render() {
+  render () {
     renderLog('VoterGuideBallot');  // Set LOG_RENDER_EVENTS to log all renders
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
     const { classes } = this.props;
@@ -701,7 +701,7 @@ class VoterGuideBallot extends Component {
 
     return (
       <div className="ballot">
-        {this.state.showSelectBallotModal ? (
+        { this.state.showSelectBallotModal ? (
           <SelectBallotModal
             ballotElectionList={this.state.ballotElectionList}
             ballotBaseUrl={ballotBaseUrl}
@@ -711,7 +711,7 @@ class VoterGuideBallot extends Component {
             show={this.state.showSelectBallotModal}
             toggleFunction={this.toggleSelectBallotModal}
           />
-        ) : null}
+        ) : null }
         <div className="card">
           <div className="card-main">
             <Helmet title={`${organization.organization_name} - We Vote`} />
@@ -721,7 +721,7 @@ class VoterGuideBallot extends Component {
                 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}
                 onClick={() => this.openShowElectionsWithOrganizationVoterGuidesModal()}
               >
-                {electionName ? (
+                { electionName ? (
                   <div className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
                     {electionName}
                     <SettingsIconWrapper>
@@ -737,10 +737,10 @@ class VoterGuideBallot extends Component {
                     )}
                   </div>
                 ) : (
-                    <span className="u-push--sm">
+                  <span className="u-push--sm">
                       Choose Election...
-                    </span>
-                  )}
+                  </span>
+                )}
               </TitleWrapper>
             </header>
 
@@ -785,15 +785,15 @@ class VoterGuideBallot extends Component {
                       ))}
                     </div>
                   ) : (
-                      <Card>
-                        <EmptyBallotMessageContainer>
-                          <BallotIcon classes={{ root: classes.ballotIconRoot }} />
-                          <EmptyBallotText>
-                            {organization.organization_name}
-                            {' '}
+                    <Card>
+                      <EmptyBallotMessageContainer>
+                        <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                        <EmptyBallotText>
+                          {organization.organization_name}
+                          {' '}
                           has not made any endorsements on your ballot.
                         </EmptyBallotText>
-                          {/*
+                        {/*
                         <Button
                           classes={{ root: classes.ballotButtonRoot }}
                           color="primary"
@@ -803,9 +803,9 @@ class VoterGuideBallot extends Component {
                           See All Endorsements
                         </Button>
                         */}
-                        </EmptyBallotMessageContainer>
-                      </Card>
-                    )
+                      </EmptyBallotMessageContainer>
+                    </Card>
+                  )
                   }
                 </VoterGuideBallotWrapper>
                 <ExtraActionsWrapper>

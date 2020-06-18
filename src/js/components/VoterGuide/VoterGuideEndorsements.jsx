@@ -43,7 +43,7 @@ class VoterGuideEndorsements extends Component {
     params: PropTypes.object,
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       clearSearchTextNow: false,
@@ -52,7 +52,7 @@ class VoterGuideEndorsements extends Component {
       loadingMoreItems: false,
       organization: {},
       organizationId: 0,
-      organizationWeVoteId: "",
+      organizationWeVoteId: '',
       positionListForOneElection: [],
       searchIsUnderway: false,
       voter: {},
@@ -62,7 +62,7 @@ class VoterGuideEndorsements extends Component {
     this.onScroll = this.onScroll.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { organizationWeVoteId } = this.props;
     // console.log('VoterGuideEndorsements componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     const ballotBaseUrl = calculateBallotBaseUrl(
@@ -73,15 +73,15 @@ class VoterGuideEndorsements extends Component {
       this.props.params.google_civic_election_id || 0;
     // console.log('googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
     let ballotReturnedWeVoteId =
-      this.props.params.ballot_returned_we_vote_id || "";
+      this.props.params.ballot_returned_we_vote_id || '';
     ballotReturnedWeVoteId =
-      ballotReturnedWeVoteId === "none" ? "" : ballotReturnedWeVoteId;
+      ballotReturnedWeVoteId === 'none' ? '' : ballotReturnedWeVoteId;
     // console.log('this.props.params.ballot_returned_we_vote_id: ', this.props.params.ballot_returned_we_vote_id);
     let ballotLocationShortcut =
-      this.props.params.ballot_location_shortcut || "";
+      this.props.params.ballot_location_shortcut || '';
     ballotLocationShortcut = ballotLocationShortcut.trim();
     ballotLocationShortcut =
-      ballotLocationShortcut === "none" ? "" : ballotLocationShortcut;
+      ballotLocationShortcut === 'none' ? '' : ballotLocationShortcut;
     let googleCivicElectionId = 0;
     if (googleCivicElectionIdFromUrl !== 0) {
       googleCivicElectionIdFromUrl = parseInt(googleCivicElectionIdFromUrl, 10);
@@ -100,14 +100,14 @@ class VoterGuideEndorsements extends Component {
       ballotLocationShortcut ||
       googleCivicElectionIdFromUrl
     ) {
-      if (ballotLocationShortcut !== "") {
+      if (ballotLocationShortcut !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
-        BallotActions.voterBallotItemsRetrieve(0, "", ballotLocationShortcut);
+        BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcut);
         // Change the URL to match
         historyPush(`${ballotBaseUrl}/${ballotLocationShortcut}`);
-      } else if (ballotReturnedWeVoteId !== "") {
+      } else if (ballotReturnedWeVoteId !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
-        BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, "");
+        BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, '');
         // Change the URL to match
         historyPush(`${ballotBaseUrl}/id/${ballotReturnedWeVoteId}`);
       } else if (googleCivicElectionIdFromUrl !== 0) {
@@ -115,12 +115,12 @@ class VoterGuideEndorsements extends Component {
         if (googleCivicElectionId !== googleCivicElectionIdFromUrl) {
           BallotActions.voterBallotItemsRetrieve(
             googleCivicElectionIdFromUrl,
-            "",
-            ""
+            '',
+            '',
           );
           // Change the URL to match
           let ballotElectionUrl = `${ballotBaseUrl}/election/${googleCivicElectionIdFromUrl}`;
-          if (this.props.activeRoute && this.props.activeRoute !== "") {
+          if (this.props.activeRoute && this.props.activeRoute !== '') {
             ballotElectionUrl += `/${this.props.activeRoute}`;
           }
           historyPush(ballotElectionUrl);
@@ -221,13 +221,13 @@ class VoterGuideEndorsements extends Component {
       currentGoogleCivicElectionId: VoterStore.electionId(),
       electionName,
       electionDayText,
-      voter: VoterStore.getVoter()
+      voter: VoterStore.getVoter(),
     });
 
-    window.addEventListener("scroll", this.onScroll);
+    window.addEventListener('scroll', this.onScroll);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     // console.log('VoterGuideEndorsements componentWillReceiveProps');
     // When a new organization is passed in, update this component to show the new data
     const differentElection =
@@ -270,7 +270,7 @@ class VoterGuideEndorsements extends Component {
         });
       }
       this.setState({
-        currentGoogleCivicElectionId: VoterStore.electionId()
+        currentGoogleCivicElectionId: VoterStore.electionId(),
       });
     }
     const electionName = BallotStore.currentBallotElectionName;
@@ -282,7 +282,7 @@ class VoterGuideEndorsements extends Component {
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.ballotStoreListener.remove();
     this.organizationStoreListener.remove();
     this.supportStoreListener.remove();
@@ -292,10 +292,10 @@ class VoterGuideEndorsements extends Component {
       clearTimeout(this.positionItemTimer);
       this.positionItemTimer = null;
     }
-    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener('scroll', this.onScroll);
   }
 
-  onBallotStoreChange() {
+  onBallotStoreChange () {
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
     this.setState({
@@ -305,7 +305,7 @@ class VoterGuideEndorsements extends Component {
     });
   }
 
-  onOrganizationStoreChange() {
+  onOrganizationStoreChange () {
     const { organizationWeVoteId } = this.state;
     // console.log('VoterGuideEndorsements onOrganizationStoreChange, organizationWeVoteId: ', organizationWeVoteId);
     if (organizationWeVoteId) {
@@ -335,7 +335,7 @@ class VoterGuideEndorsements extends Component {
     }
   }
 
-  onSupportStoreChange() {
+  onSupportStoreChange () {
     // Whenever positions change, we want to make sure to get the latest organization, because it has
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
     const { organizationWeVoteId } = this.state;
@@ -360,7 +360,7 @@ class VoterGuideEndorsements extends Component {
     }
   }
 
-  onVoterGuideStoreChange() {
+  onVoterGuideStoreChange () {
     const { organizationWeVoteId } = this.props;
     const voterGuideElectionList = VoterGuideStore.getVoterGuideElectionList(
       organizationWeVoteId,
@@ -371,7 +371,7 @@ class VoterGuideEndorsements extends Component {
     });
   }
 
-  onVoterStoreChange() {
+  onVoterStoreChange () {
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
     this.setState({
@@ -382,8 +382,8 @@ class VoterGuideEndorsements extends Component {
     });
   }
 
-  onScroll() {
-    const showMoreItemsElement = document.querySelector("#showMoreItemsId");
+  onScroll () {
+    const showMoreItemsElement = document.querySelector('#showMoreItemsId');
     // console.log('showMoreItemsElement: ', showMoreItemsElement);
     // console.log('Loading more: ', this.state.loadingMoreItems);
     if (showMoreItemsElement) {
@@ -426,7 +426,7 @@ class VoterGuideEndorsements extends Component {
     }, 500);
   };
 
-  openShowElectionsWithOrganizationVoterGuidesModal() {
+  openShowElectionsWithOrganizationVoterGuidesModal () {
     // console.log('VoterGuideEndorsements openShowElectionsWithOrganizationVoterGuidesModal');
     const { voterGuideElectionListCount } = this.state;
     if (voterGuideElectionListCount) {
@@ -435,7 +435,7 @@ class VoterGuideEndorsements extends Component {
   }
 
   // This function is called by BallotSearchResults and SearchBar when an API search has been cleared
-  clearSearch() {
+  clearSearch () {
     // console.log('VoterGuideEndorsements, clearSearch');
     this.setState({
       clearSearchTextNow: true,
@@ -444,7 +444,7 @@ class VoterGuideEndorsements extends Component {
   }
 
   // This function is called by BallotSearchResults and SearchBar when an API search has been triggered
-  searchUnderway(searchIsUnderway) {
+  searchUnderway (searchIsUnderway) {
     // console.log('VoterGuideEndorsements, searchIsUnderway: ', searchIsUnderway);
     this.setState({
       clearSearchTextNow: false,
@@ -452,8 +452,8 @@ class VoterGuideEndorsements extends Component {
     });
   }
 
-  render() {
-    renderLog("VoterGuideEndorsements"); // Set LOG_RENDER_EVENTS to log all renders
+  render () {
+    renderLog('VoterGuideEndorsements'); // Set LOG_RENDER_EVENTS to log all renders
     // console.log('VoterGuideEndorsements render');
     const { classes } = this.props;
     const {
@@ -496,12 +496,12 @@ class VoterGuideEndorsements extends Component {
         organizationWeVoteId;
     }
 
-    // console.log("lookingAtSelf: ", lookingAtSelf);
+    // console.log('lookingAtSelf: ', lookingAtSelf);
     const electionDayTextFormatted = electionDayText ? (
-      <span>{moment(electionDayText).format("MMM Do, YYYY")}</span>
+      <span>{moment(electionDayText).format('MMM Do, YYYY')}</span>
     ) : (
-        <span />
-      );
+      <span />
+    );
     const organizationName = capitalizeString(organization.organization_name);
     const titleText = `${organizationName} - We Vote`;
     const descriptionText = `See endorsements and opinions from ${organizationName} for the November election`;
@@ -514,7 +514,7 @@ class VoterGuideEndorsements extends Component {
         {/* Since VoterGuideEndorsements, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
         <Helmet
           title={titleText}
-          meta={[{ name: "description", content: descriptionText }]}
+          meta={[{ name: 'description', content: descriptionText }]}
         />
         <div className="page-content-container">
           <div className="container-fluid">
@@ -549,14 +549,14 @@ class VoterGuideEndorsements extends Component {
                   <EmptyBallotMessageContainer>
                     <BallotIcon classes={{ root: classes.ballotIconRoot }} />
                     <EmptyBallotText>
-                      {organization.organization_name} has not made any
-                      endorsements for this election.
+                      {organization.organization_name}
+                      has not made any endorsements for this election.
                     </EmptyBallotText>
                     {/*
                     <Button
                       classes={{ root: classes.ballotButtonRoot }}
-                      color="primary"
-                      variant="contained"
+                      color='primary'
+                      variant='contained'
                       // onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('addpositions')}
                     >
                       See All Endorsements
@@ -603,22 +603,22 @@ const styles = theme => ({
   ballotIconRoot: {
     width: 150,
     height: 150,
-    color: "rgb(171, 177, 191)",
-    [theme.breakpoints.down("sm")]: {
+    color: 'rgb(171, 177, 191)',
+    [theme.breakpoints.down('sm')]: {
       width: 75,
       height: 75,
     },
   },
   ballotButtonRoot: {
     width: 250,
-    [theme.breakpoints.down("md")]: {
-      width: "100%"
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
     },
   },
   settingsIcon: {
-    color: "#999",
-    marginTop: "-5px",
-    marginLeft: "3px",
+    color: '#999',
+    marginTop: '-5px',
+    marginLeft: '3px',
     width: 16,
     height: 16,
   },
@@ -661,7 +661,7 @@ const SettingsIconWrapper = styled.span``;
 const ShowMoreItemsWrapper = styled.div``;
 
 const TitleWrapper = styled.h1`
-  ${({ showCursorPointer }) => (showCursorPointer ? "cursor: pointer;" : "")}
+  ${({ showCursorPointer }) => (showCursorPointer ? 'cursor: pointer;' : '')}
 `;
 
 const VoterGuideEndorsementsWrapper = styled.div`

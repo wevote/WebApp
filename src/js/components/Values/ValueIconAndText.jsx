@@ -25,7 +25,7 @@ class ValueIconAndText extends Component {
     subtractTotalWidth: PropTypes.func,
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       allCachedPositionsForThisCandidateLength: 0,
@@ -33,13 +33,13 @@ class ValueIconAndText extends Component {
     this.valueSpan = React.createRef();
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.candidateStoreListener = CandidateStore.addListener(this.onCachedPositionsOrIssueStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onCachedPositionsOrIssueStoreChange.bind(this));
     this.onCachedPositionsOrIssueStoreChange();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if not needed
     if (this.state.allCachedPositionsForThisCandidateLength !== nextState.allCachedPositionsForThisCandidateLength) {
       // console.log('this.state.allCachedPositionsForThisCandidateLength: ', this.state.allCachedPositionsForThisCandidateLength, ', nextState.allCachedPositionsForThisCandidateLength', nextState.allCachedPositionsForThisCandidateLength);
@@ -52,7 +52,7 @@ class ValueIconAndText extends Component {
     return false;
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate (prevProps) {
     // console.log('ValueIconAndText componentDidUpdate');
     const { oneIssue } = this.props;
     if (!prevProps.issueWidths[oneIssue.issue_we_vote_id]) {
@@ -65,12 +65,12 @@ class ValueIconAndText extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.issueStoreListener.remove();
   }
 
-  onCachedPositionsOrIssueStoreChange() {
+  onCachedPositionsOrIssueStoreChange () {
     const { ballotItemWeVoteId, oneIssue } = this.props;
     const {
       allCachedPositionsForThisCandidateLength: priorAllCachedPositionsForThisCandidateLength,
@@ -168,7 +168,7 @@ class ValueIconAndText extends Component {
     );
   }
 
-  render() {
+  render () {
     // console.log('ValueIconAndText render');
     const { ballotItemWeVoteId, classes, externalUniqueId, issueFollowedByVoter, oneIssue } = this.props;
     const svgFill = issueFollowedByVoter ? '#555' : '#999';
