@@ -9,6 +9,8 @@ import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
+import { convertStateCodeFilterToStateCode } from '../../utils/address-functions';
+
 
 class VoterGuidePositionFilter extends Component {
   static propTypes = {
@@ -158,11 +160,7 @@ class VoterGuidePositionFilter extends Component {
     selectedFilters.forEach((filter) => {
       switch (filter) {
         case 'showSupportFilter':
-          containsAtLeastOneSupportOpposeComment = true;
-          break;
         case 'showOpposeFilter':
-          containsAtLeastOneSupportOpposeComment = true;
-          break;
         case 'showInformationOnlyFilter':
           containsAtLeastOneSupportOpposeComment = true;
           break;
@@ -187,6 +185,24 @@ class VoterGuidePositionFilter extends Component {
           default:
             break;
         }
+      });
+    }
+    // Is at least one state chosen? If not, do not limit by state code.
+    let containsAtLeastOneStateCode = false;
+    let oneStateCode;
+    const stateCodesToShow = [];
+    selectedFilters.forEach((filter) => {
+      oneStateCode = convertStateCodeFilterToStateCode(filter);
+      if (oneStateCode) {
+        stateCodesToShow.push(oneStateCode);
+        containsAtLeastOneStateCode = true;
+      }
+    });
+    if (containsAtLeastOneStateCode) {
+      const filterItemsSnapshot = filteredItems;
+      filteredItems = [];
+      stateCodesToShow.forEach((stateCode) => {
+        filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.state_code.toLowerCase() === stateCode.toLowerCase())];
       });
     }
     // Comment or no comment?

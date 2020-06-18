@@ -112,37 +112,42 @@ class OrganizationVoterGuideCard extends Component {
             </span>
           </OrganizationWebsiteWrapper>
         )}
-        { isVoterOwner && (
-          <Button
-            color="primary"
-            id="OrganizationVoterGuideCardEditYourVoterGuideButton"
-            onClick={this.onEdit}
-            variant="contained"
-          >
-            <span>Edit Your Endorsements</span>
-          </Button>
-        )}
-        { !isVoterOwner && (
-          <>
-            <FollowToggleWrapper>
-              <FollowToggle
-                platformType="desktop"
-                organizationWeVoteId={organizationWeVoteId}
-                otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
-                showFollowingText
-              />
-            </FollowToggleWrapper>
-            { (isSpeakerTypePrivateCitizen(organizationType) && organizationLinkedVoterWeVoteId) && (
-              <FriendToggleWrapper>
-                <FriendToggle
-                  displayFullWidth
+        <EditOrFollow>
+          { isVoterOwner && (
+            <EditYourEndorsementsCardWrapper>
+              <Button
+                color="primary"
+                id="OrganizationVoterGuideCardEditYourVoterGuideButton"
+                onClick={this.onEdit}
+                size="small"
+                variant="outlined"
+              >
+                <span>Edit Your Endorsements</span>
+              </Button>
+            </EditYourEndorsementsCardWrapper>
+          )}
+          { !isVoterOwner && (
+            <>
+              <FollowToggleWrapper>
+                <FollowToggle
+                  platformType="desktop"
+                  organizationWeVoteId={organizationWeVoteId}
                   otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
-                  showFriendsText
+                  showFollowingText
                 />
-              </FriendToggleWrapper>
-            )}
-          </>
-        )}
+              </FollowToggleWrapper>
+              { (isSpeakerTypePrivateCitizen(organizationType) && organizationLinkedVoterWeVoteId) && (
+                <FriendToggleWrapper>
+                  <FriendToggle
+                    displayFullWidth
+                    otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
+                    showFriendsText
+                  />
+                </FriendToggleWrapper>
+              )}
+            </>
+          )}
+        </EditOrFollow>
         { twitterDescriptionMinusName && !this.props.turnOffDescription ? (
           <TwitterDescription>
             <ParsedTwitterDescription
@@ -169,6 +174,14 @@ const CardMain = styled.div`
   padding: 16px 16px 8px;
   font-size: 14px;
   position: relative;
+`;
+
+const EditOrFollow = styled.div`
+  display: block;
+  width: 100%;
+`;
+
+const EditYourEndorsementsCardWrapper = styled.div`
 `;
 
 const FollowToggleWrapper = styled.div`

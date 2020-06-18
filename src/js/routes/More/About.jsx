@@ -74,7 +74,7 @@ class About extends Component {
           <AboutDescriptionContainer>
             Currently, the U.S. trails most developed nations in voter turnout.
             {' '}
-            Only 6 out of 10 eligible voters is expected to cast a ballot next year.
+            Only 6 out of 10 eligible voters is expected to cast a ballot this year.
             {' '}
             Improving overall voter participation is a responsibility shared by all of us.
             {' '}

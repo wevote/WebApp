@@ -193,14 +193,14 @@ const styles = theme => ({
   input: {
     padding: 0,
     marginLeft: 8,
-    width: 100,
+    width: 75,
     transition: 'all ease-in 150ms',
     [theme.breakpoints.down('md')]: {
       width: '50%',
       fontSize: 'inherit',
     },
     [theme.breakpoints.down('sm')]: {
-      width: 75,
+      width: 55,
       fontSize: 'inherit',
     },
   },

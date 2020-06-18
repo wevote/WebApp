@@ -349,7 +349,7 @@ export default class OrganizationVoterGuide extends Component {
                   useReadMoreForTwitterDescription
                 />
                 { isVoterOwner && (
-                  <div className="u-float-right">
+                  <EditYourEndorsementsWrapper>
                     <Button
                       id="organizationVoterGuideEdit"
                       onClick={this.onEdit}
@@ -358,7 +358,7 @@ export default class OrganizationVoterGuide extends Component {
                     >
                       <span>Edit Your Endorsements</span>
                     </Button>
-                  </div>
+                  </EditYourEndorsementsWrapper>
                 )}
                 { !isVoterOwner && (
                   <>
@@ -474,6 +474,10 @@ const CardContainer = styled.div`
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     margin-top: ${({ bannerUrl }) => (bannerUrl ? '-203px' : '0')};
   }
+`;
+
+const EditYourEndorsementsWrapper = styled.div`
+  margin-top: 4px;
 `;
 
 const FollowToggleMobileWrapper = styled.div`

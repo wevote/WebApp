@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import InfoIcon from '@material-ui/icons/Info';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import { getStateCodesFoundInObjectList } from '../../utils/address-functions';
 import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import FriendActions from '../../actions/FriendActions';
@@ -59,21 +60,24 @@ class VoterGuidePositionList extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      atLeastOneFriendAdded: false,
       filteredPositionList: [],
       filteredPositionListLength: 0,
       isSearching: false,
       loadingMoreItems: false,
+      numberOfPositionItemsDisplayed: 0,
       numberOfPositionItemsToDisplay: STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
       positionList: [],
       positionSearchResults: [],
       searchText: '',
+      stateCodesToDisplay: [],
       totalNumberOfPositionSearchResults: 0,
     };
     this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
-    // console.log('PositionList componentDidMount');
+    // console.log('VoterGuidePositionList componentDidMount');
     let { incomingPositionList } = this.props;
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -82,7 +86,7 @@ class VoterGuidePositionList extends Component {
     const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
     // eslint-disable-next-line arrow-body-style
     incomingPositionList = incomingPositionList.map((position) => {
-      // console.log('PositionList onOrganizationStoreChange, position: ', position);
+      // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
         followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
@@ -91,10 +95,10 @@ class VoterGuidePositionList extends Component {
 
     // Replicate onFriendStoreChange
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    // console.log('PositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
+    // console.log('VoterGuidePositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
     // eslint-disable-next-line arrow-body-style
     incomingPositionList = incomingPositionList.map((position) => {
-      // console.log('PositionList onFriendStoreChange, position: ', position);
+      // console.log('VoterGuidePositionList onFriendStoreChange, position: ', position);
       return ({
         ...position,
         currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
@@ -106,21 +110,71 @@ class VoterGuidePositionList extends Component {
       FriendActions.currentFriends();
     }
 
+    const stateCodesToDisplay = getStateCodesFoundInObjectList(incomingPositionList);
+    // console.log('stateCodesToDisplay:', stateCodesToDisplay);
+
     window.addEventListener('scroll', this.onScroll);
     this.setState({
       positionList: incomingPositionList,
       filteredPositionList: incomingPositionList,
       filteredPositionListLength: incomingPositionList.length,
+      stateCodesToDisplay,
     });
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log('PositionList componentWillReceiveProps');
+    // console.log('VoterGuidePositionList componentWillReceiveProps');
     const { incomingPositionList } = nextProps;
+    const stateCodesToDisplay = getStateCodesFoundInObjectList(incomingPositionList);
     this.setState({
       positionList: incomingPositionList,
       // filteredPositionList: incomingPositionList, // Do not update
+      stateCodesToDisplay,
     });
+    // }
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.state.atLeastOneFriendAdded !== nextState.atLeastOneFriendAdded) {
+      return true;
+    }
+    if (this.state.filteredPositionListLength !== nextState.filteredPositionListLength) {
+      return true;
+    }
+    if (this.state.isSearching !== nextState.isSearching) {
+      return true;
+    }
+    if (this.state.loadingMoreItems !== nextState.loadingMoreItems) {
+      return true;
+    }
+    if (this.state.numberOfPositionItemsDisplayed !== nextState.numberOfPositionItemsDisplayed) {
+      return true;
+    }
+    if (this.state.numberOfPositionItemsToDisplay !== nextState.numberOfPositionItemsToDisplay) {
+      return true;
+    }
+    if (this.state.searchText !== nextState.searchText) {
+      return true;
+    }
+    if (this.state.totalNumberOfPositionSearchResults !== nextState.totalNumberOfPositionSearchResults) {
+      return true;
+    }
+
+    const { incomingPositionList } = nextProps;
+    const { incomingPositionList: priorPositionList } = this.props;
+    const incomingPositionListLength = incomingPositionList ? incomingPositionList.length : 0;
+    const priorPositionListLength = priorPositionList ? priorPositionList.length : 0;
+    if (incomingPositionListLength !== priorPositionListLength) {
+      return true;
+    }
+    if (JSON.stringify(this.state.filteredPositionList) !== JSON.stringify(nextState.filteredPositionList)) {
+      return true;
+    }
+    if (JSON.stringify(this.state.stateCodesToDisplay) !== JSON.stringify(nextState.stateCodesToDisplay)) {
+      return true;
+    }
+    return false;
   }
 
   componentWillUnmount () {
@@ -134,29 +188,39 @@ class VoterGuidePositionList extends Component {
   }
 
   onFriendStoreChange () {
+    // console.log('onFriendStoreChange');
     const { positionList } = this.state; // filteredPositionList,
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    // console.log('PositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
+    // console.log('VoterGuidePositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
     // eslint-disable-next-line arrow-body-style
+    let currentFriend;
+    let atLeastOneFriendAdded = false;
     const positionListWithFriendData = positionList.map((position) => {
-      // console.log('PositionList onFriendStoreChange, position: ', position);
+      // console.log('VoterGuidePositionList onFriendStoreChange, position: ', position);
+      currentFriend = organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0;
+      if (currentFriend) {
+        atLeastOneFriendAdded = true;
+      }
       return ({
         ...position,
-        currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
+        atLeastOneFriendAdded,
+        currentFriend,
       });
     });
-    this.setState({
-      positionList: positionListWithFriendData,
-    });
+    if (atLeastOneFriendAdded) {
+      this.setState({
+        positionList: positionListWithFriendData,
+      });
+    }
   }
 
   onOrganizationStoreChange () {
-    // console.log('PositionList onOrganizationStoreChange');
+    // console.log('VoterGuidePositionList onOrganizationStoreChange');
     const { filteredPositionList, positionList } = this.state;
     const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
     // eslint-disable-next-line arrow-body-style
     const positionListWithFollowedData = positionList.map((position) => {
-      // console.log('PositionList onOrganizationStoreChange, position: ', position);
+      // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
         followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
@@ -164,7 +228,7 @@ class VoterGuidePositionList extends Component {
     });
     // eslint-disable-next-line arrow-body-style
     const filteredPositionListWithFollowedData = filteredPositionList.map((position) => {
-      // console.log('PositionList onOrganizationStoreChange, position: ', position);
+      // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
         followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
@@ -178,7 +242,7 @@ class VoterGuidePositionList extends Component {
   }
 
   onFilteredItemsChange = (filteredPositions) => {
-    // console.log('VoterGuidePositionList onFilteredItemsChange, filteredPositions:', filteredPositions);
+    // console.log('onFilteredItemsChange, filteredPositions:', filteredPositions);
     this.setState({
       filteredPositionList: filteredPositions,
       filteredPositionListLength: filteredPositions.length,
@@ -191,9 +255,10 @@ class VoterGuidePositionList extends Component {
     // console.log('showMoreItemsElement: ', showMoreItemsElement);
     // console.log('Loading more: ', this.state.loadingMoreItems);
     if (showMoreItemsElement) {
+      // console.log('onScroll');
       const {
-        filteredPositionListLength, isSearching, numberOfPositionItemsToDisplay,
-        totalNumberOfPositionSearchResults,
+        filteredPositionListLength, isSearching, loadingMoreItems,
+        numberOfPositionItemsToDisplay, totalNumberOfPositionSearchResults,
       } = this.state;
 
       // console.log('window.height: ', window.innerHeight);
@@ -210,13 +275,14 @@ class VoterGuidePositionList extends Component {
         } else {
           this.setState({ loadingMoreItems: false });
         }
-      } else {
+      } else if (loadingMoreItems) {
         this.setState({ loadingMoreItems: false });
       }
     }
   }
 
   onPositionSearch = (searchText, filteredItems) => {
+    // console.log('onPositionSearch');
     window.scrollTo(0, 0);
     const totalNumberOfPositionSearchResults = filteredItems.length || 0;
     this.setState({
@@ -251,10 +317,10 @@ class VoterGuidePositionList extends Component {
   }
 
   render () {
-    const { positionList } = this.state;
-    renderLog('PositionList');  // Set LOG_RENDER_EVENTS to log all renders
+    const { positionList, stateCodesToDisplay } = this.state;
+    renderLog('VoterGuidePositionList');  // Set LOG_RENDER_EVENTS to log all renders
     if (!positionList) {
-      // console.log('PositionList Loading...');
+      // console.log('VoterGuidePositionList Loading...');
       return <div>Loading...</div>;
     }
     const { organizationWeVoteId } = this.props;
@@ -263,7 +329,7 @@ class VoterGuidePositionList extends Component {
       numberOfPositionItemsToDisplay, positionSearchResults, searchText,
       totalNumberOfPositionSearchResults,
     } = this.state;
-    // console.log('PositionList render');
+    // console.log('VoterGuidePositionList render');
     // console.log('this.state.positionList render: ', this.state.positionList);
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     let showTitle = false;
@@ -291,6 +357,7 @@ class VoterGuidePositionList extends Component {
             voterGuidePositionSearchMode
             selectedFiltersDefault={selectedFiltersDefault}
             sortFilters={['sortByAlphabetical']}
+            stateCodesToDisplay={stateCodesToDisplay}
           >
             {/* props get added to this component in FilterBase */}
             <VoterGuidePositionFilter />

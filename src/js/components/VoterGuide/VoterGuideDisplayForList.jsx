@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
 import ImageHandler from '../ImageHandler';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
@@ -15,7 +17,7 @@ import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 // VoterGuideDisplayForList is used by GuideList for viewing voter guides you can follow on the Candidate
 // and Opinions (you can follow) Components
 // Please see VoterGuide/OrganizationCard for the Component displayed by TwitterHandle
-export default class VoterGuideDisplayForList extends PureComponent {
+class VoterGuideDisplayForList extends PureComponent {
   static propTypes = {
     children: PropTypes.object, // This is how we pass in the FollowToggle
     organization_we_vote_id: PropTypes.string,
@@ -39,7 +41,7 @@ export default class VoterGuideDisplayForList extends PureComponent {
   render () {
     renderLog('VoterGuideDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.props.organization_we_vote_id === undefined) {
-      // console.log("VoterGuideDisplayForList this.props.organization_we_vote_id === undefined");
+      // console.log('VoterGuideDisplayForList this.props.organization_we_vote_id === undefined');
       return null;
     }
 
@@ -53,7 +55,7 @@ export default class VoterGuideDisplayForList extends PureComponent {
     const numOfLines = 2;
     const voterGuideDisplayName = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : '';
     const twitterDescription = this.props.twitter_description ? this.props.twitter_description : '';
-    // console.log("VoterGuideDisplayForList twitterDescription: ", twitterDescription);
+    // console.log('VoterGuideDisplayForList twitterDescription: ', twitterDescription);
 
     // If the voter_guide_display_name is in the twitter_description, remove it
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterGuideDisplayName, twitterDescription);
@@ -62,7 +64,7 @@ export default class VoterGuideDisplayForList extends PureComponent {
     const voterGuideLink = this.props.twitter_handle ? `/${this.props.twitter_handle}` : `/voterguide/${organizationWeVoteId}`;
 
     let positionDescription = '';
-    const isOnBallotItemPage = true; // From "actor's" perspective: actorSupportsBallotItemLabel
+    const isOnBallotItemPage = true; // From 'actor's' perspective: actorSupportsBallotItemLabel
     if (position.vote_smart_rating) {
       positionDescription = <PositionRatingSnippet {...position} />;
     } else if (position.is_support || position.is_oppose) {
@@ -75,7 +77,7 @@ export default class VoterGuideDisplayForList extends PureComponent {
     const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
 
     return (
-      <div id="childCard" className="card-child card-child--not-followed">
+      <Wrapper id="voterGuideDisplayForList">
         <div className="card-child__media-object-anchor">
           <StickyPopover
             delay={{ show: 700, hide: 100 }}
@@ -123,7 +125,40 @@ export default class VoterGuideDisplayForList extends PureComponent {
             </div>
           </div>
         </div>
-      </div>
+      </Wrapper>
     );
   }
 }
+
+const styles = theme => ({
+  ballotIconRoot: {
+    width: 150,
+    height: 150,
+    color: 'rgb(171, 177, 191)',
+  },
+  ballotButtonIconRoot: {
+    marginRight: 8,
+  },
+  ballotButtonRoot: {
+    width: 250,
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
+});
+
+const Wrapper = styled.div`
+  padding: 8px;
+  background-color: #f8f8f8 !default;
+  border: 1px solid #e7e7e7;
+  margin: -1px 0 6px 0; // stylelint-disable-line sh-waqar/declaration-use-variable
+  @include breakpoints(max mid-small) {
+    margin-left: -(16px); // stylelint-disable-line sh-waqar/declaration-use-variable
+    margin-right: -(16px); // stylelint-disable-line sh-waqar/declaration-use-variable
+  }
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+`;
+
+export default withStyles(styles)(VoterGuideDisplayForList);
