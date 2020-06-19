@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Drawer } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import CandidateItem from '../Ballot/CandidateItem';
@@ -118,6 +119,13 @@ class OrganizationModal extends Component {
     return (
       <>
         <Drawer classes={{ paper: classes.drawer }} id="share-menu" anchor="right" open={this.state.open} direction="left" onClose={this.closeOrganizationModal}>
+          <IconButton
+            aria-label="Close"
+            className={classes.closeButton}
+            id="closeOrganizationModal"
+          >
+            <span className="fas fa-times u-cursor--pointer" onClick={this.closeOrganizationModal} />
+          </IconButton>
           <CandidateItem
             inModal
             candidateWeVoteId={candidateWeVoteId}
@@ -184,7 +192,7 @@ const styles = () => ({
     fontWeight: 'bold',
   },
   closeButton: {
-    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   closeButtonAbsolute: {
     position: 'absolute',
