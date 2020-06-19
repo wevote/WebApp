@@ -4,11 +4,14 @@ import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { isCordova, isIOsSmallerThanPlus } from '../../utils/cordovaUtils';
+import { isCordova, isIOsSmallerThanPlus, isIPad } from '../../utils/cordovaUtils';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { shortenText } from '../../utils/textFormat';
 // import webAppConfig from '../../config';
+
+/* eslint-disable no-nested-ternary */
+
 
 class BallotTitleHeader extends Component {
   static propTypes = {
@@ -49,7 +52,7 @@ class BallotTitleHeader extends Component {
       );
     } else if (isCordova() && electionName) {
       return (
-        <Wrapper scrolled={scrolled}>
+        <Wrapper scrolled={scrolled} ipad={isIPad()}>
           <Title>
             <ElectionName scrolled={scrolled}>
               <span className="u-show-mobile-iphone5-or-smaller">
@@ -166,7 +169,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: ${props => (props.scrolled ? '12px' : 0)};
+  margin-top: ${props => (props.ipad ? '12px' : (props.scrolled ? '12px' : 0))};
 `;
 
 const Title = styled.h1`

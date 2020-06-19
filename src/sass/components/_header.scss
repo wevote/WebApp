@@ -35,6 +35,11 @@ $header-padding-left: 15px;
     background-color: $page-header-color;
   }
 
+  &__container_ipad {
+    background-color: $page-header-color;
+    margin-top: 26px !important;
+  }
+
   &__container_branding_off {
     background-color: $gray-darker;
     padding: $space-sm $space-none;

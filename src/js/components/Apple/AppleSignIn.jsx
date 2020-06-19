@@ -163,7 +163,6 @@ const AppleSignInContainer  = styled.div`
   margin: 0 auto 11px;
   height: 46px;
   border-radius: 4px;
-  max-width: 408px;
   overflow: hidden;
   padding: 0 40px;
   position: relative;
