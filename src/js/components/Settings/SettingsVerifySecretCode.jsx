@@ -562,6 +562,7 @@ class SettingsVerifySecretCode extends Component {
             </Button>
             */}
             <Button
+              id="changeEmailAddressButton"
               classes={{ root: classes.button }}
               color="primary"
               disabled={voterVerifySecretCodeSubmitted}

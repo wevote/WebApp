@@ -55,6 +55,7 @@ class VoterPlanModal extends Component {
 
     this.closeVoterPlanModal = this.closeVoterPlanModal.bind(this);
     this.handleVotingRoughDateChange = this.handleVotingRoughDateChange.bind(this);
+    this.handleVotingRoughDateClick = this.handleVotingRoughDateClick.bind(this);
     this.handleApproximateTimeChange = this.handleApproximateTimeChange.bind(this);
     this.handleModeOfTransportChange = this.handleModeOfTransportChange.bind(this);
     this.handleLocationToDeliverBallotChange = this.handleLocationToDeliverBallotChange.bind(this);
@@ -259,6 +260,11 @@ class VoterPlanModal extends Component {
     this.setState({ votingRoughDate: event.target.value });
   }
 
+  handleVotingRoughDateClick (event) {
+    console.log(event.target.value);
+    this.setState({ votingRoughDate: event.target.value });
+  }
+
   generateVoterPlanText () {
     const {
       approximateTime, electionDateMonthYear, locationToDeliverBallot, modeOfTransport,
@@ -334,6 +340,7 @@ class VoterPlanModal extends Component {
                 native
                 value={votingRoughDate}
                 onChange={this.handleVotingRoughDateChange}
+                onClick={this.handleVotingRoughDateClick}
                 inputProps={{
                   placeholder: 'select when',
                 }}

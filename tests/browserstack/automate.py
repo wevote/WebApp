@@ -8,136 +8,125 @@ import re
 import time
 import queue 
 
+identity = re.compile(r'^#(.*?) ', flags=re.MULTILINE)
+
 def goToTextEditor():
-  pyautogui.hotkey(modifierKey,'2') # Go to vim
+  pyautogui.hotkey(modifierKey,'2') # go to vim
 
 def goToBrowser():
   pyautogui.hotkey(modifierKey,'1') # Go to Google Chome
-  time.sleep(pause) # Prevent race conditions
-  pyautogui.hotkey('ctrl','shift','c') # Inspect element
 
-def parseHtml(getId):
-  time.sleep(pause) # Prevent race condition
-  pyautogui.hotkey('fn','f2') # Select html
-  time.sleep(pause) # Prevent race condition
-  pyautogui.hotkey('ctrl','a') # Highlight all
-  time.sleep(pause) # Prevent race condition
-  pyautogui.hotkey('ctrl','c') # Copy html
-  pyautogui.press('esc') # Reset
-
-  html = subprocess.Popen(['xclip','-s','c','-d',':0','-o'], stdout=subprocess.PIPE).stdout.read().decode() # Get clipboard 
-  elementHtml = re.search(r'(<.*?>)', html).group(1) # Match first element
-
-  if re.search(r'<(.*?) ', elementHtml).group(1) == 'input': # Check if tagname is input
-    global isInput
-    isInput = True
-
-  if getId:
-    if re.search(r' id="(.*?)"', elementHtml):
-      return re.search(r' id="(.*?)"', elementHtml).group(1) # Return id
-    else:
-      return None
-
+def getCssSelector():
+  global isId
+  isId = False
+  cssSelector = subprocess.Popen(['xclip','-s','c','-d',':0','-o'], stdout=subprocess.PIPE).stdout.read().decode() # Get clipboard
+  if identity.search(cssSelector):
+    isId = True
+    return identity.search(cssSelector).group(1) # return id
   else:
-    time.sleep(pause) # Prevent race condition
-    pyautogui.click(button='right') # Open menu
-    pyautogui.press('down', presses=8) # Go to Copy CSS Selector
-    pyautogui.press('enter') # Select Copy CSS Selector
-    return subprocess.Popen(['xclip','-s','c','-d',':0','-o'], stdout=subprocess.PIPE).stdout.read().decode() # Return css selector
+    return cssSelector
 
-def on_canonical(function):
-  return lambda key : function(listener.canonical(key))
+def on_escape():
+  global escape
+  escape = True
 
-def on_activate():
+def setInput():
+  global isInput
+  isInput = True
+
+def unsetInput():
+  global isInput
+  isInput = False
+
+def goBack():
   global back
   back = True
-  time.sleep(pause) # Prevent race condition
-  pyautogui.hotkey('ctrl','shift','i') # Close developer tools
-  time.sleep(pause) # Prevent race condition
-  pyautogui.hotkey('alt','left') # Go back
-  time.sleep(pause) # Prevent race condition
-  pyautogui.hotkey('ctrl','shift','c') # Inspect element
+
+def unsetScroll():
+  global scroll
+  scroll = False
+
+def on_scroll(x, y, dx, dy):
+  global scroll 
+  scroll = True
+  print(scroll)
 
 modifierKey = 'winleft' # i3 modifier key
 pause = 0.5
 os.environ['DISPLAY'] = ':0' # Needed for Xorg
-elementId = ''
-elementSelector = ''
-textInput = ''
-back = False
 isInput = False
 scroll = False
-backHotKey = keyboard.HotKey(keyboard.HotKey.parse('<alt>+<left>'), on_activate) # Go to on_activate when alt+left is pressed
+back = False
+isId = False
 
-with mouse.Events() as mouseEvents:
-  while True:
-    goToBrowser() # Go to browser
+while True:
+  elementSelector = ''
+  textInput = ''
 
-    listener = keyboard.Listener(on_press=on_canonical(backHotKey.press)) 
-    listener.start() # Listen for alt+left
+  goToBrowser() # Go to browser
 
+  hotkey = keyboard.GlobalHotKeys({'<ctrl>+i': setInput, '<ctrl>+<shift>+u': unsetInput, '<alt>+<left>': goBack,'<end>': unsetScroll})
+  hotkey.start() # Listen for hotkeys
+  
+  mouseListen = mouse.Listener(on_scroll=on_scroll)
+  mouseListen.start() # Listen for scrolls
+
+  print('Starting keyboard listener...')
+  with keyboard.Events() as events:
     while True:
-      mouseEvent = mouseEvents.get() # Block and wait for mouse event
-      if type(mouseEvent) == mouse.Events.Scroll: # Scroll
-        scroll = True
-      elif type(mouseEvent) == mouse.Events.Click and mouseEvent.pressed and mouseEvent.button == mouse.Button.left: # Left click
-        listener.stop() # Stop listener
-        elementId = parseHtml(True) # Parse html
-        pyautogui.click() # Second click
-        break
-      elif type(mouseEvent) == mouse.Events.Click and mouseEvent.pressed and mouseEvent.button == mouse.Button.right: # Right click
-        listener.stop() # Stop listener
-        elementSelector = parseHtml(False) # Parse html
-        pyautogui.click() # Second click
-        break
-
-    subprocess.Popen(['xclip','-se','c','-d',':0','/dev/null']) # Clear clipboard 
-
-    if isInput:
-      isInput = False # reset isInput
-      with keyboard.Events() as keyboardBlock:
-        while True:
-          keyboardEvent = keyboardBlock.get() # Block on keyboard input
-          if type(keyboardEvent) == keyboard.Events.Press: # Only check for presses
-            try:
-              textInput += keyboardEvent.key.char
-            except AttributeError:
-              if keyboardEvent.key == keyboard.Key.space:
-                textInput += ' '
-              elif keyboardEvent.key == keyboard.Key.backspace:
-                textInput = textInput[:-1]
-              else:
-                break
-
-    while type(mouseEvent) == mouse.Events.Move or type(mouseEvent) == mouse.Events.Scroll or type(mouseEvent) == mouse.Events.Click: 
       try:
-        mouseEvent = mouseEvents.get(0.01) # Trash all mouse events
+        event = events.get(1.0)
+        if event.key == keyboard.Key.ctrl_r:
+          break
       except queue.Empty:
-        break
+        pass
+  
+  print('Scroll: ' + str(scroll))
+  mouseListen.stop() # Stop listener
+  hotkey.stop() # Stop listener
+  print('Starting css selection')
+  elementSelector = getCssSelector() # Get css selector
+  print('Finished css selection. Element Selector: ' + elementSelector)
+  time.sleep(pause) # Prevent race conditions
+  pyautogui.click() # Second click
 
-    goToTextEditor() # Go to text editor
-    time.sleep(pause) # Prevent race conditions
+  print(elementSelector)
+  subprocess.Popen(['xclip','-se','c','-d',':0','/dev/null']) # Clear clipboard 
 
-    if back:
-      pyautogui.write('await browser.back();\n') # Write code
-      back = False # Clear back variable
-    elif elementId and scroll:
-      pyautogui.write('await scrollIntoViewSimple("%s");\n' % elementId) # Write code
-      scroll = False # Clear scroll variable
+  print(isInput)
+  if isInput:
+    isInput = False # reset isInput
+    with keyboard.Events() as events:
+      for event in events:
+        if event.key == keyboard.Key.ctrl_r: # Check for alt
+          time.sleep(pause) # Prevent race conditions
+          pyautogui.hotkey('ctrl','a') # Select all
+          time.sleep(pause) # Prevent race conditions
+          pyautogui.hotkey('ctrl','c') # Copy to clipboard
+          textInput = subprocess.Popen(['xclip','-s','c','-d',':0','-o'], stdout=subprocess.PIPE).stdout.read().decode() # Get clipboard
+          break
 
-    if elementId and not textInput:
-      pyautogui.write('await simpleClick("%s");\n' % elementId) # Write code
-      elementId = '' # Clear element id
-    elif elementSelector and not textInput:
-      pyautogui.write("await selectClick('%s');\n" % elementSelector) # Write code
-      elementSelector = '' # Clear element selector
-    elif elementId and textInput:
-      pyautogui.write('await simpleTextInput("%s", "%s");\n' % (elementId, textInput)) # Write code
-      elementId = '' # Clear element id
-      textInput = '' # Clear text input
-    elif elementSelector and textInput:
-      pyautogui.write("await selectTextInput('%s', '%s');\n" % (elementSelector, textInput)) # Write code
-      elementSelector = '' # Clear element selector
-      textInput = '' # Clear text input
-    else:
-      break
+  goToTextEditor() # Go to text editor
+  time.sleep(pause) # Prevent race conditions
+
+  if back:
+    pyautogui.write('await browser.back();\n') # Write code
+    back = False
+
+  if scroll and isId:
+    pyautogui.write('await scrollIntoViewSimple("%s");\n' % elementSelector) # Write code
+    scroll = False
+  elif scroll and not isId
+    pyautogui.write('await scrollIntoViewSelect("%s");\n' % elementSelector) # Write code
+    scroll = False
+
+  elif isId and not textInput:
+    pyautogui.write('await simpleClick("%s");\n' % elementSelector) # Write code
+  elif elementSelector and not textInput:
+    pyautogui.write("await selectClick('%s');\n" % elementSelector) # Write code
+  elif isId and textInput:
+    pyautogui.write('await simpleTextInput("%s", "%s");\n' % (elementSelector, textInput)) # Write code
+  elif elementSelector and textInput:
+    pyautogui.write('await selectTextInput("%s", "%s");\n' % (elementSelector, textInput)) # Write code
+  else:
+    break
