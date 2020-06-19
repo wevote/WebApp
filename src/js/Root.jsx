@@ -45,7 +45,6 @@ import OrganizationVoterGuideMeasure from './routes/VoterGuide/OrganizationVoter
 import OrganizationVoterGuideOffice from './routes/VoterGuide/OrganizationVoterGuideOffice';
 import OrganizationVoterGuideMobileDetails from './routes/VoterGuide/OrganizationVoterGuideMobileDetails';
 import PageNotFound from './routes/PageNotFound';
-import PollingPlaceLocatorModal from './routes/Vote/PollingPlaceLocatorModal';
 import Pricing from './routes/More/Pricing';
 import Privacy from './routes/More/Privacy';
 import ProcessingDonation from './routes/More/ProcessingDonation';
@@ -154,7 +153,6 @@ const routes = () => {  // eslint-disable-line arrow-body-style
 
       <Route path="/candidate-for-extension" component={CandidateForExtension} />
       <Route path="/add-candidate-for-extension" component={AddCandidateForExtension} />
-      <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
       <Route path="/for-campaigns" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForCampaigns {...props} pathname="/for-campaigns" />} />
       <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
       <Route path="/how" component={isNotWeVoteMarketingSite ? ReadyRedirect : HowItWorks} />

@@ -27,7 +27,6 @@ module.exports = {
     new CopyPlugin([
       { from: 'src/extension.html', to: '.' },
       { from: 'src/robots.txt', to: '.' },
-      { from: 'src/vip.html', to: '.' },
       { from: 'src/css/', to: 'css/' },
       { from: 'src/img/',
         to: 'img/',
