@@ -420,9 +420,9 @@ if (isSimulator()) {
 
 export const enums = {
   ballotVote: 1,
-  moreAccount: 2,
+  settingsAccount: 2,
   moreAbout: 3,
-  moreHamburger: 4,
+  settingsHamburger: 4,
   settingsSubscription: 5,
   settingsVoterGuideList: 6,
   moreTools: 7,
@@ -443,7 +443,8 @@ export const enums = {
   opinions: 202,
   values: 203,
   voterGuideWild: 204,
-  twitterSignIn: 205,
+  ready: 205,
+  twitterSignIn: 206,
   defaultVal: 1000,
 };
 
@@ -460,15 +461,17 @@ export function pageEnumeration () {
              href.indexOf('/index.html#/more/terms') > 0) {
     return enums.moreTerms;
   } else if (href.indexOf('/index.html#/settings/account') > 0) {
-    return enums.moreAccount;
+    return enums.settingsAccount;
   } else if (href.indexOf('/index.html#/settings/hamburger') > 0) {
-    return enums.moreHamburger;
+    return enums.settingsHamburger;
   } else if (href.indexOf('/index.html#/settings/tools') > 0) {
     return enums.moreTools;
   } else if (href.indexOf('/index.html#/settings/subscription') > 0) {
     return enums.settingsSubscription;
   } else if (href.indexOf('/index.html#/settings/voterguidelist') > 0) {
     return enums.settingsVoterGuideList;
+  } else if (href.indexOf('/index.html#/ready') > 0) {
+    return enums.ready;
   } else if (href.indexOf('/index.html#/values/list') > 0) {
     return enums.valuesList;
 
@@ -598,3 +601,11 @@ export function chipLabelText (fullLabel) {
   return fullLabel;
 }
 
+export function snackOffset () {
+  let snackOffsetValue = '75px !important';
+  if (isCordova()) {
+    snackOffsetValue = $('.footer.container').length > 0 ? '118px !important' : '72px !important';
+  }
+
+  return snackOffsetValue;
+}

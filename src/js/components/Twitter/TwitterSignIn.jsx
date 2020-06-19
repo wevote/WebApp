@@ -175,12 +175,25 @@ class TwitterSignIn extends Component {
   render () {
     const { buttonText } = this.props;
     const { buttonSubmittedText, twitterSignInStartSubmitted } = this.state;
+    let disabled = twitterSignInStartSubmitted;
+    if (isIOS()) {
+      const { device: { version } } = window;
+      if (version) {
+        const floatVersion = parseFloat(version);
+        if (floatVersion < 13.0) {
+          console.log('Sign in with Twitter is not available on iOS < 13, this phone is running: ', floatVersion);
+          disabled = true;
+        }
+      }
+    }
+
     renderLog('TwitterSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <SplitIconButton
         backgroundColor="#55acee"
+        fontColor={disabled ? 'gray' : false}
         buttonText={twitterSignInStartSubmitted ? shortenText(buttonSubmittedText, 32) : shortenText(buttonText, 32)}
-        disabled={twitterSignInStartSubmitted}
+        disabled={disabled}
         externalUniqueId="twitterSignIn"
         icon={<i className="fab fa-twitter" />}
         onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}

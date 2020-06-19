@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
-import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { snackOffset } from '../../utils/cordovaUtils';
 
 let openSnackbarFn;
 
@@ -53,7 +53,7 @@ class SnackNotifier extends Component {
         ContentProps={{
           'aria-describedby': 'snackbar-message-id',
         }}
-        classes={{ anchorOriginBottomCenter: isWebApp() ? classes.anchorOriginBottomCenter : classes.anchorOriginBottomCenterCordova }}
+        classes={{ anchorOriginBottomCenter: classes.anchorOriginBottomCenter }}
       />
     );
   }
@@ -61,10 +61,7 @@ class SnackNotifier extends Component {
 
 const styles = () => ({
   anchorOriginBottomCenter: {
-    bottom: '75px !important',
-  },
-  anchorOriginBottomCenterCordova: {
-    bottom: '118px !important',
+    bottom: snackOffset(),
   },
 });
 
