@@ -738,7 +738,7 @@ class VoterGuideBallot extends Component {
                   </div>
                 ) : (
                   <span className="u-push--sm">
-                      Choose Election...
+                    Choose Election...
                   </span>
                 )}
               </TitleWrapper>
@@ -806,7 +806,7 @@ class VoterGuideBallot extends Component {
                       </EmptyBallotMessageContainer>
                     </Card>
                   )
-                  }
+                }
                 </VoterGuideBallotWrapper>
                 <ExtraActionsWrapper>
                   <EndorsementCard
@@ -815,7 +815,6 @@ class VoterGuideBallot extends Component {
                     organizationWeVoteId={organizationWeVoteId}
                     text={`Are there endorsements from ${organization.organization_name} that you expected to see?`}
                     title="Endorsements Missing?"
-
                   />
                   {organization.organization_twitter_handle && (
                     <ThisIsMeAction

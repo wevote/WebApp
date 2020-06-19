@@ -293,9 +293,8 @@ class CandidateForDrawer extends Component {
           bsPrefix="u-margin-top--sm u-stack--xs"
           variant="primary"
           buttonText="ENDORSEMENTS MISSING?"
-          text={`Are there endorsements for
-          ${candidateName}
-          that you expected to see?`}
+          text={`Are there endorsements for ${candidateName} that you expected to see?`}
+          whiteOnBlue
         />
         <ThisIsMeAction
           twitterHandleBeingViewed={candidate.twitter_handle}

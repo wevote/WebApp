@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import ReactSVG from 'react-svg';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from './OpenExternalWebSite';
 import positionIcon from '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
@@ -48,6 +49,39 @@ class EndorsementCard extends PureComponent {
       return null;
     }
     // console.log('organizationWeVoteId:', organizationWeVoteId, ', linkedOrganizationWeVoteId:', linkedOrganizationWeVoteId);
+    let backgroundColor = '';
+    let fontColor = '';
+    let icon = (
+      <ReactSVG
+        src={cordovaDot(positionIcon)}
+        alt=""
+        svgStyle={
+          {
+            width: '20px',
+          }
+        }
+      />
+    );
+    if (whiteOnBlue) {
+      backgroundColor = '#fff';
+      fontColor = '#2e3c5d';
+      icon = (
+        <ReactSVG
+          src={cordovaDot(positionIcon)}
+          svgStyle={
+            {
+              backgroundColor: '#2e3c5d', // '#fff'
+              borderRadius: '3px',
+              fill: '#fff', // '#2e3c5d'
+              padding: '2px',
+              width: '24px',
+              height: '24px',
+            }
+          }
+          alt=""
+        />
+      );
+    }
     return (
       <div>
         <div className="card">
@@ -62,9 +96,10 @@ class EndorsementCard extends PureComponent {
                   <SplitIconButton
                     title="Add endorsements to We Vote"
                     id="endorsementCardAddEndorsementsToWeVote"
-                    icon={<img src={cordovaDot(positionIcon)} alt="" />}
+                    icon={icon}
+                    backgroundColor={backgroundColor}
                     buttonText={this.props.buttonText}
-                    whiteOnBlue={whiteOnBlue}
+                    fontColor={fontColor}
                   />
                 )}
               />

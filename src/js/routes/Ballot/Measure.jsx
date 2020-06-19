@@ -304,9 +304,8 @@ class Measure extends Component {
           bsPrefix="u-margin-top--sm u-stack--xs"
           variant="primary"
           buttonText="ENDORSEMENTS MISSING?"
-          text={`Are there endorsements for
-          ${measureName}
-          that you expected to see?`}
+          text={`Are there endorsements for ${measureName} that you expected to see?`}
+          whiteOnBlue
         />
         <br />
         {/* Show links to this candidate in the admin tools */}
