@@ -50,41 +50,25 @@ class VoterGuideEndorsements extends Component {
   componentDidMount () {
     const { organizationWeVoteId } = this.props;
     // console.log('VoterGuideEndorsements componentDidMount, organizationWeVoteId:', organizationWeVoteId);
-    const ballotBaseUrl = calculateBallotBaseUrl(
-      null,
-      this.props.location.pathname,
-    );
-    let googleCivicElectionIdFromUrl =
-      this.props.params.google_civic_election_id || 0;
+    const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
+    let googleCivicElectionIdFromUrl = this.props.params.google_civic_election_id || 0;
     // console.log('googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
-    let ballotReturnedWeVoteId =
-      this.props.params.ballot_returned_we_vote_id || '';
-    ballotReturnedWeVoteId =
-      ballotReturnedWeVoteId === 'none' ? '' : ballotReturnedWeVoteId;
+    let ballotReturnedWeVoteId = this.props.params.ballot_returned_we_vote_id || '';
+    ballotReturnedWeVoteId = ballotReturnedWeVoteId === 'none' ? '' : ballotReturnedWeVoteId;
     // console.log('this.props.params.ballot_returned_we_vote_id: ', this.props.params.ballot_returned_we_vote_id);
-    let ballotLocationShortcut =
-      this.props.params.ballot_location_shortcut || '';
+    let ballotLocationShortcut = this.props.params.ballot_location_shortcut || '';
     ballotLocationShortcut = ballotLocationShortcut.trim();
-    ballotLocationShortcut =
-      ballotLocationShortcut === 'none' ? '' : ballotLocationShortcut;
+    ballotLocationShortcut = ballotLocationShortcut === 'none' ? '' : ballotLocationShortcut;
     let googleCivicElectionId = 0;
     if (googleCivicElectionIdFromUrl !== 0) {
       googleCivicElectionIdFromUrl = parseInt(googleCivicElectionIdFromUrl, 10);
       // googleCivicElectionId = googleCivicElectionIdFromUrl;
-    } else if (
-      BallotStore.ballotProperties &&
-      BallotStore.ballotProperties.google_civic_election_id
-    ) {
-      googleCivicElectionId =
-        BallotStore.ballotProperties.google_civic_election_id;
+    } else if (BallotStore.ballotProperties && BallotStore.ballotProperties.google_civic_election_id) {
+      googleCivicElectionId = BallotStore.ballotProperties.google_civic_election_id;
     }
 
     // console.log('ballotReturnedWeVoteId: ', ballotReturnedWeVoteId, ', ballotLocationShortcut:', ballotLocationShortcut, ', googleCivicElectionIdFromUrl: ', googleCivicElectionIdFromUrl);
-    if (
-      ballotReturnedWeVoteId ||
-      ballotLocationShortcut ||
-      googleCivicElectionIdFromUrl
-    ) {
+    if (ballotReturnedWeVoteId || ballotLocationShortcut || googleCivicElectionIdFromUrl) {
       if (ballotLocationShortcut !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
         BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcut);
@@ -98,11 +82,7 @@ class VoterGuideEndorsements extends Component {
       } else if (googleCivicElectionIdFromUrl !== 0) {
         // Change the ballot on load to make sure we are getting what we expect from the url
         if (googleCivicElectionId !== googleCivicElectionIdFromUrl) {
-          BallotActions.voterBallotItemsRetrieve(
-            googleCivicElectionIdFromUrl,
-            '',
-            '',
-          );
+          BallotActions.voterBallotItemsRetrieve(googleCivicElectionIdFromUrl, '', '');
           // Change the URL to match
           let ballotElectionUrl = `${ballotBaseUrl}/election/${googleCivicElectionIdFromUrl}`;
           if (this.props.activeRoute && this.props.activeRoute !== '') {
@@ -136,25 +116,13 @@ class VoterGuideEndorsements extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (organizationWeVoteId) {
-      VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(
-        organizationWeVoteId,
-        VoterStore.electionId(),
-      );
+      VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.electionId());
       // TODO: COMMENT OUT because they were added to OrganizationVoterGuideTabs?
       // Positions for this organization, for this voter / election
-      OrganizationActions.positionListForOpinionMaker(
-        organizationWeVoteId,
-        true,
-      );
+      OrganizationActions.positionListForOpinionMaker(organizationWeVoteId, true);
       // Positions for this organization, NOT including for this voter / election
-      OrganizationActions.positionListForOpinionMaker(
-        organizationWeVoteId,
-        false,
-        true,
-      );
-      const organization = OrganizationStore.getOrganizationByWeVoteId(
-        organizationWeVoteId,
-      );
+      OrganizationActions.positionListForOpinionMaker(organizationWeVoteId, false, true);
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       const organizationId = organization.organization_id;
 
       if (organizationId) {
@@ -178,26 +146,19 @@ class VoterGuideEndorsements extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log('VoterGuideEndorsements componentWillReceiveProps');
     // When a new organization is passed in, update this component to show the new data
-    const differentElection =
-      this.state.currentGoogleCivicElectionId !== VoterStore.electionId();
-    const differentOrganization =
-      this.state.organizationWeVoteId !== nextProps.organizationWeVoteId;
+    const differentElection = this.state.currentGoogleCivicElectionId !== VoterStore.electionId();
+    const differentOrganization = this.state.organizationWeVoteId !== nextProps.organizationWeVoteId;
     // console.log('VoterGuideEndorsements componentWillReceiveProps-differentElection: ', differentElection, ' differentOrganization: ', differentOrganization);
     if (differentElection || differentOrganization) {
       // console.log('VoterGuideEndorsements componentWillReceiveProps, differentElection:', differentElection, ', differentOrganization:', differentOrganization);
       // console.log('VoterGuideEndorsements, componentWillReceiveProps, nextProps.organization: ', nextProps.organization);
-      VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(
-        nextProps.organizationWeVoteId,
-        VoterStore.electionId(),
-      );
+      VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organizationWeVoteId, VoterStore.electionId());
       // // Positions for this organization, for this voter / election
       // OrganizationActions.positionListForOpinionMaker(nextProps.organizationWeVoteId, true);
       // // Positions for this organization, NOT including for this voter / election
       // OrganizationActions.positionListForOpinionMaker(nextProps.organizationWeVoteId, false, true);
       const { organizationWeVoteId } = nextProps;
-      const organization = OrganizationStore.getOrganizationByWeVoteId(
-        organizationWeVoteId,
-      );
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       const organizationId = organization.organization_id;
 
       if (organizationId) {
@@ -284,7 +245,7 @@ class VoterGuideEndorsements extends Component {
   }
 
   render () {
-    renderLog('VoterGuideEndorsements'); // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('VoterGuideEndorsements');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('VoterGuideEndorsements render');
     const { classes } = this.props;
     const {
@@ -311,9 +272,7 @@ class VoterGuideEndorsements extends Component {
 
     let lookingAtSelf = false;
     if (this.state.voter) {
-      lookingAtSelf =
-        this.state.voter.linked_organization_we_vote_id ===
-        organizationWeVoteId;
+      lookingAtSelf = this.state.voter.linked_organization_we_vote_id === organizationWeVoteId;
     }
 
     // console.log("lookingAtSelf: ", lookingAtSelf);
@@ -331,14 +290,12 @@ class VoterGuideEndorsements extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             <VoterGuideEndorsementsWrapper>
-              {lookingAtSelf && (
+              { lookingAtSelf && (
                 <div className="u-margin-left--md u-push--md">
                   <BallotSearchResults
                     clearSearchTextNow={clearSearchTextNow}
                     googleCivicElectionId={currentGoogleCivicElectionId}
-                    organizationWeVoteId={
-                      this.state.voter.linked_organization_we_vote_id
-                    }
+                    organizationWeVoteId={this.state.voter.linked_organization_we_vote_id}
                     searchUnderwayFunction={this.searchUnderway}
                   />
                 </div>
@@ -376,7 +333,8 @@ class VoterGuideEndorsements extends Component {
                   doneButtonText="Clear Search"
                 />
               </span>
-            ) : null}
+            ) : null
+            }
             <ExtraActionsWrapper>
               <EndorsementCard
                 buttonText="ENDORSEMENTS MISSING?"
@@ -387,11 +345,10 @@ class VoterGuideEndorsements extends Component {
               />
               {organization.organization_twitter_handle && (
                 <ThisIsMeAction
-                  twitterHandleBeingViewed={
-                    organization.organization_twitter_handle
-                  }
-                  nameBeingViewed={organization.organization_name}
                   kindOfOwner="ORGANIZATION"
+                  nameBeingViewed={organization.organization_name}
+                  twitterHandleBeingViewed={organization.organization_twitter_handle}
+                  whiteOnBlue
                 />
               )}
             </ExtraActionsWrapper>
@@ -433,7 +390,7 @@ const EmptyBallotMessageContainer = styled.div`
   flex-flow: column;
   padding: 1em 2em;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding: 0.5em 0.5em;
+    padding: .5em .5em;
   }
 `;
 

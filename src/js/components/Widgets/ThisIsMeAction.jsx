@@ -64,6 +64,14 @@ class ThisIsMeAction extends Component {
     } else {
       thisIsMeActionText = 'Is this you, or do you work here?';
     }
+    let backgroundColor = '';
+    let fontColor = '';
+    let icon = <i className="fab fa-twitter-square" />;
+    if (whiteOnBlue) {
+      backgroundColor = '#fff';
+      fontColor = '#2e3c5d';
+      icon = <i className="fab fa-twitter-square" />;
+    }
 
     return (
       <div>
@@ -74,11 +82,12 @@ class ThisIsMeAction extends Component {
                 <div className="endorsement-card">
                   <Link to={`/verifythisisme/${twitterHandleBeingViewed}`} className="u-no-underline">
                     <SplitIconButton
-                      title={`Claim @${this.props.twitterHandleBeingViewed}`}
-                      id="candidateVerifyThisIsMeAction"
-                      icon={<i className="fab fa-twitter-square" />}
+                      backgroundColor={backgroundColor}
                       buttonText={`Claim @${this.props.twitterHandleBeingViewed}`}
-                      whiteOnBlue={whiteOnBlue}
+                      fontColor={fontColor}
+                      icon={icon}
+                      id="candidateVerifyThisIsMeAction"
+                      title={`Claim @${this.props.twitterHandleBeingViewed}`}
                     />
                   </Link>
                   <div className="endorsement-card__text">

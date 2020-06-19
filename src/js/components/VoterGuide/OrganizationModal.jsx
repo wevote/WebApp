@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Drawer } from '@material-ui/core';
-import { IconButton } from '@material-ui/core';
+import { Drawer, IconButton } from '@material-ui/core';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import CandidateItem from '../Ballot/CandidateItem';
