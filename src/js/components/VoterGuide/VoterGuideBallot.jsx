@@ -236,8 +236,8 @@ class VoterGuideBallot extends Component {
 
     // Were there any actual changes?
     if (ballotReturnedWeVoteId !== this.state.ballotReturnedWeVoteId ||
-        ballotLocationShortcut !== this.state.ballotLocationShortcut ||
-        googleCivicElectionId !== this.state.googleCivicElectionId) {
+      ballotLocationShortcut !== this.state.ballotLocationShortcut ||
+      googleCivicElectionId !== this.state.googleCivicElectionId) {
       this.setState({
         ballotReturnedWeVoteId,
         ballotLocationShortcut,
@@ -738,7 +738,7 @@ class VoterGuideBallot extends Component {
                   </div>
                 ) : (
                   <span className="u-push--sm">
-                    Choose Election...
+                      Choose Election...
                   </span>
                 )}
               </TitleWrapper>
@@ -806,7 +806,7 @@ class VoterGuideBallot extends Component {
                       </EmptyBallotMessageContainer>
                     </Card>
                   )
-                }
+                  }
                 </VoterGuideBallotWrapper>
                 <ExtraActionsWrapper>
                   <EndorsementCard
@@ -815,6 +815,7 @@ class VoterGuideBallot extends Component {
                     organizationWeVoteId={organizationWeVoteId}
                     text={`Are there endorsements from ${organization.organization_name} that you expected to see?`}
                     title="Endorsements Missing?"
+
                   />
                   {organization.organization_twitter_handle && (
                     <ThisIsMeAction
@@ -825,7 +826,7 @@ class VoterGuideBallot extends Component {
                   )}
 
                   {/* Show links to this candidate in the admin tools */}
-                  { (voterIsAdmin || voterIsVerifiedVolunteer) && organizationWeVoteId && (
+                  {(voterIsAdmin || voterIsVerifiedVolunteer) && organizationWeVoteId && (
                     <span className="u-wrap-links d-print-none">
                       <span>Admin:</span>
                       <OpenExternalWebSite
@@ -842,7 +843,7 @@ class VoterGuideBallot extends Component {
                     </span>
                   )}
                   {/* Show links to the polling location this was copied from in the admin tools */}
-                  { !!(sourcePollingLocationWeVoteId && (voterIsAdmin || voterIsVerifiedVolunteer)) && (
+                  {!!(sourcePollingLocationWeVoteId && (voterIsAdmin || voterIsVerifiedVolunteer)) && (
                     <div className="u-wrap-links d-print-none">
                       Admin link:
                       <OpenExternalWebSite

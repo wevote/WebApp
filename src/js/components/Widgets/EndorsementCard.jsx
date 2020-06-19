@@ -13,6 +13,7 @@ class EndorsementCard extends PureComponent {
     organizationWeVoteId: PropTypes.string,
     title: PropTypes.string,
     text: PropTypes.string,
+    whiteOnBlue: PropTypes.bool,
   };
 
   constructor (props) {
@@ -35,7 +36,7 @@ class EndorsementCard extends PureComponent {
   }
 
   render () {
-    const { organizationWeVoteId } = this.props;
+    const { organizationWeVoteId, whiteOnBlue } = this.props;
     const { voter } = this.state;
     if (!voter) {
       return null;
@@ -63,6 +64,7 @@ class EndorsementCard extends PureComponent {
                     id="endorsementCardAddEndorsementsToWeVote"
                     icon={<img src={cordovaDot(positionIcon)} alt="" />}
                     buttonText={this.props.buttonText}
+                    whiteOnBlue={whiteOnBlue}
                   />
                 )}
               />

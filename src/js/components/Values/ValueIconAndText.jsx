@@ -197,7 +197,7 @@ class ValueIconAndText extends Component {
             ) : <span />}
             classes={{ root: classes.chipStyle }}
             label={oneIssue.issue_name}
-           ref={this.valueSpan}
+            ref={this.valueSpan}
           />
         </ValueIconAndTextSpan>
       </StickyPopover>

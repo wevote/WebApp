@@ -11,6 +11,7 @@ class ThisIsMeAction extends Component {
     kindOfOwner: PropTypes.string,
     nameBeingViewed: PropTypes.string,
     twitterHandleBeingViewed: PropTypes.string,
+    whiteOnBlue: PropTypes.bool,
   };
 
   constructor (props) {
@@ -39,7 +40,7 @@ class ThisIsMeAction extends Component {
       // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization
       return <span />;
     }
-    const { kindOfOwner, nameBeingViewed } = this.props;
+    const { kindOfOwner, nameBeingViewed, whiteOnBlue } = this.props;
     // Manage the control over this organization voter guide
     const { voter } = this.state;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
@@ -77,6 +78,7 @@ class ThisIsMeAction extends Component {
                       id="candidateVerifyThisIsMeAction"
                       icon={<i className="fab fa-twitter-square" />}
                       buttonText={`Claim @${this.props.twitterHandleBeingViewed}`}
+                      whiteOnBlue={whiteOnBlue}
                     />
                   </Link>
                   <div className="endorsement-card__text">
@@ -96,4 +98,4 @@ const Container = styled.div`
   padding: 16px;
 `;
 
-export default  ThisIsMeAction;
+export default ThisIsMeAction;
