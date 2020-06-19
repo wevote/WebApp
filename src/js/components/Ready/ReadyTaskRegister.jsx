@@ -2,10 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import register0Percent from '../../../img/global/svg-icons/ready/register-0-percent.svg';
 import register100Percent from '../../../img/global/svg-icons/ready/register-100-percent.svg';
-import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
+import {
+  ButtonLeft,
+  ButtonText,
+  Icon,
+  PercentComplete,
+  ReadyCard,
+  StyledButton,
+  StyledCheckbox,
+  StyledCheckboxCompleted,
+  SubTitle,
+  Title,
+  TitleRowWrapper,
+} from './ReadyTaskStyles';
 
 class ReadyTaskRegister extends React.Component {
   static propTypes = {
@@ -85,18 +98,27 @@ class ReadyTaskRegister extends React.Component {
           <SubTitle className="u-cursor--pointer" onClick={this.goToNextStep}>
             {completed ? 'You have verified with your state that you are registered to vote.' : 'If you\'re voter registration isn\'t current, you won\'t be able to cast your ballot.'}
           </SubTitle>
-          {!completed && (
-            <StyledButton
-              className="u-cursor--pointer"
-              color="primary"
-              completed={completed || undefined}
-              onClick={this.goToNextStep}
-              variant="outlined"
-              withoutsteps="1"
-            >
-              <ButtonLeft>
-                <StyledCheckbox />
-                <ButtonText>
+          <StyledButton
+            className="u-cursor--pointer"
+            color="primary"
+            completed={completed || undefined}
+            onClick={this.goToNextStep}
+            variant="outlined"
+            withoutsteps="1"
+          >
+            <ButtonLeft>
+              {completed ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
+              <ButtonText>
+                {completed ? (
+                  <>
+                    <span className="u-show-mobile">
+                      Registration Verified
+                    </span>
+                    <span className="u-show-desktop-tablet">
+                      You Are Registered in your State
+                    </span>
+                  </>
+                ) : (
                   <>
                     <span className="u-show-mobile">
                       Verify Now
@@ -104,12 +126,12 @@ class ReadyTaskRegister extends React.Component {
                     <span className="u-show-desktop-tablet">
                       Verify You Are Registered in your State
                     </span>
+                    <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
                   </>
-                  <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
-                </ButtonText>
-              </ButtonLeft>
-            </StyledButton>
-          )}
+                )}
+              </ButtonText>
+            </ButtonLeft>
+          </StyledButton>
         </div>
       </ReadyCard>
     );

@@ -429,8 +429,10 @@ class ReadyTaskBallot extends React.Component {
               %
               {!!(percentCompleted) && (
                 <>
-                  {' '}
-                  Complete
+                  <span className="u-show-desktop-tablet">
+                    {' '}
+                    Complete
+                  </span>
                 </>
               )}
             </PercentComplete>
@@ -475,15 +477,13 @@ class ReadyTaskBallot extends React.Component {
                   )}
                 </ButtonText>
               </ButtonLeft>
-              {!allCandidatesAllCompleted && (
-                <NumberComplete>
-                  (
-                  {allCandidatesNumberCompleted}
-                  /
-                  {allCandidatesTotalNumber}
-                  )
-                </NumberComplete>
-              )}
+              <NumberComplete>
+                (
+                {allCandidatesNumberCompleted}
+                /
+                {allCandidatesTotalNumber}
+                )
+              </NumberComplete>
             </StyledButton>
           )}
           {/* ************* */}
@@ -522,15 +522,13 @@ class ReadyTaskBallot extends React.Component {
                   )}
                 </ButtonText>
               </ButtonLeft>
-              {!federalAllCompleted && (
-                <NumberComplete>
-                  (
-                  {federalNumberCompleted}
-                  /
-                  {federalTotalNumber}
-                  )
-                </NumberComplete>
-              )}
+              <NumberComplete>
+                (
+                {federalNumberCompleted}
+                /
+                {federalTotalNumber}
+                )
+              </NumberComplete>
             </StyledButton>
           )}
           {/* ************* */}
@@ -569,15 +567,13 @@ class ReadyTaskBallot extends React.Component {
                   )}
                 </ButtonText>
               </ButtonLeft>
-              {!stateAllCompleted && (
-                <NumberComplete>
-                  (
-                  {stateNumberCompleted}
-                  /
-                  {stateTotalNumber}
-                  )
-                </NumberComplete>
-              )}
+              <NumberComplete>
+                (
+                {stateNumberCompleted}
+                /
+                {stateTotalNumber}
+                )
+              </NumberComplete>
             </StyledButton>
           )}
           {/* ************* */}
@@ -616,15 +612,13 @@ class ReadyTaskBallot extends React.Component {
                   )}
                 </ButtonText>
               </ButtonLeft>
-              {!measureAllCompleted && (
-                <NumberComplete>
-                  (
-                  {measureNumberCompleted}
-                  /
-                  {measureTotalNumber}
-                  )
-                </NumberComplete>
-              )}
+              <NumberComplete>
+                (
+                {measureNumberCompleted}
+                /
+                {measureTotalNumber}
+                )
+              </NumberComplete>
             </StyledButton>
           )}
           {/* *********** */}
@@ -663,15 +657,13 @@ class ReadyTaskBallot extends React.Component {
                   )}
                 </ButtonText>
               </ButtonLeft>
-              {!localAllCompleted && (
-                <NumberComplete>
-                  (
-                  {localNumberCompleted}
-                  /
-                  {localTotalNumber}
-                  )
-                </NumberComplete>
-              )}
+              <NumberComplete>
+                (
+                {localNumberCompleted}
+                /
+                {localTotalNumber}
+                )
+              </NumberComplete>
             </StyledButton>
           )}
           {/* ************ */}
@@ -715,7 +707,11 @@ class ReadyTaskBallot extends React.Component {
                   )}
                 </ButtonText>
               </ButtonLeft>
-              {!howItWorksCompleted && (
+              {howItWorksCompleted ? (
+                <NumberComplete>
+                  (1/1)
+                </NumberComplete>
+              ) : (
                 <NumberComplete>
                   (0/1)
                 </NumberComplete>
@@ -762,7 +758,11 @@ class ReadyTaskBallot extends React.Component {
                   )}
                 </ButtonText>
               </ButtonLeft>
-              {!personalizedScoreIntroCompleted && (
+              {personalizedScoreIntroCompleted ? (
+                <NumberComplete>
+                  (1/1)
+                </NumberComplete>
+              ) : (
                 <NumberComplete>
                   (0/1)
                 </NumberComplete>
