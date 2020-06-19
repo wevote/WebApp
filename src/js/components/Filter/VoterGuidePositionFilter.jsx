@@ -5,15 +5,12 @@ import uniqBy from 'lodash-es/uniqBy';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
-import FriendStore from '../../stores/FriendStore';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
-import ShareStore from '../../stores/ShareStore';
+import { convertStateCodeFilterToStateCode } from '../../utils/address-functions';
 
-const groupTypeIdentifiers = ['C', 'C3', 'C4', 'G', 'NP', 'O', 'P'];
-const privateCitizenIdentifiers = ['I', 'V'];
 
 class VoterGuidePositionFilter extends Component {
   static propTypes = {
@@ -29,9 +26,10 @@ class VoterGuidePositionFilter extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      issues: IssueStore.getAllIssues(),
       allItemsLength: 0,
+      issues: IssueStore.getAllIssues(),
       sortedBy: '',
+      thisYearInteger: 0,
     };
   }
 
@@ -41,18 +39,13 @@ class VoterGuidePositionFilter extends Component {
     if (allItems) {
       allItemsLength = allItems.length || 0;
     }
-    const currentFriendsOrganizationWeVoteIds = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    const currentSharedItemOrganizationWeVoteIds = ShareStore.currentSharedItemOrganizationWeVoteIDList();
+    const today = new Date();
+    const thisYearInteger = today.getFullYear();
     this.setState({
       allItemsLength,
-      currentFriendsOrganizationWeVoteIds,
-      currentFriendsOrganizationWeVoteIdsLength: currentFriendsOrganizationWeVoteIds.length,
-      currentSharedItemOrganizationWeVoteIds,
-      currentSharedItemOrganizationWeVoteIdsLength: currentSharedItemOrganizationWeVoteIds.length,
+      thisYearInteger,
     });
-    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -67,17 +60,7 @@ class VoterGuidePositionFilter extends Component {
   }
 
   componentWillUnmount () {
-    this.friendStoreListener.remove();
     this.organizationStoreListener.remove();
-    this.shareStoreListener.remove();
-  }
-
-  onFriendStoreChange () {
-    const currentFriendsOrganizationWeVoteIds = FriendStore.currentFriendsOrganizationWeVoteIDList();
-    this.setState({
-      currentFriendsOrganizationWeVoteIds,
-      currentFriendsOrganizationWeVoteIdsLength: currentFriendsOrganizationWeVoteIds.length,
-    });
   }
 
   onOrganizationStoreChange () {
@@ -92,14 +75,6 @@ class VoterGuidePositionFilter extends Component {
         allItemsLength: newAllItemsLength,
       });
     }
-  }
-
-  onShareStoreChange () {
-    const currentSharedItemOrganizationWeVoteIds = ShareStore.currentSharedItemOrganizationWeVoteIDList();
-    this.setState({
-      currentSharedItemOrganizationWeVoteIds,
-      currentSharedItemOrganizationWeVoteIdsLength: currentSharedItemOrganizationWeVoteIds.length,
-    });
   }
 
   getFilteredItemsByLinkedIssue = (issueFilter) => {
@@ -125,45 +100,67 @@ class VoterGuidePositionFilter extends Component {
 
   getNewFilteredItems = () => {
     const { allItems, selectedFilters } = this.props;
+    const { thisYearInteger } = this.state;
     // console.log('allItems:', allItems);
-    const { currentFriendsOrganizationWeVoteIds, currentSharedItemOrganizationWeVoteIds } = this.state;
-    // console.log('currentFriendsOrganizationWeVoteIds:', currentFriendsOrganizationWeVoteIds);
     let filteredItems = [];
     if (!selectedFilters || !selectedFilters.length) return allItems;
-    // First, bring in only the kinds of organizations with checkmark
+    // First, bring in only the race levels to show
+    // const selectedFiltersDefault = ['sortByAlphabetical', 'thisYear', 'federalRaces', 'stateRaces', 'measureRaces', 'localRaces'];
     selectedFilters.forEach((filter) => {
       switch (filter) {
-        // case 'endorsingGroup':
-        //   filteredItems = [...filteredItems, ...allItems.filter(item => groupTypeIdentifiers.includes(item.speaker_type))];
-        //   break;
-        // case 'individualVoter':
-        //   filteredItems = [...filteredItems, ...allItems.filter(item => privateCitizenIdentifiers.includes(item.speaker_type) && !currentSharedItemOrganizationWeVoteIds.includes(item.speaker_we_vote_id))];
-        //   break;
-        // case 'newsOrganization':
-        //   filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'NW')];
-        //   break;
-        // case 'publicFigure':
-        //   filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'PF')];
-        //   break;
-        // case 'yourFriends':
-        //   filteredItems = [...filteredItems, ...allItems.filter(item => currentFriendsOrganizationWeVoteIds.includes(item.speaker_we_vote_id) || currentSharedItemOrganizationWeVoteIds.includes(item.speaker_we_vote_id))];
-        //   break;
+        case 'federalRaces':
+          filteredItems = [...filteredItems, ...allItems.filter(item => item.race_office_level === 'Federal')];
+          break;
+        case 'stateRaces':
+          filteredItems = [...filteredItems, ...allItems.filter(item => item.race_office_level === 'State')];
+          break;
+        case 'measureRaces':
+          filteredItems = [...filteredItems, ...allItems.filter(item => item.kind_of_ballot_item === 'MEASURE')];
+          break;
+        case 'localRaces':
+          filteredItems = [...filteredItems, ...allItems.filter(item => item.race_office_level === 'Local')];
+          break;
         default:
-          filteredItems = allItems; // Temp
           break;
       }
     });
+    // thisYear, priorYears, battlegroundRaces
+    let containsAtLeastOneYear = false;
+    selectedFilters.forEach((filter) => {
+      switch (filter) {
+        case 'thisYear':
+          containsAtLeastOneYear = true;
+          break;
+        case 'priorYears':
+          containsAtLeastOneYear = true;
+          break;
+        default:
+          break;
+      }
+    });
+    if (containsAtLeastOneYear) {
+      const filterItemsSnapshot = filteredItems;
+      filteredItems = [];
+      selectedFilters.forEach((filter) => {
+        switch (filter) {
+          case 'thisYear':
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.position_year === thisYearInteger)];
+            break;
+          case 'priorYears':
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.position_year < thisYearInteger)];
+            break;
+          default:
+            break;
+        }
+      });
+    }
     // Which showSupportFilter/showOpposeFilter/showCommentFilter to show?
     // Make sure one of them is chosen. If not, do not limit by support/oppose/comment
     let containsAtLeastOneSupportOpposeComment = false;
     selectedFilters.forEach((filter) => {
       switch (filter) {
         case 'showSupportFilter':
-          containsAtLeastOneSupportOpposeComment = true;
-          break;
         case 'showOpposeFilter':
-          containsAtLeastOneSupportOpposeComment = true;
-          break;
         case 'showInformationOnlyFilter':
           containsAtLeastOneSupportOpposeComment = true;
           break;
@@ -188,6 +185,24 @@ class VoterGuidePositionFilter extends Component {
           default:
             break;
         }
+      });
+    }
+    // Is at least one state chosen? If not, do not limit by state code.
+    let containsAtLeastOneStateCode = false;
+    let oneStateCode;
+    const stateCodesToShow = [];
+    selectedFilters.forEach((filter) => {
+      oneStateCode = convertStateCodeFilterToStateCode(filter);
+      if (oneStateCode) {
+        stateCodesToShow.push(oneStateCode);
+        containsAtLeastOneStateCode = true;
+      }
+    });
+    if (containsAtLeastOneStateCode) {
+      const filterItemsSnapshot = filteredItems;
+      filteredItems = [];
+      stateCodesToShow.forEach((stateCode) => {
+        filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.state_code.toLowerCase() === stateCode.toLowerCase())];
       });
     }
     // Comment or no comment?
@@ -288,61 +303,88 @@ class VoterGuidePositionFilter extends Component {
               classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
-                  checked={selectedFilters.indexOf('yourFriends') > -1}
-                  onChange={() => this.toggleFilter('yourFriends')}
-                  value="yourFriends"
+                  checked={selectedFilters.indexOf('thisYear') > -1}
+                  onChange={() => this.toggleFilter('thisYear')}
+                  value="thisYear"
                   color="primary"
                 />
               )}
-              label="Your Friends"
+              label="This Year"
             />
             <FormControlLabel
               classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
-                  checked={selectedFilters.indexOf('newsOrganization') > -1}
-                  onChange={() => this.toggleFilter('newsOrganization')}
-                  value="newsOrganization"
+                  checked={selectedFilters.indexOf('priorYears') > -1}
+                  onChange={() => this.toggleFilter('priorYears')}
+                  value="priorYears"
                   color="primary"
                 />
               )}
-              label="News"
+              label="Prior Years"
+            />
+            {/* <FormControlLabel */}
+            {/*  classes={{ label: classes.formControlLabel }} */}
+            {/*  control={( */}
+            {/*    <Checkbox */}
+            {/*      checked={selectedFilters.indexOf('battlegroundRaces') > -1} */}
+            {/*      onChange={() => this.toggleFilter('battlegroundRaces')} */}
+            {/*      value="battlegroundRaces" */}
+            {/*      color="primary" */}
+            {/*    /> */}
+            {/*  )} */}
+            {/*  label="Battleground Races" */}
+            {/* /> */}
+          </FilterColumn>
+          <FilterColumn className="u-show-desktop-tablet">
+            <b>Race Level</b>
+            <FormControlLabel
+              classes={{ label: classes.formControlLabel }}
+              control={(
+                <Checkbox
+                  checked={selectedFilters.indexOf('federalRaces') > -1}
+                  onChange={() => this.toggleFilter('federalRaces')}
+                  value="federalRaces"
+                  color="primary"
+                />
+              )}
+              label="Federal"
             />
             <FormControlLabel
               classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
-                  checked={selectedFilters.indexOf('endorsingGroup') > -1}
-                  onChange={() => this.toggleFilter('endorsingGroup')}
-                  value="endorsingGroup"
+                  checked={selectedFilters.indexOf('stateRaces') > -1}
+                  onChange={() => this.toggleFilter('stateRaces')}
+                  value="stateRaces"
                   color="primary"
                 />
               )}
-              label="Groups"
+              label="State"
             />
             <FormControlLabel
               classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
-                  checked={selectedFilters.indexOf('publicFigure') > -1}
-                  onChange={() => this.toggleFilter('publicFigure')}
-                  value="publicFigure"
+                  checked={selectedFilters.indexOf('measureRaces') > -1}
+                  onChange={() => this.toggleFilter('measureRaces')}
+                  value="measureRaces"
                   color="primary"
                 />
               )}
-              label="Public Figures"
+              label="Measure"
             />
             <FormControlLabel
               classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
-                  checked={selectedFilters.indexOf('individualVoter') > -1}
-                  onChange={() => this.toggleFilter('individualVoter')}
-                  value="individualVoter"
+                  checked={selectedFilters.indexOf('localRaces') > -1}
+                  onChange={() => this.toggleFilter('localRaces')}
+                  value="localRaces"
                   color="primary"
                 />
               )}
-              label="Private Citizens"
+              label="Local"
             />
           </FilterColumn>
         </FilterRow>

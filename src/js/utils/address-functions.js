@@ -76,3 +76,32 @@ export function convertStateTextToStateCode (stateText) {
   }
   return '';
 }
+
+export function convertStateCodeFilterToStateCode (stateCodeFilter) {
+  if (stateCodeFilter) {
+    const stateCodeInArray = Object.keys(stateCodeMap).filter(stateCode => `stateCode${stateCode}` === stateCodeFilter);
+    return stateCodeInArray[0];
+  }
+  return '';
+}
+
+export function getAllStateCodeFilters () {
+  return Object.keys(stateCodeMap).map(stateCode => `stateCode${stateCode}`);
+}
+
+export function getAllStateCodes () {
+  return Object.keys(stateCodeMap);
+}
+
+export function getStateCodesFoundInObjectList (incomingObjectList) {
+  const allStateCodes = getAllStateCodes() || [];
+  // console.log('incomingObjectList:', incomingObjectList);
+  const stateCodesFoundInObjectList = [];
+  incomingObjectList.forEach((object) => {
+    if (object && object.state_code && allStateCodes.includes(object.state_code.toUpperCase())) {
+      stateCodesFoundInObjectList.push(object.state_code.toUpperCase());
+    }
+  });
+  stateCodesFoundInObjectList.sort();
+  return [...new Set(stateCodesFoundInObjectList)];
+}

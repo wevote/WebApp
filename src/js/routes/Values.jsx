@@ -4,6 +4,7 @@ import AddEndorsements from '../components/Widgets/AddEndorsements';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { cordovaDot } from '../utils/cordovaUtils';
+import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
 import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
@@ -22,7 +23,7 @@ import VoterStore from '../stores/VoterStore';
 
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = cordovaDot(TestimonialPhoto);
-const testimonial = 'Following values that are important to me lets me see the opinions of other people who share my values.';
+const testimonial = 'I like seeing the opinions of people who share my values.';
 
 export default class Values extends Component {
   static propTypes = {};
@@ -30,15 +31,20 @@ export default class Values extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      issuesFollowedCount: 0,
+      issuesDisplayDecisionHasBeenMade: false,
+      issuesToFollowShouldBeDisplayed: false,
     };
   }
 
   componentDidMount () {
-    this.onIssueStoreChange();
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.onIssueStoreChange();
+    this.onVoterStoreChange();
+    if (!IssueStore.issueDescriptionsRetrieveCalled()) {
+      IssueActions.issueDescriptionsRetrieve();
+    }
+    IssueActions.issuesFollowedRetrieve();
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 
@@ -48,9 +54,24 @@ export default class Values extends Component {
   }
 
   onIssueStoreChange () {
+    const { issuesDisplayDecisionHasBeenMade } = this.state;
+    const issuesFollowedCount = IssueStore.getIssuesVoterIsFollowingLength();
     this.setState({
-      issuesFollowedCount: IssueStore.getIssuesVoterIsFollowingLength(),
+      issuesFollowedCount,
     });
+    // console.log('Values, onIssueStoreChange, issuesDisplayDecisionHasBeenMade: ', issuesDisplayDecisionHasBeenMade);
+    if (!issuesDisplayDecisionHasBeenMade) {
+      const areIssuesLoadedFromAPIServer = IssueStore.areIssuesLoadedFromAPIServer();
+      const areIssuesFollowedLoadedFromAPIServer = IssueStore.areIssuesFollowedLoadedFromAPIServer();
+      // console.log('areIssuesLoadedFromAPIServer: ', areIssuesLoadedFromAPIServer, ', areIssuesFollowedLoadedFromAPIServer:', areIssuesFollowedLoadedFromAPIServer);
+      if (areIssuesLoadedFromAPIServer && areIssuesFollowedLoadedFromAPIServer) {
+        // console.log('issuesFollowedCount: ', issuesFollowedCount);
+        this.setState({
+          issuesDisplayDecisionHasBeenMade: true,
+          issuesToFollowShouldBeDisplayed: (issuesFollowedCount <= 3),
+        });
+      }
+    }
   }
 
   onVoterStoreChange () {
@@ -66,7 +87,7 @@ export default class Values extends Component {
     if (!this.state.voter) {
       return LoadingWheel;
     }
-    const { issuesFollowedCount } = this.state;
+    const { issuesFollowedCount, issuesToFollowShouldBeDisplayed } = this.state;
 
     let publicFiguresBlockToDisplay = null;
     const publicFiguresFollowedCount = 0;
@@ -88,14 +109,14 @@ export default class Values extends Component {
 
     return (
       <span>
-        <Helmet title="Values, Public Figures & Organizations - We Vote" />
+        <Helmet title="Endorsements - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="row">
           <div id="mainContentColumn" className="col-sm-12 col-md-8">
-            {issuesFollowedCount ? (
-              <ValuesFollowedPreview />
-            ) : (
-              <div className="d-md-none d-block">
+            {publicFiguresBlockToDisplay}
+            {organizationsBlockToDisplay}
+            {!!(issuesToFollowShouldBeDisplayed) && (
+              <div className="u-show-mobile">
                 <div className="card">
                   <div className="card-main">
                     <Testimonial
@@ -105,13 +126,17 @@ export default class Values extends Component {
                     />
                   </div>
                 </div>
+                <ValuesToFollowPreview
+                  includeLinkToIssue
+                />
               </div>
             )}
-            {(issuesFollowedCount) ? null : <ValuesToFollowPreview />}
-            {publicFiguresBlockToDisplay}
-            {organizationsBlockToDisplay}
+            {!!(issuesFollowedCount) && <ValuesFollowedPreview /> }
           </div>
           <div className="col-md-4 d-none d-md-block">
+            {this.state.voter.signed_in_twitter ? null : (
+              <TwitterSignInCard />
+            )}
             <div className="card">
               <div className="card-main">
                 <Testimonial
@@ -121,9 +146,10 @@ export default class Values extends Component {
                 />
               </div>
             </div>
-            {this.state.voter.signed_in_twitter ? null : (
-              <TwitterSignInCard />
-            )}
+            <ValuesToFollowPreview
+              followToggleOnItsOwnLine
+              includeLinkToIssue
+            />
             <AddEndorsements />
           </div>
         </div>

@@ -285,6 +285,7 @@ class VoterStore extends ReduceStore {
     let incorrectSecretCodeEntered;
     let membershipOrganizationWeVoteId;
     let numberOfTriesRemaining;
+    let revisedState;
     let secretCodeVerified;
     let voterDeviceId;
     let voterExternalIdHasBeenSavedOnce;
@@ -653,7 +654,7 @@ class VoterStore extends ReduceStore {
           const { voter_photo_url_medium: statePhotoMed } = state.voter;
           const { voter_photo_url_medium: incomingPhotoMed } = incomingVoter;
           if (!statePhotoMed && !incomingPhotoMed) {
-            incomingVoter.voter_photo_url_medium = 'https://quality.wevote.us/img/global/logos/Apple-01.svg';  // TODO: Switch over to wevote.us once PR is in
+            incomingVoter.voter_photo_url_medium = 'https://wevote.us/img/global/logos/Apple_logo_grey.svg';  // TODO: Switch over to wevote.us once live server is updated
           }
         }
 
@@ -669,7 +670,9 @@ class VoterStore extends ReduceStore {
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
         VoterActions.voterSMSPhoneNumberRetrieve();
-        return this.resetState();
+        revisedState = state;
+        revisedState = Object.assign({}, revisedState, this.getInitialState());
+        return revisedState;
 
       case 'voterSMSPhoneNumberRetrieve':
         // console.log('VoterStore  voterSMSPhoneNumberRetrieve: ', action.res.sms_phone_number_list);

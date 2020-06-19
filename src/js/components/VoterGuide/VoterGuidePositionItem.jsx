@@ -14,94 +14,31 @@ import MeasureActions from '../../actions/MeasureActions';
 import MeasureStore from '../../stores/MeasureStore';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import OrganizationStore from '../../stores/OrganizationStore';
 import { capitalizeString, stringContains } from '../../utils/textFormat';
 import ReadMore from '../Widgets/ReadMore';
-import SupportStore from '../../stores/SupportStore';
-import VoterStore from '../../stores/VoterStore';
 import AppActions from '../../actions/AppActions';
 
 class VoterGuidePositionItem extends Component {
   static propTypes = {
-    organizationWeVoteId: PropTypes.string.isRequired,
+    ballotItemDisplayName: PropTypes.string,
     position: PropTypes.object.isRequired,
+    searchResultsNode: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      componentDidMountFinished: false,
       hidePositionStatement: false,
-      voterOpposesBallotItem: false,
-      voterPositionIsPublic: false,
-      voterSupportsBallotItem: false,
-      organizationWeVoteId: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
-      signedInWithThisFacebookAccount: false,
-      signedInWithThisOrganization: false,
-      signedInWithThisTwitterAccount: false,
-      voterTextStatement: '',
-      voter: {},
     };
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
     this.onClickFunction = this.onClickFunction.bind(this);
   }
 
   componentDidMount () {
-    const { organizationWeVoteId, position } = this.props;
+    const { position } = this.props;
     const { ballot_item_we_vote_id: ballotItemWeVoteId } = position;
-    const voter = VoterStore.getVoter();
-    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-    const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
-    const organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : '';
-    const signedInWithThisOrganization = voter && voter.linked_organization_we_vote_id === organizationWeVoteId;
-    const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
-    let signedInWithThisTwitterAccount = false;
-    if (signedInTwitter && voter.twitter_screen_name !== null) {
-      signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === organizationTwitterHandleBeingViewed.toLowerCase();
-    }
-    const signedInFacebook = voter === undefined ? false : voter.signed_in_facebook;
-    let signedInWithThisFacebookAccount = false;
-    if (signedInFacebook) {
-      signedInWithThisFacebookAccount = voter.facebook_id === organizationFacebookIdBeingViewed;
-    }
-    let voterTextStatement = '';
-    let voterPositionIsPublic;
-    let voterSupportsBallotItem;
-    let voterOpposesBallotItem;
-    // If looking at your own page, update when supportProps change
-    if (signedInWithThisTwitterAccount || signedInWithThisOrganization) {
-      // console.log('VoterGuidePositionItem signedInWithThisTwitterAccount');
-      // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
-      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
-      if (ballotItemStatSheet) {
-        ({ voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet);
-      } else {
-        voterOpposesBallotItem = position.is_oppose;
-        voterPositionIsPublic = position.is_public_position;
-        voterSupportsBallotItem = position.is_support;
-        voterTextStatement = position.statement_text;
-      }
-    } else {
-      // console.log('VoterGuidePositionItem NOT signedInWithThisTwitterAccount');
-      voterOpposesBallotItem = position.is_oppose;
-      voterPositionIsPublic = position.is_public_position;
-      voterSupportsBallotItem = position.is_support;
-      voterTextStatement = position.statement_text;
-    }
-    this.setState({
-      componentDidMountFinished: true,
-      voterOpposesBallotItem,
-      voterPositionIsPublic,
-      voterSupportsBallotItem,
-      organizationWeVoteId,
-      signedInWithThisFacebookAccount,
-      signedInWithThisOrganization,
-      signedInWithThisTwitterAccount,
-      voterTextStatement,
-      voter,
-    });
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
     if (ballotItemWeVoteId &&
@@ -142,90 +79,11 @@ class VoterGuidePositionItem extends Component {
 
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-  }
-
-  componentWillReceiveProps (nextProps) {
-    // console.log('VoterGuidePositionItem componentWillReceiveProps');
-    const { organizationWeVoteId, position } = nextProps;
-    const { ballot_item_we_vote_id: ballotItemWeVoteId } = position;
-    this.setState({
-      organizationWeVoteId,
-    });
-    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
-    if (ballotItemStatSheet) {
-      const { voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
-      this.setState({
-        voterOpposesBallotItem,
-        voterPositionIsPublic,
-        voterSupportsBallotItem,
-        voterTextStatement,
-      });
-    }
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      return true;
-    }
-    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
-      return true;
-    }
-    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-      // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
-      return true;
-    }
-    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
-      // console.log('this.state.voterOpposesBallotItem:', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem:', nextState.voterOpposesBallotItem);
-      return true;
-    }
-    if (this.state.voterPositionIsPublic !== nextState.voterPositionIsPublic) {
-      // console.log('this.state.voterPositionIsPublic:', this.state.voterPositionIsPublic, ', nextState.voterPositionIsPublic:', nextState.voterPositionIsPublic);
-      return true;
-    }
-    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
-      // console.log('this.state.voterSupportsBallotItem:', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem:', nextState.voterSupportsBallotItem);
-      return true;
-    }
-    if (this.state.organizationFacebookIdBeingViewed !== nextState.organizationFacebookIdBeingViewed) {
-      // console.log('this.state.organizationFacebookIdBeingViewed:', this.state.organizationFacebookIdBeingViewed, ', nextState.organizationFacebookIdBeingViewed:', nextState.organizationFacebookIdBeingViewed);
-      return true;
-    }
-    if (this.state.organizationTwitterHandleBeingViewed !== nextState.organizationTwitterHandleBeingViewed) {
-      // console.log('this.state.organizationTwitterHandleBeingViewed:', this.state.organizationTwitterHandleBeingViewed, ', nextState.organizationTwitterHandleBeingViewed:', nextState.organizationTwitterHandleBeingViewed);
-      return true;
-    }
-    if (this.state.signedInWithThisFacebookAccount !== nextState.signedInWithThisFacebookAccount) {
-      // console.log('this.state.signedInWithThisFacebookAccount:', this.state.signedInWithThisFacebookAccount, ', nextState.signedInWithThisFacebookAccount:', nextState.signedInWithThisFacebookAccount);
-      return true;
-    }
-    if (this.state.signedInWithThisOrganization !== nextState.signedInWithThisOrganization) {
-      // console.log('this.state.signedInWithThisOrganization:', this.state.signedInWithThisOrganization, ', nextState.signedInWithThisOrganization:', nextState.signedInWithThisOrganization);
-      return true;
-    }
-    if (this.state.signedInWithThisTwitterAccount !== nextState.signedInWithThisTwitterAccount) {
-      // console.log('this.state.signedInWithThisTwitterAccount:', this.state.signedInWithThisTwitterAccount, ', nextState.signedInWithThisTwitterAccount:', nextState.signedInWithThisTwitterAccount);
-      return true;
-    }
-    if (this.state.voterTextStatement !== nextState.voterTextStatement) {
-      // console.log('this.state.voterTextStatement:', this.state.voterTextStatement, ', nextState.voterTextStatement:', nextState.voterTextStatement);
-      return true;
-    }
-    // console.log('shouldComponentUpdate no change');
-    return false;
   }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
-    this.organizationStoreListener.remove();
-    this.supportStoreListener.remove();
-    this.voterStoreListener.remove();
   }
 
   onCandidateStoreChange () {
@@ -292,91 +150,6 @@ class VoterGuidePositionItem extends Component {
     }
   }
 
-  onOrganizationStoreChange () {
-    const { organizationWeVoteId, voter } = this.state;
-    // console.log('VoterGuidePositionItem onOrganizationStoreChange, organization.organization_we_vote_id: ', organization.organization_we_vote_id);
-    if (organizationWeVoteId) {
-      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
-      const organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : '';
-      const signedInWithThisOrganization = voter && voter.linked_organization_we_vote_id === organizationWeVoteId;
-      this.setState({
-        organizationFacebookIdBeingViewed,
-        organizationTwitterHandleBeingViewed,
-        organizationWeVoteId,
-        signedInWithThisOrganization,
-      });
-    }
-  }
-
-  onSupportStoreChange () {
-    const { position } = this.props;
-    const { organizationWeVoteId, signedInWithThisTwitterAccount, signedInWithThisOrganization } = this.state;
-    const { ballot_item_we_vote_id: ballotItemWeVoteId } = position;
-    if (organizationWeVoteId) {
-      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
-      const organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : '';
-      this.setState({
-        organizationFacebookIdBeingViewed,
-        organizationTwitterHandleBeingViewed,
-        organizationWeVoteId,
-      });
-    }
-    let voterTextStatement;
-    let voterPositionIsPublic;
-    let voterSupportsBallotItem;
-    let voterOpposesBallotItem;
-    // If looking at your own page, update when supportProps change
-    if (signedInWithThisTwitterAccount || signedInWithThisOrganization) {
-      // console.log('VoterGuidePositionItem signedInWithThisTwitterAccount');
-      // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
-      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
-      if (ballotItemStatSheet) {
-        ({ voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet);
-      } else {
-        voterOpposesBallotItem = position.is_oppose;
-        voterPositionIsPublic = position.is_public_position;
-        voterSupportsBallotItem = position.is_support;
-        voterTextStatement = position.statement_text;
-      }
-    } else {
-      // console.log('VoterGuidePositionItem NOT signedInWithThisTwitterAccount');
-      voterOpposesBallotItem = position.is_oppose;
-      voterPositionIsPublic = position.is_public_position;
-      voterSupportsBallotItem = position.is_support;
-      voterTextStatement = position.statement_text;
-    }
-    this.setState({
-      voterOpposesBallotItem,
-      voterPositionIsPublic,
-      voterSupportsBallotItem,
-      voterTextStatement,
-    });
-  }
-
-  onVoterStoreChange () {
-    const { organizationFacebookIdBeingViewed, organizationTwitterHandleBeingViewed, organizationWeVoteId } = this.state;
-    const voter = VoterStore.getVoter();
-    const signedInWithThisOrganization = voter && voter.linked_organization_we_vote_id === organizationWeVoteId;
-    const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
-    let signedInWithThisTwitterAccount = false;
-    if (signedInTwitter && voter.twitter_screen_name !== null && organizationTwitterHandleBeingViewed) {
-      signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === organizationTwitterHandleBeingViewed.toLowerCase();
-    }
-    const signedInFacebook = voter === undefined ? false : voter.signed_in_facebook;
-    let signedInWithThisFacebookAccount = false;
-    if (signedInFacebook) {
-      signedInWithThisFacebookAccount = voter.facebook_id === organizationFacebookIdBeingViewed;
-    }
-    this.setState({
-      signedInWithThisFacebookAccount,
-      signedInWithThisOrganization,
-      signedInWithThisTwitterAccount,
-      voter,
-    });
-  }
-
   onClickFunction () {
     AppActions.setShowOrganizationModal(true);
     AppActions.setOrganizationModalId(Object.keys(this.state.positionListFromFriendsHasBeenRetrievedOnce)[0]);
@@ -405,8 +178,9 @@ class VoterGuidePositionItem extends Component {
 
   render () {
     renderLog('VoterGuidePositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { position } = this.props;
-    // console.log('VoterGuidePositionItem position:', position);
+    const { position, searchResultsNode } = this.props;
+    // const { thisYearInteger } = this.state;
+    // console.log('VoterGuidePositionItem render');
     let {
       ballot_item_display_name: ballotItemDisplayName,
       more_info_url: moreInfoUrl,
@@ -418,6 +192,7 @@ class VoterGuidePositionItem extends Component {
       is_oppose: organizationOpposesBallotItem,
       is_support: organizationSupportsBallotItem,
       kind_of_ballot_item: kindOfBallotItem,
+      position_year: positionYear,
       speaker_image_url_https_tiny: organizationImageUrlHttpsTiny,
       statement_text: statementText,
     } = position;
@@ -453,6 +228,9 @@ class VoterGuidePositionItem extends Component {
       <div>
         <Card>
           <BallotItemPadding>
+            <SearchResultsNodeWrapper>
+              {searchResultsNode}
+            </SearchResultsNodeWrapper>
             <BallotItemWrapper className="card-main__media-object">
               {isCandidate ? (
                 <CandidateItemWrapper onClick={this.onClickFunction}>
@@ -469,17 +247,23 @@ class VoterGuidePositionItem extends Component {
                     <h2 className="card-main__display-name">
                       {ballotItemDisplayName}
                     </h2>
-                    <span className="u-show-desktop-tablet">
-                      {contestOfficeName && (
-                        <div>
-                          <OfficeNameText
-                            contestOfficeName={contestOfficeName}
-                            // politicalParty={politicalParty}
-                            showOfficeName
-                          />
-                        </div>
+                    <div className="u-show-desktop-tablet">
+                      {(contestOfficeName) && (
+                        <OfficeNameText
+                          contestOfficeName={contestOfficeName}
+                          // politicalParty={politicalParty}
+                          showOfficeName
+                        />
                       )}
-                    </span>
+                      {(positionYear) && (
+                        <PositionYearText>
+                          {' '}
+                          (
+                          {positionYear}
+                          )
+                        </PositionYearText>
+                      )}
+                    </div>
                   </Candidate>
                 </CandidateItemWrapper>
               ) : (
@@ -487,7 +271,17 @@ class VoterGuidePositionItem extends Component {
                   <Title>
                     {ballotDisplay[0]}
                   </Title>
-                  <SubTitle>{ballotDisplay[1]}</SubTitle>
+                  <SubTitle>
+                    {ballotDisplay[1]}
+                    {(positionYear) && (
+                      <PositionYearText>
+                        {' '}
+                        (
+                        {positionYear}
+                        )
+                      </PositionYearText>
+                    )}
+                  </SubTitle>
                 </MeasureItemWrapper>
               )}
               {/* (signedInWithThisTwitterAccount ||
@@ -497,6 +291,7 @@ class VoterGuidePositionItem extends Component {
               */}
               <BallotItemSupportOpposeCountDisplayWrapper>
                 <BallotItemSupportOpposeCountDisplay
+                  ballotItemDisplayName={this.props.ballotItemDisplayName}
                   ballotItemWeVoteId={ballotItemWeVoteId}
                   hideNumbersOfAllPositions
                 />
@@ -520,6 +315,14 @@ class VoterGuidePositionItem extends Component {
                     showOfficeName
                   />
                 </div>
+              )}
+              {(positionYear) && (
+                <PositionYearText>
+                  {' '}
+                  (
+                  {positionYear}
+                  )
+                </PositionYearText>
               )}
               {statementText && (
                 <MobileItemDescription>
@@ -696,9 +499,18 @@ const OrganizationImageWrapper = styled.span`
   padding-right: 4px;
 `;
 
+const PositionYearText = styled.div`
+  font-weight: 200;
+  color: #999;
+`;
+
 const SourceLink = styled.div`
   float: right;
   margin-bottom: -4px;
+`;
+
+const SearchResultsNodeWrapper = styled.div`
+  margin-bottom: 2px !important;
 `;
 
 const SubTitle = styled.h3`

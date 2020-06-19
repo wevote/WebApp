@@ -184,6 +184,7 @@ export default class CodeCopier extends Component {
                 className={this.state.status.length ?
                   'form-control' :
                   'form-control u-stack--sm'}
+                id="enterTwitterHandleInput"
                 name="twitterHandle"
                 placeholder="Enter Twitter Handle"
                 onKeyDown={this.resetState}

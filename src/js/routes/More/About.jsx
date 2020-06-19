@@ -19,7 +19,7 @@ import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayFor
 import ToolBar from './ToolBar';
 import VoterStore from '../../stores/VoterStore';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
-// import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
+import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import { Title } from '../../components/Welcome/HeaderWelcome';
 
 class About extends Component {
@@ -36,7 +36,7 @@ class About extends Component {
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="About We Vote" />
-        {/* <WelcomeAppbar pathname="/more/about" /> */}
+        <WelcomeAppbar pathname="/more/about" />
         <HeaderForAbout>
           <Title>About We Vote</Title>
           <ToolBar />
@@ -74,7 +74,7 @@ class About extends Component {
           <AboutDescriptionContainer>
             Currently, the U.S. trails most developed nations in voter turnout.
             {' '}
-            Only 6 out of 10 eligible voters is expected to cast a ballot next year.
+            Only 6 out of 10 eligible voters is expected to cast a ballot this year.
             {' '}
             Improving overall voter participation is a responsibility shared by all of us.
             {' '}
@@ -185,7 +185,7 @@ class About extends Component {
           <AboutDescriptionContainer>
             We are thankful for
             {' '}
-            <Link to="/more/credits">
+            <Link to="/more/credits" onlyActiveOnIndex>
               our volunteers, our board of directors, our funders, and the organizations
               &nbsp;
               <i className="fas fa-external-link-alt" />

@@ -68,6 +68,7 @@ export default class SelectVoterGuidesSideBarLink extends Component {
               <ButtonWrapper>
                 <ButtonContainer>
                   <Button
+                    id="selectVotingGuidesSideBarLinkEdit"
                     color="primary"
                     fullWidth
                     onClick={this.goToEditLink}
@@ -78,6 +79,7 @@ export default class SelectVoterGuidesSideBarLink extends Component {
                 </ButtonContainer>
                 <ButtonContainer>
                   <Button
+                    id="selectVotingGuidesSideBarLinkPreview"
                     fullWidth
                     onClick={this.goToPreviewLink}
                     variant="outlined"

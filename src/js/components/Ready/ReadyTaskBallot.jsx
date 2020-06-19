@@ -181,7 +181,8 @@ class ReadyTaskBallot extends React.Component {
       measureButtonNeeded, measureAllCompleted,
       stateButtonNeeded, stateAllCompleted, stateNumberCompleted,
     } = ballotItemsStatusCounts;
-    let activeShowButtonCount = 0;
+    const howItWorksCompleted = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
+    const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     let allCandidatesShowButton = false;
     let allDecisionsMadeCount = 0;
     let allDecisionsNeededCount = 0;
@@ -191,15 +192,14 @@ class ReadyTaskBallot extends React.Component {
     let candidateRaceTypesThatNeedDecisions = 0;
     let federalShowButton = false;
     let howItWorksButtonHidden = false;
-    let howItWorksShowButton = true;
+    let howItWorksShowButton = !howItWorksCompleted;
     let localShowButton = false;
     let measureShowButton;
     let personalizedScoreIntroButtonHidden = false;
-    let personalizedScoreIntroShowButton = true;
+    let personalizedScoreIntroShowButton = !personalizedScoreIntroCompleted;
     let stateShowButton = false;
     let showMoreShowButton = false;
-    const howItWorksCompleted = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
-    const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+    let visibleButtonCount = 0;
     allDecisionsNeededCount += federalButtonNeeded ? 1 : 0;
     allDecisionsNeededCount += localButtonNeeded ? 1 : 0;
     allDecisionsNeededCount += measureButtonNeeded ? 1 : 0;
@@ -259,54 +259,67 @@ class ReadyTaskBallot extends React.Component {
     // ///////////////////
     // This section is to limit the number shown to 3, unless "show more" has been clicked
     if (showMoreButtonWasClicked) {
-      activeShowButtonCount += howItWorksButtonHidden ? 1 : 0;
-      activeShowButtonCount += howItWorksShowButton ? 1 : 0;
-      activeShowButtonCount += personalizedScoreIntroButtonHidden ? 1 : 0;
-      activeShowButtonCount += personalizedScoreIntroShowButton ? 1 : 0;
-      activeShowButtonCount += allCandidatesShowButton ? 1 : 0;
-      activeShowButtonCount += federalShowButton ? 1 : 0;
-      activeShowButtonCount += localShowButton ? 1 : 0;
-      activeShowButtonCount += measureShowButton ? 1 : 0;
-      activeShowButtonCount += stateShowButton ? 1 : 0;
-      if (activeShowButtonCount > 3) {
+      // The "show more" button has been clicked. Show all buttons.
+      visibleButtonCount = 0; // Count up the number of buttons that are shown, so we know whether or not to turn on the "show more" button
+      // Show both onboarding buttons when "show more" clicked
+      howItWorksShowButton = true;
+      personalizedScoreIntroShowButton = true;
+      visibleButtonCount += howItWorksButtonHidden ? 1 : 0;
+      visibleButtonCount += howItWorksShowButton ? 1 : 0;
+      visibleButtonCount += personalizedScoreIntroButtonHidden ? 1 : 0;
+      visibleButtonCount += personalizedScoreIntroShowButton ? 1 : 0;
+      visibleButtonCount += allCandidatesShowButton ? 1 : 0;
+      visibleButtonCount += federalShowButton ? 1 : 0;
+      visibleButtonCount += localShowButton ? 1 : 0;
+      visibleButtonCount += measureShowButton ? 1 : 0;
+      visibleButtonCount += stateShowButton ? 1 : 0;
+      if (visibleButtonCount > 3) {
         showMoreShowButton = true;
       }
     } else {
+      // The "show more" button has not been clicked. Roll-up what we can
       // Should we turn on "show more" link?
-      let showMoreCount = 2; // Always start with two points for onboarding
-      showMoreCount += allCandidatesShowButton ? 1 : 0;
-      showMoreCount += federalShowButton ? 1 : 0;
-      showMoreCount += localShowButton ? 1 : 0;
-      showMoreCount += measureShowButton ? 1 : 0;
-      showMoreCount += stateShowButton ? 1 : 0;
-      if (showMoreCount > 3) {
+      let buttonCouldBeShownCount = 2; // The onboarding buttons could always be shown
+      buttonCouldBeShownCount += federalButtonNeeded ? 1 : 0;
+      buttonCouldBeShownCount += localButtonNeeded ? 1 : 0;
+      buttonCouldBeShownCount += measureButtonNeeded ? 1 : 0;
+      buttonCouldBeShownCount += stateButtonNeeded ? 1 : 0;
+      if (buttonCouldBeShownCount > 3) {
         showMoreShowButton = true;
       }
 
       // Turn off all visible items past the first three
-      activeShowButtonCount += howItWorksShowButton ? 1 : 0;
-      activeShowButtonCount += personalizedScoreIntroShowButton ? 1 : 0;
-      activeShowButtonCount += allCandidatesShowButton ? 1 : 0;
-      if (activeShowButtonCount > 3) {
+      visibleButtonCount = 0;
+      visibleButtonCount += allCandidatesShowButton ? 1 : 0;
+      if (visibleButtonCount > 3) {
         allCandidatesShowButton = false;
       }
-      activeShowButtonCount += federalShowButton ? 1 : 0;
-      if (activeShowButtonCount > 3) {
+      visibleButtonCount += federalShowButton ? 1 : 0;
+      if (visibleButtonCount > 3) {
         federalShowButton = false;
       }
-      activeShowButtonCount += localShowButton ? 1 : 0;
-      if (activeShowButtonCount > 3) {
+      visibleButtonCount += localShowButton ? 1 : 0;
+      if (visibleButtonCount > 3) {
         localShowButton = false;
       }
-      activeShowButtonCount += measureShowButton ? 1 : 0;
-      if (activeShowButtonCount > 3) {
+      visibleButtonCount += measureShowButton ? 1 : 0;
+      if (visibleButtonCount > 3) {
         measureShowButton = false;
       }
-      activeShowButtonCount += stateShowButton ? 1 : 0;
-      if (activeShowButtonCount > 3) {
+      visibleButtonCount += stateShowButton ? 1 : 0;
+      if (visibleButtonCount > 3) {
         stateShowButton = false;
       }
+      visibleButtonCount += howItWorksShowButton ? 1 : 0;
+      if (visibleButtonCount > 3) {
+        howItWorksShowButton = false;
+      }
+      visibleButtonCount += personalizedScoreIntroShowButton ? 1 : 0;
+      if (visibleButtonCount > 3) {
+        personalizedScoreIntroShowButton = false;
+      }
     }
+    // console.log('showMoreButtonWasClicked: ', showMoreButtonWasClicked);
 
     this.setState({
       allCandidatesShowButton,
@@ -407,13 +420,19 @@ class ReadyTaskBallot extends React.Component {
             >
               {yourBallotTitle}
             </Title>
-            <PercentComplete showprogresscolor={percentCompleted > 0}>
+            <PercentComplete
+              className="u-cursor--pointer"
+              onClick={() => this.showMoreButtonsLink()}
+              showprogresscolor={percentCompleted > 0}
+            >
               {percentCompleted}
               %
               {!!(percentCompleted) && (
                 <>
-                  {' '}
-                  Complete
+                  <span className="u-show-desktop-tablet">
+                    {' '}
+                    Complete
+                  </span>
                 </>
               )}
             </PercentComplete>
@@ -421,6 +440,232 @@ class ReadyTaskBallot extends React.Component {
           <SubTitle className="u-cursor--pointer" onClick={this.goToBallot}>
             {yourBallotSubtitle}
           </SubTitle>
+          {/* ************* */}
+          {/* Decide on All Candidates */}
+          {/* ************* */}
+          {(allCandidatesShowButton && allCandidatesButtonNeeded) && (
+            <StyledButton
+              id="decideOnCandidatesButton"
+              className="u-cursor--pointer"
+              color="primary"
+              completed={allCandidatesAllCompleted ? 'true' : undefined}
+              onClick={this.goToBallot}
+              variant="outlined"
+            >
+              <ButtonLeft>
+                {allCandidatesAllCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
+                <ButtonText>
+                  {allCandidatesAllCompleted ? (
+                    <>
+                      <span className="u-show-mobile">
+                        All Candidates Chosen
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Your Decisions on Candidates
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="u-show-mobile">
+                        All Candidates
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Decide on Candidates
+                      </span>
+                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                    </>
+                  )}
+                </ButtonText>
+              </ButtonLeft>
+              <NumberComplete>
+                (
+                {allCandidatesNumberCompleted}
+                /
+                {allCandidatesTotalNumber}
+                )
+              </NumberComplete>
+            </StyledButton>
+          )}
+          {/* ************* */}
+          {/* Federal Races */}
+          {/* ************* */}
+          {(federalShowButton && federalButtonNeeded) && (
+            <StyledButton
+              className="u-cursor--pointer"
+              color="primary"
+              completed={federalAllCompleted ? 'true' : undefined}
+              onClick={this.goToFederalRaces}
+              variant="outlined"
+            >
+              <ButtonLeft>
+                {federalAllCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
+                <ButtonText>
+                  {federalAllCompleted ? (
+                    <>
+                      <span className="u-show-mobile">
+                        Federal Races
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Your Decisions on Federal Races
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="u-show-mobile">
+                        Federal Races
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Decide on Federal Races
+                      </span>
+                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                    </>
+                  )}
+                </ButtonText>
+              </ButtonLeft>
+              <NumberComplete>
+                (
+                {federalNumberCompleted}
+                /
+                {federalTotalNumber}
+                )
+              </NumberComplete>
+            </StyledButton>
+          )}
+          {/* ************* */}
+          {/* State Races */}
+          {/* ************* */}
+          {(stateShowButton && stateButtonNeeded) && (
+            <StyledButton
+              className="u-cursor--pointer"
+              color="primary"
+              completed={stateAllCompleted ? 'true' : undefined}
+              onClick={this.goToStateRaces}
+              variant="outlined"
+            >
+              <ButtonLeft>
+                {stateAllCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
+                <ButtonText>
+                  {stateAllCompleted ? (
+                    <>
+                      <span className="u-show-mobile">
+                        State Races
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Your Decisions on State Races
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="u-show-mobile">
+                        State Races
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Decide on State Races
+                      </span>
+                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                    </>
+                  )}
+                </ButtonText>
+              </ButtonLeft>
+              <NumberComplete>
+                (
+                {stateNumberCompleted}
+                /
+                {stateTotalNumber}
+                )
+              </NumberComplete>
+            </StyledButton>
+          )}
+          {/* ************* */}
+          {/* Measures */}
+          {/* ************* */}
+          {(measureShowButton && measureButtonNeeded) && (
+            <StyledButton
+              className="u-cursor--pointer"
+              color="primary"
+              completed={measureAllCompleted ? 'true' : undefined}
+              onClick={this.goToMeasureRaces}
+              variant="outlined"
+            >
+              <ButtonLeft>
+                {measureAllCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
+                <ButtonText>
+                  {measureAllCompleted ? (
+                    <>
+                      <span className="u-show-mobile">
+                        All Measures
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Your Decisions on Measures
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="u-show-mobile">
+                        All Measures
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Decide on Measures
+                      </span>
+                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                    </>
+                  )}
+                </ButtonText>
+              </ButtonLeft>
+              <NumberComplete>
+                (
+                {measureNumberCompleted}
+                /
+                {measureTotalNumber}
+                )
+              </NumberComplete>
+            </StyledButton>
+          )}
+          {/* *********** */}
+          {/* Local Races */}
+          {/* *********** */}
+          {(localShowButton && localButtonNeeded) && (
+            <StyledButton
+              className="u-cursor--pointer"
+              color="primary"
+              completed={localAllCompleted ? 'true' : undefined}
+              onClick={this.goToLocalRaces}
+              variant="outlined"
+            >
+              <ButtonLeft>
+                {localAllCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
+                <ButtonText>
+                  {localAllCompleted ? (
+                    <>
+                      <span className="u-show-mobile">
+                        Local Races
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Your Decisions on Local Races
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="u-show-mobile">
+                        Local Races
+                      </span>
+                      <span className="u-show-desktop-tablet">
+                        Decide on Local Races
+                      </span>
+                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                    </>
+                  )}
+                </ButtonText>
+              </ButtonLeft>
+              <NumberComplete>
+                (
+                {localNumberCompleted}
+                /
+                {localTotalNumber}
+                )
+              </NumberComplete>
+            </StyledButton>
+          )}
           {/* ************ */}
           {/* How It Works */}
           {/* ************ */}
@@ -462,7 +707,11 @@ class ReadyTaskBallot extends React.Component {
                   )}
                 </ButtonText>
               </ButtonLeft>
-              {!howItWorksCompleted && (
+              {howItWorksCompleted ? (
+                <NumberComplete>
+                  (1/1)
+                </NumberComplete>
+              ) : (
                 <NumberComplete>
                   (0/1)
                 </NumberComplete>
@@ -509,245 +758,13 @@ class ReadyTaskBallot extends React.Component {
                   )}
                 </ButtonText>
               </ButtonLeft>
-              {!personalizedScoreIntroCompleted && (
+              {personalizedScoreIntroCompleted ? (
+                <NumberComplete>
+                  (1/1)
+                </NumberComplete>
+              ) : (
                 <NumberComplete>
                   (0/1)
-                </NumberComplete>
-              )}
-            </StyledButton>
-          )}
-          {/* ************* */}
-          {/* Decide on All Candidates */}
-          {/* ************* */}
-          {(allCandidatesShowButton && allCandidatesButtonNeeded) && (
-            <StyledButton
-              id="decideOnCandidatesButton"
-              className="u-cursor--pointer"
-              color="primary"
-              completed={allCandidatesAllCompleted ? 'true' : undefined}
-              onClick={this.goToBallot}
-              variant="outlined"
-            >
-              <ButtonLeft>
-                {allCandidatesAllCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
-                <ButtonText>
-                  {allCandidatesAllCompleted ? (
-                    <>
-                      <span className="u-show-mobile">
-                        All Candidates Chosen
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        Your Decisions on Candidates
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="u-show-mobile">
-                        All Candidates
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        Decide on Candidates
-                      </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
-                    </>
-                  )}
-                </ButtonText>
-              </ButtonLeft>
-              {!allCandidatesAllCompleted && (
-                <NumberComplete>
-                  (
-                  {allCandidatesNumberCompleted}
-                  /
-                  {allCandidatesTotalNumber}
-                  )
-                </NumberComplete>
-              )}
-            </StyledButton>
-          )}
-          {/* ************* */}
-          {/* Federal Races */}
-          {/* ************* */}
-          {(federalShowButton && federalButtonNeeded) && (
-            <StyledButton
-              className="u-cursor--pointer"
-              color="primary"
-              completed={federalAllCompleted ? 'true' : undefined}
-              onClick={this.goToFederalRaces}
-              variant="outlined"
-            >
-              <ButtonLeft>
-                {federalAllCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
-                <ButtonText>
-                  {federalAllCompleted ? (
-                    <>
-                      <span className="u-show-mobile">
-                        Federal Races
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        Your Decisions on Federal Races
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="u-show-mobile">
-                        Federal Races
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        Decide on Federal Races
-                      </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
-                    </>
-                  )}
-                </ButtonText>
-              </ButtonLeft>
-              {!federalAllCompleted && (
-                <NumberComplete>
-                  (
-                  {federalNumberCompleted}
-                  /
-                  {federalTotalNumber}
-                  )
-                </NumberComplete>
-              )}
-            </StyledButton>
-          )}
-          {/* ************* */}
-          {/* State Races */}
-          {/* ************* */}
-          {(stateShowButton && stateButtonNeeded) && (
-            <StyledButton
-              className="u-cursor--pointer"
-              color="primary"
-              completed={stateAllCompleted ? 'true' : undefined}
-              onClick={this.goToStateRaces}
-              variant="outlined"
-            >
-              <ButtonLeft>
-                {stateAllCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
-                <ButtonText>
-                  {stateAllCompleted ? (
-                    <>
-                      <span className="u-show-mobile">
-                        State Races
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        Your Decisions on State Races
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="u-show-mobile">
-                        State Races
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        Decide on State Races
-                      </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
-                    </>
-                  )}
-                </ButtonText>
-              </ButtonLeft>
-              {!stateAllCompleted && (
-                <NumberComplete>
-                  (
-                  {stateNumberCompleted}
-                  /
-                  {stateTotalNumber}
-                  )
-                </NumberComplete>
-              )}
-            </StyledButton>
-          )}
-          {/* ************* */}
-          {/* Measures */}
-          {/* ************* */}
-          {(measureShowButton && measureButtonNeeded) && (
-            <StyledButton
-              className="u-cursor--pointer"
-              color="primary"
-              completed={measureAllCompleted ? 'true' : undefined}
-              onClick={this.goToMeasureRaces}
-              variant="outlined"
-            >
-              <ButtonLeft>
-                {measureAllCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
-                <ButtonText>
-                  {measureAllCompleted ? (
-                    <>
-                      <span className="u-show-mobile">
-                        All Measures
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        Your Decisions on Measures
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="u-show-mobile">
-                        All Measures
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        Decide on Measures
-                      </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
-                    </>
-                  )}
-                </ButtonText>
-              </ButtonLeft>
-              {!measureAllCompleted && (
-                <NumberComplete>
-                  (
-                  {measureNumberCompleted}
-                  /
-                  {measureTotalNumber}
-                  )
-                </NumberComplete>
-              )}
-            </StyledButton>
-          )}
-          {/* *********** */}
-          {/* Local Races */}
-          {/* *********** */}
-          {(localShowButton && localButtonNeeded) && (
-            <StyledButton
-              className="u-cursor--pointer"
-              color="primary"
-              completed={localAllCompleted ? 'true' : undefined}
-              onClick={this.goToLocalRaces}
-              variant="outlined"
-            >
-              <ButtonLeft>
-                {localAllCompleted ? <StyledCheckboxCompleted><CheckCircle /></StyledCheckboxCompleted> : <StyledCheckbox /> }
-                <ButtonText>
-                  {localAllCompleted ? (
-                    <>
-                      <span className="u-show-mobile">
-                        Local Races
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        Your Decisions on Local Races
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="u-show-mobile">
-                        Local Races
-                      </span>
-                      <span className="u-show-desktop-tablet">
-                        Decide on Local Races
-                      </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
-                    </>
-                  )}
-                </ButtonText>
-              </ButtonLeft>
-              {!localAllCompleted && (
-                <NumberComplete>
-                  (
-                  {localNumberCompleted}
-                  /
-                  {localTotalNumber}
-                  )
                 </NumberComplete>
               )}
             </StyledButton>

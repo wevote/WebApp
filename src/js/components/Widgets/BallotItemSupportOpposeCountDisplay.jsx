@@ -28,6 +28,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   static propTypes = {
+    ballotItemDisplayName: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string.isRequired,
     classes: PropTypes.object,
     closeSupportOpposeCountDisplayModal: PropTypes.bool,
@@ -86,7 +87,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // console.log('isCandidate:', isCandidate, 'isMeasure:', isMeasure);
     if (isCandidate) {
       const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
-      ballotItemDisplayName = candidate.ballot_item_display_name || '';
+      ballotItemDisplayName = candidate.ballot_item_display_name || this.props.ballotItemDisplayName;
       const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
@@ -97,7 +98,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       });
     } else if (isMeasure) {
       const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
-      ballotItemDisplayName = measure.ballot_item_display_name || '';
+      ballotItemDisplayName = measure.ballot_item_display_name || this.props.ballotItemDisplayName;
       const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
@@ -124,7 +125,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
     if (isCandidate) {
       const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
-      ballotItemDisplayName = candidate.ballot_item_display_name || '';
+      ballotItemDisplayName = candidate.ballot_item_display_name || this.props.ballotItemDisplayName;
       const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
@@ -135,7 +136,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       });
     } else if (isMeasure) {
       const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
-      ballotItemDisplayName = measure.ballot_item_display_name || '';
+      ballotItemDisplayName = measure.ballot_item_display_name || this.props.ballotItemDisplayName;
       const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
       const { numberOfAllSupportPositions, numberOfAllOpposePositions, numberOfAllInfoOnlyPositions } = countResults;
       this.setState({
@@ -509,9 +510,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                     <>
                       {' '}
                       <strong>{ballotItemDisplayName}</strong>
-                      .
                     </>
                   )}
+                  .
                 </YourOpinion>
               )}
               {voterOpposesBallotItem && (
@@ -712,8 +713,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   </NetworkScoreSmall>
                 </DecidedIconWrapper>
                 You support
-                {' '}
-                <strong>{ballotItemDisplayName}</strong>
+                {ballotItemDisplayName && (
+                  <>
+                    {' '}
+                    <strong>{ballotItemDisplayName}</strong>
+                  </>
+                )}
                 .
                 <br />
               </YourOpinion>
@@ -769,9 +774,17 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               />
             </ItemActionBarWrapper>
             <div>
-              Follow opinions to build your personalized score about
-              {' '}
-              <strong>{ballotItemDisplayName ? ` ${ballotItemDisplayName}` : ''}</strong>
+              Follow opinions to build your personalized score
+              {(ballotItemDisplayName) && (
+                <span>
+                  {' '}
+                  about
+                  {' '}
+                  <strong>
+                    {ballotItemDisplayName}
+                  </strong>
+                </span>
+              )}
               .
             </div>
             <div>

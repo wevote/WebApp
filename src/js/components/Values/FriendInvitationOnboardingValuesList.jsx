@@ -14,6 +14,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
     displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
     followToggleOnItsOwnLine: PropTypes.bool,
     friendIssueWeVoteIdList: PropTypes.array,
+    includeLinkToIssue: PropTypes.bool,
     oneColumn: PropTypes.bool,
   };
 
@@ -84,7 +85,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
 
   render () {
     renderLog('FriendInvitationOnboardingValuesList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { followToggleOnItsOwnLine, oneColumn } = this.props;
+    const { followToggleOnItsOwnLine, includeLinkToIssue, oneColumn } = this.props;
     const { allIssuesNoLean, allLeftIssues, allRightIssues } = this.state;
 
     // console.log('All issues:', issuesList);
@@ -106,6 +107,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
             followToggleOn
             followToggleOnItsOwnLine={followToggleOnItsOwnLine}
             hideAdvocatesCount
+            includeLinkToIssue={includeLinkToIssue}
             issue={issue}
             issueImageSize="SMALL"
             key={`issue-list-key-${issue.issue_we_vote_id}`}
@@ -132,6 +134,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
             followToggleOn
             followToggleOnItsOwnLine={followToggleOnItsOwnLine}
             hideAdvocatesCount
+            includeLinkToIssue={includeLinkToIssue}
             issue={issue}
             issueImageSize="SMALL"
             key={`issue-list-key-${issue.issue_we_vote_id}`}
@@ -158,6 +161,7 @@ export default class FriendInvitationOnboardingValuesList extends Component {
             followToggleOn
             followToggleOnItsOwnLine={followToggleOnItsOwnLine}
             hideAdvocatesCount
+            includeLinkToIssue={includeLinkToIssue}
             issue={issue}
             issueImageSize="SMALL"
             key={`issue-list-key-${issue.issue_we_vote_id}`}

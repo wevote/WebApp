@@ -177,7 +177,7 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/values/') ||
       stringContains('/settings/positions', pathnameLowerCase) ||
       pathnameLowerCase.startsWith('/settings/voterguidelist') ||
-      pathnameLowerCase.startsWith('/settings/voterguidesmenu')
+      pathnameLowerCase.startsWith('/settings/voterguidesmenu') || pathnameLowerCase.startsWith('/register')
   ) {
     // We want to HIDE the footer bar on the above path patterns
     showFooterBar = false;

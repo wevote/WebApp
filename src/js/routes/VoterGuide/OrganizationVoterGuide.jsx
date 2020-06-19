@@ -200,7 +200,7 @@ export default class OrganizationVoterGuide extends Component {
         this.setState({
           organization,
           organizationId: organization.organization_id,
-          linkedVoterWeVoteId: organization.linked_voter_we_vote_id,
+          organizationLinkedVoterWeVoteId: organization.linked_voter_we_vote_id,
           organizationType: organization.organization_type,
           voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(organizationWeVoteId),
           voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(organizationWeVoteId),
@@ -222,7 +222,7 @@ export default class OrganizationVoterGuide extends Component {
         this.setState({
           organization,
           organizationId: organization.organization_id,
-          linkedVoterWeVoteId: organization.linked_voter_we_vote_id,
+          organizationLinkedVoterWeVoteId: organization.linked_voter_we_vote_id,
           organizationType: organization.organization_type,
         });
         if (organization.organization_banner_url) {
@@ -281,7 +281,7 @@ export default class OrganizationVoterGuide extends Component {
 
   render () {
     renderLog('OrganizationVoterGuide');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activeRoute, linkedVoterWeVoteId, organizationBannerUrl, organizationId, organizationType, organizationWeVoteId } = this.state;
+    const { activeRoute, organizationLinkedVoterWeVoteId, organizationBannerUrl, organizationId, organizationType, organizationWeVoteId } = this.state;
     if (!this.state.organization || !this.state.voter || this.state.autoFollowRedirectHappening) {
       return <div>{LoadingWheel}</div>;
     }
@@ -349,7 +349,7 @@ export default class OrganizationVoterGuide extends Component {
                   useReadMoreForTwitterDescription
                 />
                 { isVoterOwner && (
-                  <div className="u-float-right">
+                  <EditYourEndorsementsWrapper>
                     <Button
                       id="organizationVoterGuideEdit"
                       onClick={this.onEdit}
@@ -358,7 +358,7 @@ export default class OrganizationVoterGuide extends Component {
                     >
                       <span>Edit Your Endorsements</span>
                     </Button>
-                  </div>
+                  </EditYourEndorsementsWrapper>
                 )}
                 { !isVoterOwner && (
                   <>
@@ -366,15 +366,15 @@ export default class OrganizationVoterGuide extends Component {
                       <FollowToggle
                         platformType="mobile"
                         organizationWeVoteId={organizationWeVoteId}
-                        otherVoterWeVoteId={linkedVoterWeVoteId}
+                        otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
                         showFollowingText
                       />
                     </FollowToggleMobileWrapper>
-                    { isSpeakerTypePrivateCitizen(organizationType) && (
+                    { (isSpeakerTypePrivateCitizen(organizationType) && organizationLinkedVoterWeVoteId) && (
                       <FriendToggleMobileWrapper>
                         <FriendToggle
                           displayFullWidth
-                          otherVoterWeVoteId={linkedVoterWeVoteId}
+                          otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
                           showFriendsText
                         />
                       </FriendToggleMobileWrapper>
@@ -474,6 +474,10 @@ const CardContainer = styled.div`
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     margin-top: ${({ bannerUrl }) => (bannerUrl ? '-203px' : '0')};
   }
+`;
+
+const EditYourEndorsementsWrapper = styled.div`
+  margin-top: 4px;
 `;
 
 const FollowToggleMobileWrapper = styled.div`

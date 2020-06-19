@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import FriendInvitationOnboardingValuesList from './FriendInvitationOnboardingValuesList';
 import IssueActions from '../../actions/IssueActions';
-import IssueCardCompressed from './IssueCardCompressed';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import { historyPush } from '../../utils/cordovaUtils';
 
 class ValuesToFollowPreview extends Component {
+  static propTypes = {
+    followToggleOnItsOwnLine: PropTypes.bool,
+    includeLinkToIssue: PropTypes.bool,
+  };
+
   constructor (props) {
     super(props);
     this.state = {
@@ -41,37 +47,13 @@ class ValuesToFollowPreview extends Component {
   }
 
   render () {
-    // const width = document.documentElement.clientWidth;
     renderLog('ValuesToFollowPreview');  // Set LOG_RENDER_EVENTS to log all renders
-    let issueList = [];
-    if (this.state.issuesToFollow) {
-      issueList = this.state.issuesToFollow;
+    const { followToggleOnItsOwnLine, includeLinkToIssue } = this.props;
+    const { issuesToFollow } = this.state;
+    let issuesToFollowLength = 0;
+    if (issuesToFollow) {
+      issuesToFollowLength = issuesToFollow.length;
     }
-
-    let ISSUES_TO_SHOW = 4;
-
-    if (window.innerWidth < 768) {
-      ISSUES_TO_SHOW = 2;
-    } else {
-      ISSUES_TO_SHOW = 4;
-    }
-
-    let issueCount = 0;
-    const issueListForDisplay = issueList.map((issue) => {
-      issueCount++;
-      if (issueCount > ISSUES_TO_SHOW) {
-        return null;
-      } else {
-        return (
-          <IssueCardCompressed
-            followToggleOn
-            issue={issue}
-            issueImageSize="SMALL"
-            key={`issue-list-key-${issue.issue_we_vote_id}`}
-          />
-        );
-      }
-    });
 
     return (
       <div className="opinions-followed__container">
@@ -79,17 +61,26 @@ class ValuesToFollowPreview extends Component {
           <div className="card-main">
             <SectionTitle>
               Values to Follow
-              {!!(issueList && issueList.length) && (
+              {!!(issuesToFollowLength) && (
                 <>
                   {' '}
                   (
-                  {issueList.length}
+                  {issuesToFollowLength}
                   )
                 </>
               )}
             </SectionTitle>
+            <SectionInformation>
+              <i className="fas fa-info-circle" />
+              Follow values/issues to see opinions from people who share your values.
+            </SectionInformation>
             <Row className="row">
-              { issueListForDisplay }
+              <FriendInvitationOnboardingValuesList
+                displayOnlyIssuesNotFollowedByVoter
+                followToggleOnItsOwnLine={followToggleOnItsOwnLine}
+                includeLinkToIssue={includeLinkToIssue}
+                oneColumn
+              />
             </Row>
             <ShowMoreFooter
               showMoreId="valuesToFollowPreviewShowMoreId"
@@ -104,13 +95,18 @@ class ValuesToFollowPreview extends Component {
 }
 
 const Row = styled.div`
-  margin: 0px -6px;
+  margin: 0 !important;
+`;
+
+const SectionInformation = styled.div`
+  margin-bottom: 16px;
 `;
 
 const SectionTitle = styled.h2`
-  width: fit-content;  font-weight: bold;
+  font-weight: bold;
   font-size: 18px;
-  margin-bottom: 16px;
+  margin-bottom: 4px;
+  width: fit-content;
 `;
 
 export default withTheme((ValuesToFollowPreview));
