@@ -106,7 +106,7 @@ const StyledButton = styled(Button)`
     padding: 0 !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: ${props => (props.completed || props.withoutsteps ? 'flex-start' : 'space-between')} !important;
+    justify-content: ${props => (props.withoutsteps ? 'flex-start' : 'space-between')} !important;
   }
   :hover {
     background: #f7f7f7 !important;

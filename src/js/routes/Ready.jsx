@@ -18,6 +18,7 @@ import ReadMore from '../components/Widgets/ReadMore';
 import ReadyActions from '../actions/ReadyActions';
 import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
 import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
+import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import { renderLog } from '../utils/logging';
@@ -166,6 +167,11 @@ class Ready extends Component {
               <ReadyTaskPlan
                 arrowsOn
               />
+              {nextReleaseFeaturesEnabled && (
+                <ReadyTaskFriends
+                  arrowsOn
+                />
+              )}
             </div>
             <div className="col-lg-4 d-none d-lg-block">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
