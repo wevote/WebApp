@@ -34,6 +34,12 @@ class ReadyTaskFriends extends React.Component {
       numberOfFriendsWithPlan: 0,
       numberOfFriendsYouWillRemind: 0,
       numberOfYourPositionsThisElection: 0,
+      // numberOfFriendsReady: 5,
+      // numberOfFriendsRegistered: 4,
+      // numberOfFriendsWithBallot: 7,
+      // numberOfFriendsWithPlan: 12,
+      // numberOfFriendsYouWillRemind: 6,
+      // numberOfYourPositionsThisElection: 9,
     };
   }
 
@@ -192,8 +198,11 @@ class ReadyTaskFriends extends React.Component {
                   </>
                 ) : (
                   <>
-                    <span className="u-show-mobile">
+                    <span className="u-show-mobile-iphone5-or-smaller">
                       Send Ballot
+                    </span>
+                    <span className="u-show-mobile-bigger-than-iphone5">
+                      Send Ballot to Friends
                     </span>
                     <span className="u-show-desktop-tablet">
                       Encourage Friends to Look at Ballot
@@ -223,12 +232,12 @@ class ReadyTaskFriends extends React.Component {
                     <span className="u-show-mobile">
                       {numberOfYourPositionsThisElection}
                       {' '}
-                      Items Endorsed
+                      Ballot Items Endorsed
                     </span>
                     <span className="u-show-desktop-tablet">
                       {numberOfYourPositionsThisElection}
                       {' '}
-                      Ballot Items You Endorse
+                      Ballot Items You Support or Oppose
                     </span>
                   </>
                 ) : (
@@ -269,16 +278,16 @@ class ReadyTaskFriends extends React.Component {
                     <span className="u-show-desktop-tablet">
                       {numberOfFriendsWithPlan}
                       {' '}
-                      Friends have Shared Plan to Vote
+                      Friends have Shared Their Plan to Vote
                     </span>
                   </>
                 ) : (
                   <>
                     <span className="u-show-mobile">
-                      Share Plan to Vote
+                      Friends Have Plan?
                     </span>
                     <span className="u-show-desktop-tablet">
-                      Ask Friends to Share Plan to Vote
+                      Make Sure Friends Have Plan to Vote
                     </span>
                     <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
                   </>
