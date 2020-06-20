@@ -185,7 +185,11 @@ class FooterBar extends React.Component {
                 onClick={() => cordovaOpenSafariView('https://help.wevote.us', null, 50)}
               />
             ) : (
-              <BottomNavigationAction className="no-outline" id="helpTabFooterBar" />
+              <BottomNavigationAction
+                className="no-outline"
+                id="helpTabFooterBar"
+                icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />}
+              />
             )}
           </BottomNavigation>
         </div>
