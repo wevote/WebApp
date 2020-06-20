@@ -295,8 +295,25 @@ class Application extends Component {
       }
       return (
         <LoadingScreen>
-          <div style={{ padding: 30 }}>
-            <h1 className="h1">Loading...</h1>
+          <div
+            style={
+              {
+                display: 'flex',
+                position: 'fixed',
+                height: '100vh',
+                width: '100vw',
+                top: 0,
+                left: 0,
+                backgroundColor: '#fff',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: 14,
+                color: '#0d5470',
+                flexDirection: 'column',
+              }
+            }
+          >
+            <h1 className="h1">More election data loading...</h1>
             { isCordova() &&
               <h2 className="h1">Does your phone have access to the internet?</h2>
             }

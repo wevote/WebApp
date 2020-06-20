@@ -63,10 +63,6 @@
     "ballotTest-iOS": "./node_modules/.bin/wdio ./tests/browserstack/ballotiOS.wdio.config.js",
     "readyTest-Browser": "./node_modules/.bin/wdio ./tests/browserstack/readyBrowser.wdio.config.js",
     "readyTest-Android": "./node_modules/.bin/wdio ./tests/browserstack/readyAndroid.wdio.config.js",
-    "readyTest-Android": "./node_modules/.bin/wdio ./tests/browserstack/readyAndroid.wdio.config.js",
-    "readyTest-Android": "./node_modules/.bin/wdio ./tests/browserstack/readyAndroid.wdio.config.js",
-    "readyTest-Android": "./node_modules/.bin/wdio ./tests/browserstack/readyAndroid.wdio.config.js",
-    "readyTest-Android": "./node_modules/.bin/wdio ./tests/browserstack/readyAndroid.wdio.config.js",
     "readyTest-iOS": "./node_modules/.bin/wdio ./tests/browserstack/readyiOS.wdio.config.js",
     "exampleTest": "./node_modules/.bin/wdio ./tests/browserstack/example.wdio.config.js",
     "start": "webpack-dev-server",
@@ -93,7 +89,6 @@
     "es6-promise": "^4.2.8",
     "flux": "^3.1.3",
     "font-awesome": "^4.7.0",
-    "fsevents": "^2.1.2",
     "history": "^3.2.1",
     "iframe-resizer": "^3.6.6",
     "jquery": "^3.5.0",
@@ -223,6 +218,9 @@
     "webpack-dev-server": "^3.10.1",
     "workbox-webpack-plugin": "^4.3.1",
     "yargs": "^6.6.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.1.2"
   },
   "repository": "https://github.com/wevote/webapp.git",
   "pre-commit": [
