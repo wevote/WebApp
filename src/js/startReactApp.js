@@ -13,7 +13,7 @@ import styledTheme from './styled-theme';
 import { renderLog } from './utils/logging';
 
 
-// May 2020, this was moved into a seperate file, so that the imports can be delayed
+// May 2020, this was moved into a separate file, so that the imports can be delayed
 // until after the cordova 'deviceready' event (if we are in Cordova).
 // eslint-disable-next-line no-unused-vars,import/prefer-default-export
 export default function startReactApp () {

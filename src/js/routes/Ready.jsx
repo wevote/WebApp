@@ -113,9 +113,9 @@ class Ready extends Component {
       chosenReadyIntroductionText, chosenReadyIntroductionTitle, issuesShouldBeDisplayed,
       locationGuessClosed, voter,
     } = this.state;
-    if (!voter) {
-      return LoadingWheel;
-    }
+    // if (!voter) {
+    //   return LoadingWheel;
+    // }
     // const defaultIntroductionText = 'Make sure you\'re ready to vote ' +
     //   '(registered to vote, have a plan, etc.) ' +
     //   'See who\'s running for office. What do they stand for? ' +

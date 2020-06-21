@@ -59,6 +59,7 @@
         </div>
       </div>
     </div>
+    <!-- This adds over a second delay to main thread, but is required by core bundle.js //-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <script>
@@ -67,6 +68,7 @@
       }
     </script>
 <!--    <script type="text/javascript" async defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>-->
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" async defer src="https://platform.twitter.com/widgets.js"></script>
     <script>
@@ -99,6 +101,19 @@
       linkElementForMainCss.type = 'text/css';
       let firstExistingLink = document.getElementsByTagName('link')[0];
       firstExistingLink.parentNode.insertBefore(linkElementForMainCss, firstExistingLink);
+
+      // Dale 2020-06 Having trouble getting jQuery to load without blocking thread
+      // setTimeout(() => {
+      //   /* Load jquery for API calls */
+      //   let scriptElementForJquery = document.createElement('script');
+      //   scriptElementForJquery.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
+      //   let firstExistingScript = document.getElementsByTagName('script')[0];
+      //   firstExistingScript.parentNode.insertBefore(scriptElementForJquery, firstExistingScript);
+      // }, 5000);
+      // let scriptElementForJquery = document.createElement('script');
+      // scriptElementForJquery.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
+      // let firstExistingScript = document.getElementsByTagName('script')[0];
+      // firstExistingScript.parentNode.insertBefore(scriptElementForJquery, firstExistingScript);
 
       setTimeout(() => {
         /* ZenDesk load delay so it doesn't block main thread */
