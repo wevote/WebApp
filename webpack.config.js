@@ -12,11 +12,32 @@ const port = process.env.PORT || 3000;
 // Set isProduction to false, to enable the interactive bundle analyser and the Unused component analyzer
 const isProduction = true;   // Developers can set this to be false, but in git it should always be true
 
+// , './src/sass/loading-screen.scss'  // Deprecated by Dale
+// When we include the core bundle, its' Root file takes over routing once it loads.
+// What we want is for the bundle without API calls to fully load before we start loading
+// larger bundle.js in the background.
+//     bundle: ['./src/js/index.js', './src/sass/main.scss'],
+//     readyBundle: ['./src/js/startReactReadyApp.js', './src/sass/main.scss'],
+
+// Dale 2020-06 When I try to use optimization (chunks-webpack-plugin), the routes file within readyBundle doesn't seem get used.
+//     "chunks-webpack-plugin": "^6.1.0",
+
+//   optimization: {
+//     splitChunks: {
+//       chunks: 'all',
+//       name: false,
+//     },
+//   },
+
+// To switch back to readyBundle
+//     readyBundle: ['./src/js/startReactReadyApp.js', './src/sass/main.scss'],
 module.exports = {
   mode: 'development',
-  entry: ['./src/js/index.js', './src/sass/loading-screen.scss', './src/sass/main.scss'],
+  entry: {
+    bundle: ['./src/js/index.js', './src/sass/main.scss'],
+  },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'build'),
   },
   plugins: [

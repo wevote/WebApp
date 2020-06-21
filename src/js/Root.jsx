@@ -48,6 +48,7 @@ import PageNotFound from './routes/PageNotFound';
 import Pricing from './routes/More/Pricing';
 import Privacy from './routes/More/Privacy';
 import ProcessingDonation from './routes/More/ProcessingDonation';
+import GetReady from './routes/GetReady';
 import Ready from './routes/Ready';
 import ReadyRedirect from './routes/ReadyRedirect';
 import RegisterToVote from './routes/More/RegisterToVote';
@@ -107,6 +108,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       }
       <Route path="/welcome" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
       <Route path="/news" component={News} />
+      <Route path="/getready" component={GetReady} />
       <Route path="/ready" component={Ready} />
       <Route path="/register" component={Register} />
       <Route path="/ballot" component={BallotIndex}>

@@ -9,7 +9,7 @@ function localIsCordova () {
   return cordova !== undefined;
 }
 
-// Adding functions to the String prototype will make stuff like `for (char in str)` break, because it will loop over the substringOccurences property.
+// Adding functions to the String prototype will make stuff like `for (char in str)` break, because it will loop over the substringOccurrences property.
 // As long as we use `forEach()` or `for (char of str)` then that side effect will be mitigated.
 String.prototype.numberOfNeedlesFoundInString = numberOfNeedlesFoundInString; // eslint-disable-line
 
