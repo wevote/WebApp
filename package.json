@@ -67,6 +67,7 @@
     "exampleTest": "./node_modules/.bin/wdio ./tests/browserstack/example.wdio.config.js",
     "start": "webpack-dev-server",
     "start-https": "webpack-dev-server --https --cert ./src/cert/server.crt --key ./src/cert/server.key",
+    "start-prod-local": "node ./server-prod-local.js",
     "start-profile": "node --inspect-brk ./node_modules/.bin/gulp",
     "prod": "NODE_ENV=production webpack -p",
     "build-dev": "NODE_ENV=development gulp build",
