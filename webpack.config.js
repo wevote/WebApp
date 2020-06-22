@@ -34,7 +34,7 @@ const isProduction = true;   // Developers can set this to be false, but in git 
 module.exports = {
   mode: 'development',
   entry: {
-    readyBundle: ['./src/js/startReactReadyApp.js', './src/sass/main.scss'],
+    bundle: ['./src/js/index.js', './src/sass/main.scss'],
   },
   output: {
     filename: '[name].js',
