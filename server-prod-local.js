@@ -1,9 +1,5 @@
 #!/usr/bin/env node
 // Run the express server locally with a production bundle.js, built with 'npm run prod'
-//
-// Note run 'npm run prod' first to build the production bundle
-// Note this will not redirect from http to https, or vice versa.
-// Note: this does not use webpack, it just starts the bundle in the express server based on the settings in /src/js/config
 
 // eslint-disable-next-line import/no-unresolved
 const server = require('./server.js');
