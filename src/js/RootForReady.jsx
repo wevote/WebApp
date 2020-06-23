@@ -1,10 +1,11 @@
 import React, { Suspense, lazy } from 'react';
-import Loadable from 'react-loadable';
 // import { IndexRedirect, Route } from 'react-router';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import ApplicationForReady from './ApplicationForReady';
 // import PageNotFound from './routes/PageNotFound';
 import GetReady from './routes/GetReady';
+
+const Ballot = lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Ballot" */ './routes/Ballot/Ballot'));
 // import Ballot from './routes/Ballot/Ballot';
 // const Ballot = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Ballot" */ './routes/Ballot/Ballot').then(
 //   module => ({
@@ -27,6 +28,9 @@ const routes = () => {  // eslint-disable-line arrow-body-style
       <Switch>
         {/* <Route exact path="/ballot" component={Ballot} /> */}
         <Route path="/getready" component={GetReady} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Route path="/ballot" component={Ballot} />
+        </Suspense>
       </Switch>
       {/* <Route path="*" component={PageNotFound} /> */}
     </Router>

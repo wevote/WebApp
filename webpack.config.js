@@ -11,7 +11,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const port = process.env.PORT || 3000;
 
 // Set isProduction to false, to enable the interactive bundle analyser and the Unused component analyzer
-const isProduction = true;   // Developers can set this to be false, but in git it should always be true
+const isProduction = false;   // Developers can set this to be false, but in git it should always be true
 
 // , './src/sass/loading-screen.scss'  // Deprecated by Dale
 // When we include the core bundle, its' Root file takes over routing once it loads.
@@ -47,6 +47,18 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: 'initial',
+      cacheGroups: {
+        components: {
+          name: 'components',
+          test: /[\\/]js[\\/]components[\\/]/,
+          enforce: true,
+        },
+        stores: {
+          name: 'stores',
+          test: /[\\/]stores[\\/]/,
+          enforce: true,
+        },
+      },
     },
     runtimeChunk: {
       name: 'manifest',
@@ -76,7 +88,7 @@ module.exports = {
       { from: 'src/css/', to: 'css/' },
       { from: 'src/img/',
         to: 'img/',
-        ignore: ['DO-NOT-BUNDLE/**/*', 'welcome/partners/**/*' ],
+        ignore: ['DO-NOT-BUNDLE/**/*', 'welcome/partners/**/*'],
       },
       { from: 'src/javascript/', to: 'javascript/' },
     ]),
