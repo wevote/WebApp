@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { render } from 'react-dom';
 import {
   browserHistory, hashHistory, Router, applyRouterMiddleware,
@@ -23,16 +23,18 @@ export default function startReactApp () {
 
   const element = (
     // eslint-disable-next-line react/jsx-filename-extension
-    <MuiThemeProvider theme={muiTheme}>
-      <ThemeProvider theme={styledTheme}>
-        <Router
-          history={isCordova() ? hashHistory : browserHistory}
-          render={applyRouterMiddleware(useScroll(() => true))}
-        >
-          {routes()}
-        </Router>
-      </ThemeProvider>
-    </MuiThemeProvider>
+    <Suspense fallback={<div>&nbsp;</div>}>
+      <MuiThemeProvider theme={muiTheme}>
+        <ThemeProvider theme={styledTheme}>
+          <Router
+            history={isCordova() ? hashHistory : browserHistory}
+            render={applyRouterMiddleware(useScroll(() => true))}
+          >
+            {routes()}
+          </Router>
+        </ThemeProvider>
+      </MuiThemeProvider>
+    </Suspense>
   );
 
   // console.log('startReactApp before render');
