@@ -6,11 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import PageNotFound from './routes/PageNotFound';
 import GetReady from './routes/GetReady';
 // import Ballot from './routes/Ballot/Ballot';
-// const Ballot = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Ballot" */ './routes/Ballot/Ballot').then(
-//   module => ({
-//     default: module.Ballot
-//   }),
-// ));
+const Ballot = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Ballot" */ './routes/Ballot/Ballot'));
 // const Ballot = lazy(() => import('./routes/Ballot/Ballot'));
 // const AsyncBallotComponent = loadable( {
 //     loader: () => import( './home.component' ),
@@ -24,10 +20,12 @@ import GetReady from './routes/GetReady';
 const routes = () => {  // eslint-disable-line arrow-body-style
   return (
     <Router>
-      <Switch>
-        {/* <Route exact path="/ballot" component={Ballot} /> */}
-        <Route path="/getready" component={GetReady} />
-      </Switch>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <Route exact path="/ballot" component={Ballot} />
+          <Route path="/getready" component={GetReady} />
+        </Switch>
+      </Suspense>
       {/* <Route path="*" component={PageNotFound} /> */}
     </Router>
   );

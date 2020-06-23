@@ -6,7 +6,7 @@ import About from './routes/More/About';
 import AbsenteeBallot from './routes/More/AbsenteeBallot';
 import AddCandidateForExtension from './routes/Ballot/AddCandidateForExtension';
 import Attributions from './routes/More/Attributions';
-import Ballot from './routes/Ballot/Ballot';
+// import Ballot from './routes/Ballot/Ballot';
 import BallotIndex from './routes/Ballot/BallotIndex';
 import Candidate from './routes/Ballot/Candidate';
 import CandidateForExtension from './routes/Ballot/CandidateForExtension';
@@ -81,6 +81,8 @@ import WeVoteBallotEmbed from './routes/More/WeVoteBallotEmbed';
 import YourPage from './routes/YourPage';
 import { isWebApp } from './utils/cordovaUtils';
 import Register from './routes/Register';
+
+const Ballot = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Ballot" */ './routes/Ballot/Ballot'));
 
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
 // const ballotHasBeenVisited = cookies.getItem('ballot_has_been_visited');
