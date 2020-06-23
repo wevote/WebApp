@@ -1,8 +1,9 @@
+const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UnusedWebpackPlugin = require('unused-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const path = require('path');
 const { InjectManifest } = require('workbox-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');   // Don't delete this!
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
@@ -21,7 +22,7 @@ const isProduction = true;   // Developers can set this to be false, but in git 
 //     getReady: ['./src/js/startReactReadyApp.js', './src/sass/main.scss'],
 
 // Dale 2020-06 When I try to use optimization (chunks-webpack-plugin), the routes file within getReady doesn't seem get used.
-//     DEPRECATED: "chunks-webpack-plugin": "^6.1.0",
+//     DEPRECATED: "chunks-webpack-plugin": "^6.1.0", // This is based on "entry" only
 //     "webpack-split-chunks": "^0.2.1",
 
 //   optimization: {
@@ -33,23 +34,48 @@ const isProduction = true;   // Developers can set this to be false, but in git 
 
 // To switch back to getReady
 //     getReady: ['./src/js/startReactReadyApp.js', './src/sass/main.scss'],
+//     getReady: ['./src/js/startReactReadyApp.js'],
 module.exports = {
   mode: 'development',
   entry: {
-    bundle: ['./src/js/index.js', './src/sass/main.scss'],
-    getReady: ['./src/js/startReactReadyApp.js', './src/sass/main.scss'],
+    bundle: ['./src/js/index.js'],
+    mainCss: ['./src/sass/main.scss'],
   },
   output: {
-    chunkFilename: '[name].bundle.js',
-    filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.[contenthash:8].js',
+    filename: '[name].bundle.[contenthash:8].js',
     path: path.resolve(__dirname, 'build'),
   },
   optimization: {
+    runtimeChunk: 'single',
     splitChunks: {
-      chunks: 'initial',
-    },
-    runtimeChunk: {
-      name: 'manifest',
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        components: {
+          name: 'components',
+          test: /[\\/]js[\\/]components[\\/]/,
+          enforce: true,
+        },
+        stores: {
+          name: 'stores',
+          test: /[\\/]stores[\\/]/,
+          enforce: true,
+        },
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            // Thanks to David Gilbertson: https://medium.com/hackernoon/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `npm.${packageName.replace('@', '')}`;
+          },
+        },
+      },
     },
     minimizer: [
       new UglifyJsPlugin({
@@ -65,6 +91,7 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new webpack.HashedModuleIdsPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
@@ -76,7 +103,7 @@ module.exports = {
       { from: 'src/css/', to: 'css/' },
       { from: 'src/img/',
         to: 'img/',
-        ignore: ['DO-NOT-BUNDLE/**/*', 'welcome/partners/**/*' ],
+        ignore: ['DO-NOT-BUNDLE/**/*', 'welcome/partners/**/*'],
       },
       { from: 'src/javascript/', to: 'javascript/' },
     ]),
