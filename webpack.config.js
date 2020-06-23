@@ -6,21 +6,23 @@ const path = require('path');
 const { InjectManifest } = require('workbox-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');   // Don't delete this!
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const port = process.env.PORT || 3000;
 
 // Set isProduction to false, to enable the interactive bundle analyser and the Unused component analyzer
-const isProduction = true;   // Developers can set this to be false, but in git it should always be true
+const isProduction = false;   // Developers can set this to be false, but in git it should always be true
 
 // , './src/sass/loading-screen.scss'  // Deprecated by Dale
 // When we include the core bundle, its' Root file takes over routing once it loads.
 // What we want is for the bundle without API calls to fully load before we start loading
 // larger bundle.js in the background.
 //     bundle: ['./src/js/index.js', './src/sass/main.scss'],
-//     readyBundle: ['./src/js/startReactReadyApp.js', './src/sass/main.scss'],
+//     getReady: ['./src/js/startReactReadyApp.js', './src/sass/main.scss'],
 
-// Dale 2020-06 When I try to use optimization (chunks-webpack-plugin), the routes file within readyBundle doesn't seem get used.
-//     "chunks-webpack-plugin": "^6.1.0",
+// Dale 2020-06 When I try to use optimization (chunks-webpack-plugin), the routes file within getReady doesn't seem get used.
+//     DEPRECATED: "chunks-webpack-plugin": "^6.1.0",
+//     "webpack-split-chunks": "^0.2.1",
 
 //   optimization: {
 //     splitChunks: {
@@ -29,21 +31,44 @@ const isProduction = true;   // Developers can set this to be false, but in git 
 //     },
 //   },
 
-// To switch back to readyBundle
-//     readyBundle: ['./src/js/startReactReadyApp.js', './src/sass/main.scss'],
+// To switch back to getReady
+//     getReady: ['./src/js/startReactReadyApp.js', './src/sass/main.scss'],
 module.exports = {
   mode: 'development',
   entry: {
     bundle: ['./src/js/index.js', './src/sass/main.scss'],
+    getReady: ['./src/js/startReactReadyApp.js', './src/sass/main.scss'],
   },
   output: {
-    filename: '[name].js',
+    chunkFilename: '[name].bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'build'),
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'initial',
+    },
+    runtimeChunk: {
+      name: 'manifest',
+    },
+    minimizer: [
+      new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: {
+          ecma: 8,
+          mangle: false,
+          keep_classnames: true,
+          keep_fnames: true,
+        },
+      }),
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
+      filename: 'index.html',
+      chunksSortMode: 'none',
     }),
     new CopyPlugin([
       { from: 'src/extension.html', to: '.' },
