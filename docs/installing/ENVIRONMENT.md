@@ -24,7 +24,7 @@ It creates an environment that has its own installation directories, that doesn'
 Install [Homebrew](https://brew.sh/), and then install Python:
 
     $ cd ~
-    $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     $ brew install python
 
 <!-- This failed on 3 Macs in a row for me, including a new out of the box Mac, let's skip the easy_install option, Steve April 2018 
