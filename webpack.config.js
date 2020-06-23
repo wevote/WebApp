@@ -38,8 +38,7 @@ const isProduction = true;   // Developers can set this to be false, but in git 
 module.exports = {
   mode: 'development',
   entry: {
-    bundle: ['./src/js/index.js'],
-    mainCss: ['./src/sass/main.scss'],
+    bundle: ['./src/js/index.js', './src/sass/main.scss'],
   },
   output: {
     chunkFilename: '[name].bundle.[contenthash:8].js',
@@ -64,16 +63,18 @@ module.exports = {
           enforce: true,
         },
         vendor: {
+          name: 'vendor',
           test: /[\\/]node_modules[\\/]/,
-          name(module) {
-            // Thanks to David Gilbertson: https://medium.com/hackernoon/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758
-            // get the name. E.g. node_modules/packageName/not/this/part.js
-            // or node_modules/packageName
-            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-
-            // npm package names are URL-safe, but some servers don't like @ symbols
-            return `npm.${packageName.replace('@', '')}`;
-          },
+          enforce: true,
+          // name(module) {
+          //   // Thanks to David Gilbertson: https://medium.com/hackernoon/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758
+          //   // get the name. E.g. node_modules/packageName/not/this/part.js
+          //   // or node_modules/packageName
+          //   const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+          //
+          //   // npm package names are URL-safe, but some servers don't like @ symbols
+          //   return `npm.${packageName.replace('@', '')}`;
+          // },
         },
       },
     },
