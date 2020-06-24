@@ -52,29 +52,55 @@ module.exports = {
       maxInitialRequests: Infinity,
       minSize: 0,
       cacheGroups: {
+        reactCore: {
+          name: 'reactCore',
+          test: /[\\/]node_modules[\\/](prop-types|react|react-dom|react-helmet|react-router|react-router-scroll|react-text-truncate)[\\/]/,
+          chunks: 'all',
+          enforce: true,
+        },
+        materialStyle: {
+          name: 'materialStyle',
+          test: /[\\/]node_modules[\\/](@material-ui|styled-components)[\\/]/,
+          chunks: 'all',
+          enforce: true,
+        },
+        ready: {
+          name: 'ready',
+          test: function (module) {
+            if (module.resource) {
+              return module.resource.includes('/js/config.js') ||
+                module.resource.includes('/js/index.js') ||
+                module.resource.includes('/js/mui-theme.js') ||
+                module.resource.includes('/js/Root.jsx') ||
+                module.resource.includes('/js/startReactApp.jsx') ||
+                module.resource.includes('/js/styled-theme.js') ||
+                module.resource.includes('/js/components/ReadyNoApi/') ||
+                module.resource.includes('/js/components/Widgets/ReadMore.jsx') ||
+                module.resource.includes('/js/routes/ReadyNoApi.jsx') ||
+                module.resource.includes('/js/utils/');
+            }
+          },
+          chunks: 'all',
+          enforce: true,
+        },
         components: {
           name: 'components',
           test: /[\\/]js[\\/]components[\\/]/,
+          chunks: 'async',
           enforce: true,
+          priority: -10,
         },
         stores: {
           name: 'stores',
           test: /[\\/]stores[\\/]/,
+          chunks: 'async',
           enforce: true,
         },
-        vendor: {
-          name: 'vendor',
+        defaultVendors: {
+          name: 'defaultVendors',
           test: /[\\/]node_modules[\\/]/,
-          enforce: true,
-          // name(module) {
-          //   // Thanks to David Gilbertson: https://medium.com/hackernoon/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758
-          //   // get the name. E.g. node_modules/packageName/not/this/part.js
-          //   // or node_modules/packageName
-          //   const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-          //
-          //   // npm package names are URL-safe, but some servers don't like @ symbols
-          //   return `npm.${packageName.replace('@', '')}`;
-          // },
+          chunks: 'async',
+          priority: -10,
         },
       },
     },
@@ -96,7 +122,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
-      chunksSortMode: 'none',
+      chunksSortMode: 'auto',
     }),
     new CopyPlugin([
       { from: 'src/extension.html', to: '.' },

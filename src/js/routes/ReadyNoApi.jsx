@@ -16,8 +16,8 @@ import cookies from '../utils/cookies';
 // import LoadingWheel from '../components/LoadingWheel';
 import ReadMore from '../components/Widgets/ReadMore';
 // import ReadyActions from '../actions/ReadyActions';
-import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
-import ReadyTaskBallotNoApi from '../components/Ready/ReadyTaskBallotNoApi';
+import ReadyIntroduction from '../components/ReadyNoApi/ReadyIntroduction';
+import ReadyTaskBallotNoApi from '../components/ReadyNoApi/ReadyTaskBallotNoApi';
 // import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 // import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 // import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
@@ -106,7 +106,7 @@ class Ready extends Component {
   }
 
   componentDidCatch (error, info) {
-    console.log('GetReady.jsx caught: ', error, info.componentStack);
+    console.log('ReadyNoApi.jsx caught: ', error, info.componentStack);
   }
 
   render () {
@@ -153,9 +153,9 @@ class Ready extends Component {
                   <ReadyIntroduction />
                 </div>
               </Card>
-              <ReadyTaskBallotNoApi
-                arrowsOn
-              />
+              {/* <ReadyTaskBallotNoApi */}
+              {/*  arrowsOn */}
+              {/* /> */}
               {/* {nextReleaseFeaturesEnabled && ( */}
               {/*  <ReadyTaskRegister */}
               {/*    arrowsOn */}

@@ -4,7 +4,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import ApplicationForReady from './ApplicationForReady';
 // import PageNotFound from './routes/PageNotFound';
-import GetReady from './routes/GetReady';
+import GetReady from './routes/ReadyNoApi';
 // import Ballot from './routes/Ballot/Ballot';
 // const Ballot = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Ballot" */ './routes/Ballot/Ballot'));
 const Ballot = lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Ballot" */ './routes/Ballot/Ballot'));

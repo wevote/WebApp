@@ -11,7 +11,7 @@ import ballot100Percent from '../../../img/global/svg-icons/ready/ballot-100-per
 // import BallotActions from '../../actions/BallotActions';
 // import BallotStore from '../../stores/BallotStore';
 // import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
-import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
+import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper } from '../Ready/ReadyTaskStyles';
 import ShowMoreButtons from './ShowMoreButtons';
 // import SupportStore from '../../stores/SupportStore';
 // import VoterStore from '../../stores/VoterStore';
