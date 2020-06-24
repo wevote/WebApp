@@ -174,4 +174,5 @@ web_app/build/*
 .vscode
 .gitattributes
 /yarn.lock
+server.csr
 

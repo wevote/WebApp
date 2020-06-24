@@ -12,7 +12,7 @@ import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
-import ShowMoreButtons from './ShowMoreButtons';
+import ShowMoreButtons from '../ReadyNoApi/ShowMoreButtons';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import VoterConstants from '../../constants/VoterConstants';

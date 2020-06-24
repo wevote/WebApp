@@ -16,7 +16,7 @@ import IssueStore from '../stores/IssueStore';
 import LoadingWheel from '../components/LoadingWheel';
 import ReadMore from '../components/Widgets/ReadMore';
 import ReadyActions from '../actions/ReadyActions';
-import ReadyIntroduction from '../components/Ready/ReadyIntroduction';
+import ReadyIntroduction from '../components/ReadyNoApi/ReadyIntroduction';
 import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';

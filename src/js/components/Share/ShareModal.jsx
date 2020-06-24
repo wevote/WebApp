@@ -9,7 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import { Button, Tooltip } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import {
   EmailIcon,
   EmailShareButton,

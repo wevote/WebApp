@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import EditLocation from '@material-ui/icons/EditLocation';
 import CheckCircle from '@material-ui/icons/CheckCircle';
