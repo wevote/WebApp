@@ -9,9 +9,9 @@ import { renderLog } from '../../utils/logging';
 import closeIcon from '../../../img/global/icons/x-close.png';
 
 export default class IntroNetwork extends Component {
-  static goToBallotLink () {
-    const ballotLink = '/ballot';
-    historyPush(ballotLink);
+  static goToReadyLink () {
+    const readyLink = '/ready';
+    historyPush(readyLink);
   }
 
   constructor (props) {
@@ -74,7 +74,7 @@ export default class IntroNetwork extends Component {
       <div>
         <Helmet title="Welcome to We Vote" />
         <div className="intro-story container-fluid well u-inset--md" style={this.overrideMediaQueryForAndroidTablets()}>
-          <span onClick={IntroNetwork.goToBallotLink}>
+          <span onClick={IntroNetwork.goToReadyLink}>
             <img
               src={cordovaDot(closeIcon)}
               className={isWebApp() ? 'x-close' : 'x-close x-close__cordova'}
