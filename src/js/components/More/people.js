@@ -10,13 +10,6 @@ const photoPath = cordovaDot('/img/global/photos/');
 const logoPath = cordovaDot('/img/global/logos/');
 
 export const weVoteFounders = [{
-  name: 'Jenifer Fernandez Ancona',
-  image: `${photoPath}Jenifer_Fernandez_Ancona-256x256.jpg`,
-  title: [
-    'Co-Founder & c4 Board Chair',
-    'Jenifer helps to run Women Donors Network, a national community of 220 progressive women donors. Jenifer also directs WDN Action, a 501(c)(4) organization advancing justice through advocacy, funding, and civic engagement of underrepresented communities.',
-  ],
-}, {
   name: 'Dale John McGrew',
   image: `${photoPath}Dale_McGrew-256x256.jpg`,
   title: [
@@ -39,13 +32,6 @@ export const weVoteBoard = [{
   title: [
     'Senior Adviser',
     'Executive Director of CTCL, software for election administrators. Former Voting Info Project Harvard Ash Center for Democratic Governance and Innovation.',
-  ],
-}, {
-  name: 'Tory Gavito',
-  image: `${photoPath}Tory_Gavito-200x200.jpg`,
-  title: [
-    'c4 Board Member',
-    'Executive Director at Way to Win.',
   ],
 }, {
   name: 'Lawrence Grodeska',
@@ -369,9 +355,6 @@ export const teamOfVolunteers = [{
   name: 'Leon Li',
   title: 'Livermore, CA',
 }, {
-  name: 'Jenifer Fernandez Ancona',
-  title: 'Oakland, CA',
-}, {
   name: 'Rob Simpson',
   title: 'Warrenton, VA',
 }, {
@@ -542,9 +525,6 @@ export const teamOfVolunteers = [{
 }, {
   name: 'Niyati Kothari',
   title: 'Alpharetta, GA',
-}, {
-  name: 'Dan Ancona',
-  title: 'Oakland, CA',
 }, {
   name: 'Zak Zaidman',
   title: 'Ojai, CA',
