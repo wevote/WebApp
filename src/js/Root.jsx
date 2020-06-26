@@ -95,23 +95,23 @@ const routes = () => {  // eslint-disable-line arrow-body-style
   // console.log('window.innerWidth:', window.innerWidth);
   return (
     <Route path="/">
+      {                       // 12/4/18: Not sure why we need the following disabled
+        (function redir () {  // eslint-disable-line wrap-iife
+          if (isWebApp()) {
+            // return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/ready" />;
+            return <IndexRedirect to="/ready" />;
+          } else {
+            return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ready" />;
+          }
+        }
+        )()
+      }
       <Suspense fallback={<div>Loading...</div>}>
         <Route path="/getready" component={ReadyNoApi} />
       </Suspense>
       <Suspense fallback={<div>Loading...</div>}>
         <Route path="/" component={Application}>
           <Route component={Intro} />
-          {                       // 12/4/18: Not sure why we need the following disabled
-            (function redir () {  // eslint-disable-line wrap-iife
-              if (isWebApp()) {
-                // return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/ready" />;
-                return <IndexRedirect to="/ready" />;
-              } else {
-                return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />;
-              }
-            }
-            )()
-          }
           <Route path="/welcome" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
           <Route path="/news" component={News} />
           <Route path="/ready" component={Ready} />

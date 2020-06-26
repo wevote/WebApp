@@ -199,15 +199,7 @@ class About extends Component {
             Our Story
           </SectionTitle>
           <AboutDescriptionContainer>
-            After meeting in Oakland in the spring of 2012, We Vote co-founders Dale McGrew and Jenifer Fernandez Ancona became fast friends.
-            {' '}
-            Dale brings Silicon Valley experience from founding and successfully selling two high tech startups,
-            {' '}
-            and Jenifer brings political, advocacy and fundraising experience from years on the front-lines of national campaigns.
-            {' '}
-            Through frequent conversations, the idea of a nonprofit “Yelp for Politics” was born.
-            {' '}
-            Founded in 2014, We Vote would be a community for voters, they decided, created by people concerned about where this country is heading.
+            Founded in 2014, the idea of a nonprofit “Yelp for Politics” was born. We Vote would be a community for voters, created by people concerned about where this country is heading.
             {' '}
             Being an open source, volunteer-driven project means anyone can contribute. Kind of like democracy.
           </AboutDescriptionContainer>
