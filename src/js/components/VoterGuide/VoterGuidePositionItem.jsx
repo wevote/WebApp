@@ -306,10 +306,12 @@ class VoterGuidePositionItem extends Component {
               </DesktopItemHeader>
               <DesktopItemBody>
                 <DesktopItemDescription>
-                  <ReadMore
-                    textToDisplay={positionDescription}
-                    numberOfLines={4}
-                  />
+                  {positionDescription && (
+                    <ReadMore
+                      textToDisplay={positionDescription}
+                      numberOfLines={4}
+                    />
+                  )}
                 </DesktopItemDescription>
                 <DesktopItemFooter>
                   {/* <strong>Was this Useful?</strong>
@@ -428,10 +430,12 @@ class VoterGuidePositionItem extends Component {
             <MobileItemBody>
               <MobileItemDescriptionFollowToggleContainer>
                 <MobileItemDescription>
-                  <ReadMore
-                    textToDisplay={positionDescription}
-                    numberOfLines={4}
-                  />
+                  {positionDescription && (
+                    <ReadMore
+                      textToDisplay={positionDescription}
+                      numberOfLines={4}
+                    />
+                  )}
                 </MobileItemDescription>
               </MobileItemDescriptionFollowToggleContainer>
               <MobileItemFooter>
