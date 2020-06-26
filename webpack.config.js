@@ -41,8 +41,8 @@ module.exports = {
     bundle: ['./src/js/index.js', './src/sass/main.scss'],
   },
   output: {
-    chunkFilename: '[name].bundle.[contenthash:8].js',
-    filename: '[name].bundle.[contenthash:8].js',
+    chunkFilename: '[name].bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'build'),
   },
   optimization: {
