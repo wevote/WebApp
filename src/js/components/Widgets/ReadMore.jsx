@@ -55,11 +55,15 @@ export default class ReadMore extends Component {
       collapseText = 'Show Less  ';
     }
 
-    // remove extra ascii carriage returns or other control text
-    textToDisplay = textToDisplay.replace(/[\x0D-\x1F]/g, ''); // eslint-disable-line no-control-regex
+    let expandedTextArray = [];
+    let keyBasedOnTextToDisplay = [];
+    if (textToDisplay) {
+      // remove extra ascii carriage returns or other control text
+      textToDisplay = textToDisplay.replace(/[\x0D-\x1F]/g, ''); // eslint-disable-line no-control-regex
+      expandedTextArray = textToDisplay.replace(/(?:\r\n|\r|\n){2,}/g, '\r\n\r\n').split(/(?:\r\n|\r|\n)/g);
+      keyBasedOnTextToDisplay = textToDisplay.substring(0, 20).toLowerCase().replace(/\s/g, '') || 'notext';
+    }
     // convert text into array, splitting on line breaks
-    const expandedTextArray = textToDisplay.replace(/(?:\r\n|\r|\n){2,}/g, '\r\n\r\n').split(/(?:\r\n|\r|\n)/g);
-    const keyBasedOnTextToDisplay = textToDisplay.substring(0, 20).toLowerCase().replace(/\s/g, '') || 'notext';
 
     // There are cases where we would like to show line breaks when there is a little bit of text
     let notEnoughTextToTruncate = false;
