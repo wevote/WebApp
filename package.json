@@ -196,7 +196,6 @@
     "gulp-sourcemaps": "^2.6.5",
     "gulp-stylelint": "^8.0.0",
     "gulp-uglify": "^2.1.2",
-    "html-webpack-exclude-assets-plugin": "^0.0.7",
     "html-webpack-plugin": "^4.3.0",
     "jsdom": "^9.12.0",
     "mocha": "^6.2.3",
