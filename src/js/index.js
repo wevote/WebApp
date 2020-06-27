@@ -2,6 +2,7 @@ import webAppConfig from './config';
 import startReactApp from './startReactApp';
 import { numberOfNeedlesFoundInString } from './utils/search-functions';
 
+
 // If in Cordova, need this function before cordovaUtils might be loaded
 function localIsCordova () {
   const { cordova } = window;
