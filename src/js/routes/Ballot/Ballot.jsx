@@ -39,7 +39,7 @@ import IssueStore from '../../stores/IssueStore';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
-import showBallotDecisionsTabs from '../../utils/showBallotDecisionsTabs';
+import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import ShowMoreItems from '../../components/Widgets/ShowMoreItems';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';

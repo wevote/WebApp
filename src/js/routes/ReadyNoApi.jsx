@@ -17,7 +17,7 @@ import cookies from '../utils/cookies';
 import ReadMore from '../components/Widgets/ReadMore';
 // import ReadyActions from '../actions/ReadyActions';
 import ReadyIntroduction from '../components/ReadyNoApi/ReadyIntroduction';
-import ReadyTaskBallotNoApi from '../components/ReadyNoApi/ReadyTaskBallotNoApi';
+// import ReadyTaskBallotNoApi from '../components/ReadyNoApi/ReadyTaskBallotNoApi';
 // import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 // import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 // import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
@@ -29,7 +29,7 @@ import { renderLog } from '../utils/logging';
 
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
-class Ready extends Component {
+class ReadyNoApi extends Component {
   static propTypes = {};
 
   constructor (props) {
@@ -110,7 +110,8 @@ class Ready extends Component {
   }
 
   render () {
-    renderLog('GetReady');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('ReadyNoApi');  // Set LOG_RENDER_EVENTS to log all renders
+    console.log('ReadyNoApi render');
     const {
       chosenReadyIntroductionText, chosenReadyIntroductionTitle
     } = this.state;
@@ -260,4 +261,4 @@ const Paragraph = styled.div`
 const Wrapper = styled.div`
 `;
 
-export default withStyles(styles)(Ready);
+export default withStyles(styles)(ReadyNoApi);

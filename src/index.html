@@ -31,11 +31,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/img/global/icons/favicon-16x16.png" >
     <link rel="icon" sizes="48x48" href="/img/global/icons/favicon.ico" >
 
+<!-- These lines replaced below with injected HTML //-->
 <!--    <link rel="preload" onload="this.rel='stylesheet'" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" as="style" crossOrigin="anonymous" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" />-->
-    <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
-    <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
-    <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css" />
-
+<!--    <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>-->
+<!--    <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />-->
+<!--    <link rel="preload" as="style" onload="this.rel='stylesheet'" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css" />-->
 <!--    <script async defer src="/javascript/google-analytics.js"></script>-->
 <!--    <script async defer src="/javascript/google-tag-manager.js"></script>-->
   </head>
@@ -43,35 +43,122 @@
     <div id="app" class="app-wrapper">
       <div>
         <div style="
-          display: flex;
-          position: fixed;
-          height: 100vh;
-          width: 100vw;
-          top: 0;
-          left: 0;
-          background-color: #fff;
-          justify-content: center;
           align-items: center;
-          font-size: 30px;
+          background-color: #fff;
           color: #0d5470;
+          display: flex;
           flex-direction: column;
+          font-size: 30px;
+          height: 100vh;
+          justify-content: center;
+          left: 0;
+          margin: 15px;
+          position: fixed;
+          top: 0;
+          width: 100vw;
           ">
           <div>Your election is loading...</div>
         </div>
       </div>
     </div>
     <!-- This adds over a second delay to main thread, but is required by core bundle.js //-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
 
-    <script>
+    <!-- Testing to make sure we can remove popper //-->
+    <!--    <script type="text/javascript" async defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>-->
+
+<!-- These lines replaced below with injected HTML //-->
+<!--    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>-->
+<!--    <script type="text/javascript" async defer src="https://platform.twitter.com/widgets.js"></script>-->
+
+    <script type="text/javascript">
+      // Dale 2020-06 This is not working because we need jQuery so quickly
+      // setTimeout(() => {
+      //   /* Load jquery for API calls */
+      //   let scriptElementForJquery = document.createElement('script');
+      //   scriptElementForJquery.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js';
+      //   let firstExistingScript = document.getElementsByTagName('script')[0];
+      //   firstExistingScript.parentNode.insertBefore(scriptElementForJquery, firstExistingScript);
+      // }, 1000);
+
+      let firstExistingScript = document.getElementsByTagName('script')[0];
+
+      let scriptElementForBootstrap = document.createElement('script');
+      scriptElementForBootstrap.src = 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js';
+      scriptElementForBootstrap.type = 'text/javascript';
+      // firstExistingScript = document.getElementsByTagName('script')[0];
+      firstExistingScript.parentNode.insertBefore(scriptElementForBootstrap, firstExistingScript);
+
+      // COMMENT OUT WHEN SPEED TESTING
+      // setTimeout(() => {
+      //   let scriptElementForGoogleAnalytics = document.createElement('script');
+      //   scriptElementForGoogleAnalytics.src = '/javascript/google-analytics.js';
+      //   firstExistingScript = document.getElementsByTagName('script')[0];
+      //   firstExistingScript.parentNode.insertBefore(scriptElementForGoogleAnalytics, firstExistingScript);
+      //
+      //   let scriptElementForGoogleTagManager = document.createElement('script');
+      //   scriptElementForGoogleTagManager.src = '/javascript/google-tag-manager.js';
+      //   firstExistingScript = document.getElementsByTagName('script')[0];
+      //   firstExistingScript.parentNode.insertBefore(scriptElementForGoogleTagManager, firstExistingScript);
+      // }, 2000);
+
+      // COMMENT OUT WHEN SPEED TESTING
+      // setTimeout(() => {
+      //   // We don't want Fontawesome blocking DOMContentLoad
+      //   let linkElementForFontAwesome = document.createElement('link');
+      //   linkElementForFontAwesome.rel = 'stylesheet';
+      //   linkElementForFontAwesome.href = 'https://use.fontawesome.com/releases/v5.8.2/css/all.css';
+      //   linkElementForFontAwesome.as = 'style';
+      //   linkElementForFontAwesome.crossOrigin = 'anonymous';
+      //   linkElementForFontAwesome.integrity = 'sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay';
+      //   let firstExistingLink = document.getElementsByTagName('link')[0];
+      //   firstExistingLink.parentNode.insertBefore(linkElementForFontAwesome, firstExistingLink);
+      //
+      //   let scriptElementForTwitterWidgets = document.createElement('script');
+      //   scriptElementForTwitterWidgets.src = 'https://platform.twitter.com/widgets.js';
+      //   scriptElementForTwitterWidgets.type = 'text/javascript';
+      //   let firstExistingScript = document.getElementsByTagName('script')[0];
+      //   firstExistingScript.parentNode.insertBefore(scriptElementForTwitterWidgets, firstExistingScript);
+      // }, 3000);
+
+      // COMMENT OUT WHEN SPEED TESTING
+      // setTimeout(() => {
+      //   // ZenDesk load delay so it doesn't block main thread
+      //   let scriptElementForZenDesk = document.createElement('script');
+      //   scriptElementForZenDesk.id = 'ze-snippet';
+      //   scriptElementForZenDesk.src = 'https://static.zdassets.com/ekr/snippet.js?key=117d80d3-9e4e-4aac-8a1c-1ca9ade4266d';
+      //   let firstExistingScript = document.getElementsByTagName('script')[0];
+      //   firstExistingScript.parentNode.insertBefore(scriptElementForZenDesk, firstExistingScript);
+      // }, 15000);
+
+      // COMMENT OUT WHEN SPEED TESTING
+      // setTimeout(() => {
+      //   // Delay Stripe load so it doesn't block main thread
+      //   let firstExistingScript = document.getElementsByTagName('script')[0];
+      //
+      //   let scriptElement1 = document.createElement('script');
+      //   scriptElement1.src = 'https://checkout.stripe.com/checkout.js';
+      //   scriptElement1.type = 'text/javascript';
+      //   firstExistingScript.parentNode.insertBefore(scriptElement1, firstExistingScript);
+      //
+      //   let scriptElement2 = document.createElement('script');
+      //   scriptElement2.src = 'https://js.stripe.com/v3/';
+      //   scriptElement2.type = 'text/javascript';
+      //   firstExistingScript.parentNode.insertBefore(scriptElement2, firstExistingScript);
+      // }, 16000);
+
+      // COMMENT OUT WHEN SPEED TESTING
+      // setTimeout(() => {
+      //   // Maps load so it doesn't block main thread
+      //   let scriptElementForMaps = document.createElement('script');
+      //   scriptElementForMaps.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCM0vM1mzh56OuA5IfgW_U6Qd9jD99WH6M&callback=initMap&libraries=places';
+      //   let firstExistingScript = document.getElementsByTagName('script')[0];
+      //   firstExistingScript.parentNode.insertBefore(scriptElementForMaps, firstExistingScript);
+      // }, 20000);
       function initMap(){
         //
       }
     </script>
-<!--    <script type="text/javascript" async defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>-->
-
-<!--    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>-->
-<!--    <script type="text/javascript" async defer src="https://platform.twitter.com/widgets.js"></script>-->
     <script>
       {/* Zendesk settings */}
       window.zESettings = {
@@ -94,96 +181,6 @@
           },
         }
       };
-    </script>
-    <script type="text/javascript">
-      // We want to load this earlier
-      // let linkElementForMainCss = document.createElement('link');
-      // linkElementForMainCss.rel = 'stylesheet';
-      // linkElementForMainCss.href = '/css/main.css';
-      // linkElementForMainCss.type = 'text/css';
-      // let firstExistingLink = document.getElementsByTagName('link')[0];
-      // firstExistingLink.parentNode.insertBefore(linkElementForMainCss, firstExistingLink);
-
-      // Dale 2020-06 Having trouble getting jQuery to load without blocking thread
-      // setTimeout(() => {
-      //   /* Load jquery for API calls */
-      //   let scriptElementForJquery = document.createElement('script');
-      //   scriptElementForJquery.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
-      //   let firstExistingScript = document.getElementsByTagName('script')[0];
-      //   firstExistingScript.parentNode.insertBefore(scriptElementForJquery, firstExistingScript);
-      // }, 5000);
-      let firstExistingScript = document.getElementsByTagName('script')[0];
-
-      // Try this again later
-      // let scriptElementForJquery = document.createElement('script');
-      // scriptElementForJquery.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
-      // firstExistingScript.parentNode.insertBefore(scriptElementForJquery, firstExistingScript);
-
-      let scriptElementForBootstrap = document.createElement('script');
-      scriptElementForBootstrap.src = 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js';
-      scriptElementForBootstrap.type = 'text/javascript';
-      // firstExistingScript = document.getElementsByTagName('script')[0];
-      firstExistingScript.parentNode.insertBefore(scriptElementForBootstrap, firstExistingScript);
-
-      let scriptElementForGoogleAnalytics = document.createElement('script');
-      scriptElementForGoogleAnalytics.src = '/javascript/google-analytics.js';
-      firstExistingScript = document.getElementsByTagName('script')[0];
-      firstExistingScript.parentNode.insertBefore(scriptElementForGoogleAnalytics, firstExistingScript);
-
-      let scriptElementForGoogleTagManager = document.createElement('script');
-      scriptElementForGoogleTagManager.src = '/javascript/google-tag-manager.js';
-      firstExistingScript = document.getElementsByTagName('script')[0];
-      firstExistingScript.parentNode.insertBefore(scriptElementForGoogleTagManager, firstExistingScript);
-
-      setTimeout(() => {
-        // We don't want Fontawesome blocking DOMContentLoad
-        let linkElementForFontAwesome = document.createElement('link');
-        linkElementForFontAwesome.rel = 'stylesheet';
-        linkElementForFontAwesome.href = 'https://use.fontawesome.com/releases/v5.8.2/css/all.css';
-        linkElementForFontAwesome.as = 'style';
-        linkElementForFontAwesome.crossOrigin = 'anonymous';
-        linkElementForFontAwesome.integrity = 'sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay';
-        let firstExistingLink = document.getElementsByTagName('link')[0];
-        firstExistingLink.parentNode.insertBefore(linkElementForFontAwesome, firstExistingLink);
-
-        let scriptElementForTwitterWidgets = document.createElement('script');
-        scriptElementForTwitterWidgets.src = 'https://platform.twitter.com/widgets.js';
-        scriptElementForTwitterWidgets.type = 'text/javascript';
-        let firstExistingScript = document.getElementsByTagName('script')[0];
-        firstExistingScript.parentNode.insertBefore(scriptElementForTwitterWidgets, firstExistingScript);
-      }, 2000);
-
-      setTimeout(() => {
-        // ZenDesk load delay so it doesn't block main thread
-        let scriptElementForZenDesk = document.createElement('script');
-        scriptElementForZenDesk.id = 'ze-snippet';
-        scriptElementForZenDesk.src = 'https://static.zdassets.com/ekr/snippet.js?key=117d80d3-9e4e-4aac-8a1c-1ca9ade4266d';
-        let firstExistingScript = document.getElementsByTagName('script')[0];
-        firstExistingScript.parentNode.insertBefore(scriptElementForZenDesk, firstExistingScript);
-      }, 15000);
-
-      setTimeout(() => {
-        // Delay Stripe load so it doesn't block main thread
-        let firstExistingScript = document.getElementsByTagName('script')[0];
-
-        let scriptElement1 = document.createElement('script');
-        scriptElement1.src = 'https://checkout.stripe.com/checkout.js';
-        scriptElement1.type = 'text/javascript';
-        firstExistingScript.parentNode.insertBefore(scriptElement1, firstExistingScript);
-
-        let scriptElement2 = document.createElement('script');
-        scriptElement2.src = 'https://js.stripe.com/v3/';
-        scriptElement2.type = 'text/javascript';
-        firstExistingScript.parentNode.insertBefore(scriptElement2, firstExistingScript);
-      }, 16000);
-
-      setTimeout(() => {
-        // Maps load so it doesn't block main thread
-        let scriptElementForMaps = document.createElement('script');
-        scriptElementForMaps.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCM0vM1mzh56OuA5IfgW_U6Qd9jD99WH6M&callback=initMap&libraries=places';
-        let firstExistingScript = document.getElementsByTagName('script')[0];
-        firstExistingScript.parentNode.insertBefore(scriptElementForMaps, firstExistingScript);
-      }, 20000);
     </script>
   </body>
 </html>
