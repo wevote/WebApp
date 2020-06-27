@@ -124,9 +124,9 @@ class ElectionCountdown extends React.Component {
                     {daysMobile === '1' ? 'day' : 'days'}
                   </>
                 ) : (
-                  <>
-                    Days...
-                  </>
+                  <DaysLargeText>
+                    ... days
+                  </DaysLargeText>
                 )}
               </CardTitleUpcoming>
             </div>
@@ -184,9 +184,9 @@ class ElectionCountdown extends React.Component {
               ) : (
                 <TimeFlex>
                   <TimeSection>
-                    <Time>
+                    <TimeLoading>
                       Loading...
-                    </Time>
+                    </TimeLoading>
                     <Small>Days</Small>
                   </TimeSection>
                 </TimeFlex>
@@ -398,6 +398,10 @@ const CardSubTitle = styled.h3`
   }
 `;
 
+const DaysLargeText = styled.div`
+  color: #ccc;
+`;
+
 const TimeFlex = styled.div`
   width: 100%;
   display: flex;
@@ -415,9 +419,16 @@ const TimeSection = styled.div`
 `;
 
 const Time = styled.h1`
-  margin: 0;
   font-size: 60px !important;
   font-weight: 800 !important;
+  margin: 0;
+`;
+
+const TimeLoading = styled.h1`
+  color: #ccc;
+  font-size: 60px !important;
+  font-weight: 800 !important;
+  margin: 0;
 `;
 
 const Small = styled.small`

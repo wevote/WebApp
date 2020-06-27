@@ -1,7 +1,8 @@
-import { isCordova, isIOS, isAndroid, isAndroidSimulator, isSimulator, getAndroidSize, pageEnumeration, enums,
+import { isCordova, isIOS, isAndroid, isAndroidSimulator, isSimulator, getAndroidSize,
   isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, hasIPhoneNotch, isIPhone6p1in, isIPhone6p5in, isIPad } from './cordovaUtils';
+import { enums, pageEnumeration } from '../utilsApi/cordovaUtilsPageEnumeration';
 import { cordovaOffsetLog } from './logging';
-import showBallotDecisionsTabs from './showBallotDecisionsTabs';
+import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs';
 import VoterStore from '../stores/VoterStore';
 
 
