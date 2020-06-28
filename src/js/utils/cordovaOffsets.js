@@ -239,6 +239,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '53px';
         case enums.moreTerms:       return '32px';
         case enums.officeWild:      return '84px';
+        case enums.settingsHamburger: return '38px';
         case enums.settingsWild:    return '61px';
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         default:                    return '0px';
