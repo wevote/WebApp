@@ -360,7 +360,7 @@ class WelcomeAppbar extends Component {
               )}
             </DesktopView>
             <MobileTabletView>
-              <NavLink id="welcomeYourBallotMobile" to="/ready">Your Ballot</NavLink>
+              <NavLink id="welcomeYourBallotMobile" to="/ballot">Your Ballot</NavLink>
               {voterIsSignedIn && (
                 <div>
                   {voterPhotoUrlMedium ? (
