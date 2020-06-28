@@ -200,7 +200,7 @@ class FooterBar extends React.Component {
 
 const styles = () => ({
   anchorOriginTopRightRectangle: {
-    top: isFriendsTabSelected ? 5 : 2,
+    top: isFriendsTabSelected ? 0 : 2,
   },
 });
 
