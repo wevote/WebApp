@@ -494,6 +494,7 @@ const NoResultsText = styled.div`
 
 const SearchResultsFoundInExplanation = styled.div`
   background-color: #C2DCE8;
+  border-radius: 4px;
   color: #0E759F;
   margin-left: 0 !important;
   margin-right: 0 !important;
