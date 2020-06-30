@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { render } from 'react-dom';
 import {
   browserHistory, hashHistory, Router, applyRouterMiddleware,
@@ -13,7 +13,7 @@ import styledTheme from './styled-theme';
 import { renderLog } from './utils/logging';
 
 
-// May 2020, this was moved into a seperate file, so that the imports can be delayed
+// May 2020, this was moved into a separate file, so that the imports can be delayed
 // until after the cordova 'deviceready' event (if we are in Cordova).
 // eslint-disable-next-line no-unused-vars,import/prefer-default-export
 export default function startReactApp () {
@@ -23,16 +23,18 @@ export default function startReactApp () {
 
   const element = (
     // eslint-disable-next-line react/jsx-filename-extension
-    <MuiThemeProvider theme={muiTheme}>
-      <ThemeProvider theme={styledTheme}>
-        <Router
-          history={isCordova() ? hashHistory : browserHistory}
-          render={applyRouterMiddleware(useScroll(() => true))}
-        >
-          {routes()}
-        </Router>
-      </ThemeProvider>
-    </MuiThemeProvider>
+    <Suspense fallback={<div>&nbsp;</div>}>
+      <MuiThemeProvider theme={muiTheme}>
+        <ThemeProvider theme={styledTheme}>
+          <Router
+            history={isCordova() ? hashHistory : browserHistory}
+            render={applyRouterMiddleware(useScroll(() => true))}
+          >
+            {routes()}
+          </Router>
+        </ThemeProvider>
+      </MuiThemeProvider>
+    </Suspense>
   );
 
   // console.log('startReactApp before render');

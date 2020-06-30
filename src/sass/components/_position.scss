@@ -102,17 +102,5 @@ $toggle-icon-margin-top: 3px;
 }
 
 .position-item {
-  border-left: 4px solid #e8e8e8;  // Replace with $gray-border #ddd?
-  &--support {
-    border-left: 4px solid rgb(31, 192, 111);
-  }
-  &--supportFollow {
-    border-left: 4px solid rgb(31, 192, 111);
-  }
-  &--oppose {
-    border-left: 4px solid rgb(255, 73, 34);
-  }
-  &--opposeFollow {
-    border-left: 4px solid rgb(255, 73, 34);
-  }
+  border-left: 4px solid #999;
 }

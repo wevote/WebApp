@@ -453,6 +453,7 @@ class SettingsSubscriptionPlan extends Component {
                 </strong>
               </h4>
               <Button
+                id="changePlanButton"
                 classes={{ root: classes.changeCancelPlanButton }}
                 color="primary"
                 onClick={this.onChangePlan}

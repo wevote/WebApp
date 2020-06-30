@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import BallotStore from '../../stores/BallotStore';
-import { historyPush, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { historyPush, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
@@ -30,9 +30,6 @@ class EditAddressOneHorizontalRow extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  componentWillMount () {
-    prepareForCordovaKeyboard('AddressBox');
-  }
 
   componentDidMount () {
     // console.log("In EditAddressOneHorizontalRow componentDidMount");
@@ -69,7 +66,7 @@ class EditAddressOneHorizontalRow extends Component {
     } else {
       console.log('Google Maps Error: DeletedApiProjectMapError');
     }
-    restoreStylesAfterCordovaKeyboard('AddressBox');
+    restoreStylesAfterCordovaKeyboard('EditAddressOneHorizontalRow');
   }
 
   // See https://reactjs.org/docs/error-boundaries.html

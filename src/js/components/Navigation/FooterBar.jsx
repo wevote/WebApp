@@ -116,8 +116,8 @@ class FooterBar extends React.Component {
         return historyPush('/values');
       case 3:
         return historyPush('/friends');
-      case 4:
-        return historyPush('/news');
+      // case 4:
+      //   return historyPush('/news');
       default:
         return null;
     }
@@ -162,7 +162,7 @@ class FooterBar extends React.Component {
             <BottomNavigationAction className="no-outline" id="readyTabFooterBar" label="Ready?" showLabel icon={<HowToVoteIcon />} />
             <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<BallotIcon />} />
             {/* OFF FOR NOW !voterIsSignedIn && () */}
-            <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />
+            <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Opinions" showLabel icon={<QuestionAnswerIcon />} />
             <BottomNavigationAction
               className="no-outline"
               id="friendsTabFooterBar"
@@ -185,7 +185,11 @@ class FooterBar extends React.Component {
                 onClick={() => cordovaOpenSafariView('https://help.wevote.us', null, 50)}
               />
             ) : (
-              <BottomNavigationAction className="no-outline" id="helpTabFooterBar" />
+              <BottomNavigationAction
+                className="no-outline"
+                id="helpTabFooterBar"
+                icon={<HelpOutline style={{ color: 'rgba(0, 0, 0, 0.541176)' }} />}
+              />
             )}
           </BottomNavigation>
         </div>
@@ -196,7 +200,7 @@ class FooterBar extends React.Component {
 
 const styles = () => ({
   anchorOriginTopRightRectangle: {
-    top: isFriendsTabSelected ? 5 : 2,
+    top: isFriendsTabSelected ? 0 : 2,
   },
 });
 

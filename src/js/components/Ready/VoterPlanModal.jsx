@@ -6,7 +6,12 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Select, InputBase, Button, Paper, FormControlLabel, Checkbox } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
 import EditLocationIcon from '@material-ui/icons/EditLocation';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotStore from '../../stores/BallotStore';
@@ -55,6 +60,7 @@ class VoterPlanModal extends Component {
 
     this.closeVoterPlanModal = this.closeVoterPlanModal.bind(this);
     this.handleVotingRoughDateChange = this.handleVotingRoughDateChange.bind(this);
+    this.handleVotingRoughDateClick = this.handleVotingRoughDateClick.bind(this);
     this.handleApproximateTimeChange = this.handleApproximateTimeChange.bind(this);
     this.handleModeOfTransportChange = this.handleModeOfTransportChange.bind(this);
     this.handleLocationToDeliverBallotChange = this.handleLocationToDeliverBallotChange.bind(this);
@@ -259,6 +265,11 @@ class VoterPlanModal extends Component {
     this.setState({ votingRoughDate: event.target.value });
   }
 
+  handleVotingRoughDateClick (event) {
+    console.log(event.target.value);
+    this.setState({ votingRoughDate: event.target.value });
+  }
+
   generateVoterPlanText () {
     const {
       approximateTime, electionDateMonthYear, locationToDeliverBallot, modeOfTransport,
@@ -334,6 +345,7 @@ class VoterPlanModal extends Component {
                 native
                 value={votingRoughDate}
                 onChange={this.handleVotingRoughDateChange}
+                onClick={this.handleVotingRoughDateClick}
                 inputProps={{
                   placeholder: 'select when',
                 }}
@@ -437,12 +449,12 @@ class VoterPlanModal extends Component {
                           value={votingLocationAddress}
                         />
                         <OpenExternalWebSite
-                          id="findPollingLocationButton"
                           url={getPollingLocationUrl}
                           target="_blank"
                           className="u-gray-mid"
                           body={(
                             <Button
+                              id="findPollingLocationButton"
                               classes={{ root: classes.saveButton }}
                               color="primary"
                               fullWidth
@@ -479,6 +491,7 @@ class VoterPlanModal extends Component {
                 <AddToMyCalendarWrapper>
                   <FormControlLabel
                     classes={{ root: classes.formControlLabel }}
+                    id="addedToCalendar"
                     control={(
                       <Checkbox
                         // checked={state.checkedB}
@@ -493,6 +506,7 @@ class VoterPlanModal extends Component {
                 <TextReminderWrapper>
                   <FormControlLabel
                     classes={{ root: classes.formControlLabel }}
+                    id="textMeReminder"
                     control={(
                       <Checkbox
                         // checked={state.checkedB}
@@ -517,6 +531,7 @@ class VoterPlanModal extends Component {
                   {/* </InputItem> */}
                   <FormControlLabel
                     classes={{ root: classes.formControlLabel }}
+                    id="emailMeReminder"
                     control={(
                       <Checkbox
                         // checked={state.checkedB}
@@ -543,6 +558,7 @@ class VoterPlanModal extends Component {
         </DialogContent>
         <ModalFooter>
           <Button
+            id="yourPlanForVotingSaveButton"
             color="primary"
             disabled={!showSaveButton}
             fullWidth

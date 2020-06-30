@@ -32,7 +32,7 @@ export default class IntroNetworkSafety extends Component {
           Plan your entire ballot
           <br />
           <span className="intro-story__h1--highlight">
-          in 6 minutes
+            in 6 minutes
           </span>
         </div>
         <div className="intro-story__separator" />

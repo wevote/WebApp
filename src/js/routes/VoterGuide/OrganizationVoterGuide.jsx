@@ -200,7 +200,7 @@ export default class OrganizationVoterGuide extends Component {
         this.setState({
           organization,
           organizationId: organization.organization_id,
-          linkedVoterWeVoteId: organization.linked_voter_we_vote_id,
+          organizationLinkedVoterWeVoteId: organization.linked_voter_we_vote_id,
           organizationType: organization.organization_type,
           voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(organizationWeVoteId),
           voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(organizationWeVoteId),
@@ -222,7 +222,7 @@ export default class OrganizationVoterGuide extends Component {
         this.setState({
           organization,
           organizationId: organization.organization_id,
-          linkedVoterWeVoteId: organization.linked_voter_we_vote_id,
+          organizationLinkedVoterWeVoteId: organization.linked_voter_we_vote_id,
           organizationType: organization.organization_type,
         });
         if (organization.organization_banner_url) {
@@ -281,7 +281,7 @@ export default class OrganizationVoterGuide extends Component {
 
   render () {
     renderLog('OrganizationVoterGuide');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activeRoute, linkedVoterWeVoteId, organizationBannerUrl, organizationId, organizationType, organizationWeVoteId } = this.state;
+    const { activeRoute, organizationLinkedVoterWeVoteId, organizationBannerUrl, organizationId, organizationType, organizationWeVoteId } = this.state;
     if (!this.state.organization || !this.state.voter || this.state.autoFollowRedirectHappening) {
       return <div>{LoadingWheel}</div>;
     }
@@ -349,7 +349,7 @@ export default class OrganizationVoterGuide extends Component {
                   useReadMoreForTwitterDescription
                 />
                 { isVoterOwner && (
-                  <div className="u-float-right">
+                  <EditYourEndorsementsWrapper>
                     <Button
                       id="organizationVoterGuideEdit"
                       onClick={this.onEdit}
@@ -358,7 +358,7 @@ export default class OrganizationVoterGuide extends Component {
                     >
                       <span>Edit Your Endorsements</span>
                     </Button>
-                  </div>
+                  </EditYourEndorsementsWrapper>
                 )}
                 { !isVoterOwner && (
                   <>
@@ -366,60 +366,54 @@ export default class OrganizationVoterGuide extends Component {
                       <FollowToggle
                         platformType="mobile"
                         organizationWeVoteId={organizationWeVoteId}
-                        otherVoterWeVoteId={linkedVoterWeVoteId}
+                        otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
                         showFollowingText
                       />
                     </FollowToggleMobileWrapper>
-                    { isSpeakerTypePrivateCitizen(organizationType) && (
+                    { (isSpeakerTypePrivateCitizen(organizationType) && organizationLinkedVoterWeVoteId) && (
                       <FriendToggleMobileWrapper>
                         <FriendToggle
                           displayFullWidth
-                          otherVoterWeVoteId={linkedVoterWeVoteId}
+                          otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
                           showFriendsText
                         />
                       </FriendToggleMobileWrapper>
                     )}
                   </>
                 )}
-                <div className="tabs-container d-print-none">
-                  <ul className="nav tabs">
+                <FriendsFollowingFollowersMobileWrapper className="d-print-none">
+                  <ul className="nav">
                     {developmentFeatureTurnedOn && (
-                      <li className="tab-default">
+                      <li>
                         <a // eslint-disable-line
                           style={{ padding: '5px 5px' }}
                           onClick={() => this.goToVoterGuideDetailsPage('friends')}
                         >
-                          <span className="u-show-mobile u-bold">
-                            {friendsList.length}
-                            <TabText>{' Friends'}</TabText>
-                          </span>
+                          <TabNumber>{friendsList.length}</TabNumber>
+                          <TabText>{' Friends'}</TabText>
                         </a>
                       </li>
                     )}
-                    <li className="tab-default">
+                    <li>
                       <a // eslint-disable-line
                         style={{ padding: '5px 5px' }}
                         onClick={() => this.goToVoterGuideDetailsPage('following')}
                       >
-                        <span className="u-show-mobile u-bold">
-                          {this.state.voterGuideFollowedList.length}
-                          <TabText>{' Following'}</TabText>
-                        </span>
+                        <TabNumber>{this.state.voterGuideFollowedList.length}</TabNumber>
+                        <TabText>{' Following'}</TabText>
                       </a>
                     </li>
-                    <li className="tab-default">
+                    <li>
                       <a // eslint-disable-line
                         style={{ padding: '5px 5px' }}
                         onClick={() => this.goToVoterGuideDetailsPage('followers')}
                       >
-                        <span className="u-show-mobile u-bold">
-                          {voterGuideFollowersList.length}
-                          <TabText>{' Followers'}</TabText>
-                        </span>
+                        <TabNumber>{voterGuideFollowersList.length}</TabNumber>
+                        <TabText>{' Followers'}</TabText>
                       </a>
                     </li>
                   </ul>
-                </div>
+                </FriendsFollowingFollowersMobileWrapper>
               </div>
             </div>
           </div>
@@ -482,12 +476,28 @@ const CardContainer = styled.div`
   }
 `;
 
+const EditYourEndorsementsWrapper = styled.div`
+  margin-top: 4px;
+`;
+
 const FollowToggleMobileWrapper = styled.div`
   margin-top: 4px;
 `;
 
+const FriendsFollowingFollowersMobileWrapper = styled.div`
+  margin-top: 6px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+`;
+
 const FriendToggleMobileWrapper = styled.div`
   margin-top: 4px;
+`;
+
+const TabNumber = styled.span`
+  color: #333;
+  font-weight: bold;
 `;
 
 const TabText = styled.span`

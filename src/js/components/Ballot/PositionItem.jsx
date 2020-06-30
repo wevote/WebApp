@@ -200,7 +200,7 @@ class PositionItem extends Component {
 
   render () {
     renderLog('PositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, position } = this.props;
+    const { classes, position, searchResultsNode } = this.props;
     if (!position) {
       return null;
     }
@@ -244,6 +244,8 @@ class PositionItem extends Component {
     }
 
     // console.log(position);
+    const organizationSupportsBallotItem = position.is_support;
+    const organizationOpposesBallotItem = position.is_oppose;
     let supportOpposeInfo = 'InfoButNotPartOfScore';
     if (position.is_information_only) {
       supportOpposeInfo = 'InfoButNotPartOfScore';
@@ -253,7 +255,7 @@ class PositionItem extends Component {
       supportOpposeInfo = 'SupportButNotPartOfScore';
     } else if (organizationInVotersNetwork && position.is_oppose) {
       supportOpposeInfo = 'OpposeAndPartOfScore';
-    } else if (!position.support) {
+    } else if (!position.is_support) {
       supportOpposeInfo = 'OpposeButNotPartOfScore';
     }
 
@@ -398,8 +400,8 @@ class PositionItem extends Component {
 
       return (
         <>
+          {searchResultsNode}
           <div className="u-show-desktop-tablet">
-            {this.props.searchResultsNode}
             <DesktopContainer>
               <DesktopItemLeft>
                 <DesktopItemImage>
@@ -443,7 +445,7 @@ class PositionItem extends Component {
                   <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft platformType="desktop" />
                 )}
               </DesktopItemLeft>
-              <PositionItemDesktop className={`position-item--${supportOpposeInfo} position-item`}>
+              <PositionItemDesktop isSupport={organizationSupportsBallotItem} isOppose={organizationOpposesBallotItem}>
                 <DesktopItemHeader>
                   <DesktopItemNameIssueContainer>
                     <DesktopItemNameContainer>
@@ -524,8 +526,8 @@ class PositionItem extends Component {
             </DesktopContainer>
           </div>
           <div className="u-show-mobile">
-            <PositionItemMobile className={`position-item--${supportOpposeInfo} position-item`}>
-              {this.props.searchResultsNode}
+            <PositionItemMobile isSupport={organizationSupportsBallotItem} isOppose={organizationOpposesBallotItem}>
+              {searchResultsNode}
               <MobileItemHeader>
                 <MobileItemImage>
                   <Link to={speakerLink} className="u-no-underline">
@@ -663,15 +665,136 @@ const styles = theme => ({
   },
 });
 
-const PositionItemMobile = styled.li`
-  background: #eee;
-  border-radius: 5px;
-  margin: 16px;
-  list-style: none;
-  @media (max-width: 476px) {
-    margin: 16px 0;
+const DesktopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 24px 24px 24px;
+`;
+
+const DesktopItemBody = styled.div`
+  margin: 0;
+`;
+
+const DesktopItemDescription = styled.div`
+  font-size: 14px;
+  margin-top: 8px;
+`;
+
+const DesktopItemEndorsementDisplay = styled.div`
+  margin-left: auto;
+  padding: 0;
+`;
+
+const DesktopItemFooter = styled.div`
+  font-size: 12px;
+  margin-top: 2px;
+`;
+
+const DesktopItemHeader = styled.div`
+  display: flex;
+  align-items: top;
+  justify-content: flex-start;
+`;
+
+const DesktopItemImage = styled.div`
+  width: 57.76px;
+  margin: 0 auto;
+  height: 57.76px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 8px;
+  * {
+    border-radius: 6px;
+    width: 57.76px !important;
+    height: 57.76px !important;
+    max-width: 57.76px !important;
+    display: flex;
+    align-items: flex-start;
   }
-  max-width: 100% !important;
+`;
+
+const DesktopItemIssues = styled.div`
+  margin: 0;
+  padding: 0;
+`;
+
+const DesktopItemLeft = styled.div`
+  width: 85px;
+  padding: 0 16px 0 0;
+`;
+
+const DesktopItemName = styled.h4`
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+`;
+
+const DesktopItemNameContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const DesktopItemNameIssueContainer = styled.div`
+  padding: 0px;
+`;
+
+const DesktopItemTwitter = styled.div`
+  color: #999;
+  display: inline-block;
+  font-size: 12px;
+  padding-left: 10px;
+  white-space: nowrap;
+`;
+
+const DesktopItemTwitterContainer = styled.div`
+`;
+
+const MobileItemBody = styled.div`
+  padding: 6px 6px 6px;
+  border-bottom-right-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 5px;
+`;
+
+const MobileItemDescription = styled.div`
+  font-size: 16px;
+  color: #333;
+  flex: 1 1 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 14px;
+  }
+`;
+
+const MobileItemDescriptionFollowToggleContainer = styled.div`
+  left: 2px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const MobileItemEndorsementContainer = styled.div`
+  margin-left: auto;
+  margin-bottom: auto;
+  width: 50px;
+  height: 100%;
+  max-height: 100%;
+`;
+
+const MobileItemEndorsementDisplay = styled.div`
+  width: 100%;
+  height: 100%;
+  margin-bottom: 4px;
+`;
+
+const MobileItemFollowToggleDisplay = styled.div`
+  width: 75px;
+`;
+
+const MobileItemFooter = styled.div`
+  height: 20px;
+  width: 100%;
+  margin-top: 2px;
+  font-size: 12px;
 `;
 
 const MobileItemHeader = styled.div`
@@ -699,6 +822,12 @@ const MobileItemImage = styled.div`
   }
 `;
 
+const MobileItemIssues = styled.div`
+  margin: 0;
+  font-size: 14px;
+  flex: 1 1 0;
+`;
+
 const MobileItemName = styled.h4`
   font-size: 18px;
   font-weight: 500;
@@ -712,12 +841,6 @@ const MobileItemNameIssuesContainer = styled.div`
   }
 `;
 
-const MobileSmallItemNameContainer = styled.div`
-  @media (min-width: 375px) {
-    display: none;
-  }
-`;
-
 const MobileSmallItemIssuesContainer = styled.div`
   @media (min-width: 375px) {
     display: none;
@@ -726,166 +849,9 @@ const MobileSmallItemIssuesContainer = styled.div`
   margin-top: -12px;
 `;
 
-const MobileItemIssues = styled.div`
-  margin: 0;
-  font-size: 14px;
-  flex: 1 1 0;
-`;
-
-const MobileItemEndorsementContainer = styled.div`
-  margin-left: auto;
-  margin-bottom: auto;
-  width: 50px;
-  height: 100%;
-  max-height: 100%;
-`;
-
-const MobileItemEndorsementDisplay = styled.div`
-  width: 100%;
-  height: 100%;
-  margin-bottom: 4px;
-`;
-
-const MobileItemBody = styled.div`
-  padding: 6px 6px 6px;
-  border-bottom-right-radius: 8px;
-  border-top-right-radius: 8px;
-  border-bottom-left-radius: 5px;
-`;
-
-const MobileItemDescriptionFollowToggleContainer = styled.div`
-  left: 2px;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const MobileItemDescription = styled.div`
-  font-size: 16px;
-  color: #333;
-  flex: 1 1 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 14px;
-  }
-`;
-
-const MobileItemFollowToggleDisplay = styled.div`
-  width: 75px;
-`;
-
-const MobileItemFooter = styled.div`
-  height: 20px;
-  width: 100%;
-  margin-top: 2px;
-  font-size: 12px;
-`;
-
-const DesktopContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 24px 24px 24px;
-`;
-
-const DesktopItemLeft = styled.div`
-  width: 85px;
-  padding: 0 16px 0 0;
-`;
-
-const DesktopItemImage = styled.div`
-  width: 57.76px;
-  margin: 0 auto;
-  height: 57.76px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  margin-bottom: 8px;
-  * {
-    border-radius: 6px;
-    width: 57.76px !important;
-    height: 57.76px !important;
-    max-width: 57.76px !important;
-    display: flex;
-    align-items: flex-start;
-  }
-`;
-
-const PositionItemDesktop = styled.div`
-  border-radius: 5px;
-  list-style: none;
-  padding: 6px 16px;
-  background: #eee;
-  flex: 1 1 0;
-`;
-
-const DesktopItemHeader = styled.div`
-  display: flex;
-  align-items: top;
-  justify-content: flex-start;
-`;
-
-const DesktopItemNameIssueContainer = styled.div`
-  padding: 0px;
-`;
-
-const DesktopItemNameContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-`;
-
-const DesktopItemName = styled.h4`
-  font-size: 18px;
-  font-weight: bold;
-  margin: 0;
-`;
-
-const DesktopItemIssues = styled.div`
-  margin: 0;
-  padding: 0;
-`;
-
-const DesktopItemEndorsementDisplay = styled.div`
-  margin-left: auto;
-  padding: 0;
-`;
-
-const DesktopItemBody = styled.div`
-  margin: 0;
-`;
-
-const DesktopItemDescription = styled.div`
-  font-size: 14px;
-  margin-top: 8px;
-`;
-
-const DesktopItemFooter = styled.div`
-  font-size: 12px;
-  margin-top: 2px;
-`;
-
-const DesktopItemTwitterContainer = styled.div`
-`;
-
-const DesktopItemTwitter = styled.div`
-  color: #999;
-  display: inline-block;
-  font-size: 12px;
-  padding-left: 10px;
-  white-space: nowrap;
-`;
-
-const SupportAndPartOfScore = styled.div`
-  background: ${({ theme }) => theme.colors.supportGreenRgb};
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  @media print{
-    border: 2px solid grey;
+const MobileSmallItemNameContainer = styled.div`
+  @media (min-width: 375px) {
+    display: none;
   }
 `;
 
@@ -906,76 +872,9 @@ const OpposeAndPartOfScore = styled.div`
   }
 `;
 
-const OverlayImage = styled.div`
-  margin-left: -2px;
-  margin-top: -17px;
-  z-index: 2;
-`;
-
-const SourceLink = styled.div`
-  float: right;
-  margin-bottom: -4px;
-`;
-
-const TwitterIcon = styled.span`
-  font-size: 16px;
-  color: #ccc;
-  margin-right: 2px;
-  vertical-align: bottom;
-`;
-
-const OrganizationSupportWrapper = styled.div`
-  position: relative;
-  z-index: 1;
-`;
-
-const OrganizationSupportSquare = styled.div`
-  align-items: center;
-  background: white;
-  border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
-  border-radius: 5px;
-  color: ${({ theme }) => theme.colors.supportGreenRgb};
-  cursor: pointer;
-  display: flex;
-  height: 40px;
-  font-size: 20px;
-  font-weight: bold;
-  justify-content: center;
-  width: 40px;
-`;
-
-const OrganizationSupportIconWrapper = styled.div`
-  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '2px' : '0')};
-`;
-
-const OrganizationOpposeWrapper = styled.div`
-  position: relative;
-  z-index: 1;
-`;
-
-const OrganizationOpposeSquare = styled.div`
-  background: white;
-  border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
-  color: ${({ theme }) => theme.colors.opposeRedRgb};
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  font-size: 20px;
-  font-weight: bold;
-`;
-
-const OrganizationOpposeIconWrapper = styled.div`
-  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '2px' : '0')};
-  margin-top: ${({ speakerImageExists }) => (speakerImageExists ? '-2px' : '0')};
-`;
-
-const OrganizationInformationOnlyWrapper = styled.div`
-  position: relative;
-  z-index: 1;
+const OrganizationInfoOnlyIconWrapper = styled.div`
+  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '4px' : '0')};
+  margin-top: ${({ speakerImageExists }) => (speakerImageExists ? '-5px' : '0')};
 `;
 
 const OrganizationInformationOnlySquare = styled.div`
@@ -993,9 +892,118 @@ const OrganizationInformationOnlySquare = styled.div`
   font-weight: bold;
 `;
 
-const OrganizationInfoOnlyIconWrapper = styled.div`
-  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '4px' : '0')};
-  margin-top: ${({ speakerImageExists }) => (speakerImageExists ? '-5px' : '0')};
+const OrganizationInformationOnlyWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+`;
+
+const OrganizationOpposeIconWrapper = styled.div`
+  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '2px' : '0')};
+  margin-top: ${({ speakerImageExists }) => (speakerImageExists ? '-2px' : '0')};
+`;
+
+const OrganizationOpposeSquare = styled.div`
+  background: white;
+  border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
+  color: ${({ theme }) => theme.colors.opposeRedRgb};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const OrganizationOpposeWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+`;
+
+const OrganizationSupportIconWrapper = styled.div`
+  margin-left: ${({ speakerImageExists }) => (speakerImageExists ? '2px' : '0')};
+`;
+
+const OrganizationSupportSquare = styled.div`
+  align-items: center;
+  background: white;
+  border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
+  border-radius: 5px;
+  color: ${({ theme }) => theme.colors.supportGreenRgb};
+  cursor: pointer;
+  display: flex;
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  justify-content: center;
+  width: 40px;
+`;
+
+const OrganizationSupportWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+`;
+
+const OverlayImage = styled.div`
+  margin-left: -2px;
+  margin-top: -17px;
+  z-index: 2;
+`;
+
+const PositionItemDesktop = styled.div`
+  background: #eee;
+  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
+  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
+  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  border-radius: 5px;
+  flex: 1 1 0;
+  list-style: none;
+  padding: 6px 16px;
+`;
+
+const PositionItemMobile = styled.li`
+  background: #eee;
+  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
+  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
+  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  border-radius: 5px;
+  list-style: none;
+  margin: 16px;
+  max-width: 100% !important;
+  @media (max-width: 476px) {
+    margin: 16px 0;
+  }
+`;
+
+const SourceLink = styled.div`
+  float: right;
+  margin-bottom: -4px;
+`;
+
+const SupportAndPartOfScore = styled.div`
+  background: ${({ theme }) => theme.colors.supportGreenRgb};
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  @media print{
+    border: 2px solid grey;
+  }
+`;
+
+const TwitterIcon = styled.span`
+  font-size: 16px;
+  color: #ccc;
+  margin-right: 2px;
+  vertical-align: bottom;
 `;
 
 export default withTheme(withStyles(styles)(PositionItem));

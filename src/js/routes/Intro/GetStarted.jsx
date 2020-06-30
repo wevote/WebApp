@@ -104,11 +104,11 @@ export default class GetStarted extends Component {
                 <div className="twitter-intro-connect col-md-4 col-md-offset-4 xs-block form-group">
                   <TwitterSignIn />
                   <br />
-                Sign in with Twitter to see
+                  Sign in with Twitter to see
                   <br />
-                the voter guides of everyone
+                  the voter guides of everyone
                   <br />
-                you follow on Twitter.
+                  you follow on Twitter.
                   <br />
                   <br />
                 </div>

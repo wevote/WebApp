@@ -27,6 +27,7 @@ import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
+import { voterPhoto } from '../../utils/voterPhoto';
 
 class HeaderBackToBallot extends Component {
   static propTypes = {
@@ -179,7 +180,9 @@ class HeaderBackToBallot extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
+    // WARN: Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
     // console.log('HeaderBackToBallot componentWillReceiveProps, nextProps: ', nextProps);
     let candidateWeVoteId;
     let googleCivicElectionId;
@@ -573,9 +576,11 @@ class HeaderBackToBallot extends Component {
       backToCandidateWeVoteId, backToMeasure, backToMeasureWeVoteId, backToVariable,
       candidate, googleCivicElectionId, measureWeVoteId, officeName, officeWeVoteId,
       organization, organizationWeVoteId, profilePopUpOpen, scrolledDown, showSignInModal,
-      shareModalStep, showShareModal, voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
+      shareModalStep, showShareModal, voter, voterFirstName, voterIsSignedIn,
     } = this.state;
+    const voterPhotoUrlMedium = voterPhoto(voter);
     const { classes, pathname } = this.props;
+
     // console.log('HeaderBackToBallot googleCivicElectionId:', googleCivicElectionId);
 
     let backToLink;
@@ -706,7 +711,7 @@ class HeaderBackToBallot extends Component {
                 onClick={this.toggleSignInModal}
                 variant="text"
               >
-              Sign In
+                Sign In
               </Button>
             )}
           </div>

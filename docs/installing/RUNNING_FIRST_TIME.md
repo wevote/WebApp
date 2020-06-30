@@ -51,9 +51,42 @@ To install OpenSSL for Mac OS X, type in your terminal:
 
 1)  After installation, check the version: `openssl version`
     
-1)  If it's not showing 1.0.2 as the most recent version, then you need to symlink to the updated openssl version like so:
+1)  If it's not showing the most recent version, then you need to symlink to the updated openssl version like so:
     
-    `ln -s /usr/local/Cellar/openssl/1.0.2h_1/bin/openssl /usr/local/bin/openssl `
+     ln -s /usr/local/Cellar/openssl/1.0.2h_1/bin/openssl /usr/local/bin/openssl
+
+Now create a self signed certificate, starting from the WebApp folder.
+
+     openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
+     openssl rsa -passin pass:x -in server.pass.key -out server.key
+     rm server.pass.key
+     openssl req -new -key server.key -out server.csr
+     
+At this point you will be asked for certificate information, like this:
+
+     Country Name (2 letter code) []:US
+     State or Province Name (full name) []:California
+     Locality Name (eg, city) []:Oakland
+     Organization Name (eg, company) []:We Vote
+     Organizational Unit Name (eg, section) []:
+     Common Name (eg, fully qualified host name) []:localhost
+     Email Address []:
+
+     Please enter the following 'extra' attributes
+     to be sent with your certificate request
+     A challenge password []:
+
+Finally run this:
+
+     openssl x509 -req -sha256 -days 365 -in server.csr -signkey server.key -out server.crt
+     mv server.key ./src/cert/
+     mv server.crt ./src/cert/
+
+Enter this into your Chrome address bar:
+
+     chrome://flags/#allow-insecure-localhost
+     
+And then enable that setting. You will have to restart your browser.
 
 Then you should be able to start the WebApp using SSL 
 

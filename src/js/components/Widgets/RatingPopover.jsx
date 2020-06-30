@@ -18,8 +18,8 @@ export default class RatingPopover extends Component {
 
     const ratingDescription = (
       <div className="u-margin-top--xs">
-      Ratings are given by the organization, and collected by the
-      nonprofit Vote Smart.
+        Ratings are given by the organization, and collected by the
+        nonprofit Vote Smart.
         <br />
         <span className="u-no-break">
           <img src={cordovaDot(downArrowColorIcon)} width="20" height="20" alt="down-arrow" />
@@ -47,7 +47,7 @@ export default class RatingPopover extends Component {
     return (
       <div className="card-main__description card-main__rating-description u-margin-top--xs">
         <div onClick={toggleDescription} className="card-main__rating-description__header u-cursor--pointer">
-        (rating source: VoteSmart.org)
+          (rating source: VoteSmart.org)
           {' '}
           { showDescription ? <span className="glyphicon glyphicon-triangle-bottom d-print-none" /> : null }
         </div>

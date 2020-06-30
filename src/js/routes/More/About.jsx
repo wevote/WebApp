@@ -74,7 +74,7 @@ class About extends Component {
           <AboutDescriptionContainer>
             Currently, the U.S. trails most developed nations in voter turnout.
             {' '}
-            Only 6 out of 10 eligible voters is expected to cast a ballot next year.
+            Only 6 out of 10 eligible voters is expected to cast a ballot this year.
             {' '}
             Improving overall voter participation is a responsibility shared by all of us.
             {' '}
@@ -185,7 +185,7 @@ class About extends Component {
           <AboutDescriptionContainer>
             We are thankful for
             {' '}
-            <Link to="/more/credits">
+            <Link to="/more/credits" onlyActiveOnIndex>
               our volunteers, our board of directors, our funders, and the organizations
               &nbsp;
               <i className="fas fa-external-link-alt" />
@@ -199,15 +199,7 @@ class About extends Component {
             Our Story
           </SectionTitle>
           <AboutDescriptionContainer>
-            After meeting in Oakland in the spring of 2012, We Vote co-founders Dale McGrew and Jenifer Fernandez Ancona became fast friends.
-            {' '}
-            Dale brings Silicon Valley experience from founding and successfully selling two high tech startups,
-            {' '}
-            and Jenifer brings political, advocacy and fundraising experience from years on the front-lines of national campaigns.
-            {' '}
-            Through frequent conversations, the idea of a nonprofit “Yelp for Politics” was born.
-            {' '}
-            Founded in 2014, We Vote would be a community for voters, they decided, created by people concerned about where this country is heading.
+            Founded in 2014, the idea of a nonprofit “Yelp for Politics” was born. We Vote would be a community for voters, created by people concerned about where this country is heading.
             {' '}
             Being an open source, volunteer-driven project means anyone can contribute. Kind of like democracy.
           </AboutDescriptionContainer>

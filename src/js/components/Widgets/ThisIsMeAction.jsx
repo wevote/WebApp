@@ -11,6 +11,7 @@ class ThisIsMeAction extends Component {
     kindOfOwner: PropTypes.string,
     nameBeingViewed: PropTypes.string,
     twitterHandleBeingViewed: PropTypes.string,
+    whiteOnBlue: PropTypes.bool,
   };
 
   constructor (props) {
@@ -39,7 +40,7 @@ class ThisIsMeAction extends Component {
       // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization
       return <span />;
     }
-    const { kindOfOwner, nameBeingViewed } = this.props;
+    const { kindOfOwner, nameBeingViewed, whiteOnBlue } = this.props;
     // Manage the control over this organization voter guide
     const { voter } = this.state;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
@@ -63,6 +64,14 @@ class ThisIsMeAction extends Component {
     } else {
       thisIsMeActionText = 'Is this you, or do you work here?';
     }
+    let backgroundColor = '';
+    let fontColor = '';
+    let icon = <i className="fab fa-twitter-square" />;
+    if (whiteOnBlue) {
+      backgroundColor = '#fff';
+      fontColor = '#2e3c5d';
+      icon = <i className="fab fa-twitter-square" />;
+    }
 
     return (
       <div>
@@ -73,10 +82,12 @@ class ThisIsMeAction extends Component {
                 <div className="endorsement-card">
                   <Link to={`/verifythisisme/${twitterHandleBeingViewed}`} className="u-no-underline">
                     <SplitIconButton
-                      title={`Claim @${this.props.twitterHandleBeingViewed}`}
-                      id="candidateVerifyThisIsMeAction"
-                      icon={<i className="fab fa-twitter-square" />}
+                      backgroundColor={backgroundColor}
                       buttonText={`Claim @${this.props.twitterHandleBeingViewed}`}
+                      fontColor={fontColor}
+                      icon={icon}
+                      id="candidateVerifyThisIsMeAction"
+                      title={`Claim @${this.props.twitterHandleBeingViewed}`}
                     />
                   </Link>
                   <div className="endorsement-card__text">
@@ -96,4 +107,4 @@ const Container = styled.div`
   padding: 16px;
 `;
 
-export default  ThisIsMeAction;
+export default ThisIsMeAction;

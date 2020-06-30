@@ -1,11 +1,14 @@
+const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const UnusedWebpackPlugin = require('unused-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const path = require('path');
 const { InjectManifest } = require('workbox-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');   // Don't delete this!
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const port = process.env.PORT || 3000;
 
@@ -14,24 +17,116 @@ const isProduction = true;   // Developers can set this to be false, but in git 
 
 module.exports = {
   mode: 'development',
-  entry: ['./src/js/index.js', './src/sass/loading-screen.scss', './src/sass/main.scss'],
+  entry: {
+    bundle: ['./src/js/index.js', './src/sass/main.scss'],
+  },
   output: {
-    filename: 'bundle.js',
+    chunkFilename: '[name].bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'build'),
+  },
+  optimization: {
+    runtimeChunk: false,
+    splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        reactCore: {
+          name: 'reactCore',
+          test: /[\\/]node_modules[\\/](jquery|prop-types|react|react-dom|react-helmet|react-router|react-router-scroll|react-text-truncate)[\\/]/,
+          chunks: 'all',
+          enforce: true,
+        },
+        // minimalNodeModules: {
+        //   name: 'minimalNodeModules',
+        //   test: /[\\/]node_modules[\\/](@babel|clsx|create-react-class|css-vendor|dom-helpers|@emotion|exenv|fbjs|history|hoist-non-react-statics|hyphenate-style-name|invariant|is-in-browser|is-what|jss|jss-plugin-camel-case|jss-plugin-default-unit|jss-plugin-global|jss-plugin-nested|jss-plugin-props-sort|jss-plugin-vendor-prefixer|jss-plugin-rule-value-function|memoize-one|merge-anything|object-assign|process|query-string|react-is|react-fast-compare|react-js|react-side-effect|scroll-behavior|shallowequal|sockjs-client|strict-uri-encode|stylis|stylis-rule-sheet|tiny-warning)[\\/]/,
+        //   chunks: 'all',
+        //   enforce: true,
+        // },
+        materialStyle: {
+          name: 'materialStyle',
+          test: /[\\/]node_modules[\\/](@material-ui|styled-components)[\\/]/,
+          chunks: 'all',
+          enforce: true,
+        },
+        readyNoApi: {
+          name: 'readyNoApi',
+          test: function (module) {
+            if (module.resource) {
+              return module.resource.includes('/js/config.js') ||
+                module.resource.includes('/js/index.js') ||
+                module.resource.includes('/js/mui-theme.js') ||
+                module.resource.includes('/js/Root.jsx') ||
+                module.resource.includes('/js/startReactApp.js') ||
+                module.resource.includes('/js/styled-theme.js') ||
+                module.resource.includes('/js/components/ReadyNoApi/') ||
+                module.resource.includes('/js/components/Widgets/ReadMore.jsx') ||
+                module.resource.includes('/js/routes/ReadyNoApi.jsx') ||
+                module.resource.includes('/js/utils/') ||
+                module.resource.match(/[\\/]node_modules[\\/](@babel|clsx|create-react-class|css-vendor|dom-helpers|@emotion|exenv|fbjs|history|hoist-non-react-statics|hyphenate-style-name|invariant|is-in-browser|is-what|jss|jss-plugin-camel-case|jss-plugin-default-unit|jss-plugin-global|jss-plugin-nested|jss-plugin-props-sort|jss-plugin-vendor-prefixer|jss-plugin-rule-value-function|memoize-one|merge-anything|object-assign|process|query-string|react-is|react-fast-compare|react-js|react-side-effect|scroll-behavior|shallowequal|sockjs-client|strict-uri-encode|stylis|stylis-rule-sheet|tiny-warning)[\\/]/);
+            }
+          },
+          chunks: 'all',
+          enforce: true,
+        },
+        defaultWeVote: {
+          name: 'defaultWeVote',
+          test: function (module) {
+            if (module.resource) {
+              return module.resource.includes('/js/');
+            }
+          },
+          chunks: 'all',
+          enforce: true,
+          priority: -10,
+        },
+        defaultVendors: {
+          name: 'defaultVendors',
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'all',
+          enforce: true,
+          priority: -10,
+        },
+      },
+    },
+    minimizer: [
+      new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: {
+          ecma: 8,
+          mangle: false,
+          keep_classnames: true,
+          keep_fnames: true,
+        },
+      }),
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new webpack.HashedModuleIdsPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
+      filename: 'index.html',
+      chunksSortMode: 'auto',
+    }),
+    new ScriptExtHtmlWebpackPlugin({
+      sync: ['jQuery', 'materialStyle', 'reactCore', 'readyNoApi'],
+      // This just generates a link, but doesn't remove the script from being included and holding up onload
+      // Possible solution: use this, but modify the html to remove the "<script" tag manually
+      // prefetch: {
+      //   test: ['defaultVendors', 'defaultWeVote'],
+      //   chunks: 'all',
+      // },
+      defaultAttribute: 'async',
     }),
     new CopyPlugin([
       { from: 'src/extension.html', to: '.' },
       { from: 'src/robots.txt', to: '.' },
-      { from: 'src/vip.html', to: '.' },
       { from: 'src/css/', to: 'css/' },
       { from: 'src/img/',
         to: 'img/',
-        ignore: ['DO-NOT-BUNDLE/**/*', 'welcome/partners/**/*' ],
+        ignore: ['DO-NOT-BUNDLE/**/*', 'welcome/partners/**/*'],
       },
       { from: 'src/javascript/', to: 'javascript/' },
     ]),

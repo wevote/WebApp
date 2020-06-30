@@ -16,6 +16,7 @@ class IssueCard extends Component {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
     followToggleOn: PropTypes.bool,
+    followToggleOnItsOwnLine: PropTypes.bool,
     hideAdvocatesCount: PropTypes.bool,
     includeLinkToIssue: PropTypes.bool,
     issue: PropTypes.object.isRequired,
@@ -143,37 +144,48 @@ class IssueCard extends Component {
     }
 
     const { issueWeVoteId, ballotItemWeVoteId } = this.state;
-    const { currentBallotIdInUrl, followToggleOn, hideAdvocatesCount, includeLinkToIssue, turnOffDescription, turnOffIssueImage, urlWithoutHash } = this.props;
+    const { currentBallotIdInUrl, followToggleOn, followToggleOnItsOwnLine, hideAdvocatesCount, includeLinkToIssue, turnOffDescription, turnOffIssueImage, urlWithoutHash } = this.props;
     return (
       <Wrapper
         key={`issue-card-${issueWeVoteId}`}
         className={this.props.condensed ? "card-child u-full-height" : "card-child u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"}
         condensed={!!this.props.condensed}
       >
-        <Flex condensed={!!this.props.condensed}>
-          <div className="card-main__media-object-anchor">
-            {!turnOffIssueImage && (
-              <span>
-                {includeLinkToIssue ? (
-                  <Link to={this.getIssueLink}
-                        className="u-no-underline"
-                  >
-                    {issueImage}
-                  </Link>
-                ) : (
-                  <span>
-                    {issueImage}
-                  </span>
-                )}
-              </span>
-            )}
-          </div>
-          <>
-            {includeLinkToIssue ? (
-              <Link id="valueListLink"
-                    to={this.getIssueLink}
-                    className="u-no-underline"
-              >
+        <Flex condensed={!!this.props.condensed} followToggleOnItsOwnLine={!!followToggleOnItsOwnLine}>
+          <FlexNameAndIcon condensed={!!this.props.condensed}>
+            <div className="card-main__media-object-anchor">
+              {!turnOffIssueImage && (
+                <span>
+                  {includeLinkToIssue ? (
+                    <Link to={this.getIssueLink}
+                          className="u-no-underline"
+                    >
+                      {issueImage}
+                    </Link>
+                  ) : (
+                    <span>
+                      {issueImage}
+                    </span>
+                  )}
+                </span>
+              )}
+            </div>
+            <>
+              {includeLinkToIssue ? (
+                <Link id="valueListLink"
+                      to={this.getIssueLink}
+                      className="u-no-underline"
+                >
+                  <IssueName>
+                    {`${issueDisplayName} `}
+                    {!hideAdvocatesCount && (
+                      <IssueAdvocatesCount>
+                        {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
+                      </IssueAdvocatesCount>
+                    )}
+                  </IssueName>
+                </Link>
+              ) : (
                 <IssueName>
                   {`${issueDisplayName} `}
                   {!hideAdvocatesCount && (
@@ -182,19 +194,10 @@ class IssueCard extends Component {
                     </IssueAdvocatesCount>
                   )}
                 </IssueName>
-              </Link>
-            ) : (
-              <IssueName>
-                {`${issueDisplayName} `}
-                {!hideAdvocatesCount && (
-                  <IssueAdvocatesCount>
-                    {`(${countOfOrganizationsUnderThisIssue}${countOfOrganizationsUnderThisIssue === 1 ? ' Advocate' : ''}${countOfOrganizationsUnderThisIssue > 1 ? ' Advocates' : ''})`}
-                  </IssueAdvocatesCount>
-                )}
-              </IssueName>
-            )}
-          </>
-          {followToggleOn && issueWeVoteId ? (
+              )}
+            </>
+          </FlexNameAndIcon>
+          {(followToggleOn && issueWeVoteId) && (
             <FollowIssueToggleContainer>
               <IssueFollowToggleButton
                 ballotItemWeVoteId={ballotItemWeVoteId}
@@ -205,8 +208,7 @@ class IssueCard extends Component {
                 urlWithoutHash={urlWithoutHash}
               />
             </FollowIssueToggleContainer>
-          ) : null
-          }
+          )}
         </Flex>
         { !turnOffDescription && (
           <Description>
@@ -249,6 +251,14 @@ const FollowIssueToggleContainer = styled.div`
 `;
 
 const Flex = styled.div`
+  ${props => (props.followToggleOnItsOwnLine ?
+    '' :
+    'display: flex; align-items: center; justify-content: flex-start;'
+  )}
+  width: ${props => (props.condensed ? '100%' : null)};
+`;
+
+const FlexNameAndIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;

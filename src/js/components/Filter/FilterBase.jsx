@@ -5,10 +5,12 @@ import Badge from '@material-ui/core/Badge';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
+import { getAllStateCodeFilters } from '../../utils/address-functions';
 import BallotSearch from '../Ballot/BallotSearch';
 import { renderLog } from '../../utils/logging';
+import StateDropDown from './StateDropDown';
 
-const sortFilters = ['sortByMagic', 'sortByNetwork', 'sortByReach'];
+const defaultSortFilters = ['sortByMagic', 'sortByNetwork', 'sortByReach'];
 
 class FilterBase extends React.Component {
   static propTypes = {
@@ -22,28 +24,53 @@ class FilterBase extends React.Component {
     onToggleSearch: PropTypes.func,
     positionSearchMode: PropTypes.bool,
     selectedFiltersDefault: PropTypes.array,
+    sortFilters: PropTypes.array,
+    stateCodesToDisplay: PropTypes.array,
+    voterGuidePositionSearchMode: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       changeTrigger: '',
-      // componentDidMount: false,
       isSearching: false,
       lastFilterAdded: '',
       showAllFilters: false,
       selectedFilters: [],
-      // fullWidth: PropTypes.bool,
     };
   }
 
   componentDidMount () {
-    // console.log('FilterBase componentDidMount, selectedFiltersDefault:', this.props.selectedFiltersDefault);
+    // console.log('FilterBase componentDidMount');
     this.setState({
       // componentDidMount: true,
       selectedFilters: this.props.selectedFiltersDefault || [],
+      sortFilters: this.props.sortFilters || defaultSortFilters,
     });
   }
+
+  changeToDifferentStateCodeFilter = (stateCodeFilter) => {
+    const { selectedFilters } = this.state;
+    let updatedFilters = selectedFilters;
+    // console.log('FilterBase changeToDifferentStateCodeFilter, stateCodeFilter: ', stateCodeFilter);
+    // Figure out which other filters to remove when we switch to a new stateCode filter
+    const allStateCodeFilters = getAllStateCodeFilters();
+    // Get all other stateCode filters, minus the one we want to switch to
+    const stateCodeFiltersToRemove = allStateCodeFilters.filter(stateCode => stateCodeFilter !== stateCode);
+    // console.log('selectedFilters: ', selectedFilters);
+    // console.log('stateCodeFiltersToRemove: ', stateCodeFiltersToRemove);
+
+    if (updatedFilters.indexOf(stateCodeFilter) > -1) {
+      // stateCode already selected. Do nothing.
+    } else {
+      // console.log('Adding stateCodeFilter:', stateCodeFilter);
+      updatedFilters = [...updatedFilters, stateCodeFilter];
+    }
+    // Only include state filters that aren't in stateCodeFiltersToRemove
+    const updatedSelectedFilters = updatedFilters.filter(item => !stateCodeFiltersToRemove.includes(item));
+    // console.log('updatedSelectedFilters:', updatedSelectedFilters);
+    this.setState({ selectedFilters: updatedSelectedFilters });
+  };
 
   toggleShowAllFilters = () => {
     const { showAllFilters } = this.state;
@@ -80,7 +107,7 @@ class FilterBase extends React.Component {
   };
 
   selectSortByFilter = (filterName) => {
-    const { selectedFilters } = this.state;
+    const { selectedFilters, sortFilters } = this.state;
     let updatedFilters = selectedFilters;
     // Figure out which other filters to remove when we switch to a new sortBy filter
     const remainingSortFiltersToRemove = sortFilters.filter(item => item !== filterName);
@@ -191,11 +218,15 @@ class FilterBase extends React.Component {
     }
   };
 
+  onStateDropDownChange = (stateCode) => {
+    this.changeToDifferentStateCodeFilter(`stateCode${stateCode}`);
+  }
+
   render () {
     renderLog('FilterBase');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('FilterBase render');
-    const { isSearching, selectedFilters, showAllFilters } = this.state;
-    const { allItems, classes, positionSearchMode } = this.props;
+    const { isSearching, selectedFilters, showAllFilters, sortFilters } = this.state;
+    const { allItems, classes, positionSearchMode, stateCodesToDisplay, voterGuidePositionSearchMode } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
     return (
@@ -203,14 +234,22 @@ class FilterBase extends React.Component {
         <FilterTop>
           <BallotSearch
             addVoterGuideMode
+            alwaysOpen={voterGuidePositionSearchMode}
             isSearching={isSearching}
             items={allItems}
             onBallotSearch={this.onSearch}
             onToggleSearch={this.handleToggleSearchBallot}
             positionSearchMode={positionSearchMode}
+            voterGuidePositionSearchMode={voterGuidePositionSearchMode}
           />
           {!isSearching && this.generateGroupedFilters()}
           {!isSearching && this.generateIslandFilters()}
+          {(!isSearching && stateCodesToDisplay) && (
+            <StateDropDown
+              onStateDropDownChange={this.onStateDropDownChange}
+              stateCodesToDisplay={stateCodesToDisplay}
+            />
+          )}
           {!isSearching && (
             <Badge
               classes={{ badge: classes.badge }}

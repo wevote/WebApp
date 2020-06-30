@@ -258,7 +258,7 @@ class Office extends Component {
 
     const testimonialAuthor = 'Dale M., Oakland, California';
     const imageUrl = cordovaDot(daleMcGrewJpm);
-    const testimonial = 'Following values that are important to me lets me see the opinions of other people who share my values.';
+    const testimonial = 'I like seeing the opinions of people who share my values.';
 
     // ==============================================================
 

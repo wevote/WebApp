@@ -47,11 +47,28 @@ export default class PublicFiguresToFollowPreview extends Component {
       <div id="mainContainer" className="opinions-followed__container">
         <section className="card">
           <div className="card-main">
-            <SectionTitle id="publicFiguresSection">Public Figures to Follow</SectionTitle>
+            <SectionTitle
+              id="publicFiguresSection"
+              className="u-cursor--pointer"
+              onClick={() => this.goToPublicFigures()}
+            >
+              Public Figures to Follow
+            </SectionTitle>
+            <SectionDescription>
+              Follow a public figure to see what they think.
+            </SectionDescription>
             <Suspense fallback={<span>Loading...</span>}>
-              <GuideList incomingVoterGuideList={voterGuidesToFollow} instantRefreshOn />
+              <GuideList
+                hideShowMoreItems
+                incomingVoterGuideList={voterGuidesToFollow}
+                instantRefreshOn
+              />
             </Suspense>
-            <ShowMoreFooter showMoreId="publicFiguresToFollowPreviewShowMoreId" showMoreLink={() => this.goToPublicFigures()} showMoreText="Explore more public figures" />
+            <ShowMoreFooter
+              showMoreId="publicFiguresToFollowPreviewShowMoreId"
+              showMoreLink={() => this.goToPublicFigures()}
+              showMoreText="Explore more public figures"
+            />
           </div>
         </section>
       </div>
@@ -59,8 +76,16 @@ export default class PublicFiguresToFollowPreview extends Component {
   }
 }
 
-const SectionTitle = styled.h2`
-  width: fit-content;  font-weight: bold;
-  font-size: 18px;
+const SectionDescription = styled.h2`
+  font-weight: 200;
+  font-size: 14px;
   margin-bottom: 16px;
+  width: fit-content;
+`;
+
+const SectionTitle = styled.h2`
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 4px;
+  width: fit-content;
 `;

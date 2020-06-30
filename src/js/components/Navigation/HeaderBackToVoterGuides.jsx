@@ -32,6 +32,7 @@ import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectio
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import { voterPhoto } from '../../utils/voterPhoto';
 
 class HeaderBackToVoterGuides extends Component {
   static propTypes = {
@@ -100,8 +101,6 @@ class HeaderBackToVoterGuides extends Component {
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
-    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
-
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
@@ -110,12 +109,13 @@ class HeaderBackToVoterGuides extends Component {
       voter,
       voterFirstName,
       voterIsSignedIn,
-      voterPhotoUrlMedium,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
+    // WARN: Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
     // console.log('HeaderBackToVoterGuides componentWillReceiveProps, nextProps: ', nextProps);
     // let officeName;
     let organization = {};
@@ -136,12 +136,10 @@ class HeaderBackToVoterGuides extends Component {
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
-    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       voter,
       voterFirstName,
       voterIsSignedIn,
-      voterPhotoUrlMedium,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
       voterGuideWeVoteId: nextProps.params.voter_guide_we_vote_id,
     });
@@ -195,12 +193,10 @@ class HeaderBackToVoterGuides extends Component {
     const voter = VoterStore.getVoter();
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
-    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     this.setState({
       voter,
       voterFirstName,
       voterIsSignedIn,
-      voterPhotoUrlMedium,
     });
   }
 
@@ -268,9 +264,10 @@ class HeaderBackToVoterGuides extends Component {
     renderLog('HeaderBackToVoterGuides');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       profilePopUpOpen, showNewVoterGuideModal, showSignInModal,
-      voter, voterFirstName, voterIsSignedIn, voterPhotoUrlMedium,
+      voter, voterFirstName, voterIsSignedIn,
     } = this.state;
     const { classes, pathname } = this.props;
+    const voterPhotoUrlMedium = voterPhoto(voter);
 
     let backToLink = '/settings/voterguidelist'; // default
     let backToOrganizationLinkText = 'Voter Guides'; // Back to
@@ -386,7 +383,7 @@ class HeaderBackToVoterGuides extends Component {
                 onClick={this.toggleSignInModal}
                 variant="text"
               >
-              Sign In
+                Sign In
               </Button>
             )}
           </div>

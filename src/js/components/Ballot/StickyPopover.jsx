@@ -130,7 +130,7 @@ class StickyPopover extends Component {
           >
             {popoverComponent}
             {this.props.showCloseIcon && (
-              <CloseIcon>
+              <CloseIcon id="closeYourPersonalizedScorePopover">
                 <span className="fas fa-times u-cursor--pointer" aria-hidden="true" onClick={this.closePopover} />
               </CloseIcon>
             )}

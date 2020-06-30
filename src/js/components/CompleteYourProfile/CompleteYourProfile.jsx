@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import EditLocation from '@material-ui/icons/EditLocation';
 import CheckCircle from '@material-ui/icons/CheckCircle';
@@ -34,7 +34,7 @@ class CompleteYourProfile extends Component {
         {
           id: 1,
           title: 'Watch how it works (no sound)',
-          buttonText: 'How It Works',
+          buttonText: 'How We Vote Works',
           completed: false,
           description: '',
           icon: (<PlayCircleFilled />),
@@ -129,6 +129,7 @@ class CompleteYourProfile extends Component {
   }
 
   onVoterStoreChange () {
+    // console.log('CompleteYourProfile onVoterStoreChange');
     this.setCompletedStatus();
     this.sortSteps();
     this.setState({
@@ -138,35 +139,47 @@ class CompleteYourProfile extends Component {
 
   setCompletedStatus = () => {
     const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
+    const howItWorksWatchedId = 1;
     if (howItWorksWatched) {
-      const howItWorksWatchedId = 1;
       this.setItemComplete(howItWorksWatchedId);
+    } else {
+      this.setItemNotComplete(howItWorksWatchedId);
     }
     const valuesIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.VALUES_INTRO_COMPLETED);
+    const valuesIntroCompletedId = 2;
     if (valuesIntroCompleted) {
-      const valuesIntroCompletedId = 2;
       this.setItemComplete(valuesIntroCompletedId);
+    } else {
+      this.setItemNotComplete(valuesIntroCompletedId);
     }
     // const adviserIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ORGANIZATIONS_COMPLETED);
+    // const adviserIntroCompletedId = 3;
     // if (adviserIntroCompleted) {
-    //   const adviserIntroCompletedId = 3;
     //   this.setItemComplete(adviserIntroCompletedId);
+    // } else {
+    //   this.setItemNotComplete(adviserIntroCompletedId);
     // }
     const addressIntroCompletedByCookie = cookies.getItem('location_guess_closed');
     const { addressIntroCompleted } = this.state;
+    const addressIntroCompletedId = 3;
     if (addressIntroCompleted || addressIntroCompletedByCookie) {
-      const addressIntroCompletedId = 3;
       this.setItemComplete(addressIntroCompletedId);
+    } else {
+      this.setItemNotComplete(addressIntroCompletedId);
     }
     const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+    const personalizedScoreIntroCompletedId = 4;
     if (personalizedScoreIntroCompleted) {
-      const personalizedScoreIntroCompletedId = 4;
       this.setItemComplete(personalizedScoreIntroCompletedId);
+    } else {
+      this.setItemNotComplete(personalizedScoreIntroCompletedId);
     }
     // const firstPositionIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED);
+    // const firstPositionIntroCompletedId = 5;
     // if (firstPositionIntroCompleted) {
-    //   const firstPositionIntroCompletedId = 5;
     //   this.setItemComplete(firstPositionIntroCompletedId);
+    // } else {
+    //   this.setItemNotComplete(firstPositionIntroCompletedId);
     // }
     this.setState({
       // adviserIntroCompleted,
@@ -193,6 +206,23 @@ class CompleteYourProfile extends Component {
     });
     this.setState({ steps: newSteps });
     this.goToNextIncompleteStep();
+  }
+
+  setItemNotComplete (stepItemIdToMarkNotComplete) {
+    // console.log('Setting not complete!');
+    const { steps } = this.state;
+    let oneStepModified;
+    const newSteps = steps.map((oneStep) => {
+      if (oneStep.id === stepItemIdToMarkNotComplete) {
+        // console.log('Item to mark not complete: ', oneStep);
+        oneStepModified = oneStep;
+        oneStepModified.completed = false;
+        return oneStepModified;
+      } else {
+        return oneStep;
+      }
+    });
+    this.setState({ steps: newSteps });
   }
 
   openHowItWorksModal = () => {
@@ -301,6 +331,7 @@ class CompleteYourProfile extends Component {
   }
 
   render () {
+    // console.log('CompleteYourProfile render');
     const {
       activeStep, addressIntroCompleted, ballotLength, ballotRemainingChoicesLength,
       // firstPositionIntroCompleted,

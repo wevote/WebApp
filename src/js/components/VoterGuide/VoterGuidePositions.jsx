@@ -29,6 +29,8 @@ import VoterStore from '../../stores/VoterStore';
 import YourPositionsVisibilityMessage from './YourPositionsVisibilityMessage';
 import AppActions from '../../actions/AppActions';
 
+
+// 2020-06-10 Being replaced with VoterGuideEndorsements
 class VoterGuidePositions extends Component {
   static propTypes = {
     activeRoute: PropTypes.string,
@@ -337,7 +339,7 @@ class VoterGuidePositions extends Component {
   }
 
   onScroll () {
-    const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
+    const showMoreItemsElement = document.querySelector('#showMoreItemsId');
     // console.log('showMoreItemsElement: ', showMoreItemsElement);
     // console.log('Loading more: ', this.state.loadingMoreItems);
     if (showMoreItemsElement) {
@@ -401,14 +403,22 @@ class VoterGuidePositions extends Component {
   }
 
   render () {
-    renderLog('VoterGuidePositions');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('VoterGuidePositions'); // Set LOG_RENDER_EVENTS to log all renders
     // console.log('VoterGuidePositions render');
     const { classes } = this.props;
     const {
-      clearSearchTextNow, currentGoogleCivicElectionId, electionDayText, electionName,
-      loadingMoreItems, organization,
-      organizationId, organizationWeVoteId, numberOfPositionItemsToDisplay,
-      positionListForOneElection, positionListForOneElectionLength, searchIsUnderway,
+      clearSearchTextNow,
+      currentGoogleCivicElectionId,
+      electionDayText,
+      electionName,
+      loadingMoreItems,
+      organization,
+      organizationId,
+      organizationWeVoteId,
+      numberOfPositionItemsToDisplay,
+      positionListForOneElection,
+      positionListForOneElectionLength,
+      searchIsUnderway,
       voterGuideElectionListCount,
     } = this.state;
     // console.log('voterGuideElectionListCount:', voterGuideElectionListCount);
@@ -468,13 +478,15 @@ class VoterGuidePositions extends Component {
                         {' '}
                         <span className="d-none d-sm-inline">&mdash;</span>
                         {' '}
-                        <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+                        <span className="u-gray-mid u-no-break">
+                          {electionDayTextFormatted}
+                        </span>
                       </>
                     )}
                   </span>
                 ) : (
                   <span className="u-push--sm">
-                         Loading Election...
+                    Choose Election...
                   </span>
                 )}
               </TitleWrapper>
@@ -485,7 +497,7 @@ class VoterGuidePositions extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             <VoterGuideEndorsementsWrapper>
-              { lookingAtSelf && (
+              {lookingAtSelf && (
                 <div className="u-margin-left--md u-push--md">
                   <BallotSearchResults
                     clearSearchTextNow={clearSearchTextNow}
@@ -495,7 +507,7 @@ class VoterGuidePositions extends Component {
                   />
                 </div>
               )}
-              { !!(atLeastOnePositionFoundForThisElection && !searchIsUnderway) && (
+              {!!(atLeastOnePositionFoundForThisElection && !searchIsUnderway) && (
                 <div>
                   <>
                     {lookingAtSelf && <YourPositionsVisibilityMessage positionList={positionListForOneElection} />}
@@ -506,7 +518,9 @@ class VoterGuidePositions extends Component {
                       }
                       numberOfPositionItemsDisplayed += 1;
                       return (
-                        <VoterGuidePositionItemWrapper key={`VoterGuidePositionItem-${item.position_we_vote_id}`}>
+                        <VoterGuidePositionItemWrapper
+                          key={`VoterGuidePositionItem-${item.position_we_vote_id}`}
+                        >
                           <VoterGuidePositionItem
                             organizationWeVoteId={organizationWeVoteId}
                             position={item}
@@ -515,7 +529,10 @@ class VoterGuidePositions extends Component {
                       );
                     })}
                   </>
-                  <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
+                  <ShowMoreItemsWrapper
+                    id="showMoreItemsId"
+                    onClick={this.increaseNumberOfPositionItemsToDisplay}
+                  >
                     <ShowMoreItems
                       loadingMoreItemsNow={loadingMoreItems}
                       numberOfItemsDisplayed={numberOfPositionItemsDisplayed}
@@ -523,14 +540,12 @@ class VoterGuidePositions extends Component {
                     />
                   </ShowMoreItemsWrapper>
                   <LoadingItemsWheel>
-                    {loadingMoreItems ? (
-                      <CircularProgress />
-                    ) : null}
+                    {loadingMoreItems ? <CircularProgress /> : null}
                   </LoadingItemsWheel>
                 </div>
               )}
               {/* If the positionListForOneElection comes back empty, display a message saying that there aren't any positions for this election. */}
-              { !atLeastOnePositionFoundForThisElection && (
+              {!atLeastOnePositionFoundForThisElection && (
                 <Card>
                   <EmptyBallotMessageContainer>
                     <BallotIcon classes={{ root: classes.ballotIconRoot }} />
@@ -555,10 +570,12 @@ class VoterGuidePositions extends Component {
             </VoterGuideEndorsementsWrapper>
             {searchIsUnderway ? (
               <span className="d-block d-sm-none">
-                <FooterDoneBar doneFunction={this.clearSearch} doneButtonText="Clear Search" />
+                <FooterDoneBar
+                  doneFunction={this.clearSearch}
+                  doneButtonText="Clear Search"
+                />
               </span>
-            ) : null
-            }
+            ) : null}
             <ExtraActionsWrapper>
               <EndorsementCard
                 variant="primary"
@@ -569,9 +586,10 @@ class VoterGuidePositions extends Component {
               />
               {organization.organization_twitter_handle && (
                 <ThisIsMeAction
-                  twitterHandleBeingViewed={organization.organization_twitter_handle}
-                  nameBeingViewed={organization.organization_name}
                   kindOfOwner="ORGANIZATION"
+                  nameBeingViewed={organization.organization_name}
+                  twitterHandleBeingViewed={organization.organization_twitter_handle}
+                  whiteOnBlue
                 />
               )}
             </ExtraActionsWrapper>

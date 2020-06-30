@@ -149,7 +149,7 @@ class FriendInvitationOnboardingIntro extends Component {
           <FriendInvitationList>
             <FriendInvitationListTitleRow>
               <Dot><StepNumber>1</StepNumber></Dot>
-              <StepTitle>Make sure you&apos;re ready to vote</StepTitle>
+              <StepTitle>Be ready to vote in 6 minutes</StepTitle>
             </FriendInvitationListTitleRow>
             <FriendInvitationListRow>
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
@@ -158,20 +158,20 @@ class FriendInvitationOnboardingIntro extends Component {
 
             <FriendInvitationListTitleRow>
               <Dot><StepNumber>2</StepNumber></Dot>
-              <StepTitle>See what&apos;s on your ballot</StepTitle>
+              <StepTitle>Be confident in your choices</StepTitle>
             </FriendInvitationListTitleRow>
             <FriendInvitationListRow>
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-              <StepText>Who&apos;s running for office? What do they stand for? With over 12,400 candidates running for 3,600 offices this year, We Vote helps you make sense of your choices.</StepText>
+              <StepText>Who&apos;s running for office? What do they stand for? With over 12,400 candidates running for 3,600 offices this year, We Vote helps you make sense of your options.</StepText>
             </FriendInvitationListRow>
 
             <FriendInvitationListTitleRow>
               <Dot><StepNumber>3</StepNumber></Dot>
-              <StepTitle>Learn from friends you trust</StepTitle>
+              <StepTitle>Be the change you want to see in the world</StepTitle>
             </FriendInvitationListTitleRow>
             <FriendInvitationListRow>
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-              <StepText>Between the nonstop misleading TV ads, texts, calls and overflowing mailboxes, who has time to make sense of the madness? Get help from people you trust.</StepText>
+              <StepText>You&apos;ve done your homework deciding how to vote. Now show your friends how to make sense of their decisions, so they can vote their values.</StepText>
             </FriendInvitationListRow>
           </FriendInvitationList>
         </FriendInvitationListWrapper>

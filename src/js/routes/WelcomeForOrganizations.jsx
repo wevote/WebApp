@@ -116,7 +116,7 @@ class WelcomeForOrganizations extends Component {
             Supercharge Your
             <BlueTitle>{` ${currentTitleTextToDisplay}`}</BlueTitle>
           </Title>
-          <SubTitle>Only 6 out of 10 eligible voters are predicted to cast a ballot next year.</SubTitle>
+          <SubTitle>Only 6 out of 10 eligible voters are predicted to cast a ballot this year.</SubTitle>
           <PlayerContainer>
             <Video
               src="https://player.vimeo.com/video/329164243"

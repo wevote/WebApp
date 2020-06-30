@@ -98,7 +98,7 @@ export default class SelectVoterGuidesSideBar extends Component {
               onClick={() => this.openNewVoterGuideModal()}
               variant="contained"
             >
-             Choose New Election
+              Choose New Election
             </Button>
           </div>
           <Row>

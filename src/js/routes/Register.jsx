@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
@@ -30,7 +31,9 @@ import turboVote from '../../img/global/logos/turbovote-logo.png';
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class Register extends Component {
-  static propTypes = {};
+  static propTypes = {
+    classes: PropTypes.object,
+  };
 
   constructor (props) {
     super(props);
@@ -57,14 +60,14 @@ class Register extends Component {
     AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
   }
 
-  componentWillUnmount () {
-    this.appStoreListener.remove();
-    this.voterStoreListener.remove();
-  }
-
   shouldComponentUpdate (nextState) {
     if (this.state.majorStep !== nextState.majorStep) return true;
     return false;
+  }
+
+  componentWillUnmount () {
+    this.appStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onAppStoreChange () {
@@ -217,7 +220,7 @@ class Register extends Component {
                 className={this.state.votedInLastYear === 'not-registered' ? classes.selectedButton : this.state.minorStep === '3' ? classes.button : classes.activeButton}
                 fullWidth
           >
-                I'm not registered.
+                I&apos;m not registered.
           </Button>
         </Section>
         )}
@@ -256,14 +259,14 @@ class Register extends Component {
     const renderMajorStepB = () => (
       <Section>
         <h3 style={{ textAlign: 'center', fontSize: 28, fontWeight: 700, marginBottom: 0 }}>
-            Congratulations, you're self-verified!
+            Congratulations, you&apos;re self-verified!
         </h3>
         <img style={{ width: 100, margin: '32px auto', textAlign: 'center', display: 'block' }} src="../../../img/global/svg-icons/ready/register-100-percent.svg" alt="" />
         <p style={{ textAlign: 'center' }}>
-            Your registration freshness date is
+          Your registration freshness date is
           {' '}
           {formatDateToMonthDayYear(new Date())}
-            .
+          .
         </p>
         <p style={{ textAlign: 'center' }}>We recommend and annual freshness check.</p>
         <br />
@@ -283,14 +286,14 @@ class Register extends Component {
               We recommend you register now here, and then return when you are done.
             </h3>
             <CustomButton variant="outlined" color="primary">
-              <img style={{height: 'auto', width: 75}} src={voteDotOrg} />
+              <img style={{ height: 'auto', width: 75 }} src={voteDotOrg} />
               Register Through Vote.org
             </CustomButton>
             <CustomButton variant="outlined" color="primary">
               Register Through VoteAmerica.com
             </CustomButton>
             <CustomButton variant="outlined" color="primary">
-              <img style={{height: 'auto', width: 75}} src={turboVote} />
+              <img style={{ height: 'auto', width: 75 }} src={turboVote} />
               Register Through turbovote.org
             </CustomButton>
             <CustomButton variant="outlined" color="primary">
@@ -308,12 +311,12 @@ class Register extends Component {
               <p>You will need to sign in when you submit this form in order to see your results.</p>
               <Row>
                 <Column>
-                  <label>First Name</label>
-                  <Input placeholder="Type here..." />
+                  <label htmlFor="firstName">First Name</label>
+                  <Input id="firstName" placeholder="Type here..." />
                 </Column>
                 <Column>
-                  <label>First Name</label>
-                  <Input placeholder="Type here..." />
+                  <label htmlFor="lastName">Last Name</label>
+                  <Input id="lastName" placeholder="Type here..." />
                 </Column>
               </Row>
               <hr />

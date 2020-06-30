@@ -285,6 +285,7 @@ class VoterStore extends ReduceStore {
     let incorrectSecretCodeEntered;
     let membershipOrganizationWeVoteId;
     let numberOfTriesRemaining;
+    let revisedState;
     let secretCodeVerified;
     let voterDeviceId;
     let voterExternalIdHasBeenSavedOnce;
@@ -650,6 +651,11 @@ class VoterStore extends ReduceStore {
         if (incomingVoter.signed_in_with_apple) {
           // Completing the logical OR that can't be conveniently made in the server, since Sign in with Apple is device_id specific
           incomingVoter.is_signed_in = incomingVoter.signed_in_with_apple;
+          const { voter_photo_url_medium: statePhotoMed } = state.voter;
+          const { voter_photo_url_medium: incomingPhotoMed } = incomingVoter;
+          if (!statePhotoMed && !incomingPhotoMed) {
+            incomingVoter.voter_photo_url_medium = 'https://wevote.us/img/global/logos/Apple_logo_grey.svg';  // TODO: Switch over to wevote.us once live server is updated
+          }
         }
 
         return {
@@ -664,7 +670,9 @@ class VoterStore extends ReduceStore {
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
         VoterActions.voterSMSPhoneNumberRetrieve();
-        return this.resetState();
+        revisedState = state;
+        revisedState = Object.assign({}, revisedState, this.getInitialState());
+        return revisedState;
 
       case 'voterSMSPhoneNumberRetrieve':
         // console.log('VoterStore  voterSMSPhoneNumberRetrieve: ', action.res.sms_phone_number_list);
@@ -756,6 +764,7 @@ class VoterStore extends ReduceStore {
         if (action.res.success) {
           // eslint-disable-next-line camelcase
           const { first_name, middle_name, last_name, email, user_code: appleUserCode } = action.res;
+          VoterActions.voterRetrieve();
           return {
             ...state,
             voter: {

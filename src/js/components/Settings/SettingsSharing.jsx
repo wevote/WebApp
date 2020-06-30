@@ -308,6 +308,7 @@ class SettingsSharing extends Component {
               </SharingColumn>
               <SharingColumn alignRight>
                 <Switch
+                  id="hideWeVoteLogoSwitch"
                   color="primary"
                   checked={hideLogo}
                   onChange={this.handleToggleHideLogo}
@@ -478,6 +479,7 @@ class SettingsSharing extends Component {
                 </InputBoxLabel>
                 <DescriptionText>A few sentences describing your site. The text used on search engines, or when your page is shared on social media.</DescriptionText>
                 <GiantTextInput
+                  id="settingsSharingInputBox"
                   onChange={this.handleChosenSocialShareDescriptionChange}
                   value={chosenSocialShareDescription}
                   placeholder="Type Description..."

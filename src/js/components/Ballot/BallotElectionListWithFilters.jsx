@@ -604,7 +604,7 @@ export default class BallotElectionListWithFilters extends Component {
               <PriorOrUpcomingElectionsWrapper>
                 <strong>
                   <h4 className="h4">
-                  Upcoming Election
+                    Upcoming Election
                     {(upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null }
                   </h4>
                 </strong>

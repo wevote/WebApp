@@ -125,7 +125,9 @@ class IssuesByOrganizationDisplayList extends Component {
           <PopoverTitleIcon>
             <ReactSVG
               src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-              svgStyle={{ fill: '#fff', padding: '1px 1px 1px 0px' }}
+              svgStyle={{
+                fill: '#2e3c5d', padding: '1px 1px 1px 0px',
+              }}
             />
           </PopoverTitleIcon>
           <PopoverTitleText>
@@ -192,7 +194,7 @@ class IssuesByOrganizationDisplayList extends Component {
           ) : <span />}
           classes={{ root: classes.chipStyle }}
           label={oneIssue.issue_name}
-         ref={this.valueSpan}
+          ref={this.valueSpan}
         />
       </ValueIconAndTextOrganization>
     );

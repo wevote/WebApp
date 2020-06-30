@@ -4,6 +4,7 @@
 # Ignore build files
 build
 build-live
+package-lock.json
 
 # TernJS
 ###################
@@ -173,4 +174,5 @@ web_app/build/*
 .vscode
 .gitattributes
 /yarn.lock
+server.csr
 

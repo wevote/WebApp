@@ -1,8 +1,6 @@
 import { browserHistory, hashHistory } from 'react-router';
-import showBallotDecisionsTabs from './showBallotDecisionsTabs'; // eslint-disable-line import/no-cycle
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
-import { stringContains } from './textFormat';
 
 /* global $  */
 
@@ -119,8 +117,8 @@ export function getIOSSizeString () {
   const iPhone3p5inPhones = ['iPhone1,1', 'iPhone1,2', 'iPhone2,1', 'iPhone3,1', 'iPhone3,2', 'iPhone3,3', 'iPhone4,1'];
   //    iPhone:             5            5            5C           5C           5S           5S           SE
   const iPhone4inPhones = ['iPhone5,1', 'iPhone5,2', 'iPhone5,3', 'iPhone5,4', 'iPhone6,1', 'iPhone6,2', 'iPhone8,4'];
-  //    iPhone:               6            6S           7            7            8             8
-  const iPhone4p7inPhones = ['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4'];
+  //    iPhone:               6            6S           7            7            8             8             SE 2nd Gen
+  const iPhone4p7inPhones = ['iPhone7,2', 'iPhone8,1', 'iPhone9,1', 'iPhone9,3', 'iPhone10,1', 'iPhone10,4', 'iPhone12,8'];
   //    iPhone:                 6 Plus       6S Plus      7 Plus       7Plus        8 Plus        8 Plus
   const isIPhone5p5inPhones = ['iPhone7,1', 'iPhone8,2', 'iPhone9,2', 'iPhone9,4', 'iPhone10,2', 'iPhone10,5'];
   //    iPhone:               X             X             XS            11 Pro
@@ -152,7 +150,7 @@ export function getIOSSizeString () {
     return 'isIPhone3p5in';
   } else if (size.height === '1136' && size.width === '640') {  // iPhone 5, 5c, 5s, SE
     return 'isIPhone4in';
-  } else if (size.height === '1334' && size.width === '750') {  // iPhone 6, 6s, 7, 8
+  } else if (size.height === '1334' && size.width === '750') {  // iPhone 6, 6s, 7, 8, SE (2nd Gen)
     return 'isIPhone4p7in';
   } else if ((size.height === '1920' && size.width === '1080') ||  // iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
             (size.height === '2208' && size.width === '1242')) {   // iPhone 8 Plus in simulator
@@ -194,7 +192,7 @@ export function isIPhone4in () {
 export function isIPhone4p7in () {
   if (isIOS()) {
     if (getIOSSizeString() === 'isIPhone4p7in') {
-      logMatch('isIPhone4p7in: iPhone 678 (4.7")', true);
+      logMatch('isIPhone4p7in: iPhone 678 & SE2 (4.7")', true);
       return true;
     }
   }
@@ -418,101 +416,6 @@ if (isSimulator()) {
   }
 }
 
-export const enums = {
-  ballotVote: 1,
-  moreAbout: 2,
-  moreHamburger: 3,
-  moreTools: 4,
-  moreTerms: 5,
-  valuesList: 6,
-  officeWild: 100,
-  settingsWild: 101,
-  wevoteintroWild: 102,
-  ballotSmHdrWild: 103,
-  ballotLgHdrWild: 104,
-  candidateWild: 105,
-  measureWild: 106,
-  valueWild: 107,
-  voterGuideCreatorWild: 109,
-  welcomeWild: 108,
-  candidate: 200,
-  friends: 201,
-  opinions: 202,
-  values: 203,
-  voterGuideWild: 204,
-  twitterSignIn: 205,
-  defaultVal: 1000,
-};
-
-export function pageEnumeration () {
-  const { href } = window.location;
-  // const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
-
-  // second level paths must be tried first
-  if (href.indexOf('/index.html#/ballot/vote') > 0) {
-    return enums.ballotVote;
-  } else if (href.indexOf('/index.html#/more/about') > 0) {
-    return enums.moreAbout;
-  } else if (href.indexOf('/index.html#/more/privacy') > 0 ||
-             href.indexOf('/index.html#/more/terms') > 0) {
-    return enums.moreTerms;
-  } else if (href.indexOf('/index.html#/settings/hamburger') > 0) {
-    return enums.moreHamburger;
-  } else if (href.indexOf('/index.html#/settings/tools') > 0) {
-    return enums.moreTools;
-  } else if (href.indexOf('/index.html#/values/list') > 0) {
-    return enums.valuesList;
-
-  // then wildcarded second level paths
-  } else if (href.indexOf('/index.html#/candidate/') > 0) {
-    return enums.candidateWild;
-  } else if (href.indexOf('/index.html#/office/') > 0) {
-    return enums.officeWild;
-  } else if (href.indexOf('/index.html#/settings/') > 0 ||
-             stringContains('facebook_sign_in', href)) {
-    return enums.settingsWild;
-  } else if (href.indexOf('/index.html#/value/') > 0) {
-    return enums.valueWild;
-  } else if (href.indexOf('/index.html#/vg/') > 0) {
-    return enums.voterGuideCreatorWild;
-  } else if (stringContains('btcand', href) ||
-             stringContains('btmeas', href)) {
-    return enums.voterGuideWild;
-  } else if (href.indexOf('/index.html#/wevoteintro/') > 0) {
-    return enums.wevoteintroWild;
-  } else if (href.indexOf('/index.html#/ballot') > 0) {
-    if (showBallotDecisionsTabs()) {
-      return enums.ballotLgHdrWild;
-    } else {
-      return enums.ballotSmHdrWild;
-    }
-  } else if (href.indexOf('/index.html#/measure/') > 0) {
-    return enums.measureWild;
-
-  // then specific first level paths
-  } if (href.indexOf('/index.html#/candidate') > 0) {
-    return enums.candidate;
-  } else if (href.indexOf('/index.html#/friends') > 0) {
-    return enums.friends;
-  } else if (href.indexOf('/index.html#/opinions') > 0) {
-    return enums.opinions;
-  } else if (href.indexOf('/index.html#/ready') > 0) {
-    return enums.values; // Use /value setting
-  } else if (href.indexOf('/index.html#/values') > 0) {
-    return enums.values;
-  } else if (href.indexOf('/index.html#/welcome') > 0 ||
-             href.indexOf('/index.html#/for-organizations') > 0 ||
-             href.indexOf('/index.html#/for-campaigns') > 0 ||
-             href.indexOf('/index.html#/more/pricing') > 0 ||
-             href.indexOf('/index.html#/how') > 0) {
-    return enums.welcomeWild;
-  } else if (href.indexOf('/index.html#/twitter_sign_in') > 0) {
-    return enums.twitterSignIn;
-  }
-  return enums.defaultVal;
-}
-
-
 export function getToastClass () {
   let toastClass = '';
   if (hasIPhoneNotch()) {
@@ -563,4 +466,37 @@ export function blurTextFieldAndroid () {
   if (isAndroid()) {
     restoreStylesAfterCordovaKeyboard('AddFriendsByEmail');
   }
+}
+
+
+export function chipLabelText (fullLabel) {
+  if (isWebApp() && window.innerWidth < 350) { // iPhone SE/SE2/5 in Web Browser
+    if (fullLabel === 'Federal') {
+      return 'Fed';
+    } else if (fullLabel === 'State') {
+      return 'St';
+    } else if (fullLabel === 'Measure') {
+      return 'Meas';
+    } else if (fullLabel === 'Local') {
+      return 'Loc';
+    }
+  } else if (isWebApp() && window.innerWidth < 400) { // iPhone 6/7/8 in Web Browser
+    if (fullLabel === 'Federal') {
+      return 'Fed';
+    }
+  } else if (isCordova() && window.innerWidth < 400) { // iPhone SE/SE2/5 in Cordova
+    if (fullLabel === 'Federal') {
+      return 'Fed';
+    }
+  }
+  return fullLabel;
+}
+
+export function snackOffset () {
+  let snackOffsetValue = '75px !important';
+  if (isCordova()) {
+    snackOffsetValue = $('.footer.container').length > 0 ? '118px !important' : '72px !important';
+  }
+
+  return snackOffsetValue;
 }

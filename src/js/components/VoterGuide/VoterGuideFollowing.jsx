@@ -194,7 +194,7 @@ class VoterGuideFollowing extends Component {
                   )}
                   <TitleWrapper>
                     {lookingAtSelf ? (
-                      <h4 className="card__additional-heading">
+                      <>
                         You Are Following
                         <span className="d-none d-sm-block">
                           {' '}
@@ -202,26 +202,31 @@ class VoterGuideFollowing extends Component {
                           {' '}
                           Organizations or People
                         </span>
-                      </h4>
+                      </>
                     ) : (
-                      <h4 className="card__additional-heading">
+                      <>
                         {organizationName}
                         {' '}
                         is Following
-                      </h4>
+                      </>
                     )}
                   </TitleWrapper>
                 </span>
               ) : (
                 <DelayedLoad showLoadingText waitBeforeShow={2000}>
-                  {lookingAtSelf ?
-                    <h4 className="card__additional-heading">You&apos;re not following anyone.</h4> : (
-                      <h4 className="card__additional-heading">
+                  <TitleWrapper>
+                    {lookingAtSelf ? (
+                      <>
+                        You&apos;re not following anyone.
+                      </>
+                    ) : (
+                      <>
                         {organizationName}
                         {' '}
                         is not following anyone.
-                      </h4>
+                      </>
                     )}
+                  </TitleWrapper>
                 </DelayedLoad>
               )
             }
@@ -243,11 +248,9 @@ class VoterGuideFollowing extends Component {
             {/* Results Not Found */}
             {(searchTerm && (voterGuideFollowedListFilteredBySearch && voterGuideFollowedListFilteredBySearch.length === 0)) && (
               <SearchResultsWrapper>
-                <h4 className="card__additional-heading">
-                  &quot;
-                  {searchTerm}
-                  &quot; not found
-                </h4>
+                &quot;
+                {searchTerm}
+                &quot; not found
               </SearchResultsWrapper>
             )}
             <span>
@@ -275,10 +278,7 @@ const SearchResultsWrapper = styled.div`
 `;
 
 const TitleWrapper = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
+  margin: 15px;
 `;
 
 const Wrapper = styled.div`

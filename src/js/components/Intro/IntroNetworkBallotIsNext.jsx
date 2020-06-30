@@ -13,9 +13,9 @@ then you can't use relative paths."
 */
 
 export default class IntroNetworkBallotIsNext extends Component {
-  static goToBallotLink () {
-    const goToBallot = '/ballot';
-    historyPush(goToBallot);
+  static goToReadyLink () {
+    const goToReady = '/ready';
+    historyPush(goToReady);
   }
 
   constructor (props) {
@@ -50,7 +50,7 @@ export default class IntroNetworkBallotIsNext extends Component {
         <p className="intro-story__info">Make sure to enter the correct address to have the correct ballot.</p>
         <button type="button"
                 className="btn intro-story__btn intro-story__btn--bottom"
-                onClick={IntroNetworkBallotIsNext.goToBallotLink}
+                onClick={IntroNetworkBallotIsNext.goToReadyLink}
                 style={{ top: `${cordovaNetworkNextButtonTop()}` }}
         >
           Next&nbsp;&nbsp;&gt;

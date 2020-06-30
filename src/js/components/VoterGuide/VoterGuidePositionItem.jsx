@@ -1,107 +1,46 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import ReactSVG from 'react-svg';
 import Card from '@material-ui/core/Card';
 import { withStyles } from '@material-ui/core/styles';
+import AppActions from '../../actions/AppActions';
 import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
 import CandidateStore from '../../stores/CandidateStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import MeasureActions from '../../actions/MeasureActions';
 import MeasureStore from '../../stores/MeasureStore';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import OrganizationStore from '../../stores/OrganizationStore';
-import { capitalizeString, stringContains } from '../../utils/textFormat';
+import { capitalizeString, numberWithCommas, stringContains } from '../../utils/textFormat';
 import ReadMore from '../Widgets/ReadMore';
-import SupportStore from '../../stores/SupportStore';
-import VoterStore from '../../stores/VoterStore';
-import AppActions from '../../actions/AppActions';
 
 class VoterGuidePositionItem extends Component {
   static propTypes = {
-    organizationWeVoteId: PropTypes.string.isRequired,
+    ballotItemDisplayName: PropTypes.string,
     position: PropTypes.object.isRequired,
+    searchResultsNode: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      componentDidMountFinished: false,
       hidePositionStatement: false,
-      voterOpposesBallotItem: false,
-      voterPositionIsPublic: false,
-      voterSupportsBallotItem: false,
-      organizationWeVoteId: '',
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
-      signedInWithThisFacebookAccount: false,
-      signedInWithThisOrganization: false,
-      signedInWithThisTwitterAccount: false,
-      voterTextStatement: '',
-      voter: {},
     };
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
     this.onClickFunction = this.onClickFunction.bind(this);
   }
 
   componentDidMount () {
-    const { organizationWeVoteId, position } = this.props;
+    const { position } = this.props;
     const { ballot_item_we_vote_id: ballotItemWeVoteId } = position;
-    const voter = VoterStore.getVoter();
-    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-    const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
-    const organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : '';
-    const signedInWithThisOrganization = voter && voter.linked_organization_we_vote_id === organizationWeVoteId;
-    const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
-    let signedInWithThisTwitterAccount = false;
-    if (signedInTwitter && voter.twitter_screen_name !== null) {
-      signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === organizationTwitterHandleBeingViewed.toLowerCase();
-    }
-    const signedInFacebook = voter === undefined ? false : voter.signed_in_facebook;
-    let signedInWithThisFacebookAccount = false;
-    if (signedInFacebook) {
-      signedInWithThisFacebookAccount = voter.facebook_id === organizationFacebookIdBeingViewed;
-    }
-    let voterTextStatement = '';
-    let voterPositionIsPublic;
-    let voterSupportsBallotItem;
-    let voterOpposesBallotItem;
-    // If looking at your own page, update when supportProps change
-    if (signedInWithThisTwitterAccount || signedInWithThisOrganization) {
-      // console.log('VoterGuidePositionItem signedInWithThisTwitterAccount');
-      // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
-      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
-      if (ballotItemStatSheet) {
-        ({ voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet);
-      } else {
-        voterOpposesBallotItem = position.is_oppose;
-        voterPositionIsPublic = position.is_public_position;
-        voterSupportsBallotItem = position.is_support;
-        voterTextStatement = position.statement_text;
-      }
-    } else {
-      // console.log('VoterGuidePositionItem NOT signedInWithThisTwitterAccount');
-      voterOpposesBallotItem = position.is_oppose;
-      voterPositionIsPublic = position.is_public_position;
-      voterSupportsBallotItem = position.is_support;
-      voterTextStatement = position.statement_text;
-    }
-    this.setState({
-      componentDidMountFinished: true,
-      voterOpposesBallotItem,
-      voterPositionIsPublic,
-      voterSupportsBallotItem,
-      organizationWeVoteId,
-      signedInWithThisFacebookAccount,
-      signedInWithThisOrganization,
-      signedInWithThisTwitterAccount,
-      voterTextStatement,
-      voter,
-    });
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
     if (ballotItemWeVoteId &&
@@ -142,90 +81,11 @@ class VoterGuidePositionItem extends Component {
 
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-  }
-
-  componentWillReceiveProps (nextProps) {
-    // console.log('VoterGuidePositionItem componentWillReceiveProps');
-    const { organizationWeVoteId, position } = nextProps;
-    const { ballot_item_we_vote_id: ballotItemWeVoteId } = position;
-    this.setState({
-      organizationWeVoteId,
-    });
-    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
-    if (ballotItemStatSheet) {
-      const { voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet;
-      this.setState({
-        voterOpposesBallotItem,
-        voterPositionIsPublic,
-        voterSupportsBallotItem,
-        voterTextStatement,
-      });
-    }
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      return true;
-    }
-    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
-      return true;
-    }
-    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-      // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
-      return true;
-    }
-    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
-      // console.log('this.state.voterOpposesBallotItem:', this.state.voterOpposesBallotItem, ', nextState.voterOpposesBallotItem:', nextState.voterOpposesBallotItem);
-      return true;
-    }
-    if (this.state.voterPositionIsPublic !== nextState.voterPositionIsPublic) {
-      // console.log('this.state.voterPositionIsPublic:', this.state.voterPositionIsPublic, ', nextState.voterPositionIsPublic:', nextState.voterPositionIsPublic);
-      return true;
-    }
-    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
-      // console.log('this.state.voterSupportsBallotItem:', this.state.voterSupportsBallotItem, ', nextState.voterSupportsBallotItem:', nextState.voterSupportsBallotItem);
-      return true;
-    }
-    if (this.state.organizationFacebookIdBeingViewed !== nextState.organizationFacebookIdBeingViewed) {
-      // console.log('this.state.organizationFacebookIdBeingViewed:', this.state.organizationFacebookIdBeingViewed, ', nextState.organizationFacebookIdBeingViewed:', nextState.organizationFacebookIdBeingViewed);
-      return true;
-    }
-    if (this.state.organizationTwitterHandleBeingViewed !== nextState.organizationTwitterHandleBeingViewed) {
-      // console.log('this.state.organizationTwitterHandleBeingViewed:', this.state.organizationTwitterHandleBeingViewed, ', nextState.organizationTwitterHandleBeingViewed:', nextState.organizationTwitterHandleBeingViewed);
-      return true;
-    }
-    if (this.state.signedInWithThisFacebookAccount !== nextState.signedInWithThisFacebookAccount) {
-      // console.log('this.state.signedInWithThisFacebookAccount:', this.state.signedInWithThisFacebookAccount, ', nextState.signedInWithThisFacebookAccount:', nextState.signedInWithThisFacebookAccount);
-      return true;
-    }
-    if (this.state.signedInWithThisOrganization !== nextState.signedInWithThisOrganization) {
-      // console.log('this.state.signedInWithThisOrganization:', this.state.signedInWithThisOrganization, ', nextState.signedInWithThisOrganization:', nextState.signedInWithThisOrganization);
-      return true;
-    }
-    if (this.state.signedInWithThisTwitterAccount !== nextState.signedInWithThisTwitterAccount) {
-      // console.log('this.state.signedInWithThisTwitterAccount:', this.state.signedInWithThisTwitterAccount, ', nextState.signedInWithThisTwitterAccount:', nextState.signedInWithThisTwitterAccount);
-      return true;
-    }
-    if (this.state.voterTextStatement !== nextState.voterTextStatement) {
-      // console.log('this.state.voterTextStatement:', this.state.voterTextStatement, ', nextState.voterTextStatement:', nextState.voterTextStatement);
-      return true;
-    }
-    // console.log('shouldComponentUpdate no change');
-    return false;
   }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
-    this.organizationStoreListener.remove();
-    this.supportStoreListener.remove();
-    this.voterStoreListener.remove();
   }
 
   onCandidateStoreChange () {
@@ -292,91 +152,6 @@ class VoterGuidePositionItem extends Component {
     }
   }
 
-  onOrganizationStoreChange () {
-    const { organizationWeVoteId, voter } = this.state;
-    // console.log('VoterGuidePositionItem onOrganizationStoreChange, organization.organization_we_vote_id: ', organization.organization_we_vote_id);
-    if (organizationWeVoteId) {
-      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
-      const organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : '';
-      const signedInWithThisOrganization = voter && voter.linked_organization_we_vote_id === organizationWeVoteId;
-      this.setState({
-        organizationFacebookIdBeingViewed,
-        organizationTwitterHandleBeingViewed,
-        organizationWeVoteId,
-        signedInWithThisOrganization,
-      });
-    }
-  }
-
-  onSupportStoreChange () {
-    const { position } = this.props;
-    const { organizationWeVoteId, signedInWithThisTwitterAccount, signedInWithThisOrganization } = this.state;
-    const { ballot_item_we_vote_id: ballotItemWeVoteId } = position;
-    if (organizationWeVoteId) {
-      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      const organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
-      const organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : '';
-      this.setState({
-        organizationFacebookIdBeingViewed,
-        organizationTwitterHandleBeingViewed,
-        organizationWeVoteId,
-      });
-    }
-    let voterTextStatement;
-    let voterPositionIsPublic;
-    let voterSupportsBallotItem;
-    let voterOpposesBallotItem;
-    // If looking at your own page, update when supportProps change
-    if (signedInWithThisTwitterAccount || signedInWithThisOrganization) {
-      // console.log('VoterGuidePositionItem signedInWithThisTwitterAccount');
-      // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
-      const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);
-      if (ballotItemStatSheet) {
-        ({ voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem, voterTextStatement } = ballotItemStatSheet);
-      } else {
-        voterOpposesBallotItem = position.is_oppose;
-        voterPositionIsPublic = position.is_public_position;
-        voterSupportsBallotItem = position.is_support;
-        voterTextStatement = position.statement_text;
-      }
-    } else {
-      // console.log('VoterGuidePositionItem NOT signedInWithThisTwitterAccount');
-      voterOpposesBallotItem = position.is_oppose;
-      voterPositionIsPublic = position.is_public_position;
-      voterSupportsBallotItem = position.is_support;
-      voterTextStatement = position.statement_text;
-    }
-    this.setState({
-      voterOpposesBallotItem,
-      voterPositionIsPublic,
-      voterSupportsBallotItem,
-      voterTextStatement,
-    });
-  }
-
-  onVoterStoreChange () {
-    const { organizationFacebookIdBeingViewed, organizationTwitterHandleBeingViewed, organizationWeVoteId } = this.state;
-    const voter = VoterStore.getVoter();
-    const signedInWithThisOrganization = voter && voter.linked_organization_we_vote_id === organizationWeVoteId;
-    const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
-    let signedInWithThisTwitterAccount = false;
-    if (signedInTwitter && voter.twitter_screen_name !== null && organizationTwitterHandleBeingViewed) {
-      signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === organizationTwitterHandleBeingViewed.toLowerCase();
-    }
-    const signedInFacebook = voter === undefined ? false : voter.signed_in_facebook;
-    let signedInWithThisFacebookAccount = false;
-    if (signedInFacebook) {
-      signedInWithThisFacebookAccount = voter.facebook_id === organizationFacebookIdBeingViewed;
-    }
-    this.setState({
-      signedInWithThisFacebookAccount,
-      signedInWithThisOrganization,
-      signedInWithThisTwitterAccount,
-      voter,
-    });
-  }
-
   onClickFunction () {
     AppActions.setShowOrganizationModal(true);
     AppActions.setOrganizationModalId(Object.keys(this.state.positionListFromFriendsHasBeenRetrievedOnce)[0]);
@@ -405,21 +180,24 @@ class VoterGuidePositionItem extends Component {
 
   render () {
     renderLog('VoterGuidePositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { position } = this.props;
-    // console.log('VoterGuidePositionItem position:', position);
+    const { position, searchResultsNode } = this.props;
+    // const { thisYearInteger } = this.state;
+    // console.log('VoterGuidePositionItem render');
     let {
       ballot_item_display_name: ballotItemDisplayName,
       more_info_url: moreInfoUrl,
     } = position;
     const {
-      ballot_item_image_url_https_large: ballotItemImageUrlHttpsLarge,
+      ballot_item_image_url_https_medium: ballotItemImageUrlHttpsMedium,
       ballot_item_we_vote_id: ballotItemWeVoteId,
       is_information_only: organizationInformationOnlyBallotItem,
       is_oppose: organizationOpposesBallotItem,
       is_support: organizationSupportsBallotItem,
       kind_of_ballot_item: kindOfBallotItem,
+      position_year: positionYear,
       speaker_image_url_https_tiny: organizationImageUrlHttpsTiny,
-      statement_text: statementText,
+      statement_text: positionDescription,
+      speaker_twitter_followers_count: twitterFollowersCount,
     } = position;
     const isCandidate = String(kindOfBallotItem) === 'CANDIDATE';
     // console.log('kindOfBallotItem:', kindOfBallotItem, 'isCandidate:', isCandidate);
@@ -449,158 +227,245 @@ class VoterGuidePositionItem extends Component {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }
+    const imagePlaceholder = (
+      <ReactSVG
+        src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')}
+      />
+    );
+
     return (
-      <div>
-        <Card>
-          <BallotItemPadding>
-            <BallotItemWrapper className="card-main__media-object">
-              {isCandidate ? (
-                <CandidateItemWrapper onClick={this.onClickFunction}>
-                  <BallotItemImageWrapper>
-                    <ImageHandler
-                      className="card-main__avatar"
-                      sizeClassName="icon-lg "
-                      imageUrl={ballotItemImageUrlHttpsLarge}
-                      alt="candidate-photo"
-                      kind_of_ballot_item={kindOfBallotItem}
-                    />
-                  </BallotItemImageWrapper>
-                  <Candidate>
-                    <h2 className="card-main__display-name">
-                      {ballotItemDisplayName}
-                    </h2>
-                    <span className="u-show-desktop-tablet">
-                      {contestOfficeName && (
-                        <div>
-                          <OfficeNameText
-                            contestOfficeName={contestOfficeName}
-                            // politicalParty={politicalParty}
-                            showOfficeName
-                          />
-                        </div>
-                      )}
-                    </span>
-                  </Candidate>
-                </CandidateItemWrapper>
-              ) : (
-                <MeasureItemWrapper>
-                  <Title>
-                    {ballotDisplay[0]}
-                  </Title>
-                  <SubTitle>{ballotDisplay[1]}</SubTitle>
-                </MeasureItemWrapper>
-              )}
-              {/* (signedInWithThisTwitterAccount ||
-              signedInWithThisOrganization ||
-              signedInWithThisFacebookAccount) &&
-              <FriendsOnlyIndicator isFriendsOnly={!voterPositionIsPublic} />
-              */}
-              <BallotItemSupportOpposeCountDisplayWrapper>
-                <BallotItemSupportOpposeCountDisplay
-                  ballotItemWeVoteId={ballotItemWeVoteId}
-                  hideNumbersOfAllPositions
-                />
-                <VerticalSeparator />
-                <BallotItemVoterGuideSupportOpposeDisplay
-                  organizationInformationOnlyBallotItem={organizationInformationOnlyBallotItem}
-                  organizationOpposesBallotItem={organizationOpposesBallotItem}
-                  organizationSupportsBallotItem={organizationSupportsBallotItem}
-                  organizationImageUrlHttpsTiny={organizationImageUrlHttpsTiny}
-                  positionItem={position}
-                />
-              </BallotItemSupportOpposeCountDisplayWrapper>
-              {' '}
-            </BallotItemWrapper>
-            <span className="u-show-mobile">
-              {contestOfficeName && (
+      <>
+        <SearchResultsNodeWrapper>
+          {searchResultsNode}
+        </SearchResultsNodeWrapper>
+        <DesktopContainerWrapper className="u-show-desktop-tablet">
+          <DesktopContainer>
+            <DesktopItemLeft>
+              <DesktopItemImage onClick={this.onClickFunction} className="u-cursor--pointer">
                 <div>
+                  { ballotItemImageUrlHttpsMedium ? (
+                    <ImageHandler
+                      className="card-child__avatar"
+                      sizeClassName="icon-lg"
+                      imageUrl={ballotItemImageUrlHttpsMedium}
+                    />
+                  ) :
+                    imagePlaceholder }
+                </div>
+              </DesktopItemImage>
+            </DesktopItemLeft>
+            <PositionItemDesktop isSupport={organizationSupportsBallotItem} isOppose={organizationOpposesBallotItem}>
+              <DesktopItemHeader>
+                <DesktopItemNameAndOfficeContainer>
+                  <DesktopItemNameContainer>
+                    <DesktopItemName onClick={this.onClickFunction} className="u-cursor--pointer">
+                      { ballotItemDisplayName }
+                    </DesktopItemName>
+                    <DesktopItemTwitterContainer>
+                      { !!(twitterFollowersCount && String(twitterFollowersCount) !== '0') && (
+                        <DesktopItemTwitter>
+                          <TwitterIcon className="fab fa-twitter" />
+                          {numberWithCommas(twitterFollowersCount)}
+                        </DesktopItemTwitter>
+                      )}
+                    </DesktopItemTwitterContainer>
+                  </DesktopItemNameContainer>
+                  <DesktopItemOffice onClick={this.onClickFunction} className="u-cursor--pointer">
+                    {(contestOfficeName) && (
+                      <OfficeNameText
+                        contestOfficeName={contestOfficeName}
+                        // politicalParty={politicalParty}
+                        showOfficeName
+                      />
+                    )}
+                    {(positionYear) && (
+                      <PositionYearText>
+                        {' '}
+                        (
+                        {positionYear}
+                        )
+                      </PositionYearText>
+                    )}
+                  </DesktopItemOffice>
+                </DesktopItemNameAndOfficeContainer>
+                <BallotItemSupportOpposeCountDisplayWrapper>
+                  <BallotItemSupportOpposeCountDisplay
+                    ballotItemDisplayName={this.props.ballotItemDisplayName}
+                    ballotItemWeVoteId={ballotItemWeVoteId}
+                    hideNumbersOfAllPositions
+                  />
+                  <VerticalSeparator />
+                  <BallotItemVoterGuideSupportOpposeDisplay
+                    organizationInformationOnlyBallotItem={organizationInformationOnlyBallotItem}
+                    organizationOpposesBallotItem={organizationOpposesBallotItem}
+                    organizationSupportsBallotItem={organizationSupportsBallotItem}
+                    organizationImageUrlHttpsTiny={organizationImageUrlHttpsTiny}
+                    positionItem={position}
+                  />
+                </BallotItemSupportOpposeCountDisplayWrapper>
+              </DesktopItemHeader>
+              <DesktopItemBody>
+                <DesktopItemDescription>
+                  {positionDescription && (
+                    <ReadMore
+                      textToDisplay={positionDescription}
+                      numberOfLines={4}
+                    />
+                  )}
+                </DesktopItemDescription>
+                <DesktopItemFooter>
+                  {/* <strong>Was this Useful?</strong>
+                  Yes  No
+                  <div className="u-float-right">
+                    Flag Links
+                  </div> */}
+                  {moreInfoUrl ? (
+                    <SourceLink>
+                      <OpenExternalWebSite
+                        body={(
+                          <span>
+                            view source
+                            {' '}
+                            <i className="fas fa-external-link-alt" aria-hidden="true" />
+                          </span>
+                        )}
+                        className="u-gray-mid"
+                        target="_blank"
+                        url={moreInfoUrl}
+                      />
+                    </SourceLink>
+                  ) : null
+                  }
+                </DesktopItemFooter>
+              </DesktopItemBody>
+            </PositionItemDesktop>
+          </DesktopContainer>
+        </DesktopContainerWrapper>
+        <MobileContainerWrapper className="u-show-mobile">
+          <PositionItemMobile isSupport={organizationSupportsBallotItem} isOppose={organizationOpposesBallotItem}>
+            {searchResultsNode}
+            <MobileItemHeader>
+              <MobileItemNameAndOfficeContainer>
+                <MobileItemNameContainer onClick={this.onClickFunction} className="u-cursor--pointer">
+                  <MobileItemImage>
+                    { ballotItemImageUrlHttpsMedium ? (
+                      <ImageHandler
+                        className="card-child__avatar"
+                        sizeClassName="icon-lg"
+                        imageUrl={ballotItemImageUrlHttpsMedium}
+                      />
+                    ) :
+                      imagePlaceholder }
+                  </MobileItemImage>
+                  {/* Visible for most phones */}
+                  <MobileItemNameAndOfficeContainerLarger className="u-show-mobile-bigger-than-iphone5">
+                    <MobileItemName>
+                      { ballotItemDisplayName }
+                    </MobileItemName>
+                    <MobileItemOffice>
+                      {(contestOfficeName) && (
+                        <OfficeNameText
+                          contestOfficeName={contestOfficeName}
+                          // politicalParty={politicalParty}
+                          showOfficeName
+                        />
+                      )}
+                      {(positionYear) && (
+                        <PositionYearText>
+                          {' '}
+                          (
+                          {positionYear}
+                          )
+                        </PositionYearText>
+                      )}
+                    </MobileItemOffice>
+                  </MobileItemNameAndOfficeContainerLarger>
+                  {/* Visible on iPhone 5/se */}
+                  <MobileItemNameAndOfficeContainerSmaller className="u-show-mobile-iphone5-or-smaller">
+                    <MobileItemName>
+                      { ballotItemDisplayName }
+                    </MobileItemName>
+                  </MobileItemNameAndOfficeContainerSmaller>
+                </MobileItemNameContainer>
+              </MobileItemNameAndOfficeContainer>
+              <MobileItemEndorsementContainer>
+                <MobileItemEndorsementDisplay>
+                  <BallotItemSupportOpposeCountDisplayWrapper>
+                    <BallotItemSupportOpposeCountDisplay
+                      ballotItemDisplayName={this.props.ballotItemDisplayName}
+                      ballotItemWeVoteId={ballotItemWeVoteId}
+                      hideNumbersOfAllPositions
+                    />
+                    <VerticalSeparator />
+                    <BallotItemVoterGuideSupportOpposeDisplay
+                      organizationInformationOnlyBallotItem={organizationInformationOnlyBallotItem}
+                      organizationOpposesBallotItem={organizationOpposesBallotItem}
+                      organizationSupportsBallotItem={organizationSupportsBallotItem}
+                      organizationImageUrlHttpsTiny={organizationImageUrlHttpsTiny}
+                      positionItem={position}
+                    />
+                  </BallotItemSupportOpposeCountDisplayWrapper>
+                </MobileItemEndorsementDisplay>
+              </MobileItemEndorsementContainer>
+            </MobileItemHeader>
+            <div className="u-show-mobile-iphone5-or-smaller">
+              <MobileItemOfficeSmallerPhones onClick={this.onClickFunction} className="u-cursor--pointer">
+                {(contestOfficeName) && (
                   <OfficeNameText
                     contestOfficeName={contestOfficeName}
                     // politicalParty={politicalParty}
                     showOfficeName
                   />
-                </div>
-              )}
-              {statementText && (
+                )}
+                {(positionYear) && (
+                  <PositionYearText>
+                    {' '}
+                    (
+                    {positionYear}
+                    )
+                  </PositionYearText>
+                )}
+              </MobileItemOfficeSmallerPhones>
+            </div>
+            <MobileItemBody>
+              <MobileItemDescriptionFollowToggleContainer>
                 <MobileItemDescription>
-                  {organizationImageUrlHttpsTiny && (
-                    <OrganizationImageWrapper>
-                      <ImageHandler
-                        sizeClassName="image-24x24 "
-                        imageUrl={organizationImageUrlHttpsTiny}
-                        alt="organization-photo"
-                        kind_of_ballot_item="ORGANIZATION"
-                      />
-                    </OrganizationImageWrapper>
+                  {positionDescription && (
+                    <ReadMore
+                      textToDisplay={positionDescription}
+                      numberOfLines={4}
+                    />
                   )}
-                  <ReadMore
-                    textToDisplay={statementText}
-                    numberOfLines={4}
-                  />
-                  <MobileItemFooter>
-                    {moreInfoUrl ? (
-                      <SourceLink>
-                        <OpenExternalWebSite
-                          body={(
-                            <span>
-                              source
-                              {' '}
-                              <i className="fas fa-external-link-alt" aria-hidden="true" />
-                            </span>
-                          )}
-                          className="u-gray-mid"
-                          target="_blank"
-                          url={moreInfoUrl}
-                        />
-                      </SourceLink>
-                    ) : null
-                    }
-                  </MobileItemFooter>
                 </MobileItemDescription>
-              )}
-            </span>
-            <span className="u-show-desktop-tablet">
-              {statementText && (
-                <DesktopItemDescription>
-                  {organizationImageUrlHttpsTiny && (
-                    <OrganizationImageWrapper>
-                      <ImageHandler
-                        sizeClassName="image-24x24 "
-                        imageUrl={organizationImageUrlHttpsTiny}
-                        alt="organization-photo"
-                        kind_of_ballot_item="ORGANIZATION"
-                      />
-                    </OrganizationImageWrapper>
-                  )}
-                  <ReadMore
-                    textToDisplay={statementText}
-                    numberOfLines={3}
-                  />
-                  <DesktopItemFooter>
-                    {moreInfoUrl ? (
-                      <SourceLink>
-                        <OpenExternalWebSite
-                          body={(
-                            <span>
-                              view source
-                              {' '}
-                              <i className="fas fa-external-link-alt" aria-hidden="true" />
-                            </span>
-                          )}
-                          className="u-gray-mid"
-                          target="_blank"
-                          url={moreInfoUrl}
-                        />
-                      </SourceLink>
-                    ) : null
-                    }
-                  </DesktopItemFooter>
-                </DesktopItemDescription>
-              )}
-            </span>
-          </BallotItemPadding>
-        </Card>
-      </div>
+              </MobileItemDescriptionFollowToggleContainer>
+              <MobileItemFooter>
+                {/* <strong>Was this Useful?</strong>
+                Yes  No
+                <div className="u-float-right">
+                  Flag Links
+                </div> */}
+                {moreInfoUrl ? (
+                  <SourceLink>
+                    <OpenExternalWebSite
+                      body={(
+                        <span>
+                          source
+                          {' '}
+                          <i className="fas fa-external-link-alt" aria-hidden="true" />
+                        </span>
+                      )}
+                      className="u-gray-mid"
+                      target="_blank"
+                      url={moreInfoUrl}
+                    />
+                  </SourceLink>
+                ) : null
+                }
+              </MobileItemFooter>
+            </MobileItemBody>
+          </PositionItemMobile>
+        </MobileContainerWrapper>
+      </>
     );
   }
 }
@@ -640,7 +505,6 @@ const BallotItemPadding = styled.div`
 const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
   cursor: pointer;
   display: flex;
-  float: right;
 `;
 
 const BallotItemWrapper = styled.div`
@@ -656,49 +520,25 @@ const BallotItemWrapper = styled.div`
 const Candidate = styled.div`
 `;
 
-const DesktopItemDescription = styled.div`
-  font-size: 16px;
-  border-radius: 5px;
-  list-style: none;
-  padding: 6px;
-  background: #eee;
-  flex: 1 1 0;
-`;
-
-const DesktopItemFooter = styled.div`
-  font-size: 12px;
-  margin-top: 8px;
-  padding-bottom: 12px;
-`;
-
 const MeasureItemWrapper = styled.div`
   cursor: pointer;
   display: flex;
   flex-flow: row wrap;
 `;
 
-const MobileItemDescription = styled.div`
-  font-size: 16px;
-  border-radius: 2px;
-  list-style: none;
-  padding: 4px;
-  background: #eee;
-  flex: 1 1 0;
-`;
-
-const MobileItemFooter = styled.div`
-  font-size: 12px;
-  margin-top: 8px;
-  padding-bottom: 12px;
-`;
-
 const OrganizationImageWrapper = styled.span`
   padding-right: 4px;
 `;
 
-const SourceLink = styled.div`
-  float: right;
-  margin-bottom: -4px;
+const PositionYearText = styled.span`
+  color: #999;
+  font-weight: 200;
+  // margin-left: 4px;
+`;
+
+const SearchResultsNodeWrapper = styled.div`
+  margin-bottom: 2px !important;
+  padding: 15px;
 `;
 
 const SubTitle = styled.h3`
@@ -726,6 +566,248 @@ const VerticalSeparator = styled.div`
   width: 2px;
   background: #ccc;
   margin: 0 4px;
+`;
+
+
+// /////////////////////////////////////////////////////////
+const DesktopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 15px 15px 15px;
+`;
+
+const DesktopContainerWrapper = styled.div`
+`;
+
+const DesktopItemBody = styled.div`
+  margin: 0;
+`;
+
+const DesktopItemDescription = styled.div`
+  font-size: 14px;
+  margin-top: 8px;
+`;
+
+// const DesktopItemDescription = styled.div`
+//   font-size: 16px;
+//   border-radius: 5px;
+//   list-style: none;
+//   padding: 6px;
+//   background: #eee;
+//   flex: 1 1 0;
+// `;
+
+const DesktopItemEndorsementDisplay = styled.div`
+  margin-left: auto;
+  padding: 0;
+`;
+
+const DesktopItemFooter = styled.div`
+  font-size: 12px;
+  margin-top: 8px;
+  padding-bottom: 12px;
+`;
+
+const DesktopItemHeader = styled.div`
+  display: flex;
+  align-items: top;
+  justify-content: space-between;
+`;
+
+const DesktopItemImage = styled.div`
+  width: 48px;
+  margin: 0 auto;
+  height: 48px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 8px;
+  * {
+    border-radius: 6px;
+    width: 48px !important;
+    height: 48px !important;
+    max-width: 48px !important;
+    display: flex;
+    align-items: flex-start;
+  }
+`;
+
+const DesktopItemLeft = styled.div`
+  width: 56px;
+  padding: 0 8px 0 0;
+`;
+
+const DesktopItemName = styled.h4`
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+`;
+
+const DesktopItemNameContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const DesktopItemNameAndOfficeContainer = styled.div`
+  padding: 0px;
+`;
+
+const DesktopItemOffice = styled.div`
+`;
+
+const DesktopItemTwitter = styled.div`
+  color: #999;
+  display: inline-block;
+  font-size: 12px;
+  padding-left: 10px;
+  white-space: nowrap;
+`;
+
+const DesktopItemTwitterContainer = styled.div`
+`;
+
+const MobileContainerWrapper = styled.div`
+`;
+
+const MobileItemBody = styled.div`
+  padding: 6px 6px 6px;
+  border-bottom-right-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 5px;
+`;
+
+const MobileItemDescription = styled.div`
+  font-size: 16px;
+  color: #333;
+  flex: 1 1 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 14px;
+  }
+`;
+
+// const MobileItemDescription = styled.div`
+//   font-size: 16px;
+//   border-radius: 2px;
+//   list-style: none;
+//   padding: 4px;
+//   background: #eee;
+//   flex: 1 1 0;
+// `;
+
+const MobileItemDescriptionFollowToggleContainer = styled.div`
+  left: 2px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const MobileItemEndorsementContainer = styled.div`
+  margin-left: auto;
+  margin-bottom: auto;
+  height: 100%;
+  max-height: 100%;
+`;
+
+const MobileItemEndorsementDisplay = styled.div`
+  width: 100%;
+  height: 100%;
+  margin-bottom: 4px;
+`;
+
+const MobileItemFooter = styled.div`
+  height: 20px;
+  width: 100%;
+  margin-top: 2px;
+  font-size: 12px;
+`;
+
+const MobileItemHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0 6px 8px;
+  min-height: 46px;
+`;
+
+const MobileItemNameAndOfficeContainer = styled.div`
+`;
+
+const MobileItemNameContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+`;
+
+const MobileItemImage = styled.div`
+  margin-right: 6px;
+  width: 48px;
+  height: 48px;
+  * {
+    border-radius: 4px;
+    width: 48px !important;
+    height: 48px !important;
+    max-width: 48px !important;
+    display: flex;
+    align-items: flex-start;
+    &::before {
+      font-size: 48px !important;
+    }
+  }
+`;
+
+const MobileItemName = styled.h4`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  padding-right: 2px;
+`;
+
+const MobileItemNameAndOfficeContainerLarger = styled.div`
+`;
+
+const MobileItemOffice = styled.div`
+`;
+
+const MobileItemOfficeSmallerPhones = styled.div`
+  padding-left: 6px;
+`;
+
+const MobileItemNameAndOfficeContainerSmaller = styled.div`
+`;
+
+const PositionItemDesktop = styled.div`
+  background: #eee;
+  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
+  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
+  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  border-radius: 5px;
+  flex: 1 1 0;
+  list-style: none;
+  padding: 6px 16px;
+`;
+
+const PositionItemMobile = styled.li`
+  background: #eee;
+  ${({ isSupport, isOppose }) => ((!isOppose && !isSupport) ? 'border-left: 4px solid #ccc;' : '')}
+  ${({ isOppose }) => (isOppose ? 'border-left: 4px solid rgb(255, 73, 34);' : '')}
+  ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
+  border-radius: 5px;
+  list-style: none;
+  margin: 16px;
+  max-width: 100% !important;
+  @media (max-width: 476px) {
+    margin: 16px 0;
+  }
+`;
+
+const SourceLink = styled.div`
+  float: right;
+  margin-bottom: -4px;
+`;
+
+const TwitterIcon = styled.span`
+  font-size: 16px;
+  color: #ccc;
+  margin-right: 2px;
+  vertical-align: bottom;
 `;
 
 export default withStyles(styles)(VoterGuidePositionItem);

@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
-import { Menu, MenuItem, withStyles } from '@material-ui/core';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
@@ -144,14 +146,14 @@ class IssueFollowToggleButton extends Component {
       // console.log('error');
       return <div>{this.state.errorInfo}</div>;
     }
-    const { issueName, showFollowingButtonText, showIssueNameOnFollowButton, lightModeOn, classes } = this.props;
+    const { classes, issueName, issueWeVoteId, lightModeOn, showFollowingButtonText, showIssueNameOnFollowButton } = this.props;
     const { isFollowing } = this.state;
     let followButtonText = 'Follow';
     if (showIssueNameOnFollowButton) {
       followButtonText = shortenText(`Follow ${issueName}`, 27);
     }
     return (
-      <div className="issues-follow-container">
+      <div className="issues-follow-container" id="issues-follow-container">
         {isFollowing ? (
           <React.Fragment>
             <Button
@@ -208,7 +210,7 @@ class IssueFollowToggleButton extends Component {
         ) : (
           <Button
             type="button"
-            id="issueFollowButton"
+            id={`issueFollowButton-${issueWeVoteId}`}
             className={`issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius${lightModeOn ? '' : ' issues-follow-btn--blue'}`}
             onClick={this.onIssueFollow}
           >

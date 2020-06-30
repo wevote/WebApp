@@ -35,7 +35,8 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 
-
+// DALE 2020-06-10 We are deprecating the ballot on the Voter Guide page
+// We can delete after 2020-08-31
 // Related to WebApp/src/js/routes/Ballot/Ballot.jsx
 class VoterGuideBallot extends Component {
   static propTypes = {
@@ -235,8 +236,8 @@ class VoterGuideBallot extends Component {
 
     // Were there any actual changes?
     if (ballotReturnedWeVoteId !== this.state.ballotReturnedWeVoteId ||
-        ballotLocationShortcut !== this.state.ballotLocationShortcut ||
-        googleCivicElectionId !== this.state.googleCivicElectionId) {
+      ballotLocationShortcut !== this.state.ballotLocationShortcut ||
+      googleCivicElectionId !== this.state.googleCivicElectionId) {
       this.setState({
         ballotReturnedWeVoteId,
         ballotLocationShortcut,
@@ -737,7 +738,7 @@ class VoterGuideBallot extends Component {
                   </div>
                 ) : (
                   <span className="u-push--sm">
-                         Loading Election...
+                    Choose Election...
                   </span>
                 )}
               </TitleWrapper>
@@ -824,7 +825,7 @@ class VoterGuideBallot extends Component {
                   )}
 
                   {/* Show links to this candidate in the admin tools */}
-                  { (voterIsAdmin || voterIsVerifiedVolunteer) && organizationWeVoteId && (
+                  {(voterIsAdmin || voterIsVerifiedVolunteer) && organizationWeVoteId && (
                     <span className="u-wrap-links d-print-none">
                       <span>Admin:</span>
                       <OpenExternalWebSite
@@ -841,7 +842,7 @@ class VoterGuideBallot extends Component {
                     </span>
                   )}
                   {/* Show links to the polling location this was copied from in the admin tools */}
-                  { !!(sourcePollingLocationWeVoteId && (voterIsAdmin || voterIsVerifiedVolunteer)) && (
+                  {!!(sourcePollingLocationWeVoteId && (voterIsAdmin || voterIsVerifiedVolunteer)) && (
                     <div className="u-wrap-links d-print-none">
                       Admin link:
                       <OpenExternalWebSite
@@ -849,7 +850,7 @@ class VoterGuideBallot extends Component {
                         target="_blank"
                         body={(
                           <span>
-                          This ballot copied from polling location &quot;
+                            This ballot copied from polling location &quot;
                             {sourcePollingLocationWeVoteId}
                             &quot;
                           </span>

@@ -113,7 +113,7 @@ class ElectionCountdown extends React.Component {
 
     const electionIsUpcomingHtml = (
       <Card className="card">
-        <div className="card-main">
+        <div className="">
           <div className="u-show-mobile">
             <div>
               <CardTitleUpcoming>
@@ -124,9 +124,9 @@ class ElectionCountdown extends React.Component {
                     {daysMobile === '1' ? 'day' : 'days'}
                   </>
                 ) : (
-                  <>
-                    Days...
-                  </>
+                  <DaysLargeText>
+                    ... days
+                  </DaysLargeText>
                 )}
               </CardTitleUpcoming>
             </div>
@@ -184,9 +184,9 @@ class ElectionCountdown extends React.Component {
               ) : (
                 <TimeFlex>
                   <TimeSection>
-                    <Time>
+                    <TimeLoading>
                       Loading...
-                    </Time>
+                    </TimeLoading>
                     <Small>Days</Small>
                   </TimeSection>
                 </TimeFlex>
@@ -214,7 +214,7 @@ class ElectionCountdown extends React.Component {
     );
     const electionIsTodayHtml = (
       <Card className="card">
-        <div className="card-main">
+        <div className="">
           <div className="u-show-mobile">
             <div>
               <CardTitleToday>
@@ -270,7 +270,7 @@ class ElectionCountdown extends React.Component {
     );
     const electionInPastHtml = (
       <Card className="card">
-        <div className="card-main">
+        <div className="">
           <div className="u-show-mobile">
             <div>
               <CardTitlePast>
@@ -337,6 +337,8 @@ class ElectionCountdown extends React.Component {
 }
 
 const Card = styled.div`
+  padding-top: 4px;
+  padding-bottom: 8px;
 `;
 
 const CardTitleUpcoming = styled.h1`
@@ -383,7 +385,7 @@ const CardSubTitle = styled.h3`
   font-weight: 700;
   color: #2E3C5D !important;
   width: fit-content;
-  padding-bottom: 8px;
+  margin-bottom: 0 !important;
   margin-top: ${props => (props.desktopMode ? '24px' : null)};
   width: 100%;
   text-align: ${props => (props.center ? 'center' : 'left')};
@@ -394,6 +396,10 @@ const CardSubTitle = styled.h3`
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
     font-size: 13px;
   }
+`;
+
+const DaysLargeText = styled.div`
+  color: #ccc;
 `;
 
 const TimeFlex = styled.div`
@@ -413,9 +419,16 @@ const TimeSection = styled.div`
 `;
 
 const Time = styled.h1`
-  margin: 0;
   font-size: 60px !important;
   font-weight: 800 !important;
+  margin: 0;
+`;
+
+const TimeLoading = styled.h1`
+  color: #ccc;
+  font-size: 60px !important;
+  font-weight: 800 !important;
+  margin: 0;
 `;
 
 const Small = styled.small`

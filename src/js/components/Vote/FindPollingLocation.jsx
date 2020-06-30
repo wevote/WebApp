@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import PlaceIcon from '@material-ui/icons/Place';
 import { withStyles } from '@material-ui/core/styles';
-import { historyPush } from '../../utils/cordovaUtils';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 class FindPollingLocation extends Component {
   static propTypes = {
@@ -18,17 +18,24 @@ class FindPollingLocation extends Component {
 
   render () {
     const { classes } = this.props;
+    const getPollingLocationUrl = 'https://gttp.votinginfoproject.org/';
     return (
       <Wrapper>
-        <Button
-          classes={{ root: classes.ballotButtonRoot }}
-          color="primary"
-          variant="contained"
-          onClick={() => historyPush('/polling-place-locator')}
-        >
-          <PlaceIcon classes={{ root: classes.ballotButtonIconRoot }} />
-          Your Polling Location
-        </Button>
+        <OpenExternalWebSite
+          url={getPollingLocationUrl}
+          target="_blank"
+          className="u-gray-mid"
+          body={(
+            <Button
+              classes={{ root: classes.ballotButtonRoot }}
+              color="primary"
+              variant="contained"
+            >
+              <PlaceIcon classes={{ root: classes.ballotButtonIconRoot }} />
+              Your Polling Location
+            </Button>
+          )}
+        />
         <InformationTextWrapper className="social-btn-description u-show-desktop">
           <i className="fas fa-info-circle" />
           Find the location where you can hand deliver your official ballot before the end of election day.

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
+import { convertStateCodeToStateText } from '../../utils/address-functions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -12,7 +13,6 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { cleanArray } from '../../utils/textFormat';
-import { convertStateCodeToStateText } from '../../utils/address-functions';
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
@@ -352,7 +352,7 @@ export default class BallotElectionList extends Component {
         <div className="ballot-election-list__list">
           <div className="ballot-election-list__upcoming DEPRECATED">
             <h4 className="h4">
-            Upcoming Election
+              Upcoming Election
               { (upcomingElectionListInState && upcomingElectionListInState.length !== 1 && !this.state.showMoreUpcomingElections) ||
                 (upcomingElectionList && upcomingElectionList.length !== 1 && this.state.showMoreUpcomingElections) ? 's' : null
               }
@@ -399,7 +399,7 @@ export default class BallotElectionList extends Component {
             <div className="ballot-election-list__prior">
               { priorElectionListInState && priorElectionListInState.length ? (
                 <h4 className="h4">
-                Prior Election
+                  Prior Election
                   { (priorElectionListInState.length > 1 ||
                     (priorElectionList && priorElectionList.length > 1)) ?
                     's' :

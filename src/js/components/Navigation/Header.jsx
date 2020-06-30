@@ -130,12 +130,15 @@ export default class Header extends Component {
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
     } else if (isCordova() && isIOS() && !hasIPhoneNotch()) {
-      iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '0px' : 'undefined'}` }} />;
+      iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '24px' : 'undefined'}` }} />;
     }
 
     // console.log('organizationModalId: ', this.state.organizationModalId);
 
-    const pageHeaderStyle = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
+    let pageHeaderStyle = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
+    if (isIPad()) {
+      pageHeaderStyle = pageHeaderStyle.replace('page-header__container', 'page-header__container_ipad');
+    }
     // console.log(`Header href: ${window.location.href}  cordovaStyle: `, cordovaTopHeaderTopMargin());
 
 

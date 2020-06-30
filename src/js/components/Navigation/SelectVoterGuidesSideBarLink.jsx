@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { historyPush } from '../../utils/cordovaUtils';
 import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
@@ -68,6 +68,7 @@ export default class SelectVoterGuidesSideBarLink extends Component {
               <ButtonWrapper>
                 <ButtonContainer>
                   <Button
+                    id="selectVotingGuidesSideBarLinkEdit"
                     color="primary"
                     fullWidth
                     onClick={this.goToEditLink}
@@ -78,6 +79,7 @@ export default class SelectVoterGuidesSideBarLink extends Component {
                 </ButtonContainer>
                 <ButtonContainer>
                   <Button
+                    id="selectVotingGuidesSideBarLinkPreview"
                     fullWidth
                     onClick={this.goToPreviewLink}
                     variant="outlined"

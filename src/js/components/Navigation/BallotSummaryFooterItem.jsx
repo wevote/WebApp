@@ -20,20 +20,6 @@ class BallotSummaryFooterItem extends Component {
     };
   }
 
-  componentDidMount () {
-    const { children } = this.props;
-    this.setState({
-      children,
-    });
-  }
-
-  componentWillReceiveProps (nextProps) {
-    const { children } = nextProps;
-    this.setState({
-      children,
-    });
-  }
-
   jumpToNewSection = (activeRaceItem) => {
     if (this.props.setActiveRaceItem) {
       this.props.setActiveRaceItem(activeRaceItem);
@@ -43,8 +29,7 @@ class BallotSummaryFooterItem extends Component {
 
   render () {
     renderLog('BallotSummaryFooterItem'); // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
-    const { children } = this.state;
+    const { classes, children } = this.props;
 
     if (!children) {
       return null;

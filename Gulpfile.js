@@ -30,6 +30,15 @@ gulp.task("browserify", function () {
     basedir: "./src",
     transform: [babelify],
   };
+  // const ops = {
+  //   debug: !PRODUCTION,
+  //   entries: "js/startReactReadyApp.js",
+  //   cache: {},
+  //   packageCache: {},
+  //   extensions: [".js", ".jsx"],
+  //   basedir: "./src",
+  //   transform: [babelify],
+  // };
 
   // 2017-04-05 Watchify is causing too many problems, so we are turning it off until we can resolve Issue 757
   // var opsWatchify = assign({ cache: {}, packageCache: {} }, watchify.args, ops);
@@ -56,6 +65,7 @@ gulp.task("browserify", function () {
       .pipe(uglify({ preserveComments: false, mangle: false }))
       .pipe(gulp.dest("./build/js")) :
 
+    // development build
     bundler
       .plugin('watchify', {
         verbose: true,
@@ -66,6 +76,21 @@ gulp.task("browserify", function () {
       .pipe(source("bundle.js"))
       .pipe(gulp.dest("./build/js"))
       .pipe(browserSync.stream());
+
+    // Compressed development build - didn't work
+    // bundler
+    //   .plugin('watchify', {
+    //     verbose: true,
+    //   })
+    //   .transform('uglifyify', { global: true })
+    //   .bundle()
+    //   .on("error", err)
+    //   .on("update", bundle)
+    //   .pipe(source("bundle.js"))
+    //   .pipe(buffer())
+    //   .pipe(uglify({ preserveComments: false, mangle: false }))
+    //   .pipe(gulp.dest("./build/js"))
+    //   .pipe(browserSync.stream());
 
 
   }
@@ -109,9 +134,9 @@ gulp.task("compile-bootstrap", function () {
 });
 
 // Compile main and loading-screen, then copy them to the /build/css directory
+// 2020-06 Deprecated by Dale:                    "./src/sass/loading-screen.scss",
 gulp.task("sass", function () {
   return gulp.src(["./src/sass/main.scss",
-                   "./src/sass/loading-screen.scss",
     ])
     .pipe(sourcemaps.init())
     .on("error", function (err) { console.error(err); })

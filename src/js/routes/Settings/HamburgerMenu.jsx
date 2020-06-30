@@ -9,6 +9,7 @@ import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
+import { voterPhoto } from '../../utils/voterPhoto';
 
 const webAppConfig = require('../../config');
 
@@ -100,7 +101,8 @@ export default class HamburgerMenu extends Component {
     }
 
     let { is_signed_in: isSignedIn } = voter;
-    const { voter_photo_url_medium: photoUrl } = voter;
+    const voterPhotoUrlMedium = voterPhoto(voter);
+
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
     const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
@@ -119,7 +121,7 @@ export default class HamburgerMenu extends Component {
 
             {!isSignedIn && (
               <HamburgerMenuRow
-                fullIcon={this.yourAccountIcon(photoUrl)}
+                fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
                 linkText="Sign In"
                 onClickAction={null}
                 to="/settings/account"
@@ -138,7 +140,7 @@ export default class HamburgerMenu extends Component {
 
             {isSignedIn && (
               <HamburgerMenuRow
-                fullIcon={this.yourAccountIcon(photoUrl)}
+                fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
                 linkText="Security & Sign In"
                 onClickAction={null}
                 to="/settings/account"
@@ -243,7 +245,7 @@ export default class HamburgerMenu extends Component {
               <td className="hamburger-terms__td" colSpan={3}>
                 <div>
                   <span className="hamburger-terms__text">
-                    <Link to="/more/terms">
+                    <Link to="/more/terms" id="termsOfService">
                       <span className="u-no-break">Terms of Service</span>
                     </Link>
                   </span>

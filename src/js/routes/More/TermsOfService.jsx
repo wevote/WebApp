@@ -51,7 +51,7 @@ export default class TermsOfService extends React.Component {
           <h2>Personal Information</h2>
           <p>
             Your submission of personal information is governed by our
-            <Link to="/more/privacy">Privacy Policy</Link>
+            <Link to="/more/privacy" id="privacyPolicy">Privacy Policy</Link>
             .
           </p>
           <h2>Errors, Inaccuracies and Omissions</h2>

@@ -38,10 +38,7 @@ class WelcomeFooter extends Component {
                 <OpenExternalWebSite className={classes.link} url="https://absentee.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Get Your Absentee Ballot</span>)} />
               }
               <Link id="footerLinkSeeYourBallot" className={classes.link} to="/ballot">See Your Ballot</Link>
-              {isWebApp() ?
-                <Link id="footerLinkPollingPlaceLocator" className={classes.link} to="/polling-place-locator">Polling Place Locator</Link> :
-                <OpenExternalWebSite className={classes.link} url="https://wevote.us/vip.html" target="_blank" body={(<span>Polling Place Locator</span>)} />
-              }
+              <OpenExternalWebSite className={classes.link} url="https://gttp.votinginfoproject.org/" target="_blank" body={(<span>Polling Place Locator</span>)} />
               <Link id="footerLinkFreeOnlineTools" className={classes.link} to="/settings/tools">Free Online Tools</Link>
               <Link id="footerLinkPremiumOnlineTools" className={classes.link} to="/settings/tools">Premium Online Tools</Link>
             </Column>

@@ -37,6 +37,7 @@ import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import ShareModal from '../Share/ShareModal';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
+import { voterPhoto } from '../../utils/voterPhoto';
 
 // const webAppConfig = require('../../config');
 
@@ -438,12 +439,12 @@ class HeaderBar extends Component {
 
     // console.log('Header Bar, showSignInModal ', showSignInModal);
     const ballotBaseUrl = '/ballot';
-    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
     const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     const showingBallot = stringContains(ballotBaseUrl, pathname.toLowerCase().slice(0, 7));
     const showingFriendsTabs = displayFriendsTabs();
+    const voterPhotoUrlMedium = voterPhoto(voter);
     const editAddressButtonHtml = (
       <Tooltip title="Change my location or election" aria-label="Change Address or Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
         <span>
@@ -518,7 +519,7 @@ class HeaderBar extends Component {
                   <Tab classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                 )}
                 {/* OFF FOR NOW (!voterIsSignedIn && showFullNavigation) && () */}
-                <Tab classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Values" onClick={() => this.handleNavigation('/values')} />
+                <Tab classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Opinions" onClick={() => this.handleNavigation('/values')} />
                 { showFullNavigation && (
                   <Tab
                     classes={(numberOfIncomingFriendRequests > 0) ? { root: classes.tabRootIncomingFriendRequests } : { root: classes.tabRootFriends }}
@@ -558,6 +559,7 @@ class HeaderBar extends Component {
                       src={voterPhotoUrlMedium}
                       style={{
                         marginLeft: 16,
+                        marginBottom: 10,
                       }}
                       height={34}
                       width={34}
