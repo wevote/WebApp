@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 // import BallotActions from '../actions/BallotActions';
 // import BallotStore from '../stores/BallotStore';
 // import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import cookies from '../utils/cookies';
+// import cookies from '../utils/cookies';
 // import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 // import ElectionCountdown from '../components/Ready/ElectionCountdown';
 // import { isWebApp } from '../utils/cordovaUtils';
@@ -37,8 +37,8 @@ class ReadyNoApi extends Component {
     this.state = {
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
-      issuesDisplayDecisionHasBeenMade: false,
-      issuesShouldBeDisplayed: false,
+      // issuesDisplayDecisionHasBeenMade: false,
+      // issuesShouldBeDisplayed: false,
     };
   }
 
@@ -60,9 +60,9 @@ class ReadyNoApi extends Component {
     // }
     // ReadyActions.voterPlansForVoterRetrieve();
     // AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
-    this.setState({
-      locationGuessClosed: cookies.getItem('location_guess_closed'),
-    });
+    // this.setState({
+    //   locationGuessClosed: cookies.getItem('location_guess_closed'),
+    // });
   }
 
   componentWillUnmount () {
@@ -113,7 +113,7 @@ class ReadyNoApi extends Component {
     renderLog('ReadyNoApi');  // Set LOG_RENDER_EVENTS to log all renders
     console.log('ReadyNoApi render');
     const {
-      chosenReadyIntroductionText, chosenReadyIntroductionTitle
+      chosenReadyIntroductionText, chosenReadyIntroductionTitle,
     } = this.state;
     // if (!voter) {
     //   return LoadingWheel;

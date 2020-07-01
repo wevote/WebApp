@@ -13,7 +13,6 @@ import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import { historyPush, isWebApp } from '../utils/cordovaUtils';
 import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
-import LoadingWheel from '../components/LoadingWheel';
 import ReadMore from '../components/Widgets/ReadMore';
 import ReadyActions from '../actions/ReadyActions';
 import ReadyIntroduction from '../components/ReadyNoApi/ReadyIntroduction';
@@ -96,7 +95,7 @@ class Ready extends Component {
   }
 
   onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+    // this.setState({ voter: VoterStore.getVoter() });
   }
 
   goToBallot = () => {
@@ -111,15 +110,8 @@ class Ready extends Component {
     renderLog('Ready');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       chosenReadyIntroductionText, chosenReadyIntroductionTitle, issuesShouldBeDisplayed,
-      locationGuessClosed, voter,
+      locationGuessClosed,
     } = this.state;
-    // if (!voter) {
-    //   return LoadingWheel;
-    // }
-    // const defaultIntroductionText = 'Make sure you\'re ready to vote ' +
-    //   '(registered to vote, have a plan, etc.) ' +
-    //   'See who\'s running for office. What do they stand for? ' +
-    //   'Learn from people you trust.';
 
     return (
       <Wrapper className="page-content-container">

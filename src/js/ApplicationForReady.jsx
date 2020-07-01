@@ -15,14 +15,14 @@ class ApplicationForReady extends Component {
   static propTypes = {
     children: PropTypes.element,
     location: PropTypes.object,
-    params: PropTypes.object,
+    // params: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       // Do not define voter here. We rely on it being undefined
-      voter_initial_retrieve_needed: true,
+      // voter_initial_retrieve_needed: true,
     };
   }
 
@@ -83,9 +83,9 @@ class ApplicationForReady extends Component {
   }
 
   render () {
-    renderLog('Application');  // Set LOG_RENDER_EVENTS to log all renders
-    const { location: { pathname } } = this.props;
-    // console.log('Application render, pathname:', pathname);
+    renderLog('ApplicationForReady');  // Set LOG_RENDER_EVENTS to log all renders
+    // const { location: { pathname } } = this.props;
+    // console.log('ApplicationForReady render, pathname:', pathname);
 
     if (this.props.location === undefined) {
       return (
@@ -127,13 +127,13 @@ class ApplicationForReady extends Component {
     // } = getApplicationViewBooleans(pathname);
     // const contentFullWidthMode = true;
     // const readyMode = true;
-    const showFooterBar = true;
-    const showShareButtonFooter = false;
+    // const showFooterBar = true;
+    // const showShareButtonFooter = false;
     // console.log('showShareButtonFooter:', showShareButtonFooter);
     // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     // This handles other pages, like Welcome and the Ballot display
-    // console.log('Application, another mode');
+    // console.log('ApplicationForReady, another mode');
     return (
       <div className={this.getAppBaseClass()} id="app-base-id">
         <ToastContainer closeButton={false} className={getToastClass()} />

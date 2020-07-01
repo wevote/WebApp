@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function componentLoader (componentName) {
   // console.log('componentLoaderFunction: ', componentName);
@@ -97,12 +97,15 @@ export default function componentLoader (componentName) {
       return React.lazy(() => import('../routes/More/Privacy'));
     case 'ProcessingDonation':
       return React.lazy(() => import('../routes/More/ProcessingDonation'));
+    default:
     case 'ReadyNoApi':
       return React.lazy(() => import('../routes/ReadyNoApi'));
     case 'Ready':
       return React.lazy(() => import('../routes/Ready'));
     case 'ReadyRedirect':
       return React.lazy(() => import('../routes/ReadyRedirect'));
+    case 'Register':
+      return React.lazy(() => import('../routes/Register'));
     case 'RegisterToVote':
       return React.lazy(() => import('../routes/More/RegisterToVote'));
     case 'SampleBallot':
@@ -159,8 +162,5 @@ export default function componentLoader (componentName) {
       return React.lazy(() => import('../routes/More/WeVoteBallotEmbed'));
     case 'YourPage':
       return React.lazy(() => import('../routes/YourPage'));
-    case 'Register':
-      return React.lazy(() => import('../routes/Register'));
   }
-  return null;
 }

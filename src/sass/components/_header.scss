@@ -36,8 +36,9 @@ $header-padding-left: 15px;
   }
 
   &__container_ipad {
+    $ipad-margin-top: 26px;
     background-color: $page-header-color;
-    margin-top: 26px !important;
+    margin-top: $ipad-margin-top !important;
   }
 
   &__container_branding_off {
