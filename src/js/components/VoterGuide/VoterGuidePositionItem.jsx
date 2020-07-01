@@ -214,12 +214,12 @@ class VoterGuidePositionItem extends Component {
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
     let contestOfficeName;
     // let politicalParty;
-    let ballotDisplay = [];
+    // let ballotDisplay = [];
     if (isCandidate) {
       contestOfficeName = position.contest_office_name;
       // politicalParty = position.ballot_item_political_party;
     } else {
-      ballotDisplay = ballotItemDisplayName.split(':');
+      // ballotDisplay = ballotItemDisplayName.split(':');
     }
     if (moreInfoUrl) {
       if (!moreInfoUrl.toLowerCase().startsWith('http')) {
@@ -238,7 +238,7 @@ class VoterGuidePositionItem extends Component {
           <SearchResultsNodeWrapper>
             {searchResultsNode}
           </SearchResultsNodeWrapper>
-          )}
+        )}
         <DesktopContainerWrapper className="u-show-desktop-tablet">
           <DesktopContainer>
             {isCandidate && (
