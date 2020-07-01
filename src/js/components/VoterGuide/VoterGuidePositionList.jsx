@@ -12,6 +12,7 @@ import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
+import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuidePositionFilter from '../Filter/VoterGuidePositionFilter';
@@ -351,6 +352,11 @@ class VoterGuidePositionList extends Component {
             allItems={positionList}
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
+            numberOfItemsFoundNode={(
+              <NumberOfItemsFound
+                numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
+              />
+            )}
             onFilteredItemsChange={this.onFilteredItemsChange}
             onSearch={this.onPositionSearch}
             onToggleSearch={this.handleToggleSearchBallot}
@@ -494,6 +500,7 @@ const NoResultsText = styled.div`
 
 const SearchResultsFoundInExplanation = styled.div`
   background-color: #C2DCE8;
+  border-radius: 4px;
   color: #0E759F;
   margin-left: 0 !important;
   margin-right: 0 !important;

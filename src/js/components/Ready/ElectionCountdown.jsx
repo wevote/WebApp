@@ -110,7 +110,7 @@ class ElectionCountdown extends React.Component {
 
   render () {
     const { days, daysMobile, electionIsToday, electionInPast, hours, minutes, seconds, electionDate } = this.state;
-
+    const timeStillLoading = !(days || hours || minutes || seconds);
     const electionIsUpcomingHtml = (
       <Card className="card">
         <div className="">
@@ -125,7 +125,7 @@ class ElectionCountdown extends React.Component {
                   </>
                 ) : (
                   <DaysLargeText>
-                    ... days
+                    &mdash; days
                   </DaysLargeText>
                 )}
               </CardTitleUpcoming>
@@ -149,48 +149,37 @@ class ElectionCountdown extends React.Component {
           </div>
           <div className="u-show-desktop-tablet">
             <div>
-              {(days || hours || minutes || seconds) ? (
-                <TimeFlex>
-                  <TimeSection>
-                    <Time>
-                      {days || '0'}
-                    </Time>
-                    <Small>
-                      {days === '1' ? 'Day' : 'Days'}
-                    </Small>
-                  </TimeSection>
-                  <TimeSection><Time>:</Time></TimeSection>
-                  <TimeSection>
-                    <Time>
-                      {hours || '00'}
-                    </Time>
-                    <Small>Hours</Small>
-                  </TimeSection>
-                  <TimeSection><Time>:</Time></TimeSection>
-                  <TimeSection>
-                    <Time>
-                      {minutes || '00'}
-                    </Time>
-                    <Small>Minutes</Small>
-                  </TimeSection>
-                  <TimeSection><Time>:</Time></TimeSection>
-                  <TimeSection>
-                    <Time>
-                      {seconds || '00'}
-                    </Time>
-                    <Small>Seconds</Small>
-                  </TimeSection>
-                </TimeFlex>
-              ) : (
-                <TimeFlex>
-                  <TimeSection>
-                    <TimeLoading>
-                      Loading...
-                    </TimeLoading>
-                    <Small>Days</Small>
-                  </TimeSection>
-                </TimeFlex>
-              )}
+              <TimeFlex>
+                <TimeSection>
+                  <Time timeStillLoading={timeStillLoading}>
+                    {timeStillLoading ? <span>&ndash;</span> : days || '00'}
+                  </Time>
+                  <Small>
+                    {days === '1' ? 'Day' : 'Days'}
+                  </Small>
+                </TimeSection>
+                <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
+                <TimeSection>
+                  <Time timeStillLoading={timeStillLoading}>
+                    {timeStillLoading ? <span>&ndash;</span> : hours || '00'}
+                  </Time>
+                  <Small>Hours</Small>
+                </TimeSection>
+                <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
+                <TimeSection>
+                  <Time timeStillLoading={timeStillLoading}>
+                    {timeStillLoading ? <span>&ndash;</span> : minutes || '00'}
+                  </Time>
+                  <Small>Minutes</Small>
+                </TimeSection>
+                <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
+                <TimeSection>
+                  <Time timeStillLoading={timeStillLoading}>
+                    {timeStillLoading ? <span>&ndash;</span> : seconds || '00'}
+                  </Time>
+                  <Small>Seconds</Small>
+                </TimeSection>
+              </TimeFlex>
             </div>
             <div>
               <CardSubTitle center desktopMode>
@@ -419,13 +408,7 @@ const TimeSection = styled.div`
 `;
 
 const Time = styled.h1`
-  font-size: 60px !important;
-  font-weight: 800 !important;
-  margin: 0;
-`;
-
-const TimeLoading = styled.h1`
-  color: #ccc;
+  ${props => (props.timeStillLoading ? 'color: #ccc;' : '')}
   font-size: 60px !important;
   font-weight: 800 !important;
   margin: 0;

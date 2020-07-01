@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 class ShowMoreItems extends Component {
   static propTypes = {
+    hideShowMoreLink: PropTypes.bool,
     loadingMoreItemsNow: PropTypes.bool,
     numberOfItemsDisplayed: PropTypes.number,
     numberOfItemsTotal: PropTypes.number,
@@ -15,7 +16,7 @@ class ShowMoreItems extends Component {
   }
 
   render () {
-    const { loadingMoreItemsNow, numberOfItemsDisplayed, numberOfItemsTotal } = this.props;
+    const { hideShowMoreLink, loadingMoreItemsNow, numberOfItemsDisplayed, numberOfItemsTotal } = this.props;
 
     if (numberOfItemsDisplayed === 0) {
       return null;
@@ -30,7 +31,7 @@ class ShowMoreItems extends Component {
         of
         {' '}
         {numberOfItemsTotal}
-        {(!loadingMoreItemsNow && numberOfItemsDisplayed && numberOfItemsTotal && (numberOfItemsDisplayed < numberOfItemsTotal)) && (
+        {(!hideShowMoreLink && !loadingMoreItemsNow && numberOfItemsDisplayed && numberOfItemsTotal && (numberOfItemsDisplayed < numberOfItemsTotal)) && (
           <span className="u-link-color u-cursor--pointer">
             &nbsp;&ndash;&nbsp;Show More
           </span>

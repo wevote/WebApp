@@ -14,6 +14,7 @@ import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../LoadingWheel';
+import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SettingsAddBallotItemsFilter from '../Filter/SettingsAddBallotItemsFilter';
@@ -565,6 +566,11 @@ class VoterGuideSettingsAddPositions extends Component {
               onFilteredItemsChange={this.onFilteredItemsChangeFromPositionItemsFilterBase}
               onSearch={this.onPositionSearch}
               onToggleSearch={this.handleToggleSearchBallot}
+              numberOfItemsFoundNode={(
+                <NumberOfItemsFound
+                  numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : totalNumberOfPositionItems}
+                />
+              )}
               selectedFiltersDefault={selectedFiltersCurrentDefault}
               totalNumberOfItemsFound={totalNumberOfPositionItems}
             >
@@ -700,6 +706,11 @@ class VoterGuideSettingsAddPositions extends Component {
               groupedFilters={groupedFilters}
               islandFilters={islandFilters}
               allItems={allBallotItems}
+              numberOfItemsFoundNode={(
+                <NumberOfItemsFound
+                  numberOfItemsTotal={isSearching ? totalNumberOfBallotSearchResults : totalNumberOfBallotItems}
+                />
+              )}
               onSearch={this.onBallotSearch}
               onFilteredItemsChange={this.onFilteredItemsChangeFromBallotItemsFilterBase}
               onToggleSearch={this.handleToggleSearchBallot}

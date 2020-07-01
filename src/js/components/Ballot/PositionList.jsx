@@ -11,6 +11,7 @@ import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
+import NumberOfItemsFound from '../Widgets/NumberOfItemsFound';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import PositionItem from './PositionItem';
@@ -317,6 +318,11 @@ class PositionList extends Component {
             allItems={positionList}
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
+            numberOfItemsFoundNode={(
+              <NumberOfItemsFound
+                numberOfItemsTotal={isSearching ? totalNumberOfPositionSearchResults : filteredPositionListLength}
+              />
+            )}
             onFilteredItemsChange={this.onFilteredItemsChange}
             onSearch={this.onPositionSearch}
             onToggleSearch={this.handleToggleSearchBallot}

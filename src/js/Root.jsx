@@ -39,7 +39,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
         (function redirect () {  // eslint-disable-line wrap-iife
           if (isWebApp()) {
             // return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/ready" />;
-            return <IndexRedirect to="/getready" />;
+            return <IndexRedirect to="/ready" />;
           } else {
             return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ready" />;
           }
