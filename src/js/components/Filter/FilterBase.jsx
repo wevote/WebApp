@@ -24,6 +24,7 @@ class FilterBase extends React.Component {
     onToggleSearch: PropTypes.func,
     positionSearchMode: PropTypes.bool,
     selectedFiltersDefault: PropTypes.array,
+    numberOfItemsFoundNode: PropTypes.node,
     sortFilters: PropTypes.array,
     stateCodesToDisplay: PropTypes.array,
     voterGuidePositionSearchMode: PropTypes.bool,
@@ -226,7 +227,7 @@ class FilterBase extends React.Component {
     renderLog('FilterBase');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('FilterBase render');
     const { isSearching, selectedFilters, showAllFilters, sortFilters } = this.state;
-    const { allItems, classes, positionSearchMode, stateCodesToDisplay, voterGuidePositionSearchMode } = this.props;
+    const { allItems, classes, positionSearchMode, numberOfItemsFoundNode, stateCodesToDisplay, voterGuidePositionSearchMode } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
     return (
@@ -268,6 +269,9 @@ class FilterBase extends React.Component {
               </div>
             </Badge>
           )}
+          <NumberOfItemsFoundWrapper>
+            {numberOfItemsFoundNode}
+          </NumberOfItemsFoundWrapper>
         </FilterTop>
         {
           React.cloneElement(this.props.children, {
@@ -298,18 +302,20 @@ const styles = theme => ({
   },
 });
 
-const Wrapper = styled.div`
-  padding-top: 10px;
-  display: flex;
-  flex-flow: column;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
-`;
-
 const FilterTop = styled.div`
   display: flex;
   flex-flow: row wrap;
   padding: 0.5rem 0;
+`;
+
+const NumberOfItemsFoundWrapper = styled.div`
+  // float: right;
+`;
+
+const Wrapper = styled.div`
+  padding-top: 10px;
+  display: flex;
+  flex-flow: column;
 `;
 
 export default withStyles(styles)(FilterBase);

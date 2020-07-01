@@ -125,7 +125,7 @@ class ElectionCountdown extends React.Component {
                   </>
                 ) : (
                   <DaysLargeText>
-                    ... days
+                    &mdash; days
                   </DaysLargeText>
                 )}
               </CardTitleUpcoming>

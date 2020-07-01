@@ -495,7 +495,7 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
 const DesktopContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 2px 15px 15px 15px;
+  margin: 2px 15px 8px 15px;
 `;
 
 const DesktopContainerWrapper = styled.div`
