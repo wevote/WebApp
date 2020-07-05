@@ -2,6 +2,7 @@
 module.exports = {
   WE_VOTE_URL_PROTOCOL: 'http://', // 'http://' for local dev or 'https://' for live server
   WE_VOTE_HOSTNAME: 'localhost:3000', // Don't add 'http...' here.  Live server: 'WeVote.US', Quality: 'quality.WeVote.US', developers: 'localhost:3000'
+  WE_VOTE_IMAGE_PATH_FOR_CORDOVA: 'https://wevote.us',   // If you are not working with Cordova, you don't need to change this
   SECURE_CERTIFICATE_INSTALLED: false,
 
   WE_VOTE_SERVER_ROOT_URL: 'https://api.wevoteusa.org/',

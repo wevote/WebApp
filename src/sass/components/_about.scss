@@ -92,6 +92,12 @@ $radio-button-width: 80px;
 
 // Sign in with Apple for WebApp
 .signin-button > div > div > svg { // stylelint-disable-line selector-max-type
-  height: 50px;
+  height: 39px;
   width: 100%;
 }
+
+.signin-button > div  { // stylelint-disable-line selector-max-type
+  max-width: unset !important;
+}
+
+
