@@ -21,6 +21,7 @@ import VoterStore from '../../stores/VoterStore';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import { Title } from '../../components/Welcome/HeaderWelcome';
+import ShowMoreFooter from '../../components/Navigation/ShowMoreFooter';
 
 class About extends Component {
   static getProps () {
@@ -170,11 +171,21 @@ class About extends Component {
           </AboutDescriptionContainer>
           <AboutDescriptionContainer>
             <div className="row position-relative">
-              {
-              weVoteStaff.map(teamMember => (
-                <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
-              ))
-              }
+              {(weVoteStaff.length > 2) ? (
+                <>
+                  <TeamMemberDisplayForList key={`teamDisplay-${weVoteStaff[0].name}-${weVoteStaff[0].title[0]}`} teamMember={weVoteStaff[0]} />
+                  <TeamMemberDisplayForList key={`teamDisplay-${weVoteStaff[1].name}-${weVoteStaff[1].title[0]}`} teamMember={weVoteStaff[1]} />
+                  <ShowMoreFooter showMoreId="ShowMoreWeVoteStaff"
+                                  showMoreLink={() => weVoteStaff.map(teamMember => (
+                                    <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />))}
+                                  showMoreText="SHOW MORE"
+                  />
+                </>
+              ) : (
+                weVoteStaff.map(teamMember => (
+                  <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
+                ))
+              )}
             </div>
           </AboutDescriptionContainer>
         </Section>
