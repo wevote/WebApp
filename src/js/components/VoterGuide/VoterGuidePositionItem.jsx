@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ReactSVG from 'react-svg';
-import Card from '@material-ui/core/Card';
 import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
 import BallotItemVoterGuideSupportOpposeDisplay from '../Widgets/BallotItemVoterGuideSupportOpposeDisplay';
@@ -215,12 +214,12 @@ class VoterGuidePositionItem extends Component {
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
     let contestOfficeName;
     // let politicalParty;
-    let ballotDisplay = [];
+    // let ballotDisplay = [];
     if (isCandidate) {
       contestOfficeName = position.contest_office_name;
       // politicalParty = position.ballot_item_political_party;
     } else {
-      ballotDisplay = ballotItemDisplayName.split(':');
+      // ballotDisplay = ballotItemDisplayName.split(':');
     }
     if (moreInfoUrl) {
       if (!moreInfoUrl.toLowerCase().startsWith('http')) {
@@ -235,25 +234,29 @@ class VoterGuidePositionItem extends Component {
 
     return (
       <>
-        <SearchResultsNodeWrapper>
-          {searchResultsNode}
-        </SearchResultsNodeWrapper>
+        {!!(searchResultsNode) && (
+          <SearchResultsNodeWrapper>
+            {searchResultsNode}
+          </SearchResultsNodeWrapper>
+        )}
         <DesktopContainerWrapper className="u-show-desktop-tablet">
           <DesktopContainer>
-            <DesktopItemLeft>
-              <DesktopItemImage onClick={this.onClickFunction} className="u-cursor--pointer">
-                <div>
-                  { ballotItemImageUrlHttpsMedium ? (
-                    <ImageHandler
-                      className="card-child__avatar"
-                      sizeClassName="icon-lg"
-                      imageUrl={ballotItemImageUrlHttpsMedium}
-                    />
-                  ) :
-                    imagePlaceholder }
-                </div>
-              </DesktopItemImage>
-            </DesktopItemLeft>
+            {isCandidate && (
+              <DesktopItemLeft>
+                <DesktopItemImage onClick={this.onClickFunction} className="u-cursor--pointer">
+                  <div>
+                    { ballotItemImageUrlHttpsMedium ? (
+                      <ImageHandler
+                        className="card-child__avatar"
+                        sizeClassName="icon-lg"
+                        imageUrl={ballotItemImageUrlHttpsMedium}
+                      />
+                    ) :
+                      imagePlaceholder }
+                  </div>
+                </DesktopItemImage>
+              </DesktopItemLeft>
+            )}
             <PositionItemDesktop isSupport={organizationSupportsBallotItem} isOppose={organizationOpposesBallotItem}>
               <DesktopItemHeader>
                 <DesktopItemNameAndOfficeContainer>
@@ -343,20 +346,21 @@ class VoterGuidePositionItem extends Component {
         </DesktopContainerWrapper>
         <MobileContainerWrapper className="u-show-mobile">
           <PositionItemMobile isSupport={organizationSupportsBallotItem} isOppose={organizationOpposesBallotItem}>
-            {searchResultsNode}
             <MobileItemHeader>
               <MobileItemNameAndOfficeContainer>
                 <MobileItemNameContainer onClick={this.onClickFunction} className="u-cursor--pointer">
-                  <MobileItemImage>
-                    { ballotItemImageUrlHttpsMedium ? (
-                      <ImageHandler
-                        className="card-child__avatar"
-                        sizeClassName="icon-lg"
-                        imageUrl={ballotItemImageUrlHttpsMedium}
-                      />
-                    ) :
-                      imagePlaceholder }
-                  </MobileItemImage>
+                  {isCandidate && (
+                    <MobileItemImage>
+                      { ballotItemImageUrlHttpsMedium ? (
+                        <ImageHandler
+                          className="card-child__avatar"
+                          sizeClassName="icon-lg"
+                          imageUrl={ballotItemImageUrlHttpsMedium}
+                        />
+                      ) :
+                        imagePlaceholder }
+                    </MobileItemImage>
+                  )}
                   {/* Visible for most phones */}
                   <MobileItemNameAndOfficeContainerLarger className="u-show-mobile-bigger-than-iphone5">
                     <MobileItemName>
@@ -444,7 +448,7 @@ class VoterGuidePositionItem extends Component {
                 <div className="u-float-right">
                   Flag Links
                 </div> */}
-                {moreInfoUrl ? (
+                {moreInfoUrl && (
                   <SourceLink>
                     <OpenExternalWebSite
                       body={(
@@ -459,8 +463,7 @@ class VoterGuidePositionItem extends Component {
                       url={moreInfoUrl}
                     />
                   </SourceLink>
-                ) : null
-                }
+                )}
               </MobileItemFooter>
             </MobileItemBody>
           </PositionItemMobile>
@@ -484,96 +487,15 @@ const styles = theme => ({
   },
 });
 
-const CandidateItemWrapper = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-flow: row nowrap;
-`;
-
-const BallotItemImageWrapper = styled.span`
-  padding-right: 10px;
-`;
-
-const BallotItemPadding = styled.div`
-  padding: 15px;
-  width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    width: 100%;
-  }
-`;
-
 const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
   cursor: pointer;
   display: flex;
 `;
 
-const BallotItemWrapper = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  padding-bottom: 4px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    padding-bottom: 2px;
-  }
-`;
-
-const Candidate = styled.div`
-`;
-
-const MeasureItemWrapper = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-flow: row wrap;
-`;
-
-const OrganizationImageWrapper = styled.span`
-  padding-right: 4px;
-`;
-
-const PositionYearText = styled.span`
-  color: #999;
-  font-weight: 200;
-  // margin-left: 4px;
-`;
-
-const SearchResultsNodeWrapper = styled.div`
-  margin-bottom: 2px !important;
-  padding: 15px;
-`;
-
-const SubTitle = styled.h3`
-  font-size: 16px;
-  font-weight: 300;
-  color: #555;
-  margin-top: .6rem;
-  width: 135%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 13px;
-  }
-`;
-
-const Title = styled.h1`
-  font-size: 18px;
-  font-weight: bold;
-  margin: .1rem 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 16px;
-  }
-`;
-
-const VerticalSeparator = styled.div`
-  height: 44px;
-  width: 2px;
-  background: #ccc;
-  margin: 0 4px;
-`;
-
-
-// /////////////////////////////////////////////////////////
 const DesktopContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 8px 15px 15px 15px;
+  margin: 2px 15px 8px 15px;
 `;
 
 const DesktopContainerWrapper = styled.div`
@@ -586,20 +508,6 @@ const DesktopItemBody = styled.div`
 const DesktopItemDescription = styled.div`
   font-size: 14px;
   margin-top: 8px;
-`;
-
-// const DesktopItemDescription = styled.div`
-//   font-size: 16px;
-//   border-radius: 5px;
-//   list-style: none;
-//   padding: 6px;
-//   background: #eee;
-//   flex: 1 1 0;
-// `;
-
-const DesktopItemEndorsementDisplay = styled.div`
-  margin-left: auto;
-  padding: 0;
 `;
 
 const DesktopItemFooter = styled.div`
@@ -684,15 +592,6 @@ const MobileItemDescription = styled.div`
     font-size: 14px;
   }
 `;
-
-// const MobileItemDescription = styled.div`
-//   font-size: 16px;
-//   border-radius: 2px;
-//   list-style: none;
-//   padding: 4px;
-//   background: #eee;
-//   flex: 1 1 0;
-// `;
 
 const MobileItemDescriptionFollowToggleContainer = styled.div`
   left: 2px;
@@ -791,10 +690,22 @@ const PositionItemMobile = styled.li`
   ${({ isSupport }) => (isSupport ? 'border-left: 4px solid rgb(31, 192, 111);' : '')}
   border-radius: 5px;
   list-style: none;
-  margin: 16px;
+  margin-top: 2px;
+  margin-bottom: 12px;
   max-width: 100% !important;
+`;
+
+const PositionYearText = styled.span`
+  color: #999;
+  font-weight: 200;
+  // margin-left: 4px;
+`;
+
+const SearchResultsNodeWrapper = styled.div`
+  margin-bottom: 2px !important;
+  padding: 0 15px;
   @media (max-width: 476px) {
-    margin: 16px 0;
+    padding: 0 !important;
   }
 `;
 
@@ -808,6 +719,13 @@ const TwitterIcon = styled.span`
   color: #ccc;
   margin-right: 2px;
   vertical-align: bottom;
+`;
+
+const VerticalSeparator = styled.div`
+  height: 44px;
+  width: 2px;
+  background: #ccc;
+  margin: 0 4px;
 `;
 
 export default withStyles(styles)(VoterGuidePositionItem);

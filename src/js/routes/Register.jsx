@@ -4,6 +4,9 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import { CheckCircle } from '@material-ui/icons';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -12,25 +15,17 @@ import AppStore from '../stores/AppStore';
 import BallotActions from '../actions/BallotActions';
 import BallotStore from '../stores/BallotStore';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
-import ElectionCountdown from '../components/Ready/ElectionCountdown';
-import { historyPush } from '../utils/cordovaUtils';
 import LoadingWheel from '../components/LoadingWheel';
-import PledgeToVote from '../components/Ready/PledgeToVote';
-import ReadMore from '../components/Widgets/ReadMore';
 import ReadyActions from '../actions/ReadyActions';
-import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
-import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
-import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import { renderLog } from '../utils/logging';
 import VoterStore from '../stores/VoterStore';
-import webAppConfig from '../config';
 import { formatStateName } from '../utils/formatStateName';
 import { formatDateToMonthDayYear } from '../utils/textFormat';
 import voteDotOrg from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import turboVote from '../../img/global/logos/turbovote-logo.png';
+// import webAppConfig from '../config';
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class Register extends Component {
   static propTypes = {
@@ -40,8 +35,6 @@ class Register extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      chosenReadyIntroductionText: '',
-      chosenReadyIntroductionTitle: '',
       selectedState: '',
       majorStep: 'A',
       minorStep: '1',
@@ -107,7 +100,6 @@ class Register extends Component {
     if (!voter) {
       return LoadingWheel;
     }
-    const defaultIntroductionText = "We've all been there. Election day is almost here, but besides the President and a few other decisions, we don't know how we're going to vote. There has to be a better way. Now, there is!";
 
     console.log(this.state.majorStep);
 
@@ -183,7 +175,7 @@ class Register extends Component {
             </Select>
           </FormControl>
         </Section>
-        {this.state.minorStep === '2a' && (
+        {(this.state.minorStep === '2a' || this.state.minorStep === '3') && (
         <Section>
           <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16 }}>
                 Have you voted in
@@ -197,21 +189,24 @@ class Register extends Component {
                 }}
                 variant="outlined"
                 color="primary"
-                className={this.state.votedInLastYear === 'yes' ? classes.selectedButton : classes.button}
+                // eslint-disable-next-line no-nested-ternary
+                className={this.state.votedInLastYear === 'yes' ? classes.selectedButton : this.state.minorStep === '3' ? classes.button : classes.activeButton}
                 fullWidth
           >
                 Yes
           </Button>
           <Button
                 onClick={() => {
-                  this.setState({ majorStep: 'A', minorStep: '3' });
+                  this.setState({ majorStep: 'A', minorStep: '3', votedInLastYear: 'no' });
                 }}
                 variant="outlined"
                 color="primary"
-                className={this.state.votedInLastYear === 'no' ? classes.selectedButton : classes.button}
+                // eslint-disable-next-line no-nested-ternary
+                className={this.state.votedInLastYear === 'no' ? classes.selectedButton : this.state.minorStep === '3' ? classes.button : classes.activeButton}
                 fullWidth
           >
-                No
+            {this.state.votedInLastYear === 'no' && <CheckCircle />}
+            No
           </Button>
           <Button
                 onClick={() => {
@@ -219,7 +214,8 @@ class Register extends Component {
                 }}
                 variant="outlined"
                 color="primary"
-                className={this.state.votedInLastYear === 'not-registered' ? classes.selectedButton : classes.button}
+                // eslint-disable-next-line no-nested-ternary
+                className={this.state.votedInLastYear === 'not-registered' ? classes.selectedButton : this.state.minorStep === '3' ? classes.button : classes.activeButton}
                 fullWidth
           >
                 I&apos;m not registered.
@@ -237,7 +233,7 @@ class Register extends Component {
                 }}
                 variant="outlined"
                 color="primary"
-                className={this.state.registeredInLastThreeWeeks === 'yes' ? classes.selectedButton : classes.button}
+                className={this.state.registeredInLastThreeWeeks === 'yes' ? classes.selectedButton : classes.activeButton}
                 fullWidth
           >
                 Yes
@@ -248,7 +244,7 @@ class Register extends Component {
                 }}
                 variant="outlined"
                 color="primary"
-                className={this.state.registeredInLastThreeWeeks === 'no' ? classes.selectedButton : classes.button}
+                className={this.state.registeredInLastThreeWeeks === 'no' ? classes.selectedButton : classes.activeButton}
                 fullWidth
           >
                 No
@@ -270,13 +266,13 @@ class Register extends Component {
           {formatDateToMonthDayYear(new Date())}
           .
         </p>
-        <p style={{ textAlign: 'center' }}>We recommend and annual freshness check.</p>
+        <p style={{ textAlign: 'center' }}>We recommend an annual freshness check.</p>
         <br />
         <br />
         <br />
         <br />
         <Button className={classes.button} variant="outlined" fullWidth color="primary">Advanced Verification</Button>
-        <Button className={classes.nextButton} variant="contained" fullWidth color="primary">Continue</Button>
+        <Button className={classes.nextButton} onClick={() => { this.setState({ majorStep: 'D' }); }} variant="contained" fullWidth color="primary">Continue</Button>
       </Section>
     );
 
@@ -545,7 +541,9 @@ class Register extends Component {
             </Section>
             <StickyFooter>
               <Column>
-                <Button fullWidth variant="outlined" color="primary">I&apos;m Not Registered</Button>
+                <Button fullWidth variant="outlined" color="primary">
+                  I&apos;m Not Registered
+                </Button>
               </Column>
               <Column>
                 <Button fullWidth variant="contained" color="primary">Submit</Button>
@@ -567,10 +565,15 @@ class Register extends Component {
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row" style={{ paddingTop: 32 }}>
             <div className="col-sm-12 col-lg-8">
-              {this.state.majorStep === 'A' && renderMajorStepA()}
-              {this.state.majorStep === 'B' && renderMajorStepB()}
-              {this.state.majorStep === 'C' && renderMajorStepC()}
-              {this.state.majorStep === 'D' && renderMajorStepD()}
+              <Card>
+                <CardContent>
+                  {this.state.majorStep === 'A' && renderMajorStepA()}
+                  {this.state.majorStep === 'B' && renderMajorStepB()}
+                  {this.state.majorStep === 'C' && renderMajorStepC()}
+                  {this.state.majorStep === 'D' && renderMajorStepD()}
+                </CardContent>
+              </Card>
+
             </div>
           </div>
         </PageContainer>
@@ -618,10 +621,18 @@ const styles = theme => ({
     marginBottom: '12px',
     padding: '10px 8px',
   },
+  activeButton: {
+    background: 'white !important',
+    marginBottom: '12px',
+    padding: '10px 8px',
+    fontWeight: 'bold',
+    border: '2px solid #2E3C5D !important',
+  },
   selectedButton: {
     background: 'white !important',
     marginBottom: '12px',
     padding: '10px 8px',
+    fontWeight: 'bold',
     border: '2px solid #2E3C5D !important',
   },
 });
@@ -695,28 +706,28 @@ const Section = styled.div`
   margin-bottom: 48px;
 `;
 
-const EditAddressWrapper = styled.div`
-  margin-bottom: 8px !important;
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-`;
+// const EditAddressWrapper = styled.div`
+//   margin-bottom: 8px !important;
+//   margin-left: 0 !important;
+//   padding-left: 0 !important;
+//   padding-right: 0 !important;
+// `;
 
 const PageContainer = styled.div`
   padding-top: 0 !important;
 `;
 
-const Title = styled.h2`
-  font-size: 26px;
-  font-weight: 800;
-  margin: 0 0 12px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: 18px;
-  }
-`;
+// const Title = styled.h2`
+//   font-size: 26px;
+//   font-weight: 800;
+//   margin: 0 0 12px;
+//   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+//     font-size: 18px;
+//   }
+// `;
 
-const Paragraph = styled.div`
+// const Paragraph = styled.div`
 
-`;
+// `;
 
 export default withStyles(styles)(Register);
