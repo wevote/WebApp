@@ -52,7 +52,68 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.pause(PAUSE_DURATION_MICROSECONDS * 9);
       await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting
     }
-    await selectClick('#profilePopUpYourSettings .header-slide-out-menu-text-left');
+
+    // //////////////////////
+    // Check the positioning of the SignInModal when we click "Enter Email"
+    if (isCordovaFromAppStore) {
+      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      await simpleClick('emailSignIn-splitIconButton'); // Clicks "Sign in with an email" button
+      await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com'); // Type input
+      await simpleClick('voterEmailAddressEntrySendCode'); // Click Send Verification Code
+      await simpleTextInput('digit1', '0');
+      await simpleTextInput('digit2', '1');
+      await simpleTextInput('digit3', '2');
+      await simpleTextInput('digit4', '3');
+      await simpleTextInput('digit5', '4');
+      await simpleTextInput('digit6', '5');
+      await simpleClick('emailVerifyButton'); // Click Verify
+      await simpleClick('emailVerificationBackButton'); // Click back
+//      await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
+      await simpleTextInput('enterVoterEmailAddress', 'A'.repeat(1000)); // Type input
+//      await simpleClick('changeEmailAddressButton'); // Click change email address
+//      await simpleTextInput('enterVoterEmailAddress', "'@gmail.com") // Type input
+//      await simpleClick('voterEmailAddressEntrySendCode') // Click Send Verification Code
+//      await simpleClick('emailVerifyButton'); // Click Verify
+//      await simpleClick('enterVoterEmailAddress') // Click input box
+      await simpleClick('cancelEmailButton'); // Clicks the cancel button
+    } else if (isAndroid && isMobileScreenSize) { // Android mobile browsers can't click this element without scrolling
+      // Don't test
+    } else {
+      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      await simpleClick('emailSignIn-splitIconButton'); // Clicks "Sign in with an email" button
+      await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
+      await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
+    }
+
+		// //////////////////////
+    // Check the positioning of the SignInModal when we click "Enter Phone"
+    if (isCordovaFromAppStore && isAndroid) {
+      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      await simpleClick('smsSignIn-splitIconButton'); // Clicks "Sign in with a text" button
+      await simpleTextInput('enterVoterPhone', '18004444444') // Inputs voter phone number
+      await simpleClick('voterPhoneSendSMS'); // Clicks "Send Verification Code"
+      await simpleTextInput("digit1", "0");
+      await simpleTextInput("digit2", "1");
+      await simpleTextInput("digit3", "2");
+      await simpleTextInput("digit4", "3");
+      await simpleTextInput("digit5", "4");
+      await simpleTextInput("digit6", "5");
+//      await selectClick('[name="VERIFY"]'); // Click Verify
+//      await selectClick('[name="CHANGE PHONE NUMBER"]'); // Click change phone number
+//      await simpleClick('enterVoterPhone') // Click input box
+//      await simpleClick('voterPhoneSendSMS') // Click Send Verification Code
+//      await selectClick('[name="BACK"]'); // Click Verify
+//      await simpleClick('enterVoterPhone') // Click input box
+//      await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
+    } else  if (isAndroid && isMobileScreenSize) {  // Samsung mobile browsers can't click this element without scrolling
+      // Don't test
+    } else {
+      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      await simpleClick('enterVoterPhone'); // Puts cursor in Phone text input
+      await simpleClick('profileCloseSignInModal'); // Clicks on X
+    }
+
+    await simpleClick('profilePopUpYourSettings');
     await simpleTextInput("first-name", "Hello how are you");
     await simpleTextInput("last-name", "I am great thanks");
     await simpleTextInput("organization-name", "I am really cool");

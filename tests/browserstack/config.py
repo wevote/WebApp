@@ -3,61 +3,49 @@ import json
 import re
 import argparse
 
-def template(filename):
-    if not filename.endswith('.template'):
-        raise argparse.ArgumentTypeError('Must be a .template file')
-    return filename
-
 parser = argparse.ArgumentParser(description='Generate configuration file')
 command_group = parser.add_mutually_exclusive_group() 
 # Can not set browser.geoLocation and browser.local simultaneously 
-command_group.add_argument('-g', '--browserstack.geoLocation', default=None, type=str, help='set browser geolocation')
-command_group.add_argument('-l', '--browserstack.local', action='store_true', help='do not test on localhost')
+command_group.add_argument('-g', '--browserstack.geoLocation', default='US', type=str, help='Set browser geolocation')
+command_group.add_argument('-l', '--browserstack.local', action='store_true', help='Test on localhost')
+parser.add_argument('-s', '--scriptName', required=True, type=str, help='Script to test')
 parser.add_argument('-b', '--batch', required=True, type=str, choices=['Android', 'iOS', 'Browser'], help='test batch to test')
-parser.add_argument('-f', '--file', type=template, required=True, help='path to template configuration file (.template)')
+parser.add_argument('-f', '--file', default='wdio.conf.template', type=str, help='path to template configuration file (.template)')
 parser.add_argument('-j', '--json', default='devices_to_test.json', type=str, help='path to json file')
-parser.add_argument('-n', '--numberOfTests', default=5, choices=range(1, 6), type=int, help='run first n number of tests')
-parser.add_argument('-a', '--app', action='store_true', default=None, help='test app instead of web app')
+parser.add_argument('-n', '--numberOfTests', default=5, type=str, help='run first n number of tests')
+parser.add_argument('-a', '--app', action='store_true', help='test mobile app instead of web app')
 parser.add_argument('-i', '--interchange', action='store_true', help='select specific test cases')
 parser.add_argument('-w', '--write', action='store_true', help='write to configuration file')
-parser.add_argument('-d', '--browserstack.debug', action='store_false', help='turn debugging off')
 parser.add_argument('-c', '--isCordova', action='store_true', help='set isCordovaFromAppStore to true')
-parser.add_argument('-s', '--acceptSslCerts', action='store_false', help='do not use https')
-parser.add_argument('-t', '--timeout', default=180000, type=int, help='time before test ends')
+parser.add_argument('-t', '--timeout', default=360000, type=int, help='time before test ends')
 parser.add_argument('-m', '--isMobileScreenSize', action='store_true', help='set mobile-screen to true')
-parser.add_argument('--waitForTimeout', default=360000, type=int, help='time before connection is times out')
+parser.add_argument('--acceptSslCerts', action='store_false', help='do not use https')
 parser.add_argument('--connectionRetryTimeout', default=90000, type=int, help='time before connection is retried')
 parser.add_argument('--connectionRetryCount', default=3, type=int, help='number of times connection is retried')
 args = vars(parser.parse_args())
-
-# Convert boolean to string
-for key, value in args.items():
-    if type(value) == bool:
-        if value:
-            args[key] = 'true'
-        else:
-            args[key] = 'false'
 
 replace = {}
 replace.update(args)
 
 if args['batch'] == 'Android':
-    replace['real_mobile'] = 'true'
-    if args['app'] == 'true':
-        replace['app'] = 'browserStackConfig.BROWSERSTACK_APK_URL'
-    replace['isAndroid'] = 'true'
-    replace['isIOS'] = 'false'
+    replace['real_mobile'] = True
+    replace['isAndroid'] = True
+    replace['isIOS'] = False
 elif args['batch'] == 'iOS':
-    replace['real_mobile'] = 'true'
-    if args['app'] == 'true':
-        replace['app'] = 'browserStackConfig.BROWSERSTACK_IPA_URL'
-    replace['isAndroid'] = 'false'
-    replace['isIOS'] = 'true'
+    replace['real_mobile'] = True
+    replace['isAndroid'] = False
+    replace['isIOS'] = True
 else:
-    replace['real_mobile'] = 'false'
-    replace['app'] = ''
-    replace['isAndroid'] = 'false'
-    replace['isIOS'] = 'false'
+    replace['real_mobile'] = False
+    replace['isAndroid'] = False
+    replace['isIOS'] = False
+
+if args['app'] and args['batch'] == 'Android':
+    replace['app'] = 'browserStackConfig.BROWSERSTACK_APK_URL'
+elif args['app'] and args['batch'] == 'iOS':
+    replace['app'] = 'browserStackConfig.BROWSERSTACK_IPA_URL'
+else:
+    replace['app'] = "''"
 
 del replace['batch']
 del replace['file']
@@ -67,9 +55,9 @@ del replace['interchange']
 
 with open(args['json'], 'r') as f:
     devices = json.load(f)
-    if args['interchange'] == 'true':
+    if args['interchange']:
         while True:
-            print('First %d test case(s) will be run.' % args['numberOfTests'])
+            print('First %s test case(s) will be run.' % args['numberOfTests'])
             for key, value in devices[args['batch']].items():
                 print("%s: %s" % (key, value))
             try:
@@ -80,60 +68,54 @@ with open(args['json'], 'r') as f:
                 devices[args['batch']][str(testNumber1)], devices[args['batch']][str(testNumber2)] = devices[args['batch']][str(testNumber2)], devices[args['batch']][str(testNumber1)]
             else: 
                 break
-          
-    for i in range(0, args['numberOfTests']):
-        # generate default values
-        replace['os%d' % i] = ''
-        replace['browser_version%d' % i] = ''
-        # import from json file
-        for key, value in devices[args['batch']][str(i)].items():
-            if key == 'device' or key == 'os':
-                #generate name
-              replace['name%d' % i] = value.replace(' ', '')
-            elif key == 'browserName':
-                #generate name
-                replace['name%d' % i] += value
-            elif key == 'browser_version':
-                #generate name
-                replace['name%d' % i] += value
-            replace["%s%d" % (key, i)] = value
 
+if args['numberOfTests'].find('-') != -1:
+  start = int(args['numberOfTests'].split('-')[0]) 
+  end = int(args['numberOfTests'].split('-')[1])
+else:
+  start = 0
+  end = int(args['numberOfTests'])
+
+for i in range(start, end + 1):
+    # import from json file
+    for key, value in devices[args['batch']][str(i)].items():
+        replace["%s%d" % (key, (i - start))] = value
+    i -= start
+    # generate default values
+    replace['os%d' % i] = ''
+    replace['browser_version%d' % i] = ''
+    # Fix appium version (when iOS version < 12 1.17.0 is not supported)
+    if float(replace['os_version%d' % i]) < 12 and replace['browserstack.appium_version%d' % i] == '1.17.0' and replace['browserName%d' % i] != 'Android':
+      replace['browserstack.appium_version%d' % i] = '1.16.0'
+
+# Read template file
+lines = []
 with open(args['file'], 'r') as config:
-    lines = config.readlines()
-    config.close()
-    if lines:
-        # Replace .template file extension with .js
-        configFilename = args['file'].replace('.template', '.js')
-        if args['write'] == 'true':
-          filePermissions = 'w'
+    lines += config.readlines()
+
+# Replace .template file extension with .js
+configFileName = args['file'].replace('.template', '.js')
+
+if args['write']:
+  config = open(configFileName, 'w')
+
+for line in lines:
+    replaced = False
+    replacedString = line
+    # create output file with configuration values
+    for configOption, value in replace.items():
+        # Replace string 
+        if type(value) == bool and value:
+            replacedString, numberOfSubstitutions = re.subn(r'%%%s' % configOption, 'true', replacedString, count=1)
+        elif type(value) == bool and not value:
+            replacedString, numberOfSubstitutions = re.subn(r'%%%s' % configOption, 'false', replacedString, count=1)
+        elif value == '':
+            replacedString, numberOfSubstitutions = re.subn(r'%%%s' % configOption, "''", replacedString, count=1)
         else:
-          filePermissions = 'r'
-        with open(configFilename, filePermissions) as config:
-            for line in lines:
-                replaced = False
-                # create output file with configuration values
-                for key, value in replace.items():
-                    if replace[key] == None:
-                        if '%%%s' % key in line: 
-                            replaced = True
-                            break
-                    if args['batch'] == 'Browser':
-                        if '%device' in line or '%app' in line:
-                            replaced = True
-                            break 
-                    replacedString, numberOfSubstitutions = re.subn(r'%%%s' % key, str(value), line, count=1)
-                    if numberOfSubstitutions == 1: 
-                        if args['write'] == 'true':
-                            config.write(replacedString)
-                        else:
-                            if args['write'] == 'true':
-                                config.write(line)
-                            if args['write'] == 'false':
-                                print(replacedString.replace('\n',''))    
-                        replaced = True
-                        break
-                if not replaced:
-                    if args['write'] == 'true':
-                        config.write(line)
-                    if args['write'] == 'false':
-                        print(replacedString.replace('\n',''))
+          replacedString, numberOfSubstitutions = re.subn(r'%%%s' % configOption, str(value), replacedString, count=1)
+
+    # Write to file or print to standard output
+    if args['write']:
+        config.write(replacedString)
+    else:
+        print(replacedString.replace('\n',''))    

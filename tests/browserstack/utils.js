@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const PAUSE_DURATION_MICROSECONDS = 1250;
+const PAUSE_DURATION_MICROSECONDS = 2500;
 
 async function clearTextInputValue (elementIdName) {
   const clickableSelector = `#${elementIdName}`;
@@ -43,6 +43,12 @@ function stopScript (driver) {
 async function scrollIntoViewSimple (elementIdName) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
+  await clickableItem.scrollIntoView();
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+async function scrollIntoViewSelect (selector) {
+  const clickableItem = await $(selector);
   await clickableItem.scrollIntoView();
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
@@ -140,6 +146,7 @@ async function simpleCloseBootstrapModal () {
 async function simpleTextInput (elementIdName, textValue) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
   await clickableItem.setValue(textValue);
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
@@ -158,4 +165,4 @@ function writeToLog (message) {
   });
 }
 
-module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog };
+module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog };

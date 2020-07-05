@@ -1,69 +1,55 @@
 #!/bin/bash
 error () { echo $1; exit; }
 usage () { 
-  echo -e "Usage: $0 [-r remove] -s <script name> -t <test type Android/iOS/Browser> -f <web app path> [-n number of tests]\n" 
-  echo "Example: $0 -f /opt/MyProjects/WebApp/ -s ballot -t Android"; 
+  echo -e "Usage: $0 -s <script> [-r remove] [-n number of tests]\n" 
+  echo -e "Example: $0 -s ballot\n"; 
+  echo "Make sure you are running this in the directory in which the script is located."; 
   exit
 }
 
-numberTests=5
+numTests=5
 
-while getopts "rs:f:t:n:" opt; 
+while getopts "rs:n:" opt; 
 do
     case $opt in
     r)
         remove=1;;
-    f)
-        filepath=$OPTARG;;
     s)
         script=$OPTARG;;
-    t)
-        testType=$OPTARG;;
     n)
-        numberTests=$OPTARG;;
+        numTests=$OPTARG;;
     \?)
         usage;;
     esac
 done
 
-[[ -z $filepath || -z $script || -z $testType ]] && usage
-[[ $numberTests -gt 5 || $numberTests -lt 1 ]] && error 'Number of tests must be between 1 and 5'
-
-insert="    \"${script}Test-$testType\": \"./node_modules/.bin/wdio ./tests/browserstack/$script$testType.wdio.config.js\","
-configFilePath=${filepath}tests/browserstack
-scriptFilePath=$configFilePath/specs
-
-[ ! -d $configFilePath ] && error 'File path is not a directory'
-[ ! -r $configFilePath/parallel.wdio.config.js ] && error 'Parallel.wdio.config.js does not exist or your file path is incorrect'
+# Checks
+maxTests=5
+[[ -z $script ]] && usage
+[[ $numTests -gt $maxTests || $numTests -lt 1 ]] && error 'Number of tests must be between 1 and 5'
+[ ! -r parallel.wdio.config.js ] && error 'Parallel.wdio.config.js does not exist in the current directory'
 
 if [[ $remove -ne 1 ]]; then
-    # Check for duplicates
-    [[ -z `grep -n "$insert" ${filepath}package.json` ]] && lineNumber=`grep -n "exampleTest" ${filepath}package.json`
-
-    # Insert the script into package.json
-    [[ ! -z $lineNumber ]] && sed -i "${lineNumber%%:*}i${insert}" ${filepath}package.json
-    
-    # Create .wdio.config.template file
-    substitute="s/%name/${script}MainTest-$testType%name/g;s/%scriptName/$script/g"
-    if [[ $numberTests -ne 5 ]]; then  
-        name0LineNumber=`grep -n "name0" $configFilePath/parallel.wdio.config.js`
-        name1LineNumber=`grep -n "name1" $configFilePath/parallel.wdio.config.js`
-        codeBlockLength=$(( ${name1LineNumber%%:*} - ${name0LineNumber%%:*} )) 
-        end=`grep -n "name4" $configFilePath/parallel.wdio.config.js` 
-        comment="$(( ${end%%:*} - 1 - (4 - $numberTests) * $codeBlockLength )),$(( ${end%%:*} + 19 ))s/^/\/\//"
+    # Comment out tests if necessary
+    if [[ $numTests -ne 5 ]]; then  
+        os0=`grep -n os0 parallel.wdio.config.js`
+        os1=`grep -n os1 parallel.wdio.config.js`
+        blockSize=$(( ${os1%%:*} - ${os0%%:*} )) 
+        os4=`grep -n os4 parallel.wdio.config.js` 
+        # Number of lines between os4 and {
+        lineOffset=4
+        numBlocks=$((maxTests - 1 - $numTests))
+        comment="$((${os4%%:*} - $lineOffset - $numBlocks * $blockSize)),$((${os4%%:*} + ($blockSize - $lineOffset - 1)))s/^/\/\//"
     fi
-    sed -e "$comment" -e "$substitute" $configFilePath/parallel.wdio.config.js > $configFilePath/$script$testType.wdio.config.template
+    # Create wdio.conf.template file
+    sed -e "$comment" -e "$substitute" parallel.wdio.config.js > wdio.conf.template
 
     # Create main script
-    cp -n $scriptFilePath/exampleTest.js $scriptFilePath/${script}MainTest.js
+    cp -n ./specs/exampleTest.js ./specs/${script}MainTest.js
 else
-    # Remove script from package.json
-    lineNumber=`grep -n "$insert" ${filepath}package.json`
-    [[ ! -z $lineNumber ]] && sed -i "${lineNumber%%:*}d" ${filepath}package.json
-    
-    # Remove .wdio.config.template file
-    rm $configFilePath/${script}${testType}.wdio.config.template
+    # Remove wdio.config.template file
+    rm wdio.conf.template
 
     # Remove main script
-    rm $scriptFilePath/${script}MainTest.js
+    rm ./specs/${script}MainTest.js
 fi
