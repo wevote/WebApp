@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
-import Comment from '@material-ui/icons/Comment';
-import { Menu, MenuItem } from '@material-ui/core/esm'; // , Tooltip
-import Reply from '@material-ui/icons/Reply';
+import {Comment, Reply} from '@material-ui/icons';
+import { Menu, MenuItem, Button } from '@material-ui/core'; // , Tooltip
 import { withStyles } from '@material-ui/core/styles';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
 // import MuiThemeProvider from '@material-ui/core/MuiThemeProvider';
 // import createMuiTheme from '@material-ui/core/createMuiTheme';
-import TextField from '@material-ui/core/TextField';
+import { TextField, Button } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';

@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
-import CloseIcon from '@material-ui/icons/Close';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
+import {Close} from '@material-ui/icons';import { Dialog, DialogContent, IconButton, Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -125,7 +121,7 @@ class FirstPositionIntroModal extends Component {
             onClick={this.closeThisModal}
             id="closeFirstPositionIntroModal"
           >
-            <CloseIcon />
+            <Close />
           </IconButton>
         </ModalTitleArea>
         <DialogContent classes={{ root: classes.dialogContent }}>

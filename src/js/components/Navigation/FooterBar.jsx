@@ -2,14 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import Badge from '@material-ui/core/Badge';
-import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import HelpOutline from '@material-ui/icons/HelpOutline';
-import BallotIcon from '@material-ui/icons/Ballot';
-import HowToVoteIcon from '@material-ui/icons/HowToVote';
-import PeopleIcon from '@material-ui/icons/People';
+import {BottomNavigation, BottomNavigationAction, Badge} from '@material-ui/core';
+import {QuestionAnswer, HelpOutline, Ballot, HowToVote, People} from '@material-ui/icons';
 import AppStore from '../../stores/AppStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
 import { historyPush, isCordova, cordovaOpenSafariView } from '../../utils/cordovaUtils';
@@ -159,10 +153,10 @@ class FooterBar extends React.Component {
             onChange={this.handleChange}
             showLabels
           >
-            <BottomNavigationAction className="no-outline" id="readyTabFooterBar" label="Ready?" showLabel icon={<HowToVoteIcon />} />
-            <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<BallotIcon />} />
+            <BottomNavigationAction className="no-outline" id="readyTabFooterBar" label="Ready?" showLabel icon={<HowToVote />} />
+            <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<Ballot />} />
             {/* OFF FOR NOW !voterIsSignedIn && () */}
-            <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Opinions" showLabel icon={<QuestionAnswerIcon />} />
+            <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Opinions" showLabel icon={<QuestionAnswer />} />
             <BottomNavigationAction
               className="no-outline"
               id="friendsTabFooterBar"
@@ -170,7 +164,7 @@ class FooterBar extends React.Component {
               showLabel
               icon={(
                 <Badge badgeContent={numberOfIncomingFriendRequests} className={classes.anchorOriginTopRightRectangle} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
-                  <PeopleIcon />
+                  <People />
                 </Badge>
               )}
             />

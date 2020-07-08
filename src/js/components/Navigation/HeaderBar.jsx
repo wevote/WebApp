@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import PlaceIcon from '@material-ui/icons/Place';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { Button, AppBar, Toolbar, Tabs, Tab, IconButton, Tooltip, Badge } from '@material-ui/core';
+import {Place, AccountCircle} from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import Badge from '@material-ui/core/Badge';
 import { historyPush, isWebApp, isCordova, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import AdviserIntroModal from '../CompleteYourProfile/AdviserIntroModal';
 import AppActions from '../../actions/AppActions';
@@ -454,7 +446,7 @@ class HeaderBar extends Component {
               id="changeAddressOrElectionHeaderBarElection"
               onClick={() => this.toggleSelectBallotModal('', false, false)}
             >
-              <PlaceIcon />
+              <Place />
             </IconButton>
             <Button
               color="primary"
@@ -471,7 +463,7 @@ class HeaderBar extends Component {
               id="changeAddressOnlyHeaderBar"
               onClick={() => this.toggleSelectBallotModal('', false, true)}
             >
-              <PlaceIcon />
+              <Place />
             </IconButton>
             <Button
               color="primary"
@@ -592,7 +584,7 @@ class HeaderBar extends Component {
                       <FirstNameWrapper>
                         {shortenText(voterFirstName, 9)}
                       </FirstNameWrapper>
-                      <AccountCircleIcon />
+                      <AccountCircle />
                     </IconButton>
                     {this.state.profilePopUpOpen && voterIsSignedIn && (
                       <HeaderBarProfilePopUp

@@ -2,9 +2,8 @@ import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
-import BallotIcon from '@material-ui/icons/Ballot';
-import Button from '@material-ui/core/Button';
+import {Ballot} from '@material-ui/icons';
+import { Button, Card } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
@@ -130,7 +129,7 @@ class VoterGuidesUnderOneValue extends Component {
               <br />
               <Card>
                 <EmptyValueMessageContainer id="noEndorsements">
-                  <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                  <Ballot classes={{ root: classes.ballotIconRoot }} />
                   <EmptyValueText>There are no endorsements for this issue yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyValueText>
                   <Button
                     id="addEndorsements"
@@ -139,7 +138,7 @@ class VoterGuidesUnderOneValue extends Component {
                     onClick={() => historyPush('/settings/voterguidelist')}
                     variant="contained"
                   >
-                    <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
+                    <Ballot classes={{ root: classes.ballotButtonIconRoot }} />
                     Add Endorsements
                   </Button>
                 </EmptyValueMessageContainer>

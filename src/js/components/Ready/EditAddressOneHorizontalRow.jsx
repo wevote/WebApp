@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
-import EditLocationIcon from '@material-ui/icons/EditLocation';
+import {EditLocation} from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
+import { Paper, InputBase, Button } from '@material-ui/core';
 import BallotStore from '../../stores/BallotStore';
 import { historyPush, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -171,7 +169,7 @@ class EditAddressOneHorizontalRow extends Component {
         <form onSubmit={this.voterAddressSave}>
           <InternalFormWrapper>
             <Paper className={classes.paperInputForm} elevation={2}>
-              <EditLocationIcon className="ion-input-icon" />
+              <EditLocation className="ion-input-icon" />
               <InputBase
                 className={classes.inputBase}
                 name="address"
