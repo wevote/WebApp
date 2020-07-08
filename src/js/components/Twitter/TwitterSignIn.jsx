@@ -191,7 +191,7 @@ class TwitterSignIn extends Component {
     return (
       <SplitIconButton
         backgroundColor="#55acee"
-        fontColor={disabled ? 'gray' : false}
+        fontColor={disabled ? 'gray' : 'white'}
         buttonText={twitterSignInStartSubmitted ? shortenText(buttonSubmittedText, 32) : shortenText(buttonText, 32)}
         disabled={disabled}
         externalUniqueId="twitterSignIn"
