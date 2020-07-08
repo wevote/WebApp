@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { Link } from 'react-router';
 import { historyPush } from '../../utils/cordovaUtils';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';

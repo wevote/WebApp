@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { ListItem } from '@material-ui/core';
+import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
 import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';

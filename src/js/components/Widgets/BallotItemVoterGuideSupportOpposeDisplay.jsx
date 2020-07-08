@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {Info, ThumbUp, ThumbDown} from '@material-ui/icons';
+import InfoIcon from '@material-ui/icons/Info';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import FriendsOnlyIndicator from './FriendsOnlyIndicator';
@@ -99,7 +101,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
             <OrganizationSupportWrapper>
               <OrganizationSupportSquare>
                 <OrganizationSupportIconWrapper>
-                  <ThumbUp />
+                  <ThumbUpIcon />
                 </OrganizationSupportIconWrapper>
               </OrganizationSupportSquare>
               {organizationImageUrlHttpsTiny && (
@@ -133,7 +135,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
             <OrganizationOpposeWrapper>
               <OrganizationOpposeSquare>
                 <OrganizationOpposeIconWrapper>
-                  <ThumbDown />
+                  <ThumbDownIcon />
                 </OrganizationOpposeIconWrapper>
               </OrganizationOpposeSquare>
               {organizationImageUrlHttpsTiny && (
@@ -167,7 +169,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
             <OrganizationInformationOnlyWrapper>
               <OrganizationInformationOnlySquare>
                 <OrganizationInfoOnlyIconWrapper>
-                  <Info />
+                  <InfoIcon />
                 </OrganizationInfoOnlyIconWrapper>
               </OrganizationInformationOnlySquare>
               {organizationImageUrlHttpsTiny && (

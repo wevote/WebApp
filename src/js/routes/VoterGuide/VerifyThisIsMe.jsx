@@ -4,7 +4,7 @@ import Alert from 'react-bootstrap/Alert';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import AppActions from '../../actions/AppActions';
 import CandidateItem from '../../components/Ballot/CandidateItem';
 import CandidateStore from '../../stores/CandidateStore';

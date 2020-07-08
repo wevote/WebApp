@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Info} from '@material-ui/icons';
-import {Tooltip} from '@material-ui/core';
+import Info from '@material-ui/icons/Info';
+import Tooltip from '@material-ui/core/Tooltip';
 
 class WeVoteTooltip extends Component {
   static propTypes = {

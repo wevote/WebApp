@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import AppActions from '../actions/AppActions';

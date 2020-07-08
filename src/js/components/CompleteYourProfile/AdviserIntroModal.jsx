@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Close} from '@material-ui/icons';import { Dialog, DialogContent, IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import IconButton from '@material-ui/core/IconButton';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -67,7 +70,7 @@ class AdviserIntroModal extends Component {
             onClick={this.closeThisModal}
             id="closeAdviserIntroModal"
           >
-            <Close />
+            <CloseIcon />
           </IconButton>
         </ModalTitleArea>
         <DialogContent classes={{ root: classes.dialogContent }}>

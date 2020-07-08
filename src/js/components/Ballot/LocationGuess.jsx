@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import {Place} from '@material-ui/icons';
+import { withStyles } from '@material-ui/core/styles/index';
+import PlaceIcon from '@material-ui/icons/Place';
 import cookies from '../../utils/cookies';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
@@ -74,7 +74,7 @@ class LocationGuess extends Component {
       // console.log('textForMapSearch before: ', textForMapSearch);
       return (
         <PrintWrapper id="location_guess" className="card-main__location-guess">
-          <Place classes={{ root: classes.iconRoot }} />
+          <PlaceIcon classes={{ root: classes.iconRoot }} />
           <ParagraphStyled>
             {textForMapSearch ?
               (

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {MoreHoriz} from '@material-ui/icons/MoreHoriz';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import IssueStore from '../../stores/IssueStore';
 import ValueIconAndText from './ValueIconAndText';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -274,7 +274,7 @@ class IssuesByBallotItemDisplayList extends Component {
         </Issues>
         {(expandIssues || this.props.disableMoreWrapper || totalRemainingWidth > 0) ? null : (
           <MoreWrapper onClick={this.handleExpandIssues}>
-            <MoreHoriz
+            <MoreHorizIcon
               id="issuesByBallotItemDisplayListMoreIssuesIcon"
             />
           </MoreWrapper>

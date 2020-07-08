@@ -4,8 +4,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { Button, Dialog, IconButton } from '@material-ui/core';
-import {Close, Info} from '@material-ui/icons';
+import Button from '@material-ui/core/Button';
+import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import InfoIcon from '@material-ui/icons/Info';
 import BallotStore from '../../stores/BallotStore';
 import BallotActions from '../../actions/BallotActions';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
@@ -229,7 +232,7 @@ class SharedItemModal extends Component {
               onClick={this.closeSharedItemModalLocal}
               id="closeSharedItemModal"
             >
-              <Close />
+              <CloseIcon />
             </IconButton>
           </ModalTitleArea>
           <ModalContent style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }}>
@@ -260,7 +263,7 @@ class SharedItemModal extends Component {
                     </SharedByOrganization>
                     {!!(organizationName && developmentFeatureTurnedOn) && (
                       <OpinionsAddedToPersonalizedScore>
-                        <Info classes={{ root: classes.informationIcon }} />
+                        <InfoIcon classes={{ root: classes.informationIcon }} />
                         <OpinionsAddedText>
                           {organizationName}
                           &apos;s opinions will be added to your personalized scores.

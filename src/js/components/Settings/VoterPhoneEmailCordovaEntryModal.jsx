@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Dialog, DialogContent} from '@material-ui/core';
-import {MailOutline, Message} from '@material-ui/icons';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import MessageIcon from '@material-ui/icons/Message';
 import clsx from 'clsx';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import SplitIconButton from '../Widgets/SplitIconButton';
@@ -67,7 +69,7 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
             backgroundColor="#2E3C5D"
             buttonText={isPhone ? 'Sign in with a text' : 'Sign in with an Email'}
             externalUniqueId={isPhone ? 'smsSignIn' : 'emailSignIn'}
-            icon={isPhone ? <Message /> : <MailOutline />}
+            icon={isPhone ? <MessageIcon /> : <MailOutlineIcon />}
             onClick={() => this.setDialogVisible()}
             separatorColor="rgba(250, 250, 250, .6)"
             title={isPhone ? 'Sign in by SMS' : 'Sign in by email'}

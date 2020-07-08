@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Snackbar, IconButton} from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
-import {Close} from '@material-ui/icons';
+import CloseIcon from '@material-ui/icons/Close';
 import { renderLog } from '../../utils/logging';
 
 const styles = theme => ({
@@ -77,7 +78,7 @@ class BrowserPushMessage extends Component {
             color="inherit"
             onClick={this.handleClose}
           >
-            <Close />
+            <CloseIcon />
           </IconButton>,
         ]}
       />

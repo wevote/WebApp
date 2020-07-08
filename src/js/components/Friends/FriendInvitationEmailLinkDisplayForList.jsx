@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { isWebApp } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';

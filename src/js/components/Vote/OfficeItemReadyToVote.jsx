@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Avatar} from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar/index';
 import { withStyles } from '@material-ui/core/styles';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { isCordova } from '../../utils/cordovaUtils';

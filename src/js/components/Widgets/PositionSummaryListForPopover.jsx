@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {CheckCircle, ThumbUp, ThumbDown} from '@material-ui/icons';
+import CheckCircle from '@material-ui/icons/CheckCircle';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import FollowToggle from './FollowToggle';
 import FriendsIcon from './FriendsIcon';
@@ -87,7 +89,7 @@ class PositionSummaryListForPopover extends Component {
         >
           {positionSummary.organizationSupports && !positionSummary.organizationInVotersNetwork && (
             <SupportButNotPartOfScore>
-              <ThumbUp classes={{ root: classes.endorsementIcon }} />
+              <ThumbUpIcon classes={{ root: classes.endorsementIcon }} />
             </SupportButNotPartOfScore>
           )}
           {positionSummary.organizationSupports && positionSummary.organizationInVotersNetwork && (
@@ -107,7 +109,7 @@ class PositionSummaryListForPopover extends Component {
           )}
           {positionSummary.organizationOpposes && !positionSummary.organizationInVotersNetwork && (
             <OpposeButNotPartOfScore>
-              <ThumbDown classes={{ root: classes.endorsementIcon }} />
+              <ThumbDownIcon classes={{ root: classes.endorsementIcon }} />
             </OpposeButNotPartOfScore>
           )}
           {positionSummary.organizationOpposes && positionSummary.organizationInVotersNetwork && (

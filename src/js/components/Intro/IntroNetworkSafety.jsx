@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-// import { Button } from '@material-ui/core';
+// import Button from '@material-ui/core/Button';
 
 /*
 The problem with urls in css for Apache Cordova

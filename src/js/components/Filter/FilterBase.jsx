@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Badge } from '@material-ui/core';
-import { FilterList } from '@material-ui/icons';
+import Badge from '@material-ui/core/Badge';
+import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import { getAllStateCodeFilters } from '../../utils/address-functions';
@@ -263,7 +263,7 @@ class FilterBase extends React.Component {
                 id="filterBaseFilters"
                 onClick={this.toggleShowAllFilters}
               >
-                <FilterList />
+                <FilterListIcon />
                 &nbsp;
                 <span className="listFilter__text">Filters</span>
               </div>

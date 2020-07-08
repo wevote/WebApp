@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
-import {CheckCircle, Info, ThumbUp, ThumbDown} from '@material-ui/icons';
+import CheckCircle from '@material-ui/icons/CheckCircle';
+import InfoIcon from '@material-ui/icons/Info';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import FollowToggle from './FollowToggle';
@@ -201,7 +204,7 @@ class PositionItemScorePopover extends Component {
           <PositionSummaryWrapper>
             {organizationSupports && !organizationInVotersNetwork && (
               <SupportButNotPartOfScore>
-                <ThumbUp classes={{ root: classes.endorsementIcon }} />
+                <ThumbUpIcon classes={{ root: classes.endorsementIcon }} />
               </SupportButNotPartOfScore>
             )}
             {organizationSupports && organizationInVotersNetwork && (
@@ -211,7 +214,7 @@ class PositionItemScorePopover extends Component {
             )}
             {organizationOpposes && !organizationInVotersNetwork && (
               <OpposeButNotPartOfScore>
-                <ThumbDown classes={{ root: classes.endorsementIcon }} />
+                <ThumbDownIcon classes={{ root: classes.endorsementIcon }} />
               </OpposeButNotPartOfScore>
             )}
             {organizationOpposes && organizationInVotersNetwork && (
@@ -221,7 +224,7 @@ class PositionItemScorePopover extends Component {
             )}
             {organizationProvidingInformationOnly && (
               <InformationOnly>
-                <Info classes={{ root: classes.informationOnlyIcon }} />
+                <InfoIcon classes={{ root: classes.informationOnlyIcon }} />
               </InformationOnly>
             )}
             <OrganizationSupportsOrOpposesText>

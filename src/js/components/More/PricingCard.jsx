@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
-import {Close, Check} from '@material-ui/icons';
+import Close from '@material-ui/icons/Close';
+import Check from '@material-ui/icons/Check';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationStore from '../../stores/OrganizationStore';

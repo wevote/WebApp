@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Helmet from 'react-helmet';

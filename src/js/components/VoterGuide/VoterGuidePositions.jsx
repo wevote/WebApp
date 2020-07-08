@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import {Card, CircularProgress} from '@material-ui/core';
-import {Ballot, Settings} from '@material-ui/icons';
+import Card from '@material-ui/core/Card';
+import BallotIcon from '@material-ui/icons/Ballot';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
 import BallotActions from '../../actions/BallotActions';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
@@ -468,7 +470,7 @@ class VoterGuidePositions extends Component {
                     {electionName}
                     {!!(voterGuideElectionListCount) && (
                       <SettingsIconWrapper>
-                        <Settings classes={{ root: classes.settingsIcon }} />
+                        <SettingsIcon classes={{ root: classes.settingsIcon }} />
                       </SettingsIconWrapper>
                     )}
                     {Boolean(electionDayText) && (
@@ -546,7 +548,7 @@ class VoterGuidePositions extends Component {
               {!atLeastOnePositionFoundForThisElection && (
                 <Card>
                   <EmptyBallotMessageContainer>
-                    <Ballot classes={{ root: classes.ballotIconRoot }} />
+                    <BallotIcon classes={{ root: classes.ballotIconRoot }} />
                     <EmptyBallotText>
                       {organization.organization_name}
                       {' '}

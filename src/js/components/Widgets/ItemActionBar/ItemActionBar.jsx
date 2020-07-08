@@ -4,8 +4,13 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
-import { Button, Dialog } from '@material-ui/core';
-import {Done, ThumbUp, ThumbDown, Comment, NotInterested} from '@material-ui/icons';
+import Button from '@material-ui/core/Button';
+import DoneIcon from '@material-ui/icons/Done';
+import ThumbsUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbsDownIcon from '@material-ui/icons/ThumbDown';
+import CommentIcon from '@material-ui/icons/Comment';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import Dialog from '@material-ui/core/Dialog';
 import { cordovaDot } from '../../../utils/cordovaUtils';
 import { renderLog } from '../../../utils/logging';
 import { stringContains } from '../../../utils/textFormat';
@@ -228,7 +233,7 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <NotInterested classes={{ root: classes.buttonIcon }} />
+        <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
         {this.isOpposeCalculated() ? (
           <span
             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
@@ -259,7 +264,7 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <NotInterested classes={{ root: classes.buttonIcon }} />
+        <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
       </Button>
     );
   };
@@ -274,7 +279,7 @@ class ItemActionBar extends PureComponent {
        onClick={() => this.supportItem()}
        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <Done
+        <DoneIcon
         classes={{ root: classes.buttonIcon }}
         />
         {this.isSupportCalculated() ? (
@@ -306,7 +311,7 @@ class ItemActionBar extends PureComponent {
        onClick={() => this.supportItem()}
        classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <Done
+        <DoneIcon
           classes={{ root: classes.buttonIcon }}
         />
       </Button>
@@ -323,7 +328,7 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.supportItem()}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <ThumbUp classes={{ root: classes.buttonIcon }} />
+        <ThumbsUpIcon classes={{ root: classes.buttonIcon }} />
         { this.isSupportCalculated() ? (
           <span
             className={`u-no-break ${shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
@@ -353,7 +358,7 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.supportItem()}
         classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <ThumbUp classes={{ root: classes.buttonIcon }} />
+        <ThumbsUpIcon classes={{ root: classes.buttonIcon }} />
       </Button>
     );
   };
@@ -368,7 +373,7 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <ThumbDown classes={{ root: classes.buttonIcon }} />
+        <ThumbsDownIcon classes={{ root: classes.buttonIcon }} />
         { this.isOpposeCalculated() ? (
           <span
             className={`u-no-break ${shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
@@ -398,7 +403,7 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <ThumbDown classes={{ root: classes.buttonIcon }} />
+        <ThumbsDownIcon classes={{ root: classes.buttonIcon }} />
       </Button>
     );
   };
@@ -413,7 +418,7 @@ class ItemActionBar extends PureComponent {
         onClick={this.togglePositionStatementFunction}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <Comment classes={{ root: classes.buttonIcon }} />
+        <CommentIcon classes={{ root: classes.buttonIcon }} />
         <span className={shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
           'item-actionbar__position-btn-label'}
         >
@@ -434,7 +439,7 @@ class ItemActionBar extends PureComponent {
           onClick={this.togglePositionStatementFunction}
           classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
         >
-          <Comment classes={{ root: classes.buttonIcon }} />
+          <CommentIcon classes={{ root: classes.buttonIcon }} />
         </Button>
       </StackedButton>
     );

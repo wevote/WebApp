@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Close, EditLocation} from '@material-ui/icons';
+import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import IconButton from '@material-ui/core/IconButton';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { Button, Dialog, DialogContent, IconButton, Checkbox, FormControlLabel, InputBase, Select, Paper } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import EditLocationIcon from '@material-ui/icons/EditLocation';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotStore from '../../stores/BallotStore';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
@@ -315,7 +324,7 @@ class VoterPlanModal extends Component {
             id="closeVoterPlanModal"
             onClick={this.closeVoterPlanModal}
           >
-            <Close />
+            <CloseIcon />
           </IconButton>
         </ModalTitleArea>
         <DialogContent classes={{ root: classes.dialogContent }}>
@@ -429,7 +438,7 @@ class VoterPlanModal extends Component {
                   <div>
                     <InternalFormWrapper>
                       <Paper className={classes.paperInputForm} elevation={2}>
-                        <EditLocation className="ion-input-icon" />
+                        <EditLocationIcon className="ion-input-icon" />
                         <InputBase
                           aria-label="Address"
                           className={classes.inputBase}

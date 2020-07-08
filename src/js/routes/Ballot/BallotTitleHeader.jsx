@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {Tooltip} from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
-import {Settings} from '@material-ui/icons';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { isCordova, isIOsSmallerThanPlus, isIPad } from '../../utils/cordovaUtils';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
@@ -109,7 +109,7 @@ class BallotTitleHeader extends Component {
                   {electionName}
                 </span>
                 <SettingsIconWrapper>
-                  <Settings classes={{ root: classes.settingsIcon }} />
+                  <SettingsIcon classes={{ root: classes.settingsIcon }} />
                 </SettingsIconWrapper>
                 {!electionDayTextObject && (
                   <DelayedLoad waitBeforeShow={1000}>
@@ -144,7 +144,7 @@ class BallotTitleHeader extends Component {
         <span className="u-push--sm" onClick={this.props.toggleSelectBallotModal} id="ballotTitleHeaderSelectBallotModalLoadingElection">
           Choose Election...
           <SettingsIconWrapper>
-            <Settings classes={{ root: classes.settingsIcon }} />
+            <SettingsIcon classes={{ root: classes.settingsIcon }} />
           </SettingsIconWrapper>
         </span>
       );

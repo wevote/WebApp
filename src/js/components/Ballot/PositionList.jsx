@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import { CircularProgress } from '@material-ui/core';
-import {Comment, Info, ThumbUp, ThumbDown} from '@material-ui/icons';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CommentIcon from '@material-ui/icons/Comment';
+import InfoIcon from '@material-ui/icons/Info';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import FriendActions from '../../actions/FriendActions';
@@ -19,17 +22,17 @@ import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter
 const groupedFilters = [
   {
     filterName: 'showSupportFilter',
-    icon: <ThumbUp />,
+    icon: <ThumbUpIcon />,
     filterId: 'thumbUpFilter',
   },
   {
     filterName: 'showOpposeFilter',
-    icon: <ThumbDown />,
+    icon: <ThumbDownIcon />,
     filterId: 'thumbDownFilter',
   },
   {
     filterName: 'showInformationOnlyFilter',
-    icon: <Info />,
+    icon: <InfoIcon />,
     filterId: 'infoFilter',
   },
 ];
@@ -37,7 +40,7 @@ const groupedFilters = [
 const islandFilters = [
   {
     filterName: 'showCommentFilter',
-    icon: <Comment />,
+    icon: <CommentIcon />,
     filterDisplayName: 'Has Comment',
     filterId: 'islandFilterCommented',
   },

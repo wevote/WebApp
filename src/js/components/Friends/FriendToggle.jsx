@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import FriendActions from '../../actions/FriendActions';
 import FriendsIcon from '../Widgets/FriendsIcon';

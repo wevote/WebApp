@@ -2,9 +2,11 @@ import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import {LocationOn, Email, Person} from '@material-ui/icons';
+import LocationIcon from '@material-ui/icons/LocationOn';
+import PersonIcon from '@material-ui/icons/Person';
+import EmailIcon from '@material-ui/icons/Email';
 import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
 import googleLogo from '../../img/global/logos/google-logo.svg';
 import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';
@@ -134,7 +136,7 @@ class WelcomeForVoters extends PureComponent {
           <SubTitle>Finally, a simple way to fill out your ballot.</SubTitle>
           <GetStarted>
             <AddressBoxWelcome icon={
-              <LocationOn classes={{ root: classes.locationIcon }} />
+              <LocationIcon classes={{ root: classes.locationIcon }} />
             }
             />
             <Button
@@ -241,13 +243,13 @@ class WelcomeForVoters extends PureComponent {
               <SectionTitle>Sign up to get updates about We Vote</SectionTitle>
               <SignUpContainer>
                 <TextBox
-                  icon={<Person />}
+                  icon={<PersonIcon />}
                   placeholder="Full Name"
                   value={this.state.voterFullName}
                   inputProps={{ onChange: this.updateVoterFullName }}
                 />
                 <TextBox
-                  icon={<Email />}
+                  icon={<EmailIcon />}
                   placeholder="Email"
                   value={this.state.voterEmail}
                   inputProps={{ type: 'email', onChange: this.updateVoterEmailAddress }}

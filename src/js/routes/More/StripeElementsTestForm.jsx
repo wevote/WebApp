@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
-import {Checkbox, Button} from '@material-ui/core';
+import Checkbox from '@material-ui/core/Checkbox';
+import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
@@ -133,8 +134,7 @@ class StripeElementsTestForm extends Component {
             style={{ height: 35, marginTop: 56, marginLeft: 5 }}
             tabIndex="0"
             onClick={redeem}
-            variant="contained"
-            color="primary"
+            variant="success"
           >
             <span>Redeem Coupon</span>
           </Button>
@@ -148,8 +148,7 @@ class StripeElementsTestForm extends Component {
         <Button
           tabIndex="0"
           onClick={submit}
-          variant="contained"
-          color="primary"
+          variant="success"
         >
           <span>Start my Subscription</span>
         </Button>

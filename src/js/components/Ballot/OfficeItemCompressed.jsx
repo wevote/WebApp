@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {ArrowForward} from '@material-ui/icons';
-import { Button } from '@material-ui/core';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import Button from '@material-ui/core/Button';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
@@ -364,7 +364,7 @@ class OfficeItemCompressed extends Component {
         <Link id={`officeItemCompressedTopNameLink-${officeWeVoteId}`} to={this.getOfficeLink()}>
           <Title>
             {ballotItemDisplayName}
-            <ArrowForward
+            <ArrowForwardIcon
               classes={{ root: classes.cardHeaderIconRoot }}
             />
           </Title>

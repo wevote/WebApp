@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {AccountCircle} from '@material-ui/icons';
-import {AppBar, IconButton, Toolbar, Button} from '@material-ui/core';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
@@ -272,7 +275,7 @@ class HeaderBackTo extends Component {
                       <FirstNameWrapper>
                         {shortenText(voterFirstName, 9)}
                       </FirstNameWrapper>
-                      <AccountCircle />
+                      <AccountCircleIcon />
                     </IconButton>
                   </span>
                 )

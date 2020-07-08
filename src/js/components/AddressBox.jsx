@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {EditLocation} from '@material-ui/icons';
+import Button from '@material-ui/core/Button';
+import EditLocationIcon from '@material-ui/icons/EditLocation';
 import { withStyles } from '@material-ui/core/styles';
-import {Paper, InputBase, Button} from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
 import BallotStore from '../stores/BallotStore';
 import BallotActions from '../actions/BallotActions';
 import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
@@ -206,7 +208,7 @@ class AddressBox extends Component {
       <div className="container">
         <form onSubmit={this.voterAddressSave} className="row">
           <Paper className={classes.root} elevation={2}>
-            <EditLocation className="ion-input-icon" />
+            <EditLocationIcon className="ion-input-icon" />
             <InputBase
               className={classes.input}
               name="address"

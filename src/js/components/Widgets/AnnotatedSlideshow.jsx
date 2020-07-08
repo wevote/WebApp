@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import styled, { withTheme } from 'styled-components';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import {ArrowLeft, ArrowRight, ArrowLeftOutlined} from '@material-ui/icons';
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import { cordovaDot } from '../../utils/cordovaUtils';
 
 class AnnotatedSlideshow extends PureComponent {
@@ -48,13 +49,13 @@ class AnnotatedSlideshow extends PureComponent {
         <Slide>
           {!this.props.inModal && (
             <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(false)}>
-              <ArrowLeft classes={{ root: classes.navIconRoot }} />
+              <ArrowLeftIcon classes={{ root: classes.navIconRoot }} />
             </Nav>
           )}
           <Image inModal={this.props.inModal} src={cordovaDot(imgSrc)} />
           {!this.props.inModal && (
             <Nav disabled={selectedStepIndex === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(true)}>
-              <ArrowRight classes={{ root: classes.navIconRoot }} />
+              <ArrowRightIcon classes={{ root: classes.navIconRoot }} />
             </Nav>
           )}
         </Slide>

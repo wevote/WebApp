@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import {Comment, ArrowBackIos, Reply, FileCopyOutlined} from '@material-ui/icons';
-import { Drawer, MenuItem, Button } from '@material-ui/core';
+import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
+import Button from '@material-ui/core/Button';
+import Comment from '@material-ui/icons/Comment';
+import { Drawer, MenuItem } from '@material-ui/core/esm';
+import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+import Reply from '@material-ui/icons/Reply';
 import {
   EmailIcon,
   EmailShareButton,
@@ -564,7 +568,7 @@ class ShareButtonFooter extends Component {
                       <ShareModalOption
                         background="#2E3C5D"
                         copyLink
-                        icon={<FileCopyOutlined />}
+                        icon={<FileCopyOutlinedIcon />}
                         link={linkToBeShared}
                         onClickFunction={this.saveActionShareButtonCopy}
                         title="Copy Link"
@@ -646,7 +650,7 @@ class ShareButtonFooter extends Component {
                       <ShareModalOption
                         background="#2E3C5D"
                         copyLink
-                        icon={<FileCopyOutlined />}
+                        icon={<FileCopyOutlinedIcon />}
                         link={linkToBeShared}
                         onClickFunction={this.saveActionShareButtonCopy}
                         title="Copy Link"

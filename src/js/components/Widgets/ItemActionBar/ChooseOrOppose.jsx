@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {DialogTitle, IconButton, DialogContent} from '@material-ui/core';
-import {Close} from '@material-ui/icons';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import DialogContent from '@material-ui/core/DialogContent';
 import { withStyles } from '@material-ui/core/styles';
 import PositionPublicToggle from '../PositionPublicToggle';
 import Slides from './Slides';
@@ -68,7 +70,7 @@ class ChooseOrOppose extends Component {
             onClick={this.props.onClose}
             id="profileCloseItemActionBar"
           >
-            <Close />
+            <CloseIcon />
           </IconButton>
         </DialogTitle>
         <HorizontalLine />

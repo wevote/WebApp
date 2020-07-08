@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
 import AppActions from '../../actions/AppActions';

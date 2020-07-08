@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import { InputBase, IconButton } from '@material-ui/core';
-import { Search, Close } from '@material-ui/icons';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
 import sortBy from 'lodash-es/sortBy';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isCordova } from '../../utils/cordovaUtils';
@@ -142,7 +144,7 @@ class BallotSearch extends Component {
           classes={{ root: classes.iconButtonRoot }}
           onClick={!alwaysOpen ? this.toggleSearch : undefined}
         >
-          <Search classes={{ root: classes.iconRoot }} />
+          <SearchIcon classes={{ root: classes.iconRoot }} />
         </IconButton>
         <Separator isSearching={isSearching} alwaysOpen={alwaysOpen} />
         <InputBase
@@ -159,7 +161,7 @@ class BallotSearch extends Component {
             classes={{ root: classes.iconButtonRoot }}
             onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
           >
-            <Close classes={{ root: classes.closeIconRoot }} />
+            <CloseIcon classes={{ root: classes.closeIconRoot }} />
           </IconButton>
         </Closer>
       </SearchWrapper>

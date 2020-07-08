@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import {Snackbar} from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
 import { renderLog } from '../../utils/logging';
 import { snackOffset } from '../../utils/cordovaUtils';
 

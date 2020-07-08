@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Close} from '@material-ui/icons';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import DialogContent from '@material-ui/core/DialogContent';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  IconButton,
-  DialogContent,
-  Select,
-  FormControl,
-  InputLabel,
-} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotElectionListWithFilters from './BallotElectionListWithFilters';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
@@ -138,7 +136,7 @@ class SelectBallotModal extends Component {
             onClick={() => { this.props.toggleFunction(); }}
             id="profileCloseSelectBallotModal"
           >
-            <Close />
+            <CloseIcon />
           </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>

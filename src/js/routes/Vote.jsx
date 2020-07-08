@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import moment from 'moment';
-import {Ballot} from '@material-ui/icons';
-import { Button, Card } from '@material-ui/core';
+import BallotIcon from '@material-ui/icons/Ballot';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import BallotActions from '../actions/BallotActions';
@@ -490,7 +491,7 @@ class Vote extends Component {
                       </div>
                       <Card>
                         <EmptyBallotMessageContainer>
-                          <Ballot classes={{ root: classes.ballotIconRoot }} />
+                          <BallotIcon classes={{ root: classes.ballotIconRoot }} />
                           <EmptyBallotText>You haven&apos;t chosen any candidates or measures yet. Go to &quot;Ballot&quot; to decide what to vote for.</EmptyBallotText>
                           <Button
                             classes={{ root: classes.ballotButtonRoot }}
@@ -498,7 +499,7 @@ class Vote extends Component {
                             variant="contained"
                             onClick={() => historyPush('/ballot')}
                           >
-                            <Ballot classes={{ root: classes.ballotButtonIconRoot }} />
+                            <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
                             Go to Ballot
                           </Button>
                         </EmptyBallotMessageContainer>

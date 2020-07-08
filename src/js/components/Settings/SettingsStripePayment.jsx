@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';

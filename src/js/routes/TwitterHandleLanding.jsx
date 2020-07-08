@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import Candidate from './Ballot/Candidate';

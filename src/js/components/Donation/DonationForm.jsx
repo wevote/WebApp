@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import DonateActions from '../../actions/DonateActions';
 import { renderLog } from '../../utils/logging';

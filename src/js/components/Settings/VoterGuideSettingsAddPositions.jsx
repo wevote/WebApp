@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import {Ballot} from '@material-ui/icons';
-import { Button, Card, CircularProgress } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Card from '@material-ui/core/Card';
+import BallotIcon from '@material-ui/icons/Ballot';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';
 import BallotItemForAddPositions from './BallotItemForAddPositions';
@@ -520,7 +522,7 @@ class VoterGuideSettingsAddPositions extends Component {
           <div className="container">
             <Card>
               <EmptyBallotMessageContainer>
-                <Ballot classes={{ root: classes.ballotIconRoot }} />
+                <BallotIcon classes={{ root: classes.ballotIconRoot }} />
                 <EmptyBallotText>You haven&apos;t endorsed any candidates or measures yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyBallotText>
                 <Button
                   classes={{ root: classes.ballotButtonRoot }}
@@ -528,7 +530,7 @@ class VoterGuideSettingsAddPositions extends Component {
                   variant="contained"
                   onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('addpositions')}
                 >
-                  <Ballot classes={{ root: classes.ballotButtonIconRoot }} />
+                  <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
                   Add Endorsements
                 </Button>
               </EmptyBallotMessageContainer>
@@ -644,7 +646,7 @@ class VoterGuideSettingsAddPositions extends Component {
           ) : (
             <Card>
               <EmptyBallotMessageContainer>
-                <Ballot classes={{ root: classes.ballotIconRoot }} />
+                <BallotIcon classes={{ root: classes.ballotIconRoot }} />
                 <EmptyBallotText>
                   No results found.
                   {' '}
@@ -811,7 +813,7 @@ class VoterGuideSettingsAddPositions extends Component {
           ) : (
             <Card>
               <EmptyBallotMessageContainer>
-                <Ballot classes={{ root: classes.ballotIconRoot }} />
+                <BallotIcon classes={{ root: classes.ballotIconRoot }} />
                 <EmptyBallotText>
                   No results found.
                   {' '}
