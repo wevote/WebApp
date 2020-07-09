@@ -10,7 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import BallotActions from '../actions/BallotActions';
 import AppStore from '../stores/AppStore';
 import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
-import BallotSearch from '../components/Ballot/BallotSearch';
+import FilterBaseSearch from '../components/Filter/FilterBaseSearch';
 import BallotStore from '../stores/BallotStore';
 import BallotTitleHeader from './Ballot/BallotTitleHeader';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
@@ -439,11 +439,11 @@ class Vote extends Component {
                       <div className="ballot__item-filter-tabs">
                         { ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
                           <React.Fragment>
-                            <BallotSearch
+                            <FilterBaseSearch
                               isSearching={isSearching}
                               onToggleSearch={this.handleToggleSearchBallot}
-                              items={ballotWithItemsFromCompletionFilterType}
-                              onBallotSearch={this.handleSearch}
+                              allItems={ballotWithItemsFromCompletionFilterType}
+                              onFilterBaseSearch={this.handleSearch}
                               alwaysOpen={!showFilterTabs}
                             />
                           </React.Fragment>

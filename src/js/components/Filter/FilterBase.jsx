@@ -6,7 +6,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import { getAllStateCodeFilters } from '../../utils/address-functions';
-import BallotSearch from '../Ballot/BallotSearch';
+import FilterBaseSearch from './FilterBaseSearch';
 import { renderLog } from '../../utils/logging';
 import StateDropDown from './StateDropDown';
 
@@ -22,6 +22,7 @@ class FilterBase extends React.Component {
     onSearch: PropTypes.func,
     onFilteredItemsChange: PropTypes.func,
     onToggleSearch: PropTypes.func,
+    opinionsAndBallotItemsSearchMode: PropTypes.bool,
     positionSearchMode: PropTypes.bool,
     selectedFiltersDefault: PropTypes.array,
     numberOfItemsFoundNode: PropTypes.node,
@@ -227,19 +228,23 @@ class FilterBase extends React.Component {
     renderLog('FilterBase');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('FilterBase render');
     const { isSearching, selectedFilters, showAllFilters, sortFilters } = this.state;
-    const { allItems, classes, positionSearchMode, numberOfItemsFoundNode, stateCodesToDisplay, voterGuidePositionSearchMode } = this.props;
+    const {
+      allItems, classes, opinionsAndBallotItemsSearchMode, positionSearchMode,
+      numberOfItemsFoundNode, stateCodesToDisplay, voterGuidePositionSearchMode,
+    } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
     return (
       <Wrapper>
         <FilterTop>
-          <BallotSearch
+          <FilterBaseSearch
             addVoterGuideMode
             alwaysOpen={voterGuidePositionSearchMode}
             isSearching={isSearching}
-            items={allItems}
-            onBallotSearch={this.onSearch}
+            allItems={allItems}
+            onFilterBaseSearch={this.onSearch}
             onToggleSearch={this.handleToggleSearchBallot}
+            opinionsAndBallotItemsSearchMode={opinionsAndBallotItemsSearchMode}
             positionSearchMode={positionSearchMode}
             voterGuidePositionSearchMode={voterGuidePositionSearchMode}
           />

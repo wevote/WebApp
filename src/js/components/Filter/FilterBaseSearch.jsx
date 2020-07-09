@@ -9,19 +9,24 @@ import styled from 'styled-components';
 import sortBy from 'lodash-es/sortBy';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isCordova } from '../../utils/cordovaUtils';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
+import opinionsAndBallotItemsSearchPriority from '../../utils/opinionsAndBallotItemsSearchPriority';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
 import positionSearchPriority from '../../utils/positionSearchPriority';
+import { arrayContains } from '../../utils/textFormat';
 import voterGuidePositionSearchPriority from '../../utils/voterGuidePositionSearchPriority';
 
-const delayBeforeSearchExecution = 400;
+const delayBeforeSearchExecution = 600;
 
-class BallotSearch extends Component {
+class FilterBaseSearch extends Component {
   static propTypes = {
     addVoterGuideMode: PropTypes.bool,
     alwaysOpen: PropTypes.bool,
     classes: PropTypes.object,
     isSearching: PropTypes.bool,
-    items: PropTypes.array,
-    onBallotSearch: PropTypes.func,
+    allItems: PropTypes.array,
+    onFilterBaseSearch: PropTypes.func,
+    opinionsAndBallotItemsSearchMode: PropTypes.bool,
     onToggleSearch: PropTypes.func,
     positionSearchMode: PropTypes.bool,
     theme: PropTypes.object,
@@ -32,12 +37,22 @@ class BallotSearch extends Component {
     super(props);
     this.state = {
       searchText: '',
+      searchTextAlreadyRetrieved: [],
     };
     this.handleSearch = this.handleSearch.bind(this);
   }
 
+  componentDidMount () {
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+  }
+
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if not needed
+    if (this.props.allItems && nextProps.allItems) {
+      if (this.props.allItems.length !== nextProps.allItems.length) {
+        return true;
+      }
+    }
     if (this.props.isSearching !== nextProps.isSearching) {
       // console.log("shouldComponentUpdate: this.state.isSearching", this.state.isSearching, ", nextState.isSearching", nextState.isSearching);
       return true;
@@ -57,14 +72,35 @@ class BallotSearch extends Component {
       clearTimeout(this.timer);
       this.timer = null;
     }
+    this.organizationStoreListener.remove();
   }
 
-  filterItems = search => this.props.items.map((item) => {
-    const { positionSearchMode, voterGuidePositionSearchMode } = this.props;
+  onOrganizationStoreChange () {
+    const { opinionsAndBallotItemsSearchMode } = this.props;
+    if (opinionsAndBallotItemsSearchMode) {
+      this.handleSearchAllItemsRefresh();
+    }
+  }
+
+  filterItems = search => this.props.allItems.map((item) => {
+    const { opinionsAndBallotItemsSearchMode, positionSearchMode, voterGuidePositionSearchMode } = this.props;
+    const { searchTextAlreadyRetrieved } = this.state;
     let candidatesToShowForSearchResults = [];
     let foundInArray = [];
     let searchPriority = 0;
-    if (positionSearchMode) {
+    if (opinionsAndBallotItemsSearchMode) {
+      // Reach out to API server to get more Organizations or Ballot items.
+      if (!arrayContains(search, searchTextAlreadyRetrieved)) {
+        OrganizationActions.organizationSearch(search);
+        searchTextAlreadyRetrieved.push(search);
+        this.setState({ searchTextAlreadyRetrieved });
+      }
+      const opinionsAndBallotItemsResults = opinionsAndBallotItemsSearchPriority(search, item);
+      ({ searchPriority } = opinionsAndBallotItemsResults);
+      ({ foundInArray } = opinionsAndBallotItemsResults);
+      ({ candidatesToShowForSearchResults } = opinionsAndBallotItemsResults);
+      return { ...item, searchPriority, foundInArray, candidatesToShowForSearchResults };
+    } else if (positionSearchMode) {
       const positionResults = positionSearchPriority(search, item);
       ({ searchPriority } = positionResults);
       ({ foundInArray } = positionResults);
@@ -89,12 +125,29 @@ class BallotSearch extends Component {
     // console.log('toggleSearch, isSearching:', isSearching);
     if (isSearching) {
       this.setState({ searchText: '' });
-      this.props.onBallotSearch('', []);
+      this.props.onFilterBaseSearch('', []);
     } else {
       this.searchInput.focus();
     }
     this.props.onToggleSearch(isSearching);
   };
+
+  handleSearchAllItemsRefresh = () => { // eslint-disable-line consistent-return
+    // console.log('handleSearchAllItemsRefresh');
+    let { searchText } = this.state;
+    searchText = searchText.trimStart();
+
+    // If search value is empty, exit
+    if (!searchText) return [];
+    if (!searchText.length) return [];
+    if (searchText.length <= 1) return [];
+
+    // Filter out items without the search terms, and put the most likely search result at the top
+    // Only return results if they get past the filter
+    const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter(item => item.searchPriority > 0);
+    // console.log('sortedFiltered:', sortedFiltered);
+    return this.props.onFilterBaseSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
+  }
 
   handleSearch (event) { // eslint-disable-line consistent-return
     // if search bar always open, isSearching is toggled only when input is given text is cleared with 'x' button
@@ -102,23 +155,30 @@ class BallotSearch extends Component {
       this.toggleSearch();
     }
     clearTimeout(this.timer);
-    const { value: searchText } = event.target;
-    this.setState({ searchText });
-    // If search value is empty, exit and return all items
-    if (!searchText.length) return this.props.onBallotSearch(searchText, this.props.items);
 
-    // If search value shorter than minimum length, exit
-    // if (value.length < 3) return null;
+    const { searchText: priorSearchText } = this.state;
+    let { value: searchText } = event.target;
+    searchText = searchText.trimStart();
+
+    if (priorSearchText !== searchText) {
+      this.setState({ searchText });
+    }
+    // If search value is empty, exit
+    if (!searchText.length) return [];
 
     this.timer = setTimeout(() => {
-      // Filter out items without the search terms, and put the most likely search result at the top
-      // Only return results if they get past the filter
       if (!searchText) {
         return [];
       }
+
+      // If search value one character or less, exit
+      if (searchText.length <= 1) return [];
+
+      // Filter out items without the search terms, and put the most likely search result at the top
+      // Only return results if they get past the filter
       const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter(item => item.searchPriority > 0);
       // console.log('sortedFiltered:', sortedFiltered);
-      return this.props.onBallotSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
+      return this.props.onFilterBaseSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
     }, delayBeforeSearchExecution);
   }
 
@@ -133,6 +193,7 @@ class BallotSearch extends Component {
     } else {
       searchClasses = classes.inputHidden;
     }
+    // console.log('FilterBaseSearch render');
     return (
       <SearchWrapper
         searchOpen={isSearching || alwaysOpen}
@@ -256,4 +317,4 @@ const SearchWrapper = styled.div`
   }
 `;
 
-export default withTheme(withStyles(styles)(BallotSearch));
+export default withTheme(withStyles(styles)(FilterBaseSearch));

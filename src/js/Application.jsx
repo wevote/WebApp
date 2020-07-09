@@ -8,6 +8,7 @@ import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibi
 import cookies from './utils/cookies';
 import { getToastClass, historyPush, isCordova, isWebApp } from './utils/cordovaUtils';
 import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
+import DelayedLoad from './components/Widgets/DelayedLoad';
 import displayFriendsTabs from './utils/displayFriendsTabs';
 import ElectionActions from './actions/ElectionActions';
 import FooterBar from './components/Navigation/FooterBar';
@@ -298,25 +299,29 @@ class Application extends Component {
           <div
             style={
               {
+                alignItems: 'center',
+                backgroundColor: '#fff',
+                color: '#0d5470',
                 display: 'flex',
-                position: 'fixed',
+                flexDirection: 'column',
+                fontSize: 14,
                 height: '100vh',
                 width: '100vw',
-                top: 0,
-                left: 0,
-                backgroundColor: '#fff',
                 justifyContent: 'center',
-                alignItems: 'center',
-                fontSize: 14,
-                color: '#0d5470',
-                flexDirection: 'column',
+                left: 0,
+                marginLeft: '15px',
+                marginRight: '15px',
+                position: 'fixed',
+                top: 0,
               }
             }
           >
             <h1 className="h1">More election data loading...</h1>
-            { isCordova() &&
-              <h2 className="h1">Does your phone have access to the internet?</h2>
-            }
+            { isCordova() && (
+              <DelayedLoad waitBeforeShow={1000}>
+                <h2 className="h1">Does your phone have access to the internet?</h2>
+              </DelayedLoad>
+            )}
             <div className="u-loading-spinner u-loading-spinner--light" />
           </div>
         </LoadingScreen>

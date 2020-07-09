@@ -67,7 +67,7 @@ export default class PublicFiguresToFollowPreview extends Component {
             <ShowMoreFooter
               showMoreId="publicFiguresToFollowPreviewShowMoreId"
               showMoreLink={() => this.goToPublicFigures()}
-              showMoreText="Explore more public figures"
+              showMoreText="Find more public figures"
             />
           </div>
         </section>
