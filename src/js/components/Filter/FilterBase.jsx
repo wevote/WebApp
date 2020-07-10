@@ -6,7 +6,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import { getAllStateCodeFilters } from '../../utils/address-functions';
-import BallotSearch from '../Ballot/BallotSearch';
+import FilterBaseSearch from './FilterBaseSearch';
 import { renderLog } from '../../utils/logging';
 import StateDropDown from './StateDropDown';
 
@@ -22,9 +22,11 @@ class FilterBase extends React.Component {
     onSearch: PropTypes.func,
     onFilteredItemsChange: PropTypes.func,
     onToggleSearch: PropTypes.func,
+    opinionsAndBallotItemsSearchMode: PropTypes.bool,
     positionSearchMode: PropTypes.bool,
     selectedFiltersDefault: PropTypes.array,
     numberOfItemsFoundNode: PropTypes.node,
+    searchTextDefault: PropTypes.string,
     sortFilters: PropTypes.array,
     stateCodesToDisplay: PropTypes.array,
     voterGuidePositionSearchMode: PropTypes.bool,
@@ -48,6 +50,10 @@ class FilterBase extends React.Component {
       selectedFilters: this.props.selectedFiltersDefault || [],
       sortFilters: this.props.sortFilters || defaultSortFilters,
     });
+    const { searchTextDefault } = this.props;
+    if (searchTextDefault) {
+      this.setState({ isSearching: true });
+    }
   }
 
   changeToDifferentStateCodeFilter = (stateCodeFilter) => {
@@ -227,20 +233,25 @@ class FilterBase extends React.Component {
     renderLog('FilterBase');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('FilterBase render');
     const { isSearching, selectedFilters, showAllFilters, sortFilters } = this.state;
-    const { allItems, classes, positionSearchMode, numberOfItemsFoundNode, stateCodesToDisplay, voterGuidePositionSearchMode } = this.props;
+    const {
+      allItems, classes, opinionsAndBallotItemsSearchMode, positionSearchMode,
+      numberOfItemsFoundNode, searchTextDefault, stateCodesToDisplay, voterGuidePositionSearchMode,
+    } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
     return (
       <Wrapper>
         <FilterTop>
-          <BallotSearch
+          <FilterBaseSearch
             addVoterGuideMode
             alwaysOpen={voterGuidePositionSearchMode}
             isSearching={isSearching}
-            items={allItems}
-            onBallotSearch={this.onSearch}
+            allItems={allItems}
+            onFilterBaseSearch={this.onSearch}
             onToggleSearch={this.handleToggleSearchBallot}
+            opinionsAndBallotItemsSearchMode={opinionsAndBallotItemsSearchMode}
             positionSearchMode={positionSearchMode}
+            searchTextDefault={searchTextDefault}
             voterGuidePositionSearchMode={voterGuidePositionSearchMode}
           />
           {!isSearching && this.generateGroupedFilters()}

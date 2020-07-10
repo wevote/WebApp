@@ -72,7 +72,7 @@ export default function componentLoader (componentName) {
     case 'Office':
       return React.lazy(() => import('../routes/Ballot/Office'));
     case 'Opinions':
-      return React.lazy(() => import('../routes/Opinions'));
+      return React.lazy(() => import('../routes/Opinions2020'));
     case 'OpinionsFollowed':
       return React.lazy(() => import('../routes/OpinionsFollowed'));
     case 'OpinionsIgnored':

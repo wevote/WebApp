@@ -37,7 +37,7 @@ export default class OrganizationsToFollowPreview extends Component {
   }
 
   goToOrganizations () {
-    historyPush('/opinions');
+    historyPush('/opinions/f/showOrganizationsFilter');
   }
 
   render () {
@@ -68,7 +68,7 @@ export default class OrganizationsToFollowPreview extends Component {
             <ShowMoreFooter
               showMoreId="organizationsToFollowPreviewShowMoreId"
               showMoreLink={() => this.goToOrganizations()}
-              showMoreText="Explore more organizations"
+              showMoreText="Find more organizations"
             />
           </div>
         </section>
