@@ -37,7 +37,7 @@ class AddFriendsByEmail extends Component {
       senderEmailAddressError: false,
       loading: false,
       onEnterEmailAddressesStep: true,
-      invitationEmailsAlreadyScheduledStep: false,
+      invitationEmailsAlreadyScheduledStepFromApi: false,
       onFriendInvitationsSentStep: false,
       voter: {},
       voterIsSignedIn: false,
@@ -70,11 +70,14 @@ class AddFriendsByEmail extends Component {
   onFriendStoreChange () {
     const friendInvitationsWaitingForVerification = FriendStore.friendInvitationsWaitingForVerification() || [];
     const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
-
+    if (friendInvitationsWaitingForVerification && friendInvitationsWaitingForVerification.length) {
+      this.setState({
+        friendInvitationsWaitingForVerification,
+        invitationEmailsAlreadyScheduledStepFromApi: true,
+      });
+    }
     this.setState({
       errorMessageToShowVoter,
-      friendInvitationsWaitingForVerification,
-      invitationEmailsAlreadyScheduledStep: friendInvitationsWaitingForVerification.length,
       loading: false,
     });
   }
@@ -181,7 +184,6 @@ class AddFriendsByEmail extends Component {
     FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
       lastNameArray, '', this.state.add_friends_message,
       this.state.senderEmailAddress);
-
     // console.log(response);
     // After calling the API, reset the form
     this.setState({
@@ -192,7 +194,6 @@ class AddFriendsByEmail extends Component {
       emailAddressesError: false,
       senderEmailAddress: '',
       onEnterEmailAddressesStep: true,
-      invitationEmailsAlreadyScheduledStep: false,
       onFriendInvitationsSentStep: true,
     });
   }
@@ -232,7 +233,7 @@ class AddFriendsByEmail extends Component {
     const {
       emailAddressesError, errorMessageToShowVoter, friendContactInfo, friendFirstName, friendInvitationsWaitingForVerification,
       friendLastName, friendsToInvite,
-      invitationEmailsAlreadyScheduledStep, loading,
+      invitationEmailsAlreadyScheduledStepFromApi, loading,
       onEnterEmailAddressesStep, onFriendInvitationsSentStep, senderEmailAddressError, voterIsSignedIn,
     } = this.state;
 
@@ -244,7 +245,6 @@ class AddFriendsByEmail extends Component {
     if (loading) {
       return LoadingWheel;
     }
-
     return (
       <div>
         {emailAddressesError || errorMessageToShowVoter || senderEmailAddressError ? (
@@ -254,7 +254,7 @@ class AddFriendsByEmail extends Component {
           </div>
         ) : (
           <div>
-            {onFriendInvitationsSentStep && (
+            {(onFriendInvitationsSentStep && voterIsSignedIn) && (
               <div className="alert alert-success">
                 Invitations sent. Is there anyone else you&apos;d like to invite?
               </div>
@@ -277,7 +277,7 @@ class AddFriendsByEmail extends Component {
             ))}
           </FriendsDisplay>
         )}
-        {(invitationEmailsAlreadyScheduledStep && !voterIsSignedIn) ? (
+        {(invitationEmailsAlreadyScheduledStepFromApi && !voterIsSignedIn) ? (
           <div>
             <Alert variant="danger">
               Your invitations will be sent after you sign in:
@@ -289,7 +289,6 @@ class AddFriendsByEmail extends Component {
                 ))}
               </ul>
             </Alert>
-
             <SettingsAccount
               pleaseSignInTitle="Sign in to Send Your Friend Requests"
               pleaseSignInSubTitle=""
