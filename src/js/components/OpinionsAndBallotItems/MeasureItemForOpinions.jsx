@@ -8,6 +8,7 @@ import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
+import { historyPush } from '../../utils/cordovaUtils';
 
 
 class MeasureItemForOpinions extends Component {
@@ -34,8 +35,6 @@ class MeasureItemForOpinions extends Component {
       showPositionStatement: false,
       voterTextStatement: '',
     };
-    // this.getMeasureLink = this.getMeasureLink.bind(this);
-    this.openMeasureLinkModal = this.openMeasureLinkModal.bind(this);
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
   }
 
@@ -144,18 +143,14 @@ class MeasureItemForOpinions extends Component {
     }
   }
 
-  // getMeasureLink (oneMeasureWeVoteId) {
-  //   if (this.state.organizationWeVoteId) {
-  //     // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
-  //     return `/measure/${oneMeasureWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
-  //   } else {
-  //     // If no organization_we_vote_id, signal that we want to link back to default ballot
-  //     return `/measure/${oneMeasureWeVoteId}/b/btdb`; // back-to-default-ballot
-  //   }
-  // }
+  getMeasureLink = () => {
+    const { ballotItemWeVoteId } = this.props;
+    return `/measure/${ballotItemWeVoteId}/b/btdb`; // back-to-default-ballot
+  }
 
-  openMeasureLinkModal (oneMeasureWeVoteId) {
-    console.log('Open measure viewer for ', oneMeasureWeVoteId);
+  goToMeasureLink = () => {
+    const measureLink = this.getMeasureLink();
+    historyPush(measureLink);
   }
 
   togglePositionStatement () {
@@ -216,7 +211,7 @@ class MeasureItemForOpinions extends Component {
     return (
       <Card classes={{ root: classes.cardRoot }}>
         <InfoRow>
-          <MeasureInfoWrapper onClick={() => { this.openMeasureLinkModal(ballotItemWeVoteId); }}>
+          <MeasureInfoWrapper onClick={this.goToMeasureLink}>
             <Title>
               {ballotDisplay[0]}
             </Title>

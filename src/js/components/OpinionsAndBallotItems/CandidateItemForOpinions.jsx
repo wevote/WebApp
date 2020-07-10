@@ -129,9 +129,14 @@ class CandidateItemForOpinions extends Component {
     }
   }
 
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('CandidateItemForOpinions caught error: ', `${error} with info: `, info);
+  getCandidateLink () {
+    // If here, we assume the voter is on the Office page
+    const { oneCandidate } = this.props;
+    const { we_vote_id: candidateWeVoteId } = oneCandidate;
+    if (candidateWeVoteId) {
+      return `/candidate/${candidateWeVoteId}/b/btdo`; // back-to-default-office
+    }
+    return '';
   }
 
   togglePositionStatement () {
@@ -142,14 +147,9 @@ class CandidateItemForOpinions extends Component {
     });
   }
 
-  getCandidateLink () {
-    // If here, we assume the voter is on the Office page
-    const { oneCandidate } = this.props;
-    const { we_vote_id: candidateWeVoteId } = oneCandidate;
-    if (candidateWeVoteId) {
-      return `/candidate/${candidateWeVoteId}/b/btdo`; // back-to-default-office
-    }
-    return '';
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('CandidateItemForOpinions caught error: ', `${error} with info: `, info);
   }
 
   render () {

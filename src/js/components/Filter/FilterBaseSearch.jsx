@@ -9,6 +9,8 @@ import styled from 'styled-components';
 import sortBy from 'lodash-es/sortBy';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isCordova } from '../../utils/cordovaUtils';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
+import BallotActions from '../../actions/BallotActions';
+import BallotStore from '../../stores/BallotStore';
 import opinionsAndBallotItemsSearchPriority from '../../utils/opinionsAndBallotItemsSearchPriority';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -29,6 +31,7 @@ class FilterBaseSearch extends Component {
     opinionsAndBallotItemsSearchMode: PropTypes.bool,
     onToggleSearch: PropTypes.func,
     positionSearchMode: PropTypes.bool,
+    searchTextDefault: PropTypes.string,
     theme: PropTypes.object,
     voterGuidePositionSearchMode: PropTypes.bool,
   };
@@ -43,7 +46,14 @@ class FilterBaseSearch extends Component {
   }
 
   componentDidMount () {
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    const { searchTextDefault } = this.props;
+    if (searchTextDefault) {
+      this.setState({
+        searchText: searchTextDefault,
+      }, this.handleSearchAllItemsRefresh);
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -54,11 +64,11 @@ class FilterBaseSearch extends Component {
       }
     }
     if (this.props.isSearching !== nextProps.isSearching) {
-      // console.log("shouldComponentUpdate: this.state.isSearching", this.state.isSearching, ", nextState.isSearching", nextState.isSearching);
+      // console.log('shouldComponentUpdate: this.state.isSearching', this.state.isSearching, ', nextState.isSearching', nextState.isSearching);
       return true;
     }
     if (this.state.searchText !== nextState.searchText) {
-      // console.log("shouldComponentUpdate: this.state.searchText", this.state.searchText, ", nextState.searchText", nextState.searchText);
+      // console.log('shouldComponentUpdate: this.state.searchText', this.state.searchText, ', nextState.searchText', nextState.searchText);
       return true;
     }
     if (this.props.alwaysOpen !== nextProps.alwaysOpen) {
@@ -72,7 +82,15 @@ class FilterBaseSearch extends Component {
       clearTimeout(this.timer);
       this.timer = null;
     }
+    this.ballotStoreListener.remove();
     this.organizationStoreListener.remove();
+  }
+
+  onBallotStoreChange () {
+    const { opinionsAndBallotItemsSearchMode } = this.props;
+    if (opinionsAndBallotItemsSearchMode) {
+      this.handleSearchAllItemsRefresh();
+    }
   }
 
   onOrganizationStoreChange () {
@@ -92,6 +110,9 @@ class FilterBaseSearch extends Component {
       // Reach out to API server to get more Organizations or Ballot items.
       if (!arrayContains(search, searchTextAlreadyRetrieved)) {
         OrganizationActions.organizationSearch(search);
+        // DALE NOTE: 2020-07-10 This second retrieve causes the results to get erased from the display list sometimes
+        //  Needs to be fixed.
+        BallotActions.ballotItemOptionsRetrieve('', search);
         searchTextAlreadyRetrieved.push(search);
         this.setState({ searchTextAlreadyRetrieved });
       }

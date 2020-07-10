@@ -26,6 +26,7 @@ class FilterBase extends React.Component {
     positionSearchMode: PropTypes.bool,
     selectedFiltersDefault: PropTypes.array,
     numberOfItemsFoundNode: PropTypes.node,
+    searchTextDefault: PropTypes.string,
     sortFilters: PropTypes.array,
     stateCodesToDisplay: PropTypes.array,
     voterGuidePositionSearchMode: PropTypes.bool,
@@ -49,6 +50,10 @@ class FilterBase extends React.Component {
       selectedFilters: this.props.selectedFiltersDefault || [],
       sortFilters: this.props.sortFilters || defaultSortFilters,
     });
+    const { searchTextDefault } = this.props;
+    if (searchTextDefault) {
+      this.setState({ isSearching: true });
+    }
   }
 
   changeToDifferentStateCodeFilter = (stateCodeFilter) => {
@@ -230,7 +235,7 @@ class FilterBase extends React.Component {
     const { isSearching, selectedFilters, showAllFilters, sortFilters } = this.state;
     const {
       allItems, classes, opinionsAndBallotItemsSearchMode, positionSearchMode,
-      numberOfItemsFoundNode, stateCodesToDisplay, voterGuidePositionSearchMode,
+      numberOfItemsFoundNode, searchTextDefault, stateCodesToDisplay, voterGuidePositionSearchMode,
     } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
@@ -246,6 +251,7 @@ class FilterBase extends React.Component {
             onToggleSearch={this.handleToggleSearchBallot}
             opinionsAndBallotItemsSearchMode={opinionsAndBallotItemsSearchMode}
             positionSearchMode={positionSearchMode}
+            searchTextDefault={searchTextDefault}
             voterGuidePositionSearchMode={voterGuidePositionSearchMode}
           />
           {!isSearching && this.generateGroupedFilters()}

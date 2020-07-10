@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import BallotItemForOpinions from '../components/OpinionsAndBallotItems/BallotItemForOpinions';
 import BallotActions from '../actions/BallotActions';
 import BallotStore from '../stores/BallotStore';
+import CandidateSearchItemForOpinions from '../components/OpinionsAndBallotItems/CandidateSearchItemForOpinions';
 import { renderLog } from '../utils/logging';
 import FilterBase from '../components/Filter/FilterBase';
 import groupIcon from '../../img/global/svg-icons/group-icon.svg';
@@ -59,13 +60,16 @@ const islandFilters = [
 class Opinions2020 extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    params: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       allBallotItems: [],
+      allBallotItemSearchResults: [],
       allOrganizationSearchResults: [],
+      ballotItemWeVoteIdsAlreadyFoundList: [],
       ballotSearchResults: [],
       currentSelectedBallotFilters: [], // So we know when the ballot filters change
       filteredOpinionsAndBallotItems: [],
@@ -75,6 +79,8 @@ class Opinions2020 extends Component {
       numberOfBallotItemsToDisplay: 5,
       organizationWeVoteIdsAlreadyFoundList: [],
       searchText: '',
+      searchTextDefault: '',
+      selectedFiltersAddDefault: [],
       stateCodeFromIpAddress: '',
       stateCodeToRetrieve: '',
       totalNumberOfBallotItems: 0,
@@ -91,6 +97,23 @@ class Opinions2020 extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+
+    const { searchTextDefault, selectedFilter } = this.props.params;
+    const selectedFiltersAddDefault = ['sortByAlphabetical'];
+    // console.log('selectedFilter:', selectedFilter);
+    if (selectedFilter) {
+      // Options: showBallotItemsFilter, showOrganizationsFilter, showPublicFiguresFilter
+      selectedFiltersAddDefault.push(selectedFilter);
+      this.setState({
+        selectedFiltersAddDefault,
+      });
+    }
+    if (searchTextDefault) {
+      // Options: showBallotItemsFilter, showOrganizationsFilter, showPublicFiguresFilter
+      this.setState({
+        searchTextDefault,
+      });
+    }
 
     // Ballot Items
     const localGoogleCivicElectionId = VoterStore.electionId();
@@ -169,19 +192,100 @@ class Opinions2020 extends Component {
       clearTimeout(this.ballotItemTimer);
       this.ballotItemTimer = null;
     }
-    if (this.positionItemTimer) {
-      clearTimeout(this.positionItemTimer);
-      this.positionItemTimer = null;
-    }
     window.removeEventListener('scroll', this.onScroll);
   }
 
   onBallotStoreChange () {
-    const { allOrganizationSearchResults, allVoterGuides } = this.state;
+    const { allBallotItemSearchResults, allOrganizationSearchResults, allVoterGuides, ballotItemWeVoteIdsAlreadyFoundList } = this.state;
     const localGoogleCivicElectionId = VoterStore.electionId();
     const allBallotItemsFlattened = BallotStore.getAllBallotItemsFlattened(localGoogleCivicElectionId);
-    const allOpinionsAndBallotItems = allVoterGuides.concat(allBallotItemsFlattened, allOrganizationSearchResults);
+    let ballotItemWeVoteIdsAlreadyFoundChanged = false;
     // console.log('Opinions2020, onBallotStoreChange allBallotItemsFlattened:', allBallotItemsFlattened);
+    for (let count = 0; count < allBallotItemsFlattened.length; count++) {
+      if (!arrayContains(allBallotItemsFlattened[count].we_vote_id, ballotItemWeVoteIdsAlreadyFoundList)) {
+        ballotItemWeVoteIdsAlreadyFoundList.push(allBallotItemsFlattened[count].we_vote_id);
+        ballotItemWeVoteIdsAlreadyFoundChanged = true;
+      }
+      if (allBallotItemsFlattened[count].candidate_list) {
+        for (let count2 = 0; count2 < allBallotItemsFlattened[count].candidate_list.length; count2++) {
+          if (!arrayContains(allBallotItemsFlattened[count].candidate_list[count2].we_vote_id, ballotItemWeVoteIdsAlreadyFoundList)) {
+            ballotItemWeVoteIdsAlreadyFoundList.push(allBallotItemsFlattened[count].candidate_list[count2].we_vote_id);
+            ballotItemWeVoteIdsAlreadyFoundChanged = true;
+          }
+        }
+      }
+    }
+
+    // Anything coming back from search?
+    const ballotItemSearchResultsList = BallotStore.ballotItemSearchResultsList();
+    // console.log('ballotItemSearchResultsList:', ballotItemSearchResultsList);
+    if (ballotItemSearchResultsList && ballotItemSearchResultsList.length) {
+      // Figure out which of these organizations has already been retrieved so we are only adding new
+      const newBallotItemSearchResults = ballotItemSearchResultsList.filter(ballotItem => !arrayContains(ballotItem.we_vote_id, ballotItemWeVoteIdsAlreadyFoundList));
+      // console.log('newBallotItemSearchResults:', newBallotItemSearchResults);
+
+      // Figure out the organizations we already have voterGuides for so we don't duplicate
+      if (newBallotItemSearchResults.length) {
+        let newBallotItem;
+        const newBallotItems = [];
+        for (let count = 0; count < newBallotItemSearchResults.length; count++) {
+          ballotItemWeVoteIdsAlreadyFoundList.push(newBallotItemSearchResults[count].we_vote_id);
+          ballotItemWeVoteIdsAlreadyFoundChanged = true;
+          if (arrayContains('cand', newBallotItemSearchResults[count].we_vote_id)) {
+            newBallotItem = {
+              ballot_item_display_name: newBallotItemSearchResults[count].ballot_item_display_name,
+              candidate_photo_url_medium: newBallotItemSearchResults[count].candidate_photo_url_medium,
+              kind_of_ballot_item: 'CANDIDATE',
+              twitter_description: newBallotItemSearchResults[count].twitter_description || '',
+              twitter_followers_count: newBallotItemSearchResults[count].twitter_followers_count || 0,
+              twitter_handle: newBallotItemSearchResults[count].twitter_handle,
+              state_code: newBallotItemSearchResults[count].state_code,
+              we_vote_id: newBallotItemSearchResults[count].we_vote_id,
+            };
+          } else if (arrayContains('meas', newBallotItemSearchResults[count].we_vote_id) || arrayContains('meas', newBallotItemSearchResults[count].measure_we_vote_id)) {
+            newBallotItem = {
+              ballot_item_display_name: newBallotItemSearchResults[count].ballot_item_display_name,
+              google_civic_election_id: newBallotItemSearchResults[count].google_civic_election_id,
+              kind_of_ballot_item: 'MEASURE',
+              measure_text: newBallotItemSearchResults[count].measure_text,
+              race_office_level: 'Measure',
+              state_code: newBallotItemSearchResults[count].state_code,
+              // twitter_followers_count: newBallotItemSearchResults[count].organization_twitter_followers_count || 0,
+              // twitter_handle: newBallotItemSearchResults[count].organization_twitter_handle,
+              // voter_guide_display_name: newBallotItemSearchResults[count].organization_name,
+              // voter_guide_image_url_medium: newBallotItemSearchResults[count].organization_photo_url_medium,
+              // voter_guide_owner_type: newBallotItemSearchResults[count].organization_owner_type || '',
+              we_vote_id: newBallotItemSearchResults[count].we_vote_id || newBallotItemSearchResults[count].measure_we_vote_id,
+            };
+          } else {
+            newBallotItem = {
+              ballot_item_display_name: newBallotItemSearchResults[count].ballot_item_display_name,
+              candidate_list: newBallotItemSearchResults[count].candidate_list || [],
+              kind_of_ballot_item: 'OFFICE',
+              race_office_level: '',
+              state_code: newBallotItemSearchResults[count].state_code,
+              // twitter_followers_count: newBallotItemSearchResults[count].organization_twitter_followers_count || 0,
+              // twitter_handle: newBallotItemSearchResults[count].organization_twitter_handle,
+              // voter_guide_display_name: newBallotItemSearchResults[count].organization_name,
+              // voter_guide_image_url_medium: newBallotItemSearchResults[count].organization_photo_url_medium,
+              // voter_guide_owner_type: newBallotItemSearchResults[count].organization_owner_type || '',
+              we_vote_id: newBallotItemSearchResults[count].we_vote_id,
+            };
+          }
+          newBallotItems.push(newBallotItem);
+          allBallotItemSearchResults.push(newBallotItem);
+        }
+        this.setState({
+          allBallotItemSearchResults,
+        });
+      }
+      if (ballotItemWeVoteIdsAlreadyFoundChanged) {
+        this.setState({
+          ballotItemWeVoteIdsAlreadyFoundList,
+        });
+      }
+    }
+    const allOpinionsAndBallotItems = allVoterGuides.concat(allBallotItemsFlattened, allBallotItemSearchResults, allOrganizationSearchResults);  // , allBallotItemSearchResults
     this.setState({
       allBallotItems: allBallotItemsFlattened,
       allOpinionsAndBallotItems,
@@ -289,8 +393,8 @@ class Opinions2020 extends Component {
           newOrganizations.push(newOrganization);
           allOrganizationSearchResults.push(newOrganization);
         }
-        const { allBallotItems, allVoterGuides } = this.state;
-        const allOpinionsAndBallotItems = allBallotItems.concat(allVoterGuides, newOrganizations);
+        const { allBallotItems, allBallotItemSearchResults, allVoterGuides } = this.state;
+        const allOpinionsAndBallotItems = allBallotItems.concat(allBallotItemSearchResults, allVoterGuides, newOrganizations);
         this.setState({
           allOpinionsAndBallotItems,
           allOrganizationSearchResults,
@@ -301,14 +405,14 @@ class Opinions2020 extends Component {
   }
 
   onVoterGuideStoreChange () {
-    const { allBallotItems, allOrganizationSearchResults } = this.state;
+    const { allBallotItems, allBallotItemSearchResults, allOrganizationSearchResults } = this.state;
     const voterGuidesToFollowAll = VoterGuideStore.getVoterGuidesToFollowAll();
     const voterGuidesVoterIsFollowing = VoterGuideStore.getVoterGuidesVoterIsFollowing();
     const allVoterGuidesBeforeFilter = voterGuidesToFollowAll.concat(voterGuidesVoterIsFollowing);
     // console.log('allVoterGuidesBeforeFilter:', allVoterGuidesBeforeFilter);
     const allVoterGuides = uniqBy(allVoterGuidesBeforeFilter, 'organization_we_vote_id');
     // console.log('allVoterGuides:', allVoterGuides);
-    const allOpinionsAndBallotItems = allBallotItems.concat(allVoterGuides, allOrganizationSearchResults);
+    const allOpinionsAndBallotItems = allBallotItems.concat(allBallotItemSearchResults, allVoterGuides, allOrganizationSearchResults);
     this.setState({
       allOpinionsAndBallotItems,
       allVoterGuides,
@@ -399,6 +503,7 @@ class Opinions2020 extends Component {
     numberOfBallotItemsToDisplay += 5;
     // console.log('Number of ballot items after increment: ', numberOfBallotItemsToDisplay);
 
+    clearTimeout(this.ballotItemTimer);
     this.ballotItemTimer = setTimeout(() => {
       this.setState({
         numberOfBallotItemsToDisplay,
@@ -414,17 +519,18 @@ class Opinions2020 extends Component {
   render () {
     renderLog('Opinions2020');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { isSearching, searchText, stateCodeToRetrieve } = this.state;
     const localGoogleCivicElectionId = VoterStore.electionId();
-    // console.log('Opinions2020 render');
-    const selectedFiltersAddDefault = ['sortByAlphabetical'];
     const {
       allOpinionsAndBallotItems, ballotSearchResults,
-      filteredOpinionsAndBallotItems, numberOfBallotItemsToDisplay,
+      filteredOpinionsAndBallotItems, isSearching,
+      numberOfBallotItemsToDisplay,
+      searchText, searchTextDefault, selectedFiltersAddDefault,
+      stateCodeToRetrieve,
     } = this.state;
     if (!allOpinionsAndBallotItems) {
       return LoadingWheel;
     }
+    // console.log('Opinions2020 render, allBallotItemSearchResults:', allBallotItemSearchResults);
     const atLeastOneFoundWithTheseFilters = (filteredOpinionsAndBallotItems && filteredOpinionsAndBallotItems.length);
     let numberOfBallotItemsDisplayed = 0;
     let totalNumberOfBallotItems = 0;
@@ -462,6 +568,7 @@ class Opinions2020 extends Component {
                 onFilteredItemsChange={this.onFilteredItemsChangeFromBallotItemsFilterBase}
                 opinionsAndBallotItemsSearchMode
                 onToggleSearch={this.handleToggleSearch}
+                searchTextDefault={searchTextDefault}
                 selectedFiltersDefault={selectedFiltersAddDefault}
                 totalNumberOfItemsFound={totalNumberOfBallotItems}
                 voterGuidePositionSearchMode
@@ -515,12 +622,15 @@ class Opinions2020 extends Component {
                     return foundInStringItem;
                   });
                 }
+                const isCandidate = stringContains('cand', oneBallotItemOrOrganization.we_vote_id);
                 const isMeasure = stringContains('meas', oneBallotItemOrOrganization.we_vote_id);
                 const isOffice = stringContains('off', oneBallotItemOrOrganization.we_vote_id);
                 const isOrganizationFromSearch = stringContains('org', oneBallotItemOrOrganization.we_vote_id);
                 let isVoterGuide = false;
                 if (isOffice || isMeasure) {
                   // console.log('BALLOT_ITEM-oneBallotItemOrOrganization', oneBallotItemOrOrganization);
+                } else if (isCandidate) {
+                  // console.log('CANDIDATE-oneBallotItemOrOrganization', oneBallotItemOrOrganization);
                 } else if (isOrganizationFromSearch) {
                   // console.log('ORG-oneBallotItemOrOrganization', oneBallotItemOrOrganization);
                 } else {
@@ -547,6 +657,17 @@ class Opinions2020 extends Component {
                         })
                         }
                       </SearchResultsFoundInExplanation>
+                    )}
+                    {(isCandidate) && (
+                      <>
+                        <CandidateSearchItemForOpinions
+                          candidateWeVoteId={oneBallotItemOrOrganization.we_vote_id}
+                          contestOfficeName={oneBallotItemOrOrganization.contest_office_name}
+                          contestOfficeWeVoteId={oneBallotItemOrOrganization.contest_office_we_vote_id}
+                          oneCandidate={oneBallotItemOrOrganization}
+                          numberOfCandidatesInList={1}
+                        />
+                      </>
                     )}
                     {(isOffice || isMeasure) && (
                       <>

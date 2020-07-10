@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
-import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
-import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import { historyPush } from '../../utils/cordovaUtils';
 import { arrayContains, toTitleCase } from '../../utils/textFormat';
 import CandidateItemForOpinions from './CandidateItemForOpinions';
@@ -16,7 +14,6 @@ class OfficeItemForOpinions extends Component {
     ballotItemDisplayName: PropTypes.string.isRequired,
     candidateList: PropTypes.array,
     candidatesToShowForSearchResults: PropTypes.array,
-    classes: PropTypes.object,
     organization: PropTypes.object,
     organizationWeVoteId: PropTypes.string,
     theme: PropTypes.object,
@@ -32,7 +29,6 @@ class OfficeItemForOpinions extends Component {
 
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
-    this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
   }
 
@@ -106,23 +102,13 @@ class OfficeItemForOpinions extends Component {
   }
 
   getOfficeLink () {
-    if (this.state.organizationWeVoteId) {
-      // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
-      return `/office/${this.props.ballotItemWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
-    } else {
-      // If no organizationWeVoteId, signal that we want to link back to default ballot
-      return `/office/${this.props.ballotItemWeVoteId}/b/btdb`; // back-to-default-ballot
-    }
+    const { ballotItemWeVoteId } = this.props;
+    return `/office/${ballotItemWeVoteId}/b/btdb`; // back-to-default-ballot
   }
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('OfficeItemForOpinions caught error: ', `${error} with info: `, info);
-  }
-
-  goToCandidateLink (candidateWeVoteId) {
-    const candidateLink = this.getCandidateLink(candidateWeVoteId);
-    historyPush(candidateLink);
   }
 
   goToOfficeLink () {
@@ -133,7 +119,7 @@ class OfficeItemForOpinions extends Component {
   render () {
     renderLog('OfficeItemForOpinions');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballotItemDisplayName } = this.props;
-    const { ballotItemWeVoteId, candidatesToShowForSearchResults, classes, theme, externalUniqueId } = this.props;
+    const { ballotItemWeVoteId, candidatesToShowForSearchResults, theme, externalUniqueId } = this.props;
     const { candidateList } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
 
@@ -150,15 +136,6 @@ class OfficeItemForOpinions extends Component {
           >
             <Title>
               {ballotItemDisplayName}
-              {!!(candidateList && candidateList.length) && (
-                <>
-                  {' '}
-                  (
-                  {candidateList.length}
-                  )
-                  {' '}
-                </>
-              )}
             </Title>
           </div>
           {/* Display all candidates running for this office */}

@@ -36,7 +36,7 @@ export default class PublicFiguresToFollowPreview extends Component {
   }
 
   goToPublicFigures () {
-    historyPush('/opinions');
+    historyPush('/opinions/f/showPublicFiguresFilter');
   }
 
   render () {

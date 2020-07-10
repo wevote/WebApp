@@ -73,7 +73,10 @@ class BallotItemForOpinions extends Component {
 
   render () {
     renderLog('BallotItemForOpinions');  // Set LOG_RENDER_EVENTS to log all renders
-    const { ballotItemDisplayName, ballotItemWeVoteId, candidateList, kindOfBallotItem, measureText, organization, organizationWeVoteId } = this.state;
+    const {
+      ballotItemDisplayName, ballotItemWeVoteId, candidateList,
+      kindOfBallotItem, measureText, organization, organizationWeVoteId,
+    } = this.state;
     const { externalUniqueId } = this.props;
     if (!kindOfBallotItem) {
       // console.log('No value in kindOfBallotItem: ', kindOfBallotItem, ', for ballotItemDisplayName: ', ballotItemDisplayName, ', ballotItemWeVoteId:', ballotItemWeVoteId);
