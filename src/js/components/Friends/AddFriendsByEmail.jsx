@@ -384,7 +384,12 @@ class AddFriendsByEmail extends Component {
                           color="primary"
                           variant="outlined"
                         >
-                          Add Another
+                          <span className="u-show-mobile">
+                            Add
+                          </span>
+                          <span className="u-show-desktop-tablet">
+                            Add Another
+                          </span>
                         </Button>
                         <Button
                           color="primary"
