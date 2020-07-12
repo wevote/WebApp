@@ -28,7 +28,7 @@ export default class PublicFiguresToFollowPreview extends Component {
   }
 
   onVoterGuideStoreChange () {
-    const limit = 3;
+    const limit = 2;
     const limitToPublicFigures = true;
     this.setState({
       voterGuidesToFollow: VoterGuideStore.getVoterGuidesToFollowAll(limit, limitToPublicFigures),
@@ -55,7 +55,7 @@ export default class PublicFiguresToFollowPreview extends Component {
               Public Figures to Follow
             </SectionTitle>
             <SectionDescription>
-              Follow a public figure to see what they think.
+              Follow a public figure to add their opinions to your personalized score.
             </SectionDescription>
             <Suspense fallback={<span>Loading...</span>}>
               <GuideList

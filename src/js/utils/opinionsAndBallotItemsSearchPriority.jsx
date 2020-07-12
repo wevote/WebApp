@@ -33,7 +33,7 @@ export default function opinionsAndBallotItemsSearchPriority (originalString, it
       if (!arrayContains('Name', voterGuideOrBallotItemDetailsArray)) voterGuideOrBallotItemDetailsArray.push('Name');
     }
     if (item.twitter_handle && item.twitter_handle.numberOfNeedlesFoundInString(searchNeedleString)) {
-      oneWordScore += item.twitter_handle.numberOfNeedlesFoundInString(searchNeedleString) * 5;
+      oneWordScore += item.twitter_handle.numberOfNeedlesFoundInString(searchNeedleString) * 10;
       foundInThisVoterGuideOrBallotItem = true;
       if (!arrayContains('Twitter handle', voterGuideOrBallotItemDetailsArray)) voterGuideOrBallotItemDetailsArray.push('Twitter handle');
     }
@@ -74,15 +74,16 @@ export default function opinionsAndBallotItemsSearchPriority (originalString, it
       candidateDetailsString = '';
       for (let i = 0; i < wordsArray.length; i++) {
         searchNeedleString = wordsArray[i].toString();
+        oneWordScore = 0;
         if (!ignoreDescriptionFields && candidate.ballotpedia_candidate_summary && candidate.ballotpedia_candidate_summary.numberOfNeedlesFoundInString(searchNeedleString)) {
           oneWordScore += candidate.ballotpedia_candidate_summary.numberOfNeedlesFoundInString(searchNeedleString);
           foundInThisCandidate = true;
-          if (!arrayContains('candidate summary', candidateDetailsArray)) candidateDetailsArray.push('candidate summary');
+          if (!arrayContains('Candidate summary', candidateDetailsArray)) candidateDetailsArray.push('Candidate summary');
         }
         if (candidate.ballot_item_display_name && candidate.ballot_item_display_name.numberOfNeedlesFoundInString(searchNeedleString)) {
           oneWordScore += candidate.ballot_item_display_name.numberOfNeedlesFoundInString(searchNeedleString) * 5;
           foundInThisCandidate = true;
-          if (!arrayContains('name', candidateDetailsArray)) candidateDetailsArray.push('name');
+          if (!arrayContains('Candidate name', candidateDetailsArray)) candidateDetailsArray.push('Candidate name');
         }
         if (!ignoreDescriptionFields && candidate.twitter_description && candidate.twitter_description.numberOfNeedlesFoundInString(searchNeedleString)) {
           oneWordScore += candidate.twitter_description.numberOfNeedlesFoundInString(searchNeedleString);
@@ -90,14 +91,14 @@ export default function opinionsAndBallotItemsSearchPriority (originalString, it
           if (!arrayContains('Twitter description', candidateDetailsArray)) candidateDetailsArray.push('Twitter description');
         }
         if (candidate.twitter_handle && candidate.twitter_handle.numberOfNeedlesFoundInString(searchNeedleString)) {
-          oneWordScore += candidate.twitter_handle.numberOfNeedlesFoundInString(searchNeedleString) * 2;
+          oneWordScore += candidate.twitter_handle.numberOfNeedlesFoundInString(searchNeedleString) * 10;
           foundInThisCandidate = true;
           if (!arrayContains('Twitter handle', candidateDetailsArray)) candidateDetailsArray.push('Twitter handle');
         }
         if (candidate.party && candidate.party.numberOfNeedlesFoundInString(searchNeedleString)) {
           oneWordScore += candidate.party.numberOfNeedlesFoundInString(searchNeedleString) * 2;
           foundInThisCandidate = true;
-          if (!arrayContains('political party', candidateDetailsArray)) candidateDetailsArray.push('political party');
+          if (!arrayContains('Political party', candidateDetailsArray)) candidateDetailsArray.push('Political party');
         }
         searchPriority += oneWordScore;
       }
@@ -122,6 +123,10 @@ export default function opinionsAndBallotItemsSearchPriority (originalString, it
       }
     });
   }
+  // if (searchPriority) {
+  //   console.log('opinionsAndBallotItemsSearchPriority item:', item);
+  //   console.log('searchPriority:', searchPriority);
+  // }
   return {
     searchPriority,
     foundInArray,

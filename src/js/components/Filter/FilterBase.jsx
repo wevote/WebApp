@@ -19,14 +19,16 @@ class FilterBase extends React.Component {
     classes: PropTypes.object,
     groupedFilters: PropTypes.array,
     islandFilters: PropTypes.array,
+    numberOfItemsFoundNode: PropTypes.node,
     onSearch: PropTypes.func,
     onFilteredItemsChange: PropTypes.func,
     onToggleSearch: PropTypes.func,
     opinionsAndBallotItemsSearchMode: PropTypes.bool,
     positionSearchMode: PropTypes.bool,
-    selectedFiltersDefault: PropTypes.array,
-    numberOfItemsFoundNode: PropTypes.node,
+    searchOnOwnLine: PropTypes.bool,
     searchTextDefault: PropTypes.string,
+    searchTextLarge: PropTypes.bool,
+    selectedFiltersDefault: PropTypes.array,
     sortFilters: PropTypes.array,
     stateCodesToDisplay: PropTypes.array,
     voterGuidePositionSearchMode: PropTypes.bool,
@@ -235,25 +237,32 @@ class FilterBase extends React.Component {
     const { isSearching, selectedFilters, showAllFilters, sortFilters } = this.state;
     const {
       allItems, classes, opinionsAndBallotItemsSearchMode, positionSearchMode,
-      numberOfItemsFoundNode, searchTextDefault, stateCodesToDisplay, voterGuidePositionSearchMode,
+      numberOfItemsFoundNode, searchOnOwnLine, searchTextDefault, searchTextLarge,
+      stateCodesToDisplay, voterGuidePositionSearchMode,
     } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
+    const filterBaseSearch = (
+      <FilterBaseSearch
+        addVoterGuideMode
+        allItems={allItems}
+        alwaysOpen={voterGuidePositionSearchMode}
+        isSearching={isSearching}
+        onFilterBaseSearch={this.onSearch}
+        onToggleSearch={this.handleToggleSearchBallot}
+        opinionsAndBallotItemsSearchMode={opinionsAndBallotItemsSearchMode}
+        positionSearchMode={positionSearchMode}
+        searchTextDefault={searchTextDefault}
+        searchTextLarge={searchTextLarge}
+        voterGuidePositionSearchMode={voterGuidePositionSearchMode}
+      />
+    );
+
     return (
       <Wrapper>
+        {searchOnOwnLine && filterBaseSearch}
         <FilterTop>
-          <FilterBaseSearch
-            addVoterGuideMode
-            alwaysOpen={voterGuidePositionSearchMode}
-            isSearching={isSearching}
-            allItems={allItems}
-            onFilterBaseSearch={this.onSearch}
-            onToggleSearch={this.handleToggleSearchBallot}
-            opinionsAndBallotItemsSearchMode={opinionsAndBallotItemsSearchMode}
-            positionSearchMode={positionSearchMode}
-            searchTextDefault={searchTextDefault}
-            voterGuidePositionSearchMode={voterGuidePositionSearchMode}
-          />
+          {!searchOnOwnLine && filterBaseSearch}
           {!isSearching && this.generateGroupedFilters()}
           {!isSearching && this.generateIslandFilters()}
           {(!isSearching && stateCodesToDisplay) && (

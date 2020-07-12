@@ -111,6 +111,7 @@ class Opinions2020 extends Component {
     if (searchTextDefault) {
       // Options: showBallotItemsFilter, showOrganizationsFilter, showPublicFiguresFilter
       this.setState({
+        isSearching: true,
         searchTextDefault,
       });
     }
@@ -475,7 +476,7 @@ class Opinions2020 extends Component {
     this.setState({
       currentSelectedBallotFilters,
       filteredOpinionsAndBallotItems,
-      isSearching: false,
+      // isSearching: false,
     });
   }
 
@@ -530,7 +531,7 @@ class Opinions2020 extends Component {
     if (!allOpinionsAndBallotItems) {
       return LoadingWheel;
     }
-    // console.log('Opinions2020 render, allBallotItemSearchResults:', allBallotItemSearchResults);
+    // console.log('Opinions2020 render, isSearching:', isSearching, ', searchText:', searchText, ', searchTextDefault:', searchTextDefault);
     const atLeastOneFoundWithTheseFilters = (filteredOpinionsAndBallotItems && filteredOpinionsAndBallotItems.length);
     let numberOfBallotItemsDisplayed = 0;
     let totalNumberOfBallotItems = 0;
@@ -549,10 +550,6 @@ class Opinions2020 extends Component {
       <div className="container">
         <Card className="card">
           <div className="card-main">
-            <div className="h3">Search</div>
-            <SearchExplanation>
-              Search for candidates, offices, measures, public figures or organizations.
-            </SearchExplanation>
             <FilterBaseWrapper>
               <FilterBase
                 key="addPositionsFilterBase"
@@ -568,9 +565,11 @@ class Opinions2020 extends Component {
                 onFilteredItemsChange={this.onFilteredItemsChangeFromBallotItemsFilterBase}
                 opinionsAndBallotItemsSearchMode
                 onToggleSearch={this.handleToggleSearch}
+                searchOnOwnLine
                 searchTextDefault={searchTextDefault}
+                searchTextLarge
                 selectedFiltersDefault={selectedFiltersAddDefault}
-                totalNumberOfItemsFound={totalNumberOfBallotItems}
+                totalNumberOfItemsFound={isSearching ? totalNumberOfBallotSearchResults : totalNumberOfBallotItems}
                 voterGuidePositionSearchMode
               >
                 {/* props get added to this component in FilterBase */}
@@ -580,13 +579,13 @@ class Opinions2020 extends Component {
                 />
               </FilterBase>
             </FilterBaseWrapper>
-            {(isSearching && searchText) && (
-              <SearchTitle>
-                Searching for &quot;
-                {searchText}
-                &quot;
-              </SearchTitle>
-            )}
+            {/* {(isSearching && searchText) && ( */}
+            {/*  <SearchTitle> */}
+            {/*    Searching for &quot; */}
+            {/*    {searchText} */}
+            {/*    &quot; */}
+            {/*  </SearchTitle> */}
+            {/* )} */}
           </div>
         </Card>
         {((!isSearching && atLeastOneFoundWithTheseFilters && filteredOpinionsAndBallotItems && filteredOpinionsAndBallotItems.length) || (isSearching && ballotSearchResults && ballotSearchResults.length)) ? (
@@ -598,19 +597,11 @@ class Opinions2020 extends Component {
                   // console.log('MISSING we_vote_id');
                   return null;
                 }
-                if (isSearching) {
-                  // console.log('isSearching: numberOfBallotItemsDisplayed:', numberOfBallotItemsDisplayed, ", totalNumberOfBallotSearchResults:", totalNumberOfBallotSearchResults);
-                  if (numberOfBallotItemsDisplayed >= totalNumberOfBallotSearchResults) {
-                    return null;
-                  }
-                  numberOfBallotItemsDisplayed += 1;
-                } else {
-                  // console.log('YYYYY: numberOfBallotItemsDisplayed:', numberOfBallotItemsDisplayed, ", numberOfBallotItemsToDisplay:", numberOfBallotItemsToDisplay);
-                  if (numberOfBallotItemsDisplayed >= numberOfBallotItemsToDisplay) {
-                    return null;
-                  }
-                  numberOfBallotItemsDisplayed += 1;
+                // console.log('numberOfBallotItemsDisplayed:', numberOfBallotItemsDisplayed, ", numberOfBallotItemsToDisplay:", numberOfBallotItemsToDisplay);
+                if (numberOfBallotItemsDisplayed >= numberOfBallotItemsToDisplay) {
+                  return null;
                 }
+                numberOfBallotItemsDisplayed += 1;
                 // console.log('AFTER return nulls, searchText: ', searchText);
                 let foundInItemsAlreadyShown = 0;
                 let searchWordAlreadyShown = 0;
@@ -797,11 +788,6 @@ const FilterBaseWrapper = styled.div`
   margin-top: -12px;
 `;
 
-const SearchExplanation = styled.div`
-  margin-top: 4px;
-  margin-bottom: 4px;
-`;
-
 const SearchResultsFoundInExplanation = styled.div`
   background-color: #C2DCE8;
   color: #0E759F;
@@ -810,12 +796,6 @@ const SearchResultsFoundInExplanation = styled.div`
     margin-left: -15px !important;
     margin-right: -15px !important;
   }
-`;
-
-const SearchTitle = styled.div`
-  font-size: 24px;
-  margin-top: 12px;
-  margin-bottom: 12px;
 `;
 
 const ShowMoreItemsWrapper = styled.div`

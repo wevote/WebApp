@@ -75,16 +75,18 @@ class Application extends Component {
   componentDidUpdate (prevProps, prevState, nextContent) {
     // console.log('Application componentDidUpdate');
     const { location: { pathname } } = this.props;
-    const { voteMode, voterGuideMode } = getApplicationViewBooleans(pathname);
     const { lastZenDeskVisibilityPathName } = this.state;
-    if (!voterGuideMode && AppStore.showEditAddressButton()) {
-      AppActions.setShowEditAddressButton(false);
-    }
-    if (!voteMode &&
-      ((voterGuideMode && !AppStore.showEditAddressButton()) ||
-        stringContains('/ballot', pathname.toLowerCase().slice(0, 7)))) {
-      AppActions.setShowEditAddressButton(true);
-    }
+    // Dale 2020-07: This is throwing a 'Cannot dispatch in the middle of a dispatch' violation
+    // const { voteMode, voterGuideMode } = getApplicationViewBooleans(pathname);
+    // console.log('AppStore.showEditAddressButton()', AppStore.showEditAddressButton());
+    // if (!voterGuideMode && AppStore.showEditAddressButton()) {
+    //   AppActions.setShowEditAddressButton(false);
+    // }
+    // if (!voteMode &&
+    //   ((voterGuideMode && !AppStore.showEditAddressButton()) ||
+    //     stringContains('/ballot', pathname.toLowerCase().slice(0, 7)))) {
+    //   AppActions.setShowEditAddressButton(true);
+    // }
     if (isWebApp() && String(lastZenDeskVisibilityPathName) !== String(pathname)) {
       // console.log('lastZenDeskVisibilityPathName:', lastZenDeskVisibilityPathName, ', pathname:', pathname);
       setZenDeskHelpVisibility(pathname);

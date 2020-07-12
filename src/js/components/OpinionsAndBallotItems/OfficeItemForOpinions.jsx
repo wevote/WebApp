@@ -106,14 +106,14 @@ class OfficeItemForOpinions extends Component {
     return `/office/${ballotItemWeVoteId}/b/btdb`; // back-to-default-ballot
   }
 
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('OfficeItemForOpinions caught error: ', `${error} with info: `, info);
-  }
-
   goToOfficeLink () {
     const officeLink = this.getOfficeLink();
     historyPush(officeLink);
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('OfficeItemForOpinions caught error: ', `${error} with info: `, info);
   }
 
   render () {

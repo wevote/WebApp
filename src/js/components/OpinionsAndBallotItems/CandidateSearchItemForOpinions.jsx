@@ -26,13 +26,6 @@ class CandidateSearchItemForOpinions extends Component {
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
   }
 
-  componentDidMount () {
-  }
-
-  componentWillUnmount () {
-    this.candidateStoreListener.remove();
-  }
-
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
