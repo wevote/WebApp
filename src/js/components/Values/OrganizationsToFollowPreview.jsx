@@ -28,7 +28,7 @@ export default class OrganizationsToFollowPreview extends Component {
   }
 
   onVoterGuideStoreChange () {
-    const limit = 3;
+    const limit = 2;
     const limitToPublicFigures = false;
     const limitToOrganizations = true;
     this.setState({
@@ -56,7 +56,7 @@ export default class OrganizationsToFollowPreview extends Component {
               Organizations to Follow
             </SectionTitle>
             <SectionDescription>
-              Follow an organization to see what they think.
+              Follow an organization to add their opinions to your personalized score.
             </SectionDescription>
             <Suspense fallback={<span>Loading...</span>}>
               <GuideList

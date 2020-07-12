@@ -218,7 +218,7 @@ class GuideList extends Component {
     let numberOfItemsDisplayed = 0;
     if (!filteredOrganizationsWithPositions) {
       return (
-        <div className="guidelist card-child__list-group">
+        <div className="guidelist">
           <div className="u-flex u-flex-column u-items-center">
             <div className="u-margin-top--sm u-stack--sm u-no-break">
               No results found.
@@ -237,11 +237,8 @@ class GuideList extends Component {
     return (
       <div>
         {(filteredOrganizationsWithPositions.length && voterGuideListCount) ? (
-          <div className="guidelist card-child__list-group">
+          <div className="guidelist">
             {filteredOrganizationsWithPositions.map((organization) => {
-              const handleIgnoreFunc = () => {
-                this.handleIgnore(organization.organization_we_vote_id);
-              };
               if (organization) {
                 if (numberOfItemsDisplayed >= numberOfItemsToDisplay) {
                   return null;
@@ -249,6 +246,9 @@ class GuideList extends Component {
                 numberOfItemsDisplayed += 1;
               }
               // console.log('GuideList render', numberOfItemsDisplayed, numberOfItemsToDisplay);
+              const handleIgnoreFunc = () => {
+                this.handleIgnore(organization.organization_we_vote_id);
+              };
               return (
                 <VoterGuideDisplayForList
                   key={organization.organization_we_vote_id}

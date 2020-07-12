@@ -23,15 +23,16 @@ const delayBeforeSearchExecution = 600;
 class FilterBaseSearch extends Component {
   static propTypes = {
     addVoterGuideMode: PropTypes.bool,
+    allItems: PropTypes.array,
     alwaysOpen: PropTypes.bool,
     classes: PropTypes.object,
     isSearching: PropTypes.bool,
-    allItems: PropTypes.array,
     onFilterBaseSearch: PropTypes.func,
     opinionsAndBallotItemsSearchMode: PropTypes.bool,
     onToggleSearch: PropTypes.func,
     positionSearchMode: PropTypes.bool,
     searchTextDefault: PropTypes.string,
+    searchTextLarge: PropTypes.bool,
     theme: PropTypes.object,
     voterGuidePositionSearchMode: PropTypes.bool,
   };
@@ -50,9 +51,12 @@ class FilterBaseSearch extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     const { searchTextDefault } = this.props;
     if (searchTextDefault) {
+      // this.setState({
+      //   searchText: searchTextDefault,
+      // }, this.handleSearchAllItemsRefresh);
       this.setState({
         searchText: searchTextDefault,
-      }, this.handleSearchAllItemsRefresh);
+      });
     }
   }
 
@@ -87,6 +91,7 @@ class FilterBaseSearch extends Component {
   }
 
   onBallotStoreChange () {
+    // console.log('FilterBaseSearch onBallotStoreChange');
     const { opinionsAndBallotItemsSearchMode } = this.props;
     if (opinionsAndBallotItemsSearchMode) {
       this.handleSearchAllItemsRefresh();
@@ -94,6 +99,7 @@ class FilterBaseSearch extends Component {
   }
 
   onOrganizationStoreChange () {
+    // console.log('FilterBaseSearch onOrganizationStoreChange');
     const { opinionsAndBallotItemsSearchMode } = this.props;
     if (opinionsAndBallotItemsSearchMode) {
       this.handleSearchAllItemsRefresh();
@@ -101,6 +107,7 @@ class FilterBaseSearch extends Component {
   }
 
   filterItems = search => this.props.allItems.map((item) => {
+    // console.log('FilterBaseSearch filterItems');
     const { opinionsAndBallotItemsSearchMode, positionSearchMode, voterGuidePositionSearchMode } = this.props;
     const { searchTextAlreadyRetrieved } = this.state;
     let candidatesToShowForSearchResults = [];
@@ -204,33 +211,38 @@ class FilterBaseSearch extends Component {
   }
 
   render () {
-    const { classes, theme, isSearching, alwaysOpen } = this.props;
+    const { alwaysOpen, classes, isSearching, searchTextLarge, theme } = this.props;
     const { searchText } = this.state;
-    let searchClasses;
+    let inputBaseInputClasses;
+    const inputBaseRootClasses = searchTextLarge ? classes.inputBaseRootLarge : classes.inputBaseRoot;
+    const searchIconClasses = searchTextLarge ? classes.iconRootLarge : classes.iconRoot;
     if (isSearching) {
-      searchClasses = classes.inputSearching;
+      inputBaseInputClasses = searchTextLarge ? classes.inputSearchingLarge : classes.inputSearching;
     } else if (alwaysOpen) {
-      searchClasses = classes.input;
+      inputBaseInputClasses = searchTextLarge ? classes.inputDefaultLarge : classes.inputDefault;
     } else {
-      searchClasses = classes.inputHidden;
+      inputBaseInputClasses = classes.inputHidden;
     }
     // console.log('FilterBaseSearch render');
     return (
       <SearchWrapper
-        searchOpen={isSearching || alwaysOpen}
         brandBlue={theme.palette.primary.main}
         isCordova={isCordova()}
         isSearching={isSearching}
+        searchTextLarge={searchTextLarge}
+        searchOpen={isSearching || alwaysOpen}
       >
         <IconButton
           classes={{ root: classes.iconButtonRoot }}
           onClick={!alwaysOpen ? this.toggleSearch : undefined}
         >
-          <SearchIcon classes={{ root: classes.iconRoot }} />
+          <SearchIcon
+            classes={{ root: searchIconClasses }}
+          />
         </IconButton>
         <Separator isSearching={isSearching} alwaysOpen={alwaysOpen} />
         <InputBase
-          classes={{ input: searchClasses }}
+          classes={{ input: inputBaseInputClasses, root: inputBaseRootClasses }}
           inputRef={(input) => { this.searchInput = input; }}
           onChange={this.handleSearch}
           value={searchText}
@@ -238,10 +250,14 @@ class FilterBaseSearch extends Component {
           onBlur={blurTextFieldAndroid}
           placeholder="Search"
         />
-        <Closer isSearching={isSearching} showCloser={isSearching} brandBlue={theme.palette.primary.main}>
+        <Closer
+          brandBlue={theme.palette.primary.main}
+          isSearching={isSearching}
+          onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
+          showCloser={isSearching}
+        >
           <IconButton
             classes={{ root: classes.iconButtonRoot }}
-            onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
           >
             <CloseIcon classes={{ root: classes.closeIconRoot }} />
           </IconButton>
@@ -252,9 +268,6 @@ class FilterBaseSearch extends Component {
 }
 
 const styles = theme => ({
-  searchRoot: {
-    height: 26,
-  },
   iconButtonRoot: {
     padding: 0,
     borderRadius: 16,
@@ -268,11 +281,21 @@ const styles = theme => ({
     width: 18,
     height: 18,
   },
+  iconRootLarge: {
+    width: 24,
+    height: 24,
+  },
   closeIconRoot: {
     width: 18,
     height: 18,
   },
-  input: {
+  inputBaseRoot: {
+
+  },
+  inputBaseRootLarge: {
+    width: '100%',
+  },
+  inputDefault: {
     padding: 0,
     marginLeft: 8,
     width: 75,
@@ -286,14 +309,21 @@ const styles = theme => ({
       fontSize: 'inherit',
     },
   },
+  inputDefaultLarge: {
+    fontSize: 22,
+    marginLeft: 8,
+    padding: 0,
+    width: '100%',
+    transition: 'all ease-in 150ms',
+  },
   inputHidden: {
     padding: 0,
     width: 0,
     transition: 'all ease-in 150ms',
   },
   inputSearching: {
-    padding: 0,
     marginLeft: 8,
+    padding: 0,
     width: 350,
     transition: 'all ease-in 150ms',
     [theme.breakpoints.down('md')]: {
@@ -304,6 +334,13 @@ const styles = theme => ({
       width: 150,
       fontSize: 'inherit',
     },
+  },
+  inputSearchingLarge: {
+    fontSize: 22,
+    marginLeft: 8,
+    padding: 0,
+    width: '100%',
+    transition: 'all ease-in 150ms',
   },
 });
 
@@ -328,7 +365,7 @@ const SearchWrapper = styled.div`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: 26px;
+  height: ${({ searchTextLarge }) => (searchTextLarge ? '32px' : '26px')};
   border: 1px solid ${({ isSearching, brandBlue }) => (isSearching ? brandBlue : '#ccc')};
   padding: 0 3px 0 3px;
   margin-right: 16px;

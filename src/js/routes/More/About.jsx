@@ -201,7 +201,11 @@ class About extends Component {
             </div>
           </MemberListContainer>
           <AboutDescriptionContainer>
-            <h2 className="h2">Board Members &amp; Advisers ({weVoteBoard.length})</h2>
+            <h2 className="h2">
+              Board Members &amp; Advisers (
+              {weVoteBoard.length}
+              )
+            </h2>
           </AboutDescriptionContainer>
           <AboutDescriptionContainer>
             <div className="row position-relative">
@@ -229,7 +233,11 @@ class About extends Component {
             </div>
           </AboutDescriptionContainer>
           <AboutDescriptionContainer>
-            <h2 className="h2">Staff &amp; Senior Volunteers ({weVoteStaff.length})</h2>
+            <h2 className="h2">
+              Staff &amp; Senior Volunteers (
+              {weVoteStaff.length}
+              )
+            </h2>
           </AboutDescriptionContainer>
           <AboutDescriptionContainer>
             <div className="row position-relative">
