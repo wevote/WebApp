@@ -121,8 +121,9 @@ class OrganizationModal extends Component {
             aria-label="Close"
             className={classes.closeButton}
             id="closeOrganizationModal"
+             onClick={this.closeOrganizationModal}
           >
-            <span className="fas fa-times u-cursor--pointer" onClick={this.closeOrganizationModal} />
+            <span className="fas fa-times u-cursor--pointer" />
           </IconButton>
           <CandidateItem
             inModal

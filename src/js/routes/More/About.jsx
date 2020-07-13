@@ -21,18 +21,67 @@ import VoterStore from '../../stores/VoterStore';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import { Title } from '../../components/Welcome/HeaderWelcome';
+import ShowMoreButtons from '../../components/ReadyNoApi/ShowMoreButtons';
 
 class About extends Component {
   static getProps () {
     return {};
   }
 
+  constructor (props) {
+    super(props);
+    this.state = {
+      showAllFounders: false,
+      showAllBoard: false,
+      showAllStaff: false,
+      showMoreButtonWasClickedFounders: false,
+      showMoreButtonWasClickedBoard: false,
+      showMoreButtonWasClickedStaff: false,
+    };
+  }
+
   componentDidMount () {
     AnalyticsActions.saveActionAboutMobile(VoterStore.electionId());
   }
 
+  showMoreButtonsLinkFounders = () => {
+    const { showMoreButtonWasClickedFounders, showAllFounders } = this.state;
+    this.setState({
+      showMoreButtonWasClickedFounders: !showMoreButtonWasClickedFounders,
+      showAllFounders: !showAllFounders,
+    });
+  }
+
+  showMoreButtonsLinkBoard = () => {
+    const { showMoreButtonWasClickedBoard, showAllBoard } = this.state;
+    this.setState({
+      showMoreButtonWasClickedBoard: !showMoreButtonWasClickedBoard,
+      showAllBoard: !showAllBoard,
+    });
+  }
+
+  showMoreButtonsLinkStaff = () => {
+    const { showMoreButtonWasClickedStaff, showAllStaff } = this.state;
+    this.setState({
+      showMoreButtonWasClickedStaff: !showMoreButtonWasClickedStaff,
+      showAllStaff: !showAllStaff,
+    });
+  }
+
+
+
   render () {
     renderLog('About');  // Set LOG_RENDER_EVENTS to log all renders
+    const {
+      showMoreButtonWasClickedBoard, showMoreButtonWasClickedStaff,
+      showAllBoard, showAllStaff,
+    } = this.state;
+    let showShowMoreButtonBoard = true;
+    let showShowMoreButtonStaff = true;
+    if (weVoteBoard.length <= 3) { showShowMoreButtonBoard = false; }
+    if (weVoteStaff.length <= 3) { showShowMoreButtonStaff = false; }
+    let weVoteBoardCount = 0;
+    let weVoteStaffCount = 0;
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="About We Vote" />
@@ -146,35 +195,73 @@ class About extends Component {
           </AboutDescriptionContainer>
           <MemberListContainer>
             <div className="row position-relative">
-              {
-              weVoteFounders.map(teamMember => (
+              {weVoteFounders.map(teamMember => (
                 <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
-              ))
-              }
+              ))}
             </div>
           </MemberListContainer>
           <AboutDescriptionContainer>
-            <h2 className="h2">Board Members &amp; Advisers</h2>
+            <h2 className="h2">
+              Board Members &amp; Advisers (
+              {weVoteBoard.length}
+              )
+            </h2>
           </AboutDescriptionContainer>
           <AboutDescriptionContainer>
             <div className="row position-relative">
-              {
-              weVoteBoard.map(teamMember => (
-                <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
-              ))
-              }
+              {weVoteBoard.map((teamMember) => {
+                weVoteBoardCount++;
+                if (!showAllBoard) {
+                  if (weVoteBoardCount > 3) return null;
+                }
+                return (
+                  <TeamMemberDisplayForList
+                    key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`}
+                    teamMember={teamMember}
+                  />
+                );
+              })}
+            </div>
+            <div>
+              {showShowMoreButtonBoard && (
+                <ShowMoreButtons
+                  showMoreId="showMoreBallotButtons"
+                  showMoreButtonWasClicked={showMoreButtonWasClickedBoard}
+                  showMoreButtonsLink={this.showMoreButtonsLinkBoard}
+                />
+              )}
             </div>
           </AboutDescriptionContainer>
           <AboutDescriptionContainer>
-            <h2 className="h2">Staff &amp; Senior Volunteers</h2>
+            <h2 className="h2">
+              Staff &amp; Senior Volunteers (
+              {weVoteStaff.length}
+              )
+            </h2>
           </AboutDescriptionContainer>
           <AboutDescriptionContainer>
             <div className="row position-relative">
-              {
-              weVoteStaff.map(teamMember => (
-                <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
-              ))
-              }
+              {weVoteStaff.map((teamMember) => {
+                weVoteStaffCount++;
+                if (!showAllStaff) {
+                  if (weVoteStaffCount > 3) return null;
+                }
+                return (
+                  <TeamMemberDisplayForList
+                    key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`}
+                    teamMember={teamMember}
+                  />
+                );
+              })}
+            </div>
+            <div>
+              {showShowMoreButtonStaff && (
+                <ShowMoreButtons
+                  showMoreId="showMoreBallotButtons"
+                  showMoreButtonWasClicked={showMoreButtonWasClickedStaff}
+                  showMoreButtonsLink={this.showMoreButtonsLinkStaff}
+                />
+              )}
             </div>
           </AboutDescriptionContainer>
         </Section>

@@ -802,11 +802,11 @@ class VoterGuideSettingsAddPositions extends Component {
                   numberOfItemsTotal={isSearching ? totalNumberOfBallotSearchResults : totalNumberOfBallotItems}
                 />
               </ShowMoreItemsWrapper>
-              <LoadingItemsWheel>
-                {loadingMoreBallotItems ? (
-                  <CircularProgress />
-                ) : null}
-              </LoadingItemsWheel>
+              {/* <LoadingItemsWheel> */}
+              {/*  {loadingMoreBallotItems ? ( */}
+              {/*    <CircularProgress /> */}
+              {/*  ) : null} */}
+              {/* </LoadingItemsWheel> */}
             </div>
           ) : (
             <Card>

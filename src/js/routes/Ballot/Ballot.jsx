@@ -14,7 +14,7 @@ import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotTitleHeader from './BallotTitleHeader';
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
-import BallotSearch from '../../components/Ballot/BallotSearch';
+import FilterBaseSearch from '../../components/Filter/FilterBaseSearch';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
 import BallotStore from '../../stores/BallotStore';
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
@@ -856,7 +856,7 @@ class Ballot extends Component {
     }
   };
 
-  onBallotSearch = (searchText, filteredItems) => {
+  onFilterBaseSearch = (searchText, filteredItems) => {
     window.scrollTo(0, 0);
     const totalNumberOfBallotItems = filteredItems.length || 0;
     this.setState({
@@ -1143,11 +1143,11 @@ class Ballot extends Component {
                         <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
                           { ballotWithItemsFromCompletionFilterType.length ? (
                             <React.Fragment>
-                              <BallotSearch
+                              <FilterBaseSearch
                                 alwaysOpen={!showFilterTabs}
                                 isSearching={isSearching}
-                                items={ballotWithAllItems}
-                                onBallotSearch={this.onBallotSearch}
+                                allItems={ballotWithAllItems}
+                                onFilterBaseSearch={this.onFilterBaseSearch}
                                 onToggleSearch={this.handleToggleSearchBallot}
                               />
                               { showFilterTabs && (

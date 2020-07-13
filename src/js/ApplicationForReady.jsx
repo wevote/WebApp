@@ -93,18 +93,20 @@ class ApplicationForReady extends Component {
           <div
             style={
               {
+                alignItems: 'center',
+                backgroundColor: '#fff',
+                color: '#0d5470',
                 display: 'flex',
-                position: 'fixed',
+                flexDirection: 'column',
+                fontSize: 14,
                 height: '100vh',
                 width: '100vw',
-                top: 0,
-                left: 0,
-                backgroundColor: '#fff',
                 justifyContent: 'center',
-                alignItems: 'center',
-                fontSize: 14,
-                color: '#0d5470',
-                flexDirection: 'column',
+                left: 0,
+                marginLeft: '15px',
+                marginRight: '15px',
+                position: 'fixed',
+                top: 0,
               }
             }
           >

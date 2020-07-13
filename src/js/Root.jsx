@@ -127,6 +127,8 @@ const routes = () => {  // eslint-disable-line arrow-body-style
 
           {/* Ballot Off-shoot Pages */}
           <Route path="/opinions" component={componentLoader('Opinions')} />
+          <Route path="/opinions/f/:selectedFilter" component={componentLoader('Opinions')} />
+          <Route path="/opinions/s/:searchTextDefault" component={componentLoader('Opinions')} />
           <Route path="/opinions_followed" component={componentLoader('OpinionsFollowed')} />
           <Route path="/opinions_ignored" component={componentLoader('OpinionsIgnored')} />
 

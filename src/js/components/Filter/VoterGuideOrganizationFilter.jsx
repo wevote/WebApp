@@ -391,12 +391,6 @@ const FilterColumn = styled.div`
   margin-right: 2rem;
 `;
 
-const SortByContainer = styled.div`
-  height: 40px;
-  display: flex;
-  align-items: center;
-`;
-
 const SortBy = styled.p`
   font-size: ${({ selected }) => (selected ? '.95rem' : '.875rem')};
   margin: 8px 0 0 0;
@@ -409,6 +403,12 @@ const SortBy = styled.p`
   &:hover {
     filter: opacity(0.7);
   }
+`;
+
+const SortByContainer = styled.div`
+  height: 40px;
+  display: flex;
+  align-items: center;
 `;
 
 export default withStyles(styles)(VoterGuideOrganizationFilter);

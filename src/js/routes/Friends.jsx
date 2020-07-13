@@ -412,7 +412,7 @@ class Friends extends Component {
                   {voterIsSignedIn && (
                     <FirstAndLastNameRequiredAlert />
                   )}
-                  {!(friendActivityExists) && (
+                  {!!(!voterIsSignedIn || !friendActivityExists) && (
                     <InviteByEmail />
                   )}
                   <FriendInvitationsSentToMePreview />
