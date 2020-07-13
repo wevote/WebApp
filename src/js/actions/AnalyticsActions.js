@@ -70,10 +70,11 @@ import AppStore from '../stores/AppStore'; // eslint-disable-line import/no-cycl
 // ACTION_VIEW_SHARED_OFFICE_ALL_OPINIONS = 67
 // ACTION_VIEW_SHARED_READY = 68
 // ACTION_VIEW_SHARED_READY_ALL_OPINIONS = 69
+// ACTION_SEARCH_OPINIONS = 70
 
 export default {
 
-  saveActionWrapper (actionConstant, googleCivicElectionId) {
+  saveActionWrapper (actionConstant, googleCivicElectionId = '') {
     Dispatcher.loadEndpoint('saveAnalyticsAction',
       {
         action_constant: actionConstant,
@@ -211,6 +212,11 @@ export default {
 
   saveActionReadyVisit (googleCivicElectionId) {
     const actionConstant = 43; // ACTION_READY_VISIT
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionSearchOpinions (googleCivicElectionId = '') {
+    const actionConstant = 70; // ACTION_SEARCH_OPINIONS
     this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 

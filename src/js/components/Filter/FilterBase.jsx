@@ -6,7 +6,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import { getAllStateCodeFilters } from '../../utils/address-functions';
-import BallotSearch from '../Ballot/BallotSearch';
+import FilterBaseSearch from './FilterBaseSearch';
 import { renderLog } from '../../utils/logging';
 import StateDropDown from './StateDropDown';
 
@@ -19,12 +19,16 @@ class FilterBase extends React.Component {
     classes: PropTypes.object,
     groupedFilters: PropTypes.array,
     islandFilters: PropTypes.array,
+    numberOfItemsFoundNode: PropTypes.node,
     onSearch: PropTypes.func,
     onFilteredItemsChange: PropTypes.func,
     onToggleSearch: PropTypes.func,
+    opinionsAndBallotItemsSearchMode: PropTypes.bool,
     positionSearchMode: PropTypes.bool,
+    searchOnOwnLine: PropTypes.bool,
+    searchTextDefault: PropTypes.string,
+    searchTextLarge: PropTypes.bool,
     selectedFiltersDefault: PropTypes.array,
-    numberOfItemsFoundNode: PropTypes.node,
     sortFilters: PropTypes.array,
     stateCodesToDisplay: PropTypes.array,
     voterGuidePositionSearchMode: PropTypes.bool,
@@ -48,6 +52,10 @@ class FilterBase extends React.Component {
       selectedFilters: this.props.selectedFiltersDefault || [],
       sortFilters: this.props.sortFilters || defaultSortFilters,
     });
+    const { searchTextDefault } = this.props;
+    if (searchTextDefault) {
+      this.setState({ isSearching: true });
+    }
   }
 
   changeToDifferentStateCodeFilter = (stateCodeFilter) => {
@@ -100,7 +108,7 @@ class FilterBase extends React.Component {
     // And finally, cancel any search that might be underway
     this.setState({ isSearching: false });
     if (this.props.onToggleSearch) {
-      this.props.onToggleSearch(false);
+      this.props.onToggleSearch(true);
     }
     if (this.props.onSearch) {
       this.props.onSearch('', []);
@@ -205,7 +213,7 @@ class FilterBase extends React.Component {
   ));
 
   handleToggleSearchBallot = (isSearching) => {
-    // console.log('FilterBase handleToggleSearchBallot isSearching:', isSearching);
+    // console.log('FilterBase handleToggleSearchBallot prior isSearching:', isSearching);
     this.setState({ isSearching: !isSearching });
     if (this.props.onToggleSearch) {
       this.props.onToggleSearch(isSearching);
@@ -227,22 +235,34 @@ class FilterBase extends React.Component {
     renderLog('FilterBase');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('FilterBase render');
     const { isSearching, selectedFilters, showAllFilters, sortFilters } = this.state;
-    const { allItems, classes, positionSearchMode, numberOfItemsFoundNode, stateCodesToDisplay, voterGuidePositionSearchMode } = this.props;
+    const {
+      allItems, classes, opinionsAndBallotItemsSearchMode, positionSearchMode,
+      numberOfItemsFoundNode, searchOnOwnLine, searchTextDefault, searchTextLarge,
+      stateCodesToDisplay, voterGuidePositionSearchMode,
+    } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
+    const filterBaseSearch = (
+      <FilterBaseSearch
+        addVoterGuideMode
+        allItems={allItems}
+        alwaysOpen={voterGuidePositionSearchMode}
+        isSearching={isSearching}
+        onFilterBaseSearch={this.onSearch}
+        onToggleSearch={this.handleToggleSearchBallot}
+        opinionsAndBallotItemsSearchMode={opinionsAndBallotItemsSearchMode}
+        positionSearchMode={positionSearchMode}
+        searchTextDefault={searchTextDefault}
+        searchTextLarge={searchTextLarge}
+        voterGuidePositionSearchMode={voterGuidePositionSearchMode}
+      />
+    );
+
     return (
       <Wrapper>
+        {searchOnOwnLine && filterBaseSearch}
         <FilterTop>
-          <BallotSearch
-            addVoterGuideMode
-            alwaysOpen={voterGuidePositionSearchMode}
-            isSearching={isSearching}
-            items={allItems}
-            onBallotSearch={this.onSearch}
-            onToggleSearch={this.handleToggleSearchBallot}
-            positionSearchMode={positionSearchMode}
-            voterGuidePositionSearchMode={voterGuidePositionSearchMode}
-          />
+          {!searchOnOwnLine && filterBaseSearch}
           {!isSearching && this.generateGroupedFilters()}
           {!isSearching && this.generateIslandFilters()}
           {(!isSearching && stateCodesToDisplay) && (

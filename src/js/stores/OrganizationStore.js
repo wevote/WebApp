@@ -26,7 +26,7 @@ class OrganizationStore extends ReduceStore {
         organization_search_term: '',
         organization_twitter_handle: '',
         number_of_search_results: 0,
-        search_results: [],
+        organizations_list: [],
       },
       voterOrganizationFeaturesProvided: {
         chosenFaviconAllowed: false,
@@ -219,6 +219,15 @@ class OrganizationStore extends ReduceStore {
     }
   }
 
+  getOrganizationSearchResultsList () {
+    // if only one organization is found, return the organization_twitter_handle
+    const { organizationSearchResults } = this.getState();
+    if (organizationSearchResults && organizationSearchResults.organizations_list && organizationSearchResults.number_of_search_results > 0) {
+      return organizationSearchResults.organizations_list || [];
+    }
+    return [];
+  }
+
   getOrganizationSearchResultsOrganization () {
     // if only one organization is found, return the organization_twitter_handle
     const { organizationSearchResults } = this.getState();
@@ -300,8 +309,8 @@ class OrganizationStore extends ReduceStore {
     let voterLinkedOrganizationWeVoteId;
     let voterGuides;
     let voterOrganizationFeaturesProvided;
-    const organizationsList = action.res.organizations_list || [];
-    const numberOfSearchResults = organizationsList.length;
+    let organizationsList = [];
+    let numberOfSearchResults = 0;
     const organizationWeVoteIdForVoterGuideOwner = action.res.organization_we_vote_id;
     let hostname;
 
@@ -348,6 +357,8 @@ class OrganizationStore extends ReduceStore {
         };
 
       case 'organizationSearch':
+        organizationsList = action.res.organizations_list || [];
+        numberOfSearchResults = organizationsList.length;
         return {
           ...state,
           organizationSearchResults: {
@@ -822,7 +833,7 @@ class OrganizationStore extends ReduceStore {
             organization_search_term: '',
             organization_twitter_handle: '',
             number_of_search_results: 0,
-            search_results: [],
+            organizations_list: [],
           },
           voterOrganizationFeaturesProvided: {
             chosenFaviconAllowed: false,

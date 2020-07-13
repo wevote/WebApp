@@ -44,11 +44,7 @@ class Office extends Component {
     this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
     const officeWeVoteId = this.props.params.office_we_vote_id;
     const office = OfficeStore.getOffice(officeWeVoteId);
-    if (!office || !office.ballot_item_display_name) {
-      OfficeActions.officeRetrieve(officeWeVoteId);
-      CandidateActions.candidatesRetrieve(officeWeVoteId);
-      // console.log('componentDidMount officeRetrieve');
-    } else {
+    if (office && office.ballot_item_display_name && office.candidate_list) {
       let { candidate_list: candidateList } = office;
       // console.log('componentDidMount office:', office);
       if (candidateList && candidateList.length && officeWeVoteId) {
@@ -80,6 +76,10 @@ class Office extends Component {
         candidateList,
         office,
       });
+    } else {
+      OfficeActions.officeRetrieve(officeWeVoteId);
+      CandidateActions.candidatesRetrieve(officeWeVoteId);
+      // console.log('componentDidMount officeRetrieve');
     }
 
     this.setState({
