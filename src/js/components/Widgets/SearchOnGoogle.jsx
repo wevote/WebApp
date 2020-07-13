@@ -32,7 +32,7 @@ class SearchOnGoogle extends Component {
           title="Search on Google"
           body={(
             <SplitIconButton
-              buttonText="Search on Google"
+              buttonText="Google Search"
               backgroundColor="#fff"
               compressedSize
               fontColor="#000"

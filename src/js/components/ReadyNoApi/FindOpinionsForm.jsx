@@ -67,7 +67,7 @@ class FindOpinionsForm extends Component {
       <OuterWrapper>
         <InnerWrapper>
           <IntroHeader>
-            {headerText || 'Find Candidate'}
+            {headerText || 'Find Candidates'}
           </IntroHeader>
           <SearchWrapper
             brandBlue={theme.palette.primary.main}

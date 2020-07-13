@@ -51,12 +51,9 @@ class FilterBaseSearch extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     const { searchTextDefault } = this.props;
     if (searchTextDefault) {
-      // this.setState({
-      //   searchText: searchTextDefault,
-      // }, this.handleSearchAllItemsRefresh);
       this.setState({
         searchText: searchTextDefault,
-      });
+      }, this.handleSearchAllItemsRefresh);
     }
   }
 
