@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {CheckCircle, ThumbUp, ThumbDown} from '@material-ui/icons';
+import { CheckCircle, ThumbUp, ThumbDown } from '@material-ui/icons';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import FollowToggle from './FollowToggle';
 import FriendsIcon from './FriendsIcon';

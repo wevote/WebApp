@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {AccountCircle, Close, Menu} from '@material-ui/icons';
-import {AppBar, Toolbar, Button, IconButton} from '@material-ui/core';
+import { AccountCircle, Close, Menu } from '@material-ui/icons';
+import { AppBar, Toolbar, Button, IconButton } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import cookies from '../../utils/cookies';

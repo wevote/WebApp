@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import {Ballot} from '@material-ui/icons';
+import { Ballot } from '@material-ui/icons';
 import { Button, Card, CircularProgress } from '@material-ui/core';
 import styled from 'styled-components';
 import AppActions from '../../actions/AppActions';

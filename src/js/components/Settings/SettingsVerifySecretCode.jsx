@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {ArrowBack, ArrowBackIos} from '@material-ui/icons';
+import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
 import { Button, Dialog, OutlinedInput } from '@material-ui/core';
 import clsx from 'clsx';
 import { renderLog } from '../../utils/logging';

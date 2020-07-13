@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Dialog, DialogContent} from '@material-ui/core';
-import {MailOutline, Message} from '@material-ui/icons';
+import { Dialog, DialogContent } from '@material-ui/core';
+import { MailOutline, Message } from '@material-ui/icons';
 import clsx from 'clsx';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import SplitIconButton from '../Widgets/SplitIconButton';

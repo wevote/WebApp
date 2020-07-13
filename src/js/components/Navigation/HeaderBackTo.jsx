@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {AccountCircle} from '@material-ui/icons';
-import {AppBar, IconButton, Toolbar, Button} from '@material-ui/core';
+import { AccountCircle } from '@material-ui/icons';
+import { AppBar, IconButton, Toolbar, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';

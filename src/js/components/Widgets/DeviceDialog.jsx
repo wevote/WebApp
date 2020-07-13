@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Dialog, DialogActions, DialogContent, DialogTitle, Table, TableBody, TableCell, TableHead, TableRow, Button} from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';

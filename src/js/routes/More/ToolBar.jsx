@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {IconButton, Tooltip} from '@material-ui/core';
+import { IconButton, Tooltip } from '@material-ui/core';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';

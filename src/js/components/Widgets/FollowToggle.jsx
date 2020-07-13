@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
-import {CheckCircle, NotInterested} from '@material-ui/icons';
+import { CheckCircle, NotInterested } from '@material-ui/icons';
 import FriendStore from '../../stores/FriendStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import VoterGuideStore from '../../stores/VoterGuideStore';

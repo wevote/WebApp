@@ -5,7 +5,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import { Button, Dialog } from '@material-ui/core';
-import {Done, ThumbUp, ThumbDown, Comment, NotInterested} from '@material-ui/icons';
+import { Done, ThumbUp, ThumbDown, Comment, NotInterested } from '@material-ui/icons';
 import { cordovaDot } from '../../../utils/cordovaUtils';
 import { renderLog } from '../../../utils/logging';
 import { stringContains } from '../../../utils/textFormat';

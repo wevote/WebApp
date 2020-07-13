@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Dialog, DialogTitle, IconButton, Typography, DialogContent} from '@material-ui/core';
-import {Close} from '@material-ui/icons';
+import { Dialog, DialogTitle, IconButton, Typography, DialogContent } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import BallotElectionListWithFilters from '../Ballot/BallotElectionListWithFilters';
 import { renderLog } from '../../utils/logging';

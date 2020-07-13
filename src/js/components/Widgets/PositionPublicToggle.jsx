@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Dialog, DialogContent, DialogTitle, IconButton, Typography, Radio, FormControlLabel, FormControl} from '@material-ui/core';
-import {Close} from '@material-ui/icons';
+import { Dialog, DialogContent, DialogTitle, IconButton, Typography, Radio, FormControlLabel, FormControl } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { isCordova, isWebApp } from '../../utils/cordovaUtils'; // hasIPhoneNotch,

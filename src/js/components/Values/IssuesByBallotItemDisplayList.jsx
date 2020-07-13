@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {MoreHoriz} from '@material-ui/icons/MoreHoriz';
+import { MoreHoriz } from '@material-ui/icons';
 import IssueStore from '../../stores/IssueStore';
 import ValueIconAndText from './ValueIconAndText';
 import VoterGuideStore from '../../stores/VoterGuideStore';

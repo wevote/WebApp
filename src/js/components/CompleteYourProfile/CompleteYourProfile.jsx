@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import {PlayCircleFilled, EditLocation, CheckCircle} from '@material-ui/icons';
+import { PlayCircleFilled, EditLocation, CheckCircle } from '@material-ui/icons';
 import AppActions from '../../actions/AppActions';
 import BallotStore from '../../stores/BallotStore';
 import SupportStore from '../../stores/SupportStore';

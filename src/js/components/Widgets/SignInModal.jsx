@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {Dialog, DialogContent, DialogTitle, IconButton, Typography} from '@material-ui/core';
-import {Close} from '@material-ui/icons';
+import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { isCordova, isAndroid, isIOS,

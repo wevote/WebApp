@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {DialogTitle, IconButton, DialogContent} from '@material-ui/core';
-import {Close} from '@material-ui/icons';
+import { DialogTitle, IconButton, DialogContent } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import PositionPublicToggle from '../PositionPublicToggle';
 import Slides from './Slides';

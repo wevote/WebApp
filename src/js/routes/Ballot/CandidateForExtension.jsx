@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Box, Button, Tabs, Tab} from '@material-ui/core';
+import { Box, Button, Tabs, Tab } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import AnalyticsActions from '../../actions/AnalyticsActions';

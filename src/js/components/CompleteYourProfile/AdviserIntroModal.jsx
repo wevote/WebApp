@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Close} from '@material-ui/icons';import { Dialog, DialogContent, IconButton } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
+import { Dialog, DialogContent, IconButton } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';

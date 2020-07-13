@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import {Ballot} from '@material-ui/icons';
+import { Ballot } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';

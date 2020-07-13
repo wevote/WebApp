@@ -3,7 +3,7 @@ import { Elements, StripeProvider } from 'react-stripe-elements';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButton, OutlinedInput, Radio, RadioGroup } from '@material-ui/core';
-import {Close, ArrowBack, ArrowBackIos} from '@material-ui/icons';
+import { Close, ArrowBack, ArrowBackIos } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';

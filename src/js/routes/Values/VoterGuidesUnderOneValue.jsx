@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {Ballot} from '@material-ui/icons';
+import { Ballot } from '@material-ui/icons';
 import { Button, Card } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';

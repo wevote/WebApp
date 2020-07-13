@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // import Edit from '@material-ui/icons/Edit';
 // import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import {CheckCircle} from '@material-ui/icons';
+import { CheckCircle } from '@material-ui/icons';
 import { Button, TableRow, TableHead, TableCell, TableBody, Table } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';

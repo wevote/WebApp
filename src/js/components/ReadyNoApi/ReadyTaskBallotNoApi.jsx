@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {ArrowForward, CheckCircle} from '@material-ui/icons';
+import { ArrowForward, CheckCircle } from '@material-ui/icons';
 
 // import AppActions from '../../actions/AppActions';
 import ballot0Percent from '../../../img/global/svg-icons/ready/ballot-0-percent.svg';

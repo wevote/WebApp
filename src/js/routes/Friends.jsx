@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import {Tabs, Tab} from '@material-ui/core';
+import { Tabs, Tab } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../actions/AnalyticsActions';
