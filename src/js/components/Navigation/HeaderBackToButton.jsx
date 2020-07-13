@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import KeyboardBackspaceIcon from '@material-ui/icons/ArrowBack';
-import KeyboardBackSpaceIconCordovaIOS from '@material-ui/icons/ArrowBackIos';
+import { Button } from '@material-ui/core';
+import { ArrowBack, ArrowBackIos } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import { historyPush, isIOS } from '../../utils/cordovaUtils';
 
@@ -41,9 +40,9 @@ class HeaderBackToButton extends Component {
         onClick={() => historyPush(backToLink)}
       >
         {isIOS() ? (
-          <KeyboardBackSpaceIconCordovaIOS className="button-icon" />
+          <ArrowBackIos className="button-icon" />
         ) : (
-          <KeyboardBackspaceIcon className="button-icon" />
+          <ArrowBack className="button-icon" />
         )}
         <span className="u-show-desktop-tablet u-no-break">{shortenText(backToLinkText, 60)}</span>
         <span className="u-show-mobile u-no-break">{shortenText(backToLinkText, 23)}</span>

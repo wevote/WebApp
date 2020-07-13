@@ -3,10 +3,8 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import InfoIcon from '@material-ui/icons/Info';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import { Button } from '@material-ui/core';
+import {Info, ThumbDown, ThumbUp} from '@material-ui/icons';
 import ReactSVG from 'react-svg';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import FollowToggle from '../Widgets/FollowToggle';
@@ -329,7 +327,7 @@ class PositionItem extends Component {
                     <OrganizationSupportWrapper>
                       <OrganizationSupportSquare>
                         <OrganizationSupportIconWrapper speakerImageExists={!!(position.speaker_image_url_https_medium)}>
-                          <ThumbUpIcon />
+                          <ThumbUp />
                         </OrganizationSupportIconWrapper>
                       </OrganizationSupportSquare>
                       {position.speaker_image_url_https_medium && (
@@ -350,7 +348,7 @@ class PositionItem extends Component {
                         <OrganizationOpposeWrapper>
                           <OrganizationOpposeSquare>
                             <OrganizationOpposeIconWrapper speakerImageExists={!!(position.speaker_image_url_https_medium)}>
-                              <ThumbDownIcon />
+                              <ThumbDown />
                             </OrganizationOpposeIconWrapper>
                           </OrganizationOpposeSquare>
                           {position.speaker_image_url_https_medium && (
@@ -371,7 +369,7 @@ class PositionItem extends Component {
                             <OrganizationInformationOnlyWrapper>
                               <OrganizationInformationOnlySquare>
                                 <OrganizationInfoOnlyIconWrapper speakerImageExists={!!(position.speaker_image_url_https_medium)}>
-                                  <InfoIcon />
+                                  <Info />
                                 </OrganizationInfoOnlyIconWrapper>
                               </OrganizationInformationOnlySquare>
                               {position.speaker_image_url_https_medium && (

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import CloseIcon from '@material-ui/icons/Close';
+import { InputBase, IconButton } from '@material-ui/core';
+import { Search, Close } from '@material-ui/icons';
 import styled from 'styled-components';
 import sortBy from 'lodash-es/sortBy';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isCordova } from '../../utils/cordovaUtils';
@@ -233,9 +231,7 @@ class FilterBaseSearch extends Component {
           classes={{ root: classes.iconButtonRoot }}
           onClick={!alwaysOpen ? this.toggleSearch : undefined}
         >
-          <SearchIcon
-            classes={{ root: searchIconClasses }}
-          />
+          <Search classes={{ root: searchIconClasses }} />
         </IconButton>
         <Separator isSearching={isSearching} alwaysOpen={alwaysOpen} />
         <InputBase
@@ -256,7 +252,7 @@ class FilterBaseSearch extends Component {
           <IconButton
             classes={{ root: classes.iconButtonRoot }}
           >
-            <CloseIcon classes={{ root: classes.closeIconRoot }} />
+            <Close classes={{ root: classes.closeIconRoot }} />
           </IconButton>
         </Closer>
       </SearchWrapper>

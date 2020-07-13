@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import ReactSVG from 'react-svg';
-import Chip from '@material-ui/core/Chip';
+import {Chip} from '@material-ui/core';
 import CandidateStore from '../../stores/CandidateStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
