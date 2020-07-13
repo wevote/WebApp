@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { Button, Dialog, IconButton } from '@material-ui/core';
-import {Close, Info} from '@material-ui/icons';
+import { Close, Info } from '@material-ui/icons';
 import BallotStore from '../../stores/BallotStore';
 import BallotActions from '../../actions/BallotActions';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';

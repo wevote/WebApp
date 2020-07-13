@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {ArrowRightAlt, Done, Comment, NotInterested, ThumbUp, ThumbDown} from '@material-ui/icons';
+import { ArrowRightAlt, Done, Comment, NotInterested, ThumbUp, ThumbDown } from '@material-ui/icons';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';

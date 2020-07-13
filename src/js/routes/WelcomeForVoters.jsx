@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import {LocationOn, Email, Person} from '@material-ui/icons';
+import { LocationOn, Email, Person } from '@material-ui/icons';
 import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
 import googleLogo from '../../img/global/logos/google-logo.svg';
 import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';

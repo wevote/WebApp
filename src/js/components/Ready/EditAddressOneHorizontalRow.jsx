@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {EditLocation} from '@material-ui/icons';
+import { EditLocation } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, InputBase, Button } from '@material-ui/core';
 import BallotStore from '../../stores/BallotStore';

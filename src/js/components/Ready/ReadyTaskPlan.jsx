@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {ArrowForward} from '@material-ui/icons';
+import { ArrowForward } from '@material-ui/icons';
 import AppActions from '../../actions/AppActions';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import plan0Percent from '../../../img/global/svg-icons/ready/plan-0-percent.svg';

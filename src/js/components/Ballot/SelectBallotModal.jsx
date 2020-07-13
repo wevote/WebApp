@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Close} from '@material-ui/icons';
+import { Close } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import {
   Button,

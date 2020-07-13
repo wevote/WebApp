@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {ArrowForward} from '@material-ui/icons';
+import { ArrowForward } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import BallotStore from '../../stores/BallotStore';

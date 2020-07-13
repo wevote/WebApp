@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Close, EditLocation} from '@material-ui/icons';
+import { Close, EditLocation } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button, Dialog, DialogContent, IconButton, Checkbox, FormControlLabel, InputBase, Select, Paper } from '@material-ui/core';
 import AnalyticsActions from '../../actions/AnalyticsActions';

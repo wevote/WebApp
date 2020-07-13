@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
-import {CheckCircle, Info, ThumbUp, ThumbDown} from '@material-ui/icons';
+import { CheckCircle, Info, ThumbUp, ThumbDown } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import FollowToggle from './FollowToggle';

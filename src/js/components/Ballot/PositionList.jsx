@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
-import {Comment, Info, ThumbUp, ThumbDown} from '@material-ui/icons';
+import { Comment, Info, ThumbUp, ThumbDown } from '@material-ui/icons';
 import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import FriendActions from '../../actions/FriendActions';

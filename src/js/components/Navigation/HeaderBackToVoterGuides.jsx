@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { Button, AppBar, Toolbar, Tooltip, IconButton } from '@material-ui/core';
-import {Place, AccountCircle} from '@material-ui/icons';
+import { Place, AccountCircle } from '@material-ui/icons';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import BallotStore from '../../stores/BallotStore';

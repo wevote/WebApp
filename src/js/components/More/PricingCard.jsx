@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
-import {Close, Check} from '@material-ui/icons';
+import { Close, Check } from '@material-ui/icons';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationStore from '../../stores/OrganizationStore';

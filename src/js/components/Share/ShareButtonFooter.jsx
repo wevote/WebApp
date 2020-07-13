@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import {Comment, ArrowBackIos, Reply, FileCopyOutlined} from '@material-ui/icons';
+import { Comment, ArrowBackIos, Reply, FileCopyOutlined } from '@material-ui/icons';
 import { Drawer, MenuItem, Button } from '@material-ui/core';
 import {
   EmailIcon,

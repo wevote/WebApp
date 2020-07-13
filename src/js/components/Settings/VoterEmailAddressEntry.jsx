@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { Button, Paper, InputBase } from '@material-ui/core';
-import {Delete, Mail} from '@material-ui/icons';
+import { Delete, Mail } from '@material-ui/icons';
 import LoadingWheel from '../LoadingWheel';
 import { blurTextFieldAndroid, focusTextFieldAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import styled from 'styled-components';
-import {Badge, Chip, CircularProgress, Link} from '@material-ui/core';
+import { Badge, Chip, CircularProgress, Link } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';

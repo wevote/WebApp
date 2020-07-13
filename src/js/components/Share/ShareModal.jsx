@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {Close, People, FileCopyOutlined, ArrowBackIos} from '@material-ui/icons';
-import {Dialog, DialogContent, IconButton, Tooltip, Button} from '@material-ui/core';
+import { Close, People, FileCopyOutlined, ArrowBackIos } from '@material-ui/icons';
+import { Dialog, DialogContent, IconButton, Tooltip, Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import {
   EmailIcon,

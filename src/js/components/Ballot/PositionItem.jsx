@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import {Info, ThumbDown, ThumbUp} from '@material-ui/icons';
+import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
 import ReactSVG from 'react-svg';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import FollowToggle from '../Widgets/FollowToggle';

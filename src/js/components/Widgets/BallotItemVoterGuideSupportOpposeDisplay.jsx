@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import {Info, ThumbUp, ThumbDown} from '@material-ui/icons';
+import { Info, ThumbUp, ThumbDown } from '@material-ui/icons';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import FriendsOnlyIndicator from './FriendsOnlyIndicator';

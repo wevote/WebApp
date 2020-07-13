@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {Tooltip} from '@material-ui/core';
+import { Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import {Settings} from '@material-ui/icons';
+import { Settings } from '@material-ui/icons';
 import { isCordova, isIOsSmallerThanPlus, isIPad } from '../../utils/cordovaUtils';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';

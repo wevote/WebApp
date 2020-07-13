@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {EditLocation} from '@material-ui/icons';
+import { EditLocation } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import {Paper, InputBase, Button} from '@material-ui/core';
+import { Paper, InputBase, Button } from '@material-ui/core';
 import BallotStore from '../stores/BallotStore';
 import BallotActions from '../actions/BallotActions';
 import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
