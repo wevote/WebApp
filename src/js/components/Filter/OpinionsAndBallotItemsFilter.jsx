@@ -218,7 +218,7 @@ class OpinionsAndBallotItemsFilter extends Component {
 
   getNewFilteredItems = () => {
     const { allItems } = this.props;
-    let { selectedFilters } = this.props;
+    const { selectedFilters } = this.props;
     if (!selectedFilters || !selectedFilters.length) {
       // selectedFilters = ['sortByAlphabetical'];
       // this.toggleFilter('sortByAlphabetical');
