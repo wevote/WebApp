@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { scrollIntoViewSimple, simpleClick, selectClick, simpleTextInput, selectTextInput } = require('../utils');
+const { clearTextInput, scrollIntoViewSimple, simpleClick, selectClick, simpleTextInput, selectTextInput } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_';
@@ -121,6 +121,7 @@ describe('Cross browser automated testing', () => {
     if (!isTablet) { // element not interactable
       await simpleClick('editAddressInPlaceModalEditButton'); // Change address
       await simpleClick('addressBoxText'); // Change address
+      await clearTextInput('addressBoxText'); // Clear address
       await simpleTextInput('addressBoxText', 'Oakland, CA 94501'); // Change address
       await simpleClick('addressBoxModalSaveButton'); // Click save
       await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
@@ -245,7 +246,7 @@ describe('Cross browser automated testing', () => {
     } else {
       await simpleClick('friendsTabFooterBar');  // Mobile or tablet screen size - FOOTER ICONS
     }
-    await simpleTextInput('EmailAddress', 'filipfrancetic@gmail.com');
+    await simpleTextInput('EmailAddress', 'automated_voter1@WeVote.info');
     await selectClick('.card-main');
     await simpleClick('friendsNextButton');
   });

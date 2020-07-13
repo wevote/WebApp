@@ -1,23 +1,28 @@
-const { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleTextInput, selectTextInput } = require('../utils');
-
 const assert = require('assert');
+const { scrollIntoViewSimple, scrollIntoViewSelect, simpleClick, selectClick, simpleTextInput, selectTextInput} = require('../utils');
 
 const PAUSE_DURATION_MICROSECONDS = 1250;
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
-const IOS_CONTEXT = 'WEBVIEW_1';
+const IOS_CONTEXT = 'WEBVIEW_';
+const { twitterUserName, twitterPassword } = driver.config;
+const { isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS} = driver.config.capabilities;
 
-describe('Basic cross-platform We Vote test',  () => {
-  it('should load the app so we can run various tests', async () => {
-    const { twitterUserName, twitterPassword } = driver.config;
-    const { device, browserName, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
-    const WEB_APP_ROOT_URL = driver.config.webAppRootUrl;
+describe('Cross browser automated testing',  () => {
+  before(async () => {
     if (isCordovaFromAppStore) {
       // switch contexts and click through intro
       const contexts = await driver.getContexts();
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const context = contexts.includes(ANDROID_CONTEXT) ? ANDROID_CONTEXT : IOS_CONTEXT;
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await driver.switchContext(context);
+      let webview = false;
+      // eslint-disable-next-line
+      for (const context of contexts) {
+        if ((isAndroid && context.includes(ANDROID_CONTEXT)) || (isIOS && context.includes(IOS_CONTEXT))) {
+          // eslint-disable-next-line no-await-in-loop
+          await driver.switchContext(context);
+          webview = true;
+          break;
+        }
+      }
+      assert(webview);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await selectClick('div[data-index="0"] .intro-story__btn--bottom'); // Click first next button
       await selectClick('div[data-index="1"] .intro-story__btn--bottom'); // Click second next button
@@ -27,34 +32,24 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.url('ready');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     }
-    // //////////////////////
-    // Sign in using Twitter, when in browser
-    if (!isCordovaFromAppStore && twitterUserName && twitterPassword) {
+  });
+
+  it('should sign in with twitter', async () =>  {
+    if (twitterUserName && twitterPassword) {
       await simpleClick('signInHeaderBar'); // Clicks on Sign in
       await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
       await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
       await simpleTextInput('password', twitterPassword); // Enter Password
       await simpleClick('allow'); // Clicks on Authorize App
-//      const unusualLoginUsernameInput = await $('input[name="session[username_or_email]"]');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await unusualLoginUsernameInput.setValue(twitterUserName);
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      const unusualLoginPasswordInput = await $('input[name="session[password]"]');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await unusualLoginPasswordInput.setValue(twitterPassword);
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      const unusualLoginSubmit = await $('[data-testid="LoginForm_Login_Button"]');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await unusualLoginSubmit.click();
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//      await selectTextInput('input[name="session[username_or_email]"]', twitterUserName);
+//      await selectTextInput('input[name="session[password]"]', twitterPassword);
+//      await selectClick('[data-testid="LoginForm_Login_Button"]');
 //      await simpleTextInput('challenge_response', ''); // Clicks on 'Confirmation Code'
 //      await simpleClick('allow'); // Clicks on Authorize App
-      await browser.pause(PAUSE_DURATION_MICROSECONDS * 9);
-      await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting
     }
+  });
 
-    // //////////////////////
-    // Check the positioning of the SignInModal when we click "Enter Email"
+  it('should sign in with email', async () =>  {
     if (isCordovaFromAppStore) {
       await simpleClick('signInHeaderBar'); // Clicks on Sign in
       await simpleClick('emailSignIn-splitIconButton'); // Clicks "Sign in with an email" button
@@ -69,28 +64,26 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleClick('emailVerifyButton'); // Click Verify
       await simpleClick('emailVerificationBackButton'); // Click back
 //      await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
-      await simpleTextInput('enterVoterEmailAddress', 'A'.repeat(1000)); // Type input
+      await simpleTextInput('enterVoterEmailAddress', 'A'.repeat(500)); // Type input
 //      await simpleClick('changeEmailAddressButton'); // Click change email address
 //      await simpleTextInput('enterVoterEmailAddress', "'@gmail.com") // Type input
 //      await simpleClick('voterEmailAddressEntrySendCode') // Click Send Verification Code
 //      await simpleClick('emailVerifyButton'); // Click Verify
 //      await simpleClick('enterVoterEmailAddress') // Click input box
       await simpleClick('cancelEmailButton'); // Clicks the cancel button
-    } else if (isAndroid && isMobileScreenSize) { // Android mobile browsers can't click this element without scrolling
-      // Don't test
-    } else {
+    } else if (!isAndroid || !isMobileScreenSize) { // Android mobile browsers can't click this element without scrolling
       await simpleClick('signInHeaderBar'); // Clicks on Sign in
       await simpleClick('emailSignIn-splitIconButton'); // Clicks "Sign in with an email" button
       await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
       await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
     }
+  });
 
-		// //////////////////////
-    // Check the positioning of the SignInModal when we click "Enter Phone"
-    if (isCordovaFromAppStore && isAndroid) {
+  it('should sign in with phone', async () => {
+    if (isCordovaFromAppStore) {
       await simpleClick('signInHeaderBar'); // Clicks on Sign in
       await simpleClick('smsSignIn-splitIconButton'); // Clicks "Sign in with a text" button
-      await simpleTextInput('enterVoterPhone', '18004444444') // Inputs voter phone number
+      await simpleTextInput('enterVoterPhone', '18004444444'); // Inputs voter phone number
       await simpleClick('voterPhoneSendSMS'); // Clicks "Send Verification Code"
       await simpleTextInput("digit1", "0");
       await simpleTextInput("digit2", "1");
@@ -98,21 +91,26 @@ describe('Basic cross-platform We Vote test',  () => {
       await simpleTextInput("digit4", "3");
       await simpleTextInput("digit5", "4");
       await simpleTextInput("digit6", "5");
-//      await selectClick('[name="VERIFY"]'); // Click Verify
-//      await selectClick('[name="CHANGE PHONE NUMBER"]'); // Click change phone number
-//      await simpleClick('enterVoterPhone') // Click input box
-//      await simpleClick('voterPhoneSendSMS') // Click Send Verification Code
-//      await selectClick('[name="BACK"]'); // Click Verify
-//      await simpleClick('enterVoterPhone') // Click input box
-//      await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
-    } else  if (isAndroid && isMobileScreenSize) {  // Samsung mobile browsers can't click this element without scrolling
-      // Don't test
+      await simpleClick('emailVerifyButton'); // Click Verify
+      if (!isIOS || !isCordovaFromAppStore) { // change phone number button can't be located
+        await simpleClick('changeEmailAddressButton'); // Click change phone number
+        await simpleClick('enterVoterPhone'); // Click input box
+        await simpleClick('voterPhoneSendSMS'); // Click Send Verification Code
+      }
+      await simpleClick('emailVerificationBackButton'); // Click back
+      await simpleClick('enterVoterPhone'); // Click input box
+      await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
     } else {
       await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      await simpleClick('smsSignIn-splitIconButton'); // Clicks "Sign in with a text" button
       await simpleClick('enterVoterPhone'); // Puts cursor in Phone text input
-      await simpleClick('profileCloseSignInModal'); // Clicks on X
+      await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
     }
+  });
 
+  it('should test settings page', async () => {
+    assert(await $$('#profileAvatarHeaderBar').length);
+    await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting
     await simpleClick('profilePopUpYourSettings');
     await simpleTextInput("first-name", "Hello how are you");
     await simpleTextInput("last-name", "I am great thanks");
@@ -182,7 +180,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await selectClick('=Hide Code');
     await scrollIntoViewSimple('selectVoterGuidesSideBarNewVoterGuide');
     await simpleClick('selectVoterGuidesSideBarNewVoterGuide');
-    await simpleClick('profileCloseVoterGuideChooseElectionModal'); 
+    await simpleClick('profileCloseVoterGuideChooseElectionModal');
     await simpleClick('selectVotingGuidesSideBarLinkEdit');
     await browser.back();
     await simpleClick('selectVotingGuidesSideBarLinkPreview');
