@@ -108,7 +108,7 @@ class FilterBase extends React.Component {
     // And finally, cancel any search that might be underway
     this.setState({ isSearching: false });
     if (this.props.onToggleSearch) {
-      this.props.onToggleSearch(false);
+      this.props.onToggleSearch(true);
     }
     if (this.props.onSearch) {
       this.props.onSearch('', []);
@@ -213,7 +213,7 @@ class FilterBase extends React.Component {
   ));
 
   handleToggleSearchBallot = (isSearching) => {
-    // console.log('FilterBase handleToggleSearchBallot isSearching:', isSearching);
+    // console.log('FilterBase handleToggleSearchBallot prior isSearching:', isSearching);
     this.setState({ isSearching: !isSearching });
     if (this.props.onToggleSearch) {
       this.props.onToggleSearch(isSearching);

@@ -65,20 +65,7 @@
     <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
     <script type="text/javascript" async defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
-<!-- These lines replaced below with injected HTML //-->
-<!--    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>-->
-<!--    <script type="text/javascript" async defer src="https://platform.twitter.com/widgets.js"></script>-->
-
     <script type="text/javascript">
-      // Dale 2020-06 This is not working because we need jQuery so quickly
-      // setTimeout(() => {
-      //   /* Load jquery for API calls */
-      //   let scriptElementForJquery = document.createElement('script');
-      //   scriptElementForJquery.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js';
-      //   let firstExistingScript = document.getElementsByTagName('script')[0];
-      //   firstExistingScript.parentNode.insertBefore(scriptElementForJquery, firstExistingScript);
-      // }, 1000);
-
       let firstExistingScript = document.getElementsByTagName('script')[0];
 
       let scriptElementForBootstrap = document.createElement('script');

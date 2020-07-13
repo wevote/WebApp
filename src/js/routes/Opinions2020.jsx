@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
 import styled from 'styled-components';
+import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotItemForOpinions from '../components/OpinionsAndBallotItems/BallotItemForOpinions';
 import BallotActions from '../actions/BallotActions';
 import BallotStore from '../stores/BallotStore';
@@ -22,10 +23,10 @@ import organizationIcon from '../../img/global/svg-icons/organization-icon.svg';
 import OrganizationStore from '../stores/OrganizationStore';
 import OpinionsAndBallotItemsFilter from '../components/Filter/OpinionsAndBallotItemsFilter';
 import ShowMoreItems from '../components/Widgets/ShowMoreItems';
+import { arrayContains, stringContains } from '../utils/textFormat';
 import VoterGuideDisplayForListForOpinions from '../components/OpinionsAndBallotItems/VoterGuideDisplayForListForOpinions';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
-import { arrayContains, stringContains } from '../utils/textFormat';
 
 
 const groupedFilters = [
@@ -109,6 +110,7 @@ class Opinions2020 extends Component {
       });
     }
     if (searchTextDefault) {
+      AnalyticsActions.saveActionSearchOpinions(VoterStore.electionId());
       // Options: showBallotItemsFilter, showOrganizationsFilter, showPublicFiguresFilter
       this.setState({
         isSearching: true,
@@ -199,6 +201,7 @@ class Opinions2020 extends Component {
   onBallotStoreChange () {
     const { allBallotItemSearchResults, allOrganizationSearchResults, allVoterGuides, ballotItemWeVoteIdsAlreadyFoundList } = this.state;
     const localGoogleCivicElectionId = VoterStore.electionId();
+    // console.log('onBallotStoreChange, localGoogleCivicElectionId:', localGoogleCivicElectionId);
     const allBallotItemsFlattened = BallotStore.getAllBallotItemsFlattened(localGoogleCivicElectionId);
     let ballotItemWeVoteIdsAlreadyFoundChanged = false;
     // console.log('Opinions2020, onBallotStoreChange allBallotItemsFlattened:', allBallotItemsFlattened);
@@ -472,11 +475,10 @@ class Opinions2020 extends Component {
   }
 
   onFilteredItemsChangeFromBallotItemsFilterBase = (filteredOpinionsAndBallotItems, currentSelectedBallotFilters) => {
-    // console.log('onFilteredItemsChangeFromBallotItemsFilterBase, filteredOpinionsAndBallotItems: ', filteredOpinionsAndBallotItems);
+    // console.log('onFilteredItemsChangeFromBallotItemsFilterBase, currentSelectedBallotFilters: ', currentSelectedBallotFilters);
     this.setState({
       currentSelectedBallotFilters,
       filteredOpinionsAndBallotItems,
-      // isSearching: false,
     });
   }
 
@@ -489,12 +491,18 @@ class Opinions2020 extends Component {
   };
 
   handleToggleSearch = (isSearching) => {
-    // console.log('Opinions2020 handleToggleSearch isSearching:', isSearching);
+    // console.log('Opinions2020 handleToggleSearch PRIOR isSearching:', isSearching, ', clear searchTextDefault');
     // const { ballotWithItemsFromCompletionFilterType } = this.state;
     // let totalNumberOfBallotItems;
     this.setState({
       isSearching: !isSearching,
     });
+    // If prior isSearching was true, clear the searchTextDefault
+    if (isSearching) {
+      this.setState({
+        searchTextDefault: '',
+      });
+    }
   };
 
   increaseNumberOfBallotItemsToDisplay = () => {

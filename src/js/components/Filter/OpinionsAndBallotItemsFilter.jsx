@@ -220,11 +220,10 @@ class OpinionsAndBallotItemsFilter extends Component {
     const { allItems } = this.props;
     let { selectedFilters } = this.props;
     if (!selectedFilters || !selectedFilters.length) {
-      // We always want to make sure there is at least on race filter on
-      selectedFilters = ['showFederalRaceFilter'];
-      this.toggleFilter('showFederalRaceFilter');
+      // selectedFilters = ['sortByAlphabetical'];
+      // this.toggleFilter('sortByAlphabetical');
       // console.log('Exiting getNewFilteredItems (1)');
-      return [];
+      // return [];
     }
     let filteredItems = allItems; // Start with all items
 
