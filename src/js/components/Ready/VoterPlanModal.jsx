@@ -169,7 +169,7 @@ class VoterPlanModal extends Component {
     let savedVoterPlanFound = false;
     if (!voterPlansForVoterRetrieved) {
       ReadyActions.voterPlansForVoterRetrieve();
-    } else {
+    } else if (savedVoterPlan.google_civic_election_id) {
       savedVoterPlanFound = true;
     }
     this.setState({
