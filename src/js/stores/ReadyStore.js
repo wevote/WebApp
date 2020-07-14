@@ -36,10 +36,9 @@ class ReadyStore extends ReduceStore {
   }
 
   reduce (state, action) {
-    const { allCachedVoterPlansForVoterByElectionId, allLatestPublicVoterPlansByElectionId } = state;
+    const { allCachedVoterPlansForVoterByElectionId, allLatestPublicVoterPlansByElectionId, voterPlansForVoterRetrieved } = state;
     let googleCivicElectionId = 0;
     let voterPlanList = [];
-    let voterPlansForVoterRetrieved;
 
 
     switch (action.type) {
@@ -77,7 +76,6 @@ class ReadyStore extends ReduceStore {
       case 'voterPlansForVoterRetrieve':
         // console.log('ReadyStore voterPlansForVoterRetrieve, action.res:', action.res);
         if (!action.res || !action.res.success) return state;
-        voterPlansForVoterRetrieved = true;
         voterPlanList = action.res.voter_plan_list || [];
         if (voterPlanList.length) {
           voterPlanList.forEach((oneVoterPlan) => {
@@ -87,12 +85,12 @@ class ReadyStore extends ReduceStore {
           return {
             ...state,
             allCachedVoterPlansForVoterByElectionId,
-            voterPlansForVoterRetrieved,
+            voterPlansForVoterRetrieved: true,
           };
-        } else if (voterPlansForVoterRetrieved) {
+        } else if (!voterPlansForVoterRetrieved) {
           return {
             ...state,
-            voterPlansForVoterRetrieved,
+            voterPlansForVoterRetrieved: true,
           };
         } else {
           return state;
