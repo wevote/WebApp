@@ -71,18 +71,14 @@ class ReadyStore extends ReduceStore {
         // console.log('ReadyStore voterPlansForVoterRetrieve, action.res:', action.res);
         if (!action.res || !action.res.success) return state;
         voterPlanList = action.res.voter_plan_list || [];
-        if (voterPlanList.length) {
-          voterPlanList.forEach((oneVoterPlan) => {
-            googleCivicElectionId = oneVoterPlan.google_civic_election_id || 0;
-            allCachedVoterPlansForVoterByElectionId[googleCivicElectionId] = oneVoterPlan;
-          });
-          return {
-            ...state,
-            allCachedVoterPlansForVoterByElectionId,
-          };
-        } else {
-          return state;
-        }
+        voterPlanList.forEach((oneVoterPlan) => {
+          googleCivicElectionId = oneVoterPlan.google_civic_election_id || 0;
+          allCachedVoterPlansForVoterByElectionId[googleCivicElectionId] = oneVoterPlan;
+        });
+        return {
+          ...state,
+          allCachedVoterPlansForVoterByElectionId,
+        };
 
       default:
         return state;
