@@ -69,9 +69,12 @@ class Opinions2020 extends Component {
     this.state = {
       allBallotItems: [],
       allBallotItemSearchResults: [],
+      allOpinionsAndBallotItems: [],
       allOrganizationSearchResults: [],
+      allVoterGuides: [],
       ballotItemWeVoteIdsAlreadyFoundList: [],
       ballotSearchResults: [],
+      componentDidMount: false,
       currentSelectedBallotFilters: [], // So we know when the ballot filters change
       filteredOpinionsAndBallotItems: [],
       isSearching: false,
@@ -85,13 +88,13 @@ class Opinions2020 extends Component {
       stateCodeFromIpAddress: '',
       stateCodeToRetrieve: '',
       totalNumberOfBallotItems: 0,
-      allVoterGuides: [],
     };
     this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
     this.setState({
+      componentDidMount: true,
       numberOfBallotItemsToDisplay: 5,
     });
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
@@ -101,7 +104,7 @@ class Opinions2020 extends Component {
 
     const { searchTextDefault, selectedFilter } = this.props.params;
     const selectedFiltersAddDefault = ['sortByAlphabetical'];
-    // console.log('selectedFilter:', selectedFilter);
+    // console.log('componentDidMount searchTextDefault:', searchTextDefault);
     if (selectedFilter) {
       // Options: showBallotItemsFilter, showOrganizationsFilter, showPublicFiguresFilter
       selectedFiltersAddDefault.push(selectedFilter);
@@ -258,7 +261,7 @@ class Opinions2020 extends Component {
               // twitter_handle: newBallotItemSearchResults[count].organization_twitter_handle,
               // voter_guide_display_name: newBallotItemSearchResults[count].organization_name,
               // voter_guide_image_url_medium: newBallotItemSearchResults[count].organization_photo_url_medium,
-              // voter_guide_owner_type: newBallotItemSearchResults[count].organization_owner_type || '',
+              // voter_guide_owner_type: newBallotItemSearchResults[count].organization_type || '',
               we_vote_id: newBallotItemSearchResults[count].we_vote_id || newBallotItemSearchResults[count].measure_we_vote_id,
             };
           } else {
@@ -272,7 +275,7 @@ class Opinions2020 extends Component {
               // twitter_handle: newBallotItemSearchResults[count].organization_twitter_handle,
               // voter_guide_display_name: newBallotItemSearchResults[count].organization_name,
               // voter_guide_image_url_medium: newBallotItemSearchResults[count].organization_photo_url_medium,
-              // voter_guide_owner_type: newBallotItemSearchResults[count].organization_owner_type || '',
+              // voter_guide_owner_type: newBallotItemSearchResults[count].organization_type || '',
               we_vote_id: newBallotItemSearchResults[count].we_vote_id,
             };
           }
@@ -391,7 +394,7 @@ class Opinions2020 extends Component {
             twitter_handle: newOrganizationSearchResults[count].organization_twitter_handle,
             voter_guide_display_name: newOrganizationSearchResults[count].organization_name,
             voter_guide_image_url_medium: newOrganizationSearchResults[count].organization_photo_url_medium,
-            voter_guide_owner_type: newOrganizationSearchResults[count].organization_owner_type || '',
+            voter_guide_owner_type: newOrganizationSearchResults[count].organization_type || '',
             we_vote_id: newOrganizationSearchResults[count].organization_we_vote_id,
           };
           newOrganizations.push(newOrganization);
@@ -530,13 +533,13 @@ class Opinions2020 extends Component {
     const { classes } = this.props;
     const localGoogleCivicElectionId = VoterStore.electionId();
     const {
-      allOpinionsAndBallotItems, ballotSearchResults,
+      allOpinionsAndBallotItems, ballotSearchResults, componentDidMount,
       filteredOpinionsAndBallotItems, isSearching,
       numberOfBallotItemsToDisplay,
       searchText, searchTextDefault, selectedFiltersAddDefault,
       stateCodeToRetrieve,
     } = this.state;
-    if (!allOpinionsAndBallotItems) {
+    if (!componentDidMount) {
       return LoadingWheel;
     }
     // console.log('Opinions2020 render, isSearching:', isSearching, ', searchText:', searchText, ', searchTextDefault:', searchTextDefault);

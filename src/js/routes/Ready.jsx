@@ -39,6 +39,7 @@ class Ready extends Component {
       chosenReadyIntroductionTitle: '',
       issuesDisplayDecisionHasBeenMade: false,
       issuesShouldBeDisplayed: false,
+      textForMapSearch: '',
     };
   }
 
@@ -61,6 +62,7 @@ class Ready extends Component {
     AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
     this.setState({
       locationGuessClosed: cookies.getItem('location_guess_closed'),
+      textForMapSearch: VoterStore.getTextForMapSearch(),
     });
   }
 
@@ -96,7 +98,10 @@ class Ready extends Component {
   }
 
   onVoterStoreChange () {
-    // this.setState({ voter: VoterStore.getVoter() });
+    const textForMapSearch = VoterStore.getTextForMapSearch();
+    this.setState({
+      textForMapSearch,
+    });
   }
 
   goToBallot = () => {
@@ -111,16 +116,18 @@ class Ready extends Component {
     renderLog('Ready');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       chosenReadyIntroductionText, chosenReadyIntroductionTitle, issuesShouldBeDisplayed,
-      locationGuessClosed,
+      locationGuessClosed, textForMapSearch,
     } = this.state;
 
+    const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
+    // console.log('locationGuessClosed:', locationGuessClosed, ', textForMapSearch:', textForMapSearch, ', showAddressVerificationForm:', showAddressVerificationForm);
     return (
       <Wrapper className="page-content-container">
         <PageContainer className="container-fluid" isWeb={isWebApp()}>
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
-            {!(locationGuessClosed) && (
+            {(showAddressVerificationForm) && (
               <EditAddressWrapper className="col-12">
                 <EditAddressOneHorizontalRow saveUrl="/ready" />
               </EditAddressWrapper>

@@ -67,7 +67,7 @@ class FindOpinionsForm extends Component {
       <OuterWrapper>
         <InnerWrapper>
           <IntroHeader>
-            {headerText || 'Find Candidates'}
+            {headerText || 'Find Candidates & Opinions'}
           </IntroHeader>
           <SearchWrapper
             brandBlue={theme.palette.primary.main}
@@ -200,10 +200,9 @@ const InnerWrapper = styled.div`
 
 const IntroHeader = styled.div`
   margin: 0;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
-  // margin-bottom: 6px;
-  // margin-top: 12px;
+  text-align: center;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     font-size: 18px;
     margin-top: 0;
@@ -224,11 +223,8 @@ const SearchWrapper = styled.div`
   height: ${({ searchTextLarge }) => (searchTextLarge ? '32px' : '26px')};
   border: 1px solid #ccc;
   padding: 0 3px 0 3px;
-  margin-right: 16px;
   margin-bottom: 8px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-right: 8px;
-  }
+  text-align: center;
 `;
 
 export default withTheme(withStyles(styles)(FindOpinionsForm));

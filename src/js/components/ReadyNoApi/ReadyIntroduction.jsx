@@ -133,7 +133,7 @@ const IntroHeader = styled.div`
   font-size: 26px;
   font-weight: 800;
   margin: 0 !important;
-  text-align: left;
+  text-align: center;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     font-size: 16px;
   }
