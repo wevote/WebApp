@@ -9,6 +9,8 @@ import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 import { renderLog } from '../../utils/logging';
 import SupportStore from '../../stores/SupportStore';
+import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
+import { historyPush } from '../../utils/cordovaUtils';
 
 
 class CandidateItemForOpinions extends Component {
@@ -139,6 +141,11 @@ class CandidateItemForOpinions extends Component {
     return '';
   }
 
+  goToCandidateLink = () => {
+    // If here, we assume the voter is on the Office page
+    historyPush(this.getCandidateLink());
+  }
+
   togglePositionStatement () {
     const { showPositionStatement } = this.state;
     this.setState({
@@ -162,7 +169,7 @@ class CandidateItemForOpinions extends Component {
     if (!oneCandidate || !oneCandidate.we_vote_id) {
       return null;
     }
-
+    // console.log('oneCandidate:', oneCandidate);
     const commentDisplayDesktop = voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement || showPositionStatement ? (
       <ItemPositionStatementActionBarDesktopWrapper className="d-none d-sm-block u-min-50">
         <ItemPositionStatementActionBar
@@ -214,23 +221,41 @@ class CandidateItemForOpinions extends Component {
             <Link to={this.getCandidateLink()} className="card-main__no-underline">
               <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
                 {oneCandidate.ballot_item_display_name}
-                <br />
-                <span className="card-main__candidate-party-description">{candidatePartyText}</span>
+                {candidatePartyText && (
+                  <>
+                    <br />
+                    <span className="card-main__candidate-party-description">{candidatePartyText}</span>
+                  </>
+                )}
               </h4>
             </Link>
+            {!!(oneCandidate.twitter_followers_count) && (
+              <TwitterWrapper
+                className="u-show-desktop twitter-followers__badge u-cursor--pointer"
+                onClick={() => this.goToCandidateLink}
+              >
+                <span className="fab fa-twitter fa-sm" />
+                <span title={numberWithCommas(oneCandidate.twitter_followers_count)}>{abbreviateNumber(oneCandidate.twitter_followers_count)}</span>
+              </TwitterWrapper>
+            )}
           </Candidate>
-          {/* Action Buttons: Support/Oppose/Comment */}
-          <ItemActionBar
-            inModal={this.props.inModal}
-            ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-            ballotItemWeVoteId={oneCandidate.we_vote_id}
-            buttonsOnly
-            externalUniqueId={`candidateItemForAddPositions-${oneCandidate.we_vote_id}`}
-            positionPublicToggleWrapAllowed={this.props.numberOfCandidatesInList > 1}
-            shareButtonHide
-            togglePositionStatementFunction={this.togglePositionStatement}
-          />
         </CandidateTopRow>
+        {oneCandidate.twitter_description && (
+          <CandidateDescription>
+            {oneCandidate.twitter_description}
+          </CandidateDescription>
+        )}
+        {/* Action Buttons: Support/Oppose/Comment */}
+        <ItemActionBar
+          inModal={this.props.inModal}
+          ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+          ballotItemWeVoteId={oneCandidate.we_vote_id}
+          buttonsOnly
+          externalUniqueId={`candidateItemForAddPositions-${oneCandidate.we_vote_id}`}
+          positionPublicToggleWrapAllowed={this.props.numberOfCandidatesInList > 1}
+          shareButtonHide
+          togglePositionStatementFunction={this.togglePositionStatement}
+        />
         {commentDisplayDesktop}
         {commentDisplayMobile}
       </Wrapper>
@@ -253,9 +278,6 @@ const styles = theme => ({
   },
 });
 
-const Wrapper = styled.div`
-`;
-
 const CandidateTopRow = styled.div`
   display: flex;
   flex-flow: row wrap;
@@ -267,12 +289,22 @@ const Candidate = styled.div`
   cursor: pointer;
 `;
 
+const CandidateDescription = styled.div`
+`;
+
 const ItemPositionStatementActionBarDesktopWrapper = styled.div`
   margin-bottom: 8px;
 `;
 
 const ItemPositionStatementActionBarMobileWrapper = styled.div`
   margin-bottom: 4px;
+`;
+
+const TwitterWrapper = styled.div`
+  margin-left: 15px;
+`;
+
+const Wrapper = styled.div`
 `;
 
 export default withTheme(withStyles(styles)(CandidateItemForOpinions));

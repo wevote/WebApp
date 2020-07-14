@@ -1104,6 +1104,7 @@ class Ballot extends Component {
     if (ballotWithItemsFromCompletionFilterType.length === 0 && inRemainingDecisionsMode) {
       historyPush(this.state.pathname);
     }
+    const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
 
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
@@ -1262,14 +1263,14 @@ class Ballot extends Component {
                   {!isSearching && (
                     <DelayedLoad waitBeforeShow={2000}>
                       <>
-                        {locationGuessClosed ? (
-                          <span className="u-show-desktop-tablet">
-                            <CompleteYourProfile />
-                          </span>
-                        ) : (
+                        {(showAddressVerificationForm) ? (
                           <EditAddressWrapper>
                             <EditAddressOneHorizontalRow saveUrl="/ballot" />
                           </EditAddressWrapper>
+                        ) : (
+                          <span className="u-show-desktop-tablet">
+                            <CompleteYourProfile />
+                          </span>
                         )}
                       </>
                     </DelayedLoad>

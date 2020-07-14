@@ -48,6 +48,7 @@ class FilterBaseSearch extends Component {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     const { searchTextDefault } = this.props;
+    // console.log('componentDidMount searchTextDefault:', searchTextDefault);
     if (searchTextDefault) {
       this.setState({
         searchText: searchTextDefault,
@@ -68,6 +69,9 @@ class FilterBaseSearch extends Component {
     }
     if (this.state.searchText !== nextState.searchText) {
       // console.log('shouldComponentUpdate: this.state.searchText', this.state.searchText, ', nextState.searchText', nextState.searchText);
+      return true;
+    }
+    if (this.state.searchTextDefault !== nextState.searchTextDefault) {
       return true;
     }
     if (this.props.alwaysOpen !== nextProps.alwaysOpen) {
@@ -104,20 +108,10 @@ class FilterBaseSearch extends Component {
   filterItems = search => this.props.allItems.map((item) => {
     // console.log('FilterBaseSearch filterItems');
     const { opinionsAndBallotItemsSearchMode, positionSearchMode, voterGuidePositionSearchMode } = this.props;
-    const { searchTextAlreadyRetrieved } = this.state;
     let candidatesToShowForSearchResults = [];
     let foundInArray = [];
     let searchPriority = 0;
     if (opinionsAndBallotItemsSearchMode) {
-      // Reach out to API server to get more Organizations or Ballot items.
-      if (!arrayContains(search, searchTextAlreadyRetrieved)) {
-        OrganizationActions.organizationSearch(search);
-        // DALE NOTE: 2020-07-10 This second retrieve causes the results to get erased from the display list sometimes
-        //  Needs to be fixed.
-        BallotActions.ballotItemOptionsRetrieve('', search);
-        searchTextAlreadyRetrieved.push(search);
-        this.setState({ searchTextAlreadyRetrieved });
-      }
       const opinionsAndBallotItemsResults = opinionsAndBallotItemsSearchPriority(search, item);
       ({ searchPriority } = opinionsAndBallotItemsResults);
       ({ foundInArray } = opinionsAndBallotItemsResults);
@@ -167,9 +161,25 @@ class FilterBaseSearch extends Component {
 
     // Filter out items without the search terms, and put the most likely search result at the top
     // Only return results if they get past the filter
+    this.searchNewItems(searchText);
     const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter(item => item.searchPriority > 0);
     // console.log('sortedFiltered:', sortedFiltered);
     return this.props.onFilterBaseSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
+  }
+
+  searchNewItems = (searchText) => {
+    const { opinionsAndBallotItemsSearchMode } = this.props;
+    const { searchTextAlreadyRetrieved } = this.state;
+    // console.log('searchNewItems searchText:', searchText, ', searchTextAlreadyRetrieved:', searchTextAlreadyRetrieved);
+    if (opinionsAndBallotItemsSearchMode) {
+      // Reach out to API server to get more Organizations or Ballot items.
+      if (!arrayContains(searchText, searchTextAlreadyRetrieved)) {
+        OrganizationActions.organizationSearch(searchText);
+        BallotActions.ballotItemOptionsRetrieve('', searchText);
+        searchTextAlreadyRetrieved.push(searchText);
+        this.setState({ searchTextAlreadyRetrieved });
+      }
+    }
   }
 
   handleSearch (event) { // eslint-disable-line consistent-return
@@ -197,6 +207,7 @@ class FilterBaseSearch extends Component {
       // If search value one character or less, exit
       if (searchText.length <= 1) return [];
 
+      this.searchNewItems(searchText);
       // Filter out items without the search terms, and put the most likely search result at the top
       // Only return results if they get past the filter
       const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter(item => item.searchPriority > 0);

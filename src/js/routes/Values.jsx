@@ -117,7 +117,7 @@ export default class Values extends Component {
             <div className="card u-show-mobile-tablet">
               <div className="card-main">
                 <FindOpinionsForm
-                  headerText="Find Opinions"
+                  headerText="Find Opinions or Endorsements"
                   searchTextLarge
                 />
               </div>
@@ -146,7 +146,7 @@ export default class Values extends Component {
             <div className="card u-show-desktop">
               <div className="card-main">
                 <FindOpinionsForm
-                  headerText="Find Opinions"
+                  headerText="Find Opinions / Endorsements"
                   searchTextLarge
                 />
               </div>

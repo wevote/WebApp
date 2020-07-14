@@ -227,19 +227,19 @@ class OpinionsAndBallotItemsFilter extends Component {
     }
     let filteredItems = allItems; // Start with all items
 
-    // Remove all Candidates
-    const filterItemsSnapshot = filteredItems;
-    filteredItems = [];
-    filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.kind_of_ballot_item !== 'CANDIDATE')];
-
-    // Remove states that aren't in the selectedFilters?
-    const stateCodeList = Object.keys(stateCodeMap);
-    const stateCodesSelected = ['na', ''];
-    selectedFilters.forEach((filter) => {
-      if (arrayContains(filter, stateCodeList)) {
-        stateCodesSelected.push(filter.toLowerCase());
-      }
-    });
+    // // Remove all Candidates
+    // const filterItemsSnapshot = filteredItems;
+    // filteredItems = [];
+    // filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.kind_of_ballot_item !== 'CANDIDATE')];
+    //
+    // // Remove states that aren't in the selectedFilters?
+    // const stateCodeList = Object.keys(stateCodeMap);
+    // const stateCodesSelected = ['na', ''];
+    // selectedFilters.forEach((filter) => {
+    //   if (arrayContains(filter, stateCodeList)) {
+    //     stateCodesSelected.push(filter.toLowerCase());
+    //   }
+    // });
     // console.log('stateCodesSelected:', stateCodesSelected);
     // console.log('filteredItems:', filteredItems);
     // Only show item if from the state we are looking at
@@ -249,7 +249,6 @@ class OpinionsAndBallotItemsFilter extends Component {
     //   filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => arrayContains(item.state_code, stateCodesSelected))];
     // }
 
-    // Comment or no comment?
     let containsOrgPublicFigureOrCandidateFilter = false;
     selectedFilters.forEach((filter) => {
       switch (filter) {

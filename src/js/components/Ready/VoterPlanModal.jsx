@@ -72,8 +72,12 @@ class VoterPlanModal extends Component {
     }
 
     const ballotElectionDate = BallotStore.currentBallotElectionDate;
+    if (ballotElectionDate) {
+      this.setState({
+        electionDateMonthYear: formatDateToMonthDayYear(ballotElectionDate),
+      });
+    }
     this.setState({
-      electionDateMonthYear: formatDateToMonthDayYear(ballotElectionDate),
       savedVoterPlanFound,
     });
     this.setVoterPlanSavedStates(savedVoterPlan, true);
@@ -150,9 +154,11 @@ class VoterPlanModal extends Component {
 
   onBallotStoreChange () {
     const ballotElectionDate = BallotStore.currentBallotElectionDate;
-    this.setState({
-      electionDateMonthYear: formatDateToMonthDayYear(ballotElectionDate),
-    });
+    if (ballotElectionDate) {
+      this.setState({
+        electionDateMonthYear: formatDateToMonthDayYear(ballotElectionDate),
+      });
+    }
   }
 
   onReadyStoreChange () {
@@ -208,15 +214,6 @@ class VoterPlanModal extends Component {
         try {
           const voterPlanDataAsDict = JSON.parse(voterPlanDataSerialized);
           const { voterPlanChangedLocally } = this.state;
-          // this.setState({
-          //   approximateTimeSavedValue: voterPlanDataAsDict.approximateTime,
-          //   electionDateMonthYearSavedValue: voterPlanDataAsDict.electionDateMonthYear,
-          //   locationToDeliverBallotSavedValue: voterPlanDataAsDict.locationToDeliverBallot,
-          //   modeOfTransportSavedValue: voterPlanDataAsDict.modeOfTransport,
-          //   showToPublicSavedValue: voterPlanDataAsDict.showToPublic,
-          //   votingLocationAddressSavedValue: voterPlanDataAsDict.votingLocationAddress,
-          //   votingRoughDateSavedValue: voterPlanDataAsDict.votingRoughDate,
-          // });
           const updateFormValues = firstTime || !voterPlanChangedLocally;
           if (updateFormValues) {
             this.setState({
@@ -436,7 +433,7 @@ class VoterPlanModal extends Component {
                           id="enterVotingLocationAddress"
                           name="votingLocationAddress"
                           onChange={this.handleVotingLocationAddressChange}
-                          placeholder="Enter address..."
+                          placeholder={(locationToDeliverBallot === 'voting center') ? 'Address of Voting Center' : 'Address of Polling Location'}
                           value={votingLocationAddress}
                         />
                         <OpenExternalWebSite
