@@ -78,7 +78,6 @@ class ReadyStore extends ReduceStore {
         // console.log('ReadyStore voterPlansForVoterRetrieve, action.res:', action.res);
         if (!action.res || !action.res.success) return state;
         voterPlansForVoterRetrieved = true;
-
         voterPlanList = action.res.voter_plan_list || [];
         if (voterPlanList.length) {
           voterPlanList.forEach((oneVoterPlan) => {
@@ -90,11 +89,13 @@ class ReadyStore extends ReduceStore {
             allCachedVoterPlansForVoterByElectionId,
             voterPlansForVoterRetrieved,
           };
-        } else {
+        } else if (voterPlansForVoterRetrieved) {
           return {
             ...state,
             voterPlansForVoterRetrieved,
           };
+        } else {
+          return state;
         }
 
       default:
