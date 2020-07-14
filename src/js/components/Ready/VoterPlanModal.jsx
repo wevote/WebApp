@@ -165,8 +165,9 @@ class VoterPlanModal extends Component {
     const googleCivicElectionId = VoterStore.electionId();
     const savedVoterPlan = ReadyStore.getVoterPlanForVoterByElectionId(googleCivicElectionId);
     this.setVoterPlanSavedStates(savedVoterPlan);
+    const voterPlansForVoterRetrieved = ReadyStore.getVoterPlansForVoterRetrieved();
     let savedVoterPlanFound = false;
-    if (savedVoterPlan.google_civic_election_id === undefined) {
+    if (!voterPlansForVoterRetrieved) {
       ReadyActions.voterPlansForVoterRetrieve();
     } else {
       savedVoterPlanFound = true;
