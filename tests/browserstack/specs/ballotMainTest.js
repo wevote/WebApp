@@ -1,30 +1,33 @@
 const assert = require('assert');
-const { clearTextInput, scrollIntoViewSimple, simpleClick, selectClick, simpleTextInput, selectTextInput } = require('../utils');
+const { clearTextInputValue, scrollIntoViewSimple, simpleClick, selectClick, simpleTextInput, selectTextInput, hiddenClick, hiddenSelectClick, hiddenSelectTextInput } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_';
 const PAUSE_DURATION_MICROSECONDS = 3000;
 const PAUSE_DURATION_BALLOT_LOAD = 6000;
-const { device, browserName, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
+const { device, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
 // Remember that tablets should be considered desktop screen size
 const isDesktopScreenSize = !isMobileScreenSize;
-const changeAddressHeaderBar = (isDesktopScreenSize) ? 'changeAddressOrElectionHeaderBarElection' : 'changeAddressOnlyHeaderBar';
-const ballotBadgePlatformPrefixID = (isDesktopScreenSize) ? 'ballotBadgeDesktop' : 'ballotBadgeMobile';
+let ballotBadgePlatformPrefixID = 'ballotBadge';
 
-let isChrome = false;
 let isS8 = false;
 let isGooglePixel3 = false;
-let isTablet = false;
-
-// Check if device capability is used
-if (browserName) {
-  isChrome = browserName.includes('Chrome');
-}
+let isiPhone = false;
+let isiPad = false;
 
 if (device) {
   isS8 = device.includes('Samsung Galaxy S8');
   isGooglePixel3 = device.includes('Google Pixel 3');
-  isTablet = device.includes('Tab');
+  isiPad = device.includes('iPad');
+  isiPhone = device.includes('iPhone');
+}
+
+if (!isAndroid) {
+  if (isDesktopScreenSize || isiPad) {
+    ballotBadgePlatformPrefixID += 'Desktop';
+  } else {
+    ballotBadgePlatformPrefixID += 'Mobile';
+  }
 }
 
 const personalizedScoreSteps = 7;
@@ -65,24 +68,31 @@ describe('Cross browser automated testing', () => {
 
   it('should input our address', async () =>  {
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-    await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', 'Oakland, CA 94501'); // Focus on Location Input
-    await simpleClick('editAddressOneHorizontalRowSaveButton'); // Click save
+    if (await $$('#ballotIfBallotDoesNotAppear').length === 0) {
+      await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', 'Oakland, CA 94501'); // Focus on Location Input
+      await simpleClick('editAddressOneHorizontalRowSaveButton'); // Click save
+    } else {
+      await simpleClick('ballotIfBallotDoesNotAppear');
+      await hiddenClick('editAddressInPlaceModalEditButton');
+      await clearTextInputValue('addressBoxText');
+      await simpleTextInput('addressBoxText', 'Oakland, CA 94501');
+      await simpleClick('addressBoxModalSaveButton');
+    }
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
   });
 
   it('should click through how it works', async () =>  {
-    if (!isAndroid || !isCordovaFromAppStore) { // Android doesn't do this
-      if (isDesktopScreenSize) {
+    if (!((isAndroid || isiPhone) && isCordovaFromAppStore)) { // Not on Android or iPhone Mobile App
+      if (isDesktopScreenSize || isiPad) {
         await simpleClick('completeYourProfileDesktopButton'); // Click 'How it works'
         await simpleClick('annotatedSlideShowStep1Next'); // Click Next
         await simpleClick('annotatedSlideShowStep2Next'); // Click Next
         await simpleClick('annotatedSlideShowStep3Next'); // Click Next
         await simpleClick('annotatedSlideShowStep4Next'); // Click Next
         await simpleClick('howItWorksGetStartedDesktopButton'); // End of How it Works Modal
-        await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
-        await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
+        await simpleClick('profileCloseSignInModal'); // Clicks on "X"
         await simpleClick('completeYourProfileDesktopButton'); // Clicks on Choose Interests
-        await selectClick('#valuesIntroModalValueList #issues-follow-container'); // select an interest
+        await selectClick('#valuesIntroModalValueList [id^=issueFollowButton]'); // select an interest
         await scrollIntoViewSimple('valuesIntroModalNext'); // Scrolls to Next button
         await simpleClick('valuesIntroModalNext'); // Close the Interests modal
         await simpleClick('completeYourProfileDesktopButton'); // Clicks on Learn More
@@ -117,21 +127,13 @@ describe('Cross browser automated testing', () => {
   });
 
   it('should test "Address and Elections"', async() => {
-    await simpleClick(changeAddressHeaderBar); // Click location icon
-    if (!isTablet) { // element not interactable
-      await simpleClick('editAddressInPlaceModalEditButton'); // Change address
-      await simpleClick('addressBoxText'); // Change address
-      await clearTextInput('addressBoxText'); // Clear address
-      await simpleTextInput('addressBoxText', 'Oakland, CA 94501'); // Change address
-      await simpleClick('addressBoxModalSaveButton'); // Click save
-      await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+    if (isCordovaFromAppStore && isIOS) {
+      await hiddenClick('changeAddressOnlyHeaderBar');
+    } else if (isCordovaFromAppStore && isAndroid) {
+      await simpleClick('changeAddressHeaderBar');
     } else {
-      await simpleClick('profileCloseSelectBallotModal'); // Close Address and Elections modal
+      await simpleClick('ballotTitleHeaderSelectBallotModal');
     }
-  });
-
-  it('should switch to US 2018 Midterm Election', async() => {
-    await simpleClick(changeAddressHeaderBar); // Click location icon
     await selectClick('button.SelectBallotModal__PriorButton-sc-1kby1m3-8.kPEgxg'); // Click on Prior
     await simpleClick('ballotElectionListWithFiltersButton-6000'); // Clicks on US 2018 Midterm Election
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
@@ -147,18 +149,20 @@ describe('Cross browser automated testing', () => {
 
   it('should visit measure page', async() => {
     await selectClick('[id^=measureItemCompressedChoiceYes-]'); // Click on first measure
-    if (!isAndroid || !isCordovaFromAppStore) { // Element not interactable
-      await selectClick('[id^=itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-]'); // Click on vote yes
-      await simpleClick('profileCloseItemActionBar'); // Click close for pop up
-      await selectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-]'); // Click on vote no
-      await selectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-]'); // Undo opposition
-      await selectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Click on text area
-      await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
-      await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
+    await hiddenSelectClick('[id^=itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-wv02meas604-]'); // Click yes
+    await simpleClick('profileCloseItemActionBar'); // Click close for pop up
+    await hiddenSelectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas604-]'); // Click no
+    await hiddenSelectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas604-]'); // Undo
+    await selectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Click on text area
+    await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
+    await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
+    if (!isIOS) {
       await selectClick('[id^=itemPositionStatementActionBarEdit-]'); // Click on edit button
-      await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', `${backspace}`.repeat(25)); // clear text area
+    } else { // bug where save button doesn't go away
       await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
     }
+    await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', `${backspace}`.repeat(25)); // clear text area
+    await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
   });
 
   it('should open position display filters', async() => {
@@ -167,14 +171,12 @@ describe('Cross browser automated testing', () => {
   });
 
   it('should follow and unfollow and endorsing organization of measure', async() => {
-    if (!isCordovaFromAppStore) { // no selector on app (iOS) or element not interactable (Android)
-      await selectClick('[id^=positionItemFollowToggleFollow-]'); // Follow organization
-      if (isS8 || isGooglePixel3) {
-        await scrollIntoViewSimple('readMore'); // Scroll down slightly
-      }
-      await selectClick('[id^=positionItemFollowToggleDropdown-]');
-      await selectClick('[id^=positionItemFollowToggleUnfollow-]'); // Unfollow organization
+    await hiddenSelectClick('[id^=positionItemFollowToggleFollow-]'); // Follow organization
+    if (isS8 || isGooglePixel3) {
+      await scrollIntoViewSimple('readMore'); // Scroll down slightly
     }
+    await selectClick('[id^=positionItemFollowToggleDropdown-]');
+    await selectClick('[id^=positionItemFollowToggleUnfollow-]'); // Unfollow organization
   });
 
   it('should go back', async() => {
@@ -185,54 +187,46 @@ describe('Cross browser automated testing', () => {
   it('should visit the federal page', async() => {
     await simpleClick(`${ballotBadgePlatformPrefixID}-Federal`); // Go to federal
     await selectClick('[id^=officeItemCompressedCandidateImageAndName-]'); // Clicks the first candidate
-    if (!isAndroid || !isCordovaFromAppStore) { // element not interactable
-      await selectClick('[id^=itemActionBarSupportButton-candidateItem-]'); // Support the candidate
-      await selectClick('[id^=itemActionBarOpposeButton-candidateItem-]'); // Oppose the candidate
-      await selectClick('[id^=itemActionBarOpposeButton-candidateItem-]'); // Undo opposition
-      await selectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Clicks on text area
-      await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
-      await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
-      await selectClick('[id^=itemPositionStatementActionBarEdit-]'); // Click on edit button
-      await selectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Clicks on text area
-      await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', `${backspace}`.repeat(25)); // clear text area
-      await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
+    await hiddenSelectClick('[id^=itemActionBarSupportButton-candidateItem-]'); // Support the candidate
+    await hiddenSelectClick('[id^=itemActionBarOpposeButton-candidateItem-]'); // Oppose the candidate
+    await hiddenSelectClick('[id^=itemActionBarOpposeButton-candidateItem-]'); // Undo opposition
+    await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Clicks on text area
+    await hiddenSelectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
+    await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
+    if (!isIOS) {
+      await hiddenSelectClick('[id^=itemPositionStatementActionBarEdit-]'); // Click on edit button
+    } else { // bug where save button doesn't go away
+      await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
     }
+    await hiddenSelectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Clicks on text area
+    await hiddenSelectTextInput('[id^=itemPositionStatementActionBarTextArea-]', `${backspace}`.repeat(25)); // clear text area
+    await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
   });
 
   it('should follow and unfollow an endorsing organization of candidate', async() => {
-    if (!isCordovaFromAppStore) { // no selector on app (iOS) or element not interactable (Android)
-      await selectClick('[id^=positionItemFollowToggleFollow-]'); // Follow organization
-      if (isChrome) {
-        await selectClick('[id^=positionItemFollowToggleFollow-]'); // Need to click twice on Chrome
-      }
-      if (isS8 || isGooglePixel3) {
-        await scrollIntoViewSimple('readMore'); // Scroll down slightly
-      }
-      await selectClick('[id^=positionItemFollowToggleDropdown-]');
-      await selectClick('[id^=positionItemFollowToggleUnfollow-]'); // Unfollow organization
+    await hiddenSelectClick('[id^=positionItemFollowToggleFollow-]'); // Follow organization
+    if (isS8 || isGooglePixel3) {
+      await scrollIntoViewSimple('readMore'); // Scroll down slightly
     }
+    await hiddenSelectClick('[id^=positionItemFollowToggleDropdown-]');
+    await hiddenSelectClick('[id^=positionItemFollowToggleUnfollow-]'); // Unfollow organization
   });
 
   it('should visit organization page from candidate page', async() => {
-    if (!isCordovaFromAppStore) { // no selector on app (iOS) or element not interactable (Android)
-      await selectClick('[id*=-LinkToEndorsingOrganization-]'); // Click on the link to organization's page
-      await selectClick('[id^=positionItemFollowToggleFollow-]'); // Follow organization
-      await selectClick('[id^=positionItemFollowToggleDropdown-]');
-      await selectClick('[id^=positionItemFollowToggleUnfollow-]'); // Unfollow organization
-      await selectClick('[id^=positionItemFollowToggleDropdown-]');
-      await selectClick('[id^=positionItemFollowToggleIgnore-]'); // Ignore organization
-      await selectClick('[id^=positionItemFollowToggleDropdown-]');
-      await selectClick('[id^=positionItemFollowToggleStopIgnoring-]'); // Unignore organization
-      await simpleClick('backToLinkTabHeader'); // Go back to candidate page
-    }
-  });
-
-  it('should go back', async() => {
-    await simpleClick('backToLinkTabHeader');
-    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+    await hiddenSelectClick('[id*=-LinkToEndorsingOrganization-]'); // Click on the link to organization's page
+    await hiddenSelectClick('[id^=positionItemFollowToggleFollow-]'); // Follow organization
+    await hiddenSelectClick('[id^=positionItemFollowToggleDropdown-]');
+    await hiddenSelectClick('[id^=positionItemFollowToggleUnfollow-]'); // Unfollow organization
+    await hiddenSelectClick('[id^=positionItemFollowToggleDropdown-]');
+    await hiddenSelectClick('[id^=positionItemFollowToggleIgnore-]'); // Ignore organization
+    await hiddenSelectClick('[id^=positionItemFollowToggleDropdown-]');
+    await hiddenSelectClick('[id^=positionItemFollowToggleStopIgnoring-]'); // Unignore organization
   });
 
   it('should go to the values tab', async() => {
+    await simpleClick('backToLinkTabHeader'); // Go back to candidate page
+    await simpleClick('backToLinkTabHeader');
+    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     if (isDesktopScreenSize) {
       await simpleClick('valuesTabHeaderBar');  // Desktop screen size - HEADER TABS
     } else {

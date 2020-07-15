@@ -129,6 +129,21 @@ async function simpleClick (elementIdName) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
+async function hiddenClick (id) {
+  await browser.executeAsync((selector, done) => { document.getElementById(selector).click(); done(); }, id);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+async function hiddenSelectClick (selector) {
+  await browser.executeAsync((s, done) => { document.querySelector(s).click(); done(); }, selector);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+async function hiddenSelectTextInput (selector, input) {
+  await browser.executeAsync((s, i, done) => { document.querySelector(s).value = i; done(); }, selector, input);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
 async function selectClick (selector) {
   const clickableItem = await $(selector);
   await browser.waitUntil(() => clickableItem.isClickable());
@@ -165,4 +180,4 @@ function writeToLog (message) {
   });
 }
 
-module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog };
+module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog, hiddenClick, hiddenSelectClick, hiddenSelectTextInput };

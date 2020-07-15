@@ -36,11 +36,11 @@ describe('Cross browser automated testing',  () => {
 
   it('should sign in with twitter', async () =>  {
     if (twitterUserName && twitterPassword) {
-      await simpleClick('signInHeaderBar'); // Clicks on Sign in
-      await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
-      await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
-      await simpleTextInput('password', twitterPassword); // Enter Password
-      await simpleClick('allow'); // Clicks on Authorize App
+//      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+//      await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
+//      await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
+//      await simpleTextInput('password', twitterPassword); // Enter Password
+//      await simpleClick('allow'); // Clicks on Authorize App
 //      await selectTextInput('input[name="session[username_or_email]"]', twitterUserName);
 //      await selectTextInput('input[name="session[password]"]', twitterPassword);
 //      await selectClick('[data-testid="LoginForm_Login_Button"]');
@@ -55,6 +55,7 @@ describe('Cross browser automated testing',  () => {
       await simpleClick('emailSignIn-splitIconButton'); // Clicks "Sign in with an email" button
       await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com'); // Type input
       await simpleClick('voterEmailAddressEntrySendCode'); // Click Send Verification Code
+      // Speed up entering digits
       await simpleTextInput('digit1', '0');
       await simpleTextInput('digit2', '1');
       await simpleTextInput('digit3', '2');
@@ -85,6 +86,7 @@ describe('Cross browser automated testing',  () => {
       await simpleClick('smsSignIn-splitIconButton'); // Clicks "Sign in with a text" button
       await simpleTextInput('enterVoterPhone', '18004444444'); // Inputs voter phone number
       await simpleClick('voterPhoneSendSMS'); // Clicks "Send Verification Code"
+      // Speed up entering digits
       await simpleTextInput("digit1", "0");
       await simpleTextInput("digit2", "1");
       await simpleTextInput("digit3", "2");
@@ -123,6 +125,7 @@ describe('Cross browser automated testing',  () => {
     await simpleClick('voterPhoneSendSMS');
     await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com');
     await simpleClick('voterEmailAddressEntrySendCode');
+    // Speed up entering digits
     await simpleTextInput("digit1", "0");
     await simpleTextInput("digit2", "1");
     await simpleTextInput("digit3", "2");

@@ -53,21 +53,26 @@ del replace['json']
 del replace['write']
 del replace['interchange']
 
+# Load json
 with open(args['json'], 'r') as f:
     devices = json.load(f)
-    if args['interchange']:
-        while True:
-            print('First %s test case(s) will be run.' % args['numberOfTests'])
-            for key, value in devices[args['batch']].items():
-                print("%s: %s" % (key, value))
-            try:
-                testNumber1, testNumber2 = map(int, input('Enter two tests to swap. (-1 -1 to exit)').split())
-            except:
-                break
-            if testNumber1 != -1 or testNumber2 != -1:
-                devices[args['batch']][str(testNumber1)], devices[args['batch']][str(testNumber2)] = devices[args['batch']][str(testNumber2)], devices[args['batch']][str(testNumber1)]
-            else: 
-                break
+
+devices = devices[args['batch']]
+
+if args['interchange']:
+    while True:
+        print(f'{args["numberOfTests"]} test case(s) will be run.')
+        for key, value in devices.items():
+            print("%s: %s" % (key, value))
+        try:
+            testNumber1, testNumber2 = input('Enter two tests to swap. (ctrl-c to exit): ').split()
+        except KeyboardInterrupt:
+            break
+        except ValueError:
+          print('Example: 2 3')
+        if devices[testNumber1] and devices[testNumber2]:
+            # swap tests
+            devices[testNumber1], devices[testNumber2] = devices[testNumber2], devices[testNumber1]
 
 if args['numberOfTests'].find('-') != -1:
   start = int(args['numberOfTests'].split('-')[0]) 
@@ -77,17 +82,16 @@ else:
   end = int(args['numberOfTests'])
 
 for i in range(start, end + 1):
-    # import from json file
-    for key, value in devices[args['batch']][str(i)].items():
-        replace["%s%d" % (key, (i - start))] = value
-    i -= start
     # generate default values
     replace['os%d' % i] = ''
     replace['browser_version%d' % i] = ''
-    # Fix appium version (when iOS version < 12 1.17.0 is not supported)
-    if float(replace['os_version%d' % i]) < 12 and replace['browserstack.appium_version%d' % i] == '1.17.0' and replace['browserName%d' % i] != 'Android':
-      replace['browserstack.appium_version%d' % i] = '1.16.0'
-
+    replace['browserstack.appium_version%d' % i] = ''
+    replace['device%d' % i] = ''
+    # import from json file
+    for key, value in devices[str(i)].items():
+        replace["%s%d" % (key, (i - start))] = value
+    i -= start
+    
 # Read template file
 lines = []
 with open(args['file'], 'r') as config:
@@ -100,22 +104,23 @@ if args['write']:
   config = open(configFileName, 'w')
 
 for line in lines:
-    replaced = False
-    replacedString = line
     # create output file with configuration values
     for configOption, value in replace.items():
         # Replace string 
         if type(value) == bool and value:
-            replacedString, numberOfSubstitutions = re.subn(r'%%%s' % configOption, 'true', replacedString, count=1)
+            line = re.sub(r'%%%s' % configOption, 'true', line)
         elif type(value) == bool and not value:
-            replacedString, numberOfSubstitutions = re.subn(r'%%%s' % configOption, 'false', replacedString, count=1)
+            line = re.sub(r'%%%s' % configOption, 'false', line)
         elif value == '':
-            replacedString, numberOfSubstitutions = re.subn(r'%%%s' % configOption, "''", replacedString, count=1)
+            line = re.sub(r'%%%s' % configOption, "", line)
         else:
-          replacedString, numberOfSubstitutions = re.subn(r'%%%s' % configOption, str(value), replacedString, count=1)
+            line = re.sub(r'%%%s' % configOption, str(value), line)
 
+    # delete empty config options
+    if "''" in line:
+      line = ''
     # Write to file or print to standard output
     if args['write']:
-        config.write(replacedString)
+        config.write(line)
     else:
-        print(replacedString.replace('\n',''))    
+        print(line, end="")    
