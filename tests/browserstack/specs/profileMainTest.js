@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { scrollIntoViewSimple, scrollIntoViewSelect, simpleClick, selectClick, simpleTextInput, selectTextInput} = require('../utils');
+const { scrollIntoViewSimple, scrollIntoViewSelect, simpleClick, selectClick, simpleTextInput } = require('../utils');
 
 const PAUSE_DURATION_MICROSECONDS = 1250;
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
@@ -36,11 +36,11 @@ describe('Cross browser automated testing',  () => {
 
   it('should sign in with twitter', async () =>  {
     if (twitterUserName && twitterPassword) {
-//      await simpleClick('signInHeaderBar'); // Clicks on Sign in
-//      await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
-//      await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
-//      await simpleTextInput('password', twitterPassword); // Enter Password
-//      await simpleClick('allow'); // Clicks on Authorize App
+      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+      await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
+      await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
+      await simpleTextInput('password', twitterPassword); // Enter Password
+      await simpleClick('allow'); // Clicks on Authorize App
 //      await selectTextInput('input[name="session[username_or_email]"]', twitterUserName);
 //      await selectTextInput('input[name="session[password]"]', twitterPassword);
 //      await selectClick('[data-testid="LoginForm_Login_Button"]');

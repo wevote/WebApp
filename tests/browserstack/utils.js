@@ -1,6 +1,7 @@
 const fs = require('fs');
 
 const PAUSE_DURATION_MICROSECONDS = 2500;
+const PAUSE_TEXT_INPUT = 1250;
 
 async function clearTextInputValue (elementIdName) {
   const clickableSelector = `#${elementIdName}`;
@@ -161,9 +162,9 @@ async function simpleCloseBootstrapModal () {
 async function simpleTextInput (elementIdName, textValue) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
-  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+  await browser.pause(PAUSE_TEXT_INPUT);
   await clickableItem.setValue(textValue);
-  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+  await browser.pause(PAUSE_TEXT_INPUT);
 }
 
 async function selectTextInput (selector, textValue) {

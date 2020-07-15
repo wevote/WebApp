@@ -5,39 +5,31 @@ const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_';
 const PAUSE_DURATION_MICROSECONDS = 3000;
 const PAUSE_DURATION_BALLOT_LOAD = 6000;
-const { device, os_version, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
+const { device, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
 // Remember that tablets should be considered desktop screen size
 const isDesktopScreenSize = !isMobileScreenSize;
-let ballotBadgePlatformPrefixID = 'ballotBadge';
+let ballotBadgePlatformPrefixID = (isDesktopScreenSize) ? 'ballotBadgeDesktop' : 'ballotBadgeMobile';
 
 let isS8 = false;
 let isGooglePixel3 = false;
 let isiPhone = false;
 let isiPad = false;
-let isCatalina = false;
+let isTab = false;
 
 if (device) {
   isS8 = device.includes('Samsung Galaxy S8');
   isGooglePixel3 = device.includes('Google Pixel 3');
   isiPad = device.includes('iPad');
   isiPhone = device.includes('iPhone');
+  isTab = device.includes('Tab');
 }
 
-if (os_version) {
-  isCatalina = os_version.includes('Catalina');
-}
-
-if (!isAndroid) {
-  if (isDesktopScreenSize || isiPad) {
-    ballotBadgePlatformPrefixID += 'Desktop';
-  } else {
-    ballotBadgePlatformPrefixID += 'Mobile';
-  }
+if (isTab) {
+  ballotBadgePlatformPrefixID = 'ballotBadgeDesktop';
 }
 
 const personalizedScoreSteps = 7;
 const xssTest = '<script>alert(1)</script>';
-const backspace = '\uE003';
 
 describe('Cross browser automated testing', () => {
   // Run before any test
@@ -73,7 +65,7 @@ describe('Cross browser automated testing', () => {
 
   it('should input our address', async () =>  {
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-    if (!isCordovaFromAppStore) {
+    if (!(isCordovaFromAppStore && isIOS)) {
       await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', 'Oakland, CA 94501'); // Focus on Location Input
       await simpleClick('editAddressOneHorizontalRowSaveButton'); // Click save
     } else {
@@ -87,8 +79,8 @@ describe('Cross browser automated testing', () => {
   });
 
   it('should click through how it works', async () =>  {
-    if (!((isAndroid || isiPhone) && isCordovaFromAppStore)) { // Not on Android or iPhone Mobile App
-      if (isDesktopScreenSize || isiPad) {
+    if (!((isAndroid || isiPhone) && isCordovaFromAppStore) || isTab) { // Not on Android or iPhone Mobile App
+      if (isDesktopScreenSize || isiPad || isTab) {
         await simpleClick('completeYourProfileDesktopButton'); // Click 'How it works'
         await simpleClick('annotatedSlideShowStep1Next'); // Click Next
         await simpleClick('annotatedSlideShowStep2Next'); // Click Next
@@ -108,8 +100,7 @@ describe('Cross browser automated testing', () => {
         await simpleClick('annotatedSlideShowStep3Next');
         await simpleClick('annotatedSlideShowStep4Next');
         await simpleClick('howItWorksGetStartedDesktopButton'); // End of How it Works Modal
-        await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
-        await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
+        await simpleClick('profileCloseSignInModal'); // Clicks on "X"
         await simpleClick('completeYourProfileMobileButton'); // Clicks on Choose Interests
         await selectClick('#valuesIntroModalValueList #issues-follow-container'); // select an interest
         await scrollIntoViewSimple('valuesIntroModalNext'); // Scrolls to Next button
@@ -132,10 +123,8 @@ describe('Cross browser automated testing', () => {
   });
 
   it('should test "Address and Elections"', async() => {
-    if (isCordovaFromAppStore && isIOS) {
+    if (isCordovaFromAppStore) {
       await hiddenClick('changeAddressOnlyHeaderBar');
-    } else if (isCordovaFromAppStore && isAndroid) {
-      await simpleClick('changeAddressHeaderBar');
     } else {
       await simpleClick('ballotTitleHeaderSelectBallotModal');
     }
@@ -158,15 +147,11 @@ describe('Cross browser automated testing', () => {
     await simpleClick('profileCloseItemActionBar'); // Click close for pop up
     await hiddenSelectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-]'); // Click no
     await hiddenSelectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-]'); // Undo
-    await selectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Click on text area
-    await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
-    await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
-    if (isCatalina || isCordovaFromAppStore) {
-      await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
-    }
-    await selectClick('[id^=itemPositionStatementActionBarEdit-]'); // Click on edit button
-    await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', `${backspace}`.repeat(25)); // clear text area
-    await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
+    await hiddenSelectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Click on text area
+    await hiddenSelectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
+    await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
+    await hiddenSelectTextInput('[id^=itemPositionStatementActionBarTextArea-]', ''); // clear text area
+    await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
   });
 
   it('should open position display filters', async() => {
@@ -176,11 +161,11 @@ describe('Cross browser automated testing', () => {
 
   it('should follow and unfollow and endorsing organization of measure', async() => {
     await hiddenSelectClick('[id^=positionItemFollowToggleFollow-]'); // Follow organization
+    await hiddenSelectClick('[id^=positionItemFollowToggleDropdown-]');
+    await hiddenSelectClick('[id^=positionItemFollowToggleUnfollow-]'); // Unfollow organization
     if (isS8 || isGooglePixel3) {
       await scrollIntoViewSimple('readMore'); // Scroll down slightly
     }
-    await selectClick('[id^=positionItemFollowToggleDropdown-]');
-    await selectClick('[id^=positionItemFollowToggleUnfollow-]'); // Unfollow organization
   });
 
   it('should go back', async() => {
@@ -189,7 +174,7 @@ describe('Cross browser automated testing', () => {
   });
 
   it('should visit the federal page', async() => {
-    await simpleClick(`${ballotBadgePlatformPrefixID}-Federal`); // Go to federal
+    await hiddenClick(`${ballotBadgePlatformPrefixID}-Federal`); // Go to federal
     await selectClick('[id^=officeItemCompressedCandidateImageAndName-]'); // Clicks the first candidate
     await hiddenSelectClick('[id^=itemActionBarSupportButton-candidateItem-]'); // Support the candidate
     await hiddenSelectClick('[id^=itemActionBarOpposeButton-candidateItem-]'); // Oppose the candidate
