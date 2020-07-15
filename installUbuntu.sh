@@ -1,19 +1,16 @@
-#For Mac users only
-#!/usr/bin/env zsh
+#For Ubuntu 20.04 only
+#!/usr/bin/env bash
 
-function error() { echo "\x1B[1;31m$1\x1B[0m"; exit 1; }
-function success() { echo "\x1B[1;32m$1\x1B[0m"; }
+function error() { echo -e "\e[1;31m$1\e[0m"; exit 1; }
+function success() { echo -e "\e[1;32m$1\e[0m"; }
 
-[[ "$1" == "" ]] && error "./installmac.sh <github username>"
+[[ "$1" == "" ]] && error "$0 <github username>"
 gituser=$1
 minNodeVersion="v10.12.0"
 minNpmVersion="6.4.1"
 
-echo "[*] Installing brew..."
-which brew >/dev/null && success "[+] Brew already installed" || (echo "" | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" >/dev/null 2>&1 && success "[+] Installed brew" || error "[-] Failed to install brew")
-
 echo "[*] Installing python..." 
-which python >/dev/null && success "[+] Python already installed" || (brew install python >/dev/null 2>&1  && success "[+] Installed python" || error "[-] Failed to install python")
+which python >/dev/null && success "[+] Python already installed" || (sudo apt install python >/dev/null 2>&1  && success "[+] Installed python" || error "[-] Failed to install python")
 
 echo "[*] Installing pip..." 
 which pip3 >/dev/null && success "[+] Pip already installed" || (curl -s https://bootstrap.pypa.io/get-pip.py | sudo python >/dev/null 2>&1 && success "[+] Installed pip" || error "[-] Failed to install pip")
@@ -22,7 +19,7 @@ echo "[*] Installing nodeenv..."
 which nodeenv >/dev/null && success "[+] Nodeenv already installed" || (sudo -H pip install nodeenv >/dev/null 2>&1 && success "[+] Installed nodeenv" || error "[-] Failed to install nodeenv")
 
 echo "[*] Installing node..."
-which node >/dev/null && success "[+] Node already installed" || (brew install node >/dev/null 2>&1 && success "[+] Installed node" || error "[-] Failed to install node")
+which node >/dev/null && success "[+] Node already installed" || (sudo apt install node >/dev/null 2>&1 && success "[+] Installed node" || error "[-] Failed to install node")
 
 echo "[*] Checking node and npm versions..."
 [[ "`echo -e "$(node -v)\n$minNodeVersion" | sort -V | head -n 1`" == "$nodeVersion" && "$nodeVersion" != "$minNodeVersion" ]] && error "node is not up to date"
@@ -63,10 +60,10 @@ echo "[*] Adding ssh key to ssh authentication agent..."
 ssh-add ~/.ssh/id_rsa 2>/dev/null && success "[+] Added ssh key to ssh authentication agent" || error "[-] Failed to add ssh key to ssh authentication agent"
 
 echo "[*] Copying ssh key to ssh authentication agent..."
-pbcopy < ~/.ssh/id_rsa.pub >/dev/null && success "[+] Copied ssh key to clipboard" || error "[-] Failed to copy ssh key to clipboard"
+xclip -se c < ~/.ssh/id_rsa.pub >/dev/null && success "[+] Copied ssh key to clipboard" || error "[-] Failed to copy ssh key to clipboard"
 
 success "[*] Done"
 
-echo "\x1B[33;1mGo to your "Settings" page in GitHub (click on your avatar on the top right). In the left navigation, choose "SSH and GPG keys".
+echo -e "\xe[33;1mGo to your "Settings" page in GitHub (click on your avatar on the top right). In the left navigation, choose "SSH and GPG keys".
 Click the "New SSH key" button on the top right.
-Paste the contents of the "~/.ssh/id_rsa.pub" key file (which you alerady copied to your clipboard) into the "Key" text area, and give it any Title you would like.]\x1B[0m"
+Paste the contents of the "~/.ssh/id_rsa.pub" key file (which you alerady copied to your clipboard) into the "Key" text area, and give it any Title you would like.]\xe[0m"

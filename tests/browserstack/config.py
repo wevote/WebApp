@@ -79,7 +79,7 @@ if args['numberOfTests'].find('-') != -1:
   end = int(args['numberOfTests'].split('-')[1])
 else:
   start = 0
-  end = int(args['numberOfTests'])
+  end = int(args['numberOfTests']) - 1
 
 for i in range(start, end + 1):
     i -= start
