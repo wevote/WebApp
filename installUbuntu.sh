@@ -9,6 +9,13 @@ gituser=$1
 minNodeVersion="v10.12.0"
 minNpmVersion="6.4.1"
 
+echo "[*] Updating..." && sudo apt update -y && success "[+] Updated successfully" || error "[-] Failed to update"
+ 
+echo "[*] Upgrading..." && sudo apt upgrade -y && success "[+] Upgraded successfully" || error "[-] Failed to upgrade"
+ 
+echo "[*] Installing xclip..."
+which xclip >/dev/null && success "[+] Xclip already installed" || (sudo apt install xclip >/dev/null 2>&1  && success "[+] Installed xclip" || error "[-] Failed to install xclip")
+
 echo "[*] Installing python..." 
 which python >/dev/null && success "[+] Python already installed" || (sudo apt install python >/dev/null 2>&1  && success "[+] Installed python" || error "[-] Failed to install python")
 
@@ -54,7 +61,7 @@ npm install
 } >/dev/null 2>&1 && success "[+] Installed npm packages" || error "[-] Failed to install npm packages"
 
 echo "[*] Adding ssh key..."
-[[ -f "$HOME/.ssh/id_rsa" ]] && success "[+] ssh key already exists" || (ssh-keygen -q -t rsa -b 4096 -N '' -f "$HOME/.ssh/id_rsa" && success "[+] Created ssh key" || error "Failed to create ssh key")
+[[ -f "$HOME/.ssh/id_rsa" ]] && success "[+] ssh key already exists" || (ssh-keygen -q -t rsa -b 4096 -N '' -f "$HOME/.ssh/id_rsa" && success "[+] Created ssh key" || error "[-] Failed to create ssh key")
 
 echo "[*] Adding ssh key to ssh authentication agent..."
 ssh-add ~/.ssh/id_rsa 2>/dev/null && success "[+] Added ssh key to ssh authentication agent" || error "[-] Failed to add ssh key to ssh authentication agent"

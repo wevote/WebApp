@@ -161,7 +161,9 @@ describe('Cross browser automated testing', () => {
     await selectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Click on text area
     await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
     await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
-    await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
+    if (isCatalina || isCordovaFromAppStore) {
+      await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
+    }
     await selectClick('[id^=itemPositionStatementActionBarEdit-]'); // Click on edit button
     await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', `${backspace}`.repeat(25)); // clear text area
     await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button

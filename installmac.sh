@@ -57,7 +57,7 @@ npm install
 } >/dev/null 2>&1 && success "[+] Installed npm packages" || error "[-] Failed to install npm packages"
 
 echo "[*] Adding ssh key..."
-[[ -f "$HOME/.ssh/id_rsa" ]] && success "[+] ssh key already exists" || (ssh-keygen -q -t rsa -b 4096 -N '' -f "$HOME/.ssh/id_rsa" && success "[+] Created ssh key" || error "Failed to create ssh key")
+[[ -f "$HOME/.ssh/id_rsa" ]] && success "[+] ssh key already exists" || (ssh-keygen -q -t rsa -b 4096 -N '' -f "$HOME/.ssh/id_rsa" && success "[+] Created ssh key" || error "[-] Failed to create ssh key")
 
 echo "[*] Adding ssh key to ssh authentication agent..."
 ssh-add ~/.ssh/id_rsa 2>/dev/null && success "[+] Added ssh key to ssh authentication agent" || error "[-] Failed to add ssh key to ssh authentication agent"
