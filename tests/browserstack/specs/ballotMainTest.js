@@ -68,7 +68,7 @@ describe('Cross browser automated testing', () => {
 
   it('should input our address', async () =>  {
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-    if (await $$('#ballotIfBallotDoesNotAppear').length === 0) {
+    if (!isCordovaFromAppStore) {
       await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', 'Oakland, CA 94501'); // Focus on Location Input
       await simpleClick('editAddressOneHorizontalRowSaveButton'); // Click save
     } else {
@@ -193,11 +193,8 @@ describe('Cross browser automated testing', () => {
     await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Clicks on text area
     await hiddenSelectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
     await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
-    if (!isIOS) {
-      await hiddenSelectClick('[id^=itemPositionStatementActionBarEdit-]'); // Click on edit button
-    } else { // bug where save button doesn't go away
-      await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
-    }
+    // Bug edit button does not appear
+    await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
     await hiddenSelectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Clicks on text area
     await hiddenSelectTextInput('[id^=itemPositionStatementActionBarTextArea-]', `${backspace}`.repeat(25)); // clear text area
     await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button

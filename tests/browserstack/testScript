@@ -37,7 +37,7 @@ if [[ $remove -ne 1 ]]; then
         blockSize=$(( ${os1%%:*} - ${os0%%:*} )) 
         os4=`grep -n os4 parallel.wdio.config.js` 
         # Number of lines between os4 and {
-        lineOffset=4
+        lineOffset=1
         numBlocks=$((maxTests - 1 - $numTests))
         comment="$((${os4%%:*} - $lineOffset - $numBlocks * $blockSize)),$((${os4%%:*} + ($blockSize - $lineOffset - 1)))s/^/\/\//"
     fi

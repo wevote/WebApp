@@ -82,15 +82,16 @@ else:
   end = int(args['numberOfTests'])
 
 for i in range(start, end + 1):
+    i -= start
     # generate default values
     replace['os%d' % i] = ''
     replace['browser_version%d' % i] = ''
     replace['browserstack.appium_version%d' % i] = ''
     replace['device%d' % i] = ''
     # import from json file
+    i += start
     for key, value in devices[str(i)].items():
         replace["%s%d" % (key, (i - start))] = value
-    i -= start
     
 # Read template file
 lines = []
