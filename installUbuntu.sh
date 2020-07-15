@@ -73,4 +73,4 @@ success "[*] Done"
 
 echo -e "\e[33;1mGo to your "Settings" page in GitHub (click on your avatar on the top right). In the left navigation, choose "SSH and GPG keys".
 Click the "New SSH key" button on the top right.
-Paste the contents of the "~/.ssh/id_rsa.pub" key file (which you alerady copied to your clipboard) into the "Key" text area, and give it any Title you would like.]\e[0m"
+Paste the contents of the "~/.ssh/id_rsa.pub" key file (which you alerady copied to your clipboard) into the "Key" text area, and give it any Title you would like. Then go back to the terminal and run the command 'git remote set-url origin git@github.com:$gituser/WebApp.git' followed by 'git config --global user.name "$gituser"'.]\e[0m"
