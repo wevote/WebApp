@@ -13,95 +13,114 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const port = process.env.PORT || 3000;
 
 // Set isProduction to false, to enable the interactive bundle analyser and the Unused component analyzer
-const isProduction = true;   // Developers can set this to be false, but in git it should always be true
+const isProduction = false;   // Developers can set this to be false, but in git it should always be true
 
 module.exports = {
   mode: 'development',
   entry: {
     bundle: ['./src/js/index.js', './src/sass/main.scss'],
+    vendor: ['@material-ui/core']
   },
   output: {
     chunkFilename: '[name].bundle.js',
-    filename: '[name].bundle.js',
+    filename: '[name].[hash].js',
     path: path.resolve(__dirname, 'build'),
   },
   optimization: {
-    runtimeChunk: false,
     splitChunks: {
-      chunks: 'all',
-      maxInitialRequests: Infinity,
-      minSize: 0,
       cacheGroups: {
-        reactCore: {
-          name: 'reactCore',
-          test: /[\\/]node_modules[\\/](jquery|prop-types|react|react-dom|react-helmet|react-router|react-router-scroll|react-text-truncate)[\\/]/,
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
           chunks: 'all',
-          enforce: true,
+          enforce: true
         },
-        // minimalNodeModules: {
-        //   name: 'minimalNodeModules',
-        //   test: /[\\/]node_modules[\\/](@babel|clsx|create-react-class|css-vendor|dom-helpers|@emotion|exenv|fbjs|history|hoist-non-react-statics|hyphenate-style-name|invariant|is-in-browser|is-what|jss|jss-plugin-camel-case|jss-plugin-default-unit|jss-plugin-global|jss-plugin-nested|jss-plugin-props-sort|jss-plugin-vendor-prefixer|jss-plugin-rule-value-function|memoize-one|merge-anything|object-assign|process|query-string|react-is|react-fast-compare|react-js|react-side-effect|scroll-behavior|shallowequal|sockjs-client|strict-uri-encode|stylis|stylis-rule-sheet|tiny-warning)[\\/]/,
-        //   chunks: 'all',
-        //   enforce: true,
-        // },
-        materialStyle: {
-          name: 'materialStyle',
-          test: /[\\/]node_modules[\\/](@material-ui|styled-components)[\\/]/,
-          chunks: 'all',
-          enforce: true,
-        },
-        readyNoApi: {
-          name: 'readyNoApi',
-          test: function (module) {
-            if (module.resource) {
-              return module.resource.includes('/js/config.js') ||
-                module.resource.includes('/js/index.js') ||
-                module.resource.includes('/js/mui-theme.js') ||
-                module.resource.includes('/js/Root.jsx') ||
-                module.resource.includes('/js/startReactApp.js') ||
-                module.resource.includes('/js/styled-theme.js') ||
-                module.resource.includes('/js/components/ReadyNoApi/') ||
-                module.resource.includes('/js/components/Widgets/ReadMore.jsx') ||
-                module.resource.includes('/js/routes/ReadyNoApi.jsx') ||
-                module.resource.includes('/js/utils/') ||
-                module.resource.match(/[\\/]node_modules[\\/](@babel|clsx|create-react-class|css-vendor|dom-helpers|@emotion|exenv|fbjs|history|hoist-non-react-statics|hyphenate-style-name|invariant|is-in-browser|is-what|jss|jss-plugin-camel-case|jss-plugin-default-unit|jss-plugin-global|jss-plugin-nested|jss-plugin-props-sort|jss-plugin-vendor-prefixer|jss-plugin-rule-value-function|memoize-one|merge-anything|object-assign|process|query-string|react-is|react-fast-compare|react-js|react-side-effect|scroll-behavior|shallowequal|sockjs-client|strict-uri-encode|stylis|stylis-rule-sheet|tiny-warning)[\\/]/);
-            }
-          },
-          chunks: 'all',
-          enforce: true,
-        },
-        defaultWeVote: {
-          name: 'defaultWeVote',
-          test: function (module) {
-            if (module.resource) {
-              return module.resource.includes('/js/');
-            }
-          },
-          chunks: 'all',
-          enforce: true,
-          priority: -10,
-        },
-        defaultVendors: {
-          name: 'defaultVendors',
-          test: /[\\/]node_modules[\\/]/,
-          chunks: 'all',
-          enforce: true,
-          priority: -10,
-        },
-      },
-    },
-    minimizer: [
-      new UglifyJsPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          ecma: 8,
-          mangle: false,
-          keep_classnames: true,
-          keep_fnames: true,
-        },
-      }),
-    ],
+        vendor: {
+          chunks: 'initial',
+          test: 'vendor',
+          name: 'vendor',
+          enforce: true
+        }
+      }
+    }
   },
+  // optimization: {
+  //   runtimeChunk: false,
+  //   splitChunks: {
+  //     chunks: 'all',
+  //     maxInitialRequests: Infinity,
+  //     minSize: 0,
+  //     cacheGroups: {
+  //       reactCore: {
+  //         name: 'reactCore',
+  //         test: /[\\/]node_modules[\\/](jquery|prop-types|react|react-dom|react-helmet|react-router|react-router-scroll|react-text-truncate)[\\/]/,
+  //         chunks: 'all',
+  //         enforce: true,
+  //       },
+  //       // minimalNodeModules: {
+  //       //   name: 'minimalNodeModules',
+  //       //   test: /[\\/]node_modules[\\/](@babel|clsx|create-react-class|css-vendor|dom-helpers|@emotion|exenv|fbjs|history|hoist-non-react-statics|hyphenate-style-name|invariant|is-in-browser|is-what|jss|jss-plugin-camel-case|jss-plugin-default-unit|jss-plugin-global|jss-plugin-nested|jss-plugin-props-sort|jss-plugin-vendor-prefixer|jss-plugin-rule-value-function|memoize-one|merge-anything|object-assign|process|query-string|react-is|react-fast-compare|react-js|react-side-effect|scroll-behavior|shallowequal|sockjs-client|strict-uri-encode|stylis|stylis-rule-sheet|tiny-warning)[\\/]/,
+  //       //   chunks: 'all',
+  //       //   enforce: true,
+  //       // },
+  //       materialStyle: {
+  //         name: 'materialStyle',
+  //         test: /[\\/]node_modules[\\/](@material-ui|styled-components)[\\/]/,
+  //         chunks: 'all',
+  //         enforce: true,
+  //       },
+  //       readyNoApi: {
+  //         name: 'readyNoApi',
+  //         test: function (module) {
+  //           if (module.resource) {
+  //             return module.resource.includes('/js/config.js') ||
+  //               module.resource.includes('/js/index.js') ||
+  //               module.resource.includes('/js/mui-theme.js') ||
+  //               module.resource.includes('/js/Root.jsx') ||
+  //               module.resource.includes('/js/startReactApp.js') ||
+  //               module.resource.includes('/js/styled-theme.js') ||
+  //               module.resource.includes('/js/components/ReadyNoApi/') ||
+  //               module.resource.includes('/js/components/Widgets/ReadMore.jsx') ||
+  //               module.resource.includes('/js/routes/ReadyNoApi.jsx') ||
+  //               module.resource.includes('/js/utils/') ||
+  //               module.resource.match(/[\\/]node_modules[\\/](@babel|clsx|create-react-class|css-vendor|dom-helpers|@emotion|exenv|fbjs|history|hoist-non-react-statics|hyphenate-style-name|invariant|is-in-browser|is-what|jss|jss-plugin-camel-case|jss-plugin-default-unit|jss-plugin-global|jss-plugin-nested|jss-plugin-props-sort|jss-plugin-vendor-prefixer|jss-plugin-rule-value-function|memoize-one|merge-anything|object-assign|process|query-string|react-is|react-fast-compare|react-js|react-side-effect|scroll-behavior|shallowequal|sockjs-client|strict-uri-encode|stylis|stylis-rule-sheet|tiny-warning)[\\/]/);
+  //           }
+  //         },
+  //         chunks: 'all',
+  //         enforce: true,
+  //       },
+  //       defaultWeVote: {
+  //         name: 'defaultWeVote',
+  //         test: function (module) {
+  //           if (module.resource) {
+  //             return module.resource.includes('/js/');
+  //           }
+  //         },
+  //         chunks: 'all',
+  //         enforce: true,
+  //         priority: -10,
+  //       },
+  //       defaultVendors: {
+  //         name: 'defaultVendors',
+  //         test: /[\\/]node_modules[\\/]/,
+  //         chunks: 'all',
+  //         enforce: true,
+  //         priority: -10,
+  //       },
+  //     },
+  //   },
+  //   minimizer: [
+  //     new UglifyJsPlugin({
+  //       sourceMap: true,
+  //       uglifyOptions: {
+  //         ecma: 8,
+  //         mangle: false,
+  //         keep_classnames: true,
+  //         keep_fnames: true,
+  //       },
+  //     }),
+  //   ],
+  // },
   plugins: [
     new CleanWebpackPlugin(),
     new webpack.HashedModuleIdsPlugin(),
@@ -205,10 +224,9 @@ module.exports = {
   },
   devServer: {
     host: 'localhost',
-    port,
+    port: port,
     historyApiFallback: true,
-    open: true,
-    writeToDisk: true,
+    open: true
   },
   devtool: 'inline-cheap-module-source-map',
 };

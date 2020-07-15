@@ -11,10 +11,10 @@
       "@babel/preset-react"
     ],
     "plugins": [
-      "@babel/plugin-syntax-dynamic-import",
       "dynamic-import-node-babel-7",
-      "@babel/plugin-syntax-import-meta",
+      "@babel/plugin-syntax-dynamic-import",
       "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-syntax-import-meta",
       "@babel/plugin-proposal-json-strings",
       [
         "@babel/plugin-proposal-decorators",
@@ -105,9 +105,11 @@
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-copy-to-clipboard": "^5.0.2",
+    "react-delay-render": "^0.1.2",
     "react-dom": "^16.12.0",
     "react-helmet": "^5.2.1",
     "react-iframe-resizer-super": "^0.2.2",
+    "react-imported-component": "^6.3.5",
     "react-loadable": "^5.5.0",
     "react-mixin": "^3.1.1",
     "react-phone-number-input": "^2.5.1",

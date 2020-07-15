@@ -4,6 +4,24 @@ import { IndexRoute, IndexRedirect, Route } from 'react-router'; // Route,
 import cookies from './utils/cookies';
 import componentLoader from './utils/componentLoader';
 import { isWebApp } from './utils/cordovaUtils';
+import Loading from './components/Widgets/Loading';
+import Values from './routes/Values';
+import Ballot from './routes/Ballot/Ballot';
+import importedComponent from 'react-imported-component';
+
+const AsyncDynamicPage = importedComponent(
+  () => import(/* webpackChunkName:'Values' */ './routes/Values'),
+  {
+    LoadingComponent: Loading
+  }
+);
+
+const AsyncBallot = importedComponent(
+  () => import(/* webpackChunkName:'Ballot' */ './routes/Ballot/Ballot'),
+  {
+    LoadingComponent: Loading
+  }
+);
 
 // Temp until we can find alternative
 const OrganizationVoterGuide = React.lazy(() => import('./routes/VoterGuide/OrganizationVoterGuide'));
@@ -24,17 +42,8 @@ const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
 const routes = () => {  // eslint-disable-line arrow-body-style
   // console.log('window.innerWidth:', window.innerWidth);
   return (
-    // <Router>
-    //   <div>
-    //     <Switch>
-    //       <Suspense fallback={<div>Loading...</div>}>
-    //         <Route path="/getready" component={componentLoader('ReadyNoApi')} />
-    //         <Route path="/ready" component={componentLoader('Ready')} />
-    //       </Suspense>
-    //     </Switch>
-    //   </div>
-    // </Router>
-    <Route path="/">
+    <>
+    {/* <Route path="/">
       {                       // 12/4/18: Not sure why we need the following disabled
         (function redirect () {  // eslint-disable-line wrap-iife
           if (isWebApp()) {
@@ -45,12 +54,18 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           }
         }
         )()
-      }
-      <Suspense fallback={<div>Loading...</div>}>
-        <Route path="/getready" component={componentLoader('ReadyNoApi')} />
-      </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Route component={componentLoader('Application')}>
+      } */}
+                <Route exact path="/" component={Ballot} />
+          <Route exact path="/values-test" component={AsyncDynamicPage} />
+          <Route component={AsyncBallot} />
+      {/* <Suspense fallback={<div>Loading...</div>}> */}
+        {/* <Route path="/getready" component={componentLoader('ReadyNoApi')} /> */}
+      {/* </Suspense> */}
+      {/* <Suspense fallback={<div>Loading...</div>}>
+        <Route component={componentLoader('Application')}> */}
+
+
+        {/*
           <Route component={componentLoader('Intro')} />
           <Route path="/welcome" component={isNotWeVoteMarketingSite ? componentLoader('ReadyRedirect') : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
           <Route path="/news" component={componentLoader('News')} />
@@ -108,9 +123,6 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/wevoteintro/network" component={componentLoader('IntroNetwork')} />
           <Route path="/intro/sample_ballot" component={componentLoader('SampleBallot')} />
           <Route path="/intro/get_started" component={componentLoader('GetStarted')} />
-
-          {/* Your Settings go in this structure... */}
-          {/* Complete path on one line for searching */}
           <Route path="/settings" component={componentLoader('SettingsDashboard')} />
           <Route path="/settings/claim" component={componentLoader('ClaimYourPage')} />
           <Route path="/settings/hamburger" component={componentLoader('HamburgerMenu')} />
@@ -118,27 +130,23 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/settings/menu" component={componentLoader('SettingsMenuMobile')} />
           <Route path="/settings/voterguidelist" component={componentLoader('VoterGuideListDashboard')} />
           <Route path="/settings/voterguidesmenu" component={componentLoader('VoterGuidesMenuMobile')} />
-          {/* settings/:edit_mode includes "/settings/account", "/settings/address", "/settings/domain", "/settings/election",
-          "/settings/issues_linked", "/settings/issues_to_link", "/settings/issues", "/settings/notifications",
-          "/settings/profile", "/settings/text", "/settings/tools" */}
           <Route path="/settings/:edit_mode" component={componentLoader('SettingsDashboard')} />
           <Route path="/settings/issues/:edit_mode" component={componentLoader('SettingsDashboard')} />
           <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" component={componentLoader('SettingsDashboard')} />
 
-          {/* Ballot Off-shoot Pages */}
+       
           <Route path="/opinions" component={componentLoader('Opinions')} />
           <Route path="/opinions/f/:selectedFilter" component={componentLoader('Opinions')} />
           <Route path="/opinions/s/:searchTextDefault" component={componentLoader('Opinions')} />
           <Route path="/opinions_followed" component={componentLoader('OpinionsFollowed')} />
           <Route path="/opinions_ignored" component={componentLoader('OpinionsIgnored')} />
 
-          {/* Friend related Pages */}
+        
           <Route path="/friends" component={componentLoader('Friends')} />
           <Route path="/friends/:tabItem" component={componentLoader('Friends')} />
           <Route path="/facebook_invitable_friends" component={componentLoader('FacebookInvitableFriends')} />
           <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={componentLoader('FriendInvitationOnboarding')} />
 
-          {/* More Menu Pages */}
           <Route path="/more/about" component={isNotWeVoteMarketingSite ? componentLoader('ReadyRedirect') : componentLoader('About')} />
           <Route path="/more/absentee" component={componentLoader('AbsenteeBallot')} />
           <Route path="/more/alerts" component={componentLoader('ElectionReminder')} />
@@ -158,7 +166,6 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/more/network" component={componentLoader('Friends')} />
           <Route path="/more/network/key/:invitation_secret_key" component={componentLoader('FriendInvitationByEmailVerifyProcess')} />
           <Route path="/more/network/key/:invitation_secret_key/ignore" component={componentLoader('FriendInvitationByEmailVerifyProcess')} />
-          {/* Redirecting old URLs to new components */}
           <Route path="/more/network/friends" component={componentLoader('Friends')} />
           <Route path="/more/network/organizations" component={componentLoader('Values')} />
           <Route path="/more/pricing" component={isNotWeVoteMarketingSite ? componentLoader('ReadyRedirect') : componentLoader('Pricing')} />
@@ -173,8 +180,6 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/values" component={componentLoader('Values')} />
           <Route path="/values/list" component={componentLoader('ValuesList')} />
           <Route path="/value/:value_slug" component={componentLoader('VoterGuidesUnderOneValue')} />
-
-          {/* Voter Guide Pages - By Organization */}
           <Route path="/voterguide/:organization_we_vote_id" component={props => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
           <Route path="/voterguide/:organization_we_vote_id/ballot" component={props => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
           <Route path="/voterguide/:organization_we_vote_id/ballot/empty" component={props => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
@@ -219,8 +224,6 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/voterguide/:organization_we_vote_id/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
           <Route path="/voterguideedit/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideEdit')} />
           <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" component={componentLoader('OrganizationVoterGuideEdit')} />
-
-          {/* Voter Guide Settings go in this structure... "/vg/wvYYvgYY/settings/positions", "/vg/wvYYvgYY/settings/addpositions" */}
           <Route path="/vg/:voter_guide_we_vote_id/settings" component={componentLoader('VoterGuideSettingsDashboard')} />
           <Route path="/vg/:voter_guide_we_vote_id/settings/menu" component={componentLoader('VoterGuideSettingsMenuMobile')} />
           <Route path="/vg/:voter_guide_we_vote_id/settings/positions" component={componentLoader('VoterGuideSettingsDashboard')} />
@@ -232,15 +235,13 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/verify_email/:email_secret_key" component={componentLoader('VerifyEmailProcess')} />
           <Route path="/sign_in_email/:email_secret_key" component={componentLoader('SignInEmailProcess')} />
 
-          {/* Confirming that person owns twitter handle */}
           <Route path="/verifythisisme/:twitter_handle" component={componentLoader('VerifyThisIsMe')} />
           <Route path="/twittersigninprocess/:sign_in_step" component={componentLoader('TwitterSignInProcess')} />
 
-          {/* Custom link. "/-/" is controlled by customer and tied to hostname, "/-" is generated by software */}
           <Route path="/-/:custom_link_string" component={componentLoader('SharedItemLanding')} />
           <Route path="/-:shared_item_code" component={componentLoader('SharedItemLanding')} />
 
-          {/* Temporary scratchpad for component testing */}
+
           <Route path="/testing/scratchpad" component={isNotWeVoteMarketingSite ? componentLoader('ReadyRedirect') : componentLoader('ScratchPad')} />
 
           <Route path=":twitter_handle/ballot/empty" component={componentLoader('TwitterHandleLanding')} />
@@ -249,9 +250,6 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path=":twitter_handle/ballot/id/:ballot_returned_we_vote_id/:view_mode" component={componentLoader('TwitterHandleLanding')} />
           <Route path=":twitter_handle/ballot/election/:google_civic_election_id" component={componentLoader('TwitterHandleLanding')} />
           <Route path=":twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={componentLoader('TwitterHandleLanding')} />
-          {/* view_mode not taken in yet */}
-
-          {/* Any route that is not found -> @return TwitterHandleLanding component */}
           <Route path=":twitter_handle/followers" component={props => <TwitterHandleLanding {...props} activeRoute="followers" />} />
           <Route path=":twitter_handle/following" component={props => <TwitterHandleLanding {...props} activeRoute="following" />} />
           <Route path=":twitter_handle/positions" component={props => <TwitterHandleLanding {...props} activeRoute="positions" />} />
@@ -283,9 +281,22 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
           <Route path=":twitter_handle" component={componentLoader('TwitterHandleLanding')} />
           <Route path="*" component={componentLoader('PageNotFound')} />
-        </Route>
+        */}
+
+
+
+
+
+
+
+
+
+
+
+        {/* </Route>
       </Suspense>
-    </Route>
+    </Route> */}
+    </>
   );
 };
 

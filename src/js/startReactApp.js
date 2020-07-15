@@ -11,6 +11,7 @@ import routes from './Root';
 import muiTheme from './mui-theme';
 import styledTheme from './styled-theme';
 import { renderLog } from './utils/logging';
+import Application from './Application';
 
 
 // May 2020, this was moved into a separate file, so that the imports can be delayed
@@ -23,18 +24,21 @@ export default function startReactApp () {
 
   const element = (
     // eslint-disable-next-line react/jsx-filename-extension
-    <Suspense fallback={<div>&nbsp;</div>}>
+    // <Suspense fallback={<div>&nbsp;</div>}>
       <MuiThemeProvider theme={muiTheme}>
         <ThemeProvider theme={styledTheme}>
+
           <Router
             history={isCordova() ? hashHistory : browserHistory}
             render={applyRouterMiddleware(useScroll(() => true))}
           >
-            {routes()}
+                      <Application>
+            {routes()}          </Application>
           </Router>
+
         </ThemeProvider>
       </MuiThemeProvider>
-    </Suspense>
+    // </Suspense>
   );
 
   // console.log('startReactApp before render');
