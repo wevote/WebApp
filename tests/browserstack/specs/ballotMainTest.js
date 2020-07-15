@@ -5,7 +5,7 @@ const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_';
 const PAUSE_DURATION_MICROSECONDS = 3000;
 const PAUSE_DURATION_BALLOT_LOAD = 6000;
-const { device, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
+const { device, os_version, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
 // Remember that tablets should be considered desktop screen size
 const isDesktopScreenSize = !isMobileScreenSize;
 let ballotBadgePlatformPrefixID = 'ballotBadge';
@@ -14,12 +14,17 @@ let isS8 = false;
 let isGooglePixel3 = false;
 let isiPhone = false;
 let isiPad = false;
+let isCatalina = false;
 
 if (device) {
   isS8 = device.includes('Samsung Galaxy S8');
   isGooglePixel3 = device.includes('Google Pixel 3');
   isiPad = device.includes('iPad');
   isiPhone = device.includes('iPhone');
+}
+
+if (os_version) {
+  isCatalina = os_version.includes('Catalina');
 }
 
 if (!isAndroid) {
@@ -149,18 +154,15 @@ describe('Cross browser automated testing', () => {
 
   it('should visit measure page', async() => {
     await selectClick('[id^=measureItemCompressedChoiceYes-]'); // Click on first measure
-    await hiddenSelectClick('[id^=itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-wv02meas604-]'); // Click yes
+    await hiddenSelectClick('[id^=itemActionBarYesButton-measureItem-ballotItemSupportOpposeComment-]'); // Click yes
     await simpleClick('profileCloseItemActionBar'); // Click close for pop up
-    await hiddenSelectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas604-]'); // Click no
-    await hiddenSelectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-wv02meas604-]'); // Undo
+    await hiddenSelectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-]'); // Click no
+    await hiddenSelectClick('[id^=itemActionBarNoButton-measureItem-ballotItemSupportOpposeComment-]'); // Undo
     await selectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Click on text area
     await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
     await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
-    if (!isIOS) {
-      await selectClick('[id^=itemPositionStatementActionBarEdit-]'); // Click on edit button
-    } else { // bug where save button doesn't go away
-      await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
-    }
+    await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
+    await selectClick('[id^=itemPositionStatementActionBarEdit-]'); // Click on edit button
     await selectTextInput('[id^=itemPositionStatementActionBarTextArea-]', `${backspace}`.repeat(25)); // clear text area
     await selectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
   });
@@ -193,10 +195,7 @@ describe('Cross browser automated testing', () => {
     await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Clicks on text area
     await hiddenSelectTextInput('[id^=itemPositionStatementActionBarTextArea-]', xssTest); // Write something in Text Area
     await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
-    // Bug edit button does not appear
-    await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
-    await hiddenSelectClick('[id^=itemPositionStatementActionBarTextArea-]'); // Clicks on text area
-    await hiddenSelectTextInput('[id^=itemPositionStatementActionBarTextArea-]', `${backspace}`.repeat(25)); // clear text area
+    await hiddenSelectTextInput('[id^=itemPositionStatementActionBarTextArea-]', ''); // Clear text area
     await hiddenSelectClick('[id^=itemPositionStatementActionBarSave-]'); // Click on save button
   });
 
