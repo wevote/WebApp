@@ -4,6 +4,7 @@ import AddEndorsements from '../components/Widgets/AddEndorsements';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { cordovaDot } from '../utils/cordovaUtils';
+import FindOpinionsForm from '../components/ReadyNoApi/FindOpinionsForm';
 import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
 import LoadingWheel from '../components/LoadingWheel';
@@ -113,6 +114,14 @@ export default class Values extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <div className="row">
           <div id="mainContentColumn" className="col-sm-12 col-md-8">
+            <div className="card u-show-mobile-tablet">
+              <div className="card-main">
+                <FindOpinionsForm
+                  headerText="Find Opinions or Endorsements"
+                  searchTextLarge
+                />
+              </div>
+            </div>
             {publicFiguresBlockToDisplay}
             {organizationsBlockToDisplay}
             {!!(issuesToFollowShouldBeDisplayed) && (
@@ -134,6 +143,14 @@ export default class Values extends Component {
             {!!(issuesFollowedCount) && <ValuesFollowedPreview /> }
           </div>
           <div className="col-md-4 d-none d-md-block">
+            <div className="card u-show-desktop">
+              <div className="card-main">
+                <FindOpinionsForm
+                  headerText="Find Opinions / Endorsements"
+                  searchTextLarge
+                />
+              </div>
+            </div>
             {this.state.voter.signed_in_twitter ? null : (
               <TwitterSignInCard />
             )}

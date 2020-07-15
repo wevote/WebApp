@@ -3,13 +3,8 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import { Button, Card, CardContent, FormControl, InputLabel, Select } from '@material-ui/core';
 import { CheckCircle } from '@material-ui/icons';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppStore from '../stores/AppStore';
 import BallotActions from '../actions/BallotActions';
@@ -567,6 +562,28 @@ class Register extends Component {
             <div className="col-sm-12 col-lg-8">
               <Card>
                 <CardContent>
+                  <span>{this.state.majorStep}</span>
+                  <span>{this.state.minorStep}</span>
+                  <br />
+                  <br />
+                  <br />
+                  <Button color="primary" variant={this.state.majorStep === 'A' ? 'contained' : 'outlined'} size="small">
+                    1
+                  </Button>
+                  {' '}
+                  <Button disabled={!this.state.stepOneCompleted} color="primary" variant={this.state.majorStep === 'B' ? 'contained' : 'outlined'} size="small">
+                    2
+                  </Button>
+                  {' '}
+                  <Button disabled={!this.state.stepTwoCompleted} color="primary" variant={this.state.majorStep === 'C' ? 'contained' : 'outlined'} size="small">
+                    3
+                  </Button>
+                  {' '}
+                  <Button disabled={!this.state.stepThreeCompleted} color="primary" variant={this.state.majorStep === 'D' ? 'contained' : 'outlined'} size="small">
+                    4
+                  </Button>
+                  {' '}
+                  <br />
                   {this.state.majorStep === 'A' && renderMajorStepA()}
                   {this.state.majorStep === 'B' && renderMajorStepB()}
                   {this.state.majorStep === 'C' && renderMajorStepC()}

@@ -10,6 +10,7 @@ class ReadyStore extends ReduceStore {
       allCachedVoterPlansByElectionIdAndVoterId: {}, // This is a dictionary with google_civic_election_id as one key and voter_we_vote_id as a second key and a friends only voterPlan as the value
       allLatestPublicVoterPlansByElectionIdAndStateCode: {}, // This is a dictionary with google_civic_election_id as one key and state_code as a second key and a public voterPlan as the value
       allLatestPublicVoterPlansByElectionId: {}, // This is a dictionary with google_civic_election_id as key and a public voterPlan as the value
+      voterPlansForVoterRetrieved: false, // This is a boolean indicating whether there has been an attempted retrieval of the voter plans for a voter
     };
   }
 
@@ -30,10 +31,15 @@ class ReadyStore extends ReduceStore {
     return this.getState().allCachedVoterPlansForVoterByElectionId[googleCivicElectionId] || {};
   }
 
+  getVoterPlansForVoterRetrieved () {
+    return this.getState().voterPlansForVoterRetrieved || false;
+  }
+
   reduce (state, action) {
-    const { allCachedVoterPlansForVoterByElectionId, allLatestPublicVoterPlansByElectionId } = state;
+    const { allCachedVoterPlansForVoterByElectionId, allLatestPublicVoterPlansByElectionId, voterPlansForVoterRetrieved } = state;
     let googleCivicElectionId = 0;
     let voterPlanList = [];
+
 
     switch (action.type) {
       case 'voterPlanListRetrieve':
@@ -71,14 +77,24 @@ class ReadyStore extends ReduceStore {
         // console.log('ReadyStore voterPlansForVoterRetrieve, action.res:', action.res);
         if (!action.res || !action.res.success) return state;
         voterPlanList = action.res.voter_plan_list || [];
-        voterPlanList.forEach((oneVoterPlan) => {
-          googleCivicElectionId = oneVoterPlan.google_civic_election_id || 0;
-          allCachedVoterPlansForVoterByElectionId[googleCivicElectionId] = oneVoterPlan;
-        });
-        return {
-          ...state,
-          allCachedVoterPlansForVoterByElectionId,
-        };
+        if (voterPlanList.length) {
+          voterPlanList.forEach((oneVoterPlan) => {
+            googleCivicElectionId = oneVoterPlan.google_civic_election_id || 0;
+            allCachedVoterPlansForVoterByElectionId[googleCivicElectionId] = oneVoterPlan;
+          });
+          return {
+            ...state,
+            allCachedVoterPlansForVoterByElectionId,
+            voterPlansForVoterRetrieved: true,
+          };
+        } else if (!voterPlansForVoterRetrieved) {
+          return {
+            ...state,
+            voterPlansForVoterRetrieved: true,
+          };
+        } else {
+          return state;
+        }
 
       default:
         return state;

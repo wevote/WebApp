@@ -55,7 +55,6 @@ describe('Cross browser automated testing',  () => {
       await simpleClick('emailSignIn-splitIconButton'); // Clicks "Sign in with an email" button
       await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com'); // Type input
       await simpleClick('voterEmailAddressEntrySendCode'); // Click Send Verification Code
-      // Speed up entering digits
       await simpleTextInput('digit1', '0');
       await simpleTextInput('digit2', '1');
       await simpleTextInput('digit3', '2');
@@ -86,7 +85,6 @@ describe('Cross browser automated testing',  () => {
       await simpleClick('smsSignIn-splitIconButton'); // Clicks "Sign in with a text" button
       await simpleTextInput('enterVoterPhone', '18004444444'); // Inputs voter phone number
       await simpleClick('voterPhoneSendSMS'); // Clicks "Send Verification Code"
-      // Speed up entering digits
       await simpleTextInput("digit1", "0");
       await simpleTextInput("digit2", "1");
       await simpleTextInput("digit3", "2");
@@ -125,7 +123,6 @@ describe('Cross browser automated testing',  () => {
     await simpleClick('voterPhoneSendSMS');
     await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com');
     await simpleClick('voterEmailAddressEntrySendCode');
-    // Speed up entering digits
     await simpleTextInput("digit1", "0");
     await simpleTextInput("digit2", "1");
     await simpleTextInput("digit3", "2");

@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import Card from '@material-ui/core/Card';
-import BallotIcon from '@material-ui/icons/Ballot';
-import Button from '@material-ui/core/Button';
+import { Ballot } from '@material-ui/icons';
+import { Button, Card } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../utils/logging';
 import { historyPush, isCordova } from '../utils/cordovaUtils';
@@ -35,7 +34,7 @@ class PageNotFound extends Component {
                   variant="contained"
                   onClick={() => historyPush('/ballot')}
                 >
-                  <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
+                  <Ballot classes={{ root: classes.ballotButtonIconRoot }} />
                   Go to Ballot
                 </Button>
               </EmptyBallotMessageContainer>

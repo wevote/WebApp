@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import CloseIcon from '@material-ui/icons/Close';
-import People from '@material-ui/icons/People';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
+import { Close, People, FileCopyOutlined, ArrowBackIos } from '@material-ui/icons';
+import { Dialog, DialogContent, IconButton, Tooltip, Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
 import {
   EmailIcon,
   EmailShareButton,
@@ -362,7 +355,7 @@ class ShareModal extends Component {
               onClick={this.closeShareModal}
               id="closeShareModal"
             >
-              <CloseIcon />
+              <Close />
             </IconButton>
           </ModalTitleArea>
           <DialogContent classes={{ root: classes.dialogContent }}>
@@ -444,7 +437,7 @@ class ShareModal extends Component {
                 <ShareModalOption
                   background="#2E3C5D"
                   copyLink
-                  icon={<FileCopyOutlinedIcon />}
+                  icon={<FileCopyOutlined />}
                   id="copyShareLink"
                   link={linkToBeShared}
                   onClickFunction={this.saveActionShareButtonCopy}
@@ -476,7 +469,7 @@ class ShareModal extends Component {
       //         onClick={this.closeShareModal}
       //         id="profileCloseShareModal"
       //       >
-      //         <CloseIcon />
+      //         <Close />
       //       </IconButton>
       //     </ModalTitleArea>
       //     <DialogContent classes={{ root: classes.dialogContent }}>
@@ -502,7 +495,7 @@ class ShareModal extends Component {
               onClick={this.closeShareModal}
               id="profileCloseShareModal"
             >
-              <CloseIcon />
+              <Close />
             </IconButton>
           </ModalTitleArea>
           <DialogContent classes={{ root: classes.dialogContent }}>
@@ -542,7 +535,7 @@ class ShareModal extends Component {
               onClick={this.closeShareModal}
               id="profileCloseShareModal"
             >
-              <CloseIcon />
+              <Close />
             </IconButton>
           </ModalTitleArea>
           <DialogContent classes={{ root: classes.dialogContent }}>

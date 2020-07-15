@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import CheckCircle from '@material-ui/icons/CheckCircle';
+import { ArrowForward, CheckCircle } from '@material-ui/icons';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import register0Percent from '../../../img/global/svg-icons/ready/register-0-percent.svg';
 import register100Percent from '../../../img/global/svg-icons/ready/register-100-percent.svg';
@@ -126,7 +125,7 @@ class ReadyTaskRegister extends React.Component {
                     <span className="u-show-desktop-tablet">
                       Verify You Are Registered in your State
                     </span>
-                    <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                    <ArrowForward classes={{ root: classes.arrowRoot }} />
                   </>
                 )}
               </ButtonText>

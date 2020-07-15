@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
-import PlaceIcon from '@material-ui/icons/Place';
+import { Button } from '@material-ui/core';
+import { Place } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
@@ -31,7 +31,7 @@ class FindPollingLocation extends Component {
               color="primary"
               variant="contained"
             >
-              <PlaceIcon classes={{ root: classes.ballotButtonIconRoot }} />
+              <Place classes={{ root: classes.ballotButtonIconRoot }} />
               Your Polling Location
             </Button>
           )}

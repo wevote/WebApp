@@ -10,6 +10,7 @@ import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import cookies from '../utils/cookies';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
+import FindOpinionsForm from '../components/ReadyNoApi/FindOpinionsForm';
 import { historyPush, isWebApp } from '../utils/cordovaUtils';
 import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
@@ -38,6 +39,7 @@ class Ready extends Component {
       chosenReadyIntroductionTitle: '',
       issuesDisplayDecisionHasBeenMade: false,
       issuesShouldBeDisplayed: false,
+      textForMapSearch: '',
     };
   }
 
@@ -60,6 +62,7 @@ class Ready extends Component {
     AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
     this.setState({
       locationGuessClosed: cookies.getItem('location_guess_closed'),
+      textForMapSearch: VoterStore.getTextForMapSearch(),
     });
   }
 
@@ -95,7 +98,10 @@ class Ready extends Component {
   }
 
   onVoterStoreChange () {
-    // this.setState({ voter: VoterStore.getVoter() });
+    const textForMapSearch = VoterStore.getTextForMapSearch();
+    this.setState({
+      textForMapSearch,
+    });
   }
 
   goToBallot = () => {
@@ -110,16 +116,18 @@ class Ready extends Component {
     renderLog('Ready');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       chosenReadyIntroductionText, chosenReadyIntroductionTitle, issuesShouldBeDisplayed,
-      locationGuessClosed,
+      locationGuessClosed, textForMapSearch,
     } = this.state;
 
+    const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
+    // console.log('locationGuessClosed:', locationGuessClosed, ', textForMapSearch:', textForMapSearch, ', showAddressVerificationForm:', showAddressVerificationForm);
     return (
       <Wrapper className="page-content-container">
         <PageContainer className="container-fluid" isWeb={isWebApp()}>
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
-            {!(locationGuessClosed) && (
+            {(showAddressVerificationForm) && (
               <EditAddressWrapper className="col-12">
                 <EditAddressOneHorizontalRow saveUrl="/ready" />
               </EditAddressWrapper>
@@ -143,11 +151,37 @@ class Ready extends Component {
                   </div>
                 </Card>
               )}
-              <Card className="card u-show-mobile-tablet">
+              <Card className="card u-show-mobile">
+                <div className="card-main">
+                  <FindOpinionsForm
+                    searchTextLarge
+                  />
+                </div>
+              </Card>
+              <Card className="card u-show-mobile">
                 <div className="card-main">
                   <ReadyIntroduction />
                 </div>
               </Card>
+              <IntroAndFindTabletWrapper className="u-show-tablet">
+                <IntroductionWrapper>
+                  <Card className="card">
+                    <div className="card-main">
+                      <ReadyIntroduction />
+                    </div>
+                  </Card>
+                </IntroductionWrapper>
+                <IntroAndFindTabletSpacer />
+                <FindWrapper>
+                  <Card className="card">
+                    <div className="card-main">
+                      <FindOpinionsForm
+                        searchTextLarge
+                      />
+                    </div>
+                  </Card>
+                </FindWrapper>
+              </IntroAndFindTabletWrapper>
               <ReadyTaskBallot
                 arrowsOn
               />
@@ -178,6 +212,13 @@ class Ready extends Component {
                   </div>
                 </Card>
               )}
+              <Card className="card">
+                <div className="card-main">
+                  <FindOpinionsForm
+                    searchTextLarge
+                  />
+                </div>
+              </Card>
               <Card className="card">
                 <div className="card-main">
                   <ReadyIntroduction
@@ -227,6 +268,23 @@ const EditAddressWrapper = styled.div`
   margin-left: 0 !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
+`;
+
+const FindWrapper = styled.div`
+  width: 40%;
+`;
+
+const IntroductionWrapper = styled.div`
+  width: 60%;
+`;
+
+const IntroAndFindTabletWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const IntroAndFindTabletSpacer = styled.div`
+  width: 20px;
 `;
 
 const PageContainer = styled.div`

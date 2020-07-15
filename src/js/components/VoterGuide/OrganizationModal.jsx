@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
+import { Drawer, IconButton } from '@material-ui/core';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import CandidateItem from '../Ballot/CandidateItem';
@@ -122,8 +121,9 @@ class OrganizationModal extends Component {
             aria-label="Close"
             className={classes.closeButton}
             id="closeOrganizationModal"
+             onClick={this.closeOrganizationModal}
           >
-            <span className="fas fa-times u-cursor--pointer" onClick={this.closeOrganizationModal} />
+            <span className="fas fa-times u-cursor--pointer" />
           </IconButton>
           <CandidateItem
             inModal

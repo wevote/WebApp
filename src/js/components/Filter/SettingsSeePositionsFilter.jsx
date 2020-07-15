@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { FormControlLabel, Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
 import { renderLog } from '../../utils/logging';
 
 

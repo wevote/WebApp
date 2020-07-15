@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Ballot from '@material-ui/icons/Ballot';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { Ballot } from '@material-ui/icons';
+import { Typography, Button } from '@material-ui/core';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../utils/logging';

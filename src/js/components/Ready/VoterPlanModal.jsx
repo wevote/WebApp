@@ -1,18 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import CloseIcon from '@material-ui/icons/Close';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
+import { Close, EditLocation } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import InputBase from '@material-ui/core/InputBase';
-import Paper from '@material-ui/core/Paper';
-import Select from '@material-ui/core/Select';
-import EditLocationIcon from '@material-ui/icons/EditLocation';
+import { Button, Dialog, DialogContent, IconButton, Checkbox, FormControlLabel, InputBase, Select, Paper } from '@material-ui/core';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotStore from '../../stores/BallotStore';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
@@ -81,8 +72,12 @@ class VoterPlanModal extends Component {
     }
 
     const ballotElectionDate = BallotStore.currentBallotElectionDate;
+    if (ballotElectionDate) {
+      this.setState({
+        electionDateMonthYear: formatDateToMonthDayYear(ballotElectionDate),
+      });
+    }
     this.setState({
-      electionDateMonthYear: formatDateToMonthDayYear(ballotElectionDate),
       savedVoterPlanFound,
     });
     this.setVoterPlanSavedStates(savedVoterPlan, true);
@@ -159,19 +154,22 @@ class VoterPlanModal extends Component {
 
   onBallotStoreChange () {
     const ballotElectionDate = BallotStore.currentBallotElectionDate;
-    this.setState({
-      electionDateMonthYear: formatDateToMonthDayYear(ballotElectionDate),
-    });
+    if (ballotElectionDate) {
+      this.setState({
+        electionDateMonthYear: formatDateToMonthDayYear(ballotElectionDate),
+      });
+    }
   }
 
   onReadyStoreChange () {
     const googleCivicElectionId = VoterStore.electionId();
     const savedVoterPlan = ReadyStore.getVoterPlanForVoterByElectionId(googleCivicElectionId);
     this.setVoterPlanSavedStates(savedVoterPlan);
+    const voterPlansForVoterRetrieved = ReadyStore.getVoterPlansForVoterRetrieved();
     let savedVoterPlanFound = false;
-    if (savedVoterPlan.google_civic_election_id === undefined) {
+    if (!voterPlansForVoterRetrieved) {
       ReadyActions.voterPlansForVoterRetrieve();
-    } else {
+    } else if (savedVoterPlan.google_civic_election_id) {
       savedVoterPlanFound = true;
     }
     this.setState({
@@ -217,15 +215,6 @@ class VoterPlanModal extends Component {
         try {
           const voterPlanDataAsDict = JSON.parse(voterPlanDataSerialized);
           const { voterPlanChangedLocally } = this.state;
-          // this.setState({
-          //   approximateTimeSavedValue: voterPlanDataAsDict.approximateTime,
-          //   electionDateMonthYearSavedValue: voterPlanDataAsDict.electionDateMonthYear,
-          //   locationToDeliverBallotSavedValue: voterPlanDataAsDict.locationToDeliverBallot,
-          //   modeOfTransportSavedValue: voterPlanDataAsDict.modeOfTransport,
-          //   showToPublicSavedValue: voterPlanDataAsDict.showToPublic,
-          //   votingLocationAddressSavedValue: voterPlanDataAsDict.votingLocationAddress,
-          //   votingRoughDateSavedValue: voterPlanDataAsDict.votingRoughDate,
-          // });
           const updateFormValues = firstTime || !voterPlanChangedLocally;
           if (updateFormValues) {
             this.setState({
@@ -324,7 +313,7 @@ class VoterPlanModal extends Component {
             id="closeVoterPlanModal"
             onClick={this.closeVoterPlanModal}
           >
-            <CloseIcon />
+            <Close />
           </IconButton>
         </ModalTitleArea>
         <DialogContent classes={{ root: classes.dialogContent }}>
@@ -438,14 +427,14 @@ class VoterPlanModal extends Component {
                   <div>
                     <InternalFormWrapper>
                       <Paper className={classes.paperInputForm} elevation={2}>
-                        <EditLocationIcon className="ion-input-icon" />
+                        <EditLocation className="ion-input-icon" />
                         <InputBase
                           aria-label="Address"
                           className={classes.inputBase}
                           id="enterVotingLocationAddress"
                           name="votingLocationAddress"
                           onChange={this.handleVotingLocationAddressChange}
-                          placeholder="Enter address..."
+                          placeholder={(locationToDeliverBallot === 'voting center') ? 'Address of Voting Center' : 'Address of Polling Location'}
                           value={votingLocationAddress}
                         />
                         <OpenExternalWebSite

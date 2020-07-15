@@ -2,12 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
-import DoneIcon from '@material-ui/icons/Done';
-import CommentIcon from '@material-ui/icons/Comment';
-import NotInterestedIcon from '@material-ui/icons/NotInterested';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import { ArrowRightAlt, Done, Comment, NotInterested, ThumbUp, ThumbDown } from '@material-ui/icons';
 import CandidateStore from '../../stores/CandidateStore';
 import FriendStore from '../../stores/FriendStore';
 import IssueStore from '../../stores/IssueStore';
@@ -502,7 +497,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <YourOpinion>
                   <DecidedIconWrapper>
                     <NetworkScoreSmall className={classes.voterSupports} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
-                      <DoneIcon classes={{ root: classes.decidedIconSmall }} />
+                      <Done classes={{ root: classes.decidedIconSmall }} />
                     </NetworkScoreSmall>
                   </DecidedIconWrapper>
                   You support
@@ -519,7 +514,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <YourOpinion>
                   <DecidedIconWrapper>
                     <NetworkScoreSmall className={classes.voterOpposes} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
-                      <NotInterestedIcon classes={{ root: classes.decidedIconSmall }} />
+                      <NotInterested classes={{ root: classes.decidedIconSmall }} />
                     </NetworkScoreSmall>
                   </DecidedIconWrapper>
                   You oppose
@@ -709,7 +704,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               <YourOpinion>
                 <DecidedIconWrapper>
                   <NetworkScoreSmall className={classes.voterSupports} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
-                    <DoneIcon classes={{ root: classes.decidedIconSmall }} />
+                    <Done classes={{ root: classes.decidedIconSmall }} />
                   </NetworkScoreSmall>
                 </DecidedIconWrapper>
                 You support
@@ -727,7 +722,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               <YourOpinion>
                 <DecidedIconWrapper>
                   <NetworkScoreSmall className={classes.voterOpposes} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
-                    <NotInterestedIcon classes={{ root: classes.decidedIconSmall }} />
+                    <NotInterested classes={{ root: classes.decidedIconSmall }} />
                   </NetworkScoreSmall>
                 </DecidedIconWrapper>
                 You oppose
@@ -842,7 +837,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           >
             <NetworkScore className={classes.voterSupports} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
               <VoterChoiceWrapper>
-                <DoneIcon classes={{ root: classes.decidedIcon }} />
+                <Done classes={{ root: classes.decidedIcon }} />
               </VoterChoiceWrapper>
             </NetworkScore>
           </StickyPopover>
@@ -861,7 +856,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           >
             <NetworkScore className={classes.voterOpposes} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
               <VoterChoiceWrapper>
-                <NotInterestedIcon classes={{ root: classes.decidedIcon }} />
+                <NotInterested classes={{ root: classes.decidedIcon }} />
               </VoterChoiceWrapper>
             </NetworkScore>
           </StickyPopover>
@@ -897,14 +892,14 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <EndorsementWrapper>
                   <EndorsementRow>
                     <Endorsement>
-                      <ThumbUpIcon classes={{ root: classes.endorsementIconRoot }} />
+                      <ThumbUp classes={{ root: classes.endorsementIconRoot }} />
                       <EndorsementCount>
                         {numberOfAllSupportPositions}
                       </EndorsementCount>
                     </Endorsement>
                     { showOpposeCount && (
                       <Endorsement>
-                        <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
+                        <ThumbDown classes={{ root: classes.endorsementIconRoot }} />
                         <EndorsementCount>
                           {numberOfAllOpposePositions}
                         </EndorsementCount>
@@ -912,7 +907,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                     )}
                     { showCommentCount && (
                       <Endorsement>
-                        <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
+                        <Comment classes={{ root: classes.endorsementIconRoot }} />
                         <EndorsementCount>
                           {numberOfAllInfoOnlyPositions}
                         </EndorsementCount>
@@ -948,12 +943,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 </NetworkScore>
                 {showDownArrow && (
                   <DownArrow>
-                    <ArrowRightAltIcon classes={{ root: classes.arrowRightAltIconDown }} />
+                    <ArrowRightAlt classes={{ root: classes.arrowRightAltIconDown }} />
                   </DownArrow>
                 )}
                 {showUpArrow && (
                   <UpArrow>
-                    <ArrowRightAltIcon classes={{ root: classes.arrowRightAltIconUp }} />
+                    <ArrowRightAlt classes={{ root: classes.arrowRightAltIconUp }} />
                   </UpArrow>
                 )}
               </NetworkScoreWrapper>

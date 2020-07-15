@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { ArrowForward } from '@material-ui/icons';
 import { renderLog } from '../../utils/logging';
 
 
@@ -28,7 +28,7 @@ class ShowMoreFooter extends React.Component {
         <ShowMoreFooterText>
           { showMoreText }
           {' '}
-          <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />
+          <ArrowForward classes={{ root: classes.cardFooterIconRoot }} />
         </ShowMoreFooterText>
       </ShowMoreFooterStyled>
     );

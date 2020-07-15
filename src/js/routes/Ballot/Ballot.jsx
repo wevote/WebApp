@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import styled from 'styled-components';
-import Badge from '@material-ui/core/Badge';
-import Chip from '@material-ui/core/Chip';
-import Link from '@material-ui/core/Link';
+import { Badge, Chip, CircularProgress, Link } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
@@ -17,7 +14,7 @@ import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotTitleHeader from './BallotTitleHeader';
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
-import BallotSearch from '../../components/Ballot/BallotSearch';
+import FilterBaseSearch from '../../components/Filter/FilterBaseSearch';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
 import BallotStore from '../../stores/BallotStore';
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
@@ -859,7 +856,7 @@ class Ballot extends Component {
     }
   };
 
-  onBallotSearch = (searchText, filteredItems) => {
+  onFilterBaseSearch = (searchText, filteredItems) => {
     window.scrollTo(0, 0);
     const totalNumberOfBallotItems = filteredItems.length || 0;
     this.setState({
@@ -1107,6 +1104,7 @@ class Ballot extends Component {
     if (ballotWithItemsFromCompletionFilterType.length === 0 && inRemainingDecisionsMode) {
       historyPush(this.state.pathname);
     }
+    const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
 
     let numberOfBallotItemsDisplayed = 0;
     let showLoadingText = true;
@@ -1146,11 +1144,11 @@ class Ballot extends Component {
                         <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
                           { ballotWithItemsFromCompletionFilterType.length ? (
                             <React.Fragment>
-                              <BallotSearch
+                              <FilterBaseSearch
                                 alwaysOpen={!showFilterTabs}
                                 isSearching={isSearching}
-                                items={ballotWithAllItems}
-                                onBallotSearch={this.onBallotSearch}
+                                allItems={ballotWithAllItems}
+                                onFilterBaseSearch={this.onFilterBaseSearch}
                                 onToggleSearch={this.handleToggleSearchBallot}
                               />
                               { showFilterTabs && (
@@ -1265,14 +1263,14 @@ class Ballot extends Component {
                   {!isSearching && (
                     <DelayedLoad waitBeforeShow={2000}>
                       <>
-                        {locationGuessClosed ? (
-                          <span className="u-show-desktop-tablet">
-                            <CompleteYourProfile />
-                          </span>
-                        ) : (
+                        {(showAddressVerificationForm) ? (
                           <EditAddressWrapper>
                             <EditAddressOneHorizontalRow saveUrl="/ballot" />
                           </EditAddressWrapper>
+                        ) : (
+                          <span className="u-show-desktop-tablet">
+                            <CompleteYourProfile />
+                          </span>
                         )}
                       </>
                     </DelayedLoad>

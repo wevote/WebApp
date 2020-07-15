@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import CloseIcon from '@material-ui/icons/Close';
-import IconButton from '@material-ui/core/IconButton';
+import { Close } from '@material-ui/icons';
+import { IconButton, Popover, Typography } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import Popover from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
 
 class MaterialUIPopover extends Component {
   static propTypes = {
@@ -132,7 +130,7 @@ class MaterialUIPopover extends Component {
             onClick={this.handleClose}
             id="popoverCloseButton"
             >
-              <CloseIcon classes={{ root: classes.closeButton }} />
+              <Close classes={{ root: classes.closeButton }} />
             </IconButton>
           </CloseWrapper>
         </Popover>

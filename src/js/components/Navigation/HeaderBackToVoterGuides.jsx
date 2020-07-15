@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import PlaceIcon from '@material-ui/icons/Place';
+import { Button, AppBar, Toolbar, Tooltip, IconButton } from '@material-ui/core';
+import { Place, AccountCircle } from '@material-ui/icons';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import BallotStore from '../../stores/BallotStore';
@@ -299,7 +294,7 @@ class HeaderBackToVoterGuides extends Component {
             id="changeVoterGuideElectionHeaderBar"
             onClick={this.toggleVoterGuideModal}
           >
-            <PlaceIcon />
+            <Place />
           </IconButton>
           <Button
             color="primary"
@@ -355,7 +350,7 @@ class HeaderBackToVoterGuides extends Component {
                       <FirstNameWrapper>
                         {shortenText(voterFirstName, 9)}
                       </FirstNameWrapper>
-                      <AccountCircleIcon />
+                      <AccountCircle />
                     </IconButton>
                   </div>
                 )

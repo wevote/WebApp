@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import Radio from '@material-ui/core/Radio';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
+import { Dialog, DialogContent, DialogTitle, IconButton, Typography, Radio, FormControlLabel, FormControl } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { isCordova, isWebApp } from '../../utils/cordovaUtils'; // hasIPhoneNotch,
@@ -245,7 +238,7 @@ class PositionPublicToggle extends Component {
             onClick={() => { this.togglePositionPublicHelpModal(); }}
             id="profileClosePositionPublicToggle"
           >
-            <CloseIcon />
+            <Close />
           </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>

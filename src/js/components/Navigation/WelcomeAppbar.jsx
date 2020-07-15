@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Appbar from '@material-ui/core/AppBar/index';
-import Toolbar from '@material-ui/core/Toolbar/index';
-import Button from '@material-ui/core/Button/index';
-import IconButton from '@material-ui/core/IconButton/index';
+import { AccountCircle, Close, Menu } from '@material-ui/icons';
+import { AppBar, Toolbar, Button, IconButton } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
-import MenuIcon from '@material-ui/icons/Menu';
 import { renderLog } from '../../utils/logging';
 import cookies from '../../utils/cookies';
 import Navigation, { LogoContainer, Divider, NavLink, MobileNavigationMenu, MobileNavDivider, NavRow } from '../Welcome/Navigation';
@@ -256,7 +251,7 @@ class WelcomeAppbar extends Component {
       showHowItWorksForVoters = true;
     }
     return (
-      <Appbar position="relative" classes={{ root: classes.appBarRoot }}>
+      <AppBar position="relative" classes={{ root: classes.appBarRoot }}>
         <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
           <LogoContainer>
             <HeaderBarLogo light />
@@ -338,7 +333,7 @@ class WelcomeAppbar extends Component {
                         <FirstNameWrapper>
                           {shortenText(voterFirstName, 9)}
                         </FirstNameWrapper>
-                        <AccountCircleIcon />
+                        <AccountCircle />
                       </IconButton>
                     </ProfileIconWrapper>
                   )
@@ -383,7 +378,7 @@ class WelcomeAppbar extends Component {
                         id="profileAvatarHeaderBar"
                         onClick={this.toggleProfilePopUp}
                       >
-                        <AccountCircleIcon />
+                        <AccountCircle />
                       </IconButton>
                     </ProfileIconWrapper>
                   )
@@ -409,13 +404,13 @@ class WelcomeAppbar extends Component {
                 id="hamburgerMenuHeaderBar"
                 onClick={() => this.handleShowMobileNavigation(true)}
               >
-                <MenuIcon />
+                <Menu />
               </IconButton>
               {
                 showMobileNavigationMenu && (
                   <MobileNavigationMenu>
                     <NavRow>
-                      <CloseIcon
+                      <Close
                         classes={{ root: classes.navClose }}
                         onClick={() => this.handleShowMobileNavigation(false)}
                       />
@@ -490,7 +485,7 @@ class WelcomeAppbar extends Component {
             toggleFunction={this.closePaidAccountUpgradeModal}
           />
         )}
-      </Appbar>
+      </AppBar>
     );
   }
 }

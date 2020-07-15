@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import CheckCircle from '@material-ui/icons/CheckCircle';
+import { ArrowForward, CheckCircle } from '@material-ui/icons';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import register0Percent from '../../../img/global/svg-icons/ready/register-0-percent.svg';
 import register100Percent from '../../../img/global/svg-icons/ready/register-100-percent.svg';
@@ -157,12 +156,12 @@ class ReadyTaskFriends extends React.Component {
                     <span className="u-show-mobile">
                       Ask Friends to Register
                       <span className="u-show-mobile-bigger-than-iphone5">
-                        <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                        <ArrowForward classes={{ root: classes.arrowRoot }} />
                       </span>
                     </span>
                     <span className="u-show-desktop-tablet">
                       Ask Friends to Verify Registration
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                      <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </span>
                   </>
                 )}
@@ -207,7 +206,7 @@ class ReadyTaskFriends extends React.Component {
                     <span className="u-show-desktop-tablet">
                       Encourage Friends to Look at Ballot
                     </span>
-                    <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                    <ArrowForward classes={{ root: classes.arrowRoot }} />
                   </>
                 )}
               </ButtonText>
@@ -248,7 +247,7 @@ class ReadyTaskFriends extends React.Component {
                     <span className="u-show-desktop-tablet">
                       Endorse Candidates, Change the World
                     </span>
-                    <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                    <ArrowForward classes={{ root: classes.arrowRoot }} />
                   </>
                 )}
               </ButtonText>
@@ -289,7 +288,7 @@ class ReadyTaskFriends extends React.Component {
                     <span className="u-show-desktop-tablet">
                       Make Sure Friends Have Plan to Vote
                     </span>
-                    <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                    <ArrowForward classes={{ root: classes.arrowRoot }} />
                   </>
                 )}
               </ButtonText>
@@ -330,7 +329,7 @@ class ReadyTaskFriends extends React.Component {
                     <span className="u-show-desktop-tablet">
                       Remind Three Friends on Election Day
                     </span>
-                    <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                    <ArrowForward classes={{ root: classes.arrowRoot }} />
                   </>
                 )}
               </ButtonText>

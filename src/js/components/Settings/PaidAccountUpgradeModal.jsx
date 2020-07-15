@@ -2,18 +2,8 @@ import React, { Component } from 'react';
 import { Elements, StripeProvider } from 'react-stripe-elements';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import Button from '@material-ui/core/Button';
-import CloseIcon from '@material-ui/icons/Close';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import IconButton from '@material-ui/core/IconButton';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
+import { Button, Dialog, DialogContent, FormControl, FormControlLabel, IconButton, OutlinedInput, Radio, RadioGroup } from '@material-ui/core';
+import { Close, ArrowBack, ArrowBackIos } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
@@ -1041,7 +1031,7 @@ class PaidAccountUpgradeModal extends Component {
             onClick={this.closePaidAccountUpgradeModal}
             id="profileClosePaidAccountUpgradeModal"
           >
-            <CloseIcon />
+            <Close />
           </IconButton>
         </ModalTitleArea>
         {paidAccountProcessStep === 'choosePlan' ? (

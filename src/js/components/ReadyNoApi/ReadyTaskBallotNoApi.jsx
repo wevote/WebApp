@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import CheckCircle from '@material-ui/icons/CheckCircle';
+import { ArrowForward, CheckCircle } from '@material-ui/icons';
+
 // import AppActions from '../../actions/AppActions';
 import ballot0Percent from '../../../img/global/svg-icons/ready/ballot-0-percent.svg';
 import ballot50Percent from '../../../img/global/svg-icons/ready/ballot-50-percent.svg';
@@ -398,7 +398,7 @@ class ReadyTaskBallotNoApi extends React.Component {
                       <span className="u-show-desktop-tablet">
                         Decide on Candidates
                       </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                      <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </>
                   )}
                 </ButtonText>
@@ -443,7 +443,7 @@ class ReadyTaskBallotNoApi extends React.Component {
                       <span className="u-show-desktop-tablet">
                         Decide on Federal Races
                       </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                      <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </>
                   )}
                 </ButtonText>
@@ -488,7 +488,7 @@ class ReadyTaskBallotNoApi extends React.Component {
                       <span className="u-show-desktop-tablet">
                         Decide on State Races
                       </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                      <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </>
                   )}
                 </ButtonText>
@@ -533,7 +533,7 @@ class ReadyTaskBallotNoApi extends React.Component {
                       <span className="u-show-desktop-tablet">
                         Decide on Measures
                       </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                      <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </>
                   )}
                 </ButtonText>
@@ -578,7 +578,7 @@ class ReadyTaskBallotNoApi extends React.Component {
                       <span className="u-show-desktop-tablet">
                         Decide on Local Races
                       </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                      <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </>
                   )}
                 </ButtonText>
@@ -623,11 +623,11 @@ class ReadyTaskBallotNoApi extends React.Component {
                       </span>
                       <span className="u-show-mobile-bigger-than-iphone5">
                         How We Vote Works
-                        <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                        <ArrowForward classes={{ root: classes.arrowRoot }} />
                       </span>
                       <span className="u-show-desktop-tablet">
                         How We Vote Works
-                        <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                        <ArrowForward classes={{ root: classes.arrowRoot }} />
                       </span>
                     </span>
                   )}
@@ -679,7 +679,7 @@ class ReadyTaskBallotNoApi extends React.Component {
                       <span className="u-show-desktop-tablet">
                         What&apos;s a Personalized Score?
                       </span>
-                      <ArrowForwardIcon classes={{ root: classes.arrowRoot }} />
+                      <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </>
                   )}
                 </ButtonText>

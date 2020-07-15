@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SettingsIcon from '@material-ui/icons/Settings';
+import { Settings } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import AddressBox from '../AddressBox';
@@ -100,7 +100,7 @@ class EditAddressInPlace extends Component {
             { textForMapSearch.length ? shortenText(textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }
             {' '}
           </EditAddressPreview>
-          <SettingsIcon classes={{ root: classes.settingsIcon }} />
+          <Settings classes={{ root: classes.settingsIcon }} />
         </SettingsIconWrapper>
       );
     }

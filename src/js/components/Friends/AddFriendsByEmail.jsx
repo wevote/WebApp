@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Alert from 'react-bootstrap/Alert';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { TextField, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import Close from '@material-ui/icons/Close';
+import { Close } from '@material-ui/icons';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import LoadingWheel from '../LoadingWheel';
 import FriendActions from '../../actions/FriendActions';
@@ -37,7 +36,7 @@ class AddFriendsByEmail extends Component {
       senderEmailAddressError: false,
       loading: false,
       onEnterEmailAddressesStep: true,
-      invitationEmailsAlreadyScheduledStep: false,
+      invitationEmailsAlreadyScheduledStepFromApi: false,
       onFriendInvitationsSentStep: false,
       voter: {},
       voterIsSignedIn: false,
@@ -70,11 +69,14 @@ class AddFriendsByEmail extends Component {
   onFriendStoreChange () {
     const friendInvitationsWaitingForVerification = FriendStore.friendInvitationsWaitingForVerification() || [];
     const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
-
+    if (friendInvitationsWaitingForVerification && friendInvitationsWaitingForVerification.length) {
+      this.setState({
+        friendInvitationsWaitingForVerification,
+        invitationEmailsAlreadyScheduledStepFromApi: true,
+      });
+    }
     this.setState({
       errorMessageToShowVoter,
-      friendInvitationsWaitingForVerification,
-      invitationEmailsAlreadyScheduledStep: friendInvitationsWaitingForVerification.length,
       loading: false,
     });
   }
@@ -181,7 +183,6 @@ class AddFriendsByEmail extends Component {
     FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
       lastNameArray, '', this.state.add_friends_message,
       this.state.senderEmailAddress);
-
     // console.log(response);
     // After calling the API, reset the form
     this.setState({
@@ -192,7 +193,6 @@ class AddFriendsByEmail extends Component {
       emailAddressesError: false,
       senderEmailAddress: '',
       onEnterEmailAddressesStep: true,
-      invitationEmailsAlreadyScheduledStep: false,
       onFriendInvitationsSentStep: true,
     });
   }
@@ -232,7 +232,7 @@ class AddFriendsByEmail extends Component {
     const {
       emailAddressesError, errorMessageToShowVoter, friendContactInfo, friendFirstName, friendInvitationsWaitingForVerification,
       friendLastName, friendsToInvite,
-      invitationEmailsAlreadyScheduledStep, loading,
+      invitationEmailsAlreadyScheduledStepFromApi, loading,
       onEnterEmailAddressesStep, onFriendInvitationsSentStep, senderEmailAddressError, voterIsSignedIn,
     } = this.state;
 
@@ -244,7 +244,6 @@ class AddFriendsByEmail extends Component {
     if (loading) {
       return LoadingWheel;
     }
-
     return (
       <div>
         {emailAddressesError || errorMessageToShowVoter || senderEmailAddressError ? (
@@ -254,7 +253,7 @@ class AddFriendsByEmail extends Component {
           </div>
         ) : (
           <div>
-            {onFriendInvitationsSentStep && (
+            {(onFriendInvitationsSentStep && voterIsSignedIn) && (
               <div className="alert alert-success">
                 Invitations sent. Is there anyone else you&apos;d like to invite?
               </div>
@@ -277,7 +276,7 @@ class AddFriendsByEmail extends Component {
             ))}
           </FriendsDisplay>
         )}
-        {(invitationEmailsAlreadyScheduledStep && !voterIsSignedIn) ? (
+        {(invitationEmailsAlreadyScheduledStepFromApi && !voterIsSignedIn) ? (
           <div>
             <Alert variant="danger">
               Your invitations will be sent after you sign in:
@@ -289,7 +288,6 @@ class AddFriendsByEmail extends Component {
                 ))}
               </ul>
             </Alert>
-
             <SettingsAccount
               pleaseSignInTitle="Sign in to Send Your Friend Requests"
               pleaseSignInSubTitle=""
@@ -385,7 +383,12 @@ class AddFriendsByEmail extends Component {
                           color="primary"
                           variant="outlined"
                         >
-                          Add Another
+                          <span className="u-show-mobile">
+                            Add
+                          </span>
+                          <span className="u-show-desktop-tablet">
+                            Add Another
+                          </span>
                         </Button>
                         <Button
                           color="primary"

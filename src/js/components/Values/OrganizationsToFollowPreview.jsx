@@ -28,7 +28,7 @@ export default class OrganizationsToFollowPreview extends Component {
   }
 
   onVoterGuideStoreChange () {
-    const limit = 3;
+    const limit = 2;
     const limitToPublicFigures = false;
     const limitToOrganizations = true;
     this.setState({
@@ -37,7 +37,7 @@ export default class OrganizationsToFollowPreview extends Component {
   }
 
   goToOrganizations () {
-    historyPush('/opinions');
+    historyPush('/opinions/f/showOrganizationsFilter');
   }
 
   render () {
@@ -56,7 +56,7 @@ export default class OrganizationsToFollowPreview extends Component {
               Organizations to Follow
             </SectionTitle>
             <SectionDescription>
-              Follow an organization to see what they think.
+              Follow an organization to add their opinions to your personalized score.
             </SectionDescription>
             <Suspense fallback={<span>Loading...</span>}>
               <GuideList
@@ -68,7 +68,7 @@ export default class OrganizationsToFollowPreview extends Component {
             <ShowMoreFooter
               showMoreId="organizationsToFollowPreviewShowMoreId"
               showMoreLink={() => this.goToOrganizations()}
-              showMoreText="Explore more organizations"
+              showMoreText="Find more organizations"
             />
           </div>
         </section>

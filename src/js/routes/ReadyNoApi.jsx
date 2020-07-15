@@ -63,6 +63,7 @@ class ReadyNoApi extends Component {
     // this.setState({
     //   locationGuessClosed: cookies.getItem('location_guess_closed'),
     // });
+    // historyPush('/ballot');
   }
 
   componentWillUnmount () {

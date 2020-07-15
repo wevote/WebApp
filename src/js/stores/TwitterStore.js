@@ -41,6 +41,20 @@ class TwitterStore extends ReduceStore {
     };
   }
 
+  resetVoterSpecificData () {
+    return {
+      kind_of_owner: this.getState().kind_of_owner || '',
+      owner_we_vote_id: this.getState().owner_we_vote_id || '',
+      twitter_handle: this.getState().twitter_handle || '',
+      twitter_description: this.getState().twitter_description || '',
+      twitter_followers_count: this.getState().twitter_followers_count || '',
+      twitter_name: this.getState().twitter_name || '',
+      twitter_photo_url: this.getState().twitter_photo_url || '',
+      twitter_user_website: this.getState().twitter_user_website || '',
+      status: this.status || '',
+    };
+  }
+
   resetState () {
     return this.getInitialState();
   }
@@ -141,7 +155,8 @@ class TwitterStore extends ReduceStore {
 
       case 'voterSignOut':
         // console.log("resetting TwitterStore");
-        return this.resetState();
+        // return this.resetState();
+        return this.resetVoterSpecificData();
 
       default:
         return {

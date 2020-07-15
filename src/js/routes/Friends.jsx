@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import { Tabs, Tab } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -413,7 +412,7 @@ class Friends extends Component {
                   {voterIsSignedIn && (
                     <FirstAndLastNameRequiredAlert />
                   )}
-                  {!(friendActivityExists) && (
+                  {!!(!voterIsSignedIn || !friendActivityExists) && (
                     <InviteByEmail />
                   )}
                   <FriendInvitationsSentToMePreview />

@@ -4,9 +4,8 @@ import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import styled from 'styled-components';
-import Card from '@material-ui/core/Card';
-import BallotIcon from '@material-ui/icons/Ballot';
-import SettingsIcon from '@material-ui/icons/Settings';
+import { Card } from '@material-ui/core';
+import { Ballot, Settings } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
@@ -725,7 +724,7 @@ class VoterGuideBallot extends Component {
                   <div className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
                     {electionName}
                     <SettingsIconWrapper>
-                      <SettingsIcon classes={{ root: classes.settingsIcon }} />
+                      <Settings classes={{ root: classes.settingsIcon }} />
                     </SettingsIconWrapper>
                     {Boolean(electionDayText) && (
                       <>
@@ -787,7 +786,7 @@ class VoterGuideBallot extends Component {
                   ) : (
                     <Card>
                       <EmptyBallotMessageContainer>
-                        <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                        <Ballot classes={{ root: classes.ballotIconRoot }} />
                         <EmptyBallotText>
                           {organization.organization_name}
                           {' '}

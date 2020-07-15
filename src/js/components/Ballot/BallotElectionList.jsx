@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
+import { Button } from '@material-ui/core';
 import { convertStateCodeToStateText } from '../../utils/address-functions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';

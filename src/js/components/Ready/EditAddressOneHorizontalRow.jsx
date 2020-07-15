@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
-import EditLocationIcon from '@material-ui/icons/EditLocation';
+import { EditLocation } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
+import { Paper, InputBase, Button } from '@material-ui/core';
 import BallotStore from '../../stores/BallotStore';
 import { historyPush, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -34,7 +32,6 @@ class EditAddressOneHorizontalRow extends Component {
   componentDidMount () {
     // console.log("In EditAddressOneHorizontalRow componentDidMount");
     this.setState({
-      locationGuessClosed: cookies.getItem('location_guess_closed'),
       textForMapSearch: VoterStore.getTextForMapSearch(),
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -84,7 +81,6 @@ class EditAddressOneHorizontalRow extends Component {
       historyPush(saveUrl);
     } else {
       this.setState({
-        locationGuessClosed: cookies.getItem('location_guess_closed'),
         textForMapSearch: VoterStore.getTextForMapSearch(),
       });
     }
@@ -99,7 +95,6 @@ class EditAddressOneHorizontalRow extends Component {
       historyPush(saveUrl);
     } else {
       this.setState({
-        locationGuessClosed: cookies.getItem('location_guess_closed'),
         textForMapSearch: VoterStore.getTextForMapSearch(),
       });
     }
@@ -151,32 +146,40 @@ class EditAddressOneHorizontalRow extends Component {
   render () {
     renderLog('EditAddressOneHorizontalRow');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { locationGuessClosed, textForMapSearch } = this.state;
-
-    if (locationGuessClosed) {
-      // Address has already been saved in the last 30 days
-      return null;
-    }
+    const { textForMapSearch } = this.state;
 
     return (
       <Wrapper>
         <AddressLabel className="u-show-desktop-tablet">
-          <span className="u-show-tablet">
-            Your correct location?
-          </span>
-          <span className="u-show-desktop">
-            Do we have your location correct?
-          </span>
+          {(textForMapSearch) ? (
+            <>
+              <span className="u-show-tablet">
+                Your correct location?
+              </span>
+              <span className="u-show-desktop">
+                Do we have your location correct?
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="u-show-tablet">
+                Enter your location
+              </span>
+              <span className="u-show-desktop">
+                Please enter your location
+              </span>
+            </>
+          )}
         </AddressLabel>
         <form onSubmit={this.voterAddressSave}>
           <InternalFormWrapper>
             <Paper className={classes.paperInputForm} elevation={2}>
-              <EditLocationIcon className="ion-input-icon" />
+              <EditLocation className="ion-input-icon" />
               <InputBase
                 className={classes.inputBase}
                 name="address"
                 aria-label="Address"
-                placeholder="Enter registered address..."
+                placeholder="Full address and ZIP..."
                 value={textForMapSearch}
                 inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
                 inputProps={{
@@ -194,7 +197,15 @@ class EditAddressOneHorizontalRow extends Component {
               onClick={this.voterAddressSave}
               variant="contained"
             >
-              Confirm
+              {(textForMapSearch) ? (
+                <>
+                  Confirm
+                </>
+              ) : (
+                <>
+                  Save
+                </>
+              )}
             </Button>
           </InternalFormWrapper>
         </form>
