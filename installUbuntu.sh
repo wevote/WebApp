@@ -16,11 +16,11 @@ echo "[*] Upgrading..." && sudo apt upgrade -y && success "[+] Upgraded successf
 echo "[*] Installing xclip..."
 which xclip >/dev/null && success "[+] Xclip already installed" || (sudo apt install xclip >/dev/null 2>&1  && success "[+] Installed xclip" || error "[-] Failed to install xclip")
 
-echo "[*] Installing python..." 
-which python >/dev/null && success "[+] Python already installed" || (sudo apt install python >/dev/null 2>&1  && success "[+] Installed python" || error "[-] Failed to install python")
+echo "[*] Installing git..."
+which git >/dev/null && success "[+] Git already installed" || (sudo apt install git >/dev/null 2>&1  && success "[+] Installed git" || error "[-] Failed to install git")
 
 echo "[*] Installing pip..." 
-which pip3 >/dev/null && success "[+] Pip already installed" || (curl -s https://bootstrap.pypa.io/get-pip.py | sudo python >/dev/null 2>&1 && success "[+] Installed pip" || error "[-] Failed to install pip")
+which pip3 >/dev/null && success "[+] Pip already installed" || (sudo apt install python3-pip >/dev/null 2>&1 && success "[+] Installed pip" || error "[-] Failed to install pip")
 
 echo "[*] Installing nodeenv..." 
 which nodeenv >/dev/null && success "[+] Nodeenv already installed" || (sudo -H pip install nodeenv >/dev/null 2>&1 && success "[+] Installed nodeenv" || error "[-] Failed to install nodeenv")
