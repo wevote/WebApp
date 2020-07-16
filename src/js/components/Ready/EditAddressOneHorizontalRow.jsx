@@ -76,6 +76,7 @@ class EditAddressOneHorizontalRow extends Component {
     // console.log('EditAddressOneHorizontalRow, onBallotStoreChange, this.state:', this.state);
     const { saveUrl } = this.props;
     const { textForMapSearch, voterSavedAddress } = this.state;
+    // console.log('onBallotStoreChange, state.voterSavedAddress:', voterSavedAddress, ', VoterStore.getTextForMapSearch():', VoterStore.getTextForMapSearch())
     const { pathname } = window.location;
     if (saveUrl && saveUrl !== '' && pathname !== saveUrl && textForMapSearch && voterSavedAddress) {
       historyPush(saveUrl);
@@ -103,10 +104,14 @@ class EditAddressOneHorizontalRow extends Component {
   _placeChanged (addressAutocomplete) {
     const place = addressAutocomplete.getPlace();
     if (place.formatted_address) {
+      // console.log('_placeChanged place.formatted_address:', place.formatted_address);
+      VoterActions.voterAddressSave(place.formatted_address);
       this.setState({
         textForMapSearch: place.formatted_address,
       });
     } else {
+      // console.log('_placeChanged place.name:', place.name);
+      VoterActions.voterAddressSave(place.name);
       this.setState({
         textForMapSearch: place.name,
       });
@@ -114,7 +119,8 @@ class EditAddressOneHorizontalRow extends Component {
   }
 
   handleKeyPress (event) {
-    // console.log('EditAddressOneHorizontalRow, handleKeyPress, event: ', event);
+    // console.log('EditAddressOneHorizontalRow, handleKeyPress, event: ', event, ', event.keyCode:', event.keyCode);
+    // console.log('this.autoComplete:', this.autoComplete);
     const enterAndSpaceKeyCodes = [13]; // We actually don't want to use the space character to save, 32
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       event.preventDefault();
@@ -127,8 +133,8 @@ class EditAddressOneHorizontalRow extends Component {
   }
 
   voterAddressSave (event) {
-    // console.log('EditAddressOneHorizontalRow, voterAddressSave');
     const { textForMapSearch } = this.state;
+    // console.log('EditAddressOneHorizontalRow, voterAddressSave, textForMapSearch:', textForMapSearch);
     event.preventDefault();
     VoterActions.voterAddressSave(textForMapSearch);
     const oneMonthExpires = 86400 * 31;
@@ -137,6 +143,12 @@ class EditAddressOneHorizontalRow extends Component {
       voterSavedAddress: true,
     });
   }
+
+  saveAddressToApiServer = () => {
+    const { textForMapSearch } = this.state;
+    // console.log('saveAddressToApiServer, textForMapSearch: ', textForMapSearch);
+    VoterActions.voterAddressSave(textForMapSearch);
+  };
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
@@ -163,10 +175,10 @@ class EditAddressOneHorizontalRow extends Component {
           ) : (
             <>
               <span className="u-show-tablet">
-                Enter your location
+                Enter full address for correct ballot
               </span>
               <span className="u-show-desktop">
-                Please enter your location
+                Enter your full address to see correct ballot
               </span>
             </>
           )}
@@ -183,6 +195,7 @@ class EditAddressOneHorizontalRow extends Component {
                 value={textForMapSearch}
                 inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
                 inputProps={{
+                  onBlur: this.saveAddressToApiServer,
                   onChange: this.updateVoterAddress,
                   onKeyDown: this.handleKeyPress,
                 }}

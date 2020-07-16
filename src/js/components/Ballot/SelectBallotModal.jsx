@@ -358,10 +358,10 @@ const MapChartWrapper = styled.div`
 
 const SidebarWrapper = styled.div`
   padding: 16px;
-  @media (max-width: 860px) {
+  @media (max-width: 575px) {
     padding-top: 0px;
   }
-  @media(min-width: 860px) {
+  @media(min-width: 576px) {
     width: auto;
     flex: 1 1 0;
   }
