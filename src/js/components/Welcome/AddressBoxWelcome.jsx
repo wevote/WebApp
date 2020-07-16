@@ -85,10 +85,16 @@ class AddressBoxWelcome extends PureComponent {
     const ENTER_KEY_CODE = 13;
     if (event.keyCode === ENTER_KEY_CODE) {
       event.preventDefault();
+      const { textForMapSearch } = this.state;
       this.timer = setTimeout(() => {
-        VoterActions.voterAddressSave(this.state.textForMapSearch);
+        VoterActions.voterAddressSave(textForMapSearch);
       }, 500);
     }
+  };
+
+  saveAddressToApiServer = () => {
+    const { textForMapSearch } = this.state;
+    VoterActions.voterAddressSave(textForMapSearch);
   };
 
   render () {
@@ -100,6 +106,7 @@ class AddressBoxWelcome extends PureComponent {
         inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
         inputProps={{
           ...this.props.inputProps,
+          onBlur: this.saveAddressToApiServer,
           onChange: this.updateVoterAddress,
           onKeyDown: this.handleKeyPress,
         }}

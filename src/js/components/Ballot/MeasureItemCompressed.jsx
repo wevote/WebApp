@@ -14,7 +14,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import { renderLog } from '../../utils/logging';
-import { capitalizeString, shortenText } from '../../utils/textFormat';
+import { capitalizeString, shortenText, stripHtmlFromString } from '../../utils/textFormat';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 
 
@@ -92,10 +92,10 @@ class MeasureItemCompressed extends Component {
       localUniqueId: measureWeVoteId,
       measure,
       // measureSubtitle: measure.measure_subtitle,
-      measureText: measure.measure_text,
+      measureText: stripHtmlFromString(measure.measure_text),
       measureWeVoteId,
-      noVoteDescription: measure.no_vote_description,
-      yesVoteDescription: measure.yes_vote_description,
+      noVoteDescription: stripHtmlFromString(measure.no_vote_description),
+      yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
       organizationWeVoteId,
     });
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
@@ -198,9 +198,9 @@ class MeasureItemCompressed extends Component {
       ballotItemDisplayName: measure.ballot_item_display_name,
       measure,
       // measureSubtitle: measure.measure_subtitle,
-      measureText: measure.measure_text,
-      noVoteDescription: measure.no_vote_description,
-      yesVoteDescription: measure.yes_vote_description,
+      measureText: stripHtmlFromString(measure.measure_text),
+      noVoteDescription: stripHtmlFromString(measure.no_vote_description),
+      yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
     });
   }
 

@@ -133,9 +133,8 @@ class WelcomeForVoters extends PureComponent {
           </Title>
           <SubTitle>Finally, a simple way to fill out your ballot.</SubTitle>
           <GetStarted>
-            <AddressBoxWelcome icon={
-              <LocationOn classes={{ root: classes.locationIcon }} />
-            }
+            <AddressBoxWelcome
+              icon={<LocationOn classes={{ root: classes.locationIcon }} />}
             />
             <Button
               variant="contained"

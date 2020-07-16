@@ -336,6 +336,15 @@ export function stringContains (needle, stringHaystack) {
   }
 }
 
+export function stripHtmlFromString (rawString) {
+  if (rawString === undefined) {
+    return '';
+  }
+  let strippedString = rawString.replace(/&nbsp;/gi, ' ');
+  strippedString = strippedString.replace(/<br>/gi, ' ');
+  return strippedString;
+}
+
 export const youTubeRegX = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;
 export const vimeoRegX = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
 
