@@ -101,6 +101,12 @@ class EditAddressOneHorizontalRow extends Component {
     }
   }
 
+  saveAddressToApiServer = () => {
+    const { textForMapSearch } = this.state;
+    // console.log('saveAddressToApiServer, textForMapSearch: ', textForMapSearch);
+    VoterActions.voterAddressSave(textForMapSearch);
+  };
+
   _placeChanged (addressAutocomplete) {
     const place = addressAutocomplete.getPlace();
     if (place.formatted_address) {
@@ -143,12 +149,6 @@ class EditAddressOneHorizontalRow extends Component {
       voterSavedAddress: true,
     });
   }
-
-  saveAddressToApiServer = () => {
-    const { textForMapSearch } = this.state;
-    // console.log('saveAddressToApiServer, textForMapSearch: ', textForMapSearch);
-    VoterActions.voterAddressSave(textForMapSearch);
-  };
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
