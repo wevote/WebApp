@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+import { renderLog } from '../../utils/logging';
 
 class ShareModalOption extends Component {
   static propTypes = {
@@ -41,12 +42,14 @@ class ShareModalOption extends Component {
   }
 
   render () {
+    renderLog('ShareModalOption');  // Set LOG_RENDER_EVENTS to log all renders
     const { background, copyLink, icon, link, noLink, title, uniqueExternalId } = this.props;
-    // console.log('ShareModalOption copyLink:', copyLink, ', link:', link);
+    const linkToBeShared = link.replace('https://file:/', 'https://wevote.us/');
+    console.log('ShareModalOption copyLink:', copyLink, ', link:', link, ', linkToBeShared:', linkToBeShared);
     return (
       <Wrapper>
         {copyLink ? (
-          <CopyToClipboard text={link} onCopy={this.copyLink}>
+          <CopyToClipboard text={linkToBeShared} onCopy={this.copyLink}>
             <div id={`shareModalOption-${uniqueExternalId}`}>
               <Icon background={background}>
                 {icon}
@@ -70,7 +73,7 @@ class ShareModalOption extends Component {
             ) : (
               <OpenExternalWebSite
                 className="no-decoration"
-                url={link}
+                url={linkToBeShared}
                 target="_blank"
                 body={(
                   <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>

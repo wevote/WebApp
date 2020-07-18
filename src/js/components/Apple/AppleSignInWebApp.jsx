@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import { renderLog } from '../../utils/logging';
-import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
+import { isWebApp } from '../../utils/cordovaUtils';
 
-class AppleSignIn extends Component {
+class AppleSignInWebApp extends Component {
   static propTypes = {
     closeSignInModal: PropTypes.func,
     signedIn: PropTypes.bool,
@@ -15,9 +15,6 @@ class AppleSignIn extends Component {
   constructor (props) {
     super(props);
     this.signInToApple = this.signInToApple.bind(this);
-    if (isWebApp()) {
-      this.initializeSignInWithApple();
-    }
   }
 
   // Initialize Sign in with Apple
@@ -27,6 +24,16 @@ class AppleSignIn extends Component {
 
     // window.voterActionVoterAppleSignInSave = VoterActions.voterAppleSignInSave;
     const voterActionVoterAppleSignInSave = VoterActions.voterAppleSignInSave;
+
+    // Listen for authorization success
+    document.addEventListener('AppleIDSignInOnSuccess', (data) => {
+      console.log('signInToApple SUCCESS -------------:', data);
+    });
+
+    // Listen for authorization failures
+    document.addEventListener('AppleIDSignInOnFailure', (error) => {
+      console.log('signInToApple ERROR -------------:', error);
+    });
 
     signin(
       { requestedScopes: [0, 1]},
@@ -64,65 +71,13 @@ class AppleSignIn extends Component {
     )(voterActionVoterAppleSignInSave);
   }
 
-  // Sign in with Apple, for the WebApp -- Requires Oauth Flow through the python server
-  // https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_js/configuring_your_webpage_for_sign_in_with_apple
-  initializeSignInWithApple () {
-    const head = document.getElementsByTagName('head')[0];
-    const script = document.createElement('script');
-    script.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js';
-    script.type = 'text/javascript';
-    head.appendChild(script);
-    // <meta name="appleid-signin-client-id" content="[CLIENT_ID]">
-    let meta = document.createElement('meta');
-    meta.name = 'appleid-signin-client-id';
-    meta.content = 'us.wevote.webapp';  // https://developer.apple.com/account/resources/identifiers/list
-    head.appendChild(meta);
-    // <meta name="appleid-signin-scope" content="[SCOPES]">
-    meta = document.createElement('meta');
-    meta.name = 'appleid-signin-scope';
-    meta.content = 'email';
-    head.appendChild(meta);
-    // <meta name="appleid-signin-redirect-uri" content="[REDIRECT_URI]">
-    meta = document.createElement('meta');
-    meta.name = 'appleid-signin-redirect-uri';
-    meta.content = 'https://api.wevoteusa.org/apis/v1/appleSignInOauthRedirectDestination';  // This has to be a real DNS lookupable domain, and can't be localhost or an ip address
-    head.appendChild(meta);
-    // <meta name="appleid-signin-state" content="[STATE]">
-    meta = document.createElement('meta');
-    meta.name = 'appleid-signin-state';
-    meta.content = 'NonGuessableValueThatShouldNotBeCheckedIntoGitLikeThisOneIS'; // TODO: ADD ME
-    head.appendChild(meta);
-    // <meta name="appleid-signin-use-popup" content="true"> <!-- or false defaults to false -->
-    meta = document.createElement('meta');
-    meta.name = 'appleid-signin-use-popup';
-    meta.content = 'true';
-    head.appendChild(meta);
-  }
-
   render () {
     renderLog('AppleSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     const isWeb = isWebApp();
     const { signedIn } = this.props;
+    const { device: { version } } = window;
     let enabled = true;
-
-    if (isWeb) {
-      return (
-        <div id="appleid-signin"
-             className="signin-button"
-             data-color="black"
-             data-border="true"
-             data-type="sign in"
-        />
-      );
-    }
-
-    if (isAndroid()) {
-      console.error('Sign in with Apple is not available on Android');
-      return null;
-    }
-
-    if (isIOS()) {
-      const { device: { version } } = window;
+    if (version) {
       const floatVersion = parseFloat(version);
       if (floatVersion < 13.0) {
         console.log('Sign in with Apple is not available on iOS < 13, this phone is running: ', floatVersion);
@@ -139,10 +94,7 @@ class AppleSignIn extends Component {
     } else {
       return (
         <AppleSignInContainer enabled={enabled}>
-          <AppleSignInButton type="submit"
-                             isWeb={isWeb}
-                             onClick={() => (enabled ? this.signInToApple() : null)}
-          >
+          <AppleSignInButton type="submit" isWeb={isWeb} onClick={() => (enabled ? this.signInToApple() : null)}>
             <AppleLogo signedIn={signedIn} enabled={enabled} />
             <AppleSignInText id="appleSignInText" enabled={enabled}>
               Sign in with Apple
@@ -154,7 +106,7 @@ class AppleSignIn extends Component {
   }
 }
 
-export default AppleSignIn;
+export default AppleSignInWebApp;
 
 export function AppleLogo (parameters) {
   return (

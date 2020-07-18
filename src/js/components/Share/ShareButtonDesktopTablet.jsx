@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Comment, Reply } from '@material-ui/icons';
-import { Menu, MenuItem, Button } from '@material-ui/core'; // , Tooltip
+import { Menu, MenuItem, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import ShareActions from '../../actions/ShareActions';
 import { stringContains } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
 
 class ShareButtonDesktopTablet extends Component {
   static propTypes = {
@@ -108,14 +109,16 @@ class ShareButtonDesktopTablet extends Component {
     AppActions.setShowShareModal(true);
     AppActions.setShareModalStep(shareModalStep);
     const { pathname } = window.location;
-    if (!stringContains('/modal/share', pathname)) {
+    if (!stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithModalShare = `${pathname}${pathname.endsWith('/') ? '' : '/'}modal/share`;
+      // console.log('Navigation ShareButtonDesktopTablet openShareModal ', pathnameWithModalShare)
       historyPush(pathnameWithModalShare);
     }
     this.setState({ openShareMenu: false });
   }
 
   render () {
+    renderLog('ShareButtonDesktopTablet');  // Set LOG_RENDER_EVENTS to log all renders
     const { candidateShare, classes, measureShare, officeShare } = this.props;
     const { anchorEl, chosenPreventSharingOpinions, openShareMenu } = this.state;
 

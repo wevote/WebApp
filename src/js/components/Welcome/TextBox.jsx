@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { InputBase } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { renderLog } from '../../utils/logging';
 
 class TextBox extends Component {
   static propTypes = {
@@ -13,6 +14,7 @@ class TextBox extends Component {
   };
 
   render () {
+    renderLog('TextBox');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, placeholder, inputProps, icon } = this.props;
     return (
       <Container>

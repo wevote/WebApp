@@ -4,7 +4,6 @@ import { Settings } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import AddressBox from '../AddressBox';
-import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
@@ -55,18 +54,9 @@ class EditAddressInPlace extends Component {
     if (this.props.toggleEditingAddress) {
       this.props.toggleEditingAddress();
     }
-    if (isWebApp()) {
-      this.setState({
-        editingAddress: !editingAddress,
-      });
-    } else {
-      // The scrolling pane within the Modal causes an '[LayoutConstraints] Unable to simultaneously satisfy constraints.'
-      // error in Cordova, when you try to expand it to fit for entering text in the address box, and Cordova messes up
-      // the display as in https://github.com/wevote/WeVoteCordova/issues/52  So instead use the non modal version in
-      // the settings/location route.
-      this.incomingToggleFunction();
-      historyPush('/settings/address');
-    }
+    this.setState({
+      editingAddress: !editingAddress,
+    });
   }
 
   render () {
