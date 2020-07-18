@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
@@ -202,6 +203,7 @@ class ReadyNoApi extends Component {
               {/* {nextReleaseFeaturesEnabled && <PledgeToVote />} */}
             </div>
           </div>
+          <Link to="/ready">Go to Ready</Link>
         </PageContainer>
       </Wrapper>
     );
