@@ -78,7 +78,7 @@ class VoterGuidePositionFilter extends Component {
 
   getFilteredItemsByLinkedIssue = (issueFilter) => {
     const { allItems } = this.props;
-    return allItems.filter(item => item.issue_we_vote_ids_linked === issueFilter.issue_we_vote_id);
+    return allItems.filter(item => (item && item.issue_we_vote_ids_linked === issueFilter.issue_we_vote_id));
   };
 
   orderByCurrentFriendsFirst = (firstGuide, secondGuide) => {
@@ -108,16 +108,16 @@ class VoterGuidePositionFilter extends Component {
     selectedFilters.forEach((filter) => {
       switch (filter) {
         case 'federalRaces':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.race_office_level === 'Federal')];
+          filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'Federal'))];
           break;
         case 'stateRaces':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.race_office_level === 'State')];
+          filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'State'))];
           break;
         case 'measureRaces':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.kind_of_ballot_item === 'MEASURE')];
+          filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.kind_of_ballot_item === 'MEASURE'))];
           break;
         case 'localRaces':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.race_office_level === 'Local')];
+          filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'Local'))];
           break;
         default:
           break;
@@ -143,10 +143,10 @@ class VoterGuidePositionFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'thisYear':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.position_year === thisYearInteger)];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.position_year === thisYearInteger))];
             break;
           case 'priorYears':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.position_year < thisYearInteger)];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.position_year < thisYearInteger))];
             break;
           default:
             break;
@@ -173,13 +173,13 @@ class VoterGuidePositionFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'showSupportFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.is_support_or_positive_rating)];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.is_support_or_positive_rating))];
             break;
           case 'showOpposeFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.is_oppose_or_negative_rating)];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.is_oppose_or_negative_rating))];
             break;
           case 'showInformationOnlyFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.is_information_only)];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.is_information_only))];
             break;
           default:
             break;
@@ -201,7 +201,7 @@ class VoterGuidePositionFilter extends Component {
       const filterItemsSnapshot = filteredItems;
       filteredItems = [];
       stateCodesToShow.forEach((stateCode) => {
-        filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.state_code.toLowerCase() === stateCode.toLowerCase())];
+        filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.state_code.toLowerCase() === stateCode.toLowerCase()))];
       });
     }
     // Comment or no comment?
@@ -221,7 +221,7 @@ class VoterGuidePositionFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'showCommentFilter':
-            filteredItems = [...filteredItems, ...filterItemsCommentSnapshot.filter(item => item.statement_text && item.statement_text.length)];
+            filteredItems = [...filteredItems, ...filterItemsCommentSnapshot.filter(item => (item && item.statement_text && item.statement_text.length))];
             break;
           default:
             break;
