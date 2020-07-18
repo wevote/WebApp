@@ -16,7 +16,7 @@ const port = process.env.PORT || 3000;
 const isProduction = true;   // Developers can set this to be false, but in git it should always be true
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: {
     bundle: ['./src/js/index.js', './src/sass/main.scss'],
   },
@@ -26,6 +26,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
   },
   optimization: {
+    removeAvailableModules: true,
     runtimeChunk: false,
     splitChunks: {
       chunks: 'all',
@@ -38,12 +39,6 @@ module.exports = {
           chunks: 'all',
           enforce: true,
         },
-        // minimalNodeModules: {
-        //   name: 'minimalNodeModules',
-        //   test: /[\\/]node_modules[\\/](@babel|clsx|create-react-class|css-vendor|dom-helpers|@emotion|exenv|fbjs|history|hoist-non-react-statics|hyphenate-style-name|invariant|is-in-browser|is-what|jss|jss-plugin-camel-case|jss-plugin-default-unit|jss-plugin-global|jss-plugin-nested|jss-plugin-props-sort|jss-plugin-vendor-prefixer|jss-plugin-rule-value-function|memoize-one|merge-anything|object-assign|process|query-string|react-is|react-fast-compare|react-js|react-side-effect|scroll-behavior|shallowequal|sockjs-client|strict-uri-encode|stylis|stylis-rule-sheet|tiny-warning)[\\/]/,
-        //   chunks: 'all',
-        //   enforce: true,
-        // },
         materialStyle: {
           name: 'materialStyle',
           test: /[\\/]node_modules[\\/](@material-ui|styled-components)[\\/]/,
@@ -70,6 +65,64 @@ module.exports = {
           chunks: 'all',
           enforce: true,
         },
+        // 2020-07-17 Dale: After a lot of testing, breaking up into these multiple bundles does not make the bundles load faster
+        // weVoteWidgets: {
+        //   name: 'weVoteWidgets',
+        //   test: function (module) {
+        //     if (module.resource) {
+        //       return module.resource.includes('/js/components/Widgets');
+        //     }
+        //   },
+        //   chunks: 'all',
+        //   enforce: true,
+        // },
+        // weVoteReady: {
+        //   name: 'weVoteReady',
+        //   test: function (module) {
+        //     if (module.resource) {
+        //       return module.resource.includes('/js/routes/Ready.jsx') ||
+        //         module.resource.includes('/js/routes/ReadyRedirect.jsx') ||
+        //         module.resource.includes('/js/components/Ready/');
+        //     }
+        //   },
+        //   chunks: 'all',
+        //   enforce: true,
+        // },
+        // weVoteStoresAndActions: {
+        //   name: 'weVoteStoresAndActions',
+        //   test: function (module) {
+        //     if (module.resource) {
+        //       return module.resource.includes('/js/actions') ||
+        //         module.resource.includes('/js/stores');
+        //     }
+        //   },
+        //   chunks: 'all',
+        //   enforce: true,
+        // },
+        // weVoteBallot: {
+        //   name: 'weVoteBallot',
+        //   test: function (module) {
+        //     if (module.resource) {
+        //       return module.resource.includes('/js/routes/Ballot') ||
+        //         module.resource.includes('/js/components/Ballot') ||
+        //         module.resource.includes('/js/routes/VoterGuide') ||
+        //         module.resource.includes('/js/components/VoterGuide');
+        //     }
+        //   },
+        //   chunks: 'all',
+        //   enforce: true,
+        // },
+        // weVoteSettings: {
+        //   name: 'weVoteSettings',
+        //   test: function (module) {
+        //     if (module.resource) {
+        //       return module.resource.includes('/js/routes/Settings') ||
+        //         module.resource.includes('/js/components/Settings');
+        //     }
+        //   },
+        //   chunks: 'all',
+        //   enforce: true,
+        // },
         defaultWeVote: {
           name: 'defaultWeVote',
           test: function (module) {
@@ -113,7 +166,7 @@ module.exports = {
     new ScriptExtHtmlWebpackPlugin({
       sync: ['jQuery', 'materialStyle', 'reactCore', 'readyNoApi'],
       // This just generates a link, but doesn't remove the script from being included and holding up onload
-      // Possible solution: use this, but modify the html to remove the "<script" tag manually
+      // Causes additional 2 second delay
       // prefetch: {
       //   test: ['defaultVendors', 'defaultWeVote'],
       //   chunks: 'all',
@@ -205,7 +258,7 @@ module.exports = {
   },
   devServer: {
     host: 'localhost',
-    port,
+    port: port,
     historyApiFallback: true,
     open: true,
     writeToDisk: true,
