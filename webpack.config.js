@@ -65,7 +65,7 @@ module.exports = {
           chunks: 'all',
           enforce: true,
         },
-        // 2020-07-17 Dale: After a lot of testing, breaking up into these multiple bundles does not increase load time
+        // 2020-07-17 Dale: After a lot of testing, breaking up into these multiple bundles does not make the bundles load faster
         // weVoteWidgets: {
         //   name: 'weVoteWidgets',
         //   test: function (module) {
