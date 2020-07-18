@@ -21,7 +21,7 @@ import ShareActions from '../../actions/ShareActions';
 import SharedItemIntroduction from './SharedItemIntroduction';
 import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
-import { formatDateToMonthDayYear } from '../../utils/textFormat';
+import { convertToInteger, formatDateToMonthDayYear } from '../../utils/textFormat';
 
 class SharedItemModal extends Component {
   static propTypes = {
@@ -189,6 +189,10 @@ class SharedItemModal extends Component {
     if (!sharedItemCode) {
       return null;
     }
+    let showCountDownDays = (days && electionDate);
+    if (convertToInteger(days) < 0) {
+      showCountDownDays = false;
+    }
 
     const sharingContextText = 'has shared this page with you.';
     // console.log('sharedByOrganizationType:', sharedByOrganizationType, ', sharedByVoterWeVoteId:', sharedByVoterWeVoteId);
@@ -207,7 +211,7 @@ class SharedItemModal extends Component {
       >
         <ContentWrapper>
           <ModalTitleArea>
-            {!!(days && electionDate) && (
+            {showCountDownDays && (
               <ElectionCountdownText>
                 <ElectionCountdownDays>
                   {days}

@@ -145,13 +145,13 @@ class FilterBase extends React.Component {
   getGroupedFilterCountsFromFilteredItems = () => {
     const { allItems, groupedFilters } = this.props;
     let allItemsWithoutCandidates = [];
-    allItemsWithoutCandidates = [...allItemsWithoutCandidates, ...allItems.filter(item => item.kind_of_ballot_item !== 'CANDIDATE')];
+    allItemsWithoutCandidates = [...allItemsWithoutCandidates, ...allItems.filter(item => (item && item.kind_of_ballot_item !== 'CANDIDATE'))];
     const resultsDict = {};
     let oneRaceOfficeLevelItems = [];
     groupedFilters.forEach((oneFilter) => {
       oneRaceOfficeLevelItems = [];
       // console.log('getGroupedFilterCountsFromFilteredItems oneFilter.filterDisplayName:', oneFilter.filterDisplayName);
-      oneRaceOfficeLevelItems = [...oneRaceOfficeLevelItems, ...allItemsWithoutCandidates.filter(item => item.race_office_level === oneFilter.filterDisplayName)];
+      oneRaceOfficeLevelItems = [...oneRaceOfficeLevelItems, ...allItemsWithoutCandidates.filter(item => (item && item.race_office_level === oneFilter.filterDisplayName))];
       resultsDict[oneFilter.filterName] = oneRaceOfficeLevelItems.length;
     });
     // console.log('resultsDict:', resultsDict);

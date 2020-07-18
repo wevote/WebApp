@@ -16,7 +16,7 @@ const port = process.env.PORT || 3000;
 const isProduction = true;   // Developers can set this to be false, but in git it should always be true
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     bundle: ['./src/js/index.js', './src/sass/main.scss'],
   },

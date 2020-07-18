@@ -154,7 +154,9 @@ class Ready extends Component {
               <Card className="card u-show-mobile">
                 <div className="card-main">
                   <FindOpinionsForm
+                    introHeaderLink="/values"
                     searchTextLarge
+                    showVoterGuidePhotos
                   />
                 </div>
               </Card>
@@ -176,7 +178,9 @@ class Ready extends Component {
                   <Card className="card">
                     <div className="card-main">
                       <FindOpinionsForm
+                        introHeaderLink="/values"
                         searchTextLarge
+                        showVoterGuidePhotos
                       />
                     </div>
                   </Card>
@@ -198,6 +202,16 @@ class Ready extends Component {
                   arrowsOn
                 />
               )}
+              <div className="u-show-mobile-tablet">
+                {(issuesShouldBeDisplayed) && (
+                  <ValuesListWrapper>
+                    <ValuesToFollowPreview
+                      followToggleOnItsOwnLine
+                      includeLinkToIssue
+                    />
+                  </ValuesListWrapper>
+                )}
+              </div>
             </div>
             <div className="col-lg-4 d-none d-lg-block">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
@@ -215,7 +229,9 @@ class Ready extends Component {
               <Card className="card">
                 <div className="card-main">
                   <FindOpinionsForm
+                    introHeaderLink="/values"
                     searchTextLarge
+                    showVoterGuidePhotos
                   />
                 </div>
               </Card>
@@ -230,6 +246,7 @@ class Ready extends Component {
                 <ValuesListWrapper>
                   <ValuesToFollowPreview
                     followToggleOnItsOwnLine
+                    includeLinkToIssue
                   />
                 </ValuesListWrapper>
               )}
