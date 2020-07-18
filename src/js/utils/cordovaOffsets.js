@@ -298,7 +298,7 @@ export function cordovaBallotFilterTopMargin () {
         return '65px';
       }
     } else if (isIPad()) {
-      return '61px';
+      return '73px';
     } else if (isIPhone4in()) {
       return '67px';
     }

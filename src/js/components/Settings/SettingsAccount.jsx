@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import cookies from '../../utils/cookies';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
-import AppleSignIn from '../Apple/AppleSignIn';
+import AppleSignInCordova from '../Apple/AppleSignInCordova';
 import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, isWebApp,
-  restoreStylesAfterCordovaKeyboard, isAndroid,
+  restoreStylesAfterCordovaKeyboard, isIOS,
 } from '../../utils/cordovaUtils';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
@@ -27,7 +27,6 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterPhoneVerificationEntry from './VoterPhoneVerificationEntry';
 import VoterPhoneEmailCordovaEntryModal from './VoterPhoneEmailCordovaEntryModal';
-import webAppConfig from '../../config';
 
 /* global $ */
 
@@ -344,7 +343,8 @@ export default class SettingsAccount extends Component {
     //   'hideTwitterSignInButton', hideTwitterSignInButton,
     //   'hideFacebookSignInButton', hideFacebookSignInButton, 'hideDialogForCordova', hideDialogForCordova,
     //   'isOnFacebookSupportedDomainUrl', isOnFacebookSupportedDomainUrl, 'isOnWeVoteRootUrl', isOnWeVoteRootUrl);
-    const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+
+    // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     return (
       <>
@@ -480,8 +480,9 @@ export default class SettingsAccount extends Component {
               </div>
             ) : null
             }
-            {!isAndroid() && nextReleaseFeaturesEnabled && (
-              <AppleSignIn signedIn={voterIsSignedInWithApple} closeSignInModal={this.localCloseSignInModal} />
+            {/* TODO: 7/18/20. This will need to be !isAndroid() && nextReleaseFeaturesEnabled && */}
+            {isIOS() && (
+              <AppleSignInCordova signedIn={voterIsSignedInWithApple} closeSignInModal={this.localCloseSignInModal} />
             )}
             {!hideVoterPhoneEntry && isWebApp() && (
               <VoterPhoneVerificationEntry

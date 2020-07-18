@@ -507,8 +507,9 @@ class HeaderBackToBallot extends Component {
     AppActions.setShowShareModal(false);
     AppActions.setShareModalStep('');
     const { pathname } = this.props;
-    if (stringContains('/modal/share', pathname)) {
+    if (stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithoutModalShare = pathname.replace('/modal/share', '');
+      // console.log('navigation closeShareModal ', pathnameWithoutModalShare);
       historyPush(pathnameWithoutModalShare);
     }
   }

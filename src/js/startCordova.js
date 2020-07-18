@@ -1,7 +1,4 @@
-import {
-  isIOS,
-  prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard,
-} from './utils/cordovaUtils';
+import { isIOS, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
 
 function localPrepareForCordovaKeyboard () {

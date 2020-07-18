@@ -251,7 +251,10 @@ class ShareModal extends Component {
       } else {
         linkToBeShared = currentFullUrlToShare;
       }
+      linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
       linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
+      // console.log('ShareModal linkToBeShared:', linkToBeShared);
+
       // const twitterTextEncoded = encodeURI('Check out this cool ballot tool!');
       // if (shareModalStep === 'ballotShareOptions') {
       //   emailSubjectEncoded = encodeURI('Ready to vote?');
@@ -413,6 +416,7 @@ class ShareModal extends Component {
                   </TwitterShareButton>
                 </Wrapper>
                 <Wrapper>
+                  {/* The EmailShareButton works in Cordova, but ONLY if an email client is configured, so it doesn't work in a simulator */}
                   <EmailShareButton
                     body={`${titleText}`}
                     className="no-decoration"
