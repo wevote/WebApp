@@ -87,6 +87,15 @@ class Application extends Component {
     //     stringContains('/ballot', pathname.toLowerCase().slice(0, 7)))) {
     //   AppActions.setShowEditAddressButton(true);
     // }
+    if (stringContains('/ballot', pathname.toLowerCase().slice(0, 7)) ||
+        stringContains('/ready', pathname.toLowerCase().slice(0, 7))) {
+      if (!AppStore.showEditAddressButton()) {
+        AppActions.setShowEditAddressButton(true);
+      }
+    } else if (AppStore.showEditAddressButton()) {
+      AppActions.setShowEditAddressButton(false);
+    }
+
     if (isWebApp() && String(lastZenDeskVisibilityPathName) !== String(pathname)) {
       // console.log('lastZenDeskVisibilityPathName:', lastZenDeskVisibilityPathName, ', pathname:', pathname);
       setZenDeskHelpVisibility(pathname);

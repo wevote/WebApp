@@ -311,7 +311,8 @@ class SettingsVerifySecretCode extends Component {
         digit5: allDigits[4],
         digit6: allDigits[5],
       });
-      document.getElementById('digit6').focus();
+      document.getElementById('digit1').blur(); // If we leave the focus, the box doesn't fill
+      // document.getElementById('digit6').focus(); // If we focus, it clears the box
       this.setState({
         errorToDisplay: false,
         errorMessageToDisplay: '',
