@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PositionPublicToggle from '../PositionPublicToggle';
 import Slides from './Slides';
 import SettingsAccount from '../../Settings/SettingsAccount';
+import VoterStore from '../../../stores/VoterStore';
 
 class ChooseOrOppose extends Component {
   static propTypes = {
@@ -17,8 +18,35 @@ class ChooseOrOppose extends Component {
     inModal: PropTypes.bool,
   };
 
+  constructor (props) {
+    super(props);
+    this.state = {
+      voterIsSignedIn: false,
+    };
+  }
+
+  componentDidMount () {
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    this.setState({
+      voterIsSignedIn,
+    });
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    this.setState({
+      voterIsSignedIn,
+    });
+  }
+
   getSlides = () => {
     const { ballotItemType } = this.props;
+    const { voterIsSignedIn } = this.state;
     const slides = [
       (
         <React.Fragment>
@@ -45,12 +73,20 @@ class ChooseOrOppose extends Component {
         </React.Fragment>
       ),
       (
-        <SettingsAccount
-          pleaseSignInTitle="Sign in to save your choices!"
-          pleaseSignInSubTitle=""
-          toggleSignInModal={this.props.onClose}
-          inModal
-        />
+        <>
+          {voterIsSignedIn ? (
+            <div>
+              Thank you for signing in!
+            </div>
+          ) : (
+            <SettingsAccount
+              pleaseSignInTitle="Sign in to save your choices!"
+              pleaseSignInSubTitle=""
+              toggleSignInModal={this.props.onClose}
+              inModal
+            />
+          )}
+        </>
       ),
     ];
     return slides;
@@ -58,6 +94,7 @@ class ChooseOrOppose extends Component {
 
   render () {
     const { classes } = this.props;
+    const { voterIsSignedIn } = this.state;
     return (
       <React.Fragment>
         <DialogTitle classes={{ root: classes.dialogTitle }}>
@@ -73,7 +110,11 @@ class ChooseOrOppose extends Component {
         </DialogTitle>
         <HorizontalLine />
         <DialogContent classes={{ root: classes.dialogContent }}>
-          <Slides slides={this.getSlides()} onClose={this.props.onClose} />
+          <Slides
+            onClose={this.props.onClose}
+            slides={this.getSlides()}
+            voterIsSignedIn={voterIsSignedIn}
+          />
         </DialogContent>
       </React.Fragment>
     );

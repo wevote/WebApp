@@ -161,68 +161,62 @@ class EditAddressOneHorizontalRow extends Component {
     const { textForMapSearch } = this.state;
 
     return (
-      <Wrapper>
-        <AddressLabel className="u-show-desktop-tablet">
-          {(textForMapSearch) ? (
-            <>
-              <span className="u-show-tablet">
-                Your correct location?
-              </span>
-              <span className="u-show-desktop">
-                Do we have your location correct?
-              </span>
-            </>
-          ) : (
-            <>
-              <span className="u-show-tablet">
-                Enter full address for correct ballot
-              </span>
-              <span className="u-show-desktop">
-                Enter your full address to see correct ballot
-              </span>
-            </>
-          )}
-        </AddressLabel>
-        <form onSubmit={this.voterAddressSave}>
-          <InternalFormWrapper>
-            <Paper className={classes.paperInputForm} elevation={2}>
-              <EditLocation className="ion-input-icon" />
-              <InputBase
-                className={classes.inputBase}
-                name="address"
-                aria-label="Address"
-                placeholder="Full address and ZIP..."
-                value={textForMapSearch}
-                inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
-                inputProps={{
-                  onBlur: this.saveAddressToApiServer,
-                  onChange: this.updateVoterAddress,
-                  onKeyDown: this.handleKeyPress,
-                }}
-                id="editAddressOneHorizontalRowTextForMapSearch"
-              />
-            </Paper>
-            <Button
-              classes={{ root: classes.saveButton }}
-              color="primary"
-              fullWidth
-              id="editAddressOneHorizontalRowSaveButton"
-              onClick={this.voterAddressSave}
-              variant="contained"
-            >
-              {(textForMapSearch) ? (
-                <>
-                  Confirm
-                </>
-              ) : (
-                <>
-                  Save
-                </>
-              )}
-            </Button>
-          </InternalFormWrapper>
-        </form>
-      </Wrapper>
+      <OuterWrapper>
+        <InnerWrapper className="u-show-mobile">
+          <AddressLabelMobile>
+            Enter full address for correct ballot
+          </AddressLabelMobile>
+        </InnerWrapper>
+        <InnerWrapper>
+          <AddressLabel>
+            <span className="u-show-tablet">
+              Enter full address for correct ballot
+            </span>
+            <span className="u-show-desktop">
+              Enter your full address to see correct ballot
+            </span>
+          </AddressLabel>
+          <form onSubmit={this.voterAddressSave}>
+            <InternalFormWrapper>
+              <Paper className={classes.paperInputForm} elevation={2}>
+                <EditLocation className="ion-input-icon" />
+                <InputBase
+                  className={classes.inputBase}
+                  name="address"
+                  aria-label="Address"
+                  placeholder="Full address and ZIP..."
+                  value={textForMapSearch}
+                  inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
+                  inputProps={{
+                    onBlur: this.saveAddressToApiServer,
+                    onChange: this.updateVoterAddress,
+                    onKeyDown: this.handleKeyPress,
+                  }}
+                  id="editAddressOneHorizontalRowTextForMapSearch"
+                />
+              </Paper>
+              <Button
+                classes={{ root: classes.saveButton }}
+                color="primary"
+                fullWidth
+                id="editAddressOneHorizontalRowSaveButton"
+                onClick={this.voterAddressSave}
+                variant="contained"
+              >
+                {(textForMapSearch) ? (
+                  <>
+                    Update
+                  </>
+                ) : (
+                  <>
+                    Save
+                  </>
+                )}
+              </Button>
+            </InternalFormWrapper>
+          </form>
+        </InnerWrapper>
+      </OuterWrapper>
     );
   }
 }
@@ -231,17 +225,25 @@ const AddressLabel = styled.div`
   font-weight: 600;
   margin-right: 12px;
 `;
+
+const AddressLabelMobile = styled.div`
+  font-weight: 600;
+`;
+
 const InternalFormWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-const Wrapper = styled.div`
+const OuterWrapper = styled.div`
+  margin-bottom: 8px !important;
+  width: 100%;
+`;
+
+const InnerWrapper = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
-  margin-bottom: 8px !important;
-  width: 100%;
 `;
 
 const styles = theme => ({
