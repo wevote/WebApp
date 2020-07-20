@@ -175,4 +175,6 @@ web_app/build/*
 .gitattributes
 /yarn.lock
 server.csr
+tests/browserstack/wdio.conf.js
+tests/browserstack/wdio.conf.template
 

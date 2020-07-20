@@ -1,11 +1,15 @@
 const assert = require('assert');
-const { scrollIntoViewSimple, scrollIntoViewSelect, simpleClick, selectClick, simpleTextInput } = require('../utils');
+const { clearTextInputValue, scrollIntoViewSimple, scrollIntoViewSelect, simpleClick, selectClick, simpleTextInput, hiddenClick } = require('../utils');
 
 const PAUSE_DURATION_MICROSECONDS = 1250;
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_';
 const { twitterUserName, twitterPassword } = driver.config;
-const { isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS} = driver.config.capabilities;
+const { isAndroid, isCordovaFromAppStore, isIOS } = driver.config.capabilities;
+const sqlTest = "' or 1=1 -- -";
+const xssTest = '>script>alert("1")>/script>';
+const xssTest2 = "@>script>alert('1')>/script>";
+const xssTest3 = '">meta name=\'>script>alert(1)>/script>\'>"';
 
 describe('Cross browser automated testing',  () => {
   before(async () => {
@@ -34,13 +38,74 @@ describe('Cross browser automated testing',  () => {
     }
   });
 
+  it('should sign in with email', async () =>  {
+    await simpleClick('signInHeaderBar'); // Clicks on Sign in
+    if (isCordovaFromAppStore) {
+      await simpleClick('emailSignIn-splitIconButton');
+    }
+    await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com'); // Type input
+    await hiddenClick('voterEmailAddressEntrySendCode'); // Click Send Verification Code
+    await simpleTextInput('digit1', '0');
+    await simpleTextInput('digit2', '1');
+    await simpleTextInput('digit3', '2');
+    await simpleTextInput('digit4', '3');
+    await simpleTextInput('digit5', '4');
+    await simpleTextInput('digit6', '5');
+    await simpleClick('emailVerifyButton'); // Click Verify
+    await simpleClick('emailVerificationBackButton'); // Click back
+    await simpleTextInput('enterVoterEmailAddress', 'A'.repeat(200)); // Type input
+    await hiddenClick('cancelEmailButton'); // Clicks the cancel button
+  });
+
+  it('should sign in with phone', async () => {
+    await simpleClick('signInHeaderBar'); // Clicks on Sign in
+    if (isCordovaFromAppStore) {
+      await simpleClick('smsSignIn-splitIconButton');
+    }
+    await simpleTextInput('enterVoterPhone', '18004444444'); // Inputs voter phone number
+    await simpleClick('voterPhoneSendSMS'); // Clicks "Send Verification Code"
+    await simpleTextInput("digit1", "0");
+    await simpleTextInput("digit2", "1");
+    await simpleTextInput("digit3", "2");
+    await simpleTextInput("digit4", "3");
+    await simpleTextInput("digit5", "4");
+    await simpleTextInput("digit6", "5");
+    await simpleClick('emailVerifyButton'); // Click Verify
+    await simpleClick('emailVerificationBackButton'); // Click back
+    await simpleTextInput('enterVoterPhone', 'A'.repeat(200)); // Type input
+    await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
+  });
+
   it('should sign in with twitter', async () =>  {
     if (twitterUserName && twitterPassword) {
       await simpleClick('signInHeaderBar'); // Clicks on Sign in
-      await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
-      await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
-      await simpleTextInput('password', twitterPassword); // Enter Password
-      await simpleClick('allow'); // Clicks on Authorize App
+      if (isCordovaFromAppStore && isIOS) {
+        // Bug
+        const twitterSignIn = await $('#twitterSignIn-splitIconButton');
+        const twitterX = await twitterSignIn.getLocation('x');
+        const twitterY = await twitterSignIn.getLocation('y');
+        await browser.touchAction({ action: 'tap', x: twitterX, y: twitterY });
+      } else {
+        await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
+      }
+      if (isCordovaFromAppStore && isAndroid) {
+        await driver.switchContext('NATIVE_APP');
+        const username_or_email = await $('//android.widget.EditText[@resource-id="username_or_email"]');
+        await username_or_email.setValue(twitterUserName);
+        const password = await $('//android.widget.EditText[@resource-id="password"]');
+        await password.setValue(twitterPassword);
+        const allow = await $('//android.widget.Button[@resource-id="allow"]');
+        await allow.click();
+        const challenge_response = await $('//android.widget.EditText[@resource-id="challenge_response"]');
+        await challenge_response.setValue('4696256077');
+        const email_challenge_submit = await $('//android.widget.Button[@resource-id="email_challenge_submit"]');
+        await email_challenge_submit.click();
+        await driver.switchContext('WEBVIEW_org.wevote.cordova');
+      } else {
+        await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
+        await simpleTextInput('password', twitterPassword); // Enter Password
+        await simpleClick('allow'); // Clicks on Authorize App
+      }
 //      await selectTextInput('input[name="session[username_or_email]"]', twitterUserName);
 //      await selectTextInput('input[name="session[password]"]', twitterPassword);
 //      await selectClick('[data-testid="LoginForm_Login_Button"]');
@@ -49,79 +114,20 @@ describe('Cross browser automated testing',  () => {
     }
   });
 
-  it('should sign in with email', async () =>  {
-    if (isCordovaFromAppStore) {
-      await simpleClick('signInHeaderBar'); // Clicks on Sign in
-      await simpleClick('emailSignIn-splitIconButton'); // Clicks "Sign in with an email" button
-      await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com'); // Type input
-      await simpleClick('voterEmailAddressEntrySendCode'); // Click Send Verification Code
-      await simpleTextInput('digit1', '0');
-      await simpleTextInput('digit2', '1');
-      await simpleTextInput('digit3', '2');
-      await simpleTextInput('digit4', '3');
-      await simpleTextInput('digit5', '4');
-      await simpleTextInput('digit6', '5');
-      await simpleClick('emailVerifyButton'); // Click Verify
-      await simpleClick('emailVerificationBackButton'); // Click back
-//      await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
-      await simpleTextInput('enterVoterEmailAddress', 'A'.repeat(500)); // Type input
-//      await simpleClick('changeEmailAddressButton'); // Click change email address
-//      await simpleTextInput('enterVoterEmailAddress', "'@gmail.com") // Type input
-//      await simpleClick('voterEmailAddressEntrySendCode') // Click Send Verification Code
-//      await simpleClick('emailVerifyButton'); // Click Verify
-//      await simpleClick('enterVoterEmailAddress') // Click input box
-      await simpleClick('cancelEmailButton'); // Clicks the cancel button
-    } else if (!isAndroid || !isMobileScreenSize) { // Android mobile browsers can't click this element without scrolling
-      await simpleClick('signInHeaderBar'); // Clicks on Sign in
-      await simpleClick('emailSignIn-splitIconButton'); // Clicks "Sign in with an email" button
-      await simpleClick('enterVoterEmailAddress'); // Puts cursor in Email address text input
-      await simpleClick('profileCloseSignInModal'); // Clicks on Sign Out
-    }
-  });
-
-  it('should sign in with phone', async () => {
-    if (isCordovaFromAppStore) {
-      await simpleClick('signInHeaderBar'); // Clicks on Sign in
-      await simpleClick('smsSignIn-splitIconButton'); // Clicks "Sign in with a text" button
-      await simpleTextInput('enterVoterPhone', '18004444444'); // Inputs voter phone number
-      await simpleClick('voterPhoneSendSMS'); // Clicks "Send Verification Code"
-      await simpleTextInput("digit1", "0");
-      await simpleTextInput("digit2", "1");
-      await simpleTextInput("digit3", "2");
-      await simpleTextInput("digit4", "3");
-      await simpleTextInput("digit5", "4");
-      await simpleTextInput("digit6", "5");
-      await simpleClick('emailVerifyButton'); // Click Verify
-      if (!isIOS || !isCordovaFromAppStore) { // change phone number button can't be located
-        await simpleClick('changeEmailAddressButton'); // Click change phone number
-        await simpleClick('enterVoterPhone'); // Click input box
-        await simpleClick('voterPhoneSendSMS'); // Click Send Verification Code
-      }
-      await simpleClick('emailVerificationBackButton'); // Click back
-      await simpleClick('enterVoterPhone'); // Click input box
-      await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
-    } else {
-      await simpleClick('signInHeaderBar'); // Clicks on Sign in
-      await simpleClick('smsSignIn-splitIconButton'); // Clicks "Sign in with a text" button
-      await simpleClick('enterVoterPhone'); // Puts cursor in Phone text input
-      await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
-    }
-  });
-
   it('should test settings page', async () => {
-    assert(await $$('#profileAvatarHeaderBar').length);
-    await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting
-    await simpleClick('profilePopUpYourSettings');
-    await simpleTextInput("first-name", "Hello how are you");
-    await simpleTextInput("last-name", "I am great thanks");
-    await simpleTextInput("organization-name", "I am really cool");
-    await simpleTextInput("organizationWebsiteTextArea", "aHahahaha ");
-    await simpleTextInput("organizationDescriptionTextArea", "Sup I'm gangsta");
+    await browser.pause(PAUSE_DURATION_MICROSECONDS * 10);
+    await hiddenClick('profileAvatarHeaderBar'); // Clicks on Setting
+    await selectClick('#profilePopUpYourSettings > button');
+    await simpleTextInput("first-name", 'A'.repeat(200));
+    await simpleTextInput("last-name", xssTest);
+    await simpleTextInput("organization-name", sqlTest);
+    await simpleTextInput("organizationWebsiteTextArea", 'A'.repeat(200));
+    await simpleTextInput("organizationDescriptionTextArea", xssTest);
     await simpleClick("edit");
     await selectClick('#securityAndSignIn span');
     await simpleTextInput("enterVoterPhone", "9723591212");
     await simpleClick('voterPhoneSendSMS');
-    await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com');
+    await simpleTextInput('enterVoterEmailAddress', 'automated_voter1@WeVote.info');
     await simpleClick('voterEmailAddressEntrySendCode');
     await simpleTextInput("digit1", "0");
     await simpleTextInput("digit2", "1");
@@ -138,13 +144,13 @@ describe('Cross browser automated testing',  () => {
     await simpleClick('newsletterOptIn');
     await simpleClick('domain');
     await selectClick('=Site Text');
-    await simpleTextInput('addTitleHereInput', '>script>alert("1")>/script>');
-    await simpleTextInput("addIntroductionHereInput", "' or 1=1 -- -");
+    await simpleTextInput('addTitleHereInput', xssTest);
+    await simpleTextInput("addIntroductionHereInput", sqlTest);
     await simpleClick('siteTextSaveButton');
     await simpleClick('sharing');
 //    await simpleClick('hideWeVoteLogoSwitch'); // Switch is not clickable
     await scrollIntoViewSimple("settingsSharingInputBox");
-    await simpleTextInput("settingsSharingInputBox", "' or 1=1 -- -");
+    await simpleTextInput("settingsSharingInputBox", sqlTest);
     await simpleClick('cancelChosenSocialShareDescriptionButton');
 //    await simpleClick('chosenPreventSharingOpinions'); // Switch is not clickable
     await scrollIntoViewSimple("subscriptionPlan");
@@ -152,48 +158,44 @@ describe('Cross browser automated testing',  () => {
     await simpleClick('changePlanButton');
     await simpleClick("profileClosePaidAccountUpgradeModal");
     await simpleClick('analytics');
-    await simpleTextInput("googleAnalyticsTrackerInput", ">script>alert('1')>/script>");
+    await simpleTextInput("googleAnalyticsTrackerInput", xssTest);
     await simpleClick('googleAnalyticsTrackerInputCancel');
-    await simpleTextInput("verifyWebmasterToolInput", ">meta name='>script>alert(1)>/script>'>");
+    await simpleTextInput("verifyWebmasterToolInput", xssTest3);
     await simpleClick('verifyWebmasterToolCancelButton');
-    await simpleTextInput("verifyWebmasterToolInput", ">meta name='>script>alert(1)>/script>'>");
+    await simpleTextInput("verifyWebmasterToolInput", xssTest3);
     await simpleClick('verifyWebmasterToolSaveButton');
     await simpleClick('toolsForYourWebsite');
+
     await simpleClick('codeCopierInteractiveBallotTool');
-    await selectClick('=Show Code');
-    await selectClick('=Hide Code');
-    await simpleTextInput("enterTwitterHandleInput", "@>script>alert('1')>/script>");
-    await scrollIntoViewSimple('codeCopierVoterRegistrationTool');
+    await selectClick('#codeCopierInteractiveBallotTool ~ div.u-stack--sm a:nth-child(1)');
+    await selectClick('#codeCopierInteractiveBallotTool ~ div.u-stack--sm a:nth-child(1)');
+
+    await simpleTextInput("enterTwitterHandleInput", xssTest2);
+    await clearTextInputValue("enterTwitterHandleInput", xssTest2);
+
+    await scrollIntoViewSelect('=Attributions');
     await simpleClick('codeCopierVoterRegistrationTool');
+    await selectClick('#codeCopierVoterRegistrationTool ~ div.u-stack--sm a:nth-child(1)');
+    await selectClick('#codeCopierVoterRegistrationTool ~ div.u-stack--sm a:nth-child(1)');
 
-    await selectClick('=Show Code');
-    await selectClick('=Hide Code');
-
+    await scrollIntoViewSelect('=Attributions');
     await simpleClick('codeCopierAbsenteeBallotTool');
-    await selectClick('=Show Code');
-    await selectClick('=Hide Code');
+    await selectClick('#codeCopierAbsenteeBallotTool ~ div.u-stack--sm a:nth-child(1)');
+    await selectClick('#codeCopierAbsenteeBallotTool ~ div.u-stack--sm a:nth-child(1)');
+
+    await scrollIntoViewSimple('codeCopierVoterRegistrationTool');
     await simpleClick('codeCopierCheckRegistrationStatusTool');
-    await selectClick('=Show Code');
-    await selectClick('=Hide Code');
+    await selectClick('#codeCopierCheckRegistrationStatusTool ~ div.u-stack--sm a:nth-child(1)');
+    await selectClick('#codeCopierCheckRegistrationStatusTool ~ div.u-stack--sm a:nth-child(1)');
+
+    await scrollIntoViewSimple('codeCopierVoterRegistrationTool');
     await simpleClick('codeCopierElectionReminderTool');
-    await selectClick('=Show Code');
-    await selectClick('=Hide Code');
+    await selectClick('#codeCopierElectionReminderTool ~ div.u-stack--sm a:nth-child(1)');
+    await selectClick('#codeCopierElectionReminderTool ~ div.u-stack--sm a:nth-child(1)');
+
     await scrollIntoViewSimple('selectVoterGuidesSideBarNewVoterGuide');
     await simpleClick('selectVoterGuidesSideBarNewVoterGuide');
     await simpleClick('profileCloseVoterGuideChooseElectionModal');
-    await simpleClick('selectVotingGuidesSideBarLinkEdit');
-    await browser.back();
-    await simpleClick('selectVotingGuidesSideBarLinkPreview');
-    await browser.back();
     await scrollIntoViewSelect('=Click to view example');
-    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(2) #selectVotingGuidesSideBarLinkEdit > .MuiButton-label');
-    await browser.back();
-    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(2) #selectVotingGuidesSideBarLinkPreview > .MuiButton-label');
-    await browser.back();
-
-    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(3) #selectVotingGuidesSideBarLinkEdit > .MuiButton-label');
-    await browser.back();
-    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(3) #selectVotingGuidesSideBarLinkPreview > .MuiButton-label');
-    await browser.back();
   });
 });

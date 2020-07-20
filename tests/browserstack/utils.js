@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const PAUSE_DURATION_MICROSECONDS = 2500;
-const PAUSE_TEXT_INPUT = 1250;
+const PAUSE_TEXT_INPUT = 625;
 
 async function clearTextInputValue (elementIdName) {
   const clickableSelector = `#${elementIdName}`;
