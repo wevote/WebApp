@@ -41,7 +41,6 @@ class SelectBallotModal extends Component {
     super(props);
     this.state = {
       editingAddress: false,
-      pathname: undefined,
       selectedState: 'all',
       upcoming: true,
       prior: false,
@@ -51,17 +50,9 @@ class SelectBallotModal extends Component {
   }
 
   componentDidMount () {
-    this.setState({
-      pathname: this.props.pathname,
-    });
     AnalyticsActions.saveActionSelectBallotModal(VoterStore.electionId());
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({
-      pathname: nextProps.pathname,
-    });
-  }
   //
   // shouldComponentUpdate (nextProps, nextState) {
   //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
@@ -111,9 +102,9 @@ class SelectBallotModal extends Component {
 
   render () {
     renderLog('SelectBallotModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, hideAddressEdit, hideElections } = this.props;
+    const { classes, hideAddressEdit, hideElections, pathname } = this.props;
     const { editingAddress } = this.state;
-    const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
+    const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, pathname);
 
     const voterAddressObject = VoterStore.getAddressObject();
     let dialogTitleText = 'Address & Elections';
@@ -126,7 +117,7 @@ class SelectBallotModal extends Component {
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+        onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <DialogTitle>
           <Title>
@@ -148,8 +139,9 @@ class SelectBallotModal extends Component {
                 <EditAddressInPlaceWrapperMobile>
                   <EditAddressInPlace
                     address={voterAddressObject}
+                    ballotBaseUrl={ballotBaseUrl}
                     defaultIsEditingAddress={editingAddress}
-                    pathname={this.state.pathname}
+                    pathname={pathname}
                     toggleFunction={this.props.toggleFunction}
                     toggleEditingAddress={this.toggleEditingAddress}
                   />
@@ -166,8 +158,9 @@ class SelectBallotModal extends Component {
                 {!hideAddressEdit && (
                   <EditAddressInPlace
                     address={voterAddressObject}
+                    ballotBaseUrl={ballotBaseUrl}
                     defaultIsEditingAddress={editingAddress}
-                    pathname={this.state.pathname}
+                    pathname={pathname}
                     toggleFunction={this.props.toggleFunction}
                     toggleEditingAddress={this.toggleEditingAddress}
                   />
@@ -358,10 +351,10 @@ const MapChartWrapper = styled.div`
 
 const SidebarWrapper = styled.div`
   padding: 16px;
-  @media (max-width: 860px) {
+  @media (max-width: 575px) {
     padding-top: 0px;
   }
-  @media(min-width: 860px) {
+  @media(min-width: 576px) {
     width: auto;
     flex: 1 1 0;
   }

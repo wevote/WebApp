@@ -16,6 +16,8 @@ import { stringContains } from '../../utils/textFormat';
 import StickyPopover from '../Ballot/StickyPopover';
 import { getPositionSummaryListForBallotItem, getPositionListSummaryIncomingDataStats } from '../../utils/positionFunctions';
 import PositionSummaryListForPopover from './PositionSummaryListForPopover';
+import SupportActions from '../../actions/SupportActions';
+import { openSnackbar } from './SnackNotifier';
 
 class BallotItemSupportOpposeCountDisplay extends Component {
   static closePositionsPopover () {
@@ -65,6 +67,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       voterSupportsBallotItem: false,
     };
     this.goToBallotItemLinkLocal = this.goToBallotItemLinkLocal.bind(this);
+    this.stopOpposingItem = this.stopOpposingItem.bind(this);
+    this.stopSupportingItem = this.stopSupportingItem.bind(this);
   }
 
   componentDidMount () {
@@ -421,6 +425,29 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     }
   };
 
+  stopOpposingItem () {
+    const { ballotItemWeVoteId } = this.props;
+    const isMeasure = stringContains('meas', ballotItemWeVoteId);
+    let kindOfBallotItem = 'CANDIDATE';
+    if (isMeasure) {
+      kindOfBallotItem = 'MEASURE';
+    }
+    // console.log('ItemActionBar, stopOpposingItem, transitioning:', this.state.transitioning);
+    SupportActions.voterStopOpposingSave(ballotItemWeVoteId, kindOfBallotItem);
+    openSnackbar({ message: 'Opposition removed!' });
+  }
+
+  stopSupportingItem () {
+    const { ballotItemWeVoteId } = this.props;
+    const isMeasure = stringContains('meas', ballotItemWeVoteId);
+    let kindOfBallotItem = 'CANDIDATE';
+    if (isMeasure) {
+      kindOfBallotItem = 'MEASURE';
+    }
+    SupportActions.voterStopSupportingSave(ballotItemWeVoteId, kindOfBallotItem);
+    openSnackbar({ message: 'Support removed!' });
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('BallotItemSupportOpposeCountDisplay caught error: ', `${error} with info: `, info);
@@ -496,7 +523,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               {voterSupportsBallotItem && (
                 <YourOpinion>
                   <DecidedIconWrapper>
-                    <NetworkScoreSmall className={classes.voterSupports} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+                    <NetworkScoreSmall
+                      className={classes.voterSupports}
+                      onClick={this.stopSupportingItem}
+                      voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                      voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                    >
                       <Done classes={{ root: classes.decidedIconSmall }} />
                     </NetworkScoreSmall>
                   </DecidedIconWrapper>
@@ -513,7 +545,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               {voterOpposesBallotItem && (
                 <YourOpinion>
                   <DecidedIconWrapper>
-                    <NetworkScoreSmall className={classes.voterOpposes} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+                    <NetworkScoreSmall
+                      className={classes.voterOpposes}
+                      onClick={this.stopOpposingItem}
+                      voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                      voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                    >
                       <NotInterested classes={{ root: classes.decidedIconSmall }} />
                     </NetworkScoreSmall>
                   </DecidedIconWrapper>
@@ -703,7 +740,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             {voterSupportsBallotItem && (
               <YourOpinion>
                 <DecidedIconWrapper>
-                  <NetworkScoreSmall className={classes.voterSupports} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+                  <NetworkScoreSmall
+                    className={classes.voterSupports}
+                    onClick={this.stopSupportingItem}
+                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                  >
                     <Done classes={{ root: classes.decidedIconSmall }} />
                   </NetworkScoreSmall>
                 </DecidedIconWrapper>
@@ -721,7 +763,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             {voterOpposesBallotItem && (
               <YourOpinion>
                 <DecidedIconWrapper>
-                  <NetworkScoreSmall className={classes.voterOpposes} voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+                  <NetworkScoreSmall
+                    className={classes.voterOpposes}
+                    onClick={this.stopOpposingItem}
+                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                  >
                     <NotInterested classes={{ root: classes.decidedIconSmall }} />
                   </NetworkScoreSmall>
                 </DecidedIconWrapper>

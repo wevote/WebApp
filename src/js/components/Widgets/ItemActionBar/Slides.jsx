@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import VoterStore from '../../../stores/VoterStore';
 
 class Slides extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     slides: PropTypes.array,
     startIndex: PropTypes.number,
-    classes: PropTypes.object,
     onClose: PropTypes.func,
+    voterIsSignedIn: PropTypes.bool,
   }
 
   constructor (props) {
@@ -29,10 +29,9 @@ class Slides extends Component {
   }
 
   render () {
-    const { classes } = this.props;
+    const { classes, voterIsSignedIn } = this.props;
     const { currentIndex } = this.state;
     const numberOfButtons = currentIndex > 0 && currentIndex < this.props.slides.length ? 2 : 1;
-    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
     let activeButtons;
     switch (currentIndex) {
       default:
@@ -107,7 +106,7 @@ class Slides extends Component {
               color="primary"
               onClick={this.props.onClose}
             >
-              Sign In Later
+              {voterIsSignedIn ? 'Close' : 'Sign In Later'}
             </Button>
           </Options>
         );

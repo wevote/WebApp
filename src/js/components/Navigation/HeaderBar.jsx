@@ -343,8 +343,9 @@ class HeaderBar extends Component {
     AppActions.setShowShareModal(false);
     AppActions.setShareModalStep('');
     const { pathname } = this.props;
-    if (stringContains('/modal/share', pathname)) {
-      const pathnameWithoutModalShare = pathname.replace('/modal/share', '');
+    if (stringContains('/modal/share', pathname) && isWebApp()) {
+      const pathnameWithoutModalShare = pathname.replace('/modal/share', '');  // Cordova
+      // console.log('Navigation closeShareModal ', pathnameWithoutModalShare)
       historyPush(pathnameWithoutModalShare);
     }
   }
@@ -430,11 +431,11 @@ class HeaderBar extends Component {
     } = this.state;
 
     // console.log('Header Bar, showSignInModal ', showSignInModal);
-    const ballotBaseUrl = '/ballot';
+    const ballotBaseUrl = stringContains('/ready', pathname.toLowerCase().slice(0, 7)) ? '/ready' : '/ballot';
     const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
     const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
-    const showingBallot = stringContains(ballotBaseUrl, pathname.toLowerCase().slice(0, 7));
+    const showingBallot = stringContains('/ballot', pathname.toLowerCase().slice(0, 7));
     const showingFriendsTabs = displayFriendsTabs();
     const voterPhotoUrlMedium = voterPhoto(voter);
     const editAddressButtonHtml = (
@@ -628,7 +629,7 @@ class HeaderBar extends Component {
         )}
         {showSelectBallotModal && (
           <SelectBallotModal
-            ballotBaseUrl="/ballot"
+            ballotBaseUrl={ballotBaseUrl}
             hideAddressEdit={showSelectBallotModalHideAddress}
             hideElections={showSelectBallotModalHideElections}
             location={location}

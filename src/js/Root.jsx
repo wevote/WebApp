@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react';
-import { IndexRoute, IndexRedirect, Route } from 'react-router'; // Route,
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { IndexRedirect, Route } from 'react-router'; // Route,
 import cookies from './utils/cookies';
 import componentLoader from './utils/componentLoader';
 import { isWebApp } from './utils/cordovaUtils';
@@ -24,28 +23,16 @@ const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
 const routes = () => {  // eslint-disable-line arrow-body-style
   // console.log('window.innerWidth:', window.innerWidth);
   return (
-    // <Router>
-    //   <div>
-    //     <Switch>
-    //       <Suspense fallback={<div>Loading...</div>}>
-    //         <Route path="/getready" component={componentLoader('ReadyNoApi')} />
-    //         <Route path="/ready" component={componentLoader('Ready')} />
-    //       </Suspense>
-    //     </Switch>
-    //   </div>
-    // </Router>
-    <Route path="/">
-      {                       // 12/4/18: Not sure why we need the following disabled
-        (function redirect () {  // eslint-disable-line wrap-iife
+    <>
+      <Route path="/">
+        {(function redirect () {
           if (isWebApp()) {
-            // return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/ready" />;
             return <IndexRedirect to="/ready" />;
           } else {
             return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ready" />;
           }
-        }
-        )()
-      }
+        }())}
+      </Route>
       <Suspense fallback={<div>Loading...</div>}>
         <Route path="/getready" component={componentLoader('ReadyNoApi')} />
       </Suspense>
@@ -55,36 +42,35 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/welcome" component={isNotWeVoteMarketingSite ? componentLoader('ReadyRedirect') : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
           <Route path="/news" component={componentLoader('News')} />
           <Route path="/ready" component={componentLoader('Ready')} />
+          <Route path="/ready/election/:google_civic_election_id" component={componentLoader('Ready')} />
           <Route path="/register" component={componentLoader('Register')} />
-          <Route path="/ballot" component={componentLoader('BallotIndex')}>
-            <IndexRoute component={componentLoader('Ballot')} />
-            <Route path="/ballot?voter_refresh_timer_on=:voter_refresh_timer_on" component={componentLoader('Ballot')} />
-            <Route path="/office/:office_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={componentLoader('Office')} />
-            <Route path="/office/:office_we_vote_id/b/:back_to_variable/" component={componentLoader('Office')} />
-            <Route path="/office/:office_we_vote_id/b/:back_to_variable" component={componentLoader('Office')} />
-            <Route path="/office/:office_we_vote_id/modal/:modal_to_show/:shared_item_code" component={componentLoader('Office')} />
-            <Route path="/office/:office_we_vote_id/modal/:modal_to_show" component={componentLoader('Office')} />
-            <Route path="/office/:office_we_vote_id/:back_to_variable/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideOffice')} />
-            <Route path="/office/:office_we_vote_id/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideOffice')} />
-            <Route path="/office/:office_we_vote_id" component={componentLoader('Office')} />
-            <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={componentLoader('Candidate')} />
-            <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={componentLoader('Candidate')} />
-            <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/" component={componentLoader('Candidate')} />
-            <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable" component={componentLoader('Candidate')} />
-            <Route path="/candidate/:candidate_we_vote_id/modal/:modal_to_show/:shared_item_code" component={componentLoader('Candidate')} />
-            <Route path="/candidate/:candidate_we_vote_id/modal/:modal_to_show" component={componentLoader('Candidate')} />
-            <Route path="/candidate/:candidate_we_vote_id/:back_to_variable/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideCandidate')} />
-            <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideCandidate')} />
-            <Route path="/candidate/:candidate_we_vote_id" component={componentLoader('Candidate')} />
-            <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={componentLoader('Measure')} />
-            <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={componentLoader('Measure')} />
-            <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/" component={componentLoader('Measure')} />
-            <Route path="/measure/:measure_we_vote_id/b/:back_to_variable" component={componentLoader('Measure')} />
-            <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show/:shared_item_code" component={componentLoader('Measure')} />
-            <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show" component={componentLoader('Measure')} />
-            <Route path="/measure/:measure_we_vote_id/:back_to_variable/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideMeasure')} />
-            <Route path="/measure/:measure_we_vote_id" component={componentLoader('Measure')} />
-          </Route>
+          <Route path="/ballot" component={componentLoader('Ballot')} />
+          <Route path="/ballot?voter_refresh_timer_on=:voter_refresh_timer_on" component={componentLoader('Ballot')} />
+          <Route path="/office/:office_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={componentLoader('Office')} />
+          <Route path="/office/:office_we_vote_id/b/:back_to_variable/" component={componentLoader('Office')} />
+          <Route path="/office/:office_we_vote_id/b/:back_to_variable" component={componentLoader('Office')} />
+          <Route path="/office/:office_we_vote_id/modal/:modal_to_show/:shared_item_code" component={componentLoader('Office')} />
+          <Route path="/office/:office_we_vote_id/modal/:modal_to_show" component={componentLoader('Office')} />
+          <Route path="/office/:office_we_vote_id/:back_to_variable/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideOffice')} />
+          <Route path="/office/:office_we_vote_id/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideOffice')} />
+          <Route path="/office/:office_we_vote_id" component={componentLoader('Office')} />
+          <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={componentLoader('Candidate')} />
+          <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={componentLoader('Candidate')} />
+          <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable/" component={componentLoader('Candidate')} />
+          <Route path="/candidate/:candidate_we_vote_id/b/:back_to_variable" component={componentLoader('Candidate')} />
+          <Route path="/candidate/:candidate_we_vote_id/modal/:modal_to_show/:shared_item_code" component={componentLoader('Candidate')} />
+          <Route path="/candidate/:candidate_we_vote_id/modal/:modal_to_show" component={componentLoader('Candidate')} />
+          <Route path="/candidate/:candidate_we_vote_id/:back_to_variable/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideCandidate')} />
+          <Route path="/candidate/:candidate_we_vote_id/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideCandidate')} />
+          <Route path="/candidate/:candidate_we_vote_id" component={componentLoader('Candidate')} />
+          <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={componentLoader('Measure')} />
+          <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={componentLoader('Measure')} />
+          <Route path="/measure/:measure_we_vote_id/b/:back_to_variable/" component={componentLoader('Measure')} />
+          <Route path="/measure/:measure_we_vote_id/b/:back_to_variable" component={componentLoader('Measure')} />
+          <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show/:shared_item_code" component={componentLoader('Measure')} />
+          <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show" component={componentLoader('Measure')} />
+          <Route path="/measure/:measure_we_vote_id/:back_to_variable/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideMeasure')} />
+          <Route path="/measure/:measure_we_vote_id" component={componentLoader('Measure')} />
           <Route path="/ballot/vote" component={componentLoader('Vote')} />
           <Route path="/ballot/modal/:modal_to_show/:shared_item_code" component={componentLoader('Ballot')} />
           <Route path="/ballot/modal/:modal_to_show" component={componentLoader('Ballot')} />
@@ -285,7 +271,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="*" component={componentLoader('PageNotFound')} />
         </Route>
       </Suspense>
-    </Route>
+    </>
   );
 };
 

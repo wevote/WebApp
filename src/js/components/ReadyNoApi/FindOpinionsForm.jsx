@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,12 +12,16 @@ import {
   focusTextFieldAndroid, historyPush,
   isCordova,
 } from '../../utils/cordovaUtils';
+import ImageHandler from '../ImageHandler';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 class FindOpinionsForm extends Component {
   static propTypes = {
     classes: PropTypes.object,
     headerText: PropTypes.string,
+    introHeaderLink: PropTypes.string,
     searchTextLarge: PropTypes.bool,
+    showVoterGuidePhotos: PropTypes.bool,
     theme: PropTypes.object,
   };
 
@@ -24,7 +29,48 @@ class FindOpinionsForm extends Component {
     super(props);
     this.state = {
       searchText: '',
+      opinionPhotosHtml: <span />,
     };
+  }
+
+  componentDidMount () {
+    this.onVoterGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.voterGuideStoreListener.remove();
+  }
+
+  onVoterGuideStoreChange () {
+    const { showVoterGuidePhotos } = this.props;
+    if (showVoterGuidePhotos) {
+      const limit = 3;
+      const publicFiguresToFollow = VoterGuideStore.getVoterGuidesToFollowAll(limit, true);
+      const organizationsToFollow = VoterGuideStore.getVoterGuidesToFollowAll(limit, false, true);
+      const combinedVoterGuides = publicFiguresToFollow.concat(organizationsToFollow);
+      // console.log('onVoterGuideStoreChange:', combinedVoterGuides)
+      const opinionPhotosHtml = (
+        <PublicFiguresAndOrganizationsList>
+          {combinedVoterGuides.map((voterGuide) => {
+            const voterGuideLink = voterGuide.twitter_handle ? `/${voterGuide.twitter_handle}` : `/voterguide/${voterGuide.organization_we_vote_id}`;
+            if (!voterGuide.voter_guide_image_url_tiny) {
+              return null;
+            }
+            return (
+              <OneVoterGuideWrapper key={`findOpinionsFormPreviewImage-${voterGuide.organization_we_vote_id}`}>
+                <Link to={voterGuideLink} className="u-no-underline">
+                  <ImageHandler className="card-child__avatar" sizeClassName="image-sm " imageUrl={voterGuide.voter_guide_image_url_tiny} />
+                </Link>
+              </OneVoterGuideWrapper>
+            );
+          })}
+        </PublicFiguresAndOrganizationsList>
+      );
+      this.setState({
+        opinionPhotosHtml,
+      });
+    }
   }
 
   handleKeyPress = (event) => {
@@ -57,8 +103,8 @@ class FindOpinionsForm extends Component {
 
   render () {
     renderLog('FindOpinionsForm');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, headerText, searchTextLarge, theme } = this.props;
-    const { searchText } = this.state;
+    const { classes, headerText, introHeaderLink, searchTextLarge, theme } = this.props;
+    const { opinionPhotosHtml, searchText } = this.state;
     const inputBaseInputClasses = searchTextLarge ? classes.inputDefaultLarge : classes.inputDefault;
     const inputBaseRootClasses = searchTextLarge ? classes.inputBaseRootLarge : classes.inputBaseRoot;
     const searchIconClasses = searchTextLarge ? classes.iconRootLarge : classes.iconRoot;
@@ -66,9 +112,17 @@ class FindOpinionsForm extends Component {
     return (
       <OuterWrapper>
         <InnerWrapper>
-          <IntroHeader>
-            {headerText || 'Find Candidates & Opinions'}
-          </IntroHeader>
+          {introHeaderLink ? (
+            <Link to={introHeaderLink} className="u-no-underline">
+              <IntroHeader>
+                {headerText || 'Find Candidates & Opinions'}
+              </IntroHeader>
+            </Link>
+          ) : (
+            <IntroHeader>
+              {headerText || 'Find Candidates & Opinions'}
+            </IntroHeader>
+          )}
           <SearchWrapper
             brandBlue={theme.palette.primary.main}
             isCordova={isCordova()}
@@ -92,6 +146,9 @@ class FindOpinionsForm extends Component {
               <SearchIcon classes={{ root: searchIconClasses }} />
             </IconButton>
           </SearchWrapper>
+          <PublicFiguresAndOrganizationsWrapper>
+            {opinionPhotosHtml}
+          </PublicFiguresAndOrganizationsWrapper>
         </InnerWrapper>
       </OuterWrapper>
     );
@@ -189,12 +246,6 @@ const styles = theme => ({
   },
 });
 
-const OuterWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 0 !important;
-`;
-
 const InnerWrapper = styled.div`
 `;
 
@@ -207,6 +258,25 @@ const IntroHeader = styled.div`
     font-size: 18px;
     margin-top: 0;
   }
+`;
+
+const OneVoterGuideWrapper = styled.div`
+  margin: 1px !important;
+`;
+
+const OuterWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 0 !important;
+`;
+
+const PublicFiguresAndOrganizationsList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const PublicFiguresAndOrganizationsWrapper = styled.div`
 `;
 
 const Separator = styled.div`

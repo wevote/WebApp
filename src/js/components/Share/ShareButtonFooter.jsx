@@ -14,17 +14,18 @@ import {
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
-import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import { historyPush } from '../../utils/cordovaUtils';
-import isMobile from '../../utils/isMobile';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
-import { openSnackbar } from '../Widgets/SnackNotifier';
 import ShareActions from '../../actions/ShareActions';
 import ShareModalOption from './ShareModalOption';
 import ShareStore from '../../stores/ShareStore';
-import { stringContains } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
+import isMobile from '../../utils/isMobile';
+import { getApplicationViewBooleans } from '../../utils/applicationUtils';
+import { historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { openSnackbar } from '../Widgets/SnackNotifier';
+import { renderLog } from '../../utils/logging';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
+import { stringContains } from '../../utils/textFormat';
 
 class ShareButtonFooter extends Component {
   static propTypes = {
@@ -305,6 +306,7 @@ class ShareButtonFooter extends Component {
   }
 
   openNativeShare (linkToBeShared, shareTitle = '') {
+    // console.log('openNativeShare linkToBeShared:', linkToBeShared);
     if (navigator.share) {
       navigator.share({
         title: shareTitle,
@@ -319,8 +321,9 @@ class ShareButtonFooter extends Component {
     AppActions.setShowShareModal(true);
     AppActions.setShareModalStep(shareFooterStep);
     const { pathname } = window.location;
-    if (!stringContains('/modal/share', pathname)) {
+    if (!stringContains('/modal/share', pathname) && isWebApp()) {
       const pathnameWithModalShare = `${pathname}/modal/share`;
+      // console.log('openShareModal ', pathnameWithModalShare);
       historyPush(pathnameWithModalShare);
     }
   }
@@ -346,6 +349,7 @@ class ShareButtonFooter extends Component {
   }
 
   render () {
+    renderLog('ShareButtonFooter');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
     const {
       allOpinions,
@@ -421,7 +425,10 @@ class ShareButtonFooter extends Component {
       shareMenuTextDefault = 'Ballot';
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
+    linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
     linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
+    // console.log('ShareButtonFooter linkToBeShared:', linkToBeShared);
+
     const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSignInModal || showVoterPlanModal;
     const developmentFeatureTurnedOn = false;
     return (
@@ -622,6 +629,7 @@ class ShareButtonFooter extends Component {
                         </TwitterShareButton>
                       </ShareWrapper>
                       <ShareWrapper>
+                        {/* The EmailShareButton works in Cordova, but ONLY if an email client is configured, so it doesn't work in a simulator */}
                         <EmailShareButton
                           body={`${titleText} ${linkToBeShared}`}
                           className="no-decoration"

@@ -47,7 +47,9 @@ export function calculateBallotBaseUrl (incomingBallotBaseUrl, incomingPathname)
   const incomingPathnameExists = incomingPathname && incomingPathname !== '';
   const ballotBaseUrlEmpty = !incomingBallotBaseUrl || incomingBallotBaseUrl === '';
   let ballotBaseUrl = '';
-  if (incomingPathnameExists && ballotBaseUrlEmpty) {
+  if (incomingBallotBaseUrl === '/ready') {
+    ballotBaseUrl = '/ready';
+  } else if (incomingPathnameExists && ballotBaseUrlEmpty) {
     // console.log("incomingPathname:", incomingPathname);
     // Strip off everything after these path strings "/ballot" "/positions" "/followers" "/followed"
     const temp1 = incomingPathname.toLowerCase().split('/ballot')[0];
@@ -334,6 +336,15 @@ export function stringContains (needle, stringHaystack) {
   } else {
     return false;
   }
+}
+
+export function stripHtmlFromString (rawString) {
+  if (rawString === undefined) {
+    return '';
+  }
+  let strippedString = rawString.replace(/&nbsp;/gi, ' ');
+  strippedString = strippedString.replace(/<br>/gi, ' ');
+  return strippedString;
 }
 
 export const youTubeRegX = /(http:|https:)?\/\/(www\.)?(youtube.com|youtu.be)\/(watch)?(\?v=)?(\S+)?/;

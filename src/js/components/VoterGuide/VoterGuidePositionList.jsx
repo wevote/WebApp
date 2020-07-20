@@ -16,6 +16,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuidePositionFilter from '../Filter/VoterGuidePositionFilter';
 import VoterGuidePositionItem from './VoterGuidePositionItem';
 import ShowMoreItems from '../Widgets/ShowMoreItems';
+import { arrayContains } from '../../utils/textFormat';
 
 
 // Thumbs up/down needs to be fixed
@@ -81,11 +82,23 @@ class VoterGuidePositionList extends Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
 
+    // console.log('componentDidMount incomingPositionList:', incomingPositionList);
+    const candidateAlreadySeenThisYear = {};
+
     // Replicate onOrganizationStoreChange
     const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
     // eslint-disable-next-line arrow-body-style
     incomingPositionList = incomingPositionList.map((position) => {
       // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
+      if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && arrayContains(position.position_year, candidateAlreadySeenThisYear[position.ballot_item_we_vote_id])) {
+        // console.log('componentDidMount already seen');
+        return null;
+      } else if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id]) {
+        candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].push(position.position_year);
+      } else {
+        candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] = [];
+        candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].push(position.position_year);
+      }
       return ({
         ...position,
         followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
@@ -123,7 +136,29 @@ class VoterGuidePositionList extends Component {
 
   componentWillReceiveProps (nextProps) {
     // console.log('VoterGuidePositionList componentWillReceiveProps');
-    const { incomingPositionList } = nextProps;
+    let { incomingPositionList } = nextProps;
+    const candidateAlreadySeenThisYear = {};
+
+    // Replicate onOrganizationStoreChange
+    const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
+    // eslint-disable-next-line arrow-body-style
+    incomingPositionList = incomingPositionList.map((position) => {
+      // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
+      if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && arrayContains(position.position_year, candidateAlreadySeenThisYear[position.ballot_item_we_vote_id])) {
+        // console.log('componentWillReceiveProps already seen');
+        return null;
+      } else if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id]) {
+        candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].push(position.position_year);
+      } else {
+        candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] = [];
+        candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].push(position.position_year);
+      }
+      return ({
+        ...position,
+        followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+      });
+    });
+
     const stateCodesToDisplay = getStateCodesFoundInObjectList(incomingPositionList);
     this.setState({
       positionList: incomingPositionList,

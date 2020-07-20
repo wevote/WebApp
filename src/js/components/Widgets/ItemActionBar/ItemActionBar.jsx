@@ -551,6 +551,7 @@ class ItemActionBar extends PureComponent {
     }
 
     const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    // const supportOpposeModalHasBeenShown = false; // For testing
     if (!supportOpposeModalHasBeenShown) {
       this.toggleSupportOrOpposeHelpModal();
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
@@ -584,7 +585,11 @@ class ItemActionBar extends PureComponent {
     renderLog('ItemActionBar ItemActionBar.jsx');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ItemActionBar render');
     const { buttonsOnly, commentButtonHide, commentButtonHideInMobile, classes } = this.props;
-    const { ballotItemType, ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState, numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, showSupportOrOpposeHelpModal, voterPositionIsPublic } = this.state;
+    const {
+      ballotItemType, ballotItemWeVoteId, isOpposeAPIState, isSupportAPIState,
+      numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
+      showSupportOrOpposeHelpModal, voterPositionIsPublic,
+    } = this.state;
 
     if (numberOfSupportPositionsForScore === undefined ||
       numberOfOpposePositionsForScore === undefined ||

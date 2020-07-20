@@ -19,6 +19,9 @@ class PageNotFound extends Component {
 
   render () {
     renderLog('PageNotFound');  // Set LOG_RENDER_EVENTS to log all renders
+    if (isCordova()) {
+      console.log(`PageNotFound window.location.href: ${window.location.href}`);
+    }
     const { classes } = this.props;
     return (
       <div className="page-content-container">

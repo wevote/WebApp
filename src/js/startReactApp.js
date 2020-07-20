@@ -6,8 +6,9 @@ import {
 import { useScroll } from 'react-router-scroll';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from 'styled-components';
-import { isCordova } from './utils/cordovaUtils';
+import { isCordova, isWebApp } from './utils/cordovaUtils';
 import routes from './Root';
+import routesSingleBundle from './RootSingleBundle';
 import muiTheme from './mui-theme';
 import styledTheme from './styled-theme';
 import { renderLog } from './utils/logging';
@@ -30,7 +31,7 @@ export default function startReactApp () {
             history={isCordova() ? hashHistory : browserHistory}
             render={applyRouterMiddleware(useScroll(() => true))}
           >
-            {routes()}
+            {isWebApp() ? routes() : routesSingleBundle()}
           </Router>
         </ThemeProvider>
       </MuiThemeProvider>

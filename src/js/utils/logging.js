@@ -5,6 +5,12 @@ const webAppConfig = require('../config');
 export function routingLog (text) {
   if (webAppConfig.LOG_ROUTING) {
     console.log('Application pathname on entry = ', text);
+    if (text.length > 100) {
+      console.log('Application pathname + 100  = ', text.substring(100));
+    }
+    if (text.length > 200) {
+      console.log('Application pathname + 200  = ', text.substring(200));
+    }
   }
 }
 

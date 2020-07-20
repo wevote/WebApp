@@ -10,7 +10,7 @@ import ImageHandler from '../ImageHandler';
 import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 import ReadMore from '../Widgets/ReadMore';
 import { renderLog } from '../../utils/logging';
-import { formatDateToMonthDayYear } from '../../utils/textFormat';
+import { convertToInteger, formatDateToMonthDayYear } from '../../utils/textFormat';
 
 class FriendInvitationOnboardingIntro extends Component {
   static propTypes = {
@@ -65,6 +65,10 @@ class FriendInvitationOnboardingIntro extends Component {
     renderLog('FriendInvitationOnboardingIntro');  // Set LOG_RENDER_EVENTS to log all renders
     const { friendFirstName, friendLastName, invitationMessage, friendImageUrlHttpsTiny } = this.props;
     const { days, electionDate } = this.state;
+    let showCountDownDays = (days && electionDate);
+    if (convertToInteger(days) < 0) {
+      showCountDownDays = false;
+    }
     return (
       <Wrapper>
         <WeVoteLogoWrapper>
@@ -74,7 +78,7 @@ class FriendInvitationOnboardingIntro extends Component {
             src={cordovaDot(logoDark)}
           />
         </WeVoteLogoWrapper>
-        {!!(days && electionDate) && (
+        {showCountDownDays && (
           <ElectionCountdownText>
             <ElectionCountdownDays>
               {days}

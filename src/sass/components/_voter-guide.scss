@@ -7,10 +7,15 @@
 }
 
 .organization-banner-image-div {
+  min-height: 200px;
   max-height: 300px;
   overflow: hidden;
+  @include breakpoints (medium large) {
+    min-height: 0;
+  }
   @include breakpoints (0 medium) {
     max-height: 200px;
+    min-height: 0;
   }
 }
 

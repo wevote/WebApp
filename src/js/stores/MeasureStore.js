@@ -1,6 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
-import { stringContains } from '../utils/textFormat';
+import { stringContains, stripHtmlFromString } from '../utils/textFormat';
 import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions';  // eslint-disable-line import/no-cycle
 
 class MeasureStore extends ReduceStore {
@@ -19,7 +19,7 @@ class MeasureStore extends ReduceStore {
     if (measureWeVoteId) {
       const measure = this.getMeasure(measureWeVoteId);
       if (measure && measure.yes_vote_description) {
-        return measure.yes_vote_description;
+        return stripHtmlFromString(measure.yes_vote_description);
       }
     }
     return '';
@@ -29,7 +29,7 @@ class MeasureStore extends ReduceStore {
     if (measureWeVoteId) {
       const measure = this.getMeasure(measureWeVoteId);
       if (measure && measure.no_vote_description) {
-        return measure.no_vote_description;
+        return stripHtmlFromString(measure.no_vote_description);
       }
     }
     return '';

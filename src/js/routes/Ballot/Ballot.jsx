@@ -27,7 +27,6 @@ import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
-import FriendInvitationOnboardingValuesList from '../../components/Values/FriendInvitationOnboardingValuesList';
 import isMobile from '../../utils/isMobile';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
@@ -41,6 +40,7 @@ import ShowMoreItems from '../../components/Widgets/ShowMoreItems';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import { checkShouldUpdate, formatVoterBallotList } from './utils';
+import ValuesToFollowPreview from '../../components/Values/ValuesToFollowPreview';
 import VoterActions from '../../actions/VoterActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
@@ -1409,13 +1409,10 @@ class Ballot extends Component {
                       />
                       {(issuesFollowedCount < 3) && (
                         <ValuesListWrapper>
-                          <div className="card">
-                            <FriendInvitationOnboardingValuesList
-                              displayOnlyIssuesNotFollowedByVoter
-                              followToggleOnItsOwnLine
-                              oneColumn
-                            />
-                          </div>
+                          <ValuesToFollowPreview
+                            followToggleOnItsOwnLine
+                            includeLinkToIssue
+                          />
                         </ValuesListWrapper>
                       )}
                     </div>

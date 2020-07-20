@@ -76,6 +76,7 @@ class EditAddressOneHorizontalRow extends Component {
     // console.log('EditAddressOneHorizontalRow, onBallotStoreChange, this.state:', this.state);
     const { saveUrl } = this.props;
     const { textForMapSearch, voterSavedAddress } = this.state;
+    // console.log('onBallotStoreChange, state.voterSavedAddress:', voterSavedAddress, ', VoterStore.getTextForMapSearch():', VoterStore.getTextForMapSearch())
     const { pathname } = window.location;
     if (saveUrl && saveUrl !== '' && pathname !== saveUrl && textForMapSearch && voterSavedAddress) {
       historyPush(saveUrl);
@@ -100,13 +101,23 @@ class EditAddressOneHorizontalRow extends Component {
     }
   }
 
+  saveAddressToApiServer = () => {
+    const { textForMapSearch } = this.state;
+    // console.log('saveAddressToApiServer, textForMapSearch: ', textForMapSearch);
+    VoterActions.voterAddressSave(textForMapSearch);
+  };
+
   _placeChanged (addressAutocomplete) {
     const place = addressAutocomplete.getPlace();
     if (place.formatted_address) {
+      // console.log('_placeChanged place.formatted_address:', place.formatted_address);
+      VoterActions.voterAddressSave(place.formatted_address);
       this.setState({
         textForMapSearch: place.formatted_address,
       });
     } else {
+      // console.log('_placeChanged place.name:', place.name);
+      VoterActions.voterAddressSave(place.name);
       this.setState({
         textForMapSearch: place.name,
       });
@@ -114,7 +125,8 @@ class EditAddressOneHorizontalRow extends Component {
   }
 
   handleKeyPress (event) {
-    // console.log('EditAddressOneHorizontalRow, handleKeyPress, event: ', event);
+    // console.log('EditAddressOneHorizontalRow, handleKeyPress, event: ', event, ', event.keyCode:', event.keyCode);
+    // console.log('this.autoComplete:', this.autoComplete);
     const enterAndSpaceKeyCodes = [13]; // We actually don't want to use the space character to save, 32
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       event.preventDefault();
@@ -127,8 +139,8 @@ class EditAddressOneHorizontalRow extends Component {
   }
 
   voterAddressSave (event) {
-    // console.log('EditAddressOneHorizontalRow, voterAddressSave');
     const { textForMapSearch } = this.state;
+    // console.log('EditAddressOneHorizontalRow, voterAddressSave, textForMapSearch:', textForMapSearch);
     event.preventDefault();
     VoterActions.voterAddressSave(textForMapSearch);
     const oneMonthExpires = 86400 * 31;
@@ -149,67 +161,62 @@ class EditAddressOneHorizontalRow extends Component {
     const { textForMapSearch } = this.state;
 
     return (
-      <Wrapper>
-        <AddressLabel className="u-show-desktop-tablet">
-          {(textForMapSearch) ? (
-            <>
-              <span className="u-show-tablet">
-                Your correct location?
-              </span>
-              <span className="u-show-desktop">
-                Do we have your location correct?
-              </span>
-            </>
-          ) : (
-            <>
-              <span className="u-show-tablet">
-                Enter your location
-              </span>
-              <span className="u-show-desktop">
-                Please enter your location
-              </span>
-            </>
-          )}
-        </AddressLabel>
-        <form onSubmit={this.voterAddressSave}>
-          <InternalFormWrapper>
-            <Paper className={classes.paperInputForm} elevation={2}>
-              <EditLocation className="ion-input-icon" />
-              <InputBase
-                className={classes.inputBase}
-                name="address"
-                aria-label="Address"
-                placeholder="Full address and ZIP..."
-                value={textForMapSearch}
-                inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
-                inputProps={{
-                  onChange: this.updateVoterAddress,
-                  onKeyDown: this.handleKeyPress,
-                }}
-                id="editAddressOneHorizontalRowTextForMapSearch"
-              />
-            </Paper>
-            <Button
-              classes={{ root: classes.saveButton }}
-              color="primary"
-              fullWidth
-              id="editAddressOneHorizontalRowSaveButton"
-              onClick={this.voterAddressSave}
-              variant="contained"
-            >
-              {(textForMapSearch) ? (
-                <>
-                  Confirm
-                </>
-              ) : (
-                <>
-                  Save
-                </>
-              )}
-            </Button>
-          </InternalFormWrapper>
-        </form>
-      </Wrapper>
+      <OuterWrapper>
+        <InnerWrapper className="u-show-mobile">
+          <AddressLabelMobile>
+            Enter full address for correct ballot
+          </AddressLabelMobile>
+        </InnerWrapper>
+        <InnerWrapper>
+          <AddressLabel>
+            <span className="u-show-tablet">
+              Enter full address for correct ballot
+            </span>
+            <span className="u-show-desktop">
+              Enter your full address to see correct ballot
+            </span>
+          </AddressLabel>
+          <form onSubmit={this.voterAddressSave}>
+            <InternalFormWrapper>
+              <Paper className={classes.paperInputForm} elevation={2}>
+                <EditLocation className="ion-input-icon" />
+                <InputBase
+                  className={classes.inputBase}
+                  name="address"
+                  aria-label="Address"
+                  placeholder="Full address and ZIP..."
+                  value={textForMapSearch}
+                  inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
+                  inputProps={{
+                    onBlur: this.saveAddressToApiServer,
+                    onChange: this.updateVoterAddress,
+                    onKeyDown: this.handleKeyPress,
+                  }}
+                  id="editAddressOneHorizontalRowTextForMapSearch"
+                />
+              </Paper>
+              <Button
+                classes={{ root: classes.saveButton }}
+                color="primary"
+                fullWidth
+                id="editAddressOneHorizontalRowSaveButton"
+                onClick={this.voterAddressSave}
+                variant="contained"
+              >
+                {(textForMapSearch) ? (
+                  <>
+                    Update
+                  </>
+                ) : (
+                  <>
+                    Save
+                  </>
+                )}
+              </Button>
+            </InternalFormWrapper>
+          </form>
+        </InnerWrapper>
+      </OuterWrapper>
     );
   }
 }
@@ -218,17 +225,25 @@ const AddressLabel = styled.div`
   font-weight: 600;
   margin-right: 12px;
 `;
+
+const AddressLabelMobile = styled.div`
+  font-weight: 600;
+`;
+
 const InternalFormWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-const Wrapper = styled.div`
+const OuterWrapper = styled.div`
+  margin-bottom: 8px !important;
+  width: 100%;
+`;
+
+const InnerWrapper = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
-  margin-bottom: 8px !important;
-  width: 100%;
 `;
 
 const styles = theme => ({
