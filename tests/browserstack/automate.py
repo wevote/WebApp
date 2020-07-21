@@ -8,7 +8,7 @@ import re
 import time
 import queue 
 
-identity = re.compile(r'^#(.*?) ', flags=re.MULTILINE)
+identity = re.compile(r'^#(.*)', flags=re.MULTILINE)
 
 def goToTextEditor():
   pyautogui.hotkey(modifierKey,'2') # go to vim
@@ -20,11 +20,16 @@ def getCssSelector():
   global isId
   isId = False
   cssSelector = subprocess.Popen(['xclip','-s','c','-d',':0','-o'], stdout=subprocess.PIPE).stdout.read().decode() # Get clipboard
-  if identity.search(cssSelector):
+  if identity.search(cssSelector.split()[0]): 
     isId = True
-    return identity.search(cssSelector).group(1) # return id
+    return identity.search(cssSelector.split()[0]).group(1) # return id
   else:
     return cssSelector
+
+def on_press(key):
+  if key == keyboard.Key.ctrl_r:
+    print('Ctrl_R!')
+    return False
 
 def on_escape():
   global escape
@@ -49,7 +54,6 @@ def unsetScroll():
 def on_scroll(x, y, dx, dy):
   global scroll 
   scroll = True
-  print(scroll)
 
 modifierKey = 'winleft' # i3 modifier key
 pause = 0.5
@@ -58,47 +62,48 @@ isInput = False
 scroll = False
 back = False
 isId = False
+hotkey = keyboard.GlobalHotKeys({'<ctrl>+i': setInput, '<ctrl>+<shift>+u': unsetInput, '<alt>+<left>': goBack,'<end>': unsetScroll})
+hotkey.start() # Listen for hotkeys
 
 while True:
   elementSelector = ''
   textInput = ''
 
   goToBrowser() # Go to browser
+  print('Going to browser')
 
-  hotkey = keyboard.GlobalHotKeys({'<ctrl>+i': setInput, '<ctrl>+<shift>+u': unsetInput, '<alt>+<left>': goBack,'<end>': unsetScroll})
-  hotkey.start() # Listen for hotkeys
+  print('Starting hotkeys')
   
   mouseListen = mouse.Listener(on_scroll=on_scroll)
+  print('Starting mouse listener...')
   mouseListen.start() # Listen for scrolls
 
+  keyboardListen = keyboard.Listener(on_press=on_press)
   print('Starting keyboard listener...')
-  with keyboard.Events() as events:
-    while True:
-      try:
-        event = events.get(1.0)
-        if event.key == keyboard.Key.ctrl_r:
-          break
-      except queue.Empty:
-        pass
-  
-  print('Scroll: ' + str(scroll))
-  mouseListen.stop() # Stop listener
-  hotkey.stop() # Stop listener
-  print('Starting css selection')
+  keyboardListen.start()
+
+  try:
+      keyboardListen.wait()
+      print('Waiting...')
+
+  finally:
+    print('Stopping mouse listener...')
+    mouseListen.stop()
+    print('Stopping keyboard listener...')
+    keyboardListen.stop()
+
   elementSelector = getCssSelector() # Get css selector
   print('Finished css selection. Element Selector: ' + elementSelector)
   time.sleep(pause) # Prevent race conditions
   pyautogui.click() # Second click
 
-  print(elementSelector)
   subprocess.Popen(['xclip','-se','c','-d',':0','/dev/null']) # Clear clipboard 
 
-  print(isInput)
   if isInput:
     isInput = False # reset isInput
     with keyboard.Events() as events:
       for event in events:
-        if event.key == keyboard.Key.ctrl_r: # Check for alt
+        if event.key == keyboard.Key.ctrl_r: # Check for ctrl_r
           time.sleep(pause) # Prevent race conditions
           pyautogui.hotkey('ctrl','a') # Select all
           time.sleep(pause) # Prevent race conditions
@@ -106,6 +111,7 @@ while True:
           textInput = subprocess.Popen(['xclip','-s','c','-d',':0','-o'], stdout=subprocess.PIPE).stdout.read().decode() # Get clipboard
           break
 
+  print('Going to text editor')
   goToTextEditor() # Go to text editor
   time.sleep(pause) # Prevent race conditions
 
@@ -116,7 +122,7 @@ while True:
   if scroll and isId:
     pyautogui.write('await scrollIntoViewSimple("%s");\n' % elementSelector) # Write code
     scroll = False
-  elif scroll and not isId
+  elif scroll and not isId:
     pyautogui.write('await scrollIntoViewSelect("%s");\n' % elementSelector) # Write code
     scroll = False
 
@@ -130,3 +136,4 @@ while True:
     pyautogui.write('await selectTextInput("%s", "%s");\n' % (elementSelector, textInput)) # Write code
   else:
     break
+hotkey.stop() # Stop listener

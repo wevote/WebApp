@@ -1,6 +1,7 @@
 const fs = require('fs');
 
-const PAUSE_DURATION_MICROSECONDS = 1250;
+const PAUSE_DURATION_MICROSECONDS = 2500;
+const PAUSE_TEXT_INPUT = 625;
 
 async function clearTextInputValue (elementIdName) {
   const clickableSelector = `#${elementIdName}`;
@@ -43,6 +44,12 @@ function stopScript (driver) {
 async function scrollIntoViewSimple (elementIdName) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
+  await clickableItem.scrollIntoView();
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+async function scrollIntoViewSelect (selector) {
+  const clickableItem = await $(selector);
   await clickableItem.scrollIntoView();
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
@@ -123,6 +130,21 @@ async function simpleClick (elementIdName) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
+async function hiddenClick (id) {
+  await browser.executeAsync((selector, done) => { document.getElementById(selector).click(); done(); }, id);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+async function hiddenSelectClick (selector) {
+  await browser.executeAsync((s, done) => { document.querySelector(s).click(); done(); }, selector);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+async function hiddenSelectTextInput (selector, input) {
+  await browser.executeAsync((s, i, done) => { document.querySelector(s).value = i; done(); }, selector, input);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
 async function selectClick (selector) {
   const clickableItem = await $(selector);
   await browser.waitUntil(() => clickableItem.isClickable());
@@ -140,8 +162,9 @@ async function simpleCloseBootstrapModal () {
 async function simpleTextInput (elementIdName, textValue) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
+  await browser.pause(PAUSE_TEXT_INPUT);
   await clickableItem.setValue(textValue);
-  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+  await browser.pause(PAUSE_TEXT_INPUT);
 }
 
 async function selectTextInput (selector, textValue) {
@@ -158,4 +181,4 @@ function writeToLog (message) {
   });
 }
 
-module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog };
+module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog, hiddenClick, hiddenSelectClick, hiddenSelectTextInput };
