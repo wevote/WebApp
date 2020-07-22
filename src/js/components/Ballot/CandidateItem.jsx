@@ -20,7 +20,11 @@ import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
+import {
+  abbreviateNumber,
+  numberWithCommas,
+  stripHtmlFromString,
+} from '../../utils/textFormat';
 
 // This is related to /js/components/VoterGuide/OrganizationVoterGuideCandidateItem.jsx
 class CandidateItem extends Component {
@@ -108,6 +112,7 @@ class CandidateItem extends Component {
       const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
       const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
       let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
+      ballotpediaCandidateSummaryText = stripHtmlFromString(ballotpediaCandidateSummaryText);
       ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
       const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
       const voterOpposesBallotItem = SupportStore.getVoterOpposesByBallotItemWeVoteId(candidateWeVoteId);
@@ -228,6 +233,7 @@ class CandidateItem extends Component {
       const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
       const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
       let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
+      ballotpediaCandidateSummaryText = stripHtmlFromString(ballotpediaCandidateSummaryText);
       ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
       const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
       const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
