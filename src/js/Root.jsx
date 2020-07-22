@@ -22,6 +22,7 @@ const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
 
 const routes = () => {  // eslint-disable-line arrow-body-style
   // console.log('window.innerWidth:', window.innerWidth);
+  console.log('Root.jsx rootes has been instantiated');
   return (
     <>
       <Route path="/">

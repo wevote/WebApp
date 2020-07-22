@@ -22,20 +22,31 @@ export default function startReactApp () {
   console.log('startReactApp first line in startReactApp');
   console.log('startReactApp isCordova(): ', isCordova());
 
-  const element = (
+  const element = isWebApp() ? (
     // eslint-disable-next-line react/jsx-filename-extension
     <Suspense fallback={<div>&nbsp;</div>}>
       <MuiThemeProvider theme={muiTheme}>
         <ThemeProvider theme={styledTheme}>
           <Router
-            history={isCordova() ? hashHistory : browserHistory}
+            history={browserHistory}
             render={applyRouterMiddleware(useScroll(() => true))}
           >
-            {isWebApp() ? routes() : routesSingleBundle()}
+            {routes()}
           </Router>
         </ThemeProvider>
       </MuiThemeProvider>
     </Suspense>
+  ) : (
+    <MuiThemeProvider theme={muiTheme}>
+      <ThemeProvider theme={styledTheme}>
+        <Router
+          history={hashHistory}
+          render={applyRouterMiddleware(useScroll(() => true))}
+        >
+          {routesSingleBundle()}
+        </Router>
+      </ThemeProvider>
+    </MuiThemeProvider>
   );
 
   // console.log('startReactApp before render');
