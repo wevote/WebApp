@@ -113,7 +113,6 @@ class CandidateItem extends Component {
       const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
       let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
       ballotpediaCandidateSummaryText = stripHtmlFromString(ballotpediaCandidateSummaryText);
-      ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
       const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
       const voterOpposesBallotItem = SupportStore.getVoterOpposesByBallotItemWeVoteId(candidateWeVoteId);
       const voterSupportsBallotItem = SupportStore.getVoterSupportsByBallotItemWeVoteId(candidateWeVoteId);
@@ -234,7 +233,6 @@ class CandidateItem extends Component {
       const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
       let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
       ballotpediaCandidateSummaryText = stripHtmlFromString(ballotpediaCandidateSummaryText);
-      ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
       const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
       const allCachedPositionsForThisCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(candidateWeVoteId);
       const allCachedPositionsForThisCandidateLength = allCachedPositionsForThisCandidate.length || 0;
