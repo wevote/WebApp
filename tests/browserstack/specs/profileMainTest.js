@@ -4,7 +4,7 @@ const { clearTextInputValue, scrollIntoViewSimple, scrollIntoViewSelect, simpleC
 const PAUSE_DURATION_MICROSECONDS = 1250;
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_';
-const { twitterUserName, twitterPassword } = driver.config;
+const { voterDeviceId /*, twitterUserName, twitterPassword */ } = driver.config;
 const { isAndroid, isCordovaFromAppStore, isIOS } = driver.config.capabilities;
 const sqlTest = "' or 1=1 -- -";
 const xssTest = '>script>alert("1")>/script>';
@@ -76,43 +76,49 @@ describe('Cross browser automated testing',  () => {
     await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
   });
 
-  it('should sign in with twitter', async () =>  {
-    if (twitterUserName && twitterPassword) {
-      await simpleClick('signInHeaderBar'); // Clicks on Sign in
-      if (isCordovaFromAppStore && isIOS) {
-        // Bug
-        const twitterSignIn = await $('#twitterSignIn-splitIconButton');
-        const twitterX = await twitterSignIn.getLocation('x');
-        const twitterY = await twitterSignIn.getLocation('y');
-        await browser.touchAction({ action: 'tap', x: twitterX, y: twitterY });
-      } else {
-        await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
-      }
-      if (isCordovaFromAppStore && isAndroid) {
-        await driver.switchContext('NATIVE_APP');
-        const username_or_email = await $('//android.widget.EditText[@resource-id="username_or_email"]');
-        await username_or_email.setValue(twitterUserName);
-        const password = await $('//android.widget.EditText[@resource-id="password"]');
-        await password.setValue(twitterPassword);
-        const allow = await $('//android.widget.Button[@resource-id="allow"]');
-        await allow.click();
-        const challenge_response = await $('//android.widget.EditText[@resource-id="challenge_response"]');
-        await challenge_response.setValue('4696256077');
-        const email_challenge_submit = await $('//android.widget.Button[@resource-id="email_challenge_submit"]');
-        await email_challenge_submit.click();
-        await driver.switchContext('WEBVIEW_org.wevote.cordova');
-      } else {
-        await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
-        await simpleTextInput('password', twitterPassword); // Enter Password
-        await simpleClick('allow'); // Clicks on Authorize App
-      }
+  it('should set the cookie', async () =>  {
+    await browser.url('.wevote.us');
+    await browser.setCookies({ name: 'voter_device_id', value: voterDeviceId, domain: '.wevote.us' });
+    await browser.refresh();
+  });
+
+//  it('should sign in with twitter', async () =>  {
+//    if (twitterUserName && twitterPassword) {
+//      await simpleClick('signInHeaderBar'); // Clicks on Sign in
+//      if (isCordovaFromAppStore && isIOS) {
+//        // Bug
+//        const twitterSignIn = await $('#twitterSignIn-splitIconButton');
+//        const twitterX = await twitterSignIn.getLocation('x');
+//        const twitterY = await twitterSignIn.getLocation('y');
+//        await browser.touchAction({ action: 'tap', x: twitterX, y: twitterY });
+//      } else {
+//        await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
+//      }
+//      if (isCordovaFromAppStore && isAndroid) {
+//        await driver.switchContext('NATIVE_APP');
+//        const username_or_email = await $('//android.widget.EditText[@resource-id="username_or_email"]');
+//        await username_or_email.setValue(twitterUserName);
+//        const password = await $('//android.widget.EditText[@resource-id="password"]');
+//        await password.setValue(twitterPassword);
+//        const allow = await $('//android.widget.Button[@resource-id="allow"]');
+//        await allow.click();
+//        const challenge_response = await $('//android.widget.EditText[@resource-id="challenge_response"]');
+//        await challenge_response.setValue('4696256077');
+//        const email_challenge_submit = await $('//android.widget.Button[@resource-id="email_challenge_submit"]');
+//        await email_challenge_submit.click();
+//        await driver.switchContext('WEBVIEW_org.wevote.cordova');
+//      } else {
+//        await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
+//        await simpleTextInput('password', twitterPassword); // Enter Password
+//        await simpleClick('allow'); // Clicks on Authorize App
+//      }
 //      await selectTextInput('input[name="session[username_or_email]"]', twitterUserName);
 //      await selectTextInput('input[name="session[password]"]', twitterPassword);
 //      await selectClick('[data-testid="LoginForm_Login_Button"]');
 //      await simpleTextInput('challenge_response', ''); // Clicks on 'Confirmation Code'
 //      await simpleClick('allow'); // Clicks on Authorize App
-    }
-  });
+//    }
+//  });
 
   it('should test settings page', async () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS * 10);
