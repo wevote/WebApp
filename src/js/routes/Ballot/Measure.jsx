@@ -280,8 +280,8 @@ class Measure extends Component {
               <MeasureShareWrapper>
                 <ShareButtonDesktopTablet measureShare />
               </MeasureShareWrapper>
-              {measure.ballotpedia_measure_url && (
-                <ViewOnBallotpedia externalLinkUrl={measure.ballotpedia_measure_url} />
+              {measure.measure_url && (
+                <ViewOnBallotpedia externalLinkUrl={measure.measure_url} />
               )}
               {measureName && (
                 <SearchOnGoogle googleQuery={`${measureName}`} />
