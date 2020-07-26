@@ -13,6 +13,7 @@ exports.config = {
   ],
   twitterUserName: browserStackConfig.TWITTER_USER_NAME,
   twitterPassword: browserStackConfig.TWITTER_PASSWORD,
+  voterDeviceId: '%cookie',
   exclude: [],
   capabilities: [
     {

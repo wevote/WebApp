@@ -182,6 +182,7 @@ class Register extends Component {
                 onClick={() => {
                   this.setState({ majorStep: 'B', minorStep: '4' });
                 }}
+                id="didVoteInLastYearButton"
                 variant="outlined"
                 color="primary"
                 // eslint-disable-next-line no-nested-ternary
@@ -194,6 +195,7 @@ class Register extends Component {
                 onClick={() => {
                   this.setState({ majorStep: 'A', minorStep: '3', votedInLastYear: 'no' });
                 }}
+                id="didNotVoteInLastYearButton"
                 variant="outlined"
                 color="primary"
                 // eslint-disable-next-line no-nested-ternary
@@ -204,6 +206,7 @@ class Register extends Component {
             No
           </Button>
           <Button
+                id="notRegisteredButton"
                 onClick={() => {
                   this.setState({ majorStep: 'C', minorStep: '6b' });
                 }}

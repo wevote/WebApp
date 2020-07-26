@@ -140,6 +140,16 @@ async function hiddenSelectClick (selector) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
+async function hiddenClickNth (selector, index) {
+  await browser.executeAsync((s, i, done) => { document.querySelectorAll(s)[i].click(); done(); }, selector, index);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+async function hiddenTextInput (id, input) {
+  await browser.executeAsync((i, v, done) => { document.getElementById(i).value = v; done(); }, id, input);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
 async function hiddenSelectTextInput (selector, input) {
   await browser.executeAsync((s, i, done) => { document.querySelector(s).value = i; done(); }, selector, input);
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -181,4 +191,4 @@ function writeToLog (message) {
   });
 }
 
-module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog, hiddenClick, hiddenSelectClick, hiddenSelectTextInput };
+module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog, hiddenClick, hiddenSelectClick, hiddenSelectTextInput, hiddenTextInput, hiddenClickNth };

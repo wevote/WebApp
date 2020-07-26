@@ -129,6 +129,7 @@ class FindOpinionsForm extends Component {
             searchTextLarge={searchTextLarge}
           >
             <InputBase
+              id="findCandidatesAndOpinionsSearch"
               classes={{ input: inputBaseInputClasses, root: inputBaseRootClasses }}
               inputRef={(input) => { this.searchInput = input; }}
               onBlur={blurTextFieldAndroid}

@@ -92,7 +92,6 @@ describe('Cross browser automated testing', () => {
         await selectClick('#valuesIntroModalValueList [id^=issueFollowButton]'); // select an interest
         await scrollIntoViewSimple('valuesIntroModalNext'); // Scrolls to Next button
         await simpleClick('valuesIntroModalNext'); // Close the Interests modal
-        await simpleClick('completeYourProfileDesktopButton'); // Clicks on Learn More
       } else {
         await simpleClick('completeYourProfileMobileButton'); // clicks on How it works
         await simpleClick('annotatedSlideShowStep1Next');
@@ -109,16 +108,7 @@ describe('Cross browser automated testing', () => {
         await simpleClick('completeYourProfileMobileButton'); // Clicks on Confirm Address
         await simpleClick('addressBoxModalSaveButton'); // clicks on save button
         await simpleClick('profileCloseSelectBallotModal'); // Clicks on close
-        await simpleClick('completeYourProfileMobileButton'); // Clicks on Learn More
       }
-      for (let step = 0; step < personalizedScoreSteps; step++) {
-        // eslint-disable-next-line no-await-in-loop
-        await simpleClick('personalizedScoreIntroModalNextButton'); // Personalized Score Modal - 7 steps */
-      }
-      await simpleClick('popoverCloseButton'); // Close the popover before clicking on Next
-      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
-      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
-      await simpleClick('personalizedScoreIntroModalNextButton'); // Clicks on Next
     }
   });
 

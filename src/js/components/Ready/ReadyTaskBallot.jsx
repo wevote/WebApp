@@ -580,6 +580,7 @@ class ReadyTaskBallot extends React.Component {
           {/* ************* */}
           {(measureShowButton && measureButtonNeeded) && (
             <StyledButton
+              id="decideOnMeasuresButton"
               className="u-cursor--pointer"
               color="primary"
               completed={measureAllCompleted ? 'true' : undefined}

@@ -98,6 +98,7 @@ class ReadyTaskRegister extends React.Component {
             {completed ? 'You have verified with your state that you are registered to vote.' : 'If you\'re voter registration isn\'t current, you won\'t be able to cast your ballot.'}
           </SubTitle>
           <StyledButton
+            id="verifyRegisteredInStateButton"
             className="u-cursor--pointer"
             color="primary"
             completed={completed || undefined}

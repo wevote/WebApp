@@ -344,6 +344,7 @@ export function stripHtmlFromString (rawString) {
   }
   let strippedString = rawString.replace(/&nbsp;/gi, ' ');
   strippedString = strippedString.replace(/<br>/gi, ' ');
+  strippedString = strippedString.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
   return strippedString;
 }
 
