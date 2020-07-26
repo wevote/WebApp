@@ -14,6 +14,7 @@ import VoterGuideEndorsements from './VoterGuideEndorsements';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { abbreviateNumber, arrayContains } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
 // import VoterGuideBallot from './VoterGuideBallot';  // We can delete after 2020-08-31
 
 export default class OrganizationVoterGuideTabs extends Component {
@@ -231,6 +232,7 @@ export default class OrganizationVoterGuideTabs extends Component {
   }
 
   render () {
+    renderLog('OrganizationVoterGuideTabs');  // Set LOG_RENDER_EVENTS to log all renders
     document.body.scrollTop = this.state.scrollDownValue;
     const {
       activeRoute, allOrganizationPositionsLength, organizationWeVoteId,

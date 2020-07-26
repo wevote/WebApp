@@ -158,7 +158,11 @@ class EditAddressOneHorizontalRow extends Component {
   render () {
     renderLog('EditAddressOneHorizontalRow');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { textForMapSearch } = this.state;
+    const { textForMapSearch, voterSavedAddress } = this.state;
+
+    if (voterSavedAddress) {
+      return <span />;
+    }
 
     return (
       <OuterWrapper>

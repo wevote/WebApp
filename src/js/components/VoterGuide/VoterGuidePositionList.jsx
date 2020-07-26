@@ -90,6 +90,9 @@ class VoterGuidePositionList extends Component {
     // eslint-disable-next-line arrow-body-style
     incomingPositionList = incomingPositionList.map((position) => {
       // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
+      if (!position) {
+        return null;
+      }
       if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && arrayContains(position.position_year, candidateAlreadySeenThisYear[position.ballot_item_we_vote_id])) {
         // console.log('componentDidMount already seen');
         return null;
@@ -101,7 +104,7 @@ class VoterGuidePositionList extends Component {
       }
       return ({
         ...position,
-        followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+        followed: organizationsVoterIsFollowing.filter(org => (position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
       });
     });
 
@@ -113,7 +116,7 @@ class VoterGuidePositionList extends Component {
       // console.log('VoterGuidePositionList onFriendStoreChange, position: ', position);
       return ({
         ...position,
-        currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
+        currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => (position && organizationWeVoteId === position.speaker_we_vote_id)).length > 0,
       });
     });
 
@@ -144,6 +147,9 @@ class VoterGuidePositionList extends Component {
     // eslint-disable-next-line arrow-body-style
     incomingPositionList = incomingPositionList.map((position) => {
       // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
+      if (!position) {
+        return null;
+      }
       if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && arrayContains(position.position_year, candidateAlreadySeenThisYear[position.ballot_item_we_vote_id])) {
         // console.log('componentWillReceiveProps already seen');
         return null;
@@ -155,7 +161,7 @@ class VoterGuidePositionList extends Component {
       }
       return ({
         ...position,
-        followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+        followed: organizationsVoterIsFollowing.filter(org => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
       });
     });
 
@@ -231,7 +237,7 @@ class VoterGuidePositionList extends Component {
     let atLeastOneFriendAdded = false;
     const positionListWithFriendData = positionList.map((position) => {
       // console.log('VoterGuidePositionList onFriendStoreChange, position: ', position);
-      currentFriend = organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0;
+      currentFriend = organizationsVoterIsFriendsWith.filter(organizationWeVoteId => (position && organizationWeVoteId === position.speaker_we_vote_id)).length > 0;
       if (currentFriend) {
         atLeastOneFriendAdded = true;
       }
@@ -257,7 +263,7 @@ class VoterGuidePositionList extends Component {
       // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
-        followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+        followed: organizationsVoterIsFollowing.filter(org => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
       });
     });
     // eslint-disable-next-line arrow-body-style
@@ -265,7 +271,7 @@ class VoterGuidePositionList extends Component {
       // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
-        followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+        followed: organizationsVoterIsFollowing.filter(org => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
       });
     });
     this.setState({

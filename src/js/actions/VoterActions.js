@@ -288,11 +288,11 @@ export default {
       });
   },
 
-  voterUpdateNotificationSettingsFlags (flagIntegerToSet, flag_integer_to_unset = '') {
+  voterUpdateNotificationSettingsFlags (flagIntegerToSet, flagIntegerToUnset = '') {
     Dispatcher.loadEndpoint('voterUpdate',
       {
         notification_flag_integer_to_set: flagIntegerToSet,
-        notification_flag_integer_to_unset: flag_integer_to_unset,
+        notification_flag_integer_to_unset: flagIntegerToUnset,
       });
   },
 

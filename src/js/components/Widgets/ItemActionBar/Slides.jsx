@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { renderLog } from '../../../utils/logging';
 
 class Slides extends Component {
   static propTypes = {
@@ -29,6 +30,7 @@ class Slides extends Component {
   }
 
   render () {
+    renderLog('Slides');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, voterIsSignedIn } = this.props;
     const { currentIndex } = this.state;
     const numberOfButtons = currentIndex > 0 && currentIndex < this.props.slides.length ? 2 : 1;

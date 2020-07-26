@@ -12,6 +12,7 @@ import { getPositionSummaryListForBallotItem } from '../../utils/positionFunctio
 import PositionSummaryListForPopover from '../Widgets/PositionSummaryListForPopover';
 import ReadMore from '../Widgets/ReadMore';
 import StickyPopover from '../Ballot/StickyPopover';
+import { renderLog } from '../../utils/logging';
 
 class ValueIconAndText extends Component {
   static propTypes = {
@@ -169,6 +170,7 @@ class ValueIconAndText extends Component {
   }
 
   render () {
+    renderLog('ValueIconAndText');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('ValueIconAndText render');
     const { ballotItemWeVoteId, classes, externalUniqueId, issueFollowedByVoter, oneIssue } = this.props;
     const svgFill = issueFollowedByVoter ? '#555' : '#999';

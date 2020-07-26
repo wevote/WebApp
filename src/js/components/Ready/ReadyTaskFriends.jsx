@@ -27,18 +27,18 @@ class ReadyTaskFriends extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      numberOfFriendsReady: 0,
-      numberOfFriendsRegistered: 0,
-      numberOfFriendsWithBallot: 0,
-      numberOfFriendsWithPlan: 0,
-      numberOfFriendsYouWillRemind: 0,
-      numberOfYourPositionsThisElection: 0,
-      // numberOfFriendsReady: 5,
-      // numberOfFriendsRegistered: 4,
-      // numberOfFriendsWithBallot: 7,
-      // numberOfFriendsWithPlan: 12,
-      // numberOfFriendsYouWillRemind: 6,
-      // numberOfYourPositionsThisElection: 9,
+      // numberOfFriendsReady: 0,
+      // numberOfFriendsRegistered: 0,
+      // numberOfFriendsWithBallot: 0,
+      // numberOfFriendsWithPlan: 0,
+      // numberOfFriendsYouWillRemind: 0,
+      // numberOfYourPositionsThisElection: 0,
+      numberOfFriendsReady: 5,
+      numberOfFriendsRegistered: 4,
+      numberOfFriendsWithBallot: 7,
+      numberOfFriendsWithPlan: 12,
+      numberOfFriendsYouWillRemind: 6,
+      numberOfYourPositionsThisElection: 9,
     };
   }
 

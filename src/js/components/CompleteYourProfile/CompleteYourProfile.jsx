@@ -10,6 +10,7 @@ import VoterStore from '../../stores/VoterStore';
 import VoterConstants from '../../constants/VoterConstants';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import cookies from '../../utils/cookies';
+import { renderLog } from '../../utils/logging';
 // import BallotIcon from '@material-ui/icons/Ballot';
 // import ThumbUp from '@material-ui/icons/ThumbUp';
 
@@ -329,6 +330,7 @@ class CompleteYourProfile extends Component {
   }
 
   render () {
+    renderLog('CompleteYourProfile');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('CompleteYourProfile render');
     const {
       activeStep, addressIntroCompleted, ballotLength, ballotRemainingChoicesLength,
