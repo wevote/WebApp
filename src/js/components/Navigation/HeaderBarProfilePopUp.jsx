@@ -120,7 +120,7 @@ class HeaderBarProfilePopUp extends Component {
             {/* Desktop or Mobile */}
             <li>
               <ListItemWrapper>
-                <Link id="profilePopUpYourValues" onClick={this.hideProfilePopUp} to="/values">
+                <Link id="profilePopUpYourValues" onClick={this.hideProfilePopUp} to="/values/list">
                   <Button
                     variant="text"
                     color="primary"

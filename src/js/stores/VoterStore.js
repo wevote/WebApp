@@ -720,6 +720,14 @@ class VoterStore extends ReduceStore {
       case 'voterUpdate':
         // console.log('VoterStore  voterUpdate ');
         if (action.res.success) {
+          let interfaceStatusFlags = action.res.interface_status_flags;
+          if (interfaceStatusFlags === undefined) {
+            interfaceStatusFlags = state.voter.interface_status_flags;
+          }
+          let notificationSettingsFlags = action.res.notification_settings_flags;
+          if (notificationSettingsFlags === undefined) {
+            notificationSettingsFlags = state.voter.notification_settings_flags;
+          }
           return {
             ...state,
             voter: {
@@ -728,8 +736,8 @@ class VoterStore extends ReduceStore {
               first_name: action.res.first_name,
               last_name: action.res.last_name,
               facebook_email: action.res.email || state.voter.email,
-              interface_status_flags: action.res.interface_status_flags || state.voter.interface_status_flags,
-              notification_settings_flags: action.res.notification_settings_flags || state.voter.notification_settings_flags,
+              interface_status_flags: interfaceStatusFlags,
+              notification_settings_flags: notificationSettingsFlags,
               voter_donation_history_list: action.res.voter_donation_history_list || state.voter.voter_donation_history_list,
             },
           };

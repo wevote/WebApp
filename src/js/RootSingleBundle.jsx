@@ -32,7 +32,7 @@ import Intro from './routes/Intro/Intro';
 import IntroNetwork from './routes/Intro/IntroNetwork';
 import Location from './routes/Settings/Location';
 import Measure from './routes/Ballot/Measure';
-import News from './routes/News';
+import News from './routes/Activity/News';
 import Office from './routes/Ballot/Office';
 import Opinions from './routes/Opinions';
 import OpinionsFollowed from './routes/OpinionsFollowed';
@@ -111,6 +111,7 @@ const routesSingleBundle = () => {  // eslint-disable-line arrow-body-style
       <Route path="/news" component={News} />
       {/* <Route path="/getready" component={GetReady} /> */}
       <Route path="/ready" component={Ready} />
+      <Route path="/ready/election/:google_civic_election_id" component={Ready} />
       <Route path="/register" component={Register} />
       <Route path="/ballot" component={BallotIndex}>
         <IndexRoute component={Ballot} />

@@ -71,9 +71,7 @@ export function getApplicationViewBooleans (pathname) {
     contentFullWidthMode = true;
     settingsMode = true;
   } else if (pathnameLowerCase.startsWith('/value') || // '/values'
-    pathnameLowerCase === '/opinions' ||
-    pathnameLowerCase === '/opinions_followed' ||
-    pathnameLowerCase === '/opinions_ignored') {
+    pathnameLowerCase.startsWith('/opinions')) {
     contentFullWidthMode = true;
     valuesMode = true;
   } else if (pathnameLowerCase.startsWith('/candidate-for-extension') ||
@@ -136,7 +134,7 @@ export function getApplicationViewBooleans (pathname) {
     showBackToSettingsMobile = true;
   } else if (pathnameLowerCase.startsWith('/value/') ||
     pathnameLowerCase === '/values/list' ||
-    pathnameLowerCase === '/opinions' ||
+    // pathnameLowerCase === '/opinions' ||
     pathnameLowerCase === '/opinions_followed' ||
     pathnameLowerCase === '/opinions_ignored') {
     showBackToValues = true;

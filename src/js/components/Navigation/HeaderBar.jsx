@@ -302,7 +302,7 @@ class HeaderBar extends Component {
     if (voterIsSignedIn) {
       if (pathname && pathname.toLowerCase().startsWith('/ready')) return 0;
       if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 1;
-      if (stringContains('/value', pathname.toLowerCase())) return 2; // '/values'
+      if (stringContains('/value', pathname.toLowerCase()) || stringContains('/opinions', pathname.toLowerCase())) return 2; // '/values'
       if (stringContains('/friends', pathname.toLowerCase())) return 3;
       // OFF FOR NOW
       // if (stringContains('/friends', pathname.toLowerCase())) return 2;
@@ -310,7 +310,7 @@ class HeaderBar extends Component {
     } else {
       if (pathname && pathname.toLowerCase().startsWith('/ready')) return 0;
       if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 1;
-      if (stringContains('/value', pathname.toLowerCase())) return 2; // '/values'
+      if (stringContains('/value', pathname.toLowerCase()) || stringContains('/opinions', pathname.toLowerCase())) return 2; // '/values'
       if (stringContains('/friends', pathname.toLowerCase())) return 3;
     }
 
