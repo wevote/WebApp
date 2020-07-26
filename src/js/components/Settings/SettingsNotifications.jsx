@@ -210,6 +210,7 @@ class SettingsNotifications extends Component {
                       </TableCell>
                       <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                         <input
+                          aria-label="show friend requests in app"
                           checked
                           disabled
                           type="checkbox"
@@ -217,11 +218,13 @@ class SettingsNotifications extends Component {
                       </TableCell>
                       <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                         <input
+                          aria-label="email friend requests"
                           checked
                           disabled
                           type="checkbox"
                         />
                         {/* <input */}
+                        {/*  aria-label="text friend requests" */}
                         {/*  id="friendRequestsEmail" */}
                         {/*  type="checkbox" */}
                         {/*  name="friendRequestsEmail" */}
@@ -256,6 +259,7 @@ class SettingsNotifications extends Component {
                     {/*  </TableCell> */}
                     {/*  <TableCell align="center" classes={{ root: classes.tableCellColumn }}> */}
                     {/*    <input */}
+                    {/*      aria-label="show suggested friends in app" */}
                     {/*      checked */}
                     {/*      disabled */}
                     {/*      type="checkbox" */}
@@ -263,6 +267,7 @@ class SettingsNotifications extends Component {
                     {/*  </TableCell> */}
                     {/*  <TableCell align="center" classes={{ root: classes.tableCellColumn }}> */}
                     {/*    <input */}
+                    {/*      aria-label="email suggested friends notices" */}
                     {/*      id="suggestedFriendsEmail" */}
                     {/*      type="checkbox" */}
                     {/*      name="suggestedFriendsEmail" */}
@@ -272,6 +277,7 @@ class SettingsNotifications extends Component {
                     {/*  </TableCell> */}
                     {/*  /!* <TableCell align="center" classes={{ root: classes.tableCellColumn }}> *!/ */}
                     {/*  /!*  <input *!/ */}
+                    {/*  /!*    aria-label="text suggested friends notices" *!/ */}
                     {/*  /!*    id="suggestedFriendsSms" *!/ */}
                     {/*  /!*    type="checkbox" *!/ */}
                     {/*  /!*    name="suggestedFriendsSms" *!/ */}
@@ -302,6 +308,7 @@ class SettingsNotifications extends Component {
                         </TableCell>
                         <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                           <input
+                            aria-label="show friends opinions from your ballot in app"
                             checked
                             disabled
                             type="checkbox"
@@ -309,6 +316,7 @@ class SettingsNotifications extends Component {
                         </TableCell>
                         <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                           <input
+                            aria-label="email friends opinions from your ballot"
                             id="friendOpinionsYourBallotEmail"
                             type="checkbox"
                             name="friendOpinionsYourBallotEmail"
@@ -318,6 +326,7 @@ class SettingsNotifications extends Component {
                         </TableCell>
                         {/* <TableCell align="center" classes={{ root: classes.tableCellColumn }}> */}
                         {/*  <input */}
+                        {/*    aria-label="text friends opinions from your ballot" */}
                         {/*    id="friendOpinionsYourBallotSms" */}
                         {/*    type="checkbox" */}
                         {/*    name="friendOpinionsYourBallotSms" */}
@@ -348,6 +357,7 @@ class SettingsNotifications extends Component {
                       </TableCell>
                       <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                         <input
+                          aria-label="show friends opinions from all regions in app"
                           id="friendOpinionsOtherRegions"
                           type="checkbox"
                           name="friendOpinionsOtherRegions"
@@ -357,6 +367,7 @@ class SettingsNotifications extends Component {
                       </TableCell>
                       <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                         <input
+                          aria-label="email friends opinions from all regions"
                           id="friendOpinionsOtherRegionsEmail"
                           type="checkbox"
                           name="friendOpinionsOtherRegionsEmail"
@@ -366,6 +377,7 @@ class SettingsNotifications extends Component {
                       </TableCell>
                       {/* <TableCell align="center" classes={{ root: classes.tableCellColumn }}> */}
                       {/*  <input */}
+                      {/*    aria-label="text friends opinions from all regions" */}
                       {/*    id="friendOpinionsOtherRegionsSms" */}
                       {/*    type="checkbox" */}
                       {/*    name="friendOpinionsOtherRegionsSms" */}
@@ -391,12 +403,14 @@ class SettingsNotifications extends Component {
                       </TableCell>
                       <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                         <input
+                          aria-label="newsletter not available in app"
                           disabled
                           type="checkbox"
                         />
                       </TableCell>
                       <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                         <input
+                          aria-label="email we vote newsletter"
                           id="newsletterOptIn"
                           type="checkbox"
                           name="newsletterOptIn"
@@ -406,6 +420,7 @@ class SettingsNotifications extends Component {
                       </TableCell>
                       {/* <TableCell align="center" classes={{ root: classes.tableCellColumn }}> */}
                       {/*  <input */}
+                      {/*    aria-label="newsletter not available by sms" */}
                       {/*    disabled */}
                       {/*    type="checkbox" */}
                       {/*  /> */}
