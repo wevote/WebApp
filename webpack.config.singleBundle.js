@@ -1,8 +1,11 @@
-const path = require('path');
+// Steve 6/25/20: Forked from webpack.config.js at 0a58c2f "Dale John McGrew 6/19/20, 6:57 AM Removing external Polling Location widget from our stack. Instead, link people to external web page hosted by Democracy Works."
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UnusedWebpackPlugin = require('unused-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const path = require('path');
+const { InjectManifest } = require('workbox-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');   // Don't delete this!
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
@@ -12,7 +15,7 @@ const port = process.env.PORT || 3000;
 const isProduction = true;   // Developers can set this to be false, but in git it should always be true
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: ['./src/js/index.js', './src/sass/loading-screen.scss', './src/sass/main.scss'],
   output: {
     filename: 'bundle.js',
@@ -35,6 +38,10 @@ module.exports = {
     ]),
     // Strip from bundle.js, all moment.js locales except “en”
     new MomentLocalesPlugin(),
+    new InjectManifest({
+      swSrc: './src/serviceWorker.js',
+      swDest: 'sw.js',
+    }),
     ...(isProduction ? [] : [
       new UnusedWebpackPlugin({  // Set isProduction to false to list (likely) unused files
       // Source directories and files, to exclude from unused file checking

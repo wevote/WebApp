@@ -47,7 +47,9 @@ export function calculateBallotBaseUrl (incomingBallotBaseUrl, incomingPathname)
   const incomingPathnameExists = incomingPathname && incomingPathname !== '';
   const ballotBaseUrlEmpty = !incomingBallotBaseUrl || incomingBallotBaseUrl === '';
   let ballotBaseUrl = '';
-  if (incomingPathnameExists && ballotBaseUrlEmpty) {
+  if (incomingBallotBaseUrl === '/ready') {
+    ballotBaseUrl = '/ready';
+  } else if (incomingPathnameExists && ballotBaseUrlEmpty) {
     // console.log("incomingPathname:", incomingPathname);
     // Strip off everything after these path strings "/ballot" "/positions" "/followers" "/followed"
     const temp1 = incomingPathname.toLowerCase().split('/ballot')[0];

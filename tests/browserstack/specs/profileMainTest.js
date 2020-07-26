@@ -1,23 +1,32 @@
-const { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleTextInput, selectTextInput } = require('../utils');
-
 const assert = require('assert');
+const { clearTextInputValue, scrollIntoViewSimple, scrollIntoViewSelect, simpleClick, selectClick, simpleTextInput, hiddenClick } = require('../utils');
 
 const PAUSE_DURATION_MICROSECONDS = 1250;
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
-const IOS_CONTEXT = 'WEBVIEW_1';
+const IOS_CONTEXT = 'WEBVIEW_';
+const { twitterUserName, twitterPassword } = driver.config;
+const { isAndroid, isCordovaFromAppStore, isIOS } = driver.config.capabilities;
+const sqlTest = "' or 1=1 -- -";
+const xssTest = '>script>alert("1")>/script>';
+const xssTest2 = "@>script>alert('1')>/script>";
+const xssTest3 = '">meta name=\'>script>alert(1)>/script>\'>"';
 
-describe('Basic cross-platform We Vote test',  () => {
-  it('should load the app so we can run various tests', async () => {
-    const { twitterUserName, twitterPassword } = driver.config;
-    const { device, browserName, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
-    const WEB_APP_ROOT_URL = driver.config.webAppRootUrl;
+describe('Cross browser automated testing',  () => {
+  before(async () => {
     if (isCordovaFromAppStore) {
       // switch contexts and click through intro
       const contexts = await driver.getContexts();
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      const context = contexts.includes(ANDROID_CONTEXT) ? ANDROID_CONTEXT : IOS_CONTEXT;
-      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await driver.switchContext(context);
+      let webview = false;
+      // eslint-disable-next-line
+      for (const context of contexts) {
+        if ((isAndroid && context.includes(ANDROID_CONTEXT)) || (isIOS && context.includes(IOS_CONTEXT))) {
+          // eslint-disable-next-line no-await-in-loop
+          await driver.switchContext(context);
+          webview = true;
+          break;
+        }
+      }
+      assert(webview);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await selectClick('div[data-index="0"] .intro-story__btn--bottom'); // Click first next button
       await selectClick('div[data-index="1"] .intro-story__btn--bottom'); // Click second next button
@@ -27,42 +36,98 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.url('ready');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
     }
-    // //////////////////////
-    // Sign in using Twitter, when in browser
-    if (!isCordovaFromAppStore && twitterUserName && twitterPassword) {
+  });
+
+  it('should sign in with email', async () =>  {
+    await simpleClick('signInHeaderBar'); // Clicks on Sign in
+    if (isCordovaFromAppStore) {
+      await simpleClick('emailSignIn-splitIconButton');
+    }
+    await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com'); // Type input
+    await hiddenClick('voterEmailAddressEntrySendCode'); // Click Send Verification Code
+    await simpleTextInput('digit1', '0');
+    await simpleTextInput('digit2', '1');
+    await simpleTextInput('digit3', '2');
+    await simpleTextInput('digit4', '3');
+    await simpleTextInput('digit5', '4');
+    await simpleTextInput('digit6', '5');
+    await simpleClick('emailVerifyButton'); // Click Verify
+    await simpleClick('emailVerificationBackButton'); // Click back
+    await simpleTextInput('enterVoterEmailAddress', 'A'.repeat(200)); // Type input
+    await hiddenClick('cancelEmailButton'); // Clicks the cancel button
+  });
+
+  it('should sign in with phone', async () => {
+    await simpleClick('signInHeaderBar'); // Clicks on Sign in
+    if (isCordovaFromAppStore) {
+      await simpleClick('smsSignIn-splitIconButton');
+    }
+    await simpleTextInput('enterVoterPhone', '18004444444'); // Inputs voter phone number
+    await simpleClick('voterPhoneSendSMS'); // Clicks "Send Verification Code"
+    await simpleTextInput("digit1", "0");
+    await simpleTextInput("digit2", "1");
+    await simpleTextInput("digit3", "2");
+    await simpleTextInput("digit4", "3");
+    await simpleTextInput("digit5", "4");
+    await simpleTextInput("digit6", "5");
+    await simpleClick('emailVerifyButton'); // Click Verify
+    await simpleClick('emailVerificationBackButton'); // Click back
+    await simpleTextInput('enterVoterPhone', 'A'.repeat(200)); // Type input
+    await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
+  });
+
+  it('should sign in with twitter', async () =>  {
+    if (twitterUserName && twitterPassword) {
       await simpleClick('signInHeaderBar'); // Clicks on Sign in
-      await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
-      await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
-      await simpleTextInput('password', twitterPassword); // Enter Password
-      await simpleClick('allow'); // Clicks on Authorize App
-//      const unusualLoginUsernameInput = await $('input[name="session[username_or_email]"]');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await unusualLoginUsernameInput.setValue(twitterUserName);
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      const unusualLoginPasswordInput = await $('input[name="session[password]"]');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await unusualLoginPasswordInput.setValue(twitterPassword);
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      const unusualLoginSubmit = await $('[data-testid="LoginForm_Login_Button"]');
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
-//      await unusualLoginSubmit.click();
-//      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      if (isCordovaFromAppStore && isIOS) {
+        // Bug
+        const twitterSignIn = await $('#twitterSignIn-splitIconButton');
+        const twitterX = await twitterSignIn.getLocation('x');
+        const twitterY = await twitterSignIn.getLocation('y');
+        await browser.touchAction({ action: 'tap', x: twitterX, y: twitterY });
+      } else {
+        await simpleClick('twitterSignIn-splitIconButton'); // Clicks on Twitter Sign in Button
+      }
+      if (isCordovaFromAppStore && isAndroid) {
+        await driver.switchContext('NATIVE_APP');
+        const username_or_email = await $('//android.widget.EditText[@resource-id="username_or_email"]');
+        await username_or_email.setValue(twitterUserName);
+        const password = await $('//android.widget.EditText[@resource-id="password"]');
+        await password.setValue(twitterPassword);
+        const allow = await $('//android.widget.Button[@resource-id="allow"]');
+        await allow.click();
+        const challenge_response = await $('//android.widget.EditText[@resource-id="challenge_response"]');
+        await challenge_response.setValue('4696256077');
+        const email_challenge_submit = await $('//android.widget.Button[@resource-id="email_challenge_submit"]');
+        await email_challenge_submit.click();
+        await driver.switchContext('WEBVIEW_org.wevote.cordova');
+      } else {
+        await simpleTextInput('username_or_email', twitterUserName); // Enter Username or Email id
+        await simpleTextInput('password', twitterPassword); // Enter Password
+        await simpleClick('allow'); // Clicks on Authorize App
+      }
+//      await selectTextInput('input[name="session[username_or_email]"]', twitterUserName);
+//      await selectTextInput('input[name="session[password]"]', twitterPassword);
+//      await selectClick('[data-testid="LoginForm_Login_Button"]');
 //      await simpleTextInput('challenge_response', ''); // Clicks on 'Confirmation Code'
 //      await simpleClick('allow'); // Clicks on Authorize App
-      await browser.pause(PAUSE_DURATION_MICROSECONDS * 9);
-      await simpleClick('profileAvatarHeaderBar'); // Clicks on Setting
     }
-    await selectClick('#profilePopUpYourSettings .header-slide-out-menu-text-left');
-    await simpleTextInput("first-name", "Hello how are you");
-    await simpleTextInput("last-name", "I am great thanks");
-    await simpleTextInput("organization-name", "I am really cool");
-    await simpleTextInput("organizationWebsiteTextArea", "aHahahaha ");
-    await simpleTextInput("organizationDescriptionTextArea", "Sup I'm gangsta");
+  });
+
+  it('should test settings page', async () => {
+    await browser.pause(PAUSE_DURATION_MICROSECONDS * 10);
+    await hiddenClick('profileAvatarHeaderBar'); // Clicks on Setting
+    await selectClick('#profilePopUpYourSettings > button');
+    await simpleTextInput("first-name", 'A'.repeat(200));
+    await simpleTextInput("last-name", xssTest);
+    await simpleTextInput("organization-name", sqlTest);
+    await simpleTextInput("organizationWebsiteTextArea", 'A'.repeat(200));
+    await simpleTextInput("organizationDescriptionTextArea", xssTest);
     await simpleClick("edit");
     await selectClick('#securityAndSignIn span');
     await simpleTextInput("enterVoterPhone", "9723591212");
     await simpleClick('voterPhoneSendSMS');
-    await simpleTextInput('enterVoterEmailAddress', 'test@gmail.com');
+    await simpleTextInput('enterVoterEmailAddress', 'automated_voter1@WeVote.info');
     await simpleClick('voterEmailAddressEntrySendCode');
     await simpleTextInput("digit1", "0");
     await simpleTextInput("digit2", "1");
@@ -79,13 +144,13 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('newsletterOptIn');
     await simpleClick('domain');
     await selectClick('=Site Text');
-    await simpleTextInput('addTitleHereInput', '>script>alert("1")>/script>');
-    await simpleTextInput("addIntroductionHereInput", "' or 1=1 -- -");
+    await simpleTextInput('addTitleHereInput', xssTest);
+    await simpleTextInput("addIntroductionHereInput", sqlTest);
     await simpleClick('siteTextSaveButton');
     await simpleClick('sharing');
 //    await simpleClick('hideWeVoteLogoSwitch'); // Switch is not clickable
     await scrollIntoViewSimple("settingsSharingInputBox");
-    await simpleTextInput("settingsSharingInputBox", "' or 1=1 -- -");
+    await simpleTextInput("settingsSharingInputBox", sqlTest);
     await simpleClick('cancelChosenSocialShareDescriptionButton');
 //    await simpleClick('chosenPreventSharingOpinions'); // Switch is not clickable
     await scrollIntoViewSimple("subscriptionPlan");
@@ -93,48 +158,44 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('changePlanButton');
     await simpleClick("profileClosePaidAccountUpgradeModal");
     await simpleClick('analytics');
-    await simpleTextInput("googleAnalyticsTrackerInput", ">script>alert('1')>/script>");
+    await simpleTextInput("googleAnalyticsTrackerInput", xssTest);
     await simpleClick('googleAnalyticsTrackerInputCancel');
-    await simpleTextInput("verifyWebmasterToolInput", ">meta name='>script>alert(1)>/script>'>");
+    await simpleTextInput("verifyWebmasterToolInput", xssTest3);
     await simpleClick('verifyWebmasterToolCancelButton');
-    await simpleTextInput("verifyWebmasterToolInput", ">meta name='>script>alert(1)>/script>'>");
+    await simpleTextInput("verifyWebmasterToolInput", xssTest3);
     await simpleClick('verifyWebmasterToolSaveButton');
     await simpleClick('toolsForYourWebsite');
+
     await simpleClick('codeCopierInteractiveBallotTool');
-    await selectClick('=Show Code');
-    await selectClick('=Hide Code');
-    await simpleTextInput("enterTwitterHandleInput", "@>script>alert('1')>/script>");
-    await scrollIntoViewSimple('codeCopierVoterRegistrationTool');
+    await selectClick('#codeCopierInteractiveBallotTool ~ div.u-stack--sm a:nth-child(1)');
+    await selectClick('#codeCopierInteractiveBallotTool ~ div.u-stack--sm a:nth-child(1)');
+
+    await simpleTextInput("enterTwitterHandleInput", xssTest2);
+    await clearTextInputValue("enterTwitterHandleInput", xssTest2);
+
+    await scrollIntoViewSelect('=Attributions');
     await simpleClick('codeCopierVoterRegistrationTool');
+    await selectClick('#codeCopierVoterRegistrationTool ~ div.u-stack--sm a:nth-child(1)');
+    await selectClick('#codeCopierVoterRegistrationTool ~ div.u-stack--sm a:nth-child(1)');
 
-    await selectClick('=Show Code');
-    await selectClick('=Hide Code');
-
+    await scrollIntoViewSelect('=Attributions');
     await simpleClick('codeCopierAbsenteeBallotTool');
-    await selectClick('=Show Code');
-    await selectClick('=Hide Code');
+    await selectClick('#codeCopierAbsenteeBallotTool ~ div.u-stack--sm a:nth-child(1)');
+    await selectClick('#codeCopierAbsenteeBallotTool ~ div.u-stack--sm a:nth-child(1)');
+
+    await scrollIntoViewSimple('codeCopierVoterRegistrationTool');
     await simpleClick('codeCopierCheckRegistrationStatusTool');
-    await selectClick('=Show Code');
-    await selectClick('=Hide Code');
+    await selectClick('#codeCopierCheckRegistrationStatusTool ~ div.u-stack--sm a:nth-child(1)');
+    await selectClick('#codeCopierCheckRegistrationStatusTool ~ div.u-stack--sm a:nth-child(1)');
+
+    await scrollIntoViewSimple('codeCopierVoterRegistrationTool');
     await simpleClick('codeCopierElectionReminderTool');
-    await selectClick('=Show Code');
-    await selectClick('=Hide Code');
+    await selectClick('#codeCopierElectionReminderTool ~ div.u-stack--sm a:nth-child(1)');
+    await selectClick('#codeCopierElectionReminderTool ~ div.u-stack--sm a:nth-child(1)');
+
     await scrollIntoViewSimple('selectVoterGuidesSideBarNewVoterGuide');
     await simpleClick('selectVoterGuidesSideBarNewVoterGuide');
-    await simpleClick('profileCloseVoterGuideChooseElectionModal'); 
-    await simpleClick('selectVotingGuidesSideBarLinkEdit');
-    await browser.back();
-    await simpleClick('selectVotingGuidesSideBarLinkPreview');
-    await browser.back();
+    await simpleClick('profileCloseVoterGuideChooseElectionModal');
     await scrollIntoViewSelect('=Click to view example');
-    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(2) #selectVotingGuidesSideBarLinkEdit > .MuiButton-label');
-    await browser.back();
-    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(2) #selectVotingGuidesSideBarLinkPreview > .MuiButton-label');
-    await browser.back();
-
-    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(3) #selectVotingGuidesSideBarLinkEdit > .MuiButton-label');
-    await browser.back();
-    await selectClick('.SelectVoterGuidesSideBar__Column-sc-12b71ji-2:nth-child(3) #selectVotingGuidesSideBarLinkPreview > .MuiButton-label');
-    await browser.back();
   });
 });

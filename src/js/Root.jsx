@@ -22,6 +22,7 @@ const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
 
 const routes = () => {  // eslint-disable-line arrow-body-style
   // console.log('window.innerWidth:', window.innerWidth);
+  console.log('Root.jsx rootes has been instantiated');
   return (
     <>
       <Route path="/">
@@ -42,6 +43,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/welcome" component={isNotWeVoteMarketingSite ? componentLoader('ReadyRedirect') : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
           <Route path="/news" component={componentLoader('News')} />
           <Route path="/ready" component={componentLoader('Ready')} />
+          <Route path="/ready/election/:google_civic_election_id" component={componentLoader('Ready')} />
           <Route path="/register" component={componentLoader('Register')} />
           <Route path="/ballot" component={componentLoader('Ballot')} />
           <Route path="/ballot?voter_refresh_timer_on=:voter_refresh_timer_on" component={componentLoader('Ballot')} />
