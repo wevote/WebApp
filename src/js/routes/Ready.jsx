@@ -157,6 +157,7 @@ class Ready extends Component {
                     introHeaderLink="/values"
                     searchTextLarge
                     showVoterGuidePhotos
+                    uniqueExternalId="showMobile"
                   />
                 </div>
               </Card>
@@ -181,6 +182,7 @@ class Ready extends Component {
                         introHeaderLink="/values"
                         searchTextLarge
                         showVoterGuidePhotos
+                        uniqueExternalId="showTablet"
                       />
                     </div>
                   </Card>
@@ -232,6 +234,7 @@ class Ready extends Component {
                     introHeaderLink="/values"
                     searchTextLarge
                     showVoterGuidePhotos
+                    uniqueExternalId="showDesktopRightColumn"
                   />
                 </div>
               </Card>

@@ -23,6 +23,7 @@ class FindOpinionsForm extends Component {
     searchTextLarge: PropTypes.bool,
     showVoterGuidePhotos: PropTypes.bool,
     theme: PropTypes.object,
+    uniqueExternalId: PropTypes.string,
   };
 
   constructor (props) {
@@ -43,7 +44,7 @@ class FindOpinionsForm extends Component {
   }
 
   onVoterGuideStoreChange () {
-    const { showVoterGuidePhotos } = this.props;
+    const { showVoterGuidePhotos, uniqueExternalId } = this.props;
     if (showVoterGuidePhotos) {
       const limit = 3;
       const publicFiguresToFollow = VoterGuideStore.getVoterGuidesToFollowAll(limit, true);
@@ -58,8 +59,12 @@ class FindOpinionsForm extends Component {
               return null;
             }
             return (
-              <OneVoterGuideWrapper key={`findOpinionsFormPreviewImage-${voterGuide.organization_we_vote_id}`}>
-                <Link to={voterGuideLink} className="u-no-underline">
+              <OneVoterGuideWrapper key={`findOpinionsFormPreviewImage-${voterGuide.organization_we_vote_id}-${uniqueExternalId}`}>
+                <Link
+                  className="u-no-underline"
+                  id={`findOpinionsFormPreviewImageLink-${voterGuide.organization_we_vote_id}-${uniqueExternalId}`}
+                  to={voterGuideLink}
+                >
                   <ImageHandler className="card-child__avatar" sizeClassName="image-sm " imageUrl={voterGuide.voter_guide_image_url_tiny} />
                 </Link>
               </OneVoterGuideWrapper>
@@ -103,7 +108,7 @@ class FindOpinionsForm extends Component {
 
   render () {
     renderLog('FindOpinionsForm');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, headerText, introHeaderLink, searchTextLarge, theme } = this.props;
+    const { classes, headerText, introHeaderLink, searchTextLarge, theme, uniqueExternalId } = this.props;
     const { opinionPhotosHtml, searchText } = this.state;
     const inputBaseInputClasses = searchTextLarge ? classes.inputDefaultLarge : classes.inputDefault;
     const inputBaseRootClasses = searchTextLarge ? classes.inputBaseRootLarge : classes.inputBaseRoot;
@@ -113,7 +118,11 @@ class FindOpinionsForm extends Component {
       <OuterWrapper>
         <InnerWrapper>
           {introHeaderLink ? (
-            <Link to={introHeaderLink} className="u-no-underline">
+            <Link
+              className="u-no-underline"
+              id={`findCandidatesAndOpinionsHeaderLink-${uniqueExternalId}`}
+              to={introHeaderLink}
+            >
               <IntroHeader>
                 {headerText || 'Find Candidates & Opinions'}
               </IntroHeader>
@@ -129,7 +138,7 @@ class FindOpinionsForm extends Component {
             searchTextLarge={searchTextLarge}
           >
             <InputBase
-              id="findCandidatesAndOpinionsSearch"
+              id={`findCandidatesAndOpinionsSearch-${uniqueExternalId}`}
               classes={{ input: inputBaseInputClasses, root: inputBaseRootClasses }}
               inputRef={(input) => { this.searchInput = input; }}
               onBlur={blurTextFieldAndroid}
@@ -142,6 +151,7 @@ class FindOpinionsForm extends Component {
             <Separator />
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
+              id={`findCandidatesAndOpinionsIconClick-${uniqueExternalId}`}
               onClick={this.goToSearchPage}
             >
               <SearchIcon classes={{ root: searchIconClasses }} />
