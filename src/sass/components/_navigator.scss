@@ -312,7 +312,7 @@ $pop-up-menu-cordova-padding: 10px;
     z-index: 3; //to float above the account/ProfilePopUp menu option grey div
   }
   &__cordova {
-    margin-right: $space-md;
+    background-color: unset;  /* stylelint-disable-line */
   }
 }
 
