@@ -34,7 +34,7 @@ import Location from './routes/Settings/Location';
 import Measure from './routes/Ballot/Measure';
 import News from './routes/Activity/News';
 import Office from './routes/Ballot/Office';
-import Opinions from './routes/Opinions';
+import Opinions from './routes/Opinions2020';
 import OpinionsFollowed from './routes/OpinionsFollowed';
 import OpinionsIgnored from './routes/OpinionsIgnored';
 import OrganizationVoterGuide from './routes/VoterGuide/OrganizationVoterGuide';
@@ -96,17 +96,14 @@ const routesSingleBundle = () => {  // eslint-disable-line arrow-body-style
   return (
     <Route path="/" component={Application}>
       <Route component={Intro} />
-      {                       // 12/4/18: Not sure why we need the following disabled
-        (function redir () {  // eslint-disable-line wrap-iife
+      {
+        (function redirect () {
           if (isWebApp()) {
-            // return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/ready" />;
-            return <IndexRedirect to="/ballot" />;
+            return <IndexRedirect to="/ready" />;
           } else {
-            return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />;
+            return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ready" />;
           }
-        }
-        )()
-      }
+        }())}
       <Route path="/welcome" component={isNotWeVoteMarketingSite ? ReadyRedirect : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
       <Route path="/news" component={News} />
       {/* <Route path="/getready" component={GetReady} /> */}
@@ -142,6 +139,8 @@ const routesSingleBundle = () => {  // eslint-disable-line arrow-body-style
         <Route path="/measure/:measure_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideMeasure} />
         <Route path="/measure/:measure_we_vote_id" component={Measure} />
       </Route>
+
+      {/* Additional Ballot Paths */}
       <Route path="/ballot/vote" component={Vote} />
       <Route path="/ballot/modal/:modal_to_show/:shared_item_code" component={Ballot} />
       <Route path="/ballot/modal/:modal_to_show" component={Ballot} />
@@ -184,6 +183,8 @@ const routesSingleBundle = () => {  // eslint-disable-line arrow-body-style
 
       {/* Ballot Off-shoot Pages */}
       <Route path="/opinions" component={Opinions} />
+      <Route path="/opinions/f/:selectedFilter" component={Opinions} />
+      <Route path="/opinions/s/:searchTextDefault" component={Opinions} />
       <Route path="/opinions_followed" component={OpinionsFollowed} />
       <Route path="/opinions_ignored" component={OpinionsIgnored} />
 

@@ -72,6 +72,8 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/measure/:measure_we_vote_id/modal/:modal_to_show" component={componentLoader('Measure')} />
           <Route path="/measure/:measure_we_vote_id/:back_to_variable/:organization_we_vote_id" component={componentLoader('OrganizationVoterGuideMeasure')} />
           <Route path="/measure/:measure_we_vote_id" component={componentLoader('Measure')} />
+
+          {/* Additional Ballot Paths */}
           <Route path="/ballot/vote" component={componentLoader('Vote')} />
           <Route path="/ballot/modal/:modal_to_show/:shared_item_code" component={componentLoader('Ballot')} />
           <Route path="/ballot/modal/:modal_to_show" component={componentLoader('Ballot')} />
