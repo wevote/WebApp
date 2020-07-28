@@ -52,6 +52,7 @@ describe('Cross browser automated testing', () => {
       }
       assert(webview);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.orientation('landscape');
       await selectClick('div[data-index="0"] .intro-story__btn--bottom'); // Click first next button
       await selectClick('div[data-index="1"] .intro-story__btn--bottom'); // Click second next button
       await selectClick('div[data-index="2"] .intro-story__btn--bottom'); // Click third next button

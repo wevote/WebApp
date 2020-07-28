@@ -20,6 +20,7 @@ parser.add_argument('-w', '--write', action='store_true', help='write to configu
 parser.add_argument('-t', '--timeout', default=360000, type=int, help='time before test ends')
 parser.add_argument('-m', '--isMobileScreenSize', action='store_true', help='set mobile-screen to true')
 parser.add_argument('-d', '--isCordova', action='store_true', help='set isCordovaFromAppStore to true')
+parser.add_argument('-r', '--resolution', default='', type=str, help='set screen resolution')
 parser.add_argument('--acceptSslCerts', action='store_false', help='do not use https')
 parser.add_argument('--connectionRetryTimeout', default=90000, type=int, help='time before connection is retried')
 parser.add_argument('--connectionRetryCount', default=3, type=int, help='number of times connection is retried')

@@ -77,7 +77,7 @@ describe('Cross browser automated testing',  () => {
   });
 
   it('should set the cookie', async () =>  {
-    await browser.url('.wevote.us');
+    await browser.url('https://.wevote.us/');
     await browser.setCookies({ name: 'voter_device_id', value: voterDeviceId, domain: '.wevote.us' });
     await browser.refresh();
   });
@@ -123,7 +123,7 @@ describe('Cross browser automated testing',  () => {
   it('should test settings page', async () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS * 10);
     await hiddenClick('profileAvatarHeaderBar'); // Clicks on Setting
-    await selectClick('#profilePopUpYourSettings > button');
+    await hiddenClick('#profilePopUpYourSettings > button');
     await simpleTextInput("first-name", 'A'.repeat(200));
     await simpleTextInput("last-name", xssTest);
     await simpleTextInput("organization-name", sqlTest);
