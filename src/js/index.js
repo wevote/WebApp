@@ -60,7 +60,7 @@ if (localIsCordova()) {
   document.addEventListener('deviceready', (id) => {
     window.isDeviceReady = true;
     console.log('Received Cordova Event: ', id.type);
-    navigator.splashscreen.hide();
+    // navigator.splashscreen.hide();  Save for 2020, might be needed
     window.plugins.screensize.get((result) => {
       console.log('screensize.get: ', result);
       window.pbakondyScreenSize = result;
