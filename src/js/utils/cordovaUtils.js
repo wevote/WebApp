@@ -407,6 +407,7 @@ export function isSimulator () {
   return isAndroidSimulator() || isIOsSimulator();
 }
 
+// This block of code run when cordovaUiils is loaded, and is not specifically called by a function
 if (isSimulator()) {
   if (isAndroidSimulator()) {
     cordovaOffsetLog(`cordovaScrollablePaneTopPadding: ${window.location.href}`);
