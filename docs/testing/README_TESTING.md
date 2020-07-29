@@ -51,7 +51,7 @@ and put it into the `BROWSERSTACK_APK_URL` value field like this:
 
 With this `BROWSERSTACK_APK_URL` variable set now, we can run tests on the android mobile application.
 
-There are three scripts for running tests: config.py, testscript, and wdio.config.js. testScript generates the template file named wdio.config.template which acts as a template for creating wdio.config.js. config.py uses the wdio.config.template file to generate the wdio.config.js file, which is used for running the test. Note that testScript requires bash and config.py requires python3. 
+There are three scripts for running tests: config.py, testscript, and wdio.config.js. testScript generates the template file named wdio.config.template which acts as a template for creating wdio.config.js as well as creates the script using the script name parameter if it does not already exist. config.py uses the wdio.config.template file to generate the wdio.config.js file, which is used for running the test. Note that testScript requires bash and config.py requires python3. 
 
     (WebAppEnv) $ ./testscript -s <script name> -n <number of tests> (run without options for help)
     (WebAppEnv) $ python config.py -s <script name> -b <type of device> -n <number of tests> (-h for help) 
