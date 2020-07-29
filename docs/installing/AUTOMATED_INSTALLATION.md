@@ -1,20 +1,20 @@
-#Automated Installation
+# Automated Installation
 [Go back to Readme Home](../../README.md)
 
-##For Mac Users
-##Copy installmac.sh to a file
+## For Mac Users
+## Copy installmac.sh to a file
 
-##Make it executable
+## Make it executable
 $ chmod +x installmac.sh
 
-##Run it
+## Run it
 $ ./installmac.sh
 
-##For Ubuntu Users
-##Copy installUbuntu.sh
+## For Ubuntu Users
+## Copy installUbuntu.sh
 
-##Make it executable
+## Make it executable
 $ chmod +x installUbuntu.sh
 
-##Run it 
+## Run it 
 $ ./installUbuntu.sh
