@@ -17,9 +17,9 @@ Our current Beta version is here [https://WeVote.US](https://WeVote.US) and we a
 Our installation process is built to allow engineers all over America to contribute to We Vote.
 It may seem complicated, but it allows anyone to be in a position to make suggestions, and get involved.
 
-1. [Automated Installation](docs/installing/AUTOMATED_INSTALLATION.md)
+[Automated Installation](docs/installing/AUTOMATED_INSTALLATION.md)
 
-    OR
+  OR
 
 1. [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
 
