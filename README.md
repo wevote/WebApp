@@ -17,10 +17,10 @@ Our current Beta version is here [https://WeVote.US](https://WeVote.US) and we a
 Our installation process is built to allow engineers all over America to contribute to We Vote.
 It may seem complicated, but it allows anyone to be in a position to make suggestions, and get involved.
 
-1. [Automated Installation](docs/installing/AUTOMATED_INSTALLATION.md)
+Automated Installation
+1. [Run automated scripts](docs/installing/AUTOMATED_INSTALLATION.md)
 
-OR
-
+Manual Installation
 1. [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
 
 2. [Bringing Code to Your Machine](docs/installing/CLONING_CODE.md)
@@ -64,6 +64,8 @@ Please read the following before you start contributing to the project. Thank yo
 
 ## Testing WebApp
 
-[Introduction to WebApp testing](docs/testing/README_TESTING.md)
+1. [Introduction to WebApp testing](docs/testing/README_TESTING.md)
+
+2. [Explanation of various files](docs/testing/EXPLAIN_FILES.md)
 
 Welcome aboard!!
