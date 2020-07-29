@@ -2,19 +2,15 @@
 [Go back to Readme Home](../../README.md)
 
 ## For Mac Users
-### Copy installmac.sh to a file
 
-### Make it executable
-$ chmod +x installmac.sh
+Copy the contents of [installmac.sh](https://github.com/wevote/WebApp/blob/develop/installmac.sh) to a file and run it
 
-### Run it
-$ ./installmac.sh
-
+    $ chmod +x installmac.sh
+    $ ./installmac.sh
+    
 ## For Ubuntu Users
-### Copy installUbuntu.sh
 
-### Make it executable
-$ chmod +x installUbuntu.sh
+Copy the contents of [installUbuntu.sh](https://github.com/wevote/WebApp/blob/develop/installUbuntu.sh) to a file and run it
 
-### Run it 
-$ ./installUbuntu.sh
+    $ chmod +x installUbuntu.sh
+    $ ./installUbuntu.sh
