@@ -5,14 +5,18 @@
 [Click here to see the minimum browser versions](https://docs.google.com/spreadsheets/d/1FlUMCvg1pNIO0IzJm0jQyvUW1YC_KHh-LO4l-OVIcog/edit#gid=1774503729) 
 that we support.
 
-# How to test Wevote WebApp with BrowserStack
+## How to test Wevote WebApp with BrowserStack
 
 If you haven't updated your dependencies in a while, run `npm install` from your terminal to install WebdriverIO (this is a framework that lets us test both the browser app and Cordova mobile apps with a single script). 
+
+### Manual installation only
 
 Copy `WebApp/tests/browserstack/browserstack.config-template.js` into `WebApp/tests/browserstack/browserstack.config.js`:
 
     (WebAppEnv) $ cd WebApp
     (WebAppEnv) $ cp tests/browserstack/browserstack.config-template.js tests/browserstack/browserstack.config.js
+
+### Automated installation start here
 
 You'll need to add your credentials to `browserstack.config.js`. Sign into Browserstack and navigate to the [BrowserStack Automate dashboard](https://automate.browserstack.com/). Press the down arrow next to where it says "Access Key" in the header. You should see your username ("YOUR-USERNAME" below) and access key ("ACCESS-KEY-HERE" below). You will need both of these values to upload the compiled App.
 
@@ -45,17 +49,18 @@ and put it into the `BROWSERSTACK_APK_URL` value field like this:
 
     BROWSERSTACK_APK_URL: 'bs://ANOTHER-GENERATED-STRING-HERE',
 
-With this `BROWSERSTACK_APK_URL` variable set now, we can run `npm run ballotTest-Android`.
+With this `BROWSERSTACK_APK_URL` variable set now, we can run tests on the android mobile application.
 
-To run the tests, run one or more of the following:
+There are three scripts for running tests: config.py, testscript, and wdio.config.js. testScript generates the template file named wdio.config.template which acts as a template for creating wdio.config.js. config.py uses the wdio.config.template file to generate the wdio.config.js file, which is used for running the test.  
 
-    (WebAppEnv) $ npm run ballotTest-Browser
-    (WebAppEnv) $ npm run ballotTest-Android
-    (WebAppEnv) $ npm run ballotTest-iOS
-    (WebAppEnv) $ npm run marketingTest-Browser
+    (WebAppEnv) $ ./testscript -s <script name> -n <number of tests> (run without options for help)
+    (WebAppEnv) $ python config.py -s <script name> -b <type of device> -n <number of tests> (-h for help) 
 
-When the test finishes, you should be able to see the video of the browser test on the BrowserStack Automate dashboard and video of the mobile apps on BrowserStack App Automate.
+To run the tests, run:
 
+    (WebAppEnv) $ wdio wdio.config.js
+    
+When the test finishes, you should be able to see the video of browser tests on the BrowserStack Automate dashboard and video of the mobile apps on BrowserStack App Automate.
 
 [//]: <> ( ## User Interaction Automated Testing with SauceLabs and Selenium)
 
