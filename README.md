@@ -64,6 +64,8 @@ Please read the following before you start contributing to the project. Thank yo
 
 ## Testing WebApp
 
-[Introduction to WebApp testing](docs/testing/README_TESTING.md)
+1. [Introduction to WebApp testing](docs/testing/README_TESTING.md)
+
+2. [Explanation of various files](docs/testing/EXPLAIN_FILES.md)
 
 Welcome aboard!!
