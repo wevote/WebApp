@@ -5,6 +5,7 @@
 
 Copy the contents of [installmac.sh](https://github.com/wevote/WebApp/blob/develop/installmac.sh) to a file and run it
 
+    $ [text editor] installmac.sh   (Copy contents of file to text editor)                         
     $ chmod +x installmac.sh
     $ ./installmac.sh
     
@@ -12,5 +13,6 @@ Copy the contents of [installmac.sh](https://github.com/wevote/WebApp/blob/devel
 
 Copy the contents of [installUbuntu.sh](https://github.com/wevote/WebApp/blob/develop/installUbuntu.sh) to a file and run it
 
+    $ [text editor] installmac.sh   (Copy contents of file to text editor)
     $ chmod +x installUbuntu.sh
     $ ./installUbuntu.sh
