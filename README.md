@@ -19,7 +19,7 @@ It may seem complicated, but it allows anyone to be in a position to make sugges
 
 1. [Automated Installation](docs/installing/AUTOMATED_INSTALLATION.md)
 
-  OR
+    OR
 
 1. [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
 
