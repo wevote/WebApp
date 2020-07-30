@@ -1,26 +1,23 @@
 const assert = require('assert');
-const { clearTextInputValue, scrollIntoViewSimple, simpleClick, selectClick, simpleTextInput, selectTextInput, hiddenClick, hiddenSelectClick, hiddenSelectTextInput } = require('../utils');
+const { scrollIntoViewSimple, simpleClick, selectClick, simpleTextInput, hiddenClick, hiddenSelectClick, hiddenSelectTextInput } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_';
 const PAUSE_DURATION_MICROSECONDS = 3000;
 const PAUSE_DURATION_BALLOT_LOAD = 6000;
 const { device, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
+const enter = '\uE007';
 // Remember that tablets should be considered desktop screen size
 const isDesktopScreenSize = !isMobileScreenSize;
 let ballotBadgePlatformPrefixID = (isDesktopScreenSize) ? 'ballotBadgeDesktop' : 'ballotBadgeMobile';
 
 let isS8 = false;
 let isGooglePixel3 = false;
-let isiPhone = false;
-let isiPad = false;
 let isTab = false;
 
 if (device) {
   isS8 = device.includes('Samsung Galaxy S8');
   isGooglePixel3 = device.includes('Google Pixel 3');
-  isiPad = device.includes('iPad');
-  isiPhone = device.includes('iPhone');
   isTab = device.includes('Tab');
 }
 
@@ -28,17 +25,15 @@ if (isTab) {
   ballotBadgePlatformPrefixID = 'ballotBadgeDesktop';
 }
 
-const personalizedScoreSteps = 7;
 const xssTest = '<script>alert(1)</script>';
 
 describe('Cross browser automated testing', () => {
   // Run before any test
   before(async () => {
     if (isCordovaFromAppStore) {
-      // ///////////////////////////////
       // For the apps downloadable from either the Apple App Store or Android Play Store,
       // click through the onboarding screens
-      await browser.pause(PAUSE_DURATION_BALLOT_LOAD * 2);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
       const contexts = await driver.getContexts();
       let webview = false;
       // eslint-disable-next-line
@@ -52,47 +47,58 @@ describe('Cross browser automated testing', () => {
       }
       assert(webview);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
-      await browser.orientation('landscape');
+      await driver.setOrientation('PORTRAIT');
       await selectClick('div[data-index="0"] .intro-story__btn--bottom'); // Click first next button
+      await driver.setOrientation('PORTRAIT');
       await selectClick('div[data-index="1"] .intro-story__btn--bottom'); // Click second next button
       await selectClick('div[data-index="2"] .intro-story__btn--bottom'); // Click third next button
-      await simpleClick('ballotTabFooterBar');  // Go to ballot
     } else {
-      // ///////////////////////////////
       // For the website version, open our quality testing site
       await browser.url('ballot');
     }
   });
 
-  it('should input our address', async () =>  {
+  it('should go to the ready tab', async() => {
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-    if (!(isCordovaFromAppStore && isIOS)) {
-      await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', 'Oakland, CA 94501'); // Focus on Location Input
-      await simpleClick('editAddressOneHorizontalRowSaveButton'); // Click save
+    if (isDesktopScreenSize) {
+      await simpleClick('readyTabHeaderBar');  // Desktop screen size - HEADER TABS
     } else {
-      await simpleClick('ballotIfBallotDoesNotAppear');
-      await hiddenClick('editAddressInPlaceModalEditButton');
-      await clearTextInputValue('addressBoxText');
-      await simpleTextInput('addressBoxText', 'Oakland, CA 94501');
-      await simpleClick('addressBoxModalSaveButton');
+      await simpleClick('readyTabFooterBar');  // Mobile screen size - FOOTER ICONS
     }
+  });
+
+  it('should input our address', async () =>  {
+    //if (!(isCordovaFromAppStore && isIOS)) {
+    await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', `Oakland, CA 94501${enter}`); // Focus on Location Input
+    await simpleClick('editAddressOneHorizontalRowSaveButton'); // Click save
+    //} else {
+    //  await simpleClick('ballotIfBallotDoesNotAppear');
+    //  await hiddenClick('editAddressInPlaceModalEditButton');
+    //  await simpleClick('addressBoxText');
+    //  await browser.keys('Oakland, CA 94501');
+    //  await simpleClick('addressBoxModalSaveButton');
+    //}
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
   });
 
+  it('should go to the ballot tab', async() => {
+    if (isDesktopScreenSize) {
+      await simpleClick('ballotTabHeaderBar');  // Desktop screen size - HEADER TABS
+    } else {
+      await simpleClick('ballotTabFooterBar');  // Mobile or tablet screen size - FOOTER ICONS
+    }
+  });
+
   it('should click through how it works', async () =>  {
-    if (!((isAndroid || isiPhone) && isCordovaFromAppStore) || isTab) { // Not on Android or iPhone Mobile App
-      if (isDesktopScreenSize || isiPad || isTab) {
-        await simpleClick('completeYourProfileDesktopButton'); // Click 'How it works'
+    if (!(isAndroid && isCordovaFromAppStore) || isTab) { // Not on Android or iPhone Mobile App
+      if (isDesktopScreenSize || isIOS || isTab) {
+        await hiddenClick('completeYourProfileDesktopButton'); // Click 'How it works'
         await simpleClick('annotatedSlideShowStep1Next'); // Click Next
         await simpleClick('annotatedSlideShowStep2Next'); // Click Next
         await simpleClick('annotatedSlideShowStep3Next'); // Click Next
         await simpleClick('annotatedSlideShowStep4Next'); // Click Next
         await simpleClick('howItWorksGetStartedDesktopButton'); // End of How it Works Modal
         await simpleClick('profileCloseSignInModal'); // Clicks on "X"
-        await simpleClick('completeYourProfileDesktopButton'); // Clicks on Choose Interests
-        await selectClick('#valuesIntroModalValueList [id^=issueFollowButton]'); // select an interest
-        await scrollIntoViewSimple('valuesIntroModalNext'); // Scrolls to Next button
-        await simpleClick('valuesIntroModalNext'); // Close the Interests modal
       } else {
         await simpleClick('completeYourProfileMobileButton'); // clicks on How it works
         await simpleClick('annotatedSlideShowStep1Next');
@@ -101,6 +107,29 @@ describe('Cross browser automated testing', () => {
         await simpleClick('annotatedSlideShowStep4Next');
         await simpleClick('howItWorksGetStartedDesktopButton'); // End of How it Works Modal
         await simpleClick('profileCloseSignInModal'); // Clicks on "X"
+      }
+    }
+  });
+
+  it('should test "Address and Elections"', async () => {
+    if (isCordovaFromAppStore) {
+      await hiddenClick('changeAddressOnlyHeaderBar');
+    } else {
+      await simpleClick('ballotTitleHeaderSelectBallotModal');
+    }
+    await selectClick('button.SelectBallotModal__PriorButton-sc-1kby1m3-8.kPEgxg'); // Click on Prior
+    await simpleClick('ballotElectionListWithFiltersButton-6000'); // Clicks on US 2018 Midterm Election
+    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+  });
+
+  it('should click through choose interests', async () =>  {
+    if (!(isAndroid && isCordovaFromAppStore) || isTab) { // Not on Android or iPhone Mobile App
+      if (isDesktopScreenSize || isIOS || isTab) {
+        await hiddenClick('completeYourProfileDesktopButton'); // Clicks on Choose Interests
+        await selectClick('#valuesIntroModalValueList [id^=issueFollowButton]'); // select an interest
+        await scrollIntoViewSimple('valuesIntroModalNext'); // Scrolls to Next button
+        await simpleClick('valuesIntroModalNext'); // Close the Interests modal
+      } else {
         await simpleClick('completeYourProfileMobileButton'); // Clicks on Choose Interests
         await selectClick('#valuesIntroModalValueList #issues-follow-container'); // select an interest
         await scrollIntoViewSimple('valuesIntroModalNext'); // Scrolls to Next button
@@ -111,17 +140,6 @@ describe('Cross browser automated testing', () => {
         await simpleClick('profileCloseSelectBallotModal'); // Clicks on close
       }
     }
-  });
-
-  it('should test "Address and Elections"', async() => {
-    if (isCordovaFromAppStore) {
-      await hiddenClick('changeAddressOnlyHeaderBar');
-    } else {
-      await simpleClick('ballotTitleHeaderSelectBallotModal');
-    }
-    await selectClick('button.SelectBallotModal__PriorButton-sc-1kby1m3-8.kPEgxg'); // Click on Prior
-    await simpleClick('ballotElectionListWithFiltersButton-6000'); // Clicks on US 2018 Midterm Election
-    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
   });
 
   it('should click on ballot filler badges at top of page', async() => {
@@ -217,21 +235,5 @@ describe('Cross browser automated testing', () => {
     await simpleTextInput('EmailAddress', 'automated_voter1@WeVote.info');
     await selectClick('.card-main');
     await simpleClick('friendsNextButton');
-  });
-
-  it('should go to the ready tab', async() => {
-    if (isDesktopScreenSize) {
-      await simpleClick('readyTabHeaderBar');  // Desktop screen size - HEADER TABS
-    } else {
-      await simpleClick('readyTabFooterBar');  // Mobile screen size - FOOTER ICONS
-    }
-  });
-
-  it('should go back to the ballot tab', async() => {
-    if (isDesktopScreenSize) {
-      await simpleClick('ballotTabHeaderBar');  // Desktop screen size - HEADER TABS
-    } else {
-      await simpleClick('ballotTabFooterBar');  // Mobile or tablet screen size - FOOTER ICONS
-    }
   });
 });
