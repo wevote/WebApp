@@ -11,6 +11,7 @@ import cookies from '../../utils/cookies';
 import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
+import HeaderNotificationMenu from './HeaderNotificationMenu';
 import MeasureStore from '../../stores/MeasureStore';
 import OfficeItem from '../Ballot/OfficeItem';
 import OfficeStore from '../../stores/OfficeStore';
@@ -654,9 +655,10 @@ class HeaderBackToBallot extends Component {
             id="backToLinkTabHeader"
           />
 
-          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
+          <NotificationsAndProfileWrapper className="u-cursor--pointer">
+            <HeaderNotificationMenu />
             {voterIsSignedIn ? (
-              <span>
+              <span onClick={this.toggleAccountMenu}>
                 {voterPhotoUrlMedium ? (
                   <span
                     id="profileAvatarHeaderBar"
@@ -712,7 +714,7 @@ class HeaderBackToBallot extends Component {
                 Sign In
               </Button>
             )}
-          </div>
+          </NotificationsAndProfileWrapper>
         </Toolbar>
         {stringContains('/office', pathname.toLowerCase())  && officeName && (
           <OfficeNameWrapper className="header-toolbar">
@@ -772,6 +774,16 @@ const styles = theme => ({
   },
 });
 
+const FirstNameWrapper = styled.div`
+  font-size: 14px;
+  padding-right: 4px;
+`;
+
+const NotificationsAndProfileWrapper = styled.div`
+  display: flex;
+  z-index: 3; //to float above the account/ProfilePopUp menu option grey div
+`;
+
 const OfficeNameWrapper = styled.div`
   display: flex;
   margin-left: 30px;
@@ -779,11 +791,6 @@ const OfficeNameWrapper = styled.div`
 
 const OfficeShareWrapper = styled.div`
   margin-bottom: 12px;
-`;
-
-const FirstNameWrapper = styled.div`
-  font-size: 14px;
-  padding-right: 4px;
 `;
 
 export default withStyles(styles)(HeaderBackToBallot);

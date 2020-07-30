@@ -34,7 +34,7 @@ class SettingsNotifications extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      friendOpinionsOtherRegions: false,
+      // friendOpinionsOtherRegions: false,
       friendOpinionsOtherRegionsEmail: false,
       friendOpinionsYourBallotEmail: false,
       // friendRequestsEmail: false,
@@ -104,7 +104,7 @@ class SettingsNotifications extends Component {
       this.setState({ friendOpinionsYourBallotEmail: (event.target.checked) });
     } else if (event.target.name === 'friendOpinionsOtherRegions') {
       this.voterUpdateNotificationSettingsFlags(event.target.checked, VoterConstants.NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS);
-      this.setState({ friendOpinionsOtherRegions: (event.target.checked) });
+      // this.setState({ friendOpinionsOtherRegions: (event.target.checked) });
     } else if (event.target.name === 'friendOpinionsOtherRegionsEmail') {
       this.voterUpdateNotificationSettingsFlags(event.target.checked, VoterConstants.NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL);
       this.setState({ friendOpinionsOtherRegionsEmail: (event.target.checked) });
@@ -138,7 +138,8 @@ class SettingsNotifications extends Component {
     const { classes } = this.props;
     const {
       friendOpinionsYourBallotEmail, // friendOpinionsYourBallotSms,
-      friendOpinionsOtherRegions, friendOpinionsOtherRegionsEmail, // friendOpinionsOtherRegionsSms,
+      // friendOpinionsOtherRegions,
+      friendOpinionsOtherRegionsEmail, // friendOpinionsOtherRegionsSms,
       // friendRequestsEmail, // friendRequestsSms,
       newsletterOptIn,
       notificationsSavedStatus,
@@ -344,25 +345,20 @@ class SettingsNotifications extends Component {
                         component="th"
                         scope="row"
                       >
-                        <span className="u-show-mobile">
-                          <span className="u-no-break">Friends&apos; opinions</span>
-                          {' '}
-                          <span className="u-no-break">(all regions)</span>
-                        </span>
-                        <span className="u-show-desktop-tablet">
-                          <span className="u-no-break">Friends&apos; opinions</span>
-                          {' '}
-                          <span className="u-no-break">(all regions)</span>
-                        </span>
+                        <span className="u-no-break">Friends&apos; opinions</span>
+                        {' '}
+                        <span className="u-no-break">(all regions)</span>
                       </TableCell>
                       <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                         <input
                           aria-label="show friends opinions from all regions in app"
+                          checked
+                          // checked={friendOpinionsOtherRegions}
+                          disabled
                           id="friendOpinionsOtherRegions"
                           type="checkbox"
                           name="friendOpinionsOtherRegions"
                           onChange={this.updateNotificationSettings}
-                          checked={friendOpinionsOtherRegions}
                         />
                       </TableCell>
                       <TableCell align="center" classes={{ root: classes.tableCellColumn }}>

@@ -14,6 +14,7 @@ import FirstPositionIntroModal from '../CompleteYourProfile/FirstPositionIntroMo
 import FriendStore from '../../stores/FriendStore';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderBarLogo from './HeaderBarLogo';
+import HeaderNotificationMenu from './HeaderNotificationMenu';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
@@ -440,8 +441,8 @@ class HeaderBar extends Component {
     const voterPhotoUrlMedium = voterPhoto(voter);
     const editAddressButtonHtml = (
       <Tooltip title="Change my location or election" aria-label="Change Address or Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-        <span>
-          <span className="u-show-desktop-tablet">
+        <>
+          <AddressWrapperDesktop className="u-show-desktop-tablet">
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
               id="changeAddressOrElectionHeaderBarElection"
@@ -457,8 +458,8 @@ class HeaderBar extends Component {
             >
               Address & Elections
             </Button>
-          </span>
-          <span className="u-show-mobile">
+          </AddressWrapperDesktop>
+          <AddressWrapperMobile className="u-show-mobile-bigger-than-iphone5">
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
               id="changeAddressOnlyHeaderBar"
@@ -474,8 +475,17 @@ class HeaderBar extends Component {
             >
               Address
             </Button>
-          </span>
-        </span>
+          </AddressWrapperMobile>
+          <AddressWrapperMobileTiny className="u-show-mobile-iphone5-or-smaller">
+            <IconButton
+              classes={{ root: classes.iconButtonRoot }}
+              id="changeAddressOnlyHeaderBar"
+              onClick={() => this.toggleSelectBallotModal('', false, true)}
+            >
+              <Place />
+            </IconButton>
+          </AddressWrapperMobileTiny>
+        </>
       </Tooltip>
     );
 
@@ -539,11 +549,12 @@ class HeaderBar extends Component {
             </div>
             {
               voterIsSignedIn && voterPhotoUrlMedium ? (
-                <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
-                  {
-                    showEditAddressButton && editAddressButtonHtml
-                  }
-                  <span id="profileAvatarHeaderBar"
+                <NotificationsAndProfileWrapper className="u-cursor--pointer">
+                  <div>
+                    {showEditAddressButton && editAddressButtonHtml}
+                  </div>
+                  <HeaderNotificationMenu />
+                  <div id="profileAvatarHeaderBar"
                     className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
                     onClick={this.toggleProfilePopUp}
                   >
@@ -558,7 +569,7 @@ class HeaderBar extends Component {
                       width={34}
                       alt="Your Settings"
                     />
-                  </span>
+                  </div>
                   {this.state.profilePopUpOpen && voterIsSignedIn && (
                     <HeaderBarProfilePopUp
                       hideProfilePopUp={this.hideProfilePopUp}
@@ -572,11 +583,14 @@ class HeaderBar extends Component {
                       weVoteBrandingOff={this.state.we_vote_branding_off}
                     />
                   )}
-                </div>
+                </NotificationsAndProfileWrapper>
               ) : (
                 voterIsSignedIn && (
-                  <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
-                    {showEditAddressButton && editAddressButtonHtml}
+                  <NotificationsAndProfileWrapper className="u-cursor--pointer">
+                    <div>
+                      {showEditAddressButton && editAddressButtonHtml}
+                    </div>
+                    <HeaderNotificationMenu />
                     <IconButton
                       classes={{ root: classes.iconButtonRoot }}
                       id="profileAvatarHeaderBar"
@@ -600,23 +614,28 @@ class HeaderBar extends Component {
                         weVoteBrandingOff={this.state.we_vote_branding_off}
                       />
                     )}
-                  </div>
+                  </NotificationsAndProfileWrapper>
                 )
               )
             }
             {
               !voterIsSignedIn && (
-              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none d-print-none">
-                {showEditAddressButton && editAddressButtonHtml}
+              <NotificationsAndProfileWrapper className="u-cursor--pointer d-print-none">
+                <div>
+                  {showEditAddressButton && editAddressButtonHtml}
+                </div>
+                <HeaderNotificationMenu />
                 <Button
                   color="primary"
                   classes={{ root: classes.headerButtonRoot }}
                   id="signInHeaderBar"
                   onClick={this.toggleSignInModal}
                 >
-                  Sign In
+                  <span className="u-no-break">
+                    Sign In
+                  </span>
                 </Button>
-              </div>
+              </NotificationsAndProfileWrapper>
               )
             }
           </Toolbar>
@@ -702,7 +721,7 @@ const styles = theme => ({
     },
     color: 'rgba(17, 17, 17, .5)',
     outline: 'none !important',
-    paddingRight: 20,
+    paddingRight: 6,
     [theme.breakpoints.down('sm')]: {
       paddingTop: 6,
       marginLeft: 2,
@@ -767,10 +786,18 @@ const styles = theme => ({
   },
 });
 
-const Wrapper = styled.div`
-  margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
-  transition: all 50ms ease-in;
-  ${({ scrolledDown }) => (scrolledDown ? 'transform: translateY(-100%);' : '')}
+const AddressWrapperDesktop = styled.div`
+  margin-top: 6px;
+  width: 220px;
+`;
+
+const AddressWrapperMobile = styled.div`
+  margin-top: 6px;
+  width: 104px;
+`;
+
+const AddressWrapperMobileTiny = styled.div`
+  margin-top: 10px;
 `;
 
 const FirstNameWrapper = styled.div`
@@ -780,6 +807,17 @@ const FirstNameWrapper = styled.div`
 
 const FriendTabWrapper = styled.div`
   margin-left: ${({ incomingFriendRequests }) => (incomingFriendRequests ? '-20px' : '0')};
+`;
+
+const NotificationsAndProfileWrapper = styled.div`
+  display: flex;
+  z-index: 3; //to float above the account/ProfilePopUp menu option grey div
+`;
+
+const Wrapper = styled.div`
+  margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
+  transition: all 50ms ease-in;
+  ${({ scrolledDown }) => (scrolledDown ? 'transform: translateY(-100%);' : '')}
 `;
 
 export default withStyles(styles)(HeaderBar);
