@@ -10,6 +10,7 @@ import cookies from '../../utils/cookies';
 import { hasIPhoneNotch, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
+import HeaderNotificationMenu from './HeaderNotificationMenu';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import SignInModal from '../Widgets/SignInModal';
@@ -243,7 +244,8 @@ class HeaderBackTo extends Component {
           />
 
           {isWebApp() && (
-          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+          <NotificationsAndProfileWrapper className="u-cursor--pointer">
+            <HeaderNotificationMenu />
             {voterIsSignedIn ? (
               <span>
                 {voterPhotoUrlMedium ? (
@@ -303,7 +305,7 @@ class HeaderBackTo extends Component {
                 Sign In
               </Button>
             )}
-          </div>
+          </NotificationsAndProfileWrapper>
           )}
         </Toolbar>
         {showSignInModal && (
@@ -344,6 +346,11 @@ const styles = theme => ({
 const FirstNameWrapper = styled.div`
   font-size: 14px;
   padding-right: 4px;
+`;
+
+const NotificationsAndProfileWrapper = styled.div`
+  display: flex;
+  z-index: 3; //to float above the account/ProfilePopUp menu option grey div
 `;
 
 export default withStyles(styles)(HeaderBackTo);

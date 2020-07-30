@@ -237,7 +237,7 @@ class AddFriendsByEmail extends Component {
     } = this.state;
 
     // console.log(friendsToInvite);
-    const atLeastOneValidated = friendsToInvite.length !== 0 || validatePhoneOrEmail(this.state.friendContactInfo);
+    const atLeastOneValidated = friendsToInvite.length !== 0 || validatePhoneOrEmail(friendContactInfo);
 
     const { classes } = this.props;
 
@@ -317,44 +317,46 @@ class AddFriendsByEmail extends Component {
                         onBlur={blurTextFieldAndroid}
                         placeholder="For example: name@domain.com"
                       />
-                      <div className="row">
-                        <div className={this.props.inSideColumn ? 'col col-12' : 'col col-6'}>
-                          <Label>
-                            Friend&apos;s First Name
-                          </Label>
-                          <TextField
-                            variant="outlined"
-                            margin="dense"
-                            classes={{ root: classes.textField }}
-                            type="text"
-                            id="friendFirstName"
-                            name="friendFirstName"
-                            value={friendFirstName}
-                            onChange={this.cacheFriendData}
-                            onFocus={focusTextFieldAndroid}
-                            onBlur={blurTextFieldAndroid}
-                            placeholder={isMobileScreenSize() || inSideColumn ? 'Optional' : 'Optional, but helpful!'}
-                          />
+                      {friendContactInfo && (
+                        <div className="row">
+                          <div className={this.props.inSideColumn ? 'col col-12' : 'col col-6'}>
+                            <Label>
+                              Friend&apos;s First Name
+                            </Label>
+                            <TextField
+                              variant="outlined"
+                              margin="dense"
+                              classes={{ root: classes.textField }}
+                              type="text"
+                              id="friendFirstName"
+                              name="friendFirstName"
+                              value={friendFirstName}
+                              onChange={this.cacheFriendData}
+                              onFocus={focusTextFieldAndroid}
+                              onBlur={blurTextFieldAndroid}
+                              placeholder={isMobileScreenSize() || inSideColumn ? 'Optional' : 'Optional, but helpful!'}
+                            />
+                          </div>
+                          <div className={this.props.inSideColumn ? 'col col-12' : 'col col-6'}>
+                            <Label>
+                              Friend&apos;s Last Name
+                            </Label>
+                            <TextField
+                              variant="outlined"
+                              margin="dense"
+                              classes={{ root: classes.textField }}
+                              type="text"
+                              id="friendLastName"
+                              name="friendLastName"
+                              value={friendLastName}
+                              onChange={this.cacheFriendData}
+                              onFocus={focusTextFieldAndroid}
+                              onBlur={blurTextFieldAndroid}
+                              placeholder="Optional"
+                            />
+                          </div>
                         </div>
-                        <div className={this.props.inSideColumn ? 'col col-12' : 'col col-6'}>
-                          <Label>
-                            Friend&apos;s Last Name
-                          </Label>
-                          <TextField
-                            variant="outlined"
-                            margin="dense"
-                            classes={{ root: classes.textField }}
-                            type="text"
-                            id="friendLastName"
-                            name="friendLastName"
-                            value={friendLastName}
-                            onChange={this.cacheFriendData}
-                            onFocus={focusTextFieldAndroid}
-                            onBlur={blurTextFieldAndroid}
-                            placeholder="Optional"
-                          />
-                        </div>
-                      </div>
+                      )}
                       {atLeastOneValidated ? (
                         <>
                           <Label>Add Personal Message</Label>
