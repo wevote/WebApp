@@ -1,8 +1,6 @@
-const assert = require('assert');
 const { scrollIntoViewSimple, simpleClick, selectClick, simpleTextInput, hiddenClick, hiddenSelectClick, hiddenSelectTextInput } = require('../utils');
 
-const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
-const IOS_CONTEXT = 'WEBVIEW_';
+const WEBVIEW = 'WEBVIEW_';
 const PAUSE_DURATION_MICROSECONDS = 3000;
 const PAUSE_DURATION_BALLOT_LOAD = 6000;
 const { device, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
@@ -27,29 +25,25 @@ if (isTab) {
 
 const xssTest = '<script>alert(1)</script>';
 
-describe('Cross browser automated testing', () => {
+describe('Cross browser automated testing', async () => {
   // Run before any test
   before(async () => {
     if (isCordovaFromAppStore) {
       // For the apps downloadable from either the Apple App Store or Android Play Store,
       // click through the onboarding screens
-      await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
       const contexts = await driver.getContexts();
-      let webview = false;
-      // eslint-disable-next-line
-      for (const context of contexts) {
-        if ((isAndroid && context.includes(ANDROID_CONTEXT)) || (isIOS && context.includes(IOS_CONTEXT))) {
-          // eslint-disable-next-line no-await-in-loop
-          await driver.switchContext(context);
-          webview = true;
-          break;
-        }
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      if (await contexts[1].includes(WEBVIEW)) {
+        await driver.switchContext(contexts[1]);
+      } else {
+        await browser.deleteSession();
       }
-      assert(webview);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await driver.setOrientation('LANDSCAPE');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await driver.setOrientation('PORTRAIT');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await selectClick('div[data-index="0"] .intro-story__btn--bottom'); // Click first next button
-      await driver.setOrientation('PORTRAIT');
       await selectClick('div[data-index="1"] .intro-story__btn--bottom'); // Click second next button
       await selectClick('div[data-index="2"] .intro-story__btn--bottom'); // Click third next button
     } else {
@@ -61,31 +55,23 @@ describe('Cross browser automated testing', () => {
   it('should go to the ready tab', async() => {
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     if (isDesktopScreenSize) {
-      await simpleClick('readyTabHeaderBar');  // Desktop screen size - HEADER TABS
+      await simpleClick('readyTabHeaderBar');
     } else {
-      await simpleClick('readyTabFooterBar');  // Mobile screen size - FOOTER ICONS
+      await simpleClick('readyTabFooterBar');  // Click ready tab
     }
   });
 
   it('should input our address', async () =>  {
-    //if (!(isCordovaFromAppStore && isIOS)) {
     await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', `Oakland, CA 94501${enter}`); // Focus on Location Input
     await simpleClick('editAddressOneHorizontalRowSaveButton'); // Click save
-    //} else {
-    //  await simpleClick('ballotIfBallotDoesNotAppear');
-    //  await hiddenClick('editAddressInPlaceModalEditButton');
-    //  await simpleClick('addressBoxText');
-    //  await browser.keys('Oakland, CA 94501');
-    //  await simpleClick('addressBoxModalSaveButton');
-    //}
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
   });
 
   it('should go to the ballot tab', async() => {
     if (isDesktopScreenSize) {
-      await simpleClick('ballotTabHeaderBar');  // Desktop screen size - HEADER TABS
+      await simpleClick('ballotTabHeaderBar');
     } else {
-      await simpleClick('ballotTabFooterBar');  // Mobile or tablet screen size - FOOTER ICONS
+      await simpleClick('ballotTabFooterBar');  // Click ballot tab
     }
   });
 
@@ -206,13 +192,21 @@ describe('Cross browser automated testing', () => {
 
   it('should visit organization page from candidate page', async() => {
     await hiddenSelectClick('[id*=-LinkToEndorsingOrganization-]'); // Click on the link to organization's page
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await hiddenSelectClick('[id^=positionItemFollowToggleFollow-]'); // Follow organization
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await hiddenSelectClick('[id^=positionItemFollowToggleDropdown-]');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await hiddenSelectClick('[id^=positionItemFollowToggleUnfollow-]'); // Unfollow organization
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await hiddenSelectClick('[id^=positionItemFollowToggleDropdown-]');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await hiddenSelectClick('[id^=positionItemFollowToggleIgnore-]'); // Ignore organization
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await hiddenSelectClick('[id^=positionItemFollowToggleDropdown-]');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await hiddenSelectClick('[id^=positionItemFollowToggleStopIgnoring-]'); // Unignore organization
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
   });
 
   it('should go to the values tab', async() => {
@@ -220,20 +214,21 @@ describe('Cross browser automated testing', () => {
     await simpleClick('backToLinkTabHeader');
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     if (isDesktopScreenSize) {
-      await simpleClick('valuesTabHeaderBar');  // Desktop screen size - HEADER TABS
+      await simpleClick('valuesTabHeaderBar');
     } else {
-      await simpleClick('valuesTabFooterBar');  // Mobile or tablet screen size - FOOTER ICONS
+      await simpleClick('valuesTabFooterBar');  // Click values tab
     }
   });
 
   it('should go to the friends tab', async() => {
     if (isDesktopScreenSize) {
-      await simpleClick('friendsTabHeaderBar');  // Desktop screen size - HEADER TABS
+      await simpleClick('friendsTabHeaderBar');
     } else {
-      await simpleClick('friendsTabFooterBar');  // Mobile or tablet screen size - FOOTER ICONS
+      await simpleClick('friendsTabFooterBar');  // Click friends tab
     }
     await simpleTextInput('EmailAddress', 'automated_voter1@WeVote.info');
     await selectClick('.card-main');
     await simpleClick('friendsNextButton');
+    await browser.deleteSession();
   });
 });
