@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { capitalizeString } from '../../utils/textFormat';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
+import ActivityActions from '../../actions/ActivityActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
@@ -17,13 +18,12 @@ import MeasureStore from '../../stores/MeasureStore';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import PositionList from '../../components/Ballot/PositionList';
+import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
-import ShareButtonDesktopTablet
-  from '../../components/Share/ShareButtonDesktopTablet';
-import ViewOnBallotpedia from '../../components/Widgets/ViewOnBallotpedia';
 import SearchOnGoogle from '../../components/Widgets/SearchOnGoogle';
+import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 
 // The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
 class Measure extends Component {
@@ -107,6 +107,7 @@ class Measure extends Component {
         AppActions.setShowSharedItemModal(sharedItemCode);
       }
     }
+    ActivityActions.activityNoticeListRetrieve();
   }
 
   componentWillReceiveProps (nextProps) {

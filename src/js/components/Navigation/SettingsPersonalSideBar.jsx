@@ -115,7 +115,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           </div>
 
-          {isSignedIn && !isOnPartnerUrl && (
+          {!isOnPartnerUrl && (
             <div className={String(editMode) === 'notifications' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container'}

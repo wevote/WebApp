@@ -390,14 +390,14 @@ class VoterPlanModal extends Component {
               >
                 {/* <option value="select-mode-of-transport" className="emphasize">select transport</option> */}
                 <option value="walk">walk</option>
-                <option value="take a bus">take a bus</option>
+                <option value="run">run</option>
+                <option value="bike">bike</option>
                 <option value="drive">drive</option>
-                <option value="skip">skip</option>
-                <option value="hop">hop</option>
-                <option value="fly">fly</option>
+                <option value="take a bus">take a bus</option>
+                <option value="carpool">carpool</option>
+                <option value="take subway">take subway</option>
                 <option value="jetpack">jetpack</option>
                 <option value="ride a giraffe">ride a giraffe</option>
-                <option value="swim">swim</option>
               </Select>
               {' '}
               with my ballot to my

@@ -65,7 +65,7 @@ class HeaderNotificationMenu extends Component {
           <NotificationsTitle>
             Notifications
           </NotificationsTitle>
-          <NotificationsSettings>
+          <NotificationsSettings className="u-link-color">
             Settings
           </NotificationsSettings>
         </NotificationsHeaderWrapper>

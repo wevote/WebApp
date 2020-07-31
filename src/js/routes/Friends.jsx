@@ -4,6 +4,7 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Tabs, Tab } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import ActivityActions from '../actions/ActivityActions';
 import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
@@ -88,6 +89,7 @@ class Friends extends Component {
       voter: VoterStore.getVoter(),
     });
     this.resetDefaultTabForMobile(friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe);
+    ActivityActions.activityNoticeListRetrieve();
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 

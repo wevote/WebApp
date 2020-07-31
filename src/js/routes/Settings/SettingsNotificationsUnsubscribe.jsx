@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,38 +11,38 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import MailOutline from '@material-ui/icons/MailOutline';
-import Notifications from '@material-ui/icons/Notifications';
+import PhoneAndroid from '@material-ui/icons/PhoneAndroid';
 import Settings from '@material-ui/icons/Settings';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import LoadingWheel from '../LoadingWheel';
+import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
+import { historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
-import { openSnackbar } from '../Widgets/SnackNotifier';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
-import VoterEmailAddressEntry from './VoterEmailAddressEntry';
 import VoterStore from '../../stores/VoterStore';
-// import PhoneAndroid from '@material-ui/icons/PhoneAndroid';
 import webAppConfig from '../../config';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 
-class SettingsNotifications extends Component {
+class SettingsNotificationsUnsubscribe extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    params: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      addEmailInterfaceOpen: false,
+      emailSubscriptionSecretKey: '',
       // friendOpinionsOtherRegions: false,
       friendOpinionsOtherRegionsEmail: false,
       friendOpinionsYourBallotEmail: false,
       // friendRequestsEmail: false,
       newsletterOptIn: false,
       notificationsSavedStatus: '',
+      smsSubscriptionSecretKey: '',
       // suggestedFriendsEmail: false,
     };
 
@@ -52,9 +53,26 @@ class SettingsNotifications extends Component {
   // componentWillMount is used in WebApp
   componentDidMount () {
     // console.log('SignIn componentDidMount');
-    this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
+    let emailSubscriptionSecretKey = '';
+    let smsSubscriptionSecretKey = '';
+    if (this.props.params) {
+      if (this.props.params.email_subscription_secret_key) {
+        emailSubscriptionSecretKey = this.props.params.email_subscription_secret_key;
+        this.setState({
+          emailSubscriptionSecretKey,
+        });
+        AnalyticsActions.saveActionUnsubscribeEmailPage(VoterStore.electionId());
+      } else if (this.props.params.sms_subscription_secret_key) {
+        smsSubscriptionSecretKey = this.props.params.sms_subscription_secret_key;
+        this.setState({
+          smsSubscriptionSecretKey,
+        });
+        AnalyticsActions.saveActionUnsubscribeSmsPage(VoterStore.electionId());
+      }
+    }
+    // Retrieve the current settings values
+    VoterActions.voterNotificationSettingsUpdateFromSecretKey(emailSubscriptionSecretKey, smsSubscriptionSecretKey);
   }
 
   componentWillUnmount () {
@@ -66,32 +84,32 @@ class SettingsNotifications extends Component {
   }
 
   onVoterStoreChange () {
-    if (VoterStore.isVoterFound()) {
-      const friendOpinionsOtherRegionsEmail = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL);
-      const friendOpinionsYourBallotEmail = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT_EMAIL);
-      const newsletterOptIn = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
+    const voterNotificationSettingsUpdateStatus = VoterStore.getVoterNotificationSettingsUpdateStatus();
+    // console.log('onVoterStoreChange voterNotificationSettingsUpdateStatus:', voterNotificationSettingsUpdateStatus);
+    let apiResponseReceived = false;
+    let normalizedEmailAddressExists = false;
+    let normalizedEmailAddress = '';
+    let voterFound = false;
+    if (voterNotificationSettingsUpdateStatus && voterNotificationSettingsUpdateStatus.apiResponseReceived) {
+      ({ apiResponseReceived, normalizedEmailAddress, voterFound } = voterNotificationSettingsUpdateStatus);
+      normalizedEmailAddressExists = true;
+
+      // Now set individual flag states
+      const friendOpinionsOtherRegionsEmail = VoterStore.getNotificationSettingsFlagStateFromSecretKey(VoterConstants.NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL);
+      const friendOpinionsYourBallotEmail = VoterStore.getNotificationSettingsFlagStateFromSecretKey(VoterConstants.NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT_EMAIL);
+      const newsletterOptIn = VoterStore.getNotificationSettingsFlagStateFromSecretKey(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
+
       this.setState({
         friendOpinionsOtherRegionsEmail,
         friendOpinionsYourBallotEmail,
         newsletterOptIn,
       });
     }
-    const primaryEmailAddressDict = VoterStore.getPrimaryEmailAddressDict();
-    let primaryEmailAddressExists = false;
-    if (primaryEmailAddressDict && primaryEmailAddressDict.normalized_email_address) {
-      primaryEmailAddressExists = true;
-    }
-    const voter = VoterStore.getVoter();
     this.setState({
-      primaryEmailAddressExists,
-      voter,
-    });
-  }
-
-  openAddEmailInterface = () => {
-    openSnackbar({ message: 'Please enter your email address.' });
-    this.setState({
-      addEmailInterfaceOpen: true,
+      apiResponseReceived,
+      normalizedEmailAddress,
+      normalizedEmailAddressExists,
+      voterFound,
     });
   }
 
@@ -143,65 +161,104 @@ class SettingsNotifications extends Component {
   }
 
   voterUpdateNotificationSettingsFlags (checked, selectedVoterConstant) {
+    const { emailSubscriptionSecretKey, smsSubscriptionSecretKey } = this.state;
     if (checked) {
-      VoterActions.voterUpdateNotificationSettingsFlags(selectedVoterConstant);
+      VoterActions.voterNotificationSettingsUpdateFromSecretKey(emailSubscriptionSecretKey, smsSubscriptionSecretKey, selectedVoterConstant);
     } else {
-      VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_ZERO, selectedVoterConstant);
+      VoterActions.voterNotificationSettingsUpdateFromSecretKey(emailSubscriptionSecretKey, smsSubscriptionSecretKey, VoterConstants.NOTIFICATION_ZERO, selectedVoterConstant);
     }
   }
 
   render () {
-    renderLog('SettingsNotifications');  // Set LOG_RENDER_EVENTS to log all renders
+    renderLog('SettingsNotificationsUnsubscribe');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
-      addEmailInterfaceOpen,
-      friendOpinionsYourBallotEmail, // friendOpinionsYourBallotSms,
+      apiResponseReceived,
+      friendOpinionsYourBallotEmail, friendOpinionsYourBallotSms,
       // friendOpinionsOtherRegions,
-      friendOpinionsOtherRegionsEmail, // friendOpinionsOtherRegionsSms,
-      // friendRequestsEmail, // friendRequestsSms,
+      friendOpinionsOtherRegionsEmail, friendOpinionsOtherRegionsSms,
+      // friendRequestsEmail,
+      friendRequestsSms,
       newsletterOptIn,
-      notificationsSavedStatus, primaryEmailAddressExists,
+      normalizedEmailAddress, normalizedEmailAddressExists,
+      // normalizedSmsPhoneNumber,
+      normalizedSmsPhoneNumberExists,
+      notificationsSavedStatus,
       // suggestedFriendsEmail, // suggestedFriendsSms,
-      voter,
+      voterFound,
     } = this.state;
-    if (!voter) {
+    if (!apiResponseReceived) {
       return LoadingWheel;
     }
 
+    if (!voterFound) {
+      return (
+        <Wrapper>
+          <Helmet title="Notification Settings - We Vote" />
+          <BrowserPushMessage incomingProps={this.props} />
+          <ContentArea className="card">
+            <div className="card-main">
+              <div className="h2">
+                Could Not Find Notification Settings
+              </div>
+              <ViewOnWeVoteWrapper>
+                <Button
+                  classes={{ root: classes.ballotButtonRoot }}
+                  color="primary"
+                  variant="contained"
+                  onClick={() => historyPush('/settings/notifications')}
+                >
+                  <Settings classes={{ root: classes.ballotButtonIconRoot }} />
+                  View on We Vote
+                </Button>
+              </ViewOnWeVoteWrapper>
+            </div>
+          </ContentArea>
+        </Wrapper>
+      );
+    }
+
     return (
-      <div className="">
-        <Helmet title="Notifications - We Vote" />
+      <Wrapper>
+        <Helmet title="Notification Settings - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
-        <div className="card">
+        <ContentArea className="card">
           <div className="card-main">
             <div>
               <HeaderWrapper>
-                <div className="h2">Notification Settings</div>
-                <div className="u-gray-mid">{notificationsSavedStatus}</div>
+                <div className="h2">
+                  Notification Settings
+                  {normalizedEmailAddressExists && (
+                    <>
+                      {' '}
+                      for
+                      {' '}
+                      <strong>{normalizedEmailAddress}</strong>
+                    </>
+                  )}
+                </div>
               </HeaderWrapper>
               <TableContainer>
                 <Table aria-label="simple table">
                   <TableHead>
                     <TableRow>
                       <TableCell classes={{ root: classes.tableCellDescription }}>
-                        &nbsp;
+                        <div className="u-gray-mid">{notificationsSavedStatus}</div>
                       </TableCell>
-                      <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
-                        <ColumnIcon>
-                          <Notifications classes={{ root: classes.notificationsIconRoot }} />
-                        </ColumnIcon>
-                        <ColumnLabel className="u-no-break">In App</ColumnLabel>
-                      </TableCell>
-                      <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
-                        <ColumnIcon>
-                          <MailOutline classes={{ root: classes.emailIconRoot }} />
-                        </ColumnIcon>
-                        <ColumnLabel>Email</ColumnLabel>
-                      </TableCell>
-                      {/* <TableCell align="center" classes={{ root: classes.tableCellColumn }}> */}
-                      {/*  <PhoneAndroid classes={{ root: classes.smsIconRoot }} /> */}
-                      {/*  <ColumnLabel>SMS</ColumnLabel> */}
-                      {/* </TableCell> */}
+                      {normalizedEmailAddressExists && (
+                        <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
+                          <ColumnIcon>
+                            <MailOutline classes={{ root: classes.emailIconRoot }} />
+                          </ColumnIcon>
+                          <ColumnLabel>Email</ColumnLabel>
+                        </TableCell>
+                      )}
+                      {normalizedSmsPhoneNumberExists && (
+                        <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
+                          <PhoneAndroid classes={{ root: classes.smsIconRoot }} />
+                          <ColumnLabel>SMS</ColumnLabel>
+                        </TableCell>
+                      )}
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -220,45 +277,36 @@ class SettingsNotifications extends Component {
                           New friend requests, and responses to your requests
                         </span>
                       </TableCell>
-                      <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
-                        <input
-                          aria-label="show friend requests in app"
-                          checked
-                          disabled
-                          type="checkbox"
-                        />
-                      </TableCell>
-                      <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
-                        {primaryEmailAddressExists ? (
+                      {normalizedEmailAddressExists && (
+                        <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                           <input
                             aria-label="email friend requests"
                             checked
                             disabled
                             type="checkbox"
                           />
-                        ) : (
-                          <SettingsIconWrapper>
-                            <Settings classes={{ root: classes.settingsIcon }} onClick={this.openAddEmailInterface} />
-                          </SettingsIconWrapper>
-                        )}
-                        {/* <input */}
-                        {/*  aria-label="text friend requests" */}
-                        {/*  id="friendRequestsEmail" */}
-                        {/*  type="checkbox" */}
-                        {/*  name="friendRequestsEmail" */}
-                        {/*  onChange={this.updateNotificationSettings} */}
-                        {/*  checked={friendRequestsEmail} */}
-                        {/* /> */}
-                      </TableCell>
-                      {/* <TableCell align="center" classes={{ root: classes.tableCellColumn }}> */}
-                      {/*  <input */}
-                      {/*    id="friendRequestsSms" */}
-                      {/*    type="checkbox" */}
-                      {/*    name="friendRequestsSms" */}
-                      {/*    onChange={this.updateNotificationSettings} */}
-                      {/*    checked={friendRequestsSms} */}
-                      {/*  /> */}
-                      {/* </TableCell> */}
+                          {/* <input */}
+                          {/*  aria-label="email friend requests" */}
+                          {/*  id="friendRequestsEmail" */}
+                          {/*  type="checkbox" */}
+                          {/*  name="friendRequestsEmail" */}
+                          {/*  onChange={this.updateNotificationSettings} */}
+                          {/*  checked={friendRequestsEmail} */}
+                          {/* /> */}
+                        </TableCell>
+                      )}
+                      {normalizedSmsPhoneNumberExists && (
+                        <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
+                          <input
+                            aria-label="text friend requests"
+                            id="friendRequestsSms"
+                            type="checkbox"
+                            name="friendRequestsSms"
+                            onChange={this.updateNotificationSettings}
+                            checked={friendRequestsSms}
+                          />
+                        </TableCell>
+                      )}
                     </TableRow>
                     {/* ************************************** */}
                     {/* *** NOTIFICATION_SUGGESTED_FRIENDS *** */}
@@ -324,16 +372,8 @@ class SettingsNotifications extends Component {
                             <span className="u-no-break">(on your ballot)</span>
                           </span>
                         </TableCell>
-                        <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
-                          <input
-                            aria-label="show friends opinions from your ballot in app"
-                            checked
-                            disabled
-                            type="checkbox"
-                          />
-                        </TableCell>
-                        <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
-                          {primaryEmailAddressExists ? (
+                        {normalizedEmailAddressExists && (
+                          <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                             <input
                               aria-label="email friends opinions from your ballot"
                               id="friendOpinionsYourBallotEmail"
@@ -342,22 +382,20 @@ class SettingsNotifications extends Component {
                               onChange={this.updateNotificationSettings}
                               checked={friendOpinionsYourBallotEmail}
                             />
-                          ) : (
-                            <SettingsIconWrapper>
-                              <Settings classes={{ root: classes.settingsIcon }} onClick={this.openAddEmailInterface} />
-                            </SettingsIconWrapper>
-                          )}
-                        </TableCell>
-                        {/* <TableCell align="center" classes={{ root: classes.tableCellColumn }}> */}
-                        {/*  <input */}
-                        {/*    aria-label="text friends opinions from your ballot" */}
-                        {/*    id="friendOpinionsYourBallotSms" */}
-                        {/*    type="checkbox" */}
-                        {/*    name="friendOpinionsYourBallotSms" */}
-                        {/*    onChange={this.updateNotificationSettings} */}
-                        {/*    checked={friendOpinionsYourBallotSms} */}
-                        {/*  /> */}
-                        {/* </TableCell> */}
+                          </TableCell>
+                        )}
+                        {normalizedSmsPhoneNumberExists && (
+                          <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
+                            <input
+                              aria-label="text friends opinions from your ballot"
+                              id="friendOpinionsYourBallotSms"
+                              type="checkbox"
+                              name="friendOpinionsYourBallotSms"
+                              onChange={this.updateNotificationSettings}
+                              checked={friendOpinionsYourBallotSms}
+                            />
+                          </TableCell>
+                        )}
                       </TableRow>
                     )}
                     {/* ************************************************** */}
@@ -372,20 +410,8 @@ class SettingsNotifications extends Component {
                         {' '}
                         <span className="u-no-break">(all regions)</span>
                       </TableCell>
-                      <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
-                        <input
-                          aria-label="show friends opinions from all regions in app"
-                          checked
-                          // checked={friendOpinionsOtherRegions}
-                          disabled
-                          id="friendOpinionsOtherRegions"
-                          type="checkbox"
-                          name="friendOpinionsOtherRegions"
-                          onChange={this.updateNotificationSettings}
-                        />
-                      </TableCell>
-                      <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
-                        {primaryEmailAddressExists ? (
+                      {normalizedEmailAddressExists && (
+                        <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                           <input
                             aria-label="email friends opinions from all regions"
                             id="friendOpinionsOtherRegionsEmail"
@@ -394,26 +420,24 @@ class SettingsNotifications extends Component {
                             onChange={this.updateNotificationSettings}
                             checked={friendOpinionsOtherRegionsEmail}
                           />
-                        ) : (
-                          <SettingsIconWrapper>
-                            <Settings classes={{ root: classes.settingsIcon }} onClick={this.openAddEmailInterface} />
-                          </SettingsIconWrapper>
-                        )}
-                      </TableCell>
-                      {/* <TableCell align="center" classes={{ root: classes.tableCellColumn }}> */}
-                      {/*  <input */}
-                      {/*    aria-label="text friends opinions from all regions" */}
-                      {/*    id="friendOpinionsOtherRegionsSms" */}
-                      {/*    type="checkbox" */}
-                      {/*    name="friendOpinionsOtherRegionsSms" */}
-                      {/*    onChange={this.updateNotificationSettings} */}
-                      {/*    checked={friendOpinionsOtherRegionsSms} */}
-                      {/*  /> */}
-                      {/* </TableCell> */}
+                        </TableCell>
+                      )}
+                      {normalizedSmsPhoneNumberExists && (
+                        <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
+                          <input
+                            aria-label="text friends opinions from all regions"
+                            id="friendOpinionsOtherRegionsSms"
+                            type="checkbox"
+                            name="friendOpinionsOtherRegionsSms"
+                            onChange={this.updateNotificationSettings}
+                            checked={friendOpinionsOtherRegionsSms}
+                          />
+                        </TableCell>
+                      )}
                     </TableRow>
                     {/* ************************************** */}
                     {/* *** NOTIFICATION_NEWSLETTER_OPT_IN *** */}
-                    {primaryEmailAddressExists && (
+                    {normalizedEmailAddressExists && (
                       <TableRow key="tableRow-newsletterOptIn">
                         <TableCell
                           classes={{ root: classes.tableCellDescription }}
@@ -429,13 +453,6 @@ class SettingsNotifications extends Component {
                         </TableCell>
                         <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                           <input
-                            aria-label="newsletter not available in app"
-                            disabled
-                            type="checkbox"
-                          />
-                        </TableCell>
-                        <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
-                          <input
                             aria-label="email we vote newsletter"
                             id="newsletterOptIn"
                             type="checkbox"
@@ -444,35 +461,42 @@ class SettingsNotifications extends Component {
                             checked={newsletterOptIn}
                           />
                         </TableCell>
-                        {/* <TableCell align="center" classes={{ root: classes.tableCellColumn }}> */}
-                        {/*  <input */}
-                        {/*    aria-label="newsletter not available by sms" */}
-                        {/*    disabled */}
-                        {/*    type="checkbox" */}
-                        {/*  /> */}
-                        {/* </TableCell> */}
                       </TableRow>
                     )}
                   </TableBody>
                 </Table>
               </TableContainer>
+              <ViewOnWeVoteWrapper>
+                <Button
+                  classes={{ root: classes.ballotButtonRoot }}
+                  color="primary"
+                  variant="contained"
+                  onClick={() => historyPush('/settings/notifications')}
+                >
+                  <Settings classes={{ root: classes.ballotButtonIconRoot }} />
+                  View on We Vote
+                </Button>
+              </ViewOnWeVoteWrapper>
             </div>
-            <VoterEmailAddressEntry hideSignInWithEmail={!addEmailInterfaceOpen} />
-            {!addEmailInterfaceOpen && (
-              <AddNewEmailWrapper>
-                <div className="u-cursor--pointer u-link-color" onClick={this.openAddEmailInterface}>
-                  Add Email Address
-                </div>
-              </AddNewEmailWrapper>
-            )}
           </div>
-        </div>
-      </div>
+        </ContentArea>
+      </Wrapper>
     );
   }
 }
 
 const styles = () => ({
+  ballotIconRoot: {
+    width: 150,
+    height: 150,
+    color: 'rgb(171, 177, 191)',
+  },
+  ballotButtonIconRoot: {
+    marginRight: 8,
+  },
+  ballotButtonRoot: {
+    width: 250,
+  },
   emailIconRoot: {
     color: 'rgb(171, 177, 191)',
   },
@@ -499,10 +523,6 @@ const styles = () => ({
   },
 });
 
-const AddNewEmailWrapper = styled.div`
-  margin-top: 12px;
-`;
-
 const ColumnIcon = styled.div`
   margin-bottom: 0px !important;
 `;
@@ -513,6 +533,10 @@ const ColumnLabel = styled.div`
   margin-top: -5px;
 `;
 
+const ContentArea = styled.div`
+  max-width: 750px;
+`;
+
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -520,9 +544,18 @@ const HeaderWrapper = styled.div`
   width: 100%;
 `;
 
-const SettingsIconWrapper = styled.div`
+const ViewOnWeVoteWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  margin-bottom: 15px;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
   margin-left: 15px;
   margin-right: 15px;
 `;
 
-export default withStyles(styles)(SettingsNotifications);
+export default withStyles(styles)(SettingsNotificationsUnsubscribe);

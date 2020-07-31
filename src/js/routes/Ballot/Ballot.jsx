@@ -5,6 +5,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 import { Badge, Chip, CircularProgress, Link } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import ActivityActions from '../../actions/ActivityActions';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
@@ -283,6 +284,7 @@ class Ballot extends Component {
         AppActions.setShowSharedItemModal(sharedItemCode);
       }
     }
+    ActivityActions.activityNoticeListRetrieve();
     window.addEventListener('scroll', this.onScroll);
   }
 

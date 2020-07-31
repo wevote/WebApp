@@ -38,6 +38,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
         <Route path="/getready" component={componentLoader('ReadyNoApi')} />
       </Suspense>
       <Suspense fallback={<div>Loading...</div>}>
+        <Route path="/settings/notifications/esk/:email_subscription_secret_key" component={componentLoader('SettingsNotificationsUnsubscribe')} />
         <Route component={componentLoader('Application')}>
           <Route component={componentLoader('Intro')} />
           <Route path="/welcome" component={isNotWeVoteMarketingSite ? componentLoader('ReadyRedirect') : props => <WelcomeForVoters {...props} pathname="/welcome" />} />

@@ -21,6 +21,7 @@ class VoterEmailAddressEntry extends Component {
   static propTypes = {
     classes: PropTypes.object,
     closeSignInModal: PropTypes.func,
+    hideSignInWithEmail: PropTypes.bool,
     inModal: PropTypes.bool,
     toggleOtherSignInOptions: PropTypes.func,
   };
@@ -52,7 +53,7 @@ class VoterEmailAddressEntry extends Component {
       voterEmailAddressIsValid: false,
       voterEmailAddressList: [],
       voterEmailAddressListCount: 0,
-      voterEmailAddressesVerifiedCount: 0,
+      // voterEmailAddressesVerifiedCount: 0,
     };
     if (isCordova()) {
       signInModalGlobalState.set('textOrEmailSignInInProcess', true);
@@ -64,57 +65,58 @@ class VoterEmailAddressEntry extends Component {
     VoterActions.voterEmailAddressRetrieve();
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    if (JSON.stringify(this.state.emailAddressStatus) !== JSON.stringify(nextState.emailAddressStatus)) {
-      // console.log('this.state.emailAddressStatus', this.state.emailAddressStatus, ', nextState.emailAddressStatus', nextState.emailAddressStatus);
-      return true;
-    }
-    if (this.state.disableEmailVerificationButton !== nextState.disableEmailVerificationButton) {
-      // console.log('this.state.disableEmailVerificationButton', this.state.disableEmailVerificationButton, ', nextState.disableEmailVerificationButton', nextState.disableEmailVerificationButton);
-      return true;
-    }
-    if (this.state.displayEmailVerificationButton !== nextState.displayEmailVerificationButton) {
-      // console.log('this.state.displayEmailVerificationButton', this.state.displayEmailVerificationButton, ', nextState.displayEmailVerificationButton', nextState.displayEmailVerificationButton);
-      return true;
-    }
-    if (this.state.loading !== nextState.loading) {
-      // console.log('this.state.loading', this.state.loading, ', nextState.loading', nextState.loading);
-      return true;
-    }
-    if (this.state.secretCodeSystemLocked !== nextState.secretCodeSystemLocked) {
-      // console.log('this.state.secretCodeSystemLocked', this.state.secretCodeSystemLocked, ', nextState.secretCodeSystemLocked', nextState.secretCodeSystemLocked);
-      return true;
-    }
-    if (this.state.showError !== nextState.showError) {
-      // console.log('this.state.showError', this.state.showError, ', nextState.showError', nextState.showError);
-      return true;
-    }
-    if (this.state.showVerifyModal !== nextState.showVerifyModal) {
-      // console.log('this.state.showVerifyModal', this.state.showVerifyModal, ', nextState.showVerifyModal', nextState.showVerifyModal);
-      return true;
-    }
-    if (this.state.signInCodeEmailSentAndWaitingForResponse !== nextState.signInCodeEmailSentAndWaitingForResponse) {
-      // console.log('this.state.signInCodeEmailSentAndWaitingForResponse', this.state.signInCodeEmailSentAndWaitingForResponse, ', nextState.signInCodeEmailSentAndWaitingForResponse', nextState.signInCodeEmailSentAndWaitingForResponse);
-      return true;
-    }
-    if (this.state.voterEmailAddress !== nextState.voterEmailAddress) {
-      // console.log('this.state.voterEmailAddress', this.state.voterEmailAddress, ', nextState.voterEmailAddress', nextState.voterEmailAddress);
-      return true;
-    }
-    if (this.state.voterEmailAddressListCount !== nextState.voterEmailAddressListCount) {
-      // console.log('this.state.voterEmailAddressListCount', this.state.voterEmailAddressListCount, ', nextState.voterEmailAddressListCount', nextState.voterEmailAddressListCount);
-      return true;
-    }
-    if (this.state.voterEmailAddressesVerifiedCount !== nextState.voterEmailAddressesVerifiedCount) {
-      // console.log('this.state.voterEmailAddressesVerifiedCount', this.state.voterEmailAddressesVerifiedCount, ', nextState.voterEmailAddressesVerifiedCount', nextState.voterEmailAddressesVerifiedCount);
-      return true;
-    }
-    // console.log('shouldComponentUpdate false');
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   if (JSON.stringify(this.state.emailAddressStatus) !== JSON.stringify(nextState.emailAddressStatus)) {
+  //     // console.log('this.state.emailAddressStatus', this.state.emailAddressStatus, ', nextState.emailAddressStatus', nextState.emailAddressStatus);
+  //     return true;
+  //   }
+  //   if (this.state.disableEmailVerificationButton !== nextState.disableEmailVerificationButton) {
+  //     // console.log('this.state.disableEmailVerificationButton', this.state.disableEmailVerificationButton, ', nextState.disableEmailVerificationButton', nextState.disableEmailVerificationButton);
+  //     return true;
+  //   }
+  //   if (this.state.displayEmailVerificationButton !== nextState.displayEmailVerificationButton) {
+  //     // console.log('this.state.displayEmailVerificationButton', this.state.displayEmailVerificationButton, ', nextState.displayEmailVerificationButton', nextState.displayEmailVerificationButton);
+  //     return true;
+  //   }
+  //   if (this.state.loading !== nextState.loading) {
+  //     // console.log('this.state.loading', this.state.loading, ', nextState.loading', nextState.loading);
+  //     return true;
+  //   }
+  //   if (this.state.secretCodeSystemLocked !== nextState.secretCodeSystemLocked) {
+  //     // console.log('this.state.secretCodeSystemLocked', this.state.secretCodeSystemLocked, ', nextState.secretCodeSystemLocked', nextState.secretCodeSystemLocked);
+  //     return true;
+  //   }
+  //   if (this.state.showError !== nextState.showError) {
+  //     // console.log('this.state.showError', this.state.showError, ', nextState.showError', nextState.showError);
+  //     return true;
+  //   }
+  //   if (this.state.showVerifyModal !== nextState.showVerifyModal) {
+  //     // console.log('this.state.showVerifyModal', this.state.showVerifyModal, ', nextState.showVerifyModal', nextState.showVerifyModal);
+  //     return true;
+  //   }
+  //   if (this.state.signInCodeEmailSentAndWaitingForResponse !== nextState.signInCodeEmailSentAndWaitingForResponse) {
+  //     // console.log('this.state.signInCodeEmailSentAndWaitingForResponse', this.state.signInCodeEmailSentAndWaitingForResponse, ', nextState.signInCodeEmailSentAndWaitingForResponse', nextState.signInCodeEmailSentAndWaitingForResponse);
+  //     return true;
+  //   }
+  //   if (this.state.voterEmailAddress !== nextState.voterEmailAddress) {
+  //     // console.log('this.state.voterEmailAddress', this.state.voterEmailAddress, ', nextState.voterEmailAddress', nextState.voterEmailAddress);
+  //     return true;
+  //   }
+  //   if (this.state.voterEmailAddressListCount !== nextState.voterEmailAddressListCount) {
+  //     // console.log('this.state.voterEmailAddressListCount', this.state.voterEmailAddressListCount, ', nextState.voterEmailAddressListCount', nextState.voterEmailAddressListCount);
+  //     return true;
+  //   }
+  //   if (this.state.voterEmailAddressesVerifiedCount !== nextState.voterEmailAddressesVerifiedCount) {
+  //     // console.log('this.state.voterEmailAddressesVerifiedCount', this.state.voterEmailAddressesVerifiedCount, ', nextState.voterEmailAddressesVerifiedCount', nextState.voterEmailAddressesVerifiedCount);
+  //     return true;
+  //   }
+  //   // console.log('shouldComponentUpdate false');
+  //   return false;
+  // }
 
   componentDidUpdate () {
-    if (isCordova() && !this.state.movedInitialFocus) {
+    const { movedInitialFocus } = this.state;
+    if (isCordova() && !movedInitialFocus) {
       const inputFld = $('#enterVoterEmailAddress');
       // console.log('enterVoterEmailAddress ', $(inputFld));
       $(inputFld).focus();
@@ -169,14 +171,14 @@ class VoterEmailAddressEntry extends Component {
     }
     const voterEmailAddressList = VoterStore.getEmailAddressList();
     const voterEmailAddressListCount = voterEmailAddressList.length;
-    const voterEmailAddressesVerifiedCount = VoterStore.getEmailAddressesVerifiedCount();
+    // const voterEmailAddressesVerifiedCount = VoterStore.getEmailAddressesVerifiedCount();
     this.setState({
       loading: false,
       secretCodeSystemLocked,
       voter: VoterStore.getVoter(),
       voterEmailAddressList,
       voterEmailAddressListCount,
-      voterEmailAddressesVerifiedCount,
+      // voterEmailAddressesVerifiedCount,
     });
   }
 
@@ -186,9 +188,10 @@ class VoterEmailAddressEntry extends Component {
 
   voterEmailAddressSave = (event) => {
     // console.log('VoterEmailAddressEntry this.voterEmailAddressSave');
+    const { voterEmailAddress } = this.state;
     event.preventDefault();
     const sendLinkToSignIn = true;
-    VoterActions.voterEmailAddressSave(this.state.voterEmailAddress, sendLinkToSignIn);
+    VoterActions.voterEmailAddressSave(voterEmailAddress, sendLinkToSignIn);
     this.setState({ loading: true });
   };
 
@@ -206,9 +209,10 @@ class VoterEmailAddressEntry extends Component {
         },
         signInCodeEmailSentAndWaitingForResponse: true,
       });
-    } else {
-      this.setState({ showError: true });
     }
+    // else {
+    //   this.setState({ showError: true });
+    // }
   };
 
   reSendSignInCodeEmail = (voterEmailAddress) => {
@@ -357,16 +361,17 @@ class VoterEmailAddressEntry extends Component {
   render () {
     renderLog('VoterEmailAddressEntry');  // Set LOG_RENDER_EVENTS true to log all renders
     const { loading } = this.state;
-    // console.log('VoterEmailAddressEntry loading: ', this.state.loading);
+    // console.log('VoterEmailAddressEntry loading: ', loading);
     if (loading) {
-      // console.log('VoterEmailAddressEntry loading: ', this.state.loading);
+      // console.log('VoterEmailAddressEntry loading: ', loading);
       return LoadingWheel;
     }
 
-    const { classes } = this.props;
+    const { classes, hideSignInWithEmail } = this.props;
     const {
       disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, hideExistingEmailAddresses,
-      secretCodeSystemLocked, showVerifyModal, signInCodeEmailSentAndWaitingForResponse, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
+      secretCodeSystemLocked, showVerifyModal, signInCodeEmailSentAndWaitingForResponse,
+      voter, voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
     } = this.state;
 
     const signInLinkOrCodeSent = (emailAddressStatus.link_to_sign_in_email_sent || emailAddressStatus.sign_in_code_email_sent);
@@ -428,7 +433,7 @@ class VoterEmailAddressEntry extends Component {
     let enterEmailTitle = isWebApp() ? 'Sign in with Email' : 'Email the Sign In code to';
     // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
     //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
-    if (this.state.voter && this.state.voter.is_signed_in) {
+    if (voter && voter.is_signed_in) {
       enterEmailTitle = 'Add New Email';
       // enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to verify this new email." :
       //   "You'll receive a magic link in the email on this phone. Click that link to verify this new email.";
@@ -623,9 +628,11 @@ class VoterEmailAddressEntry extends Component {
             {emailAddressStatusHtml}
           </span>
         )}
-        <EmailSection isWeb={isWebApp()}>
-          {enterEmailHtml}
-        </EmailSection>
+        {!hideSignInWithEmail && (
+          <EmailSection isWeb={isWebApp()}>
+            {enterEmailHtml}
+          </EmailSection>
+        )}
         {showVerifyModal && (
           <SettingsVerifySecretCode
             show={showVerifyModal}
