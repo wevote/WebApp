@@ -9,6 +9,8 @@ export default function componentLoader (componentName) {
       return React.lazy(() => import('../routes/More/AbsenteeBallot'));
     case 'AddCandidateForExtension':
       return React.lazy(() => import('../routes/Ballot/AddCandidateForExtension'));
+    case 'AppleSignInProcess':
+      return React.lazy(() => import('../routes/process/AppleSignInProcess'));
     case 'Application':
       return React.lazy(() => import('../Application'));
     case 'Attributions':

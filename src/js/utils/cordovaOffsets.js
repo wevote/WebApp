@@ -202,32 +202,36 @@ export function cordovaScrollablePaneTopPadding () {
     if (sizeString === '--xl') {
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding sizeString: ${sizeString}`);
       switch (pageEnumeration()) {
-        case enums.ballotLgHdrWild: return showBallotDecisionsTabs() ? '25px' : '42px';
-        case enums.ballotSmHdrWild: return '131px';
-        case enums.ballotVote:      return isSignedIn ? '149px' : '145px';
-        case enums.candidate:       return '64px';
-        case enums.candidateWild:   return '53px';
-        case enums.measureWild:     return '57px';
-        case enums.moreTerms:       return '32px';
-        case enums.officeWild:      return '79px';
-        case enums.settingsHamburger:   return '43px';
-        case enums.settingsWild:    return '57px';
+        case enums.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '36px' : '42px';
+        case enums.ballotSmHdrWild:       return '131px';
+        case enums.ballotVote:            return isSignedIn ? '149px' : '145px';
+        case enums.candidate:             return '64px';
+        case enums.candidateWild:         return '53px';
+        case enums.measureWild:           return '57px';
+        case enums.moreTerms:             return '32px';
+        case enums.officeWild:            return '79px';
+        case enums.settingsAccount:       return '53px';
+        case enums.settingsHamburger:     return '43px';
+        case enums.settingsSubscription:  return '54px';
+        case enums.settingsWild:          return '57px';
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
-        default:                    return '0px';
+        default:                          return '0px';
       }
     } else if (sizeString === '--lg') {
       switch (pageEnumeration()) {
-        case enums.ballotSmHdrWild: return '135px';
-        case enums.ballotVote:      return isSignedIn ? '128px' : '135px';
-        case enums.candidate:       return '55px';
-        case enums.candidateWild:   return '53px';
-        case enums.measureWild:     return '40px';
-        case enums.moreTerms:       return '32px';
-        case enums.officeWild:      return '78px';
-        case enums.settingsHamburger: return '46px';
-        case enums.settingsWild:    return '61px';
+        case enums.ballotSmHdrWild:       return '135px';
+        case enums.ballotVote:            return isSignedIn ? '128px' : '135px';
+        case enums.candidate:             return '55px';
+        case enums.candidateWild:         return '53px';
+        case enums.measureWild:           return '40px';
+        case enums.moreTerms:             return '32px';
+        case enums.officeWild:            return '78px';
+        case enums.settingsAccount:       return '51px';
+        case enums.settingsHamburger:     return '46px';
+        case enums.settingsSubscription:  return '87px';
+        case enums.settingsWild:          return '61px';
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
-        default:                    return '0px';
+        default:                          return '0px';
       }
     } if (sizeString === '--md') {
       switch (pageEnumeration()) {
@@ -239,10 +243,12 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '53px';
         case enums.moreTerms:       return '32px';
         case enums.officeWild:      return '84px';
-        case enums.settingsHamburger: return '38px';
-        case enums.settingsWild:    return '61px';
+        case enums.settingsAccount:       return '53px';
+        case enums.settingsHamburger:     return '38px';
+        case enums.settingsSubscription:  return '53px';
+        case enums.settingsWild:          return '61px';
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
-        default:                    return '0px';
+        default:                          return '0px';
       }
     } else if (sizeString === '--sm') {
       switch (pageEnumeration()) {
