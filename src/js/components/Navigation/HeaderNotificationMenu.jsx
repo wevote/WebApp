@@ -170,6 +170,7 @@ class HeaderNotificationMenu extends Component {
               max={9}
               style={{
                 display: 'inline-block',
+                height: '35px',
               }}
             >
               <Notifications />
@@ -217,6 +218,7 @@ const styles = theme => ({
   iconButtonRoot: {
     color: 'rgba(17, 17, 17, .4)',
     outline: 'none !important',
+    height: '48px',
     paddingRight: 0,
     '&:hover': {
       backgroundColor: 'transparent',
