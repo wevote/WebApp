@@ -1,32 +1,29 @@
-const assert = require('assert');
-const { clearTextInputValue, scrollIntoViewSimple, scrollIntoViewSelect, simpleClick, selectClick, simpleTextInput, hiddenClick } = require('../utils');
+const { assert } = require('assert');
+const { clearTextInputValue, scrollIntoViewSimple, scrollIntoViewSelect, simpleClick, selectClick, simpleTextInput, hiddenClick, selectTextInput } = require('../utils');
 
 const PAUSE_DURATION_MICROSECONDS = 1250;
-const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
-const IOS_CONTEXT = 'WEBVIEW_';
-const { voterDeviceId /*, twitterUserName, twitterPassword */ } = driver.config;
+const WEBVIEW = 'WEBVIEW_';
+const { voterDeviceId, twitterUserName, twitterPassword } = driver.config;
 const { isAndroid, isCordovaFromAppStore, isIOS } = driver.config.capabilities;
 const sqlTest = "' or 1=1 -- -";
 const xssTest = '>script>alert("1")>/script>';
 const xssTest2 = "@>script>alert('1')>/script>";
 const xssTest3 = '">meta name=\'>script>alert(1)>/script>\'>"';
 
-describe('Cross browser automated testing',  () => {
+describe('Cross browser automated testing', async () => {
+  // Run before any test
   before(async () => {
     if (isCordovaFromAppStore) {
-      // switch contexts and click through intro
+      // For the apps downloadable from either the Apple App Store or Android Play Store,
+      // click through the onboarding screens
       const contexts = await driver.getContexts();
-      let webview = false;
-      // eslint-disable-next-line
-      for (const context of contexts) {
-        if ((isAndroid && context.includes(ANDROID_CONTEXT)) || (isIOS && context.includes(IOS_CONTEXT))) {
-          // eslint-disable-next-line no-await-in-loop
-          await driver.switchContext(context);
-          webview = true;
-          break;
-        }
+      if (contexts[1].includes(WEBVIEW)) {
+        await driver.switchContext(contexts[1]);
+        await driver.setOrientation('LANDSCAPE');
+        await driver.setOrientation('PORTRAIT');
+      } else {
+        await assert(false);
       }
-      assert(webview);
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await selectClick('div[data-index="0"] .intro-story__btn--bottom'); // Click first next button
       await selectClick('div[data-index="1"] .intro-story__btn--bottom'); // Click second next button
@@ -62,7 +59,7 @@ describe('Cross browser automated testing',  () => {
     if (isCordovaFromAppStore) {
       await simpleClick('smsSignIn-splitIconButton');
     }
-    await simpleTextInput('enterVoterPhone', '18004444444'); // Inputs voter phone number
+    await simpleTextInput('enterVoterPhone', '15005550006'); // Inputs voter phone number
     await simpleClick('voterPhoneSendSMS'); // Clicks "Send Verification Code"
     await simpleTextInput("digit1", "0");
     await simpleTextInput("digit2", "1");
@@ -70,17 +67,25 @@ describe('Cross browser automated testing',  () => {
     await simpleTextInput("digit4", "3");
     await simpleTextInput("digit5", "4");
     await simpleTextInput("digit6", "5");
-    await simpleClick('emailVerifyButton'); // Click Verify
+    await hiddenClick('emailVerifyButton'); // Click Verify
     await simpleClick('emailVerificationBackButton'); // Click back
     await simpleTextInput('enterVoterPhone', 'A'.repeat(200)); // Type input
     await simpleClick('cancelVoterPhoneSendSMS'); // Clicks the cancel button
+    await browser.deleteSession();
   });
 
-  it('should set the cookie', async () =>  {
-    await browser.url('https://.wevote.us/');
-    await browser.setCookies({ name: 'voter_device_id', value: voterDeviceId, domain: '.wevote.us' });
-    await browser.refresh();
-  });
+//  it('should set the cookie', async () =>  {
+//    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//    if (isCordovaFromAppStore && isIOS) {
+//      await browser.setCookies({ name: 'voter_device_id', value: voterDeviceId, domain: '.^filecookies^' });
+//      await simpleClick('readyTabFooterBar');
+//    } else {
+//      await browser.url('https://wevote.us/');
+//      await browser.setCookies({ name: 'voter_device_id', value: voterDeviceId, domain: '.wevote.us' });
+//      await browser.url('ready');
+//    }
+//    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+//  });
 
 //  it('should sign in with twitter', async () =>  {
 //    if (twitterUserName && twitterPassword) {
@@ -120,88 +125,88 @@ describe('Cross browser automated testing',  () => {
 //    }
 //  });
 
-  it('should test settings page', async () => {
-    await browser.pause(PAUSE_DURATION_MICROSECONDS * 10);
-    await hiddenClick('profileAvatarHeaderBar'); // Clicks on Setting
-    await hiddenClick('#profilePopUpYourSettings > button');
-    await simpleTextInput("first-name", 'A'.repeat(200));
-    await simpleTextInput("last-name", xssTest);
-    await simpleTextInput("organization-name", sqlTest);
-    await simpleTextInput("organizationWebsiteTextArea", 'A'.repeat(200));
-    await simpleTextInput("organizationDescriptionTextArea", xssTest);
-    await simpleClick("edit");
-    await selectClick('#securityAndSignIn span');
-    await simpleTextInput("enterVoterPhone", "9723591212");
-    await simpleClick('voterPhoneSendSMS');
-    await simpleTextInput('enterVoterEmailAddress', 'automated_voter1@WeVote.info');
-    await simpleClick('voterEmailAddressEntrySendCode');
-    await simpleTextInput("digit1", "0");
-    await simpleTextInput("digit2", "1");
-    await simpleTextInput("digit3", "2");
-    await simpleTextInput("digit4", "3");
-    await simpleTextInput("digit5", "4");
-    await simpleTextInput("digit6", "5");
-    await simpleClick("emailVerifyButton");
-    await simpleClick('codeVerificationDialog');
-    await simpleClick('changeEmailAddressButton');
-    await selectClick('=Send Verification Again');
-    await simpleClick('emailVerificationBackButton');
-    await simpleClick('notifications');
-    await simpleClick('newsletterOptIn');
-    await simpleClick('domain');
-    await selectClick('=Site Text');
-    await simpleTextInput('addTitleHereInput', xssTest);
-    await simpleTextInput("addIntroductionHereInput", sqlTest);
-    await simpleClick('siteTextSaveButton');
-    await simpleClick('sharing');
-//    await simpleClick('hideWeVoteLogoSwitch'); // Switch is not clickable
-    await scrollIntoViewSimple("settingsSharingInputBox");
-    await simpleTextInput("settingsSharingInputBox", sqlTest);
-    await simpleClick('cancelChosenSocialShareDescriptionButton');
-//    await simpleClick('chosenPreventSharingOpinions'); // Switch is not clickable
-    await scrollIntoViewSimple("subscriptionPlan");
-    await simpleClick('subscriptionPlan');
-    await simpleClick('changePlanButton');
-    await simpleClick("profileClosePaidAccountUpgradeModal");
-    await simpleClick('analytics');
-    await simpleTextInput("googleAnalyticsTrackerInput", xssTest);
-    await simpleClick('googleAnalyticsTrackerInputCancel');
-    await simpleTextInput("verifyWebmasterToolInput", xssTest3);
-    await simpleClick('verifyWebmasterToolCancelButton');
-    await simpleTextInput("verifyWebmasterToolInput", xssTest3);
-    await simpleClick('verifyWebmasterToolSaveButton');
-    await simpleClick('toolsForYourWebsite');
-
-    await simpleClick('codeCopierInteractiveBallotTool');
-    await selectClick('#codeCopierInteractiveBallotTool ~ div.u-stack--sm a:nth-child(1)');
-    await selectClick('#codeCopierInteractiveBallotTool ~ div.u-stack--sm a:nth-child(1)');
-
-    await simpleTextInput("enterTwitterHandleInput", xssTest2);
-    await clearTextInputValue("enterTwitterHandleInput", xssTest2);
-
-    await scrollIntoViewSelect('=Attributions');
-    await simpleClick('codeCopierVoterRegistrationTool');
-    await selectClick('#codeCopierVoterRegistrationTool ~ div.u-stack--sm a:nth-child(1)');
-    await selectClick('#codeCopierVoterRegistrationTool ~ div.u-stack--sm a:nth-child(1)');
-
-    await scrollIntoViewSelect('=Attributions');
-    await simpleClick('codeCopierAbsenteeBallotTool');
-    await selectClick('#codeCopierAbsenteeBallotTool ~ div.u-stack--sm a:nth-child(1)');
-    await selectClick('#codeCopierAbsenteeBallotTool ~ div.u-stack--sm a:nth-child(1)');
-
-    await scrollIntoViewSimple('codeCopierVoterRegistrationTool');
-    await simpleClick('codeCopierCheckRegistrationStatusTool');
-    await selectClick('#codeCopierCheckRegistrationStatusTool ~ div.u-stack--sm a:nth-child(1)');
-    await selectClick('#codeCopierCheckRegistrationStatusTool ~ div.u-stack--sm a:nth-child(1)');
-
-    await scrollIntoViewSimple('codeCopierVoterRegistrationTool');
-    await simpleClick('codeCopierElectionReminderTool');
-    await selectClick('#codeCopierElectionReminderTool ~ div.u-stack--sm a:nth-child(1)');
-    await selectClick('#codeCopierElectionReminderTool ~ div.u-stack--sm a:nth-child(1)');
-
-    await scrollIntoViewSimple('selectVoterGuidesSideBarNewVoterGuide');
-    await simpleClick('selectVoterGuidesSideBarNewVoterGuide');
-    await simpleClick('profileCloseVoterGuideChooseElectionModal');
-    await scrollIntoViewSelect('=Click to view example');
-  });
+//  it('should test settings page', async () => {
+//    await browser.pause(PAUSE_DURATION_MICROSECONDS * 10);
+//    await hiddenClick('profileAvatarHeaderBar'); // Clicks on Setting
+//    await hiddenClick('#profilePopUpYourSettings > button');
+//    await simpleTextInput("first-name", 'A'.repeat(200));
+//    await simpleTextInput("last-name", xssTest);
+//    await simpleTextInput("organization-name", sqlTest);
+//    await simpleTextInput("organizationWebsiteTextArea", 'A'.repeat(200));
+//    await simpleTextInput("organizationDescriptionTextArea", xssTest);
+//    await simpleClick("edit");
+//    await selectClick('#securityAndSignIn span');
+//    await simpleTextInput("enterVoterPhone", "15005550006");
+//    await simpleClick('voterPhoneSendSMS');
+//    await simpleTextInput('enterVoterEmailAddress', 'automated_voter1@WeVote.info');
+//    await simpleClick('voterEmailAddressEntrySendCode');
+//    await simpleTextInput("digit1", "0");
+//    await simpleTextInput("digit2", "1");
+//    await simpleTextInput("digit3", "2");
+//    await simpleTextInput("digit4", "3");
+//    await simpleTextInput("digit5", "4");
+//    await simpleTextInput("digit6", "5");
+//    await simpleClick("emailVerifyButton");
+//    await simpleClick('codeVerificationDialog');
+//    await simpleClick('changeEmailAddressButton');
+//    await selectClick('=Send Verification Again');
+//    await simpleClick('emailVerificationBackButton');
+//    await simpleClick('notifications');
+//    await simpleClick('newsletterOptIn');
+//    await simpleClick('domain');
+//    await selectClick('=Site Text');
+//    await simpleTextInput('addTitleHereInput', xssTest);
+//    await simpleTextInput("addIntroductionHereInput", sqlTest);
+//    await simpleClick('siteTextSaveButton');
+//    await simpleClick('sharing');
+//  //    await simpleClick('hideWeVoteLogoSwitch'); // Switch is not clickable
+//    await scrollIntoViewSimple("settingsSharingInputBox");
+//    await simpleTextInput("settingsSharingInputBox", sqlTest);
+//    await simpleClick('cancelChosenSocialShareDescriptionButton');
+//  //    await simpleClick('chosenPreventSharingOpinions'); // Switch is not clickable
+//    await scrollIntoViewSimple("subscriptionPlan");
+//    await simpleClick('subscriptionPlan');
+//    await simpleClick('changePlanButton');
+//    await simpleClick("profileClosePaidAccountUpgradeModal");
+//    await simpleClick('analytics');
+//    await simpleTextInput("googleAnalyticsTrackerInput", xssTest);
+//    await simpleClick('googleAnalyticsTrackerInputCancel');
+//    await simpleTextInput("verifyWebmasterToolInput", xssTest3);
+//    await simpleClick('verifyWebmasterToolCancelButton');
+//    await simpleTextInput("verifyWebmasterToolInput", xssTest3);
+//    await simpleClick('verifyWebmasterToolSaveButton');
+//    await simpleClick('toolsForYourWebsite');
+//
+//    await simpleClick('codeCopierInteractiveBallotTool');
+//    await selectClick('#codeCopierInteractiveBallotTool ~ div.u-stack--sm a:nth-child(1)');
+//    await selectClick('#codeCopierInteractiveBallotTool ~ div.u-stack--sm a:nth-child(1)');
+//
+//    await simpleTextInput("enterTwitterHandleInput", xssTest2);
+//    await clearTextInputValue("enterTwitterHandleInput", xssTest2);
+//
+//    await scrollIntoViewSelect('=Attributions');
+//    await simpleClick('codeCopierVoterRegistrationTool');
+//    await selectClick('#codeCopierVoterRegistrationTool ~ div.u-stack--sm a:nth-child(1)');
+//    await selectClick('#codeCopierVoterRegistrationTool ~ div.u-stack--sm a:nth-child(1)');
+//
+//    await scrollIntoViewSelect('=Attributions');
+//    await simpleClick('codeCopierAbsenteeBallotTool');
+//    await selectClick('#codeCopierAbsenteeBallotTool ~ div.u-stack--sm a:nth-child(1)');
+//    await selectClick('#codeCopierAbsenteeBallotTool ~ div.u-stack--sm a:nth-child(1)');
+//
+//    await scrollIntoViewSimple('codeCopierVoterRegistrationTool');
+//    await simpleClick('codeCopierCheckRegistrationStatusTool');
+//    await selectClick('#codeCopierCheckRegistrationStatusTool ~ div.u-stack--sm a:nth-child(1)');
+//    await selectClick('#codeCopierCheckRegistrationStatusTool ~ div.u-stack--sm a:nth-child(1)');
+//
+//    await scrollIntoViewSimple('codeCopierVoterRegistrationTool');
+//    await simpleClick('codeCopierElectionReminderTool');
+//    await selectClick('#codeCopierElectionReminderTool ~ div.u-stack--sm a:nth-child(1)');
+//    await selectClick('#codeCopierElectionReminderTool ~ div.u-stack--sm a:nth-child(1)');
+//
+//    await scrollIntoViewSimple('selectVoterGuidesSideBarNewVoterGuide');
+//    await simpleClick('selectVoterGuidesSideBarNewVoterGuide');
+//    await simpleClick('profileCloseVoterGuideChooseElectionModal');
+//    await scrollIntoViewSelect('=Click to view example');
+//  });
 });
