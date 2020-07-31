@@ -1,16 +1,11 @@
 const fs = require('fs');
 
-const PAUSE_DURATION_MICROSECONDS = 2500;
+const PAUSE_DURATION_MICROSECONDS = 3000;
 const PAUSE_TEXT_INPUT = 625;
 
 async function clearTextInputValue (elementIdName) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
-  // const charactersToDelete = 1;
-  // for (let i = 0; i <= charactersToDelete; i++) {
-  //   // Delete 30 characters at a time. If we delete 1 at a time the Google location popover refills the input box too fast.
-  //   await clickableItem.setValue('\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003');
-  // }
   await clickableItem.setValue('\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003');
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
@@ -140,6 +135,11 @@ async function hiddenSelectClick (selector) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
+async function hiddenTextInputNth (selector, number, value) {
+  await browser.executeAsync((s, n, v, done) => { document.querySelectorAll(s)[n].value = v; done(); }, selector, number, value);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
 async function hiddenClickNth (selector, index) {
   await browser.executeAsync((s, i, done) => { document.querySelectorAll(s)[i].click(); done(); }, selector, index);
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -152,6 +152,16 @@ async function hiddenTextInput (id, input) {
 
 async function hiddenSelectTextInput (selector, input) {
   await browser.executeAsync((s, i, done) => { document.querySelector(s).value = i; done(); }, selector, input);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+async function getHtml (selector) {
+  const el = await $$(selector);
+  await el.forEach(element => element.getHTML());
+}
+
+async function scrollDown (amount) {
+  await browser.executeAsync((y, done) => { scroll(0, y); done(); }, amount);
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
@@ -191,4 +201,4 @@ function writeToLog (message) {
   });
 }
 
-module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog, hiddenClick, hiddenSelectClick, hiddenSelectTextInput, hiddenTextInput, hiddenClickNth };
+module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog, hiddenClick, hiddenSelectClick, hiddenSelectTextInput, hiddenTextInput, hiddenClickNth, scrollDown, hiddenTextInputNth, getHtml };

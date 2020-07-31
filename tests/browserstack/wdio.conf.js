@@ -9,14 +9,14 @@ exports.config = {
   key: browserStackConfig.BROWSERSTACK_KEY,
   updateJob: false,
   specs: [
-    './specs/profileMainTest.js',
+    './specs/readyMainTest.js',
   ],
   twitterUserName: browserStackConfig.TWITTER_USER_NAME,
   twitterPassword: browserStackConfig.TWITTER_PASSWORD,
   exclude: [],
   capabilities: [
     {
-      name: 'profileMainTest: iPhone XR 12',
+      name: 'readyMainTest: iPhone XR 12',
       build: buildNameForDisplay,
       device: 'iPhone XR',
       os_version: '12',
@@ -34,7 +34,7 @@ exports.config = {
       isMobileScreenSize: true,
     },
 //    {
-//      name: 'profileMainTest: %device1%os1 %os_version1',
+//      name: 'readyMainTest: %device1%os1 %os_version1',
 //      build: buildNameForDisplay,
 //      device: '%device1',
 //      os: '%os1',
@@ -54,7 +54,7 @@ exports.config = {
 //      isMobileScreenSize: true,
 //    },
 //    {
-//      name: 'profileMainTest: %device2%os2 %os_version2',
+//      name: 'readyMainTest: %device2%os2 %os_version2',
 //      build: buildNameForDisplay,
 //      device: '%device2',
 //      os: '%os2',
@@ -74,7 +74,7 @@ exports.config = {
 //      isMobileScreenSize: true,
 //    },
 //    {
-//      name: 'profileMainTest: %device3%os3 %os_version3',
+//      name: 'readyMainTest: %device3%os3 %os_version3',
 //      build: buildNameForDisplay,
 //      device: '%device3',
 //      os: '%os3',
@@ -94,7 +94,7 @@ exports.config = {
 //      isMobileScreenSize: true,
 //    },
 //    {
-//      name: 'profileMainTest: %device4%os4 %os_version4',
+//      name: 'readyMainTest: %device4%os4 %os_version4',
 //      build: buildNameForDisplay,
 //      device: '%device4',
 //      os: '%os4',
