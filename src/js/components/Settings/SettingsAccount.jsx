@@ -6,12 +6,11 @@ import styled from 'styled-components';
 import cookies from '../../utils/cookies';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
-import AppleSignInCordova from '../Apple/AppleSignInCordova';
+import AppleSignIn from '../Apple/AppleSignIn';
 import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, isWebApp,
-  restoreStylesAfterCordovaKeyboard, isIOS,
-} from '../../utils/cordovaUtils';
+  restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
@@ -73,7 +72,7 @@ export default class SettingsAccount extends Component {
   // Set up this component upon first entry
   // componentWillMount is used in WebApp
   componentDidMount () {
-    // console.log("SignIn componentDidMount");
+    // console.log("SettingsAccount componentDidMount");
     this.onVoterStoreChange();
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
@@ -130,7 +129,7 @@ export default class SettingsAccount extends Component {
     } else {
       const isOnWeVoteRootUrl = AppStore.isOnWeVoteRootUrl();
       const isOnWeVoteSubdomainUrl = AppStore.isOnWeVoteSubdomainUrl();
-      const isOnFacebookSupportedDomainUrl = AppStore.isOnFacebookSupportedDomainUrl();
+      const isOnFacebookSupportedDomainUrl = AppStore.isOnFacebookSupportedDomainUrl() || window.location.href.includes('ngrok');
       let pleaseSignInSubTitle = '';
       if (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl || isOnFacebookSupportedDomainUrl) {
         pleaseSignInSubTitle = 'Don\'t worry, we won\'t post anything automatically.';
@@ -338,13 +337,11 @@ export default class SettingsAccount extends Component {
       }
     }
 
-    // console.log('SettingsAccount voterIsSignedIn', voterIsSignedIn, 'signedInTwitter', voterIsSignedInTwitter, 'signedInFacebook', voterIsSignedInFacebook,
+    // console.log('SettingsAccount voterIsSignedIn', voterIsSignedIn, '\nsignedInTwitter', voterIsSignedInTwitter, 'signedInFacebook', voterIsSignedInFacebook,
     //   'signedInWithApple', voterIsSignedInWithApple, '\nhideDialogForCordova', hideDialogForCordova, 'hideCurrentlySignedInHeader', hideCurrentlySignedInHeader,
     //   'hideTwitterSignInButton', hideTwitterSignInButton,
     //   'hideFacebookSignInButton', hideFacebookSignInButton, 'hideDialogForCordova', hideDialogForCordova,
     //   'isOnFacebookSupportedDomainUrl', isOnFacebookSupportedDomainUrl, 'isOnWeVoteRootUrl', isOnWeVoteRootUrl);
-
-    // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     return (
       <>
@@ -480,10 +477,7 @@ export default class SettingsAccount extends Component {
               </div>
             ) : null
             }
-            {/* TODO: 7/18/20. This will need to be !isAndroid() && nextReleaseFeaturesEnabled && */}
-            {isIOS() && (
-              <AppleSignInCordova signedIn={voterIsSignedInWithApple} closeSignInModal={this.localCloseSignInModal} />
-            )}
+            <AppleSignIn signedIn={voterIsSignedInWithApple} closeSignInModal={this.localCloseSignInModal} />
             {!hideVoterPhoneEntry && isWebApp() && (
               <VoterPhoneVerificationEntry
                 closeSignInModal={this.localCloseSignInModal}

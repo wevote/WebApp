@@ -5,7 +5,7 @@ import { EditLocation } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, InputBase, Button } from '@material-ui/core';
 import BallotStore from '../../stores/BallotStore';
-import { historyPush, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { historyPush, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
@@ -58,10 +58,10 @@ class EditAddressOneHorizontalRow extends Component {
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.ballotStoreListener.remove();
-    if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed.
+    if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed for Cordova
       this.googleAutocompleteListener.remove();
-    } else {
-      console.log('Google Maps Error: DeletedApiProjectMapError');
+    } else if (isWebApp()) {
+      console.log('ERROR: Google Maps API IS NOT LOADED');
     }
     restoreStylesAfterCordovaKeyboard('EditAddressOneHorizontalRow');
   }

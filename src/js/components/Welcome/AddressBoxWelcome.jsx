@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import TextBox from './TextBox';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
-import { restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 class AddressBoxWelcome extends PureComponent {
@@ -28,6 +28,8 @@ class AddressBoxWelcome extends PureComponent {
       const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
       addressAutocomplete.setComponentRestrictions({ country: 'us' });
       this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
+    } else if (isWebApp()) {
+      console.log('ERROR: Google Maps API IS NOT LOADED');
     }
   }
 
@@ -44,10 +46,8 @@ class AddressBoxWelcome extends PureComponent {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
-    if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed.
+    if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed for Cordova
       this.googleAutocompleteListener.remove();
-    } else {
-      console.log('Google Maps Error: DeletedApiProjectMapError');
     }
     restoreStylesAfterCordovaKeyboard('AddressBoxWelcome');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.timer) {

@@ -5,7 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { Paper, InputBase, Button } from '@material-ui/core';
 import BallotStore from '../stores/BallotStore';
 import BallotActions from '../actions/BallotActions';
-import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
+import { historyPush, isCordova, isWebApp, prepareForCordovaKeyboard,
+  restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
 import LoadingWheel from './LoadingWheel';
 import { renderLog } from '../utils/logging';
 import VoterActions from '../actions/VoterActions';
@@ -51,11 +52,13 @@ class AddressBox extends Component {
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    const { google } = window;
+    const { google } = window;  // Cordova purposefully does not load the google maps API at this time
     if (google !== undefined) {
       const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
       addressAutocomplete.setComponentRestrictions({ country: 'us' });
       this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
+    } else if (isWebApp()) {
+      console.log('ERROR: Google Maps API IS NOT LOADED');
     }
   }
 
@@ -100,10 +103,8 @@ class AddressBox extends Component {
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.ballotStoreListener.remove();
-    if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed.
+    if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed for Cordova
       this.googleAutocompleteListener.remove();
-    } else {
-      console.log('Google Maps Error: DeletedApiProjectMapError');
     }
     restoreStylesAfterCordovaKeyboard('AddressBox');
   }
