@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import ActivityActions from '../../actions/ActivityActions';
 import CandidateList from '../../components/Ballot/CandidateList';
 import { capitalizeString } from '../../utils/textFormat';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -103,6 +104,7 @@ class Office extends Component {
         AppActions.setShowSharedItemModal(sharedItemCode);
       }
     }
+    ActivityActions.activityNoticeListRetrieve();
     AnalyticsActions.saveActionOffice(VoterStore.electionId(), this.props.params.office_we_vote_id);
   }
 

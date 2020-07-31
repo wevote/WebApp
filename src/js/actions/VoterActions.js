@@ -288,11 +288,21 @@ export default {
       });
   },
 
-  voterUpdateNotificationSettingsFlags (flagIntegerToSet, flag_integer_to_unset = '') {
+  voterUpdateNotificationSettingsFlags (flagIntegerToSet, flagIntegerToUnset = '') {
     Dispatcher.loadEndpoint('voterUpdate',
       {
         notification_flag_integer_to_set: flagIntegerToSet,
-        notification_flag_integer_to_unset: flag_integer_to_unset,
+        notification_flag_integer_to_unset: flagIntegerToUnset,
+      });
+  },
+
+  voterNotificationSettingsUpdateFromSecretKey (emailSubscriptionSecretKey = '', smsSubscriptionSecretKey = '', flagIntegerToSet = 0, flagIntegerToUnset = 0) {
+    Dispatcher.loadEndpoint('voterNotificationSettingsUpdate',
+      {
+        email_subscription_secret_key: emailSubscriptionSecretKey,
+        sms_subscription_secret_key: smsSubscriptionSecretKey,
+        notification_flag_integer_to_set: flagIntegerToSet,
+        notification_flag_integer_to_unset: flagIntegerToUnset,
       });
   },
 

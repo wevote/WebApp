@@ -7,7 +7,7 @@ export function voterPhoto (voter) {
   if (!voter) {
     return placeholderImageUrl;
   }
-  const { voter_photo_url_medium: voterPhotoUrlMedium, signedInWithApple } = voter;
+  const { voter_photo_url_medium: voterPhotoUrlMedium, signed_in_with_apple: signedInWithApple } = voter;
   if (!voterPhotoUrlMedium && signedInWithApple  && isIOS()) {
     return placeholderImageUrl;
   }

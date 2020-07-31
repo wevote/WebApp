@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
 import styled from 'styled-components';
+import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BallotItemForOpinions from '../components/OpinionsAndBallotItems/BallotItemForOpinions';
 import BallotActions from '../actions/BallotActions';
@@ -145,6 +146,7 @@ class Opinions2020 extends Component {
       BallotActions.voterBallotItemsRetrieve(0, '', '');
     }
     OrganizationActions.organizationsFollowedRetrieve();
+    ActivityActions.activityNoticeListRetrieve();
 
     window.addEventListener('scroll', this.onScroll);
   }

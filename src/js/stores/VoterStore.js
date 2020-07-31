@@ -37,6 +37,13 @@ class VoterStore extends ReduceStore {
       smsPhoneNumberList: [],
       voterFound: false,
       voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
+      voterNotificationSettingsUpdateStatus: {
+        apiResponseReceived: false,
+        voterFound: false,
+        normalizedEmailAddress: '',
+        normalizedSmsPhoneNumber: '',
+        notificationSettingsFlags: false,
+      },
     };
   }
 
@@ -86,6 +93,23 @@ class VoterStore extends ReduceStore {
   getEmailAddressList () {
     const { emailAddressList } = this.getState();
     return emailAddressList;
+  }
+
+  getPrimaryEmailAddressDict () {
+    const { emailAddressList } = this.getState();
+    let oneEmail = {};
+    let primaryEmailAddress = {};
+    for (let i = 0; i < emailAddressList.length; ++i) {
+      oneEmail = emailAddressList[i];
+      // console.log('getPrimaryEmailAddressDict, oneEmail:', oneEmail);
+      if (oneEmail.primary_email_address === true &&
+          oneEmail.email_permanent_bounce === false &&
+          oneEmail.email_ownership_is_verified === true) {
+        primaryEmailAddress = oneEmail;
+      }
+    }
+    // console.log('getPrimaryEmailAddressDict, primaryEmailAddress:', primaryEmailAddress);
+    return primaryEmailAddress;
   }
 
   getEmailAddressesVerifiedCount () {
@@ -191,6 +215,10 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.is_signed_in || false;
   }
 
+  getVoterNotificationSettingsUpdateStatus () {
+    return this.getState().voterNotificationSettingsUpdateStatus || {};
+  }
+
   // Could be either Facebook photo or Twitter photo
   getVoterPhotoUrlLarge () {
     return this.getState().voter.voter_photo_url_large || '';
@@ -251,6 +279,20 @@ class VoterStore extends ReduceStore {
       return false;
     }
     const notificationSettingsFlags = this.getState().voter.notification_settings_flags || 0;
+    // return True if bit specified by the flag is also set
+    //  in notificationSettingsFlags (voter.notification_settings_flags)
+    // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
+    // so for value of flag = 1 and 4, we return a positive integer,
+    // but, the bit representing 2 and 8 are not set, so for flag = 2 and 8, we return zero
+    return notificationSettingsFlags & flag; // eslint-disable-line no-bitwise
+  }
+
+  getNotificationSettingsFlagStateFromSecretKey (flag) {
+    // Look in js/Constants/VoterConstants.js for list of flag constant definitions
+    if (!this.getState().voterNotificationSettingsUpdateStatus) {
+      return false;
+    }
+    const { notificationSettingsFlags } = this.getState().voterNotificationSettingsUpdateStatus;
     // return True if bit specified by the flag is also set
     //  in notificationSettingsFlags (voter.notification_settings_flags)
     // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
@@ -588,6 +630,31 @@ class VoterStore extends ReduceStore {
           },
         };
 
+      case 'voterNotificationSettingsUpdate':
+        console.log('VoterStore, voterNotificationSettingsUpdate');
+        if (!action.res) {
+          return {
+            ...state,
+            voterNotificationSettingsUpdateStatus: {
+              apiResponseReceived: true,
+              voterFound: false,
+              normalizedEmailAddress: '',
+              normalizedSmsPhoneNumber: '',
+              notificationSettingsFlags: false,
+            },
+          };
+        }
+        return {
+          ...state,
+          voterNotificationSettingsUpdateStatus: {
+            apiResponseReceived: true,
+            voterFound: action.res.voter_found,
+            normalizedEmailAddress: action.res.normalized_email_address,
+            normalizedSmsPhoneNumber: action.res.normalized_sms_phone_number,
+            notificationSettingsFlags: action.res.notification_settings_flags,
+          },
+        };
+
       case 'voterPhotoSave':
         // console.log('VoterStore, voterPhotoSave');
         return {
@@ -720,6 +787,14 @@ class VoterStore extends ReduceStore {
       case 'voterUpdate':
         // console.log('VoterStore  voterUpdate ');
         if (action.res.success) {
+          let interfaceStatusFlags = action.res.interface_status_flags;
+          if (interfaceStatusFlags === undefined) {
+            interfaceStatusFlags = state.voter.interface_status_flags;
+          }
+          let notificationSettingsFlags = action.res.notification_settings_flags;
+          if (notificationSettingsFlags === undefined) {
+            notificationSettingsFlags = state.voter.notification_settings_flags;
+          }
           return {
             ...state,
             voter: {
@@ -728,8 +803,8 @@ class VoterStore extends ReduceStore {
               first_name: action.res.first_name,
               last_name: action.res.last_name,
               facebook_email: action.res.email || state.voter.email,
-              interface_status_flags: action.res.interface_status_flags || state.voter.interface_status_flags,
-              notification_settings_flags: action.res.notification_settings_flags || state.voter.notification_settings_flags,
+              interface_status_flags: interfaceStatusFlags,
+              notification_settings_flags: notificationSettingsFlags,
               voter_donation_history_list: action.res.voter_donation_history_list || state.voter.voter_donation_history_list,
             },
           };

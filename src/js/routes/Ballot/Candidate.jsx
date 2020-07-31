@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
@@ -133,6 +134,7 @@ class Candidate extends Component {
         AppActions.setShowSharedItemModal(sharedItemCode);
       }
     }
+    ActivityActions.activityNoticeListRetrieve();
   }
 
   componentWillReceiveProps (nextProps) {

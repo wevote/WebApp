@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import VoterActions from '../../actions/VoterActions';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import { renderLog } from '../../utils/logging';
-import { isWebApp } from '../../utils/cordovaUtils';
+import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
+import webAppConfig from '../../config';
 
-class AppleSignInWebApp extends Component {
+class AppleSignIn extends Component {
   static propTypes = {
     closeSignInModal: PropTypes.func,
     signedIn: PropTypes.bool,
@@ -14,26 +15,57 @@ class AppleSignInWebApp extends Component {
 
   constructor (props) {
     super(props);
-    this.signInToApple = this.signInToApple.bind(this);
+    this.signInToAppleIOS = this.signInToAppleIOS.bind(this);
+    this.signInToAppleWebApp = this.signInToAppleWebApp.bind(this);
+    this.signInClicked = this.signInClicked.bind(this);
+    this.onSignInSuccess = this.onSignInSuccess.bind(this);
+    this.onSignInFailure = this.onSignInFailure.bind(this);
   }
 
-  // Initialize Sign in with Apple
-  signInToApple () {
+  componentDidMount () {
+    if (isWebApp()) {
+      const { AppleID } = window;
+      if (AppleID) {
+        AppleID.auth.init({
+          clientId: 'us.wevote.webapp',
+          scope: 'name email',
+          redirectURI: 'https://6384bfb6c401.ngrok.io/applesigninprocess',
+          state: 'steve',
+          popup: true,
+        });
+      } else {
+        console.log('ERROR in AppleSignIn, the Sign In with Apple client did not load');
+      }
+      document.addEventListener('AppleIDSignInOnSuccess', (data) => {
+        console.log('AppleIDSignInOnSuccessListener  data:', data);
+      });
+      document.addEventListener('AppleIDSignInOnFailure', (error) => {
+        console.log('AppleIDSignInOnFailureListener ERROR:', error);
+      });
+    }
+  }
+
+  componentWillUnmount () {
+    if (isWebApp()) {
+      // document.removeEventListener('AppleIDSignInOnSuccess', this.onSignInSuccess());
+      // document.removeEventListener('AppleIDSignInOnFailure', this.onSignInFailure());
+    }
+  }
+
+  onSignInSuccess (data) {
+    console.log('onSignInSuccess  data:', data);
+  }
+
+  onSignInFailure (data) {
+    console.log('onSignInFailure  data:', data);
+  }
+
+  signInToAppleIOS () {
     console.log('SignInWithApple: Button clicked');
     const { SignInWithApple: { signin } } = window.cordova.plugins;
 
     // window.voterActionVoterAppleSignInSave = VoterActions.voterAppleSignInSave;
     const voterActionVoterAppleSignInSave = VoterActions.voterAppleSignInSave;
-
-    // Listen for authorization success
-    document.addEventListener('AppleIDSignInOnSuccess', (data) => {
-      console.log('signInToApple SUCCESS -------------:', data);
-    });
-
-    // Listen for authorization failures
-    document.addEventListener('AppleIDSignInOnFailure', (error) => {
-      console.log('signInToApple ERROR -------------:', error);
-    });
 
     signin(
       { requestedScopes: [0, 1]},
@@ -71,13 +103,40 @@ class AppleSignInWebApp extends Component {
     )(voterActionVoterAppleSignInSave);
   }
 
+  signInToAppleWebApp () {  // https://i.stack.imgur.com/Le6Jf.png  https://stackoverflow.com/questions/61071848/sign-in-with-apple-js-returns-invalid-request-in
+    const { AppleID } = window;
+    console.log('AppleSignIn signInToAppleWebApp button pressed');
+    try {
+      AppleID.auth.signIn();
+    } catch (error) {
+      console.log('signInToAppleWebApp exception ERROR:', error);
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  signInClicked (enabled) {
+    if (!enabled) {
+      return null;
+    }
+    if (isWebApp()) {
+      this.signInToAppleWebApp();
+    } else {
+      this.signInToAppleIOS();
+    }
+  }
+
   render () {
     renderLog('AppleSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     const isWeb = isWebApp();
+    const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
     const { signedIn } = this.props;
-    const { device: { version } } = window;
     let enabled = true;
-    if (version) {
+
+    if (isAndroid() || !nextReleaseFeaturesEnabled) {
+      // console.log('Sign in with Apple is not available on Android');
+      return null;
+    } else if (isIOS()) {
+      const { device: { version } } = window;
       const floatVersion = parseFloat(version);
       if (floatVersion < 13.0) {
         console.log('Sign in with Apple is not available on iOS < 13, this phone is running: ', floatVersion);
@@ -94,7 +153,10 @@ class AppleSignInWebApp extends Component {
     } else {
       return (
         <AppleSignInContainer enabled={enabled}>
-          <AppleSignInButton type="submit" isWeb={isWeb} onClick={() => (enabled ? this.signInToApple() : null)}>
+          <AppleSignInButton type="submit"
+                             isWeb={isWeb}
+                             onClick={() => this.signInClicked(enabled)}
+          >
             <AppleLogo signedIn={signedIn} enabled={enabled} />
             <AppleSignInText id="appleSignInText" enabled={enabled}>
               Sign in with Apple
@@ -106,7 +168,7 @@ class AppleSignInWebApp extends Component {
   }
 }
 
-export default AppleSignInWebApp;
+export default AppleSignIn;
 
 export function AppleLogo (parameters) {
   return (

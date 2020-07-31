@@ -50,22 +50,22 @@
     // Hide when 575px or less
     display: none !important;
   }
-  @include breakpoints(960px) {
-    // Hide when 960px or greater
+  @include breakpoints(992px) {
+    // Hide when 992px or greater
     display: none !important;
   }
 }
 
 .u-show-mobile-tablet {
-  @include breakpoints(960px) {
-    // Hide when 960px or greater
+  @include breakpoints(992px) {
+    // Hide when 992px or greater
     display: none !important;
   }
 }
 
 .u-show-desktop {
-  @include breakpoints(0 960px) {
-    // Hide when 959px or less
+  @include breakpoints(0 992px) {
+    // Hide when 991px or less
     display: none !important;
   }
 }

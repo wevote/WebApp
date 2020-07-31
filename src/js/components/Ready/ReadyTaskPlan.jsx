@@ -10,6 +10,7 @@ import plan100Percent from '../../../img/global/svg-icons/ready/plan-100-percent
 import ReadyStore from '../../stores/ReadyStore';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
 import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
 
 class ReadyTaskPlan extends React.Component {
   static propTypes = {
@@ -59,6 +60,7 @@ class ReadyTaskPlan extends React.Component {
   }
 
   render () {
+    renderLog('ReadyTaskPlan');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const { completed, voterPlanText } = this.state;
 

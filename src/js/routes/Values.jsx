@@ -119,6 +119,7 @@ export default class Values extends Component {
                 <FindOpinionsForm
                   headerText="Find Opinions or Endorsements"
                   searchTextLarge
+                  uniqueExternalId="showMobileTablet"
                 />
               </div>
             </div>
@@ -148,6 +149,7 @@ export default class Values extends Component {
                 <FindOpinionsForm
                   headerText="Find Opinions / Endorsements"
                   searchTextLarge
+                  uniqueExternalId="showDesktop"
                 />
               </div>
             </div>

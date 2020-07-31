@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import AnalyticsActions from '../actions/AnalyticsActions';
-import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
-import LoadingWheel from '../components/LoadingWheel';
-import { renderLog } from '../utils/logging';
-import VoterStore from '../stores/VoterStore';
+import Card from '@material-ui/core/Card';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import Testimonial from '../../components/Widgets/Testimonial';
+import VoterStore from '../../stores/VoterStore';
 
 class News extends Component {
   static propTypes = {};
@@ -41,23 +44,31 @@ class News extends Component {
       return LoadingWheel;
     }
 
+    const testimonialAuthor = 'Alissa B., Oakland, California';
+    const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
+    const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from.';
     return (
       <span>
         <Helmet title="Ready to Vote? - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="row">
           <div className="col-sm-12 col-md-8">
-            <PageTitle>
-              News
-            </PageTitle>
+            <Card className="card">
+              <div className="card-main">
+                <PageTitle>
+                  {LoadingWheel}
+                </PageTitle>
+              </div>
+            </Card>
           </div>
           <div className="col-md-4 d-none d-md-block">
-            <RightColumnTitle>
-              Actions
-            </RightColumnTitle>
             <div className="card">
               <div className="card-main">
-                Hello
+                <Testimonial
+                  imageUrl={imageUrl}
+                  testimonialAuthor={testimonialAuthor}
+                  testimonial={testimonial}
+                />
               </div>
             </div>
           </div>
@@ -68,10 +79,6 @@ class News extends Component {
 }
 
 const PageTitle = styled.div`
-  margin: 20px 0;
-`;
-
-const RightColumnTitle = styled.div`
   margin: 20px 0;
 `;
 

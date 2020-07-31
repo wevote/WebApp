@@ -9,6 +9,8 @@ export default function componentLoader (componentName) {
       return React.lazy(() => import('../routes/More/AbsenteeBallot'));
     case 'AddCandidateForExtension':
       return React.lazy(() => import('../routes/Ballot/AddCandidateForExtension'));
+    case 'AppleSignInProcess':
+      return React.lazy(() => import('../routes/Process/AppleSignInProcess'));
     case 'Application':
       return React.lazy(() => import('../Application'));
     case 'Attributions':
@@ -68,7 +70,7 @@ export default function componentLoader (componentName) {
     case 'Measure':
       return React.lazy(() => import('../routes/Ballot/Measure'));
     case 'News':
-      return React.lazy(() => import('../routes/News'));
+      return React.lazy(() => import('../routes/Activity/News'));
     case 'Office':
       return React.lazy(() => import('../routes/Ballot/Office'));
     case 'Opinions':
@@ -118,6 +120,8 @@ export default function componentLoader (componentName) {
       return React.lazy(() => import('../routes/Settings/SettingsDashboard'));
     case 'SettingsMenuMobile':
       return React.lazy(() => import('../routes/Settings/SettingsMenuMobile'));
+    case 'SettingsNotificationsUnsubscribe':
+      return React.lazy(() => import('../routes/Settings/SettingsNotificationsUnsubscribe'));
     case 'SharedItemLanding':
       return React.lazy(() => import('../routes/SharedItemLanding'));
     case 'SignInJumpProcess':

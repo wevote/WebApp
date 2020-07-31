@@ -341,7 +341,7 @@ class VoterPhoneVerificationEntry extends Component {
   }
 
   sendSignInCodeSMS (event) {
-    console.log('sendSignInCodeSMS');
+    // console.log('sendSignInCodeSMS');
     if (event) {
       event.preventDefault();
     }
