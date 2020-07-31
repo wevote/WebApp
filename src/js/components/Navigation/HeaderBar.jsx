@@ -743,9 +743,9 @@ const styles = theme => ({
     },
   },
   iconButtonRoot: {
-    paddingTop: 2,
+    paddingTop: 1,
     paddingRight: 0,
-    paddingBottom: 2,
+    paddingBottom: 3,
     paddingLeft: 0,
     color: 'rgba(17, 17, 17, .4)',
     outline: 'none !important',
@@ -787,17 +787,17 @@ const styles = theme => ({
 });
 
 const AddressWrapperDesktop = styled.div`
-  margin-top: 6px;
+  margin-top: 4px;
   width: 220px;
 `;
 
 const AddressWrapperMobile = styled.div`
-  margin-top: 6px;
+  margin-top: 4px;
   width: 104px;
 `;
 
 const AddressWrapperMobileTiny = styled.div`
-  margin-top: 10px;
+  margin-top: 7px;
 `;
 
 const FirstNameWrapper = styled.div`
