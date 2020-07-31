@@ -9,7 +9,7 @@ class ActivityStore extends ReduceStore {
   }
 
   allActivityNotices () {
-    return this.getState().allActivityNotices;
+    return this.getState().allActivityNotices || [];
   }
 
   reduce (state, action) {
@@ -20,6 +20,9 @@ class ActivityStore extends ReduceStore {
           ...state,
           allActivityNotices: action.res.activity_notice_list,
         };
+
+      case 'voterSignOut':
+        return this.getInitialState();
 
       default:
         return state;

@@ -71,6 +71,8 @@ import AppStore from '../stores/AppStore'; // eslint-disable-line import/no-cycl
 // ACTION_VIEW_SHARED_READY = 68
 // ACTION_VIEW_SHARED_READY_ALL_OPINIONS = 69
 // ACTION_SEARCH_OPINIONS = 70
+// ACTION_UNSUBSCRIBE_EMAIL_PAGE = 71
+// ACTION_UNSUBSCRIBE_SMS_PAGE = 72
 
 export default {
 
@@ -297,6 +299,16 @@ export default {
 
   saveActionShareReadyAllOpinions (googleCivicElectionId) {
     const actionConstant = 59; // ACTION_SHARE_READY_ALL_OPINIONS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionUnsubscribeEmailPage (googleCivicElectionId) {
+    const actionConstant = 71; // ACTION_UNSUBSCRIBE_EMAIL_PAGE
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionUnsubscribeSmsPage (googleCivicElectionId) {
+    const actionConstant = 72; // ACTION_UNSUBSCRIBE_SMS_PAGE
     this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 

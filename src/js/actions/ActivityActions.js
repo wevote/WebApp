@@ -9,6 +9,7 @@ import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
   activityNoticeListRetrieve () {
+    // console.log('activityNoticeListRetrieve');
     Dispatcher.loadEndpoint('activityNoticeListRetrieve',
       {
         // google_civic_election_id: googleCivicElectionId,
