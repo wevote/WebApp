@@ -286,7 +286,7 @@ class SettingsNotificationsUnsubscribe extends Component {
                             type="checkbox"
                           />
                           {/* <input */}
-                          {/*  aria-label="text friend requests" */}
+                          {/*  aria-label="email friend requests" */}
                           {/*  id="friendRequestsEmail" */}
                           {/*  type="checkbox" */}
                           {/*  name="friendRequestsEmail" */}
@@ -298,6 +298,7 @@ class SettingsNotificationsUnsubscribe extends Component {
                       {normalizedSmsPhoneNumberExists && (
                         <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                           <input
+                            aria-label="text friend requests"
                             id="friendRequestsSms"
                             type="checkbox"
                             name="friendRequestsSms"
