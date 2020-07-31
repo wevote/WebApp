@@ -63,7 +63,7 @@ describe('Cross browser automated testing', async () => {
 
   it('should input our address', async () =>  {
     await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', `Oakland, CA 94501${enter}`); // Focus on Location Input
-    await simpleClick('editAddressOneHorizontalRowSaveButton'); // Click save
+    //await simpleClick('editAddressOneHorizontalRowSaveButton'); // Click save
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
   });
 
