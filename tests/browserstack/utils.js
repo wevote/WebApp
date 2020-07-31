@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const PAUSE_DURATION_MICROSECONDS = 2500;
+const PAUSE_DURATION_MICROSECONDS = 3000;
 const PAUSE_TEXT_INPUT = 625;
 
 async function clearTextInputValue (elementIdName) {
@@ -155,6 +155,11 @@ async function hiddenSelectTextInput (selector, input) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
+async function getHtml (selector) {
+  const el = await $$(selector);
+  await el.forEach(element => element.getHTML());
+}
+
 async function scrollDown (amount) {
   await browser.executeAsync((y, done) => { scroll(0, y); done(); }, amount);
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -196,4 +201,4 @@ function writeToLog (message) {
   });
 }
 
-module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog, hiddenClick, hiddenSelectClick, hiddenSelectTextInput, hiddenTextInput, hiddenClickNth, scrollDown, hiddenTextInputNth };
+module.exports = { clearTextInputValue, clickTopLeftCornerOfElement, scrollIntoViewSimple, scrollIntoViewSelect, scrollThroughPage, setNewAddress, setNewAddressAndroid, setNewAddressIOS, simpleClick, selectClick, simpleCloseBootstrapModal, simpleTextInput, selectTextInput, stopScript, writeToLog, hiddenClick, hiddenSelectClick, hiddenSelectTextInput, hiddenTextInput, hiddenClickNth, scrollDown, hiddenTextInputNth, getHtml };

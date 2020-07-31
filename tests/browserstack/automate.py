@@ -28,7 +28,6 @@ def getCssSelector():
 
 def on_press(key):
   if key == keyboard.Key.ctrl_r:
-    print('Ctrl_R!')
     return False
 
 def on_escape():
