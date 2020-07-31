@@ -1,20 +1,28 @@
-const { simpleClick, selectClick, simpleTextInput, selectTextInput, scrollIntoViewSimple, hiddenClickNth, hiddenSelectClick, hiddenClick, hiddenTextInput, scrollDown, hiddenTextInputNth } = require('../utils');
+const { simpleClick, selectClick, simpleTextInput, selectTextInput, hiddenSelectClick, hiddenTextInputNth, hiddenClickNth, hiddenSelectTextInput, getHtml, scrollIntoViewSimple } = require('../utils');
 
 const PAUSE_DURATION_MICROSECONDS = 1250;
-const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
-const IOS_CONTEXT = 'WEBVIEW_1';
+const WEBVIEW = 'WEBVIEW_';
 const xssTest = '<img src=javascript:alert("1")>';
 const enter = '\uE007';
-const { device, isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
+const { isIOS, isCordovaFromAppStore } = driver.config.capabilities;
+let webview_context;
 
-describe('Basic cross-platform We Vote test', async () => {
-  it('should load the app or url', async () => {
-    const { isCordova } = driver.config.capabilities;
-    if (isCordova) {
-      // switch contexts and click through intro
+describe('Cross browser automated testing', async () => {
+  // Run before any test
+  before(async () => {
+    if (isCordovaFromAppStore) {
+      // For the apps downloadable from either the Apple App Store or Android Play Store,
+      // click through the onboarding screens
       const contexts = await driver.getContexts();
-      const context = contexts.includes(ANDROID_CONTEXT) ? ANDROID_CONTEXT : IOS_CONTEXT;
-      await driver.switchContext(context);
+      if (contexts[1].includes(WEBVIEW)) {
+        await driver.switchContext(contexts[1]);
+        await driver.setOrientation('LANDSCAPE');
+        await driver.setOrientation('PORTRAIT');
+        webview_context = contexts[1];
+      } else {
+        await browser.deleteSession();
+      }
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await selectClick('div[data-index="0"] .intro-story__btn--bottom'); // Click first next button
       await selectClick('div[data-index="1"] .intro-story__btn--bottom'); // Click second next button
       await selectClick('div[data-index="2"] .intro-story__btn--bottom'); // Click third next button
@@ -27,31 +35,44 @@ describe('Basic cross-platform We Vote test', async () => {
   });
 
   it('should enter an address', async () => {
-    await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', `Oakland, CA 94501${enter}`); // Enter address
+    await simpleTextInput('editAddressOneHorizontalRowTextForMapSearch', `Oakland, CA 94501`); // Enter address
+    await simpleClick('editAddressOneHorizontalRowSaveButton');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
   });
 
   it('should search for candidates and opinions', async () => {
-    await hiddenTextInputNth('[id^=findCandidatesAndOpinionsSearch]', 2, 'President');
-    await hiddenClickNth('[class^="MuiButtonBase-root MuiIconButton-root jss"]', 4); // Click search icon
+    if (isCordovaFromAppStore && isIOS) {
+      await hiddenSelectTextInput('[class^="MuiInputBase-input FindOpinionsForm-inputDefaultLarge-"]', 'President');
+      await hiddenSelectClick('[class^="MuiButtonBase-root MuiIconButton-root FindOpinionsForm-iconButtonRoot-"]');
+    } else {
+      await hiddenTextInputNth('[id^=findCandidatesAndOpinionsSearch]', 2, 'President');
+      await selectClick('[id^=findCandidatesAndOpinionsIconClick-]');
+    }
     await browser.back();
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
   });
 
   it('should test "We Vote makes being a voter easier', async () => {
-    await hiddenClickNth('#showMoreReadyIntroductionCompressed', 2); // Click "Show More"
+    await getHtml('#showMoreReadyIntroductionCompressed');
+    await simpleClick('showMoreReadyIntroductionCompressed'); // Click "Show More"
     await simpleClick('readMore'); // Click "More"
     await simpleClick('readMore'); // Click "More"
     await simpleClick('showLess'); // Click "Show Less"
     await simpleClick('showLess'); // Click "Show Less"
-    await hiddenClickNth('#showMoreReadyIntroductionCompressed', 2); // Click "Show More"
+    await simpleClick('showMoreReadyIntroductionCompressed', 2); // Click "Show More"
   });
 
   it('should test "Voting?" Section', async() => {
-    await browser.pause(PAUSE_DURATION_MICROSECONDS * 2);
+    await scrollIntoViewSimple('showMoreReadyIntroductionCompressed');
     await simpleClick('decideOnCandidatesButton'); // Click "Decide on candidates" Button
     await browser.back(); // Go back
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('decideOnMeasuresButton'); // Click "Decide on candidates" Button
+    if (isCordovaFromAppStore && isIOS) {
+      await selectClick('[class^="MuiButtonBase-root MuiButton-root MuiButton-outlined"]'); // Click "Decide on measures" Button
+    } else {
+      await simpleClick('decideOnMeasuresButton'); // Click "Decide on measures" Button
+    }
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await browser.back(); // Go back
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('howItWorksButton'); // Click "How It Works" Button
@@ -61,6 +82,10 @@ describe('Basic cross-platform We Vote test', async () => {
     await simpleClick('annotatedSlideShowStep4Next'); // Click next
     await simpleClick('howItWorksGetStartedDesktopButton'); // Click "Get Started"
     await simpleClick('profileCloseSignInModal'); // Click "X"
+    if (isCordovaFromAppStore && isIOS) {
+      await simpleClick('readyTabFooterBar');
+      await scrollIntoViewSimple('showMoreReadyIntroductionCompressed');
+    }
     await simpleClick('showMoreBallotButtons'); // Click "show more"
     await simpleClick('whatsAPersonalizedScoreButton'); // Click "What's a personalized score?" Button
     await simpleClick('personalizedScoreIntroModalNextButton'); // Click "Say What?"
@@ -94,24 +119,70 @@ describe('Basic cross-platform We Vote test', async () => {
   it('should test "When and Where Will You Vote?" Section', async () => {
     await simpleClick('makeYourPlanNowButton'); // Click "Make Your Plan Now" Button
     await simpleClick('selectVotingRoughDate'); // Choose voting date
-    await hiddenSelectClick('option[value="asap"]'); // Choose "The day before election day"
-    await simpleClick('selectApproximateTime'); // Choose time
-    await browser.keys(`9:00 AM${enter}`); // Click "9:00 AM"
-    await simpleClick('selectModeOfTransport'); // Choose mode of transport
-    await browser.keys(`drive${enter}`); // Choose "drive"
-    await simpleClick('selectLocationToDeliverBallot'); // Choose location to deliver ballot
-    await browser.keys(`voting center${enter}`); // Choose "voting center"
+    if (isCordovaFromAppStore && isIOS) {
+      await driver.switchContext('NATIVE_APP');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      let options = await $('//XCUIElementTypePickerWheel');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await options.addValue('The day before election day');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await driver.switchContext(webview_context);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('selectApproximateTime'); // Choose time
+      await driver.switchContext('NATIVE_APP');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      options = await $('//XCUIElementTypePickerWheel');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await options.addValue('9:00 AM');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await driver.switchContext(webview_context);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('selectModeOfTransport'); // Choose mode of transport
+      await driver.switchContext('NATIVE_APP');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      options = await $('//XCUIElementTypePickerWheel');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await options.addValue('drive');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await driver.switchContext(webview_context);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('selectLocationToDeliverBallot'); // Choose location to deliver ballot
+      await driver.switchContext('NATIVE_APP');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      options = await $('//XCUIElementTypePickerWheel');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await options.addValue('voting center');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await driver.switchContext(webview_context);
+    } else {
+      await hiddenSelectClick('option[value="asap"]'); // Choose ""
+      await simpleClick('selectApproximateTime'); // Choose time
+      await browser.keys(`9:00 AM${enter}`); // Click "9:00 AM"
+      await simpleClick('selectModeOfTransport'); // Choose mode of transport
+      await browser.keys(`drive${enter}`); // Choose "drive"
+      await simpleClick('selectLocationToDeliverBallot'); // Choose location to deliver ballot
+      await browser.keys(`voting center${enter}`); // Choose "voting center"
+    }
     await simpleTextInput('enterVotingLocationAddress', xssTest); // Enter in address
     await simpleClick('findPollingLocationButton'); // Click "Find Voting Center"
-    await browser.switchWindow(browser.getWindowHandle().toString()); // Switch back to ready page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('addedToCalendar'); // Click "I added this to my calendar"
-    await simpleClick('addedToCalendar');
-    await simpleClick('textMeReminder'); // Click "Please text me a reminder at:
-    await selectTextInput('input[name="textMeReminderPhoneNumber"]', '8325839162'); // Enter in address
-    await simpleClick('emailMeReminder'); // Click "Please email me a reminder at:"
-    await selectTextInput('input[name="emailMeReminderEmailAddress"]', 'Luobrandon6@gmail.com'); // Enter in email address
+    if (isCordovaFromAppStore && isIOS) {
+      await driver.switchContext('NATIVE_APP');
+      const done = await $('//XCUIElementTypeButton[@name="Done"]'); // Click done
+      await done.click(); // Click done
+      await driver.switchContext(webview_context);
+    } else {
+      await browser.switchWindow(browser.getWindowHandle().toString()); // Switch back to ready page
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await simpleClick('addedToCalendar'); // Click "I added this to my calendar"
+      await simpleClick('addedToCalendar');
+      await simpleClick('textMeReminder'); // Click "Please text me a reminder at:
+      await selectTextInput('input[name="textMeReminderPhoneNumber"]', '15005550006'); // Enter in address
+      await simpleClick('emailMeReminder'); // Click "Please email me a reminder at:"
+      await selectTextInput('input[name="emailMeReminderEmailAddress"]', 'Luobrandon6@gmail.com'); // Enter in email address
+    }
     await simpleClick('yourPlanForVotingSaveButton'); // Click save
+    await browser.deleteSession();
   });
 
 //   it('Are Your Friends Ready to Vote?', async () => {
