@@ -4,7 +4,7 @@ const PAUSE_DURATION_MICROSECONDS = 1250;
 const WEBVIEW = 'WEBVIEW_';
 const xssTest = '<img src=javascript:alert("1")>';
 const enter = '\uE007';
-const { isIOS, isCordovaFromAppStore } = driver.config.capabilities;
+const { isAndroid, isIOS, isCordovaFromAppStore } = driver.config.capabilities;
 let webview_context;
 
 describe('Cross browser automated testing', async () => {
@@ -53,7 +53,6 @@ describe('Cross browser automated testing', async () => {
   });
 
   it('should test "We Vote makes being a voter easier', async () => {
-    await getHtml('#showMoreReadyIntroductionCompressed');
     await simpleClick('showMoreReadyIntroductionCompressed'); // Click "Show More"
     await simpleClick('readMore'); // Click "More"
     await simpleClick('readMore'); // Click "More"
@@ -82,7 +81,7 @@ describe('Cross browser automated testing', async () => {
     await simpleClick('annotatedSlideShowStep4Next'); // Click next
     await simpleClick('howItWorksGetStartedDesktopButton'); // Click "Get Started"
     await simpleClick('profileCloseSignInModal'); // Click "X"
-    if (isCordovaFromAppStore && isIOS) {
+    if (isCordovaFromAppStore) {
       await simpleClick('readyTabFooterBar');
       await scrollIntoViewSimple('showMoreReadyIntroductionCompressed');
     }
@@ -155,6 +154,60 @@ describe('Cross browser automated testing', async () => {
       await options.addValue('voting center');
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
       await driver.switchContext(webview_context);
+    } else if (isAndroid && isCordovaFromAppStore) {
+      await driver.switchContext('NATIVE_APP');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      const selectVotingRoughDate = await $('//android.widget.CheckedTextView[@text="The day before election day"]');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      await selectVotingRoughDate.click();
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      await driver.switchContext(webview_context);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      await simpleClick('selectApproximateTime'); // Choose time
+
+      await driver.switchContext('NATIVE_APP');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      const selectApproximateTime = await $('//android.widget.CheckedTextView[@text="9:00 AM"]'); // Click "9:00 AM"
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      await selectApproximateTime.click();
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      await driver.switchContext(webview_context);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      await simpleClick('selectModeOfTransport'); // Choose mode of transport
+
+      await driver.switchContext('NATIVE_APP');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      const selectModeOfTransport = await $('//android.widget.CheckedTextView[@text="drive"]'); // Choose "drive"
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      await selectModeOfTransport.click();
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      await driver.switchContext(webview_context);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      await simpleClick('selectLocationToDeliverBallot'); // Choose location to deliver ballot
+
+      await driver.switchContext('NATIVE_APP');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      const selectLocationToDeliverBallot = await $('//android.widget.CheckedTextView[@text="voting center"]');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      await selectLocationToDeliverBallot.click();
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+      await driver.switchContext(webview_context);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
     } else {
       await hiddenSelectClick('option[value="asap"]'); // Choose ""
       await simpleClick('selectApproximateTime'); // Choose time
@@ -171,6 +224,15 @@ describe('Cross browser automated testing', async () => {
       const done = await $('//XCUIElementTypeButton[@name="Done"]'); // Click done
       await done.click(); // Click done
       await driver.switchContext(webview_context);
+    } else if (isCordovaFromAppStore && isAndroid) {
+      await driver.switchContext('NATIVE_APP');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      const close = await $('//android.widget.ImageButton[@resource-id="com.android.chrome:id/close_button"]');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await close.click(); // Click X
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await driver.switchContext(webview_context);
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
     } else {
       await browser.switchWindow(browser.getWindowHandle().toString()); // Switch back to ready page
       await browser.pause(PAUSE_DURATION_MICROSECONDS);
