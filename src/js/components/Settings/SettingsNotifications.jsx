@@ -490,8 +490,10 @@ const styles = () => ({
     color: 'rgb(171, 177, 191)',
   },
   tableCellColumn: {
-    paddingLeft: 6,
+    paddingTop: 0,
     paddingRight: 6,
+    paddingBottom: 0,
+    paddingLeft: 6,
   },
   tableCellDescription: {
     paddingLeft: 0,

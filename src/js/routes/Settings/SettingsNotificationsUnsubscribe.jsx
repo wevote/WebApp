@@ -238,6 +238,19 @@ class SettingsNotificationsUnsubscribe extends Component {
                   )}
                 </div>
               </HeaderWrapper>
+              {normalizedEmailAddressExists && (
+                <IntroductionText>
+                  <div>
+                    <strong>
+                      Not your email address?
+                    </strong>
+                    {' '}
+                    This message was probably forwarded to you from a friend.
+                    {' '}
+                    Instead of making changes here, please contact them directly to stop receiving forwarded emails.
+                  </div>
+                </IntroductionText>
+              )}
               <TableContainer>
                 <Table aria-label="simple table">
                   <TableHead>
@@ -514,8 +527,10 @@ const styles = () => ({
     color: 'rgb(171, 177, 191)',
   },
   tableCellColumn: {
-    paddingLeft: 6,
+    paddingTop: 0,
     paddingRight: 6,
+    paddingBottom: 0,
+    paddingLeft: 6,
   },
   tableCellDescription: {
     paddingLeft: 0,
@@ -542,6 +557,11 @@ const HeaderWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+`;
+
+const IntroductionText = styled.div`
+  margin-top: 0px;
+  margin-bottom: 0px;
 `;
 
 const ViewOnWeVoteWrapper = styled.div`
