@@ -78,7 +78,7 @@ export function calculateBallotBaseUrlForVoterGuide (incomingBallotBaseUrl, inco
 
 export function convertNameToSlug (incomingString) {
   // This is used to turn issue/value names into URL paths
-  if (!incomingString) {
+  if (!incomingString || incomingString === '' || incomingString === "") {
     return '';
   }
   let convertedString = incomingString.toLowerCase();
@@ -90,7 +90,7 @@ export function convertNameToSlug (incomingString) {
 }
 
 export function toTitleCase (incomingString) {
-  if (!incomingString) {
+  if (!incomingString || incomingString === '' || incomingString === "") {
     return '';
   }
   let count;
@@ -129,17 +129,17 @@ export function toTitleCase (incomingString) {
 // March 24, 2018:  Poorly named and DOESN'T seem to work.
 // It seems like it is supposed to do what the new "toTitleCase" (above) does,
 // but send this function "Now is the time" and it returns "Now is the time"
-export function capitalizeString (rawString) {
+export function capitalizeString (incomingString) {
   // TODO Update everywhere we use capitalizeString to use toTitleCase
-  return toTitleCase(rawString);
-  // if (rawString === undefined) {
+  return toTitleCase(incomingString);
+  // if (incomingString === undefined) {
   //   return "";
   // }
-  // if (rawString === rawString.toUpperCase()) {
-  //   var lowercase = rawString.toLowerCase();
+  // if (incomingString === incomingString.toUpperCase()) {
+  //   var lowercase = incomingString.toLowerCase();
   //   return lowercase.replace( /(^|\s)([a-z])/g, function (m, p1, p2) { return p1 + p2.toUpperCase(); } );
   // } else {
-  //   return rawString;
+  //   return incomingString;
   // }
 }
 
@@ -164,11 +164,11 @@ export function elipses (name, mobile) {
   return mobile ? cut(3) : cut(8);
 }
 
-export function extractTwitterHandleFromTextString (rawString) {
-  if (rawString === undefined) {
+export function extractTwitterHandleFromTextString (incomingString) {
+  if (!incomingString || incomingString === '' || incomingString === "") {
     return '';
   }
-  let lowerCaseString = rawString.toLowerCase();
+  let lowerCaseString = incomingString.toLowerCase();
   lowerCaseString = lowerCaseString.replace('http://twitter.com', '');
   lowerCaseString = lowerCaseString.replace('http://www.twitter.com', '');
   lowerCaseString = lowerCaseString.replace('https://twitter.com', '');
@@ -200,10 +200,10 @@ export function isString (value) {
   return typeof value === 'string' || value instanceof String;
 }
 
-export function isValidUrl (rawString) {
-  const rawStringTrimmed = rawString.trim();
+export function isValidUrl (incomingString) {
+  const incomingStringTrimmed = incomingString.trim();
   const regexp = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
-  return regexp.test(rawStringTrimmed);
+  return regexp.test(incomingStringTrimmed);
 }
 
 /**
@@ -291,12 +291,12 @@ export function returnFirstXWords (originalString, numberOfWordsToReturn) {
   return xWords;
 }
 
-export function sentenceCaseString (rawStringIncoming) {
-  if (rawStringIncoming === undefined) {
+export function sentenceCaseString (incomingString) {
+  if (!incomingString || incomingString === '' || incomingString === "") {
     return '';
   }
-  const rawString = rawStringIncoming.toLowerCase();
-  const stringArray = rawString.split('.');
+  const incomingStringLowerCase = incomingString.toLowerCase();
+  const stringArray = incomingStringLowerCase.split('.');
   let finalString = '';
   let count;
   let count2;
@@ -315,7 +315,7 @@ export function sentenceCaseString (rawStringIncoming) {
 }
 
 export function shortenText (incomingString, maximumLength) {
-  if (!incomingString) {
+  if (!incomingString || incomingString === '' || incomingString === "") {
     return '';
   }
   const maximumLengthInteger = parseInt(maximumLength, 10);
@@ -338,11 +338,11 @@ export function stringContains (needle, stringHaystack) {
   }
 }
 
-export function stripHtmlFromString (rawString) {
-  if (rawString === undefined) {
+export function stripHtmlFromString (incomingString) {
+  if (!incomingString || incomingString === '' || incomingString === "") {
     return '';
   }
-  let strippedString = rawString.replace(/&nbsp;/gi, ' ');
+  let strippedString = incomingString.replace(/&nbsp;/gi, ' ');
   strippedString = strippedString.replace(/<br>/gi, ' ');
   strippedString = strippedString.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
   return strippedString;
