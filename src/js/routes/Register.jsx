@@ -18,9 +18,9 @@ import { formatStateName } from '../utils/formatStateName';
 import { formatDateToMonthDayYear } from '../utils/textFormat';
 import voteDotOrg from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import turboVote from '../../img/global/logos/turbovote-logo.png';
-// import webAppConfig from '../config';
 
-// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+/* Styled Input confuses lint in this case, so we disable */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 
 class Register extends Component {
   static propTypes = {
