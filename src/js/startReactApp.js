@@ -8,11 +8,9 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from 'styled-components';
 import { isCordova, isWebApp } from './utils/cordovaUtils';
 import routes from './Root';
-import routesSingleBundle from './RootSingleBundle';
 import muiTheme from './mui-theme';
 import styledTheme from './styled-theme';
 import { renderLog } from './utils/logging';
-
 
 // May 2020, this was moved into a separate file, so that the imports can be delayed
 // until after the cordova 'deviceready' event (if we are in Cordova).
@@ -22,13 +20,13 @@ export default function startReactApp () {
   console.log('startReactApp first line in startReactApp');
   console.log('startReactApp isCordova(): ', isCordova());
 
-  const element = isWebApp() ? (
+  const element = (
     // eslint-disable-next-line react/jsx-filename-extension
     <Suspense fallback={<div>&nbsp;</div>}>
       <MuiThemeProvider theme={muiTheme}>
         <ThemeProvider theme={styledTheme}>
           <Router
-            history={browserHistory}
+            history={isWebApp() ? browserHistory : hashHistory}
             render={applyRouterMiddleware(useScroll(() => true))}
           >
             {routes()}
@@ -36,17 +34,6 @@ export default function startReactApp () {
         </ThemeProvider>
       </MuiThemeProvider>
     </Suspense>
-  ) : (
-    <MuiThemeProvider theme={muiTheme}>
-      <ThemeProvider theme={styledTheme}>
-        <Router
-          history={hashHistory}
-          render={applyRouterMiddleware(useScroll(() => true))}
-        >
-          {routesSingleBundle()}
-        </Router>
-      </ThemeProvider>
-    </MuiThemeProvider>
   );
 
   // console.log('startReactApp before render');

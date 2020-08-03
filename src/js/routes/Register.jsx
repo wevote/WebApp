@@ -18,9 +18,9 @@ import { formatStateName } from '../utils/formatStateName';
 import { formatDateToMonthDayYear } from '../utils/textFormat';
 import voteDotOrg from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import turboVote from '../../img/global/logos/turbovote-logo.png';
-// import webAppConfig from '../config';
 
-// const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
+/* Styled Input confuses lint in this case, so we disable */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 
 class Register extends Component {
   static propTypes = {
@@ -173,10 +173,10 @@ class Register extends Component {
         {(this.state.minorStep === '2a' || this.state.minorStep === '3') && (
         <Section>
           <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16 }}>
-                Have you voted in
+            Have you voted in
             {formatStateName(this.state.selectedState)}
             {' '}
-                in the last year?
+            in the last year?
           </h3>
           <Button
                 onClick={() => {
@@ -189,7 +189,7 @@ class Register extends Component {
                 className={this.state.votedInLastYear === 'yes' ? classes.selectedButton : this.state.minorStep === '3' ? classes.button : classes.activeButton}
                 fullWidth
           >
-                Yes
+            Yes
           </Button>
           <Button
                 onClick={() => {
@@ -216,14 +216,14 @@ class Register extends Component {
                 className={this.state.votedInLastYear === 'not-registered' ? classes.selectedButton : this.state.minorStep === '3' ? classes.button : classes.activeButton}
                 fullWidth
           >
-                I&apos;m not registered.
+            I&apos;m not registered.
           </Button>
         </Section>
         )}
         {this.state.minorStep === '3' && (
         <Section>
           <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16 }}>
-                Have you registered in the last 3 weeks?
+            Have you registered in the last 3 weeks?
           </h3>
           <Button
                 onClick={() => {
@@ -234,7 +234,7 @@ class Register extends Component {
                 className={this.state.registeredInLastThreeWeeks === 'yes' ? classes.selectedButton : classes.activeButton}
                 fullWidth
           >
-                Yes
+            Yes
           </Button>
           <Button
                 onClick={() => {
@@ -245,7 +245,7 @@ class Register extends Component {
                 className={this.state.registeredInLastThreeWeeks === 'no' ? classes.selectedButton : classes.activeButton}
                 fullWidth
           >
-                No
+            No
           </Button>
         </Section>
         )}
@@ -255,7 +255,7 @@ class Register extends Component {
     const renderMajorStepB = () => (
       <Section>
         <h3 style={{ textAlign: 'center', fontSize: 28, fontWeight: 700, marginBottom: 0 }}>
-            Congratulations, you&apos;re self-verified!
+          Congratulations, you&apos;re self-verified!
         </h3>
         <img style={{ width: 100, margin: '32px auto', textAlign: 'center', display: 'block' }} src="../../../img/global/svg-icons/ready/register-100-percent.svg" alt="" />
         <p style={{ textAlign: 'center' }}>
