@@ -1,6 +1,7 @@
 import webAppConfig from './config';
 import startReactApp from './startReactApp';
 import { numberOfNeedlesFoundInString } from './utils/search-functions';
+import { isWebApp } from './utils/cordovaUtils';
 
 
 // If in Cordova, need this function before cordovaUtils might be loaded
@@ -52,6 +53,15 @@ if ('ENABLE_WORKBOX_SERVICE_WORKER' in webAppConfig &&
       });
     });
     navigator.serviceWorker.register('/sw.js');
+  });
+}
+
+if (isWebApp()) {
+  document.addEventListener('AppleIDSignInOnSuccess', (data) => {
+    console.log('AppleIDSignInOnSuccessListener index.js data:', data);
+  });
+  document.addEventListener('AppleIDSignInOnFailure', (error) => {
+    console.log('AppleIDSignInOnFailureListener index.js ERROR:', error);
   });
 }
 
