@@ -492,12 +492,18 @@ class HeaderBar extends Component {
     const doNotShowWeVoteLogo = weVoteBrandingOff || hideWeVoteLogo;
     const showWeVoteLogo = !doNotShowWeVoteLogo;
     const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 8px', right: 'unset' };
+    let appBarCname = 'page-header ';
+    if (hasIPhoneNotch()) {
+      appBarCname += ' page-header__cordova-iphonex';
+    } else if (isCordova()) {
+      appBarCname += ' page-header__cordova';
+    }
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
         <AppBar position="relative"
                 color="default"
-                className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`}
+                className={`${appBarCname} ${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`}
                 style={cordovaOverrides}
         >
           <Toolbar className="header-toolbar" disableGutters>

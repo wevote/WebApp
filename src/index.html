@@ -60,6 +60,7 @@
     <!-- This adds over a second delay to main thread, but is required by core bundle.js //-->
     <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
     <script type="text/javascript" async defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
 
     <script type="text/javascript">
       let firstExistingScript = document.getElementsByTagName('script')[0];
@@ -134,16 +135,6 @@
           firstExistingScript.parentNode.insertBefore(scriptElementForMaps, firstExistingScript);
         }, 20000);
       }
-
-      setTimeout(() => {
-        // This is a tiny (28kb) library, and can be needed immediately.  Disabling this load could stop the app from running.
-        // Delay the load of the "Sign In With Apple" library, so that it doesn't block the main thread
-        let scriptElementForApple= document.createElement('script');
-        scriptElementForApple.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js';
-        let firstExistingScript = document.getElementsByTagName('script')[0];
-        firstExistingScript.parentNode.insertBefore(scriptElementForApple, firstExistingScript);
-        // console.log('Loaded ........... appleid.auth.js')
-      }, 10000);
 
       function initMap () {
         //

@@ -29,7 +29,7 @@ class AppleSignIn extends Component {
         AppleID.auth.init({
           clientId: 'us.wevote.webapp',
           scope: 'name email',
-          redirectURI: 'https://6384bfb6c401.ngrok.io/applesigninprocess',
+          redirectURI: 'https://9faafc7f6464.ngrok.io/apis/v1/appleSignInOauthRedirectDestination',
           state: 'steve',
           popup: true,
         });

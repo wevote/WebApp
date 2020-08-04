@@ -82,7 +82,7 @@ $header-padding-left: 15px;
   &__cordova-iphonex {
     margin: $space-none;
     padding-bottom: $space-xs;
-    padding-top: $space-none;
+    padding-top: $space-none !important;
   }
 
   &__voter-guide-creator {
