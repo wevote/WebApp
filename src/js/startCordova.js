@@ -19,6 +19,10 @@ export function initializationForCordova () { // eslint-disable-line
     TwitterSignIn.handleTwitterOpenURL(url);
   };
 
+  // Cordova only, override "open" to use InAppBrowser to open any outside site
+  const { cordova } = window;
+  window.open = cordova.InAppBrowser.open;
+
   // Special keyboard handling for iOS
   if (isIOS()) {
     // Unfortunately this event only works on iOS, but fortunately it is most needed on iOS
