@@ -2,25 +2,34 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Drawer, IconButton } from '@material-ui/core';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
-import CandidateItem from '../Ballot/CandidateItem';
 import AnalyticsActions from '../../actions/AnalyticsActions';
-import VoterStore from '../../stores/VoterStore';
+import BallotStore from '../../stores/BallotStore';
+import CandidateActions from '../../actions/CandidateActions';
+import CandidateItem from '../Ballot/CandidateItem';
+import CandidateStore from '../../stores/CandidateStore';
+import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import DelayedLoad from '../Widgets/DelayedLoad';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
+import MeasureActions from '../../actions/MeasureActions';
+import MeasureItem from '../Ballot/MeasureItem';
+import MeasureStore from '../../stores/MeasureStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
+import PositionList from '../Ballot/PositionList';
+import { renderLog } from '../../utils/logging';
+import { convertToInteger, stringContains } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import CandidateActions from '../../actions/CandidateActions';
-import CandidateStore from '../../stores/CandidateStore';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterStore from '../../stores/VoterStore';
 
 class OrganizationModal extends Component {
   static propTypes = {
-    candidateWeVoteId: PropTypes.string,
+    ballotItemWeVoteId: PropTypes.string,
     classes: PropTypes.object,
-    open: PropTypes.bool,
+    modalOpen: PropTypes.bool,
     organizationWeVoteId: PropTypes.string,
+    params: PropTypes.object,
     pathname: PropTypes.string,
     toggleFunction: PropTypes.func.isRequired,
   };
@@ -28,10 +37,12 @@ class OrganizationModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      allCachedPositionsForThisBallotItem: [],
+      modalOpen: this.props.modalOpen,
       pathname: '',
-      open: false,
-      candidateWeVoteId: '',
-      organizationWeVoteId: '',
+      positionListFromFriendsHasBeenRetrievedOnce: {},
+      positionListHasBeenRetrievedOnce: {},
+      voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce: {},
     };
 
     this.closeOrganizationModal = this.closeOrganizationModal.bind(this);
@@ -40,23 +51,89 @@ class OrganizationModal extends Component {
   // Ids: options, friends
 
   componentDidMount () {
-    // this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-    // FriendActions.currentFriends();
-    // console.log('Candidate componentDidMount');
+    // console.log('OrganizationModal componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    const { candidateWeVoteId, organizationWeVoteId } = this.props;
-    // console.log('candidateWeVoteId:', candidateWeVoteId);
-    if (candidateWeVoteId) {
+    this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    const { ballotItemWeVoteId } = this.props;
+    // console.log('ballotItemWeVoteId:', ballotItemWeVoteId);
+    const isMeasure = stringContains('meas', ballotItemWeVoteId);
+    const isCandidate = stringContains('cand', ballotItemWeVoteId);
+    if (isCandidate) {
+      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+      const { ballot_item_display_name: ballotItemDisplayName, contest_office_we_vote_id: officeWeVoteId } = candidate;
+      // console.log('candidate:', candidate);
+      CandidateActions.candidateRetrieve(ballotItemWeVoteId);
+      if (!this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        CandidateActions.positionListForBallotItemPublic(ballotItemWeVoteId);
+        const { positionListHasBeenRetrievedOnce } = this.state;
+        positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
+        this.setState({
+          positionListHasBeenRetrievedOnce,
+        });
+      }
+      if (!this.localPositionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(officeWeVoteId)
+      ) {
+        CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
+        });
+      }
+      const allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
       this.setState({
-        candidateWeVoteId,
+        allCachedPositionsForThisBallotItem,
+        ballotItemDisplayName,
+        isCandidate,
+        isMeasure,
       });
-      CandidateActions.candidateRetrieve(candidateWeVoteId);
+      AnalyticsActions.saveActionCandidate(VoterStore.electionId(), ballotItemWeVoteId);
     }
-
+    if (isMeasure) {
+      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
+      let ballotItemDisplayName = '';
+      if (measure && measure.ballot_item_display_name) {
+        ballotItemDisplayName = measure.ballot_item_display_name;
+      }
+      MeasureActions.measureRetrieve(ballotItemWeVoteId);
+      if (!this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+        !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)
+      ) {
+        MeasureActions.positionListForBallotItemPublic(ballotItemWeVoteId);
+        const { positionListHasBeenRetrievedOnce } = this.state;
+        positionListHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
+        this.setState({
+          positionListHasBeenRetrievedOnce,
+        });
+      }
+      if (!this.localPositionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId) &&
+        !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId)
+      ) {
+        MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
+        const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+        positionListFromFriendsHasBeenRetrievedOnce[ballotItemWeVoteId] = true;
+        this.setState({
+          positionListFromFriendsHasBeenRetrievedOnce,
+        });
+      }
+      const allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+      this.setState({
+        allCachedPositionsForThisBallotItem,
+        ballotItemDisplayName,
+        isCandidate,
+        isMeasure,
+      });
+      AnalyticsActions.saveActionMeasure(VoterStore.electionId(), ballotItemWeVoteId);
+    }
     OrganizationActions.organizationsFollowedRetrieve();
 
     // We want to make sure we have all of the position information so that comments show up
-    const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidateWeVoteId);
+    const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
 
     if (voterGuidesForThisBallotItem) {
       voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
@@ -66,6 +143,7 @@ class OrganizationModal extends Component {
         }
       });
     }
+
     if (!IssueStore.issueDescriptionsRetrieveCalled()) {
       IssueActions.issueDescriptionsRetrieve();
     }
@@ -74,27 +152,90 @@ class OrganizationModal extends Component {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
     }
 
-    AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
     this.setState({
-      candidateWeVoteId,
-      organizationWeVoteId,
-      open: this.props.open,
+      modalOpen: this.props.modalOpen,
       pathname: this.props.pathname,
     });
   }
 
   componentWillUnmount () {
-    // console.log('Candidate componentWillUnmount');
     this.candidateStoreListener.remove();
+    this.measureStoreListener.remove();
   }
 
   onCandidateStoreChange () {
-    // We just want to trigger a re-render
-    this.setState();
+    const { ballotItemWeVoteId } = this.props;
+    const { isCandidate } = this.state;
+    // console.log('Candidate onCandidateStoreChange, ballotItemWeVoteId:', ballotItemWeVoteId);
+    if (isCandidate) {
+      const allCachedPositionsForThisBallotItem = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      // console.log('allCachedPositionsForThisBallotItem:', allCachedPositionsForThisBallotItem);
+      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+      const { ballot_item_display_name: ballotItemDisplayName, google_civic_election_id: googleCivicElectionId } = candidate;
+      if (googleCivicElectionId &&
+        !VoterGuideStore.voterGuidesUpcomingFromFriendsStopped(googleCivicElectionId) &&
+        !this.localVoterGuidesFromFriendsUpcomingHasBeenRetrievedOnce(googleCivicElectionId)
+      ) {
+        VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
+        const { voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce } = this.state;
+        const googleCivicElectionIdInteger = convertToInteger(googleCivicElectionId);
+        voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce[googleCivicElectionIdInteger] = true;
+        this.setState({
+          voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce,
+        });
+      }
+      this.setState({
+        ballotItemDisplayName,
+        allCachedPositionsForThisBallotItem,
+      });
+    }
+  }
+
+  onMeasureStoreChange () {
+    const { ballotItemWeVoteId } = this.props;
+    const { isMeasure } = this.state;
+    // console.log('Measure, onMeasureStoreChange');
+    if (isMeasure) {
+      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
+      let ballotItemDisplayName = '';
+      if (measure && measure.ballot_item_display_name) {
+        ballotItemDisplayName = measure.ballot_item_display_name;
+      }
+      const allCachedPositionsForThisBallotItem = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+      this.setState({
+        allCachedPositionsForThisBallotItem,
+        ballotItemDisplayName,
+      });
+    }
+  }
+
+  localPositionListHasBeenRetrievedOnce (ballotItemWeVoteId) {
+    if (ballotItemWeVoteId) {
+      const { positionListHasBeenRetrievedOnce } = this.state;
+      return positionListHasBeenRetrievedOnce[ballotItemWeVoteId];
+    }
+    return false;
+  }
+
+  localPositionListFromFriendsHasBeenRetrievedOnce (ballotItemWeVoteId) {
+    if (ballotItemWeVoteId) {
+      const { positionListFromFriendsHasBeenRetrievedOnce } = this.state;
+      return positionListFromFriendsHasBeenRetrievedOnce[ballotItemWeVoteId];
+    }
+    return false;
+  }
+
+  localVoterGuidesFromFriendsUpcomingHasBeenRetrievedOnce (googleCivicElectionId) {
+    const googleCivicElectionIdInteger = convertToInteger(googleCivicElectionId);
+    if (googleCivicElectionIdInteger) {
+      const { voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce } = this.state;
+      return voterGuidesFromFriendsUpcomingHasBeenRetrievedOnce[googleCivicElectionIdInteger];
+    }
+    return false;
   }
 
   closeOrganizationModal () {
-    this.setState({ open: false });
+    this.setState({ modalOpen: false });
     setTimeout(() => {
       this.props.toggleFunction(this.state.pathname);
     }, 500);
@@ -102,21 +243,20 @@ class OrganizationModal extends Component {
 
   render () {
     // console.log(this.props.candidate_we_vote_id);
-
     renderLog('OrganizationModal');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
-
-    const { organizationWeVoteId, candidateWeVoteId } = this.state;
-
-    // console.log("organizationWeVoteId: ", organizationWeVoteId);
-    // console.log("candidateWeVoteId: ", candidateWeVoteId);
-
-    // console.log('currentSelectedPlanCostForPayment:', currentSelectedPlanCostForPayment);
-    // console.log(this.state);
+    const { classes, organizationWeVoteId, ballotItemWeVoteId } = this.props;
+    const { allCachedPositionsForThisBallotItem, ballotItemDisplayName, isCandidate, isMeasure, modalOpen } = this.state;
 
     return (
       <>
-        <Drawer classes={{ paper: classes.drawer }} id="share-menu" anchor="right" open={this.state.open} direction="left" onClose={this.closeOrganizationModal}>
+        <Drawer
+          anchor="right"
+          classes={{ paper: classes.drawer }}
+          direction="left"
+          id="share-menu"
+          onClose={this.closeOrganizationModal}
+          open={modalOpen}
+        >
           <IconButton
             aria-label="Close"
             className={classes.closeButton}
@@ -125,27 +265,46 @@ class OrganizationModal extends Component {
           >
             <span className="fas fa-times u-cursor--pointer" />
           </IconButton>
-          <CandidateItem
-            inModal
-            candidateWeVoteId={candidateWeVoteId}
-            organizationWeVoteId={organizationWeVoteId}
-            hideShowMoreFooter
-            expandIssuesByDefault
-            showLargeImage
-            showTopCommentByBallotItem
-            showOfficeName
-            showPositionStatementActionBar
-          />
+          {isCandidate && (
+            <CandidateItem
+              candidateWeVoteId={ballotItemWeVoteId}
+              expandIssuesByDefault
+              hideShowMoreFooter
+              inModal
+              linkToBallotItemPage
+              organizationWeVoteId={organizationWeVoteId}
+              showLargeImage
+              showTopCommentByBallotItem
+              showOfficeName
+              showPositionStatementActionBar
+            />
+          )}
+          {isMeasure && (
+            <MeasureItem measureWeVoteId={ballotItemWeVoteId} />
+          )}
+          { !!(allCachedPositionsForThisBallotItem.length) && (
+            <section className="card">
+              <DelayedLoad showLoadingText waitBeforeShow={500}>
+                <PositionList
+                  ballotItemDisplayName={ballotItemDisplayName}
+                  incomingPositionList={allCachedPositionsForThisBallotItem}
+                  params={this.props.params}
+                />
+                <br />
+              </DelayedLoad>
+            </section>
+          )}
         </Drawer>
       </>
     );
   }
 }
+
 const styles = () => ({
   drawer: {
-    maxWidth: '360px !important',
+    maxWidth: '550px !important',
     '& *': {
-      maxWidth: '360px !important',
+      maxWidth: '550px !important',
     },
   },
   dialogPaper: {

@@ -73,6 +73,7 @@ import AppStore from '../stores/AppStore'; // eslint-disable-line import/no-cycl
 // ACTION_SEARCH_OPINIONS = 70
 // ACTION_UNSUBSCRIBE_EMAIL_PAGE = 71
 // ACTION_UNSUBSCRIBE_SMS_PAGE = 72
+// ACTION_MEASURE = 73
 
 export default {
 
@@ -165,6 +166,11 @@ export default {
   saveActionInviteByEmail (googleCivicElectionId) {
     const actionConstant = 27; // ACTION_INVITE_BY_EMAIL
     this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionMeasure (googleCivicElectionId, ballotItemWeVoteId) {
+    const actionConstant = 73; // ACTION_MEASURE
+    this.saveActionWrapperWithBallotItem(actionConstant, googleCivicElectionId, ballotItemWeVoteId);
   },
 
   saveActionModalIssues (googleCivicElectionId) {

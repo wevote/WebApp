@@ -6,6 +6,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import ReactSVG from 'react-svg';
+import AppActions from '../../actions/AppActions';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import FollowToggle from '../Widgets/FollowToggle';
 import FriendStore from '../../stores/FriendStore';
@@ -79,6 +80,10 @@ class voterGuideDisplayForListForOpinions extends Component {
     this.setState({
       voterIsFriendsWithThisOrganization,
     });
+  }
+
+  closeOrganizationModal () {
+    AppActions.setShowOrganizationModal(false);
   }
 
   render () {
@@ -183,7 +188,11 @@ class voterGuideDisplayForListForOpinions extends Component {
                         id="positions-popover-trigger-click-root-close"
                       >
                         <div>
-                          <Link to={speakerLink} id={`desktop-LinkToEndorsingOrganization-${organizationWeVoteId}`}>
+                          <Link
+                            id={`desktop-LinkToEndorsingOrganization-${organizationWeVoteId}`}
+                            onClick={this.closeOrganizationModal}
+                            to={speakerLink}
+                          >
                             { voterGuideDisplayName }
                           </Link>
                         </div>
@@ -247,7 +256,12 @@ class voterGuideDisplayForListForOpinions extends Component {
               {/* Visible for most phones */}
               <MobileItemNameIssuesContainer>
                 <MobileItemName>
-                  <Link to={speakerLink} className="u-break-word" id={`mobile-LinkToEndorsingOrganization-${organizationWeVoteId}`}>
+                  <Link
+                    className="u-break-word"
+                    id={`mobile-LinkToEndorsingOrganization-${organizationWeVoteId}`}
+                    onClick={this.closeOrganizationModal}
+                    to={speakerLink}
+                  >
                     { voterGuideDisplayName }
                   </Link>
                 </MobileItemName>

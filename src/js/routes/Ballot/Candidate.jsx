@@ -118,7 +118,7 @@ class Candidate extends Component {
       IssueActions.issuesUnderBallotItemsRetrieve(VoterStore.electionId());
       // IssueActions.issuesUnderBallotItemsRetrieveCalled(VoterStore.electionId()); // TODO: Move this to AppActions? Currently throws error: 'Cannot dispatch in the middle of a dispatch'
     }
-    AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
+
     this.setState({
       allCachedPositionsForThisCandidate,
       candidateWeVoteId,
@@ -135,6 +135,7 @@ class Candidate extends Component {
       }
     }
     ActivityActions.activityNoticeListRetrieve();
+    AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
   }
 
   componentWillReceiveProps (nextProps) {

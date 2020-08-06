@@ -340,7 +340,7 @@ export default class OrganizationVoterGuide extends Component {
           }
         </div>
 
-        <div className="d-block d-sm-none">
+        <div className="u-show-mobile">
           <div className="col-12">
             <div className="card">
               <div className="card-main">
@@ -421,7 +421,7 @@ export default class OrganizationVoterGuide extends Component {
 
         <div className="container-fluid">
           <div className="row">
-            <div className="d-none d-sm-block col-md-4">
+            <div className="u-show-desktop-tablet col-4">
               <CardContainer bannerUrl={organizationBannerUrl}>
                 <div className="card">
                   <div className="card-main">
@@ -432,7 +432,7 @@ export default class OrganizationVoterGuide extends Component {
               </CardContainer>
             </div>
 
-            <div className="col-12 col-md-8">
+            <div className="col-12 col-sm-8">
               <OrganizationVoterGuideTabs
                 activeRoute={activeRoute}
                 activeRouteChanged={this.changeActiveRoute}

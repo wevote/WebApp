@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import TextTruncate from 'react-text-truncate';
 import styled from 'styled-components';
+import AppActions from '../../actions/AppActions';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import CandidateStore from '../../stores/CandidateStore';
@@ -479,10 +479,10 @@ class CandidateItem extends Component {
                   (
                     <div className="row">
                       <div className={`card__blue ${(voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement) ? 'col col-6' : 'col col-9'}`}>
-                        <Link to={this.getCandidateLink()} className="card-main__no-underline">
+                        <div onClick={this.goToCandidateLink} className="card-main__no-underline">
                           <br />
                           {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
-                        </Link>
+                        </div>
                       </div>
                       <div className={`${(voterSupportsBallotItem || voterOpposesBallotItem || voterTextStatement) ? 'col col-6' : 'col col-3'}`}>
                         <ItemActionBar
@@ -514,10 +514,10 @@ class CandidateItem extends Component {
               </div>
               <div className="u-show-mobile-tablet">
                 {linkToBallotItemPage ? (
-                  <Link to={this.getCandidateLink()} className="card-main__no-underline">
+                  <div onClick={this.goToCandidateLink} className="card-main__no-underline">
                     <br />
                     {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
-                  </Link>
+                  </div>
                 ) : (
                   <div>
                     <br />
@@ -560,18 +560,24 @@ class CandidateItem extends Component {
   };
 
   goToCandidateLink () {
-    // If here, we assume the voter is on the Office page
+    // In case we were in the OrganizationModal, close it
+    AppActions.setShowOrganizationModal(false);
     historyPush(this.getCandidateLink());
   }
 
   goToOfficeLink () {
+    // In case we were in the OrganizationModal, close it
+    AppActions.setShowOrganizationModal(false);
     historyPush(this.getOfficeLink());
   }
 
   render () {
     renderLog('CandidateItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { linkToBallotItemPage, openSupportOpposeCountDisplayModal, showHover } = this.props;
-    const { candidateText, candidateWeVoteId, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow } = this.state;
+    const {
+      candidateText, candidateWeVoteId,
+      largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow,
+    } = this.state;
     if (!candidateWeVoteId) {
       // console.log('CandidateItem waiting for candidateWeVoteId to make it into the state variable');
       return null;
