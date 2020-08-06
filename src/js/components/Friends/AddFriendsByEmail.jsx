@@ -5,10 +5,11 @@ import Alert from 'react-bootstrap/Alert';
 import { TextField, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
+import DelayedLoad from '../Widgets/DelayedLoad';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
-import LoadingWheel from '../LoadingWheel';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
+import LoadingWheel from '../LoadingWheel';
 import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 import { validatePhoneOrEmail } from '../../utils/regex-checks';
@@ -25,7 +26,7 @@ class AddFriendsByEmail extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      add_friends_message: 'Here’s how I’m figuring out this election.',
+      addFriendsMessage: 'Here’s how I’m figuring out this election.',
       friendsToInvite: [],
       friendFirstName: '',
       friendLastName: '',
@@ -46,8 +47,12 @@ class AddFriendsByEmail extends Component {
   }
 
   componentDidMount () {
+    // console.log('AddFriendsByEmail componentDidMount');
     this.onFriendStoreChange();
-    this.setState({ voter: VoterStore.getVoter() });
+    this.setState({
+      loading: true,
+      voter: VoterStore.getVoter(),
+    });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     FriendActions.friendInvitationsWaitingForVerification();
@@ -67,6 +72,7 @@ class AddFriendsByEmail extends Component {
   };
 
   onFriendStoreChange () {
+    // console.log('AddFriendsByEmail onFriendStoreChange');
     const friendInvitationsWaitingForVerification = FriendStore.friendInvitationsWaitingForVerification() || [];
     const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
     if (friendInvitationsWaitingForVerification && friendInvitationsWaitingForVerification.length) {
@@ -83,16 +89,18 @@ class AddFriendsByEmail extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
+    // console.log('AddFriendsByEmail onVoterStoreChange voterIsSignedIn:', voterIsSignedIn);
     this.setState({
       voter,
-      voterIsSignedIn: voter.is_signed_in,
+      voterIsSignedIn,
       loading: false,
     });
   }
 
   cacheAddFriendsByEmailMessage = (e) => {
     this.setState({
-      add_friends_message: e.target.value,
+      addFriendsMessage: e.target.value,
     });
   };
 
@@ -154,7 +162,7 @@ class AddFriendsByEmail extends Component {
   friendInvitationByEmailSend (e) {
     e.preventDefault();
     // console.log('friendInvitationByEmailSend');
-    const { friendsToInvite, friendContactInfo, friendFirstName, friendLastName } = this.state;
+    const { addFriendsMessage, friendsToInvite, friendContactInfo, friendFirstName, friendLastName } = this.state;
 
     // console.log('FriendsToInvite: ', friendsToInvite);
     const emailAddressArray = [];
@@ -181,7 +189,7 @@ class AddFriendsByEmail extends Component {
     // const response =
     FriendActions.clearErrorMessageToShowVoter();
     FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
-      lastNameArray, '', this.state.add_friends_message,
+      lastNameArray, '', addFriendsMessage,
       this.state.senderEmailAddress);
     // console.log(response);
     // After calling the API, reset the form
@@ -277,22 +285,24 @@ class AddFriendsByEmail extends Component {
           </FriendsDisplay>
         )}
         {(invitationEmailsAlreadyScheduledStepFromApi && !voterIsSignedIn) ? (
-          <div>
-            <Alert variant="danger">
-              Your invitations will be sent after you sign in:
-              <ul>
-                {friendInvitationsWaitingForVerification.map(friend => (
-                  <li key={friend.invitation_sent_to}>
-                    {friend.invitation_sent_to}
-                  </li>
-                ))}
-              </ul>
-            </Alert>
-            <SettingsAccount
-              pleaseSignInTitle="Sign in to Send Your Friend Requests"
-              pleaseSignInSubTitle=""
-            />
-          </div>
+          <DelayedLoad waitBeforeShow={1000}>
+            <>
+              <Alert variant="danger">
+                Your invitations will be sent after you sign in:
+                <ul>
+                  {friendInvitationsWaitingForVerification.map(friend => (
+                    <li key={friend.invitation_sent_to}>
+                      {friend.invitation_sent_to}
+                    </li>
+                  ))}
+                </ul>
+              </Alert>
+              <SettingsAccount
+                pleaseSignInTitle="Sign in to Send Your Friend Requests"
+                pleaseSignInSubTitle=""
+              />
+            </>
+          </DelayedLoad>
         ) : (
           <>
             {onEnterEmailAddressesStep && (

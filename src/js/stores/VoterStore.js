@@ -39,6 +39,7 @@ class VoterStore extends ReduceStore {
       voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
       voterNotificationSettingsUpdateStatus: {
         apiResponseReceived: false,
+        emailFound: false,
         voterFound: false,
         normalizedEmailAddress: '',
         normalizedSmsPhoneNumber: '',
@@ -593,7 +594,7 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterMergeTwoAccounts':
-        console.log('VoterStore, voterMergeTwoAccounts');
+        // console.log('VoterStore, voterMergeTwoAccounts');
         // On the server we just switched linked this voterDeviceId to a new voter record, so we want to
         //  refresh a lot of data
         VoterActions.voterRetrieve();
@@ -631,12 +632,13 @@ class VoterStore extends ReduceStore {
         };
 
       case 'voterNotificationSettingsUpdate':
-        console.log('VoterStore, voterNotificationSettingsUpdate');
+        // console.log('VoterStore, voterNotificationSettingsUpdate');
         if (!action.res) {
           return {
             ...state,
             voterNotificationSettingsUpdateStatus: {
               apiResponseReceived: true,
+              emailFound: false,
               voterFound: false,
               normalizedEmailAddress: '',
               normalizedSmsPhoneNumber: '',
@@ -648,6 +650,7 @@ class VoterStore extends ReduceStore {
           ...state,
           voterNotificationSettingsUpdateStatus: {
             apiResponseReceived: true,
+            emailFound: action.res.email_found,
             voterFound: action.res.voter_found,
             normalizedEmailAddress: action.res.normalized_email_address,
             normalizedSmsPhoneNumber: action.res.normalized_sms_phone_number,

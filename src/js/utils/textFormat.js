@@ -78,7 +78,7 @@ export function calculateBallotBaseUrlForVoterGuide (incomingBallotBaseUrl, inco
 
 export function convertNameToSlug (incomingString) {
   // This is used to turn issue/value names into URL paths
-  if (!incomingString || incomingString === '' || incomingString === '') {
+  if (!incomingString || incomingString === '') {
     return '';
   }
   let convertedString = incomingString.toLowerCase();
@@ -90,7 +90,7 @@ export function convertNameToSlug (incomingString) {
 }
 
 export function toTitleCase (incomingString) {
-  if (!incomingString || incomingString === '' || incomingString === '') {
+  if (!incomingString || incomingString === '') {
     return '';
   }
   let count;
@@ -165,7 +165,7 @@ export function elipses (name, mobile) {
 }
 
 export function extractTwitterHandleFromTextString (incomingString) {
-  if (!incomingString || incomingString === '' || incomingString === '') {
+  if (!incomingString || incomingString === '') {
     return '';
   }
   let lowerCaseString = incomingString.toLowerCase();
@@ -292,7 +292,7 @@ export function returnFirstXWords (originalString, numberOfWordsToReturn) {
 }
 
 export function sentenceCaseString (incomingString) {
-  if (!incomingString || incomingString === '' || incomingString === '') {
+  if (!incomingString || incomingString === '') {
     return '';
   }
   const incomingStringLowerCase = incomingString.toLowerCase();
@@ -315,7 +315,7 @@ export function sentenceCaseString (incomingString) {
 }
 
 export function shortenText (incomingString, maximumLength) {
-  if (!incomingString || incomingString === '' || incomingString === '') {
+  if (!incomingString || incomingString === '') {
     return '';
   }
   const maximumLengthInteger = parseInt(maximumLength, 10);
@@ -339,7 +339,7 @@ export function stringContains (needle, stringHaystack) {
 }
 
 export function stripHtmlFromString (incomingString) {
-  if (!incomingString || incomingString === '' || incomingString === '') {
+  if (!incomingString || incomingString === '') {
     return '';
   }
   let strippedString = incomingString.replace(/&nbsp;/gi, ' ');
@@ -354,4 +354,11 @@ export const vimeoRegX = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
 // This must be placed after declaration of stringContains
 export function isProperlyFormattedVoterGuideWeVoteId (voterGuideWeVoteId) {
   return voterGuideWeVoteId && stringContains('wv', voterGuideWeVoteId) && stringContains('vg', voterGuideWeVoteId);
+}
+
+export function timeFromDate (dateString) {
+  if (!dateString || dateString === '') {
+    return '';
+  }
+  return moment.utc(dateString).fromNow();
 }

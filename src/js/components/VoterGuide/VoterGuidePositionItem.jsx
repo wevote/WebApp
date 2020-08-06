@@ -181,7 +181,7 @@ class VoterGuidePositionItem extends Component {
     renderLog('VoterGuidePositionItem');  // Set LOG_RENDER_EVENTS to log all renders
     const { position, searchResultsNode } = this.props;
     // const { thisYearInteger } = this.state;
-    // console.log('VoterGuidePositionItem render');
+    // console.log('VoterGuidePositionItem render position:', position);
     let {
       ballot_item_display_name: ballotItemDisplayName,
       more_info_url: moreInfoUrl,
