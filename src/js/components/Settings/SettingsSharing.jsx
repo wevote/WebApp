@@ -18,6 +18,7 @@ import SettingsAccountLevelChip from './SettingsAccountLevelChip';
 import { ImageDescription, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions } from './SettingsStyled';
 import VoterStore from '../../stores/VoterStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
+import DelayedLoad from '../Widgets/DelayedLoad';
 
 class SettingsSharing extends Component {
   static propTypes = {
@@ -272,11 +273,15 @@ class SettingsSharing extends Component {
       chosen_logo_url_https: chosenLogoUrlHttps,
       chosen_social_share_master_image_url_https: chosenSocialShareMasterImageUrlHttps,
     } = organization;
-    if (!voterIsSignedIn) {
-      // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
-    } else if (!voter || !organizationWeVoteId) {
+    if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
+    } else if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return (
+        <DelayedLoad waitBeforeShow={1000}>
+          <SettingsAccount />
+        </DelayedLoad>
+      );
     }
     // console.log('organization: ', organization);
     // console.log('chosenLogoUrlHttps: ', chosenLogoUrlHttps);

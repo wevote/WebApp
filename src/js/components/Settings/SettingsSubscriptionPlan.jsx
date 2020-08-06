@@ -18,6 +18,7 @@ import { renderLog } from '../../utils/logging';
 import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 import { formatDateToYearMonthDay, stringContains } from '../../utils/textFormat';
+import DelayedLoad from '../Widgets/DelayedLoad';
 
 class SettingsSubscriptionPlan extends Component {
   static propTypes = {
@@ -231,11 +232,15 @@ class SettingsSubscriptionPlan extends Component {
       voter, voterIsSignedIn, mobileMode,
     } = this.state;
     const { classes, externalUniqueId } = this.props;
-    if (!voterIsSignedIn) {
-      // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
-    } else if (!voter || !organizationWeVoteId) {
+    if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
+    } else if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return (
+        <DelayedLoad waitBeforeShow={1000}>
+          <SettingsAccount />
+        </DelayedLoad>
+      );
     }
 
     if (organization && organization.we_vote_custom_domain) {

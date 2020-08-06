@@ -12,6 +12,7 @@ import { renderLog } from '../../utils/logging';
 import SeeTheseSettingsInAction from './SeeTheseSettingsInAction';
 import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
+import DelayedLoad from '../Widgets/DelayedLoad';
 
 class SettingsSiteText extends Component {
   static propTypes = {
@@ -177,11 +178,15 @@ class SettingsSiteText extends Component {
       organizationReadyIntroductionTextChangedLocally, organizationReadyIntroductionTitleChangedLocally,
     } = this.state;
     const { classes, externalUniqueId } = this.props;
-    if (!voterIsSignedIn) {
-      // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
-    } else if (!voter || !organizationWeVoteId) {
+    if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
+    } else if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return (
+        <DelayedLoad waitBeforeShow={1000}>
+          <SettingsAccount />
+        </DelayedLoad>
+      );
     }
 
     return (
