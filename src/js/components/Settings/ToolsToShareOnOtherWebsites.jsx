@@ -1,11 +1,13 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import CodeCopier from '../Widgets/CodeCopier';
 import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
-export default function ToolsToShareOnOtherWebsites () {
+
+export default function ToolsToShareOnOtherWebsites (props) {
   return (
     <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
       <Helmet title="Free civic engagement tools - We Vote" />
@@ -35,6 +37,7 @@ export default function ToolsToShareOnOtherWebsites () {
 
           <div className="row">
             <CodeCopier
+              externalUniqueId={props.externalUniqueId}
               title="Interactive Ballot Tool"
               sourceUrl="https://wevote.us/ballot"
               codeCopierButtonId="codeCopierInteractiveBallotTool"
@@ -42,6 +45,7 @@ export default function ToolsToShareOnOtherWebsites () {
               exampleUrl="https://wevote.us/more/myballot"
             />
             <CodeCopier
+              externalUniqueId={props.externalUniqueId}
               title="Voter Guide Tool"
               exampleUrl="https://wevote.us/lwv_oakland"
               codeCopierButtonId="codeCopierVoterGuideTool"
@@ -58,6 +62,7 @@ export default function ToolsToShareOnOtherWebsites () {
           <h1 className="h2">From Our Partner, Vote.org</h1>
           <div className="row">
             <CodeCopier
+              externalUniqueId={props.externalUniqueId}
               title="Voter Registration Tool"
               sourceUrl="https://register.vote.org/?partner=111111&campaign=free-tools"
               exampleUrl="https://wevote.us/more/register"
@@ -65,6 +70,7 @@ export default function ToolsToShareOnOtherWebsites () {
               imageUrl="/img/tools/register.png"
             />
             <CodeCopier
+              externalUniqueId={props.externalUniqueId}
               title="Absentee Ballot Tool"
               sourceUrl="https://absentee.vote.org/?partner=111111&campaign=free-tools"
               exampleUrl="https://wevote.us/more/absentee"
@@ -72,6 +78,7 @@ export default function ToolsToShareOnOtherWebsites () {
               imageUrl="/img/tools/absentee.png"
             />
             <CodeCopier
+              externalUniqueId={props.externalUniqueId}
               title="Check Registration Status Tool"
               sourceUrl="https://verify.vote.org/?partner=111111&campaign=free-tools"
               exampleUrl="https://wevote.us/more/verify"
@@ -79,6 +86,7 @@ export default function ToolsToShareOnOtherWebsites () {
               imageUrl="/img/tools/verify.png"
             />
             <CodeCopier
+              externalUniqueId={props.externalUniqueId}
               title="Election Reminder Tool"
               sourceUrl="https://reminders.vote.org/?partner=111111&campaign=free-tools"
               exampleUrl="https://wevote.us/more/alerts"
@@ -104,6 +112,10 @@ export default function ToolsToShareOnOtherWebsites () {
     </Wrapper>
   );
 }
+
+ToolsToShareOnOtherWebsites.propTypes = {
+  externalUniqueId: PropTypes.string,
+};
 
 const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};

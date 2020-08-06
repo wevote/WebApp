@@ -16,6 +16,7 @@ const styles = theme => ({
 
 class BrowserPushMessage extends Component {
   static propTypes = {
+    externalUniqueId: PropTypes.string,
     incomingProps: PropTypes.object, // needs more specificity
     classes: PropTypes.object,
   };
@@ -42,7 +43,7 @@ class BrowserPushMessage extends Component {
 
   render () {
     renderLog('BrowserPushMessage');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    const { classes, externalUniqueId } = this.props;
     let { message, type } = this.state;
     const { name } = this.state;
     // console.log(`BrowserPushMessage message: ${message}  type: ${type}`);
@@ -72,6 +73,7 @@ class BrowserPushMessage extends Component {
         message={<span id="message-id">{message}</span>}
         action={[
           <IconButton
+            id={externalUniqueId ? `pushCloseIconButton-${externalUniqueId}` : 'pushCloseIconButton'}
             key="close"
             aria-label="Close"
             color="inherit"

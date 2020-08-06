@@ -16,6 +16,7 @@ import VoterStore from '../../stores/VoterStore';
 class SettingsSiteText extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    externalUniqueId: PropTypes.string,
   };
 
   constructor (props) {
@@ -175,7 +176,7 @@ class SettingsSiteText extends Component {
       organizationReadyIntroductionText, organizationReadyIntroductionTitle,
       organizationReadyIntroductionTextChangedLocally, organizationReadyIntroductionTitleChangedLocally,
     } = this.state;
-    const { classes } = this.props;
+    const { classes, externalUniqueId } = this.props;
     if (!voterIsSignedIn) {
       // console.log('voterIsSignedIn is false');
       return <SettingsAccount />;
@@ -203,7 +204,7 @@ class SettingsSiteText extends Component {
                 Add introduction title and text to welcome people visiting your site&apos;s &quot;Ready?&quot; page.
               </InputLabelHelperText>
               <TextField
-                id="addTitleHereInput"
+                id={`addTitleHereInput-${externalUniqueId}`}
                 onChange={this.handleOrganizationReadyIntroductionTitleChange}
                 onClick={this.showReadyIntroductionButtons}
                 label="Add Title here..."
@@ -211,7 +212,7 @@ class SettingsSiteText extends Component {
                 value={organizationReadyIntroductionTitle}
               />
               <TextField
-                id="addIntroductionHereInput"
+                id={`addIntroductionHereInput-${externalUniqueId}`}
                 onChange={this.handleOrganizationReadyIntroductionTextChange}
                 onClick={this.showReadyIntroductionButtons}
                 label="Add introduction text here..."
@@ -231,7 +232,7 @@ class SettingsSiteText extends Component {
                   Cancel
                 </Button>
                 <Button
-                  id="siteTextSaveButton"
+                  id={`siteTextSaveButton-${externalUniqueId}`}
                   color="primary"
                   disabled={!organizationReadyIntroductionTextChangedLocally && !organizationReadyIntroductionTitleChangedLocally}
                   onClick={this.onSaveReadyIntroductionButton}

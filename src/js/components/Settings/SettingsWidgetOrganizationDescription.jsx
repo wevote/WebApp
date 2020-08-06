@@ -18,6 +18,7 @@ const delayBeforeRemovingSavedStatus = 4000;
 class SettingsWidgetOrganizationDescription extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    externalUniqueId: PropTypes.string,
     voterHasMadeChangesFunction: PropTypes.func,
   };
 
@@ -122,7 +123,7 @@ class SettingsWidgetOrganizationDescription extends Component {
       return LoadingWheel;
     }
 
-    const { classes } = this.props;
+    const { classes, externalUniqueId } = this.props;
 
     return (
       <div className="">
@@ -132,7 +133,7 @@ class SettingsWidgetOrganizationDescription extends Component {
               <FormControl classes={{ root: classes.formControl }}>
                 <Label htmlFor="organizationDescriptionTextArea">{ this.state.isOrganization ? 'Description Shown with Endorsements' : 'Description Shown with Endorsements'}</Label>
                 <TextField
-                  id="organizationDescriptionTextArea"
+                  id={`organizationDescriptionTextArea-${externalUniqueId}`}
                   name="organizationDescription"
                   rows={4}
                   multiline

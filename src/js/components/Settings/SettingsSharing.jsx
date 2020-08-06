@@ -22,6 +22,7 @@ import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingF
 class SettingsSharing extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    externalUniqueId: PropTypes.string,
   };
 
   constructor (props) {
@@ -250,7 +251,7 @@ class SettingsSharing extends Component {
 
   render () {
     renderLog('SettingsSharing');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    const { classes, externalUniqueId } = this.props;
     const {
       chosenFaviconFromFileReader,
       chosenFeaturePackage,
@@ -307,7 +308,7 @@ class SettingsSharing extends Component {
               </SharingColumn>
               <SharingColumn alignRight>
                 <Switch
-                  id="hideWeVoteLogoSwitch"
+                  id={`hideWeVoteLogoSwitch-${externalUniqueId}`}
                   color="primary"
                   checked={hideLogo}
                   onChange={this.handleToggleHideLogo}
@@ -349,7 +350,7 @@ class SettingsSharing extends Component {
                 <Button
                   color="primary"
                   classes={{ root: classes.uploadButton }}
-                  id="uploadHeaderLogo"
+                  id={`uploadHeaderLogo-${externalUniqueId}`}
                   variant="contained"
                   onClick={this.handleUploadHeaderLogo}
                 >
@@ -360,7 +361,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
-                      id="organizationChosenLogoDelete"
+                      id={`organizationChosenLogoDelete-${externalUniqueId}`}
                       variant="outlined"
                       onClick={() => this.organizationChosenLogoDelete()}
                     >
@@ -388,7 +389,7 @@ class SettingsSharing extends Component {
               <SharingColumn alignRight>
                 <PremiumableButton
                   classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
-                  id="handleUploadFavicon"
+                  id={`handleUploadFavicon-${externalUniqueId}`}
                   onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleUploadFavicon : () => this.openPaidAccountUpgradeModal('enterprise')}
                   premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                 >
@@ -410,7 +411,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
-                      id="organizationChosenFaviconDelete"
+                      id={`organizationChosenFaviconDelete-${externalUniqueId}`}
                       variant="outlined"
                       onClick={() => this.organizationChosenFaviconDelete()}
                     >
@@ -438,7 +439,7 @@ class SettingsSharing extends Component {
               <SharingColumn alignRight>
                 <PremiumableButton
                   classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
-                  id="handleUploadShareImage"
+                  id={`handleUploadShareImage-${externalUniqueId}`}
                   premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                   onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleUploadShareImage : () => this.openPaidAccountUpgradeModal('enterprise')}
                 >
@@ -460,7 +461,7 @@ class SettingsSharing extends Component {
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
-                      id="organizationChosenSocialShareMasterImageDelete"
+                      id={`organizationChosenSocialShareMasterImageDelete-${externalUniqueId}`}
                       variant="outlined"
                       onClick={() => this.organizationChosenSocialShareMasterImageDelete()}
                     >
@@ -478,7 +479,7 @@ class SettingsSharing extends Component {
                 </InputBoxLabel>
                 <DescriptionText>A few sentences describing your site. The text used on search engines, or when your page is shared on social media.</DescriptionText>
                 <GiantTextInput
-                  id="settingsSharingInputBox"
+                  id={`settingsSharingInputBox-${externalUniqueId}`}
                   onChange={this.handleChosenSocialShareDescriptionChange}
                   value={chosenSocialShareDescription}
                   placeholder="Type Description..."
@@ -488,7 +489,7 @@ class SettingsSharing extends Component {
                     color="primary"
                     classes={{ root: classes.button }}
                     disabled={!chosenSocialShareDescriptionChangedLocally}
-                    id="cancelChosenSocialShareDescriptionButton"
+                    id={`cancelChosenSocialShareDescriptionButton-${externalUniqueId}`}
                     onClick={this.onCancelChosenSocialShareDescriptionButton}
                   >
                     Cancel
@@ -496,7 +497,7 @@ class SettingsSharing extends Component {
                   <PremiumableButton
                     classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
                     disabled={voterFeaturePackageExceedsOrEqualsEnterprise ? !chosenSocialShareDescriptionChangedLocally : false}
-                    id="onSaveChosenSocialShareDescriptionButton"
+                    id={`onSaveChosenSocialShareDescriptionButton-${externalUniqueId}`}
                     premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
                     onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.onSaveChosenSocialShareDescriptionButton : () => this.openPaidAccountUpgradeModal('enterprise')}
                   >
@@ -529,7 +530,7 @@ class SettingsSharing extends Component {
                 <Switch
                   color="primary"
                   checked={chosenPreventSharingOpinions}
-                  id="chosenPreventSharingOpinions"
+                  id={`chosenPreventSharingOpinions-${externalUniqueId}`}
                   onChange={this.handleTogglePreventSharingOpinions}
                   value="chosenPreventSharingOpinions"
                   inputProps={{ 'aria-label': 'Prevent sharing opinions switch' }}
