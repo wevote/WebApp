@@ -191,8 +191,8 @@ export default class Header extends Component {
               isSignedIn={voter.is_signed_in}
               pathname={pathname}
               show={showOrganizationModal}
-              candidateWeVoteId={this.state.organizationModalId}
-              open={showOrganizationModal}
+              ballotItemWeVoteId={this.state.organizationModalId}
+              modalOpen={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
             />
           )}
@@ -269,8 +269,8 @@ export default class Header extends Component {
                 isSignedIn={voter.is_signed_in}
                 pathname={pathname}
                 show={showOrganizationModal}
-                candidateWeVoteId={this.state.organizationModalId}
-                open={showOrganizationModal}
+                ballotItemWeVoteId={this.state.organizationModalId}
+                modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
             />
           )}
@@ -323,8 +323,8 @@ export default class Header extends Component {
                 isSignedIn={voter.is_signed_in}
                 pathname={pathname}
                 show={showOrganizationModal}
-                candidateWeVoteId={this.state.organizationModalId}
-                open={showOrganizationModal}
+                ballotItemWeVoteId={this.state.organizationModalId}
+                modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
             />
           )}
@@ -372,8 +372,8 @@ export default class Header extends Component {
                 isSignedIn={voter.is_signed_in}
                 pathname={pathname}
                 show={showOrganizationModal}
-                candidateWeVoteId={this.state.organizationModalId}
-                open={showOrganizationModal}
+                ballotItemWeVoteId={this.state.organizationModalId}
+                modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
             />
           )}
@@ -443,8 +443,8 @@ export default class Header extends Component {
                 isSignedIn={voter.is_signed_in}
                 pathname={pathname}
                 show={showOrganizationModal}
-                candidateWeVoteId={this.state.organizationModalId}
-                open={showOrganizationModal}
+                ballotItemWeVoteId={this.state.organizationModalId}
+                modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
             />
           )}

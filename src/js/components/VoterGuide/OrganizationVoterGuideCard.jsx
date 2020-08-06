@@ -66,7 +66,7 @@ class OrganizationVoterGuideCard extends Component {
         { organizationPhotoUrlLarge ? (
           <ProfileAvatar>
             <Link to={voterGuideLink} className="u-no-underline">
-              <img src={organizationPhotoUrlLarge} height="180" alt={`${displayName}`} />
+              <img src={organizationPhotoUrlLarge} alt={`${displayName}`} />
             </Link>
           </ProfileAvatar>
         ) : null
@@ -171,7 +171,7 @@ class OrganizationVoterGuideCard extends Component {
 
 const CardMain = styled.div`
   border: 1px solid #fff;
-  padding: 16px 16px 8px;
+  padding: 0px !important;
   font-size: 14px;
   position: relative;
 `;

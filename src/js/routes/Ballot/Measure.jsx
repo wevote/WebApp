@@ -6,6 +6,7 @@ import { capitalizeString } from '../../utils/textFormat';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import ActivityActions from '../../actions/ActivityActions';
+import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
@@ -79,8 +80,6 @@ class Measure extends Component {
 
     OrganizationActions.organizationsFollowedRetrieve();
 
-    // TODO CREATE THIS
-    // AnalyticsActions.saveActionMeasure(VoterStore.electionId(), measureWeVoteId);
     const measure = MeasureStore.getMeasure(measureWeVoteId);
     let measureBallotItemDisplayName = '';
     if (measure && measure.ballot_item_display_name) {
@@ -108,6 +107,7 @@ class Measure extends Component {
       }
     }
     ActivityActions.activityNoticeListRetrieve();
+    AnalyticsActions.saveActionMeasure(VoterStore.electionId(), measureWeVoteId);
   }
 
   componentWillReceiveProps (nextProps) {

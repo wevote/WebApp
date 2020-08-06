@@ -141,6 +141,7 @@ class HeaderNotificationMenu extends Component {
   }
 
   handleClick = (event) => {
+    ActivityActions.activityNoticeListRetrieve();
     this.setState({
       anchorEl: event.currentTarget,
       menuOpen: true,

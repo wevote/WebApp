@@ -6,6 +6,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { Info, ThumbDown, ThumbUp } from '@material-ui/icons';
 import ReactSVG from 'react-svg';
+import AppActions from '../../actions/AppActions';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import FollowToggle from '../Widgets/FollowToggle';
 import FriendStore from '../../stores/FriendStore';
@@ -194,6 +195,10 @@ class PositionItem extends Component {
         });
       }
     }
+  }
+
+  closeOrganizationModal () {
+    AppActions.setShowOrganizationModal(false);
   }
 
   render () {
@@ -455,7 +460,11 @@ class PositionItem extends Component {
                           id="positions-popover-trigger-click-root-close"
                         >
                           <div>
-                            <Link to={speakerLink} id={`desktop-LinkToEndorsingOrganization-${organizationWeVoteId}`}>
+                            <Link
+                              id={`desktop-LinkToEndorsingOrganization-${organizationWeVoteId}`}
+                              onClick={this.closeOrganizationModal}
+                              to={speakerLink}
+                            >
                               { position.speaker_display_name }
                             </Link>
                           </div>
@@ -542,7 +551,12 @@ class PositionItem extends Component {
                 {/* Visible for most phones */}
                 <MobileItemNameIssuesContainer>
                   <MobileItemName>
-                    <Link to={speakerLink} className="u-break-word" id={`mobile-LinkToEndorsingOrganization-${organizationWeVoteId}`}>
+                    <Link
+                      className="u-break-word"
+                      id={`mobile-LinkToEndorsingOrganization-${organizationWeVoteId}`}
+                      onClick={this.closeOrganizationModal}
+                      to={speakerLink}
+                    >
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
