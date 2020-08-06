@@ -7,6 +7,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
+import DelayedLoad from '../Widgets/DelayedLoad';
 
 export default class SettingsPromotedOrganizations extends Component {
   static propTypes = {
@@ -81,11 +82,15 @@ export default class SettingsPromotedOrganizations extends Component {
   render () {
     renderLog('SettingsPromotedOrganizations');  // Set LOG_RENDER_EVENTS to log all renders
     const { organization, organizationWeVoteId, voter, voterIsSignedIn } = this.state;
-    if (!voterIsSignedIn) {
-      // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
-    } else if (!voter || !organizationWeVoteId) {
+    if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
+    } else if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return (
+        <DelayedLoad waitBeforeShow={1000}>
+          <SettingsAccount />
+        </DelayedLoad>
+      );
     }
 
     if (organization && organization.we_vote_custom_domain) {

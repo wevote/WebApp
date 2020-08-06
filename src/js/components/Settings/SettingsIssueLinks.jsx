@@ -9,6 +9,7 @@ import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
+import DelayedLoad from '../Widgets/DelayedLoad';
 
 const PROCHOICE = 'wv02issue63';
 const PROLIFE = 'wv02issue64';
@@ -151,7 +152,11 @@ export default class SettingsIssueLinks extends Component {
     const { voterIsSignedIn } = this.state;
     if (!voterIsSignedIn) {
       // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
+      return (
+        <DelayedLoad waitBeforeShow={1000}>
+          <SettingsAccount />
+        </DelayedLoad>
+      );
     }
     let issuesToDisplay = [];
 

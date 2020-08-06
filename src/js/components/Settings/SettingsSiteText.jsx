@@ -12,10 +12,12 @@ import { renderLog } from '../../utils/logging';
 import SeeTheseSettingsInAction from './SeeTheseSettingsInAction';
 import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
+import DelayedLoad from '../Widgets/DelayedLoad';
 
 class SettingsSiteText extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    externalUniqueId: PropTypes.string,
   };
 
   constructor (props) {
@@ -175,12 +177,16 @@ class SettingsSiteText extends Component {
       organizationReadyIntroductionText, organizationReadyIntroductionTitle,
       organizationReadyIntroductionTextChangedLocally, organizationReadyIntroductionTitleChangedLocally,
     } = this.state;
-    const { classes } = this.props;
-    if (!voterIsSignedIn) {
-      // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
-    } else if (!voter || !organizationWeVoteId) {
+    const { classes, externalUniqueId } = this.props;
+    if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
+    } else if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return (
+        <DelayedLoad waitBeforeShow={1000}>
+          <SettingsAccount />
+        </DelayedLoad>
+      );
     }
 
     return (
@@ -203,7 +209,7 @@ class SettingsSiteText extends Component {
                 Add introduction title and text to welcome people visiting your site&apos;s &quot;Ready?&quot; page.
               </InputLabelHelperText>
               <TextField
-                id="addTitleHereInput"
+                id={`addTitleHereInput-${externalUniqueId}`}
                 onChange={this.handleOrganizationReadyIntroductionTitleChange}
                 onClick={this.showReadyIntroductionButtons}
                 label="Add Title here..."
@@ -211,7 +217,7 @@ class SettingsSiteText extends Component {
                 value={organizationReadyIntroductionTitle}
               />
               <TextField
-                id="addIntroductionHereInput"
+                id={`addIntroductionHereInput-${externalUniqueId}`}
                 onChange={this.handleOrganizationReadyIntroductionTextChange}
                 onClick={this.showReadyIntroductionButtons}
                 label="Add introduction text here..."
@@ -231,7 +237,7 @@ class SettingsSiteText extends Component {
                   Cancel
                 </Button>
                 <Button
-                  id="siteTextSaveButton"
+                  id={`siteTextSaveButton-${externalUniqueId}`}
                   color="primary"
                   disabled={!organizationReadyIntroductionTextChangedLocally && !organizationReadyIntroductionTitleChangedLocally}
                   onClick={this.onSaveReadyIntroductionButton}

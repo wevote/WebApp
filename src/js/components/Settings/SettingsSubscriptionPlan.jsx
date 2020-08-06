@@ -18,10 +18,12 @@ import { renderLog } from '../../utils/logging';
 import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 import { formatDateToYearMonthDay, stringContains } from '../../utils/textFormat';
+import DelayedLoad from '../Widgets/DelayedLoad';
 
 class SettingsSubscriptionPlan extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    externalUniqueId: PropTypes.string,
   };
 
   constructor (props) {
@@ -229,12 +231,16 @@ class SettingsSubscriptionPlan extends Component {
       nextInvoice, organization, organizationWeVoteId, subscriptionJournalHistory, subscriptionJournalHistoryCount,
       voter, voterIsSignedIn, mobileMode,
     } = this.state;
-    const { classes } = this.props;
-    if (!voterIsSignedIn) {
-      // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
-    } else if (!voter || !organizationWeVoteId) {
+    const { classes, externalUniqueId } = this.props;
+    if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
+    } else if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return (
+        <DelayedLoad waitBeforeShow={1000}>
+          <SettingsAccount />
+        </DelayedLoad>
+      );
     }
 
     if (organization && organization.we_vote_custom_domain) {
@@ -266,6 +272,7 @@ class SettingsSubscriptionPlan extends Component {
               </strong>
             </h4>
             <Button
+              id={`changePlanButton-${externalUniqueId}`}
               classes={{ root: classes.changeCancelPlanButton }}
               color="primary"
               onClick={this.onChangePlan}
@@ -411,6 +418,7 @@ class SettingsSubscriptionPlan extends Component {
                 </a> */}
               </SectionParagraph>
               <Button
+                id={`cancelPlanButton-${externalUniqueId}`}
                 color="primary"
                 classes={{ root: classes.changeCancelPlanButton }}
                 onClick={this.onCancelPlan}
@@ -448,7 +456,7 @@ class SettingsSubscriptionPlan extends Component {
                 </strong>
               </h4>
               <Button
-                id="changePlanButton"
+                id={`changePlanButton-${externalUniqueId}`}
                 classes={{ root: classes.changeCancelPlanButton }}
                 color="primary"
                 onClick={this.onChangePlan}

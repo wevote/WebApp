@@ -16,10 +16,12 @@ import SettingsAccount from './SettingsAccount';
 import SettingsAccountLevelChip from './SettingsAccountLevelChip';
 import VoterStore from '../../stores/VoterStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
+import DelayedLoad from '../Widgets/DelayedLoad';
 
 
 class SettingsDomain extends Component {
   static propTypes = {
+    externalUniqueId: PropTypes.string,
     classes: PropTypes.object,
   };
 
@@ -354,14 +356,18 @@ class SettingsDomain extends Component {
       organizationWeVoteId, voter, voterFeaturePackageExceedsOrEqualsProfessional, voterIsSignedIn,
       radioGroupValue, chosenDomainNameBeforeErrorCheck, chosenSubdomainBeforeErrorCheck,
     } = this.state;
-    if (!voterIsSignedIn) {
-      // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
-    } else if (!voter || !organizationWeVoteId) {
+    if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
+    } else if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return (
+        <DelayedLoad waitBeforeShow={1000}>
+          <SettingsAccount />
+        </DelayedLoad>
+      );
     }
 
-    const { classes } = this.props;
+    const { classes, externalUniqueId } = this.props;
 
     return (
       <div>
@@ -430,7 +436,7 @@ class SettingsDomain extends Component {
                       <InputBase
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
                         onChange={this.handleOrganizationChosenSubdomainChange}
-                        id="subdomainInputBox"
+                        id={`subdomainInputBox-${externalUniqueId}`}
                         placeholder="Subdomain..."
                         value={organizationChosenSubdomainAlreadyTaken ? chosenSubdomainBeforeErrorCheck : organizationChosenSubdomain || ''}
                       />
@@ -478,6 +484,7 @@ class SettingsDomain extends Component {
                     )}
                     <ButtonsContainer>
                       <Button
+                        id={`cancelSubdomainButton-${externalUniqueId}`}
                         classes={{ root: classes.button }}
                         color="primary"
                         disabled={!organizationChosenSubdomainChangedLocally}
@@ -487,6 +494,7 @@ class SettingsDomain extends Component {
                         Cancel
                       </Button>
                       <Button
+                        id={`saveSubdomainButton-${externalUniqueId}`}
                         color="primary"
                         disabled={!organizationChosenSubdomainChangedLocally}
                         onClick={this.onSaveSubdomainButton}
@@ -528,7 +536,7 @@ class SettingsDomain extends Component {
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
                         onChange={this.handleOrganizationChosenDomainNameChange}
                         placeholder="Type Full Domain..."
-                        id="customDomainInputBox"
+                        id={`customDomainInputBox-${externalUniqueId}`}
                         value={organizationChosenDomainNameAlreadyTaken ? chosenDomainNameBeforeErrorCheck : organizationChosenDomainName || ''}
                       />
                     </IconInputContainer>
@@ -570,6 +578,7 @@ class SettingsDomain extends Component {
                     )}
                     <ButtonsContainer>
                       <Button
+                        id={`cancelOrganizationDomainButton-${externalUniqueId}`}
                         classes={{ root: classes.button }}
                         color="primary"
                         disabled={!organizationChosenDomainNameChangedLocally}
@@ -579,6 +588,8 @@ class SettingsDomain extends Component {
                         Cancel
                       </Button>
                       <PremiumableButton
+                        id={`saveOrganizationDomainPremiumButton-${externalUniqueId}`}
+
                         premium={voterFeaturePackageExceedsOrEqualsProfessional ? 1 : 0}
                         onClick={voterFeaturePackageExceedsOrEqualsProfessional ? this.onSaveDomainNameButton : () => this.openPaidAccountUpgradeModal('professional')}
                       >
