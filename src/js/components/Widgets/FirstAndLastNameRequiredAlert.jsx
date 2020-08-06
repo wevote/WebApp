@@ -262,7 +262,7 @@ class FirstAndLastNameRequiredAlert extends Component {
                       Once you have saved your name, the following invitations will be sent:
                       <ul>
                         {friendInvitationsWaitingForVerification.map(friend => (
-                          <li>
+                          <li key={`invitationWillBeSent-${friend.invitation_sent_to}`}>
                             {friend.invitation_sent_to}
                           </li>
                         ))}

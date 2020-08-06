@@ -87,11 +87,12 @@ class SettingsNotificationsUnsubscribe extends Component {
     const voterNotificationSettingsUpdateStatus = VoterStore.getVoterNotificationSettingsUpdateStatus();
     // console.log('onVoterStoreChange voterNotificationSettingsUpdateStatus:', voterNotificationSettingsUpdateStatus);
     let apiResponseReceived = false;
+    let emailFound = false;
     let normalizedEmailAddressExists = false;
     let normalizedEmailAddress = '';
     let voterFound = false;
     if (voterNotificationSettingsUpdateStatus && voterNotificationSettingsUpdateStatus.apiResponseReceived) {
-      ({ apiResponseReceived, normalizedEmailAddress, voterFound } = voterNotificationSettingsUpdateStatus);
+      ({ apiResponseReceived, emailFound, normalizedEmailAddress, voterFound } = voterNotificationSettingsUpdateStatus);
       normalizedEmailAddressExists = true;
 
       // Now set individual flag states
@@ -107,6 +108,7 @@ class SettingsNotificationsUnsubscribe extends Component {
     }
     this.setState({
       apiResponseReceived,
+      emailFound,
       normalizedEmailAddress,
       normalizedEmailAddressExists,
       voterFound,
@@ -174,6 +176,7 @@ class SettingsNotificationsUnsubscribe extends Component {
     const { classes } = this.props;
     const {
       apiResponseReceived,
+      emailFound,
       friendOpinionsYourBallotEmail, friendOpinionsYourBallotSms,
       // friendOpinionsOtherRegions,
       friendOpinionsOtherRegionsEmail, friendOpinionsOtherRegionsSms,
@@ -191,7 +194,7 @@ class SettingsNotificationsUnsubscribe extends Component {
       return LoadingWheel;
     }
 
-    if (!voterFound) {
+    if (!voterFound && !emailFound) {
       return (
         <Wrapper>
           <Helmet title="Notification Settings - We Vote" />
