@@ -173,51 +173,67 @@ export default class SettingsDashboard extends Component {
 
   render () {
     renderLog('SettingsDashboard');  // Set LOG_RENDER_EVENTS to log all renders
-    let settingsComponentToDisplay = null;
+    let settingsComponentToDisplayDesktop = null;
+    let settingsComponentToDisplayMobile = null;
     switch (this.state.editMode) {
       case 'account':
-        settingsComponentToDisplay = <SettingsAccount />;
+        settingsComponentToDisplayDesktop = <SettingsAccount externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsAccount externalUniqueId="domainMobile" />;
         break;
       case 'address':
-        settingsComponentToDisplay = <SettingsAddress />;
+        settingsComponentToDisplayDesktop = <SettingsAddress externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsAddress externalUniqueId="domainMobile" />;
         break;
       case 'analytics':
-        settingsComponentToDisplay = <SettingsAnalytics />;
+        settingsComponentToDisplayDesktop = <SettingsAnalytics externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsAnalytics externalUniqueId="domainMobile" />;
         break;
       case 'domain':
-        settingsComponentToDisplay = <SettingsDomain />;
+        settingsComponentToDisplayDesktop = <SettingsDomain externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsDomain externalUniqueId="domainMobile" />;
         break;
       case 'election':
-        settingsComponentToDisplay = <SettingsElection />;
+        settingsComponentToDisplayDesktop = <SettingsElection externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsElection externalUniqueId="domainMobile" />;
         break;
       case 'issues_linked':
       case 'issues_to_link':
-        settingsComponentToDisplay = <SettingsIssueLinks organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: this.state.editMode }} />;
+        settingsComponentToDisplayDesktop = <SettingsIssueLinks externalUniqueId="domainDesktop" organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: this.state.editMode }} />;
+        settingsComponentToDisplayMobile = <SettingsIssueLinks externalUniqueId="domainMobile" organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: this.state.editMode }} />;
         break;
       case 'issues':
-        settingsComponentToDisplay = <SettingsIssueLinks organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: '' }} />;
+        settingsComponentToDisplayDesktop = <SettingsIssueLinks externalUniqueId="domainDesktop" organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: '' }} />;
+        settingsComponentToDisplayMobile = <SettingsIssueLinks externalUniqueId="domainMobile" organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: '' }} />;
         break;
       case 'notifications':
-        settingsComponentToDisplay = <SettingsNotifications />;
+        settingsComponentToDisplayDesktop = <SettingsNotifications externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsNotifications externalUniqueId="domainMobile" />;
         break;
       default:
       case 'profile':
-        settingsComponentToDisplay = <SettingsProfile />;
+        settingsComponentToDisplayDesktop = <SettingsProfile externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsProfile externalUniqueId="domainMobile" />;
         break;
       case 'promoted':
-        settingsComponentToDisplay = <SettingsPromotedOrganizations />;
+        settingsComponentToDisplayDesktop = <SettingsPromotedOrganizations />;
+        settingsComponentToDisplayMobile = <SettingsPromotedOrganizations />;
         break;
       case 'sharing':
-        settingsComponentToDisplay = <SettingsSharing />;
+        settingsComponentToDisplayDesktop = <SettingsSharing externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsSharing externalUniqueId="domainMobile" />;
         break;
       case 'subscription':
-        settingsComponentToDisplay = <SettingsSubscriptionPlan />;
+        settingsComponentToDisplayDesktop = <SettingsSubscriptionPlan externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsSubscriptionPlan externalUniqueId="domainMobile" />;
+
         break;
       case 'text':
-        settingsComponentToDisplay = <SettingsSiteText />;
+        settingsComponentToDisplayDesktop = <SettingsSiteText externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <SettingsSiteText externalUniqueId="domainMobile" />;
         break;
       case 'tools':
-        settingsComponentToDisplay = <ToolsToShareOnOtherWebsites />;
+        settingsComponentToDisplayDesktop = <ToolsToShareOnOtherWebsites externalUniqueId="domainDesktop" />;
+        settingsComponentToDisplayMobile = <ToolsToShareOnOtherWebsites externalUniqueId="domainMobile" />;
         break;
     }
 
@@ -261,7 +277,7 @@ export default class SettingsDashboard extends Component {
               </div>
               {/* Desktop mode content */}
               <div className="col-md-8">
-                {settingsComponentToDisplay}
+                {settingsComponentToDisplayDesktop}
               </div>
             </div>
           </div>
@@ -273,12 +289,12 @@ export default class SettingsDashboard extends Component {
           <div className="d-block d-md-none">
             {/* Mobile mode content */}
             <div className="col-12">
-              {settingsComponentToDisplay}
+              {settingsComponentToDisplayMobile}
             </div>
           </div>
         ) : (
           <div className="col-12">
-            {settingsComponentToDisplay}
+            {settingsComponentToDisplayMobile}
           </div>
         )}
       </div>

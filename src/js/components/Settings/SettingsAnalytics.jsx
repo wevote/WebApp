@@ -15,17 +15,19 @@ import SettingsAccount from './SettingsAccount';
 import SettingsAccountLevelChip from './SettingsAccountLevelChip';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import VoterStore from '../../stores/VoterStore';
+import DelayedLoad from '../Widgets/DelayedLoad';
 
 class SettingsAnalytics extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    externalUniqueId: PropTypes.string,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      chosenFeaturePackage: 'FREE',
       analyticsButtonsActive: '',
+      chosenFeaturePackage: 'FREE',
       organization: {},
       organizationWeVoteId: '',
       organizationChosenGoogleAnalyticsTracker: '',
@@ -278,12 +280,16 @@ class SettingsAnalytics extends Component {
       organizationChosenHtmlVerification, organizationChosenHtmlVerificationChangedLocally,
       voterFeaturePackageExceedsOrEqualsEnterprise,
     } = this.state;
-    const { classes } = this.props;
-    if (!voterIsSignedIn) {
-      // console.log('voterIsSignedIn is false');
-      return <SettingsAccount />;
-    } else if (!voter || !organizationWeVoteId) {
+    const { classes, externalUniqueId } = this.props;
+    if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
+    } else if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return (
+        <DelayedLoad waitBeforeShow={1000}>
+          <SettingsAccount />
+        </DelayedLoad>
+      );
     }
 
     return (
@@ -307,7 +313,7 @@ class SettingsAnalytics extends Component {
               </InputLabel>
               <InputLabelHelperText>Add your tracking code (e.g., UA-XXXXXXX-X) so you can see which parts of your site voters like the best.</InputLabelHelperText>
               <TextField
-                id="googleAnalyticsTrackerInput"
+                id={`googleAnalyticsTrackerInput-${externalUniqueId}`}
                 onChange={this.handleOrganizationChosenGoogleAnalyticsTrackerChange}
                 onClick={this.showChosenGoogleAnalyticsTrackerButtons}
                 label="Paste Google Analytics ID Here..."
@@ -318,7 +324,7 @@ class SettingsAnalytics extends Component {
             {analyticsButtonsActive === 'organizationChosenGoogleAnalyticsTrackerButtonsActive' && (
               <ButtonsContainer>
                 <Button
-                  id="googleAnalyticsTrackerInputCancel"
+                  id={`googleAnalyticsTrackerInputCancel-${externalUniqueId}`}
                   classes={{ root: classes.button }}
                   color="primary"
                   disabled={!organizationChosenGoogleAnalyticsTrackerChangedLocally}
@@ -329,6 +335,7 @@ class SettingsAnalytics extends Component {
                 </Button>
                 {voterFeaturePackageExceedsOrEqualsEnterprise ? (
                   <Button
+                    id={`googleAnalyticsTrackerInputSave-${externalUniqueId}`}
                     color="primary"
                     disabled={!organizationChosenGoogleAnalyticsTrackerChangedLocally}
                     onClick={this.onSaveGoogleAnalyticsTrackerButton}
@@ -338,6 +345,7 @@ class SettingsAnalytics extends Component {
                   </Button>
                 ) : (
                   <Button
+                    id={`googleAnalyticsTrackerInputSave-${externalUniqueId}`}
                     onClick={() => this.openPaidAccountUpgradeModal('enterprise')}
                     variant="contained"
                     classes={{ root: classes.goldButton }}
@@ -362,7 +370,7 @@ class SettingsAnalytics extends Component {
                 Add your entire HTML verification meta tag (e.g., &lt;meta name=&quot;google-site-verification&quot; content=&quot;your verification string&quot;&gt;) to prove that you control this website.
               </InputLabelHelperText>
               <TextField
-                id="verifyWebmasterToolInput"
+                id={`verifyWebmasterToolInput-${externalUniqueId}`}
                 onChange={this.handleOrganizationChosenHtmlVerificationChange}
                 onClick={this.showHtmlVerificationButtons}
                 label="Paste the HTML Meta Tag Here..."
@@ -373,7 +381,7 @@ class SettingsAnalytics extends Component {
             {analyticsButtonsActive === 'organizationChosenHtmlVerificationButtonsActive' ? (
               <ButtonsContainer>
                 <Button
-                  id="verifyWebmasterToolCancelButton"
+                  id={`verifyWebmasterToolCancelButton-${externalUniqueId}`}
                   classes={{ root: classes.button }}
                   color="primary"
                   disabled={!organizationChosenHtmlVerificationChangedLocally}
@@ -383,7 +391,7 @@ class SettingsAnalytics extends Component {
                   Cancel
                 </Button>
                 <Button
-                  id="verifyWebmasterToolSaveButton"
+                  id={`verifyWebmasterToolSaveButton-${externalUniqueId}`}
                   color="primary"
                   disabled={!organizationChosenHtmlVerificationChangedLocally}
                   onClick={this.onSaveHtmlVerificationButton}

@@ -100,29 +100,57 @@ class VoterGuidePositionFilter extends Component {
   getNewFilteredItems = () => {
     const { allItems, selectedFilters } = this.props;
     const { thisYearInteger } = this.state;
-    // console.log('allItems:', allItems);
+    // console.log('getNewFilteredItems allItems:', allItems, ', selectedFilters:', selectedFilters);
     let filteredItems = [];
     if (!selectedFilters || !selectedFilters.length) return allItems;
     // First, bring in only the race levels to show
     // const selectedFiltersDefault = ['sortByAlphabetical', 'thisYear', 'federalRaces', 'stateRaces', 'measureRaces', 'localRaces'];
+    let containsAtLeastOneRaceFilter = false;
     selectedFilters.forEach((filter) => {
       switch (filter) {
         case 'federalRaces':
-          filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'Federal'))];
-          break;
         case 'stateRaces':
-          filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'State'))];
-          break;
         case 'measureRaces':
-          filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.kind_of_ballot_item === 'MEASURE'))];
-          break;
         case 'localRaces':
-          filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'Local'))];
+          containsAtLeastOneRaceFilter = true;
           break;
         default:
           break;
       }
     });
+    // console.log('containsAtLeastOneRaceFilter:', containsAtLeastOneRaceFilter);
+    if (containsAtLeastOneRaceFilter) {
+      let federalRacesFilterUsed = false;
+      let stateRacesFilterUsed = false;
+      let localRacesFilterUsed = false;
+      selectedFilters.forEach((filter) => {
+        switch (filter) {
+          case 'federalRaces':
+            filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'Federal'))];
+            federalRacesFilterUsed = true;
+            break;
+          case 'stateRaces':
+            filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'State'))];
+            stateRacesFilterUsed = true;
+            break;
+          case 'measureRaces':
+            filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.kind_of_ballot_item === 'MEASURE'))];
+            break;
+          case 'localRaces':
+            filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'Local'))];
+            localRacesFilterUsed = true;
+            break;
+          default:
+            break;
+        }
+      });
+      // Now add in candidate items that might have been left out from bad data
+      if (federalRacesFilterUsed && stateRacesFilterUsed && localRacesFilterUsed) {
+        filteredItems = [...filteredItems, ...allItems.filter(item => (item && (!item.race_office_level && item.kind_of_ballot_item === 'CANDIDATE')))];
+      }
+    } else {
+      filteredItems = allItems;
+    }
     // thisYear, priorYears, battlegroundRaces
     let containsAtLeastOneYear = false;
     selectedFilters.forEach((filter) => {

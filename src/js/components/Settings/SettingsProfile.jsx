@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import PropTypes from 'prop-types';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import LoadingWheel from '../LoadingWheel';
@@ -12,6 +13,10 @@ import VoterStore from '../../stores/VoterStore';
 
 
 export default class SettingsProfile extends Component {
+  static propTypes = {
+    externalUniqueId: PropTypes.string,
+  };
+
   constructor (props) {
     super(props);
     this.state = {
@@ -37,6 +42,8 @@ export default class SettingsProfile extends Component {
 
   render () {
     renderLog('SettingsProfile');  // Set LOG_RENDER_EVENTS to log all renders
+    const { externalUniqueId } = this.props;
+
     if (!this.state.voter) {
       return LoadingWheel;
     }
@@ -49,10 +56,11 @@ export default class SettingsProfile extends Component {
           <div className="card-main">
             <h1 className="h2">General Settings</h1>
             <div>
-              <SettingsWidgetFirstLastName />
-              <SettingsWidgetOrganizationWebsite />
-              <SettingsWidgetOrganizationDescription />
+              <SettingsWidgetFirstLastName externalUniqueId={externalUniqueId} />
+              <SettingsWidgetOrganizationWebsite externalUniqueId={externalUniqueId} />
+              <SettingsWidgetOrganizationDescription externalUniqueId={externalUniqueId} />
               <SettingsWidgetAccountType
+                externalUniqueId={externalUniqueId}
                 closeEditFormOnChoice
                 showEditToggleOption
               />

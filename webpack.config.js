@@ -1,16 +1,18 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const UnusedWebpackPlugin = require('unused-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+/* jshint esversion: 6 */
 const CopyPlugin = require('copy-webpack-plugin');
-const { InjectManifest } = require('workbox-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');   // Don't delete this!
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const path = require('path');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const UnusedWebpackPlugin = require('unused-webpack-plugin');
+const webpack = require('webpack');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');   // Don't delete this!
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { InjectManifest } = require('workbox-webpack-plugin');
 
 const port = process.env.PORT || 3000;
+const single = process.env.BUNDLE && process.env.BUNDLE === 'SINGLE';
 
 // Set isProduction to false, to enable the interactive bundle analyser and the Unused component analyzer
 const isProduction = true;   // Developers can set this to be false, but in git it should always be true
@@ -20,12 +22,28 @@ module.exports = {
   entry: {
     bundle: ['./src/js/index.js', './src/sass/main.scss'],
   },
-  output: {
+  output: (single ? {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'build'),
+  } : {
     chunkFilename: '[name].bundle.js',
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'build'),
-  },
-  optimization: {
+  }),
+  optimization: (single ? {
+    removeAvailableModules: true,
+    minimizer: [
+      new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: {
+          ecma: 8,
+          mangle: false,
+          keep_classnames: true,
+          keep_fnames: true,
+        },
+      }),
+    ],
+  } : {
     removeAvailableModules: true,
     runtimeChunk: false,
     splitChunks: {
@@ -47,7 +65,8 @@ module.exports = {
         },
         readyNoApi: {
           name: 'readyNoApi',
-          test: function (module) {
+          // eslint-disable-next-line consistent-return
+          test: (module) => {
             if (module.resource) {
               return module.resource.includes('/js/config.js') ||
                 module.resource.includes('/js/index.js') ||
@@ -125,7 +144,8 @@ module.exports = {
         // },
         defaultWeVote: {
           name: 'defaultWeVote',
-          test: function (module) {
+          // eslint-disable-next-line consistent-return
+          test: (module) => {
             if (module.resource) {
               return module.resource.includes('/js/');
             }
@@ -154,25 +174,31 @@ module.exports = {
         },
       }),
     ],
-  },
+  }),
   plugins: [
     new CleanWebpackPlugin(),
-    new webpack.HashedModuleIdsPlugin(),
-    new HtmlWebpackPlugin({
+    ...(single ? [] : [
+      new webpack.HashedModuleIdsPlugin(),
+    ]),
+    new HtmlWebpackPlugin(single ? {
+      template: './src/index.html',
+    } : {
       template: './src/index.html',
       filename: 'index.html',
       chunksSortMode: 'auto',
     }),
-    new ScriptExtHtmlWebpackPlugin({
-      sync: ['jQuery', 'materialStyle', 'reactCore', 'readyNoApi'],
-      // This just generates a link, but doesn't remove the script from being included and holding up onload
-      // Causes additional 2 second delay
-      // prefetch: {
-      //   test: ['defaultVendors', 'defaultWeVote'],
-      //   chunks: 'all',
-      // },
-      defaultAttribute: 'async',
-    }),
+    ...(single ? [] : [
+      new ScriptExtHtmlWebpackPlugin({
+        sync: ['jQuery', 'materialStyle', 'reactCore', 'readyNoApi'],
+        // This just generates a link, but doesn't remove the script from being included and holding up onload
+        // Causes additional 2 second delay
+        // prefetch: {
+        //   test: ['defaultVendors', 'defaultWeVote'],
+        //   chunks: 'all',
+        // },
+        defaultAttribute: 'async',
+      }),
+    ]),
     new CopyPlugin([
       { from: 'src/extension.html', to: '.' },
       { from: 'src/robots.txt', to: '.' },
@@ -203,7 +229,6 @@ module.exports = {
           'config-template.js',
           'extension.html',
           'robots.txt',
-          'vip.html',
         ],
         // Root directory (optional)
         root: __dirname,
@@ -258,7 +283,7 @@ module.exports = {
   },
   devServer: {
     host: 'localhost',
-    port: port,
+    port,
     historyApiFallback: true,
     open: true,
     writeToDisk: true,

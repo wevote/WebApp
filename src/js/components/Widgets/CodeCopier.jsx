@@ -11,6 +11,7 @@ export default class CodeCopier extends Component {
   static propTypes = {
     codeCopierButtonId: PropTypes.string,
     exampleUrl: PropTypes.string,
+    externalUniqueId: PropTypes.string,
     imageUrl: PropTypes.string,
     sourceUrl: PropTypes.string,
     title: PropTypes.string,
@@ -118,7 +119,7 @@ export default class CodeCopier extends Component {
   render () {
     renderLog('CodeCopier');  // Set LOG_RENDER_EVENTS to log all renders
     let { sourceUrl } = this.props;
-    const { codeCopierButtonId } = this.props;
+    const { codeCopierButtonId, externalUniqueId } = this.props;
     if (!sourceUrl) sourceUrl = `https://wevote.us/${this.state.twitterHandle}`;
 
     const sourceCode =
@@ -132,7 +133,7 @@ export default class CodeCopier extends Component {
               <h3 className="h3">{this.props.title}</h3>
               <Button
                 color="primary"
-                id={codeCopierButtonId}
+                id={externalUniqueId ? `${codeCopierButtonId}-${externalUniqueId}` : `${codeCopierButtonId}`}
                 onClick={this.copyCode}
                 variant="contained"
               >
@@ -184,7 +185,7 @@ export default class CodeCopier extends Component {
                 className={this.state.status.length ?
                   'form-control' :
                   'form-control u-stack--sm'}
-                id="enterTwitterHandleInput"
+                id={externalUniqueId ? `enterTwitterHandleInput-${externalUniqueId}` : 'enterTwitterHandleInput'}
                 name="twitterHandle"
                 placeholder="Enter Twitter Handle"
                 onKeyDown={this.resetState}
@@ -204,7 +205,7 @@ export default class CodeCopier extends Component {
               }
               <Button
                 color="primary"
-                id={codeCopierButtonId}
+                id={externalUniqueId ? `${codeCopierButtonId}-${externalUniqueId}` : `${codeCopierButtonId}`}
                 disabled={!this.state.isTwitterHandleValid}
                 onClick={this.copyCode}
                 variant="text"
@@ -260,7 +261,7 @@ export default class CodeCopier extends Component {
               <h3 className="h3">{this.props.title}</h3>
               <Button
                 color="primary"
-                id={codeCopierButtonId}
+                id={externalUniqueId ? `${codeCopierButtonId}-${externalUniqueId}` : `${codeCopierButtonId}`}
                 onClick={this.copyCode}
                 variant="contained"
               >

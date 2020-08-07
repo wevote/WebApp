@@ -9,6 +9,7 @@ import ActivityStore from '../../stores/ActivityStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
+import { timeFromDate } from '../../utils/textFormat';
 
 class HeaderNotificationMenu extends Component {
   static propTypes = {
@@ -86,6 +87,7 @@ class HeaderNotificationMenu extends Component {
     }
     let activityNoticeCount = 0;
     let activityDescription = '';
+    let activityTimeFromDate = '';
     const menuItemListActivities = allActivityNotices.map((activityNotice) => {
       activityNoticeCount += 1;
       if (activityNoticeCount <= 3) {
@@ -97,6 +99,7 @@ class HeaderNotificationMenu extends Component {
         } else if (activityNotice.new_positions_entered_count > 1) {
           activityDescription += ' added new opinions.';
         }
+        activityTimeFromDate = timeFromDate(activityNotice.date_of_notice);
         return (
           <MenuItem
             className={classes.menuItem}
@@ -114,11 +117,18 @@ class HeaderNotificationMenu extends Component {
                 />
               </MenuItemPhoto>
               <MenuItemText>
-                <strong>
-                  {activityNotice.speaker_name}
-                </strong>
-                {' '}
-                {activityDescription}
+                <div>
+                  <strong>
+                    {activityNotice.speaker_name}
+                  </strong>
+                  {' '}
+                  {activityDescription}
+                </div>
+                {activityTimeFromDate && (
+                  <ActivityTime>
+                    {activityTimeFromDate}
+                  </ActivityTime>
+                )}
               </MenuItemText>
             </>
           </MenuItem>
@@ -131,6 +141,7 @@ class HeaderNotificationMenu extends Component {
   }
 
   handleClick = (event) => {
+    ActivityActions.activityNoticeListRetrieve();
     this.setState({
       anchorEl: event.currentTarget,
       menuOpen: true,
@@ -161,7 +172,7 @@ class HeaderNotificationMenu extends Component {
         >
           {allActivityNoticesCount ? (
             <Badge
-              badgeContent={<BadgeCountWrapper>{allActivityNoticesCount}</BadgeCountWrapper>}
+              badgeContent={<BadgeCountWrapper isNumberOne={allActivityNoticesCount === 1}>{allActivityNoticesCount}</BadgeCountWrapper>}
               classes={{
                 badge: classes.badgeClasses,
                 anchorOriginTopRightRectangle: classes.anchorOriginTopRightRectangle,
@@ -261,12 +272,15 @@ const styles = theme => ({
   },
 });
 
+const ActivityTime = styled.div`
+  color: #999;
+  font-size: 11px;
+  font-weight: 400;
+`;
+
 const BadgeCountWrapper = styled.span`
-  margin-top: -1px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-left: 1px;
-    margin-top: -1px;
-  }
+  margin-top: ${props => (props.isNumberOne ? '-1px' : '0')};
+  margin-left: ${props => (props.isNumberOne ? '1px' : '0')};
 `;
 
 const HeaderNotificationMenuWrapper = styled.div`

@@ -10,6 +10,9 @@ class FriendStore extends ReduceStore {
     return {
       currentFriends: [],
       currentFriendsOrganizationWeVoteIds: [],
+      friendInvitationsSentByMe: [],
+      friendInvitationsSentToMe: [],
+      friendInvitationsWaitingForVerification: [],
     };
   }
 
@@ -45,12 +48,12 @@ class FriendStore extends ReduceStore {
 
   friendInvitationsSentByMe () {
     const { friendInvitationsSentByMe } = this.getState();
-    return friendInvitationsSentByMe || {};
+    return friendInvitationsSentByMe || [];
   }
 
   friendInvitationsSentToMe () {
     const { friendInvitationsSentToMe } = this.getState();
-    return friendInvitationsSentToMe || {};
+    return friendInvitationsSentToMe || [];
   }
 
   friendInvitationsProcessed () {
@@ -108,7 +111,7 @@ class FriendStore extends ReduceStore {
 
   suggestedFriendList () {
     const { suggestedFriendList } = this.getState();
-    return suggestedFriendList || {};
+    return suggestedFriendList || [];
   }
 
   switchToAddFriendsByEmailStep () {

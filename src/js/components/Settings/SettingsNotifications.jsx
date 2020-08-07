@@ -30,6 +30,7 @@ const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES ===
 class SettingsNotifications extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    externalUniqueId: PropTypes.string,
   };
 
   constructor (props) {
@@ -152,7 +153,7 @@ class SettingsNotifications extends Component {
 
   render () {
     renderLog('SettingsNotifications');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    const { classes, externalUniqueId } = this.props;
     const {
       addEmailInterfaceOpen,
       friendOpinionsYourBallotEmail, // friendOpinionsYourBallotSms,
@@ -336,7 +337,7 @@ class SettingsNotifications extends Component {
                           {primaryEmailAddressExists ? (
                             <input
                               aria-label="email friends opinions from your ballot"
-                              id="friendOpinionsYourBallotEmail"
+                              id={`friendOpinionsYourBallotEmail-${externalUniqueId}`}
                               type="checkbox"
                               name="friendOpinionsYourBallotEmail"
                               onChange={this.updateNotificationSettings}
@@ -378,7 +379,7 @@ class SettingsNotifications extends Component {
                           checked
                           // checked={friendOpinionsOtherRegions}
                           disabled
-                          id="friendOpinionsOtherRegions"
+                          id={`friendOpinionsOtherRegions-${externalUniqueId}`}
                           type="checkbox"
                           name="friendOpinionsOtherRegions"
                           onChange={this.updateNotificationSettings}
@@ -388,7 +389,7 @@ class SettingsNotifications extends Component {
                         {primaryEmailAddressExists ? (
                           <input
                             aria-label="email friends opinions from all regions"
-                            id="friendOpinionsOtherRegionsEmail"
+                            id={`friendOpinionsOtherRegionsEmail-${externalUniqueId}`}
                             type="checkbox"
                             name="friendOpinionsOtherRegionsEmail"
                             onChange={this.updateNotificationSettings}
@@ -437,7 +438,7 @@ class SettingsNotifications extends Component {
                         <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                           <input
                             aria-label="email we vote newsletter"
-                            id="newsletterOptIn"
+                            id={`newsletterOptIn-${externalUniqueId}`}
                             type="checkbox"
                             name="newsletterOptIn"
                             onChange={this.updateNotificationSettings}
@@ -490,8 +491,10 @@ const styles = () => ({
     color: 'rgb(171, 177, 191)',
   },
   tableCellColumn: {
-    paddingLeft: 6,
+    paddingTop: 0,
     paddingRight: 6,
+    paddingBottom: 0,
+    paddingLeft: 6,
   },
   tableCellDescription: {
     paddingLeft: 0,

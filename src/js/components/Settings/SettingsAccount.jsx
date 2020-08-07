@@ -33,6 +33,7 @@ const debugMode = false;
 
 export default class SettingsAccount extends Component {
   static propTypes = {
+    externalUniqueId: PropTypes.string,
     inModal: PropTypes.bool,
     pleaseSignInTitle: PropTypes.string,
     pleaseSignInSubTitle: PropTypes.string,
@@ -298,7 +299,7 @@ export default class SettingsAccount extends Component {
 
   render () {
     renderLog('SettingsAccount');  // Set LOG_RENDER_EVENTS to log all renders
-    const { inModal } = this.props;
+    const { inModal, externalUniqueId } = this.props;
     const {
       facebookAuthResponse, hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton,
       hideVoterEmailAddressEntry, hideVoterPhoneEntry, isOnWeVoteRootUrl, isOnWeVoteSubdomainUrl,
@@ -350,7 +351,7 @@ export default class SettingsAccount extends Component {
           <BrowserPushMessage incomingProps={this.props} />
         }
         <div className={inModal ? 'card-main full-width' : 'card'} style={{ display: `${hideDialogForCordova ? ' none' : 'undefined'}` }}>
-          <Main inModal={inModal} id="settingsAccountMain">
+          <Main inModal={inModal} id={`settingsAccountMain-${externalUniqueId}`}>
             {voterIsSignedInTwitter && voterIsSignedInFacebook ?
               null :
               <h1 className="h3">{!hideTwitterSignInButton && !hideFacebookSignInButton && voterIsSignedIn ? <span>{yourAccountTitle}</span> : null}</h1>
@@ -432,7 +433,7 @@ export default class SettingsAccount extends Component {
                         <div>
                           <Button
                             className="btn-sm"
-                            id="voterSplitIntoTwoAccounts"
+                            id={`voterSplitIntoTwoAccounts-${externalUniqueId}`}
                             onClick={this.voterSplitIntoTwoAccounts}
                             type="submit"
                             variant="danger"
@@ -441,7 +442,7 @@ export default class SettingsAccount extends Component {
                           </Button>
                           <span
                             className="u-margin-left--sm"
-                            id="toggleTwitterDisconnectClose"
+                            id={`toggleTwitterDisconnectClose-${externalUniqueId}`}
                             onClick={this.toggleTwitterDisconnectClose}
                           >
                             cancel
@@ -450,7 +451,7 @@ export default class SettingsAccount extends Component {
                       ) : (
                         <div>
                           <span
-                            id="toggleTwitterDisconnectOpen"
+                            id={`toggleTwitterDisconnectOpen-${externalUniqueId}`}
                             onClick={this.toggleTwitterDisconnectOpen}
                           >
                             un-link @

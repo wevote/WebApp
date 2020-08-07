@@ -8,7 +8,7 @@ import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
-import WouldYouLikeToMergeAccounts from '../../components/WouldYouLikeToMergeAccounts';
+// import WouldYouLikeToMergeAccounts from '../../components/WouldYouLikeToMergeAccounts';
 
 export default class FriendInvitationByEmailVerifyProcess extends Component {
   static propTypes = {
@@ -212,17 +212,18 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
         },
       });
       return LoadingWheel;
-    } else if (invitationStatus.voterHasDataToPreserve) {
-      // If so, ask if they want to connect two accounts?
-      // console.log('FriendInvitationByEmailVerifyProcess yesPleaseMergeAccounts is FALSE');
-      // Display the question of whether to merge accounts or not
-      return (
-        <WouldYouLikeToMergeAccounts
-          cancelMergeFunction={this.cancelMergeFunction}
-          pleaseMergeAccountsFunction={this.setYesPleaseMergeAccounts}
-        />
-      );
-      // return <span>WouldYouLikeToMergeAccounts</span>;
+    // 2020-08-05 At this point we always want to proceed below, so no need to respond to voterHasDataToPreserve.
+    // } else if (invitationStatus.voterHasDataToPreserve) {
+    //   // If so, ask if they want to connect two accounts?
+    //   // console.log('FriendInvitationByEmailVerifyProcess yesPleaseMergeAccounts is FALSE');
+    //   // Display the question of whether to merge accounts or not
+    //   return (
+    //     <WouldYouLikeToMergeAccounts
+    //       cancelMergeFunction={this.cancelMergeFunction}
+    //       pleaseMergeAccountsFunction={this.setYesPleaseMergeAccounts}
+    //     />
+    //   );
+    //   // return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
       // Go ahead and merge the accounts, which means deleting the current voter and switching to the invitation owner
       // console.log('FriendInvitationByEmailVerifyProcess - voterHasDataToPreserve is FALSE');

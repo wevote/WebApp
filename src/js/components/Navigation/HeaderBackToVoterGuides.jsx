@@ -8,7 +8,7 @@ import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import BallotStore from '../../stores/BallotStore';
 import cookies from '../../utils/cookies';
-import { isCordova, isWebApp, historyPush } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp, historyPush, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import EndorsementModeTabs from './EndorsementModeTabs';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
@@ -310,8 +310,15 @@ class HeaderBackToVoterGuides extends Component {
       </Tooltip>
     );
 
+    let appBarCname = 'page-header page-header__voter-guide-creator';
+    if (hasIPhoneNotch()) {
+      appBarCname = 'page-header page-header__cordova-iphonex page-header__voter-guide-creator';
+    } else if (isCordova()) {
+      appBarCname = 'page-header page-header__cordova page-header__voter-guide-creator';
+    }
+
     return (
-      <AppBar className={isWebApp() ? 'page-header page-header__voter-guide-creator' : 'page-header page-header__cordova page-header__voter-guide-creator'} color="default">
+      <AppBar className={appBarCname} color="default">
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}

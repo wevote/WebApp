@@ -87,11 +87,12 @@ class SettingsNotificationsUnsubscribe extends Component {
     const voterNotificationSettingsUpdateStatus = VoterStore.getVoterNotificationSettingsUpdateStatus();
     // console.log('onVoterStoreChange voterNotificationSettingsUpdateStatus:', voterNotificationSettingsUpdateStatus);
     let apiResponseReceived = false;
+    let emailFound = false;
     let normalizedEmailAddressExists = false;
     let normalizedEmailAddress = '';
     let voterFound = false;
     if (voterNotificationSettingsUpdateStatus && voterNotificationSettingsUpdateStatus.apiResponseReceived) {
-      ({ apiResponseReceived, normalizedEmailAddress, voterFound } = voterNotificationSettingsUpdateStatus);
+      ({ apiResponseReceived, emailFound, normalizedEmailAddress, voterFound } = voterNotificationSettingsUpdateStatus);
       normalizedEmailAddressExists = true;
 
       // Now set individual flag states
@@ -107,6 +108,7 @@ class SettingsNotificationsUnsubscribe extends Component {
     }
     this.setState({
       apiResponseReceived,
+      emailFound,
       normalizedEmailAddress,
       normalizedEmailAddressExists,
       voterFound,
@@ -174,6 +176,7 @@ class SettingsNotificationsUnsubscribe extends Component {
     const { classes } = this.props;
     const {
       apiResponseReceived,
+      emailFound,
       friendOpinionsYourBallotEmail, friendOpinionsYourBallotSms,
       // friendOpinionsOtherRegions,
       friendOpinionsOtherRegionsEmail, friendOpinionsOtherRegionsSms,
@@ -191,7 +194,7 @@ class SettingsNotificationsUnsubscribe extends Component {
       return LoadingWheel;
     }
 
-    if (!voterFound) {
+    if (!voterFound && !emailFound) {
       return (
         <Wrapper>
           <Helmet title="Notification Settings - We Vote" />
@@ -238,6 +241,19 @@ class SettingsNotificationsUnsubscribe extends Component {
                   )}
                 </div>
               </HeaderWrapper>
+              {normalizedEmailAddressExists && (
+                <IntroductionText>
+                  <div>
+                    <strong>
+                      Not your email address?
+                    </strong>
+                    {' '}
+                    This message was probably forwarded to you from a friend.
+                    {' '}
+                    Instead of making changes here, please contact them directly to stop receiving forwarded emails.
+                  </div>
+                </IntroductionText>
+              )}
               <TableContainer>
                 <Table aria-label="simple table">
                   <TableHead>
@@ -514,8 +530,10 @@ const styles = () => ({
     color: 'rgb(171, 177, 191)',
   },
   tableCellColumn: {
-    paddingLeft: 6,
+    paddingTop: 0,
     paddingRight: 6,
+    paddingBottom: 0,
+    paddingLeft: 6,
   },
   tableCellDescription: {
     paddingLeft: 0,
@@ -542,6 +560,11 @@ const HeaderWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+`;
+
+const IntroductionText = styled.div`
+  margin-top: 0px;
+  margin-bottom: 0px;
 `;
 
 const ViewOnWeVoteWrapper = styled.div`

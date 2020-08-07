@@ -61,10 +61,12 @@ class Friends extends Component {
     this.state = {
       currentFriends: [],
       defaultTabItem: '',
+      friendActivityExists: false,
       friendInvitationsSentByMe: [],
       friendInvitationsSentToMe: [],
       friendsHeaderUnpinned: false,
       suggestedFriendList: [],
+      voterIsSignedIn: false,
     };
   }
 
@@ -81,12 +83,19 @@ class Friends extends Component {
     const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
     const suggestedFriendList = FriendStore.suggestedFriendList();
 
+    const voter = VoterStore.getVoter();
+    let voterIsSignedIn = false;
+    if (voter && voter.is_signed_in) {
+      voterIsSignedIn = voter.is_signed_in;
+    }
+
     this.setState({
       currentFriends: FriendStore.currentFriends(),
       friendInvitationsSentToMe,
       friendInvitationsSentByMe,
       suggestedFriendList,
-      voter: VoterStore.getVoter(),
+      voter,
+      voterIsSignedIn,
     });
     this.resetDefaultTabForMobile(friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe);
     ActivityActions.activityNoticeListRetrieve();
@@ -100,29 +109,54 @@ class Friends extends Component {
   }
 
   onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+    const voter = VoterStore.getVoter();
+    let voterIsSignedIn = false;
+    if (voter && voter.is_signed_in) {
+      voterIsSignedIn = voter.is_signed_in;
+    }
+    this.setState({
+      voter,
+      voterIsSignedIn,
+    });
   }
 
   onFriendStoreChange () {
-    const { currentFriends, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList } = this.state;
-    if (currentFriends.length !== FriendStore.currentFriends().length) {
-      this.setState({ currentFriends: FriendStore.currentFriends() });
-      // console.log('currentFriends has changed');
+    let {
+      currentFriends,
+      friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList,
+    } = this.state;
+    let resetDefaultTab = false;
+    if (currentFriends && currentFriends.length !== FriendStore.currentFriends().length) {
+      currentFriends = FriendStore.currentFriends();
+      this.setState({ currentFriends });
+      // console.log('currentFriends has changed, currentFriends:', currentFriends);
     }
-    if (friendInvitationsSentByMe.length !== FriendStore.friendInvitationsSentByMe().length) {
-      this.setState({ friendInvitationsSentByMe: FriendStore.friendInvitationsSentByMe() });
-      // console.log('friendInvitationsSentByMe has changed');
+    if (friendInvitationsSentByMe && friendInvitationsSentByMe.length !== FriendStore.friendInvitationsSentByMe().length) {
+      friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
+      this.setState({ friendInvitationsSentByMe });
+      // console.log('friendInvitationsSentByMe has changed, friendInvitationsSentByMe:', friendInvitationsSentByMe);
+      resetDefaultTab = true;
+    }
+    if (friendInvitationsSentToMe && friendInvitationsSentToMe.length !== FriendStore.friendInvitationsSentToMe().length) {
+      friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
+      this.setState({ friendInvitationsSentToMe });
+      // console.log('friendInvitationsSentToMe has changed, friendInvitationsSentToMe:', friendInvitationsSentToMe);
+      resetDefaultTab = true;
+    }
+    if (suggestedFriendList && suggestedFriendList.length !== FriendStore.suggestedFriendList().length) {
+      suggestedFriendList = FriendStore.suggestedFriendList();
+      this.setState({ suggestedFriendList });
+      // console.log('suggestedFriends has changed, suggestedFriendList:', suggestedFriendList);
+      resetDefaultTab = true;
+    }
+    if (resetDefaultTab) {
       this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
     }
-    if (friendInvitationsSentToMe.length !== FriendStore.friendInvitationsSentToMe().length) {
-      this.setState({ friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe() });
-      // console.log('friendInvitationsSentToMe has changed');
-      this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
-    }
-    if (suggestedFriendList.length !== FriendStore.suggestedFriendList().length) {
-      this.setState({ suggestedFriendList: FriendStore.suggestedFriendList() });
-      // console.log('suggestedFriends has changed');
-      this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
+    const friendActivityExists = Boolean((currentFriends && currentFriends.length) || (friendInvitationsSentByMe && friendInvitationsSentByMe.length) || (friendInvitationsSentToMe && friendInvitationsSentToMe.length) || (suggestedFriendList && suggestedFriendList.length));
+    // console.log('friendActivityExists:', friendActivityExists);
+    if (friendActivityExists) {
+      // Only set to true -- never false in order to avoid a weird loop
+      this.setState({ friendActivityExists });
     }
   }
 
@@ -183,7 +217,10 @@ class Friends extends Component {
 
   render () {
     renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
-    const { currentFriends, friendsHeaderUnpinned, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList, voter } = this.state;
+    const {
+      currentFriends, friendActivityExists, friendsHeaderUnpinned, friendInvitationsSentByMe,
+      friendInvitationsSentToMe, suggestedFriendList, voter, voterIsSignedIn,
+    } = this.state;
     const { classes } = this.props;
 
     // console.log('friendsHeaderUnpinned', friendsHeaderUnpinned);
@@ -191,11 +228,10 @@ class Friends extends Component {
     if (!voter) {
       return LoadingWheel;
     }
-    const { is_signed_in: voterIsSignedIn } = voter;
 
     let mobileContentToDisplay;
     let desktopContentToDisplay;
-    const friendActivityExists = currentFriends.length || friendInvitationsSentByMe.length || friendInvitationsSentToMe.length || suggestedFriendList.length;
+    // console.log('friendActivityExists:', friendActivityExists, ', voterIsSignedIn:', voterIsSignedIn);
 
     // Generate mobileContentToDisplay
     switch (this.props.params.tabItem) {

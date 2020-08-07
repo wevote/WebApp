@@ -25,6 +25,7 @@ class SettingsWidgetFirstLastName extends Component {
   static propTypes = {
     classes: PropTypes.object,
     displayOnly: PropTypes.bool,
+    externalUniqueId: PropTypes.string,
     hideFirstLastName: PropTypes.bool,
     hideNameShownWithEndorsements: PropTypes.bool,
     voterHasMadeChangesFunction: PropTypes.func,
@@ -266,7 +267,7 @@ class SettingsWidgetFirstLastName extends Component {
       organizationNameSavedStatus,
       voterNameSavedStatus,
     } = this.state;
-    const { classes } = this.props;
+    const { classes, externalUniqueId } = this.props;
 
     return (
       <div className="">
@@ -289,7 +290,7 @@ class SettingsWidgetFirstLastName extends Component {
                       type="text"
                       autoComplete="organization"
                       className="form-control"
-                      id="organization-name"
+                      id={`organization-name-${externalUniqueId}`}
                       name="organizationName"
                       placeholder="How would you like your organization name displayed publicly?"
                       onKeyDown={this.handleKeyPressOrganizationName}
@@ -334,7 +335,7 @@ class SettingsWidgetFirstLastName extends Component {
                               margin="dense"
                               variant="outlined"
                               autoComplete="given-name"
-                              id="first-name"
+                              id={`first-name-${externalUniqueId}`}
                               name="firstName"
                               placeholder="First Name"
                               onKeyDown={this.handleKeyPressVoterName}
@@ -351,7 +352,7 @@ class SettingsWidgetFirstLastName extends Component {
                               margin="dense"
                               variant="outlined"
                               autoComplete="family-name"
-                              id="last-name"
+                              id={`last-name-${externalUniqueId}`}
                               name="lastName"
                               placeholder="Last Name"
                               onKeyDown={this.handleKeyPressVoterName}
@@ -376,7 +377,7 @@ class SettingsWidgetFirstLastName extends Component {
                             margin="dense"
                             autoComplete="organization"
                             variant="outlined"
-                            id="organization-name"
+                            id={`organization-name-${externalUniqueId}`}
                             name="organizationName"
                             placeholder="How would you like your name displayed publicly?"
                             onKeyDown={this.handleKeyPressOrganizationName}
@@ -394,7 +395,7 @@ class SettingsWidgetFirstLastName extends Component {
                   {isCordova() && (
                     <Button
                       color="primary"
-                      id="firstLastSaveButton"
+                      id={`firstLastSaveButton-${externalUniqueId}`}
                       onClick={this.saveNameCordova}
                       variant="outlined"
                       fullWidth

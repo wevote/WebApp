@@ -18,6 +18,7 @@ export default class SettingsWidgetAccountType extends Component {
   static propTypes = {
     closeEditFormOnChoice: PropTypes.bool, // When a voter makes a choice, close the edit form
     editFormOpen: PropTypes.bool, // Normally we load this component with the edit options closed
+    externalUniqueId: PropTypes.string, // Unique add on to an id distinguishing between mobile and desktop renders
     showEditToggleOption: PropTypes.bool, // Should the voter be able to hide/show the form fields
   };
 
@@ -211,6 +212,7 @@ export default class SettingsWidgetAccountType extends Component {
     if (!this.state.voter || !this.state.organization) {
       return LoadingWheel;
     }
+    const { externalUniqueId } = this.props;
 
     return (
       <Wrapper className="">
@@ -309,7 +311,7 @@ export default class SettingsWidgetAccountType extends Component {
                   (
                   <a // eslint-disable-line
                     className=""
-                    id="edit"
+                    id={`edit-${externalUniqueId}`}
                     onClick={() => this.toggleEditForm()}
                   >
                     edit

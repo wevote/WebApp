@@ -1,3 +1,4 @@
+import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import { isIOS, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
 
 function localPrepareForCordovaKeyboard () {
@@ -8,8 +9,19 @@ function localRestoreStylesAfterCordovaKeyboard () {
   restoreStylesAfterCordovaKeyboard('ballot');
 }
 
+// for wevotetwitterscheme
 export function initializationForCordova () { // eslint-disable-line
   console.log('Application initializationForCordova ------------');
+
+  // Initialize incoming URL handler for oAuth
+  window.handleOpenURL = (url) => {
+    console.log('window.handleOpenURL ----------', url);
+    TwitterSignIn.handleTwitterOpenURL(url);
+  };
+
+  // Cordova only, override "open" to use InAppBrowser to open any outside site
+  const { cordova } = window;
+  window.open = cordova.InAppBrowser.open;
 
   // Special keyboard handling for iOS
   if (isIOS()) {
@@ -18,7 +30,6 @@ export function initializationForCordova () { // eslint-disable-line
     window.addEventListener('keyboardDidHide', localRestoreStylesAfterCordovaKeyboard);
   }
 }
-
 
 export function removeCordovaSpecificListeners () {
   if (isIOS()) {

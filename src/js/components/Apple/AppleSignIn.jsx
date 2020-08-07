@@ -6,6 +6,7 @@ import { openSnackbar } from '../Widgets/SnackNotifier';
 import { renderLog } from '../../utils/logging';
 import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import webAppConfig from '../../config';
+import cookies from '../../utils/cookies';
 
 class AppleSignIn extends Component {
   static propTypes = {
@@ -26,11 +27,12 @@ class AppleSignIn extends Component {
     if (isWebApp()) {
       const { AppleID } = window;
       if (AppleID) {
+        console.log('voter_device_id from cookie', cookies.getItem('voter_device_id'));
         AppleID.auth.init({
           clientId: 'us.wevote.webapp',
           scope: 'name email',
-          redirectURI: 'https://6384bfb6c401.ngrok.io/applesigninprocess',
-          state: 'steve',
+          redirectURI: 'https://9faafc7f6464.ngrok.io/apis/v1/appleSignInOauthRedirectDestination',
+          state: cookies.getItem('voter_device_id'),
           popup: true,
         });
       } else {

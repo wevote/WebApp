@@ -15,6 +15,7 @@ import cookies from '../utils/cookies';
 
 class AddressBox extends Component {
   static propTypes = {
+    externalUniqueId: PropTypes.string,
     showCancelEditAddressButton: PropTypes.bool,
     disableAutoFocus: PropTypes.bool,
     manualFocus: PropTypes.bool,
@@ -191,7 +192,7 @@ class AddressBox extends Component {
   render () {
     renderLog('AddressBox');  // Set LOG_RENDER_EVENTS to log all renders
     let { waitingMessage } = this.props;
-    const { classes } = this.props;
+    const { classes, externalUniqueId } = this.props;
     if (this.state.loading) {
       if (!waitingMessage) waitingMessage = 'Please wait a moment while we find your ballot...';
 
@@ -216,13 +217,13 @@ class AddressBox extends Component {
               value={this.state.textForMapSearch}
               inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
               inputProps={{ onChange: this.updateVoterAddress, onKeyDown: this.handleKeyPress, autoFocus: (!isCordova() && !this.props.disableAutoFocus) }}
-              id="addressBoxText"
+              id={externalUniqueId ? `addressBoxText-${externalUniqueId}` : 'addressBoxText'}
             />
           </Paper>
           { this.props.showCancelEditAddressButton ? (
             <Button
               color="primary"
-              id="addressBoxModalCancelButton"
+              id={externalUniqueId ? `addressBoxModalCancelButton-${externalUniqueId}` : 'addressBoxModalCancelButton'}
               onClick={this.props.toggleEditingAddress}
               classes={{ root: classes.cancelButton }}
             >
@@ -233,7 +234,7 @@ class AddressBox extends Component {
           <br />
           <Button
             color="primary"
-            id="addressBoxModalSaveButton"
+            id={externalUniqueId ? `addressBoxModalSaveButton-${externalUniqueId}` : 'addressBoxModalSaveButton'}
             onClick={this.voterAddressSave}
             variant="contained"
             classes={this.props.showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
