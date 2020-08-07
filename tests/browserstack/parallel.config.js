@@ -10,7 +10,7 @@ exports.config = {
   key: browserStackConfig.BROWSERSTACK_KEY,
   updateJob: false,
   specs: [
-    './specs/%scriptNameMainTest.js',
+    './specs/%scriptMainTest.js',
   ],
   twitterUserName: browserStackConfig.TWITTER_USER_NAME,
   twitterPassword: browserStackConfig.TWITTER_PASSWORD,
@@ -18,7 +18,7 @@ exports.config = {
   exclude: [],
   capabilities: [
     {
-      name: '%scriptNameMainTest: %device0%os0 %os_version0',
+      name: '%scriptMainTest: %device0%os0 %os_version0',
       build: buildNameForDisplay,
       device: '%device0',
       os: '%os0',
@@ -27,6 +27,7 @@ exports.config = {
       browserName: '%browserName0',
       browser_version: '%browser_version0',
       real_mobile: %real_mobile,
+      resolution: '%resolution',
       'browserstack.console': 'info',
       'browserstack.appium_version': '%browserstack.appium_version0',
       'browserstack.local': %browserstack.local,
@@ -36,7 +37,7 @@ exports.config = {
       isMobileScreenSize: %isMobileScreenSize,
     },
     {
-      name: '%scriptNameMainTest: %device1%os1 %os_version1',
+      name: '%scriptMainTest: %device1%os1 %os_version1',
       build: buildNameForDisplay,
       device: '%device1',
       os: '%os1',
@@ -45,6 +46,7 @@ exports.config = {
       browserName: '%browserName1',
       browser_version: '%browser_version1',
       real_mobile: %real_mobile,
+      resolution: '%resolution',
       'browserstack.console': 'info',
       'browserstack.appium_version': '%browserstack.appium_version1',
       'browserstack.local': %browserstack.local,
@@ -54,7 +56,7 @@ exports.config = {
       isMobileScreenSize: %isMobileScreenSize,
     },
     {
-      name: '%scriptNameMainTest: %device2%os2 %os_version2',
+      name: '%scriptMainTest: %device2%os2 %os_version2',
       build: buildNameForDisplay,
       device: '%device2',
       os: '%os2',
@@ -63,6 +65,7 @@ exports.config = {
       browserName: '%browserName2',
       browser_version: '%browser_version2',
       real_mobile: %real_mobile,
+      resolution: '%resolution',
       'browserstack.console': 'info',
       'browserstack.appium_version': '%browserstack.appium_version2',
       'browserstack.local': %browserstack.local,
@@ -72,7 +75,7 @@ exports.config = {
       isMobileScreenSize: %isMobileScreenSize,
     },
     {
-      name: '%scriptNameMainTest: %device3%os3 %os_version3',
+      name: '%scriptMainTest: %device3%os3 %os_version3',
       build: buildNameForDisplay,
       device: '%device3',
       os: '%os3',
@@ -81,6 +84,7 @@ exports.config = {
       browserName: '%browserName3',
       browser_version: '%browser_version3',
       real_mobile: %real_mobile,
+      resolution: '%resolution',
       'browserstack.console': 'info',
       'browserstack.appium_version': '%browserstack.appium_version3',
       'browserstack.local': %browserstack.local,
@@ -90,7 +94,7 @@ exports.config = {
       isMobileScreenSize: %isMobileScreenSize,
     },
     {
-      name: '%scriptNameMainTest: %device4%os4 %os_version4',
+      name: '%scriptMainTest: %device4%os4 %os_version4',
       build: buildNameForDisplay,
       device: '%device4',
       os: '%os4',
@@ -99,6 +103,7 @@ exports.config = {
       browserName: '%browserName4',
       browser_version: '%browser_version4',
       real_mobile: %real_mobile,
+      resolution: '%resolution',
       'browserstack.console': 'info',
       'browserstack.appium_version': '%browserstack.appium_version4',
       'browserstack.local': %browserstack.local,
@@ -115,5 +120,6 @@ exports.config = {
   framework: 'mocha',
   mochaOpts: {
     ui: 'bdd',
+    timeout: 360000,
   },
 }
