@@ -28,7 +28,7 @@ parser.add_argument('-o', '--offset', default=0, type=int,
                     help='starting test number')
 parser.add_argument('-a', '--app', action='store_true', 
                     help='test mobile app instead of web app')
-parser.add_argument('-t', '--trade', action='store_true', 
+parser.add_argument('-i', '--interchange', action='store_true', 
                     help='select specific test cases')
 parser.add_argument('-w', '--write', action='store_true', 
                     help='write to configuration file')
@@ -61,14 +61,17 @@ if args['batch'] == 'Android':
   conf['real_mobile'] = True
   conf['isAndroid'] = True
   conf['isIOS'] = False
+  conf['resolution'] = ''
 elif args['batch'] == 'iOS':
   conf['real_mobile'] = True
   conf['isAndroid'] = False
   conf['isIOS'] = True
+  conf['resolution'] = ''
 else:
   conf['real_mobile'] = False
   conf['isAndroid'] = False
   conf['isIOS'] = False
+  conf['resolution'] = '1920x1080'
 
 if args['app'] and args['batch'] == 'Android':
   conf['app'] = 'browserStackConfig.BROWSERSTACK_APK_URL'
@@ -77,7 +80,7 @@ elif args['app'] and args['batch'] == 'iOS':
 else:
   conf['app'] = "''"
 
-del conf['batch'], conf['file'], conf['json'], conf['write'], conf['trade']
+del conf['batch'], conf['file'], conf['json'], conf['write'], conf['interchange']
 
 # Load json
 with open(args['json'], 'r') as f:
@@ -85,7 +88,7 @@ with open(args['json'], 'r') as f:
 
 devices = devices[args['batch']]
 
-if args['trade']:
+if args['interchange']:
   while True:
     print(f'{args["number"]} test case(s) will be run. (Ctrl-C to exit)')
     for key, value in devices.items():
