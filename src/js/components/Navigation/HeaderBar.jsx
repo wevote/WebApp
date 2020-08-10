@@ -557,7 +557,6 @@ class HeaderBar extends Component {
                       src={voterPhotoUrlMedium}
                       style={{
                         marginLeft: 16,
-                        marginBottom: 10,
                       }}
                       height={34}
                       width={34}
@@ -781,17 +780,17 @@ const styles = theme => ({
 });
 
 const AddressWrapperDesktop = styled.div`
-  margin-top: 4px;
+  margin-top: 5px;
   width: 220px;
 `;
 
 const AddressWrapperMobile = styled.div`
-  margin-top: 4px;
+  margin-top: 5px;
   width: 104px;
 `;
 
 const AddressWrapperMobileTiny = styled.div`
-  margin-top: 7px;
+  margin-top: 8px;
 `;
 
 const FirstNameWrapper = styled.div`
@@ -805,6 +804,7 @@ const FirstNameWrapper = styled.div`
 
 const NotificationsAndProfileWrapper = styled.div`
   display: flex;
+  height: 48px;
   z-index: 3; //to float above the account/ProfilePopUp menu option grey div
 `;
 
