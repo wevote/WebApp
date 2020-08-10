@@ -6,6 +6,7 @@ import { renderLog } from '../../utils/logging';
 export default class SuggestedFriendList extends Component {
   static propTypes = {
     friendList: PropTypes.array,
+    inSideColumn: PropTypes.bool,
     previewMode: PropTypes.bool,
   };
 
@@ -33,15 +34,17 @@ export default class SuggestedFriendList extends Component {
     if (this.state.suggestedFriendList === undefined) {
       return null;
     }
+    const { inSideColumn, previewMode } = this.props;
 
     return (
-      <div className={!this.props.previewMode ? 'card' : null}>
-        <div className={!this.props.previewMode ? 'card-main' : null}>
+      <div className={!previewMode ? 'card' : null}>
+        <div className={!previewMode ? 'card-main' : null}>
           {this.state.suggestedFriendList.map((friend, index) => (
             <div key={friend.voter_we_vote_id}>
               <SuggestedFriendDisplayForList
                 {...friend}
-                previewMode={this.props.previewMode}
+                inSideColumn={inSideColumn}
+                previewMode={previewMode}
               />
               {index !== this.state.suggestedFriendList.length - 1 ? (
                 <hr />

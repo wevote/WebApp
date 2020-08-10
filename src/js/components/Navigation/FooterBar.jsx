@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import { BottomNavigation, BottomNavigationAction, Badge } from '@material-ui/core';
+import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import { QuestionAnswer, HelpOutline, Ballot, HowToVote, People } from '@material-ui/icons';
 import AppStore from '../../stores/AppStore';
 import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
@@ -12,7 +12,6 @@ import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import VoterStore from '../../stores/VoterStore';
-// import Notifications from '@material-ui/icons/Notifications';
 
 
 function isFriendsTabSelected () {
@@ -22,7 +21,7 @@ function isFriendsTabSelected () {
 
 class FooterBar extends React.Component {
   static propTypes = {
-    classes: PropTypes.object,
+    // classes: PropTypes.object,
     pathname: PropTypes.string,
   };
 
@@ -109,9 +108,7 @@ class FooterBar extends React.Component {
       case 2:
         return historyPush('/values');
       case 3:
-        return historyPush('/friends');
-      // case 4:
-      //   return historyPush('/news');
+        return historyPush('/news');
       default:
         return null;
     }
@@ -122,8 +119,7 @@ class FooterBar extends React.Component {
     if (stringContains('/ready', pathname.toLowerCase())) return 0;
     if (stringContains('/ballot', pathname.toLowerCase())) return 1;
     if (stringContains('/value', pathname.toLowerCase()) || stringContains('/opinions', pathname.toLowerCase())) return 2; // '/values'
-    if (stringContains('/friends', pathname.toLowerCase())) return 3;
-    if (stringContains('/news', pathname.toLowerCase())) return 4;
+    if (stringContains('/news', pathname.toLowerCase())) return 3;
     return -1;
   };
 
@@ -131,16 +127,16 @@ class FooterBar extends React.Component {
 
   render () {
     renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    // const { classes } = this.props;
     const {
-      friendInvitationsSentToMe, showingOneCompleteYourProfileModal, showShareModal, showSharedItemModal, showSignInModal,
+      // friendInvitationsSentToMe,
+      showingOneCompleteYourProfileModal, showShareModal, showSharedItemModal, showSignInModal,
       showVoterPlanModal,
     } = this.state;
-    const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
-
-    const badgeStyle = {
-      display: 'inline-block',
-    };
+    // const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
+    // const badgeStyle = {
+    //   display: 'inline-block',
+    // };
     const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSharedItemModal || showSignInModal || showVoterPlanModal;
     return (
       <FooterBarWrapper>
@@ -155,8 +151,8 @@ class FooterBar extends React.Component {
           >
             <BottomNavigationAction className="no-outline" id="readyTabFooterBar" label="Ready?" showLabel icon={<HowToVote />} />
             <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<Ballot />} />
-            {/* OFF FOR NOW !voterIsSignedIn && () */}
             <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Opinions" showLabel icon={<QuestionAnswer />} />
+            {/* OFF FOR NOW
             <BottomNavigationAction
               className="no-outline"
               id="friendsTabFooterBar"
@@ -168,7 +164,8 @@ class FooterBar extends React.Component {
                 </Badge>
               )}
             />
-            {/* OFF FOR NOW voterIsSignedIn && <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="News" showLabel icon={<Notifications />} /> */}
+            */}
+            <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="News" showLabel icon={<People />} />
             {isCordova() ? (
               <BottomNavigationAction
                 className="no-outline"

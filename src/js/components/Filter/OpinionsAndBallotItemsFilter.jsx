@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Chip, FormControlLabel, Input, MenuItem, Select } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import Select from '@material-ui/core/Select';
-import Chip from '@material-ui/core/Chip';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
 import { arrayContains, removeValueFromArray } from '../../utils/textFormat';
 import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/address-functions';
 import BallotActions from '../../actions/BallotActions';

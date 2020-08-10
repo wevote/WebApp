@@ -54,7 +54,7 @@ export default function componentLoader (componentName) {
     case 'FriendInvitationOnboarding':
       return React.lazy(() => import('../routes/Intro/FriendInvitationOnboarding'));
     case 'Friends':
-      return React.lazy(() => import('../routes/Friends'));
+      return React.lazy(() => import('../routes/Friends/Friends'));
     case 'GetStarted':
       return React.lazy(() => import('../routes/Intro/GetStarted'));
     case 'HamburgerMenu':

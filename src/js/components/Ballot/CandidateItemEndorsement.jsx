@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import MuiThemeProvider from '@material-ui/core/MuiThemeProvider';
-// import createMuiTheme from '@material-ui/core/createMuiTheme';
+// import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { TextField, Button } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import CandidateStore from '../../stores/CandidateStore';

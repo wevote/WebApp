@@ -509,7 +509,7 @@ class VoterGuidePositions extends Component {
                 <div>
                   <>
                     {lookingAtSelf && <YourPositionsVisibilityMessage positionList={positionListForOneElection} />}
-                    {positionListForOneElection.map((item) => {
+                    {positionListForOneElection.map((onePosition) => {
                       // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
                       if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
                         return null;
@@ -517,11 +517,12 @@ class VoterGuidePositions extends Component {
                       numberOfPositionItemsDisplayed += 1;
                       return (
                         <VoterGuidePositionItemWrapper
-                          key={`VoterGuidePositionItem-${item.position_we_vote_id}`}
+                          key={`VoterGuidePositionItem-${onePosition.position_we_vote_id}`}
                         >
                           <VoterGuidePositionItem
+                            ballotItemWeVoteId={onePosition.ballot_item_we_vote_id}
                             organizationWeVoteId={organizationWeVoteId}
-                            position={item}
+                            position={onePosition}
                           />
                         </VoterGuidePositionItemWrapper>
                       );

@@ -21,7 +21,8 @@ import ReadMore from '../Widgets/ReadMore';
 
 class VoterGuidePositionItem extends Component {
   static propTypes = {
-    ballotItemDisplayName: PropTypes.string,
+    // ballotItemDisplayName: PropTypes.string,
+    ballotItemWeVoteId: PropTypes.string,
     position: PropTypes.object.isRequired,
     searchResultsNode: PropTypes.object,
   };
@@ -38,15 +39,14 @@ class VoterGuidePositionItem extends Component {
   }
 
   componentDidMount () {
-    const { position } = this.props;
-    const { ballot_item_we_vote_id: ballotItemWeVoteId } = position;
+    const { ballotItemWeVoteId } = this.props;
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
     if (ballotItemWeVoteId &&
       !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
       !BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)
     ) {
-      // console.log('componentDidMount positionListForBallotItemPublic', measureWeVoteId);
+      // console.log('componentDidMount positionListForBallotItemPublic:', ballotItemWeVoteId);
       if (isCandidate) {
         CandidateActions.positionListForBallotItemPublic(ballotItemWeVoteId);
       } else if (isMeasure) {
@@ -64,6 +64,7 @@ class VoterGuidePositionItem extends Component {
       !this.localPositionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId) &&
       !BallotStore.positionListFromFriendsHasBeenRetrievedOnce(ballotItemWeVoteId)
     ) {
+      // console.log('componentDidMount positionListForBallotItemFromFriends:', ballotItemWeVoteId);
       if (isCandidate) {
         CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
       } else if (isMeasure) {
@@ -88,7 +89,7 @@ class VoterGuidePositionItem extends Component {
   }
 
   onCandidateStoreChange () {
-    const { ballotItemWeVoteId } = this.state;
+    const { ballotItemWeVoteId } = this.props;
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
     // console.log('VoterGuidePositionItem, onCandidateStoreChange');
     if (isCandidate) {
@@ -120,9 +121,9 @@ class VoterGuidePositionItem extends Component {
   }
 
   onMeasureStoreChange () {
-    const { ballotItemWeVoteId } = this.state;
+    const { ballotItemWeVoteId } = this.props;
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
-    // console.log('VoterGuidePositionItem, onMeasureStoreChange');
+    // console.log('VoterGuidePositionItem, onMeasureStoreChange:', ballotItemWeVoteId);
     if (isMeasure) {
       if (ballotItemWeVoteId &&
         !this.localPositionListHasBeenRetrievedOnce(ballotItemWeVoteId) &&
@@ -179,7 +180,7 @@ class VoterGuidePositionItem extends Component {
 
   render () {
     renderLog('VoterGuidePositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { position, searchResultsNode } = this.props;
+    const { ballotItemWeVoteId, position, searchResultsNode } = this.props;
     // const { thisYearInteger } = this.state;
     // console.log('VoterGuidePositionItem render position:', position);
     let {
@@ -188,7 +189,6 @@ class VoterGuidePositionItem extends Component {
     } = position;
     const {
       ballot_item_image_url_https_medium: ballotItemImageUrlHttpsMedium,
-      ballot_item_we_vote_id: ballotItemWeVoteId,
       is_information_only: organizationInformationOnlyBallotItem,
       is_oppose: organizationOpposesBallotItem,
       is_support: organizationSupportsBallotItem,
@@ -247,7 +247,7 @@ class VoterGuidePositionItem extends Component {
                   <div>
                     { ballotItemImageUrlHttpsMedium ? (
                       <ImageHandler
-                        className="card-child__avatar"
+                        className="card-child__avatar--round"
                         sizeClassName="icon-lg"
                         imageUrl={ballotItemImageUrlHttpsMedium}
                       />
@@ -293,7 +293,7 @@ class VoterGuidePositionItem extends Component {
                 </DesktopItemNameAndOfficeContainer>
                 <BallotItemSupportOpposeCountDisplayWrapper>
                   <BallotItemSupportOpposeCountDisplay
-                    ballotItemDisplayName={this.props.ballotItemDisplayName}
+                    ballotItemDisplayName={ballotItemDisplayName}
                     ballotItemWeVoteId={ballotItemWeVoteId}
                     hideNumbersOfAllPositions
                   />
@@ -396,7 +396,7 @@ class VoterGuidePositionItem extends Component {
                 <MobileItemEndorsementDisplay>
                   <BallotItemSupportOpposeCountDisplayWrapper>
                     <BallotItemSupportOpposeCountDisplay
-                      ballotItemDisplayName={this.props.ballotItemDisplayName}
+                      ballotItemDisplayName={ballotItemDisplayName}
                       ballotItemWeVoteId={ballotItemWeVoteId}
                       hideNumbersOfAllPositions
                     />

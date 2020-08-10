@@ -27,7 +27,7 @@ const Icon = styled.span`
   top: -2px;
   left: 4px;
   * {
-    color: #777;
+    color: #999;
   }
 `;
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
-// import CommentIcon from '@material-ui/icons/Comment';
+// import { Comment } from '@material-ui/icons';
 import { Info, ThumbUp, ThumbDown } from '@material-ui/icons';
 import { getStateCodesFoundInObjectList } from '../../utils/address-functions';
 import { renderLog } from '../../utils/logging';
@@ -42,7 +42,7 @@ const groupedFilters = [
 const islandFilters = [
   // {
   //   filterName: 'showCommentFilter',
-  //   icon: <CommentIcon />,
+  //   icon: <Comment />,
   //   filterDisplayName: 'Has Comment',
   //   filterId: 'islandFilterCommented',
   // },
@@ -55,6 +55,8 @@ class VoterGuidePositionList extends Component {
     incomingPositionList: PropTypes.array.isRequired,
     organizationWeVoteId: PropTypes.string.isRequired,
     positionListExistsTitle: PropTypes.object,
+    startingNumberOfPositionsToDisplay: PropTypes.string,
+    turnOffOnScroll: PropTypes.bool,
   };
 
   constructor (props) {
@@ -134,6 +136,7 @@ class VoterGuidePositionList extends Component {
       filteredPositionList: incomingPositionList,
       filteredPositionListLength: incomingPositionList.length,
       stateCodesToDisplay,
+      numberOfPositionItemsToDisplay: this.props.startingNumberOfPositionsToDisplay || STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
     });
   }
 
@@ -291,6 +294,10 @@ class VoterGuidePositionList extends Component {
   }
 
   onScroll () {
+    if (this.props.turnOffOnScroll) {
+      return null;
+    }
+
     const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
     // console.log('showMoreItemsElement: ', showMoreItemsElement);
     // console.log('Loading more: ', this.state.loadingMoreItems);
@@ -319,6 +326,7 @@ class VoterGuidePositionList extends Component {
         this.setState({ loadingMoreItems: false });
       }
     }
+    return null;
   }
 
   onPositionSearch = (searchText, filteredItems) => {
@@ -489,7 +497,8 @@ class VoterGuidePositionList extends Component {
             return (
               <div key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}>
                 <VoterGuidePositionItem
-                  ballotItemDisplayName={onePosition.ballot_item_display_name}
+                  ballotItemWeVoteId={onePosition.ballot_item_we_vote_id}
+                  // ballotItemDisplayName={onePosition.ballot_item_display_name}
                   organizationWeVoteId={organizationWeVoteId}
                   position={onePosition}
                   searchResultsNode={searchResultsNode}
@@ -507,9 +516,9 @@ class VoterGuidePositionList extends Component {
           />
         </ShowMoreItemsWrapper>
         <LoadingItemsWheel>
-          {loadingMoreItems ? (
+          {(loadingMoreItems) && (
             <CircularProgress />
-          ) : null}
+          )}
         </LoadingItemsWheel>
       </div>
     );
