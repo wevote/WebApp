@@ -668,6 +668,9 @@ class HeaderBackToBallot extends Component {
                     <img
                       className="header-nav__avatar"
                       src={voterPhotoUrlMedium}
+                      style={{
+                        marginLeft: 16,
+                      }}
                       height={34}
                       width={34}
                       alt="Your Settings"

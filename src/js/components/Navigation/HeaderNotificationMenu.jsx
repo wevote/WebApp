@@ -230,6 +230,8 @@ const styles = theme => ({
     color: 'rgba(17, 17, 17, .4)',
     outline: 'none !important',
     height: '48px',
+    paddingTop: '4px !important',
+    paddingBottom: '9px !important',
     paddingRight: 0,
     '&:hover': {
       backgroundColor: 'transparent',
@@ -238,6 +240,9 @@ const styles = theme => ({
   iconButtonRootSelected: {
     color: '#2E3C5D',
     outline: 'none !important',
+    height: '48px',
+    paddingTop: '4px !important',
+    paddingBottom: '9px !important',
     paddingRight: 0,
     '&:hover': {
       backgroundColor: 'transparent',
@@ -284,8 +289,8 @@ const BadgeCountWrapper = styled.span`
 `;
 
 const HeaderNotificationMenuWrapper = styled.div`
+  height: 48px;
   margin-right: 12px;
-  margin-top: -4px;
   @media (min-width: 576px) {
     margin-right: 24px;
   }
