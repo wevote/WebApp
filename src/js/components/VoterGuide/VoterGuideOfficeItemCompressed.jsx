@@ -185,6 +185,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                   return (
                     <div key={candidateWeVoteId}>
                       <VoterGuidePositionItem
+                        ballotItemWeVoteId={candidateWeVoteId}
                         organizationWeVoteId={organizationWeVoteId}
                         position={orgPositionForCandidate}
                       />

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button, AppBar, Toolbar, Tabs, Tab, IconButton, Tooltip, Badge } from '@material-ui/core';
+import { Button, AppBar, Toolbar, Tabs, Tab, IconButton, Tooltip } from '@material-ui/core';
 import { Place, AccountCircle } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import { historyPush, isWebApp, isCordova, hasIPhoneNotch } from '../../utils/cordovaUtils';
@@ -299,21 +299,10 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    const { voterIsSignedIn } = this.state;
-    if (voterIsSignedIn) {
-      if (pathname && pathname.toLowerCase().startsWith('/ready')) return 0;
-      if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 1;
-      if (stringContains('/value', pathname.toLowerCase()) || stringContains('/opinions', pathname.toLowerCase())) return 2; // '/values'
-      if (stringContains('/friends', pathname.toLowerCase())) return 3;
-      // OFF FOR NOW
-      // if (stringContains('/friends', pathname.toLowerCase())) return 2;
-      // if (pathname && pathname.toLowerCase().startsWith('/news')) return 3;
-    } else {
-      if (pathname && pathname.toLowerCase().startsWith('/ready')) return 0;
-      if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 1;
-      if (stringContains('/value', pathname.toLowerCase()) || stringContains('/opinions', pathname.toLowerCase())) return 2; // '/values'
-      if (stringContains('/friends', pathname.toLowerCase())) return 3;
-    }
+    if (pathname && pathname.toLowerCase().startsWith('/ready')) return 0;
+    if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 1;
+    if (stringContains('/value', pathname.toLowerCase()) || stringContains('/opinions', pathname.toLowerCase())) return 2; // '/values'
+    if (pathname && pathname.toLowerCase().startsWith('/news')) return 3;
 
     return false;
   };
@@ -423,7 +412,7 @@ class HeaderBar extends Component {
     }
     const { classes, pathname, location } = this.props;
     const {
-      chosenSiteLogoUrl, friendInvitationsSentToMe, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, shareModalStep,
+      chosenSiteLogoUrl, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, shareModalStep,
       showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
@@ -433,7 +422,7 @@ class HeaderBar extends Component {
 
     // console.log('Header Bar, showSignInModal ', showSignInModal);
     const ballotBaseUrl = stringContains('/ready', pathname.toLowerCase().slice(0, 7)) ? '/ready' : '/ballot';
-    const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
+    // const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
     const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     const showingBallot = stringContains('/ballot', pathname.toLowerCase().slice(0, 7));
@@ -527,9 +516,8 @@ class HeaderBar extends Component {
                 {showFullNavigation && (
                   <Tab classes={{ root: classes.tabRootBallot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                 )}
-                {/* OFF FOR NOW (!voterIsSignedIn && showFullNavigation) && () */}
                 <Tab classes={{ root: classes.tabRootValues }} id="valuesTabHeaderBar" label="Opinions" onClick={() => this.handleNavigation('/values')} />
-                { showFullNavigation && (
+                {/* OFF FOR NOW showFullNavigation && (
                   <Tab
                     classes={(numberOfIncomingFriendRequests > 0) ? { root: classes.tabRootIncomingFriendRequests } : { root: classes.tabRootFriends }}
                     id="friendsTabHeaderBar"
@@ -547,10 +535,10 @@ class HeaderBar extends Component {
                     )}
                     onClick={() => this.handleNavigation('/friends')}
                   />
-                )}
-                {/* OFF FOR NOW (voterIsSignedIn && showFullNavigation) && (
-                  <Tab classes={{ root: classes.tabRootNews }} id="voteTabHeaderBar" label="News" onClick={() => this.handleNavigation('/news')} />
                 ) */}
+                {(showFullNavigation) && (
+                  <Tab classes={{ root: classes.tabRootNews }} id="activityTabHeaderBar" label="News" onClick={() => this.handleNavigation('/news')} />
+                )}
               </Tabs>
             </div>
             {
@@ -811,9 +799,9 @@ const FirstNameWrapper = styled.div`
   padding-right: 4px;
 `;
 
-const FriendTabWrapper = styled.div`
-  margin-left: ${({ incomingFriendRequests }) => (incomingFriendRequests ? '-20px' : '0')};
-`;
+// const FriendTabWrapper = styled.div`
+//   margin-left: ${({ incomingFriendRequests }) => (incomingFriendRequests ? '-20px' : '0')};
+// `;
 
 const NotificationsAndProfileWrapper = styled.div`
   display: flex;

@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
+import { IconButton, InputBase } from '@material-ui/core';
+import { Search } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import {
@@ -154,7 +153,7 @@ class FindOpinionsForm extends Component {
               id={`findCandidatesAndOpinionsIconClick-${uniqueExternalId}`}
               onClick={this.goToSearchPage}
             >
-              <SearchIcon classes={{ root: searchIconClasses }} />
+              <Search classes={{ root: searchIconClasses }} />
             </IconButton>
           </SearchWrapper>
           <PublicFiguresAndOrganizationsWrapper>

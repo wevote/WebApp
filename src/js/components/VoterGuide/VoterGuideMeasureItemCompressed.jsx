@@ -167,6 +167,7 @@ class VoterGuideMeasureItemCompressed extends Component {
 
     return (
       <VoterGuidePositionItem
+        ballotItemWeVoteId={measureWeVoteId}
         organizationWeVoteId={organizationWeVoteId}
         position={organizationPositionForMeasure}
       />

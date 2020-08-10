@@ -8,6 +8,13 @@ import Dispatcher from '../dispatcher/Dispatcher';
 // NOTICE_FRIEND_ENDORSEMENTS
 
 export default {
+  activityListRetrieve () {
+    // console.log('activityNoticeListRetrieve');
+    Dispatcher.loadEndpoint('activityListRetrieve',
+      {
+        // google_civic_election_id: googleCivicElectionId,
+      });
+  },
   activityNoticeListRetrieve () {
     // console.log('activityNoticeListRetrieve');
     Dispatcher.loadEndpoint('activityNoticeListRetrieve',

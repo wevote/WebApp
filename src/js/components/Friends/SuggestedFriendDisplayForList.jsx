@@ -11,6 +11,7 @@ import { renderLog } from '../../utils/logging';
 
 class SuggestedFriendDisplayForList extends Component {
   static propTypes = {
+    inSideColumn: PropTypes.bool,
     linked_organization_we_vote_id: PropTypes.string,
     mutual_friends: PropTypes.number,
     positions_taken: PropTypes.number,
@@ -41,8 +42,10 @@ class SuggestedFriendDisplayForList extends Component {
   render () {
     renderLog('SuggestedFriendDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
+      inSideColumn,
       mutual_friends: mutualFriends,
       positions_taken: positionsTaken,
+      previewMode,
       voter_we_vote_id: otherVoterWeVoteId,
       voter_photo_url_large: voterPhotoUrlLarge,
     } = this.props;
@@ -60,18 +63,18 @@ class SuggestedFriendDisplayForList extends Component {
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlLarge} kind_of_ballot_item="CANDIDATE" />;
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
     const detailsHTML = (
-      <Details>
-        <Name>
+      <Details inSideColumn={inSideColumn}>
+        <Name inSideColumn={inSideColumn}>
           {voterDisplayNameFormatted}
         </Name>
         {!!(positionsTaken) && (
-          <Info>
+          <Info inSideColumn={inSideColumn}>
             Opinions:
             {' '}
             <strong>{positionsTaken}</strong>
           </Info>
         )}
-        <Info>
+        <Info inSideColumn={inSideColumn}>
           Mutual Friends:
           {' '}
           <strong>{mutualFriends || 0}</strong>
@@ -81,9 +84,9 @@ class SuggestedFriendDisplayForList extends Component {
     );
 
     const suggestedFriendHtml = (
-      <Wrapper previewMode={this.props.previewMode}>
+      <Wrapper inSideColumn={inSideColumn} previewMode={previewMode}>
         <Flex>
-          <Avatar>
+          <Avatar inSideColumn={inSideColumn}>
             { voterGuideLink ? (
               <Link to={voterGuideLink} className="u-no-underline">
                 {voterImage}
@@ -101,9 +104,9 @@ class SuggestedFriendDisplayForList extends Component {
             </>
           )}
         </Flex>
-        <ButtonWrapper>
+        <ButtonWrapper inSideColumn={inSideColumn}>
           <SuggestedFriendToggle otherVoterWeVoteId={otherVoterWeVoteId} />
-          <ButtonContainer>
+          <ButtonContainer inSideColumn={inSideColumn}>
             <Button
               color="primary"
               disabled={ignoreSuggestedFriendSent}
@@ -119,7 +122,7 @@ class SuggestedFriendDisplayForList extends Component {
       </Wrapper>
     );
 
-    if (this.props.previewMode) {
+    if (previewMode) {
       return <span>{suggestedFriendHtml}</span>;
     } else {
       return (
@@ -131,39 +134,7 @@ class SuggestedFriendDisplayForList extends Component {
   }
 }
 
-const Wrapper = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 24px 0;
-  position: relative;
-  width: 100%;
-  @media(min-width: 400px) {
-    align-items: center;
-    flex-direction: row;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
-    padding-left: 100px;
-  }
-  @media (min-width: 520px) {
-    height: 68px;
-    padding-left: 85px;
-  }
-`;
-
-const Flex = styled.div`
-  align-items: flex-start;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  width: 100%;
-`;
-
-const Avatar = styled.div`
-  max-width: 68.8px;
-  margin-right: 8px;
+const AvatarNotInColumn = `
   @media (min-width: 400px) {
     height: 100% !important;
     max-width: 100%;
@@ -180,8 +151,58 @@ const Avatar = styled.div`
     }
   }
 `;
-const Details = styled.div`
-  margin: 0 auto;
+
+const Avatar = styled.div`
+  max-width: 68.8px;
+  margin-right: 8px;
+  ${({ inSideColumn }) => ((inSideColumn) ? '' : AvatarNotInColumn)}
+`;
+
+const ButtonContainerNotInColumn = `
+  @media(min-width: 400px) {
+    width: fit-content;
+    margin: 0;
+    margin-top: 6px;
+  }
+  @media(min-width: 520px) {
+    margin: 0;
+    margin-right: 8px;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  margin-right: 12px;
+  ${({ inSideColumn }) => ((inSideColumn) ? '' : ButtonContainerNotInColumn)}
+`;
+
+const ButtonWrapperNotInColumn = `
+  @media(min-width: 400px) {
+    margin: 0;
+    margin-left: auto;
+    width: fit-content;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  @media (min-width: 520px) {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  margin: 12px 0 0;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  ${({ inSideColumn }) => ((inSideColumn) ? '' : ButtonWrapperNotInColumn)}
+`;
+
+const DetailsNotInColumn = `
   @media(min-width: 400px) {
     width: fit-content;
     margin: 0;
@@ -195,17 +216,35 @@ const Details = styled.div`
   }
 `;
 
-const Name = styled.h3`
-  color: black !important;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 4px;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 18ch;
+const Details = styled.div`
+  margin: 0 auto;
+  ${({ inSideColumn }) => ((inSideColumn) ? '' : DetailsNotInColumn)}
+`;
+
+const Flex = styled.div`
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   width: 100%;
+`;
+
+const InfoNotInSideColumn = `
+  @media (min-width: 400px){
+    display: block;
+    width: fit-content;
+  }
+`;
+
+const Info = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  ${({ inSideColumn }) => ((inSideColumn) ? '' : InfoNotInSideColumn)}
+`;
+
+const NameNotInSideColumn = `
   @media(max-width: 321px) {
     max-width: 20ch;
   }
@@ -228,51 +267,44 @@ const Name = styled.h3`
   }
 `;
 
-const Info = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+const Name = styled.h3`
+  color: black !important;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 18ch;
   width: 100%;
-  @media (min-width: 400px){
-    display: block;
-    width: fit-content;
-  }
+  ${({ inSideColumn }) => ((inSideColumn) ? '' : NameNotInSideColumn)}
 `;
 
-const ButtonWrapper = styled.div`
-  width: 100%;
-  margin: 12px 0 0;
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: space-between;
+const WrapperNotInSideColumn = `
   @media(min-width: 400px) {
-    margin: 0;
-    margin-left: auto;
-    width: fit-content;
-    align-items: flex-end;
-    flex-direction: column;
-    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    padding-left: 100px;
   }
   @media (min-width: 520px) {
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    align-items: center;
+    height: 68px;
+    padding-left: 85px;
   }
 `;
 
-const ButtonContainer = styled.div`
+const Wrapper = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 24px 0;
+  position: relative;
   width: 100%;
-  margin-right: 12px;
-  @media(min-width: 400px) {
-    width: fit-content;
-    margin: 0;
-    margin-top: 6px;
-  }
-  @media(min-width: 520px) {
-    margin: 0;
-    margin-right: 8px;
-  }
+  ${({ inSideColumn }) => ((inSideColumn) ? '' : WrapperNotInSideColumn)}
 `;
 
 export default SuggestedFriendDisplayForList;

@@ -120,6 +120,20 @@ class HeaderBarProfilePopUp extends Component {
             {/* Desktop or Mobile */}
             <li>
               <ListItemWrapper>
+                <Link id="profilePopUpYourFriends" onClick={this.hideProfilePopUp} to="/friends">
+                  <Button
+                    variant="text"
+                    color="primary"
+                    classes={{ root: classes.signOutButton }}
+                  >
+                    <span className="header-slide-out-menu-text-left">Your Friends</span>
+                  </Button>
+                </Link>
+              </ListItemWrapper>
+            </li>
+            {/* Desktop or Mobile */}
+            <li>
+              <ListItemWrapper>
                 <Link id="profilePopUpYourValues" onClick={this.hideProfilePopUp} to="/values/list">
                   <Button
                     variant="text"
