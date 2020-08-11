@@ -84,6 +84,7 @@ class ThisIsMeAction extends Component {
                     <SplitIconButton
                       backgroundColor={backgroundColor}
                       buttonText={`Claim @${this.props.twitterHandleBeingViewed}`}
+                      externalUniqueId="candidateVerifyThisIsMeAction"
                       fontColor={fontColor}
                       icon={icon}
                       id="candidateVerifyThisIsMeAction"

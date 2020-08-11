@@ -27,6 +27,7 @@ class HeaderNotificationMenu extends Component {
     // console.log('HeaderBackTo componentDidMount, this.props: ', this.props);
     this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
     ActivityActions.activityNoticeListRetrieve();
+    ActivityActions.activityListRetrieve();
   }
 
   componentWillUnmount () {
@@ -97,7 +98,7 @@ class HeaderNotificationMenu extends Component {
         } else if (activityNotice.new_positions_entered_count === 1) {
           activityDescription += ' added a new opinion.';
         } else if (activityNotice.new_positions_entered_count > 1) {
-          activityDescription += ' added new opinions.';
+          activityDescription += ` added ${activityNotice.new_positions_entered_count} new opinions.`;
         }
         activityTimeFromDate = timeFromDate(activityNotice.date_of_notice);
         return (
@@ -142,6 +143,7 @@ class HeaderNotificationMenu extends Component {
 
   handleClick = (event) => {
     ActivityActions.activityNoticeListRetrieve();
+    ActivityActions.activityListRetrieve();
     this.setState({
       anchorEl: event.currentTarget,
       menuOpen: true,

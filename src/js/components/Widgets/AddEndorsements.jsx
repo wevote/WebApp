@@ -33,10 +33,11 @@ class AddEndorsements extends Component {
               title="ENDORSEMENTS MISSING?"
               body={(
                 <SplitIconButton
-                  title="Endorsements missing?"
-                  id="myValuesAddEndorsementsToWeVote"
-                  icon={<img src={cordovaDot(positionIcon)} alt="" />}
                   buttonText="Add endorsements"
+                  externalUniqueId="myValuesAddEndorsementsToWeVote"
+                  icon={<img src={cordovaDot(positionIcon)} alt="" />}
+                  id="myValuesAddEndorsementsToWeVote"
+                  title="Endorsements missing?"
                 />
               )}
             />

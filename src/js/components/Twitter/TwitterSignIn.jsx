@@ -196,6 +196,7 @@ class TwitterSignIn extends Component {
         disabled={disabled}
         externalUniqueId="twitterSignIn"
         icon={<i className="fab fa-twitter" />}
+        id="twitterSignIn"
         onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
         separatorColor="rgba(250, 250, 250, .6)"
         title="Sign in to find voter guides"

@@ -39,28 +39,40 @@ class ActivityTidbitItem extends Component {
     const { activityTidbitId } = this.props;
     const activityTidbit = ActivityStore.getActivityTidbitById(activityTidbitId);
     const {
-      position_we_vote_id: positionWeVoteId,
+      position_we_vote_id_list: positionWeVoteIdList,
       speaker_organization_we_vote_id: speakerOrganizationWeVoteId,
     } = activityTidbit;
-    const onePosition = OrganizationStore.getPositionByPositionWeVoteId(positionWeVoteId);
-    const newPositionsEntered = [];
-    if (onePosition && onePosition.position_we_vote_id) {
-      newPositionsEntered.push(onePosition);
-    }
+    this.updatePositionsEnteredState(positionWeVoteIdList);
     this.setState({
-      newPositionsEntered,
-      positionWeVoteId,
       speakerOrganizationWeVoteId,
     });
   }
 
   onOrganizationStoreChange () {
-    const { positionWeVoteId } = this.state;
-    const onePosition = OrganizationStore.getPositionByPositionWeVoteId(positionWeVoteId);
+    const { activityTidbitId } = this.props;
+    const activityTidbit = ActivityStore.getActivityTidbitById(activityTidbitId);
+    const {
+      position_we_vote_id_list: positionWeVoteIdList,
+    } = activityTidbit;
+    this.updatePositionsEnteredState(positionWeVoteIdList);
+  }
+
+  updatePositionsEnteredState = (positionWeVoteIdList) => {
     const newPositionsEntered = [];
-    if (onePosition && onePosition.position_we_vote_id) {
-      newPositionsEntered.push(onePosition);
+    let onePosition = {};
+    let positionWeVoteId = '';
+    // console.log('positionWeVoteIdList:', positionWeVoteIdList);
+    for (let count = 0; count < positionWeVoteIdList.length; count++) {
+      positionWeVoteId = positionWeVoteIdList[count];
+      if (positionWeVoteId) {
+        onePosition = OrganizationStore.getPositionByPositionWeVoteId(positionWeVoteId);
+        // console.log('onePosition:', onePosition);
+        if (onePosition && onePosition.position_we_vote_id) {
+          newPositionsEntered.push(onePosition);
+        }
+      }
     }
+    // console.log('newPositionsEntered:', newPositionsEntered);
     this.setState({
       newPositionsEntered,
     });

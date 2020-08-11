@@ -8,9 +8,9 @@ import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
+import StickyPopover from '../Ballot/StickyPopover';
 import { numberWithCommas, timeFromDate } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
-import StickyPopover from '../Ballot/StickyPopover';
 
 class ActivitySpeakerCard extends Component {
   static propTypes = {
@@ -71,6 +71,7 @@ class ActivitySpeakerCard extends Component {
 
   render () {
     renderLog('ActivitySpeakerCard');  // Set LOG_RENDER_EVENTS to log all renders
+    const { activityTidbitId } = this.props;
     const {
       actionDescription, activityTimeFromDate, speakerIsVoter,
       speakerName, speakerOrganizationWeVoteId,
@@ -89,16 +90,16 @@ class ActivitySpeakerCard extends Component {
           delay={{ show: 700, hide: 100 }}
           popoverComponent={organizationPopoverCard}
           placement="auto"
-          id="positions-organization-popover-trigger-click-root-close"
+          id={`speakerAvatarOrganizationPopover-${activityTidbitId}`}
         >
           {(speakerProfileImageUrlMedium) ? (
-            <ProfileAvatar>
+            <SpeakerAvatar>
               <ActivityImage src={speakerProfileImageUrlMedium} alt={`${speakerName}`} />
-            </ProfileAvatar>
+            </SpeakerAvatar>
           ) : (
-            <ProfileAvatar>
+            <SpeakerAvatar>
               <ActivityImage src={cordovaDot(avatarGenericIcon)} alt={`${speakerName}`} />
-            </ProfileAvatar>
+            </SpeakerAvatar>
           )}
         </StickyPopover>
         <SpeakerActionTimeWrapper>
@@ -107,7 +108,7 @@ class ActivitySpeakerCard extends Component {
               delay={{ show: 700, hide: 100 }}
               popoverComponent={organizationPopoverCard}
               placement="auto"
-              id="positions-organization-popover-trigger-click-root-close"
+              id={`speakerNameOrganizationPopover-${activityTidbitId}`}
             >
               <SpeakerNameWrapper>
                 {speakerIsVoter ? 'You' : speakerName}
@@ -169,7 +170,7 @@ const ActivityTime = styled.div`
   font-weight: 400;
 `;
 
-const ProfileAvatar = styled.div`
+const SpeakerAvatar = styled.div`
   background: transparent;
   display: flex;
   justify-content: center;

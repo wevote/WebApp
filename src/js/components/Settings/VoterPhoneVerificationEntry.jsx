@@ -126,11 +126,12 @@ class VoterPhoneVerificationEntry extends Component {
     const { secretCodeVerified } = secretCodeVerificationStatus;
     // console.log('onVoterStoreChange smsPhoneNumberStatus:', smsPhoneNumberStatus);
     const voter = VoterStore.getVoter();
-    const { signed_in_with_email: signedInWithEmail, signed_in_facebook: signedInFacebook, signed_in_twitter: signedInTwitter } = voter;
-    // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithEmail: ${signedInWithEmail}`);
-    // TODO:  Why is there no "signed_in_with_sms"?  This is going to bite us someday, probably right here.
-    if (signedInWithEmail || signedInFacebook || signedInTwitter) {
-      // console.log('VoterEmailAddressEntry onVoterStoreChange signedInWithEmail so doing a hacky fallback close ===================');
+    const {
+      signed_in_with_sms_phone_number: signedInWithSmsPhoneNumber,
+    } = voter;
+    // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithSmsPhoneNumber: ${signedInWithSmsPhoneNumber}`);
+    if (signedInWithSmsPhoneNumber) {
+      // console.log('VoterEmailAddressEntry onVoterStoreChange signedInWithSmsPhoneNumber so doing a fallback close ===================');
       this.closeSignInModal();
       return;
     } else if (secretCodeVerified) {

@@ -20,14 +20,14 @@ export default class OpenExternalWebSite extends Component {
   render () {
     renderLog('OpenExternalWebSite');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('OpenExternalWebSite props ', this.props);
-    const { delay, className } = this.props;
+    const { delay, className, linkIdAttribute } = this.props;
     const integerDelay = delay && delay >= 0 ? delay : 50;
     const classNameString = className !== undefined ? className : 'open-web-site';
 
     if (isWebApp()) {
       return (
         <a
-          id={this.props.linkIdAttribute ? this.props.linkIdAttribute : ''}
+          id={linkIdAttribute ? linkIdAttribute : ''}
           href={this.props.url}
           className={classNameString}
           target={this.props.target ? this.props.target : ''}
@@ -40,7 +40,7 @@ export default class OpenExternalWebSite extends Component {
     } else {
       return (
         <span
-          id={this.props.linkIdAttribute ? this.props.linkIdAttribute : ''}
+          id={linkIdAttribute ? linkIdAttribute : ''}
           className={classNameString}
           title={this.props.title ? this.props.title : ''}
           onClick={() => cordovaOpenSafariView(this.props.url, null, integerDelay)}

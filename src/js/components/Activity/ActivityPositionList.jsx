@@ -45,7 +45,7 @@ class ActivityPositionList extends Component {
     let { numberOfPositionItemsToDisplay } = this.state;
     // console.log('Number of position items before increment: ', numberOfPositionItemsToDisplay);
 
-    numberOfPositionItemsToDisplay += 5;
+    numberOfPositionItemsToDisplay += 2;
     // console.log('Number of position items after increment: ', numberOfPositionItemsToDisplay);
 
     this.positionItemTimer = setTimeout(() => {
