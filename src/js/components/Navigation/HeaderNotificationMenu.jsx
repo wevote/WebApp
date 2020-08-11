@@ -19,6 +19,9 @@ class HeaderNotificationMenu extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      activityNoticeIdListNotSeen: [],
+      allActivityNoticesNotSeenCount: 0,
+      menuItemList: [],
       menuOpen: false,
     };
   }
