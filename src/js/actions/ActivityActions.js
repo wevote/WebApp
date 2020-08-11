@@ -15,11 +15,12 @@ export default {
         // google_civic_election_id: googleCivicElectionId,
       });
   },
-  activityNoticeListRetrieve () {
+  activityNoticeListRetrieve (activityNoticeIdListClicked = [], activityNoticeIdListSeen = []) {
     // console.log('activityNoticeListRetrieve');
     Dispatcher.loadEndpoint('activityNoticeListRetrieve',
       {
-        // google_civic_election_id: googleCivicElectionId,
+        activity_notice_id_list_clicked: activityNoticeIdListClicked,
+        activity_notice_id_list_seen: activityNoticeIdListSeen,
       });
   },
 };

@@ -36,14 +36,23 @@ class HeaderNotificationMenu extends Component {
 
   onActivityStoreChange () {
     const allActivityNotices = ActivityStore.allActivityNotices();
+    // console.log('allActivityNotices:', allActivityNotices);
+    const activityNoticeIdListNotSeen = allActivityNotices
+      .filter(activityNotice => activityNotice.activity_notice_seen === false)
+      .map(activityNotice => activityNotice.id);
+    // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
     const menuItemList = this.generateMenuItemList(allActivityNotices);
     this.setState({
-      allActivityNoticesCount: allActivityNotices.length,
+      activityNoticeIdListNotSeen,
+      allActivityNoticesNotSeenCount: activityNoticeIdListNotSeen.length,
       menuItemList,
     });
   }
 
-  onMenuItemClick (speakerOrganizationWeVoteId) {
+  onMenuItemClick (speakerOrganizationWeVoteId, activityNoticeId = 0) {
+    if (activityNoticeId > 0) {
+      ActivityActions.activityNoticeListRetrieve([activityNoticeId]);
+    }
     this.handleClose();
     historyPush(`/voterguide/${speakerOrganizationWeVoteId}`);
   }
@@ -57,7 +66,7 @@ class HeaderNotificationMenu extends Component {
     const menuItemList = [];
     menuItemList.push(
       <MenuItem
-        className={classes.menuItem}
+        className={classes.menuItemClicked}
         data-toggle="dropdown"
         id="notificationsHeader"
         key="notificationsHeader"
@@ -76,7 +85,7 @@ class HeaderNotificationMenu extends Component {
     if (!allActivityNotices || !allActivityNotices.length) {
       menuItemList.push(
         <MenuItem
-          className={classes.menuItem}
+          className={classes.menuItemClicked}
           data-toggle="dropdown"
           id="noActivities"
           key="noActivities"
@@ -103,11 +112,11 @@ class HeaderNotificationMenu extends Component {
         activityTimeFromDate = timeFromDate(activityNotice.date_of_notice);
         return (
           <MenuItem
-            className={classes.menuItem}
+            className={activityNotice.activity_notice_clicked ? classes.menuItemClicked : classes.menuItemNotClicked}
             data-toggle="dropdown"
             id={`activityNoticeId${activityNotice.id}`}
             key={`activityNoticeId${activityNotice.id}`}
-            onClick={() => this.onMenuItemClick(activityNotice.speaker_organization_we_vote_id)}
+            onClick={() => this.onMenuItemClick(activityNotice.speaker_organization_we_vote_id, activityNotice.id)}
           >
             <>
               <MenuItemPhoto>
@@ -142,7 +151,8 @@ class HeaderNotificationMenu extends Component {
   }
 
   handleClick = (event) => {
-    ActivityActions.activityNoticeListRetrieve();
+    const { activityNoticeIdListNotSeen } = this.state;
+    ActivityActions.activityNoticeListRetrieve([], activityNoticeIdListNotSeen);
     ActivityActions.activityListRetrieve();
     this.setState({
       anchorEl: event.currentTarget,
@@ -161,7 +171,7 @@ class HeaderNotificationMenu extends Component {
     renderLog('HeaderNotificationMenu');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('HeaderNotificationMenu render');
     const { classes } = this.props;
-    const { allActivityNoticesCount, anchorEl, menuItemList, menuOpen } = this.state;
+    const { allActivityNoticesNotSeenCount, anchorEl, menuItemList, menuOpen } = this.state;
 
     return (
       <HeaderNotificationMenuWrapper>
@@ -172,9 +182,9 @@ class HeaderNotificationMenu extends Component {
           id="headerNotificationMenuIcon"
           onClick={this.handleClick}
         >
-          {allActivityNoticesCount ? (
+          {allActivityNoticesNotSeenCount ? (
             <Badge
-              badgeContent={<BadgeCountWrapper isNumberOne={allActivityNoticesCount === 1}>{allActivityNoticesCount}</BadgeCountWrapper>}
+              badgeContent={<BadgeCountWrapper isNumberOne={allActivityNoticesNotSeenCount === 1}>{allActivityNoticesNotSeenCount}</BadgeCountWrapper>}
               classes={{
                 badge: classes.badgeClasses,
                 anchorOriginTopRightRectangle: classes.anchorOriginTopRightRectangle,
@@ -253,8 +263,20 @@ const styles = theme => ({
   list: {
     padding: '0 !important',
   },
-  menuItem: {
+  menuItemClicked: {
     backgroundColor: 'white',
+    borderRight: '1px solid #ddd',
+    borderBottom: '.5px solid #ddd',
+    borderLeft: '1px solid #ddd',
+    display: 'flex',
+    fontSize: '14px !important',
+    padding: '8px 6px !important',
+    textAlign: 'left',
+    whiteSpace: 'auto',
+    width: '100%',
+  },
+  menuItemNotClicked: {
+    backgroundColor: '#e6ecfc',
     borderRight: '1px solid #ddd',
     borderBottom: '.5px solid #ddd',
     borderLeft: '1px solid #ddd',
