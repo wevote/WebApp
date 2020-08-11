@@ -7,8 +7,10 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import { numberWithCommas, timeFromDate } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
+import StickyPopover from '../Ballot/StickyPopover';
 
 class ActivitySpeakerCard extends Component {
   static propTypes = {
@@ -21,7 +23,7 @@ class ActivitySpeakerCard extends Component {
       actionDescription: null,
       activityTimeFromDate: '',
       speakerName: '',
-      // speakerOrganizationWeVoteId: '',
+      speakerOrganizationWeVoteId: '',
       speakerProfileImageUrlMedium: '',
       speakerTwitterHandle: '',
       speakerTwitterFollowersCount: 0,
@@ -44,7 +46,7 @@ class ActivitySpeakerCard extends Component {
     const {
       date_of_notice: dateOfNotice,
       speaker_name: speakerName,
-      // speaker_organization_we_vote_id: speakerOrganizationWeVoteId,
+      speaker_organization_we_vote_id: speakerOrganizationWeVoteId,
       speaker_profile_image_url_medium: speakerProfileImageUrlMedium,
       speaker_twitter_handle: speakerTwitterHandle,
       speaker_twitter_followers_count: speakerTwitterFollowersCount,
@@ -59,7 +61,7 @@ class ActivitySpeakerCard extends Component {
       actionDescription,
       activityTimeFromDate,
       speakerName,
-      // speakerOrganizationWeVoteId,
+      speakerOrganizationWeVoteId,
       speakerProfileImageUrlMedium,
       speakerTwitterHandle,
       speakerTwitterFollowersCount,
@@ -71,31 +73,46 @@ class ActivitySpeakerCard extends Component {
     renderLog('ActivitySpeakerCard');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       actionDescription, activityTimeFromDate, speakerIsVoter,
-      speakerName, // speakerOrganizationWeVoteId,
+      speakerName, speakerOrganizationWeVoteId,
       speakerProfileImageUrlMedium, speakerTwitterFollowersCount, speakerTwitterHandle,
     } = this.state;
     if (!speakerName) {
       return <div>{LoadingWheel}</div>;
     }
+    const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={speakerOrganizationWeVoteId} />);
 
     // const voterGuideLink = speakerTwitterHandle ? `/${speakerTwitterHandle}` : `/voterguide/${speakerOrganizationWeVoteId}`;
 
     return (
       <Wrapper>
-        {(speakerProfileImageUrlMedium) ? (
-          <ProfileAvatar>
-            <ActivityImage src={speakerProfileImageUrlMedium} alt={`${speakerName}`} />
-          </ProfileAvatar>
-        ) : (
-          <ProfileAvatar>
-            <ActivityImage src={cordovaDot(avatarGenericIcon)} alt={`${speakerName}`} />
-          </ProfileAvatar>
-        )}
+        <StickyPopover
+          delay={{ show: 700, hide: 100 }}
+          popoverComponent={organizationPopoverCard}
+          placement="auto"
+          id="positions-organization-popover-trigger-click-root-close"
+        >
+          {(speakerProfileImageUrlMedium) ? (
+            <ProfileAvatar>
+              <ActivityImage src={speakerProfileImageUrlMedium} alt={`${speakerName}`} />
+            </ProfileAvatar>
+          ) : (
+            <ProfileAvatar>
+              <ActivityImage src={cordovaDot(avatarGenericIcon)} alt={`${speakerName}`} />
+            </ProfileAvatar>
+          )}
+        </StickyPopover>
         <SpeakerActionTimeWrapper>
           <SpeakerAndActionWrapper>
-            <SpeakerNameWrapper>
-              {speakerIsVoter ? 'You' : speakerName}
-            </SpeakerNameWrapper>
+            <StickyPopover
+              delay={{ show: 700, hide: 100 }}
+              popoverComponent={organizationPopoverCard}
+              placement="auto"
+              id="positions-organization-popover-trigger-click-root-close"
+            >
+              <SpeakerNameWrapper>
+                {speakerIsVoter ? 'You' : speakerName}
+              </SpeakerNameWrapper>
+            </StickyPopover>
             {(actionDescription) && (
               <ActionDescriptionWrapper>
                 {actionDescription}
