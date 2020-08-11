@@ -203,6 +203,7 @@ class FacebookSignIn extends Component {
           disabled={facebookSignInSequenceStarted}
           externalUniqueId="facebookSignIn"
           icon={<span className="fab fa-facebook-square" />}
+          id="facebookSignIn"
           onClick={this.didClickFacebookSignInButton}
           onKeyDown={this.onKeyDown}
           separatorColor="rgba(250, 250, 250, .6)"

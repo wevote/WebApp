@@ -95,11 +95,10 @@ export default class SettingsAccount extends Component {
     // }
 
     if (this.props.pleaseSignInTitle || this.props.pleaseSignInSubTitle) {
-      AppActions.storeSignInStartFullUrl();
       this.setState({
         pleaseSignInTitle: this.props.pleaseSignInTitle || '',
         pleaseSignInSubTitle: this.props.pleaseSignInSubTitle || '',
-      });
+      }, () => AppActions.storeSignInStartFullUrl());
     } else if (getStartedMode && getStartedMode === 'getStartedForCampaigns') {
       pathname = '/settings/profile';
       signInStartFullUrl = `${origin}${pathname}`;
@@ -135,11 +134,10 @@ export default class SettingsAccount extends Component {
       if (isOnWeVoteRootUrl || isOnWeVoteSubdomainUrl || isOnFacebookSupportedDomainUrl) {
         pleaseSignInSubTitle = 'Don\'t worry, we won\'t post anything automatically.';
       }
-      AppActions.storeSignInStartFullUrl();
       this.setState({
         pleaseSignInTitle: '',
         pleaseSignInSubTitle,
-      });
+      }, () => AppActions.storeSignInStartFullUrl());
     }
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),

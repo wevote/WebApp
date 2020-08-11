@@ -100,12 +100,6 @@ export const weVoteBoard = [{
 ];
 
 export const weVoteStaff = [{
-  name: 'Yuanhsin Chang',
-  image: `${photoPath}Yuanhsin_Chang-200x200.jpg`,
-  title: [
-    'User Experience Design Intern',
-  ],
-}, {
   name: 'Ahmed Elgamal',
   image: `${photoPath}Ahmed_Elgamal-200x200.jpg`,
   title: [
@@ -138,12 +132,6 @@ export const weVoteStaff = [{
     'Quality Assurance',
   ],
 }, {
-  name: 'Cody Gohl',
-  image: `${photoPath}Cody_Gohl-256x256.jpg`,
-  title: [
-    'Social Media Manager',
-  ],
-}, {
   name: 'Anisha Jain',
   image: `${photoPath}Anisha_Jain-200x200.jpg`,
   title: [
@@ -163,10 +151,10 @@ export const weVoteStaff = [{
     'Joined We Vote in 2015 with over 20 years of financial and office administration experience both in the private and public sector. Truly believes every vote counts!',
   ],
 }, {
-  name: 'Hillary Lehr',
-  image: `${photoPath}Hillary_Lehr-256x256.png`,
+  name: 'Thomas Lawson',
+  image: `${photoPath}Thomas_Lawson-200x200.jpg`,
   title: [
-    'Marketing',
+    'VP Marketing',
   ],
 }, {
   name: 'Josh Levinger',
