@@ -11,8 +11,8 @@ import VoterConstants from '../../constants/VoterConstants';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import cookies from '../../utils/cookies';
 import { renderLog } from '../../utils/logging';
-// import BallotIcon from '@material-ui/icons/Ballot';
-// import ThumbUp from '@material-ui/icons/ThumbUp';
+// import { Ballot } from '@material-ui/icons';
+// import { ThumbUp } from '@material-ui/icons';
 
 class CompleteYourProfile extends Component {
   static propTypes = {

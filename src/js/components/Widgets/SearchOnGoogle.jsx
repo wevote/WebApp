@@ -35,6 +35,7 @@ class SearchOnGoogle extends Component {
               buttonText="Google Search"
               backgroundColor="#fff"
               compressedSize
+              externalUniqueId="searchOnGoogle"
               fontColor="#000"
               fontSize="10px"
               icon={<img src={cordovaDot(googleIcon)} alt="" />}

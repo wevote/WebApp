@@ -45,6 +45,7 @@ class Office extends Component {
     this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
     const officeWeVoteId = this.props.params.office_we_vote_id;
     const office = OfficeStore.getOffice(officeWeVoteId);
+    // console.log('officeWeVoteId:', officeWeVoteId, ', office:', office);
     if (office && office.ballot_item_display_name && office.candidate_list) {
       let { candidate_list: candidateList } = office;
       // console.log('componentDidMount office:', office);
@@ -77,15 +78,17 @@ class Office extends Component {
         candidateList,
         office,
       });
-    } else {
+    } else if (officeWeVoteId) {
       OfficeActions.officeRetrieve(officeWeVoteId);
       CandidateActions.candidatesRetrieve(officeWeVoteId);
       // console.log('componentDidMount officeRetrieve');
     }
 
-    this.setState({
-      officeWeVoteId,
-    });
+    if (officeWeVoteId) {
+      this.setState({
+        officeWeVoteId,
+      });
+    }
 
     if (!IssueStore.issueDescriptionsRetrieveCalled()) {
       IssueActions.issueDescriptionsRetrieve();
@@ -109,6 +112,7 @@ class Office extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log('Office componentWillReceiveProps');
     const modalToOpen = nextProps.params.modal_to_show || '';
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
@@ -127,7 +131,11 @@ class Office extends Component {
 
   onCandidateStoreChange () {
     let { candidateList } = this.state;
-    const { officeWeVoteId } = this.state;
+    let { officeWeVoteId } = this.state;
+    if (!officeWeVoteId) {
+      officeWeVoteId = this.props.params.office_we_vote_id;
+    }
+    // console.log('onCandidateStoreChange officeWeVoteId:', officeWeVoteId);
     let newCandidate;
     const newCandidateList = [];
     if (candidateList && candidateList.length && officeWeVoteId) {
@@ -171,7 +179,10 @@ class Office extends Component {
   }
 
   onOfficeStoreChange () {
-    const { officeWeVoteId } = this.state;
+    let { officeWeVoteId } = this.state;
+    if (!officeWeVoteId) {
+      officeWeVoteId = this.props.params.office_we_vote_id;
+    }
     const office = OfficeStore.getOffice(officeWeVoteId);
     // console.log('Office.jsx onOfficeStoreChange:', officeWeVoteId, ', office:', office);
     let newCandidate;

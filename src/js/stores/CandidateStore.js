@@ -379,7 +379,7 @@ class CandidateStore extends ReduceStore {
                   kind_of_ballot_item: 'CANDIDATE',
 
                   // ballot_item_id: 0,
-                  ballot_item_we__vote_id: ballotItemWeVoteId,
+                  ballot_item_we_vote_id: ballotItemWeVoteId,
 
                   // ballot_item_state_code: '',
                   // contest_office_id: 0,

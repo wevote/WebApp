@@ -283,16 +283,16 @@ class OrganizationModal extends Component {
             <MeasureItem measureWeVoteId={ballotItemWeVoteId} />
           )}
           { !!(allCachedPositionsForThisBallotItem.length) && (
-            <section className="card">
-              <DelayedLoad showLoadingText waitBeforeShow={500}>
+            <DelayedLoad showLoadingText waitBeforeShow={500}>
+              <>
                 <PositionList
                   ballotItemDisplayName={ballotItemDisplayName}
                   incomingPositionList={allCachedPositionsForThisBallotItem}
                   params={this.props.params}
                 />
                 <br />
-              </DelayedLoad>
-            </section>
+              </>
+            </DelayedLoad>
           )}
         </Drawer>
       </>
@@ -306,19 +306,16 @@ const styles = () => ({
     '& *': {
       maxWidth: '550px !important',
     },
+    '@media(max-width: 576px)': {
+      maxWidth: '360px !important',
+      '& *': {
+        maxWidth: '360px !important',
+      },
+    },
   },
   dialogPaper: {
     display: 'block',
     marginTop: hasIPhoneNotch() ? 68 : 48,
-    '@media (min-width: 576px)': {
-      maxWidth: '600px',
-      width: '90%',
-      height: 'fit-content',
-      margin: '0 auto',
-      minWidth: 0,
-      minHeight: 0,
-      transitionDuration: '.25s',
-    },
     minWidth: '100%',
     maxWidth: '100%',
     width: '100%',
@@ -326,6 +323,18 @@ const styles = () => ({
     maxHeight: '100%',
     height: '100%',
     margin: '0 auto',
+    '@media (min-width: 577px)': {
+      maxWidth: '550px',
+      width: '90%',
+      height: 'fit-content',
+      margin: '0 auto',
+      minWidth: 0,
+      minHeight: 0,
+      transitionDuration: '.25s',
+    },
+    '@media (max-width: 576px)': {
+      maxWidth: '360px',
+    },
   },
   dialogContent: {
     padding: '24px 24px 36px 24px',

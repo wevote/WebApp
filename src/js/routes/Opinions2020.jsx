@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import uniqBy from 'lodash-es/uniqBy';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import BallotIcon from '@material-ui/icons/Ballot';
+import { Card } from '@material-ui/core';
+import { Ballot } from '@material-ui/icons';
 import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -53,7 +53,7 @@ const islandFilters = [
   },
   {
     filterName: 'showBallotItemsFilter',
-    icon: <BallotIcon />,
+    icon: <Ballot />,
     filterDisplayName: 'Ballot',
     filterId: 'islandFilterBallotItems',
   },
@@ -725,7 +725,7 @@ class Opinions2020 extends Component {
         ) : (
           <Card>
             <EmptyBallotMessageContainer>
-              <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+              <Ballot classes={{ root: classes.ballotIconRoot }} />
               <EmptyBallotText>
                 No results found.
                 {' '}

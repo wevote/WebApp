@@ -337,7 +337,7 @@ class PositionList extends Component {
             </SearchTitle>
           )}
         </FilterWrapper>
-        <ul className="card-child__list-group">
+        <UnorderedListWrapper className="card-child__list-group">
           {(isSearching ? positionSearchResults : filteredPositionList).map((onePosition) => {
             // console.log('numberOfPositionItemsDisplayed:', numberOfPositionItemsDisplayed);
             if (isSearching) {
@@ -393,7 +393,7 @@ class PositionList extends Component {
             );
           })
           }
-        </ul>
+        </UnorderedListWrapper>
         <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
           <ShowMoreItems
             loadingMoreItemsNow={loadingMoreItems}
@@ -402,9 +402,9 @@ class PositionList extends Component {
           />
         </ShowMoreItemsWrapper>
         <LoadingItemsWheel>
-          {loadingMoreItems ? (
+          {loadingMoreItems && (
             <CircularProgress />
-          ) : null}
+          )}
         </LoadingItemsWheel>
       </div>
     );
@@ -454,6 +454,10 @@ const ShowMoreItemsWrapper = styled.div`
   @media print{
     display: none;
   }
+`;
+
+const UnorderedListWrapper = styled.ul`
+  padding-inline-start: 0px !important;
 `;
 
 export default withStyles(styles)(PositionList);

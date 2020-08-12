@@ -68,6 +68,7 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
             buttonText={isPhone ? 'Sign in with a text' : 'Sign in with an Email'}
             externalUniqueId={isPhone ? 'smsSignIn' : 'emailSignIn'}
             icon={isPhone ? <Message /> : <MailOutline />}
+            id={isPhone ? 'smsSignIn' : 'emailSignIn'}
             onClick={() => this.setDialogVisible()}
             separatorColor="rgba(250, 250, 250, .6)"
             title={isPhone ? 'Sign in by SMS' : 'Sign in by email'}

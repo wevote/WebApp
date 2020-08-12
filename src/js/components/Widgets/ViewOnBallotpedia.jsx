@@ -30,6 +30,7 @@ class ViewOnBallotpedia extends Component {
               buttonText="Ballotpedia"
               backgroundColor="#fff"
               compressedSize
+              externalUniqueId="viewOnBallotpedia"
               fontColor="#000"
               icon={<img src={cordovaDot(ballotpediaIcon)} alt="" />}
               title="View on Ballotpedia"

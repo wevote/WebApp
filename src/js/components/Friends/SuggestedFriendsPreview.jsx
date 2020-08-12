@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import SuggestedFriendList from './SuggestedFriendList';
 import FriendActions from '../../actions/FriendActions';
@@ -8,6 +9,7 @@ import { renderLog } from '../../utils/logging';
 
 export default class SuggestedFriendsPreview extends Component {
   static propTypes = {
+    inSideColumn: PropTypes.bool,
   };
 
   constructor (props) {
@@ -37,6 +39,7 @@ export default class SuggestedFriendsPreview extends Component {
 
   render () {
     renderLog('SuggestedFriendsPreview');  // Set LOG_RENDER_EVENTS to log all renders
+    const { inSideColumn } = this.props;
     const { suggestedFriendList } = this.state;
     if (!suggestedFriendList || !(suggestedFriendList.length > 0)) {
       return null;
@@ -59,6 +62,7 @@ export default class SuggestedFriendsPreview extends Component {
             <div>
               <SuggestedFriendList
                 friendList={suggestedFriendListLimited}
+                inSideColumn={inSideColumn}
                 previewMode
               />
               {suggestedFriendList.length > FRIENDS_TO_SHOW && <Link to="/friends/suggested">See All</Link>}
@@ -71,7 +75,8 @@ export default class SuggestedFriendsPreview extends Component {
 }
 
 const SectionTitle = styled.h2`
-  width: fit-content;  font-weight: bold;
+  font-weight: bold;
   font-size: 18px;
   margin-bottom: 16px;
+  width: fit-content;
 `;

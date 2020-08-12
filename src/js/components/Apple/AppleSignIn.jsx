@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import cookies from '../../utils/cookies';
 import VoterActions from '../../actions/VoterActions';
+import webAppConfig from '../../config';
+import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import { renderLog } from '../../utils/logging';
-import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
-import webAppConfig from '../../config';
-import cookies from '../../utils/cookies';
 
 class AppleSignIn extends Component {
   static propTypes = {
@@ -26,13 +26,17 @@ class AppleSignIn extends Component {
   componentDidMount () {
     if (isWebApp()) {
       const { AppleID } = window;
+      const state = JSON.stringify({
+        voter_device_id: cookies.getItem('voter_device_id'),
+        return_url: window.location.href,
+      });
       if (AppleID) {
         console.log('voter_device_id from cookie', cookies.getItem('voter_device_id'));
         AppleID.auth.init({
           clientId: 'us.wevote.webapp',
           scope: 'name email',
-          redirectURI: 'https://9faafc7f6464.ngrok.io/apis/v1/appleSignInOauthRedirectDestination',
-          state: cookies.getItem('voter_device_id'),
+          redirectURI: `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}appleSignInOauthRedirectDestination`,
+          state,
           popup: true,
         });
       } else {
@@ -106,10 +110,10 @@ class AppleSignIn extends Component {
   }
 
   signInToAppleWebApp () {  // https://i.stack.imgur.com/Le6Jf.png  https://stackoverflow.com/questions/61071848/sign-in-with-apple-js-returns-invalid-request-in
-    const { AppleID } = window;
     console.log('AppleSignIn signInToAppleWebApp button pressed');
     try {
-      AppleID.auth.signIn();
+      const { auth } = window.AppleID;
+      auth.signIn();
     } catch (error) {
       console.log('signInToAppleWebApp exception ERROR:', error);
     }

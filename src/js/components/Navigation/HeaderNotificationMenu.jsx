@@ -19,6 +19,9 @@ class HeaderNotificationMenu extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      activityNoticeIdListNotSeen: [],
+      allActivityNoticesNotSeenCount: 0,
+      menuItemList: [],
       menuOpen: false,
     };
   }
@@ -27,6 +30,7 @@ class HeaderNotificationMenu extends Component {
     // console.log('HeaderBackTo componentDidMount, this.props: ', this.props);
     this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
     ActivityActions.activityNoticeListRetrieve();
+    ActivityActions.activityListRetrieve();
   }
 
   componentWillUnmount () {
@@ -35,14 +39,23 @@ class HeaderNotificationMenu extends Component {
 
   onActivityStoreChange () {
     const allActivityNotices = ActivityStore.allActivityNotices();
+    // console.log('allActivityNotices:', allActivityNotices);
+    const activityNoticeIdListNotSeen = allActivityNotices
+      .filter(activityNotice => activityNotice.activity_notice_seen === false)
+      .map(activityNotice => activityNotice.id);
+    // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
     const menuItemList = this.generateMenuItemList(allActivityNotices);
     this.setState({
-      allActivityNoticesCount: allActivityNotices.length,
+      activityNoticeIdListNotSeen,
+      allActivityNoticesNotSeenCount: activityNoticeIdListNotSeen.length,
       menuItemList,
     });
   }
 
-  onMenuItemClick (speakerOrganizationWeVoteId) {
+  onMenuItemClick (speakerOrganizationWeVoteId, activityNoticeId = 0) {
+    if (activityNoticeId > 0) {
+      ActivityActions.activityNoticeListRetrieve([activityNoticeId]);
+    }
     this.handleClose();
     historyPush(`/voterguide/${speakerOrganizationWeVoteId}`);
   }
@@ -56,7 +69,7 @@ class HeaderNotificationMenu extends Component {
     const menuItemList = [];
     menuItemList.push(
       <MenuItem
-        className={classes.menuItem}
+        className={classes.menuItemClicked}
         data-toggle="dropdown"
         id="notificationsHeader"
         key="notificationsHeader"
@@ -75,7 +88,7 @@ class HeaderNotificationMenu extends Component {
     if (!allActivityNotices || !allActivityNotices.length) {
       menuItemList.push(
         <MenuItem
-          className={classes.menuItem}
+          className={classes.menuItemClicked}
           data-toggle="dropdown"
           id="noActivities"
           key="noActivities"
@@ -97,16 +110,16 @@ class HeaderNotificationMenu extends Component {
         } else if (activityNotice.new_positions_entered_count === 1) {
           activityDescription += ' added a new opinion.';
         } else if (activityNotice.new_positions_entered_count > 1) {
-          activityDescription += ' added new opinions.';
+          activityDescription += ` added ${activityNotice.new_positions_entered_count} new opinions.`;
         }
         activityTimeFromDate = timeFromDate(activityNotice.date_of_notice);
         return (
           <MenuItem
-            className={classes.menuItem}
+            className={activityNotice.activity_notice_clicked ? classes.menuItemClicked : classes.menuItemNotClicked}
             data-toggle="dropdown"
             id={`activityNoticeId${activityNotice.id}`}
             key={`activityNoticeId${activityNotice.id}`}
-            onClick={() => this.onMenuItemClick(activityNotice.speaker_organization_we_vote_id)}
+            onClick={() => this.onMenuItemClick(activityNotice.speaker_organization_we_vote_id, activityNotice.id)}
           >
             <>
               <MenuItemPhoto>
@@ -141,7 +154,9 @@ class HeaderNotificationMenu extends Component {
   }
 
   handleClick = (event) => {
-    ActivityActions.activityNoticeListRetrieve();
+    const { activityNoticeIdListNotSeen } = this.state;
+    ActivityActions.activityNoticeListRetrieve([], activityNoticeIdListNotSeen);
+    ActivityActions.activityListRetrieve();
     this.setState({
       anchorEl: event.currentTarget,
       menuOpen: true,
@@ -159,7 +174,7 @@ class HeaderNotificationMenu extends Component {
     renderLog('HeaderNotificationMenu');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('HeaderNotificationMenu render');
     const { classes } = this.props;
-    const { allActivityNoticesCount, anchorEl, menuItemList, menuOpen } = this.state;
+    const { allActivityNoticesNotSeenCount, anchorEl, menuItemList, menuOpen } = this.state;
 
     return (
       <HeaderNotificationMenuWrapper>
@@ -170,9 +185,9 @@ class HeaderNotificationMenu extends Component {
           id="headerNotificationMenuIcon"
           onClick={this.handleClick}
         >
-          {allActivityNoticesCount ? (
+          {allActivityNoticesNotSeenCount ? (
             <Badge
-              badgeContent={<BadgeCountWrapper isNumberOne={allActivityNoticesCount === 1}>{allActivityNoticesCount}</BadgeCountWrapper>}
+              badgeContent={<BadgeCountWrapper isNumberOne={allActivityNoticesNotSeenCount === 1}>{allActivityNoticesNotSeenCount}</BadgeCountWrapper>}
               classes={{
                 badge: classes.badgeClasses,
                 anchorOriginTopRightRectangle: classes.anchorOriginTopRightRectangle,
@@ -230,6 +245,8 @@ const styles = theme => ({
     color: 'rgba(17, 17, 17, .4)',
     outline: 'none !important',
     height: '48px',
+    paddingTop: '4px !important',
+    paddingBottom: '9px !important',
     paddingRight: 0,
     '&:hover': {
       backgroundColor: 'transparent',
@@ -238,6 +255,9 @@ const styles = theme => ({
   iconButtonRootSelected: {
     color: '#2E3C5D',
     outline: 'none !important',
+    height: '48px',
+    paddingTop: '4px !important',
+    paddingBottom: '9px !important',
     paddingRight: 0,
     '&:hover': {
       backgroundColor: 'transparent',
@@ -246,8 +266,20 @@ const styles = theme => ({
   list: {
     padding: '0 !important',
   },
-  menuItem: {
+  menuItemClicked: {
     backgroundColor: 'white',
+    borderRight: '1px solid #ddd',
+    borderBottom: '.5px solid #ddd',
+    borderLeft: '1px solid #ddd',
+    display: 'flex',
+    fontSize: '14px !important',
+    padding: '8px 6px !important',
+    textAlign: 'left',
+    whiteSpace: 'auto',
+    width: '100%',
+  },
+  menuItemNotClicked: {
+    backgroundColor: '#e6ecfc',
     borderRight: '1px solid #ddd',
     borderBottom: '.5px solid #ddd',
     borderLeft: '1px solid #ddd',
@@ -284,8 +316,8 @@ const BadgeCountWrapper = styled.span`
 `;
 
 const HeaderNotificationMenuWrapper = styled.div`
+  height: 48px;
   margin-right: 12px;
-  margin-top: -4px;
   @media (min-width: 576px) {
     margin-right: 24px;
   }

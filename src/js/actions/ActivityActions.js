@@ -8,11 +8,19 @@ import Dispatcher from '../dispatcher/Dispatcher';
 // NOTICE_FRIEND_ENDORSEMENTS
 
 export default {
-  activityNoticeListRetrieve () {
+  activityListRetrieve () {
+    // console.log('activityNoticeListRetrieve');
+    Dispatcher.loadEndpoint('activityListRetrieve',
+      {
+        // google_civic_election_id: googleCivicElectionId,
+      });
+  },
+  activityNoticeListRetrieve (activityNoticeIdListClicked = [], activityNoticeIdListSeen = []) {
     // console.log('activityNoticeListRetrieve');
     Dispatcher.loadEndpoint('activityNoticeListRetrieve',
       {
-        // google_civic_election_id: googleCivicElectionId,
+        activity_notice_id_list_clicked: activityNoticeIdListClicked,
+        activity_notice_id_list_seen: activityNoticeIdListSeen,
       });
   },
 };

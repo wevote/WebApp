@@ -94,12 +94,13 @@ class EndorsementCard extends PureComponent {
                 className="u-no-underline"
                 body={(
                   <SplitIconButton
-                    title="Add endorsements to We Vote"
-                    id="endorsementCardAddEndorsementsToWeVote"
-                    icon={icon}
                     backgroundColor={backgroundColor}
                     buttonText={this.props.buttonText}
+                    externalUniqueId="endorsementCardAddEndorsementsToWeVote"
                     fontColor={fontColor}
+                    icon={icon}
+                    id="endorsementCardAddEndorsementsToWeVote"
+                    title="Add endorsements to We Vote"
                   />
                 )}
               />

@@ -21,6 +21,7 @@ class AddFriendsByEmail extends Component {
   static propTypes = {
     classes: PropTypes.object,
     inSideColumn: PropTypes.bool,
+    uniqueExternalId: PropTypes.string,
   };
 
   constructor (props) {
@@ -236,7 +237,7 @@ class AddFriendsByEmail extends Component {
 
   render () {
     renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
-    const { inSideColumn } = this.props;
+    const { classes, inSideColumn, uniqueExternalId } = this.props;
     const {
       emailAddressesError, errorMessageToShowVoter, friendContactInfo, friendFirstName, friendInvitationsWaitingForVerification,
       friendLastName, friendsToInvite,
@@ -246,8 +247,6 @@ class AddFriendsByEmail extends Component {
 
     // console.log(friendsToInvite);
     const atLeastOneValidated = friendsToInvite.length !== 0 || validatePhoneOrEmail(friendContactInfo);
-
-    const { classes } = this.props;
 
     if (loading) {
       return LoadingWheel;
@@ -319,7 +318,7 @@ class AddFriendsByEmail extends Component {
                         margin="dense"
                         classes={{ root: classes.textField }}
                         type="text"
-                        id="EmailAddress"
+                        id={uniqueExternalId ? `EmailAddress-${uniqueExternalId}` : 'EmailAddress'}
                         name="friendContactInfo"
                         value={friendContactInfo}
                         onChange={this.cacheFriendData}
@@ -329,7 +328,7 @@ class AddFriendsByEmail extends Component {
                       />
                       {friendContactInfo && (
                         <div className="row">
-                          <div className={this.props.inSideColumn ? 'col col-12' : 'col col-6'}>
+                          <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
                             <Label>
                               Friend&apos;s First Name
                             </Label>
@@ -338,7 +337,7 @@ class AddFriendsByEmail extends Component {
                               margin="dense"
                               classes={{ root: classes.textField }}
                               type="text"
-                              id="friendFirstName"
+                              id={uniqueExternalId ? `friendFirstName-${uniqueExternalId}` : 'friendFirstName'}
                               name="friendFirstName"
                               value={friendFirstName}
                               onChange={this.cacheFriendData}
@@ -347,7 +346,7 @@ class AddFriendsByEmail extends Component {
                               placeholder={isMobileScreenSize() || inSideColumn ? 'Optional' : 'Optional, but helpful!'}
                             />
                           </div>
-                          <div className={this.props.inSideColumn ? 'col col-12' : 'col col-6'}>
+                          <div className={inSideColumn ? 'col col-12' : 'col col-6'}>
                             <Label>
                               Friend&apos;s Last Name
                             </Label>
@@ -356,7 +355,7 @@ class AddFriendsByEmail extends Component {
                               margin="dense"
                               classes={{ root: classes.textField }}
                               type="text"
-                              id="friendLastName"
+                              id={uniqueExternalId ? `friendLastName-${uniqueExternalId}` : 'friendLastName'}
                               name="friendLastName"
                               value={friendLastName}
                               onChange={this.cacheFriendData}
@@ -376,7 +375,7 @@ class AddFriendsByEmail extends Component {
                             margin="dense"
                             classes={{ root: classes.textField }}
                             type="text"
-                            id="addFriendsMessage"
+                            id={uniqueExternalId ? `addFriendsMessage-${uniqueExternalId}` : 'addFriendsMessage'}
                             name="addFriendsMessage"
                             onChange={this.cacheAddFriendsByEmailMessage}
                             fullWidth
@@ -406,7 +405,7 @@ class AddFriendsByEmail extends Component {
                           color="primary"
                           classes={{ root: classes.sendButton }}
                           disabled={!this.allEnteredEmailsOrPhonesVerified()}
-                          id="friendsNextButton"
+                          id={uniqueExternalId ? `friendsNextButton-${uniqueExternalId}` : 'friendsNextButton'}
                           onClick={this.addFriendsByEmailSubmit}
                           onKeyDown={this.onKeyDown}
                           variant="contained"
