@@ -496,7 +496,9 @@ export function chipLabelText (fullLabel) {
 export function snackOffset () {
   let snackOffsetValue = '75px !important';
   if (isCordova()) {
-    snackOffsetValue = $('.footer.container').length > 0 ? '118px !important' : '72px !important';
+    // Detecting whether the share button is on the top or the bottom or not present, and whether
+    // the snack is one, or two, lines tall is just not worth it.  So just use 20% in Cordova
+    snackOffsetValue = '20% !important';
   }
 
   return snackOffsetValue;

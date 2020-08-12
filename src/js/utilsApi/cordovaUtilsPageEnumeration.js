@@ -8,7 +8,7 @@ export const enums = {
   moreAbout: 3,
   settingsHamburger: 4,
   settingsSubscription: 5,
-  settingsVoterGuideList: 6,
+  settingsVoterGuideLst: 6,
   moreTools: 7,
   moreTerms: 8,
   valuesList: 9,
@@ -53,7 +53,7 @@ export function pageEnumeration () {
   } else if (href.indexOf('/index.html#/settings/subscription') > 0) {
     return enums.settingsSubscription;
   } else if (href.indexOf('/index.html#/settings/voterguidelist') > 0) {
-    return enums.settingsVoterGuideList;
+    return enums.settingsVoterGuideLst;
   } else if (href.indexOf('/index.html#/ready') > 0) {
     return enums.ready;
   } else if (href.indexOf('/index.html#/values/list') > 0) {
