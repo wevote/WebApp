@@ -35,7 +35,7 @@ export default class OrganizationVoterGuideEdit extends Component {
     let tryToCreateVoterGuide = false;
     let continueLookingForLocalVoterGuide = true;
     if (organizationWeVoteId) {
-      OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
+      OrganizationActions.organizationRetrieve(organizationWeVoteId);
     }
     if (organizationWeVoteId && googleCivicElectionId) {
       // Simplest case where we get both variables
