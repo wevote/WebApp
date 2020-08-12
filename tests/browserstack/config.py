@@ -44,7 +44,7 @@ parser.add_argument('-r', '--run', action='store_true',
 args = vars(parser.parse_args())
 
 if args['generate'] and args['number'] != 5:
-  with open(args['file'], 'r') as f:
+  with open(args['file']) as f:
     temp = sub("{(?:(?!{).)*os%d.*?]" % args['number'], ']', f.read(), flags=S)
   with open(args['template'], 'w') as f:
     f.write(temp)
@@ -83,7 +83,7 @@ else:
 del conf['batch'], conf['file'], conf['json'], conf['write'], conf['interchange']
 
 # Load json
-with open(args['json'], 'r') as f:
+with open(args['json']) as f:
   devices = json.load(f)
 
 devices = devices[args['batch']]
@@ -118,7 +118,7 @@ for i in range(args['offset'], args['offset'] + args['number']):
 if args['write']:
   config = open('wdio.conf.js', 'w')
 
-with open(args['template'], 'r') as template:
+with open(args['template']) as template:
   for line in template.readlines():
     # create output file with configuration values
     for configOption, value in conf.items():

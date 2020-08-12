@@ -1,4 +1,4 @@
-const { scrollIntoViewSimple, simpleClick, selectClick, simpleTextInput, hiddenClick, hiddenSelectClick, hiddenSelectTextInput } = require('../utils');
+const { scrollIntoViewSimple, simpleClick, selectClick, simpleTextInput, hiddenClick, hiddenSelectClick, hiddenSelectTextInput, hiddenTextInput } = require('../utils');
 
 const WEBVIEW = 'WEBVIEW_';
 const PAUSE_DURATION_MICROSECONDS = 3000;
@@ -24,6 +24,8 @@ if (isTab) {
 }
 
 const xssTest = '<script>alert(1)</script>';
+const xssTest2 = "@>script>alert('1')>/script>";
+const sqlTest = '\' or 1=1 -- -';
 
 describe('Cross browser automated testing', async () => {
   // Run before any test
@@ -220,15 +222,31 @@ describe('Cross browser automated testing', async () => {
     }
   });
 
-  it('should go to the friends tab', async() => {
-    if (isDesktopScreenSize) {
-      await simpleClick('friendsTabHeaderBar');
-    } else {
-      await simpleClick('friendsTabFooterBar');  // Click friends tab
-    }
-    await simpleTextInput('EmailAddress', 'automated_voter1@WeVote.info');
-    await selectClick('.card-main');
-    await simpleClick('friendsNextButton');
-    await browser.deleteSession();
-  });
+  if (isCordovaFromAppStore && isAndroid) {
+    it('should go to the friends tab', async() => {
+      if (isDesktopScreenSize) {
+        await simpleClick('friendsTabHeaderBar');
+      } else {
+        await simpleClick('friendsTabFooterBar');  // Click friends tab
+      }
+      await simpleTextInput('EmailAddress', 'automated_voter1@WeVote.info');
+      await selectClick('.card-main');
+      await simpleClick('friendsNextButton');
+      await browser.deleteSession();
+    });
+  } else {
+    it('should go to the news tab', async() => {
+      if (isDesktopScreenSize) {
+        await simpleClick('activityTabHeaderBar');
+        await simpleTextInput('EmailAddress-sidebar', 'automated_voter1@WeVote.info');
+        await simpleTextInput('friendFirstName-sidebar', xssTest);
+        await simpleTextInput('friendLastName-sidebar', sqlTest);
+        await simpleTextInput('addFriendsMessage-sidebar', xssTest2);
+        await selectClick('friendsNextButton-sidebar');
+      } else {
+        await simpleClick('newsTabFooterBar');  // Click friends tab
+      }
+      await browser.deleteSession();
+    });
+  }
 });
