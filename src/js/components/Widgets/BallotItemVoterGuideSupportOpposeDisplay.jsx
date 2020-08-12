@@ -102,21 +102,21 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
                   <ThumbUp />
                 </OrganizationSupportIconWrapper>
               </OrganizationSupportSquare>
-              {organizationImageUrlHttpsTiny && (
-                <OverlayImage className="image-border-support ">
-                  <OrganizationIconWrapper>
+              <OverlayImage className="image-border-support ">
+                <OrganizationIconWrapper>
+                  {organizationImageUrlHttpsTiny ? (
                     <ImageHandler
                       alt="organization-photo-16x16"
                       imageUrl={organizationImageUrlHttpsTiny}
                       kind_of_ballot_item="ORGANIZATION"
                       sizeClassName="image-16x16 "
                     />
-                  </OrganizationIconWrapper>
-                  <FriendsOnlyIndicatorWrapper>
-                    <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
-                  </FriendsOnlyIndicatorWrapper>
-                </OverlayImage>
-              )}
+                  ) : <TinyImageSpacer />}
+                </OrganizationIconWrapper>
+                <FriendsOnlyIndicatorWrapper>
+                  <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
+                </FriendsOnlyIndicatorWrapper>
+              </OverlayImage>
             </OrganizationSupportWrapper>
           </StickyPopover>
         )}
@@ -136,21 +136,21 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
                   <ThumbDown />
                 </OrganizationOpposeIconWrapper>
               </OrganizationOpposeSquare>
-              {organizationImageUrlHttpsTiny && (
-                <OverlayImage className="image-border-oppose ">
-                  <OrganizationIconWrapper>
+              <OverlayImage className="image-border-oppose ">
+                <OrganizationIconWrapper>
+                  {organizationImageUrlHttpsTiny ? (
                     <ImageHandler
                       alt="organization-photo-16x16"
                       imageUrl={organizationImageUrlHttpsTiny}
                       kind_of_ballot_item="ORGANIZATION"
                       sizeClassName="image-16x16 "
                     />
-                  </OrganizationIconWrapper>
-                  <FriendsOnlyIndicatorWrapper>
-                    <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
-                  </FriendsOnlyIndicatorWrapper>
-                </OverlayImage>
-              )}
+                  ) : <TinyImageSpacer />}
+                </OrganizationIconWrapper>
+                <FriendsOnlyIndicatorWrapper>
+                  <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
+                </FriendsOnlyIndicatorWrapper>
+              </OverlayImage>
             </OrganizationOpposeWrapper>
           </StickyPopover>
         )}
@@ -170,21 +170,21 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
                   <Info />
                 </OrganizationInfoOnlyIconWrapper>
               </OrganizationInformationOnlySquare>
-              {organizationImageUrlHttpsTiny && (
-                <OverlayImage className="image-border-gray-border ">
-                  <OrganizationIconWrapper>
+              <OverlayImage className="image-border-gray-border ">
+                <OrganizationIconWrapper>
+                  {organizationImageUrlHttpsTiny ? (
                     <ImageHandler
                       alt="organization-photo-16x16"
                       imageUrl={organizationImageUrlHttpsTiny}
                       kind_of_ballot_item="ORGANIZATION"
                       sizeClassName="image-16x16 "
                     />
-                  </OrganizationIconWrapper>
-                  <FriendsOnlyIndicatorWrapper>
-                    <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
-                  </FriendsOnlyIndicatorWrapper>
-                </OverlayImage>
-              )}
+                  ) : <TinyImageSpacer />}
+                </OrganizationIconWrapper>
+                <FriendsOnlyIndicatorWrapper>
+                  <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
+                </FriendsOnlyIndicatorWrapper>
+              </OverlayImage>
             </OrganizationInformationOnlyWrapper>
           </StickyPopover>
         )}
@@ -348,6 +348,19 @@ const OrganizationIconWrapper = styled.div`
   width: 22px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-top: -2px !important;
+  }
+`;
+
+const TinyImageSpacer = styled.div`
+  background: white;
+  border-radius: 3px;
+  margin: 0px !important;
+  margin-top: 3px !important; // Override setting in OrganizationIconWrapper
+  padding: 0px !important;
+  width: 16px;
+  height: 16px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-top: 2px !important; // Override setting in OrganizationIconWrapper
   }
 `;
 

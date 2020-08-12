@@ -132,7 +132,7 @@ class OrganizationVoterGuideCard extends Component {
                 <FollowToggle
                   platformType="desktop"
                   organizationWeVoteId={organizationWeVoteId}
-                  otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
+                  // otherVoterWeVoteId={organizationLinkedVoterWeVoteId}
                   showFollowingText
                 />
               </FollowToggleWrapper>

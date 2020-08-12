@@ -8,10 +8,13 @@ import ActivityStore from '../../stores/ActivityStore';
 import ActivityTidbitItem from '../../components/Activity/ActivityTidbitItem';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import BallotActions from '../../actions/BallotActions';
+import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
+import FriendActions from '../../actions/FriendActions';
 import LoadingWheel from '../../components/LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -52,6 +55,11 @@ class News extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
     ActivityActions.activityListRetrieve();
+    FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
+    if (!BallotStore.allBallotItemsRetrieveCalled()) {
+      BallotActions.voterBallotItemsRetrieve(0, '', '');
+    }
+    OrganizationActions.organizationsFollowedRetrieve();
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 
