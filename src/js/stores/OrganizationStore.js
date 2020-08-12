@@ -310,19 +310,19 @@ class OrganizationStore extends ReduceStore {
     let existingPosition;
     let featuresProvidedBitmap;
     let googleCivicElectionId;
+    let hostname;
+    let newPositionList;
+    let numberOfSearchResults = 0;
     let organizationWeVoteId;
     let organization;
-    let priorCopyOfOrganization;
-    let organizationsFollowedOnTwitterList;
-    let revisedState;
-    // let search_string;
-    let voterLinkedOrganizationWeVoteId;
-    let voterGuides;
-    let voterOrganizationFeaturesProvided;
     let organizationsList = [];
-    let numberOfSearchResults = 0;
+    let organizationsFollowedOnTwitterList;
+    let priorCopyOfOrganization;
+    let revisedState;
+    let voterGuides;
+    let voterLinkedOrganizationWeVoteId;
+    let voterOrganizationFeaturesProvided;
     const organizationWeVoteIdForVoterGuideOwner = action.res.organization_we_vote_id;
-    let hostname;
 
     switch (action.type) {
       case 'organizationFollow':
@@ -565,6 +565,23 @@ class OrganizationStore extends ReduceStore {
           });
         }
         return revisedState;
+
+      case 'positionListForBallotItem':
+      case 'positionListForBallotItemFromFriends':
+        // console.log('OrganizationStore action.res:', action.res);
+        if (action.res.count === 0) return state;
+
+        newPositionList = action.res.position_list;
+        if (newPositionList) {
+          newPositionList.forEach((onePosition) => {
+            allCachedPositionsByPositionWeVoteId[onePosition.position_we_vote_id] = onePosition;
+          });
+        }
+
+        return {
+          ...state,
+          allCachedPositionsByPositionWeVoteId,
+        };
 
       case 'positionListForOpinionMaker': // ...and positionListForOpinionMakerForFriends
         // console.log('OrganizationStore, positionListForOpinionMaker response:', action.res);

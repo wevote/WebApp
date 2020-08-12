@@ -12,6 +12,7 @@ import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { historyPush } from '../../utils/cordovaUtils';
 
 class OrganizationPopoverCard extends Component {
   static propTypes = {
@@ -23,7 +24,6 @@ class OrganizationPopoverCard extends Component {
     this.state = {
       isVoterOwner: false,
       organization: {},
-      organizationWeVoteId: '',
     };
   }
 
@@ -44,28 +44,28 @@ class OrganizationPopoverCard extends Component {
     }
     this.setState({
       organization,
-      organizationWeVoteId,
+      // organizationWeVoteId,
     });
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if onOrganizationStoreChange didn't see any changes
-    let organizationWeVoteId = '';
-    if (this.state.organization) {
-      ({ organization_we_vote_id: organizationWeVoteId } = this.state.organization);
-    }
-    let nextOrganizationWeVoteId = '';
-    if (nextState.organization) {
-      ({ organization_we_vote_id: nextOrganizationWeVoteId } = nextState.organization);
-    }
-    if (organizationWeVoteId !== nextOrganizationWeVoteId) {
-      return true;
-    }
-    if (this.state.isVoterOwner !== nextState.isVoterOwner) {
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if onOrganizationStoreChange didn't see any changes
+  //   let organizationWeVoteId = '';
+  //   if (this.state.organization) {
+  //     ({ organization_we_vote_id: organizationWeVoteId } = this.state.organization);
+  //   }
+  //   let nextOrganizationWeVoteId = '';
+  //   if (nextState.organization) {
+  //     ({ organization_we_vote_id: nextOrganizationWeVoteId } = nextState.organization);
+  //   }
+  //   if (organizationWeVoteId !== nextOrganizationWeVoteId) {
+  //     return true;
+  //   }
+  //   if (this.state.isVoterOwner !== nextState.isVoterOwner) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.organizationStoreListener.remove();
@@ -73,7 +73,7 @@ class OrganizationPopoverCard extends Component {
   }
 
   onOrganizationStoreChange () {
-    const { organizationWeVoteId } = this.state;
+    const { organizationWeVoteId } = this.props;
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
     });
@@ -82,7 +82,7 @@ class OrganizationPopoverCard extends Component {
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
     if (voter && voter.linked_organization_we_vote_id) {
-      const { organizationWeVoteId } = this.state;
+      const { organizationWeVoteId } = this.props;
       const { linked_organization_we_vote_id: linkedOrganizationWeVoteId } = voter;
       const isVoterOwner = linkedOrganizationWeVoteId === organizationWeVoteId;
       this.setState({
@@ -91,18 +91,24 @@ class OrganizationPopoverCard extends Component {
     }
   }
 
+  onEdit = () => {
+    const { organizationWeVoteId } = this.props;
+    historyPush(`/voterguideedit/${organizationWeVoteId}`);
+  }
+
   render () {
     renderLog('OrganizationPopoverCard');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('OrganizationPopoverCard, organization: ', this.state.organization);
     if (!this.state.organization) {
       return <div>{LoadingWheel}</div>;
     }
-
+    const { organizationWeVoteId } = this.props;
+    const { isVoterOwner } = this.state;
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
       twitter_followers_count: twitterFollowersCount,
       organization_photo_url_large: organizationPhotoUrlLarge, organization_website: organizationWebsiteRaw,
-      organization_name: organizationName, organization_we_vote_id: organizationWeVoteId, organization_banner_url: organizationBannerUrl,
+      organization_name: organizationName, organization_banner_url: organizationBannerUrl,
     } = this.state.organization;
     const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== 'http' ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
@@ -138,7 +144,7 @@ class OrganizationPopoverCard extends Component {
                 </ImageContainer>
               </Link>
             )}
-            { this.state.isVoterOwner ? (
+            { isVoterOwner ? (
               <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
                 <span>Edit Your Endorsements</span>
               </Button>

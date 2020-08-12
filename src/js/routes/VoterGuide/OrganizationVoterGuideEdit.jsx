@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -33,6 +34,9 @@ export default class OrganizationVoterGuideEdit extends Component {
 
     let tryToCreateVoterGuide = false;
     let continueLookingForLocalVoterGuide = true;
+    if (organizationWeVoteId) {
+      OrganizationActions.organizationRetrieve(this.props.params.organization_we_vote_id);
+    }
     if (organizationWeVoteId && googleCivicElectionId) {
       // Simplest case where we get both variables
       const voterGuide = VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, googleCivicElectionId);
@@ -102,6 +106,9 @@ export default class OrganizationVoterGuideEdit extends Component {
     // console.log('onVoterGuideStoreChange voterGuideSaveResults:', voterGuideSaveResults);
     if (voterGuideSaveResults && voter && voterGuideSaveResults.organization_we_vote_id === voter.linked_organization_we_vote_id) {
       this.goToVoterGuideForDifferentElection(voterGuideSaveResults.we_vote_id);
+    } else {
+      const { organizationWeVoteId } = this.state;
+      VoterGuideStore.getVoterGuideForOrganizationId(organizationWeVoteId);
     }
   }
 
@@ -152,6 +159,7 @@ export default class OrganizationVoterGuideEdit extends Component {
   render () {
     renderLog('OrganizationVoterGuideEdit');  // Set LOG_RENDER_EVENTS to log all renders
     const { organization, organizationWeVoteId, voter } = this.state;
+    // console.log('organization:', organization, ', organizationWeVoteId:', organizationWeVoteId, ', voter:', voter);
     if (!organization || !organizationWeVoteId || !voter) {
       return <div>{LoadingWheel}</div>;
     }

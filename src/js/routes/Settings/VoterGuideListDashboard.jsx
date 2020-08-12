@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -10,8 +11,7 @@ import SettingsAccount from '../../components/Settings/SettingsAccount';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import VoterGuideListSearchResults
-  from '../../components/Settings/VoterGuideListSearchResults';
+import VoterGuideListSearchResults from '../../components/Settings/VoterGuideListSearchResults';
 
 
 class VoterGuideListDashboard extends Component {
@@ -19,7 +19,7 @@ class VoterGuideListDashboard extends Component {
     super(props);
     this.state = {
       linkedOrganizationWeVoteId: '',
-      voter: {},
+      voterIsSignedIn: false,
       clearSearchTextNow: false,
       searchIsUnderway: false,
     };
@@ -33,9 +33,10 @@ class VoterGuideListDashboard extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
     const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
     this.setState({
-      voter,
       currentGoogleCivicElectionId: VoterStore.electionId(),
+      voterIsSignedIn,
     });
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
@@ -57,8 +58,9 @@ class VoterGuideListDashboard extends Component {
 
   componentWillReceiveProps () {
     const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
     this.setState({
-      voter,
+      voterIsSignedIn,
       currentGoogleCivicElectionId: VoterStore.electionId(),
     });
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
@@ -100,8 +102,9 @@ class VoterGuideListDashboard extends Component {
   onVoterStoreChange () {
     const { linkedOrganizationWeVoteId: previousLinkedOrganizationWeVoteId } = this.state;
     const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
     this.setState({
-      voter,
+      voterIsSignedIn,
       currentGoogleCivicElectionId: VoterStore.electionId(),
     });
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
@@ -131,7 +134,11 @@ class VoterGuideListDashboard extends Component {
 
   render () {
     renderLog('VoterGuideListDashboard');  // Set LOG_RENDER_EVENTS to log all renders
-    const { clearSearchTextNow, searchIsUnderway, linkedOrganizationWeVoteId, currentGoogleCivicElectionId } = this.state;
+    const {
+      clearSearchTextNow, searchIsUnderway,
+      linkedOrganizationWeVoteId, currentGoogleCivicElectionId,
+      voterIsSignedIn,
+    } = this.state;
     // console.log(clearSearchTextNow, searchIsUnderway, linkedOrganizationWeVoteId, currentGoogleCivicElectionId);
     // const currentGoogleCivicElectionId = 0;
     return (
@@ -158,9 +165,11 @@ class VoterGuideListDashboard extends Component {
                     organizationWeVoteId={linkedOrganizationWeVoteId}
                     searchUnderwayFunction={this.searchUnderway}
               />
-              { !this.state.voter.is_signed_in ?
-                <SettingsAccount /> :
-                null}
+              { !voterIsSignedIn && (
+                <DelayedLoad waitBeforeShow={1000}>
+                  <SettingsAccount />
+                </DelayedLoad>
+              )}
               {!(searchIsUnderway) && (
                 <div className="card">
                   <div className="card-main">
