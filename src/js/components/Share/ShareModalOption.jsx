@@ -8,7 +8,7 @@ import { renderLog } from '../../utils/logging';
 
 class ShareModalOption extends Component {
   static propTypes = {
-    background: PropTypes.string,
+    backgroundColor: PropTypes.string,
     copyLink: PropTypes.bool,
     noLink: PropTypes.bool,
     icon: PropTypes.object,
@@ -43,7 +43,7 @@ class ShareModalOption extends Component {
 
   render () {
     renderLog('ShareModalOption');  // Set LOG_RENDER_EVENTS to log all renders
-    const { background, copyLink, icon, link, noLink, title, uniqueExternalId } = this.props;
+    const { backgroundColor, copyLink, icon, link, noLink, title, uniqueExternalId } = this.props;
     const linkToBeShared = link.replace('https://file:/', 'https://wevote.us/');
     console.log('ShareModalOption copyLink:', copyLink, ', link:', link, ', linkToBeShared:', linkToBeShared);
     return (
@@ -51,7 +51,7 @@ class ShareModalOption extends Component {
         {copyLink ? (
           <CopyToClipboard text={linkToBeShared} onCopy={this.copyLink}>
             <div id={`shareModalOption-${uniqueExternalId}`}>
-              <Icon background={background}>
+              <Icon background={backgroundColor}>
                 {icon}
               </Icon>
               <Text>
@@ -63,7 +63,7 @@ class ShareModalOption extends Component {
           <div>
             {noLink ? (
               <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
-                <Icon background={background}>
+                <Icon background={backgroundColor}>
                   {icon}
                 </Icon>
                 <Text>
@@ -77,7 +77,7 @@ class ShareModalOption extends Component {
                 target="_blank"
                 body={(
                   <div id={`shareModalOption-${uniqueExternalId}`} onClick={() => this.onClick}>
-                    <Icon background={background}>
+                    <Icon background={backgroundColor}>
                       {icon}
                     </Icon>
                     <Text>
@@ -128,7 +128,7 @@ const Icon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${props => props.background || 'black'};
+  background: ${props => props.backgroundColor || 'black'};
   padding: 0px;
   border-radius: 60px;
   font-size: 30px;

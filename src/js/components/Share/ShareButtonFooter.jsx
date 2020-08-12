@@ -369,7 +369,6 @@ class ShareButtonFooter extends Component {
     // let emailSubjectEncoded = '';
     // let emailBodyEncoded = '';
     let linkToBeShared = '';
-    let linkToBeSharedUrlEncoded = '';
     if (stringContains('AllOpinions', shareFooterStep)) {
       if (urlWithSharedItemCodeAllOpinions) {
         linkToBeShared = urlWithSharedItemCodeAllOpinions;
@@ -426,7 +425,7 @@ class ShareButtonFooter extends Component {
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
     linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
-    linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
+    const linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
     // console.log('ShareButtonFooter linkToBeShared:', linkToBeShared);
 
     const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSignInModal || showVoterPlanModal;
@@ -562,14 +561,14 @@ class ShareButtonFooter extends Component {
                         <ShareModalOption
                           noLink
                           onClickFunction={() => this.openShareModal('friends')}
-                          background="#2E3C5D"
+                          backgroundColor="#2E3C5D"
                           icon={<img src="../../../img/global/svg-icons/we-vote-icon-square-color.svg" alt="" />}
                           title="We Vote Friends"
                           uniqueExternalId="shareButtonFooter-Friends"
                         />
                       )}
                       <ShareModalOption
-                        background="#2E3C5D"
+                        backgroundColor="#2E3C5D"
                         copyLink
                         icon={<FileCopyOutlined />}
                         link={linkToBeShared}
@@ -578,7 +577,7 @@ class ShareButtonFooter extends Component {
                         uniqueExternalId="shareButtonFooter-CopyLink"
                       />
                       <ShareModalOption
-                        background="#2E3C5D"
+                        backgroundColor="#2E3C5D"
                         icon={<Reply />}
                         noLink
                         onClickFunction={() => this.openNativeShare(linkToBeShared, 'Open Share')}
@@ -652,7 +651,7 @@ class ShareButtonFooter extends Component {
                         </EmailShareButton>
                       </ShareWrapper>
                       <ShareModalOption
-                        background="#2E3C5D"
+                        backgroundColor="#2E3C5D"
                         copyLink
                         icon={<FileCopyOutlined />}
                         link={linkToBeShared}
@@ -862,6 +861,7 @@ const MenuSeparator = styled.div`
   }
 `;
 
+// Media queries cause a lot of problems in Cordova, please test in Cordova first, or avoid them
 const ShareWrapper = styled.div`
   cursor: pointer;
   display: block !important;

@@ -4,15 +4,8 @@ import { Snackbar, IconButton } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import { renderLog } from '../../utils/logging';
+import { isWebApp, snackOffset } from '../../utils/cordovaUtils';
 
-const styles = theme => ({
-  anchorOriginBottomCenter: {
-    bottom: 54,
-    [theme.breakpoints.up('md')]: {
-      bottom: 20,
-    },
-  },
-});
 
 class BrowserPushMessage extends Component {
   static propTypes = {
@@ -34,7 +27,7 @@ class BrowserPushMessage extends Component {
       this.setState({
         message: nextProps.incomingProps.location.state.message,
         name: nextProps.incomingProps.location.state.message_name,
-        type: nextProps.incomingProps.location.state.message_type,
+        // type: nextProps.incomingProps.location.state.message_type,
       });
     }
   }
@@ -44,18 +37,18 @@ class BrowserPushMessage extends Component {
   render () {
     renderLog('BrowserPushMessage');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, externalUniqueId } = this.props;
-    let { message, type } = this.state;
+    let { message } = this.state;
     const { name } = this.state;
     // console.log(`BrowserPushMessage message: ${message}  type: ${type}`);
 
     if (name === 'test') {
-      type = 'danger';
+    // type = 'danger';
       message = 'Test message';
     }
 
-    if (!type) {
-      type = 'info';
-    }
+    // if (!type) {
+    //   type = 'info';
+    // }
     const openSnackbar = !!(this.state.open && message);
     return (
       <Snackbar
@@ -86,5 +79,20 @@ class BrowserPushMessage extends Component {
     );
   }
 }
+
+const styles = theme => (
+  isWebApp() ? {
+    anchorOriginBottomCenter: {
+      bottom: 54,
+      [theme.breakpoints.up('md')]: {
+        bottom: 20,
+      },
+    },
+  } : {
+    anchorOriginBottomCenter: {
+      bottom: snackOffset(),
+    },
+  }
+);
 
 export default withStyles(styles)(BrowserPushMessage);
