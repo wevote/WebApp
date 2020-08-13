@@ -227,6 +227,13 @@ class BallotSideBar extends Component {
           <div className="h4 text-left" />
           <SidebarFooter>
             <span className="terms-and-privacy">
+              <Link id="ballotSideBarFAQ" to="/more/faq">
+                <span className="u-no-break">Questions?</span>
+              </Link>
+            </span>
+          </SidebarFooter>
+          <SidebarFooter>
+            <span className="terms-and-privacy">
               <Link id="ballotSideBarTermsOfService" to="/more/terms">
                 <span className="u-no-break">Terms of Service</span>
               </Link>

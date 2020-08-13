@@ -24,14 +24,14 @@ export default function ToolsToShareOnOtherWebsites (props) {
             <SectionTitle>Why use WeVote.US tools?</SectionTitle>
             <ul>
               <li>All our of tools work in all 50 states and the District of Columbia.</li>
-              <li>They’re fast and mobile-optimized, they’re free to use, and they’re the best tools available.</li>
+              <li>They&apos;re fast and mobile-optimized, they&apos;re free to use, and they&apos;re the best tools available.</li>
             </ul>
 
             <SectionTitle>Adding the tools to your website takes less than 2 minutes.</SectionTitle>
             <ol>
               <li>Copy the HTML code for the tool, or view the code.</li>
               <li>Paste the code on your website where you want the tool to appear.</li>
-              <li>We recommend putting each tool on its own page so you don’t overwhelm your visitors.</li>
+              <li>We recommend putting each tool on its own page so you don&apos;t overwhelm your visitors.</li>
             </ol>
           </div>
 

@@ -294,7 +294,7 @@ class SettingsSharing extends Component {
         <Helmet title="Domain Settings" />
         <Card className="card">
           <CardMain className="card-main">
-            <h1 className="h2">Sharing Information</h1>
+            <h1 className="h2">Logo & Sharing</h1>
             {chosenFeaturePackage === 'FREE' && (
               <>
                 <CreateConfiguredVersion />

@@ -190,6 +190,13 @@ class HeaderBarProfilePopUp extends Component {
           </ul>
           <div>
             <span className="terms-and-privacy">
+              <Link id="profilePopUpFAQ" onClick={this.hideProfilePopUp} to="/more/faq">
+                <span className="u-no-break">Frequently Asked Questions</span>
+              </Link>
+            </span>
+          </div>
+          <div>
+            <span className="terms-and-privacy">
               <Link id="profilePopUpTermsOfService" onClick={this.hideProfilePopUp} to="/more/terms">
                 <span className="u-no-break">Terms of Service</span>
               </Link>
@@ -212,12 +219,14 @@ const styles = {
     },
     color: 'rgb(6, 95, 212)',
     outline: 'none !important',
+    paddingLeft: 0,
+    paddingRight: 0,
     textAlign: 'left',
   },
 };
 
 const ListItemWrapper = styled.div`
-  padding: 5px 0 5px 10px;
+  padding: 5px 0 5px 0px;
 `;
 
 export default withStyles(styles)(HeaderBarProfilePopUp);

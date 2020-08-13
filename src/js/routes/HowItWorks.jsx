@@ -38,7 +38,7 @@ class HowItWorks extends Component {
         },
         Import: {
           title: '2. Import your endorsements',
-          description: 'We are here to help you get your opinions in front of voters, whether you have 5 endorsements, or 1,005. We Vote’s unique tech instamagically captures endorsement data from your website, spreadsheets, or text lists of candidates. No formatting overhauls required.',
+          description: 'We are here to help you get your opinions in front of voters, whether you have 5 endorsements, or 1,005. We Vote\'s unique tech instamagically captures endorsement data from your website, spreadsheets, or text lists of candidates. No formatting overhauls required.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Import-20190425.gif?',
           index: 1,
         },
@@ -116,7 +116,7 @@ class HowItWorks extends Component {
         },
         Friends: {
           title: '5. Share with friends who could use a guide',
-          description: 'Are your family and friends feeling lost when it’s time to vote? Be their hero, no matter which state they vote in.',
+          description: 'Are your family and friends feeling lost when it\'s time to vote? Be their hero, no matter which state they vote in.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Friends-20190401.gif?',
           index: 4,
         },

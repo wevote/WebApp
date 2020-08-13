@@ -124,7 +124,7 @@ class WelcomeForCampaigns extends PureComponent {
 
     const testimonialAuthor = 'Neelam J., Columbus, Ohio';
     const imageUrl = cordovaDot('/img/global/photos/Neelam_Joshi-200x200.jpg');
-    const testimonial = 'I don\'t have time to attend rallies and listen to campaign speeches, and I don’t trust much of what I see on Facebook. We Vote helps me cut through the chatter and use endorsements from people I trust.';
+    const testimonial = 'I don\'t have time to attend rallies and listen to campaign speeches, and I don\'t trust much of what I see on Facebook. We Vote helps me cut through the chatter and use endorsements from people I trust.';
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Welcome Campaigns - We Vote" />

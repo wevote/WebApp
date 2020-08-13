@@ -166,7 +166,7 @@ class FriendInvitationOnboardingIntro extends Component {
             </FriendInvitationListTitleRow>
             <FriendInvitationListRow>
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-              <StepText>Who&apos;s running for office? What do they stand for? With over 12,400 candidates running for 3,600 offices this year, We Vote helps you make sense of your options.</StepText>
+              <StepText>Who&apos;s running for office? What do they stand for? With over 12,600 candidates running for 6,500 offices this year, We Vote helps you make sense of your options.</StepText>
             </FriendInvitationListRow>
 
             <FriendInvitationListTitleRow>
