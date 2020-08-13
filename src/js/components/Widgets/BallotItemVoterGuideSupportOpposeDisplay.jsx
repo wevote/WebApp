@@ -225,10 +225,8 @@ const styles = theme => ({
 });
 
 const FriendsOnlyIndicatorWrapper = styled.div`
-  margin-top: -3px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-top: -2px !important;
-  }
+  margin-top: 0px !important;
+  display: flex;
 `;
 
 const Wrapper = styled.div`
@@ -343,25 +341,19 @@ const OverlayImage = styled.div`
 `;
 
 const OrganizationIconWrapper = styled.div`
-  margin-top: -3px !important;
+  margin-top: 0px !important;
   padding: 0 !important;
   width: 22px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-top: -2px !important;
-  }
+  display: flex;
 `;
 
 const TinyImageSpacer = styled.div`
   background: white;
   border-radius: 3px;
   margin: 0px !important;
-  margin-top: 3px !important; // Override setting in OrganizationIconWrapper
   padding: 0px !important;
   width: 16px;
   height: 16px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-top: 2px !important; // Override setting in OrganizationIconWrapper
-  }
 `;
 
 export default withTheme(withStyles(styles)(BallotItemVoterGuideSupportOpposeDisplay));
