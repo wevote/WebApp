@@ -1,4 +1,4 @@
-import { isCordova, isIOS, isAndroid, isAndroidSimulator, isSimulator, getAndroidSize,
+import { isCordova, isIOS, isAndroid, isAndroidSimulator, isSimulator, getAndroidSize, hasAndroidNotch,
   isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, hasIPhoneNotch, isIPhone6p1in, isIPhone6p5in, isIPad } from './cordovaUtils';
 import { enums, pageEnumeration } from '../utilsApi/cordovaUtilsPageEnumeration';
 import { cordovaOffsetLog } from './logging';
@@ -215,6 +215,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.settingsNotifications: return '39px';
         case enums.settingsSubscription:  return '54px';
         case enums.settingsWild:          return '57px';
+        case enums.twitterSignIn:         return hasAndroidNotch() ? '20px' : '10px';
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         default:                          return '0px';
       }

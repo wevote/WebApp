@@ -4,6 +4,8 @@ import { cordovaOffsetLog, oAuthLog } from './logging';
 
 /* global $  */
 
+let androidPixels = 0;
+
 
 export function isCordova () {
   const { isCordovaGlobal } = window;
@@ -283,7 +285,7 @@ export function getAndroidSize () {
     height: window.screen.height * ratio,
   };
 
-  const size = screen.width * screen.height;
+  androidPixels = screen.width * screen.height;
   let sizeString = 'default';
   const ratioString = parseFloat(ratio).toFixed(2);
 
@@ -292,16 +294,17 @@ export function getAndroidSize () {
      lg = 1440*2560 = 3,686,400  Nexus6P
      xl = 2560*1600 = 4,096,000  Nexus10 Tablet
      xl = 1200 x 1920 = 2,306,705 Galaxy Tab A 10.1", ratio = 1.3312500715255737
+     xl with AndroidNotch (for camera) 1440*3201 = 4,609,440, Samsung Galaxy S20 Ultra, ratio = 3
      June 2019: detecting the Galaxy Tab A by ratio, is a bit of a hack, and could bite us someday if there was an android phone with a 1.33 ratio */
 
   if (window.device.model === 'Moto G (5) Plus') {
     logMatch('Moto G (5) Plus', true);
     return '--md';
-  } else if (size > 3.7E6 || ratioString === '1.33') {
+  } else if (androidPixels > 3.7E6 || ratioString === '1.33') {
     sizeString = '--xl';
-  } else if (size > 3E6) {
+  } else if (androidPixels > 3E6) {
     sizeString = '--lg';
-  } else if (size > 1E6) {
+  } else if (androidPixels > 1E6) {
     sizeString = '--md';
   } else {
     sizeString = '--sm';
@@ -309,6 +312,17 @@ export function getAndroidSize () {
   cordovaOffsetLog(`getAndroidSize(): ${sizeString}`);
 
   return sizeString;
+}
+
+export function hasAndroidNotch () {
+  if (androidPixels === 4609440) {
+    logMatch('Android Samsung Galaxy S20 Ultra detected by pixel size');
+    return true;
+  } else if (androidPixels === 4380480) {
+    logMatch('Android Samsung Galaxy S10 plus detected by pixel size');
+    return true;
+  }
+  return false;
 }
 
 export function isAndroidSizeSM () {
