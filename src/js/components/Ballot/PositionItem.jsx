@@ -513,7 +513,7 @@ class PositionItem extends Component {
                     {moreInfoUrl ? (
                       <SourceLink>
                         <OpenExternalWebSite
-                          linkIdAttribute="moreInfo"
+                          linkIdAttribute="moreInfoDesktop"
                           body={(
                             <span>
                               view source
@@ -635,7 +635,7 @@ class PositionItem extends Component {
                   {moreInfoUrl ? (
                     <SourceLink>
                       <OpenExternalWebSite
-                        linkIdAttribute="moreInfo"
+                        linkIdAttribute="moreInfoMobile"
                         body={(
                           <span>
                             source
