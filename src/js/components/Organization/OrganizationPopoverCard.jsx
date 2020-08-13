@@ -168,7 +168,7 @@ class OrganizationPopoverCard extends Component {
                 @
                 {organizationTwitterHandle}
                 &nbsp;&nbsp;
-                { twitterFollowersCount && (
+                {!!(twitterFollowersCount) && (
                   <span>
                     <span className="fab fa-twitter twitter-followers__icon" />
                     {numberWithCommas(twitterFollowersCount)}
@@ -176,7 +176,7 @@ class OrganizationPopoverCard extends Component {
                 )}
               </OrganizationTwitterHandle>
             )}
-            { twitterDescriptionMinusName && (
+            {twitterDescriptionMinusName && (
               <Description>
                 <ParsedTwitterDescription
                   twitter_description={twitterDescriptionMinusName}
@@ -184,7 +184,7 @@ class OrganizationPopoverCard extends Component {
               </Description>
             )
             }
-            { organizationWebsite && (
+            {organizationWebsite && (
               <span className="u-wrap-links">
                 <OpenExternalWebSite
                   url={organizationWebsite}

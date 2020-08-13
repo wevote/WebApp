@@ -35,7 +35,7 @@ class VoterGuidePositionItem extends Component {
       positionListHasBeenRetrievedOnce: {},
     };
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
-    this.onClickFunction = this.onClickFunction.bind(this);
+    this.onClickShowOrganizationModal = this.onClickShowOrganizationModal.bind(this);
   }
 
   componentDidMount () {
@@ -152,9 +152,10 @@ class VoterGuidePositionItem extends Component {
     }
   }
 
-  onClickFunction () {
+  onClickShowOrganizationModal () {
+    const { ballotItemWeVoteId } = this.props;
+    AppActions.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
     AppActions.setShowOrganizationModal(true);
-    AppActions.setOrganizationModalId(Object.keys(this.state.positionListFromFriendsHasBeenRetrievedOnce)[0]);
   }
 
   togglePositionStatement () {
@@ -243,7 +244,7 @@ class VoterGuidePositionItem extends Component {
           <DesktopContainer>
             {isCandidate && (
               <DesktopItemLeft>
-                <DesktopItemImage onClick={this.onClickFunction} className="u-cursor--pointer">
+                <DesktopItemImage onClick={this.onClickShowOrganizationModal} className="u-cursor--pointer">
                   <div>
                     { ballotItemImageUrlHttpsMedium ? (
                       <ImageHandler
@@ -261,7 +262,7 @@ class VoterGuidePositionItem extends Component {
               <DesktopItemHeader>
                 <DesktopItemNameAndOfficeContainer>
                   <DesktopItemNameContainer>
-                    <DesktopItemName onClick={this.onClickFunction} className="u-cursor--pointer">
+                    <DesktopItemName onClick={this.onClickShowOrganizationModal} className="u-cursor--pointer">
                       { ballotItemDisplayName }
                     </DesktopItemName>
                     <DesktopItemTwitterContainer>
@@ -273,7 +274,7 @@ class VoterGuidePositionItem extends Component {
                       )}
                     </DesktopItemTwitterContainer>
                   </DesktopItemNameContainer>
-                  <DesktopItemOffice onClick={this.onClickFunction} className="u-cursor--pointer">
+                  <DesktopItemOffice onClick={this.onClickShowOrganizationModal} className="u-cursor--pointer">
                     {(contestOfficeName) && (
                       <OfficeNameText
                         contestOfficeName={contestOfficeName}
@@ -348,7 +349,7 @@ class VoterGuidePositionItem extends Component {
           <PositionItemMobile isSupport={organizationSupportsBallotItem} isOppose={organizationOpposesBallotItem}>
             <MobileItemHeader>
               <MobileItemNameAndOfficeContainer>
-                <MobileItemNameContainer onClick={this.onClickFunction} className="u-cursor--pointer">
+                <MobileItemNameContainer onClick={this.onClickShowOrganizationModal} className="u-cursor--pointer">
                   {isCandidate && (
                     <MobileItemImage>
                       { ballotItemImageUrlHttpsMedium ? (
@@ -413,7 +414,7 @@ class VoterGuidePositionItem extends Component {
               </MobileItemEndorsementContainer>
             </MobileItemHeader>
             <div className="u-show-mobile-iphone5-or-smaller">
-              <MobileItemOfficeSmallerPhones onClick={this.onClickFunction} className="u-cursor--pointer">
+              <MobileItemOfficeSmallerPhones onClick={this.onClickShowOrganizationModal} className="u-cursor--pointer">
                 {(contestOfficeName) && (
                   <OfficeNameText
                     contestOfficeName={contestOfficeName}

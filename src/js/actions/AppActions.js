@@ -78,8 +78,8 @@ export default {
     Dispatcher.dispatch({ type: 'showOrganizationModal', payload: show });
   },
 
-  setOrganizationModalId (id) {
-    Dispatcher.dispatch({ type: 'organizationModalId', payload: id });
+  setOrganizationModalBallotItemWeVoteId (ballotItemWeVoteId) {
+    Dispatcher.dispatch({ type: 'organizationModalBallotItemWeVoteId', payload: ballotItemWeVoteId });
   },
 
   setShowValuesIntroModal (show) {

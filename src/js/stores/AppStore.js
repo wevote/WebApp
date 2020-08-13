@@ -20,14 +20,15 @@ class AppStore extends ReduceStore {
       getStartedMode: '',
       hideWeVoteLogo: false,
       hostname: '',
+      organizationModalBallotItemWeVoteId: '',
       scrolledDown: false,
       sharedItemCode: '',
       shareModalStep: '',
       showEditAddressButton: false,
       showElectionsWithOrganizationVoterGuidesModal: false,
       showHowItWorksModal: false,
-      showVoterPlanModal: false,
       showNewVoterGuideModal: false,
+      showOrganizationModal: false,
       showPaidAccountUpgradeModal: false,
       showPersonalizedScoreIntroModal: false,
       showSelectBallotModal: false,
@@ -36,8 +37,7 @@ class AppStore extends ReduceStore {
       showShareModal: false,
       showSharedItemModal: false,
       showSignInModal: false,
-      organizationModalId: '',
-      showOrganizationModal: false,
+      showVoterPlanModal: false,
       siteConfigurationHasBeenRetrieved: false,
       siteOwnerOrganizationWeVoteId: '',
       storeSignInStartFullUrl: false,
@@ -183,8 +183,8 @@ class AppStore extends ReduceStore {
     return this.getState().showSignInModal;
   }
 
-  organizationModalId () {
-    return this.getState().organizationModalId;
+  organizationModalBallotItemWeVoteId () {
+    return this.getState().organizationModalBallotItemWeVoteId;
   }
 
   showOrganizationModal () {
@@ -265,8 +265,8 @@ class AppStore extends ReduceStore {
         return { ...state, showSignInModal: action.payload };
       case 'showOrganizationModal':
         return { ...state, showOrganizationModal: action.payload };
-      case 'organizationModalId':
-        return { ...state, organizationModalId: action.payload };
+      case 'organizationModalBallotItemWeVoteId':
+        return { ...state, organizationModalBallotItemWeVoteId: action.payload };
       case 'showValuesIntroModal':
         return { ...state, showValuesIntroModal: action.payload };
       case 'siteConfigurationRetrieve':
