@@ -134,11 +134,10 @@ class AppleSignIn extends Component {
   render () {
     renderLog('AppleSignIn');  // Set LOG_RENDER_EVENTS to log all renders
     const isWeb = isWebApp();
-    const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
     const { signedIn } = this.props;
     let enabled = true;
 
-    if (isAndroid() || !nextReleaseFeaturesEnabled) {
+    if (isAndroid()) {
       // console.log('Sign in with Apple is not available on Android');
       return null;
     } else if (isIOS()) {
@@ -165,7 +164,7 @@ class AppleSignIn extends Component {
           >
             <AppleLogo signedIn={signedIn} enabled={enabled} />
             <AppleSignInText id="appleSignInText" enabled={enabled}>
-              Sign in with Apple
+              {enabled ? 'Sign in with Apple' : '(REQUIRES iOS 13)'}
             </AppleSignInText>
           </AppleSignInButton>
         </AppleSignInContainer>

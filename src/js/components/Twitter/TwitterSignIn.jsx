@@ -173,7 +173,7 @@ class TwitterSignIn extends Component {
   }
 
   render () {
-    const { buttonText } = this.props;
+    let { buttonText } = this.props;
     const { buttonSubmittedText, twitterSignInStartSubmitted } = this.state;
     let disabled = twitterSignInStartSubmitted;
     if (isIOS()) {
@@ -183,6 +183,7 @@ class TwitterSignIn extends Component {
         if (floatVersion < 13.0) {
           console.log('Sign in with Twitter is not available on iOS < 13, this phone is running: ', floatVersion);
           disabled = true;
+          buttonText = '(Requires iOS 13)';
         }
       }
     }
