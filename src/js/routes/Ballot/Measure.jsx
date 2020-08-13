@@ -314,6 +314,7 @@ class Measure extends Component {
           <span className="u-wrap-links d-print-none">
             Admin only:
             <OpenExternalWebSite
+              linkIdAttribute="measureAdminEdit"
               url={measureAdminEditUrl}
               target="_blank"
               className="open-web-site open-web-site__no-right-padding"

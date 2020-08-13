@@ -65,6 +65,7 @@ export default class TwitterAccountCard extends Component {
                 <span>
                   &nbsp;&nbsp;
                   <OpenExternalWebSite
+                    linkIdAttribute="twitterUserWebsite"
                     url={twitterUserWebsite}
                     target="_blank"
                     body={(

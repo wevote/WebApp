@@ -119,6 +119,7 @@ class LearnMore extends Component {
 
     const externalLink = learnMoreLink ? (
       <OpenExternalWebSite
+        linkIdAttribute="learnMore"
         url={learnMoreLink}
         target="_blank"
         body={(

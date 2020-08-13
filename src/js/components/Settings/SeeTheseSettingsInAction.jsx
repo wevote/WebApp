@@ -85,6 +85,7 @@ class SeeTheseSettingsInAction extends Component {
             {' '}
             {organizationChosenSubdomain && (
               <OpenExternalWebSite
+                linkIdAttribute="organizationChosenSubdomainSeeTheseSettingsInAction"
                 url={`https://${organizationChosenSubdomain}.WeVote.US`}
                 target="_blank"
                 body={(<span>{`https://${organizationChosenSubdomain}.WeVote.US`}</span>)}
@@ -93,6 +94,7 @@ class SeeTheseSettingsInAction extends Component {
             {' '}
             {organizationChosenDomainName && (
               <OpenExternalWebSite
+                linkIdAttribute="organizationChosenDomainNameSeeTheseSettingsInAction"
                 url={`https://${organizationChosenDomainName}`}
                 target="_blank"
                 body={(<span>{`https://${organizationChosenDomainName}`}</span>)}

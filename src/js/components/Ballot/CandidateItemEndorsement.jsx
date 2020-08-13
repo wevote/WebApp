@@ -398,6 +398,7 @@ class CandidateItemEndorsement extends Component {
               {(!hideCandidateUrl && candidateUrl) && (
                 <ExternalWebSiteWrapper className="u-show-desktop">
                   <OpenExternalWebSite
+                    linkIdAttribute="candidateMobile"
                     url={candidateUrl}
                     target="_blank"
                     className="u-gray-mid"

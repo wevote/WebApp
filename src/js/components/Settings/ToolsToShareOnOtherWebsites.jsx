@@ -100,6 +100,7 @@ export default function ToolsToShareOnOtherWebsites (props) {
             <li>
               If you need access to the data gathered via your instance of the Vote.org toolset,
               <OpenExternalWebSite
+                linkIdAttribute="voteOrg"
                 url="https://vip.vote.org"
                 target="_blank"
                 body="check out the Vote.org premium tools."

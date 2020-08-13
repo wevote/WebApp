@@ -76,6 +76,7 @@ class Credits extends Component {
             {' '}
             Please join us by
             <OpenExternalWebSite
+              linkIdAttribute="wevoteJoinUs"
               url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
               target="_blank"
               className="open-web-site open-web-site__no-right-padding"

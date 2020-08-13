@@ -22,6 +22,7 @@ export default class Privacy extends React.Component {
             <span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit the We Vote websites, currently located at</span>
             <span>
               <OpenExternalWebSite
+                linkIdAttribute="wevote"
                 url="https://WeVote.US/"
                 target="_blank"
                 body={<span>WeVote.US</span>}
@@ -33,6 +34,7 @@ export default class Privacy extends React.Component {
           <p>
             You can find additional explanations of our Privacy Policy in our
             <OpenExternalWebSite
+              linkIdAttribute="wevotePrivacy"
               url="https://help.wevote.us/hc/en-us/sections/115000140987-Security-Technology"
               target="_blank"
               body={<span>Help Center</span>}
@@ -80,6 +82,7 @@ export default class Privacy extends React.Component {
             <span>We also use third-party services such as Google Analytics </span>
             <span>
               <OpenExternalWebSite
+                linkIdAttribute="googleAnalytics"
                 url="https://policies.google.com/privacy"
                 target="_blank"
                 body={<span>https://policies.google.com/privacy</span>}
@@ -89,6 +92,7 @@ export default class Privacy extends React.Component {
               {' '}
               and Full Story (
               <OpenExternalWebSite
+                linkIdAttribute="fullStoryPrivacy"
                 url="https://www.fullstory.com/legal/privacy/"
                 target="_blank"
                 body={<span>https://www.fullstory.com/legal/privacy/</span>}

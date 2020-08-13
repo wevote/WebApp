@@ -387,6 +387,7 @@ class SettingsDomain extends Component {
                     </>
                   )}
                   <OpenExternalWebSite
+                    linkIdAttribute="learnMoreSettingsDomain"
                     url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
                     target="_blank"
                     body={(<span>Learn more here.</span>)}
@@ -401,6 +402,7 @@ class SettingsDomain extends Component {
                 {' '}
                 {organizationChosenSubdomainSavedValue && (
                   <OpenExternalWebSite
+                    linkIdAttribute="organizationChosenSubdomainSavedValue"
                     url={`https://${organizationChosenSubdomainSavedValue}.WeVote.US`}
                     target="_blank"
                     body={(<span>{`https://${organizationChosenSubdomainSavedValue}.WeVote.US`}</span>)}
@@ -409,6 +411,7 @@ class SettingsDomain extends Component {
                 {' '}
                 {organizationChosenDomainNameSavedValue && (
                   <OpenExternalWebSite
+                    linkIdAttribute="organizationChosenDomainNameSavedValue"
                     url={`https://${organizationChosenDomainNameSavedValue}`}
                     target="_blank"
                     body={(<span>{`https://${organizationChosenDomainNameSavedValue}`}</span>)}
@@ -475,6 +478,7 @@ class SettingsDomain extends Component {
                         After saving a new subdomain, please allow 10 minutes for your domain to be ready
                         {organizationChosenSubdomain ? (
                           <OpenExternalWebSite
+                            linkIdAttribute="organizationChosenSubdomain"
                             url={`https://${organizationChosenSubdomain}.WeVote.US`}
                             target="_blank"
                             body={(<span>{`: https://${organizationChosenSubdomain}.WeVote.US`}</span>)}
@@ -569,6 +573,7 @@ class SettingsDomain extends Component {
                       <InputBoxDescriptionUnder>
                         After saving a new domain, please
                         <OpenExternalWebSite
+                          linkIdAttribute="weVoteSupportSettingsDomain"
                           url="https://help.wevote.us/hc/en-us/requests/new"
                           target="_blank"
                           body={<span>contact support to complete the installation</span>}

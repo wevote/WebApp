@@ -72,6 +72,7 @@ class ShareModalOption extends Component {
               </div>
             ) : (
               <OpenExternalWebSite
+                linkIdAttribute="linkToShare"
                 className="no-decoration"
                 url={linkToBeShared}
                 target="_blank"

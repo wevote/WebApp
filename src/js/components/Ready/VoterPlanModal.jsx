@@ -438,6 +438,7 @@ class VoterPlanModal extends Component {
                           value={votingLocationAddress}
                         />
                         <OpenExternalWebSite
+                          linkIdAttribute="getPollingLocationVoterPlanModal"
                           url={getPollingLocationUrl}
                           target="_blank"
                           className="u-gray-mid"

@@ -61,6 +61,7 @@ class ReturnOfficialBallot extends Component {
             {' '}
             <HidePopupWrapper>
               <OpenExternalWebSite
+                linkIdAttribute="weVoteCastVote"
                 url="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"
                 target="_blank"
                 body="See more information about casting your official vote."

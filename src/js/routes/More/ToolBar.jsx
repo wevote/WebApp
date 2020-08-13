@@ -21,6 +21,7 @@ class ToolBar extends Component {
       <div>
         <ToolBarContainer className="btn-toolbar">
           <OpenExternalWebSite
+            linkIdAttribute="wevoteTwitter"
             className="u-no-underline"
             url="https://twitter.com/WeVote"
             target="_blank"
@@ -34,6 +35,7 @@ class ToolBar extends Component {
           />
 
           <OpenExternalWebSite
+            linkIdAttribute="wevoteFacebook"
             className="u-no-underline"
             url="https://www.facebook.com/WeVoteUSA"
             target="_blank"
@@ -47,6 +49,7 @@ class ToolBar extends Component {
           />
 
           <OpenExternalWebSite
+            linkIdAttribute="eepurl"
             className="u-no-underline"
             url="http://eepurl.com/cx_frP"
             target="_blank"
@@ -61,6 +64,7 @@ class ToolBar extends Component {
 
           {!hideGitHub && (
             <OpenExternalWebSite
+              linkIdAttribute="wevoteGithub"
               className="u-no-underline"
               url="https://github.com/WeVote"
               target="_blank"
@@ -75,6 +79,7 @@ class ToolBar extends Component {
           )
           }
           <OpenExternalWebSite
+            linkIdAttribute="wevoteBlog"
             className="u-no-underline"
             url="https://blog.wevote.us/"
             target="_blank"

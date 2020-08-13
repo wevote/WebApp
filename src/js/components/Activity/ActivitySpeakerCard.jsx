@@ -128,6 +128,7 @@ class ActivitySpeakerCard extends Component {
             )}
             {(speakerTwitterHandle) && (
               <OpenExternalWebSite
+                linkIdAttribute="speakerTwitterHandle"
                 url={`https://twitter.com/${speakerTwitterHandle}`}
                 target="_blank"
                 body={(

@@ -224,6 +224,7 @@ export default class OrganizationCard extends Component {
             <div>
               { organizationTwitterHandle && !turnOffTwitterHandle && (
                 <OpenExternalWebSite
+                  linkIdAttribute="organizationTwitterHandle"
                   url={`https://twitter.com/${organizationTwitterHandle}`}
                   target="_blank"
                   body={(
@@ -245,6 +246,7 @@ export default class OrganizationCard extends Component {
               { organizationWebsite && (
                 <WebsiteWrapper>
                   <OpenExternalWebSite
+                    linkIdAttribute="organizationWebsite"
                     url={organizationWebsite}
                     target="_blank"
                     body={(

@@ -19,6 +19,7 @@ class CreateConfiguredVersion extends Component {
           Want to create a configured version of We Vote you can send out to your followers or friends?
           {' '}
           <OpenExternalWebSite
+            linkIdAttribute="learnMoreCreateConfiguredVersion"
             url="https://help.wevote.us/hc/en-us/articles/360037725754-Customizing-Your-Voter-Guide"
             target="_blank"
             body={(<span>Learn more here.</span>)}

@@ -399,6 +399,7 @@ class VoterEmailAddressEntry extends Component {
               <div>
                 Your account is locked. Please
                 <OpenExternalWebSite
+                  linkIdAttribute="weVoteSupportVoterEmailAddressEntry"
                   url="https://help.wevote.us/hc/en-us/requests/new"
                   target="_blank"
                   body={<span>contact We Vote support for help.</span>}

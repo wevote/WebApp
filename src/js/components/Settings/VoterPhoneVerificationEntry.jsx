@@ -402,6 +402,7 @@ class VoterPhoneVerificationEntry extends Component {
                 <span>
                   Your account is locked. Please
                   <OpenExternalWebSite
+                    linkIdAttribute="weVoteSupportVoterPhoneVerificationEntry"
                     url="https://help.wevote.us/hc/en-us/requests/new"
                     target="_blank"
                     body={<span>contact We Vote support for help.</span>}

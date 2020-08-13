@@ -27,6 +27,7 @@ class AddEndorsements extends Component {
         <div className="card-main">
           <div className="network-btn">
             <OpenExternalWebSite
+              linkIdAttribute="addEndorsements"
               url="https://api.wevoteusa.org/vg/create/"
               className="u-no-underline"
               target="_blank"

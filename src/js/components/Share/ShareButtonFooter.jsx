@@ -663,6 +663,7 @@ class ShareButtonFooter extends Component {
                   )}
                   {allOpinions && (
                     <OpenExternalWebSite
+                      linkIdAttribute="allOpinions"
                       url={linkToBeShared}
                       target="_blank"
                       // title={this.props.title}

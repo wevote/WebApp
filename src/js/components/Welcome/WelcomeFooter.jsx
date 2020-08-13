@@ -31,14 +31,14 @@ class WelcomeFooter extends Component {
               <Link id="footerLinkSupportedElections" className={classes.link} to="/more/elections">Supported Elections</Link>
               {isWebApp() ?
                 <Link id="footerLinkRegisterToVote" className={classes.link} to="/more/register">Register to Vote</Link> :
-                <OpenExternalWebSite className={classes.link} url="https://register.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Register to Vote</span>)} />
+                <OpenExternalWebSite linkIdAttribute="registerToVoter" className={classes.link} url="https://register.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Register to Vote</span>)} />
               }
               {isWebApp() ?
                 <Link id="footerLinkGetYourAbsenteeBallot" className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link> :
-                <OpenExternalWebSite className={classes.link} url="https://absentee.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Get Your Absentee Ballot</span>)} />
+                <OpenExternalWebSite linkIdAttribute="getYourAbsenteeBallot" className={classes.link} url="https://absentee.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Get Your Absentee Ballot</span>)} />
               }
               <Link id="footerLinkSeeYourBallot" className={classes.link} to="/ballot">See Your Ballot</Link>
-              <OpenExternalWebSite className={classes.link} url="https://gttp.votinginfoproject.org/" target="_blank" body={(<span>Polling Place Locator</span>)} />
+              <OpenExternalWebSite linkIdAttribute="pollingPlaceLocator" className={classes.link} url="https://gttp.votinginfoproject.org/" target="_blank" body={(<span>Polling Place Locator</span>)} />
               <Link id="footerLinkFreeOnlineTools" className={classes.link} to="/settings/tools">Free Online Tools</Link>
               <Link id="footerLinkPremiumOnlineTools" className={classes.link} to="/settings/tools">Premium Online Tools</Link>
             </Column>
