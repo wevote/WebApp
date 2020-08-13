@@ -17,7 +17,7 @@ export default class Privacy extends React.Component {
         <Helmet title="Privacy Policy - We Vote" />
         <div className="container-fluid well">
           <h1 className="text-center">WeVote.US Privacy Policy</h1>
-          <p><strong>Last updated: August 22, 2019</strong></p>
+          <p><strong>Last updated: August 13, 2020</strong></p>
           <p>
             <span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit the We Vote websites, currently located at</span>
             <span>
@@ -77,7 +77,7 @@ export default class Privacy extends React.Component {
             <span>We may place online advertising with third-party vendors, including Google, which will be shown on other sites on the internet. In some cases, those third-party vendors may decide which ads to show you based on your prior visits to the Site. At no time will you be personally identified to those third-party vendors, nor will any of the personal information you share with us be shared with those third-party vendors. If you prefer to opt out of the use of these third-party cookies on the Site, you can do so by visiting the Network Advertising Initiative opt out page.</span>
           </p>
           <h2><b>Cookies and data tracking</b></h2>
-          <p><span>In order to better serve you, we use cookies and periodically analyze web logs. Some cookies are used to pre-populate forms for you so that on repeat visits to the Site you don’t need to re-enter certain information.  You can set your browser to disable cookies, but then you would not have the advantage of having certain sections of forms being pre-populated for you, and you may not be able to access certain parts of the Site.</span></p>
+          <p><span>In order to better serve you, we use cookies and periodically analyze web logs. Some cookies are used to pre-populate forms for you so that on repeat visits to the Site you don&apos;t need to re-enter certain information.  You can set your browser to disable cookies, but then you would not have the advantage of having certain sections of forms being pre-populated for you, and you may not be able to access certain parts of the Site.</span></p>
           <p>
             <span>We also use third-party services such as Google Analytics </span>
             <span>
@@ -105,13 +105,13 @@ export default class Privacy extends React.Component {
             <span>
               The information generated about your use of our Site (including your IP address) is transmitted to and stored by Google and
               Full Story on servers in the United States. Google and/or Full Story may also transfer this information to third parties where
-              Google and/or Full Story are legally required, or where such third parties process the information on Google’s or Full Story&apos;s
+              Google and/or Full Story are legally required, or where such third parties process the information on Google&apos;s or Full Story&apos;s
               behalf. Google may combine your IP address with any other data held by Google. By using this Site, you consent to the processing of
               data by Google and Full Story in the manner and for the purposes set out above.
             </span>
           </p>
           <p>
-            <span>URLs contained in emails may contain an ID that enables us to correctly identify the person who takes an action using a web page. We use these URLs to simplify the process of helping you to prepare to vote. We may occasionally present a shortened URL that references a longer URL which you can see in the browser’s address bar when you access the page.</span>
+            <span>URLs contained in emails may contain an ID that enables us to correctly identify the person who takes an action using a web page. We use these URLs to simplify the process of helping you to prepare to vote. We may occasionally present a shortened URL that references a longer URL which you can see in the browser&apos;s address bar when you access the page.</span>
           </p>
           <h2><b>Links to other sites</b></h2>
           <p>

@@ -190,7 +190,7 @@ export default class HamburgerMenu extends Component {
               <HamburgerMenuRow
                 icon="fa fa-share"
                 iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
-                linkText="Sharing"
+                linkText="Logo & Sharing"
                 onClickAction={null}
                 showProChip
                 to="/settings/sharing"
@@ -241,6 +241,17 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
+            <tr className="hamburger-terms__tr-terms">
+              <td className="hamburger-terms__td" colSpan={3}>
+                <div>
+                  <span className="hamburger-terms__text">
+                    <Link to="/more/faq" id="frequentlyAskedQuestions">
+                      <span className="u-no-break">Questions?</span>
+                    </Link>
+                  </span>
+                </div>
+              </td>
+            </tr>
             <tr className="hamburger-terms__tr-terms">
               <td className="hamburger-terms__td" colSpan={3}>
                 <div>

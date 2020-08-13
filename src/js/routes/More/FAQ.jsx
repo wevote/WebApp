@@ -16,169 +16,194 @@ export default class About extends Component {
       <div>
         <Helmet title="FAQ - We Vote" />
         <div className="container-fluid card">
-          <h1 className="h1">Frequently Asked Questions</h1>
-          <ToolBar />
+          <div className="card-main">
+            <h1 className="h1">Frequently Asked Questions</h1>
+            <div
+              style={{
+                backgroundColor: '#2e3c5d',
+                paddingTop: 20,
+              }}
+            >
+              <ToolBar />
+            </div>
 
-          <br />
-          <strong>What is We Vote?</strong>
-          <br />
-          Putting the voter in the driver’s seat. Helping you
-          vote your values. Making voting more social.
-          <br />
-          <br />
+            <br />
+            <strong>What is We Vote?</strong>
+            <br />
+            We Vote is a nonprofit technology startup, creating a digital voter guide informed by issues you care about, and people you trust. Through our nonpartisan, open source platform, we&apos;ll help you become a better voter, up and down the ballot.
+            <br />
+            <br />
 
-          <strong>How does We Vote help voters?</strong>
-          <br />
-          We Vote is where you view your ballot, see endorsements from your network for all
-          candidates and measures, and collaborate with
-          folks who share your values.
-          <br />
-          <br />
+            <strong>How does We Vote help voters?</strong>
+            <br />
+            We Vote is where you view your ballot, see endorsements from your network for all
+            candidates and measures, and collaborate with
+            folks who share your values.
+            <br />
+            <br />
 
-          <strong>Who’s behind We Vote?</strong>
-          <br />
-          We Vote is a 501(c)(3) and 501(c)(4) nonprofit
-          based in Oakland, CA.
-          <br />
-          <br />
+            <strong>Who&apos;s behind We Vote?</strong>
+            <br />
+            We Vote is a collaboration between two nonprofits (
+            <OpenExternalWebSite
+              linkIdAttribute="weVoteEducationWebsite"
+              url="http://WeVoteEducation.org"
+              target="_blank"
+              body="www.WeVoteEducation.org"
+            />
+            - 501(c)(3) and
+            <OpenExternalWebSite
+              linkIdAttribute="weVoteUSAWebsite"
+              url="http://WeVoteUSA.org"
+              target="_blank"
+              body="www.WeVoteUSA.org"
+            />
+            - 501(c)(4))
+            based in Oakland, CA. We do not support or oppose any political candidate or party.
+            We are not affiliated with WeVoteProject.org or WeVoteUSA.com.
+            <br />
+            <br />
 
-          <strong>No really, who are you?</strong>
-          <br />
-          We Vote is a volunteer-driven movement. We
-          rely on volunteers across the country who use
-          their engineering, design, and other skills to build
-          We Vote. We are over 100 people who have donated 9,000+ volunteer hours, including
-          <OpenExternalWebSite
-            linkIdAttribute="wevoteGithubContributors"
-            url="https://github.com/WeVote"
-            target="_blank"
-            body="25+ contributors on GitHub"
-          />
-          We also have a small team of
-          core staff that eats way too much Thai food, and volunteer board members.
-          <br />
-          <br />
+            <strong>No really, who are you?</strong>
+            <br />
+            We Vote is a volunteer-driven movement. We
+            rely on volunteers across the country who use
+            their engineering, design, and other skills to build
+            We Vote. We are over 100 people who have donated 9,000+ volunteer hours, including
+            <OpenExternalWebSite
+              linkIdAttribute="wevoteGithubContributors"
+              url="https://github.com/WeVote"
+              target="_blank"
+              body="90+ contributors on GitHub."
+            />
+            We also have a small team of
+            core staff that eats way too much Thai food, and volunteer board members.
+            <br />
+            <br />
 
-          <strong>How does We Vote work?</strong>
-          <br />
-          Follow people and groups you trust to get info on candidates and ballot measures. Ask your friends
-          what they think. Then take We Vote with you to
-          the polls for an easy-to-use cheat sheet.
-          <br />
-          <br />
+            <strong>How does We Vote work?</strong>
+            <br />
+            Follow people and groups you trust to get info on candidates and ballot measures. Ask your friends
+            what they think. Then take We Vote with you to
+            the polls for an easy-to-use cheat sheet.
+            <br />
+            <br />
 
-          <strong>Is this an app or a website?</strong>
-          <br />
-          We have a mobile-ready website, as well as iPhone and Android apps.
-          We are free and open source:
-          <OpenExternalWebSite
-            linkIdAttribute="wevoteGithub"
-            url="https://github.com/WeVote"
-            target="_blank"
-            body="https://github.com/WeVote"
-          />
-          <br />
+            <strong>Is this an app or a website?</strong>
+            <br />
+            We have a mobile-ready website, as well as
+            <OpenExternalWebSite
+              linkIdAttribute="weVoteIPhone"
+              url="https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726"
+              target="_blank"
+              body="iPhone"
+            />
+            and
+            <OpenExternalWebSite
+              linkIdAttribute="weVoteAndroid"
+              url="https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US"
+              target="_blank"
+              body="Android"
+            />
+            apps.
+            We are free and open source:
+            <OpenExternalWebSite
+              linkIdAttribute="wevoteGithub"
+              url="https://github.com/WeVote"
+              target="_blank"
+              body="https://github.com/WeVote"
+            />
+            <br />
+            <br />
 
-          <strong>So who should I vote for?</strong>
-          <br />
-          That’s up to you.
-          <br />
-          <br />
+            <strong>So who should I vote for?</strong>
+            <br />
+            That&apos;s up to you.
+            <br />
+            <br />
 
-          <strong>Wait, what?</strong>
-          <br />
-          We Vote does not endorse any candidate or party.
-          Our job is to help you make your own decisions,
-          with help from your friends and trusted network.
-          <br />
-          <br />
+            <strong>Wait, what?</strong>
+            <br />
+            We Vote does not endorse any candidate or party.
+            Our job is to help you make your own decisions,
+            with help from your friends and trusted network.
+            <br />
+            <br />
 
-          <strong>How does We Vote help nonprofits?</strong>
-          <br />
-          We provide a free place where organizations can share and promote their voter guides, including
-          endorsements of candidates and
-          ballot measures, and connect to new constituents.
-          <br />
-          <br />
+            <strong>How does We Vote help nonprofits?</strong>
+            <br />
+            We provide a free place where organizations can share and promote their voter guides, including
+            endorsements of candidates and
+            ballot measures, and connect to new constituents.
+            <br />
+            <br />
 
-          <strong>Will you sell my email address?</strong>
-          <br />
-          Not a chance. We Vote will not sell your email address or any other individually identifiable information.
-          (We don&apos;t want our email addresses sold either!) We may sell aggregated data.
-          <br />
-          <br />
+            <strong>Will you sell my email address?</strong>
+            <br />
+            Not a chance. We Vote will not sell your email address or any other individually identifiable information.
+            (We don&apos;t want our email addresses sold either!) We may sell aggregated data.
+            <br />
+            <br />
 
-          <strong>What does We Vote cost?</strong>
-          <br />
-          It’s free! If you like We Vote,
-          {' '}
-          <Link to="/more/donate">please donate</Link>
-          {' '}
-          so we can do more to help voters.
-          <br />
-          <br />
+            <strong>What does We Vote cost?</strong>
+            <br />
+            It&apos;s free! If you like We Vote,
+            {' '}
+            <Link to="/more/donate" className="u-cursor--pointer u-link-color">please donate</Link>
+            {' '}
+            so we can do more to help voters.
+            <br />
+            <br />
 
-          <strong>How do you make money?</strong>
-          <br />
-          Like most nonprofits, we take in donations from individuals and foundations. We also plan to generate
-          revenues by offering premium features.
-          <br />
-          <br />
+            <strong>How do you make money?</strong>
+            <br />
+            Like most nonprofits, we take in donations from individuals and foundations. We also plan to generate
+            revenues by offering premium features.
+            <br />
+            <br />
 
-          <strong>How will you use my donation?</strong>
-          <br />
-          While most of the We Vote software is written by unpaid volunteers, we use financial donations to pay the staff
-          required
-          to gather and groom election data, as well as manage communications, operations, and our internship program.
-          Other expenses include server costs and fees required to buy political data.
-          <br />
-          <br />
+            <strong>How will you use my donation?</strong>
+            <br />
+            While most of the We Vote software is written by unpaid volunteers, we use financial donations to pay the staff
+            required
+            to gather and groom election data, as well as manage communications, operations, and our internship program.
+            Other expenses include server costs and fees required to buy political data.
+            <br />
+            <br />
 
-          <strong>How will you handle trolls?</strong>
-          <br />
-          Unless your name is J.R.R. Tolkien, we know how much you hate trolls. That’s why on We Vote you only hear from
-          people and organizations that you Friend or Follow. We Vote eliminates noise from people with radically
-          different values.
-          <br />
-          <br />
+            <strong>How will you handle trolls?</strong>
+            <br />
+            Unless your name is J.R.R. Tolkien, we know how much you hate trolls. That&apos;s why on We Vote you only hear from
+            people and organizations that you Friend or Follow. We Vote eliminates noise from people with radically
+            different values.
+            <br />
+            <br />
 
-          <strong>What’s next for We Vote?</strong>
-          <br />
-          iPhone and Android apps in 2018. Better tools to let organizations promote their voter guides and
-          poll their members. Plus more ways to share and discuss a wide range of political topics.
-          <br />
-          <br />
+            <strong>What&apos;s next for We Vote?</strong>
+            <br />
+            Better tools to let organizations promote their voter guides and
+            poll their members. Tools to let candidates ask for help from their supporters.
+            <br />
+            <br />
 
-          <strong>Sounds great! How can I help?</strong>
-          <br />
-          We couldn’t do what we do without volunteers and donors. Please sign up to volunteer at
-          <OpenExternalWebSite
-            linkIdAttribute="wevoteVolunteer"
-            url="http://WeVoteTeam.org/volunteer"
-            target="_blank"
-            className="open-web-site open-web-site__no-right-padding"
-            body="http://WeVoteTeam.org"
-          />
-          , and if you live in the San Francisco Bay Area, come find us every Wednesday night at
-          <OpenExternalWebSite
-            linkIdAttribute="codeForSF"
-            url="http://codeforsanfrancisco.org/"
-            target="_blank"
-            className="open-web-site open-web-site__no-right-padding"
-            body={(
-              <span>
-                Code for America&nbsp;
-                <i className="fas fa-external-link-alt" />
-              </span>
-            )}
-          />
-          .
-          <br />
-          <br />
-          <Link to="/ballot">Let&apos;s get started!</Link>
-          <br />
-          <br />
-          <br />
+            <strong>Sounds great! How can I help?</strong>
+            <br />
+            We couldn&apos;t do what we do without volunteers and donors. Please
+            {' '}
+            <OpenExternalWebSite
+              linkIdAttribute="idealistOpenPositions"
+              url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland"
+              target="_blank"
+              className="open-web-site open-web-site__no-right-padding"
+              body="sign up to volunteer on Idealist."
+            />
+            <br />
+            <br />
+            <Link to="/ballot" className="u-cursor--pointer u-link-color">Let&apos;s get started!</Link>
+            <br />
+            <br />
+            <br />
+          </div>
         </div>
       </div>
     );

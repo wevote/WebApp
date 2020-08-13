@@ -181,7 +181,7 @@ export default class SettingsPersonalSideBar extends Component {
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
-                    Sharing
+                    Logo & Sharing
                   </span>
                   <SettingsAccountLevelChip ignoreIfUpgraded onClickDisabled requiredFeaturePackage="PROFESSIONAL" />
                 </Link>

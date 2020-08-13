@@ -29,8 +29,8 @@ class ReadyIntroduction extends Component {
     renderLog('ReadyIntroduction');  // Set LOG_RENDER_EVENTS to log all renders
     const { contentUnfurled } = this.state;
     const { showStep3WhenCompressed } = this.props;
-    const numberOfCandidates = '12,400';
-    const numberOfOffices = '3,600';
+    const numberOfCandidates = '12,600';
+    const numberOfOffices = '6,500';
     return (
       <OuterWrapper>
         <InnerWrapper>

@@ -271,6 +271,8 @@ export default class SettingsDashboard extends Component {
                 </div>
                 <div>
                   <span className="terms-and-privacy">
+                    <Link to="/more/faq">Questions?</Link>
+                    <span style={{ paddingLeft: 20 }} />
                     <Link to="/more/attributions">Attributions</Link>
                   </span>
                 </div>
