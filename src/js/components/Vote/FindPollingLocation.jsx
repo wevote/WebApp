@@ -22,6 +22,7 @@ class FindPollingLocation extends Component {
     return (
       <Wrapper>
         <OpenExternalWebSite
+          linkIdAttribute="getPollingLocation"
           url={getPollingLocationUrl}
           target="_blank"
           className="u-gray-mid"

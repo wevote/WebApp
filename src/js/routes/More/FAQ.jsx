@@ -47,8 +47,9 @@ export default class About extends Component {
           We Vote is a volunteer-driven movement. We
           rely on volunteers across the country who use
           their engineering, design, and other skills to build
-          We Vote. We are over 70 people who have donated 1,800+ volunteer hours, including
+          We Vote. We are over 100 people who have donated 9,000+ volunteer hours, including
           <OpenExternalWebSite
+            linkIdAttribute="wevoteGithubContributors"
             url="https://github.com/WeVote"
             target="_blank"
             body="25+ contributors on GitHub"
@@ -68,9 +69,10 @@ export default class About extends Component {
 
           <strong>Is this an app or a website?</strong>
           <br />
-          We have a mobile-ready website now, and we’re working on iPhone and Android apps for 2018.
+          We have a mobile-ready website, as well as iPhone and Android apps.
           We are free and open source:
           <OpenExternalWebSite
+            linkIdAttribute="wevoteGithub"
             url="https://github.com/WeVote"
             target="_blank"
             body="https://github.com/WeVote"
@@ -151,6 +153,7 @@ export default class About extends Component {
           <br />
           We couldn’t do what we do without volunteers and donors. Please sign up to volunteer at
           <OpenExternalWebSite
+            linkIdAttribute="wevoteVolunteer"
             url="http://WeVoteTeam.org/volunteer"
             target="_blank"
             className="open-web-site open-web-site__no-right-padding"
@@ -158,6 +161,7 @@ export default class About extends Component {
           />
           , and if you live in the San Francisco Bay Area, come find us every Wednesday night at
           <OpenExternalWebSite
+            linkIdAttribute="codeForSF"
             url="http://codeforsanfrancisco.org/"
             target="_blank"
             className="open-web-site open-web-site__no-right-padding"

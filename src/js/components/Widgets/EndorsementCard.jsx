@@ -88,6 +88,7 @@ class EndorsementCard extends PureComponent {
           <Container>
             <div className="endorsement-card">
               <OpenExternalWebSite
+                linkIdAttribute="endorsementCard"
                 url="https://api.wevoteusa.org/vg/create/"
                 target="_blank"
                 title={this.props.title}

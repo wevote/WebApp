@@ -21,6 +21,7 @@ class ViewOnBallotpedia extends Component {
     return (
       <Wrapper>
         <OpenExternalWebSite
+          linkIdAttribute="ballotpedia"
           url={this.props.externalLinkUrl}
           target="_blank"
           title="BALLOTPEDIA"

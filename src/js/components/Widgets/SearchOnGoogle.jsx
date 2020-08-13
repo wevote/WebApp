@@ -27,6 +27,7 @@ class SearchOnGoogle extends Component {
     return (
       <Wrapper>
         <OpenExternalWebSite
+          linkIdAttribute="googleQuery"
           url={this.generateURL(this.props.googleQuery)}
           target="_blank"
           title="Search on Google"

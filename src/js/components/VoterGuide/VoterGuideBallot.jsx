@@ -828,6 +828,7 @@ class VoterGuideBallot extends Component {
                     <span className="u-wrap-links d-print-none">
                       <span>Admin:</span>
                       <OpenExternalWebSite
+                        linkIdAttribute="organizationAdmin"
                         url={organizationAdminUrl}
                         target="_blank"
                         body={(
@@ -845,6 +846,7 @@ class VoterGuideBallot extends Component {
                     <div className="u-wrap-links d-print-none">
                       Admin link:
                       <OpenExternalWebSite
+                        linkIdAttribute="ballotReturnedAdmin"
                         url={ballotReturnedAdminEditUrl}
                         target="_blank"
                         body={(

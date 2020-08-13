@@ -159,6 +159,7 @@ class About extends Component {
           <AboutDescriptionContainer>
             We Vote is made of two fully nonpartisan nonprofit organizations (501(c)(3) and 501(c)(4)) based in Oakland, California. Our software is open source, and our work is driven by over 100 volunteers who have contributed so far. Inspired by groups like
             <OpenExternalWebSite
+              linkIdAttribute="codeForSF"
               url="http://codeforsanfrancisco.org/"
               target="_blank"
               body={(
@@ -170,6 +171,7 @@ class About extends Component {
             />
             and the
             <OpenExternalWebSite
+              linkIdAttribute="mozilla"
               url="https://www.mozilla.org/en-US/foundation/"
               target="_blank"
               className="open-web-site open-web-site__no-right-padding"

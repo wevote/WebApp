@@ -96,6 +96,7 @@ export default class PublicFiguresFollowedPreview extends Component {
               </div>
             </div>
             {/* <OpenExternalWebSite
+              linkIdAttribute="suggestOrganization"
               url="https://api.wevoteusa.org/vg/create/"
               className="opinions-followed__missing-org-link"
               target="_blank"

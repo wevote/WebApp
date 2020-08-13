@@ -77,6 +77,7 @@ class OrganizationVoterGuideCard extends Component {
         </Link>
         { organizationTwitterHandle && (
           <OpenExternalWebSite
+            linkIdAttribute="organizationTwitterHandle"
             url={`https://twitter.com/${organizationTwitterHandle}`}
             target="_blank"
             body={(
@@ -99,6 +100,7 @@ class OrganizationVoterGuideCard extends Component {
           <OrganizationWebsiteWrapper>
             <span className="u-wrap-links">
               <OpenExternalWebSite
+                linkIdAttribute="organizationWebsite"
                 url={organizationWebsite}
                 target="_blank"
                 body={(

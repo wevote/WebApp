@@ -119,6 +119,7 @@ class Donate extends Component {
             to strengthen American democracy.
             {' '}
             <OpenExternalWebSite
+              linkIdAttribute="annualBudget"
               url="https://projects.propublica.org/nonprofits/organizations/811052585"
               target="_blank"
               body={(

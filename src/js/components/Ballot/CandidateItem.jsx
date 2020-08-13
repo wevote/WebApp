@@ -371,6 +371,7 @@ class CandidateItem extends Component {
               {(!hideCandidateUrl && candidateUrl && forDesktop) && (
                 <ExternalWebSiteWrapper className="u-show-desktop">
                   <OpenExternalWebSite
+                    linkIdAttribute="candidateDesktop"
                     url={candidateUrl}
                     target="_blank"
                     className="u-gray-mid"

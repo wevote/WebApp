@@ -107,6 +107,7 @@ class PricingCard extends Component {
                   }}
                   >
                     <OpenExternalWebSite
+                      linkIdAttribute="weVoteSupportPricingCard"
                       url="https://help.wevote.us/hc/en-us/requests/new"
                       target="_blank"
                       body={<span>Contact</span>}

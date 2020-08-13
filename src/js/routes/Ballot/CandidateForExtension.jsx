@@ -154,6 +154,7 @@ class CandidateForExtension extends Component {
               <Buttons>
                 <OneButton>
                   <OpenExternalWebSite
+                    linkIdAttribute="candidateWeVoteId"
                     className=""
                     body={(
                       <Button
@@ -175,6 +176,7 @@ class CandidateForExtension extends Component {
               {candidateSpecificEndorsementUrl && (
                 <OriginalLinkWrapper>
                   <OpenExternalWebSite
+                    linkIdAttribute="candidateSpecificEndorsement"
                     className=""
                     body={(
                       <OriginalLinkStyle>

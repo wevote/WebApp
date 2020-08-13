@@ -187,6 +187,7 @@ class OrganizationPopoverCard extends Component {
             {organizationWebsite && (
               <span className="u-wrap-links">
                 <OpenExternalWebSite
+                  linkIdAttribute="organizationWebsite"
                   url={organizationWebsite}
                   target="_blank"
                   body={(

@@ -134,6 +134,7 @@ export default class PositionSupportOpposeSnippet extends Component {
                     <div className="d-none d-sm-block">
                       {/* default: open in new tab */}
                       <OpenExternalWebSite
+                        linkIdAttribute="moreInfo"
                         url={moreInfoUrl}
                         target="_blank"
                         className="u-gray-mid"

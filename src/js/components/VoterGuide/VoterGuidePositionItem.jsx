@@ -326,6 +326,7 @@ class VoterGuidePositionItem extends Component {
                   {moreInfoUrl ? (
                     <SourceLink>
                       <OpenExternalWebSite
+                        linkIdAttribute="moreInfo-desktop"
                         body={(
                           <span>
                             view source
@@ -452,6 +453,7 @@ class VoterGuidePositionItem extends Component {
                 {moreInfoUrl && (
                   <SourceLink>
                     <OpenExternalWebSite
+                      linkIdAttribute="moreInfo-mobile"
                       body={(
                         <span>
                           source

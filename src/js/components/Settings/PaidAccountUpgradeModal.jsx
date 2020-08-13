@@ -637,6 +637,7 @@ class PaidAccountUpgradeModal extends Component {
               )}
               {contactSalesRequired ? (
                 <OpenExternalWebSite
+                  linkIdAttribute="weVoteSupportPaidAccountUpgradeModalMobile"
                   className="open-web-site"
                   url="https://help.wevote.us/hc/en-us/requests/new"
                   target="_blank"
@@ -816,6 +817,7 @@ class PaidAccountUpgradeModal extends Component {
                 )}
                 {contactSalesRequired ? (
                   <OpenExternalWebSite
+                    linkIdAttribute="weVoteSupportPaidAccountUpgradeModalDesktop"
                     className="open-web-site"
                     url="https://help.wevote.us/hc/en-us/requests/new"
                     target="_blank"

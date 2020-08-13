@@ -1382,6 +1382,7 @@ class Ballot extends Component {
                     <span className="u-wrap-links d-print-none">
                       <span>Admin:</span>
                       <OpenExternalWebSite
+                        linkIdAttribute="ballotReturnedAdminEdit"
                         url={ballotReturnedAdminEditUrl}
                         target="_blank"
                         body={(

@@ -307,6 +307,7 @@ class CandidateForDrawer extends Component {
           <span className="u-wrap-links d-print-none">
             Admin only:
             <OpenExternalWebSite
+              linkIdAttribute="candidateAdminEdit"
               url={candidateAdminEditUrl}
               target="_blank"
               className="open-web-site open-web-site__no-right-padding"
