@@ -37,7 +37,7 @@ export default class Header extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      organizationModalId: '',
+      organizationModalBallotItemWeVoteId: '',
       sharedItemCode: '',
       showHowItWorksModal: false,
       showVoterPlanModal: false,
@@ -59,7 +59,7 @@ export default class Header extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.organizationModalId !== nextState.organizationModalId) return true;
+    if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) return true;
     if (this.props.pathname !== nextProps.pathname) return true;
     if (this.state.sharedItemCode !== nextState.sharedItemCode) return true;
     if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) return true;
@@ -78,7 +78,7 @@ export default class Header extends Component {
   onAppStoreChange () {
     // console.log('Header, onAppStoreChange');
     this.setState({
-      organizationModalId: AppStore.organizationModalId(),
+      organizationModalBallotItemWeVoteId: AppStore.organizationModalBallotItemWeVoteId(),
       sharedItemCode: AppStore.getSharedItemCode(),
       showHowItWorksModal: AppStore.showHowItWorksModal(),
       showVoterPlanModal: AppStore.showVoterPlanModal(),
@@ -133,7 +133,7 @@ export default class Header extends Component {
       iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '24px' : 'undefined'}` }} />;
     }
 
-    // console.log('organizationModalId: ', this.state.organizationModalId);
+    // console.log('organizationModalBallotItemWeVoteId: ', this.state.organizationModalBallotItemWeVoteId);
 
     let pageHeaderStyle = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
     if (isIPad()) {
@@ -191,7 +191,7 @@ export default class Header extends Component {
               isSignedIn={voter.is_signed_in}
               pathname={pathname}
               show={showOrganizationModal}
-              ballotItemWeVoteId={this.state.organizationModalId}
+              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
               modalOpen={showOrganizationModal}
               toggleFunction={this.closeOrganizationModal}
             />
@@ -269,7 +269,7 @@ export default class Header extends Component {
                 isSignedIn={voter.is_signed_in}
                 pathname={pathname}
                 show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalId}
+                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
                 modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
             />
@@ -323,7 +323,7 @@ export default class Header extends Component {
                 isSignedIn={voter.is_signed_in}
                 pathname={pathname}
                 show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalId}
+                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
                 modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
             />
@@ -372,7 +372,7 @@ export default class Header extends Component {
                 isSignedIn={voter.is_signed_in}
                 pathname={pathname}
                 show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalId}
+                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
                 modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
             />
@@ -443,7 +443,7 @@ export default class Header extends Component {
                 isSignedIn={voter.is_signed_in}
                 pathname={pathname}
                 show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalId}
+                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
                 modalOpen={showOrganizationModal}
                 toggleFunction={this.closeOrganizationModal}
             />

@@ -72,7 +72,7 @@ class HeaderBar extends Component {
       showPersonalizedScoreIntroModal: false,
       showValuesIntroModal: false,
       shareModalStep: '',
-      organizationModalId: '',
+      organizationModalBallotItemWeVoteId: '',
       voter: {},
       voterFirstName: '',
     };
@@ -149,7 +149,7 @@ class HeaderBar extends Component {
     if (this.state.shareModalStep !== nextState.shareModalStep) {
       return true;
     }
-    if (this.state.organizationModalId !== nextState.organizationModalId) {
+    if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) {
       return true;
     }
     if (this.state.showAdviserIntroModal !== nextState.showAdviserIntroModal) {
@@ -249,7 +249,7 @@ class HeaderBar extends Component {
     this.setState({
       chosenSiteLogoUrl: AppStore.getChosenSiteLogoUrl(),
       hideWeVoteLogo: AppStore.getHideWeVoteLogo(),
-      organizationModalId: AppStore.organizationModalId(),
+      organizationModalBallotItemWeVoteId: AppStore.organizationModalBallotItemWeVoteId(),
       paidAccountUpgradeMode,
       scrolledDown: AppStore.getScrolledDown(),
       shareModalStep: AppStore.shareModalStep(),
