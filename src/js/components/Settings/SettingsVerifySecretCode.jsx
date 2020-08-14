@@ -152,19 +152,15 @@ class SettingsVerifySecretCode extends Component {
   }
 
   onDigit1Change (e) {
-    const regex1 = /^[0-9]$/;
+    const regex = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    let digit;
+    const digit = e.target.value;
 
-    if (regex1.test(e.target.value)) {
-      digit = e.target.value;
-    } else if (regex2.test(e.target.value)) { // change is fired on paste, resulting in multiple digits
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
       return;
-    } else {
-      digit = '';
     }
 
-    if (digit) {
+    if (regex.test(digit)) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
@@ -187,19 +183,15 @@ class SettingsVerifySecretCode extends Component {
 
 
   onDigit2Change (e) {
-    const regex1 = /^[0-9]$/;
+    const regex = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    let digit;
+    const digit = e.target.value;
 
-    if (regex1.test(e.target.value)) {
-      digit = e.target.value;
-    } else if (regex2.test(e.target.value)) { // change is fired on paste, resulting in multiple digits
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
       return;
-    } else {
-      digit = '';
     }
 
-    if (digit) {
+    if (regex.test(digit)) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
@@ -221,19 +213,15 @@ class SettingsVerifySecretCode extends Component {
   }
 
   onDigit3Change (e) {
-    const regex1 = /^[0-9]$/;
+    const regex = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    let digit;
+    const digit = e.target.value;
 
-    if (regex1.test(e.target.value)) {
-      digit = e.target.value;
-    } else if (regex2.test(e.target.value)) { // change is fired on paste, resulting in multiple digits
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
       return;
-    } else {
-      digit = '';
     }
 
-    if (digit) {
+    if (regex.test(digit)) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
@@ -255,19 +243,15 @@ class SettingsVerifySecretCode extends Component {
   }
 
   onDigit4Change (e) {
-    const regex1 = /^[0-9]$/;
+    const regex = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    let digit;
+    const digit = e.target.value;
 
-    if (regex1.test(e.target.value)) {
-      digit = e.target.value;
-    } else if (regex2.test(e.target.value)) { // change is fired on paste, resulting in multiple digits
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
       return;
-    } else {
-      digit = '';
     }
 
-    if (digit) {
+    if (regex.test(digit)) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
@@ -290,19 +274,15 @@ class SettingsVerifySecretCode extends Component {
 
 
   onDigit5Change (e) {
-    const regex1 = /^[0-9]$/;
+    const regex = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    let digit;
+    const digit = e.target.value;
 
-    if (regex1.test(e.target.value)) {
-      digit = e.target.value;
-    } else if (regex2.test(e.target.value)) { // change is fired on paste, resulting in multiple digits
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
       return;
-    } else {
-      digit = '';
     }
 
-    if (digit) {
+    if (regex.test(digit)) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
@@ -324,19 +304,15 @@ class SettingsVerifySecretCode extends Component {
   }
 
   onDigit6Change (e) {
-    const regex1 = /^[0-9]$/;
+    const regex = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    let digit;
+    const digit = e.target.value;
 
-    if (regex1.test(e.target.value)) {
-      digit = e.target.value;
-    } else if (regex2.test(e.target.value)) { // change is fired on paste, resulting in multiple digits
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
       return;
-    } else {
-      digit = '';
     }
 
-    if (digit) {
+    if (regex.test(digit)) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
