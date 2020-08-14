@@ -313,16 +313,12 @@ class SettingsVerifySecretCode extends Component {
     }
 
     if (regex.test(digit)) {
-      e.target.blur();
-      e.target.parentElement.nextElementSibling.firstElementChild.focus();
       this.setState({
         digit6: digit,
         errorToDisplay: false,
         errorMessageToDisplay: '',
       });
       e.target.value = digit;
-      e.target.blur();
-      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
       this.setState({
@@ -335,6 +331,8 @@ class SettingsVerifySecretCode extends Component {
 
   // eslint-disable-next-line react/sort-comp
   onPaste (e) {
+    // console.log(e.clipboardData.getData('Text'));
+
     const pastedInputArray = e.clipboardData.getData('Text').split('');
     // console.log(pastedInputArray);
 
