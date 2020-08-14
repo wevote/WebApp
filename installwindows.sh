@@ -1,4 +1,3 @@
-#For Ubuntu 20.04 only
 #!/usr/bin/env bash
 
 function error() { echo -e "\e[1;31m$1\e[0m"; exit 1; }

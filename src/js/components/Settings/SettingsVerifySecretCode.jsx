@@ -153,7 +153,13 @@ class SettingsVerifySecretCode extends Component {
 
   onDigit1Change (e) {
     const regex = /^[0-9]$/;
+    const regex2 = /^[0-9]{7}$/;
     const digit = e.target.value;
+
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
+      return;
+    }
+
     if (regex.test(digit)) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
@@ -175,9 +181,16 @@ class SettingsVerifySecretCode extends Component {
     }
   }
 
+
   onDigit2Change (e) {
     const regex = /^[0-9]$/;
+    const regex2 = /^[0-9]{7}$/;
     const digit = e.target.value;
+
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
+      return;
+    }
+
     if (regex.test(digit)) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
@@ -201,7 +214,13 @@ class SettingsVerifySecretCode extends Component {
 
   onDigit3Change (e) {
     const regex = /^[0-9]$/;
+    const regex2 = /^[0-9]{7}$/;
     const digit = e.target.value;
+
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
+      return;
+    }
+
     if (regex.test(digit)) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
@@ -225,7 +244,13 @@ class SettingsVerifySecretCode extends Component {
 
   onDigit4Change (e) {
     const regex = /^[0-9]$/;
+    const regex2 = /^[0-9]{7}$/;
     const digit = e.target.value;
+
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
+      return;
+    }
+
     if (regex.test(digit)) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
@@ -247,9 +272,16 @@ class SettingsVerifySecretCode extends Component {
     }
   }
 
+
   onDigit5Change (e) {
     const regex = /^[0-9]$/;
+    const regex2 = /^[0-9]{7}$/;
     const digit = e.target.value;
+
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
+      return;
+    }
+
     if (regex.test(digit)) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
@@ -273,7 +305,13 @@ class SettingsVerifySecretCode extends Component {
 
   onDigit6Change (e) {
     const regex = /^[0-9]$/;
+    const regex2 = /^[0-9]{7}$/;
     const digit = e.target.value;
+
+    if (regex2.test(digit)) { // change is fired on paste, resulting in multiple digits
+      return;
+    }
+
     if (regex.test(digit)) {
       this.setState({
         digit6: digit,
@@ -310,13 +348,16 @@ class SettingsVerifySecretCode extends Component {
         digit4: allDigits[3],
         digit5: allDigits[4],
         digit6: allDigits[5],
-      });
-      document.getElementById('digit1').blur(); // If we leave the focus, the box doesn't fill
-      // document.getElementById('digit6').focus(); // If we focus, it clears the box
-      this.setState({
         errorToDisplay: false,
         errorMessageToDisplay: '',
       });
+
+      document.getElementById('digit1').blur(); // prevents change from firing on chrome
+      document.getElementById('digit2').blur(); // prevents change from firing on chrome
+      document.getElementById('digit3').blur(); // prevents change from firing on chrome
+      document.getElementById('digit4').blur(); // prevents change from firing on chrome
+      document.getElementById('digit5').blur(); // prevents change from firing on chrome
+      document.getElementById('digit6').blur(); // prevents change from firing on chrome
     } else {
       this.setState({
         digit1: '',
