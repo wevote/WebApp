@@ -222,31 +222,17 @@ describe('Cross browser automated testing', async () => {
     }
   });
 
-  if (isCordovaFromAppStore && isAndroid) {
-    it('should go to the friends tab', async() => {
-      if (isDesktopScreenSize) {
-        await simpleClick('friendsTabHeaderBar');
-      } else {
-        await simpleClick('friendsTabFooterBar');  // Click friends tab
-      }
-      await simpleTextInput('EmailAddress', 'automated_voter1@WeVote.info');
-      await selectClick('.card-main');
-      await simpleClick('friendsNextButton');
-      await browser.deleteSession();
-    });
-  } else {
-    it('should go to the news tab', async() => {
-      if (isDesktopScreenSize) {
-        await simpleClick('activityTabHeaderBar');
-        await simpleTextInput('EmailAddress-sidebar', 'automated_voter1@WeVote.info');
-        await simpleTextInput('friendFirstName-sidebar', xssTest);
-        await simpleTextInput('friendLastName-sidebar', sqlTest);
-        await simpleTextInput('addFriendsMessage-sidebar', xssTest2);
-        await selectClick('friendsNextButton-sidebar');
-      } else {
-        await simpleClick('newsTabFooterBar');  // Click friends tab
-      }
-      await browser.deleteSession();
-    });
-  }
+  it('should go to the news tab', async() => {
+    if (isDesktopScreenSize) {
+      await simpleClick('activityTabHeaderBar');
+      await simpleTextInput('EmailAddress-sidebar', 'automated_voter1@WeVote.info');
+      await simpleTextInput('friendFirstName-sidebar', xssTest);
+      await simpleTextInput('friendLastName-sidebar', sqlTest);
+      await simpleTextInput('addFriendsMessage-sidebar', xssTest2);
+      await selectClick('friendsNextButton-sidebar');
+    } else {
+      await simpleClick('newsTabFooterBar');  // Click friends tab
+    }
+    await browser.deleteSession();
+  });
 });
