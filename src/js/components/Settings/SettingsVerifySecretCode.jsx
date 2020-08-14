@@ -154,7 +154,7 @@ class SettingsVerifySecretCode extends Component {
   onDigit1Change (e) {
     const regex1 = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    var digit;
+    let digit;
 
     if (regex1.test(e.target.value)) {
       digit = e.target.value;
@@ -164,9 +164,6 @@ class SettingsVerifySecretCode extends Component {
       digit = '';
     }
 
-    console.log('e' + e.target.value);
-    console.log('Digit' + digit);
-    
     if (digit) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
@@ -192,7 +189,7 @@ class SettingsVerifySecretCode extends Component {
   onDigit2Change (e) {
     const regex1 = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    var digit;
+    let digit;
 
     if (regex1.test(e.target.value)) {
       digit = e.target.value;
@@ -202,9 +199,6 @@ class SettingsVerifySecretCode extends Component {
       digit = '';
     }
 
-    console.log('e' + e.target.value);
-    console.log('Digit' + digit);
-    
     if (digit) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
@@ -215,9 +209,7 @@ class SettingsVerifySecretCode extends Component {
       });
       e.target.value = digit;
       e.target.blur();
-      if (!pasted) {
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
       this.setState({
@@ -231,7 +223,7 @@ class SettingsVerifySecretCode extends Component {
   onDigit3Change (e) {
     const regex1 = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    var digit;
+    let digit;
 
     if (regex1.test(e.target.value)) {
       digit = e.target.value;
@@ -241,9 +233,6 @@ class SettingsVerifySecretCode extends Component {
       digit = '';
     }
 
-    console.log('e' + e.target.value);
-    console.log('Digit' + digit);
-    
     if (digit) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
@@ -254,9 +243,7 @@ class SettingsVerifySecretCode extends Component {
       });
       e.target.value = digit;
       e.target.blur();
-      if (!pasted) {
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
       this.setState({
@@ -270,7 +257,7 @@ class SettingsVerifySecretCode extends Component {
   onDigit4Change (e) {
     const regex1 = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    var digit;
+    let digit;
 
     if (regex1.test(e.target.value)) {
       digit = e.target.value;
@@ -280,9 +267,6 @@ class SettingsVerifySecretCode extends Component {
       digit = '';
     }
 
-    console.log('e' + e.target.value);
-    console.log('Digit' + digit);
-    
     if (digit) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
@@ -293,9 +277,7 @@ class SettingsVerifySecretCode extends Component {
       });
       e.target.value = digit;
       e.target.blur();
-      if (!pasted) {
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
       this.setState({
@@ -310,7 +292,7 @@ class SettingsVerifySecretCode extends Component {
   onDigit5Change (e) {
     const regex1 = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    var digit;
+    let digit;
 
     if (regex1.test(e.target.value)) {
       digit = e.target.value;
@@ -320,9 +302,6 @@ class SettingsVerifySecretCode extends Component {
       digit = '';
     }
 
-    console.log('e' + e.target.value);
-    console.log('Digit' + digit);
-    
     if (digit) {
       e.target.blur();
       e.target.parentElement.nextElementSibling.firstElementChild.focus();
@@ -333,9 +312,7 @@ class SettingsVerifySecretCode extends Component {
       });
       e.target.value = digit;
       e.target.blur();
-      if (!pasted) {
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
       this.setState({
@@ -349,7 +326,7 @@ class SettingsVerifySecretCode extends Component {
   onDigit6Change (e) {
     const regex1 = /^[0-9]$/;
     const regex2 = /^[0-9]{7}$/;
-    var digit;
+    let digit;
 
     if (regex1.test(e.target.value)) {
       digit = e.target.value;
@@ -358,9 +335,6 @@ class SettingsVerifySecretCode extends Component {
     } else {
       digit = '';
     }
-
-    console.log('e' + e.target.value);
-    console.log('Digit' + digit);
 
     if (digit) {
       e.target.blur();
@@ -372,9 +346,7 @@ class SettingsVerifySecretCode extends Component {
       });
       e.target.value = digit;
       e.target.blur();
-      if (!pasted) {
-        e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
-      }
+      e.target.parentElement.nextElementSibling.firstElementChild.nextElementSibling.focus();
     } else {
       e.target.value = '';
       this.setState({
@@ -412,7 +384,6 @@ class SettingsVerifySecretCode extends Component {
       document.getElementById('digit4').blur(); // prevents change from firing on chrome
       document.getElementById('digit5').blur(); // prevents change from firing on chrome
       document.getElementById('digit6').blur(); // prevents change from firing on chrome
-
     } else {
       this.setState({
         digit1: '',
