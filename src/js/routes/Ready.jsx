@@ -135,8 +135,8 @@ class Ready extends Component {
               </EditAddressWrapper>
             )}
             <div className="col-sm-12 col-lg-8">
-              <div className="u-cursor--pointer" onClick={this.goToBallot}>
-                <ElectionCountdown />
+              <div className="u-cursor--pointer u-show-mobile-tablet" onClick={this.goToBallot}>
+                <ElectionCountdown daysOnlyMode />
               </div>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card u-show-mobile-tablet">
@@ -153,6 +153,9 @@ class Ready extends Component {
                   </div>
                 </Card>
               )}
+              <ReadyTaskBallot
+                arrowsOn
+              />
               <Card className="card u-show-mobile">
                 <div className="card-main">
                   <FindOpinionsForm
@@ -190,9 +193,6 @@ class Ready extends Component {
                   </Card>
                 </FindWrapper>
               </IntroAndFindTabletWrapper>
-              <ReadyTaskBallot
-                arrowsOn
-              />
               {nextReleaseFeaturesEnabled && (
                 <ReadyTaskRegister
                   arrowsOn
@@ -218,6 +218,9 @@ class Ready extends Component {
               </div>
             </div>
             <div className="col-lg-4 d-none d-lg-block">
+              <div className="u-cursor--pointer" onClick={this.goToBallot}>
+                <ElectionCountdown daysOnlyMode />
+              </div>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card">
                   <div className="card-main">

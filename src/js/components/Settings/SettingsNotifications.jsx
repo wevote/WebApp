@@ -168,7 +168,7 @@ class SettingsNotifications extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <div className="card">
           <div className="card-main">
-            <div>
+            <NotificationsTableWrapper>
               <HeaderWrapper>
                 <div className="h2">Notification Settings</div>
                 <div className="u-gray-mid">{notificationsSavedStatus}</div>
@@ -450,7 +450,7 @@ class SettingsNotifications extends Component {
                   </TableBody>
                 </Table>
               </TableContainer>
-            </div>
+            </NotificationsTableWrapper>
             <VoterEmailAddressEntry hideSignInWithEmail={!addEmailInterfaceOpen} />
             {!addEmailInterfaceOpen && (
               <AddNewEmailWrapper>
@@ -514,6 +514,10 @@ const HeaderWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+`;
+
+const NotificationsTableWrapper = styled.div`
+  margin-bottom: 15px;
 `;
 
 const SettingsIconWrapper = styled.div`
