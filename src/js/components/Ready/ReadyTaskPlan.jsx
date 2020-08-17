@@ -101,10 +101,10 @@ class ReadyTaskPlan extends React.Component {
               ) : (
                 <>
                   <span className="u-show-mobile">
-                    When Will You Vote?
+                    Your Plan to Vote?
                   </span>
                   <span className="u-show-desktop-tablet">
-                    When and Where Will You Vote?
+                    Your Plan to Vote?
                   </span>
                 </>
               )}
