@@ -166,7 +166,7 @@ class ReadyTaskBallot extends React.Component {
       percentCompleted += howItWorksCompleted ? 5 : 0;
       percentCompleted += personalizedScoreIntroCompleted ? 5 : 0;
     }
-    if (percentCompleted) {
+    if (percentCompleted || percentCompleted === 0) {
       this.setState({
         percentCompleted,
       });
