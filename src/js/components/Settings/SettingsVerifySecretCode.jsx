@@ -87,6 +87,7 @@ class SettingsVerifySecretCode extends Component {
     if (this.state.voterMustRequestNewCode !== nextState.voterMustRequestNewCode) return true;
     if (this.state.voterPhoneNumber !== nextState.voterPhoneNumber) return true;
     if (this.state.voterSecretCodeRequestsLocked !== nextState.voterSecretCodeRequestsLocked) return true;
+    if (this.state.voterVerifySecretCodeSubmitted !== nextState.voterVerifySecretCodeSubmitted) return true;
     if (this.state.condensed !== nextState.condensed) return true;
     if (this.state.digit1 !== nextState.digit1) return true;
     if (this.state.digit2 !== nextState.digit2) return true;

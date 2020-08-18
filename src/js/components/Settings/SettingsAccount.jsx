@@ -98,7 +98,7 @@ export default class SettingsAccount extends Component {
       this.setState({
         pleaseSignInTitle: this.props.pleaseSignInTitle || '',
         pleaseSignInSubTitle: this.props.pleaseSignInSubTitle || '',
-      }, () => AppActions.storeSignInStartFullUrl());
+      }, () => this.localStoreSignInStartFullUrl());
     } else if (getStartedMode && getStartedMode === 'getStartedForCampaigns') {
       pathname = '/settings/profile';
       signInStartFullUrl = `${origin}${pathname}`;
@@ -137,7 +137,7 @@ export default class SettingsAccount extends Component {
       this.setState({
         pleaseSignInTitle: '',
         pleaseSignInSubTitle,
-      }, () => AppActions.storeSignInStartFullUrl());
+      }, () => this.localStoreSignInStartFullUrl());
     }
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
@@ -261,6 +261,14 @@ export default class SettingsAccount extends Component {
   voterSplitIntoTwoAccounts () {
     VoterActions.voterSplitIntoTwoAccounts();
     this.setState({ showTwitterDisconnect: false });
+  }
+
+  localStoreSignInStartFullUrl () {
+    const { pathname } = window.location;
+    // console.log('localStoreSignInStartFullUrl, pathname:', pathname);
+    if (pathname !== '/settings/account') {
+      AppActions.storeSignInStartFullUrl();
+    }
   }
 
   componentDidCatch (error, info) {
