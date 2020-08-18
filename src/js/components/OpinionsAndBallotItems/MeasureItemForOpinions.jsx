@@ -185,7 +185,7 @@ class MeasureItemForOpinions extends Component {
           externalUniqueId="desktopPositionStatement"
           // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
-          type="MEASURE"
+          ballotItemType="MEASURE"
           shownInList
         />
       </div>
@@ -200,7 +200,7 @@ class MeasureItemForOpinions extends Component {
           externalUniqueId="mobilePositionStatement"
           // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
-          type="MEASURE"
+          ballotItemType="MEASURE"
           shownInList
           mobile
         />

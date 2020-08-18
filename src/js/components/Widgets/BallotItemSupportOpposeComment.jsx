@@ -184,7 +184,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
           externalUniqueId={`${externalUniqueId}-desktop-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}
           // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
-          type={ballotItemType}
+          ballotItemType={ballotItemType}
           shownInList
         />
       </div>
@@ -202,7 +202,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
           hidePositionPublicToggle={hidePositionPublicToggle}
           // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
-          type={ballotItemType}
+          ballotItemType={ballotItemType}
           externalUniqueId={`${externalUniqueId}-mobile-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}
           shownInList
           mobile

@@ -15,7 +15,7 @@ class ItemPositionStatementActionBar extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     ballotItemDisplayName: PropTypes.string,
-    type: PropTypes.string.isRequired,
+    ballotItemType: PropTypes.string.isRequired,
     commentEditModeOn: PropTypes.bool,
     externalUniqueId: PropTypes.string,
     shownInList: PropTypes.bool,
@@ -179,10 +179,10 @@ class ItemPositionStatementActionBar extends Component {
 
   savePositionStatement (e) {
     e.preventDefault();
-    const { ballotItemWeVoteId, type } = this.props;
+    const { ballotItemWeVoteId, ballotItemType } = this.props;
     const { voterTextStatement } = this.state;
-    // console.log('ItemPositionStatementActionBar ballotItemWeVoteId:', ballotItemWeVoteId, 'type: ', type, 'voterTextStatement: ', voterTextStatement);
-    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, type, voterTextStatement);
+    // console.log('ItemPositionStatementActionBar ballotItemWeVoteId:', ballotItemWeVoteId, 'ballotItemType: ', ballotItemType, 'voterTextStatement: ', voterTextStatement);
+    SupportActions.voterPositionCommentSave(ballotItemWeVoteId, ballotItemType, voterTextStatement);
     if (voterTextStatement.length) {
       this.closeEditPositionStatementInput();
     }
@@ -289,7 +289,7 @@ class ItemPositionStatementActionBar extends Component {
 
     // console.log('ItemPositionStatementActionBar, editMode: ', editMode);
     // minRows={1}
-
+    // console.log('editMode:', editMode);
     return (
       <Wrapper shownInList={this.props.shownInList}>
         { // Show the edit box (Viewing self)

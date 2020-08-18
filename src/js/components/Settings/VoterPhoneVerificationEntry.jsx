@@ -42,7 +42,7 @@ class VoterPhoneVerificationEntry extends Component {
       smsPhoneNumberListCount: 0,
       smsPhoneNumberStatus: {},
       voterSMSPhoneNumber: '',
-      voterSMSPhoneNumbersVerifiedCount: 0,
+      // voterSMSPhoneNumbersVerifiedCount: 0,
       voterSMSPhoneNumberIsValid: false,
     };
 
@@ -55,6 +55,7 @@ class VoterPhoneVerificationEntry extends Component {
   }
 
   componentDidMount () {
+    this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     VoterActions.voterSMSPhoneNumberRetrieve();
     if (isCordova()) {
@@ -62,58 +63,58 @@ class VoterPhoneVerificationEntry extends Component {
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    if (JSON.stringify(this.state.smsPhoneNumberStatus) !== JSON.stringify(nextState.smsPhoneNumberStatus)) {
-      // console.log('this.state.smsPhoneNumberStatus', this.state.smsPhoneNumberStatus, ', nextState.smsPhoneNumberStatus', nextState.smsPhoneNumberStatus);
-      return true;
-    }
-    if (this.state.disablePhoneVerificationButton !== nextState.disablePhoneVerificationButton) {
-      // console.log('this.state.disablePhoneVerificationButton', this.state.disablePhoneVerificationButton, ', nextState.disablePhoneVerificationButton', nextState.disablePhoneVerificationButton);
-      return true;
-    }
-    if (this.state.displayPhoneVerificationButton !== nextState.displayPhoneVerificationButton) {
-      // console.log('this.state.displayPhoneVerificationButton', this.state.displayPhoneVerificationButton, ', nextState.displayPhoneVerificationButton', nextState.displayPhoneVerificationButton);
-      return true;
-    }
-    if (this.state.hideExistingPhoneNumbers !== nextState.hideExistingPhoneNumbers) {
-      // console.log('this.state.hideExistingPhoneNumbers', this.state.hideExistingPhoneNumbers, ', nextState.hideExistingPhoneNumbers', nextState.hideExistingPhoneNumbers);
-      return true;
-    }
-    if (this.state.loading !== nextState.loading) {
-      // console.log('this.state.loading', this.state.loading, ', nextState.loading', nextState.loading);
-      return true;
-    }
-    if (this.state.secretCodeSystemLocked !== nextState.secretCodeSystemLocked) {
-      // console.log('this.state.secretCodeSystemLocked', this.state.secretCodeSystemLocked, ', nextState.secretCodeSystemLocked', nextState.secretCodeSystemLocked);
-      return true;
-    }
-    if (this.state.showError !== nextState.showError) {
-      // console.log('this.state.showError', this.state.showError, ', nextState.showError', nextState.showError);
-      return true;
-    }
-    if (this.state.showVerifyModal !== nextState.showVerifyModal) {
-      // console.log('this.state.showVerifyModal', this.state.showVerifyModal, ', nextState.showVerifyModal', nextState.showVerifyModal);
-      return true;
-    }
-    if (this.state.signInCodeSMSSentAndWaitingForResponse !== nextState.signInCodeSMSSentAndWaitingForResponse) {
-      // console.log('this.state.signInCodeSMSSentAndWaitingForResponse', this.state.signInCodeSMSSentAndWaitingForResponse, ', nextState.signInCodeSMSSentAndWaitingForResponse', nextState.signInCodeSMSSentAndWaitingForResponse);
-      return true;
-    }
-    if (this.state.smsPhoneNumberListCount !== nextState.smsPhoneNumberListCount) {
-      // console.log('this.state.smsPhoneNumberListCount', this.state.smsPhoneNumberListCount, ', nextState.smsPhoneNumberListCount', nextState.smsPhoneNumberListCount);
-      return true;
-    }
-    if (this.state.voterSMSPhoneNumber !== nextState.voterSMSPhoneNumber) {
-      // console.log('this.state.voterSMSPhoneNumber', this.state.voterSMSPhoneNumber, ', nextState.voterSMSPhoneNumber', nextState.voterSMSPhoneNumber);
-      return true;
-    }
-    if (this.state.voterSMSPhoneNumbersVerifiedCount !== nextState.voterSMSPhoneNumbersVerifiedCount) {
-      // console.log('this.state.voterSMSPhoneNumbersVerifiedCount', this.state.voterSMSPhoneNumbersVerifiedCount, ', nextState.voterSMSPhoneNumbersVerifiedCount', nextState.voterSMSPhoneNumbersVerifiedCount);
-      return true;
-    }
-    // console.log('shouldComponentUpdate false');
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   if (JSON.stringify(this.state.smsPhoneNumberStatus) !== JSON.stringify(nextState.smsPhoneNumberStatus)) {
+  //     // console.log('this.state.smsPhoneNumberStatus', this.state.smsPhoneNumberStatus, ', nextState.smsPhoneNumberStatus', nextState.smsPhoneNumberStatus);
+  //     return true;
+  //   }
+  //   if (this.state.disablePhoneVerificationButton !== nextState.disablePhoneVerificationButton) {
+  //     // console.log('this.state.disablePhoneVerificationButton', this.state.disablePhoneVerificationButton, ', nextState.disablePhoneVerificationButton', nextState.disablePhoneVerificationButton);
+  //     return true;
+  //   }
+  //   if (this.state.displayPhoneVerificationButton !== nextState.displayPhoneVerificationButton) {
+  //     // console.log('this.state.displayPhoneVerificationButton', this.state.displayPhoneVerificationButton, ', nextState.displayPhoneVerificationButton', nextState.displayPhoneVerificationButton);
+  //     return true;
+  //   }
+  //   if (this.state.hideExistingPhoneNumbers !== nextState.hideExistingPhoneNumbers) {
+  //     // console.log('this.state.hideExistingPhoneNumbers', this.state.hideExistingPhoneNumbers, ', nextState.hideExistingPhoneNumbers', nextState.hideExistingPhoneNumbers);
+  //     return true;
+  //   }
+  //   if (this.state.loading !== nextState.loading) {
+  //     // console.log('this.state.loading', this.state.loading, ', nextState.loading', nextState.loading);
+  //     return true;
+  //   }
+  //   if (this.state.secretCodeSystemLocked !== nextState.secretCodeSystemLocked) {
+  //     // console.log('this.state.secretCodeSystemLocked', this.state.secretCodeSystemLocked, ', nextState.secretCodeSystemLocked', nextState.secretCodeSystemLocked);
+  //     return true;
+  //   }
+  //   if (this.state.showError !== nextState.showError) {
+  //     // console.log('this.state.showError', this.state.showError, ', nextState.showError', nextState.showError);
+  //     return true;
+  //   }
+  //   if (this.state.showVerifyModal !== nextState.showVerifyModal) {
+  //     // console.log('this.state.showVerifyModal', this.state.showVerifyModal, ', nextState.showVerifyModal', nextState.showVerifyModal);
+  //     return true;
+  //   }
+  //   if (this.state.signInCodeSMSSentAndWaitingForResponse !== nextState.signInCodeSMSSentAndWaitingForResponse) {
+  //     // console.log('this.state.signInCodeSMSSentAndWaitingForResponse', this.state.signInCodeSMSSentAndWaitingForResponse, ', nextState.signInCodeSMSSentAndWaitingForResponse', nextState.signInCodeSMSSentAndWaitingForResponse);
+  //     return true;
+  //   }
+  //   if (this.state.smsPhoneNumberListCount !== nextState.smsPhoneNumberListCount) {
+  //     // console.log('this.state.smsPhoneNumberListCount', this.state.smsPhoneNumberListCount, ', nextState.smsPhoneNumberListCount', nextState.smsPhoneNumberListCount);
+  //     return true;
+  //   }
+  //   if (this.state.voterSMSPhoneNumber !== nextState.voterSMSPhoneNumber) {
+  //     // console.log('this.state.voterSMSPhoneNumber', this.state.voterSMSPhoneNumber, ', nextState.voterSMSPhoneNumber', nextState.voterSMSPhoneNumber);
+  //     return true;
+  //   }
+  //   if (this.state.voterSMSPhoneNumbersVerifiedCount !== nextState.voterSMSPhoneNumbersVerifiedCount) {
+  //     // console.log('this.state.voterSMSPhoneNumbersVerifiedCount', this.state.voterSMSPhoneNumbersVerifiedCount, ', nextState.voterSMSPhoneNumbersVerifiedCount', nextState.voterSMSPhoneNumbersVerifiedCount);
+  //     return true;
+  //   }
+  //   // console.log('shouldComponentUpdate false');
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
@@ -127,13 +128,16 @@ class VoterPhoneVerificationEntry extends Component {
     // console.log('onVoterStoreChange smsPhoneNumberStatus:', smsPhoneNumberStatus);
     const voter = VoterStore.getVoter();
     const {
+      // is_signed_in: isSignedIn,
       signed_in_with_sms_phone_number: signedInWithSmsPhoneNumber,
     } = voter;
     // console.log(`VoterEmailAddressEntry onVoterStoreChange isSignedIn: ${isSignedIn}, signedInWithSmsPhoneNumber: ${signedInWithSmsPhoneNumber}`);
     if (signedInWithSmsPhoneNumber) {
       // console.log('VoterEmailAddressEntry onVoterStoreChange signedInWithSmsPhoneNumber so doing a fallback close ===================');
       this.closeSignInModal();
-      return;
+      this.setState({
+        smsPhoneNumberStatus,
+      });
     } else if (secretCodeVerified) {
       this.setState({
         displayPhoneVerificationButton: false,
@@ -164,11 +168,11 @@ class VoterPhoneVerificationEntry extends Component {
     }
     const smsPhoneNumberList = VoterStore.getSMSPhoneNumberList();
     const smsPhoneNumberListCount = smsPhoneNumberList.length;
-    const voterSMSPhoneNumbersVerifiedCount = VoterStore.getSMSPhoneNumbersVerifiedCount();
+    // const voterSMSPhoneNumbersVerifiedCount = VoterStore.getSMSPhoneNumbersVerifiedCount();
     this.setState({
       loading: false,
       voter: VoterStore.getVoter(),
-      voterSMSPhoneNumbersVerifiedCount,
+      // voterSMSPhoneNumbersVerifiedCount,
       secretCodeSystemLocked,
       smsPhoneNumberList,
       smsPhoneNumberListCount,
@@ -374,7 +378,7 @@ class VoterPhoneVerificationEntry extends Component {
       secretCodeSystemLocked, showError, showVerifyModal, signInCodeSMSSentAndWaitingForResponse,
       smsPhoneNumberStatus, smsPhoneNumberList, smsPhoneNumberListCount, voterSMSPhoneNumber,
     } = this.state;
-    // console.log('VoterPhoneVerificationEntry render showVerifyModal:', showVerifyModal);
+    // console.log('VoterPhoneVerificationEntry render');
 
     const signInLinkOrCodeSent = (smsPhoneNumberStatus.link_to_sign_in_sms_sent || smsPhoneNumberStatus.sign_in_code_sms_sent);
     const smsPhoneNumberStatusHtml = (

@@ -45,7 +45,8 @@ class HeaderBackToButton extends Component {
           <ArrowBack className="button-icon" />
         )}
         <span className="u-show-desktop-tablet u-no-break">{shortenText(backToLinkText, 60)}</span>
-        <span className="u-show-mobile u-no-break">{shortenText(backToLinkText, 23)}</span>
+        <span className="u-show-mobile-bigger-than-iphone5 u-no-break">{shortenText(backToLinkText, 23)}</span>
+        <span className="u-show-mobile-iphone5-or-smaller u-no-break">{shortenText(backToLinkText, 18)}</span>
       </Button>
     );
   }
