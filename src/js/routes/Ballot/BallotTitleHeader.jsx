@@ -26,7 +26,7 @@ class BallotTitleHeader extends Component {
     if (isIPhone3p5in() || isIPhone4in()) {
       return 26;  // iphone5-or-smaller
     } if (isIPad()) {
-      return 0;
+      return 60;
     } else {
       return 30;
     }
