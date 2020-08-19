@@ -22,7 +22,7 @@ import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { stringContains } from '../../utils/textFormat';
-
+import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 
 class PositionStatementModal extends Component {
   // This modal will show a users ballot guides from previous and current elections.
@@ -60,6 +60,10 @@ class PositionStatementModal extends Component {
       });
     }
 
+    let voter = VoterStore.getVoter();
+
+    console.log(voter);
+
     let ballotItemDisplayName = '';
     let ballotItemType;
     let isCandidate = false;
@@ -81,6 +85,7 @@ class PositionStatementModal extends Component {
       isCandidate,
       isMeasure,
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+      voter: voter
     });
   }
 
@@ -237,7 +242,7 @@ class PositionStatementModal extends Component {
         open={this.props.show}
         onClose={() => { this.props.togglePositionStatementModal(); }}
       >
-        <DialogTitle>
+        <DialogTitle classes={{ root: classes.dialogTitle }}>
           <Title>
             {dialogTitleText}
           </Title>
@@ -257,17 +262,21 @@ class PositionStatementModal extends Component {
               onSubmit={this.savePositionStatement.bind(this)}
               onFocus={this.onFocusInput}
               onBlur={this.onBlurInput}
+              style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}
             >
-              <InputBase onChange={this.updateStatementTextToBeSaved}
-                id={`itemPositionStatementActionBarTextArea-${ballotItemWeVoteId}-${externalUniqueId}`}
-                name="voterTextStatement"
-                classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
-                placeholder={statementPlaceholderText}
-                defaultValue={voterTextStatement}
-                inputRef={(input) => { this.positionInput = input; }}
-                multiline
-                rows={rowsToShow}
-              />
+              <div style={{ display: 'flex', alignItems: 'flex-start', border: '1px solid #e8e8e8', borderRadius: 3, padding: 12, marginBottom: 0 }}>
+                <img alt="" src={this.state.voter && this.state.voter.voter_photo_url_medium ? this.state.voter.voter_photo_url_medium : stockAvatar} style={{ width: 50, display: 'block', marginRight: 12 }} />
+                <InputBase onChange={this.updateStatementTextToBeSaved}
+                  id={`itemPositionStatementActionBarTextArea-${ballotItemWeVoteId}-${externalUniqueId}`}
+                  name="voterTextStatement"
+                  classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
+                  placeholder={statementPlaceholderText}
+                  defaultValue={voterTextStatement}
+                  inputRef={(input) => { this.positionInput = input; }}
+                  multiline
+                  rows={rowsToShow}
+                />
+              </div>
               <PostSaveButton className="postsave-button">
                 <Button
                   id={`itemPositionStatementActionBarSave-${ballotItemWeVoteId}-${externalUniqueId}`}
@@ -287,15 +296,18 @@ class PositionStatementModal extends Component {
   }
 }
 const styles = theme => ({
+  dialogTitle: {
+    padding: 16,
+  },
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     minHeight: '200px',
-    maxHeight: '300px',
+    maxHeight: '350px',
     height: '80%',
     width: '90%',
     maxWidth: '600px',
     top: '0px',
-    transform: 'translate(0%, -55%)',
+    transform: 'translate(0%, -20%)',
     [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
@@ -308,9 +320,10 @@ const styles = theme => ({
     },
   },
   dialogContent: {
-    [theme.breakpoints.down('md')]: {
-      padding: '0 8px 8px',
-    },
+    padding: 16,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   closeButton: {
     position: 'absolute',
@@ -339,6 +352,7 @@ const styles = theme => ({
     flex: '1 1 0',
     fontSize: 18,
     height: '100%',
+    width: '100%',
     [theme.breakpoints.down('sm')]: {
       fontSize: 16,
     },
@@ -350,17 +364,14 @@ const styles = theme => ({
 });
 
 const PostSaveButton = styled.div`
-  width: auto;
-  margin-left: auto;
-  margin-top: auto;
-  @media(max-width: 576px) {
-    height: 28px;
-    display: flex;
-    align-items: flex-end;
-  }
+  width: 100%;
 `;
 
 const TextFieldWrapper = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const Title = styled.div`
