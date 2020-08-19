@@ -265,7 +265,7 @@ class PositionStatementModal extends Component {
               style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}
             >
               <div style={{ display: 'flex', alignItems: 'flex-start', border: '1px solid #e8e8e8', borderRadius: 3, padding: 12, marginBottom: 0 }}>
-                <img src={this.state.voter && this.state.voter.voter_photo_url_medium ? this.state.voter.voter_photo_url_medium : stockAvatar} style={{ width: 50, display: 'block', marginRight: 12 }} />
+                <img alt="" src={this.state.voter && this.state.voter.voter_photo_url_medium ? this.state.voter.voter_photo_url_medium : stockAvatar} style={{ width: 50, display: 'block', marginRight: 12 }} />
                 <InputBase onChange={this.updateStatementTextToBeSaved}
                   id={`itemPositionStatementActionBarTextArea-${ballotItemWeVoteId}-${externalUniqueId}`}
                   name="voterTextStatement"
