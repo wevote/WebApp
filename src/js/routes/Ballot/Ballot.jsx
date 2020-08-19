@@ -1398,7 +1398,7 @@ class Ballot extends Component {
                 }
                 </div>
 
-                { ballotWithItemsFromCompletionFilterType.length === 0 || isCordova() ?
+                { ballotWithItemsFromCompletionFilterType.length === 0 ?
                   null : (
                     <div className="col-lg-3 d-none d-lg-block sidebar-menu">
                       <BallotSideBar

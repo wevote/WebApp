@@ -425,7 +425,7 @@ class VoterPhoneVerificationEntry extends Component {
               { smsPhoneNumberStatus.sms_phone_number_deleted ? <span>Your phone number was deleted. </span> : null }
               { smsPhoneNumberStatus.sms_ownership_is_verified ? <span>Your phone number was verified. </span> : null }
               { smsPhoneNumberStatus.make_primary_sms ? <span>Your have chosen a new primary phone number. </span> : null }
-              { smsPhoneNumberStatus.sign_in_code_sms_sent ? <span>Please check your phone. A sign in verification code was sent. </span> : null }
+              { smsPhoneNumberStatus.sign_in_code_sms_sent && !smsPhoneNumberStatus.sms_phone_number_created ? <span>Please check your phone. A sign in verification code was sent. </span> : null }
             </Alert>
           ) : null
         }
