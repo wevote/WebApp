@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import ItemActionBar from './ItemActionBar/ItemActionBar';
-import ItemPositionStatementActionBar from './ItemPositionStatementActionBar';
+import ItemPositionStatementActionBar from './ItemPositionStatementActionBar2020';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import { stringContains } from '../../utils/textFormat';
@@ -143,8 +143,16 @@ class BallotItemSupportOpposeComment extends PureComponent {
 
   render () {
     renderLog('BallotItemSupportOpposeComment');  // Set LOG_RENDER_EVENTS to log all renders
-    const { currentBallotIdInUrl, externalUniqueId, showPositionStatementActionBar, showPositionPublicToggle, hidePositionPublicToggle, urlWithoutHash, inModal } = this.props;
-    const { ballotItemDisplayName, ballotItemType, ballotItemWeVoteId, showPositionStatement, voterOpposesBallotItem, voterSupportsBallotItem, voterTextStatement } = this.state;
+    const {
+      currentBallotIdInUrl, externalUniqueId, showPositionStatementActionBar,
+      showPositionPublicToggle, hidePositionPublicToggle, urlWithoutHash, inModal,
+    } = this.props;
+    const {
+      ballotItemDisplayName, ballotItemType, ballotItemWeVoteId,
+      showPositionStatement, transitioning,
+      voterOpposesBallotItem, voterSupportsBallotItem,
+      voterTextStatement,
+    } = this.state;
 
     if (!ballotItemWeVoteId) return null;
 
@@ -167,7 +175,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
         hidePositionPublicToggle={hidePositionPublicToggle}
         supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
         togglePositionStatementFunction={this.togglePositionStatement}
-        transitioning={this.state.transitioning}
+        transitioning={transitioning}
         urlWithoutHash={urlWithoutHash}
       />
     );
@@ -183,7 +191,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
           commentEditModeOn={showPositionStatement}
           externalUniqueId={`${externalUniqueId}-desktop-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}
           // shouldFocus={this.state.shouldFocusCommentArea}
-          transitioning={this.state.transitioning}
+          transitioning={transitioning}
           ballotItemType={ballotItemType}
           shownInList
         />
@@ -201,7 +209,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
           ballotItemDisplayName={ballotItemDisplayName}
           hidePositionPublicToggle={hidePositionPublicToggle}
           // shouldFocus={this.state.shouldFocusCommentArea}
-          transitioning={this.state.transitioning}
+          transitioning={transitioning}
           ballotItemType={ballotItemType}
           externalUniqueId={`${externalUniqueId}-mobile-fromBallotItemSupportOpposeComment-${ballotItemWeVoteId}`}
           shownInList

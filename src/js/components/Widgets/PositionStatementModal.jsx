@@ -17,12 +17,13 @@ import {
   hasIPhoneNotch, prepareForCordovaKeyboard,
   restoreStylesAfterCordovaKeyboard,
 } from '../../utils/cordovaUtils';
+import ItemActionBar from './ItemActionBar/ItemActionBar';
 import MeasureStore from '../../stores/MeasureStore';
+import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { stringContains } from '../../utils/textFormat';
-import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 
 class PositionStatementModal extends Component {
   // This modal will show a users ballot guides from previous and current elections.
@@ -60,9 +61,8 @@ class PositionStatementModal extends Component {
       });
     }
 
-    let voter = VoterStore.getVoter();
-
-    console.log(voter);
+    const voter = VoterStore.getVoter();
+    // console.log(voter);
 
     let ballotItemDisplayName = '';
     let ballotItemType;
@@ -85,7 +85,7 @@ class PositionStatementModal extends Component {
       isCandidate,
       isMeasure,
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
-      voter: voter
+      voter,
     });
   }
 
@@ -262,10 +262,28 @@ class PositionStatementModal extends Component {
               onSubmit={this.savePositionStatement.bind(this)}
               onFocus={this.onFocusInput}
               onBlur={this.onBlurInput}
-              style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: '95%',
+              }}
             >
-              <div style={{ display: 'flex', alignItems: 'flex-start', border: '1px solid #e8e8e8', borderRadius: 3, padding: 12, marginBottom: 0 }}>
-                <img alt="" src={this.state.voter && this.state.voter.voter_photo_url_medium ? this.state.voter.voter_photo_url_medium : stockAvatar} style={{ width: 50, display: 'block', marginRight: 12 }} />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  border: '1px solid #e8e8e8',
+                  borderRadius: 3,
+                  padding: 12,
+                  marginBottom: 0,
+                }}
+              >
+                <img
+                  alt=""
+                  src={this.state.voter && this.state.voter.voter_photo_url_medium ? this.state.voter.voter_photo_url_medium : stockAvatar}
+                  style={{ width: 50, display: 'block', marginRight: 12 }}
+                />
                 <InputBase onChange={this.updateStatementTextToBeSaved}
                   id={`itemPositionStatementActionBarTextArea-${ballotItemWeVoteId}-${externalUniqueId}`}
                   name="voterTextStatement"
@@ -277,6 +295,23 @@ class PositionStatementModal extends Component {
                   rows={rowsToShow}
                 />
               </div>
+              <ItemActionBar
+                showPositionPublicToggle
+                inModal
+                // showPositionStatementActionBar={showPositionStatementActionBar}
+                ballotItemDisplayName={ballotItemDisplayName}
+                ballotItemWeVoteId={ballotItemWeVoteId}
+                commentButtonHide
+                commentButtonHideInMobile
+                // currentBallotIdInUrl={currentBallotIdInUrl}
+                externalUniqueId={`${externalUniqueId}-ballotItemSupportOpposeComment-${ballotItemWeVoteId}`}
+                shareButtonHide
+                // hidePositionPublicToggle={hidePositionPublicToggle}
+                // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
+                // togglePositionStatementFunction={this.togglePositionStatement}
+                // transitioning={transitioning}
+                // urlWithoutHash={urlWithoutHash}
+              />
               <PostSaveButton className="postsave-button">
                 <Button
                   id={`itemPositionStatementActionBarSave-${ballotItemWeVoteId}-${externalUniqueId}`}
@@ -313,14 +348,14 @@ const styles = theme => ({
       maxWidth: '95%',
       width: '95%',
       minHeight: '200px',
-      maxHeight: '300px',
+      maxHeight: '330px',
       height: '70%',
       margin: '0 auto',
       transform: 'translate(0%, -30%)',
     },
   },
   dialogContent: {
-    padding: 16,
+    padding: '0px 16px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
