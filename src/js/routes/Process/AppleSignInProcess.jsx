@@ -52,9 +52,9 @@ export default class AppleSignInProcess extends Component {
       // console.log('twitterSignInStatus:', twitterSignInStatus);
       const voter = VoterStore.getVoter();
       if (!voterWeVoteId) {
-        const { we_vote_id: voterWeVoteId } = voter;
+        const { we_vote_id: voterWeVoteIdFromVoter } = voter;
         this.setState({
-          voterWeVoteId,
+          voterWeVoteId: voterWeVoteIdFromVoter,
         });
       }
       const { signed_in_with_apple: voterIsSignedInWithApple } = voter;
