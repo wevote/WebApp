@@ -84,7 +84,6 @@ class PositionStatementModal extends Component {
       ballotItemType,
       isCandidate,
       isMeasure,
-      voter,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
@@ -163,7 +162,6 @@ class PositionStatementModal extends Component {
     const voter = VoterStore.getVoter();
     const { voter_is_signed_in: voterIsSignedIn, voter_photo_url_medium: voterPhotoUrlMedium } = voter;
     this.setState({
-      voter,
       voterIsSignedIn,
       voterPhotoUrlMedium,
     });
