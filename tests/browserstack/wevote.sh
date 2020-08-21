@@ -3,7 +3,7 @@ cd /opt/MyProjects/WebApp/tests/browserstack; . /opt/NodeEnvironments/WebAppEnv/
 
 # Run ballot tests
 # Browser
-python config.py -g -s ballot -b Browser -r 
+python config.py -g -s ballot -b Browser -r -w
 python config.py -g -s ballot -b iOS -r -w
 python config.py -g -s ballot -b Android -r -w
 # Mobile
