@@ -227,6 +227,11 @@ export const organizationalDonors = [{
   title: 'Data',
   logo: `${logoPath}ballotpedia-logo.png`,
 }, {
+  alt: 'BrowserStack',
+  name: '',
+  title: 'Cross-Platform Testing',
+  logo: `${logoPath}browserstack-logo-600x158.png`,
+}, {
   alt: 'Center for Technology and Civic Life',
   name: '',
   title: 'Data & Love',
