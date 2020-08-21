@@ -140,10 +140,10 @@ export default class Privacy extends React.Component {
             We Vote USA
             <br />
             {' '}
-            1717 Clemens Rd
+            1423 Broadway PMB 158
             <br />
             {' '}
-            Oakland, CA 94602
+            Oakland, CA 94612
             <br />
             {' '}
             Attn: Privacy Policy

@@ -62,7 +62,7 @@ class PositionStatementModal extends Component {
     }
 
     const voter = VoterStore.getVoter();
-    // console.log(voter);
+    const { voter_is_signed_in: voterIsSignedIn, voter_photo_url_medium: voterPhotoUrlMedium } = voter;
 
     let ballotItemDisplayName = '';
     let ballotItemType;
@@ -84,8 +84,8 @@ class PositionStatementModal extends Component {
       ballotItemType,
       isCandidate,
       isMeasure,
-      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
-      voter,
+      voterIsSignedIn,
+      voterPhotoUrlMedium,
     });
   }
 
@@ -159,8 +159,11 @@ class PositionStatementModal extends Component {
   }
 
   onVoterStoreChange () {
+    const voter = VoterStore.getVoter();
+    const { voter_is_signed_in: voterIsSignedIn, voter_photo_url_medium: voterPhotoUrlMedium } = voter;
     this.setState({
-      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+      voterIsSignedIn,
+      voterPhotoUrlMedium,
     });
   }
 
@@ -193,7 +196,7 @@ class PositionStatementModal extends Component {
       ballotItemWeVoteId, classes, externalUniqueId, hideAddressEdit, hideElections,
     } = this.props;
     const {
-      ballotItemDisplayName, voterIsSignedIn,
+      ballotItemDisplayName, voterIsSignedIn, voterPhotoUrlMedium,
       voterOpposesBallotItem, voterPositionIsPublic, voterSupportsBallotItem,
       voterTextStatement,
     } = this.state;
@@ -281,8 +284,8 @@ class PositionStatementModal extends Component {
               >
                 <img
                   alt=""
-                  src={this.state.voter && this.state.voter.voter_photo_url_medium ? this.state.voter.voter_photo_url_medium : stockAvatar}
-                  style={{ width: 50, display: 'block', marginRight: 12 }}
+                  src={voterPhotoUrlMedium || stockAvatar}
+                  style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
                 />
                 <InputBase onChange={this.updateStatementTextToBeSaved}
                   id={`itemPositionStatementActionBarTextArea-${ballotItemWeVoteId}-${externalUniqueId}`}
