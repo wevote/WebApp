@@ -67,6 +67,7 @@ args = vars(parser.parse_args())
 if args['generate'] and args['number'] != 5:
     with open(args['file']) as f:
         t = sub("{(?:(?!{).)*os%d.*?]" % args['number'], ']', f.read(), flags=S)
+        # print(t)
         with open(args['template'], 'w') as f:
             f.write(t)
 
@@ -120,9 +121,9 @@ if args['interchange']:
                 break
             except ValueError:
                 print('Example: 2 3')
-                if devices[t1] and devices[t2]:
-                    # swap tests
-                    devices[t1], devices[t2] = devices[t2], devices[t1]
+            if devices[t1] and devices[t2]:
+                # swap tests
+                devices[t1], devices[t2] = devices[t2], devices[t1]
 
 for i in range(args['number']):
     # generate default values
@@ -153,9 +154,9 @@ with open(args['template']) as template:
             else:
                 line = sub(f'%{configOption}', str(value), line)
 
-    # delete empty config options
-    if "''" in line:
-        line = ''
+        # delete empty config options
+        if "''" in line:
+            line = ''
         # Write to file or print to standard output
         if args['write']:
             config.write(line)
@@ -168,5 +169,5 @@ if args['write']:
     config.close()
 
 if args['run']:
-    wdio = Popen(['wdio', 'wdio.conf.js', '-l', 'silent'])
+    wdio = Popen(['../../node_modules/.bin/wdio', 'wdio.conf.js', '-l', 'silent'])
     wdio.wait()

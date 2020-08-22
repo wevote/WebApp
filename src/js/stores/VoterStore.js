@@ -718,15 +718,15 @@ class VoterStore extends ReduceStore {
         if (incomingVoter.linked_organization_we_vote_id) {
           OrganizationActions.organizationRetrieve(incomingVoter.linked_organization_we_vote_id);
         }
-        if (incomingVoter.signed_in_with_apple) {
-          // Completing the logical OR that can't be conveniently made in the server, since Sign in with Apple is device_id specific
-          incomingVoter.is_signed_in = incomingVoter.signed_in_with_apple;
-          const { voter_photo_url_medium: statePhotoMed } = state.voter;
-          const { voter_photo_url_medium: incomingPhotoMed } = incomingVoter;
-          if (!statePhotoMed && !incomingPhotoMed) {
-            incomingVoter.voter_photo_url_medium = 'https://wevote.us/img/global/logos/Apple_logo_grey.svg';  // TODO: Switch over to wevote.us once live server is updated
-          }
-        }
+        // if (incomingVoter.signed_in_with_apple) {
+        //   // Completing the logical OR that can't be conveniently made in the server, since Sign in with Apple is device_id specific
+        //   incomingVoter.is_signed_in = incomingVoter.signed_in_with_apple;
+        //   const { voter_photo_url_medium: statePhotoMed } = state.voter;
+        //   const { voter_photo_url_medium: incomingPhotoMed } = incomingVoter;
+        //   if (!statePhotoMed && !incomingPhotoMed) {
+        //     incomingVoter.voter_photo_url_medium = 'https://wevote.us/img/global/logos/Apple_logo_grey.svg';  // TODO: Switch over to wevote.us once live server is updated
+        //   }
+        // }
 
         return {
           ...state,
