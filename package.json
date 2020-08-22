@@ -179,7 +179,7 @@
     "babel-plugin-styled-components": "^1.10.6",
     "babelify": "^10.0.0",
     "blue-tape": "^1.0.0",
-    "browser-sync": "^2.26.7",
+    "browser-sync": "^2.26.12",
     "browserify": "^13.3.0",
     "chai": "^4.2.0",
     "chai-enzyme": "^1.0.0-beta.1",
