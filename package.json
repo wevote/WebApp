@@ -142,7 +142,8 @@
     "styled-components": "^4.4.1",
     "superagent": "^3.8.3",
     "unused-webpack-plugin": "^2.4.0",
-    "wdio": "^4.0.0"
+    "wdio": "^4.0.0",
+    "snyk": "^1.381.1"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -241,8 +242,7 @@
     "yargs": "^6.6.0"
   },
   "optionalDependencies": {
-    "fsevents": "^2.1.2",
-    "snyk": "^1.316.1"
+    "fsevents": "^2.1.2"
   },
   "repository": "https://github.com/wevote/webapp.git",
   "pre-commit": [
