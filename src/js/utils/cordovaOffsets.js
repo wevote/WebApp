@@ -199,8 +199,78 @@ export function cordovaScrollablePaneTopPadding () {
     }
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
-    if (sizeString === '--xl') {
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding sizeString: ${sizeString}`);
+    cordovaOffsetLog(`cordovaScrollablePaneTopPadding sizeString: ${sizeString}`);
+    if (sizeString === '--fold') {
+      switch (pageEnumeration()) {
+        case enums.ballotLgHdrWild:
+          return '25px';
+        case enums.ballotSmHdrWild:
+          return '0';
+        case enums.ballotVote:
+          return isSignedIn ? '149px' : '145px';
+        case enums.candidate:
+          return '64px';
+        case enums.candidateWild:
+          return '53px';
+        case enums.measureWild:
+          return '57px';
+        case enums.moreTerms:
+          return '32px';
+        case enums.officeWild:
+          return '79px';
+        case enums.settingsAccount:
+          return '53px';
+        case enums.settingsHamburger:
+          return '43px';
+        case enums.settingsNotifications:
+          return '39px';
+        case enums.settingsSubscription:
+          return '54px';
+        case enums.settingsWild:
+          return '57px';
+        case enums.twitterSignIn:
+          return hasAndroidNotch() ? '20px' : '10px';
+        case enums.voterGuideCreatorWild:
+          return '10px'; // $headroom-wrapper-webapp-voter-guide
+        default:
+          return '0px';
+      }
+    } else if (sizeString === '--xl') {
+      switch (pageEnumeration()) {
+        case enums.ballotLgHdrWild:
+          return showBallotDecisionsTabs() ? '36px' : '42px';
+        case enums.ballotSmHdrWild:
+          return '131px';
+        case enums.ballotVote:
+          return isSignedIn ? '149px' : '145px';
+        case enums.candidate:
+          return '64px';
+        case enums.candidateWild:
+          return '53px';
+        case enums.measureWild:
+          return '57px';
+        case enums.moreTerms:
+          return '32px';
+        case enums.officeWild:
+          return '79px';
+        case enums.settingsAccount:
+          return '53px';
+        case enums.settingsHamburger:
+          return '43px';
+        case enums.settingsNotifications:
+          return '39px';
+        case enums.settingsSubscription:
+          return '54px';
+        case enums.settingsWild:
+          return '57px';
+        case enums.twitterSignIn:
+          return hasAndroidNotch() ? '20px' : '10px';
+        case enums.voterGuideCreatorWild:
+          return '10px'; // $headroom-wrapper-webapp-voter-guide
+        default:
+          return '0px';
+      }
+    } else if (sizeString === '--fold') {
       switch (pageEnumeration()) {
         case enums.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '36px' : '42px';
         case enums.ballotSmHdrWild:       return '131px';
@@ -257,7 +327,7 @@ export function cordovaScrollablePaneTopPadding () {
     } else if (sizeString === '--sm') {
       switch (pageEnumeration()) {
         case enums.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '42px';
-        case enums.ballotSmHdrWild:       return '141px';
+        case enums.ballotSmHdrWild:       return '114px';
         case enums.ballotVote:            return isSignedIn ? '131px' : '128px';
         case enums.candidate:             return '24px';
         case enums.candidateWild:         return '36px';
@@ -335,7 +405,7 @@ export function cordovaBallotFilterTopMargin () {
       } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
         return '61px';
       }
-      return '61px';
+      return '55px';
     } else if (sizeString === '--xl') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-10px';
@@ -631,6 +701,8 @@ export function shareBottomOffset (pinToBottom) {
     if (hasIPhoneNotch()) {
       return pinToBottom ? '0' : '66px';
     }
+  } else if (isAndroid()) {
+    return pinToBottom ? '10px' : '57px';
   }
 
   // Default for all other devices, including desktop and mobile browsers

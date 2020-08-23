@@ -11,7 +11,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import { cordovaDot, isWebApp } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import FriendActions from '../../actions/FriendActions';
@@ -172,12 +172,19 @@ class News extends Component {
     const testimonialAuthor = 'Alissa B., Oakland, California';
     const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
     const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from.';
+    const rowStyle = isWebApp() ? {} : {
+      paddingRight: 0,
+      paddingLeft: 0,
+      marginRight: 0,
+      marginLeft: 0,
+    };
+
     return (
       <span>
         <Helmet title="News - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
-        <div className="row">
-          <div className="col-sm-12 col-md-8">
+        <div className="row" style={rowStyle}>
+          <div className="col-sm-12 col-md-8" style={rowStyle}>
             <>
               {activityTidbitsList.map((oneActivityTidbit) => {
                 // console.log('oneActivityTidbit position_we_vote_id:', oneActivityTidbit.position_we_vote_id);
@@ -248,7 +255,7 @@ class News extends Component {
               </DelayedLoad>
             )}
           </div>
-          <div className="col-md-4 d-none d-md-block">
+          <div className="col-md-4 d-none d-md-block" style={rowStyle}>
             <div className="card">
               <div className="card-main">
                 <SectionTitle>

@@ -6,7 +6,7 @@ import VoterActions from '../../actions/VoterActions';
 import webAppConfig from '../../config';
 import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import { openSnackbar } from '../Widgets/SnackNotifier';
-import { renderLog } from '../../utils/logging';
+import { oAuthLog, renderLog } from '../../utils/logging';
 
 class AppleSignIn extends Component {
   static propTypes = {
@@ -67,11 +67,8 @@ class AppleSignIn extends Component {
   }
 
   signInToAppleIOS () {
-    console.log('SignInWithApple: Button clicked');
+    console.log('SignInWithApple signInToAppleIOS: Button clicked');
     const { SignInWithApple: { signin } } = window.cordova.plugins;
-
-    // window.voterActionVoterAppleSignInSave = VoterActions.voterAppleSignInSave;
-    const voterActionVoterAppleSignInSave = VoterActions.voterAppleSignInSave;
 
     signin(
       { requestedScopes: [0, 1]},
@@ -85,7 +82,7 @@ class AppleSignIn extends Component {
             duration: 7000,
           });
         }
-        voterActionVoterAppleSignInSave(email, givenName, middleName, familyName, user);
+        VoterActions.voterAppleSignInSave(email, givenName, middleName, familyName, user);
         if (this.props.closeSignInModal) {
           this.props.closeSignInModal();
         }
@@ -93,12 +90,13 @@ class AppleSignIn extends Component {
       (err) => {
         // console.error(err);
         console.log(`SignInWithApple: ${JSON.stringify(err)}`);
+        oAuthLog(`SignInWithApple: ${JSON.stringify(err)}`);
         if (err.code === '1000') {
           // SignInWithApple: {"code":"1000","localizedFailureReason":"","error":"ASAUTHORIZATION_ERROR","localizedDescription":"The operation couldn’t be completed. (com.apple.AuthenticationServices.AuthorizationError error 1000.)"}
           // iOS takes over and the voter will be taking a break to go to settings to setup AppleID or login to iCloud for the first time on this device.
           // Super edge case outside of testing situations
           openSnackbar({
-            message: 'You may need to open Settings, and login to iCloud before proceeding.',
+            message: `You may need to open Settings, and login to iCloud before proceeding. (code: ${err.code})`,
             duration: 7000,
           });
           if (this.props.closeSignInModal) {
@@ -106,16 +104,16 @@ class AppleSignIn extends Component {
           }
         }
       },
-    )(voterActionVoterAppleSignInSave);
+    );
   }
 
   signInToAppleWebApp () {  // https://i.stack.imgur.com/Le6Jf.png  https://stackoverflow.com/questions/61071848/sign-in-with-apple-js-returns-invalid-request-in
-    console.log('AppleSignIn signInToAppleWebApp button pressed');
+    oAuthLog('AppleSignIn signInToAppleWebApp button pressed');
     try {
       const { auth } = window.AppleID;
       auth.signIn();
     } catch (error) {
-      console.log('signInToAppleWebApp exception ERROR:', error);
+      oAuthLog('signInToAppleWebApp exception ERROR:', error);
     }
   }
 
