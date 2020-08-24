@@ -27,7 +27,7 @@ class ShareModalOption extends Component {
   }
 
   onClick = () => {
-    console.log('ShareModalOption onClick function');
+    // console.log('ShareModalOption onClick function');
     if (this.props.onClickFunction) {
       this.props.onClickFunction();
     }

@@ -11,7 +11,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import { cordovaDot, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import FriendActions from '../../actions/FriendActions';
@@ -172,19 +172,26 @@ class News extends Component {
     const testimonialAuthor = 'Alissa B., Oakland, California';
     const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
     const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from.';
-    const rowStyle = isWebApp() ? {} : {
+
+    // August 23, 2020: These resolve a problem that exists in the WebApp, but looks much worse in
+    // Cordova -- Stop allowing horizontal scroll, (and vertical scroll of the entire window in some cases)
+    // by removing some styles that force some elements to be wider than the device window
+    const unsetMarginsIfCordova = isCordova() ? { margin: 'unset' } : {};
+    const unsetSideMarginsIfCordova = isCordova() ? { marginRight: 'unset', marginLeft: 'unset' } : {};
+    const unsetSomeRowStylesIfCordova = isCordova() ? {
       paddingRight: 0,
       paddingLeft: 0,
       marginRight: 0,
       marginLeft: 0,
-    };
+    } : {};
+    const expandSideMarginsIfCordova = isCordova() ? { marginRight: 23, marginLeft: 23 } : {};
 
     return (
       <span>
         <Helmet title="News - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
-        <div className="row" style={rowStyle}>
-          <div className="col-sm-12 col-md-8" style={rowStyle}>
+        <div className="row" style={unsetSomeRowStylesIfCordova}>
+          <div className="col-sm-12 col-md-8" style={unsetSomeRowStylesIfCordova}>
             <>
               {activityTidbitsList.map((oneActivityTidbit) => {
                 // console.log('oneActivityTidbit position_we_vote_id:', oneActivityTidbit.position_we_vote_id);
@@ -196,8 +203,8 @@ class News extends Component {
                 // console.log('numberOfActivityTidbitsDisplayed: ', numberOfActivityTidbitsDisplayed);
                 return (
                   <ActivityTidbitWrapper key={`${oneActivityTidbit.kind_of_activity}-${oneActivityTidbit.id}`}>
-                    <Card className="card">
-                      <CardNewsWrapper className="card-main">
+                    <Card className="card" style={unsetSideMarginsIfCordova}>
+                      <CardNewsWrapper className="card-main" id="steveCardNewsWrapper-main" style={unsetMarginsIfCordova}>
                         <ActivityTidbitItem
                           activityTidbitId={`${oneActivityTidbit.kind_of_activity}-${oneActivityTidbit.id}`}
                         />
@@ -209,8 +216,8 @@ class News extends Component {
             </>
             {(voterIsSignedIn && dateVoterJoined) && (
               <DelayedLoad waitBeforeShow={1000}>
-                <Card className="card">
-                  <div className="card-main">
+                <Card className="card" style={unsetMarginsIfCordova}>
+                  <div className="card-main" style={unsetMarginsIfCordova}>
                     <DateVoterJoinedWrapper>
                       <VoterAndWeVoteLogos>
                         <PreviewImage
@@ -233,8 +240,8 @@ class News extends Component {
                 </Card>
               </DelayedLoad>
             )}
-            <div className="card u-show-mobile">
-              <AddFriendsMobileWrapper className="card-main">
+            <div className="card u-show-mobile" style={unsetSideMarginsIfCordova}>
+              <AddFriendsMobileWrapper className="card-main" style={unsetMarginsIfCordova}>
                 <SectionTitle>
                   Voting Is Better with Friends
                 </SectionTitle>
@@ -246,7 +253,7 @@ class News extends Component {
             </div>
             {!voterIsSignedIn && (
               <DelayedLoad waitBeforeShow={1000}>
-                <SettingsAccountWrapper>
+                <SettingsAccountWrapper style={expandSideMarginsIfCordova}>
                   <SettingsAccount
                     pleaseSignInTitle="Sign in to See Your News"
                     pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
@@ -255,9 +262,9 @@ class News extends Component {
               </DelayedLoad>
             )}
           </div>
-          <div className="col-md-4 d-none d-md-block" style={rowStyle}>
+          <div className="col-md-4 d-none d-md-block" style={unsetSomeRowStylesIfCordova}>
             <div className="card">
-              <div className="card-main">
+              <div className="card-main" style={unsetMarginsIfCordova}>
                 <SectionTitle>
                   Voting Is Better with Friends
                 </SectionTitle>
@@ -269,7 +276,7 @@ class News extends Component {
             </div>
             <SuggestedFriendsPreview inSideColumn />
             <div className="card">
-              <div className="card-main">
+              <div className="card-main" style={unsetMarginsIfCordova}>
                 <Testimonial
                   imageUrl={imageUrl}
                   testimonialAuthor={testimonialAuthor}

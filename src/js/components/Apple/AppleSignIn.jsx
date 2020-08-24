@@ -81,8 +81,11 @@ class AppleSignIn extends Component {
             message: 'We Vote does not support "Hide My Email" at this time.',
             duration: 7000,
           });
+          oAuthLog('We Vote does not support "Hide My Email" at this time.');
+        } else {
+          VoterActions.voterAppleSignInSave(email, givenName, middleName, familyName, user);
+          oAuthLog('Sign in with Apple successful signin for: ', email);
         }
-        VoterActions.voterAppleSignInSave(email, givenName, middleName, familyName, user);
         if (this.props.closeSignInModal) {
           this.props.closeSignInModal();
         }
