@@ -73,19 +73,23 @@ class AppleSignIn extends Component {
     signin(
       { requestedScopes: [0, 1]},
       (response) => {
-        // console.log(`SignInWithApple: ${JSON.stringify(response)}`);
-        const { user, email, fullName: { givenName, middleName, familyName } } = response;
+        console.log(`SignInWithApple: ${JSON.stringify(response)}`);
+        const { user, email, identityToken, fullName: { givenName, middleName, familyName } } = response;
         console.log('AppleSignInSave called with email:', email);
-        if (!email || email.length === 0) {
-          openSnackbar({
-            message: 'We Vote does not support "Hide My Email" at this time.',
-            duration: 7000,
-          });
-          oAuthLog('We Vote does not support "Hide My Email" at this time.');
-        } else {
-          VoterActions.voterAppleSignInSave(email, givenName, middleName, familyName, user);
-          oAuthLog('Sign in with Apple successful signin for: ', email);
-        }
+        // In August 2020, Apple stopped returning the name and address on first signin, and email on subsequent signins
+        // So it seems that we have no way to determine if they use an alias email, found notes that dropbox and others have
+        // trouble with alias emails (probably since they match siwa sign ins with previous signins by email).  This will be trouble for us
+        // unless it is a short term bug on the Apple API servers.
+        // if (!email || email.length === 0) {
+        //   openSnackbar({
+        //     message: 'We Vote does not support "Hide My Email" at this time.',
+        //     duration: 7000,
+        //   });
+        //   oAuthLog('We Vote does not support "Hide My Email" at this time.');
+        // } else {
+        VoterActions.voterAppleSignInSave(email, givenName, middleName, familyName, user, identityToken);
+        oAuthLog('Sign in with Apple successful signin for: ', email);
+        // }
         if (this.props.closeSignInModal) {
           this.props.closeSignInModal();
         }
