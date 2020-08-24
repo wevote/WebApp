@@ -21,7 +21,7 @@ import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import isMobile from '../../utils/isMobile';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import { historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaOpenSafariView, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import { renderLog } from '../../utils/logging';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
@@ -276,16 +276,16 @@ class ShareButtonFooter extends Component {
     }
   }
 
-  saveActionShareButtonCopy = () => {
+  saveActionShareButtonCopy = () => {      // Save Analytics
     openSnackbar({ message: 'Copied!' });
     AnalyticsActions.saveActionShareButtonCopy(VoterStore.electionId());
   }
 
-  saveActionShareButtonEmail = () => {
+  saveActionShareButtonEmail = () => {     // Save Analytics
     AnalyticsActions.saveActionShareButtonEmail(VoterStore.electionId());
   }
 
-  saveActionShareButtonFacebook = () => {
+  saveActionShareButtonFacebook = () => {  // Save Analytics
     AnalyticsActions.saveActionShareButtonFacebook(VoterStore.electionId());
   }
 
@@ -301,12 +301,12 @@ class ShareButtonFooter extends Component {
     AnalyticsActions.saveActionShareButtonFriends(VoterStore.electionId());
   }
 
-  saveActionShareButtonTwitter = () => {
+  saveActionShareButtonTwitter = () => {    // Save Analytics
     AnalyticsActions.saveActionShareButtonTwitter(VoterStore.electionId());
   }
 
   openNativeShare (linkToBeShared, shareTitle = '') {
-    // console.log('openNativeShare linkToBeShared:', linkToBeShared);
+    // console.log('openNativeShare linkToBeShared:', linkToBeShared, 'shareTitle:', shareTitle);
     if (navigator.share) {
       navigator.share({
         title: shareTitle,
@@ -346,6 +346,22 @@ class ShareButtonFooter extends Component {
         AppActions.setShowSignInModal(true);
       }
     }
+  }
+
+  androidFacebookClickHandler (linkToBeSharedUrlEncoded) {
+    // react-share in Cordova for Android, navigates to the URL instead of opening a "tab" with a return 'X' button
+    // https://m.facebook.com/sharer/sharer.php?u=https%253A%252F%252Fwevote.us%252F-0i8mao%26t%3DWeVote&quote=This+is+a+website+I+am+using+to+get+ready+to+vote.
+    console.log('androidFacebookClickHandler clicked ~~~~~~~~~~~~~~~~');
+    const fbURL = `https://m.facebook.com/sharer/sharer.php?u=${linkToBeSharedUrlEncoded}&quote=This+is+a+website+I+am+using+to+get+ready+to+vote.`;
+    cordovaOpenSafariView(fbURL, null, 50);
+  }
+
+  androidTwitterClickHandler (linkToBeSharedUrlEncoded) {
+    // react-share in Cordova for Android, navigates to the URL instead of opening a "tab" with a return 'X' button
+    // https://twitter.com/share?url=https%3A%2F%2Fwevote.us%2F-0i8mao&text=This%20is%20a%20website%20I%20am%20using%20to%20get%20ready%20to%20vote.
+    console.log('androidTwitterClickHandler clicked ~~~~~~~~~~~~~~~~');
+    const twitURL = `https://twitter.com/share?url=${linkToBeSharedUrlEncoded}&text=This%20is%20a%20website%20I%20am%20using%20to%20get%20ready%20to%20vote.`;
+    cordovaOpenSafariView(twitURL, null, 50);
   }
 
   render () {
@@ -425,8 +441,8 @@ class ShareButtonFooter extends Component {
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
     linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
-    const linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
-    // console.log('ShareButtonFooter linkToBeShared:', linkToBeShared);
+    const linkToBeSharedUrlEncoded = encodeURIComponent(linkToBeShared);
+    // console.log('ShareButtonFooter linkToBeShared:', linkToBeShared, 'linkToBeSharedUrlEncoded:', linkToBeSharedUrlEncoded);
 
     const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSignInModal || showVoterPlanModal;
     const developmentFeatureTurnedOn = false;
@@ -588,44 +604,58 @@ class ShareButtonFooter extends Component {
                   ) : (
                     <Flex>
                       <ShareWrapper>
-                        <FacebookShareButton
-                          className="no-decoration"
-                          id="shareFooterFacebookButton"
-                          onClick={this.saveActionShareButtonFacebook}
-                          quote={titleText}
-                          url={`${linkToBeSharedUrlEncoded}&t=WeVote`}
-                          windowWidth={750}
-                          windowHeight={600}
+                        <div id="androidFacebook"
+                             onClick={() => isAndroid() &&
+                               this.androidFacebookClickHandler(`${linkToBeSharedUrlEncoded}&t=WeVote`)}
                         >
-                          <FacebookIcon
-                            bgStyle={{ background: '#3b5998' }}
-                            round="True"
-                            size={68}
-                          />
-                          <Text>
-                            Facebook
-                          </Text>
-                        </FacebookShareButton>
+                          <FacebookShareButton
+                            className="no-decoration"
+                            id="shareFooterFacebookButton"
+                            onClick={this.saveActionShareButtonFacebook}
+                            quote={titleText}
+                            url={`${linkToBeSharedUrlEncoded}&t=WeVote`}
+                            windowWidth={750}
+                            windowHeight={600}
+                            disabled={isAndroid()}
+                            disabledStyle={isAndroid() ? { opacity: 1 } : {}}
+                          >
+                            <FacebookIcon
+                              bgStyle={{ background: '#3b5998' }}
+                              round="True"
+                              size={68}
+                            />
+                            <Text>
+                              Facebook
+                            </Text>
+                          </FacebookShareButton>
+                        </div>
                       </ShareWrapper>
                       <ShareWrapper>
-                        <TwitterShareButton
-                          className="no-decoration"
-                          id="shareFooterTwitterButton"
-                          onClick={this.saveActionShareButtonTwitter}
-                          title={titleText}
-                          url={`${linkToBeSharedUrlEncoded}`}
-                          windowWidth={750}
-                          windowHeight={600}
+                        <div id="androidTwitter"
+                             onClick={() => isAndroid() &&
+                               this.androidTwitterClickHandler(linkToBeSharedUrlEncoded)}
                         >
-                          <TwitterIcon
-                            bgStyle={{ background: '#38A1F3' }}
-                            round="True"
-                            size={68}
-                          />
-                          <Text>
-                            Twitter
-                          </Text>
-                        </TwitterShareButton>
+                          <TwitterShareButton
+                            className="no-decoration"
+                            id="shareFooterTwitterButton"
+                            onClick={this.saveActionShareButtonTwitter}
+                            title={titleText}
+                            url={`${linkToBeSharedUrlEncoded}`}
+                            windowWidth={750}
+                            windowHeight={600}
+                            disabled={isAndroid()}
+                            disabledStyle={isAndroid() ? { opacity: 1 } : {}}
+                          >
+                            <TwitterIcon
+                              bgStyle={{ background: '#38A1F3' }}
+                              round="True"
+                              size={68}
+                            />
+                            <Text>
+                              Twitter
+                            </Text>
+                          </TwitterShareButton>
+                        </div>
                       </ShareWrapper>
                       <ShareWrapper>
                         {/* The EmailShareButton works in Cordova, but ONLY if an email client is configured, so it doesn't work in a simulator */}

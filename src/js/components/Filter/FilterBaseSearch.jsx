@@ -5,7 +5,7 @@ import { InputBase, IconButton } from '@material-ui/core';
 import { Search, Close } from '@material-ui/icons';
 import styled from 'styled-components';
 import sortBy from 'lodash-es/sortBy';
-import { blurTextFieldAndroid, focusTextFieldAndroid, isCordova } from '../../utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeFold, isCordova } from '../../utils/cordovaUtils';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
@@ -74,10 +74,7 @@ class FilterBaseSearch extends Component {
     if (this.state.searchTextDefault !== nextState.searchTextDefault) {
       return true;
     }
-    if (this.props.alwaysOpen !== nextProps.alwaysOpen) {
-      return true;
-    }
-    return false;
+    return this.props.alwaysOpen !== nextProps.alwaysOpen;
   }
 
   componentWillUnmount () {
@@ -109,8 +106,8 @@ class FilterBaseSearch extends Component {
     // console.log('FilterBaseSearch filterItems');
     const { opinionsAndBallotItemsSearchMode, positionSearchMode, voterGuidePositionSearchMode } = this.props;
     let candidatesToShowForSearchResults = [];
-    let foundInArray = [];
-    let searchPriority = 0;
+    let foundInArray;
+    let searchPriority;
     if (opinionsAndBallotItemsSearchMode) {
       const opinionsAndBallotItemsResults = opinionsAndBallotItemsSearchPriority(search, item);
       ({ searchPriority } = opinionsAndBallotItemsResults);
@@ -224,6 +221,7 @@ class FilterBaseSearch extends Component {
     const searchIconClasses = searchTextLarge ? classes.iconRootLarge : classes.iconRoot;
     if (isSearching) {
       inputBaseInputClasses = searchTextLarge ? classes.inputSearchingLarge : classes.inputSearching;
+      inputBaseInputClasses = isAndroidSizeFold() ? classes.inputDefaultFold : inputBaseInputClasses;
     } else if (alwaysOpen) {
       inputBaseInputClasses = searchTextLarge ? classes.inputDefaultLarge : classes.inputDefault;
     } else {
@@ -271,6 +269,7 @@ class FilterBaseSearch extends Component {
   }
 }
 
+// Breakpoints and media queries, have unexpected effects in Cordova, please avoid them, or condition them as isWebApp only
 const styles = theme => ({
   iconButtonRoot: {
     padding: 0,
@@ -318,6 +317,12 @@ const styles = theme => ({
     marginLeft: 8,
     padding: 0,
     width: '100%',
+    transition: 'all ease-in 150ms',
+  },
+  inputDefaultFold: {
+    padding: 0,
+    marginLeft: 8,
+    width: 75,
     transition: 'all ease-in 150ms',
   },
   inputHidden: {

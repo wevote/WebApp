@@ -471,6 +471,7 @@ class Ballot extends Component {
 
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
+    console.log('Ballot ', error);
     // Update state so the next render will show the fallback UI, We should have a 'Oh snap' page
     return { hasError: true };
   }
@@ -598,7 +599,7 @@ class Ballot extends Component {
             totalNumberOfBallotItems = raceLevelFilterItems.length;
           } else if (completionLevelFilterType !== '') {
             const list = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
-            totalNumberOfBallotItems = list.length;
+            totalNumberOfBallotItems = list ? list.length : 0;
           } else {
             totalNumberOfBallotItems = BallotStore.ballotLength;
           }
