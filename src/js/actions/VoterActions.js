@@ -321,7 +321,7 @@ export default {
     });
   },
 
-  voterAppleSignInSave (email, givenName, middleName, familyName, user) {
+  voterAppleSignInSave (email, givenName, middleName, familyName, user, identityToken) {
     // eslint-disable-next-line camelcase
     const { device: { platform: apple_platform, version: apple_os_version, model: apple_model } } = window;
     Dispatcher.loadEndpoint('appleSignInSave', {
@@ -333,6 +333,7 @@ export default {
       apple_platform,
       apple_os_version,
       apple_model,
+      identity_token: identityToken,
     });
   },
 };
