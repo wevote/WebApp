@@ -158,6 +158,10 @@ class ItemPositionStatementActionBar2020 extends Component {
     SupportActions.voterPositionCommentSave(ballotItemWeVoteId, ballotItemType, voterTextStatement);
   }
 
+  handleFocus (e) {
+    e.target.blur();
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('ItemPositionStatementActionBar2020 caught error: ', `${error} with info: `, info);
@@ -250,15 +254,16 @@ class ItemPositionStatementActionBar2020 extends Component {
             className={classes.flex}
           >
             <InputBase
-              id={`itemPositionStatementActionBarTextArea-${ballotItemWeVoteId}-${externalUniqueId}`}
-              name="voterTextStatement"
               classes={{ root: classes.input }}
-              onClick={this.togglePositionStatementModal}
-              placeholder={statementPlaceholderText}
               defaultValue={voterTextStatement}
-              disabled
+              disabled={showPositionStatementModal}
+              id={`itemPositionStatementActionBarTextArea-${ballotItemWeVoteId}-${externalUniqueId}`}
               inputRef={(tag) => { this.textarea = tag; }}
               multiline
+              name="voterTextStatement"
+              onClick={this.togglePositionStatementModal}
+              onFocus={this.handleFocus}
+              placeholder={statementPlaceholderText}
               rows={rows}
             />
             <PostSaveButton className="postsave-button">
