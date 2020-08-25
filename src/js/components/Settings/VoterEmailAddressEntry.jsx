@@ -24,6 +24,7 @@ class VoterEmailAddressEntry extends Component {
     closeSignInModal: PropTypes.func,
     hideEverythingButSignInWithEmailForm: PropTypes.bool,
     hideSignInWithEmailForm: PropTypes.bool,
+    lockOpenEmailVerificationButton: PropTypes.bool,
     toggleOtherSignInOptions: PropTypes.func,
   };
 
@@ -319,7 +320,7 @@ class VoterEmailAddressEntry extends Component {
       return LoadingWheel;
     }
 
-    const { classes, hideEverythingButSignInWithEmailForm, hideSignInWithEmailForm } = this.props;
+    const { classes, hideEverythingButSignInWithEmailForm, hideSignInWithEmailForm, lockOpenEmailVerificationButton } = this.props;
     const {
       disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, hideExistingEmailAddresses,
       secretCodeSystemLocked, showVerifyModal, signInCodeEmailSentAndWaitingForResponse,
@@ -417,7 +418,7 @@ class VoterEmailAddressEntry extends Component {
               placeholder="Type email here..."
             />
           </Paper>
-          {displayEmailVerificationButton && (
+          {(displayEmailVerificationButton || lockOpenEmailVerificationButton) && (
             <ButtonWrapper>
               <CancelButtonContainer>
                 <Button
