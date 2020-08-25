@@ -189,6 +189,7 @@ const ActivityPostEditWrapper = styled.div`
 `;
 
 const ActivityPostWrapper = styled.div`
+  font-size: 18px;
 `;
 
 const ActivitySpeakerCardWrapper = styled.div`

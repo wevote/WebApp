@@ -451,7 +451,7 @@ class SettingsNotifications extends Component {
                 </Table>
               </TableContainer>
             </NotificationsTableWrapper>
-            <VoterEmailAddressEntry hideSignInWithEmail={!addEmailInterfaceOpen} />
+            <VoterEmailAddressEntry hideSignInWithEmailForm={!addEmailInterfaceOpen} />
             {!addEmailInterfaceOpen && (
               <AddNewEmailWrapper>
                 <div className="u-cursor--pointer u-link-color" onClick={this.openAddEmailInterface}>

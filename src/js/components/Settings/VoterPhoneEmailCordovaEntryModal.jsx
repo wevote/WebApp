@@ -16,8 +16,7 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
     closeSignInModal: PropTypes.func,
-    // inModal: PropTypes.bool,
-    // toggleOtherSignInOptions: PropTypes.func,
+    toggleOtherSignInOptions: PropTypes.func,
     isPhone: PropTypes.bool,
     hideDialogForCordova: PropTypes.func,
   };
@@ -90,15 +89,15 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
           <DialogContent id="textOrEmailEntryContent" style={{ paddingTop: `${isCordova() ? 'unset' : 'undefined'}`, bottom: `${isCordova() ? 'unset' : 'undefined'}` }}>
             {isPhone ? (
               <VoterPhoneVerificationEntry
+                cancelShouldCloseModal
                 closeSignInModal={this.closeSignInModalLocal}
-                inModal
-                // toggleOtherSignInOptions={this.props.toggleNonPhoneSignInOptions}
+                hideEverythingButSignInWithPhoneForm
               />
             ) : (
               <VoterEmailAddressEntry
+                cancelShouldCloseModal
                 closeSignInModal={this.closeSignInModalLocal}
-                inModal
-                // toggleOtherSignInOptions={this.props.toggleNonEmailSignInOptions}
+                hideEverythingButSignInWithEmailForm
               />
             )}
           </DialogContent>
