@@ -218,7 +218,7 @@ const AppleLogoSvg = styled.svg`
 `;
 
 const AppleSignInText = styled.span`
-  font-size: 14pt;
+  font-size: 12pt;
   padding: none;
   border: none;
   color: ${({ enabled }) => (enabled ? '#fff' : 'grey')};

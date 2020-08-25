@@ -9,8 +9,7 @@ import AppActions from '../../actions/AppActions';
 import AppleSignIn from '../Apple/AppleSignIn';
 import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
-import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, isWebApp,
-  restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { historyPush, isCordova, isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
@@ -45,6 +44,7 @@ export default class SettingsAccount extends Component {
     super(props);
     this.state = {
       facebookAuthResponse: {},
+      hideAppleSignInButton: false,
       hideCurrentlySignedInHeader: false,
       hideDialogForCordova: false,
       hideFacebookSignInButton: false,
@@ -227,8 +227,12 @@ export default class SettingsAccount extends Component {
   };
 
   toggleNonEmailSignInOptions = () => {
-    const { hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton, hideVoterPhoneEntry } = this.state;
+    const {
+      hideAppleSignInButton, hideCurrentlySignedInHeader, hideFacebookSignInButton,
+      hideTwitterSignInButton, hideVoterPhoneEntry,
+    } = this.state;
     this.setState({
+      hideAppleSignInButton: !hideAppleSignInButton,
       hideCurrentlySignedInHeader: !hideCurrentlySignedInHeader,
       hideFacebookSignInButton: !hideFacebookSignInButton,
       hideTwitterSignInButton: !hideTwitterSignInButton,
@@ -239,8 +243,12 @@ export default class SettingsAccount extends Component {
   };
 
   toggleNonPhoneSignInOptions = () => {
-    const { hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton, hideVoterEmailAddressEntry } = this.state;
+    const {
+      hideAppleSignInButton, hideCurrentlySignedInHeader, hideFacebookSignInButton,
+      hideTwitterSignInButton, hideVoterEmailAddressEntry,
+    } = this.state;
     this.setState({
+      hideAppleSignInButton: !hideAppleSignInButton,
       hideCurrentlySignedInHeader: !hideCurrentlySignedInHeader,
       hideFacebookSignInButton: !hideFacebookSignInButton,
       hideTwitterSignInButton: !hideTwitterSignInButton,
@@ -307,7 +315,8 @@ export default class SettingsAccount extends Component {
     renderLog('SettingsAccount');  // Set LOG_RENDER_EVENTS to log all renders
     const { inModal, externalUniqueId } = this.props;
     const {
-      facebookAuthResponse, hideCurrentlySignedInHeader, hideFacebookSignInButton, hideTwitterSignInButton,
+      facebookAuthResponse, hideCurrentlySignedInHeader,
+      hideAppleSignInButton, hideFacebookSignInButton, hideTwitterSignInButton,
       hideVoterEmailAddressEntry, hideVoterPhoneEntry, isOnWeVoteRootUrl, isOnWeVoteSubdomainUrl,
       isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle, voter, hideDialogForCordova,
     } = this.state;
@@ -411,6 +420,9 @@ export default class SettingsAccount extends Component {
               </>
             ) : null
             }
+            {!hideAppleSignInButton && (
+              <AppleSignIn signedIn={voterIsSignedInWithApple} closeSignInModal={this.localCloseSignInModal} />
+            )}
             {voterIsSignedIn && !hideDialogForCordova ? (
               <div className="u-stack--md">
                 {!hideCurrentlySignedInHeader && (
@@ -418,7 +430,12 @@ export default class SettingsAccount extends Component {
                     <span className="h3 voterIsSignedIn">Currently Signed In</span>
                     <span className="u-margin-left--sm" />
                     <span className="account-edit-action" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
-                      <span className="pull-right" onClick={this.signOut.bind(this)}>sign out</span>
+                      <span
+                        className="pull-right u-link-color u-cursor--pointer"
+                        onClick={this.signOut.bind(this)}
+                      >
+                        sign out
+                      </span>
                     </span>
                   </div>
                 )}
@@ -484,34 +501,31 @@ export default class SettingsAccount extends Component {
               </div>
             ) : null
             }
-            <AppleSignIn signedIn={voterIsSignedInWithApple} closeSignInModal={this.localCloseSignInModal} />
-            {!hideVoterPhoneEntry && isWebApp() && (
+            {!hideVoterPhoneEntry && (
               <VoterPhoneVerificationEntry
                 closeSignInModal={this.localCloseSignInModal}
-                inModal={inModal}
+                hideSignInWithPhoneForm={isCordova()}
                 toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
               />
             )}
             {!hideVoterPhoneEntry && isCordova() && (
               <VoterPhoneEmailCordovaEntryModal
                 closeSignInModal={this.localCloseSignInModal}
-                inModal={inModal}
                 toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
                 isPhone
                 hideDialogForCordova={this.hideDialogForCordovaLocal}
               />
             )}
-            {!hideVoterEmailAddressEntry && isWebApp() && (
+            {!hideVoterEmailAddressEntry && (
               <VoterEmailAddressEntry
                 closeSignInModal={this.localCloseSignInModal}
-                inModal={inModal}
+                hideSignInWithEmailForm={isCordova()}
                 toggleOtherSignInOptions={this.toggleNonEmailSignInOptions}
               />
             )}
             {!hideVoterEmailAddressEntry && isCordova() && (
               <VoterPhoneEmailCordovaEntryModal
                 closeSignInModal={this.localCloseSignInModal}
-                inModal={inModal}
                 toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
                 isPhone={false}
                 hideDialogForCordova={this.hideDialogForCordovaLocal}
@@ -566,7 +580,7 @@ export default class SettingsAccount extends Component {
 
 const Main = styled.div`
   margin-top: ${({ inModal }) => (inModal ? '-16px' : '0')};
-  padding: 16px;
+  padding: ${({ inModal }) => (inModal ? '0' : '16px')};
   text-align: center;
   padding-top: 0;
   width: 100%;

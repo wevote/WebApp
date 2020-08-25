@@ -19,10 +19,11 @@ import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 
 class VoterEmailAddressEntry extends Component {
   static propTypes = {
+    cancelShouldCloseModal: PropTypes.bool,
     classes: PropTypes.object,
     closeSignInModal: PropTypes.func,
-    hideSignInWithEmail: PropTypes.bool,
-    inModal: PropTypes.bool,
+    hideEverythingButSignInWithEmailForm: PropTypes.bool,
+    hideSignInWithEmailForm: PropTypes.bool,
     toggleOtherSignInOptions: PropTypes.func,
   };
 
@@ -64,55 +65,6 @@ class VoterEmailAddressEntry extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     VoterActions.voterEmailAddressRetrieve();
   }
-
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   if (JSON.stringify(this.state.emailAddressStatus) !== JSON.stringify(nextState.emailAddressStatus)) {
-  //     // console.log('this.state.emailAddressStatus', this.state.emailAddressStatus, ', nextState.emailAddressStatus', nextState.emailAddressStatus);
-  //     return true;
-  //   }
-  //   if (this.state.disableEmailVerificationButton !== nextState.disableEmailVerificationButton) {
-  //     // console.log('this.state.disableEmailVerificationButton', this.state.disableEmailVerificationButton, ', nextState.disableEmailVerificationButton', nextState.disableEmailVerificationButton);
-  //     return true;
-  //   }
-  //   if (this.state.displayEmailVerificationButton !== nextState.displayEmailVerificationButton) {
-  //     // console.log('this.state.displayEmailVerificationButton', this.state.displayEmailVerificationButton, ', nextState.displayEmailVerificationButton', nextState.displayEmailVerificationButton);
-  //     return true;
-  //   }
-  //   if (this.state.loading !== nextState.loading) {
-  //     // console.log('this.state.loading', this.state.loading, ', nextState.loading', nextState.loading);
-  //     return true;
-  //   }
-  //   if (this.state.secretCodeSystemLocked !== nextState.secretCodeSystemLocked) {
-  //     // console.log('this.state.secretCodeSystemLocked', this.state.secretCodeSystemLocked, ', nextState.secretCodeSystemLocked', nextState.secretCodeSystemLocked);
-  //     return true;
-  //   }
-  //   if (this.state.showError !== nextState.showError) {
-  //     // console.log('this.state.showError', this.state.showError, ', nextState.showError', nextState.showError);
-  //     return true;
-  //   }
-  //   if (this.state.showVerifyModal !== nextState.showVerifyModal) {
-  //     // console.log('this.state.showVerifyModal', this.state.showVerifyModal, ', nextState.showVerifyModal', nextState.showVerifyModal);
-  //     return true;
-  //   }
-  //   if (this.state.signInCodeEmailSentAndWaitingForResponse !== nextState.signInCodeEmailSentAndWaitingForResponse) {
-  //     // console.log('this.state.signInCodeEmailSentAndWaitingForResponse', this.state.signInCodeEmailSentAndWaitingForResponse, ', nextState.signInCodeEmailSentAndWaitingForResponse', nextState.signInCodeEmailSentAndWaitingForResponse);
-  //     return true;
-  //   }
-  //   if (this.state.voterEmailAddress !== nextState.voterEmailAddress) {
-  //     // console.log('this.state.voterEmailAddress', this.state.voterEmailAddress, ', nextState.voterEmailAddress', nextState.voterEmailAddress);
-  //     return true;
-  //   }
-  //   if (this.state.voterEmailAddressListCount !== nextState.voterEmailAddressListCount) {
-  //     // console.log('this.state.voterEmailAddressListCount', this.state.voterEmailAddressListCount, ', nextState.voterEmailAddressListCount', nextState.voterEmailAddressListCount);
-  //     return true;
-  //   }
-  //   if (this.state.voterEmailAddressesVerifiedCount !== nextState.voterEmailAddressesVerifiedCount) {
-  //     // console.log('this.state.voterEmailAddressesVerifiedCount', this.state.voterEmailAddressesVerifiedCount, ', nextState.voterEmailAddressesVerifiedCount', nextState.voterEmailAddressesVerifiedCount);
-  //     return true;
-  //   }
-  //   // console.log('shouldComponentUpdate false');
-  //   return false;
-  // }
 
   componentDidUpdate () {
     const { movedInitialFocus } = this.state;
@@ -304,8 +256,8 @@ class VoterEmailAddressEntry extends Component {
 
   onCancel = () => {
     // console.log('VoterEmailAddressEntry onCancel');
-    const { inModal } = this.props;
-    if (inModal) {
+    const { cancelShouldCloseModal } = this.props;
+    if (cancelShouldCloseModal) {
       this.closeSignInModal();
     } else {
       // There are Modal display problems that don't seem to be resolvable that prevents us from returning to the full SettingsAccount modal
@@ -367,7 +319,7 @@ class VoterEmailAddressEntry extends Component {
       return LoadingWheel;
     }
 
-    const { classes, hideSignInWithEmail } = this.props;
+    const { classes, hideEverythingButSignInWithEmailForm, hideSignInWithEmailForm } = this.props;
     const {
       disableEmailVerificationButton, displayEmailVerificationButton, emailAddressStatus, hideExistingEmailAddresses,
       secretCodeSystemLocked, showVerifyModal, signInCodeEmailSentAndWaitingForResponse,
@@ -440,7 +392,7 @@ class VoterEmailAddressEntry extends Component {
       //   "You'll receive a magic link in the email on this phone. Click that link to verify this new email.";
     }
 
-    const enterEmailHtml = (
+    const enterEmailHtml = hideSignInWithEmailForm ? null : (
       <div>
         <div className="u-stack--sm u-tl">
           <strong>
@@ -536,20 +488,22 @@ class VoterEmailAddressEntry extends Component {
               <span>
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 <span>
-                  <a // eslint-disable-line
+                  <span
+                    className="u-link-color u-cursor--pointer"
                     onClick={this.setAsPrimaryEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
                   >
                     Make Primary
-                  </a>
+                  </span>
                   &nbsp;&nbsp;&nbsp;
                 </span>
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 {allowRemoveEmail && (
-                  <a // eslint-disable-line
+                  <span
+                    className="u-link-color u-cursor--pointer"
                     onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
                   >
                     <Delete />
-                  </a>
+                  </span>
                 )}
               </span>
             )}
@@ -576,20 +530,22 @@ class VoterEmailAddressEntry extends Component {
               <span>&nbsp;&nbsp;&nbsp;</span>
               {voterEmailAddressFromList.email_ownership_is_verified ?
                 null : (
-                  <a // eslint-disable-line
+                  <span
+                    className="u-link-color u-cursor--pointer"
                     onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
                   >
                     Send Verification Again
-                  </a>
+                  </span>
                 )}
 
               <span>&nbsp;&nbsp;&nbsp;</span>
               {allowRemoveEmail && (
-                <a // eslint-disable-line
+                <span
+                  className="u-link-color u-cursor--pointer"
                   onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
                 >
                   <Delete />
-                </a>
+                </span>
               )}
             </div>
           </div>
@@ -601,9 +557,13 @@ class VoterEmailAddressEntry extends Component {
 
     return (
       <Wrapper isWeb={isWebApp()}>
-        {!hideExistingEmailAddresses ? (
+        {(hideEverythingButSignInWithEmailForm || hideExistingEmailAddresses) ? (
+          <span>
+            {emailAddressStatusHtml}
+          </span>
+        ) : (
           <div>
-            {verifiedEmailsFound && !this.props.inModal ? (
+            {verifiedEmailsFound ? (
               <EmailSection isWeb={isWebApp()}>
                 <span className="h3">
                   Your Email
@@ -617,19 +577,15 @@ class VoterEmailAddressEntry extends Component {
                 {emailAddressStatusHtml}
               </span>
             )}
-            {unverifiedEmailsFound && !this.props.inModal && (
+            {unverifiedEmailsFound && (
               <EmailSection isWeb={isWebApp()}>
                 <span className="h3">Emails to Verify</span>
                 {toVerifyEmailListHtml}
               </EmailSection>
             )}
           </div>
-        ) : (
-          <span>
-            {emailAddressStatusHtml}
-          </span>
         )}
-        {!hideSignInWithEmail && (
+        {!hideSignInWithEmailForm && (
           <EmailSection isWeb={isWebApp()}>
             {enterEmailHtml}
           </EmailSection>
