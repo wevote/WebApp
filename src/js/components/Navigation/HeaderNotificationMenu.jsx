@@ -42,7 +42,7 @@ class HeaderNotificationMenu extends Component {
     // console.log('allActivityNotices:', allActivityNotices);
     const activityNoticeIdListNotSeen = allActivityNotices
       .filter(activityNotice => activityNotice.activity_notice_seen === false)
-      .map(activityNotice => activityNotice.id);
+      .map(activityNotice => activityNotice.activity_notice_id);
     // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
     const menuItemList = this.generateMenuItemList(allActivityNotices);
     this.setState({
@@ -117,9 +117,9 @@ class HeaderNotificationMenu extends Component {
           <MenuItem
             className={activityNotice.activity_notice_clicked ? classes.menuItemClicked : classes.menuItemNotClicked}
             data-toggle="dropdown"
-            id={`activityNoticeId${activityNotice.id}`}
-            key={`activityNoticeId${activityNotice.id}`}
-            onClick={() => this.onMenuItemClick(activityNotice.speaker_organization_we_vote_id, activityNotice.id)}
+            id={`activityNoticeId${activityNotice.activity_notice_id}`}
+            key={`activityNoticeId${activityNotice.activity_notice_id}`}
+            onClick={() => this.onMenuItemClick(activityNotice.speaker_organization_we_vote_id, activityNotice.activity_notice_id)}
           >
             <>
               <MenuItemPhoto>
