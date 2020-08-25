@@ -5,7 +5,7 @@ class ActivityStore extends ReduceStore {
   getInitialState () {
     return {
       allActivity: [],
-      allCachedActivityTidbitsById: {},
+      allCachedActivityTidbitsByKey: {},
       allActivityNotices: [],
     };
   }
@@ -18,34 +18,38 @@ class ActivityStore extends ReduceStore {
     return this.getState().allActivityNotices || [];
   }
 
-  getActivityTidbitById (activityTidbitId) {
-    return this.getState().allCachedActivityTidbitsById[activityTidbitId] || {};
+  getActivityTidbitByKey (activityTidbitKey) {
+    return this.getState().allCachedActivityTidbitsByKey[activityTidbitKey] || {};
   }
 
   reduce (state, action) {
-    let { allCachedActivityTidbitsById } = state;
+    let { allCachedActivityTidbitsByKey } = state;
     let incomingActivityList = [];
-    let activityTidbitId = '';
-    let allActivity = [];
+    let activityPost = {};
+    let activityTidbitKey = '';
+    let allActivity = state.allActivity || [];
+    let allActivityModified = [];
+    let priorPostFound = false;
     switch (action.type) {
       case 'activityListRetrieve':
         if (!action.res || !action.res.success) return state;
         incomingActivityList = action.res.activity_list || [];
         incomingActivityList.forEach((activityTidbit) => {
-          activityTidbitId = `${activityTidbit.kind_of_activity}-${activityTidbit.id}`;
-          if (!allCachedActivityTidbitsById) {
-            allCachedActivityTidbitsById = {};
+          activityTidbitKey = `${activityTidbit.kind_of_activity}-${activityTidbit.id}`;  // activityTidbitKey generated here
+          if (!allCachedActivityTidbitsByKey) {
+            allCachedActivityTidbitsByKey = {};
           }
-          if (!allCachedActivityTidbitsById[activityTidbitId]) {
-            allCachedActivityTidbitsById[activityTidbitId] = {};
+          if (!allCachedActivityTidbitsByKey[activityTidbitKey]) {
+            allCachedActivityTidbitsByKey[activityTidbitKey] = {};
           }
-          allCachedActivityTidbitsById[activityTidbitId] = activityTidbit;
+          allCachedActivityTidbitsByKey[activityTidbitKey] = activityTidbit;
         });
         // Temp
         allActivity = action.res.activity_list || [];
         return {
           ...state,
           allActivity,
+          allCachedActivityTidbitsByKey,
         };
 
       case 'activityNoticeListRetrieve':
@@ -53,6 +57,34 @@ class ActivityStore extends ReduceStore {
         return {
           ...state,
           allActivityNotices: action.res.activity_notice_list,
+        };
+
+      case 'activityPostSave':
+        if (!action.res || !action.res.success) return state;
+        activityPost = action.res;
+        activityTidbitKey = `${activityPost.kind_of_activity}-${activityPost.id}`;  // activityTidbitKey generated here
+        if (!allCachedActivityTidbitsByKey) {
+          allCachedActivityTidbitsByKey = {};
+        }
+        allCachedActivityTidbitsByKey[activityTidbitKey] = activityPost;
+        priorPostFound = false;
+        allActivityModified = [];
+        for (let count = 0; count < allActivity.length; count++) {
+          if (allActivity[count].activity_post_id === activityPost.activity_post_id) {
+            // Replace existing entry
+            allActivityModified.push(activityPost);
+            priorPostFound = true;
+          } else {
+            allActivityModified.push(allActivity[count]);
+          }
+        }
+        if (!priorPostFound) {
+          allActivityModified.unshift(activityPost);
+        }
+        return {
+          ...state,
+          allActivity: allActivityModified,
+          allCachedActivityTidbitsByKey,
         };
 
       case 'voterSignOut':

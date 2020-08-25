@@ -6,6 +6,7 @@ import { Card, CircularProgress } from '@material-ui/core';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
 import ActivityTidbitItem from '../../components/Activity/ActivityTidbitItem';
+import ActivityPostAdd from '../../components/Activity/ActivityPostAdd';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
@@ -70,7 +71,6 @@ class News extends Component {
 
   onActivityStoreChange () {
     const activityTidbitsList = ActivityStore.allActivity();
-    // console.log('activityTidbitsList:', activityTidbitsList);
     let activityTidbit = {};
     for (let count = 0; count < activityTidbitsList.length; count++) {
       activityTidbit = activityTidbitsList[count];
@@ -193,9 +193,16 @@ class News extends Component {
         <div className="row" style={unsetSomeRowStylesIfCordova}>
           <div className="col-sm-12 col-md-8" style={unsetSomeRowStylesIfCordova}>
             <>
+              <ActivityPostAddWrapper>
+                <ActivityPostAdd />
+              </ActivityPostAddWrapper>
               {activityTidbitsList.map((oneActivityTidbit) => {
-                // console.log('oneActivityTidbit position_we_vote_id:', oneActivityTidbit.position_we_vote_id);
+                // console.log('oneActivityTidbit:', oneActivityTidbit);
                 // console.log('numberOfActivityTidbitsDisplayed:', numberOfActivityTidbitsDisplayed);
+                if (!oneActivityTidbit || !oneActivityTidbit.speaker_name) {
+                  // console.log('Missing oneActivityTidbit.speaker_name:', oneActivityTidbit);
+                  return null;
+                }
                 if (numberOfActivityTidbitsDisplayed >= numberOfActivityTidbitsToDisplay) {
                   return null;
                 }
@@ -206,7 +213,7 @@ class News extends Component {
                     <Card className="card" style={unsetSideMarginsIfCordova}>
                       <CardNewsWrapper className="card-main" id="steveCardNewsWrapper-main" style={unsetMarginsIfCordova}>
                         <ActivityTidbitItem
-                          activityTidbitId={`${oneActivityTidbit.kind_of_activity}-${oneActivityTidbit.id}`}
+                          activityTidbitKey={`${oneActivityTidbit.kind_of_activity}-${oneActivityTidbit.id}`}  // activityTidbitKey generated here
                         />
                       </CardNewsWrapper>
                     </Card>
@@ -314,6 +321,9 @@ class News extends Component {
     );
   }
 }
+
+const ActivityPostAddWrapper = styled.div`
+`;
 
 const ActivityTidbitWrapper = styled.div`
 `;

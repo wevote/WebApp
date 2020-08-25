@@ -23,4 +23,13 @@ export default {
         activity_notice_id_list_seen: activityNoticeIdListSeen,
       });
   },
+  activityPostSave (activityPostId = 0, statementText = null, visibilitySetting = 'FRIENDS_ONLY') {
+    // console.log('activityNoticeListRetrieve');
+    Dispatcher.loadEndpoint('activityPostSave',
+      {
+        activity_post_id: activityPostId,
+        statement_text: statementText,
+        visibility_setting: visibilitySetting,
+      });
+  },
 };

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ActivityStore from '../../stores/ActivityStore';
 import avatarGenericIcon from '../../../img/global/svg-icons/avatar-generic.svg';
 import { cordovaDot } from '../../utils/cordovaUtils';
+import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
@@ -14,7 +15,8 @@ import VoterStore from '../../stores/VoterStore';
 
 class ActivitySpeakerCard extends Component {
   static propTypes = {
-    activityTidbitId: PropTypes.string.isRequired,
+    activityTidbitKey: PropTypes.string.isRequired,
+    showTwitterInformation: PropTypes.bool,
   };
 
   constructor (props) {
@@ -22,6 +24,8 @@ class ActivitySpeakerCard extends Component {
     this.state = {
       actionDescription: null,
       activityTimeFromDate: '',
+      isActivityNoticeSeed: false,
+      isActivityPost: false,
       speakerName: '',
       speakerOrganizationWeVoteId: '',
       speakerProfileImageUrlMedium: '',
@@ -41,41 +45,54 @@ class ActivitySpeakerCard extends Component {
   }
 
   onActivityStoreChange () {
-    const { activityTidbitId } = this.props;
-    const activityTidbit = ActivityStore.getActivityTidbitById(activityTidbitId);
+    const { activityTidbitKey } = this.props;
+    const activityTidbit = ActivityStore.getActivityTidbitByKey(activityTidbitKey);
     const {
-      date_of_notice: dateOfNotice,
+      date_created: dateOfNotice,
+      kind_of_activity: kindOfActivity,
       speaker_name: speakerName,
       speaker_organization_we_vote_id: speakerOrganizationWeVoteId,
       speaker_profile_image_url_medium: speakerProfileImageUrlMedium,
       speaker_twitter_handle: speakerTwitterHandle,
       speaker_twitter_followers_count: speakerTwitterFollowersCount,
       speaker_voter_we_vote_id: speakerVoterWeVoteId,
+      visibility_is_public: visibilityIsPublic,
     } = activityTidbit;
     const voter = VoterStore.getVoter();
-    // console.log('speakerVoterWeVoteId:', speakerVoterWeVoteId, ', voter.we_vote_id:', voter.we_vote_id);
     const speakerIsVoter = (voter.we_vote_id === speakerVoterWeVoteId);
+    let isActivityNoticeSeed = false;
+    let isActivityPost = false;
+    if (kindOfActivity === 'ACTIVITY_NOTICE_SEED') {
+      isActivityNoticeSeed = true;
+    } else if (kindOfActivity === 'ACTIVITY_POST') {
+      isActivityPost = true;
+    }
     const activityTimeFromDate = timeFromDate(dateOfNotice);
     const actionDescription = <span>added a new opinion.</span>;
     this.setState({
       actionDescription,
       activityTimeFromDate,
+      isActivityNoticeSeed,
+      isActivityPost,
       speakerName,
       speakerOrganizationWeVoteId,
       speakerProfileImageUrlMedium,
       speakerTwitterHandle,
       speakerTwitterFollowersCount,
       speakerIsVoter,
+      visibilityIsPublic,
     });
   }
 
   render () {
     renderLog('ActivitySpeakerCard');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activityTidbitId } = this.props;
+    const { activityTidbitKey, showTwitterInformation } = this.props;
     const {
-      actionDescription, activityTimeFromDate, speakerIsVoter,
+      actionDescription, activityTimeFromDate,
+      isActivityNoticeSeed, isActivityPost, speakerIsVoter,
       speakerName, speakerOrganizationWeVoteId,
       speakerProfileImageUrlMedium, speakerTwitterFollowersCount, speakerTwitterHandle,
+      visibilityIsPublic,
     } = this.state;
     if (!speakerName) {
       return <div>{LoadingWheel}</div>;
@@ -90,7 +107,7 @@ class ActivitySpeakerCard extends Component {
           delay={{ show: 700, hide: 100 }}
           popoverComponent={organizationPopoverCard}
           placement="auto"
-          id={`speakerAvatarOrganizationPopover-${activityTidbitId}`}
+          id={`speakerAvatarOrganizationPopover-${activityTidbitKey}`}
         >
           {(speakerProfileImageUrlMedium) ? (
             <SpeakerAvatar>
@@ -103,30 +120,35 @@ class ActivitySpeakerCard extends Component {
           )}
         </StickyPopover>
         <SpeakerActionTimeWrapper>
-          <SpeakerAndActionWrapper>
-            <StickyPopover
-              delay={{ show: 700, hide: 100 }}
-              popoverComponent={organizationPopoverCard}
-              placement="auto"
-              id={`speakerNameOrganizationPopover-${activityTidbitId}`}
-            >
+          <StickyPopover
+            delay={{ show: 700, hide: 100 }}
+            popoverComponent={organizationPopoverCard}
+            placement="auto"
+            id={`speakerNameOrganizationPopover-${activityTidbitKey}`}
+          >
+            <SpeakerAndActionWrapper>
               <SpeakerNameWrapper>
                 {speakerIsVoter ? 'You' : speakerName}
               </SpeakerNameWrapper>
-            </StickyPopover>
-            {(actionDescription) && (
-              <ActionDescriptionWrapper>
-                {actionDescription}
-              </ActionDescriptionWrapper>
-            )}
-          </SpeakerAndActionWrapper>
+              {(actionDescription && isActivityNoticeSeed) && (
+                <ActionDescriptionWrapper>
+                  {actionDescription}
+                </ActionDescriptionWrapper>
+              )}
+            </SpeakerAndActionWrapper>
+          </StickyPopover>
           <SecondLineWrapper>
-            {(activityTimeFromDate) && (
-              <ActivityTime>
-                {activityTimeFromDate}
-              </ActivityTime>
-            )}
-            {(speakerTwitterHandle) && (
+            <TimeAndFriendsOnlyWrapper>
+              {(activityTimeFromDate) && (
+                <ActivityTime>
+                  {activityTimeFromDate}
+                </ActivityTime>
+              )}
+              {(isActivityPost) && (
+                <FriendsOnlyIndicator isFriendsOnly={!visibilityIsPublic} />
+              )}
+            </TimeAndFriendsOnlyWrapper>
+            {(speakerTwitterHandle && showTwitterInformation) && (
               <OpenExternalWebSite
                 linkIdAttribute="speakerTwitterHandle"
                 url={`https://twitter.com/${speakerTwitterHandle}`}
@@ -163,12 +185,14 @@ const ActionDescriptionWrapper = styled.div`
 
 const ActivityImage = styled.img`
   border-radius: 4px;
+  width: 50px;
 `;
 
 const ActivityTime = styled.div`
   color: #999;
   font-size: 11px;
   font-weight: 400;
+  margin-right: 6px;
 `;
 
 const SpeakerAvatar = styled.div`
@@ -198,14 +222,21 @@ const SpeakerNameWrapper = styled.div`
   vertical-align: middle;
 `;
 
+const TimeAndFriendsOnlyWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: start;
+`;
+
 const TwitterHandleWrapper = styled.span`
   margin-right: 10px;
 `;
 
-const TwitterName = styled.div`
+const TwitterName = styled.span`
 `;
 
 const Wrapper = styled.div`
+  align-items: flex-start;
   display: flex;
   font-size: 14px;
   justify-content: start;
