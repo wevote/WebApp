@@ -59,6 +59,8 @@ export function getApplicationViewBooleans (pathname) {
     voteMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot')) {
     contentFullWidthMode = false;
+  } else if (pathnameLowerCase.startsWith('/news')) {
+    contentFullWidthMode = false;
   } else if (stringContains('/settings/positions', pathnameLowerCase)) {
     // contentFullWidthMode = true;
     voterGuideCreatorMode = true;

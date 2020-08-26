@@ -20,6 +20,7 @@ import {
   restoreStylesAfterCordovaKeyboard,
 } from '../../utils/cordovaUtils';
 import stockAvatar from '../../../img/global/icons/avatar-generic.png';
+import { generateActivityTidbitKeyWithPrefix } from '../../utils/activityUtils';
 import VoterStore from '../../stores/VoterStore';
 
 class ActivityPostModal extends Component {
@@ -76,7 +77,7 @@ class ActivityPostModal extends Component {
 
   onActivityStoreChange () {
     const { activityPostId } = this.props;
-    const activityTidbitKey = `ACTIVITY_POST-${activityPostId}`;  // activityTidbitKey generated here
+    const activityTidbitKey = generateActivityTidbitKeyWithPrefix('ActPost', activityPostId);
     const activityPost = ActivityStore.getActivityTidbitByKey(activityTidbitKey);
     if (activityPost) {
       const {

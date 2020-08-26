@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ActivityTidbitDrawer from '../Activity/ActivityTidbitDrawer';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
@@ -59,9 +60,11 @@ export default class Header extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.activityTidbitKeyForDrawer !== nextState.activityTidbitKeyForDrawer) return true;
     if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) return true;
     if (this.props.pathname !== nextProps.pathname) return true;
     if (this.state.sharedItemCode !== nextState.sharedItemCode) return true;
+    if (this.state.showActivityTidbitDrawer !== nextState.showActivityTidbitDrawer) return true;
     if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) return true;
     if (this.state.showVoterPlanModal !== nextState.showVoterPlanModal) return true;
     if (this.state.showOrganizationModal !== nextState.showOrganizationModal) return true;
@@ -78,8 +81,10 @@ export default class Header extends Component {
   onAppStoreChange () {
     // console.log('Header, onAppStoreChange');
     this.setState({
+      activityTidbitKeyForDrawer: AppStore.activityTidbitKeyForDrawer(),
       organizationModalBallotItemWeVoteId: AppStore.organizationModalBallotItemWeVoteId(),
       sharedItemCode: AppStore.getSharedItemCode(),
+      showActivityTidbitDrawer: AppStore.showActivityTidbitDrawer(),
       showHowItWorksModal: AppStore.showHowItWorksModal(),
       showVoterPlanModal: AppStore.showVoterPlanModal(),
       showOrganizationModal: AppStore.showOrganizationModal(),
@@ -90,6 +95,10 @@ export default class Header extends Component {
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('Header caught error: ', `${error} with info: `, info);
+  }
+
+  closeActivityTidbitDrawer () {
+    AppActions.setShowActivityTidbitDrawer(false);
   }
 
   closeHowItWorksModal () {
@@ -121,8 +130,12 @@ export default class Header extends Component {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
-    const { sharedItemCode, showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal } = this.state;
-    const { friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
+    const {
+      activityTidbitKeyForDrawer, sharedItemCode, showActivityTidbitDrawer,
+      showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal,
+    } = this.state;
+    const {
+      friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
       showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuide, showBackToVoterGuides,
     } = getApplicationViewBooleans(pathname);
@@ -266,12 +279,12 @@ export default class Header extends Component {
           )}
           {showOrganizationModal && (
             <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                pathname={pathname}
-                show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-                modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+              modalOpen={showOrganizationModal}
+              toggleFunction={this.closeOrganizationModal}
             />
           )}
           {showSharedItemModal && (
@@ -320,12 +333,12 @@ export default class Header extends Component {
           )}
           {showOrganizationModal && (
             <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                pathname={pathname}
-                show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-                modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+              modalOpen={showOrganizationModal}
+              toggleFunction={this.closeOrganizationModal}
             />
           )}
           {showSharedItemModal && (
@@ -369,12 +382,12 @@ export default class Header extends Component {
           )}
           {showOrganizationModal && (
             <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                pathname={pathname}
-                show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-                modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+              modalOpen={showOrganizationModal}
+              toggleFunction={this.closeOrganizationModal}
             />
           )}
           {showSharedItemModal && (
@@ -424,6 +437,14 @@ export default class Header extends Component {
               }
             </div>
           </div>
+          {showActivityTidbitDrawer && (
+            <ActivityTidbitDrawer
+              activityTidbitKey={activityTidbitKeyForDrawer}
+              show={showActivityTidbitDrawer}
+              modalOpen={showActivityTidbitDrawer}
+              toggleFunction={this.closeActivityTidbitDrawer}
+            />
+          )}
           {showHowItWorksModal && (
             <HowItWorksModal
               pathname={pathname}
@@ -440,12 +461,12 @@ export default class Header extends Component {
           )}
           {showOrganizationModal && (
             <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                pathname={pathname}
-                show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-                modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+              modalOpen={showOrganizationModal}
+              toggleFunction={this.closeOrganizationModal}
             />
           )}
           {showSharedItemModal && (
