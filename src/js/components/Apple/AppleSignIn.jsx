@@ -141,6 +141,7 @@ class AppleSignIn extends Component {
     const isWeb = isWebApp();
     const { signedIn } = this.props;
     let enabled = true;
+    const tinyScreen = isWeb && window.innerWidth < 300;  // Galaxy fold, folded
 
     if (isAndroid()) {
       // console.log('Sign in with Apple is not available on Android');
@@ -165,6 +166,7 @@ class AppleSignIn extends Component {
         <AppleSignInContainer enabled={enabled}>
           <AppleSignInButton type="submit"
                              isWeb={isWeb}
+                             tinyScreen={tinyScreen}
                              onClick={() => this.signInClicked(enabled)}
           >
             <AppleLogo signedIn={signedIn} enabled={enabled} />
@@ -209,6 +211,10 @@ export function AppleLogo (parameters) {
   );
 }
 
+/*
+Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
+https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
+*/
 const AppleLogoSvg = styled.svg`
   position: absolute;
   left: ${({ signedIn }) => (signedIn ? '29%' : '5%')};
@@ -217,17 +223,25 @@ const AppleLogoSvg = styled.svg`
   color: ${({ enabled }) => (enabled ? '#fff' : 'grey')};
 `;
 
+/*
+Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
+https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
+*/
 const AppleSignInText = styled.span`
-  font-size: 12pt;
-  padding: none;
+  font-size: 18px;
+  padding: 0;
   border: none;
   color: ${({ enabled }) => (enabled ? '#fff' : 'grey')};
 `;
 
+/*
+Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
+https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
+*/
 const AppleSignInButton = styled.button`
   margin-top: ${({ isWeb }) => (isWeb ? '8px' : '10px')};
   border: none;
-  padding-left: 40px;
+  padding-left: ${({ tinyScreen }) => (tinyScreen ? '20px' : '40px')};
   background-color: #000;
   color: #fff;
 `;
@@ -253,6 +267,10 @@ const AppleSignInContainer  = styled.div`
   width: 100%;
 `;
 
+/*
+Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
+https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
+*/
 const AppleSignedInContainer  = styled.div`
   background-color: #000;
   border-color: #000;

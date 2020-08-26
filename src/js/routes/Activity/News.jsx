@@ -184,6 +184,7 @@ class News extends Component {
       marginRight: 0,
       marginLeft: 0,
     } : {};
+    const reduceConstraintsIfCordova = isCordova() ? { margin: '5px 0' } : {};
     const expandSideMarginsIfCordova = isCordova() ? { marginRight: 23, marginLeft: 23 } : {};
 
     return (
@@ -193,7 +194,7 @@ class News extends Component {
         <div className="row" style={unsetSomeRowStylesIfCordova}>
           <div className="col-sm-12 col-md-8" style={unsetSomeRowStylesIfCordova}>
             <>
-              <ActivityPostAddWrapper>
+              <ActivityPostAddWrapper style={reduceConstraintsIfCordova}>
                 <ActivityPostAdd />
               </ActivityPostAddWrapper>
               {activityTidbitsList.map((oneActivityTidbit) => {

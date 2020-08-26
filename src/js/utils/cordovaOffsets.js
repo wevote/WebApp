@@ -135,6 +135,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ready:                 return '7px';
         case enums.settingsAccount:       return '84px';
         case enums.settingsHamburger:     return '81px';
+        case enums.settingsNotifications: return '79px';
         case enums.settingsSubscription:  return '90px';
         case enums.settingsVoterGuideLst: return '98px';
         case enums.settingsWild:          return '63px';
@@ -158,6 +159,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '42px';
         case enums.moreAbout:             return '22px';
         case enums.settingsAccount:       return '81px';
+        case enums.settingsNotifications: return '82px';
         case enums.moreTerms:             return '60px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
@@ -182,6 +184,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreAbout:             return '51px';
         case enums.moreTerms:             return '44px';
         case enums.moreTools:             return '44px';
+        case enums.news:                  return '19px';
         case enums.officeWild:            return '94px';
         case enums.opinions:              return '14px';
         case enums.ready:                 return '24px';
@@ -486,7 +489,10 @@ export function cordovaVoterGuideTopPadding () {
     } else if (hasIPhoneNotch()) {
       return '28px';
     } else if (isIPad()) {
-      return '0px';
+      switch (pageEnumeration()) {
+        case enums.news:             return '19px';
+        default:                     return '0px';
+      }
     }
   } else if (isAndroid()) {
     return '0px';
@@ -622,6 +628,7 @@ export function cordovaTopHeaderTopMargin () {
           case enums.ballotVote:      style.marginTop = '16px'; break;
           case enums.settingsAccount:       style.marginTop = '31px'; break;
           case enums.settingsSubscription:  style.marginTop = '34px'; break;
+          case enums.settingsNotifications: style.marginTop = '36px'; break;
           case enums.settingsWild:          style.marginTop = '38px'; break;
           case enums.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp-voter-guide-creator
           case enums.voterGuideWild:   style.marginTop = '38px'; break; // Any page with btcand or btmeas
