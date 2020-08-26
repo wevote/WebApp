@@ -31,6 +31,7 @@ export const enums = {
   ready: 205,
   twitterSignIn: 206,
   news: 207,
+  twitterIdMFollowers: 208,
   defaultVal: 1000,
 };
 
@@ -110,6 +111,8 @@ export function pageEnumeration () {
     return enums.twitterSignIn;
   } else if (href.indexOf('/index.html#/news') > 0) {
     return enums.news;
+  } else if (href.indexOf('/m/followers') > 0 || href.indexOf('/m/friends') > 0 || href.indexOf('/m/following') > 0) {
+    return enums.twitterIdMFollowers;
   }
   return enums.defaultVal;
 }

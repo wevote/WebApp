@@ -610,7 +610,8 @@ export function cordovaTopHeaderTopMargin () {
           case enums.ballotVote:      style.marginTop = '19px'; break;
           case enums.settingsWild:    style.marginTop = '22px'; break;
           case enums.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp-voter-guide-creator
-          default:                    style.marginTop = '19px'; break;
+          case enums.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
+          default:                          style.marginTop = '19px'; break;
         }
       } else if (hasIPhoneNotch()) {
         switch (pageEnumeration()) {
@@ -621,7 +622,7 @@ export function cordovaTopHeaderTopMargin () {
           case enums.valuesList:      style.marginTop = '38px'; break;
           case enums.values:          style.marginTop = '12px'; break;
           case enums.valueWild:       style.marginTop = '32px'; break;
-          case enums.opinions:        style.marginTop = '36px'; break;
+          case enums.opinions:        style.marginTop = '17px'; break;
           case enums.friends:         style.marginTop = '16px'; break;
           case enums.ballotSmHdrWild: style.marginTop = '16px'; break;
           case enums.ballotLgHdrWild: style.marginTop = '16px'; break;
@@ -631,8 +632,9 @@ export function cordovaTopHeaderTopMargin () {
           case enums.settingsNotifications: style.marginTop = '36px'; break;
           case enums.settingsWild:          style.marginTop = '38px'; break;
           case enums.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp-voter-guide-creator
-          case enums.voterGuideWild:   style.marginTop = '38px'; break; // Any page with btcand or btmeas
-          default:                     style.marginTop = '16px'; break;
+          case enums.voterGuideWild:        style.marginTop = '38px'; break; // Any page with btcand or btmeas
+          case enums.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
+          default:                          style.marginTop = '16px'; break;
         }
       } else if (isIPad()) {
         style.marginTop = '0px';

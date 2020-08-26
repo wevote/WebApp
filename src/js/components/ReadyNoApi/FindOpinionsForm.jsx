@@ -6,11 +6,7 @@ import { IconButton, InputBase } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
-import {
-  blurTextFieldAndroid,
-  focusTextFieldAndroid, historyPush,
-  isCordova,
-} from '../../utils/cordovaUtils';
+import { blurTextFieldAndroid, focusTextFieldAndroid, historyPush, isAndroid, isCordova, isIOS } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
@@ -96,6 +92,26 @@ class FindOpinionsForm extends Component {
     }
   }
 
+  inputFieldReceivesFocus = () => {
+    if (isAndroid()) {
+      focusTextFieldAndroid();
+    } else if (isIOS()) {
+      const { $ } = window;
+      $("div[class^='Ready__EditAddressWrapper']").hide();
+      $("div[class^='ReadyTaskStyles__ReadyCard']").hide();
+    }
+  }
+
+  textFieldWillBlur = () => {
+    if (isAndroid()) {
+      blurTextFieldAndroid();
+    } else if (isIOS()) {
+      const { $ } = window;
+      $("div[class^='Ready__EditAddressWrapper']").show();
+      $("div[class^='ReadyTaskStyles__ReadyCard']").show();
+    }
+  }
+
   goToSearchPage = () => {
     const { searchText } = this.state;
     if (searchText) {
@@ -140,9 +156,9 @@ class FindOpinionsForm extends Component {
               id={`findCandidatesAndOpinionsSearch-${uniqueExternalId}`}
               classes={{ input: inputBaseInputClasses, root: inputBaseRootClasses }}
               inputRef={(input) => { this.searchInput = input; }}
-              onBlur={blurTextFieldAndroid}
+              onBlur={this.textFieldWillBlur}
               onChange={this.handleSearchTextChange}
-              onFocus={focusTextFieldAndroid}
+              onFocus={this.inputFieldReceivesFocus}
               onKeyDown={this.handleKeyPress}
               placeholder="Search"
               value={searchText}
