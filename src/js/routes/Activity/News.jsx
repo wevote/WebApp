@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Card, CircularProgress } from '@material-ui/core';
 import ActivityActions from '../../actions/ActivityActions';
@@ -9,13 +10,16 @@ import ActivityTidbitItem from '../../components/Activity/ActivityTidbitItem';
 import ActivityPostAdd from '../../components/Activity/ActivityPostAdd';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppActions from '../../actions/AppActions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
+import { generateActivityTidbitKey } from '../../utils/activityUtils';
+import { cordovaDot, historyPush, isCordova } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import FriendActions from '../../actions/FriendActions';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import LoadingWheel from '../../components/LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -33,12 +37,15 @@ const STARTING_NUMBER_OF_ACTIVITY_TIDBITS_TO_DISPLAY = 10;
 
 
 class News extends Component {
-  static propTypes = {};
+  static propTypes = {
+    params: PropTypes.object,
+  };
 
   constructor (props) {
     super(props);
     this.state = {
       activityTidbitsList: [],
+      componentDidMountFinished: false,
       dateVoterJoined: '',
       activityTidbitsListLength: 0,
       loadingMoreItems: false,
@@ -48,25 +55,56 @@ class News extends Component {
       voterSignedInFacebook: false,
       voterSignedInTwitter: false,
     };
+    this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
-    this.onActivityStoreChange();
-    this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
-    ActivityActions.activityListRetrieve();
-    FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
-    if (!BallotStore.allBallotItemsRetrieveCalled()) {
-      BallotActions.voterBallotItemsRetrieve(0, '', '');
+    const activityTidbitKeyForDrawer = this.props.params.activity_tidbit_key || '';
+    let redirectInProgress = false;
+    if (activityTidbitKeyForDrawer) {
+      const { pathname } = window.location;
+      const destinationLocalUrlWithModal = `/news/a/${activityTidbitKeyForDrawer}`;
+      if (pathname && pathname !== destinationLocalUrlWithModal) {
+        historyPush(destinationLocalUrlWithModal);
+        redirectInProgress = true;
+      } else {
+        AppActions.setActivityTidbitKeyForDrawer(activityTidbitKeyForDrawer);
+        AppActions.setShowActivityTidbitDrawer(true);
+        this.setState({
+          componentDidMountFinished: true,
+        });
+      }
     }
-    OrganizationActions.organizationsFollowedRetrieve();
-    AnalyticsActions.saveActionNetwork(VoterStore.electionId());
+    if (!redirectInProgress) {
+      this.onActivityStoreChange();
+      this.onVoterStoreChange();
+      this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+      this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
+      ActivityActions.activityListRetrieve();
+      FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
+      if (!BallotStore.allBallotItemsRetrieveCalled()) {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
+      }
+      OrganizationActions.organizationsFollowedRetrieve();
+      AnalyticsActions.saveActionNetwork(VoterStore.electionId());
+      window.addEventListener('scroll', this.onScroll);
+      this.setState({
+        componentDidMountFinished: true,
+      });
+    }
   }
 
   componentWillUnmount () {
-    this.activityStoreListener.remove();
-    this.voterStoreListener.remove();
+    const { componentDidMountFinished } = this.state;
+    if (componentDidMountFinished) {
+      this.activityStoreListener.remove();
+      this.voterStoreListener.remove();
+      window.removeEventListener('scroll', this.onScroll);
+      if (this.positionItemTimer) {
+        clearTimeout(this.positionItemTimer);
+        this.positionItemTimer = null;
+      }
+    }
   }
 
   onActivityStoreChange () {
@@ -102,28 +140,31 @@ class News extends Component {
   }
 
   onScroll () {
-    const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
-    if (showMoreItemsElement) {
-      const {
-        activityTidbitsListLength, isSearching, numberOfActivityTidbitsToDisplay,
-        totalNumberOfPositionSearchResults,
-      } = this.state;
+    const { componentDidMountFinished } = this.state;
+    if (componentDidMountFinished) {
+      const showMoreItemsElement = document.querySelector('#showMoreItemsId');
+      if (showMoreItemsElement) {
+        const {
+          activityTidbitsListLength, isSearching, numberOfActivityTidbitsToDisplay,
+          totalNumberOfPositionSearchResults,
+        } = this.state;
 
-      if ((isSearching && (numberOfActivityTidbitsToDisplay < totalNumberOfPositionSearchResults)) ||
+        if ((isSearching && (numberOfActivityTidbitsToDisplay < totalNumberOfPositionSearchResults)) ||
           (!isSearching && (numberOfActivityTidbitsToDisplay < activityTidbitsListLength))) {
-        if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
-          this.setState({ loadingMoreItems: true });
-          this.increaseNumberOfPositionItemsToDisplay();
+          if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
+            this.setState({ loadingMoreItems: true });
+            this.increaseNumberOfActivityTidbitsToDisplay();
+          } else {
+            this.setState({ loadingMoreItems: false });
+          }
         } else {
           this.setState({ loadingMoreItems: false });
         }
-      } else {
-        this.setState({ loadingMoreItems: false });
       }
     }
   }
 
-  increaseNumberOfPositionItemsToDisplay = () => {
+  increaseNumberOfActivityTidbitsToDisplay = () => {
     let { numberOfActivityTidbitsToDisplay } = this.state;
     // console.log('Number of position items before increment: ', numberOfActivityTidbitsToDisplay);
 
@@ -159,12 +200,12 @@ class News extends Component {
   render () {
     renderLog('News');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      activityTidbitsList, dateVoterJoined, activityTidbitsListLength,
+      activityTidbitsList, componentDidMountFinished, dateVoterJoined, activityTidbitsListLength,
       loadingMoreItems, numberOfActivityTidbitsToDisplay,
       voter, voterIsSignedIn, voterSignedInFacebook, voterSignedInTwitter,
     } = this.state;
     // console.log('voter:', voter);
-    if (!voter) {
+    if (!voter || !componentDidMountFinished) {
       return LoadingWheel;
     }
     let numberOfActivityTidbitsDisplayed = 0;
@@ -176,16 +217,17 @@ class News extends Component {
     // August 23, 2020: These resolve a problem that exists in the WebApp, but looks much worse in
     // Cordova -- Stop allowing horizontal scroll, (and vertical scroll of the entire window in some cases)
     // by removing some styles that force some elements to be wider than the device window
-    const unsetMarginsIfCordova = isCordova() ? { margin: 'unset' } : {};
-    const unsetSideMarginsIfCordova = isCordova() ? { marginRight: 'unset', marginLeft: 'unset' } : {};
-    const unsetSomeRowStylesIfCordova = isCordova() ? {
+    const unsetMarginsIfCordova = isCordova() || isMobileScreenSize() ? { margin: 'unset' } : {};
+    const unsetSideMarginsIfCordova = isCordova() || isMobileScreenSize() ? { marginRight: 'unset', marginLeft: 'unset' } : {};
+    const unsetSomeRowStylesIfCordova = isCordova() || isMobileScreenSize() ? {
       paddingRight: 0,
       paddingLeft: 0,
       marginRight: 0,
       marginLeft: 0,
     } : {};
-    const reduceConstraintsIfCordova = isCordova() ? { margin: '5px 0' } : {};
-    const expandSideMarginsIfCordova = isCordova() ? { marginRight: 23, marginLeft: 23 } : {};
+    const reduceConstraintsIfCordova = isCordova() || isMobileScreenSize() ? { margin: '5px 0' } : {};
+    const expandSideMarginsIfCordova = isCordova() || isMobileScreenSize() ? { marginRight: 23, marginLeft: 23 } : {};
+    let activityTidbitKey;
 
     return (
       <span>
@@ -209,12 +251,13 @@ class News extends Component {
                 }
                 numberOfActivityTidbitsDisplayed += 1;
                 // console.log('numberOfActivityTidbitsDisplayed: ', numberOfActivityTidbitsDisplayed);
+                activityTidbitKey = generateActivityTidbitKey(oneActivityTidbit.kind_of_activity, oneActivityTidbit.id);
                 return (
-                  <ActivityTidbitWrapper key={`${oneActivityTidbit.kind_of_activity}-${oneActivityTidbit.id}`}>
+                  <ActivityTidbitWrapper key={activityTidbitKey}>
                     <Card className="card" style={unsetSideMarginsIfCordova}>
                       <CardNewsWrapper className="card-main" id="steveCardNewsWrapper-main" style={unsetMarginsIfCordova}>
                         <ActivityTidbitItem
-                          activityTidbitKey={`${oneActivityTidbit.kind_of_activity}-${oneActivityTidbit.id}`}  // activityTidbitKey generated here
+                          activityTidbitKey={activityTidbitKey}
                         />
                       </CardNewsWrapper>
                     </Card>
@@ -306,7 +349,10 @@ class News extends Component {
             </SignInOptionsWrapper>
           </div>
         </div>
-        <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
+        <ShowMoreItemsWrapper
+          id="showMoreItemsId"
+          onClick={this.increaseNumberOfActivityTidbitsToDisplay}
+        >
           <ShowMoreItems
             loadingMoreItemsNow={loadingMoreItems}
             numberOfItemsDisplayed={numberOfActivityTidbitsDisplayed}

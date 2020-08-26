@@ -1,5 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
+import { generateActivityTidbitKey } from '../utils/activityUtils';
 
 class ActivityStore extends ReduceStore {
   getInitialState () {
@@ -35,7 +36,7 @@ class ActivityStore extends ReduceStore {
         if (!action.res || !action.res.success) return state;
         incomingActivityList = action.res.activity_list || [];
         incomingActivityList.forEach((activityTidbit) => {
-          activityTidbitKey = `${activityTidbit.kind_of_activity}-${activityTidbit.id}`;  // activityTidbitKey generated here
+          activityTidbitKey = generateActivityTidbitKey(activityTidbit.kind_of_activity, activityTidbit.id);
           if (!allCachedActivityTidbitsByKey) {
             allCachedActivityTidbitsByKey = {};
           }
@@ -62,7 +63,7 @@ class ActivityStore extends ReduceStore {
       case 'activityPostSave':
         if (!action.res || !action.res.success) return state;
         activityPost = action.res;
-        activityTidbitKey = `${activityPost.kind_of_activity}-${activityPost.id}`;  // activityTidbitKey generated here
+        activityTidbitKey = generateActivityTidbitKey(activityPost.kind_of_activity, activityPost.id);
         if (!allCachedActivityTidbitsByKey) {
           allCachedActivityTidbitsByKey = {};
         }

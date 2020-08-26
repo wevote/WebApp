@@ -5,11 +5,12 @@ import { Dialog, DialogContent, DialogTitle, IconButton, Typography, Radio, Form
 import { Close } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
-import { isCordova, isWebApp } from '../../utils/cordovaUtils'; // hasIPhoneNotch,
+import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import SettingsAccount from '../Settings/SettingsAccount';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from '../Widgets/SnackNotifier';
+import { generateActivityTidbitKeyWithPrefix } from '../../utils/activityUtils';
 
 class ActivityPostPublicToggle extends Component {
   static propTypes = {
@@ -54,7 +55,7 @@ class ActivityPostPublicToggle extends Component {
   onActivityStoreChange () {
     const { activityPostId } = this.props;
     if (activityPostId) {
-      const activityTidbitKey = `ACTIVITY_POST-${activityPostId}`;  // activityTidbitKey generated here
+      const activityTidbitKey = generateActivityTidbitKeyWithPrefix('ActPost', activityPostId);
       const activityTidbit = ActivityStore.getActivityTidbitByKey(activityTidbitKey);
       if (activityTidbit) {
         const {

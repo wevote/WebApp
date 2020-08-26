@@ -7,6 +7,7 @@ import ActivityPositionList from './ActivityPositionList';
 import ActivityPostModal from './ActivityPostModal';
 import ActivitySpeakerCard from './ActivitySpeakerCard';
 import ActivityStore from '../../stores/ActivityStore';
+import AppActions from '../../actions/AppActions';
 import DelayedLoad from '../Widgets/DelayedLoad';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
@@ -86,6 +87,13 @@ class ActivityTidbitItem extends Component {
     this.updatePositionsEnteredState(positionWeVoteIdList);
   }
 
+  onClickShowActivityTidbitDrawer = () => {
+    const { activityTidbitKey } = this.props;
+    console.log('onClickShowActivityTidbitDrawer activityTidbitKey:', activityTidbitKey);
+    AppActions.setActivityTidbitKeyForDrawer(activityTidbitKey);
+    AppActions.setShowActivityTidbitDrawer(true);
+  }
+
   updatePositionsEnteredState = (positionWeVoteIdList) => {
     const newPositionsEntered = [];
     let onePosition = {};
@@ -155,6 +163,7 @@ class ActivityTidbitItem extends Component {
         )}
         {isActivityPost && (
           <ActivityPostWrapper>
+            {/* onClick={this.onClickShowActivityTidbitDrawer} */}
             {statementText}
           </ActivityPostWrapper>
         )}

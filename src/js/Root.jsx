@@ -43,6 +43,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route component={componentLoader('Intro')} />
           <Route path="/welcome" component={isNotWeVoteMarketingSite ? componentLoader('ReadyRedirect') : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
           <Route path="/news" component={componentLoader('News')} />
+          <Route path="/news/a/:activity_tidbit_key" component={componentLoader('News')} />
           <Route path="/ready" component={componentLoader('Ready')} />
           <Route path="/ready/election/:google_civic_election_id" component={componentLoader('Ready')} />
           <Route path="/register" component={componentLoader('Register')} />

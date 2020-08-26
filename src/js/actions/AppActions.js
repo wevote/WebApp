@@ -1,8 +1,16 @@
 import Dispatcher from '../dispatcher/AppDispatcher';
 
 export default {
+  setActivityTidbitKeyForDrawer (activityTidbitKey) {
+    Dispatcher.dispatch({ type: 'activityTidbitKeyForDrawer', payload: activityTidbitKey });
+  },
+
   setGetStartedMode (getStartedMode) {
     Dispatcher.dispatch({ type: 'getStartedMode', payload: getStartedMode });
+  },
+
+  setOrganizationModalBallotItemWeVoteId (ballotItemWeVoteId) {
+    Dispatcher.dispatch({ type: 'organizationModalBallotItemWeVoteId', payload: ballotItemWeVoteId });
   },
 
   setVoterGuideSettingsDashboardEditMode (getVoterGuideSettingsDashboardEditMode) {
@@ -15,6 +23,10 @@ export default {
 
   setShareModalStep (step) {
     Dispatcher.dispatch({ type: 'shareModalStep', payload: step });
+  },
+
+  setShowActivityTidbitDrawer (show) {
+    Dispatcher.dispatch({ type: 'showActivityTidbitDrawer', payload: show });
   },
 
   setShowAdviserIntroModal (show) {
@@ -76,10 +88,6 @@ export default {
   setShowOrganizationModal (show) {
     // console.log("Setting organizationModal to ", show);
     Dispatcher.dispatch({ type: 'showOrganizationModal', payload: show });
-  },
-
-  setOrganizationModalBallotItemWeVoteId (ballotItemWeVoteId) {
-    Dispatcher.dispatch({ type: 'organizationModalBallotItemWeVoteId', payload: ballotItemWeVoteId });
   },
 
   setShowValuesIntroModal (show) {
