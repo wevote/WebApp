@@ -5,20 +5,20 @@ import { Link } from 'react-router';
 import { Button } from '@material-ui/core';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
-import { historyPush } from '../../utils/cordovaUtils';
 import FollowToggle from '../../components/Widgets/FollowToggle';
 import FriendActions from '../../actions/FriendActions';
 import FriendToggle from '../../components/Friends/FriendToggle';
 import LoadingWheel from '../../components/LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
-import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
-import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import { isWebApp, historyPush } from '../../utils/cordovaUtils';
+import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
+import { renderLog } from '../../utils/logging';
 
 const AUTO_FOLLOW = 'af';
 
@@ -275,8 +275,9 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   goToVoterGuideDetailsPage (destinationTab) {
-    const { pathname: editLink } = window.location;
-    historyPush(`${editLink}/m/${destinationTab}`);
+    const { pathname: editLink, href: editLinkCordova } = window.location;
+    const editPathCordova = editLinkCordova.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '');
+    historyPush(`${isWebApp() ? editLink : editPathCordova}/m/${destinationTab}`);
   }
 
   render () {
@@ -304,6 +305,7 @@ export default class OrganizationVoterGuide extends Component {
             <Link
               id="OrganizationVoterGuideGoToBallot"
               to="/ballot"
+              onlyActiveOnIndex
             >
               <Button
                 color="primary"
@@ -385,7 +387,8 @@ export default class OrganizationVoterGuide extends Component {
                   <ul className="nav">
                     {developmentFeatureTurnedOn && (
                       <li>
-                        <a // eslint-disable-line
+                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                        <a
                           style={{ padding: '5px 5px' }}
                           onClick={() => this.goToVoterGuideDetailsPage('friends')}
                         >
@@ -395,7 +398,8 @@ export default class OrganizationVoterGuide extends Component {
                       </li>
                     )}
                     <li>
-                      <a // eslint-disable-line
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                      <a
                         style={{ padding: '5px 5px' }}
                         onClick={() => this.goToVoterGuideDetailsPage('following')}
                       >

@@ -191,7 +191,7 @@ export const weVoteStaff = [{
   name: 'Steve Podell',
   image: `${photoPath}Steve_Podell-256x256.jpg`,
   title: [
-    'Volunteer',
+    'Director of Mobile Development',
     'Steve has been volunteering with We Vote since 2017, and single-handedly launched our iOS and Android apps, as well as contributing to all of We Vote\'s code repositories.',
   ],
 }, {
