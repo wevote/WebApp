@@ -15,8 +15,6 @@ import { renderLog } from '../../utils/logging';
 class VoterPhoneEmailCordovaEntryModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    closeSignInModal: PropTypes.func,
-    // toggleOtherSignInOptions: PropTypes.func,
     isPhone: PropTypes.bool,
     hideDialogForCordova: PropTypes.func,
   };
@@ -26,10 +24,9 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
     this.state = {
       showDialog: false,
     };
-    this.closeSignInModalLocal = this.closeSignInModalLocal.bind(this);
   }
 
-  setDialogVisible () {
+  setDialogVisible = () => {
     console.log('VoterPhoneEmailCordovaEntryModal setDialogVisible');
     this.setState({
       showDialog: true,
@@ -37,20 +34,16 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
     this.props.hideDialogForCordova();
   }
 
-  closeSignInModalLocal () {
+  closeSignInModalLocal = () => {
     console.log('VoterPhoneEmailCordovaEntryModal closeSignInModalLocal showDialog false ======================================');
     // Because there are multiple listeners on the voterStore, some dispatching will occur for the underlying ballot page,
     // which totally messes us up here, and leaves this modal on the screen after it should've been dismissed, especially on the iPhone 5.
     // So as a workaround we close this modal when we detect that they have signed in successfully with the email,
     // which requires this further hack, Which is sensitive to checking whether the modal actually still exists.
     restoreStylesAfterCordovaKeyboard('VoterPhoneEmailCordovaEntryModal');
-
-    try {
-      console.log('VoterPhoneEmailCordovaEntryModal closeSignInModalLocal this.props valid');
-      this.props.closeSignInModal();
-    } catch (err) {
-      console.log('VoterPhoneEmailCordovaEntryModal closeSignInModalLocal caught error: ', err);
-    }
+    this.setState({
+      showDialog: false,
+    });
   }
 
   render () {
@@ -68,7 +61,7 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
             externalUniqueId={isPhone ? 'smsSignIn' : 'emailSignIn'}
             icon={isPhone ? <Message /> : <MailOutline />}
             id={isPhone ? 'smsSignIn' : 'emailSignIn'}
-            onClick={() => this.setDialogVisible()}
+            onClick={this.setDialogVisible}
             separatorColor="rgba(250, 250, 250, .6)"
             title={isPhone ? 'Sign in by SMS' : 'Sign in by email'}
           />
@@ -86,18 +79,23 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
             root: classes.dialogRoot,
           }}
         >
-          <DialogContent id="textOrEmailEntryContent" style={{ paddingTop: `${isCordova() ? 'unset' : 'undefined'}`, bottom: `${isCordova() ? 'unset' : 'undefined'}` }}>
+          <DialogContent
+            id="textOrEmailEntryContent"
+            style={{ paddingTop: `${isCordova() ? 'unset' : 'undefined'}`, bottom: `${isCordova() ? 'unset' : 'undefined'}` }}
+          >
             {isPhone ? (
               <VoterPhoneVerificationEntry
                 cancelShouldCloseModal
                 closeSignInModal={this.closeSignInModalLocal}
                 hideEverythingButSignInWithPhoneForm
+                lockOpenPhoneVerificationButton
               />
             ) : (
               <VoterEmailAddressEntry
                 cancelShouldCloseModal
                 closeSignInModal={this.closeSignInModalLocal}
                 hideEverythingButSignInWithEmailForm
+                lockOpenEmailVerificationButton
               />
             )}
           </DialogContent>

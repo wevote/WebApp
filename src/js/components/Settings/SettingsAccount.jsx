@@ -510,8 +510,6 @@ export default class SettingsAccount extends Component {
             )}
             {!hideVoterPhoneEntry && isCordova() && (
               <VoterPhoneEmailCordovaEntryModal
-                closeSignInModal={this.localCloseSignInModal}
-                toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
                 isPhone
                 hideDialogForCordova={this.hideDialogForCordovaLocal}
               />
@@ -525,8 +523,6 @@ export default class SettingsAccount extends Component {
             )}
             {!hideVoterEmailAddressEntry && isCordova() && (
               <VoterPhoneEmailCordovaEntryModal
-                closeSignInModal={this.localCloseSignInModal}
-                toggleOtherSignInOptions={this.toggleNonPhoneSignInOptions}
                 isPhone={false}
                 hideDialogForCordova={this.hideDialogForCordovaLocal}
               />

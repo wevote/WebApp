@@ -20,11 +20,12 @@ import VoterStore from '../../stores/VoterStore';
 
 class VoterPhoneVerificationEntry extends Component {
   static propTypes = {
+    cancelShouldCloseModal: PropTypes.bool,
     classes: PropTypes.object,
     closeSignInModal: PropTypes.func,
     hideEverythingButSignInWithPhoneForm: PropTypes.bool,
     hideSignInWithPhoneForm: PropTypes.bool,
-    cancelShouldCloseModal: PropTypes.bool,
+    lockOpenPhoneVerificationButton: PropTypes.bool,
     toggleOtherSignInOptions: PropTypes.func,
   };
 
@@ -321,7 +322,7 @@ class VoterPhoneVerificationEntry extends Component {
       return LoadingWheel;
     }
 
-    const { classes, hideEverythingButSignInWithPhoneForm, hideSignInWithPhoneForm } = this.props;
+    const { classes, hideEverythingButSignInWithPhoneForm, hideSignInWithPhoneForm, lockOpenPhoneVerificationButton } = this.props;
     const {
       disablePhoneVerificationButton, displayPhoneVerificationButton, hideExistingPhoneNumbers,
       secretCodeSystemLocked, showError, showVerifyModal, signInCodeSMSSentAndWaitingForResponse,
@@ -414,7 +415,7 @@ class VoterPhoneVerificationEntry extends Component {
               placeholder="Type phone number here..."
             />
           </Paper>
-          {displayPhoneVerificationButton && (
+          {(displayPhoneVerificationButton || lockOpenPhoneVerificationButton) && (
             <ButtonWrapper>
               <CancelButtonContainer>
                 <Button
