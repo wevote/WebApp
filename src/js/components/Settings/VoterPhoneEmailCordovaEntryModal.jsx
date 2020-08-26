@@ -16,7 +16,7 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
     closeSignInModal: PropTypes.func,
-    toggleOtherSignInOptions: PropTypes.func,
+    // toggleOtherSignInOptions: PropTypes.func,
     isPhone: PropTypes.bool,
     hideDialogForCordova: PropTypes.func,
   };

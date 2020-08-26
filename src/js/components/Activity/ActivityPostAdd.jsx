@@ -7,6 +7,7 @@ import { renderLog } from '../../utils/logging';
 import ActivityPostModal from './ActivityPostModal';
 import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import VoterStore from '../../stores/VoterStore';
+import { isCordova } from '../../utils/cordovaUtils';
 
 class ActivityPostAdd extends Component {
   static propTypes = {
@@ -112,9 +113,12 @@ class ActivityPostAdd extends Component {
 
     // console.log('ActivityPostAdd');
     // console.log('editMode:', editMode);
+
+    const unsetSideMarginsIfCordova = isCordova() ? { margin: 0 } : {};
+
     return (
-      <Card className="card">
-        <AddTidbitTitle>
+      <Card className="card" style={unsetSideMarginsIfCordova}>
+        <AddTidbitTitle style={unsetSideMarginsIfCordova}>
           Create Post
         </AddTidbitTitle>
         <CardNewsWrapper>

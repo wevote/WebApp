@@ -44,7 +44,7 @@ class ShareModalOption extends Component {
   render () {
     renderLog('ShareModalOption');  // Set LOG_RENDER_EVENTS to log all renders
     const { backgroundColor, copyLink, icon, link, noLink, title, uniqueExternalId } = this.props;
-    const linkToBeShared = link.replace('https://file:/', 'https://wevote.us/');
+    const linkToBeShared = link.replace(/https:\/\/file:.*?\/|https:\/\/localhost.*?\//, 'https://wevote.us/');
     console.log('ShareModalOption copyLink:', copyLink, ', noLink:', noLink, 'link:', link, ', linkToBeShared:', linkToBeShared);
     return (
       <Wrapper>
