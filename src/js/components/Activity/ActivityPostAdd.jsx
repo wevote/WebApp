@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { InputBase, Card } from '@material-ui/core';
-import { renderLog } from '../../utils/logging';
 import ActivityPostModal from './ActivityPostModal';
-import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import VoterStore from '../../stores/VoterStore';
+import stockAvatar from '../../../img/global/icons/avatar-generic.png';
+import { cordovaNewsPaddingTop } from '../../utils/cordovaOffsets';
 import { isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+
 
 class ActivityPostAdd extends Component {
   static propTypes = {
@@ -115,10 +117,14 @@ class ActivityPostAdd extends Component {
     // console.log('editMode:', editMode);
 
     const unsetSideMarginsIfCordova = isCordova() ? { margin: 0 } : {};
+    const adjustMarginsIfCordova = isCordova() ? {
+      margin: 0,
+      paddingTop: cordovaNewsPaddingTop(),
+    } : {};
 
     return (
       <Card className="card" style={unsetSideMarginsIfCordova}>
-        <AddTidbitTitle style={unsetSideMarginsIfCordova}>
+        <AddTidbitTitle style={adjustMarginsIfCordova}>
           Create Post
         </AddTidbitTitle>
         <CardNewsWrapper>

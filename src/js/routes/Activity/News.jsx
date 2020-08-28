@@ -229,6 +229,17 @@ class News extends Component {
     const expandSideMarginsIfCordova = isCordova() || isMobileScreenSize() ? { marginRight: 23, marginLeft: 23 } : {};
     let activityTidbitKey;
 
+    if (isCordova()) {
+      // If the previous render of the Ballot__Wrapper is less than the device height, pad it
+      // temporarily for Cordova to stop the footer menu from bouncing when initially rendered
+      const { $, pbakondyScreenSize } = window;
+      const deviceHeight = pbakondyScreenSize.height / pbakondyScreenSize.scale;
+      const ballotWrapperHeight = $('[class^="class=Ballot__Wrapper"]').outerHeight() || 0;
+      if (ballotWrapperHeight < deviceHeight) {
+        unsetSomeRowStylesIfCordova.paddingBottom = '625px';  // big enough for the largest phone with a footer menu
+      }
+    }
+
     return (
       <span>
         <Helmet title="News - We Vote" />
@@ -359,7 +370,8 @@ class News extends Component {
             numberOfItemsTotal={activityTidbitsListLength}
           />
         </ShowMoreItemsWrapper>
-        <LoadingItemsWheel>
+        {/* August 2020:  This height adjustment for Cordova stops the footer-container from bouncing up about 60px on first render of the page */}
+        <LoadingItemsWheel style={isCordova() ? { height: 150 } : {}}>
           {loadingMoreItems && (
             <CircularProgress />
           )}
