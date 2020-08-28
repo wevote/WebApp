@@ -76,8 +76,14 @@ export default class About extends Component {
               target="_blank"
               body="90+ contributors on GitHub."
             />
-            We also have a small team of
-            core staff that eats way too much Thai food, and volunteer board members.
+            We also have a
+            <OpenExternalWebSite
+              linkIdAttribute="weVoteAboutUsPage"
+              url="https://WeVote.US/more/about"
+              target="_blank"
+              body="small team of core staff"
+            />
+            that eats way too much Thai food, and volunteer board members.
             <br />
             <br />
 

@@ -156,16 +156,12 @@ class VoterEmailAddressEntry extends Component {
     if (voterEmailAddressIsValid && displayEmailVerificationButton) {
       VoterActions.sendSignInCodeEmail(voterEmailAddress);
       this.setState({
-        displayEmailVerificationButton: false,
         emailAddressStatus: {
           email_address_already_owned_by_other_voter: false,
         },
         signInCodeEmailSentAndWaitingForResponse: true,
       });
     }
-    // else {
-    //   this.setState({ showError: true });
-    // }
   };
 
   reSendSignInCodeEmail = (voterEmailAddress) => {
@@ -257,6 +253,10 @@ class VoterEmailAddressEntry extends Component {
 
   onCancel = () => {
     // console.log('VoterEmailAddressEntry onCancel');
+    this.setState({
+      disableEmailVerificationButton: false,
+      signInCodeEmailSentAndWaitingForResponse: false,
+    });
     const { cancelShouldCloseModal } = this.props;
     if (cancelShouldCloseModal) {
       this.closeSignInModal();
@@ -424,7 +424,7 @@ class VoterEmailAddressEntry extends Component {
                 <Button
                   id="cancelEmailButton"
                   color="primary"
-                  disabled={signInCodeEmailSentAndWaitingForResponse}
+                  // disabled={signInCodeEmailSentAndWaitingForResponse} // Never disable Cancel
                   fullWidth
                   onClick={this.onCancel}
                   onAnimationEnd={this.onAnimationEndCancel}
@@ -477,7 +477,7 @@ class VoterEmailAddressEntry extends Component {
 
         return (
           <div key={voterEmailAddressFromList.email_we_vote_id}>
-            <span>{voterEmailAddressFromList.normalized_email_address}</span>
+            <span className="u-no-break">{voterEmailAddressFromList.normalized_email_address}</span>
 
             {isPrimaryEmailAddress && (
               <span>
@@ -490,7 +490,7 @@ class VoterEmailAddressEntry extends Component {
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 <span>
                   <span
-                    className="u-link-color u-cursor--pointer"
+                    className="u-link-color u-cursor--pointer u-no-break"
                     onClick={this.setAsPrimaryEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
                   >
                     Make Primary
@@ -527,12 +527,12 @@ class VoterEmailAddressEntry extends Component {
         return (
           <div key={voterEmailAddressFromList.email_we_vote_id}>
             <div>
-              <span>{voterEmailAddressFromList.normalized_email_address}</span>
+              <span className="u-no-break">{voterEmailAddressFromList.normalized_email_address}</span>
               <span>&nbsp;&nbsp;&nbsp;</span>
               {voterEmailAddressFromList.email_ownership_is_verified ?
                 null : (
                   <span
-                    className="u-link-color u-cursor--pointer"
+                    className="u-link-color u-cursor--pointer u-no-break"
                     onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
                   >
                     Send Verification Again

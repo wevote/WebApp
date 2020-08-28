@@ -111,6 +111,12 @@ class VoterPhoneVerificationEntry extends Component {
       this.setState({
         smsPhoneNumberStatus,
       });
+    } else if (smsPhoneNumberStatus.sms_phone_number && !smsPhoneNumberStatus.sign_in_code_sms_sent) {
+      this.setState({
+        displayPhoneVerificationButton: true,
+        smsPhoneNumberStatus,
+        signInCodeSMSSentAndWaitingForResponse: false,
+      });
     } else {
       this.setState({
         smsPhoneNumberStatus,
@@ -224,6 +230,11 @@ class VoterPhoneVerificationEntry extends Component {
 
   onCancel = () => {
     // console.log('VoterPhoneVerificationEntry onCancel');
+    this.setState({
+      disablePhoneVerificationButton: false,
+      signInCodeSMSSentAndWaitingForResponse: false,
+      // voterSMSPhoneNumber: '', // Clearing voterSMSPhoneNumber variable does not clear number in form
+    });
     const { cancelShouldCloseModal } = this.props;
     if (cancelShouldCloseModal) {
       this.closeSignInModal();
@@ -304,7 +315,6 @@ class VoterPhoneVerificationEntry extends Component {
     if (voterSMSPhoneNumberIsValid && displayPhoneVerificationButton) {
       VoterActions.sendSignInCodeSMS(voterSMSPhoneNumber);
       this.setState({
-        displayPhoneVerificationButton: false,
         signInCodeSMSSentAndWaitingForResponse: true,
         smsPhoneNumberStatus: {
           sms_phone_number_already_owned_by_other_voter: false,
@@ -336,10 +346,11 @@ class VoterPhoneVerificationEntry extends Component {
         {(smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter &&
           !smsPhoneNumberStatus.sms_phone_number_deleted &&
           !smsPhoneNumberStatus.make_primary_sms && !secretCodeSystemLocked) ||
+          (smsPhoneNumberStatus.sms_phone_number && !smsPhoneNumberStatus.sign_in_code_sms_sent && !secretCodeSystemLocked) ||
           (smsPhoneNumberStatus.sms_phone_number_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked) ||
           secretCodeSystemLocked ? (
             <Alert variant="warning">
-              { smsPhoneNumberStatus.sms_phone_number_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked && (
+              {(smsPhoneNumberStatus.sms_phone_number_already_owned_by_other_voter && !signInLinkOrCodeSent && !secretCodeSystemLocked) && (
                 <div>
                   That phone is already being used by another account.
                   <br />
@@ -347,9 +358,14 @@ class VoterPhoneVerificationEntry extends Component {
                   Please click &quot;Send Login Code in an Email&quot; below to sign into that account.
                 </div>
               )}
-              { smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter && !smsPhoneNumberStatus.sms_phone_number_deleted && !smsPhoneNumberStatus.make_primary_sms && !secretCodeSystemLocked && (
+              {(smsPhoneNumberStatus.sms_phone_number_already_owned_by_this_voter && !smsPhoneNumberStatus.sms_phone_number_deleted && !smsPhoneNumberStatus.make_primary_sms && !secretCodeSystemLocked) && (
                 <div>
                   That phone number was already verified by you.
+                </div>
+              )}
+              {(smsPhoneNumberStatus.sms_phone_number && !smsPhoneNumberStatus.sign_in_code_sms_sent && !secretCodeSystemLocked) && (
+                <div>
+                  We could not send a code to this number. Please double-check your number and try again.
                 </div>
               )}
               { secretCodeSystemLocked && (
@@ -381,6 +397,7 @@ class VoterPhoneVerificationEntry extends Component {
         }
       </span>
     );
+    // console.log('VoterPhoneVerificationEntry render, smsPhoneNumberStatusHtml: ', smsPhoneNumberStatusHtml, ', smsPhoneNumberStatus:', smsPhoneNumberStatus);
 
     // "SMS" is techno jargon
     let enterSMSPhoneNumberTitle = isWebApp() ? 'Sign in with SMS Phone Number' : 'Text the sign in code to';
@@ -421,7 +438,7 @@ class VoterPhoneVerificationEntry extends Component {
                 <Button
                   id="cancelVoterPhoneSendSMS"
                   color="primary"
-                  disabled={signInCodeSMSSentAndWaitingForResponse}
+                  // disabled={signInCodeSMSSentAndWaitingForResponse} // Never disable Cancel
                   className={classes.cancelButton}
                   fullWidth
                   onClick={this.onCancel}
@@ -476,7 +493,7 @@ class VoterPhoneVerificationEntry extends Component {
 
         return (
           <div key={voterSMSPhoneNumberFromList.sms_we_vote_id}>
-            <span>{voterSMSPhoneNumberFromList.normalized_sms_phone_number}</span>
+            <span className="u-no-break">{voterSMSPhoneNumberFromList.normalized_sms_phone_number}</span>
 
             {isPrimarySMSPhoneNumber && (
               <span>
@@ -489,7 +506,7 @@ class VoterPhoneVerificationEntry extends Component {
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 <span>
                   <span
-                    className="u-link-color u-cursor--pointer"
+                    className="u-link-color u-cursor--pointer u-no-break"
                     onClick={this.setAsPrimarySMSPhoneNumber.bind(this, voterSMSPhoneNumberFromList.sms_we_vote_id)}
                   >
                     Make Primary
@@ -526,12 +543,12 @@ class VoterPhoneVerificationEntry extends Component {
         return (
           <div key={voterSMSPhoneNumberFromList.sms_we_vote_id}>
             <div>
-              <span>{voterSMSPhoneNumberFromList.normalized_sms_phone_number}</span>
+              <span className="u-no-break">{voterSMSPhoneNumberFromList.normalized_sms_phone_number}</span>
               <span>&nbsp;&nbsp;&nbsp;</span>
               {voterSMSPhoneNumberFromList.sms_ownership_is_verified ?
                 null : (
                   <span
-                    className="u-link-color u-cursor--pointer"
+                    className="u-link-color u-cursor--pointer u-no-break"
                     onClick={() => this.reSendSignInCodeSMS(voterSMSPhoneNumberFromList.normalized_sms_phone_number)}
                   >
                     Send Verification Again
