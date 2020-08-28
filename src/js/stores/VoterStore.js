@@ -763,6 +763,7 @@ class VoterStore extends ReduceStore {
             sms_phone_number_already_owned_by_other_voter: action.res.sms_phone_number_already_owned_by_other_voter,
             sms_phone_number_already_owned_by_this_voter: action.res.sms_phone_number_already_owned_by_this_voter,
             sms_phone_number_created: action.res.sms_phone_number_created,
+            sms_phone_number: action.res.sms_phone_number,
             sms_phone_number_found: action.res.sms_phone_number_found,
             sms_phone_number_deleted: action.res.sms_phone_number_deleted,
             make_primary_sms: action.res.make_primary_sms,
