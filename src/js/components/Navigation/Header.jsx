@@ -60,7 +60,7 @@ export default class Header extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.activityTidbitKeyForDrawer !== nextState.activityTidbitKeyForDrawer) return true;
+    if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) return true;
     if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) return true;
     if (this.props.pathname !== nextProps.pathname) return true;
     if (this.state.sharedItemCode !== nextState.sharedItemCode) return true;
@@ -81,7 +81,7 @@ export default class Header extends Component {
   onAppStoreChange () {
     // console.log('Header, onAppStoreChange');
     this.setState({
-      activityTidbitKeyForDrawer: AppStore.activityTidbitKeyForDrawer(),
+      activityTidbitWeVoteIdForDrawer: AppStore.activityTidbitWeVoteIdForDrawer(),
       organizationModalBallotItemWeVoteId: AppStore.organizationModalBallotItemWeVoteId(),
       sharedItemCode: AppStore.getSharedItemCode(),
       showActivityTidbitDrawer: AppStore.showActivityTidbitDrawer(),
@@ -131,7 +131,7 @@ export default class Header extends Component {
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
     const {
-      activityTidbitKeyForDrawer, sharedItemCode, showActivityTidbitDrawer,
+      activityTidbitWeVoteIdForDrawer, sharedItemCode, showActivityTidbitDrawer,
       showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal,
     } = this.state;
     const {
@@ -439,7 +439,7 @@ export default class Header extends Component {
           </div>
           {showActivityTidbitDrawer && (
             <ActivityTidbitDrawer
-              activityTidbitKey={activityTidbitKeyForDrawer}
+              activityTidbitWeVoteId={activityTidbitWeVoteIdForDrawer}
               show={showActivityTidbitDrawer}
               modalOpen={showActivityTidbitDrawer}
               toggleFunction={this.closeActivityTidbitDrawer}

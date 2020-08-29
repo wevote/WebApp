@@ -693,16 +693,15 @@ class ReadyTaskBallot extends React.Component {
                   ) : (
                     <span>
                       <span className="u-show-mobile-iphone5-or-smaller">
-                        How We Vote Works
+                        How It Works
                       </span>
                       <span className="u-show-mobile-bigger-than-iphone5">
                         How We Vote Works
-                        <ArrowForward classes={{ root: classes.arrowRoot }} />
                       </span>
                       <span className="u-show-desktop-tablet">
                         How We Vote Works
-                        <ArrowForward classes={{ root: classes.arrowRoot }} />
                       </span>
+                      <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </span>
                   )}
                 </ButtonText>

@@ -1,8 +1,8 @@
 import Dispatcher from '../dispatcher/AppDispatcher';
 
 export default {
-  setActivityTidbitKeyForDrawer (activityTidbitKey) {
-    Dispatcher.dispatch({ type: 'activityTidbitKeyForDrawer', payload: activityTidbitKey });
+  setActivityTidbitWeVoteIdForDrawer (activityTidbitWeVoteId) {
+    Dispatcher.dispatch({ type: 'activityTidbitWeVoteIdForDrawer', payload: activityTidbitWeVoteId });
   },
 
   setGetStartedMode (getStartedMode) {

@@ -12,7 +12,7 @@ import { stringContains } from '../utils/textFormat';
 class AppStore extends ReduceStore {
   getInitialState () {
     return {
-      activityTidbitKeyForDrawer: '',
+      activityTidbitWeVoteIdForDrawer: '',
       chosenPreventSharingOpinions: false,
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
@@ -48,8 +48,8 @@ class AppStore extends ReduceStore {
     };
   }
 
-  activityTidbitKeyForDrawer () {
-    return this.getState().activityTidbitKeyForDrawer;
+  activityTidbitWeVoteIdForDrawer () {
+    return this.getState().activityTidbitWeVoteIdForDrawer;
   }
 
   getChosenPreventSharingOpinions () {
@@ -235,8 +235,8 @@ class AppStore extends ReduceStore {
     let siteOwnerOrganizationWeVoteId;
     let voterExternalIdHasBeenSavedOnce;
     switch (action.type) {
-      case 'activityTidbitKeyForDrawer':
-        return { ...state, activityTidbitKeyForDrawer: action.payload };
+      case 'activityTidbitWeVoteIdForDrawer':
+        return { ...state, activityTidbitWeVoteIdForDrawer: action.payload };
       case 'getStartedMode':
         return { ...state, getStartedMode: action.payload };
       case 'getVoterGuideSettingsDashboardEditMode':

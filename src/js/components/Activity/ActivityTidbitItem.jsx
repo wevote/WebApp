@@ -16,13 +16,12 @@ import VoterStore from '../../stores/VoterStore';
 
 class ActivityTidbitItem extends Component {
   static propTypes = {
-    activityTidbitKey: PropTypes.string.isRequired,
+    activityTidbitWeVoteId: PropTypes.string.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      activityPostId: 0,
       isActivityPost: false,
       showActivityPostModal: false,
       speakerIsVoter: false,
@@ -43,12 +42,8 @@ class ActivityTidbitItem extends Component {
   }
 
   onActivityStoreChange () {
-    const { activityTidbitKey } = this.props;
-    const activityTidbit = ActivityStore.getActivityTidbitByKey(activityTidbitKey);
-    let {
-      activity_post_id: activityPostId,
-    } = activityTidbit;
-    activityPostId = parseInt(activityPostId, 10);
+    const { activityTidbitWeVoteId } = this.props;
+    const activityTidbit = ActivityStore.getActivityTidbitByWeVoteId(activityTidbitWeVoteId);
     const {
       kind_of_activity: kindOfActivity,
       position_we_vote_id_list: positionWeVoteIdList,
@@ -56,7 +51,7 @@ class ActivityTidbitItem extends Component {
       speaker_voter_we_vote_id: speakerVoterWeVoteId,
       statement_text: statementText,
     } = activityTidbit;
-    // console.log('ActivityTidbitItem onActivityStoreChange, activityTidbitKey:', activityTidbitKey, ', statementText:', statementText);
+    // console.log('ActivityTidbitItem onActivityStoreChange, activityTidbitWeVoteId:', activityTidbitWeVoteId, ', statementText:', statementText);
     const voter = VoterStore.getVoter();
     const speakerIsVoter = (voter.we_vote_id === speakerVoterWeVoteId);
     let isActivityNoticeSeed = false;
@@ -70,7 +65,6 @@ class ActivityTidbitItem extends Component {
       this.updatePositionsEnteredState(positionWeVoteIdList);
     }
     this.setState({
-      activityPostId,
       isActivityPost,
       speakerIsVoter,
       speakerOrganizationWeVoteId,
@@ -79,8 +73,8 @@ class ActivityTidbitItem extends Component {
   }
 
   onOrganizationStoreChange () {
-    const { activityTidbitKey } = this.props;
-    const activityTidbit = ActivityStore.getActivityTidbitByKey(activityTidbitKey);
+    const { activityTidbitWeVoteId } = this.props;
+    const activityTidbit = ActivityStore.getActivityTidbitByWeVoteId(activityTidbitWeVoteId);
     const {
       position_we_vote_id_list: positionWeVoteIdList,
     } = activityTidbit;
@@ -88,9 +82,9 @@ class ActivityTidbitItem extends Component {
   }
 
   onClickShowActivityTidbitDrawer = () => {
-    const { activityTidbitKey } = this.props;
-    console.log('onClickShowActivityTidbitDrawer activityTidbitKey:', activityTidbitKey);
-    AppActions.setActivityTidbitKeyForDrawer(activityTidbitKey);
+    const { activityTidbitWeVoteId } = this.props;
+    // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
+    AppActions.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
     AppActions.setShowActivityTidbitDrawer(true);
   }
 
@@ -125,23 +119,23 @@ class ActivityTidbitItem extends Component {
 
   render () {
     renderLog('ActivityTidbitItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activityTidbitKey } = this.props;
+    const { activityTidbitWeVoteId } = this.props;
     const {
-      activityPostId, externalUniqueId, isActivityPost, newPositionsEntered,
+      externalUniqueId, isActivityPost, newPositionsEntered,
       showActivityPostModal, speakerIsVoter, speakerOrganizationWeVoteId, statementText,
     } = this.state;
-    if (!activityTidbitKey) {
+    if (!activityTidbitWeVoteId) {
       return null;
     }
     return (
       <Wrapper>
         <ActivitySpeakerCardWrapper>
           <ActivitySpeakerCard
-            activityTidbitKey={activityTidbitKey}
+            activityTidbitWeVoteId={activityTidbitWeVoteId}
           />
           {(isActivityPost && speakerIsVoter) && (
             <ActivityPostEditWrapper
-              id={`activityTidbitItemEdit-${activityTidbitKey}`}
+              id={`activityTidbitItemEdit-${activityTidbitWeVoteId}`}
               onClick={this.toggleActivityPostModal}
             >
               <MoreHoriz />
@@ -169,7 +163,7 @@ class ActivityTidbitItem extends Component {
         )}
         {showActivityPostModal && (
           <ActivityPostModal
-            activityPostId={activityPostId}
+            activityPostWeVoteId={activityTidbitWeVoteId}
             externalUniqueId={externalUniqueId}
             show={showActivityPostModal}
             toggleActivityPostModal={this.toggleActivityPostModal}

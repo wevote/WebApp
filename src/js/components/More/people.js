@@ -113,12 +113,6 @@ export const weVoteStaff = [{
     'Marketing',
   ],
 }, {
-  name: 'Filip Francetic',
-  image: `${photoPath}Filip_Francetic-256x256.jpg`,
-  title: [
-    'Engineering Intern',
-  ],
-}, {
   name: 'Jeff French',
   image: `${photoPath}Jeff_French-256x256.png`,
   title: [

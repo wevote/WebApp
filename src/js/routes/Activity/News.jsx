@@ -6,6 +6,10 @@ import { withStyles } from '@material-ui/core/styles';
 import { Card, CircularProgress } from '@material-ui/core';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
+import ActivityTidbitComments from '../../components/Activity/ActivityTidbitComments';
+import ActivityTidbitReactionsSummary from '../../components/Activity/ActivityTidbitReactionsSummary';
+import ActivityTidbitAddReaction from '../../components/Activity/ActivityTidbitAddReaction';
+import ActivityCommentAdd from '../../components/Activity/ActivityCommentAdd';
 import ActivityTidbitItem from '../../components/Activity/ActivityTidbitItem';
 import ActivityPostAdd from '../../components/Activity/ActivityPostAdd';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
@@ -14,16 +18,15 @@ import AppActions from '../../actions/AppActions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import { generateActivityTidbitKey } from '../../utils/activityUtils';
 import { cordovaDot, historyPush, isCordova } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import FriendActions from '../../actions/FriendActions';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import LoadingWheel from '../../components/LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { PreviewImage } from '../../components/Settings/SettingsStyled';
+import ReactionActions from '../../actions/ReactionActions';
 import { renderLog } from '../../utils/logging';
 import SettingsAccount from '../../components/Settings/SettingsAccount';
 import ShowMoreItems from '../../components/Widgets/ShowMoreItems';
@@ -32,7 +35,9 @@ import Testimonial from '../../components/Widgets/Testimonial';
 import { formatDateToMonthDayYear, timeFromDate } from '../../utils/textFormat';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import VoterStore from '../../stores/VoterStore';
+import webAppConfig from '../../config';
 
+const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 const STARTING_NUMBER_OF_ACTIVITY_TIDBITS_TO_DISPLAY = 10;
 
 
@@ -49,7 +54,8 @@ class News extends Component {
       dateVoterJoined: '',
       activityTidbitsListLength: 0,
       loadingMoreItems: false,
-      localPositionListForOrgHasBeenRetrieved: [],
+      localLikedItemWeVoteIdsHaveBeenRetrieved: {},
+      localPositionListForOrgHasBeenRetrieved: {},
       numberOfActivityTidbitsToDisplay: STARTING_NUMBER_OF_ACTIVITY_TIDBITS_TO_DISPLAY,
       voter: {},
       voterSignedInFacebook: false,
@@ -59,16 +65,16 @@ class News extends Component {
   }
 
   componentDidMount () {
-    const activityTidbitKeyForDrawer = this.props.params.activity_tidbit_key || '';
+    const activityTidbitWeVoteIdForDrawer = this.props.params.activity_tidbit_key || '';
     let redirectInProgress = false;
-    if (activityTidbitKeyForDrawer) {
+    if (activityTidbitWeVoteIdForDrawer) {
       const { pathname } = window.location;
-      const destinationLocalUrlWithModal = `/news/a/${activityTidbitKeyForDrawer}`;
+      const destinationLocalUrlWithModal = `/news/a/${activityTidbitWeVoteIdForDrawer}`;
       if (pathname && pathname !== destinationLocalUrlWithModal) {
         historyPush(destinationLocalUrlWithModal);
         redirectInProgress = true;
       } else {
-        AppActions.setActivityTidbitKeyForDrawer(activityTidbitKeyForDrawer);
+        AppActions.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteIdForDrawer);
         AppActions.setShowActivityTidbitDrawer(true);
         this.setState({
           componentDidMountFinished: true,
@@ -109,12 +115,19 @@ class News extends Component {
 
   onActivityStoreChange () {
     const activityTidbitsList = ActivityStore.allActivity();
+    const activityTidbitsWeVoteIdList = [];
     let activityTidbit = {};
     for (let count = 0; count < activityTidbitsList.length; count++) {
       activityTidbit = activityTidbitsList[count];
       if (activityTidbit && activityTidbit.speaker_organization_we_vote_id) {
         this.retrievePositionListIfNeeded(activityTidbit.speaker_organization_we_vote_id);
       }
+      if (activityTidbit && activityTidbit.we_vote_id) {
+        activityTidbitsWeVoteIdList.push(activityTidbit.we_vote_id);
+      }
+    }
+    if (activityTidbitsWeVoteIdList.length > 0) {
+      this.retrieveReactionLikeStatusListIfNeeded(activityTidbitsWeVoteIdList);
     }
     this.setState({
       activityTidbitsList,
@@ -197,6 +210,23 @@ class News extends Component {
     }
   }
 
+  retrieveReactionLikeStatusListIfNeeded (activityTidbitsWeVoteIdList) {
+    const { localLikedItemWeVoteIdsHaveBeenRetrieved } = this.state;
+    const activityTidbitsWeVoteIdListToRequest = [];
+    for (let count = 0; count < activityTidbitsWeVoteIdList.length; count++) {
+      if (!localLikedItemWeVoteIdsHaveBeenRetrieved[activityTidbitsWeVoteIdList[count]]) {
+        activityTidbitsWeVoteIdListToRequest.push(activityTidbitsWeVoteIdList[count]);
+        localLikedItemWeVoteIdsHaveBeenRetrieved[activityTidbitsWeVoteIdList[count]] = true;
+      }
+    }
+    if (activityTidbitsWeVoteIdListToRequest.length > 0) {
+      ReactionActions.reactionLikeStatusRetrieve(activityTidbitsWeVoteIdListToRequest);
+      this.setState({
+        localLikedItemWeVoteIdsHaveBeenRetrieved,
+      });
+    }
+  }
+
   render () {
     renderLog('News');  // Set LOG_RENDER_EVENTS to log all renders
     const {
@@ -217,17 +247,17 @@ class News extends Component {
     // August 23, 2020: These resolve a problem that exists in the WebApp, but looks much worse in
     // Cordova -- Stop allowing horizontal scroll, (and vertical scroll of the entire window in some cases)
     // by removing some styles that force some elements to be wider than the device window
-    const unsetMarginsIfCordova = isCordova() || isMobileScreenSize() ? { margin: 'unset' } : {};
-    const unsetSideMarginsIfCordova = isCordova() || isMobileScreenSize() ? { marginRight: 'unset', marginLeft: 'unset' } : {};
-    const unsetSomeRowStylesIfCordova = isCordova() || isMobileScreenSize() ? {
+    const unsetMarginsIfCordova = isCordova() ? { margin: 'unset' } : {};
+    const unsetSideMarginsIfCordova = isCordova() ? { marginRight: 'unset', marginLeft: 'unset' } : {};
+    const unsetSomeRowStylesIfCordova = isCordova() ? {
       paddingRight: 0,
       paddingLeft: 0,
       marginRight: 0,
       marginLeft: 0,
     } : {};
-    const reduceConstraintsIfCordova = isCordova() || isMobileScreenSize() ? { margin: '5px 0' } : {};
-    const expandSideMarginsIfCordova = isCordova() || isMobileScreenSize() ? { marginRight: 23, marginLeft: 23 } : {};
-    let activityTidbitKey;
+    const reduceConstraintsIfCordova = isCordova() ? { margin: '5px 0' } : {};
+    const expandSideMarginsIfCordova = isCordova() ? { marginRight: 23, marginLeft: 23 } : {};
+    let activityTidbitWeVoteId;
 
     if (isCordova()) {
       // If the previous render of the Ballot__Wrapper is less than the device height, pad it
@@ -262,14 +292,32 @@ class News extends Component {
                 }
                 numberOfActivityTidbitsDisplayed += 1;
                 // console.log('numberOfActivityTidbitsDisplayed: ', numberOfActivityTidbitsDisplayed);
-                activityTidbitKey = generateActivityTidbitKey(oneActivityTidbit.kind_of_activity, oneActivityTidbit.id);
+                activityTidbitWeVoteId = oneActivityTidbit.we_vote_id;
                 return (
-                  <ActivityTidbitWrapper key={activityTidbitKey}>
+                  <ActivityTidbitWrapper key={activityTidbitWeVoteId}>
                     <Card className="card" style={unsetSideMarginsIfCordova}>
                       <CardNewsWrapper className="card-main" id="steveCardNewsWrapper-main" style={unsetMarginsIfCordova}>
-                        <ActivityTidbitItem
-                          activityTidbitKey={activityTidbitKey}
-                        />
+                        <ActivityTidbitItemWrapper>
+                          <ActivityTidbitItem
+                            activityTidbitWeVoteId={activityTidbitWeVoteId}
+                          />
+                        </ActivityTidbitItemWrapper>
+                        {nextReleaseFeaturesEnabled && (
+                          <>
+                            <ActivityTidbitReactionsSummary
+                              activityTidbitWeVoteId={activityTidbitWeVoteId}
+                            />
+                            <ActivityTidbitAddReaction
+                              activityTidbitWeVoteId={activityTidbitWeVoteId}
+                            />
+                            <ActivityTidbitComments
+                              activityTidbitWeVoteId={activityTidbitWeVoteId}
+                            />
+                            <ActivityCommentAdd
+                              activityTidbitWeVoteId={activityTidbitWeVoteId}
+                            />
+                          </>
+                        )}
                       </CardNewsWrapper>
                     </Card>
                   </ActivityTidbitWrapper>
@@ -382,6 +430,10 @@ class News extends Component {
 }
 
 const ActivityPostAddWrapper = styled.div`
+`;
+
+const ActivityTidbitItemWrapper = styled.div`
+  margin-bottom: 4px;
 `;
 
 const ActivityTidbitWrapper = styled.div`
