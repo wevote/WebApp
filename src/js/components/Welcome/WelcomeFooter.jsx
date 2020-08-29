@@ -160,6 +160,7 @@ class WelcomeFooter extends Component {
           </Text>
           <BadgeContainer>
             <span id="googleBadge"
+                  role="presentation"
                   onClick={() => window.open('https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US', 'blank')}
             >
               <img
@@ -169,6 +170,7 @@ class WelcomeFooter extends Component {
               />
             </span>
             <span id="appleBadge"
+                  role="presentation"
                   onClick={() => window.open('https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726', '_blank')}
             >
               <img
