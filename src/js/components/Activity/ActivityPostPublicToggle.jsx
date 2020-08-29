@@ -10,11 +10,10 @@ import SettingsAccount from '../Settings/SettingsAccount';
 import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from '../Widgets/SnackNotifier';
-import { generateActivityTidbitKeyWithPrefix } from '../../utils/activityUtils';
 
 class ActivityPostPublicToggle extends Component {
   static propTypes = {
-    activityPostId: PropTypes.number,
+    activityTidbitWeVoteId: PropTypes.string,
     classes: PropTypes.object,
     className: PropTypes.string,
     externalUniqueId: PropTypes.string,
@@ -53,10 +52,9 @@ class ActivityPostPublicToggle extends Component {
   }
 
   onActivityStoreChange () {
-    const { activityPostId } = this.props;
-    if (activityPostId) {
-      const activityTidbitKey = generateActivityTidbitKeyWithPrefix('ActPost', activityPostId);
-      const activityTidbit = ActivityStore.getActivityTidbitByKey(activityTidbitKey);
+    const { activityTidbitWeVoteId } = this.props;
+    if (activityTidbitWeVoteId) {
+      const activityTidbit = ActivityStore.getActivityTidbitByWeVoteId(activityTidbitWeVoteId);
       if (activityTidbit) {
         const {
           visibility_is_public: visibilityIsPublic,

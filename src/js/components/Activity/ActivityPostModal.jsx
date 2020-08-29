@@ -20,14 +20,13 @@ import {
   restoreStylesAfterCordovaKeyboard,
 } from '../../utils/cordovaUtils';
 import stockAvatar from '../../../img/global/icons/avatar-generic.png';
-import { generateActivityTidbitKeyWithPrefix } from '../../utils/activityUtils';
 import VoterStore from '../../stores/VoterStore';
 
 class ActivityPostModal extends Component {
   // This modal will show a users ballot guides from previous and current elections.
 
   static propTypes = {
-    activityPostId: PropTypes.number,
+    activityTidbitWeVoteId: PropTypes.string,
     classes: PropTypes.object,
     externalUniqueId: PropTypes.string,
     show: PropTypes.bool,
@@ -76,9 +75,8 @@ class ActivityPostModal extends Component {
   }
 
   onActivityStoreChange () {
-    const { activityPostId } = this.props;
-    const activityTidbitKey = generateActivityTidbitKeyWithPrefix('ActPost', activityPostId);
-    const activityPost = ActivityStore.getActivityTidbitByKey(activityTidbitKey);
+    const { activityTidbitWeVoteId } = this.props;
+    const activityPost = ActivityStore.getActivityTidbitByWeVoteId(activityTidbitWeVoteId);
     if (activityPost) {
       const {
         statement_text: statementText,
@@ -115,11 +113,11 @@ class ActivityPostModal extends Component {
 
   saveActivityPost = (e) => {
     e.preventDefault();
-    const { activityPostId } = this.props;
+    const { activityTidbitWeVoteId } = this.props;
     const { visibilityIsPublic, statementText } = this.state;
-    // console.log('ActivityPostModal activityPostId:', activityPostId, 'statementText: ', statementText, 'visibilityIsPublic: ', visibilityIsPublic);
+    // console.log('ActivityPostModal activityTidbitWeVoteId:', activityTidbitWeVoteId, 'statementText: ', statementText, 'visibilityIsPublic: ', visibilityIsPublic);
     const visibilitySetting = visibilityIsPublic ? 'SHOW_PUBLIC' : 'FRIENDS_ONLY';
-    ActivityActions.activityPostSave(activityPostId, statementText, visibilitySetting);
+    ActivityActions.activityPostSave(activityTidbitWeVoteId, statementText, visibilitySetting);
     this.props.toggleActivityPostModal();
   }
 
@@ -131,8 +129,7 @@ class ActivityPostModal extends Component {
 
   render () {
     renderLog('ActivityPostModal');  // Set LOG_RENDER_EVENTS to log all renders
-    let { activityPostId } = this.props;
-    activityPostId = parseInt(activityPostId, 10);
+    const { activityTidbitWeVoteId } = this.props;
     const {
       classes, externalUniqueId,
     } = this.props;
@@ -156,7 +153,7 @@ class ActivityPostModal extends Component {
       >
         <DialogTitle classes={{ root: classes.dialogTitle }}>
           <Title>
-            {activityPostId !== 0 ? 'Edit Post' : 'Create Post'}
+            {activityTidbitWeVoteId === '' ? 'Create Post' : 'Edit Post'}
           </Title>
           <IconButton
             aria-label="Close"
@@ -197,7 +194,7 @@ class ActivityPostModal extends Component {
                   style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
                 />
                 <InputBase onChange={this.updateStatementTextToBeSaved}
-                  id={`activityPostModalStatementText-${activityPostId}-${externalUniqueId}`}
+                  id={`activityPostModalStatementText-${activityTidbitWeVoteId}-${externalUniqueId}`}
                   name="statementText"
                   classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
                   placeholder={statementPlaceholderText}
@@ -214,13 +211,13 @@ class ActivityPostModal extends Component {
               />
               <PostSaveButton className="postsave-button">
                 <Button
-                  id={`ActivityPostSave-${activityPostId}-${externalUniqueId}`}
+                  id={`ActivityPostSave-${activityTidbitWeVoteId}-${externalUniqueId}`}
                   variant="contained"
                   color="primary"
                   classes={{ root: classes.saveButtonRoot }}
                   type="submit"
                 >
-                  {activityPostId !== 0 ? 'Save Changes' : 'Post'}
+                  {activityTidbitWeVoteId === '' ? 'Post' : 'Save Changes'}
                 </Button>
               </PostSaveButton>
             </form>

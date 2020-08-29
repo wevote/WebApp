@@ -8,6 +8,17 @@ import Dispatcher from '../dispatcher/Dispatcher';
 // NOTICE_FRIEND_ENDORSEMENTS
 
 export default {
+  activityCommentSave (activityCommentWeVoteId = '', parentWeVoteId = '', statementText = null, visibilitySetting = 'FRIENDS_ONLY', parentCommentWeVoteId = '') {
+    // console.log('activityNoticeListRetrieve');
+    Dispatcher.loadEndpoint('activityCommentSave',
+      {
+        activity_comment_we_vote_id: activityCommentWeVoteId,
+        parent_we_vote_id: parentWeVoteId,
+        parent_comment_we_vote_id: parentCommentWeVoteId,
+        statement_text: statementText,
+        visibility_setting: visibilitySetting,
+      });
+  },
   activityListRetrieve () {
     // console.log('activityNoticeListRetrieve');
     Dispatcher.loadEndpoint('activityListRetrieve',
@@ -23,11 +34,11 @@ export default {
         activity_notice_id_list_seen: activityNoticeIdListSeen,
       });
   },
-  activityPostSave (activityPostId = 0, statementText = null, visibilitySetting = 'FRIENDS_ONLY') {
+  activityPostSave (activityPostWeVoteId = '', statementText = null, visibilitySetting = 'FRIENDS_ONLY') {
     // console.log('activityNoticeListRetrieve');
     Dispatcher.loadEndpoint('activityPostSave',
       {
-        activity_post_id: activityPostId,
+        activity_post_we_vote_id: activityPostWeVoteId,
         statement_text: statementText,
         visibility_setting: visibilitySetting,
       });

@@ -56,6 +56,10 @@ class VoterStore extends ReduceStore {
     return this.getState().voter;
   }
 
+  getVoterWeVoteId () {
+    return this.getState().voter.we_vote_id || '';
+  }
+
   electionId () {
     return this.getState().latestGoogleCivicElectionId || 0;
   }

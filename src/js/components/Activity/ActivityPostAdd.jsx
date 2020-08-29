@@ -149,7 +149,7 @@ class ActivityPostAdd extends Component {
           </InnerFlexWrapper>
           {showActivityPostModal && (
             <ActivityPostModal
-              activityPostId={0}
+              activityPostWeVoteId=""
               externalUniqueId={externalUniqueId}
               show={showActivityPostModal}
               toggleActivityPostModal={this.toggleActivityPostModal}

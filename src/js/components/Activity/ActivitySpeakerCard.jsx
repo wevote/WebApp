@@ -15,7 +15,7 @@ import VoterStore from '../../stores/VoterStore';
 
 class ActivitySpeakerCard extends Component {
   static propTypes = {
-    activityTidbitKey: PropTypes.string.isRequired,
+    activityTidbitWeVoteId: PropTypes.string.isRequired,
     showTwitterInformation: PropTypes.bool,
   };
 
@@ -45,8 +45,8 @@ class ActivitySpeakerCard extends Component {
   }
 
   onActivityStoreChange () {
-    const { activityTidbitKey } = this.props;
-    const activityTidbit = ActivityStore.getActivityTidbitByKey(activityTidbitKey);
+    const { activityTidbitWeVoteId } = this.props;
+    const activityTidbit = ActivityStore.getActivityTidbitByWeVoteId(activityTidbitWeVoteId);
     const {
       date_created: dateOfNotice,
       kind_of_activity: kindOfActivity,
@@ -86,7 +86,7 @@ class ActivitySpeakerCard extends Component {
 
   render () {
     renderLog('ActivitySpeakerCard');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activityTidbitKey, showTwitterInformation } = this.props;
+    const { activityTidbitWeVoteId, showTwitterInformation } = this.props;
     const {
       actionDescription, activityTimeFromDate,
       isActivityNoticeSeed, isActivityPost, speakerIsVoter,
@@ -107,7 +107,7 @@ class ActivitySpeakerCard extends Component {
           delay={{ show: 700, hide: 100 }}
           popoverComponent={organizationPopoverCard}
           placement="auto"
-          id={`speakerAvatarOrganizationPopover-${activityTidbitKey}`}
+          id={`speakerAvatarOrganizationPopover-${activityTidbitWeVoteId}`}
         >
           {(speakerProfileImageUrlMedium) ? (
             <SpeakerAvatar>
@@ -124,7 +124,7 @@ class ActivitySpeakerCard extends Component {
             delay={{ show: 700, hide: 100 }}
             popoverComponent={organizationPopoverCard}
             placement="auto"
-            id={`speakerNameOrganizationPopover-${activityTidbitKey}`}
+            id={`speakerNameOrganizationPopover-${activityTidbitWeVoteId}`}
           >
             <SpeakerAndActionWrapper>
               <SpeakerNameWrapper>
