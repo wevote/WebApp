@@ -159,18 +159,24 @@ class WelcomeFooter extends Component {
             .
           </Text>
           <BadgeContainer>
-            <img
-              alt="Google Play Store badge"
-              src={cordovaDot(googlePlayIcon)}
-              className={classes.badgeIcon}
-              onClick={() => window.open('https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US', 'blank')}
-            />
-            <img
-              alt="App Store badge"
-              src={cordovaDot(appStoreIcon)}
-              className={classes.appleBadgeIcon}
-              onClick={() => window.open('https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726', '_blank')}
-            />
+            <span id="googleBadge"
+                  onClick={() => window.open('https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US', 'blank')}
+            >
+              <img
+                alt="Google Play Store badge"
+                src={cordovaDot(googlePlayIcon)}
+                className={classes.badgeIcon}
+              />
+            </span>
+            <span id="appleBadge"
+                  onClick={() => window.open('https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726', '_blank')}
+            >
+              <img
+                alt="App Store badge"
+                src={cordovaDot(appStoreIcon)}
+                className={classes.appleBadgeIcon}
+              />
+            </span>
           </BadgeContainer>
         </Bottom>
       </Wrapper>
