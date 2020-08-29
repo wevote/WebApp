@@ -159,24 +159,38 @@ class WelcomeFooter extends Component {
             .
           </Text>
           <BadgeContainer>
-            <span id="googleBadge"
-                  role="presentation"
-                  onClick={() => window.open('https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US', 'blank')}
+            <span
+              role="presentation"
             >
-              <img
-                alt="Google Play Store badge"
-                src={cordovaDot(googlePlayIcon)}
-                className={classes.badgeIcon}
+              <OpenExternalWebSite
+                linkIdAttribute="googleBadge"
+                className={classes.link}
+                url="https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US"
+                target="_blank"
+                body={(
+                  <img
+                    alt="Google Play Store badge"
+                    src={cordovaDot(googlePlayIcon)}
+                    className={classes.badgeIcon}
+                  />
+                )}
               />
             </span>
-            <span id="appleBadge"
-                  role="presentation"
-                  onClick={() => window.open('https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726', '_blank')}
+            <span
+              role="presentation"
             >
-              <img
-                alt="App Store badge"
-                src={cordovaDot(appStoreIcon)}
-                className={classes.appleBadgeIcon}
+              <OpenExternalWebSite
+                linkIdAttribute="appleBadge"
+                className={classes.link}
+                url="https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726"
+                target="_blank"
+                body={(
+                  <img
+                    alt="Apple App Store badge"
+                    src={cordovaDot(appStoreIcon)}
+                    className={classes.appleBadgeIcon}
+                  />
+                )}
               />
             </span>
           </BadgeContainer>
