@@ -4,7 +4,9 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import { historyPush, isWebApp } from '../../utils/cordovaUtils';
+import appStoreIcon from '../../../img/global/logos/download_on_the_app_store_badge_us-uk_blk.svg';
+import { cordovaDot, historyPush, isWebApp } from '../../utils/cordovaUtils';
+import googlePlayIcon from '../../../img/global/logos/google-play-badge-cropped.png';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 
@@ -156,6 +158,20 @@ class WelcomeFooter extends Component {
             />
             .
           </Text>
+          <BadgeContainer>
+            <img
+              alt="Google Play Store badge"
+              src={cordovaDot(googlePlayIcon)}
+              className={classes.badgeIcon}
+              onClick={() => window.open('https://play.google.com/store/apps/details?id=org.wevote.cordova&hl=en_US', 'blank')}
+            />
+            <img
+              alt="App Store badge"
+              src={cordovaDot(appStoreIcon)}
+              className={classes.appleBadgeIcon}
+              onClick={() => window.open('https://apps.apple.com/us/app/we-vote-voter-guide/id1347335726', '_blank')}
+            />
+          </BadgeContainer>
         </Bottom>
       </Wrapper>
     );
@@ -179,6 +195,33 @@ const styles = theme => ({
       width: '47%',
       fontSize: 12,
       border: '1px solid white',
+    },
+  },
+  badgeIcon: {
+    width: 200,
+    height: 60,
+    marginRight: '.5em',
+    cursor: 'pointer',
+    [theme.breakpoints.down('md')]: {
+      width: 175,
+      height: 53,
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: 150,
+      height: 45,
+      marginRight: '.2em',
+    },
+  },
+  appleBadgeIcon: {
+    width: 179,
+    marginLeft: '.5em',
+    cursor: 'pointer',
+    [theme.breakpoints.down('md')]: {
+      width: 160,
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: 135,
+      marginLeft: '.2em',
     },
   },
   link: {
@@ -266,6 +309,16 @@ const OptionsContainer = styled.div`
     justify-content: space-between;
   }
 `;
+
+const BadgeContainer = styled.div`
+  width: 100%;
+  margin-top: 4em;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
+`;
+
 
 const Bottom = styled.div`
   width: 750px;
