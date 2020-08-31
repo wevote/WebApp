@@ -124,7 +124,10 @@ class ActivityCommentAdd extends Component {
               rowsMax={4}
               value={statementText}
               variant="outlined"
+              margin="dense"
               InputProps={{
+                margin: 'dense',
+                classes: { root: classes.textFieldClasses },
                 startAdornment: hidePhotoFromTextField ? null : (
                   <InputAdornment position="start">
                     {(voterPhotoUrlTiny) ? (
@@ -185,6 +188,7 @@ const styles = () => ({
     padding: 6,
   },
   textFieldClasses: {
+    // padding: '8.5px 8px 6.5px 8px',
   },
   textFieldMultilineClasses: {
     // NOT WORKING in classes: , multiline: classes.textFieldMultilineClasses
