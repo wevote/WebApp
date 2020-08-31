@@ -302,3 +302,14 @@ export function hideZenDeskHelpVisibility () {
     }
   }
 }
+
+export function showZenDeskHelpVisibility () {
+  // console.log('showZenDeskHelpVisibility');
+  if (isWebApp()) {
+    try {
+      global.zE('webWidget', 'show');
+    } catch {
+      console.log('hideZenDeskHelpVisibility global.zE failure show');
+    }
+  }
+}

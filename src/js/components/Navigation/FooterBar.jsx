@@ -62,12 +62,14 @@ class FooterBar extends React.Component {
   }
 
   onAppStoreChange () {
+    const showActivityTidbitDrawer = AppStore.showActivityTidbitDrawer();
     const showingOneCompleteYourProfileModal = AppStore.showingOneCompleteYourProfileModal();
     const showShareModal = AppStore.showShareModal();
     const showSharedItemModal = AppStore.showSharedItemModal();
     const showSignInModal = AppStore.showSignInModal();
     const showVoterPlanModal = AppStore.showVoterPlanModal();
     this.setState({
+      showActivityTidbitDrawer,
       showingOneCompleteYourProfileModal,
       showShareModal,
       showSharedItemModal,
@@ -130,14 +132,14 @@ class FooterBar extends React.Component {
     // const { classes } = this.props;
     const {
       // friendInvitationsSentToMe,
-      showingOneCompleteYourProfileModal, showShareModal, showSharedItemModal, showSignInModal,
-      showVoterPlanModal,
+      showActivityTidbitDrawer, showingOneCompleteYourProfileModal, showShareModal,
+      showSharedItemModal, showSignInModal, showVoterPlanModal,
     } = this.state;
     // const numberOfIncomingFriendRequests = friendInvitationsSentToMe.length || 0;
     // const badgeStyle = {
     //   display: 'inline-block',
     // };
-    const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSharedItemModal || showSignInModal || showVoterPlanModal;
+    const hideFooterBehindModal = showActivityTidbitDrawer || showingOneCompleteYourProfileModal || showShareModal || showSharedItemModal || showSignInModal || showVoterPlanModal;
     return (
       <FooterBarWrapper>
         <div

@@ -7,6 +7,8 @@ import VoterStore from './VoterStore';
 class ReactionStore extends ReduceStore {
   getInitialState () {
     return {
+      allCachedReactionLikesByLikedItemWeVoteId: {}, // key == we_vote_id of liked item, value == List of ReactionLikes under one likedItemWeVoteId
+      allCachedReactionLikesByActivityTidbitWeVoteId: {}, // key == we_vote_id of liked item, value == List of ReactionLikes under ActivityTidbit or comments
       allItemWeVoteIdsVoterLikes: [],
       voterWeVoteIdListForEachItemLiked: {}, // Dictionary with key: item_liked_we_vote_id, value: list of voter we_vote_id's who like
     };
@@ -20,19 +22,35 @@ class ReactionStore extends ReduceStore {
     return this.getState().allActivityNotices || [];
   }
 
-  getReactionLikeListByWeVoteId (likedItemWeVoteId) {
+  getVoterWeVoteIdListByLikedItemWeVoteId (likedItemWeVoteId) {
     const voterWeVoteIdListForEachItemLiked = this.getState().voterWeVoteIdListForEachItemLiked || {};
     return voterWeVoteIdListForEachItemLiked[likedItemWeVoteId] || [];
   }
 
+  getReactionLikesByParentActivityTidbitWeVoteId (parentActivityTidbitWeVoteId) {
+    // Get all reaction likes for main ActivityTidbit and all comments underneath
+    const allCachedReactionLikesByActivityTidbitWeVoteId = this.getState().allCachedReactionLikesByActivityTidbitWeVoteId || {};
+    return allCachedReactionLikesByActivityTidbitWeVoteId[parentActivityTidbitWeVoteId] || [];
+  }
+
+  getReactionLikesByLikedItemWeVoteId (likedItemWeVoteId) {
+    const allCachedReactionLikesByLikedItemWeVoteId = this.getState().allCachedReactionLikesByLikedItemWeVoteId || {};
+    return allCachedReactionLikesByLikedItemWeVoteId[likedItemWeVoteId] || [];
+  }
+
   voterLikesThisItem (likedItemWeVoteId) {
     const allItemWeVoteIdsVoterLikes = this.getState().allItemWeVoteIdsVoterLikes || [];
+    // console.log('voterLikesThisItem allItemWeVoteIdsVoterLikes:', allItemWeVoteIdsVoterLikes);
     return arrayContains(likedItemWeVoteId, allItemWeVoteIdsVoterLikes);
   }
 
   reduce (state, action) {
     const voterWeVoteId = VoterStore.getVoterWeVoteId();
-    let { allItemWeVoteIdsVoterLikes, voterWeVoteIdListForEachItemLiked } = state;
+    const { allCachedReactionLikesByActivityTidbitWeVoteId } = state;
+    let {
+      allCachedReactionLikesByLikedItemWeVoteId,
+      allItemWeVoteIdsVoterLikes, voterWeVoteIdListForEachItemLiked,
+    } = state;
     let incomingReactionLikeList = [];
     let likedItemWeVoteId = '';
     let likedItemWeVoteIdList = [];
@@ -42,10 +60,27 @@ class ReactionStore extends ReduceStore {
         if (!action.res || !action.res.success) return state;
         incomingReactionLikeList = action.res.reaction_like_list || [];
         likedItemWeVoteIdList = action.res.liked_item_we_vote_id_list || [];
+        if (!allCachedReactionLikesByLikedItemWeVoteId) {
+          allCachedReactionLikesByLikedItemWeVoteId = {};
+        }
+        // Cycle through likedItemWeVoteIdList so we can wipe out prior likes and reset
+        likedItemWeVoteIdList.forEach((oneLikedItemWeVoteId) => {
+          allCachedReactionLikesByLikedItemWeVoteId[oneLikedItemWeVoteId] = [];
+        });
+
         likedItemWeVoteIdReturnedList = [];
         incomingReactionLikeList.forEach((reactionLike) => {
+          // Capture all likes under each liked_item
+          allCachedReactionLikesByLikedItemWeVoteId[reactionLike.liked_item_we_vote_id].push(reactionLike);
           if (!arrayContains(reactionLike.liked_item_we_vote_id, likedItemWeVoteIdReturnedList)) {
             likedItemWeVoteIdReturnedList.push(reactionLike.liked_item_we_vote_id);
+          }
+          // Capture all likes under the parent activity_tidbit
+          if (reactionLike.activity_tidbit_we_vote_id) {
+            if (!allCachedReactionLikesByActivityTidbitWeVoteId[reactionLike.activity_tidbit_we_vote_id]) {
+              allCachedReactionLikesByActivityTidbitWeVoteId[reactionLike.activity_tidbit_we_vote_id] = [];
+            }
+            allCachedReactionLikesByActivityTidbitWeVoteId[reactionLike.activity_tidbit_we_vote_id].push(reactionLike);
           }
           if (!voterWeVoteIdListForEachItemLiked) {
             voterWeVoteIdListForEachItemLiked = {};
@@ -69,6 +104,8 @@ class ReactionStore extends ReduceStore {
         });
         return {
           ...state,
+          allCachedReactionLikesByActivityTidbitWeVoteId,
+          allCachedReactionLikesByLikedItemWeVoteId,
           allItemWeVoteIdsVoterLikes,
           voterWeVoteIdListForEachItemLiked,
         };

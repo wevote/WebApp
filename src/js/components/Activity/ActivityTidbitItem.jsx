@@ -163,7 +163,7 @@ class ActivityTidbitItem extends Component {
         )}
         {showActivityPostModal && (
           <ActivityPostModal
-            activityPostWeVoteId={activityTidbitWeVoteId}
+            activityTidbitWeVoteId={activityTidbitWeVoteId}
             externalUniqueId={externalUniqueId}
             show={showActivityPostModal}
             toggleActivityPostModal={this.toggleActivityPostModal}

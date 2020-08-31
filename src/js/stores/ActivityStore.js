@@ -10,6 +10,7 @@ class ActivityStore extends ReduceStore {
       allCachedActivityCommentWeVoteIdsByTidbitWeVoteId: {}, // key == we_vote_id base of tree, value == we_vote_id of ALL Parent Comments & Child Comments so we can count
       allCachedActivityCommentsInTreeByTidbitWeVoteId: {}, // key == we_vote_id base of tree, value == Parent Comments (oldest to newest), with children in comment_list
       allCachedActivityTidbitsByWeVoteId: {},
+      allChildCommentsByParentCommentWeVoteId: {},
       allActivityNotices: [],
     };
   }
@@ -49,6 +50,10 @@ class ActivityStore extends ReduceStore {
     return this.getState().allCachedActivityTidbitsByWeVoteId[activityTidbitWeVoteId] || {};
   }
 
+  getChildCommentsByParentCommentWeVoteId (parentCommentWeVoteId) {
+    return this.getState().allChildCommentsByParentCommentWeVoteId[parentCommentWeVoteId] || {};
+  }
+
   reduce (state, action) {
     let activityComment = {};
     let activityPost = {};
@@ -59,41 +64,84 @@ class ActivityStore extends ReduceStore {
     let {
       allCachedActivityCommentWeVoteIdsByTidbitWeVoteId, allCachedActivityCommentsByCommentWeVoteId,
       allCachedActivityCommentsInTreeByTidbitWeVoteId, allCachedActivityTidbitsByWeVoteId,
+      allChildCommentsByParentCommentWeVoteId,
     } = state;
     let childCommentList = [];
-    let childCommentsByParentCommentWeVoteId = {};
+    let commentListUpdated = [];
     let incomingActivityList = [];
     let oneActivityCommentModified = {};
     let parentComments = [];
     let parentCommentsWithChildren = [];
+    let parentCommentsUpdated = [];
     let priorPostFound = false;
     switch (action.type) {
       case 'activityCommentSave':
         if (!action.res || !action.res.success) return state;
         activityComment = action.res;
+        // console.log('activityComment:', activityComment);
         activityCommentWeVoteId = activityComment.we_vote_id;
         if (!allCachedActivityCommentsByCommentWeVoteId) {
           allCachedActivityCommentsByCommentWeVoteId = {};
         }
         allCachedActivityCommentsByCommentWeVoteId[activityCommentWeVoteId] = activityComment;
-        // priorPostFound = false;
-        // allActivityModified = [];
-        // for (let count = 0; count < allActivity.length; count++) {
-        //   if (allActivity[count].activity_post_id === activityComment.we_vote_id) {
-        //     // Replace existing entry
-        //     allActivityModified.push(activityComment);
-        //     priorPostFound = true;
-        //   } else {
-        //     allActivityModified.push(allActivity[count]);
-        //   }
-        // }
-        // if (!priorPostFound) {
-        //   allActivityModified.unshift(activityComment);
-        // }
+        // console.log('allCachedActivityCommentsInTreeByTidbitWeVoteId:', allCachedActivityCommentsInTreeByTidbitWeVoteId);
+        // Traverse the tree and add it
+        commentListUpdated = [];
+        parentComments = allCachedActivityCommentsInTreeByTidbitWeVoteId[activityComment.parent_we_vote_id];
+        parentCommentsUpdated = [];
+        if (activityComment.activity_comment_created) {
+          // Add it to the tree
+          if (activityComment.parent_comment_we_vote_id) {
+            if (!allChildCommentsByParentCommentWeVoteId[activityComment.parent_comment_we_vote_id]) {
+              allChildCommentsByParentCommentWeVoteId[activityComment.parent_comment_we_vote_id] = [];
+            }
+            if (!parentComments.comment_list) {
+              parentComments.comment_list = [];
+            }
+            parentComments.comment_list.push(activityComment);
+            allChildCommentsByParentCommentWeVoteId[activityComment.parent_comment_we_vote_id].push(activityComment);
+          } else {
+            parentComments.push(activityComment);
+          }
+        } else if (activityComment.parent_comment_we_vote_id) {
+          // If here, the activityComment was updated, and it was a comment on a comment
+          if (!allChildCommentsByParentCommentWeVoteId[activityComment.parent_comment_we_vote_id]) {
+            allChildCommentsByParentCommentWeVoteId[activityComment.parent_comment_we_vote_id] = [];
+          }
+          if (!parentComments.comment_list) {
+            parentComments.comment_list = [];
+          }
+          if (parentComments.comment_list) {
+            for (let i = 0; i < parentComments.comment_list.length; i++) {
+              if (parentComments.comment_list[i].we_vote_id === activityComment.we_vote_id) {
+                commentListUpdated.push(activityComment);
+                allChildCommentsByParentCommentWeVoteId[activityComment.parent_comment_we_vote_id].push(activityComment);
+              } else {
+                commentListUpdated.push(parentComments[i]);
+                allChildCommentsByParentCommentWeVoteId[activityComment.parent_comment_we_vote_id].push(parentComments[i]);
+              }
+            }
+            parentComments.comment_list = commentListUpdated;
+          }
+        } else {
+          // If here, the activityComment was a comment on the parent post
+          parentComments.forEach((commentFromList) => {
+            if (commentFromList.we_vote_id === activityComment.we_vote_id) {
+              parentCommentsUpdated.push(activityComment);
+            } else {
+              parentCommentsUpdated.push(commentFromList);
+            }
+          });
+          parentComments = parentCommentsUpdated;
+        }
+        // console.log('parentComments:', parentComments);
+        allCachedActivityCommentsInTreeByTidbitWeVoteId[activityComment.parent_we_vote_id] = parentComments;
+
         return {
           ...state,
-          // allActivity: allActivityModified,
           allCachedActivityCommentsByCommentWeVoteId,
+          allCachedActivityCommentsInTreeByTidbitWeVoteId,
+          allChildCommentsByParentCommentWeVoteId,
         };
 
       case 'activityListRetrieve':
@@ -107,6 +155,9 @@ class ActivityStore extends ReduceStore {
         }
         if (!allCachedActivityCommentWeVoteIdsByTidbitWeVoteId) {
           allCachedActivityCommentWeVoteIdsByTidbitWeVoteId = {};
+        }
+        if (!allChildCommentsByParentCommentWeVoteId) {
+          allChildCommentsByParentCommentWeVoteId = {};
         }
         incomingActivityList.forEach((activityTidbit) => {
           activityTidbitWeVoteId = activityTidbit.we_vote_id;
@@ -127,7 +178,6 @@ class ActivityStore extends ReduceStore {
             allCachedActivityCommentsInTreeByTidbitWeVoteId[activityTidbitWeVoteId] = [];
           }
           parentComments = [];
-          childCommentsByParentCommentWeVoteId = {};
           if (activityTidbit && activityTidbit.activity_comment_list) {
             const activityCommentList = activityTidbit.activity_comment_list;
             // console.log('BEFORE activityCommentList: ', activityCommentList);
@@ -142,23 +192,26 @@ class ActivityStore extends ReduceStore {
             });
             // console.log('AFTER activityCommentList: ', activityCommentList);
             activityCommentList.forEach((oneActivityComment) => {
-              allCachedActivityCommentsByCommentWeVoteId[activityCommentWeVoteId] = oneActivityComment;
+              allCachedActivityCommentsByCommentWeVoteId[oneActivityComment.we_vote_id] = oneActivityComment;
               if (!arrayContains(oneActivityComment.we_vote_id, allCachedActivityCommentWeVoteIdsByTidbitWeVoteId[activityTidbitWeVoteId])) {
                 allCachedActivityCommentWeVoteIdsByTidbitWeVoteId[activityTidbitWeVoteId].push(oneActivityComment.we_vote_id);
               }
-              if (oneActivityComment.parent_comment_we_vote_id) {
-                if (!childCommentsByParentCommentWeVoteId[oneActivityComment.parent_comment_we_vote_id]) {
-                  childCommentsByParentCommentWeVoteId[oneActivityComment.parent_comment_we_vote_id] = [];
+              parentComments.push(oneActivityComment);
+              childCommentList = [];
+              if (oneActivityComment.comment_list) {
+                if (!allChildCommentsByParentCommentWeVoteId) {
+                  allChildCommentsByParentCommentWeVoteId = {};
                 }
-                childCommentsByParentCommentWeVoteId[oneActivityComment.parent_comment_we_vote_id].push(oneActivityComment);
-              } else {
-                parentComments.push(oneActivityComment);
+                allChildCommentsByParentCommentWeVoteId[oneActivityComment.we_vote_id] = oneActivityComment.comment_list;
+                oneActivityComment.comment_list.forEach((oneChildActivityComment) => {
+                  allCachedActivityCommentsByCommentWeVoteId[oneChildActivityComment.we_vote_id] = oneChildActivityComment;
+                });
               }
             });
             // console.log('AFTER parentComments: ', parentComments);
             parentCommentsWithChildren = [];
             parentComments.forEach((oneActivityComment) => {
-              childCommentList = childCommentsByParentCommentWeVoteId[oneActivityComment.parent_comment_we_vote_id] || [];
+              childCommentList = allChildCommentsByParentCommentWeVoteId[oneActivityComment.we_vote_id] || [];
               childCommentList.sort((optionA, optionB) => {
                 if (optionA.date_created < optionB.date_created) {
                   return -1;
@@ -183,6 +236,7 @@ class ActivityStore extends ReduceStore {
           allCachedActivityCommentsByCommentWeVoteId,
           allCachedActivityCommentsInTreeByTidbitWeVoteId,
           allCachedActivityTidbitsByWeVoteId,
+          allChildCommentsByParentCommentWeVoteId,
         };
 
       case 'activityNoticeListRetrieve':
