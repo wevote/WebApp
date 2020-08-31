@@ -21,6 +21,10 @@ class ActivityCommentAdd extends Component {
     activityTidbitWeVoteId: PropTypes.string.isRequired,
     activityCommentWeVoteId: PropTypes.string,
     classes: PropTypes.object,
+    commentEditSavedFunction: PropTypes.func,
+    hidePhotoFromTextField: PropTypes.bool,
+    inEditMode: PropTypes.bool,
+    parentCommentWeVoteId: PropTypes.string,  // Signifies that this is a response to a comment
   };
 
   constructor (props) {
@@ -45,16 +49,20 @@ class ActivityCommentAdd extends Component {
 
   onActivityStoreChange () {
     const { activityCommentWeVoteId, activityTidbitWeVoteId } = this.props;
-    const activityComment = ActivityStore.getActivityCommentByWeVoteId(activityCommentWeVoteId);
-    const {
-      statement_text: statementText,
-    } = activityComment;
-    // console.log('ActivityCommentAdd onActivityStoreChange, activityCommentWeVoteId:', activityCommentWeVoteId, ', statementText:', statementText);
+    if (activityCommentWeVoteId) {
+      const activityComment = ActivityStore.getActivityCommentByWeVoteId(activityCommentWeVoteId);
+      const {
+        statement_text: statementText,
+      } = activityComment;
+      this.setState({
+        statementText,
+      });
+      // console.log('ActivityCommentAdd onActivityStoreChange, activityCommentWeVoteId:', activityCommentWeVoteId, ', statementText:', statementText);
+    }
     const activityCommentCount = ActivityStore.getActivityCommentParentCountByTidbitWeVoteId(activityTidbitWeVoteId);
     // console.log('activityTidbitWeVoteId activityCommentCount:', activityCommentCount);
     this.setState({
       activityCommentCount,
-      statementText,
     });
   }
 
@@ -68,12 +76,17 @@ class ActivityCommentAdd extends Component {
   }
 
   saveActivityComment = () => {
-    const activityCommentWeVoteId = '';
-    const { activityTidbitWeVoteId } = this.props;
+    const { activityCommentWeVoteId, activityTidbitWeVoteId, parentCommentWeVoteId } = this.props;
     const { visibilityIsPublic, statementText } = this.state;
     // console.log('ActivityPostModal activityTidbitWeVoteId:', activityTidbitWeVoteId, 'statementText: ', statementText, 'visibilityIsPublic: ', visibilityIsPublic);
     const visibilitySetting = visibilityIsPublic ? 'SHOW_PUBLIC' : 'FRIENDS_ONLY';
-    ActivityActions.activityCommentSave(activityCommentWeVoteId, activityTidbitWeVoteId, statementText, visibilitySetting);
+    ActivityActions.activityCommentSave(activityCommentWeVoteId, activityTidbitWeVoteId, statementText, visibilitySetting, parentCommentWeVoteId);
+    this.setState({
+      statementText: '',
+    });
+    if (this.props.commentEditSavedFunction) {
+      this.props.commentEditSavedFunction();
+    }
   }
 
   updateStatementTextToBeSaved = (e) => {
@@ -91,7 +104,7 @@ class ActivityCommentAdd extends Component {
 
   render () {
     renderLog('ActivityCommentAdd');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activityCommentWeVoteId, activityTidbitWeVoteId, classes } = this.props;
+    const { activityCommentWeVoteId, activityTidbitWeVoteId, classes, hidePhotoFromTextField, inEditMode } = this.props;
     const { statementText, activityCommentCount, voterFullName, voterPhotoUrlTiny } = this.state;
     if (!activityTidbitWeVoteId) {
       return null;
@@ -105,14 +118,14 @@ class ActivityCommentAdd extends Component {
             <TextField
               id={`activityCommentAdd-${activityTidbitWeVoteId}-${activityCommentWeVoteId}`}
               classes={{ root: classes.textFieldClasses }}
-              label="Add your comment..."
+              label={inEditMode ? 'Edit your comment...' : 'Add your comment...'}
               multiline
               onChange={this.updateStatementTextToBeSaved}
               rowsMax={4}
-              // value={statementText}
+              value={statementText}
               variant="outlined"
               InputProps={{
-                startAdornment: (
+                startAdornment: hidePhotoFromTextField ? null : (
                   <InputAdornment position="start">
                     {(voterPhotoUrlTiny) ? (
                       <SpeakerAvatar>
@@ -204,7 +217,7 @@ const Wrapper = styled.div`
   display: flex;
   font-size: 14px;
   justify-content: space-between;
-  ${({ commentsExist }) => ((commentsExist) ? 'margin-top: 16px !important;' : 'margin-top: 4px !important;')}
+  ${({ commentsExist }) => ((commentsExist) ? 'margin-top: 6px !important;' : 'margin-top: 4px !important;')}
   padding: 0px !important;
 `;
 

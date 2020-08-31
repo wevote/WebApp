@@ -76,11 +76,11 @@ class ActivityTidbitAddReaction extends Component {
         <LeftColumnWrapper>
           <LikeWrapper>
             <IconButton
-              classes={voterLikesThisItem ? { root: classes.likeButtonSelected } : { root: classes.likeButton }}
+              classes={{ root: voterLikesThisItem ? classes.likeButtonSelected  : classes.likeButton }}
               id={`likeButton-${activityTidbitWeVoteId}`}
               onClick={this.onClickReactionLikeToggle}
             >
-              <ThumbUp classes={voterLikesThisItem ? { root: classes.likeIconSelected } : { root: classes.likeIcon }} />
+              <ThumbUp classes={{ root: voterLikesThisItem ? classes.likeIconSelected : classes.likeIcon }} />
               <LikeTextWrapper>
                 Like
               </LikeTextWrapper>
@@ -98,7 +98,7 @@ class ActivityTidbitAddReaction extends Component {
             >
               <Message classes={{ root: classes.commentsIcon }} />
               <CommentTextWrapper>
-                Comments
+                Comment
               </CommentTextWrapper>
             </IconButton>
           </CommentWrapper>
@@ -179,6 +179,14 @@ const styles = () => ({
   },
 });
 
+const CommentWrapper = styled.div`
+`;
+
+const CommentTextWrapper = styled.div`
+  font-size: 14px;
+  padding-left: 4px;
+`;
+
 const LeftColumnWrapper = styled.div`
   align-items: center;
   display: flex;
@@ -198,14 +206,6 @@ const RightColumnWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
-`;
-
-const CommentWrapper = styled.div`
-`;
-
-const CommentTextWrapper = styled.div`
-  font-size: 14px;
-  padding-left: 4px;
 `;
 
 const LikeTextWrapper = styled.div`

@@ -8,10 +8,9 @@ import ActivityTidbitAddReaction from './ActivityTidbitAddReaction';
 import ActivityTidbitComments from './ActivityTidbitComments';
 import ActivityTidbitItem from './ActivityTidbitItem';
 import ActivityTidbitReactionsSummary from './ActivityTidbitReactionsSummary';
+import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { renderLog } from '../../utils/logging';
-import webAppConfig from '../../config';
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class ActivityTidbitDrawer extends Component {
   static propTypes = {
@@ -29,6 +28,11 @@ class ActivityTidbitDrawer extends Component {
   }
 
   componentDidMount () {
+    hideZenDeskHelpVisibility();
+  }
+
+  componentWillUnmount () {
+    showZenDeskHelpVisibility();
   }
 
   closeActivityTidbitDrawer = () => {
@@ -68,22 +72,19 @@ class ActivityTidbitDrawer extends Component {
                 activityTidbitWeVoteId={activityTidbitWeVoteId}
               />
             </ActivityTidbitItemWrapper>
-            {nextReleaseFeaturesEnabled && (
-              <>
-                <ActivityTidbitReactionsSummary
-                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                />
-                <ActivityTidbitAddReaction
-                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                />
-                <ActivityTidbitComments
-                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                />
-                <ActivityCommentAdd
-                  activityTidbitWeVoteId={activityTidbitWeVoteId}
-                />
-              </>
-            )}
+            <ActivityTidbitReactionsSummary
+              activityTidbitWeVoteId={activityTidbitWeVoteId}
+            />
+            <ActivityTidbitAddReaction
+              activityTidbitWeVoteId={activityTidbitWeVoteId}
+            />
+            <ActivityTidbitComments
+              activityTidbitWeVoteId={activityTidbitWeVoteId}
+              showAllParentComments
+            />
+            <ActivityCommentAdd
+              activityTidbitWeVoteId={activityTidbitWeVoteId}
+            />
           </ActivityTidbitDrawerInnerWrapper>
         </Drawer>
       </>

@@ -35,9 +35,7 @@ import Testimonial from '../../components/Widgets/Testimonial';
 import { formatDateToMonthDayYear, timeFromDate } from '../../utils/textFormat';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import VoterStore from '../../stores/VoterStore';
-import webAppConfig from '../../config';
 
-const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 const STARTING_NUMBER_OF_ACTIVITY_TIDBITS_TO_DISPLAY = 10;
 
 
@@ -283,8 +281,8 @@ class News extends Component {
               {activityTidbitsList.map((oneActivityTidbit) => {
                 // console.log('oneActivityTidbit:', oneActivityTidbit);
                 // console.log('numberOfActivityTidbitsDisplayed:', numberOfActivityTidbitsDisplayed);
-                if (!oneActivityTidbit || !oneActivityTidbit.speaker_name) {
-                  // console.log('Missing oneActivityTidbit.speaker_name:', oneActivityTidbit);
+                if (!oneActivityTidbit || !oneActivityTidbit.speaker_name || !oneActivityTidbit.we_vote_id) {
+                  // console.log('Missing oneActivityTidbit.we_vote_id:', oneActivityTidbit);
                   return null;
                 }
                 if (numberOfActivityTidbitsDisplayed >= numberOfActivityTidbitsToDisplay) {
@@ -302,22 +300,19 @@ class News extends Component {
                             activityTidbitWeVoteId={activityTidbitWeVoteId}
                           />
                         </ActivityTidbitItemWrapper>
-                        {nextReleaseFeaturesEnabled && (
-                          <>
-                            <ActivityTidbitReactionsSummary
-                              activityTidbitWeVoteId={activityTidbitWeVoteId}
-                            />
-                            <ActivityTidbitAddReaction
-                              activityTidbitWeVoteId={activityTidbitWeVoteId}
-                            />
-                            <ActivityTidbitComments
-                              activityTidbitWeVoteId={activityTidbitWeVoteId}
-                            />
-                            <ActivityCommentAdd
-                              activityTidbitWeVoteId={activityTidbitWeVoteId}
-                            />
-                          </>
-                        )}
+                        <ActivityTidbitReactionsSummary
+                          activityTidbitWeVoteId={activityTidbitWeVoteId}
+                        />
+                        <ActivityTidbitAddReaction
+                          activityTidbitWeVoteId={activityTidbitWeVoteId}
+                        />
+                        <ActivityTidbitComments
+                          activityTidbitWeVoteId={activityTidbitWeVoteId}
+                          editingTurnedOff
+                        />
+                        <ActivityCommentAdd
+                          activityTidbitWeVoteId={activityTidbitWeVoteId}
+                        />
                       </CardNewsWrapper>
                     </Card>
                   </ActivityTidbitWrapper>

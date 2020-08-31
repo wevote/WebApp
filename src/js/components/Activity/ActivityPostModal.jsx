@@ -23,8 +23,6 @@ import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import VoterStore from '../../stores/VoterStore';
 
 class ActivityPostModal extends Component {
-  // This modal will show a users ballot guides from previous and current elections.
-
   static propTypes = {
     activityTidbitWeVoteId: PropTypes.string,
     classes: PropTypes.object,
@@ -44,24 +42,19 @@ class ActivityPostModal extends Component {
   componentDidMount () {
     this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-
-    const voter = VoterStore.getVoter();
-    const { voter_photo_url_medium: voterPhotoUrlMedium } = voter;
     this.onActivityStoreChange();
-    this.setState({
-      voterPhotoUrlMedium,
-    });
+    this.onVoterStoreChange();
   }
 
   componentDidUpdate () {
     const { initialFocusSet } = this.state;
-    if (this.positionInput) {
+    if (this.activityPostInput) {
       // Set the initial focus at the end of any existing text
       if (!initialFocusSet) {
-        const { positionInput } = this;
-        const { length } = positionInput.value;
-        positionInput.focus();
-        positionInput.setSelectionRange(length, length);
+        const { activityPostInput } = this;
+        const { length } = activityPostInput.value;
+        activityPostInput.focus();
+        activityPostInput.setSelectionRange(length, length);
         this.setState({
           initialFocusSet: true,
         });
@@ -77,6 +70,7 @@ class ActivityPostModal extends Component {
   onActivityStoreChange () {
     const { activityTidbitWeVoteId } = this.props;
     const activityPost = ActivityStore.getActivityTidbitByWeVoteId(activityTidbitWeVoteId);
+    // console.log('onActivityStoreChange activityTidbitWeVoteId:', activityTidbitWeVoteId, ', activityPost:', activityPost);
     if (activityPost) {
       const {
         statement_text: statementText,
@@ -193,15 +187,16 @@ class ActivityPostModal extends Component {
                   src={voterPhotoUrlMedium || stockAvatar}
                   style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
                 />
-                <InputBase onChange={this.updateStatementTextToBeSaved}
-                  id={`activityPostModalStatementText-${activityTidbitWeVoteId}-${externalUniqueId}`}
-                  name="statementText"
+                <InputBase
                   classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
-                  placeholder={statementPlaceholderText}
-                  defaultValue={statementText}
-                  inputRef={(input) => { this.positionInput = input; }}
+                  id={`activityPostModalStatementText-${activityTidbitWeVoteId}-${externalUniqueId}`}
+                  inputRef={(input) => { this.activityPostInput = input; }}
                   multiline
+                  name="statementText"
+                  onChange={this.updateStatementTextToBeSaved}
+                  placeholder={statementPlaceholderText}
                   rows={rowsToShow}
+                  value={statementText || ''}
                 />
               </div>
               <ActivityPostPublicToggle
