@@ -21,6 +21,7 @@ class ChildCommentList extends Component {
     activityTidbitWeVoteId: PropTypes.string.isRequired,
     classes: PropTypes.object,
     editingTurnedOff: PropTypes.bool,
+    hideChildCommentBottomLinks: PropTypes.bool,
     onClickToggleReplyToComment: PropTypes.func,
     parentCommentWeVoteId: PropTypes.string.isRequired,
     showAllChildComments: PropTypes.bool,
@@ -39,6 +40,7 @@ class ChildCommentList extends Component {
   }
 
   componentDidMount () {
+    // console.log('ChildCommentList componentDidMount');
     this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
     this.reactionStoreListener = ReactionStore.addListener(this.onReactionStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -54,6 +56,7 @@ class ChildCommentList extends Component {
   }
 
   onActivityStoreChange () {
+    // console.log('ChildCommentList onActivityStoreChange');
     const { parentCommentWeVoteId } = this.props;
     const childCommentsList = ActivityStore.getChildCommentsByParentCommentWeVoteId(parentCommentWeVoteId);
     const totalNumberOfChildComments = childCommentsList.length || 0;
@@ -64,6 +67,7 @@ class ChildCommentList extends Component {
   }
 
   onReactionStoreChange () {
+    // console.log('ChildCommentList onReactionStoreChange');
     const { activityTidbitWeVoteId } = this.props;
     const { voterLikesThisItemByWeVoteId } = this.state;
     // console.log('ActivityTidbitReactionsSummary onReactionStoreChange, activityTidbitWeVoteId:', activityTidbitWeVoteId);
@@ -84,6 +88,7 @@ class ChildCommentList extends Component {
   }
 
   onVoterStoreChange () {
+    // console.log('ChildCommentList onVoterStoreChange');
     const voterWeVoteId = VoterStore.getVoterWeVoteId();
     this.setState({
       voterWeVoteId,
@@ -91,12 +96,14 @@ class ChildCommentList extends Component {
   }
 
   commentEditSavedFunction = () => {
+    // console.log('commentEditSavedFunction');
     this.setState({
       commentWeVoteIdBeingEditedNow: '',
     });
   }
 
   onClickEditComment = (commentWeVoteId) => {
+    // console.log('onClickEditComment');
     // const { commentWeVoteIdBeingEditedNow } = this.state;
     this.setState({
       commentWeVoteIdBeingEditedNow: commentWeVoteId,
@@ -104,6 +111,7 @@ class ChildCommentList extends Component {
   }
 
   onClickEditCommentCancel = () => {
+    // console.log('onClickEditCommentCancel');
     this.setState({
       commentWeVoteIdBeingEditedNow: '',
     });
@@ -127,18 +135,21 @@ class ChildCommentList extends Component {
 
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
+    // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
     AppActions.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
     AppActions.setShowActivityTidbitDrawer(true);
   }
 
   onClickToggleReplyToCommentLocal = () => {
     const { parentCommentWeVoteId } = this.props;
-    if (this.props.onClickToggleReplyToComment) {
+    // console.log('onClickToggleReplyToCommentLocal parentCommentWeVoteId:', parentCommentWeVoteId);
+    if (this.props.onClickToggleReplyToComment && parentCommentWeVoteId) {
       this.props.onClickToggleReplyToComment(parentCommentWeVoteId);
     }
   }
 
   increaseNumberOfActivityTidbitsToDisplay = () => {
+    // console.log('increaseNumberOfActivityTidbitsToDisplay');
     let { numberOfChildCommentsToDisplay } = this.state;
     numberOfChildCommentsToDisplay += 2;
     this.positionItemTimer = setTimeout(() => {
@@ -150,16 +161,19 @@ class ChildCommentList extends Component {
 
   render () {
     renderLog('ChildCommentList');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activityTidbitWeVoteId, classes, editingTurnedOff, parentCommentWeVoteId, showAllChildComments } = this.props;
+    const {
+      activityTidbitWeVoteId, classes, editingTurnedOff, hideChildCommentBottomLinks,
+      parentCommentWeVoteId, showAllChildComments,
+    } = this.props;
     const {
       commentWeVoteIdBeingEditedNow, childCommentsList,
       numberOfChildCommentsToDisplay, totalNumberOfChildComments,
       voterLikesThisItemByWeVoteId, voterWeVoteId,
     } = this.state;
+    // console.log('ChildCommentList render, childCommentsList:', childCommentsList);
     if (!childCommentsList || childCommentsList.length === 0) {
       return null;
     }
-    const hideChildCommentBottomLinks = ((totalNumberOfChildComments > 1) && !showAllChildComments);
     let likeButtonSelected = false;
     let numberOfCommentsDisplayed = 0;
     let commenterIsVoter = false;
@@ -212,7 +226,6 @@ class ChildCommentList extends Component {
               </ChildCommentPhotoDiv>
               <ChildCommentWrapper
                 className={hideChildCommentBottomLinks ? 'u-cursor--pointer' : ''}
-                onClick={hideChildCommentBottomLinks ? this.onClickShowActivityTidbitDrawer : null}
               >
                 {commentWeVoteIdBeingEditedNow === childComment.we_vote_id ? (
                   <ActivityCommentAdd
@@ -225,9 +238,17 @@ class ChildCommentList extends Component {
                   />
                 ) : (
                   <ChildCommentText>
-                    <div>
-                      {childComment.statement_text}
-                    </div>
+                    {hideChildCommentBottomLinks ? (
+                      <ChildCommentStatementText
+                        onClick={this.onClickShowActivityTidbitDrawer}
+                      >
+                        {childComment.statement_text}
+                      </ChildCommentStatementText>
+                    ) : (
+                      <ChildCommentStatementText>
+                        {childComment.statement_text}
+                      </ChildCommentStatementText>
+                    )}
                     {(commenterIsVoter && !editingTurnedOff) && (
                       <ActivityCommentEditWrapper
                         id={`activityCommentEdit-${activityTidbitWeVoteId}-${childComment.we_vote_id}`}
@@ -258,7 +279,7 @@ class ChildCommentList extends Component {
                     </LikeWrapper>
                     <ReplyWrapper>
                       <IconButton
-                        classes={{ root: classes.likeButton }}
+                        classes={{ root: classes.replyButton }}
                         id={`replyButton-${parentCommentWeVoteId}-${childComment.we_vote_id}`}
                         onClick={this.onClickToggleReplyToCommentLocal}
                       >
@@ -297,20 +318,22 @@ const styles = () => ({
     '&:hover': {
       backgroundColor: 'transparent',
     },
+    width: 24,
+    height: 24,
   },
   cancelButton: {
     color: 'rgba(17, 17, 17, .4)',
     '&:hover': {
       backgroundColor: 'transparent',
     },
-    padding: 6,
+    padding: '4px 6px 6px 6px',
   },
   likeButton: {
     color: 'rgba(17, 17, 17, .4)',
     '&:hover': {
       backgroundColor: 'transparent',
     },
-    padding: 6,
+    padding: '4px 6px 6px 6px',
   },
   likeButtonSelected: {
     color: '#2e3c5d',
@@ -318,7 +341,7 @@ const styles = () => ({
     '&:hover': {
       backgroundColor: 'transparent',
     },
-    padding: 6,
+    padding: '4px 6px 6px 6px',
   },
   numberOfLikesButton: {
     padding: 6,
@@ -330,6 +353,13 @@ const styles = () => ({
     },
     padding: 6,
   },
+  replyButton: {
+    color: 'rgba(17, 17, 17, .4)',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    padding: '4px 6px 6px 6px',
+  },
 });
 
 const ActivityCommentEditWrapper = styled.div`
@@ -337,7 +367,8 @@ const ActivityCommentEditWrapper = styled.div`
 
 const ActivityImage = styled.img`
   border-radius: 4px;
-  width: 32px;
+  width: 24px;
+  height: 24px;
 `;
 
 const CancelTextWrapper = styled.div`
@@ -357,6 +388,10 @@ const ChildCommentBottomLinks = styled.div`
   margin-left: 12px;
 `;
 
+const ChildCommentStatementText = styled.div`
+  width: 100%;
+`;
+
 const ChildCommentText = styled.div`
   align-items: center;
   display: flex;
@@ -364,9 +399,9 @@ const ChildCommentText = styled.div`
   border-radius: 32px;
   background: rgb(224, 224, 224);
   color: #2e3c5d;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
-  padding: 4px 12px;
+  padding: 2px 12px;
   margin-top: 0px;
 `;
 
@@ -388,6 +423,7 @@ const CommentWrapper = styled.div`
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
+  margin-top: 3px;
   margin-bottom: 3px;
 `;
 

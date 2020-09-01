@@ -39,6 +39,7 @@ class ActivityTidbitComments extends Component {
   }
 
   componentDidMount () {
+    // console.log('ActivityTidbitComments componentDidMount');
     this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
     this.reactionStoreListener = ReactionStore.addListener(this.onReactionStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -92,13 +93,17 @@ class ActivityTidbitComments extends Component {
 
   addChildSavedFunction = (parentCommentWeVoteId) => {
     const { addChildCommentOpenByParentCommentWeVoteId } = this.state;
-    addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId] = false;
-    this.setState({
-      addChildCommentOpenByParentCommentWeVoteId,
-    });
+    if (parentCommentWeVoteId) {
+      addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId] = false;
+      this.setState({
+        addChildCommentOpenByParentCommentWeVoteId,
+      });
+    }
+    // console.log('addChildSavedFunction addChildCommentOpenByParentCommentWeVoteId:', addChildCommentOpenByParentCommentWeVoteId);
   }
 
   commentEditSavedFunction = () => {
+    // console.log('commentEditSavedFunction');
     this.setState({
       commentWeVoteIdBeingEditedNow: '',
     });
@@ -106,12 +111,14 @@ class ActivityTidbitComments extends Component {
 
   onClickEditComment = (commentWeVoteId) => {
     // const { commentWeVoteIdBeingEditedNow } = this.state;
+    // console.log('onClickEditComment, commentWeVoteId:', commentWeVoteId);
     this.setState({
       commentWeVoteIdBeingEditedNow: commentWeVoteId,
     });
   }
 
   onClickEditCommentCancel = () => {
+    // console.log('onClickEditCommentCancel');
     this.setState({
       commentWeVoteIdBeingEditedNow: '',
     });
@@ -134,25 +141,34 @@ class ActivityTidbitComments extends Component {
   }
 
   onClickToggleReplyToComment = (parentCommentWeVoteId) => {
-    // console.log('onClickReactionLikeToggle parentCommentWeVoteId:', parentCommentWeVoteId);
     const { addChildCommentOpenByParentCommentWeVoteId } = this.state;
-    if (addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId]) {
-      addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId] = false;
-    } else {
-      addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId] = true;
+    // console.log('onClickToggleReplyToComment addChildCommentOpenByParentCommentWeVoteId', addChildCommentOpenByParentCommentWeVoteId);
+    if (parentCommentWeVoteId) {
+      // Set it the first time to false
+      if (!addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId]) {
+        addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId] = false;
+      }
+      if (addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId]) {
+        addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId] = false;
+      } else {
+        addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId] = true;
+      }
+      this.setState({
+        addChildCommentOpenByParentCommentWeVoteId,
+      });
     }
-    this.setState({
-      addChildCommentOpenByParentCommentWeVoteId,
-    });
+    // console.log('onClickReactionLikeToggle parentCommentWeVoteId:', parentCommentWeVoteId, ', addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId]', addChildCommentOpenByParentCommentWeVoteId[parentCommentWeVoteId]);
   }
 
   onClickShowActivityTidbitDrawer = () => {
     const { activityTidbitWeVoteId } = this.props;
+    // console.log('onClickShowActivityTidbitDrawer activityTidbitWeVoteId:', activityTidbitWeVoteId);
     AppActions.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteId);
     AppActions.setShowActivityTidbitDrawer(true);
   }
 
   increaseNumberOfActivityTidbitsToDisplay = () => {
+    // console.log('increaseNumberOfActivityTidbitsToDisplay');
     let { numberOfParentCommentsToDisplay } = this.state;
     numberOfParentCommentsToDisplay += 2;
     this.positionItemTimer = setTimeout(() => {
@@ -164,6 +180,7 @@ class ActivityTidbitComments extends Component {
 
   render () {
     renderLog('ActivityTidbitComments');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('ActivityTidbitComments render');
     const { activityTidbitWeVoteId, classes, editingTurnedOff, showAllParentComments } = this.props;
     const {
       addChildCommentOpenByParentCommentWeVoteId, commentWeVoteIdBeingEditedNow, commentsInTree,
@@ -214,7 +231,6 @@ class ActivityTidbitComments extends Component {
           numberOfCommentsDisplayed += 1;
           likeButtonSelected = !!(voterLikesThisItemByWeVoteId[parentComment.we_vote_id]);
           commenterIsVoter = (voterWeVoteId === parentComment.commenter_voter_we_vote_id);
-          const addChildComment = addChildCommentOpenByParentCommentWeVoteId[parentComment.we_vote_id];
           // console.log('parentComment.comment_list:', parentComment.comment_list);
           return (
             <CommentWrapper key={`comment-${parentComment.we_vote_id}`}>
@@ -231,7 +247,6 @@ class ActivityTidbitComments extends Component {
               </ParentPhotoDiv>
               <ParentCommentWrapper
                 className={hideParentCommentBottomLinks ? 'u-cursor--pointer' : ''}
-                onClick={hideParentCommentBottomLinks ? this.onClickShowActivityTidbitDrawer : null}
               >
                 {commentWeVoteIdBeingEditedNow === parentComment.we_vote_id ? (
                   <ActivityCommentAdd
@@ -242,10 +257,18 @@ class ActivityTidbitComments extends Component {
                     inEditMode
                   />
                 ) : (
-                  <ParentCommentText>
-                    <div>
-                      {parentComment.statement_text}
-                    </div>
+                  <ParentCommentStatementTextOutsideWrapper>
+                    {hideParentCommentBottomLinks ? (
+                      <ParentCommentStatementText
+                        onClick={this.onClickShowActivityTidbitDrawer}
+                      >
+                        {parentComment.statement_text}
+                      </ParentCommentStatementText>
+                    ) : (
+                      <ParentCommentStatementText>
+                        {parentComment.statement_text}
+                      </ParentCommentStatementText>
+                    )}
                     {(commenterIsVoter && !editingTurnedOff) && (
                       <ActivityCommentEditWrapper
                         id={`activityCommentEdit-${activityTidbitWeVoteId}-${parentComment.we_vote_id}`}
@@ -254,7 +277,7 @@ class ActivityTidbitComments extends Component {
                         <MoreHoriz />
                       </ActivityCommentEditWrapper>
                     )}
-                  </ParentCommentText>
+                  </ParentCommentStatementTextOutsideWrapper>
                 )}
                 {(!hideParentCommentBottomLinks) && (
                   <ParentCommentBottomLinks>
@@ -276,7 +299,7 @@ class ActivityTidbitComments extends Component {
                     </LikeWrapper>
                     <ReplyWrapper>
                       <IconButton
-                        classes={{ root: classes.likeButton }}
+                        classes={{ root: classes.replyButton }}
                         id={`replyButton-${parentComment.parent_we_vote_id}-${parentComment.we_vote_id}`}
                         onClick={() => this.onClickToggleReplyToComment(parentComment.we_vote_id)}
                       >
@@ -304,16 +327,22 @@ class ActivityTidbitComments extends Component {
                   <ChildCommentListWrapper>
                     <ChildCommentList
                       activityTidbitWeVoteId={activityTidbitWeVoteId}
+                      editingTurnedOff={editingTurnedOff}
+                      hideChildCommentBottomLinks={hideParentCommentBottomLinks}
                       onClickToggleReplyToComment={this.onClickToggleReplyToComment}
                       parentCommentWeVoteId={parentComment.we_vote_id}
+                      showAllChildComments={showAllParentComments}
                     />
                   </ChildCommentListWrapper>
                 )}
-                {(addChildComment) && (
+                {(totalNumberOfParentComments === 1) && (
+                  <SpacerBelowComments />
+                )}
+                {(addChildCommentOpenByParentCommentWeVoteId && addChildCommentOpenByParentCommentWeVoteId[parentComment.we_vote_id]) && (
                   <ActivityCommentAdd
                     activityTidbitWeVoteId={activityTidbitWeVoteId}
                     parentCommentWeVoteId={parentComment.we_vote_id}
-                    commentEditSavedFunction={this.addChildSavedFunction}
+                    addChildSavedFunction={this.addChildSavedFunction}
                   />
                 )}
               </ParentCommentWrapper>
@@ -332,13 +361,21 @@ const styles = () => ({
       backgroundColor: 'transparent',
     },
     width: 32,
+    height: 32,
+  },
+  cancelButton: {
+    color: 'rgba(17, 17, 17, .4)',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    padding: '4px 6px 6px 6px',
   },
   likeButton: {
     color: 'rgba(17, 17, 17, .4)',
     '&:hover': {
       backgroundColor: 'transparent',
     },
-    padding: 6,
+    padding: '4px 6px 6px 6px',
   },
   likeButtonSelected: {
     color: '#2e3c5d',
@@ -346,7 +383,7 @@ const styles = () => ({
     '&:hover': {
       backgroundColor: 'transparent',
     },
-    padding: 6,
+    padding: '4px 6px 6px 6px',
   },
   numberOfLikesButton: {
     padding: 6,
@@ -357,6 +394,13 @@ const styles = () => ({
       backgroundColor: 'transparent',
     },
     padding: 6,
+  },
+  replyButton: {
+    color: 'rgba(17, 17, 17, .4)',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    padding: '4px 6px 6px 6px',
   },
 });
 
@@ -412,7 +456,11 @@ const ParentCommentBottomLinks = styled.div`
   margin-left: 12px;
 `;
 
-const ParentCommentText = styled.div`
+const ParentCommentStatementText = styled.div`
+  width: 100%;
+`;
+
+const ParentCommentStatementTextOutsideWrapper = styled.div`
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
@@ -450,6 +498,10 @@ const ShowMoreWrapper = styled.div`
   justify-content: center;
   margin-top: -5px;
   width: 100%;
+`;
+
+const SpacerBelowComments = styled.div`
+  height: 4px;
 `;
 
 const SpeakerAvatar = styled.div`

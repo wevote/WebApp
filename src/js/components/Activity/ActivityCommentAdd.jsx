@@ -20,6 +20,7 @@ class ActivityCommentAdd extends Component {
   static propTypes = {
     activityTidbitWeVoteId: PropTypes.string.isRequired,
     activityCommentWeVoteId: PropTypes.string,
+    addChildSavedFunction: PropTypes.func,
     classes: PropTypes.object,
     commentEditSavedFunction: PropTypes.func,
     hidePhotoFromTextField: PropTypes.bool,
@@ -84,6 +85,9 @@ class ActivityCommentAdd extends Component {
     this.setState({
       statementText: '',
     });
+    if (this.props.addChildSavedFunction && parentCommentWeVoteId) {
+      this.props.addChildSavedFunction(parentCommentWeVoteId);
+    }
     if (this.props.commentEditSavedFunction) {
       this.props.commentEditSavedFunction();
     }
@@ -199,6 +203,7 @@ const AddReplyTextWrapper = styled.div`
 const ActivityImage = styled.img`
   border-radius: 4px;
   width: 24px;
+  height: 24px;
 `;
 
 const SendButtonWrapper = styled.div`
