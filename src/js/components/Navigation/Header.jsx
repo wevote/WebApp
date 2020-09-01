@@ -69,9 +69,8 @@ export default class Header extends Component {
     if (this.state.showVoterPlanModal !== nextState.showVoterPlanModal) return true;
     if (this.state.showOrganizationModal !== nextState.showOrganizationModal) return true;
     if (this.state.showSharedItemModal !== nextState.showSharedItemModal) return true;
-    if (this.state.windowWidth !== nextState.windowWidth) return true;
-    return false;
-  }
+    return this.state.windowWidth !== nextState.windowWidth;
+./;;;;;;;;;;;;;;;……………………………………………………  }
 
   componentWillUnmount () {
     this.appStoreListener.remove();
@@ -143,7 +142,7 @@ export default class Header extends Component {
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
     } else if (isCordova() && isIOS() && !hasIPhoneNotch()) {
-      iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '24px' : 'undefined'}` }} />;
+      iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '26px' : 'undefined'}` }} />;
     }
 
     // console.log('organizationModalBallotItemWeVoteId: ', this.state.organizationModalBallotItemWeVoteId);

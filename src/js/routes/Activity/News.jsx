@@ -18,7 +18,7 @@ import AppActions from '../../actions/AppActions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import { cordovaDot, historyPush, isCordova } from '../../utils/cordovaUtils';
+import { cordovaDot, historyPush, isCordova, isIPad, isAndroidTablet } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import FriendActions from '../../actions/FriendActions';
@@ -267,6 +267,10 @@ class News extends Component {
         unsetSomeRowStylesIfCordova.paddingBottom = '625px';  // big enough for the largest phone with a footer menu
       }
     }
+    const unsetSomeRowStylesIfCordovaMdBlock = Object.assign({}, unsetSomeRowStylesIfCordova);
+    if (isIPad() || isAndroidTablet()) {
+      unsetSomeRowStylesIfCordovaMdBlock.transform = 'translate(0, 5%)';
+    }
 
     return (
       <span>
@@ -367,7 +371,7 @@ class News extends Component {
               </DelayedLoad>
             )}
           </div>
-          <div className="col-md-4 d-none d-md-block" style={unsetSomeRowStylesIfCordova}>
+          <div className="col-md-4 d-none d-md-block" style={unsetSomeRowStylesIfCordovaMdBlock}>
             <div className="card">
               <div className="card-main" style={unsetMarginsIfCordova}>
                 <SectionTitle>
