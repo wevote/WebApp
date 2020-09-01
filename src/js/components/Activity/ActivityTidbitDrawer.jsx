@@ -62,7 +62,7 @@ class ActivityTidbitDrawer extends Component {
             aria-label="Close"
             className={classes.closeButton}
             id="closeActivityTidbitDrawer"
-             onClick={this.closeActivityTidbitDrawer}
+            onClick={this.closeActivityTidbitDrawer}
           >
             <span className="fas fa-times u-cursor--pointer" />
           </IconButton>
