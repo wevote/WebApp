@@ -70,7 +70,7 @@ export default class Header extends Component {
     if (this.state.showOrganizationModal !== nextState.showOrganizationModal) return true;
     if (this.state.showSharedItemModal !== nextState.showSharedItemModal) return true;
     return this.state.windowWidth !== nextState.windowWidth;
-./;;;;;;;;;;;;;;;……………………………………………………  }
+  }
 
   componentWillUnmount () {
     this.appStoreListener.remove();
