@@ -115,6 +115,15 @@ class ActivityCommentAdd extends Component {
         <AddReplyTextWrapper>
           <FormControl classes={{ root: classes.formControl }}>
             {/* NOT WORKING in classes: , multiline: classes.textFieldMultilineClasses */}
+            {(voterPhotoUrlTiny) ? (
+              <SpeakerAvatar>
+                <ActivityImage src={voterPhotoUrlTiny} alt={`${voterFullName}`} />
+              </SpeakerAvatar>
+            ) : (
+              <SpeakerAvatar>
+                <AccountCircle classes={{ root: classes.accountCircle }} />
+              </SpeakerAvatar>
+            )}
             <TextField
               id={`activityCommentAdd-${activityTidbitWeVoteId}-${activityCommentWeVoteId}`}
               classes={{ root: classes.textFieldClasses }}
@@ -128,19 +137,19 @@ class ActivityCommentAdd extends Component {
               InputProps={{
                 margin: 'dense',
                 classes: { root: classes.textFieldClasses },
-                startAdornment: hidePhotoFromTextField ? null : (
-                  <InputAdornment position="start">
-                    {(voterPhotoUrlTiny) ? (
-                      <SpeakerAvatar>
-                        <ActivityImage src={voterPhotoUrlTiny} alt={`${voterFullName}`} />
-                      </SpeakerAvatar>
-                    ) : (
-                      <SpeakerAvatar>
-                        <AccountCircle classes={{ root: classes.accountCircle }} />
-                      </SpeakerAvatar>
-                    )}
-                  </InputAdornment>
-                ),
+                // startAdornment: hidePhotoFromTextField ? null : (
+                //   <InputAdornment position="start">
+                //     {(voterPhotoUrlTiny) ? (
+                //       <SpeakerAvatar>
+                //         <ActivityImage src={voterPhotoUrlTiny} alt={`${voterFullName}`} />
+                //       </SpeakerAvatar>
+                //     ) : (
+                //       <SpeakerAvatar>
+                //         <AccountCircle classes={{ root: classes.accountCircle }} />
+                //       </SpeakerAvatar>
+                //     )}
+                //   </InputAdornment>
+                // ),
               }}
             />
           </FormControl>
