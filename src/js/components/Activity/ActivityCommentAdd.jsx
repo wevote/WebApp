@@ -115,16 +115,19 @@ class ActivityCommentAdd extends Component {
         <AddReplyTextWrapper>
           <FormControl classes={{ root: classes.formControl }}>
             {/* NOT WORKING in classes: , multiline: classes.textFieldMultilineClasses */}
-            {(voterPhotoUrlTiny) ? (
-              <SpeakerAvatar>
-                <ActivityImage src={voterPhotoUrlTiny} alt={`${voterFullName}`} />
-              </SpeakerAvatar>
-            ) : (
-              <SpeakerAvatar>
-                <AccountCircle classes={{ root: classes.accountCircle }} />
-              </SpeakerAvatar>
-            )}
-            <TextField
+            <div style={{ display: 'flex' }}>
+
+
+              {(voterPhotoUrlTiny) ? (
+                <SpeakerAvatar>
+                  <ActivityImage src={voterPhotoUrlTiny} alt={`${voterFullName}`} />
+                </SpeakerAvatar>
+              ) : (
+                <SpeakerAvatar>
+                  <AccountCircle classes={{ root: classes.accountCircle }} />
+                </SpeakerAvatar>
+              )}
+              <TextField
               id={`activityCommentAdd-${activityTidbitWeVoteId}-${activityCommentWeVoteId}`}
               classes={{ root: classes.textFieldClasses }}
               label={inEditMode ? 'Edit your comment...' : 'Add your comment...'}
@@ -151,7 +154,8 @@ class ActivityCommentAdd extends Component {
                 //   </InputAdornment>
                 // ),
               }}
-            />
+              />
+            </div>
           </FormControl>
         </AddReplyTextWrapper>
         <SendButtonWrapper>
@@ -181,6 +185,7 @@ const styles = () => ({
   },
   formControl: {
     width: '100%',
+    margin: 0
   },
   saveComment: {
     color: 'rgba(17, 17, 17, .4)',
@@ -198,10 +203,14 @@ const styles = () => ({
   },
   textFieldClasses: {
     // padding: '8.5px 8px 6.5px 8px',
+    margin: 0,
+    width: '100%',
   },
   textFieldMultilineClasses: {
     // NOT WORKING in classes: , multiline: classes.textFieldMultilineClasses
     padding: '6.5px 14px',
+    margin: 0,
+    width: '100%',
   },
 });
 
@@ -223,6 +232,7 @@ const SpeakerAvatar = styled.div`
   display: flex;
   justify-content: center;
   position: relative;
+  margin-right: 8px;
 `;
 
 const Wrapper = styled.div`
