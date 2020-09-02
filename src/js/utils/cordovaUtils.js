@@ -380,6 +380,16 @@ export function isAndroidSizeFold () {
   return false;
 }
 
+export function isAndroidTablet () {
+  if (isAndroid()) {
+    if (window.innerWidth > 768) {
+      logMatch('isAndroidTablet: based on width"', true);
+      return true;
+    }
+  }
+  return false;
+}
+
 export function isWebAppHeight0to568 () {
   if (isWebApp()) {
     if (window && window.screen && window.screen.height <= 568) {
@@ -459,6 +469,11 @@ export function getToastClass () {
   return toastClass;
 }
 
+export function getCordovaScreenHeight () {
+  const { pbakondyScreenSize: size } = window;
+  return isIPad() ? `${size.height / size.scale}px` : '100%';
+}
+
 export function prepareForCordovaKeyboard (callerString) {
   if (callerString && isCordova()) {
     const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
@@ -475,7 +490,7 @@ export function restoreStylesAfterCordovaKeyboard (callerString) {
     const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
     cordovaOffsetLog(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${fileName}`);
     $('#app').removeClass('app-wrapper__cordova').addClass('app-wrapper');
-    $('body').css('height', '100%');
+    $('body').css('height', getCordovaScreenHeight());
     $('.footroom-wrapper').css('display', '');
   }
 }
