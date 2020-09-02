@@ -1,6 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
-import { arrayContains } from '../utils/textFormat';
+import { arrayContains, arrayReplaceObjectMatchingPropertyValue } from '../utils/textFormat';
 
 class ActivityStore extends ReduceStore {
   getInitialState () {
@@ -58,8 +58,9 @@ class ActivityStore extends ReduceStore {
     let activityComment = {};
     let activityPost = {};
     let activityCommentWeVoteId = '';
+    let activityTidbitModified = {};
     let activityTidbitWeVoteId = '';
-    let allActivity = state.allActivity || [];
+    const allActivity = state.allActivity || [];
     let allActivityModified = [];
     let {
       allCachedActivityCommentWeVoteIdsByTidbitWeVoteId, allCachedActivityCommentsByCommentWeVoteId,
@@ -69,11 +70,13 @@ class ActivityStore extends ReduceStore {
     let childCommentList = [];
     let commentListUpdated = [];
     let incomingActivityList = [];
+    let incomingActivityListReadyToMerge = [];
     let oneActivityCommentModified = {};
     let parentComments = [];
     let parentCommentsWithChildren = [];
     let parentCommentsUpdated = [];
     let priorPostFound = false;
+    let results = {};
     switch (action.type) {
       case 'activityCommentSave':
         if (!action.res || !action.res.success) return state;
@@ -147,6 +150,7 @@ class ActivityStore extends ReduceStore {
       case 'activityListRetrieve':
         if (!action.res || !action.res.success) return state;
         incomingActivityList = action.res.activity_list || [];
+        incomingActivityListReadyToMerge = [];
         if (!allCachedActivityCommentsByCommentWeVoteId) {
           allCachedActivityCommentsByCommentWeVoteId = {};
         }
@@ -160,7 +164,9 @@ class ActivityStore extends ReduceStore {
           allChildCommentsByParentCommentWeVoteId = {};
         }
         incomingActivityList.forEach((activityTidbit) => {
+          activityTidbitModified = activityTidbit;
           activityTidbitWeVoteId = activityTidbit.we_vote_id;
+          parentComments = [];
           if (!allCachedActivityTidbitsByWeVoteId) {
             allCachedActivityTidbitsByWeVoteId = {};
           }
@@ -177,7 +183,6 @@ class ActivityStore extends ReduceStore {
             // Make sure we have an empty list to put the comments in for this activityTidbit
             allCachedActivityCommentsInTreeByTidbitWeVoteId[activityTidbitWeVoteId] = [];
           }
-          parentComments = [];
           if (activityTidbit && activityTidbit.activity_comment_list) {
             const activityCommentList = activityTidbit.activity_comment_list;
             // console.log('BEFORE activityCommentList: ', activityCommentList);
@@ -226,13 +231,32 @@ class ActivityStore extends ReduceStore {
               parentCommentsWithChildren.push(oneActivityCommentModified);
             });
             allCachedActivityCommentsInTreeByTidbitWeVoteId[activityTidbit.we_vote_id] = parentCommentsWithChildren;
+            activityTidbitModified.activity_comment_list = parentCommentsWithChildren;
+          }
+          incomingActivityListReadyToMerge.push(activityTidbitModified);
+        });
+        allActivityModified = allActivity;
+        incomingActivityListReadyToMerge.forEach((incomingActivityTidbit) => {
+          results = arrayReplaceObjectMatchingPropertyValue(incomingActivityTidbit.we_vote_id, 'we_vote_id', allActivityModified, incomingActivityTidbit);
+          if (results.objectWasReplaced) {
+            allActivityModified = results.arrayHaystack;
+          } else {
+            allActivityModified.push(incomingActivityTidbit);
           }
         });
-        // Temp
-        allActivity = action.res.activity_list || [];
+        // Resort to put the newest at the top
+        allActivityModified.sort((optionA, optionB) => {
+          if (optionA.date_created > optionB.date_created) {
+            return -1;
+          }
+          if (optionA.date_created < optionB.date_created) {
+            return 1;
+          }
+          return 0;
+        });
         return {
           ...state,
-          allActivity,
+          allActivity: allActivityModified,
           allCachedActivityCommentsByCommentWeVoteId,
           allCachedActivityCommentsInTreeByTidbitWeVoteId,
           allCachedActivityTidbitsByWeVoteId,

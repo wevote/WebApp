@@ -52,12 +52,14 @@ class HeaderNotificationMenu extends Component {
     });
   }
 
-  onMenuItemClick (speakerOrganizationWeVoteId, activityNoticeId = 0) {
-    if (activityNoticeId > 0) {
-      ActivityActions.activityNoticeListRetrieve([activityNoticeId]);
+  onMenuItemClick (activityNotice) {
+    if (activityNotice.activity_notice_id > 0) {
+      ActivityActions.activityNoticeListRetrieve([activityNotice.activity_notice_id]);
     }
     this.handleClose();
-    historyPush(`/voterguide/${speakerOrganizationWeVoteId}`);
+    if (activityNotice.kind_of_notice === 'NOTICE_FRIEND_ENDORSEMENTS') {
+      historyPush(`/news/a/${activityNotice.activity_tidbit_we_vote_id}`);
+    }
   }
 
   onSettingsClick = () => {
@@ -119,7 +121,7 @@ class HeaderNotificationMenu extends Component {
             data-toggle="dropdown"
             id={`activityNoticeId${activityNotice.activity_notice_id}`}
             key={`activityNoticeId${activityNotice.activity_notice_id}`}
-            onClick={() => this.onMenuItemClick(activityNotice.speaker_organization_we_vote_id, activityNotice.activity_notice_id)}
+            onClick={() => this.onMenuItemClick(activityNotice)}
           >
             <>
               <MenuItemPhoto>

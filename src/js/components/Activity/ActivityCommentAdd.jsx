@@ -20,6 +20,7 @@ class ActivityCommentAdd extends Component {
   static propTypes = {
     activityTidbitWeVoteId: PropTypes.string.isRequired,
     activityCommentWeVoteId: PropTypes.string,
+    addChildSavedFunction: PropTypes.func,
     classes: PropTypes.object,
     commentEditSavedFunction: PropTypes.func,
     hidePhotoFromTextField: PropTypes.bool,
@@ -84,6 +85,9 @@ class ActivityCommentAdd extends Component {
     this.setState({
       statementText: '',
     });
+    if (this.props.addChildSavedFunction && parentCommentWeVoteId) {
+      this.props.addChildSavedFunction(parentCommentWeVoteId);
+    }
     if (this.props.commentEditSavedFunction) {
       this.props.commentEditSavedFunction();
     }
@@ -109,6 +113,7 @@ class ActivityCommentAdd extends Component {
     if (!activityTidbitWeVoteId) {
       return null;
     }
+    const showSendButton = inEditMode || statementText;
     // console.log('activityCommentCount:', activityCommentCount);
     return (
       <Wrapper commentsExist={(activityCommentCount > 0)}>
@@ -158,16 +163,18 @@ class ActivityCommentAdd extends Component {
             </div>
           </FormControl>
         </AddReplyTextWrapper>
-        <SendButtonWrapper>
-          <IconButton
-            classes={statementText ? { root: classes.saveCommentActive } : { root: classes.saveComment }}
-            disabled={!statementText}
-            id={`saveComment-${activityTidbitWeVoteId}`}
-            onClick={this.saveActivityComment}
-          >
-            <Send />
-          </IconButton>
-        </SendButtonWrapper>
+        {showSendButton && (
+          <SendButtonWrapper>
+            <IconButton
+              classes={statementText ? { root: classes.saveCommentActive } : { root: classes.saveComment }}
+              disabled={!statementText}
+              id={`saveComment-${activityTidbitWeVoteId}`}
+              onClick={this.saveActivityComment}
+            >
+              <Send />
+            </IconButton>
+          </SendButtonWrapper>
+        )}
       </Wrapper>
     );
   }
@@ -221,6 +228,7 @@ const AddReplyTextWrapper = styled.div`
 const ActivityImage = styled.img`
   border-radius: 4px;
   width: 24px;
+  height: 24px;
 `;
 
 const SendButtonWrapper = styled.div`

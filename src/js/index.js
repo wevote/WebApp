@@ -1,8 +1,7 @@
 import webAppConfig from './config';
 import startReactApp from './startReactApp';
 import { numberOfNeedlesFoundInString } from './utils/search-functions';
-import { isWebApp } from './utils/cordovaUtils';
-
+import { isWebApp, isIPad, getCordovaScreenHeight } from './utils/cordovaUtils';
 
 // If in Cordova, need this function before cordovaUtils might be loaded
 function localIsCordova () {
@@ -37,6 +36,9 @@ function startApp () {
   startReactApp();
 }
 
+// begin of inline startup code
+console.log('index.js loaded');
+
 // ServiceWorker setup for Workbox Progressive Web App (PWA)
 if ('ENABLE_WORKBOX_SERVICE_WORKER' in webAppConfig &&
     webAppConfig.ENABLE_WORKBOX_SERVICE_WORKER &&
@@ -70,10 +72,16 @@ if (localIsCordova()) {
   document.addEventListener('deviceready', (id) => {
     window.isDeviceReady = true;
     console.log('Received Cordova Event: ', id.type);
-    // navigator.splashscreen.hide();  Save for 2020, might be needed
-    window.plugins.screensize.get((result) => {
+    const { splashscreen } = navigator;
+    splashscreen.hide();
+    const { plugins: { screensize } } = window;
+    screensize.get((result) => {
       console.log('screensize.get: ', result);
       window.pbakondyScreenSize = result;
+      if (isIPad()) {
+        document.querySelector('body').style.height = getCordovaScreenHeight();
+        console.log('------------Initial "body" height for iPad = ', result.height  / result.scale);
+      }
       startApp();
     }, (result) => {
       console.log('pbakondy/cordova-plugin-screensize FAILURE result: ', result);
