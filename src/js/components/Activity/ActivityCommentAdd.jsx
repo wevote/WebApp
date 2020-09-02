@@ -113,6 +113,7 @@ class ActivityCommentAdd extends Component {
     if (!activityTidbitWeVoteId) {
       return null;
     }
+    const showSendButton = inEditMode || statementText;
     // console.log('activityCommentCount:', activityCommentCount);
     return (
       <Wrapper commentsExist={(activityCommentCount > 0)}>
@@ -146,16 +147,18 @@ class ActivityCommentAdd extends Component {
             />
           </FormControl>
         </AddReplyTextWrapper>
-        <SendButtonWrapper>
-          <IconButton
-            classes={statementText ? { root: classes.saveCommentActive } : { root: classes.saveComment }}
-            disabled={!statementText}
-            id={`saveComment-${activityTidbitWeVoteId}`}
-            onClick={this.saveActivityComment}
-          >
-            <Send />
-          </IconButton>
-        </SendButtonWrapper>
+        {showSendButton && (
+          <SendButtonWrapper>
+            <IconButton
+              classes={statementText ? { root: classes.saveCommentActive } : { root: classes.saveComment }}
+              disabled={!statementText}
+              id={`saveComment-${activityTidbitWeVoteId}`}
+              onClick={this.saveActivityComment}
+            >
+              <Send />
+            </IconButton>
+          </SendButtonWrapper>
+        )}
       </Wrapper>
     );
   }

@@ -33,7 +33,6 @@ class ChildCommentList extends Component {
       commentWeVoteIdBeingEditedNow: '',
       childCommentsList: [],
       numberOfChildCommentsToDisplay: STARTING_NUMBER_OF_PARENT_COMMENTS_TO_DISPLAY,
-      totalNumberOfChildComments: 0,
       voterLikesThisItemByWeVoteId: {},
       voterWeVoteId: '',
     };
@@ -59,10 +58,8 @@ class ChildCommentList extends Component {
     // console.log('ChildCommentList onActivityStoreChange');
     const { parentCommentWeVoteId } = this.props;
     const childCommentsList = ActivityStore.getChildCommentsByParentCommentWeVoteId(parentCommentWeVoteId);
-    const totalNumberOfChildComments = childCommentsList.length || 0;
     this.setState({
       childCommentsList,
-      totalNumberOfChildComments,
     });
   }
 
@@ -167,7 +164,7 @@ class ChildCommentList extends Component {
     } = this.props;
     const {
       commentWeVoteIdBeingEditedNow, childCommentsList,
-      numberOfChildCommentsToDisplay, totalNumberOfChildComments,
+      numberOfChildCommentsToDisplay,
       voterLikesThisItemByWeVoteId, voterWeVoteId,
     } = this.state;
     // console.log('ChildCommentList render, childCommentsList:', childCommentsList);

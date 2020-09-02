@@ -74,6 +74,7 @@ import AppStore from '../stores/AppStore'; // eslint-disable-line import/no-cycl
 // ACTION_UNSUBSCRIBE_EMAIL_PAGE = 71
 // ACTION_UNSUBSCRIBE_SMS_PAGE = 72
 // ACTION_MEASURE = 73
+// ACTION_NEWS = 74
 
 export default {
 
@@ -210,6 +211,11 @@ export default {
 
   saveActionNetwork (googleCivicElectionId) {
     const actionConstant = 23; // ACTION_NETWORK
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionNews (googleCivicElectionId) {
+    const actionConstant = 74; // ACTION_NEWS
     this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 

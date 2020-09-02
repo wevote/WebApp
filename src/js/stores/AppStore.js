@@ -237,6 +237,12 @@ class AppStore extends ReduceStore {
     switch (action.type) {
       case 'activityTidbitWeVoteIdForDrawer':
         return { ...state, activityTidbitWeVoteIdForDrawer: action.payload };
+      case 'activityTidbitWeVoteIdForDrawerAndOpen':
+        return {
+          ...state,
+          activityTidbitWeVoteIdForDrawer: action.payload,
+          showActivityTidbitDrawer: true,
+        };
       case 'getStartedMode':
         return { ...state, getStartedMode: action.payload };
       case 'getVoterGuideSettingsDashboardEditMode':

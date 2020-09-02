@@ -17,6 +17,7 @@ import VoterStore from '../../stores/VoterStore';
 class ActivityTidbitItem extends Component {
   static propTypes = {
     activityTidbitWeVoteId: PropTypes.string.isRequired,
+    startingNumberOfPositionsToDisplay: PropTypes.number,
   };
 
   constructor (props) {
@@ -119,7 +120,7 @@ class ActivityTidbitItem extends Component {
 
   render () {
     renderLog('ActivityTidbitItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { activityTidbitWeVoteId } = this.props;
+    const { activityTidbitWeVoteId, startingNumberOfPositionsToDisplay } = this.props;
     const {
       externalUniqueId, isActivityPost, newPositionsEntered,
       showActivityPostModal, speakerIsVoter, speakerOrganizationWeVoteId, statementText,
@@ -127,6 +128,7 @@ class ActivityTidbitItem extends Component {
     if (!activityTidbitWeVoteId) {
       return null;
     }
+    const startingNumberOfPositionsToDisplayLocal = startingNumberOfPositionsToDisplay || 1;
     return (
       <Wrapper>
         <ActivitySpeakerCardWrapper>
@@ -148,7 +150,7 @@ class ActivityTidbitItem extends Component {
               <ActivityPositionList
                 incomingPositionList={newPositionsEntered}
                 organizationWeVoteId={speakerOrganizationWeVoteId}
-                startingNumberOfPositionsToDisplay={1}
+                startingNumberOfPositionsToDisplay={startingNumberOfPositionsToDisplayLocal}
               />
             </ActivityPositionListWrapper>
           </DelayedLoad>

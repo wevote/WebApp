@@ -4,11 +4,14 @@ import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Drawer, IconButton } from '@material-ui/core';
 import ActivityCommentAdd from './ActivityCommentAdd';
+import ActivityStore from '../../stores/ActivityStore';
 import ActivityTidbitAddReaction from './ActivityTidbitAddReaction';
 import ActivityTidbitComments from './ActivityTidbitComments';
 import ActivityTidbitItem from './ActivityTidbitItem';
 import ActivityTidbitReactionsSummary from './ActivityTidbitReactionsSummary';
 import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
+import { historyPush, isCordova } from '../../utils/cordovaUtils';
+import DelayedLoad from '../Widgets/DelayedLoad';
 import { renderLog } from '../../utils/logging';
 
 
@@ -28,25 +31,49 @@ class ActivityTidbitDrawer extends Component {
   }
 
   componentDidMount () {
+    this.onActivityStoreChange();
+    this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
     hideZenDeskHelpVisibility();
   }
 
   componentWillUnmount () {
+    this.activityStoreListener.remove();
     showZenDeskHelpVisibility();
   }
 
+  onActivityStoreChange () {
+    const { activityTidbitWeVoteId } = this.props;
+    const activityTidbit = ActivityStore.getActivityTidbitByWeVoteId(activityTidbitWeVoteId);
+    const {
+      speaker_voter_we_vote_id: speakerVoterWeVoteId,
+    } = activityTidbit;
+    // console.log('ActivityTidbitItem onActivityStoreChange, activityTidbitWeVoteId:', activityTidbitWeVoteId, ', statementText:', statementText);
+    this.setState({
+      speakerVoterWeVoteId,
+    });
+  }
+
   closeActivityTidbitDrawer = () => {
+    const { activityTidbitWeVoteId } = this.props;
     this.setState({ modalOpen: false });
     setTimeout(() => {
       this.props.toggleFunction();
     }, 500);
+    const { pathname: pathnameRaw, href: hrefRaw } = window.location;
+    let pathname = pathnameRaw;
+    if (isCordova()) {
+      pathname = hrefRaw.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '');
+    }
+    if (pathname && pathname.startsWith('/news/a/')) {
+      historyPush(`/news#${activityTidbitWeVoteId}`);
+    }
   }
 
   render () {
     // console.log(this.props.candidate_we_vote_id);
     renderLog('ActivityTidbitDrawer');  // Set LOG_RENDER_EVENTS to log all renders
     const { activityTidbitWeVoteId, classes } = this.props;
-    const { modalOpen } = this.state;
+    const { modalOpen, speakerVoterWeVoteId } = this.state;
 
     return (
       <>
@@ -67,24 +94,35 @@ class ActivityTidbitDrawer extends Component {
             <span className="fas fa-times u-cursor--pointer" />
           </IconButton>
           <ActivityTidbitDrawerInnerWrapper>
-            <ActivityTidbitItemWrapper>
-              <ActivityTidbitItem
-                activityTidbitWeVoteId={activityTidbitWeVoteId}
-              />
-            </ActivityTidbitItemWrapper>
-            <ActivityTidbitReactionsSummary
-              activityTidbitWeVoteId={activityTidbitWeVoteId}
-            />
-            <ActivityTidbitAddReaction
-              activityTidbitWeVoteId={activityTidbitWeVoteId}
-            />
-            <ActivityTidbitComments
-              activityTidbitWeVoteId={activityTidbitWeVoteId}
-              showAllParentComments
-            />
-            <ActivityCommentAdd
-              activityTidbitWeVoteId={activityTidbitWeVoteId}
-            />
+            {(activityTidbitWeVoteId && speakerVoterWeVoteId) ? (
+              <>
+                <ActivityTidbitItemWrapper>
+                  <ActivityTidbitItem
+                    activityTidbitWeVoteId={activityTidbitWeVoteId}
+                    startingNumberOfPositionsToDisplay={3}
+                  />
+                </ActivityTidbitItemWrapper>
+                <ActivityTidbitReactionsSummary
+                  activityTidbitWeVoteId={activityTidbitWeVoteId}
+                />
+                <ActivityTidbitAddReaction
+                  activityTidbitWeVoteId={activityTidbitWeVoteId}
+                />
+                <ActivityTidbitComments
+                  activityTidbitWeVoteId={activityTidbitWeVoteId}
+                  showAllParentComments
+                />
+                <ActivityCommentAdd
+                  activityTidbitWeVoteId={activityTidbitWeVoteId}
+                />
+              </>
+            ) : (
+              <DelayedLoad showLoadingText waitBeforeShow={500}>
+                <div>
+                  That news item could not be found.
+                </div>
+              </DelayedLoad>
+            )}
           </ActivityTidbitDrawerInnerWrapper>
         </Drawer>
       </>
