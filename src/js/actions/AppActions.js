@@ -5,6 +5,10 @@ export default {
     Dispatcher.dispatch({ type: 'activityTidbitWeVoteIdForDrawer', payload: activityTidbitWeVoteId });
   },
 
+  setActivityTidbitWeVoteIdForDrawerAndOpen (activityTidbitWeVoteId) {
+    Dispatcher.dispatch({ type: 'activityTidbitWeVoteIdForDrawerAndOpen', payload: activityTidbitWeVoteId });
+  },
+
   setGetStartedMode (getStartedMode) {
     Dispatcher.dispatch({ type: 'getStartedMode', payload: getStartedMode });
   },

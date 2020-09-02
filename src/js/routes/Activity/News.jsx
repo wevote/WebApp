@@ -63,20 +63,19 @@ class News extends Component {
   }
 
   componentDidMount () {
-    const activityTidbitWeVoteIdForDrawer = this.props.params.activity_tidbit_key || '';
+    const activityTidbitWeVoteIdForDrawer = this.props.params.activity_tidbit_we_vote_id || '';
     let redirectInProgress = false;
     if (activityTidbitWeVoteIdForDrawer) {
-      const { pathname } = window.location;
       const destinationLocalUrlWithModal = `/news/a/${activityTidbitWeVoteIdForDrawer}`;
+      const { pathname: pathnameRaw, href: hrefRaw } = window.location;
+      let pathname = pathnameRaw;
+      if (isCordova()) {
+        pathname = hrefRaw.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '');
+      }
+      // console.log('pathname:', pathname, ', destinationLocalUrlWithModal:', destinationLocalUrlWithModal, ', activityTidbitWeVoteIdForDrawer:', activityTidbitWeVoteIdForDrawer);
       if (pathname && pathname !== destinationLocalUrlWithModal) {
         historyPush(destinationLocalUrlWithModal);
         redirectInProgress = true;
-      } else {
-        AppActions.setActivityTidbitWeVoteIdForDrawer(activityTidbitWeVoteIdForDrawer);
-        AppActions.setShowActivityTidbitDrawer(true);
-        this.setState({
-          componentDidMountFinished: true,
-        });
       }
     }
     if (!redirectInProgress) {
@@ -84,17 +83,22 @@ class News extends Component {
       this.onVoterStoreChange();
       this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
       this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
+      window.addEventListener('scroll', this.onScroll);
+      const activityTidbitWeVoteIdList = [activityTidbitWeVoteIdForDrawer];
+      if (activityTidbitWeVoteIdList && activityTidbitWeVoteIdList.length > 0) {
+        // Retrieve just the one activity being shown in the drawer
+        ActivityActions.activityListRetrieve(activityTidbitWeVoteIdList);
+      }
       ActivityActions.activityListRetrieve();
       FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
       if (!BallotStore.allBallotItemsRetrieveCalled()) {
         BallotActions.voterBallotItemsRetrieve(0, '', '');
       }
       OrganizationActions.organizationsFollowedRetrieve();
-      AnalyticsActions.saveActionNetwork(VoterStore.electionId());
-      window.addEventListener('scroll', this.onScroll);
       this.setState({
         componentDidMountFinished: true,
-      });
+      }, () => this.openActivityTidbitDrawer(activityTidbitWeVoteIdForDrawer));
+      AnalyticsActions.saveActionNews(VoterStore.electionId());
     }
   }
 
@@ -107,6 +111,10 @@ class News extends Component {
       if (this.positionItemTimer) {
         clearTimeout(this.positionItemTimer);
         this.positionItemTimer = null;
+      }
+      if (this.activityTidbitDrawerTimer) {
+        clearTimeout(this.activityTidbitDrawerTimer);
+        this.activityTidbitDrawerTimer = null;
       }
     }
   }
@@ -189,8 +197,12 @@ class News extends Component {
     }, 500);
   }
 
-  componentDidCatch (error, info) {
-    console.log('News.jsx caught: ', error, info.componentStack);
+  openActivityTidbitDrawer (activityTidbitWeVoteIdForDrawer) {
+    if (activityTidbitWeVoteIdForDrawer) {
+      this.activityTidbitDrawerTimer = setTimeout(() => {
+        AppActions.setActivityTidbitWeVoteIdForDrawerAndOpen(activityTidbitWeVoteIdForDrawer);
+      }, 500);
+    }
   }
 
   retrievePositionListIfNeeded (speakerOrganizationWeVoteId) {
@@ -223,6 +235,10 @@ class News extends Component {
         localLikedItemWeVoteIdsHaveBeenRetrieved,
       });
     }
+  }
+
+  componentDidCatch (error, info) {
+    console.log('News.jsx caught: ', error, info.componentStack);
   }
 
   render () {
@@ -297,6 +313,10 @@ class News extends Component {
                 activityTidbitWeVoteId = oneActivityTidbit.we_vote_id;
                 return (
                   <ActivityTidbitWrapper key={activityTidbitWeVoteId}>
+                    <a // eslint-disable-line jsx-a11y/anchor-has-content
+                      href={`#${activityTidbitWeVoteId}`}
+                      name={activityTidbitWeVoteId}
+                    />
                     <Card className="card" style={unsetSideMarginsIfCordova}>
                       <CardNewsWrapper className="card-main" id="steveCardNewsWrapper-main" style={unsetMarginsIfCordova}>
                         <ActivityTidbitItemWrapper>

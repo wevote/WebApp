@@ -19,11 +19,11 @@ export default {
         visibility_setting: visibilitySetting,
       });
   },
-  activityListRetrieve () {
+  activityListRetrieve (activityTidbitWeVoteIdList = []) {
     // console.log('activityNoticeListRetrieve');
     Dispatcher.loadEndpoint('activityListRetrieve',
       {
-        // google_civic_election_id: googleCivicElectionId,
+        activity_tidbit_we_vote_id_list: activityTidbitWeVoteIdList,
       });
   },
   activityNoticeListRetrieve (activityNoticeIdListClicked = [], activityNoticeIdListSeen = []) {
