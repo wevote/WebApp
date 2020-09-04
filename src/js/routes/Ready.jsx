@@ -12,6 +12,7 @@ import cookies from '../utils/cookies';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import FindOpinionsForm from '../components/ReadyNoApi/FindOpinionsForm';
+import FriendActions from '../actions/FriendActions';
 import { historyPush, isWebApp } from '../utils/cordovaUtils';
 import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
@@ -61,6 +62,7 @@ class Ready extends Component {
     }
     ReadyActions.voterPlansForVoterRetrieve();
     ActivityActions.activityNoticeListRetrieve();
+    FriendActions.suggestedFriendList();
     AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
     this.setState({
       locationGuessClosed: cookies.getItem('location_guess_closed'),

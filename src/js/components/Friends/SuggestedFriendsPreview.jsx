@@ -20,11 +20,9 @@ export default class SuggestedFriendsPreview extends Component {
   }
 
   componentDidMount () {
-    FriendActions.suggestedFriendList();
-    this.setState({
-      suggestedFriendList: FriendStore.suggestedFriendList(),
-    });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.onFriendStoreChange();
+    FriendActions.suggestedFriendList();
   }
 
   componentWillUnmount () {
@@ -32,8 +30,14 @@ export default class SuggestedFriendsPreview extends Component {
   }
 
   onFriendStoreChange () {
+    const suggestedFriendList = FriendStore.suggestedFriendList();
+    // suggestedFriendList.sort((optionA, optionB) => (optionB.voter_photo_url_medium ? 1 : 0) - (optionA.voter_photo_url_medium ? 1 : 0));
+    // suggestedFriendList.sort((optionA, optionB) => optionB.positions_taken - optionA.positions_taken);
+    suggestedFriendList.sort((optionA, optionB) => optionB.voter_date_last_changed - optionA.voter_date_last_changed);
+    suggestedFriendList.sort((optionA, optionB) => optionB.mutual_friends - optionA.mutual_friends);
+    // console.log('suggestedFriendList:', suggestedFriendList);
     this.setState({
-      suggestedFriendList: FriendStore.suggestedFriendList(),
+      suggestedFriendList,
     });
   }
 

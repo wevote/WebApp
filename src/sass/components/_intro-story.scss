@@ -9,6 +9,17 @@ $top-header-padding-top: 6px;
   }
 }
 
+.FriendInvitationTopHeaderExplanation {
+  color: $gray-mid;
+  font-size: 16px;
+  font-weight: 400;
+  padding-bottom: $space-none;
+  padding-top: $space-none;
+  @include breakpoints (max mid-small) {
+    font-size: 14px;
+  }
+}
+
 .FriendInvitationIntroHeader {
   color: $brand-blue;
   font-size: 24px;

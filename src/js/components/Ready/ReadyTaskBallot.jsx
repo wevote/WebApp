@@ -104,6 +104,19 @@ class ReadyTaskBallot extends React.Component {
     this.calculateShowButtonStates(ballotItemsStatusCounts, showMoreButtonWasClicked);
   }
 
+  goToCandidateTypeAfterCalculation = () => {
+    const { federalTotalNumber, localTotalNumber, stateTotalNumber } = this.state;
+    if (federalTotalNumber) {
+      this.goToFederalRaces();
+    } else if (stateTotalNumber) {
+      this.goToStateRaces();
+    } else if (localTotalNumber) {
+      this.goToLocalRaces();
+    } else {
+      this.goToBallot();
+    }
+  }
+
   goToFederalRaces = () => {
     BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('Federal');
@@ -175,10 +188,10 @@ class ReadyTaskBallot extends React.Component {
 
   calculateShowButtonStates = (ballotItemsStatusCounts, showMoreButtonWasClicked = false) => {
     const {
-      federalButtonNeeded, federalAllCompleted, federalNumberCompleted,
-      localButtonNeeded, localAllCompleted, localNumberCompleted,
+      federalButtonNeeded, federalAllCompleted, federalNumberCompleted, federalTotalNumber,
+      localButtonNeeded, localAllCompleted, localNumberCompleted, localTotalNumber,
       measureButtonNeeded, measureAllCompleted,
-      stateButtonNeeded, stateAllCompleted, stateNumberCompleted,
+      stateButtonNeeded, stateAllCompleted, stateNumberCompleted, stateTotalNumber,
     } = ballotItemsStatusCounts;
     const howItWorksCompleted = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
     const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
@@ -324,15 +337,18 @@ class ReadyTaskBallot extends React.Component {
       allCandidatesShowButton,
       federalButtonNeeded,
       federalShowButton,
+      federalTotalNumber,
       howItWorksShowButton,
       localButtonNeeded,
       localShowButton,
+      localTotalNumber,
       measureButtonNeeded,
       measureShowButton,
       personalizedScoreIntroShowButton,
       showMoreShowButton,
       stateButtonNeeded,
       stateShowButton,
+      stateTotalNumber,
     });
   }
 
@@ -448,7 +464,7 @@ class ReadyTaskBallot extends React.Component {
               className="u-cursor--pointer"
               color="primary"
               completed={allCandidatesAllCompleted ? 'true' : undefined}
-              onClick={this.goToBallot}
+              onClick={this.goToCandidateTypeAfterCalculation}
               variant="outlined"
             >
               <ButtonLeft>

@@ -57,8 +57,10 @@ class HeaderNotificationMenu extends Component {
       ActivityActions.activityNoticeListRetrieve([activityNotice.activity_notice_id]);
     }
     this.handleClose();
-    if (activityNotice.kind_of_notice === 'NOTICE_FRIEND_ENDORSEMENTS') {
+    if (activityNotice.kind_of_notice === 'NOTICE_FRIEND_ENDORSEMENTS' && activityNotice && activityNotice.activity_tidbit_we_vote_id) {
       historyPush(`/news/a/${activityNotice.activity_tidbit_we_vote_id}`);
+    } else {
+      historyPush('/news');
     }
   }
 

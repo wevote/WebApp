@@ -24,9 +24,16 @@ class FriendInvitationOnboardingValues extends Component {
     this.state = {};
   }
 
+  onClickShowAllTopHeaderExplanation = () => {
+    this.setState({
+      showAllTopHeaderExplanation: true,
+    });
+  }
+
   render () {
     renderLog('FriendInvitationOnboardingValues');  // Set LOG_RENDER_EVENTS to log all renders
     const { friendFirstName, friendLastName, friendImageUrlHttpsTiny, friendIssueWeVoteIdList } = this.props;
+    const { showAllTopHeaderExplanation } = this.state;
     return (
       <Wrapper>
         <WeVoteLogoWrapper>
@@ -36,8 +43,31 @@ class FriendInvitationOnboardingValues extends Component {
             src={cordovaDot(logoDark)}
           />
         </WeVoteLogoWrapper>
-        <FriendInvitationTopHeader className="FriendInvitationTopHeader">
-          Follow what you care about.
+        <FriendInvitationTopHeader>
+          <div className="FriendInvitationTopHeader">
+            Follow what you care about.
+          </div>
+          {showAllTopHeaderExplanation ? (
+            <div className="FriendInvitationTopHeaderExplanation">
+              <i className="fas fa-info-circle" />
+              Opinions will be highlighted on your ballot based on what you follow. Follow as many values/issues as you would like.
+              {' '}
+              We promise to never sell your email address.
+              {' '}
+              You can stop following values/issues at any time in the &quot;Opinions&quot; section.
+            </div>
+          ) : (
+            <div className="FriendInvitationTopHeaderExplanation" onClick={this.onClickShowAllTopHeaderExplanation}>
+              <i className="fas fa-info-circle" />
+              Opinions will be highlighted on...
+              {' '}
+              (
+              <span className="u-cursor--pointer u-link-color">
+                more
+              </span>
+              )
+            </div>
+          )}
         </FriendInvitationTopHeader>
         {!!(friendIssueWeVoteIdList && friendIssueWeVoteIdList.length) && (
           <PopularValuesWrapper>
