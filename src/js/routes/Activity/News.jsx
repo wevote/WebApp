@@ -290,7 +290,7 @@ class News extends Component {
 
     return (
       <span>
-        <Helmet title="News - We Vote" />
+        <Helmet title="Discuss - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="row" style={unsetSomeRowStylesIfCordova}>
           <div className="col-sm-12 col-md-8" style={unsetSomeRowStylesIfCordova}>
@@ -369,6 +369,9 @@ class News extends Component {
                 </Card>
               </DelayedLoad>
             )}
+            <AddFriendsMobileWrapper className="u-show-mobile" style={unsetSideMarginsIfCordova}>
+              <SuggestedFriendsPreview inSideColumn />
+            </AddFriendsMobileWrapper>
             <div className="card u-show-mobile" style={unsetSideMarginsIfCordova}>
               <AddFriendsMobileWrapper className="card-main" style={unsetMarginsIfCordova}>
                 <SectionTitle>
@@ -384,7 +387,7 @@ class News extends Component {
               <DelayedLoad waitBeforeShow={1000}>
                 <SettingsAccountWrapper style={expandSideMarginsIfCordova}>
                   <SettingsAccount
-                    pleaseSignInTitle="Sign in to See Your News"
+                    pleaseSignInTitle="Sign in to Join the Discussion"
                     pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
                   />
                 </SettingsAccountWrapper>
@@ -392,6 +395,7 @@ class News extends Component {
             )}
           </div>
           <div className="col-md-4 d-none d-md-block" style={unsetSomeRowStylesIfCordovaMdBlock}>
+            <SuggestedFriendsPreview inSideColumn />
             <div className="card">
               <div className="card-main" style={unsetMarginsIfCordova}>
                 <SectionTitle>
@@ -403,7 +407,6 @@ class News extends Component {
                 <AddFriendsByEmail inSideColumn uniqueExternalId="sidebar" />
               </div>
             </div>
-            <SuggestedFriendsPreview inSideColumn />
             <div className="card">
               <div className="card-main" style={unsetMarginsIfCordova}>
                 <Testimonial

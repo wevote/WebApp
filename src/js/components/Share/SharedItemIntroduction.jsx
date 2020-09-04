@@ -6,20 +6,39 @@ import { renderLog } from '../../utils/logging';
 class SharedItemIntroduction extends Component {
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showAllStepOne: false,
+      showAllStepTwo: false,
+      showAllStepThree: false,
+    };
+  }
+
+  onClickShowAllStepOne = () => {
+    this.setState({
+      showAllStepOne: true,
+    });
+  }
+
+  onClickShowAllStepTwo = () => {
+    this.setState({
+      showAllStepTwo: true,
+    });
+  }
+
+  onClickShowAllStepThree = () => {
+    this.setState({
+      showAllStepThree: true,
+    });
   }
 
   render () {
     renderLog('SharedItemIntroduction');  // Set LOG_RENDER_EVENTS to log all renders
+    const { showAllStepOne, showAllStepTwo, showAllStepThree } = this.state;
     return (
       <OuterWrapper>
         <InnerWrapper>
           <IntroHeader>
-            We Vote makes
-            {' '}
-            <span className="u-no-break">
-              being a voter easier:
-            </span>
+            How We Vote helps you:
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
@@ -29,7 +48,21 @@ class SharedItemIntroduction extends Component {
               </ListTitleRow>
               <ListRow>
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                <StepText>Verify your registration. Make a plan for casting your vote. Find your polling location.</StepText>
+                {showAllStepOne ? (
+                  <StepText>
+                    Make a plan for casting your vote. Verify your registration. Find your polling location.
+                  </StepText>
+                ) : (
+                  <StepText onClick={this.onClickShowAllStepOne}>
+                    Make a plan for casting your vote. Verify your...
+                    {' '}
+                    (
+                    <span className="u-cursor--pointer u-link-color">
+                      more
+                    </span>
+                    )
+                  </StepText>
+                )}
               </ListRow>
 
               <ListTitleRow>
@@ -38,16 +71,44 @@ class SharedItemIntroduction extends Component {
               </ListTitleRow>
               <ListRow>
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                <StepText>Who&apos;s running for office? What do they stand for? With over 12,600 candidates running for 6,500 offices this year, We Vote helps you make sense of your options.</StepText>
+                {showAllStepTwo ? (
+                  <StepText>
+                    Who&apos;s running for office? What do they stand for? We Vote helps you make sense of your options.
+                  </StepText>
+                ) : (
+                  <StepText onClick={this.onClickShowAllStepTwo}>
+                    Who&apos;s running for office? What do they...
+                    {' '}
+                    (
+                    <span className="u-cursor--pointer u-link-color">
+                      more
+                    </span>
+                    )
+                  </StepText>
+                )}
               </ListRow>
 
               <ListTitleRow>
                 <Dot><StepNumber>3</StepNumber></Dot>
-                <StepTitle>Be the change you want to see in the world</StepTitle>
+                <StepTitle>Help your friends</StepTitle>
               </ListTitleRow>
               <ListRow>
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                <StepText>You&apos;ve done your homework deciding how to vote. Now show your friends how to make sense of their decisions, so they can vote their values.</StepText>
+                {showAllStepThree ? (
+                  <StepText>
+                    You&apos;ve done your homework deciding how to vote. Now show your friends how to make sense of their decisions, so they can vote their values.
+                  </StepText>
+                ) : (
+                  <StepText onClick={this.onClickShowAllStepThree}>
+                    You&apos;ve done your homework deciding...
+                    {' '}
+                    (
+                    <span className="u-cursor--pointer u-link-color">
+                      more
+                    </span>
+                    )
+                  </StepText>
+                )}
               </ListRow>
             </ListMaxWidth>
           </ListWrapper>

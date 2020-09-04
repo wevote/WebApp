@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import closeIcon from '../../../img/global/icons/x-close.png';
+import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
@@ -13,6 +14,7 @@ import FriendStore from '../../stores/FriendStore';
 import FriendInvitationOnboardingIntro from '../../components/Intro/FriendInvitationOnboardingIntro';
 import FriendInvitationOnboardingValues from '../../components/Intro/FriendInvitationOnboardingValues';
 import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
+import PersonalizedScoreIntroBody from '../../components/CompleteYourProfile/PersonalizedScoreIntroBody';
 import { renderLog } from '../../utils/logging';
 import StepsChips from '../../components/Widgets/StepsChips';
 import VoterActions from '../../actions/VoterActions';
@@ -29,13 +31,7 @@ class FriendInvitationOnboarding extends Component {
     super(props);
     this.state = {
       activeSlideBefore: 0,
-      howItWorksWatchedThisSession: false,
-      imageDecideUrl: '/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif',
-      imageDecideReloadUrl: '/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif',
-      imageFollowUrl: '/img/how-it-works/HowItWorksForVoters-Follow-20190507.gif',
-      imageFollowReloadUrl: '/img/how-it-works/HowItWorksForVoters-Follow-20190507.gif',
-      imageReviewUrl: '/img/how-it-works/HowItWorksForVoters-Review-20190401.gif',
-      imageReviewReloadUrl: '/img/how-it-works/HowItWorksForVoters-Review-20190401.gif',
+      personalizedScoreIntroWatchedThisSession: false,
       invitationMessage: '',
     };
 
@@ -58,9 +54,9 @@ class FriendInvitationOnboarding extends Component {
     if (invitationSecretKey) {
       this.friendInvitationInformation(invitationSecretKey);
     }
-    const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
+    const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.setState({
-      howItWorksWatched,
+      personalizedScoreIntroCompleted,
     });
   }
 
@@ -89,43 +85,33 @@ class FriendInvitationOnboarding extends Component {
 
   onVoterStoreChange () {
     this.onFriendStoreChange();
-    const howItWorksWatched = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
+    const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.setState({
-      howItWorksWatched,
+      personalizedScoreIntroCompleted,
     });
   }
 
   goToSpecificSlide = (index) => {
     // console.log('goToSpecificSlide index:', index);
-    const { imageDecideUrl, imageFollowUrl, imageReviewUrl } = this.state;
-    // Force the animated gifs to restart the animation
     if (index === 2) {
-      this.setState({ imageFollowReloadUrl: '' });
-      setTimeout(() => {
-        this.setState({ imageFollowReloadUrl: imageFollowUrl });
-      }, 0);
-    } else if (index === 3) {
-      this.setState({ imageReviewReloadUrl: '' });
-      setTimeout(() => {
-        this.setState({ imageReviewReloadUrl: imageReviewUrl });
-      }, 0);
-    } else if (index === 4) {
-      this.setState({ imageDecideReloadUrl: '' });
-      setTimeout(() => {
-        this.setState({ imageDecideReloadUrl: imageDecideUrl });
-      }, 0);
-      this.setState({ howItWorksWatchedThisSession: true });
+      this.setState({ personalizedScoreIntroWatchedThisSession: true });
     }
+    hideZenDeskHelpVisibility();
     this.slider.current.slickGoTo(index);
   }
 
   onExitOnboarding = () => {
-    const { howItWorksWatchedThisSession } = this.state;
-    if (howItWorksWatchedThisSession) {
-      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.HOW_IT_WORKS_WATCHED);
+    const { personalizedScoreIntroWatchedThisSession } = this.state;
+    if (personalizedScoreIntroWatchedThisSession) {
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     }
     const ballotLink = '/ready';
+    showZenDeskHelpVisibility();
     historyPush(ballotLink);
+  }
+
+  personalizedScoreIntroModalToggle = () => {
+    //
   }
 
   nextSlide () {
@@ -133,45 +119,18 @@ class FriendInvitationOnboarding extends Component {
     if (invitationSecretKey) {
       this.friendInvitationInformation(invitationSecretKey);
     }
-    const { activeSlideBefore, imageDecideUrl, imageFollowUrl, imageReviewUrl } = this.state;
+    hideZenDeskHelpVisibility();
+    const { activeSlideBefore } = this.state;
     // console.log('nextSlide activeSlideBefore:', activeSlideBefore);
-    // Force the animated gifs to restart the animation
     if (activeSlideBefore === 1) {
-      this.setState({ imageFollowReloadUrl: '' });
-      setTimeout(() => {
-        this.setState({ imageFollowReloadUrl: imageFollowUrl });
-      }, 0);
-    } else if (activeSlideBefore === 2) {
-      this.setState({ imageReviewReloadUrl: '' });
-      setTimeout(() => {
-        this.setState({ imageReviewReloadUrl: imageReviewUrl });
-      }, 0);
-    } else if (activeSlideBefore === 3) {
-      this.setState({ imageDecideReloadUrl: '' });
-      setTimeout(() => {
-        this.setState({ imageDecideReloadUrl: imageDecideUrl });
-      }, 0);
-      this.setState({ howItWorksWatchedThisSession: true });
+      this.setState({ personalizedScoreIntroWatchedThisSession: true });
     }
     this.slider.current.slickNext();
   }
 
   previousSlide () {
-    const { activeSlideBefore, imageFollowUrl, imageReviewUrl } = this.state;
     // console.log('previousSlide, activeSlideBefore:', activeSlideBefore);
-    // Force the animated gifs to restart the animation
-    if (activeSlideBefore === 3) {
-      this.setState({ imageFollowReloadUrl: '' });
-      setTimeout(() => {
-        this.setState({ imageFollowReloadUrl: imageFollowUrl });
-      }, 0);
-    } else if (activeSlideBefore === 4) {
-      this.setState({ imageReviewReloadUrl: '' });
-      setTimeout(() => {
-        this.setState({ imageReviewReloadUrl: imageReviewUrl });
-      }, 0);
-    }
-    // Cannot get to imageDecide using the previousSlide function
+    hideZenDeskHelpVisibility();
     this.slider.current.slickPrev();
   }
 
@@ -199,8 +158,7 @@ class FriendInvitationOnboarding extends Component {
     const {
       activeSlideBefore, friendFirstName, friendLastName,
       friendImageUrlHttpsTiny, friendIssueWeVoteIdList, howItWorksWatched,
-      imageDecideReloadUrl, imageFollowReloadUrl, imageReviewReloadUrl,
-      invitationMessage,
+      invitationMessage, personalizedScoreIntroCompleted,
     } = this.state;
     // console.log('render:', imageFollowReloadUrl);
 
@@ -218,12 +176,12 @@ class FriendInvitationOnboarding extends Component {
       // afterChange: current => this.setState({ activeSlideAfter: current }),
     };
 
-    const showReadyNextTextOnThisSlide = howItWorksWatched ? 1 : 4;
+    const showReadyNextTextOnThisSlide = personalizedScoreIntroCompleted ? 1 : 2;
     // console.log('activeSlideBefore: ', activeSlideBefore, ', activeSlideAfter:', activeSlideAfter);
-    const stepLabels = howItWorksWatched ? ['Invitation Accepted', 'Values'] : ['Invitation Accepted', 'Values', 'Follow', 'Review', 'Decide'];
+    const stepLabels = personalizedScoreIntroCompleted ? ['Invitation Accepted', 'Values'] : ['Invitation Accepted', 'Values', 'Personalized Score'];
     return (
       <div>
-        <Helmet title="Invitation Accepted!" />
+        <Helmet title="We Vote - Invitation Accepted!" />
         <div className="intro-story container-fluid well u-inset--md" style={this.overrideMediaQueryForAndroidTablets()}>
           <span onClick={this.onExitOnboarding}>
             <img
@@ -249,7 +207,7 @@ class FriendInvitationOnboarding extends Component {
                 friendIssueWeVoteIdList={friendIssueWeVoteIdList}
               />
             </div>
-            {!howItWorksWatched && (
+            {!personalizedScoreIntroCompleted && (
               <div key={3}>
                 <HowItWorksWrapper>
                   <WeVoteLogoWrapper>
@@ -260,52 +218,15 @@ class FriendInvitationOnboarding extends Component {
                     />
                   </WeVoteLogoWrapper>
                   <SlideShowTitle>
-                    Follow organizations and people you trust
+                    What&apos;s a Personalized Score?
                   </SlideShowTitle>
                   <HowItWorksDescription>
-                    Follow those you trust as you look through your ballot, and in the Values section.
-                  </HowItWorksDescription>
-                  <HowItWorksImage src={imageFollowReloadUrl ? cordovaDot(imageFollowReloadUrl) : ''} />
-                </HowItWorksWrapper>
-              </div>
-            )}
-            {!howItWorksWatched && (
-              <div key={4}>
-                <HowItWorksWrapper>
-                  <WeVoteLogoWrapper>
-                    <img
-                      className="header-logo-img"
-                      alt="We Vote logo"
-                      src={cordovaDot(logoDark)}
+                    <PersonalizedScoreIntroBody
+                      pathname=""
+                      show
+                      toggleFunction={this.personalizedScoreIntroModalToggle}
                     />
-                  </WeVoteLogoWrapper>
-                  <SlideShowTitle>
-                    See who endorsed each choice on your ballot
-                  </SlideShowTitle>
-                  <HowItWorksDescription>
-                    Learn from the people you trust. Their recommendations will be highlighted on your ballot.
                   </HowItWorksDescription>
-                  <HowItWorksImage src={imageReviewReloadUrl ? cordovaDot(imageReviewReloadUrl) : ''} />
-                </HowItWorksWrapper>
-              </div>
-            )}
-            {!howItWorksWatched && (
-              <div key={5}>
-                <HowItWorksWrapper>
-                  <WeVoteLogoWrapper>
-                    <img
-                      className="header-logo-img"
-                      alt="We Vote logo"
-                      src={cordovaDot(logoDark)}
-                    />
-                  </WeVoteLogoWrapper>
-                  <SlideShowTitle>
-                    Complete your ballot in under six minutes
-                  </SlideShowTitle>
-                  <HowItWorksDescription>
-                    We Vote is fast, mobile, and helps you decide on the go. Vote with confidence!
-                  </HowItWorksDescription>
-                  <HowItWorksImage src={imageDecideReloadUrl ? cordovaDot(imageDecideReloadUrl) : ''} />
                 </HowItWorksWrapper>
               </div>
             )}
@@ -397,19 +318,6 @@ const HowItWorksDescription = styled.div`
   padding-bottom: 12px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     padding-bottom: 30px;
-  }
-`;
-
-const HowItWorksImage = styled.img`
-  border: 1px solid #999;
-  border-radius: 16px;
-  box-shadow: 2px 2px 4px 2px ${({ theme }) => theme.colors.grayLight};
-  width: 100%;
-  height: auto;
-  transition: all 150ms ease-in;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    width: 90vw;
-    height: calc(90vw * 0.5625);
   }
 `;
 

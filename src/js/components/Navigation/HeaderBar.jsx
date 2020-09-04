@@ -537,7 +537,7 @@ class HeaderBar extends Component {
                   />
                 ) */}
                 {(showFullNavigation) && (
-                  <Tab classes={{ root: classes.tabRootNews }} id="activityTabHeaderBar" label="News" onClick={() => this.handleNavigation('/news')} />
+                  <Tab classes={{ root: classes.tabRootNews }} id="activityTabHeaderBar" label="Discuss" onClick={() => this.handleNavigation('/news')} />
                 )}
               </Tabs>
             </div>

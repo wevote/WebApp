@@ -29,16 +29,17 @@ class ReadyIntroduction extends Component {
     renderLog('ReadyIntroduction');  // Set LOG_RENDER_EVENTS to log all renders
     const { contentUnfurled } = this.state;
     const { showStep3WhenCompressed } = this.props;
-    const numberOfCandidates = '12,600';
-    const numberOfOffices = '6,500';
+    // const numberOfCandidates = '12,600';
+    // const numberOfOffices = '6,500';
     return (
       <OuterWrapper>
         <InnerWrapper>
           <IntroHeader>
-            We Vote makes
-            {' '}
-            <span className="u-no-break">
-              being a voter easier.
+            <span className="u-show-mobile-tablet">
+              How We Vote helps you:
+            </span>
+            <span className="u-show-desktop">
+              How We Vote helps:
             </span>
           </IntroHeader>
           <ListWrapper>
@@ -63,7 +64,7 @@ class ReadyIntroduction extends Component {
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
                     <ReadMore
-                      textToDisplay={`Who's running for office? What do they stand for? With over ${numberOfCandidates} candidates running for ${numberOfOffices} offices this year, We Vote helps you make sense of your options.`}
+                      textToDisplay="Who's running for office? What do they stand for? We Vote helps you make sense of your options."
                       numberOfLines={3}
                     />
                   </StepText>
@@ -73,7 +74,7 @@ class ReadyIntroduction extends Component {
               {(contentUnfurled || showStep3WhenCompressed) && (
                 <ListTitleRow>
                   <Dot><StepNumber>3</StepNumber></Dot>
-                  <StepTitle>Be the change you want to see in the world</StepTitle>
+                  <StepTitle>Help your friends</StepTitle>
                 </ListTitleRow>
               )}
               {contentUnfurled && (

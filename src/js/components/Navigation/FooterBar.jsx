@@ -167,7 +167,7 @@ class FooterBar extends React.Component {
               )}
             />
             */}
-            <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="News" showLabel icon={<People />} />
+            <BottomNavigationAction className="no-outline" id="newsTabFooterBar" label="Discuss" showLabel icon={<People />} />
             {isCordova() ? (
               <BottomNavigationAction
                 className="no-outline"
