@@ -124,12 +124,14 @@ class ActivityCommentAdd extends Component {
               id={`activityCommentAdd-${activityTidbitWeVoteId}-${activityCommentWeVoteId}`}
               classes={{ root: classes.textFieldClasses }}
               label={inEditMode ? 'Edit your comment...' : 'Add your comment...'}
+              margin="dense"
               multiline
               onChange={this.updateStatementTextToBeSaved}
               rowsMax={4}
               value={statementText}
               variant="outlined"
               InputProps={{
+                classes: { root: classes.textFieldClasses },
                 startAdornment: hidePhotoFromTextField ? null : (
                   <InputAdornment position="start">
                     {(voterPhotoUrlTiny) ? (
@@ -175,6 +177,7 @@ const styles = () => ({
     background: 'white',
   },
   formControl: {
+    margin: 0,
     width: '100%',
   },
   saveComment: {
@@ -192,10 +195,8 @@ const styles = () => ({
     padding: 6,
   },
   textFieldClasses: {
-  },
-  textFieldMultilineClasses: {
-    // NOT WORKING in classes: , multiline: classes.textFieldMultilineClasses
-    padding: '6.5px 14px',
+    margin: 0,
+    width: '100%',
   },
 });
 
@@ -207,6 +208,7 @@ const ActivityImage = styled.img`
   border-radius: 4px;
   width: 24px;
   height: 24px;
+  margin-top: 3px;
 `;
 
 const SendButtonWrapper = styled.div`

@@ -441,7 +441,8 @@ class Application extends Component {
           weVoteBrandingOff={this.state.weVoteBrandingOff}
         />
         <SnackNotifier />
-        { typeof pathname !== 'undefined' && pathname && (String(pathname) === '/for-campaigns' ||
+        { typeof pathname !== 'undefined' && pathname &&
+          (String(pathname) === '/for-campaigns' ||
           String(pathname) === '/for-organizations' ||
           pathname.startsWith('/how') ||
           String(pathname) === '/more/about' ||

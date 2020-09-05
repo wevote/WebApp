@@ -64,7 +64,7 @@ class ActivityTidbitDrawer extends Component {
     if (isCordova()) {
       pathname = hrefRaw.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '');
     }
-    if (pathname && pathname.startsWith('/news/a/')) {
+    if (typeof pathname !== 'undefined' && pathname && pathname.startsWith('/news/a/')) {
       historyPush(`/news#${activityTidbitWeVoteId}`);
     }
   }
@@ -119,7 +119,7 @@ class ActivityTidbitDrawer extends Component {
             ) : (
               <DelayedLoad showLoadingText waitBeforeShow={500}>
                 <div>
-                  That news item could not be found.
+                  That discussion item could not be found.
                 </div>
               </DelayedLoad>
             )}
