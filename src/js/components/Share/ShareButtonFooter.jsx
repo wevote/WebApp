@@ -67,9 +67,9 @@ class ShareButtonFooter extends Component {
     const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
     const currentFullUrlAdjusted = this.getCurrentFullUrl();
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
-    const candidateShare = pathname.startsWith('/candidate');
-    const measureShare = pathname.startsWith('/measure');
-    const officeShare = pathname.startsWith('/office');
+    const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
+    const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
+    const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('ShareButtonFooter componentDidMount urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
@@ -200,9 +200,9 @@ class ShareButtonFooter extends Component {
     const { pathname } = this.props;
     const { currentFullUrlAdjusted } = this.state;
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
-    const candidateShare = pathname.startsWith('/candidate');
-    const measureShare = pathname.startsWith('/measure');
-    const officeShare = pathname.startsWith('/office');
+    const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
+    const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
+    const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
     let kindOfShare = 'BALLOT';
     if (candidateShare) {
       kindOfShare = 'CANDIDATE';

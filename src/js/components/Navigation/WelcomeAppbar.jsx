@@ -218,14 +218,16 @@ class WelcomeAppbar extends Component {
     if (String(pathname) === '/welcome') {
       showForOrganizations = true;
     }
-    if (!pathname.startsWith('/how') &&
+    if (typeof pathname !== 'undefined' && pathname &&
+      !pathname.startsWith('/how') &&
       String(pathname) !== '/welcome' &&
       String(pathname) !== '/more/credits' &&
       !pathname.startsWith('/more/donate') &&
       !pathname.startsWith('/more/pricing')) {
       showForVoters = true;
     }
-    if (!pathname.startsWith('/how') &&
+    if (typeof pathname !== 'undefined' && pathname &&
+      !pathname.startsWith('/how') &&
       (String(pathname) === '/for-campaigns' ||
         String(pathname) === '/more/about' ||
         String(pathname) === '/more/credits' ||
@@ -233,7 +235,8 @@ class WelcomeAppbar extends Component {
         pathname.startsWith('/more/pricing'))) {
       showForOrganizationsDesktop = true;
     }
-    if (!pathname.startsWith('/how') &&
+    if (typeof pathname !== 'undefined' && pathname &&
+      !pathname.startsWith('/how') &&
       (String(pathname) === '/welcome' ||
         String(pathname) === '/for-organizations' ||
         String(pathname) === '/more/credits' ||
@@ -241,13 +244,16 @@ class WelcomeAppbar extends Component {
         pathname.startsWith('/more/pricing'))) {
       showForCampaignsDesktop = true;
     }
-    if (String(pathname) === '/for-campaigns') {
+    if (typeof pathname !== 'undefined' && pathname &&
+      String(pathname) === '/for-campaigns') {
       showHowItWorksForCampaigns = true;
     }
-    if (String(pathname) === '/for-organizations') {
+    if (typeof pathname !== 'undefined' && pathname &&
+      String(pathname) === '/for-organizations') {
       showHowItWorksForOrganizations = true;
     }
-    if (String(pathname) === '/welcome' || String(pathname) === '/more/about') {
+    if (typeof pathname !== 'undefined' && pathname &&
+      (String(pathname) === '/welcome' || String(pathname) === '/more/about')) {
       showHowItWorksForVoters = true;
     }
     return (

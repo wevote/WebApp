@@ -399,14 +399,16 @@ export default class Header extends Component {
           )}
         </div>
       );
-    } else if (pathname === '/for-campaigns' ||
-               pathname === '/for-organizations' ||
-               pathname.startsWith('/how') ||
-               pathname === '/more/about' ||
-               pathname === '/more/credits' ||
-               pathname.startsWith('/more/donate') ||
-               pathname.startsWith('/more/pricing') ||
-               pathname === '/welcome') {
+    } else if (
+      typeof pathname !== 'undefined' && pathname &&
+      (pathname === '/for-campaigns' ||
+      pathname === '/for-organizations' ||
+      pathname.startsWith('/how') ||
+      pathname === '/more/about' ||
+      pathname === '/more/credits' ||
+      pathname.startsWith('/more/donate') ||
+      pathname.startsWith('/more/pricing') ||
+      pathname === '/welcome')) {
       return null;
     } else {
       // console.log('Header not in any mode');
