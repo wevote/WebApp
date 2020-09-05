@@ -122,6 +122,8 @@ class EditAddressOneHorizontalRow extends Component {
         textForMapSearch: place.name,
       });
     }
+
+    this.saveAddressToApiServer();
   }
 
   handleKeyPress (event) {
