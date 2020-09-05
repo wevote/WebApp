@@ -159,7 +159,7 @@ class CandidateItemForAddPositions extends Component {
           externalUniqueId="desktopPositionStatement"
           // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
-          type="CANDIDATE"
+          ballotItemType="CANDIDATE"
           shownInList
         />
       </ItemPositionStatementActionBarDesktopWrapper>
@@ -174,7 +174,7 @@ class CandidateItemForAddPositions extends Component {
           externalUniqueId="mobilePositionStatement"
           // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
-          type="CANDIDATE"
+          ballotItemType="CANDIDATE"
           shownInList
           mobile
         />

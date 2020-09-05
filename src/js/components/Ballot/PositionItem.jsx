@@ -163,14 +163,11 @@ class PositionItem extends Component {
       const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
       const organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
       const voterIsFriendsWithThisOrganization = FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId);
-      // let voterWeVoteIdForThisOrganization = '';
-      // if (voterIsFriendsWithThisOrganization && position.voter_we_vote_id) {
-      //   voterWeVoteIdForThisOrganization = position.voter_we_vote_id;
-      // }
-      // console.log('voterIsFriendsWithThisOrganization:', voterIsFriendsWithThisOrganization);
-      // console.log('voterWeVoteIdForThisOrganization:', voterWeVoteIdForThisOrganization);
+      const updatedPosition = OrganizationStore.getPositionByPositionWeVoteId(position.position_we_vote_id);
+
       this.setState({
         organizationInVotersNetwork,
+        updatedPosition,
         voterIsFriendsWithThisOrganization,
       });
     }
@@ -203,8 +200,14 @@ class PositionItem extends Component {
 
   render () {
     renderLog('PositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, position, searchResultsNode } = this.props;
-    if (!position) {
+    let position;
+    const { classes, searchResultsNode } = this.props;
+    ({ position } = this.props);
+    const { updatedPosition } = this.state;
+    if (updatedPosition && updatedPosition.speaker_we_vote_id) {
+      position = updatedPosition;
+    }
+    if (!position || !position.speaker_we_vote_id) {
       return null;
     }
     // console.log('PositionItem position render, position:', position);

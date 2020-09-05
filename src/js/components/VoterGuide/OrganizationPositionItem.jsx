@@ -419,7 +419,7 @@ export default class OrganizationPositionItem extends Component {
                       commentEditModeOn
                       externalUniqueId="organizationPositionItem"
                       transitioning={this.state.transitioning}
-                      type={position.kind_of_ballot_item}
+                      ballotItemType={position.kind_of_ballot_item}
                     />
                   )}
               </div>

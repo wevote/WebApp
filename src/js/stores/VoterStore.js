@@ -56,6 +56,10 @@ class VoterStore extends ReduceStore {
     return this.getState().voter;
   }
 
+  getVoterWeVoteId () {
+    return this.getState().voter.we_vote_id || '';
+  }
+
   electionId () {
     return this.getState().latestGoogleCivicElectionId || 0;
   }
@@ -718,15 +722,15 @@ class VoterStore extends ReduceStore {
         if (incomingVoter.linked_organization_we_vote_id) {
           OrganizationActions.organizationRetrieve(incomingVoter.linked_organization_we_vote_id);
         }
-        if (incomingVoter.signed_in_with_apple) {
-          // Completing the logical OR that can't be conveniently made in the server, since Sign in with Apple is device_id specific
-          incomingVoter.is_signed_in = incomingVoter.signed_in_with_apple;
-          const { voter_photo_url_medium: statePhotoMed } = state.voter;
-          const { voter_photo_url_medium: incomingPhotoMed } = incomingVoter;
-          if (!statePhotoMed && !incomingPhotoMed) {
-            incomingVoter.voter_photo_url_medium = 'https://wevote.us/img/global/logos/Apple_logo_grey.svg';  // TODO: Switch over to wevote.us once live server is updated
-          }
-        }
+        // if (incomingVoter.signed_in_with_apple) {
+        //   // Completing the logical OR that can't be conveniently made in the server, since Sign in with Apple is device_id specific
+        //   incomingVoter.is_signed_in = incomingVoter.signed_in_with_apple;
+        //   const { voter_photo_url_medium: statePhotoMed } = state.voter;
+        //   const { voter_photo_url_medium: incomingPhotoMed } = incomingVoter;
+        //   if (!statePhotoMed && !incomingPhotoMed) {
+        //     incomingVoter.voter_photo_url_medium = 'https://wevote.us/img/global/logos/Apple_logo_grey.svg';  // TODO: Switch over to wevote.us once live server is updated
+        //   }
+        // }
 
         return {
           ...state,
@@ -763,6 +767,7 @@ class VoterStore extends ReduceStore {
             sms_phone_number_already_owned_by_other_voter: action.res.sms_phone_number_already_owned_by_other_voter,
             sms_phone_number_already_owned_by_this_voter: action.res.sms_phone_number_already_owned_by_this_voter,
             sms_phone_number_created: action.res.sms_phone_number_created,
+            sms_phone_number: action.res.sms_phone_number,
             sms_phone_number_found: action.res.sms_phone_number_found,
             sms_phone_number_deleted: action.res.sms_phone_number_deleted,
             make_primary_sms: action.res.make_primary_sms,

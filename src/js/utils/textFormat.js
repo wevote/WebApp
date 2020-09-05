@@ -32,6 +32,22 @@ export function arrayContains (needle, arrayHaystack) {
   }
 }
 
+// We assume that arrayHaystack contains objects with one property with the name in needleProperty
+// When we find the first object in the arrayHaystack, replace it with the newObject
+export function arrayReplaceObjectMatchingPropertyValue (needleValue, needleProperty, arrayHaystack, newObject) {
+  let objectWasReplaced = false;
+  const indexOfExistingObject = arrayHaystack.findIndex(existingObject => existingObject[needleProperty] === needleValue);
+  if (indexOfExistingObject !== -1) {
+    arrayHaystack.splice(indexOfExistingObject, 1, newObject);
+    objectWasReplaced = true;
+  }
+  // console.log('objectWasReplaced: ', objectWasReplaced, ', indexOfExistingObject:', indexOfExistingObject);
+  return {
+    objectWasReplaced,
+    arrayHaystack,
+  };
+}
+
 // Gives preference to the earlier entry in the incoming array
 export function arrayUnique (array) {
   const a = array.concat();

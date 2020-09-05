@@ -14,17 +14,22 @@ import {
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
-import { cordovaDot, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import FriendActions from '../../actions/FriendActions';
-import FriendsShareList from '../Friends/FriendsShareList';
 import FriendStore from '../../stores/FriendStore';
+import FriendsShareList from '../Friends/FriendsShareList';
 import MessageCard from '../Widgets/MessageCard';
-import { renderLog } from '../../utils/logging';
-import { stringContains } from '../../utils/textFormat';
 import ShareActions from '../../actions/ShareActions';
 import ShareModalOption from './ShareModalOption';
 import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
+import {
+  androidFacebookClickHandler,
+  androidTwitterClickHandler,
+  cordovaSocialSharingByEmail,
+} from './shareButtonCommon';
+import { cordovaDot, hasIPhoneNotch, isAndroid, isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import { stringContains } from '../../utils/textFormat';
 
 class ShareModal extends Component {
   static propTypes = {
@@ -376,67 +381,89 @@ class ShareModal extends Component {
                   />
                 )}
                 <Wrapper>
-                  <FacebookShareButton
-                    className="no-decoration"
-                    id="shareModalFacebookButton"
-                    onClick={this.saveActionShareButtonFacebook}
-                    quote={titleText}
-                    url={`${linkToBeSharedUrlEncoded}`}
-                    windowWidth={750}
-                    windowHeight={600}
+                  <div id="androidFacebook"
+                       onClick={() => isAndroid() &&
+                         androidFacebookClickHandler(`${linkToBeSharedUrlEncoded}&t=WeVote`)}
                   >
-                    <FacebookIcon
-                      bgStyle={{ background: '#3b5998' }}
-                      round="True"
-                      size={68}
-                    />
-                    <Text>
-                      Facebook
-                    </Text>
-                  </FacebookShareButton>
+                    <FacebookShareButton
+                      className="no-decoration"
+                      id="shareModalFacebookButton"
+                      onClick={this.saveActionShareButtonFacebook}
+                      quote={titleText}
+                      url={`${linkToBeSharedUrlEncoded}`}
+                      windowWidth={750}
+                      windowHeight={600}
+                      disabled={isAndroid()}
+                      disabledStyle={isAndroid() ? { opacity: 1 } : {}}
+                    >
+                      <FacebookIcon
+                        bgStyle={{ background: '#3b5998' }}
+                        round="True"
+                        size={68}
+                      />
+                      <Text>
+                        Facebook
+                      </Text>
+                    </FacebookShareButton>
+                  </div>
                 </Wrapper>
                 <Wrapper>
-                  <TwitterShareButton
-                    className="no-decoration"
-                    id="shareModalTwitterButton"
-                    onClick={this.saveActionShareButtonTwitter}
-                    title={titleText}
-                    url={`${linkToBeSharedUrlEncoded}`}
-                    windowWidth={750}
-                    windowHeight={600}
+                  <div id="androidTwitter"
+                       onClick={() => isAndroid() &&
+                         androidTwitterClickHandler(linkToBeSharedUrlEncoded)}
                   >
-                    <TwitterIcon
-                      bgStyle={{ background: '#38A1F3' }}
-                      round="True"
-                      size={68}
-                    />
-                    <Text>
-                      Twitter
-                    </Text>
-                  </TwitterShareButton>
+                    <TwitterShareButton
+                      className="no-decoration"
+                      id="shareModalTwitterButton"
+                      onClick={this.saveActionShareButtonTwitter}
+                      title={titleText}
+                      url={`${linkToBeSharedUrlEncoded}`}
+                      windowWidth={750}
+                      windowHeight={600}
+                      disabled={isAndroid()}
+                      disabledStyle={isAndroid() ? { opacity: 1 } : {}}
+                    >
+                      <TwitterIcon
+                        bgStyle={{ background: '#38A1F3' }}
+                        round="True"
+                        size={68}
+                      />
+                      <Text>
+                        Twitter
+                      </Text>
+                    </TwitterShareButton>
+                  </div>
                 </Wrapper>
                 <Wrapper>
                   {/* The EmailShareButton works in Cordova, but ONLY if an email client is configured, so it doesn't work in a simulator */}
-                  <EmailShareButton
-                    body={`${titleText}`}
-                    className="no-decoration"
-                    id="shareModalEmailButton"
-                    beforeOnClick={this.saveActionShareButtonEmail}
-                    openShareDialogOnClick
-                    subject="Ready to vote?"
-                    url={`${linkToBeShared}`}
-                    windowWidth={750}
-                    windowHeight={600}
+                  <div id="cordovaEmail"
+                       onClick={() => isCordova() &&
+                         cordovaSocialSharingByEmail('Ready to vote?',
+                           linkToBeShared, this.props.closeShareModal)}
                   >
-                    <EmailIcon
-                      bgStyle={{ fill: '#2E3C5D' }}
-                      round="True"
-                      size={68}
-                    />
-                    <Text>
-                      Email
-                    </Text>
-                  </EmailShareButton>
+                    <EmailShareButton
+                      body={`${titleText}`}
+                      className="no-decoration"
+                      id="shareModalEmailButton"
+                      beforeOnClick={this.saveActionShareButtonEmail}
+                      openShareDialogOnClick
+                      subject="Ready to vote?"
+                      url={`${linkToBeShared}`}
+                      windowWidth={750}
+                      windowHeight={600}
+                      disabled={isCordova()}
+                      disabledStyle={isCordova() ? { opacity: 1 } : {}}
+                    >
+                      <EmailIcon
+                        bgStyle={{ fill: '#2E3C5D' }}
+                        round="True"
+                        size={68}
+                      />
+                      <Text>
+                        Email
+                      </Text>
+                    </EmailShareButton>
+                  </div>
                 </Wrapper>
                 <ShareModalOption
                   background="#2E3C5D"

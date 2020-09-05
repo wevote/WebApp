@@ -397,7 +397,7 @@ class SettingsWidgetFirstLastName extends Component {
                       color="primary"
                       id={`firstLastSaveButton-${externalUniqueId}`}
                       onClick={this.saveNameCordova}
-                      variant="outlined"
+                      variant="contained"
                       fullWidth
                     >
                       Save

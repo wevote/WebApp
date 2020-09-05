@@ -12,6 +12,7 @@ import { stringContains } from '../utils/textFormat';
 class AppStore extends ReduceStore {
   getInitialState () {
     return {
+      activityTidbitWeVoteIdForDrawer: '',
       chosenPreventSharingOpinions: false,
       chosenReadyIntroductionText: '',
       chosenReadyIntroductionTitle: '',
@@ -24,6 +25,8 @@ class AppStore extends ReduceStore {
       scrolledDown: false,
       sharedItemCode: '',
       shareModalStep: '',
+      showActivityTidbitDrawer: false,
+      showAdviserIntroModal: false,
       showEditAddressButton: false,
       showElectionsWithOrganizationVoterGuidesModal: false,
       showHowItWorksModal: false,
@@ -43,6 +46,10 @@ class AppStore extends ReduceStore {
       storeSignInStartFullUrl: false,
       voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
     };
+  }
+
+  activityTidbitWeVoteIdForDrawer () {
+    return this.getState().activityTidbitWeVoteIdForDrawer;
   }
 
   getChosenPreventSharingOpinions () {
@@ -116,6 +123,10 @@ class AppStore extends ReduceStore {
 
   showingOneCompleteYourProfileModal () {
     return this.getState().showAdviserIntroModal || this.getState().showFirstPositionIntroModal || this.getState().showHowItWorksModal || this.getState().showPersonalizedScoreIntroModal || this.getState().showValuesIntroModal || this.getState().showSelectBallotModal;
+  }
+
+  showActivityTidbitDrawer () {
+    return this.getState().showActivityTidbitDrawer;
   }
 
   showAdviserIntroModal () {
@@ -224,12 +235,24 @@ class AppStore extends ReduceStore {
     let siteOwnerOrganizationWeVoteId;
     let voterExternalIdHasBeenSavedOnce;
     switch (action.type) {
+      case 'activityTidbitWeVoteIdForDrawer':
+        return { ...state, activityTidbitWeVoteIdForDrawer: action.payload };
+      case 'activityTidbitWeVoteIdForDrawerAndOpen':
+        return {
+          ...state,
+          activityTidbitWeVoteIdForDrawer: action.payload,
+          showActivityTidbitDrawer: true,
+        };
       case 'getStartedMode':
         return { ...state, getStartedMode: action.payload };
       case 'getVoterGuideSettingsDashboardEditMode':
         return { ...state, getVoterGuideSettingsDashboardEditMode: action.payload };
+      case 'organizationModalBallotItemWeVoteId':
+        return { ...state, organizationModalBallotItemWeVoteId: action.payload };
       case 'scrolledDown':
         return { ...state, scrolledDown: action.payload };
+      case 'showActivityTidbitDrawer':
+        return { ...state, showActivityTidbitDrawer: action.payload };
       case 'showAdviserIntroModal':
         return { ...state, showAdviserIntroModal: action.payload };
       case 'showEditAddressButton':
@@ -265,8 +288,6 @@ class AppStore extends ReduceStore {
         return { ...state, showSignInModal: action.payload };
       case 'showOrganizationModal':
         return { ...state, showOrganizationModal: action.payload };
-      case 'organizationModalBallotItemWeVoteId':
-        return { ...state, organizationModalBallotItemWeVoteId: action.payload };
       case 'showValuesIntroModal':
         return { ...state, showValuesIntroModal: action.payload };
       case 'siteConfigurationRetrieve':

@@ -9,6 +9,7 @@ import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import ShareStore from '../../stores/ShareStore';
+import VoterStore from '../../stores/VoterStore';
 
 const groupTypeIdentifiers = ['C', 'C3', 'C4', 'G', 'NP', 'O', 'P'];
 const privateCitizenIdentifiers = ['I', 'V'];
@@ -32,6 +33,7 @@ class VoterGuideOrganizationFilter extends Component {
       currentFriendsOrganizationWeVoteIdsLength: 0,
       currentSharedItemOrganizationWeVoteIds: [],
       currentSharedItemOrganizationWeVoteIdsLength: 0,
+      currentVoterOrganizationWeVoteId: '',
       sortedBy: '',
     };
   }
@@ -39,11 +41,13 @@ class VoterGuideOrganizationFilter extends Component {
   componentDidMount () {
     const currentFriendsOrganizationWeVoteIds = FriendStore.currentFriendsOrganizationWeVoteIDList();
     const currentSharedItemOrganizationWeVoteIds = ShareStore.currentSharedItemOrganizationWeVoteIDList();
+    const currentVoterOrganizationWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
     this.setState({
       currentFriendsOrganizationWeVoteIds,
       currentFriendsOrganizationWeVoteIdsLength: currentFriendsOrganizationWeVoteIds.length,
       currentSharedItemOrganizationWeVoteIds,
       currentSharedItemOrganizationWeVoteIdsLength: currentSharedItemOrganizationWeVoteIds.length,
+      currentVoterOrganizationWeVoteId,
     });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
@@ -68,9 +72,11 @@ class VoterGuideOrganizationFilter extends Component {
 
   onFriendStoreChange () {
     const currentFriendsOrganizationWeVoteIds = FriendStore.currentFriendsOrganizationWeVoteIDList();
+    const currentVoterOrganizationWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
     this.setState({
       currentFriendsOrganizationWeVoteIds,
       currentFriendsOrganizationWeVoteIdsLength: currentFriendsOrganizationWeVoteIds.length,
+      currentVoterOrganizationWeVoteId,
     });
   }
 
@@ -93,6 +99,13 @@ class VoterGuideOrganizationFilter extends Component {
     return secondGuideIsFromFriend - firstGuideIsFromFriend;
   };
 
+  orderByCurrentVoterFirst = (firstGuide, secondGuide) => {
+    const { currentVoterOrganizationWeVoteId } = this.state;
+    const secondGuideIsFromCurrentVoter = secondGuide && secondGuide.speaker_we_vote_id === currentVoterOrganizationWeVoteId ? 1 : 0;
+    const firstGuideIsFromCurrentVoter = firstGuide && firstGuide.speaker_we_vote_id === currentVoterOrganizationWeVoteId ? 1 : 0;
+    return secondGuideIsFromCurrentVoter - firstGuideIsFromCurrentVoter;
+  };
+
   orderByFollowedOrgsFirst = (firstGuide, secondGuide) => secondGuide.followed - firstGuide.followed;
 
   orderByTwitterFollowers = (firstGuide, secondGuide) => secondGuide.twitter_followers_count - firstGuide.twitter_followers_count;
@@ -106,7 +119,7 @@ class VoterGuideOrganizationFilter extends Component {
   getNewFilteredItems = () => {
     const { allItems, selectedFilters } = this.props;
     // console.log('allItems:', allItems);
-    const { currentFriendsOrganizationWeVoteIds, currentSharedItemOrganizationWeVoteIds } = this.state;
+    const { currentFriendsOrganizationWeVoteIds, currentSharedItemOrganizationWeVoteIds, currentVoterOrganizationWeVoteId } = this.state;
     // console.log('currentFriendsOrganizationWeVoteIds:', currentFriendsOrganizationWeVoteIds);
     let filteredItems = [];
     if (!selectedFilters || !selectedFilters.length) return allItems;
@@ -126,7 +139,7 @@ class VoterGuideOrganizationFilter extends Component {
           filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'PF')];
           break;
         case 'yourFriends':
-          filteredItems = [...filteredItems, ...allItems.filter(item => currentFriendsOrganizationWeVoteIds.includes(item.speaker_we_vote_id) || currentSharedItemOrganizationWeVoteIds.includes(item.speaker_we_vote_id))];
+          filteredItems = [...filteredItems, ...allItems.filter(item => currentFriendsOrganizationWeVoteIds.includes(item.speaker_we_vote_id) || currentSharedItemOrganizationWeVoteIds.includes(item.speaker_we_vote_id) || currentVoterOrganizationWeVoteId === item.speaker_we_vote_id)];
           break;
         default:
           break;
@@ -203,6 +216,7 @@ class VoterGuideOrganizationFilter extends Component {
           filteredItems = filteredItems.sort(this.orderByWrittenComment);
           filteredItems = filteredItems.sort(this.orderByFollowedOrgsFirst);
           filteredItems = filteredItems.sort(this.orderByCurrentFriendsFirst);
+          filteredItems = filteredItems.sort(this.orderByCurrentVoterFirst); // Always put current voter at top
           this.setState({
             sortedBy: 'sortByMagic',
           });
@@ -213,6 +227,7 @@ class VoterGuideOrganizationFilter extends Component {
           // filteredItems = filteredItems.sort(this.orderByWrittenComment);
           // filteredItems = filteredItems.sort(this.orderByCurrentFriendsFirst);
           filteredItems = filteredItems.sort(this.orderByTwitterFollowers);
+          filteredItems = filteredItems.sort(this.orderByCurrentVoterFirst); // Always put current voter at top
           this.setState({
             sortedBy: 'sortByReach',
           });
@@ -223,6 +238,7 @@ class VoterGuideOrganizationFilter extends Component {
           // filteredItems = filteredItems.sort(this.orderByWrittenComment);
           filteredItems = filteredItems.sort(this.orderByFollowedOrgsFirst);
           filteredItems = filteredItems.sort(this.orderByCurrentFriendsFirst);
+          filteredItems = filteredItems.sort(this.orderByCurrentVoterFirst); // Always put current voter at top
           this.setState({
             sortedBy: 'sortByNetwork',
           });

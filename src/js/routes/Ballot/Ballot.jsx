@@ -471,6 +471,7 @@ class Ballot extends Component {
 
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
+    console.log('Ballot ', error);
     // Update state so the next render will show the fallback UI, We should have a 'Oh snap' page
     return { hasError: true };
   }
@@ -598,7 +599,7 @@ class Ballot extends Component {
             totalNumberOfBallotItems = raceLevelFilterItems.length;
           } else if (completionLevelFilterType !== '') {
             const list = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
-            totalNumberOfBallotItems = list.length;
+            totalNumberOfBallotItems = list ? list.length : 0;
           } else {
             totalNumberOfBallotItems = BallotStore.ballotLength;
           }
@@ -1031,6 +1032,18 @@ class Ballot extends Component {
     // console.log('window.innerWidth:', window.innerWidth);
     const textForMapSearch = VoterStore.getTextForMapSearch();
 
+    let padBallotWindowBottomForCordova = '';
+    if (isCordova()) {
+      // If the previous render of the Ballot__Wrapper is less than the device height, pad it
+      // temporarily for Cordova to stop the footer menu from bouncing when initially rendered
+      const { $, pbakondyScreenSize } = window;
+      const deviceHeight = pbakondyScreenSize.height / pbakondyScreenSize.scale;
+      const ballotWrapperHeight = $('[class^="class=Ballot__Wrapper"]').outerHeight() || 0;
+      if (ballotWrapperHeight < deviceHeight) {
+        padBallotWindowBottomForCordova = '625px';  // big enough for the largest phone with a footer menu
+      }
+    }
+
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
         <DelayedLoad showLoadingText waitBeforeShow={2000}>
@@ -1242,7 +1255,7 @@ class Ballot extends Component {
 
         <div className="page-content-container">
           <div className="container-fluid">
-            <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+            <Wrapper padTop={cordovaScrollablePaneTopPadding()} padBottom={padBallotWindowBottomForCordova}>
               {emptyBallot}
               {/* eslint-disable-next-line no-nested-ternary */}
               <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
@@ -1398,7 +1411,7 @@ class Ballot extends Component {
                 }
                 </div>
 
-                { ballotWithItemsFromCompletionFilterType.length === 0 || isCordova() ?
+                { ballotWithItemsFromCompletionFilterType.length === 0 ?
                   null : (
                     <div className="col-lg-3 d-none d-lg-block sidebar-menu">
                       <BallotSideBar
@@ -1486,6 +1499,7 @@ const ValuesListWrapper = styled.div`
 
 const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};
+  padding-bottom: ${({ padBottom }) => padBottom};
 `;
 
 const styles = theme => ({

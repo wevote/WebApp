@@ -441,7 +441,8 @@ class Application extends Component {
           weVoteBrandingOff={this.state.weVoteBrandingOff}
         />
         <SnackNotifier />
-        { String(pathname) === '/for-campaigns' ||
+        { typeof pathname !== 'undefined' && pathname &&
+          (String(pathname) === '/for-campaigns' ||
           String(pathname) === '/for-organizations' ||
           pathname.startsWith('/how') ||
           String(pathname) === '/more/about' ||
@@ -449,7 +450,7 @@ class Application extends Component {
           pathname.startsWith('/more/donate') ||
           pathname.startsWith('/more/pricing') ||
           String(pathname) === '/welcome' ||
-          !contentFullWidthMode || displayFriendsTabs() ?
+          !contentFullWidthMode || displayFriendsTabs()) ?
           (
             <div className="welcome-or-not-full-width">
               { this.props.children }

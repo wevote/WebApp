@@ -12,6 +12,7 @@ import cookies from '../utils/cookies';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import FindOpinionsForm from '../components/ReadyNoApi/FindOpinionsForm';
+import FriendActions from '../actions/FriendActions';
 import { historyPush, isWebApp } from '../utils/cordovaUtils';
 import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
@@ -61,6 +62,7 @@ class Ready extends Component {
     }
     ReadyActions.voterPlansForVoterRetrieve();
     ActivityActions.activityNoticeListRetrieve();
+    FriendActions.suggestedFriendList();
     AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
     this.setState({
       locationGuessClosed: cookies.getItem('location_guess_closed'),
@@ -135,8 +137,8 @@ class Ready extends Component {
               </EditAddressWrapper>
             )}
             <div className="col-sm-12 col-lg-8">
-              <div className="u-cursor--pointer" onClick={this.goToBallot}>
-                <ElectionCountdown />
+              <div className="u-cursor--pointer u-show-mobile-tablet" onClick={this.goToBallot}>
+                <ElectionCountdown daysOnlyMode />
               </div>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card u-show-mobile-tablet">
@@ -153,6 +155,9 @@ class Ready extends Component {
                   </div>
                 </Card>
               )}
+              <ReadyTaskBallot
+                arrowsOn
+              />
               <Card className="card u-show-mobile">
                 <div className="card-main">
                   <FindOpinionsForm
@@ -190,9 +195,6 @@ class Ready extends Component {
                   </Card>
                 </FindWrapper>
               </IntroAndFindTabletWrapper>
-              <ReadyTaskBallot
-                arrowsOn
-              />
               {nextReleaseFeaturesEnabled && (
                 <ReadyTaskRegister
                   arrowsOn
@@ -218,6 +220,9 @@ class Ready extends Component {
               </div>
             </div>
             <div className="col-lg-4 d-none d-lg-block">
+              <div className="u-cursor--pointer" onClick={this.goToBallot}>
+                <ElectionCountdown daysOnlyMode />
+              </div>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card">
                   <div className="card-main">

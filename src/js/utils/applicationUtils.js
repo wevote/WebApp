@@ -59,6 +59,8 @@ export function getApplicationViewBooleans (pathname) {
     voteMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot')) {
     contentFullWidthMode = false;
+  } else if (pathnameLowerCase.startsWith('/news')) {
+    contentFullWidthMode = false;
   } else if (stringContains('/settings/positions', pathnameLowerCase)) {
     // contentFullWidthMode = true;
     voterGuideCreatorMode = true;
@@ -297,6 +299,17 @@ export function hideZenDeskHelpVisibility () {
       global.zE('webWidget', 'hide');
     } catch {
       console.log('hideZenDeskHelpVisibility global.zE failure hide');
+    }
+  }
+}
+
+export function showZenDeskHelpVisibility () {
+  // console.log('showZenDeskHelpVisibility');
+  if (isWebApp()) {
+    try {
+      global.zE('webWidget', 'show');
+    } catch {
+      console.log('hideZenDeskHelpVisibility global.zE failure show');
     }
   }
 }

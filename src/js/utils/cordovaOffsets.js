@@ -135,6 +135,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ready:                 return '7px';
         case enums.settingsAccount:       return '84px';
         case enums.settingsHamburger:     return '81px';
+        case enums.settingsNotifications: return '79px';
         case enums.settingsSubscription:  return '90px';
         case enums.settingsVoterGuideLst: return '98px';
         case enums.settingsWild:          return '63px';
@@ -158,6 +159,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '42px';
         case enums.moreAbout:             return '22px';
         case enums.settingsAccount:       return '81px';
+        case enums.settingsNotifications: return '82px';
         case enums.moreTerms:             return '60px';
         // case enums.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
         case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
@@ -182,6 +184,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreAbout:             return '51px';
         case enums.moreTerms:             return '44px';
         case enums.moreTools:             return '44px';
+        case enums.news:                  return '19px';
         case enums.officeWild:            return '94px';
         case enums.opinions:              return '14px';
         case enums.ready:                 return '24px';
@@ -199,8 +202,78 @@ export function cordovaScrollablePaneTopPadding () {
     }
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
-    if (sizeString === '--xl') {
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding sizeString: ${sizeString}`);
+    cordovaOffsetLog(`cordovaScrollablePaneTopPadding sizeString: ${sizeString}`);
+    if (sizeString === '--fold') {
+      switch (pageEnumeration()) {
+        case enums.ballotLgHdrWild:
+          return '25px';
+        case enums.ballotSmHdrWild:
+          return '0';
+        case enums.ballotVote:
+          return isSignedIn ? '149px' : '145px';
+        case enums.candidate:
+          return '64px';
+        case enums.candidateWild:
+          return '53px';
+        case enums.measureWild:
+          return '57px';
+        case enums.moreTerms:
+          return '32px';
+        case enums.officeWild:
+          return '79px';
+        case enums.settingsAccount:
+          return '53px';
+        case enums.settingsHamburger:
+          return '43px';
+        case enums.settingsNotifications:
+          return '39px';
+        case enums.settingsSubscription:
+          return '54px';
+        case enums.settingsWild:
+          return '57px';
+        case enums.twitterSignIn:
+          return hasAndroidNotch() ? '20px' : '10px';
+        case enums.voterGuideCreatorWild:
+          return '10px'; // $headroom-wrapper-webapp-voter-guide
+        default:
+          return '0px';
+      }
+    } else if (sizeString === '--xl') {
+      switch (pageEnumeration()) {
+        case enums.ballotLgHdrWild:
+          return showBallotDecisionsTabs() ? '36px' : '42px';
+        case enums.ballotSmHdrWild:
+          return '131px';
+        case enums.ballotVote:
+          return isSignedIn ? '149px' : '145px';
+        case enums.candidate:
+          return '64px';
+        case enums.candidateWild:
+          return '53px';
+        case enums.measureWild:
+          return '57px';
+        case enums.moreTerms:
+          return '32px';
+        case enums.officeWild:
+          return '79px';
+        case enums.settingsAccount:
+          return '53px';
+        case enums.settingsHamburger:
+          return '43px';
+        case enums.settingsNotifications:
+          return '39px';
+        case enums.settingsSubscription:
+          return '54px';
+        case enums.settingsWild:
+          return '57px';
+        case enums.twitterSignIn:
+          return hasAndroidNotch() ? '20px' : '10px';
+        case enums.voterGuideCreatorWild:
+          return '10px'; // $headroom-wrapper-webapp-voter-guide
+        default:
+          return '0px';
+      }
+    } else if (sizeString === '--fold') {
       switch (pageEnumeration()) {
         case enums.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '36px' : '42px';
         case enums.ballotSmHdrWild:       return '131px';
@@ -257,7 +330,7 @@ export function cordovaScrollablePaneTopPadding () {
     } else if (sizeString === '--sm') {
       switch (pageEnumeration()) {
         case enums.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '42px';
-        case enums.ballotSmHdrWild:       return '141px';
+        case enums.ballotSmHdrWild:       return '114px';
         case enums.ballotVote:            return isSignedIn ? '131px' : '128px';
         case enums.candidate:             return '24px';
         case enums.candidateWild:         return '36px';
@@ -335,7 +408,7 @@ export function cordovaBallotFilterTopMargin () {
       } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
         return '61px';
       }
-      return '61px';
+      return '55px';
     } else if (sizeString === '--xl') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-10px';
@@ -416,7 +489,10 @@ export function cordovaVoterGuideTopPadding () {
     } else if (hasIPhoneNotch()) {
       return '28px';
     } else if (isIPad()) {
-      return '0px';
+      switch (pageEnumeration()) {
+        case enums.news:             return '19px';
+        default:                     return '0px';
+      }
     }
   } else if (isAndroid()) {
     return '0px';
@@ -534,7 +610,8 @@ export function cordovaTopHeaderTopMargin () {
           case enums.ballotVote:      style.marginTop = '19px'; break;
           case enums.settingsWild:    style.marginTop = '22px'; break;
           case enums.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp-voter-guide-creator
-          default:                    style.marginTop = '19px'; break;
+          case enums.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
+          default:                          style.marginTop = '19px'; break;
         }
       } else if (hasIPhoneNotch()) {
         switch (pageEnumeration()) {
@@ -545,17 +622,19 @@ export function cordovaTopHeaderTopMargin () {
           case enums.valuesList:      style.marginTop = '38px'; break;
           case enums.values:          style.marginTop = '12px'; break;
           case enums.valueWild:       style.marginTop = '32px'; break;
-          case enums.opinions:        style.marginTop = '36px'; break;
+          case enums.opinions:        style.marginTop = '17px'; break;
           case enums.friends:         style.marginTop = '16px'; break;
           case enums.ballotSmHdrWild: style.marginTop = '16px'; break;
           case enums.ballotLgHdrWild: style.marginTop = '16px'; break;
           case enums.ballotVote:      style.marginTop = '16px'; break;
           case enums.settingsAccount:       style.marginTop = '31px'; break;
           case enums.settingsSubscription:  style.marginTop = '34px'; break;
+          case enums.settingsNotifications: style.marginTop = '36px'; break;
           case enums.settingsWild:          style.marginTop = '38px'; break;
           case enums.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp-voter-guide-creator
-          case enums.voterGuideWild:   style.marginTop = '38px'; break; // Any page with btcand or btmeas
-          default:                     style.marginTop = '16px'; break;
+          case enums.voterGuideWild:        style.marginTop = '38px'; break; // Any page with btcand or btmeas
+          case enums.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
+          default:                          style.marginTop = '16px'; break;
         }
       } else if (isIPad()) {
         style.marginTop = '0px';
@@ -631,6 +710,8 @@ export function shareBottomOffset (pinToBottom) {
     if (hasIPhoneNotch()) {
       return pinToBottom ? '0' : '66px';
     }
+  } else if (isAndroid()) {
+    return pinToBottom ? '10px' : '57px';
   }
 
   // Default for all other devices, including desktop and mobile browsers
@@ -670,4 +751,29 @@ export function cordovaFriendsWrapper () {
     paddingTop: '60px',
     paddingBottom: '90px',
   };
+}
+
+export function cordovaNewsPaddingTop () {
+  if (isIOS()) {
+    if (isIPhone6p5in()) {                    //  11 Pro Max and XS Max
+      return '85px';
+    } else if (isIPhone6p1in()) {             // XR and 11
+      return '85px';
+    } else if (isIPhone5p8in()) {             //  X and 11 Pro
+      return '85px';
+    } else if (isIPhone5p5in()) {             //  6 Plus, 7 Plus and 8 Plus
+      return '68px';
+    } else if (isIPhone4p7in()) {             // 6, 7, 8, SE (2nd Gen)
+      return '65px';
+    } else if (isIPhone4in()) {               // SE
+      return '65px';
+    } else if (isIPad()) {
+      return '85px';
+    } else {
+      return '85px';
+    }
+  } else if (isAndroid()) {
+    return '44px';
+  }
+  return '';
 }

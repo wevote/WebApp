@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ActivityTidbitDrawer from '../Activity/ActivityTidbitDrawer';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
@@ -59,15 +60,16 @@ export default class Header extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.activityTidbitWeVoteIdForDrawer !== nextState.activityTidbitWeVoteIdForDrawer) return true;
     if (this.state.organizationModalBallotItemWeVoteId !== nextState.organizationModalBallotItemWeVoteId) return true;
     if (this.props.pathname !== nextProps.pathname) return true;
     if (this.state.sharedItemCode !== nextState.sharedItemCode) return true;
+    if (this.state.showActivityTidbitDrawer !== nextState.showActivityTidbitDrawer) return true;
     if (this.state.showHowItWorksModal !== nextState.showHowItWorksModal) return true;
     if (this.state.showVoterPlanModal !== nextState.showVoterPlanModal) return true;
     if (this.state.showOrganizationModal !== nextState.showOrganizationModal) return true;
     if (this.state.showSharedItemModal !== nextState.showSharedItemModal) return true;
-    if (this.state.windowWidth !== nextState.windowWidth) return true;
-    return false;
+    return this.state.windowWidth !== nextState.windowWidth;
   }
 
   componentWillUnmount () {
@@ -78,8 +80,10 @@ export default class Header extends Component {
   onAppStoreChange () {
     // console.log('Header, onAppStoreChange');
     this.setState({
+      activityTidbitWeVoteIdForDrawer: AppStore.activityTidbitWeVoteIdForDrawer(),
       organizationModalBallotItemWeVoteId: AppStore.organizationModalBallotItemWeVoteId(),
       sharedItemCode: AppStore.getSharedItemCode(),
+      showActivityTidbitDrawer: AppStore.showActivityTidbitDrawer(),
       showHowItWorksModal: AppStore.showHowItWorksModal(),
       showVoterPlanModal: AppStore.showVoterPlanModal(),
       showOrganizationModal: AppStore.showOrganizationModal(),
@@ -90,6 +94,10 @@ export default class Header extends Component {
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('Header caught error: ', `${error} with info: `, info);
+  }
+
+  closeActivityTidbitDrawer () {
+    AppActions.setShowActivityTidbitDrawer(false);
   }
 
   closeHowItWorksModal () {
@@ -121,8 +129,12 @@ export default class Header extends Component {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
-    const { sharedItemCode, showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal } = this.state;
-    const { friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
+    const {
+      activityTidbitWeVoteIdForDrawer, sharedItemCode, showActivityTidbitDrawer,
+      showHowItWorksModal, showVoterPlanModal, showOrganizationModal, showSharedItemModal,
+    } = this.state;
+    const {
+      friendsMode, settingsMode, valuesMode, voterGuideCreatorMode, voterGuideMode,
       showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop,
       showBackToSettingsMobile, showBackToValues, showBackToVoterGuide, showBackToVoterGuides,
     } = getApplicationViewBooleans(pathname);
@@ -130,7 +142,7 @@ export default class Header extends Component {
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
     } else if (isCordova() && isIOS() && !hasIPhoneNotch()) {
-      iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '24px' : 'undefined'}` }} />;
+      iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '26px' : 'undefined'}` }} />;
     }
 
     // console.log('organizationModalBallotItemWeVoteId: ', this.state.organizationModalBallotItemWeVoteId);
@@ -266,12 +278,12 @@ export default class Header extends Component {
           )}
           {showOrganizationModal && (
             <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                pathname={pathname}
-                show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-                modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+              modalOpen={showOrganizationModal}
+              toggleFunction={this.closeOrganizationModal}
             />
           )}
           {showSharedItemModal && (
@@ -320,12 +332,12 @@ export default class Header extends Component {
           )}
           {showOrganizationModal && (
             <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                pathname={pathname}
-                show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-                modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+              modalOpen={showOrganizationModal}
+              toggleFunction={this.closeOrganizationModal}
             />
           )}
           {showSharedItemModal && (
@@ -369,12 +381,12 @@ export default class Header extends Component {
           )}
           {showOrganizationModal && (
             <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                pathname={pathname}
-                show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-                modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+              modalOpen={showOrganizationModal}
+              toggleFunction={this.closeOrganizationModal}
             />
           )}
           {showSharedItemModal && (
@@ -387,14 +399,16 @@ export default class Header extends Component {
           )}
         </div>
       );
-    } else if (pathname === '/for-campaigns' ||
-               pathname === '/for-organizations' ||
-               pathname.startsWith('/how') ||
-               pathname === '/more/about' ||
-               pathname === '/more/credits' ||
-               pathname.startsWith('/more/donate') ||
-               pathname.startsWith('/more/pricing') ||
-               pathname === '/welcome') {
+    } else if (
+      typeof pathname !== 'undefined' && pathname &&
+      (pathname === '/for-campaigns' ||
+      pathname === '/for-organizations' ||
+      pathname.startsWith('/how') ||
+      pathname === '/more/about' ||
+      pathname === '/more/credits' ||
+      pathname.startsWith('/more/donate') ||
+      pathname.startsWith('/more/pricing') ||
+      pathname === '/welcome')) {
       return null;
     } else {
       // console.log('Header not in any mode');
@@ -424,6 +438,14 @@ export default class Header extends Component {
               }
             </div>
           </div>
+          {showActivityTidbitDrawer && (
+            <ActivityTidbitDrawer
+              activityTidbitWeVoteId={activityTidbitWeVoteIdForDrawer}
+              show={showActivityTidbitDrawer}
+              modalOpen={showActivityTidbitDrawer}
+              toggleFunction={this.closeActivityTidbitDrawer}
+            />
+          )}
           {showHowItWorksModal && (
             <HowItWorksModal
               pathname={pathname}
@@ -440,12 +462,12 @@ export default class Header extends Component {
           )}
           {showOrganizationModal && (
             <OrganizationModal
-                isSignedIn={voter.is_signed_in}
-                pathname={pathname}
-                show={showOrganizationModal}
-                ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
-                modalOpen={showOrganizationModal}
-                toggleFunction={this.closeOrganizationModal}
+              isSignedIn={voter.is_signed_in}
+              pathname={pathname}
+              show={showOrganizationModal}
+              ballotItemWeVoteId={this.state.organizationModalBallotItemWeVoteId}
+              modalOpen={showOrganizationModal}
+              toggleFunction={this.closeOrganizationModal}
             />
           )}
           {showSharedItemModal && (

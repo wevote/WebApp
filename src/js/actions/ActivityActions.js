@@ -8,11 +8,22 @@ import Dispatcher from '../dispatcher/Dispatcher';
 // NOTICE_FRIEND_ENDORSEMENTS
 
 export default {
-  activityListRetrieve () {
+  activityCommentSave (activityCommentWeVoteId = '', parentWeVoteId = '', statementText = null, visibilitySetting = 'FRIENDS_ONLY', parentCommentWeVoteId = '') {
+    // console.log('activityNoticeListRetrieve');
+    Dispatcher.loadEndpoint('activityCommentSave',
+      {
+        activity_comment_we_vote_id: activityCommentWeVoteId,
+        parent_we_vote_id: parentWeVoteId,
+        parent_comment_we_vote_id: parentCommentWeVoteId,
+        statement_text: statementText,
+        visibility_setting: visibilitySetting,
+      });
+  },
+  activityListRetrieve (activityTidbitWeVoteIdList = []) {
     // console.log('activityNoticeListRetrieve');
     Dispatcher.loadEndpoint('activityListRetrieve',
       {
-        // google_civic_election_id: googleCivicElectionId,
+        activity_tidbit_we_vote_id_list: activityTidbitWeVoteIdList,
       });
   },
   activityNoticeListRetrieve (activityNoticeIdListClicked = [], activityNoticeIdListSeen = []) {
@@ -21,6 +32,15 @@ export default {
       {
         activity_notice_id_list_clicked: activityNoticeIdListClicked,
         activity_notice_id_list_seen: activityNoticeIdListSeen,
+      });
+  },
+  activityPostSave (activityPostWeVoteId = '', statementText = null, visibilitySetting = 'FRIENDS_ONLY') {
+    // console.log('activityNoticeListRetrieve');
+    Dispatcher.loadEndpoint('activityPostSave',
+      {
+        activity_post_we_vote_id: activityPostWeVoteId,
+        statement_text: statementText,
+        visibility_setting: visibilitySetting,
       });
   },
 };

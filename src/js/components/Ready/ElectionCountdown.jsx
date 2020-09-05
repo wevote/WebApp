@@ -1,11 +1,14 @@
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import BallotStore from '../../stores/BallotStore';
 import { formatDateToMonthDayYear } from '../../utils/textFormat';
 
 class ElectionCountdown extends React.Component {
-  static propTypes = {};
+  static propTypes = {
+    daysOnlyMode: PropTypes.bool,
+  };
 
   constructor (props) {
     super(props);
@@ -109,12 +112,13 @@ class ElectionCountdown extends React.Component {
   }
 
   render () {
+    const { daysOnlyMode } = this.props;
     const { days, daysMobile, electionIsToday, electionInPast, hours, minutes, seconds, electionDate } = this.state;
     const timeStillLoading = !(days || hours || minutes || seconds);
     const electionIsUpcomingHtml = (
       <Card className="card">
         <div className="">
-          <div className="u-show-mobile">
+          <div className={daysOnlyMode ? '' : 'u-show-mobile'}>
             <div>
               <CardTitleUpcoming>
                 {(daysMobile || hours || minutes || seconds) ? (
@@ -147,64 +151,66 @@ class ElectionCountdown extends React.Component {
               </CardSubTitle>
             </div>
           </div>
-          <div className="u-show-desktop-tablet">
-            <div>
-              <TimeFlex>
-                <TimeSection>
-                  <Time timeStillLoading={timeStillLoading}>
-                    {timeStillLoading ? <span>&ndash;</span> : days || '00'}
-                  </Time>
-                  <Small>
-                    {days === '1' ? 'Day' : 'Days'}
-                  </Small>
-                </TimeSection>
-                <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
-                <TimeSection>
-                  <Time timeStillLoading={timeStillLoading}>
-                    {timeStillLoading ? <span>&ndash;</span> : hours || '00'}
-                  </Time>
-                  <Small>Hours</Small>
-                </TimeSection>
-                <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
-                <TimeSection>
-                  <Time timeStillLoading={timeStillLoading}>
-                    {timeStillLoading ? <span>&ndash;</span> : minutes || '00'}
-                  </Time>
-                  <Small>Minutes</Small>
-                </TimeSection>
-                <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
-                <TimeSection>
-                  <Time timeStillLoading={timeStillLoading}>
-                    {timeStillLoading ? <span>&ndash;</span> : seconds || '00'}
-                  </Time>
-                  <Small>Seconds</Small>
-                </TimeSection>
-              </TimeFlex>
+          {!daysOnlyMode && (
+            <div className="u-show-desktop-tablet">
+              <div>
+                <TimeFlex>
+                  <TimeSection>
+                    <Time timeStillLoading={timeStillLoading}>
+                      {timeStillLoading ? <span>&ndash;</span> : days || '00'}
+                    </Time>
+                    <Small>
+                      {days === '1' ? 'Day' : 'Days'}
+                    </Small>
+                  </TimeSection>
+                  <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
+                  <TimeSection>
+                    <Time timeStillLoading={timeStillLoading}>
+                      {timeStillLoading ? <span>&ndash;</span> : hours || '00'}
+                    </Time>
+                    <Small>Hours</Small>
+                  </TimeSection>
+                  <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
+                  <TimeSection>
+                    <Time timeStillLoading={timeStillLoading}>
+                      {timeStillLoading ? <span>&ndash;</span> : minutes || '00'}
+                    </Time>
+                    <Small>Minutes</Small>
+                  </TimeSection>
+                  <TimeSection><Time timeStillLoading={timeStillLoading}>:</Time></TimeSection>
+                  <TimeSection>
+                    <Time timeStillLoading={timeStillLoading}>
+                      {timeStillLoading ? <span>&ndash;</span> : seconds || '00'}
+                    </Time>
+                    <Small>Seconds</Small>
+                  </TimeSection>
+                </TimeFlex>
+              </div>
+              <div>
+                <CardSubTitle center desktopMode>
+                  {(electionDate) ? (
+                    <>
+                      until your next election on
+                      {' '}
+                      {formatDateToMonthDayYear(electionDate)}
+                      .
+                    </>
+                  ) : (
+                    <>
+                      until your next election on...
+                    </>
+                  )}
+                </CardSubTitle>
+              </div>
             </div>
-            <div>
-              <CardSubTitle center desktopMode>
-                {(electionDate) ? (
-                  <>
-                    until your next election on
-                    {' '}
-                    {formatDateToMonthDayYear(electionDate)}
-                    .
-                  </>
-                ) : (
-                  <>
-                    until your next election on...
-                  </>
-                )}
-              </CardSubTitle>
-            </div>
-          </div>
+          )}
         </div>
       </Card>
     );
     const electionIsTodayHtml = (
       <Card className="card">
         <div className="">
-          <div className="u-show-mobile">
+          <div className={daysOnlyMode ? '' : 'u-show-mobile'}>
             <div>
               <CardTitleToday>
                 Vote Today!
@@ -227,40 +233,42 @@ class ElectionCountdown extends React.Component {
               </CardSubTitle>
             </div>
           </div>
-          <div className="u-show-desktop-tablet">
-            <div>
-              <TimeFlex>
-                <TimeSection>
-                  <Time>
-                    Vote Today!
-                  </Time>
-                </TimeSection>
-              </TimeFlex>
+          {!daysOnlyMode && (
+            <div className="u-show-desktop-tablet">
+              <div>
+                <TimeFlex>
+                  <TimeSection>
+                    <Time>
+                      Vote Today!
+                    </Time>
+                  </TimeSection>
+                </TimeFlex>
+              </div>
+              <div>
+                <CardSubTitle center desktopMode>
+                  {(electionDate) ? (
+                    <>
+                      Your election is today
+                      {' '}
+                      {formatDateToMonthDayYear(electionDate)}
+                      .
+                    </>
+                  ) : (
+                    <>
+                      &nbsp;
+                    </>
+                  )}
+                </CardSubTitle>
+              </div>
             </div>
-            <div>
-              <CardSubTitle center desktopMode>
-                {(electionDate) ? (
-                  <>
-                    Your election is today
-                    {' '}
-                    {formatDateToMonthDayYear(electionDate)}
-                    .
-                  </>
-                ) : (
-                  <>
-                    &nbsp;
-                  </>
-                )}
-              </CardSubTitle>
-            </div>
-          </div>
+          )}
         </div>
       </Card>
     );
     const electionInPastHtml = (
       <Card className="card">
         <div className="">
-          <div className="u-show-mobile">
+          <div className={daysOnlyMode ? '' : 'u-show-mobile'}>
             <div>
               <CardTitlePast>
                 Election Completed
@@ -283,34 +291,36 @@ class ElectionCountdown extends React.Component {
               </CardSubTitle>
             </div>
           </div>
-          <div className="u-show-desktop-tablet">
-            <div>
-              <TimeFlex>
-                <TimeSection>
-                  <CardTitlePast>
-                    Election Completed
-                  </CardTitlePast>
-                  <Small>Choose Next Election</Small>
-                </TimeSection>
-              </TimeFlex>
+          {!daysOnlyMode && (
+            <div className="u-show-desktop-tablet">
+              <div>
+                <TimeFlex>
+                  <TimeSection>
+                    <CardTitlePast>
+                      Election Completed
+                    </CardTitlePast>
+                    <Small>Choose Next Election</Small>
+                  </TimeSection>
+                </TimeFlex>
+              </div>
+              <div>
+                <CardSubTitle center desktopMode>
+                  {(electionDate) ? (
+                    <>
+                      This election was on
+                      {' '}
+                      {formatDateToMonthDayYear(electionDate)}
+                      .
+                    </>
+                  ) : (
+                    <>
+                      &nbsp;
+                    </>
+                  )}
+                </CardSubTitle>
+              </div>
             </div>
-            <div>
-              <CardSubTitle center desktopMode>
-                {(electionDate) ? (
-                  <>
-                    This election was on
-                    {' '}
-                    {formatDateToMonthDayYear(electionDate)}
-                    .
-                  </>
-                ) : (
-                  <>
-                    &nbsp;
-                  </>
-                )}
-              </CardSubTitle>
-            </div>
-          </div>
+          )}
         </div>
       </Card>
     );

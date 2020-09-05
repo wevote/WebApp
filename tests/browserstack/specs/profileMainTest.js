@@ -161,7 +161,7 @@ describe('Cross browser automated testing', async () => {
 //  });
 
   it('should test settings page', async () => {
-    if (isCordovaFromAppStore && isIOS) {
+    if (isCordovaFromAppStore) {
       await browser.deleteSession();
     }
 //    await browser.pause(PAUSE_DURATION_MICROSECONDS * 10);

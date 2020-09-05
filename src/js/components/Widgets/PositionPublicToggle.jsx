@@ -17,12 +17,13 @@ import { openSnackbar } from './SnackNotifier';
 
 class PositionPublicToggle extends Component {
   static propTypes = {
+    ballotItemType: PropTypes.string.isRequired,
     ballotItemWeVoteId: PropTypes.string.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string.isRequired,
     externalUniqueId: PropTypes.string,
     inTestMode: PropTypes.bool,
-    ballotItemType: PropTypes.string.isRequired,
+    preventStackedButtons: PropTypes.bool,
   };
 
   constructor (props) {
@@ -181,7 +182,7 @@ class PositionPublicToggle extends Component {
 
   render () {
     renderLog('PositionPublicToggle');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes } = this.props;
+    const { preventStackedButtons, classes } = this.props;
     const { inTestMode, isSignedIn, voterWeVoteId } = this.state;
     let { voterPositionIsPublic } = this.state;
     if (!voterWeVoteId) {
@@ -271,7 +272,7 @@ class PositionPublicToggle extends Component {
             <RadioGroup
               onChange={this.handlePositionToggle}
             >
-              <RadioItem>
+              <RadioItem preventStackedButtons={preventStackedButtons}>
                 <FormControlLabel
                   classes={{ label: classes.radioLabel }}
                   id={`positionPublicToggleFriendsOnly-${this.props.externalUniqueId}`}
@@ -289,7 +290,7 @@ class PositionPublicToggle extends Component {
                   }
                 />
               </RadioItem>
-              <RadioItem>
+              <RadioItem preventStackedButtons={preventStackedButtons}>
                 <FormControlLabel
                   id={`positionPublicTogglePublic-${this.props.externalUniqueId}`}
                   classes={{ label: classes.radioLabel }}
@@ -389,12 +390,16 @@ const PublicToggle = styled.div`
   }
 `;
 
-const RadioItem = styled.div`
+const RadioItemStackedStyles = `
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
     width: 100% !important;
     min-width: 100% !important;
     margin-bottom: -6px;
   }
+`;
+
+const RadioItem = styled.div`
+  ${({ preventStackedButtons }) => ((preventStackedButtons) ? '' : RadioItemStackedStyles)}
 `;
 
 const RadioGroup = styled.div`
@@ -405,7 +410,7 @@ const RadioGroup = styled.div`
     margin-bottom: -10px;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    flex-flow: row wrap;
+    ${({ preventStackedButtons }) => ((preventStackedButtons) ? '' : 'flex-flow: row wrap;')}
     margin-bottom: 0;
   }
 `;

@@ -62,7 +62,7 @@ class StickyPopover extends Component {
     const { delay, openPopoverByProp } = this.props;
     if (openPopoverByProp) {
       // When manually opening Popover, turn off the mouse hover features
-    } else {
+    } else if (delay) {
       this.enterTimeoutId = setTimeout(() => this.setState({ showPopover: true }), delay.show);
     }
   }
@@ -83,7 +83,7 @@ class StickyPopover extends Component {
     const { delay, openPopoverByProp } = this.props;
     if (openPopoverByProp) {
       // When manually opening Popover, turn off the mouse hover features
-    } else {
+    } else if (delay) {
       if (this.enterTimeoutId) {
         clearTimeout(this.enterTimeoutId);
       }

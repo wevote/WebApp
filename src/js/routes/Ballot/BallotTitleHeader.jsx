@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Settings } from '@material-ui/icons';
-import { isIPad, isIPhone3p5in, isIPhone4in, isWebApp } from '../../utils/cordovaUtils';
+import { isAndroid, isAndroidSizeFold, isIPad, isIPhone3p5in, isIPhone4in, isWebApp } from '../../utils/cordovaUtils';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { shortenText } from '../../utils/textFormat';
@@ -26,10 +26,21 @@ class BallotTitleHeader extends Component {
     if (isIPhone3p5in() || isIPhone4in()) {
       return 26;  // iphone5-or-smaller
     } if (isIPad()) {
-      return 0;
+      return 60;
     } else {
       return 30;
     }
+  }
+
+  marginTopOffset () {
+    if (isIPad()) {
+      return '12px';
+    } else if (isAndroidSizeFold()) {
+      return '41px';
+    } else if (!isAndroid() && this.props.scrolled) {  // 2020-08-19, not sure if this is needed for ios or webapp
+      return '12px';
+    }
+    return 0;
   }
 
   render () {
@@ -38,7 +49,7 @@ class BallotTitleHeader extends Component {
 
     if (electionName) {
       return (
-        <Wrapper>
+        <Wrapper marginTop={this.marginTopOffset()}>
           <Tooltip title="Change my election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
             <Title onClick={this.props.toggleSelectBallotModal} id="ballotTitleHeaderSelectBallotModal">
               <ElectionName scrolled={scrolled}>
@@ -120,7 +131,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: ${props => (props.ipad ? '12px' : (props.scrolled ? '12px' : 0))};
+  margin-top: ${props => (props.marginTop)};
 `;
 
 const Title = styled.h1`

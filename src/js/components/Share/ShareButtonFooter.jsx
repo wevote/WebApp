@@ -20,8 +20,9 @@ import ShareModalOption from './ShareModalOption';
 import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import isMobile from '../../utils/isMobile';
+import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import { historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import { renderLog } from '../../utils/logging';
 import { shareBottomOffset } from '../../utils/cordovaOffsets';
@@ -64,11 +65,11 @@ class ShareButtonFooter extends Component {
     const showSignInModal = AppStore.showSignInModal();
     const showVoterPlanModal = AppStore.showVoterPlanModal();
     const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
-    const currentFullUrl = window.location.href || '';
-    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '');
-    const candidateShare = pathname.startsWith('/candidate');
-    const measureShare = pathname.startsWith('/measure');
-    const officeShare = pathname.startsWith('/office');
+    const currentFullUrlAdjusted = this.getCurrentFullUrl();
+    const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
+    const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
+    const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
+    const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('ShareButtonFooter componentDidMount urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
@@ -88,6 +89,7 @@ class ShareButtonFooter extends Component {
     this.setState({
       candidateShare,
       chosenPreventSharingOpinions,
+      currentFullUrlAdjusted,
       currentFullUrlToShare,
       measureShare,
       officeShare,
@@ -129,14 +131,15 @@ class ShareButtonFooter extends Component {
 
   onShareStoreChange () {
     // console.log('SharedModal onShareStoreChange');
-    const currentFullUrl = window.location.href || '';
-    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
+    const currentFullUrlAdjusted = this.getCurrentFullUrl();
+    const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '').toLowerCase();
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('SharedModal onShareStoreChange urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
     const showSignInModal = AppStore.showSignInModal();
     const showVoterPlanModal = AppStore.showVoterPlanModal();
     this.setState({
+      currentFullUrlAdjusted,
       currentFullUrlToShare,
       showSignInModal,
       showVoterPlanModal,
@@ -148,8 +151,8 @@ class ShareButtonFooter extends Component {
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
-    const currentFullUrl = window.location.href || '';
-    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '').toLowerCase();
+    const currentFullUrlAdjusted = this.getCurrentFullUrl();
+    const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '').toLowerCase();
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
@@ -157,12 +160,26 @@ class ShareButtonFooter extends Component {
     }
     const showSignInModal = AppStore.showSignInModal();
     this.setState({
+      currentFullUrlAdjusted,
       currentFullUrlToShare,
       showSignInModal,
       urlWithSharedItemCode,
       urlWithSharedItemCodeAllOpinions,
       voterIsSignedIn,
     });
+  }
+
+  getCurrentFullUrl () {
+    let currentFullUrl = window.location.href || '';
+    // Handles localhost and Cordova, always builds url to wevote.us
+    if (currentFullUrl.startsWith('https://localhost')) {
+      currentFullUrl = currentFullUrl.replace(/https:\/\/localhost.*?\//, 'https://wevote.us/');
+      // console.log(`currentFullUrl adjusted for localhost: ${currentFullUrl}`);
+    } else if (currentFullUrl.startsWith('file://')) {
+      currentFullUrl = currentFullUrl.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, 'https://wevote.us/');
+      // console.log(`currentFullUrl adjusted for Cordova: ${currentFullUrl}`);
+    }
+    return currentFullUrl;
   }
 
   setStep (shareFooterStep) {
@@ -181,11 +198,11 @@ class ShareButtonFooter extends Component {
 
   handleShareButtonClick = () => {
     const { pathname } = this.props;
-    const currentFullUrl = window.location.href || '';
-    const currentFullUrlToShare = currentFullUrl.replace('/modal/share', '');
-    const candidateShare = pathname.startsWith('/candidate');
-    const measureShare = pathname.startsWith('/measure');
-    const officeShare = pathname.startsWith('/office');
+    const { currentFullUrlAdjusted } = this.state;
+    const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
+    const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
+    const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
+    const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
     let kindOfShare = 'BALLOT';
     if (candidateShare) {
       kindOfShare = 'CANDIDATE';
@@ -194,9 +211,10 @@ class ShareButtonFooter extends Component {
     } else if (officeShare) {
       kindOfShare = 'OFFICE';
     }
-    ShareActions.sharedItemSave(currentFullUrl, kindOfShare);
+    ShareActions.sharedItemSave(currentFullUrlAdjusted, kindOfShare);
     this.setState({
       candidateShare,
+      currentFullUrlAdjusted,
       currentFullUrlToShare,
       measureShare,
       officeShare,
@@ -276,16 +294,16 @@ class ShareButtonFooter extends Component {
     }
   }
 
-  saveActionShareButtonCopy = () => {
+  saveActionShareButtonCopy = () => {      // Save Analytics
     openSnackbar({ message: 'Copied!' });
     AnalyticsActions.saveActionShareButtonCopy(VoterStore.electionId());
   }
 
-  saveActionShareButtonEmail = () => {
+  saveActionShareButtonEmail = () => {     // Save Analytics
     AnalyticsActions.saveActionShareButtonEmail(VoterStore.electionId());
   }
 
-  saveActionShareButtonFacebook = () => {
+  saveActionShareButtonFacebook = () => {  // Save Analytics
     AnalyticsActions.saveActionShareButtonFacebook(VoterStore.electionId());
   }
 
@@ -301,12 +319,12 @@ class ShareButtonFooter extends Component {
     AnalyticsActions.saveActionShareButtonFriends(VoterStore.electionId());
   }
 
-  saveActionShareButtonTwitter = () => {
+  saveActionShareButtonTwitter = () => {    // Save Analytics
     AnalyticsActions.saveActionShareButtonTwitter(VoterStore.electionId());
   }
 
   openNativeShare (linkToBeShared, shareTitle = '') {
-    // console.log('openNativeShare linkToBeShared:', linkToBeShared);
+    // console.log('openNativeShare linkToBeShared:', linkToBeShared, 'shareTitle:', shareTitle);
     if (navigator.share) {
       navigator.share({
         title: shareTitle,
@@ -425,7 +443,6 @@ class ShareButtonFooter extends Component {
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
     linkToBeShared = linkToBeShared.replace('https://file:/', 'https://wevote.us/');  // Cordova
-    const linkToBeSharedUrlEncoded = encodeURI(linkToBeShared);
     // console.log('ShareButtonFooter linkToBeShared:', linkToBeShared);
 
     const hideFooterBehindModal = showingOneCompleteYourProfileModal || showShareModal || showSignInModal || showVoterPlanModal;
@@ -588,67 +605,88 @@ class ShareButtonFooter extends Component {
                   ) : (
                     <Flex>
                       <ShareWrapper>
-                        <FacebookShareButton
-                          className="no-decoration"
-                          id="shareFooterFacebookButton"
-                          onClick={this.saveActionShareButtonFacebook}
-                          quote={titleText}
-                          url={`${linkToBeSharedUrlEncoded}&t=WeVote`}
-                          windowWidth={750}
-                          windowHeight={600}
+                        <div id="androidFacebook"
+                             onClick={() => isAndroid() &&
+                               androidFacebookClickHandler(`${linkToBeShared}&t=WeVote`)}
                         >
-                          <FacebookIcon
-                            bgStyle={{ background: '#3b5998' }}
-                            round="True"
-                            size={68}
-                          />
-                          <Text>
-                            Facebook
-                          </Text>
-                        </FacebookShareButton>
+                          <FacebookShareButton
+                            className="no-decoration"
+                            id="shareFooterFacebookButton"
+                            onClick={this.saveActionShareButtonFacebook}
+                            quote={titleText}
+                            url={`${linkToBeShared}&t=WeVote`}
+                            windowWidth={750}
+                            windowHeight={600}
+                            disabled={isAndroid()}
+                            disabledStyle={isAndroid() ? { opacity: 1 } : {}}
+                          >
+                            <FacebookIcon
+                              bgStyle={{ background: '#3b5998' }}
+                              round="True"
+                              size={68}
+                            />
+                            <Text>
+                              Facebook
+                            </Text>
+                          </FacebookShareButton>
+                        </div>
                       </ShareWrapper>
                       <ShareWrapper>
-                        <TwitterShareButton
-                          className="no-decoration"
-                          id="shareFooterTwitterButton"
-                          onClick={this.saveActionShareButtonTwitter}
-                          title={titleText}
-                          url={`${linkToBeSharedUrlEncoded}`}
-                          windowWidth={750}
-                          windowHeight={600}
+                        <div id="androidTwitter"
+                             onClick={() => isAndroid() &&
+                               androidTwitterClickHandler(linkToBeShared)}
                         >
-                          <TwitterIcon
-                            bgStyle={{ background: '#38A1F3' }}
-                            round="True"
-                            size={68}
-                          />
-                          <Text>
-                            Twitter
-                          </Text>
-                        </TwitterShareButton>
+                          <TwitterShareButton
+                            className="no-decoration"
+                            id="shareFooterTwitterButton"
+                            onClick={this.saveActionShareButtonTwitter}
+                            title={titleText}
+                            url={`${linkToBeShared}`}
+                            windowWidth={750}
+                            windowHeight={600}
+                            disabled={isAndroid()}
+                            disabledStyle={isAndroid() ? { opacity: 1 } : {}}
+                          >
+                            <TwitterIcon
+                              bgStyle={{ background: '#38A1F3' }}
+                              round="True"
+                              size={68}
+                            />
+                            <Text>
+                              Twitter
+                            </Text>
+                          </TwitterShareButton>
+                        </div>
                       </ShareWrapper>
                       <ShareWrapper>
                         {/* The EmailShareButton works in Cordova, but ONLY if an email client is configured, so it doesn't work in a simulator */}
-                        <EmailShareButton
-                          body={`${titleText} ${linkToBeShared}`}
-                          className="no-decoration"
-                          id="shareFooterEmailButton"
-                          beforeOnClick={this.saveActionShareButtonEmail}
-                          openShareDialogOnClick
-                          subject="Ready to vote?"
-                          url={`${linkToBeShared}`}
-                          windowWidth={750}
-                          windowHeight={600}
+                        <div id="cordovaEmail"
+                             onClick={() => isCordova() &&
+                               cordovaSocialSharingByEmail('Ready to vote?', linkToBeShared, this.handleCloseShareButtonDrawer)}
                         >
-                          <EmailIcon
-                            bgStyle={{ fill: '#2E3C5D' }}
-                            round="True"
-                            size={68}
-                          />
-                          <Text>
-                            Email
-                          </Text>
-                        </EmailShareButton>
+                          <EmailShareButton
+                            body={`${titleText} ${linkToBeShared}`}
+                            className="no-decoration"
+                            id="shareFooterEmailButton"
+                            beforeOnClick={this.saveActionShareButtonEmail}
+                            openShareDialogOnClick
+                            subject="Ready to vote?"
+                            url={`${linkToBeShared}`}
+                            windowWidth={750}
+                            windowHeight={600}
+                            disabled={isCordova()}
+                            disabledStyle={isCordova() ? { opacity: 1 } : {}}
+                          >
+                            <EmailIcon
+                              bgStyle={{ fill: '#2E3C5D' }}
+                              round="True"
+                              size={68}
+                            />
+                            <Text>
+                              Email
+                            </Text>
+                          </EmailShareButton>
+                        </div>
                       </ShareWrapper>
                       <ShareModalOption
                         backgroundColor="#2E3C5D"

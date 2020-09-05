@@ -22,7 +22,11 @@ class FriendInvitationOnboardingIntro extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showAllStepOne: false,
+      showAllStepTwo: false,
+      showAllStepThree: false,
+    };
   }
 
   componentDidMount () {
@@ -61,10 +65,28 @@ class FriendInvitationOnboardingIntro extends Component {
     }
   }
 
+  onClickShowAllStepOne = () => {
+    this.setState({
+      showAllStepOne: true,
+    });
+  }
+
+  onClickShowAllStepTwo = () => {
+    this.setState({
+      showAllStepTwo: true,
+    });
+  }
+
+  onClickShowAllStepThree = () => {
+    this.setState({
+      showAllStepThree: true,
+    });
+  }
+
   render () {
     renderLog('FriendInvitationOnboardingIntro');  // Set LOG_RENDER_EVENTS to log all renders
     const { friendFirstName, friendLastName, invitationMessage, friendImageUrlHttpsTiny } = this.props;
-    const { days, electionDate } = this.state;
+    const { days, electionDate, showAllStepOne, showAllStepTwo, showAllStepThree } = this.state;
     let showCountDownDays = (days && electionDate);
     if (convertToInteger(days) < 0) {
       showCountDownDays = false;
@@ -78,22 +100,6 @@ class FriendInvitationOnboardingIntro extends Component {
             src={cordovaDot(logoDark)}
           />
         </WeVoteLogoWrapper>
-        {showCountDownDays && (
-          <ElectionCountdownText>
-            <ElectionCountdownDays>
-              {days}
-              {' '}
-              days
-            </ElectionCountdownDays>
-            {' '}
-            until your next election on
-            {' '}
-            <span className="u-no-break">
-              {formatDateToMonthDayYear(electionDate)}
-              .
-            </span>
-          </ElectionCountdownText>
-        )}
         <FriendInvitationTopHeader className="FriendInvitationTopHeader">
           {friendFirstName || invitationMessage ? (
             <>
@@ -144,10 +150,7 @@ class FriendInvitationOnboardingIntro extends Component {
           )}
         </FriendInvitationTopHeader>
         <FriendInvitationIntroHeader className="FriendInvitationIntroHeader">
-          We Vote makes
-          <span className="u-show-mobile"><br /></span>
-          <span className="u-show-desktop-tablet">{' '}</span>
-          being a voter easier:
+          How We Vote helps you:
         </FriendInvitationIntroHeader>
         <FriendInvitationListWrapper>
           <FriendInvitationList>
@@ -157,7 +160,59 @@ class FriendInvitationOnboardingIntro extends Component {
             </FriendInvitationListTitleRow>
             <FriendInvitationListRow>
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-              <StepText>Verify your registration. Make a plan for casting your vote. Find your polling location.</StepText>
+              {showAllStepOne ? (
+                <StepText>
+                  {showCountDownDays && (
+                    <>
+                      There are
+                      {' '}
+                      {days}
+                      {' '}
+                      days
+                      {' '}
+                      until your next election on
+                      {' '}
+                      <span className="u-no-break">
+                        {formatDateToMonthDayYear(electionDate)}
+                        .
+                      </span>
+                      {' '}
+                    </>
+                  )}
+                  Make a plan for casting your vote. Verify your registration. Find your polling location.
+                </StepText>
+              ) : (
+                <StepText onClick={this.onClickShowAllStepOne}>
+                  {showCountDownDays ? (
+                    <>
+                      There are
+                      {' '}
+                      {days}
+                      {' '}
+                      days
+                      {' '}
+                      until your next election on
+                      {' '}
+                      <span className="u-no-break">
+                        {formatDateToMonthDayYear(electionDate)}
+                        .
+                      </span>
+                      {' '}
+                      Make a plan...
+                    </>
+                  ) : (
+                    <>
+                      Make a plan for casting your vote. Verify your...
+                    </>
+                  )}
+                  {' '}
+                  (
+                  <span className="u-cursor--pointer u-link-color">
+                    more
+                  </span>
+                  )
+                </StepText>
+              )}
             </FriendInvitationListRow>
 
             <FriendInvitationListTitleRow>
@@ -166,16 +221,44 @@ class FriendInvitationOnboardingIntro extends Component {
             </FriendInvitationListTitleRow>
             <FriendInvitationListRow>
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-              <StepText>Who&apos;s running for office? What do they stand for? With over 12,600 candidates running for 6,500 offices this year, We Vote helps you make sense of your options.</StepText>
+              {showAllStepTwo ? (
+                <StepText>
+                  Who&apos;s running for office? What do they stand for? We Vote helps you make sense of your options.
+                </StepText>
+              ) : (
+                <StepText onClick={this.onClickShowAllStepTwo}>
+                  Who&apos;s running for office? What do they...
+                  {' '}
+                  (
+                  <span className="u-cursor--pointer u-link-color">
+                    more
+                  </span>
+                  )
+                </StepText>
+              )}
             </FriendInvitationListRow>
 
             <FriendInvitationListTitleRow>
               <Dot><StepNumber>3</StepNumber></Dot>
-              <StepTitle>Be the change you want to see in the world</StepTitle>
+              <StepTitle>Help your friends</StepTitle>
             </FriendInvitationListTitleRow>
             <FriendInvitationListRow>
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-              <StepText>You&apos;ve done your homework deciding how to vote. Now show your friends how to make sense of their decisions, so they can vote their values.</StepText>
+              {showAllStepThree ? (
+                <StepText>
+                  You&apos;ve done your homework deciding how to vote. Now show your friends how to make sense of their decisions, so they can vote their values.
+                </StepText>
+              ) : (
+                <StepText onClick={this.onClickShowAllStepThree}>
+                  You&apos;ve done your homework deciding...
+                  {' '}
+                  (
+                  <span className="u-cursor--pointer u-link-color">
+                    more
+                  </span>
+                  )
+                </StepText>
+              )}
             </FriendInvitationListRow>
           </FriendInvitationList>
         </FriendInvitationListWrapper>
@@ -204,33 +287,6 @@ const styles = theme => ({
 const Wrapper = styled.div`
   padding-left: 12px;
   padding-right: 12px;
-`;
-
-const ElectionCountdownDays = styled.span`
-  font-size: 32px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 24px;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    font-size: 13px;
-  }
-`;
-
-const ElectionCountdownText = styled.h3`
-  font-size: 14px;
-  font-weight: 700;
-  color: #2E3C5D !important;
-  width: fit-content;
-  padding-bottom: 8px;
-  margin-top: 0;
-  width: 100%;
-  text-align: center;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 12px;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    font-size: 10px;
-  }
 `;
 
 const InvitationMessageWrapper = styled.div`
@@ -322,7 +378,7 @@ const StepTitle = styled.div`
 `;
 
 const StepText = styled.div`
-  color: #555;
+  color: #999;
   font-size: 16px;
   font-weight: 200;
   padding: 0 8px;

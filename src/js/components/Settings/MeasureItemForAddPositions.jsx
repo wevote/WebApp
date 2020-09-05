@@ -190,7 +190,7 @@ class MeasureItemForAddPositions extends Component {
           externalUniqueId="desktopPositionStatement"
           // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
-          type="MEASURE"
+          ballotItemType="MEASURE"
           shownInList
         />
       </div>
@@ -205,7 +205,7 @@ class MeasureItemForAddPositions extends Component {
           externalUniqueId="mobilePositionStatement"
           // shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
-          type="MEASURE"
+          ballotItemType="MEASURE"
           shownInList
           mobile
         />

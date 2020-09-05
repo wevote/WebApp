@@ -6,7 +6,7 @@ import VoterActions from '../../actions/VoterActions';
 import webAppConfig from '../../config';
 import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import { openSnackbar } from '../Widgets/SnackNotifier';
-import { renderLog } from '../../utils/logging';
+import { oAuthLog, renderLog } from '../../utils/logging';
 
 class AppleSignIn extends Component {
   static propTypes = {
@@ -67,25 +67,29 @@ class AppleSignIn extends Component {
   }
 
   signInToAppleIOS () {
-    console.log('SignInWithApple: Button clicked');
+    console.log('SignInWithApple signInToAppleIOS: Button clicked');
     const { SignInWithApple: { signin } } = window.cordova.plugins;
-
-    // window.voterActionVoterAppleSignInSave = VoterActions.voterAppleSignInSave;
-    const voterActionVoterAppleSignInSave = VoterActions.voterAppleSignInSave;
 
     signin(
       { requestedScopes: [0, 1]},
       (response) => {
-        // console.log(`SignInWithApple: ${JSON.stringify(response)}`);
-        const { user, email, fullName: { givenName, middleName, familyName } } = response;
+        console.log(`SignInWithApple: ${JSON.stringify(response)}`);
+        const { user, email, identityToken, fullName: { givenName, middleName, familyName } } = response;
         console.log('AppleSignInSave called with email:', email);
-        if (!email || email.length === 0) {
-          openSnackbar({
-            message: 'We Vote does not support "Hide My Email" at this time.',
-            duration: 7000,
-          });
-        }
-        voterActionVoterAppleSignInSave(email, givenName, middleName, familyName, user);
+        // In August 2020, Apple stopped returning the name and address on first signin, and email on subsequent signins
+        // So it seems that we have no way to determine if they use an alias email, found notes that dropbox and others have
+        // trouble with alias emails (probably since they match siwa sign ins with previous signins by email).  This will be trouble for us
+        // unless it is a short term bug on the Apple API servers.
+        // if (!email || email.length === 0) {
+        //   openSnackbar({
+        //     message: 'We Vote does not support "Hide My Email" at this time.',
+        //     duration: 7000,
+        //   });
+        //   oAuthLog('We Vote does not support "Hide My Email" at this time.');
+        // } else {
+        VoterActions.voterAppleSignInSave(email, givenName, middleName, familyName, user, identityToken);
+        oAuthLog('Sign in with Apple successful signin for: ', email);
+        // }
         if (this.props.closeSignInModal) {
           this.props.closeSignInModal();
         }
@@ -93,12 +97,13 @@ class AppleSignIn extends Component {
       (err) => {
         // console.error(err);
         console.log(`SignInWithApple: ${JSON.stringify(err)}`);
+        oAuthLog(`SignInWithApple: ${JSON.stringify(err)}`);
         if (err.code === '1000') {
           // SignInWithApple: {"code":"1000","localizedFailureReason":"","error":"ASAUTHORIZATION_ERROR","localizedDescription":"The operation couldn’t be completed. (com.apple.AuthenticationServices.AuthorizationError error 1000.)"}
           // iOS takes over and the voter will be taking a break to go to settings to setup AppleID or login to iCloud for the first time on this device.
           // Super edge case outside of testing situations
           openSnackbar({
-            message: 'You may need to open Settings, and login to iCloud before proceeding.',
+            message: `You may need to open Settings, and login to iCloud before proceeding. (code: ${err.code})`,
             duration: 7000,
           });
           if (this.props.closeSignInModal) {
@@ -106,16 +111,16 @@ class AppleSignIn extends Component {
           }
         }
       },
-    )(voterActionVoterAppleSignInSave);
+    );
   }
 
   signInToAppleWebApp () {  // https://i.stack.imgur.com/Le6Jf.png  https://stackoverflow.com/questions/61071848/sign-in-with-apple-js-returns-invalid-request-in
-    console.log('AppleSignIn signInToAppleWebApp button pressed');
+    oAuthLog('AppleSignIn signInToAppleWebApp button pressed');
     try {
       const { auth } = window.AppleID;
       auth.signIn();
     } catch (error) {
-      console.log('signInToAppleWebApp exception ERROR:', error);
+      oAuthLog('signInToAppleWebApp exception ERROR:', error);
     }
   }
 
@@ -136,6 +141,7 @@ class AppleSignIn extends Component {
     const isWeb = isWebApp();
     const { signedIn } = this.props;
     let enabled = true;
+    const tinyScreen = isWeb && window.innerWidth < 300;  // Galaxy fold, folded
 
     if (isAndroid()) {
       // console.log('Sign in with Apple is not available on Android');
@@ -160,6 +166,7 @@ class AppleSignIn extends Component {
         <AppleSignInContainer enabled={enabled}>
           <AppleSignInButton type="submit"
                              isWeb={isWeb}
+                             tinyScreen={tinyScreen}
                              onClick={() => this.signInClicked(enabled)}
           >
             <AppleLogo signedIn={signedIn} enabled={enabled} />
@@ -204,6 +211,10 @@ export function AppleLogo (parameters) {
   );
 }
 
+/*
+Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
+https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
+*/
 const AppleLogoSvg = styled.svg`
   position: absolute;
   left: ${({ signedIn }) => (signedIn ? '29%' : '5%')};
@@ -212,17 +223,25 @@ const AppleLogoSvg = styled.svg`
   color: ${({ enabled }) => (enabled ? '#fff' : 'grey')};
 `;
 
+/*
+Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
+https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
+*/
 const AppleSignInText = styled.span`
-  font-size: 14pt;
-  padding: none;
+  font-size: 18px;
+  padding: 0;
   border: none;
   color: ${({ enabled }) => (enabled ? '#fff' : 'grey')};
 `;
 
+/*
+Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
+https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
+*/
 const AppleSignInButton = styled.button`
   margin-top: ${({ isWeb }) => (isWeb ? '8px' : '10px')};
   border: none;
-  padding-left: 40px;
+  padding-left: ${({ tinyScreen }) => (tinyScreen ? '20px' : '40px')};
   background-color: #000;
   color: #fff;
 `;
@@ -248,6 +267,10 @@ const AppleSignInContainer  = styled.div`
   width: 100%;
 `;
 
+/*
+Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
+https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
+*/
 const AppleSignedInContainer  = styled.div`
   background-color: #000;
   border-color: #000;

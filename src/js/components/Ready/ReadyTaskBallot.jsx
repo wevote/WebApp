@@ -104,6 +104,19 @@ class ReadyTaskBallot extends React.Component {
     this.calculateShowButtonStates(ballotItemsStatusCounts, showMoreButtonWasClicked);
   }
 
+  goToCandidateTypeAfterCalculation = () => {
+    const { federalTotalNumber, localTotalNumber, stateTotalNumber } = this.state;
+    if (federalTotalNumber) {
+      this.goToFederalRaces();
+    } else if (stateTotalNumber) {
+      this.goToStateRaces();
+    } else if (localTotalNumber) {
+      this.goToLocalRaces();
+    } else {
+      this.goToBallot();
+    }
+  }
+
   goToFederalRaces = () => {
     BallotActions.completionLevelFilterTypeSave('All');
     BallotActions.raceLevelFilterTypeSave('Federal');
@@ -166,7 +179,7 @@ class ReadyTaskBallot extends React.Component {
       percentCompleted += howItWorksCompleted ? 5 : 0;
       percentCompleted += personalizedScoreIntroCompleted ? 5 : 0;
     }
-    if (percentCompleted) {
+    if (percentCompleted || percentCompleted === 0) {
       this.setState({
         percentCompleted,
       });
@@ -175,10 +188,10 @@ class ReadyTaskBallot extends React.Component {
 
   calculateShowButtonStates = (ballotItemsStatusCounts, showMoreButtonWasClicked = false) => {
     const {
-      federalButtonNeeded, federalAllCompleted, federalNumberCompleted,
-      localButtonNeeded, localAllCompleted, localNumberCompleted,
+      federalButtonNeeded, federalAllCompleted, federalNumberCompleted, federalTotalNumber,
+      localButtonNeeded, localAllCompleted, localNumberCompleted, localTotalNumber,
       measureButtonNeeded, measureAllCompleted,
-      stateButtonNeeded, stateAllCompleted, stateNumberCompleted,
+      stateButtonNeeded, stateAllCompleted, stateNumberCompleted, stateTotalNumber,
     } = ballotItemsStatusCounts;
     const howItWorksCompleted = VoterStore.getInterfaceFlagState(VoterConstants.HOW_IT_WORKS_WATCHED);
     const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
@@ -324,15 +337,18 @@ class ReadyTaskBallot extends React.Component {
       allCandidatesShowButton,
       federalButtonNeeded,
       federalShowButton,
+      federalTotalNumber,
       howItWorksShowButton,
       localButtonNeeded,
       localShowButton,
+      localTotalNumber,
       measureButtonNeeded,
       measureShowButton,
       personalizedScoreIntroShowButton,
       showMoreShowButton,
       stateButtonNeeded,
       stateShowButton,
+      stateTotalNumber,
     });
   }
 
@@ -375,12 +391,12 @@ class ReadyTaskBallot extends React.Component {
     if (percentCompleted === 0) {
       altValue = 'Start deciding';
       ballotImage = ballot0Percent;
-      yourBallotTitle = 'Voting?';
+      yourBallotTitle = 'Ballot To-Do List';
       yourBallotSubtitle = 'Start deciding how you\'ll vote.';
     } else if (percentCompleted < 100) {
       altValue = 'Ballot decisions underway';
       ballotImage = ballot50Percent;
-      yourBallotTitle = 'Your Ballot Progress';
+      yourBallotTitle = 'Ballot To-Do List';
       if (percentCompleted < 10) {
         yourBallotSubtitle = 'The first step of any journey is the hardest.';
       } else if (percentCompleted < 50) {
@@ -390,7 +406,7 @@ class ReadyTaskBallot extends React.Component {
       } else if (percentCompleted < 80) {
         yourBallotSubtitle = 'Excellent work.';
       } else {
-        yourBallotSubtitle = 'You are almost there, keep up the good work!';
+        yourBallotSubtitle = 'You are almost there!';
       }
     } else {
       altValue = 'Ballot Completed';
@@ -448,7 +464,7 @@ class ReadyTaskBallot extends React.Component {
               className="u-cursor--pointer"
               color="primary"
               completed={allCandidatesAllCompleted ? 'true' : undefined}
-              onClick={this.goToBallot}
+              onClick={this.goToCandidateTypeAfterCalculation}
               variant="outlined"
             >
               <ButtonLeft>
@@ -693,16 +709,15 @@ class ReadyTaskBallot extends React.Component {
                   ) : (
                     <span>
                       <span className="u-show-mobile-iphone5-or-smaller">
-                        How We Vote Works
+                        How It Works
                       </span>
                       <span className="u-show-mobile-bigger-than-iphone5">
                         How We Vote Works
-                        <ArrowForward classes={{ root: classes.arrowRoot }} />
                       </span>
                       <span className="u-show-desktop-tablet">
                         How We Vote Works
-                        <ArrowForward classes={{ root: classes.arrowRoot }} />
                       </span>
+                      <ArrowForward classes={{ root: classes.arrowRoot }} />
                     </span>
                   )}
                 </ButtonText>

@@ -28,10 +28,10 @@ export default class FriendsOnlyIndicator extends Component {
     let labelText = '';
     let visibilityIcon = '';
     if (isFriendsOnly) {
-      labelText = 'This position is only visible to We Vote friends.';
+      labelText = 'This is only visible to We Vote friends.';
       visibilityIcon = <ReactSVG src={cordovaDot(groupIcon)} svgStyle={{ backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset'  }} alt="Visible to Friends Only" />;
     } else {
-      labelText = 'This position is visible to the public.';
+      labelText = 'This is visible to the public.';
       visibilityIcon = <ReactSVG src={cordovaDot(publicIcon)} svgStyle={{ backgroundColor: '#fff', borderRadius: '3px', fill: '#555', width: '16px', height: '16px', display: 'flex', verticalAlign: 'unset' }} alt="Visible to Public" />;
     }
 

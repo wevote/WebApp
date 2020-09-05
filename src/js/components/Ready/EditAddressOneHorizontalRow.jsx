@@ -170,16 +170,16 @@ class EditAddressOneHorizontalRow extends Component {
       <OuterWrapper>
         <InnerWrapper className="u-show-mobile">
           <AddressLabelMobile>
-            Enter full address for correct ballot
+            Enter full street address with house number for correct ballot
           </AddressLabelMobile>
         </InnerWrapper>
         <InnerWrapper>
           <AddressLabel>
             <span className="u-show-tablet">
-              Enter full address for correct ballot
+              Enter street address with house number for correct ballot
             </span>
             <span className="u-show-desktop">
-              Enter your full address to see correct ballot
+              Enter full street address with house number for correct ballot
             </span>
           </AddressLabel>
           <form onSubmit={this.voterAddressSave}>
@@ -234,6 +234,7 @@ const AddressLabel = styled.div`
 
 const AddressLabelMobile = styled.div`
   font-weight: 600;
+  text-align: center;
 `;
 
 const InternalFormWrapper = styled.div`

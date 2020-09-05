@@ -113,12 +113,6 @@ export const weVoteStaff = [{
     'Marketing',
   ],
 }, {
-  name: 'Filip Francetic',
-  image: `${photoPath}Filip_Francetic-256x256.jpg`,
-  title: [
-    'Engineering Intern',
-  ],
-}, {
   name: 'Jeff French',
   image: `${photoPath}Jeff_French-256x256.png`,
   title: [
@@ -191,7 +185,7 @@ export const weVoteStaff = [{
   name: 'Steve Podell',
   image: `${photoPath}Steve_Podell-256x256.jpg`,
   title: [
-    'Volunteer',
+    'Director of Mobile Development',
     'Steve has been volunteering with We Vote since 2017, and single-handedly launched our iOS and Android apps, as well as contributing to all of We Vote\'s code repositories.',
   ],
 }, {
@@ -226,6 +220,11 @@ export const organizationalDonors = [{
   name: '',
   title: 'Data',
   logo: `${logoPath}ballotpedia-logo.png`,
+}, {
+  alt: 'BrowserStack',
+  name: '',
+  title: 'Cross-Platform Testing',
+  logo: `${logoPath}browserstack-logo-600x158.png`,
 }, {
   alt: 'Center for Technology and Civic Life',
   name: '',

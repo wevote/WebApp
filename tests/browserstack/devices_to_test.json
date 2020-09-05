@@ -1,5 +1,5 @@
 {"Android": 
-{"0": {"os_version": "8.0", "device": "Samsung Galaxy S9 Plus", "browserName": "Android", "browserstack.appium_version": "1.17.0"},
+{"0": {"os_version": "9.0", "device": "Samsung Galaxy S9 Plus", "browserName": "Android", "browserstack.appium_version": "1.17.0"},
 "1": {"os_version": "8.1", "device": "Samsung Galaxy J7 Prime", "browserName": "Android", "browserstack.appium_version": "1.17.0"},
 "2": {"os_version": "7.0", "device": "Samsung Galaxy S8", "browserName": "Android", "browserstack.appium_version": "1.17.0"},
 "3": {"os_version": "10.0", "device": "Google Pixel 4", "browserName": "Android", "browserstack.appium_version": "1.17.0"},

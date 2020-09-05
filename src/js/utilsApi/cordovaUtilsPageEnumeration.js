@@ -30,6 +30,8 @@ export const enums = {
   voterGuideWild: 204,
   ready: 205,
   twitterSignIn: 206,
+  news: 207,
+  twitterIdMFollowers: 208,
   defaultVal: 1000,
 };
 
@@ -51,6 +53,8 @@ export function pageEnumeration () {
     return enums.settingsHamburger;
   } else if (href.indexOf('/index.html#/settings/tools') > 0) {
     return enums.moreTools;
+  } else if (href.indexOf('/index.html#/settings/notifications') > 0) {
+    return enums.settingsNotifications;
   } else if (href.indexOf('/index.html#/settings/subscription') > 0) {
     return enums.settingsSubscription;
   } else if (href.indexOf('/index.html#/settings/voterguidelist') > 0) {
@@ -105,6 +109,10 @@ export function pageEnumeration () {
     return enums.welcomeWild;
   } else if (href.indexOf('/index.html#/twitter_sign_in') > 0) {
     return enums.twitterSignIn;
+  } else if (href.indexOf('/index.html#/news') > 0) {
+    return enums.news;
+  } else if (href.indexOf('/m/followers') > 0 || href.indexOf('/m/friends') > 0 || href.indexOf('/m/following') > 0) {
+    return enums.twitterIdMFollowers;
   }
   return enums.defaultVal;
 }

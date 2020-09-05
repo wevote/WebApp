@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Card, CircularProgress } from '@material-ui/core';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
+import ActivityTidbitComments from '../../components/Activity/ActivityTidbitComments';
+import ActivityTidbitReactionsSummary from '../../components/Activity/ActivityTidbitReactionsSummary';
+import ActivityTidbitAddReaction from '../../components/Activity/ActivityTidbitAddReaction';
+import ActivityCommentAdd from '../../components/Activity/ActivityCommentAdd';
 import ActivityTidbitItem from '../../components/Activity/ActivityTidbitItem';
+import ActivityPostAdd from '../../components/Activity/ActivityPostAdd';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppActions from '../../actions/AppActions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import { cordovaDot, historyPush, isCordova, isIPad, isAndroidTablet } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import FriendActions from '../../actions/FriendActions';
@@ -19,6 +26,7 @@ import LoadingWheel from '../../components/LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { PreviewImage } from '../../components/Settings/SettingsStyled';
+import ReactionActions from '../../actions/ReactionActions';
 import { renderLog } from '../../utils/logging';
 import SettingsAccount from '../../components/Settings/SettingsAccount';
 import ShowMoreItems from '../../components/Widgets/ShowMoreItems';
@@ -32,51 +40,100 @@ const STARTING_NUMBER_OF_ACTIVITY_TIDBITS_TO_DISPLAY = 10;
 
 
 class News extends Component {
-  static propTypes = {};
+  static propTypes = {
+    params: PropTypes.object,
+  };
 
   constructor (props) {
     super(props);
     this.state = {
       activityTidbitsList: [],
+      componentDidMountFinished: false,
       dateVoterJoined: '',
       activityTidbitsListLength: 0,
       loadingMoreItems: false,
-      localPositionListForOrgHasBeenRetrieved: [],
+      localLikedItemWeVoteIdsHaveBeenRetrieved: {},
+      localPositionListForOrgHasBeenRetrieved: {},
       numberOfActivityTidbitsToDisplay: STARTING_NUMBER_OF_ACTIVITY_TIDBITS_TO_DISPLAY,
       voter: {},
       voterSignedInFacebook: false,
       voterSignedInTwitter: false,
     };
+    this.onScroll = this.onScroll.bind(this);
   }
 
   componentDidMount () {
-    this.onActivityStoreChange();
-    this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
-    ActivityActions.activityListRetrieve();
-    FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
-    if (!BallotStore.allBallotItemsRetrieveCalled()) {
-      BallotActions.voterBallotItemsRetrieve(0, '', '');
+    const activityTidbitWeVoteIdForDrawer = this.props.params.activity_tidbit_we_vote_id || '';
+    let redirectInProgress = false;
+    if (activityTidbitWeVoteIdForDrawer) {
+      const destinationLocalUrlWithModal = `/news/a/${activityTidbitWeVoteIdForDrawer}`;
+      const { pathname: pathnameRaw, href: hrefRaw } = window.location;
+      let pathname = pathnameRaw;
+      if (isCordova()) {
+        pathname = hrefRaw.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '');
+      }
+      // console.log('pathname:', pathname, ', destinationLocalUrlWithModal:', destinationLocalUrlWithModal, ', activityTidbitWeVoteIdForDrawer:', activityTidbitWeVoteIdForDrawer);
+      if (pathname && pathname !== destinationLocalUrlWithModal) {
+        historyPush(destinationLocalUrlWithModal);
+        redirectInProgress = true;
+      }
     }
-    OrganizationActions.organizationsFollowedRetrieve();
-    AnalyticsActions.saveActionNetwork(VoterStore.electionId());
+    if (!redirectInProgress) {
+      this.onActivityStoreChange();
+      this.onVoterStoreChange();
+      this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+      this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
+      window.addEventListener('scroll', this.onScroll);
+      const activityTidbitWeVoteIdList = [activityTidbitWeVoteIdForDrawer];
+      if (activityTidbitWeVoteIdList && activityTidbitWeVoteIdList.length > 0) {
+        // Retrieve just the one activity being shown in the drawer
+        ActivityActions.activityListRetrieve(activityTidbitWeVoteIdList);
+      }
+      ActivityActions.activityListRetrieve();
+      FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
+      if (!BallotStore.allBallotItemsRetrieveCalled()) {
+        BallotActions.voterBallotItemsRetrieve(0, '', '');
+      }
+      OrganizationActions.organizationsFollowedRetrieve();
+      this.setState({
+        componentDidMountFinished: true,
+      }, () => this.openActivityTidbitDrawer(activityTidbitWeVoteIdForDrawer));
+      AnalyticsActions.saveActionNews(VoterStore.electionId());
+    }
   }
 
   componentWillUnmount () {
-    this.activityStoreListener.remove();
-    this.voterStoreListener.remove();
+    const { componentDidMountFinished } = this.state;
+    if (componentDidMountFinished) {
+      this.activityStoreListener.remove();
+      this.voterStoreListener.remove();
+      window.removeEventListener('scroll', this.onScroll);
+      if (this.positionItemTimer) {
+        clearTimeout(this.positionItemTimer);
+        this.positionItemTimer = null;
+      }
+      if (this.activityTidbitDrawerTimer) {
+        clearTimeout(this.activityTidbitDrawerTimer);
+        this.activityTidbitDrawerTimer = null;
+      }
+    }
   }
 
   onActivityStoreChange () {
     const activityTidbitsList = ActivityStore.allActivity();
-    // console.log('activityTidbitsList:', activityTidbitsList);
+    const activityTidbitsWeVoteIdList = [];
     let activityTidbit = {};
     for (let count = 0; count < activityTidbitsList.length; count++) {
       activityTidbit = activityTidbitsList[count];
       if (activityTidbit && activityTidbit.speaker_organization_we_vote_id) {
         this.retrievePositionListIfNeeded(activityTidbit.speaker_organization_we_vote_id);
       }
+      if (activityTidbit && activityTidbit.we_vote_id) {
+        activityTidbitsWeVoteIdList.push(activityTidbit.we_vote_id);
+      }
+    }
+    if (activityTidbitsWeVoteIdList.length > 0) {
+      this.retrieveReactionLikeStatusListIfNeeded(activityTidbitsWeVoteIdList);
     }
     this.setState({
       activityTidbitsList,
@@ -102,28 +159,31 @@ class News extends Component {
   }
 
   onScroll () {
-    const showMoreItemsElement =  document.querySelector('#showMoreItemsId');
-    if (showMoreItemsElement) {
-      const {
-        activityTidbitsListLength, isSearching, numberOfActivityTidbitsToDisplay,
-        totalNumberOfPositionSearchResults,
-      } = this.state;
+    const { componentDidMountFinished } = this.state;
+    if (componentDidMountFinished) {
+      const showMoreItemsElement = document.querySelector('#showMoreItemsId');
+      if (showMoreItemsElement) {
+        const {
+          activityTidbitsListLength, isSearching, numberOfActivityTidbitsToDisplay,
+          totalNumberOfPositionSearchResults,
+        } = this.state;
 
-      if ((isSearching && (numberOfActivityTidbitsToDisplay < totalNumberOfPositionSearchResults)) ||
+        if ((isSearching && (numberOfActivityTidbitsToDisplay < totalNumberOfPositionSearchResults)) ||
           (!isSearching && (numberOfActivityTidbitsToDisplay < activityTidbitsListLength))) {
-        if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
-          this.setState({ loadingMoreItems: true });
-          this.increaseNumberOfPositionItemsToDisplay();
+          if (showMoreItemsElement.getBoundingClientRect().bottom <= window.innerHeight) {
+            this.setState({ loadingMoreItems: true });
+            this.increaseNumberOfActivityTidbitsToDisplay();
+          } else {
+            this.setState({ loadingMoreItems: false });
+          }
         } else {
           this.setState({ loadingMoreItems: false });
         }
-      } else {
-        this.setState({ loadingMoreItems: false });
       }
     }
   }
 
-  increaseNumberOfPositionItemsToDisplay = () => {
+  increaseNumberOfActivityTidbitsToDisplay = () => {
     let { numberOfActivityTidbitsToDisplay } = this.state;
     // console.log('Number of position items before increment: ', numberOfActivityTidbitsToDisplay);
 
@@ -137,8 +197,12 @@ class News extends Component {
     }, 500);
   }
 
-  componentDidCatch (error, info) {
-    console.log('News.jsx caught: ', error, info.componentStack);
+  openActivityTidbitDrawer (activityTidbitWeVoteIdForDrawer) {
+    if (activityTidbitWeVoteIdForDrawer) {
+      this.activityTidbitDrawerTimer = setTimeout(() => {
+        AppActions.setActivityTidbitWeVoteIdForDrawerAndOpen(activityTidbitWeVoteIdForDrawer);
+      }, 500);
+    }
   }
 
   retrievePositionListIfNeeded (speakerOrganizationWeVoteId) {
@@ -156,15 +220,36 @@ class News extends Component {
     }
   }
 
+  retrieveReactionLikeStatusListIfNeeded (activityTidbitsWeVoteIdList) {
+    const { localLikedItemWeVoteIdsHaveBeenRetrieved } = this.state;
+    const activityTidbitsWeVoteIdListToRequest = [];
+    for (let count = 0; count < activityTidbitsWeVoteIdList.length; count++) {
+      if (!localLikedItemWeVoteIdsHaveBeenRetrieved[activityTidbitsWeVoteIdList[count]]) {
+        activityTidbitsWeVoteIdListToRequest.push(activityTidbitsWeVoteIdList[count]);
+        localLikedItemWeVoteIdsHaveBeenRetrieved[activityTidbitsWeVoteIdList[count]] = true;
+      }
+    }
+    if (activityTidbitsWeVoteIdListToRequest.length > 0) {
+      ReactionActions.reactionLikeStatusRetrieve(activityTidbitsWeVoteIdListToRequest);
+      this.setState({
+        localLikedItemWeVoteIdsHaveBeenRetrieved,
+      });
+    }
+  }
+
+  componentDidCatch (error, info) {
+    console.log('News.jsx caught: ', error, info.componentStack);
+  }
+
   render () {
     renderLog('News');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      activityTidbitsList, dateVoterJoined, activityTidbitsListLength,
+      activityTidbitsList, componentDidMountFinished, dateVoterJoined, activityTidbitsListLength,
       loadingMoreItems, numberOfActivityTidbitsToDisplay,
       voter, voterIsSignedIn, voterSignedInFacebook, voterSignedInTwitter,
     } = this.state;
     // console.log('voter:', voter);
-    if (!voter) {
+    if (!voter || !componentDidMountFinished) {
       return LoadingWheel;
     }
     let numberOfActivityTidbitsDisplayed = 0;
@@ -172,27 +257,85 @@ class News extends Component {
     const testimonialAuthor = 'Alissa B., Oakland, California';
     const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
     const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from.';
+
+    // August 23, 2020: These resolve a problem that exists in the WebApp, but looks much worse in
+    // Cordova -- Stop allowing horizontal scroll, (and vertical scroll of the entire window in some cases)
+    // by removing some styles that force some elements to be wider than the device window
+    const unsetMarginsIfCordova = isCordova() ? { margin: 'unset' } : {};
+    const unsetSideMarginsIfCordova = isCordova() ? { marginRight: 'unset', marginLeft: 'unset' } : {};
+    const unsetSomeRowStylesIfCordova = isCordova() ? {
+      paddingRight: 0,
+      paddingLeft: 0,
+      marginRight: 0,
+      marginLeft: 0,
+    } : {};
+    const reduceConstraintsIfCordova = isCordova() ? { margin: '5px 0' } : {};
+    const expandSideMarginsIfCordova = isCordova() ? { marginRight: 23, marginLeft: 23 } : {};
+    let activityTidbitWeVoteId;
+
+    if (isCordova()) {
+      // If the previous render of the Ballot__Wrapper is less than the device height, pad it
+      // temporarily for Cordova to stop the footer menu from bouncing when initially rendered
+      const { $, pbakondyScreenSize } = window;
+      const deviceHeight = pbakondyScreenSize.height / pbakondyScreenSize.scale;
+      const ballotWrapperHeight = $('[class^="class=Ballot__Wrapper"]').outerHeight() || 0;
+      if (ballotWrapperHeight < deviceHeight) {
+        unsetSomeRowStylesIfCordova.paddingBottom = '625px';  // big enough for the largest phone with a footer menu
+      }
+    }
+    const unsetSomeRowStylesIfCordovaMdBlock = Object.assign({}, unsetSomeRowStylesIfCordova);
+    if (isIPad() || isAndroidTablet()) {
+      unsetSomeRowStylesIfCordovaMdBlock.transform = 'translate(0, 5%)';
+    }
+
     return (
       <span>
-        <Helmet title="News - We Vote" />
+        <Helmet title="Discuss - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
-        <div className="row">
-          <div className="col-sm-12 col-md-8">
+        <div className="row" style={unsetSomeRowStylesIfCordova}>
+          <div className="col-sm-12 col-md-8" style={unsetSomeRowStylesIfCordova}>
             <>
+              <ActivityPostAddWrapper style={reduceConstraintsIfCordova}>
+                <ActivityPostAdd />
+              </ActivityPostAddWrapper>
               {activityTidbitsList.map((oneActivityTidbit) => {
-                // console.log('oneActivityTidbit position_we_vote_id:', oneActivityTidbit.position_we_vote_id);
+                // console.log('oneActivityTidbit:', oneActivityTidbit);
                 // console.log('numberOfActivityTidbitsDisplayed:', numberOfActivityTidbitsDisplayed);
+                if (!oneActivityTidbit || !oneActivityTidbit.speaker_name || !oneActivityTidbit.we_vote_id) {
+                  // console.log('Missing oneActivityTidbit.we_vote_id:', oneActivityTidbit);
+                  return null;
+                }
                 if (numberOfActivityTidbitsDisplayed >= numberOfActivityTidbitsToDisplay) {
                   return null;
                 }
                 numberOfActivityTidbitsDisplayed += 1;
                 // console.log('numberOfActivityTidbitsDisplayed: ', numberOfActivityTidbitsDisplayed);
+                activityTidbitWeVoteId = oneActivityTidbit.we_vote_id;
                 return (
-                  <ActivityTidbitWrapper key={`${oneActivityTidbit.kind_of_activity}-${oneActivityTidbit.id}`}>
-                    <Card className="card">
-                      <CardNewsWrapper className="card-main">
-                        <ActivityTidbitItem
-                          activityTidbitId={`${oneActivityTidbit.kind_of_activity}-${oneActivityTidbit.id}`}
+                  <ActivityTidbitWrapper key={activityTidbitWeVoteId}>
+                    <a // eslint-disable-line jsx-a11y/anchor-has-content
+                      href={`#${activityTidbitWeVoteId}`}
+                      name={activityTidbitWeVoteId}
+                    />
+                    <Card className="card" style={unsetSideMarginsIfCordova}>
+                      <CardNewsWrapper className="card-main" id="steveCardNewsWrapper-main" style={unsetMarginsIfCordova}>
+                        <ActivityTidbitItemWrapper>
+                          <ActivityTidbitItem
+                            activityTidbitWeVoteId={activityTidbitWeVoteId}
+                          />
+                        </ActivityTidbitItemWrapper>
+                        <ActivityTidbitReactionsSummary
+                          activityTidbitWeVoteId={activityTidbitWeVoteId}
+                        />
+                        <ActivityTidbitAddReaction
+                          activityTidbitWeVoteId={activityTidbitWeVoteId}
+                        />
+                        <ActivityTidbitComments
+                          activityTidbitWeVoteId={activityTidbitWeVoteId}
+                          editingTurnedOff
+                        />
+                        <ActivityCommentAdd
+                          activityTidbitWeVoteId={activityTidbitWeVoteId}
                         />
                       </CardNewsWrapper>
                     </Card>
@@ -202,8 +345,8 @@ class News extends Component {
             </>
             {(voterIsSignedIn && dateVoterJoined) && (
               <DelayedLoad waitBeforeShow={1000}>
-                <Card className="card">
-                  <div className="card-main">
+                <Card className="card" style={unsetMarginsIfCordova}>
+                  <div className="card-main" style={unsetMarginsIfCordova}>
                     <DateVoterJoinedWrapper>
                       <VoterAndWeVoteLogos>
                         <PreviewImage
@@ -226,8 +369,11 @@ class News extends Component {
                 </Card>
               </DelayedLoad>
             )}
-            <div className="card u-show-mobile">
-              <AddFriendsMobileWrapper className="card-main">
+            <AddFriendsMobileWrapper className="u-show-mobile" style={unsetSideMarginsIfCordova}>
+              <SuggestedFriendsPreview inSideColumn />
+            </AddFriendsMobileWrapper>
+            <div className="card u-show-mobile" style={unsetSideMarginsIfCordova}>
+              <AddFriendsMobileWrapper className="card-main" style={unsetMarginsIfCordova}>
                 <SectionTitle>
                   Voting Is Better with Friends
                 </SectionTitle>
@@ -239,18 +385,19 @@ class News extends Component {
             </div>
             {!voterIsSignedIn && (
               <DelayedLoad waitBeforeShow={1000}>
-                <SettingsAccountWrapper>
+                <SettingsAccountWrapper style={expandSideMarginsIfCordova}>
                   <SettingsAccount
-                    pleaseSignInTitle="Sign in to See Your News"
+                    pleaseSignInTitle="Sign in to Join the Discussion"
                     pleaseSignInSubTitle="We Vote is a community of friends who care about voting and democracy."
                   />
                 </SettingsAccountWrapper>
               </DelayedLoad>
             )}
           </div>
-          <div className="col-md-4 d-none d-md-block">
+          <div className="col-md-4 d-none d-md-block" style={unsetSomeRowStylesIfCordovaMdBlock}>
+            <SuggestedFriendsPreview inSideColumn />
             <div className="card">
-              <div className="card-main">
+              <div className="card-main" style={unsetMarginsIfCordova}>
                 <SectionTitle>
                   Voting Is Better with Friends
                 </SectionTitle>
@@ -260,9 +407,8 @@ class News extends Component {
                 <AddFriendsByEmail inSideColumn uniqueExternalId="sidebar" />
               </div>
             </div>
-            <SuggestedFriendsPreview inSideColumn />
             <div className="card">
-              <div className="card-main">
+              <div className="card-main" style={unsetMarginsIfCordova}>
                 <Testimonial
                   imageUrl={imageUrl}
                   testimonialAuthor={testimonialAuthor}
@@ -284,14 +430,18 @@ class News extends Component {
             </SignInOptionsWrapper>
           </div>
         </div>
-        <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
+        <ShowMoreItemsWrapper
+          id="showMoreItemsId"
+          onClick={this.increaseNumberOfActivityTidbitsToDisplay}
+        >
           <ShowMoreItems
             loadingMoreItemsNow={loadingMoreItems}
             numberOfItemsDisplayed={numberOfActivityTidbitsDisplayed}
             numberOfItemsTotal={activityTidbitsListLength}
           />
         </ShowMoreItemsWrapper>
-        <LoadingItemsWheel>
+        {/* August 2020:  This height adjustment for Cordova stops the footer-container from bouncing up about 60px on first render of the page */}
+        <LoadingItemsWheel style={isCordova() ? { height: 150 } : {}}>
           {loadingMoreItems && (
             <CircularProgress />
           )}
@@ -300,6 +450,13 @@ class News extends Component {
     );
   }
 }
+
+const ActivityPostAddWrapper = styled.div`
+`;
+
+const ActivityTidbitItemWrapper = styled.div`
+  margin-bottom: 4px;
+`;
 
 const ActivityTidbitWrapper = styled.div`
 `;

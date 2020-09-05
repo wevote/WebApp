@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import AddEndorsements from '../components/Widgets/AddEndorsements';
+import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { cordovaDot } from '../utils/cordovaUtils';
@@ -13,6 +15,7 @@ import NetworkOpinionsFollowed from '../components/Values/NetworkOpinionsFollowe
 import OrganizationsToFollowPreview from '../components/Values/OrganizationsToFollowPreview';
 import PublicFiguresFollowedPreview from '../components/Values/PublicFiguresFollowedPreview';
 import PublicFiguresToFollowPreview from '../components/Values/PublicFiguresToFollowPreview';
+import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
 import Testimonial from '../components/Widgets/Testimonial';
 import TestimonialPhoto from '../../img/global/photos/Dale_McGrew-200x200.jpg';
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
@@ -142,6 +145,18 @@ export default class Values extends Component {
               </div>
             )}
             {!!(issuesFollowedCount) && <ValuesFollowedPreview /> }
+            <SuggestedFriendsPreview />
+            <div className="card">
+              <div className="card-main">
+                <SectionTitle>
+                  Voting Is Better with Friends
+                </SectionTitle>
+                <SectionDescription>
+                  Add friends you feel comfortable talking politics with.
+                </SectionDescription>
+                <AddFriendsByEmail uniqueExternalId="ValuesPage" />
+              </div>
+            </div>
           </div>
           <div className="col-md-4 d-none d-md-block">
             <div className="card u-show-desktop">
@@ -176,3 +191,18 @@ export default class Values extends Component {
     );
   }
 }
+
+
+const SectionDescription = styled.div`
+  color: #999;
+  font-size: 14px;
+  margin-bottom: 4px;
+`;
+
+const SectionTitle = styled.h2`
+  width: fit-content;
+  font-weight: bolder;
+  font-size: 18px;
+  margin-bottom: 4px;
+  display: inline;
+`;

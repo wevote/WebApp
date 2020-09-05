@@ -289,17 +289,22 @@ export function getAndroidSize () {
   let sizeString = 'default';
   const ratioString = parseFloat(ratio).toFixed(2);
 
-  /* sm = 480*800 = 384,000      Nexus One
-     md = 1080*1920 = 2,073,600  PixelXL, Nexus5X, Moto G5
-     lg = 1440*2560 = 3,686,400  Nexus6P
-     xl = 2560*1600 = 4,096,000  Nexus10 Tablet
-     xl = 1200 x 1920 = 2,306,705 Galaxy Tab A 10.1", ratio = 1.3312500715255737
-     xl with AndroidNotch (for camera) 1440*3201 = 4,609,440, Samsung Galaxy S20 Ultra, ratio = 3
-     June 2019: detecting the Galaxy Tab A by ratio, is a bit of a hack, and could bite us someday if there was an android phone with a 1.33 ratio */
+  /* sm   = 480*800   =   384,000     Nexus One
+     md   = 1080*1920 = 2,073,600     PixelXL, Nexus5X, Moto G5
+     lg   = 1440*2560 = 3,686,400     Nexus6P
+     xl   = 2560*1600 = 4,096,000     Nexus10 Tablet
+     xl   = 1200*1920 = 2,306,705     Galaxy Tab A 10.1", ratio = 1.3312500715255737
+     xl with AndroidNotch                 (for camera)
+          = 1440*3201 = 4,609,440,    Samsung Galaxy S20 Ultra, ratio = 3
+     fold = 1536*2152 = 3,305,372     Galaxy Fold 7.3", ratio = 2, aspectRatio ~= 1.401
+     June 2019: detecting the Galaxy Tab A by ratio, is a bit of a hack, and could bite us someday if there was an android phone with a 1.33 ratio
+  */
 
   if (window.device.model === 'Moto G (5) Plus') {
     logMatch('Moto G (5) Plus', true);
     return '--md';
+  } else if (androidPixels < 3.4E6 && ratioString === '2.00') {
+    sizeString = '--fold';
   } else if (androidPixels > 3.7E6 || ratioString === '1.33') {
     sizeString = '--xl';
   } else if (androidPixels > 3E6) {
@@ -359,6 +364,26 @@ export function isAndroidSizeXL () {
   if (isAndroid()) {
     if (getAndroidSize() === '--xl') {
       logMatch('isAndroidSizeXL: xl = 2560*1600 = 4,096,000  Nexus10 Tablet', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isAndroidSizeFold () {
+  if (isAndroid()) {
+    if (getAndroidSize() === '--fold') {
+      logMatch('isAndroidSizeSM: based on aspect ratio, probably a Galaxy Fold 7.3"', true);
+      return true;
+    }
+  }
+  return false;
+}
+
+export function isAndroidTablet () {
+  if (isAndroid()) {
+    if (window.innerWidth > 768) {
+      logMatch('isAndroidTablet: based on width"', true);
       return true;
     }
   }
@@ -444,6 +469,11 @@ export function getToastClass () {
   return toastClass;
 }
 
+export function getCordovaScreenHeight () {
+  const { pbakondyScreenSize: size } = window;
+  return isIPad() ? `${size.height / size.scale}px` : '100%';
+}
+
 export function prepareForCordovaKeyboard (callerString) {
   if (callerString && isCordova()) {
     const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
@@ -460,7 +490,7 @@ export function restoreStylesAfterCordovaKeyboard (callerString) {
     const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
     cordovaOffsetLog(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${fileName}`);
     $('#app').removeClass('app-wrapper__cordova').addClass('app-wrapper');
-    $('body').css('height', '100%');
+    $('body').css('height', getCordovaScreenHeight());
     $('.footroom-wrapper').css('display', '');
   }
 }

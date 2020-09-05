@@ -1,4 +1,3 @@
-#For Ubuntu 20.04 only
 #!/usr/bin/env bash
 
 function error() { echo -e "\e[1;31m$1\e[0m"; exit 1; }
@@ -9,7 +8,7 @@ gituser=$1
 minNodeVersion="v10.12.0"
 minNpmVersion="6.4.1"
 
-echo "[*] Updating..." && sudo apt update -y >/dev/null 2>&1 && success "[+] Updated successfully" || error "[-] Failed to update"
+echo "[*] Updating..." && sudo apt update -y && success "[+] Updated successfully" || error "[-] Failed to update"
  
 echo "[*] Upgrading..." && sudo apt upgrade -y && success "[+] Upgraded successfully" || error "[-] Failed to upgrade"
  
