@@ -30,14 +30,17 @@ class SettingsNotificationsUnsubscribe extends Component {
       emailSubscriptionSecretKey: '',
       // friendOpinionsOtherRegions: false,
       friendOpinionsOtherRegionsEmail: false,
+      friendOpinionsOtherRegionsSms: false,
       friendOpinionsYourBallotEmail: false,
+      friendOpinionsYourBallotSms: false,
       // friendRequestsEmail: false,
       newsletterOptIn: false,
       notificationsSavedStatus: '',
       smsSubscriptionSecretKey: '',
       // suggestedFriendsEmail: false,
+      voterDailySummaryEmail: false,
+      voterDailySummarySms: false,
     };
-
     this.updateNotificationSettings = this.updateNotificationSettings.bind(this);
   }
 
@@ -90,11 +93,13 @@ class SettingsNotificationsUnsubscribe extends Component {
       // Now set individual flag states
       const friendOpinionsOtherRegionsEmail = VoterStore.getNotificationSettingsFlagStateFromSecretKey(VoterConstants.NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL);
       const friendOpinionsYourBallotEmail = VoterStore.getNotificationSettingsFlagStateFromSecretKey(VoterConstants.NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT_EMAIL);
+      const voterDailySummaryEmail = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL);
       const newsletterOptIn = VoterStore.getNotificationSettingsFlagStateFromSecretKey(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
 
       this.setState({
         friendOpinionsOtherRegionsEmail,
         friendOpinionsYourBallotEmail,
+        voterDailySummaryEmail,
         newsletterOptIn,
       });
     }
@@ -107,18 +112,21 @@ class SettingsNotificationsUnsubscribe extends Component {
     });
   }
 
-  // // NOTIFICATION_FRIEND_REQUESTS: n/a, // In App: "New friend requests, and responses to your requests"
+  // NOTIFICATION_FRIEND_REQUESTS: n/a, // In App: "New friend requests, and responses to your requests"
   // NOTIFICATION_FRIEND_REQUESTS_EMAIL: 2, // Email: "New friend requests, and responses to your requests"
   // NOTIFICATION_FRIEND_REQUESTS_SMS: 4, // SMS: "New friend requests, and responses to your requests"
-  // // NOTIFICATION_SUGGESTED_FRIENDS: n/a, // In App: "Suggestions of people you may know"
+  // NOTIFICATION_SUGGESTED_FRIENDS: n/a, // In App: "Suggestions of people you may know"
   // NOTIFICATION_SUGGESTED_FRIENDS_EMAIL: 8, // Email: "Suggestions of people you may know"
   // NOTIFICATION_SUGGESTED_FRIENDS_SMS: 16, // SMS: "Suggestions of people you may know"
-  // // NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT: n/a, // In App: "Friends' opinions (on your ballot)"
+  // NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT: n/a, // In App: "Friends' opinions (on your ballot)"
   // NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT_EMAIL: 32, // Email: "Friends' opinions (on your ballot)"
   // NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT_SMS: 64, // SMS: "Friends' opinions (on your ballot)"
   // NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS: 128, // In App: "Friends' opinions (other regions)"
   // NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL: 256, // Email: "Friends' opinions (other regions)"
   // NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_SMS: 512, // SMS: "Friends' opinions (other regions)"
+  // NOTIFICATION_VOTER_DAILY_SUMMARY = n/a  # In App: When a friend posts something, or reacts to another post
+  // NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL = 1024  # Email: When a friend posts something, or reacts to another post
+  // NOTIFICATION_VOTER_DAILY_SUMMARY_SMS = 2048  # SMS: When a friend posts something, or reacts to another post
   updateNotificationSettings (event) {
     let notificationsSavedStatusDisplay = true;
     // if (event.target.name === 'friendRequestsEmail') {
@@ -137,6 +145,9 @@ class SettingsNotificationsUnsubscribe extends Component {
     } else if (event.target.name === 'friendOpinionsOtherRegionsEmail') {
       this.voterUpdateNotificationSettingsFlags(event.target.checked, VoterConstants.NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL);
       this.setState({ friendOpinionsOtherRegionsEmail: (event.target.checked) });
+    } else if (event.target.name === 'voterDailySummaryEmail') {
+      this.voterUpdateNotificationSettingsFlags(event.target.checked, VoterConstants.NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL);
+      this.setState({ voterDailySummaryEmail: (event.target.checked) });
     } else if (event.target.name === 'newsletterOptIn') {
       this.voterUpdateNotificationSettingsFlags(event.target.checked, VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
       this.setState({ newsletterOptIn: (event.target.checked) });
@@ -172,6 +183,7 @@ class SettingsNotificationsUnsubscribe extends Component {
       friendOpinionsYourBallotEmail, friendOpinionsYourBallotSms,
       // friendOpinionsOtherRegions,
       friendOpinionsOtherRegionsEmail, friendOpinionsOtherRegionsSms,
+      voterDailySummaryEmail, voterDailySummarySms,
       // friendRequestsEmail,
       friendRequestsSms,
       newsletterOptIn,
@@ -439,6 +451,43 @@ class SettingsNotificationsUnsubscribe extends Component {
                             name="friendOpinionsOtherRegionsSms"
                             onChange={this.updateNotificationSettings}
                             checked={friendOpinionsOtherRegionsSms}
+                          />
+                        </TableCell>
+                      )}
+                    </TableRow>
+                    {/* *************************************** */}
+                    {/* *** NOTIFICATION_VOTER_DAILY_SUMMARY *** */}
+                    <TableRow key="tableRow-voterDailySummary">
+                      <TableCell
+                        classes={{ root: classes.tableCellDescription }}
+                        component="th"
+                        scope="row"
+                      >
+                        <span className="u-no-break">Friends&apos; activity,</span>
+                        {' '}
+                        <span className="u-no-break">summarized daily</span>
+                      </TableCell>
+                      {normalizedEmailAddressExists && (
+                        <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
+                          <input
+                            aria-label="email summary of friends' posts, daily"
+                            id="voterDailySummaryEmail"
+                            type="checkbox"
+                            name="voterDailySummaryEmail"
+                            onChange={this.updateNotificationSettings}
+                            checked={voterDailySummaryEmail}
+                          />
+                        </TableCell>
+                      )}
+                      {normalizedSmsPhoneNumberExists && (
+                        <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
+                          <input
+                            aria-label="text friends opinions from all regions"
+                            id="voterDailySummarySms"
+                            type="checkbox"
+                            name="voterDailySummarySms"
+                            onChange={this.updateNotificationSettings}
+                            checked={voterDailySummarySms}
                           />
                         </TableCell>
                       )}
