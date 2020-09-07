@@ -336,4 +336,11 @@ export default {
       identity_token: identityToken,
     });
   },
+
+  deviceStoreFirebaseCloudMessagingToken (firebaseFCMToken) {
+    Dispatcher.loadEndpoint('deviceStoreFirebaseCloudMessagingToken', {
+      firebase_fcm_token: firebaseFCMToken,
+    });
+  },
+
 };

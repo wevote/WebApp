@@ -273,9 +273,9 @@ class VoterStore extends ReduceStore {
     // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
     // so for value of flag = 1 and 4, we return a positive integer,
     // but, the bit representing 2 and 8 are not set, so for flag = 2 and 8, we return zero
-    const flagIsSet = interfaceStatusFlags & flag;  // eslint-disable-line no-bitwise
+    // const flagIsSet = interfaceStatusFlags & flag;  // eslint-disable-line no-bitwise
     // console.log("VoterStore getInterfaceFlagState flagIsSet: ", flagIsSet);
-    return flagIsSet;
+    return interfaceStatusFlags & flag;  // eslint-disable-line no-bitwise
   }
 
   getNotificationSettingsFlagState (flag) {
@@ -863,6 +863,16 @@ class VoterStore extends ReduceStore {
           console.log('Received a bad response from appleSignInSave API call');
           return state;
         }
+
+      case 'deviceStoreFirebaseCloudMessagingToken':
+        if (action.res.success) {
+          // console.log('Received success from deviceStoreFirebaseCloudMessagingToken API call');
+          return state;
+        } else {
+          console.log('Received a bad response from deviceStoreFirebaseCloudMessagingToken API call');
+          return state;
+        }
+
 
       case 'error-voterRetrieve' || 'error-voterAddressRetrieve' || 'error-voterAddressSave':
         // console.log('VoterStore action', action);
