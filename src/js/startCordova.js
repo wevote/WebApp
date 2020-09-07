@@ -1,5 +1,12 @@
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
-import { isIOS, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
+import {
+  isIOS,
+  prepareForCordovaKeyboard,
+  restoreStylesAfterCordovaKeyboard,
+  getIconBadgeMessageCount,
+  setIconBadgeMessageCount,
+} from './utils/cordovaUtils';
+import VoterActions from './actions/VoterActions';
 
 function localPrepareForCordovaKeyboard () {
   prepareForCordovaKeyboard('ballot');
@@ -20,14 +27,63 @@ export function initializationForCordova () { // eslint-disable-line
   };
 
   // Cordova only, override "open" to use InAppBrowser to open any outside site
-  const { cordova } = window;
-  window.open = cordova.InAppBrowser.open;
+  const { cordova: { InAppBrowser, plugins: { firebase: { messaging } } } } = window;
+  window.open = InAppBrowser.open;
 
   // Special keyboard handling for iOS
   if (isIOS()) {
     // Unfortunately this event only works on iOS, but fortunately it is most needed on iOS
     window.addEventListener('keyboardWillShow', localPrepareForCordovaKeyboard);
     window.addEventListener('keyboardDidHide', localRestoreStylesAfterCordovaKeyboard);
+
+    // https://github.com/chemerisuk/cordova-plugin-firebase-messaging
+    // For iOS, this can't be tested in a simulator
+    messaging.getToken().then((token) => {
+      console.log('Firebase FCM - Firebase Cloud Messaging registration token: ', token);
+      VoterActions.deviceStoreFirebaseCloudMessagingToken(token);
+    });
+
+    messaging.onMessage((payload) => {
+      console.log('Firebase FCM - New foreground FCM message: ', payload);
+      if (isIOS()) {
+        const { aps: { alert } } = payload;
+        console.log('Firebase FCM - New foreground FCM decomposed alert message:', alert);
+        navigator.notification.alert(alert,
+          () => console.log('WeVote FCM Message navigator.notification.alert dismissed'),
+          'We Vote');
+
+        // Begin throwaway test code
+        getIconBadgeMessageCount().then((cntString) => {
+          const cnt = parseInt(cntString, 10) + 1 || 1;
+          setIconBadgeMessageCount(cnt.toString());
+        });
+        // End throwaway test code
+
+        // Save until Android is debugged
+        // for (const [key, value] of Object.entries(payload)) {
+        //   console.log(`'Firebase FCM - FCM element ${key}: ${value}`);
+        //   console.log('key = \'' + key + '\'');
+        //   if (key === 'aps') {
+        //     console.log('key === aps');
+        //     for (const [key2, value2] of Object.entries(value)) {
+        //       console.log(`'Firebase FCM - FCM aps element ${key2}: ${value2}`);
+        //     }
+        //   }
+        // }
+      }
+    });
+
+    messaging.onBackgroundMessage((payload) => {
+      console.log('Firebase FCM - New background FCM message: ', payload);
+    });
+
+    messaging.requestPermission().then(() => {
+      console.log('Firebase FCM - Push messaging is allowed');
+    });
+
+    messaging.getInstanceId().then((instanceId) => {
+      console.log('Firebase FCM - Got instanceId: ', instanceId);
+    });
   }
 }
 

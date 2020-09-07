@@ -547,3 +547,13 @@ export function snackOffset () {
 
   return snackOffsetValue;
 }
+
+export function setIconBadgeMessageCount (countString) {
+  const { cordova: { plugins: { firebase: { messaging: { setBadge } } } } } = window;
+  setBadge(countString);
+}
+
+export function getIconBadgeMessageCount () {
+  const { cordova: { plugins: { firebase: { messaging: { getBadge } } } } } = window;
+  return getBadge();
+}
