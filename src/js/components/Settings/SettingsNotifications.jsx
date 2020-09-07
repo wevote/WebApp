@@ -37,6 +37,7 @@ class SettingsNotifications extends Component {
       newsletterOptIn: false,
       notificationsSavedStatus: '',
       // suggestedFriendsEmail: false,
+      voterDailySummaryEmail: false,
     };
 
     this.updateNotificationSettings = this.updateNotificationSettings.bind(this);
@@ -63,10 +64,12 @@ class SettingsNotifications extends Component {
     if (VoterStore.isVoterFound()) {
       const friendOpinionsOtherRegionsEmail = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL);
       const friendOpinionsYourBallotEmail = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_FRIEND_OPINIONS_YOUR_BALLOT_EMAIL);
+      const voterDailySummaryEmail = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL);
       const newsletterOptIn = VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
       this.setState({
         friendOpinionsOtherRegionsEmail,
         friendOpinionsYourBallotEmail,
+        voterDailySummaryEmail,
         newsletterOptIn,
       });
     }
@@ -101,6 +104,9 @@ class SettingsNotifications extends Component {
   // NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS: 128, // In App: "Friends' opinions (other regions)"
   // NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL: 256, // Email: "Friends' opinions (other regions)"
   // NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_SMS: 512, // SMS: "Friends' opinions (other regions)"
+  // # NOTIFICATION_VOTER_DAILY_SUMMARY = n/a  # In App: When a friend posts something, or reacts to another post
+  // NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL = 1024  # Email: When a friend posts something, or reacts to another post
+  // NOTIFICATION_VOTER_DAILY_SUMMARY_SMS = 2048  # SMS: When a friend posts something, or reacts to another post
   updateNotificationSettings (event) {
     let notificationsSavedStatusDisplay = true;
     // if (event.target.name === 'friendRequestsEmail') {
@@ -119,6 +125,9 @@ class SettingsNotifications extends Component {
     } else if (event.target.name === 'friendOpinionsOtherRegionsEmail') {
       this.voterUpdateNotificationSettingsFlags(event.target.checked, VoterConstants.NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL);
       this.setState({ friendOpinionsOtherRegionsEmail: (event.target.checked) });
+    } else if (event.target.name === 'voterDailySummaryEmail') {
+      this.voterUpdateNotificationSettingsFlags(event.target.checked, VoterConstants.NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL);
+      this.setState({ voterDailySummaryEmail: (event.target.checked) });
     } else if (event.target.name === 'newsletterOptIn') {
       this.voterUpdateNotificationSettingsFlags(event.target.checked, VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
       this.setState({ newsletterOptIn: (event.target.checked) });
@@ -152,6 +161,7 @@ class SettingsNotifications extends Component {
       friendOpinionsYourBallotEmail, // friendOpinionsYourBallotSms,
       // friendOpinionsOtherRegions,
       friendOpinionsOtherRegionsEmail, // friendOpinionsOtherRegionsSms,
+      voterDailySummaryEmail, // voterDailySummarySms,
       // friendRequestsEmail, // friendRequestsSms,
       newsletterOptIn,
       notificationsSavedStatus, primaryEmailAddressExists,
@@ -405,6 +415,48 @@ class SettingsNotifications extends Component {
                       {/*  /> */}
                       {/* </TableCell> */}
                     </TableRow>
+                    {/* *************************************** */}
+                    {/* *** NOTIFICATION_VOTER_DAILY_SUMMARY *** */}
+                    <TableRow key="tableRow-voterDailySummary">
+                      <TableCell
+                        classes={{ root: classes.tableCellDescription }}
+                        component="th"
+                        scope="row"
+                      >
+                        <span className="u-no-break">Friends&apos; activity,</span>
+                        {' '}
+                        <span className="u-no-break">summarized daily</span>
+                      </TableCell>
+                      <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
+                        &nbsp;
+                      </TableCell>
+                      <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
+                        {primaryEmailAddressExists ? (
+                          <input
+                            aria-label="email summary of friends' posts, daily"
+                            id={`voterDailySummaryEmail-${externalUniqueId}`}
+                            type="checkbox"
+                            name="voterDailySummaryEmail"
+                            onChange={this.updateNotificationSettings}
+                            checked={voterDailySummaryEmail}
+                          />
+                        ) : (
+                          <SettingsIconWrapper>
+                            <Settings classes={{ root: classes.settingsIcon }} onClick={this.openAddEmailInterface} />
+                          </SettingsIconWrapper>
+                        )}
+                      </TableCell>
+                      {/* <TableCell align="center" classes={{ root: classes.tableCellColumn }}> */}
+                      {/*  <input */}
+                      {/*    aria-label="text summary of friends' posts, daily" */}
+                      {/*    id="voterDailySummarySms" */}
+                      {/*    type="checkbox" */}
+                      {/*    name="voterDailySummarySms" */}
+                      {/*    onChange={this.updateNotificationSettings} */}
+                      {/*    checked={voterDailySummarySms} */}
+                      {/*  /> */}
+                      {/* </TableCell> */}
+                    </TableRow>
                     {/* ************************************** */}
                     {/* *** NOTIFICATION_NEWSLETTER_OPT_IN *** */}
                     {primaryEmailAddressExists && (
@@ -422,11 +474,7 @@ class SettingsNotifications extends Component {
                           </span>
                         </TableCell>
                         <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
-                          <input
-                            aria-label="newsletter not available in app"
-                            disabled
-                            type="checkbox"
-                          />
+                          &nbsp;
                         </TableCell>
                         <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                           <input

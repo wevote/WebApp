@@ -57,7 +57,7 @@ class HeaderNotificationMenu extends Component {
       ActivityActions.activityNoticeListRetrieve([activityNotice.activity_notice_id]);
     }
     this.handleClose();
-    if (activityNotice.kind_of_notice === 'NOTICE_FRIEND_ENDORSEMENTS' && activityNotice && activityNotice.activity_tidbit_we_vote_id) {
+    if (activityNotice && activityNotice.activity_tidbit_we_vote_id) {
       historyPush(`/news/a/${activityNotice.activity_tidbit_we_vote_id}`);
     } else {
       historyPush('/news');
@@ -105,16 +105,36 @@ class HeaderNotificationMenu extends Component {
     let activityNoticeCount = 0;
     let activityDescription = '';
     let activityTimeFromDate = '';
+    const maxNumberToShow = 10;
     const menuItemListActivities = allActivityNotices.map((activityNotice) => {
+      // console.log('activityNotice:', activityNotice);
       activityNoticeCount += 1;
-      if (activityNoticeCount <= 3) {
+      if (activityNoticeCount <= maxNumberToShow) {
         activityDescription = '';
-        if (activityNotice.new_positions_entered_count === 0) {
-          return null;
-        } else if (activityNotice.new_positions_entered_count === 1) {
-          activityDescription += ' added a new opinion.';
-        } else if (activityNotice.new_positions_entered_count > 1) {
-          activityDescription += ` added ${activityNotice.new_positions_entered_count} new opinions.`;
+        switch (activityNotice.kind_of_notice) {
+          default:
+          case 'NOTICE_FRIEND_ENDORSEMENTS':
+            if (activityNotice.new_positions_entered_count === 0) {
+              return null;
+            } else if (activityNotice.new_positions_entered_count === 1) {
+              activityDescription += ' added a new opinion.';
+            } else if (activityNotice.new_positions_entered_count > 1) {
+              activityDescription += ` added ${activityNotice.new_positions_entered_count} new opinions.`;
+            }
+            break;
+
+          case 'NOTICE_FRIEND_ACTIVITY_POSTS':
+            activityDescription += ' added a new discussion.';
+            if (activityNotice.number_of_comments === 1) {
+              activityDescription += ` (${activityNotice.number_of_comments} comment)`;
+            } else if (activityNotice.number_of_comments > 1) {
+              activityDescription += ` (${activityNotice.number_of_comments} comments)`;
+            } else if (activityNotice.number_of_likes > 0) {
+              activityDescription += ` (${activityNotice.number_of_likes} like)`;
+            } else if (activityNotice.number_of_likes > 1) {
+              activityDescription += ` (${activityNotice.number_of_likes} likes)`;
+            }
+            break;
         }
         activityTimeFromDate = timeFromDate(activityNotice.date_of_notice);
         return (

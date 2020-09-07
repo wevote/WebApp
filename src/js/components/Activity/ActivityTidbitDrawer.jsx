@@ -119,7 +119,10 @@ class ActivityTidbitDrawer extends Component {
             ) : (
               <DelayedLoad showLoadingText waitBeforeShow={500}>
                 <div>
-                  That discussion item could not be found.
+                  That discussion item could not be found, or you are not allowed to see it.
+                  <br />
+                  <br />
+                  Please make sure you are signed in so you can see all of your friend&apos;s amazing thoughts!
                 </div>
               </DelayedLoad>
             )}

@@ -29,6 +29,9 @@ const VoterConstants = {
   NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS: 128, // In App: "Friends' opinions (other regions)"
   NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_EMAIL: 256, // Email: "Friends' opinions (other regions)"
   NOTIFICATION_FRIEND_OPINIONS_OTHER_REGIONS_SMS: 512, // SMS: "Friends' opinions (other regions)"
+  // NOTIFICATION_VOTER_DAILY_SUMMARY = n/a  # In App: When a friend posts something, or reacts to another post
+  NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL: 1024,  // Email: When a friend posts something, or reacts to another post
+  NOTIFICATION_VOTER_DAILY_SUMMARY_SMS: 2048,  // SMS: When a friend posts something, or reacts to another post
 
   // Used for converting features_provided_bitmap into which features this voter can choose to use
   // Mirrored in WeVoteServer/organization/models.py
