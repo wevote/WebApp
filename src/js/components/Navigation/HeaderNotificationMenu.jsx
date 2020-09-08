@@ -9,7 +9,7 @@ import ActivityStore from '../../stores/ActivityStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
-import { timeFromDate } from '../../utils/textFormat';
+import { returnFirstXWords, timeFromDate } from '../../utils/textFormat';
 
 class HeaderNotificationMenu extends Component {
   static propTypes = {
@@ -105,6 +105,7 @@ class HeaderNotificationMenu extends Component {
     let activityNoticeCount = 0;
     let activityDescription = '';
     let activityTimeFromDate = '';
+    const maxNumberOfActivityPostWordsToShow = 5;
     const maxNumberToShow = 10;
     const menuItemListActivities = allActivityNotices.map((activityNotice) => {
       // console.log('activityNotice:', activityNotice);
@@ -117,14 +118,20 @@ class HeaderNotificationMenu extends Component {
             if (activityNotice.new_positions_entered_count === 0) {
               return null;
             } else if (activityNotice.new_positions_entered_count === 1) {
-              activityDescription += ' added a new opinion.';
+              activityDescription += ' added new opinion.';
             } else if (activityNotice.new_positions_entered_count > 1) {
               activityDescription += ` added ${activityNotice.new_positions_entered_count} new opinions.`;
             }
             break;
 
           case 'NOTICE_FRIEND_ACTIVITY_POSTS':
-            activityDescription += ' added a new discussion.';
+            if (activityNotice.statement_text_preview) {
+              activityDescription += ' posted: \'';
+              activityDescription += returnFirstXWords(activityNotice.statement_text_preview, maxNumberOfActivityPostWordsToShow);
+              activityDescription += '...\'';
+            } else {
+              activityDescription += ' posted.';
+            }
             if (activityNotice.number_of_comments === 1) {
               activityDescription += ` (${activityNotice.number_of_comments} comment)`;
             } else if (activityNotice.number_of_comments > 1) {
@@ -299,7 +306,7 @@ const styles = theme => ({
     fontSize: '14px !important',
     padding: '8px 6px !important',
     textAlign: 'left',
-    whiteSpace: 'auto',
+    whiteSpace: 'normal',
     width: '100%',
   },
   menuItemNotClicked: {
@@ -311,7 +318,7 @@ const styles = theme => ({
     fontSize: '14px !important',
     padding: '8px 6px !important',
     textAlign: 'left',
-    whiteSpace: 'auto',
+    whiteSpace: 'normal',
     width: '100%',
   },
   paper: {
