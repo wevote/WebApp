@@ -13,6 +13,7 @@
 //   return `${activityTidbitPrefix}${activityTidbitId}`;
 // }
 
+// eslint-disable-next-line import/prefer-default-export
 export function createDescriptionOfFriendPosts (positionNameList) {
   if (!positionNameList) return 'added opinion';
   // added an opinion.
