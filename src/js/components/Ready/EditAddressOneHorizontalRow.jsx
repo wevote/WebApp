@@ -24,7 +24,7 @@ class EditAddressOneHorizontalRow extends Component {
       voterSavedAddress: false,
     };
     this.updateVoterAddress = this.updateVoterAddress.bind(this);
-    this.voterAddressSave = this.voterAddressSave.bind(this);
+    this.voterAddressSaveLocal = this.voterAddressSaveLocal.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
@@ -101,23 +101,18 @@ class EditAddressOneHorizontalRow extends Component {
     }
   }
 
-  saveAddressToApiServer = () => {
-    const { textForMapSearch } = this.state;
-    // console.log('saveAddressToApiServer, textForMapSearch: ', textForMapSearch);
-    VoterActions.voterAddressSave(textForMapSearch);
-  };
-
   _placeChanged (addressAutocomplete) {
+    // I believe this gets called when we get a response from Google
     const place = addressAutocomplete.getPlace();
     if (place.formatted_address) {
-      // console.log('_placeChanged place.formatted_address:', place.formatted_address);
-      VoterActions.voterAddressSave(place.formatted_address);
+      // console.log('_placeChanged CALLING-VoterActions.voterAddressSave place.formatted_address:', place.formatted_address);
+      // VoterActions.voterAddressSave(place.formatted_address);
       this.setState({
         textForMapSearch: place.formatted_address,
       });
     } else {
-      // console.log('_placeChanged place.name:', place.name);
-      VoterActions.voterAddressSave(place.name);
+      // console.log('_placeChanged CALLING-VoterActions.voterAddressSave place.name:', place.name);
+      // VoterActions.voterAddressSave(place.name);
       this.setState({
         textForMapSearch: place.name,
       });
@@ -127,25 +122,32 @@ class EditAddressOneHorizontalRow extends Component {
   handleKeyPress (event) {
     // console.log('EditAddressOneHorizontalRow, handleKeyPress, event: ', event, ', event.keyCode:', event.keyCode);
     // console.log('this.autoComplete:', this.autoComplete);
+    // console.log('handleKeyPress');
     const enterAndSpaceKeyCodes = [13]; // We actually don't want to use the space character to save, 32
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       event.preventDefault();
-      this.voterAddressSave(event);
+      this.voterAddressSaveLocal(event);
     }
   }
 
+  // saveAddressFromOnBlur (event) {
+  //   // console.log('saveAddressFromOnBlur CALLING-VoterActions.voterAddressSave event.target.value: ', event.target.value);
+  //   VoterActions.voterAddressSave(event.target.value);
+  // }
+
   updateVoterAddress (event) {
+    // console.log('updateVoterAddress, event.target.value:', event.target.value);
     this.setState({ textForMapSearch: event.target.value });
   }
 
-  voterAddressSave (event) {
-    const { textForMapSearch } = this.state;
-    // console.log('EditAddressOneHorizontalRow, voterAddressSave, textForMapSearch:', textForMapSearch);
+  voterAddressSaveLocal (event) {
+    // console.log('CALLING-VoterActions.voterAddressSave, event.target.value:', event.target.value);
     event.preventDefault();
-    VoterActions.voterAddressSave(textForMapSearch);
+    VoterActions.voterAddressSave(event.target.value);
     const oneMonthExpires = 86400 * 31;
     cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
     this.setState({
+      textForMapSearch: event.target.value,
       voterSavedAddress: true,
     });
   }
@@ -157,6 +159,7 @@ class EditAddressOneHorizontalRow extends Component {
 
   render () {
     renderLog('EditAddressOneHorizontalRow');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('EditAddressOneHorizontalrow render');
     const { classes } = this.props;
     const { textForMapSearch, voterSavedAddress } = this.state;
 
@@ -180,7 +183,7 @@ class EditAddressOneHorizontalRow extends Component {
               Enter full street address with house number for correct ballot
             </span>
           </AddressLabel>
-          <form onSubmit={this.voterAddressSave}>
+          <form onSubmit={this.voterAddressSaveLocal}>
             <InternalFormWrapper>
               <Paper className={classes.paperInputForm} elevation={2}>
                 <EditLocation className="ion-input-icon" />
@@ -188,11 +191,11 @@ class EditAddressOneHorizontalRow extends Component {
                   className={classes.inputBase}
                   name="address"
                   aria-label="Address"
-                  placeholder="Full address and ZIP..."
+                  placeholder="Street number, full address and ZIP..."
                   value={textForMapSearch}
                   inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
                   inputProps={{
-                    onBlur: this.saveAddressToApiServer,
+                    // onBlur: this.saveAddressFromOnBlur,
                     onChange: this.updateVoterAddress,
                     onKeyDown: this.handleKeyPress,
                   }}
@@ -204,7 +207,7 @@ class EditAddressOneHorizontalRow extends Component {
                 color="primary"
                 fullWidth
                 id="editAddressOneHorizontalRowSaveButton"
-                onClick={this.voterAddressSave}
+                onClick={this.voterAddressSaveLocal}
                 variant="contained"
               >
                 {(textForMapSearch) ? (

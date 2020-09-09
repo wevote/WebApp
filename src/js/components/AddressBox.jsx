@@ -38,7 +38,7 @@ class AddressBox extends Component {
     // this.autocomplete = React.createRef();
 
     this.updateVoterAddress = this.updateVoterAddress.bind(this);
-    this.voterAddressSave = this.voterAddressSave.bind(this);
+    this.voterAddressSaveLocal = this.voterAddressSaveLocal.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
@@ -163,23 +163,29 @@ class AddressBox extends Component {
     const enterAndSpaceKeyCodes = [13]; // We actually don't want to use the space character to save, 32
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       event.preventDefault();
-      this.voterAddressSave(event);
+      this.voterAddressSaveLocal(event);
     }
   }
+
+  // saveAddressFromOnBlur (event) {
+  //   // console.log('saveAddressFromOnBlur CALLING-VoterActions.voterAddressSave event.target.value: ', event.target.value);
+  //   VoterActions.voterAddressSave(event.target.value);
+  // }
 
   updateVoterAddress (event) {
     this.setState({ textForMapSearch: event.target.value });
   }
 
-  voterAddressSave (event) {
-    // console.log('AddressBox, voterAddressSave');
+  voterAddressSaveLocal (event) {
+    // console.log('CALLING-VoterActions.voterAddressSave, event.target.value:', event.target.value);
     event.preventDefault();
-    VoterActions.voterAddressSave(this.state.textForMapSearch);
+    VoterActions.voterAddressSave(event.target.value);
     BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
     const oneMonthExpires = 86400 * 31;
     cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
     this.setState({
       loading: true,
+      textForMapSearch: event.target.value,
       voterSavedAddress: true,
     });
   }
@@ -191,9 +197,11 @@ class AddressBox extends Component {
 
   render () {
     renderLog('AddressBox');  // Set LOG_RENDER_EVENTS to log all renders
+    // console.log('AddressBox render');
     let { waitingMessage } = this.props;
-    const { classes, externalUniqueId } = this.props;
-    if (this.state.loading) {
+    const { classes, disableAutoFocus, externalUniqueId, showCancelEditAddressButton } = this.props;
+    const { ballotCaveat, loading, textForMapSearch } = this.state;
+    if (loading) {
       if (!waitingMessage) waitingMessage = 'Please wait a moment while we find your ballot...';
 
       return (
@@ -206,21 +214,26 @@ class AddressBox extends Component {
 
     return (
       <div className="container">
-        <form onSubmit={this.voterAddressSave} className="row">
+        <form onSubmit={this.voterAddressSaveLocal} className="row">
           <Paper className={classes.root} elevation={2}>
             <EditLocation className="ion-input-icon" />
             <InputBase
               className={classes.input}
               name="address"
               aria-label="Address"
-              placeholder="Enter registered address..."
-              value={this.state.textForMapSearch}
+              placeholder="Street number, full address and ZIP..."
+              value={textForMapSearch}
               inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
-              inputProps={{ onChange: this.updateVoterAddress, onKeyDown: this.handleKeyPress, autoFocus: (!isCordova() && !this.props.disableAutoFocus) }}
+              inputProps={{
+                autoFocus: (!isCordova() && !disableAutoFocus),
+                // onBlur: this.saveAddressFromOnBlur,
+                onChange: this.updateVoterAddress,
+                onKeyDown: this.handleKeyPress,
+              }}
               id={externalUniqueId ? `addressBoxText-${externalUniqueId}` : 'addressBoxText'}
             />
           </Paper>
-          { this.props.showCancelEditAddressButton ? (
+          {showCancelEditAddressButton ? (
             <Button
               color="primary"
               id={externalUniqueId ? `addressBoxModalCancelButton-${externalUniqueId}` : 'addressBoxModalCancelButton'}
@@ -235,16 +248,16 @@ class AddressBox extends Component {
           <Button
             color="primary"
             id={externalUniqueId ? `addressBoxModalSaveButton-${externalUniqueId}` : 'addressBoxModalSaveButton'}
-            onClick={this.voterAddressSave}
+            onClick={this.voterAddressSaveLocal}
             variant="contained"
-            classes={this.props.showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
-            fullWidth={!this.props.showCancelEditAddressButton}
+            classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
+            fullWidth={!showCancelEditAddressButton}
           >
             Save
           </Button>
         </form>
         <p />
-        <h4>{this.state.ballotCaveat}</h4>
+        <h4>{ballotCaveat}</h4>
       </div>
     );
   }
