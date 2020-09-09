@@ -17,6 +17,7 @@ export default class SharedItemLanding extends Component {
       customLinkString: '',
       destinationFullUrl: '',
       sharedItemCode: '',
+      sharedItemCodeRetrieved: false,
     };
   }
 
@@ -36,31 +37,31 @@ export default class SharedItemLanding extends Component {
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
-    // console.log('SharedItemLanding componentWillReceiveProps');
-    if (nextProps.params.custom_link_string && this.state.customLinkString !== nextProps.params.custom_link_string) {
-      // We need this test to prevent an infinite loop
-      const customLinkString = this.props.params.custom_link_string;
-      // console.log('SharedItemLanding componentWillReceiveProps, different sharedItemCode: ', nextProps.params.shared_item_code);
-      this.setState({
-        customLinkString,
-      });
-      if (customLinkString) {
-        // TODO
-      }
-    }
-    if (nextProps.params.shared_item_code && this.state.sharedItemCode !== nextProps.params.shared_item_code) {
-      // We need this test to prevent an infinite loop
-      const sharedItemCode = this.props.params.shared_item_code;
-      // console.log('SharedItemLanding componentWillReceiveProps, different sharedItemCode: ', nextProps.params.shared_item_code);
-      this.setState({
-        sharedItemCode,
-      });
-      if (sharedItemCode) {
-        ShareActions.sharedItemRetrieveByCode(sharedItemCode);
-      }
-    }
-  }
+  // componentWillReceiveProps (nextProps) {
+  //   // console.log('SharedItemLanding componentWillReceiveProps');
+  //   if (nextProps.params.custom_link_string && this.state.customLinkString !== nextProps.params.custom_link_string) {
+  //     // We need this test to prevent an infinite loop
+  //     const customLinkString = this.props.params.custom_link_string;
+  //     // console.log('SharedItemLanding componentWillReceiveProps, different sharedItemCode: ', nextProps.params.shared_item_code);
+  //     this.setState({
+  //       customLinkString,
+  //     });
+  //     if (customLinkString) {
+  //       // TODO
+  //     }
+  //   }
+  //   if (nextProps.params.shared_item_code && this.state.sharedItemCode !== nextProps.params.shared_item_code) {
+  //     // We need this test to prevent an infinite loop
+  //     const sharedItemCode = this.props.params.shared_item_code;
+  //     // console.log('SharedItemLanding componentWillReceiveProps, different sharedItemCode: ', nextProps.params.shared_item_code);
+  //     this.setState({
+  //       sharedItemCode,
+  //     });
+  //     if (sharedItemCode) {
+  //       ShareActions.sharedItemRetrieveByCode(sharedItemCode);
+  //     }
+  //   }
+  // }
 
   componentWillUnmount () {
     this.shareStoreListener.remove();
@@ -81,15 +82,19 @@ export default class SharedItemLanding extends Component {
       const { destination_full_url: destinationFullUrl } = sharedItem;
       this.setState({
         destinationFullUrl,
+        sharedItemCodeRetrieved: true,
       });
     }
   }
 
   render () {
     renderLog('SharedItemLanding');  // Set LOG_RENDER_EVENTS to log all renders
-    const { destinationFullUrl, sharedItemCode } = this.state;
-    if (destinationFullUrl === undefined || destinationFullUrl === '') {
+    const { destinationFullUrl, sharedItemCode, sharedItemCodeRetrieved } = this.state;
+    if (!sharedItemCodeRetrieved) {
+      return LoadingWheel;
+    } else if (sharedItemCodeRetrieved && (destinationFullUrl === undefined || destinationFullUrl === '')) {
       // console.log('SharedItemLanding destinationFullUrl undefined');
+      historyPush('/ready');
       return LoadingWheel;
     } else {
       const { hostname } = window.location;

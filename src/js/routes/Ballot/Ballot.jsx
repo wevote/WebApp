@@ -277,11 +277,15 @@ class Ballot extends Component {
 
     const modalToOpen = this.props.params.modal_to_show || '';
     if (modalToOpen === 'share') {
-      AppActions.setShowShareModal(true);
+      this.modalOpenTimer = setTimeout(() => {
+        AppActions.setShowShareModal(true);
+      }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = this.props.params.shared_item_code || '';
       if (sharedItemCode) {
-        AppActions.setShowSharedItemModal(sharedItemCode);
+        this.modalOpenTimer = setTimeout(() => {
+          AppActions.setShowSharedItemModal(sharedItemCode);
+        }, 1000);
       }
     }
     ActivityActions.activityNoticeListRetrieve();
@@ -291,7 +295,7 @@ class Ballot extends Component {
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // WARN: Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
-    // console.log('Ballot componentWillReceiveProps');
+    console.log('Ballot UNSAFE_componentWillReceiveProps');
 
     // We don't want to let the googleCivicElectionId disappear
     const googleCivicElectionId = nextProps.params.google_civic_election_id || this.state.googleCivicElectionId;
@@ -465,6 +469,10 @@ class Ballot extends Component {
     if (this.ballotItemTimer) {
       clearTimeout(this.ballotItemTimer);
       this.ballotItemTimer = null;
+    }
+    if (this.modalOpenTimer) {
+      clearTimeout(this.modalOpenTimer);
+      this.modalOpenTimer = null;
     }
     window.removeEventListener('scroll', this.onScroll);
   }

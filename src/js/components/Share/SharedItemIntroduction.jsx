@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import DelayedLoad from '../Widgets/DelayedLoad';
 import { renderLog } from '../../utils/logging';
+import SettingsAccount from '../Settings/SettingsAccount';
+import VoterStore from '../../stores/VoterStore';
 
 class SharedItemIntroduction extends Component {
   constructor (props) {
@@ -10,7 +13,22 @@ class SharedItemIntroduction extends Component {
       showAllStepOne: false,
       showAllStepTwo: false,
       showAllStepThree: false,
+      voterIsSignedIn: false,
     };
+  }
+
+  componentDidMount () {
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    this.setState({
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+    });
   }
 
   onClickShowAllStepOne = () => {
@@ -33,7 +51,7 @@ class SharedItemIntroduction extends Component {
 
   render () {
     renderLog('SharedItemIntroduction');  // Set LOG_RENDER_EVENTS to log all renders
-    const { showAllStepOne, showAllStepTwo, showAllStepThree } = this.state;
+    const { showAllStepOne, showAllStepTwo, showAllStepThree, voterIsSignedIn } = this.state;
     return (
       <OuterWrapper>
         <InnerWrapper>
@@ -73,7 +91,7 @@ class SharedItemIntroduction extends Component {
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                 {showAllStepTwo ? (
                   <StepText>
-                    Who&apos;s running for office? What do they stand for? We Vote helps you make sense of your options.
+                    Who&apos;s running for office? What do they stand for? What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options.
                   </StepText>
                 ) : (
                   <StepText onClick={this.onClickShowAllStepTwo}>
@@ -90,13 +108,17 @@ class SharedItemIntroduction extends Component {
 
               <ListTitleRow>
                 <Dot><StepNumber>3</StepNumber></Dot>
-                <StepTitle>Help your friends</StepTitle>
+                <StepTitle>Help your friends &amp; amplify your impact</StepTitle>
               </ListTitleRow>
               <ListRow>
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                 {showAllStepThree ? (
                   <StepText>
-                    You&apos;ve done your homework deciding how to vote. Now show your friends how to make sense of their decisions, so they can vote their values.
+                    You&apos;ve done your homework deciding how to vote.
+                    {' '}
+                    Now show your friends how to make sense of their decisions, so they can vote their values.
+                    {' '}
+                    And the more of your friends you help to vote, the more impact you will have on the outcome of the election.
                   </StepText>
                 ) : (
                   <StepText onClick={this.onClickShowAllStepThree}>
@@ -112,6 +134,23 @@ class SharedItemIntroduction extends Component {
               </ListRow>
             </ListMaxWidth>
           </ListWrapper>
+          {!voterIsSignedIn && (
+            <DelayedLoad waitBeforeShow={2500}>
+              <SignInWrapper>
+                <IntroHeader>
+                  Do you already have an account?
+                  {' '}
+                  <IntroHeaderOptional>
+                    (Optional)
+                  </IntroHeaderOptional>
+                </IntroHeader>
+                <SettingsAccount
+                  pleaseSignInTextOff
+                  inModal
+                />
+              </SignInWrapper>
+            </DelayedLoad>
+          )}
         </InnerWrapper>
       </OuterWrapper>
     );
@@ -158,6 +197,11 @@ const IntroHeader = styled.div`
   }
 `;
 
+const IntroHeaderOptional = styled.span`
+  color: #999;
+  font-weight: 400;
+`;
+
 const ListWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -187,6 +231,10 @@ const Dot = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-top: 3px;
   }
+`;
+
+const SignInWrapper = styled.div`
+  margin-top: 30px;
 `;
 
 const StepNumber = styled.div`
