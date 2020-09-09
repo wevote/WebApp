@@ -1,3 +1,6 @@
+import 'core-js/es/array';
+import 'core-js/es/promise/index';
+import 'core-js/es/object';
 import webAppConfig from './config';
 import startReactApp from './startReactApp';
 import { numberOfNeedlesFoundInString } from './utils/search-functions';
