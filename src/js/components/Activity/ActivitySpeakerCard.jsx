@@ -10,6 +10,7 @@ import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import StickyPopover from '../Ballot/StickyPopover';
+import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import { numberWithCommas, timeFromDate } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
 
@@ -50,6 +51,7 @@ class ActivitySpeakerCard extends Component {
     const {
       date_created: dateOfNotice,
       kind_of_activity: kindOfActivity,
+      position_name_list: positionNameList,
       speaker_name: speakerName,
       speaker_organization_we_vote_id: speakerOrganizationWeVoteId,
       speaker_profile_image_url_medium: speakerProfileImageUrlMedium,
@@ -68,7 +70,8 @@ class ActivitySpeakerCard extends Component {
       isActivityPost = true;
     }
     const activityTimeFromDate = timeFromDate(dateOfNotice);
-    const actionDescription = <span>added a new opinion.</span>;
+    const actionDescription = createDescriptionOfFriendPosts(positionNameList);
+    // const actionDescription = <span>added a new opinion.</span>;
     this.setState({
       actionDescription,
       activityTimeFromDate,
@@ -133,6 +136,7 @@ class ActivitySpeakerCard extends Component {
               {(actionDescription && isActivityNoticeSeed) && (
                 <ActionDescriptionWrapper>
                   {actionDescription}
+                  .
                 </ActionDescriptionWrapper>
               )}
             </SpeakerAndActionWrapper>

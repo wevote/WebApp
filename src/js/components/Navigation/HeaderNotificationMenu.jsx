@@ -9,6 +9,7 @@ import ActivityStore from '../../stores/ActivityStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
+import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import { returnFirstXWords, timeFromDate } from '../../utils/textFormat';
 
 class HeaderNotificationMenu extends Component {
@@ -115,20 +116,16 @@ class HeaderNotificationMenu extends Component {
         switch (activityNotice.kind_of_notice) {
           default:
           case 'NOTICE_FRIEND_ENDORSEMENTS':
-            if (activityNotice.new_positions_entered_count === 0) {
-              return null;
-            } else if (activityNotice.new_positions_entered_count === 1) {
-              activityDescription += ' added new opinion.';
-            } else if (activityNotice.new_positions_entered_count > 1) {
-              activityDescription += ` added ${activityNotice.new_positions_entered_count} new opinions.`;
-            }
+            activityDescription += ' ';
+            activityDescription += createDescriptionOfFriendPosts(activityNotice.position_name_list);
+            activityDescription += '.';
             break;
 
           case 'NOTICE_FRIEND_ACTIVITY_POSTS':
             if (activityNotice.statement_text_preview) {
-              activityDescription += ' posted: \'';
+              activityDescription += ' posted \"';
               activityDescription += returnFirstXWords(activityNotice.statement_text_preview, maxNumberOfActivityPostWordsToShow);
-              activityDescription += '...\'';
+              activityDescription += '...\"';
             } else {
               activityDescription += ' posted.';
             }
@@ -152,7 +149,7 @@ class HeaderNotificationMenu extends Component {
             key={`activityNoticeId${activityNotice.activity_notice_id}`}
             onClick={() => this.onMenuItemClick(activityNotice)}
           >
-            <>
+            <MenuItemInternalWrapper>
               <MenuItemPhoto>
                 <ImageHandler
                   alt="Inviting"
@@ -174,7 +171,7 @@ class HeaderNotificationMenu extends Component {
                   </ActivityTime>
                 )}
               </MenuItemText>
-            </>
+            </MenuItemInternalWrapper>
           </MenuItem>
         );
       } else {
@@ -354,7 +351,14 @@ const HeaderNotificationMenuWrapper = styled.div`
   }
 `;
 
+const MenuItemInternalWrapper = styled.div`
+  align-items: flex-start;
+  display: flex;
+  justify-content: flex-start;
+`;
+
 const MenuItemPhoto = styled.div`
+  min-width: 48px;
 `;
 
 const MenuItemText = styled.div`
