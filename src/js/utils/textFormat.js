@@ -262,19 +262,19 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
   const twitterDescriptionNotNull = twitterDescription || '';
   let twitterDescriptionMinusName;
 
-  if (twitterDescriptionNotNull.startsWith(displayNameNotNull)) {
+  if (twitterDescriptionNotNull.indexOf(displayNameNotNull) === 0) {
     twitterDescriptionMinusName = twitterDescriptionNotNull.substr(displayNameNotNull.length);
-  } else if (twitterDescriptionNotNull.startsWith(`The ${displayNameNotNull}`)) {
+  } else if (twitterDescriptionNotNull.indexOf(`The ${displayNameNotNull}`) === 0) {
     twitterDescriptionMinusName = twitterDescriptionNotNull.substr(displayNameNotNull.length + 4);
   } else if (twitterDescriptionNotNull.length) {
     twitterDescriptionMinusName = twitterDescriptionNotNull;
   } else {
     twitterDescriptionMinusName = '';
   }
-  if (twitterDescriptionMinusName.startsWith(', ')) {
+  if (twitterDescriptionMinusName.indexOf(', ') === 0) {
     twitterDescriptionMinusName = twitterDescriptionMinusName.substr(2);
   }
-  if (twitterDescriptionMinusName.startsWith(': ')) {
+  if (twitterDescriptionMinusName.indexOf(': ') === 0) {
     twitterDescriptionMinusName = twitterDescriptionMinusName.substr(2);
   }
   return twitterDescriptionMinusName;

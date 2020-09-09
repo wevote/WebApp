@@ -444,11 +444,11 @@ class Application extends Component {
         { typeof pathname !== 'undefined' && pathname &&
           (String(pathname) === '/for-campaigns' ||
           String(pathname) === '/for-organizations' ||
-          pathname.startsWith('/how') ||
+          pathname.indexOf('/how') === 0 ||
           String(pathname) === '/more/about' ||
           String(pathname) === '/more/credits' ||
-          pathname.startsWith('/more/donate') ||
-          pathname.startsWith('/more/pricing') ||
+          pathname.indexOf('/more/donate') === 0 ||
+          pathname.indexOf('/more/pricing') === 0 ||
           String(pathname) === '/welcome' ||
           !contentFullWidthMode || displayFriendsTabs()) ?
           (

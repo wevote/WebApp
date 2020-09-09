@@ -17,7 +17,7 @@ class TwitterSignIn extends Component {
   // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
   static handleTwitterOpenURL (url) {
     oAuthLog(`---------------xxxxxx-------- Application handleTwitterOpenUrl: ${url}`);
-    if (url.startsWith('wevotetwitterscheme://')) {
+    if (url.indexOf('wevotetwitterscheme://') === 0) {
       oAuthLog(`handleTwitterOpenURL received wevotetwitterscheme: ${url}`);
       const search = url.replace(new RegExp('&amp;', 'g'), '&');
       const urlParams = new URLSearchParams(search);
@@ -61,7 +61,7 @@ class TwitterSignIn extends Component {
         }
 
         historyPush('/twitter_sign_in');
-      } else if (url.startsWith('wevotetwitterscheme://sign_in_email')) {
+      } else if (url.indexOf('wevotetwitterscheme://sign_in_email') === 0) {
         oAuthLog(`twitterSignIn by email cordova, (not really twitter) -- received url = ${url}`);
 
         // Example url: wevotetwitterscheme://sign_in_email/1278821

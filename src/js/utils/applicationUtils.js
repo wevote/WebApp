@@ -24,47 +24,47 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/intro/sample_ballot' ||
     pathnameLowerCase === '/intro/get_started' ||
     pathnameLowerCase === '/more/myballot' ||
-    pathnameLowerCase.startsWith('/voterguidepositions') ||
-    pathnameLowerCase.startsWith('/wevoteintro')) {
+    pathnameLowerCase.indexOf('/voterguidepositions') === 0 ||
+    pathnameLowerCase.indexOf('/wevoteintro') === 0) {
     inTheaterMode = true;
-  } else if (pathnameLowerCase.startsWith('/candidate/') ||
+  } else if (pathnameLowerCase.indexOf('/candidate/') === 0 ||
     pathnameLowerCase === '/for-campaigns' ||
     pathnameLowerCase === '/for-organizations' ||
-    pathnameLowerCase.startsWith('/how') ||
+    pathnameLowerCase.indexOf('/how') === 0 ||
     pathnameLowerCase === '/intro' ||
-    pathnameLowerCase.startsWith('/measure/') ||
+    pathnameLowerCase.indexOf('/measure/') === 0 ||
     pathnameLowerCase === '/more/about' ||
     pathnameLowerCase === '/more/absentee' ||
     pathnameLowerCase === '/more/alerts' ||
     pathnameLowerCase === '/more/connect' ||
     pathnameLowerCase === '/more/credits' ||
-    pathnameLowerCase.startsWith('/more/donate') ||
+    pathnameLowerCase.indexOf('/more/donate') === 0 ||
     pathnameLowerCase === '/more/elections' ||
-    pathnameLowerCase.startsWith('/office/') ||
+    pathnameLowerCase.indexOf('/office/') === 0 ||
     pathnameLowerCase === '/more/network' ||
     pathnameLowerCase === '/more/network/friends' ||
     pathnameLowerCase === '/more/network/issues' ||
     pathnameLowerCase === '/more/network/organizations' ||
-    pathnameLowerCase.startsWith('/more/pricing') ||
+    pathnameLowerCase.indexOf('/more/pricing') === 0 ||
     pathnameLowerCase === '/more/privacy' ||
     pathnameLowerCase === '/more/register' ||
     pathnameLowerCase === '/more/sign_in' ||
     pathnameLowerCase === '/more/terms' ||
     pathnameLowerCase === '/more/verify' ||
-    pathnameLowerCase.startsWith('/verifythisisme/') ||
+    pathnameLowerCase.indexOf('/verifythisisme/') === 0 ||
     pathnameLowerCase === '/welcome') {
     contentFullWidthMode = true;
-  } else if (pathnameLowerCase.startsWith('/ballot/vote')) {
+  } else if (pathnameLowerCase.indexOf('/ballot/vote') === 0) {
     contentFullWidthMode = false; // I set this to false to fix the header padding issues in /ballot/vote
     voteMode = true;
-  } else if (pathnameLowerCase.startsWith('/ballot')) {
+  } else if (pathnameLowerCase.indexOf('/ballot') === 0) {
     contentFullWidthMode = false;
-  } else if (pathnameLowerCase.startsWith('/news')) {
+  } else if (pathnameLowerCase.indexOf('/news') === 0) {
     contentFullWidthMode = false;
   } else if (stringContains('/settings/positions', pathnameLowerCase)) {
     // contentFullWidthMode = true;
     voterGuideCreatorMode = true;
-  } else if (pathnameLowerCase.startsWith('/ready')) {
+  } else if (pathnameLowerCase.indexOf('/ready') === 0) {
     contentFullWidthMode = true;
     readyMode = true;
   } else if (stringContains('/settings', pathnameLowerCase) ||
@@ -72,19 +72,19 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/settings/voterguidelist') {
     contentFullWidthMode = true;
     settingsMode = true;
-  } else if (pathnameLowerCase.startsWith('/value') || // '/values'
-    pathnameLowerCase.startsWith('/opinions')) {
+  } else if (pathnameLowerCase.indexOf('/value') === 0 || // '/values'
+    pathnameLowerCase.indexOf('/opinions') === 0) {
     contentFullWidthMode = true;
     valuesMode = true;
-  } else if (pathnameLowerCase.startsWith('/candidate-for-extension') ||
-    pathnameLowerCase.startsWith('/add-candidate-for-extension') ||
-    pathnameLowerCase.startsWith('/more/extensionsignin')) {
+  } else if (pathnameLowerCase.indexOf('/candidate-for-extension') === 0 ||
+    pathnameLowerCase.indexOf('/add-candidate-for-extension') === 0 ||
+    pathnameLowerCase.indexOf('/more/extensionsignin') === 0) {
     extensionPageMode = true;
-  } else if (pathnameLowerCase.startsWith('/-')) {
+  } else if (pathnameLowerCase.indexOf('/-') === 0) {
     sharedItemLandingPage = true;
-  } else if (pathnameLowerCase.startsWith('/twitter_sign_in')) {
+  } else if (pathnameLowerCase.indexOf('/twitter_sign_in') === 0) {
     twitterSignInMode = true;
-  } else if (pathnameLowerCase.startsWith('/friends') ||
+  } else if (pathnameLowerCase.indexOf('/friends') === 0 ||
     pathnameLowerCase === '/facebook_invitable_friends') {
     contentFullWidthMode = true;
     friendsMode = true;
@@ -134,7 +134,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/settings/text' ||
     pathnameLowerCase === '/settings/tools') {
     showBackToSettingsMobile = true;
-  } else if (pathnameLowerCase.startsWith('/value/') ||
+  } else if (pathnameLowerCase.indexOf('/value/') === 0 ||
     pathnameLowerCase === '/values/list' ||
     // pathnameLowerCase === '/opinions' ||
     pathnameLowerCase === '/opinions_followed' ||
@@ -152,7 +152,7 @@ export function getApplicationViewBooleans (pathname) {
     showBackToVoterGuides = true; // DALE 2019-02-19 Soon we should be able to delete the interim voter guides page
   }
 
-  if (pathnameLowerCase.startsWith('/measure') && isCordova()) {
+  if (pathnameLowerCase.indexOf('/measure') === 0 && isCordova()) {
     showBackToBallotHeader = true;
   }
 
@@ -166,40 +166,40 @@ export function getApplicationViewBooleans (pathname) {
       stringContains('/btcand/', pathnameLowerCase) ||
       (pathnameLowerCase === '/for-campaigns') ||
       (pathnameLowerCase === '/for-organizations') ||
-      pathnameLowerCase.startsWith('/how') ||
+      pathnameLowerCase.indexOf('/how') === 0 ||
       (pathnameLowerCase === '/more/about') ||
       (pathnameLowerCase === '/more/credits') ||
-      pathnameLowerCase.startsWith('/more/donate') ||
+      pathnameLowerCase.indexOf('/more/donate') === 0 ||
       (pathnameLowerCase === '/more/myballot') ||
-      pathnameLowerCase.startsWith('/more/pricing') ||
+      pathnameLowerCase.indexOf('/more/pricing') === 0 ||
       (pathnameLowerCase === '/welcome') ||
-      pathnameLowerCase.startsWith('/value/') ||
-      pathnameLowerCase.startsWith('/values/') ||
+      pathnameLowerCase.indexOf('/value/') === 0 ||
+      pathnameLowerCase.indexOf('/values/') === 0 ||
       stringContains('/settings/positions', pathnameLowerCase) ||
-      pathnameLowerCase.startsWith('/settings/voterguidelist') ||
-      pathnameLowerCase.startsWith('/settings/voterguidesmenu') || pathnameLowerCase.startsWith('/register')
+      pathnameLowerCase.indexOf('/settings/voterguidelist' === 0) ||
+      pathnameLowerCase.indexOf('/settings/voterguidesmenu') === 0 || pathnameLowerCase.indexOf('/register') === 0
   ) {
     // We want to HIDE the footer bar on the above path patterns
     showFooterBar = false;
     // ///////// SHOW: The following are URLS where we want the footer to show
-  } else if (pathnameLowerCase.startsWith('/ballot') ||
-      pathnameLowerCase.startsWith('/candidate') || // Show Footer if back to not specified above
-      pathnameLowerCase.startsWith('/friends') ||
-      pathnameLowerCase.startsWith('/measure') || // Show Footer if back to not specified above
+  } else if (pathnameLowerCase.indexOf('/ballot') ||
+      pathnameLowerCase.indexOf('/candidate') === 0 || // Show Footer if back to not specified above
+      pathnameLowerCase.indexOf('/friends') === 0 ||
+      pathnameLowerCase.indexOf('/measure') === 0 || // Show Footer if back to not specified above
       (pathnameLowerCase === '/more/attributions') ||
       (pathnameLowerCase === '/more/privacy') ||
       (pathnameLowerCase === '/more/terms') ||
-      pathnameLowerCase.startsWith('/office') || // Show Footer if back to not specified above
-      pathnameLowerCase.startsWith('/values') ||
-      pathnameLowerCase.startsWith('/settings/account') ||
-      pathnameLowerCase.startsWith('/settings/domain') ||
-      pathnameLowerCase.startsWith('/settings/notifications') ||
-      pathnameLowerCase.startsWith('/settings/profile') ||
-      pathnameLowerCase.startsWith('/settings/sharing') ||
-      pathnameLowerCase.startsWith('/settings/subscription') ||
-      pathnameLowerCase.startsWith('/settings/text') ||
-      pathnameLowerCase.startsWith('/settings/tools') ||
-      pathnameLowerCase.startsWith('/settings')) {
+      pathnameLowerCase.indexOf('/office') === 0 || // Show Footer if back to not specified above
+      pathnameLowerCase.indexOf('/values') === 0 ||
+      pathnameLowerCase.indexOf('/settings/account') === 0 ||
+      pathnameLowerCase.indexOf('/settings/domain') === 0 ||
+      pathnameLowerCase.indexOf('/settings/notifications') === 0 ||
+      pathnameLowerCase.indexOf('/settings/profile') === 0 ||
+      pathnameLowerCase.indexOf('/settings/sharing') === 0 ||
+      pathnameLowerCase.indexOf('/settings/subscription') === 0 ||
+      pathnameLowerCase.indexOf('/settings/text') === 0 ||
+      pathnameLowerCase.indexOf('/settings/tools') === 0 ||
+      pathnameLowerCase.indexOf('/settings') === 0) {
     // We want to SHOW the footer bar on the above path patterns
     showFooterBar = true;
   } else {
@@ -208,10 +208,10 @@ export function getApplicationViewBooleans (pathname) {
   }
 
   let showShareButtonFooter = false;
-  if (pathnameLowerCase.startsWith('/ballot') ||
-    pathnameLowerCase.startsWith('/candidate') ||
-    pathnameLowerCase.startsWith('/measure') ||
-    pathnameLowerCase.startsWith('/office')) {
+  if (pathnameLowerCase.indexOf('/ballot') === 0 ||
+    pathnameLowerCase.indexOf('/candidate') === 0 ||
+    pathnameLowerCase.indexOf('/measure') === 0 ||
+    pathnameLowerCase.indexOf('/office') === 0) {
     showShareButtonFooter = true;
   }
 
@@ -270,10 +270,10 @@ export function setZenDeskHelpVisibility (pathname) {
     // console.log('setZenDeskHelpVisibility true, pathname:', pathname, ', showFooterBar:', showFooterBar);
     if ((showFooterBar ||
       ['/ballot', '/ballot/vote', '/friends', '/more/network', '/office', '/opinions', '/settings', '/value'].some(
-        match => pathname.toLowerCase().startsWith(match),
+        match => pathname.toLowerCase().indexOf(match) === 0,
       )) &&
       !['/wevoteintro', '/how', '/candidate-for-extension'].some(
-        match => pathname.toLowerCase().startsWith(match),
+        match => pathname.toLowerCase().indexOf(match) === 0,
       )
     ) { // '/values'
       try {

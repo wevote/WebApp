@@ -102,7 +102,7 @@ class DeviceDialog extends Component {
             </TableBody>
           </Table>
           {/* Show the developer options if on the simulator in iOS, or the SHOW_TEST_OPTIONS is on, or Cordova offset logging is turned on -- should not show in release builds */}
-          {(window.location.href.startsWith('file:///Users') || webAppConfig.SHOW_TEST_OPTIONS || webAppConfig.LOG_CORDOVA_OFFSETS) &&
+          {(window.location.href.indexOf('file:///Users') === 0 || webAppConfig.SHOW_TEST_OPTIONS || webAppConfig.LOG_CORDOVA_OFFSETS) &&
             (
               <div style={{ marginTop: 20 }}>
                 <div style={{ marginTop: 5 }}>

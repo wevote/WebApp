@@ -219,29 +219,29 @@ class WelcomeAppbar extends Component {
       showForOrganizations = true;
     }
     if (typeof pathname !== 'undefined' && pathname &&
-      !pathname.startsWith('/how') &&
+      !pathname.indexOf('/how') === 0 &&
       String(pathname) !== '/welcome' &&
       String(pathname) !== '/more/credits' &&
-      !pathname.startsWith('/more/donate') &&
-      !pathname.startsWith('/more/pricing')) {
+      !pathname.indexOf('/more/donate') === 0 &&
+      !pathname.indexOf('/more/pricing') === 0) {
       showForVoters = true;
     }
     if (typeof pathname !== 'undefined' && pathname &&
-      !pathname.startsWith('/how') &&
+      !pathname.indexOf('/how') === 0 &&
       (String(pathname) === '/for-campaigns' ||
         String(pathname) === '/more/about' ||
         String(pathname) === '/more/credits' ||
-        pathname.startsWith('/more/donate') ||
-        pathname.startsWith('/more/pricing'))) {
+        pathname.indexOf('/more/donate') === 0 ||
+        pathname.indexOf('/more/pricing') === 0)) {
       showForOrganizationsDesktop = true;
     }
     if (typeof pathname !== 'undefined' && pathname &&
-      !pathname.startsWith('/how') &&
+      !pathname.indexOf('/how') === 0 &&
       (String(pathname) === '/welcome' ||
         String(pathname) === '/for-organizations' ||
         String(pathname) === '/more/credits' ||
-        pathname.startsWith('/more/donate') ||
-        pathname.startsWith('/more/pricing'))) {
+        pathname.indexOf('/more/donate') === 0 ||
+        pathname.indexOf('/more/pricing') === 0)) {
       showForCampaignsDesktop = true;
     }
     if (typeof pathname !== 'undefined' && pathname &&

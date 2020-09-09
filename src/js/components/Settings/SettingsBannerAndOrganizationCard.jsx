@@ -43,7 +43,7 @@ export default class SettingsBannerAndOrganizationCard extends Component {
           </div>
         ) : null
         }
-        {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith('Voter-') ? (
+        {this.state.organization.organization_name && !this.state.organization.organization_name.indexOf('Voter-') === 0 ? (
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-12">
