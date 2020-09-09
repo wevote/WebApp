@@ -123,9 +123,9 @@ class HeaderNotificationMenu extends Component {
 
           case 'NOTICE_FRIEND_ACTIVITY_POSTS':
             if (activityNotice.statement_text_preview) {
-              activityDescription += ' posted \"';
+              activityDescription += ' posted "';
               activityDescription += returnFirstXWords(activityNotice.statement_text_preview, maxNumberOfActivityPostWordsToShow);
-              activityDescription += '...\"';
+              activityDescription += '..."';
             } else {
               activityDescription += ' posted.';
             }
