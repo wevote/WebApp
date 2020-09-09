@@ -223,7 +223,7 @@ class FriendInvitationOnboardingIntro extends Component {
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
               {showAllStepTwo ? (
                 <StepText>
-                  Who&apos;s running for office? What do they stand for? We Vote helps you make sense of your options.
+                  Who&apos;s running for office? What do they stand for? What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options.
                 </StepText>
               ) : (
                 <StepText onClick={this.onClickShowAllStepTwo}>
@@ -240,13 +240,17 @@ class FriendInvitationOnboardingIntro extends Component {
 
             <FriendInvitationListTitleRow>
               <Dot><StepNumber>3</StepNumber></Dot>
-              <StepTitle>Help your friends</StepTitle>
+              <StepTitle>Help your friends &amp; amplify your impact</StepTitle>
             </FriendInvitationListTitleRow>
             <FriendInvitationListRow>
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
               {showAllStepThree ? (
                 <StepText>
-                  You&apos;ve done your homework deciding how to vote. Now show your friends how to make sense of their decisions, so they can vote their values.
+                  You&apos;ve done your homework deciding how to vote.
+                  {' '}
+                  Now show your friends how to make sense of their decisions, so they can vote their values.
+                  {' '}
+                  And the more of your friends you help to vote, the more impact you will have on the outcome of the election.
                 </StepText>
               ) : (
                 <StepText onClick={this.onClickShowAllStepThree}>

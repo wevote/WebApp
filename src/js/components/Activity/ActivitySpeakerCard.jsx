@@ -183,8 +183,8 @@ class ActivitySpeakerCard extends Component {
 const ActionDescriptionWrapper = styled.div`
   font-size: 14px;
   margin-left: 3px;
+  margin-top: 4px;
   padding: 0px !important;
-  vertical-align: middle;
 `;
 
 const ActivityImage = styled.img`
@@ -214,7 +214,7 @@ const SpeakerActionTimeWrapper = styled.div`
 `;
 
 const SpeakerAndActionWrapper = styled.div`
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   justify-content: start;
 `;
@@ -223,7 +223,6 @@ const SpeakerNameWrapper = styled.div`
   font-size: 18px;
   font-weight: 700;
   padding: 0px !important;
-  vertical-align: middle;
 `;
 
 const TimeAndFriendsOnlyWrapper = styled.div`
@@ -243,7 +242,7 @@ const Wrapper = styled.div`
   align-items: flex-start;
   display: flex;
   font-size: 14px;
-  justify-content: start;
+  justify-content: flex-start;
   padding: 0px !important;
 `;
 

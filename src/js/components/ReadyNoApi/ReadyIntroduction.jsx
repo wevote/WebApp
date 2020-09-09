@@ -64,7 +64,7 @@ class ReadyIntroduction extends Component {
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
                     <ReadMore
-                      textToDisplay="Who's running for office? What do they stand for? We Vote helps you make sense of your options."
+                      textToDisplay="Who's running for office? What do they stand for? What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options."
                       numberOfLines={3}
                     />
                   </StepText>
@@ -74,7 +74,7 @@ class ReadyIntroduction extends Component {
               {(contentUnfurled || showStep3WhenCompressed) && (
                 <ListTitleRow>
                   <Dot><StepNumber>3</StepNumber></Dot>
-                  <StepTitle>Help your friends</StepTitle>
+                  <StepTitle>Help your friends &amp; amplify your impact</StepTitle>
                 </ListTitleRow>
               )}
               {contentUnfurled && (
@@ -82,7 +82,7 @@ class ReadyIntroduction extends Component {
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
                     <ReadMore
-                      textToDisplay="You've done your homework deciding how to vote. Now show your friends how to make sense of their decisions, so they can vote their values."
+                      textToDisplay="You've done your homework deciding how to vote. Now show your friends how to make sense of their decisions, so they can vote their values. And the more of your friends you help to vote, the more impact you will have on the outcome of the election."
                       numberOfLines={3}
                     />
                   </StepText>

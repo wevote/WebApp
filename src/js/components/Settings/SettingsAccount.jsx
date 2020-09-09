@@ -34,6 +34,7 @@ export default class SettingsAccount extends Component {
   static propTypes = {
     externalUniqueId: PropTypes.string,
     inModal: PropTypes.bool,
+    pleaseSignInTextOff: PropTypes.bool,
     pleaseSignInTitle: PropTypes.string,
     pleaseSignInSubTitle: PropTypes.string,
     closeSignInModal: PropTypes.func,
@@ -94,7 +95,7 @@ export default class SettingsAccount extends Component {
 
     // }
 
-    if (this.props.pleaseSignInTitle || this.props.pleaseSignInSubTitle) {
+    if (this.props.pleaseSignInTitle || this.props.pleaseSignInSubTitle || this.props.pleaseSignInTextOff) {
       this.setState({
         pleaseSignInTitle: this.props.pleaseSignInTitle || '',
         pleaseSignInSubTitle: this.props.pleaseSignInSubTitle || '',
