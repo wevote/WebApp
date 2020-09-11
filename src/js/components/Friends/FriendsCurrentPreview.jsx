@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';
+import { historyPush } from '../../utils/cordovaUtils';
 import FriendList from './FriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -35,6 +36,10 @@ export default class FriendsCurrentPreview extends Component {
     });
   }
 
+  goToCurrentFriends = () => {
+    historyPush('/friends/current');
+  }
+
   render () {
     renderLog('FriendsCurrentPreview');  // Set LOG_RENDER_EVENTS to log all renders
     const { currentFriendList } = this.state;
@@ -49,7 +54,7 @@ export default class FriendsCurrentPreview extends Component {
       <div className="opinion-view">
         <section className="card">
           <div className="card-main">
-            <SectionTitle>
+            <SectionTitle className="u-cursor--pointer" onClick={this.goToCurrentFriends}>
               Your Friends
               {' '}
               (

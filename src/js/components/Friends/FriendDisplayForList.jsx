@@ -103,7 +103,7 @@ class FriendDisplayForList extends Component {
 }
 
 const Wrapper = styled.div`
-  margin: 24px 0;
+  margin: 12px 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

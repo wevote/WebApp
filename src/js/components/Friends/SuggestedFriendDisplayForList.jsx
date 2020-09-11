@@ -301,7 +301,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 24px 0;
+  margin: 12px 0;
   position: relative;
   width: 100%;
   ${({ inSideColumn }) => ((inSideColumn) ? '' : WrapperNotInSideColumn)}

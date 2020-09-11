@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { historyPush } from '../../utils/cordovaUtils';
 import SuggestedFriendList from './SuggestedFriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -41,6 +42,10 @@ export default class SuggestedFriendsPreview extends Component {
     });
   }
 
+  goToSuggestedFriends = () => {
+    historyPush('/friends/suggested');
+  }
+
   render () {
     renderLog('SuggestedFriendsPreview');  // Set LOG_RENDER_EVENTS to log all renders
     const { inSideColumn } = this.props;
@@ -56,7 +61,7 @@ export default class SuggestedFriendsPreview extends Component {
       <div className="opinion-view">
         <section className="card">
           <div className="card-main">
-            <SectionTitle>
+            <SectionTitle className="u-cursor--pointer" onClick={this.goToSuggestedFriends}>
               People You May Know
               {' '}
               (

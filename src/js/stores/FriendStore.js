@@ -1,5 +1,4 @@
 import { ReduceStore } from 'flux/utils';
-import assign from 'object-assign';
 import Dispatcher from '../dispatcher/Dispatcher';
 import FriendActions from '../actions/FriendActions';  // eslint-disable-line import/no-cycle
 import { arrayContains } from '../utils/textFormat';
@@ -8,7 +7,8 @@ import VoterActions from '../actions/VoterActions';  // eslint-disable-line impo
 class FriendStore extends ReduceStore {
   getInitialState () {
     return {
-      currentFriends: [],
+      currentFriendList: [],
+      currentFriendsByVoterWeVoteIdDict: {},  // key == voterWeVoteId, value = friend data dict
       currentFriendsOrganizationWeVoteIds: [],
       friendInvitationsSentByMe: [],
       friendInvitationsSentToMe: [],
@@ -21,29 +21,14 @@ class FriendStore extends ReduceStore {
   }
 
   currentFriends () {
-    const { currentFriends } = this.getState();
-    return currentFriends || [];
+    const { currentFriendList } = this.getState();
+    return currentFriendList || [];
   }
 
   currentFriendsOrganizationWeVoteIDList () {
     // We track friendships through voter_we_vote_id (as opposed to organization_we_vote_id)
     const { currentFriendsOrganizationWeVoteIds } = this.getState();
     return currentFriendsOrganizationWeVoteIds || [];
-  }
-
-  currentFriendsWeVoteIDList () {
-    // We track friendships through voter_we_vote_id (as opposed to organization_we_vote_id)
-    const { currentFriends } = this.getState();
-    if (currentFriends) {
-      return Object.keys(currentFriends) || [];
-    } else {
-      return [];
-    }
-  }
-
-  currentFriendsIndexed () {
-    const { currentFriends } = this.getState();
-    return this.getIndexFromArr(currentFriends) || {};
   }
 
   friendInvitationsSentByMe () {
@@ -58,7 +43,7 @@ class FriendStore extends ReduceStore {
 
   friendInvitationsProcessed () {
     const { friendInvitationsProcessed } = this.getState();
-    return friendInvitationsProcessed || {};
+    return friendInvitationsProcessed || [];
   }
 
   friendInvitationsWaitingForVerification () {
@@ -91,9 +76,12 @@ class FriendStore extends ReduceStore {
     return this.getState().facebookInvitationStatus;
   }
 
-  isFriend (voterId) {
-    const currentFriendsIndex = this.currentFriendsIndexed(); // TODO DALE THIS NEEDS TO BE TESTED
-    return currentFriendsIndex[voterId] !== undefined;
+  isFriend (voterWeVoteId) {
+    const { currentFriendsByVoterWeVoteIdDict } = this.getState();
+    if (currentFriendsByVoterWeVoteIdDict) {
+      return currentFriendsByVoterWeVoteIdDict[voterWeVoteId] !== undefined;
+    }
+    return false;
   }
 
   isVoterFriendsWithThisOrganization (organizationWeVoteId) {
@@ -122,18 +110,10 @@ class FriendStore extends ReduceStore {
     return this.getState().emailBallotDataStep;
   }
 
-  getIndexFromArr (arr) { // eslint-disable-line
-    if (!arr) return {};
-    const indexed = {};
-    arr.forEach((friend) => {
-      indexed[friend.voter_we_vote_id] = friend.voter_we_vote_id;
-    });
-    return indexed;
-  }
-
   reduce (state, action) {
     // Exit if we don't receive a response
     if (!action.res) return state;  //  || !action.res.success // We deal with failures below
+    let { currentFriendsByVoterWeVoteIdDict } = state;
     let count = 0;
     let currentFriendsOrganizationWeVoteIds = [];
 
@@ -152,10 +132,9 @@ class FriendStore extends ReduceStore {
         } else if (action.res.kind_of_invite_response === 'ACCEPT_INVITATION') {
           // console.log('FriendStore friendInviteResponse incoming data ACCEPT_INVITATION, action.res:', action.res);
           FriendActions.friendInvitationsSentToMe();
-          // We update the currentFriends locally because it could be a heavy API call we don't want to call too often
+          FriendActions.currentFriends();
           return {
             ...state,
-            currentFriends: assign({}, state.currentFriends, { [action.res.voter_we_vote_id]: action.res.friend_voter }),
           };
         } else if (action.res.kind_of_invite_response === 'IGNORE_INVITATION') {
           FriendActions.friendInvitationsSentToMe();
@@ -291,14 +270,18 @@ class FriendStore extends ReduceStore {
             // console.log('FriendStore incoming data CURRENT_FRIENDS, action.res:', action.res);
             currentFriendsOrganizationWeVoteIds = [];
             if (action.res.friend_list) {
+              // Reset currentFriendsByVoterWeVoteIdDict so we don't leave in place old friends
+              currentFriendsByVoterWeVoteIdDict = {};
               for (count = 0; count < action.res.friend_list.length; count++) {
+                // console.log('action.res.friend_list[count]:', action.res.friend_list[count]);
+                currentFriendsByVoterWeVoteIdDict[action.res.friend_list[count].voter_we_vote_id] = action.res.friend_list[count];
                 currentFriendsOrganizationWeVoteIds.push(action.res.friend_list[count].linked_organization_we_vote_id);
               }
             }
-
             return {
               ...state,
-              currentFriends: action.res.friend_list,
+              currentFriendList: action.res.friend_list,
+              currentFriendsByVoterWeVoteIdDict,
               currentFriendsOrganizationWeVoteIds,
             };
           case 'FRIEND_INVITATIONS_SENT_BY_ME':

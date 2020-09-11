@@ -70,7 +70,9 @@ class EditAddressInPlace extends Component {
     if (editingAddress) {
       return (
         <span>
-          <h4 className="h4">Your Address</h4>
+          <div>
+            Please enter your full street address with house number for your correct ballot.
+          </div>
           <AddressBox
             showCancelEditAddressButton
             toggleEditingAddress={this.toggleEditingAddress}
@@ -82,16 +84,27 @@ class EditAddressInPlace extends Component {
       );
     } else {
       return (
-        <SettingsIconWrapper
+        <EditBlockWrapper
+          className="u-cursor--pointer"
           id="editAddressInPlaceModalEditButton"
           onClick={this.toggleEditingAddress}
         >
+          <FullAddressWrapper>
+            So we can give you the correct ballot, please make sure this is your full street address (with house number).
+          </FullAddressWrapper>
           <EditAddressPreview>
             { textForMapSearch.length ? shortenText(textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }
             {' '}
+            <ChangeAddressWrapper className="u-no-break">
+              <SettingsIconWrapper>
+                <Settings classes={{ root: classes.settingsIcon }} />
+              </SettingsIconWrapper>
+              <ChangeAddressText>
+                change address
+              </ChangeAddressText>
+            </ChangeAddressWrapper>
           </EditAddressPreview>
-          <Settings classes={{ root: classes.settingsIcon }} />
-        </SettingsIconWrapper>
+        </EditBlockWrapper>
       );
     }
   }
@@ -100,7 +113,6 @@ class EditAddressInPlace extends Component {
 const styles = {
   settingsIcon: {
     color: '#999',
-    marginTop: '-5px',
     marginLeft: '3px',
     width: 16,
     height: 16,
@@ -110,14 +122,31 @@ const styles = {
   },
 };
 
-const EditAddressPreview = styled.span`
+const ChangeAddressText = styled.div`
+  color: #999;
+`;
+
+const ChangeAddressWrapper = styled.div`
+  align-items: center;
+  display: flex;
+`;
+
+const EditAddressPreview = styled.div`
   font-size: 1.1rem;
   font-weight: bold;
 `;
 
-const SettingsIconWrapper = styled.div`
+const FullAddressWrapper = styled.div`
+  font-size: 0.9rem;
+  font-weight: 500;
+`;
+
+const EditBlockWrapper = styled.div`
   margin-left: 15px;
   margin-right: 15px;
+`;
+
+const SettingsIconWrapper = styled.div`
 `;
 
 export default withStyles(styles)(EditAddressInPlace);

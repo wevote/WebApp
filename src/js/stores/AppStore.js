@@ -122,7 +122,13 @@ class AppStore extends ReduceStore {
   }
 
   showingOneCompleteYourProfileModal () {
-    return this.getState().showAdviserIntroModal || this.getState().showFirstPositionIntroModal || this.getState().showHowItWorksModal || this.getState().showPersonalizedScoreIntroModal || this.getState().showValuesIntroModal || this.getState().showSelectBallotModal;
+    return this.getState().showAdviserIntroModal ||
+      this.getState().showFirstPositionIntroModal ||
+      this.getState().showHowItWorksModal ||
+      this.getState().showPersonalizedScoreIntroModal ||
+      this.getState().showSelectBallotModal ||
+      this.getState().showSharedItemModal ||
+      this.getState().showValuesIntroModal;
   }
 
   showActivityTidbitDrawer () {
