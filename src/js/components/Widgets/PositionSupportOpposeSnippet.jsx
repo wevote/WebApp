@@ -90,7 +90,7 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
 
     if (moreInfoUrl) {
-      if (!moreInfoUrl.toLowerCase().indexOf('http') === 0) {
+      if (!moreInfoUrl.toLowerCase().startsWith('http')) {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }

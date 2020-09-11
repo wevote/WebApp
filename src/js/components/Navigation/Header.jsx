@@ -403,11 +403,11 @@ export default class Header extends Component {
       typeof pathname !== 'undefined' && pathname &&
       (pathname === '/for-campaigns' ||
       pathname === '/for-organizations' ||
-      pathname.indexOf('/how') === 0 ||
+      pathname.startsWith('/how')||
       pathname === '/more/about' ||
       pathname === '/more/credits' ||
-      pathname.indexOf('/more/donate') === 0 ||
-      pathname.indexOf('/more/pricing') === 0 ||
+      pathname.startsWith('/more/donate')||
+      pathname.startsWith('/more/pricing')||
       pathname === '/welcome')) {
       return null;
     } else {

@@ -1,6 +1,6 @@
 export function brightnessByColor (color) {
-  const isHEX = color.indexOf('#') === 0;
-  const isRGB = color.indexOf('rgb') === 0;
+  const isHEX = color.startsWith('#');
+  const isRGB = color.startsWith('rgb');
   let r; let g; let b;
   if (isHEX) {
     const m = color.substr(1).match(color.length === 7 ? /(\S{2})/g : /(\S{1})/g);

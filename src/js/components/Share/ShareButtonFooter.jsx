@@ -67,9 +67,9 @@ class ShareButtonFooter extends Component {
     const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
     const currentFullUrlAdjusted = this.getCurrentFullUrl();
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
-    const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.indexOf('/candidate') === 0;
-    const measureShare = typeof pathname !== 'undefined' && pathname && pathname.indexOf('/measure') === 0;
-    const officeShare = typeof pathname !== 'undefined' && pathname && pathname.indexOf('/office') === 0;
+    const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
+    const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
+    const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('ShareButtonFooter componentDidMount urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
@@ -172,10 +172,10 @@ class ShareButtonFooter extends Component {
   getCurrentFullUrl () {
     let currentFullUrl = window.location.href || '';
     // Handles localhost and Cordova, always builds url to wevote.us
-    if (currentFullUrl.indexOf('https://localhost') === 0) {
+    if (currentFullUrl.startsWith('https://localhost')) {
       currentFullUrl = currentFullUrl.replace(/https:\/\/localhost.*?\//, 'https://wevote.us/');
       // console.log(`currentFullUrl adjusted for localhost: ${currentFullUrl}`);
-    } else if (currentFullUrl.indexOf('file://') === 0) {
+    } else if (currentFullUrl.startsWith('file://')) {
       currentFullUrl = currentFullUrl.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, 'https://wevote.us/');
       // console.log(`currentFullUrl adjusted for Cordova: ${currentFullUrl}`);
     }
@@ -200,9 +200,9 @@ class ShareButtonFooter extends Component {
     const { pathname } = this.props;
     const { currentFullUrlAdjusted } = this.state;
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
-    const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.indexOf('/candidate') === 0;
-    const measureShare = typeof pathname !== 'undefined' && pathname && pathname.indexOf('/measure') === 0;
-    const officeShare = typeof pathname !== 'undefined' && pathname && pathname.indexOf('/office') === 0;
+    const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
+    const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
+    const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
     let kindOfShare = 'BALLOT';
     if (candidateShare) {
       kindOfShare = 'CANDIDATE';

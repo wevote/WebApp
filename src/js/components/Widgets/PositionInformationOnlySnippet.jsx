@@ -69,7 +69,7 @@ export default class PositionInformationOnlySnippet extends Component {
       commentTextOff = !!this.props.comment_text_off;
     }
     if (moreInfoUrl) {
-      if (!moreInfoUrl.toLowerCase().indexOf('http') === 0) {
+      if (!moreInfoUrl.toLowerCase().startsWith('http')) {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }

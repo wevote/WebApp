@@ -431,7 +431,7 @@ export function isWebAppHeight737to896 () {
 }
 
 export function isAndroidSimulator () {
-  return window.location.href.indexOf('file:///android') === 0;
+  return window.location.href.startsWith('file:///android');
 }
 
 export function isCordovaButNotATablet () {
@@ -439,7 +439,7 @@ export function isCordovaButNotATablet () {
 }
 
 export function isIOsSimulator () {
-  return window.location.href.indexOf('file:///Users') === 0;
+  return window.location.href.startsWith('file:///Users');
 }
 
 export function isSimulator () {

@@ -223,7 +223,7 @@ class VoterGuidePositionItem extends Component {
       // ballotDisplay = ballotItemDisplayName.split(':');
     }
     if (moreInfoUrl) {
-      if (!moreInfoUrl.toLowerCase().indexOf('http') === 0) {
+      if (!moreInfoUrl.toLowerCase().startsWith('http')) {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }

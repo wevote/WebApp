@@ -1,6 +1,7 @@
 import 'core-js/es/array';
 import 'core-js/es/promise/index';
 import 'core-js/es/object';
+import 'core-js/es/string';
 import webAppConfig from './config';
 import startReactApp from './startReactApp';
 import { numberOfNeedlesFoundInString } from './utils/search-functions';
@@ -11,14 +12,6 @@ function localIsCordova () {
   const { cordova } = window;
   window.isCordovaGlobal = cordova !== undefined;    // So now we set a global
   return cordova !== undefined;
-}
-
-
-if (!String.prototype.startsWith) {
-  String.prototype.startsWith = function(searchString, position) {
-    position = position || 0;
-    return this.indexOf(searchString, position) === position;
-  };
 }
 
 // Adding functions to the String prototype will make stuff like `for (char in str)` break, because it will loop over the substringOccurrences property.

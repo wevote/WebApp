@@ -66,7 +66,7 @@ class SharedItemModal extends Component {
         if (organization && organization.organization_name) {
           // While typing 'Tom Smith' in the org field, without the following line, when you get to 'Tom ', autosaving trims and overwrites it to 'Tom' before you can type the 'S'
           // console.log('onOrganizationStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
-          if (!organization.organization_name.indexOf('Voter-wv') === 0 && organization.organization_name.trim() !== this.state.organizationName.trim()) {
+          if (!organization.organization_name.startsWith('Voter-wv') && organization.organization_name.trim() !== this.state.organizationName.trim()) {
             this.setState({
               organizationName: organization.organization_name,
               organizationPhotoUrlMedium: organization.organization_photo_url_medium,
@@ -125,7 +125,7 @@ class SharedItemModal extends Component {
     if (organization && organization.organization_name) {
       // While typing 'Tom Smith' in the org field, without the following line, when you get to 'Tom ', autosaving trims and overwrites it to 'Tom' before you can type the 'S'
       // console.log('onOrganizationStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
-      if (!organization.organization_name.indexOf('Voter-wv') === 0 && organization.organization_name.trim() !== this.state.organizationName.trim()) {
+      if (!organization.organization_name.startsWith('Voter-wv') && organization.organization_name.trim() !== this.state.organizationName.trim()) {
         this.setState({
           organizationName: organization.organization_name,
           organizationPhotoUrlMedium: organization.organization_photo_url_medium,
@@ -148,7 +148,7 @@ class SharedItemModal extends Component {
       // console.log('SharedItemModal onShareStoreChange sharedItem:', sharedItem, ', organization:', organization);
       if (organization && organization.organization_name) {
         // console.log('onOrganizationStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
-        if (!organization.organization_name.indexOf('Voter-wv') === 0 && organization.organization_name.trim() !== this.state.organizationName.trim()) {
+        if (!organization.organization_name.startsWith('Voter-wv') && organization.organization_name.trim() !== this.state.organizationName.trim()) {
           this.setState({
             organizationName: organization.organization_name,
             organizationPhotoUrlMedium: organization.organization_photo_url_medium,

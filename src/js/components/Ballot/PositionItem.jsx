@@ -280,7 +280,7 @@ class PositionItem extends Component {
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
       let moreInfoUrl = position.more_info_url;
       if (moreInfoUrl) {
-        if (!moreInfoUrl.toLowerCase().indexOf('http') === 0) {
+        if (!moreInfoUrl.toLowerCase().startsWith('http')) {
           moreInfoUrl = `http://${moreInfoUrl}`;
         }
       }
