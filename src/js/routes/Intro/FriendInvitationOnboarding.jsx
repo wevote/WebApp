@@ -157,7 +157,7 @@ class FriendInvitationOnboarding extends Component {
     const { classes } = this.props;
     const {
       activeSlideBefore, friendFirstName, friendLastName,
-      friendImageUrlHttpsTiny, friendIssueWeVoteIdList, howItWorksWatched,
+      friendImageUrlHttpsTiny, friendIssueWeVoteIdList,
       invitationMessage, personalizedScoreIntroCompleted,
     } = this.state;
     // console.log('render:', imageFollowReloadUrl);
@@ -233,7 +233,7 @@ class FriendInvitationOnboarding extends Component {
           </Slider>
           <FooterBarWrapper style={{ height: `${cordovaFooterHeight()}` }}>
             <StepsOuterWrapper>
-              <StepsWrapper width={howItWorksWatched ? 86 : 210}>
+              <StepsWrapper width={personalizedScoreIntroCompleted ? 86 : 210}>
                 <StepsChips onSelectStep={this.goToSpecificSlide} selected={activeSlideBefore} chips={stepLabels} mobile />
               </StepsWrapper>
             </StepsOuterWrapper>

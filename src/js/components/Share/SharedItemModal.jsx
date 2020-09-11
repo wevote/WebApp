@@ -6,6 +6,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { Button, Dialog, IconButton } from '@material-ui/core';
 import { Close, Info } from '@material-ui/icons';
+import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../utils/applicationUtils';
 import BallotStore from '../../stores/BallotStore';
 import BallotActions from '../../actions/BallotActions';
 import { cordovaFooterHeight, cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
@@ -16,12 +17,17 @@ import ImageHandler from '../ImageHandler';
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
+import PersonalizedScoreIntroBody from '../CompleteYourProfile/PersonalizedScoreIntroBody';
 import { renderLog } from '../../utils/logging';
+import SettingsAccount from '../Settings/SettingsAccount';
 import ShareActions from '../../actions/ShareActions';
 import SharedItemIntroduction from './SharedItemIntroduction';
 import ShareStore from '../../stores/ShareStore';
-import VoterStore from '../../stores/VoterStore';
+import StepsChips from '../Widgets/StepsChips';
 import { convertToInteger, formatDateToMonthDayYear } from '../../utils/textFormat';
+import VoterConstants from '../../constants/VoterConstants';
+import VoterStore from '../../stores/VoterStore';
+import VoterActions from '../../actions/VoterActions';
 
 class SharedItemModal extends Component {
   static propTypes = {
@@ -34,15 +40,22 @@ class SharedItemModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      currentSlideIndex: 0,
+      maxSlideIndex: 2,
       organizationName: '',
       organizationPhotoUrlMedium: '',
+      personalizedScoreIntroWatchedThisSession: false,
       sharedByOrganizationWeVoteId: '',
+      slideHtmlContentDict: {},
     };
+    this.nextSlide = this.nextSlide.bind(this);
+    this.previousSlide = this.previousSlide.bind(this);
   }
 
   componentDidMount () {
     // console.log('SharedItemModal componentDidMount');
     this.onBallotStoreChange();
+    this.onVoterStoreChange();
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.shareStoreListener = ShareStore.addListener(this.onShareStoreChange.bind(this));
@@ -123,7 +136,6 @@ class SharedItemModal extends Component {
     const organization = OrganizationStore.getOrganizationByWeVoteId(sharedByOrganizationWeVoteId);
     // console.log('SharedItemModal onOrganizationStoreChange organization:', organization);
     if (organization && organization.organization_name) {
-      // While typing 'Tom Smith' in the org field, without the following line, when you get to 'Tom ', autosaving trims and overwrites it to 'Tom' before you can type the 'S'
       // console.log('onOrganizationStoreChange: \'' + organization.organization_name + "' '" + this.state.organizationName + "'");
       if (!organization.organization_name.startsWith('Voter-wv') && organization.organization_name.trim() !== this.state.organizationName.trim()) {
         this.setState({
@@ -166,27 +178,185 @@ class SharedItemModal extends Component {
   }
 
   onVoterStoreChange () {
+    const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+    this.setState({
+      personalizedScoreIntroCompleted,
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+    }, this.updateSlideshowVariables);
   }
 
   closeSharedItemModalLocal = () => {
     // console.log('voterVerifySecretCode this.props.closeSharedItemModal:', this.props.closeSharedItemModal);
+    const { personalizedScoreIntroWatchedThisSession } = this.state;
+    if (personalizedScoreIntroWatchedThisSession) {
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
+    }
+    showZenDeskHelpVisibility();
     if (this.props.closeSharedItemModal) {
       this.props.closeSharedItemModal();
     }
   };
+
+  personalizedScoreIntroModalToggle = () => {
+    // Nothing to do
+  }
+
+  updateSlideshowVariables = () => {
+    const { personalizedScoreIntroCompleted, voterIsSignedIn } = this.state;
+    // We want to show two or three slides, because we need to take training opportunities.
+    let maxSlideIndex = 2; // Default
+    let personalizedScoreHtml;
+    let showCloseModalTextOnThisSlideIndex = 2;
+    let showPersonalizedScoreIntro = true;
+    const showVoterSignIn = !voterIsSignedIn;
+    const slideHtmlContentDict = {};
+    let stepLabels;
+    let voterSignInHtml = (
+      <SignInWrapper>
+        <IntroHeader>
+          You are signed in!
+        </IntroHeader>
+      </SignInWrapper>
+    );
+    if (voterIsSignedIn && personalizedScoreIntroCompleted) {
+      showPersonalizedScoreIntro = true;
+    } else if (!voterIsSignedIn) {
+      // Only showPersonalizedScoreIntro if !personalizedScoreIntroCompleted
+      showPersonalizedScoreIntro = !personalizedScoreIntroCompleted;
+      voterSignInHtml = (
+        <SignInWrapper>
+          <IntroHeader>
+            Do you already have an account?
+            {' '}
+            <IntroHeaderOptional>
+              (Optional)
+            </IntroHeaderOptional>
+          </IntroHeader>
+          <SettingsAccount
+            pleaseSignInTextOff
+            inModal
+          />
+        </SignInWrapper>
+      );
+    }
+    if (showPersonalizedScoreIntro && showVoterSignIn) {
+      maxSlideIndex = 2;
+      showCloseModalTextOnThisSlideIndex = 2;
+    } else if (showVoterSignIn) {
+      maxSlideIndex = 1;
+      showCloseModalTextOnThisSlideIndex = 1;
+    } else {
+      maxSlideIndex = 1;
+      showCloseModalTextOnThisSlideIndex = 1;
+    }
+    slideHtmlContentDict[0] = (
+      <IntroductionWrapper>
+        <IntroductionTopHeader>
+          Let&apos;s get started!
+          <br />
+          Please read these
+          {' '}
+          {maxSlideIndex + 1}
+          {' '}
+          quick slides about using this website.
+        </IntroductionTopHeader>
+        <SharedItemIntroduction />
+      </IntroductionWrapper>
+    );
+    if (showPersonalizedScoreIntro) {
+      personalizedScoreHtml = (
+        <PersonalizedScoreWrapper>
+          <SlideShowTitle>
+            What&apos;s a Personalized Score?
+          </SlideShowTitle>
+          <PersonalizedScoreDescription>
+            <PersonalizedScoreIntroBody
+              pathname=""
+              show
+              toggleFunction={this.personalizedScoreIntroModalToggle}
+            />
+          </PersonalizedScoreDescription>
+        </PersonalizedScoreWrapper>
+      );
+    }
+    if (showPersonalizedScoreIntro && showVoterSignIn) {
+      slideHtmlContentDict[1] = personalizedScoreHtml;
+      slideHtmlContentDict[2] = voterSignInHtml;
+      stepLabels = ['Shared Page Introduction', 'Personalized Score', 'Signed In'];
+    } else if (showVoterSignIn) {
+      slideHtmlContentDict[1] = voterSignInHtml;
+      stepLabels = ['Shared Page Introduction', 'Signed In'];
+    } else {
+      slideHtmlContentDict[1] = personalizedScoreHtml;
+      stepLabels = ['Shared Page Introduction', 'Personalized Score'];
+    }
+    this.setState({
+      maxSlideIndex,
+      showCloseModalTextOnThisSlideIndex,
+      slideHtmlContentDict,
+      stepLabels,
+    });
+  }
+
+  goToSpecificSlide = (index) => {
+    const { maxSlideIndex } = this.state;
+    // console.log('goToSpecificSlide index:', index);
+    // if (index === 2) {
+    //   this.setState({ personalizedScoreIntroWatchedThisSession: true });
+    // }
+    const minSlideIndex = 0;
+    hideZenDeskHelpVisibility();
+    if (index <= maxSlideIndex && index >= minSlideIndex) {
+      this.setState({
+        currentSlideIndex: index,
+      });
+    }
+  }
+
+  nextSlide () {
+    hideZenDeskHelpVisibility();
+    const { currentSlideIndex, maxSlideIndex } = this.state;
+    // console.log('nextSlide currentSlideIndex:', currentSlideIndex);
+    // if (currentSlideIndex === 1) {
+    //   this.setState({ personalizedScoreIntroWatchedThisSession: true });
+    // }
+    if (currentSlideIndex < maxSlideIndex) {
+      this.setState({
+        currentSlideIndex: currentSlideIndex + 1,
+      });
+    }
+  }
+
+  previousSlide () {
+    // console.log('previousSlide, currentSlideIndex:', currentSlideIndex);
+    hideZenDeskHelpVisibility();
+    const { currentSlideIndex } = this.state;
+    const minSlideIndex = 0;
+    // if (currentSlideIndex === 1) {
+    //   this.setState({ personalizedScoreIntroWatchedThisSession: true });
+    // }
+    if (currentSlideIndex > minSlideIndex) {
+      this.setState({
+        currentSlideIndex: currentSlideIndex - 1,
+      });
+    }
+  }
 
   render () {
     renderLog('SharedItemModal');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('SharedItemModal render');
     const { classes } = this.props;
     const {
-      days, electionDate,
-      organizationName, organizationPhotoUrlMedium,
+      currentSlideIndex, days, electionDate,
+      organizationName, organizationPhotoUrlMedium, personalizedScoreIntroCompleted,
       sharedByOrganizationType, sharedByOrganizationWeVoteId, sharedByVoterWeVoteId,
-      sharedItemCode,
+      sharedItemCode, showCloseModalTextOnThisSlideIndex, slideHtmlContentDict, stepLabels,
     } = this.state;
 
     if (!sharedItemCode) {
+      return null;
+    }
+    if (!slideHtmlContentDict || slideHtmlContentDict.length === 0) {
       return null;
     }
     let showCountDownDays = (days && electionDate);
@@ -197,6 +367,8 @@ class SharedItemModal extends Component {
     const sharingContextText = 'has shared this page with you.';
     // console.log('sharedByOrganizationType:', sharedByOrganizationType, ', sharedByVoterWeVoteId:', sharedByVoterWeVoteId);
     const developmentFeatureTurnedOn = false;
+    // console.log('currentSlideIndex: ', currentSlideIndex);
+    const slideHtmlContent = slideHtmlContentDict[currentSlideIndex];
     return (
       <Dialog
         id="sharedItemModal"
@@ -296,25 +468,54 @@ class SharedItemModal extends Component {
                 </SharedByOrganizationInnerWrapper>
               </SharedByOrganizationOuterWrapper>
             )}
-            <SharedItemIntroduction />
+            {slideHtmlContent}
             <br />
             <br />
             <br />
           </ModalContent>
         </ContentWrapper>
         <FooterBarWrapper style={{ height: `${cordovaFooterHeight()}` }}>
-          <OneButtonWrapper>
-            <Button
-              classes={{ root: classes.buttonRoot }}
-              color="primary"
-              id="sharedItemModalContinueButton"
-              onClick={this.closeSharedItemModalLocal}
-              style={{ top: `${cordovaNetworkNextButtonTop()}` }}
-              variant="contained"
-            >
-              Continue
-            </Button>
-          </OneButtonWrapper>
+          <StepsOuterWrapper>
+            <StepsWrapper width={personalizedScoreIntroCompleted ? 86 : 210}>
+              <StepsChips onSelectStep={this.goToSpecificSlide} selected={currentSlideIndex} chips={stepLabels} mobile />
+            </StepsWrapper>
+          </StepsOuterWrapper>
+          <TwoButtonsWrapper>
+            <BackButtonWrapper>
+              <Button
+                classes={{ root: classes.nextButtonRoot }}
+                color="primary"
+                disabled={currentSlideIndex === 0}
+                fullWidth
+                id="voterGuideSettingsPositionsSeeFullBallot"
+                onClick={this.previousSlide}
+                style={{ top: `${cordovaNetworkNextButtonTop()}` }}
+                variant="outlined"
+              >
+                Back
+              </Button>
+            </BackButtonWrapper>
+            <NextButtonWrapper>
+              <Button
+                color="primary"
+                id="sharedItemModalContinueButton"
+                variant="contained"
+                classes={{ root: classes.nextButtonRoot }}
+                onClick={currentSlideIndex === showCloseModalTextOnThisSlideIndex ? this.closeSharedItemModalLocal : this.nextSlide}
+              >
+                {currentSlideIndex === showCloseModalTextOnThisSlideIndex ? (
+                  <span>
+                    <span className="u-show-mobile">
+                      Done!
+                    </span>
+                    <span className="u-show-desktop-tablet">
+                      Continue to Shared Page
+                    </span>
+                  </span>
+                ) : 'Next'}
+              </Button>
+            </NextButtonWrapper>
+          </TwoButtonsWrapper>
         </FooterBarWrapper>
       </Dialog>
     );
@@ -322,16 +523,6 @@ class SharedItemModal extends Component {
 }
 
 const styles = theme => ({
-  buttonRoot: {
-    fontSize: 12,
-    // padding: '4px 8px',
-    height: 32,
-    [theme.breakpoints.down('md')]: {
-    },
-    [theme.breakpoints.down('sm')]: {
-      // padding: '4px 4px',
-    },
-  },
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     // overflow: 'scroll',
@@ -355,7 +546,7 @@ const styles = theme => ({
   },
   dialogRoot: {
     [theme.breakpoints.down('sm')]: {
-      zIndex: '9010 !important',
+      zIndex: '5000 !important',
     },
   },
   closeButtonAbsolute: {
@@ -379,12 +570,23 @@ const styles = theme => ({
     width: 16,
     height: 16,
   },
+  nextButtonRoot: {
+    width: '100%',
+  },
 });
 
 const ActionButtonsRow = styled.div`
   display: flex;
   justify-content: flex-start;
   // margin-top: 10px;
+`;
+
+const BackButtonWrapper = styled.div`
+  padding-right: 12px;
+  width: 100%;
+  @media(min-width: 520px) {
+    padding-right: 12px;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -427,7 +629,6 @@ const FooterBarWrapper = styled.div`
   background: #fff;
   border-top: 1px solid #eee;
   bottom: 0;
-  height: 45px;
   position: absolute;
   width: 100%;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -443,6 +644,42 @@ const FollowToggleWrapper = styled.div`
 
 const FriendToggleWrapper = styled.div`
   padding-right: 8px;
+`;
+
+const IntroductionWrapper = styled.div`
+  margin: 0px 15px;
+  margin-bottom: 45px;
+`;
+
+const IntroHeader = styled.div`
+  color: #2e3c5d;
+  font-size: 20px;
+  font-weight: 600;
+  padding-top: 20px;
+  padding-bottom: 0;
+  text-align: left;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 16px;
+    padding-top: 20px;
+  }
+`;
+
+const IntroHeaderOptional = styled.span`
+  color: #999;
+  font-weight: 400;
+`;
+
+const IntroductionTopHeader = styled.div`
+  color: #2e3c5d;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 0;
+  text-align: center;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 20px;
+  }
 `;
 
 const ModalTitleArea = styled.div`
@@ -470,11 +707,8 @@ const ModalContent = styled.div`
   }
 `;
 
-const OneButtonWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding: 4px 8px 0 8px;
+
+const NextButtonWrapper = styled.div`
   width: 100%;
 `;
 
@@ -504,6 +738,19 @@ const OrganizationNameColumn = styled.div`
 const OrganizationNameText = styled.div`
   font-size: 22px;
   font-weight: 600;
+`;
+
+const PersonalizedScoreDescription = styled.div`
+  font-size: 16px;
+  padding-bottom: 12px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding-bottom: 30px;
+  }
+`;
+
+const PersonalizedScoreWrapper = styled.div`
+  margin: 25px 15px;
+  margin-bottom: 45px;
 `;
 
 const SharedByOrganizationOuterWrapper = styled.div`
@@ -543,5 +790,40 @@ const SharedContextText = styled.div`
   color: #555;
   font-size: 14px;
 `;
+
+const SignInWrapper = styled.div`
+  margin: 30px 15px 60px 15px;
+`;
+
+const SlideShowTitle = styled.h3`
+  font-weight: bold;
+  font-size: 24px;
+  margin-top:  16px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 20px;
+    margin-top: 32px;
+  }
+`;
+
+const StepsOuterWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+  width: 100%;
+`;
+
+const StepsWrapper = styled.div`
+  width: ${({ width }) => `${width}px`};
+`;
+
+const TwoButtonsWrapper = styled.div`
+  width: 100%;
+  padding: 4px 8px 12px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export default withTheme(withStyles(styles)(SharedItemModal));
 

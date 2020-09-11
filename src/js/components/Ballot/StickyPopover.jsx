@@ -126,7 +126,7 @@ class StickyPopover extends Component {
             id={popoverId}
             onMouseEnter={this.onMouseEnterPopover}
             onMouseLeave={this.onMouseLeave}
-            className="u-z-index-5000"
+            className="u-z-index-5010"
           >
             {popoverComponent}
             {this.props.showCloseIcon && (

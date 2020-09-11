@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import DelayedLoad from '../Widgets/DelayedLoad';
 import { renderLog } from '../../utils/logging';
-import SettingsAccount from '../Settings/SettingsAccount';
-import VoterStore from '../../stores/VoterStore';
 
 class SharedItemIntroduction extends Component {
   constructor (props) {
@@ -13,22 +10,7 @@ class SharedItemIntroduction extends Component {
       showAllStepOne: false,
       showAllStepTwo: false,
       showAllStepThree: false,
-      voterIsSignedIn: false,
     };
-  }
-
-  componentDidMount () {
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-  }
-
-  componentWillUnmount () {
-    this.voterStoreListener.remove();
-  }
-
-  onVoterStoreChange () {
-    this.setState({
-      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
-    });
   }
 
   onClickShowAllStepOne = () => {
@@ -51,7 +33,7 @@ class SharedItemIntroduction extends Component {
 
   render () {
     renderLog('SharedItemIntroduction');  // Set LOG_RENDER_EVENTS to log all renders
-    const { showAllStepOne, showAllStepTwo, showAllStepThree, voterIsSignedIn } = this.state;
+    const { showAllStepOne, showAllStepTwo, showAllStepThree } = this.state;
     return (
       <OuterWrapper>
         <InnerWrapper>
@@ -134,23 +116,6 @@ class SharedItemIntroduction extends Component {
               </ListRow>
             </ListMaxWidth>
           </ListWrapper>
-          {!voterIsSignedIn && (
-            <DelayedLoad waitBeforeShow={2500}>
-              <SignInWrapper>
-                <IntroHeader>
-                  Do you already have an account?
-                  {' '}
-                  <IntroHeaderOptional>
-                    (Optional)
-                  </IntroHeaderOptional>
-                </IntroHeader>
-                <SettingsAccount
-                  pleaseSignInTextOff
-                  inModal
-                />
-              </SignInWrapper>
-            </DelayedLoad>
-          )}
         </InnerWrapper>
       </OuterWrapper>
     );
@@ -197,11 +162,6 @@ const IntroHeader = styled.div`
   }
 `;
 
-const IntroHeaderOptional = styled.span`
-  color: #999;
-  font-weight: 400;
-`;
-
 const ListWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -231,10 +191,6 @@ const Dot = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-top: 3px;
   }
-`;
-
-const SignInWrapper = styled.div`
-  margin-top: 30px;
 `;
 
 const StepNumber = styled.div`
