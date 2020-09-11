@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import DelayedLoad from '../Widgets/DelayedLoad';
 import FriendInvitationOnboardingFriendValuesList from '../Values/FriendInvitationOnboardingFriendValuesList';
 import FriendInvitationOnboardingValuesList from '../Values/FriendInvitationOnboardingValuesList';
 import ImageHandler from '../ImageHandler';
@@ -105,30 +104,25 @@ class FriendInvitationOnboardingValues extends Component {
             </ValuesWrapper>
           </PopularValuesWrapper>
         )}
-        <DelayedLoad
-          showLoadingText
-          waitBeforeShow={2000}
-        >
-          <PopularValuesWrapper>
-            <FriendInvitationValuesHeader className="FriendInvitationValuesHeader">
-              {(friendIssueWeVoteIdList && friendIssueWeVoteIdList.length) ? (
-                <>
-                  Choose from some popular others:
-                </>
-              ) : (
-                <>
-                  Choose from some popular options:
-                </>
-              )}
-            </FriendInvitationValuesHeader>
-            <ValuesWrapper>
-              <FriendInvitationOnboardingValuesList
-                displayOnlyIssuesNotFollowedByVoter
-                friendIssueWeVoteIdList={friendIssueWeVoteIdList}
-              />
-            </ValuesWrapper>
-          </PopularValuesWrapper>
-        </DelayedLoad>
+        <PopularValuesWrapper>
+          <FriendInvitationValuesHeader className="FriendInvitationValuesHeader">
+            {(friendIssueWeVoteIdList && friendIssueWeVoteIdList.length) ? (
+              <>
+                Choose from some popular others:
+              </>
+            ) : (
+              <>
+                Choose from some popular options:
+              </>
+            )}
+          </FriendInvitationValuesHeader>
+          <ValuesWrapper>
+            <FriendInvitationOnboardingValuesList
+              displayOnlyIssuesNotFollowedByVoter
+              friendIssueWeVoteIdList={friendIssueWeVoteIdList}
+            />
+          </ValuesWrapper>
+        </PopularValuesWrapper>
       </Wrapper>
     );
   }

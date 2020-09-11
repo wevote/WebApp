@@ -14,8 +14,9 @@ class PersonalizedScoreIntroBody extends Component {
     classes: PropTypes.object,
     inModal: PropTypes.bool,
     pathname: PropTypes.string,
+    markPersonalizedScoreIntroCompleted: PropTypes.func,
     show: PropTypes.bool,
-    toggleFunction: PropTypes.func.isRequired,
+    toggleFunction: PropTypes.func,
   };
 
   constructor (props) {
@@ -269,18 +270,21 @@ class PersonalizedScoreIntroBody extends Component {
   closeThisModal = () => {
     setZenDeskHelpVisibility(this.props.pathname);
     const { currentStep } = this.state;
-    const currentStepCompletedThreshold = 8;
+    const currentStepCompletedThreshold = 7;
     if (currentStep >= currentStepCompletedThreshold) {
       // console.log('currentStepCompletedThreshold passed');
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     }
-    this.props.toggleFunction(this.state.pathname);
+    if (this.props.toggleFunction) {
+      this.props.toggleFunction(this.state.pathname);
+    }
   };
 
-  personalizedScoreIntroCompleted = () => {
+  markPersonalizedScoreIntroCompleted = () => {
     // Mark this so we know to show 'How it Works' as completed
-    VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
-    this.props.toggleFunction(this.state.pathname);
+    if (this.props.markPersonalizedScoreIntroCompleted) {
+      this.props.markPersonalizedScoreIntroCompleted();
+    }
   };
 
   clickNextStepButton = () => {
@@ -288,6 +292,11 @@ class PersonalizedScoreIntroBody extends Component {
       nextStep, personalizedScoreSteps,
     } = this.state;
     // console.log('clickNextStepButton, nextStep:', nextStep);
+    // After they have seen the 7th step, we can consider the personalized score as complete
+    const currentStepCompletedThreshold = 7;
+    if (nextStep >= currentStepCompletedThreshold) {
+      this.markPersonalizedScoreIntroCompleted();
+    }
     if (nextStep) {
       this.setState(personalizedScoreSteps[nextStep]);
     }
@@ -414,7 +423,7 @@ class PersonalizedScoreIntroBody extends Component {
                     id="personalizedScoreIntroModalNextButton"
                     disabled={!(nextStep || (showPersonalizedScoreIntroCompletedButton && inModal))}
                     variant="contained"
-                    onClick={showPersonalizedScoreIntroCompletedButton ? this.personalizedScoreIntroCompleted : this.clickNextStepButton}
+                    onClick={nextStep ? this.clickNextStepButton : this.closeThisModal}
                   >
                     <span className="u-no-break">{actionButtonText}</span>
                   </Button>

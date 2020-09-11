@@ -197,6 +197,13 @@ class SharedItemModal extends Component {
     }
   };
 
+  markPersonalizedScoreIntroCompleted = () => {
+    // We don't want to set this in the API server until the onboarding modal is closed
+    this.setState({
+      personalizedScoreIntroWatchedThisSession: true,
+    });
+  }
+
   personalizedScoreIntroModalToggle = () => {
     // Nothing to do
   }
@@ -271,6 +278,7 @@ class SharedItemModal extends Component {
           </SlideShowTitle>
           <PersonalizedScoreDescription>
             <PersonalizedScoreIntroBody
+              markPersonalizedScoreIntroCompleted={this.markPersonalizedScoreIntroCompleted}
               pathname=""
               show
               toggleFunction={this.personalizedScoreIntroModalToggle}
@@ -301,9 +309,6 @@ class SharedItemModal extends Component {
   goToSpecificSlide = (index) => {
     const { maxSlideIndex } = this.state;
     // console.log('goToSpecificSlide index:', index);
-    // if (index === 2) {
-    //   this.setState({ personalizedScoreIntroWatchedThisSession: true });
-    // }
     const minSlideIndex = 0;
     hideZenDeskHelpVisibility();
     if (index <= maxSlideIndex && index >= minSlideIndex) {
@@ -317,9 +322,6 @@ class SharedItemModal extends Component {
     hideZenDeskHelpVisibility();
     const { currentSlideIndex, maxSlideIndex } = this.state;
     // console.log('nextSlide currentSlideIndex:', currentSlideIndex);
-    // if (currentSlideIndex === 1) {
-    //   this.setState({ personalizedScoreIntroWatchedThisSession: true });
-    // }
     if (currentSlideIndex < maxSlideIndex) {
       this.setState({
         currentSlideIndex: currentSlideIndex + 1,
@@ -332,9 +334,6 @@ class SharedItemModal extends Component {
     hideZenDeskHelpVisibility();
     const { currentSlideIndex } = this.state;
     const minSlideIndex = 0;
-    // if (currentSlideIndex === 1) {
-    //   this.setState({ personalizedScoreIntroWatchedThisSession: true });
-    // }
     if (currentSlideIndex > minSlideIndex) {
       this.setState({
         currentSlideIndex: currentSlideIndex - 1,
@@ -365,9 +364,6 @@ class SharedItemModal extends Component {
     }
 
     const sharingContextText = 'has shared this page with you.';
-    // console.log('sharedByOrganizationType:', sharedByOrganizationType, ', sharedByVoterWeVoteId:', sharedByVoterWeVoteId);
-    const developmentFeatureTurnedOn = false;
-    // console.log('currentSlideIndex: ', currentSlideIndex);
     const slideHtmlContent = slideHtmlContentDict[currentSlideIndex];
     return (
       <Dialog
@@ -434,7 +430,7 @@ class SharedItemModal extends Component {
                         <SharedContextText>{sharingContextText}</SharedContextText>
                       </OrganizationNameColumn>
                     </SharedByOrganization>
-                    {!!(organizationName && developmentFeatureTurnedOn) && (
+                    {!!(organizationName) && (
                       <OpinionsAddedToPersonalizedScore>
                         <Info classes={{ root: classes.informationIcon }} />
                         <OpinionsAddedText>
