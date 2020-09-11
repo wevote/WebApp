@@ -47,7 +47,7 @@ class PersonalizedScoreIntroModal extends Component {
     const { pathname } = this.props;
     setZenDeskHelpVisibility(pathname);
     const { currentStep } = this.state;
-    const currentStepCompletedThreshold = 8;
+    const currentStepCompletedThreshold = 7;
     if (currentStep >= currentStepCompletedThreshold) {
       // console.log('currentStepCompletedThreshold passed');
       VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
@@ -93,6 +93,7 @@ class PersonalizedScoreIntroModal extends Component {
         <DialogContent classes={{ root: classes.dialogContent }}>
           <PersonalizedScoreIntroBody
             inModal
+            // markPersonalizedScoreIntroCompleted={this.markPersonalizedScoreIntroCompleted} // Not needed here
             pathname={pathname}
             show={show}
             toggleFunction={this.props.toggleFunction}

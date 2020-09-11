@@ -222,19 +222,19 @@ const AddTidbitTitle = styled.div`
   color: #fff;
   font-size: 14px;
   font-weight: 700;
-  margin: 0 -16px 0 0;
+  // margin: 0 -16px 0 0;
   padding: 4px 16px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     font-size: 16px;
-    margin: 0 15px;
+    // margin: 0 15px;
   }
 `;
 
 const CardNewsWrapper = styled.div`
-  margin: 0 -16px 8px 0;
+  margin: 0 0 8px 0;
   padding: 8px 16px 8px 16px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    margin: 0 15px;
+    // margin: 0 15px;
   }
 `;
 

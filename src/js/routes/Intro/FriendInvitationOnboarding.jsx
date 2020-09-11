@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import Slider from 'react-slick';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
@@ -13,6 +12,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import FriendInvitationOnboardingIntro from '../../components/Intro/FriendInvitationOnboardingIntro';
 import FriendInvitationOnboardingValues from '../../components/Intro/FriendInvitationOnboardingValues';
+import IssueActions from '../../actions/IssueActions';
 import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 import PersonalizedScoreIntroBody from '../../components/CompleteYourProfile/PersonalizedScoreIntroBody';
 import { renderLog } from '../../utils/logging';
@@ -30,14 +30,13 @@ class FriendInvitationOnboarding extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      activeSlideBefore: 0,
+      currentSlideIndex: 0,
       personalizedScoreIntroWatchedThisSession: false,
       invitationMessage: '',
     };
 
     this.nextSlide = this.nextSlide.bind(this);
     this.previousSlide = this.previousSlide.bind(this);
-    this.slider = React.createRef();
   }
 
   componentWillMount () {
@@ -54,6 +53,10 @@ class FriendInvitationOnboarding extends Component {
     if (invitationSecretKey) {
       this.friendInvitationInformation(invitationSecretKey);
     }
+    // Pre-load this so it is ready for slide 2
+    IssueActions.issueDescriptionsRetrieve();
+    IssueActions.issuesFollowedRetrieve();
+    this.onVoterStoreChange();
     const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.setState({
       personalizedScoreIntroCompleted,
@@ -79,7 +82,7 @@ class FriendInvitationOnboarding extends Component {
         friendImageUrlHttpsTiny,
         friendIssueWeVoteIdList,
         invitationMessage,
-      });
+      }, this.updateSlideshowVariables);
     }
   }
 
@@ -88,16 +91,19 @@ class FriendInvitationOnboarding extends Component {
     const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.setState({
       personalizedScoreIntroCompleted,
-    });
+    }, this.updateSlideshowVariables);
   }
 
   goToSpecificSlide = (index) => {
+    const { maxSlideIndex } = this.state;
     // console.log('goToSpecificSlide index:', index);
-    if (index === 2) {
-      this.setState({ personalizedScoreIntroWatchedThisSession: true });
-    }
+    const minSlideIndex = 0;
     hideZenDeskHelpVisibility();
-    this.slider.current.slickGoTo(index);
+    if (index <= maxSlideIndex && index >= minSlideIndex) {
+      this.setState({
+        currentSlideIndex: index,
+      });
+    }
   }
 
   onExitOnboarding = () => {
@@ -110,8 +116,82 @@ class FriendInvitationOnboarding extends Component {
     historyPush(ballotLink);
   }
 
-  personalizedScoreIntroModalToggle = () => {
-    //
+  markPersonalizedScoreIntroCompleted = () => {
+    // We don't want to set this in the API server until the onboarding modal is closed
+    this.setState({
+      personalizedScoreIntroWatchedThisSession: true,
+    });
+  }
+
+  updateSlideshowVariables = () => {
+    const {
+      friendFirstName, friendLastName,
+      friendImageUrlHttpsTiny, friendIssueWeVoteIdList,
+      invitationMessage, personalizedScoreIntroCompleted,
+    } = this.state;
+    // We want to show two or three slides, because we need to take training opportunities.
+    let maxSlideIndex;
+    let showCloseModalTextOnThisSlideIndex;
+    let showPersonalizedScoreIntro = true;
+    const slideHtmlContentDict = {};
+    let stepLabels;
+    if (personalizedScoreIntroCompleted) {
+      showPersonalizedScoreIntro = false;
+    }
+    if (showPersonalizedScoreIntro) {
+      maxSlideIndex = 2;
+      showCloseModalTextOnThisSlideIndex = 2;
+      stepLabels = ['Introduction', 'Values', 'Personalized Score'];
+    } else {
+      maxSlideIndex = 1;
+      showCloseModalTextOnThisSlideIndex = 1;
+      stepLabels = ['Introduction', 'Values'];
+    }
+    slideHtmlContentDict[0] = (
+      <FriendInvitationOnboardingIntro
+        friendFirstName={friendFirstName}
+        friendLastName={friendLastName}
+        friendImageUrlHttpsTiny={friendImageUrlHttpsTiny}
+        invitationMessage={invitationMessage}
+      />
+    );
+    slideHtmlContentDict[1] = (
+      <FriendInvitationOnboardingValues
+        friendFirstName={friendFirstName}
+        friendLastName={friendLastName}
+        friendImageUrlHttpsTiny={friendImageUrlHttpsTiny}
+        friendIssueWeVoteIdList={friendIssueWeVoteIdList}
+      />
+    );
+    if (showPersonalizedScoreIntro) {
+      slideHtmlContentDict[2] = (
+        <HowItWorksWrapper>
+          <WeVoteLogoWrapper>
+            <img
+              className="header-logo-img"
+              alt="We Vote logo"
+              src={cordovaDot(logoDark)}
+            />
+          </WeVoteLogoWrapper>
+          <SlideShowTitle>
+            What&apos;s a Personalized Score?
+          </SlideShowTitle>
+          <HowItWorksDescription>
+            <PersonalizedScoreIntroBody
+              markPersonalizedScoreIntroCompleted={this.markPersonalizedScoreIntroCompleted}
+              pathname=""
+              show
+            />
+          </HowItWorksDescription>
+        </HowItWorksWrapper>
+      );
+    }
+    this.setState({
+      maxSlideIndex,
+      showCloseModalTextOnThisSlideIndex,
+      slideHtmlContentDict,
+      stepLabels,
+    });
   }
 
   nextSlide () {
@@ -120,18 +200,25 @@ class FriendInvitationOnboarding extends Component {
       this.friendInvitationInformation(invitationSecretKey);
     }
     hideZenDeskHelpVisibility();
-    const { activeSlideBefore } = this.state;
-    // console.log('nextSlide activeSlideBefore:', activeSlideBefore);
-    if (activeSlideBefore === 1) {
-      this.setState({ personalizedScoreIntroWatchedThisSession: true });
+    const { currentSlideIndex, maxSlideIndex } = this.state;
+    // console.log('nextSlide currentSlideIndex:', currentSlideIndex);
+    if (currentSlideIndex < maxSlideIndex) {
+      this.setState({
+        currentSlideIndex: currentSlideIndex + 1,
+      });
     }
-    this.slider.current.slickNext();
   }
 
   previousSlide () {
-    // console.log('previousSlide, activeSlideBefore:', activeSlideBefore);
+    // console.log('previousSlide, currentSlideIndex:', currentSlideIndex);
     hideZenDeskHelpVisibility();
-    this.slider.current.slickPrev();
+    const { currentSlideIndex } = this.state;
+    const minSlideIndex = 0;
+    if (currentSlideIndex > minSlideIndex) {
+      this.setState({
+        currentSlideIndex: currentSlideIndex - 1,
+      });
+    }
   }
 
   overrideMediaQueryForAndroidTablets () {
@@ -156,29 +243,15 @@ class FriendInvitationOnboarding extends Component {
     renderLog('FriendInvitationOnboarding');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
-      activeSlideBefore, friendFirstName, friendLastName,
-      friendImageUrlHttpsTiny, friendIssueWeVoteIdList,
-      invitationMessage, personalizedScoreIntroCompleted,
+      currentSlideIndex, personalizedScoreIntroCompleted, showCloseModalTextOnThisSlideIndex,
+      slideHtmlContentDict, stepLabels,
     } = this.state;
     // console.log('render:', imageFollowReloadUrl);
+    if (!slideHtmlContentDict || slideHtmlContentDict.length === 0) {
+      return null;
+    }
 
-    // These are settings for the react-slick slider
-    const settings = {
-      dots: false,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      swipe: true,
-      accessibility: true,
-      arrows: false,
-      beforeChange: (current, next) => this.setState({ activeSlideBefore: next }),
-      // afterChange: current => this.setState({ activeSlideAfter: current }),
-    };
-
-    const showReadyNextTextOnThisSlide = personalizedScoreIntroCompleted ? 1 : 2;
-    // console.log('activeSlideBefore: ', activeSlideBefore, ', activeSlideAfter:', activeSlideAfter);
-    const stepLabels = personalizedScoreIntroCompleted ? ['Invitation Accepted', 'Values'] : ['Invitation Accepted', 'Values', 'Personalized Score'];
+    const slideHtmlContent = slideHtmlContentDict[currentSlideIndex];
     return (
       <div>
         <Helmet title="We Vote - Invitation Accepted!" />
@@ -190,51 +263,11 @@ class FriendInvitationOnboarding extends Component {
               alt="close"
             />
           </span>
-          <Slider {...settings} dotsClass="slick-dots intro-modal__gray-dots" ref={this.slider}>
-            <div key={1}>
-              <FriendInvitationOnboardingIntro
-                friendFirstName={friendFirstName}
-                friendLastName={friendLastName}
-                friendImageUrlHttpsTiny={friendImageUrlHttpsTiny}
-                invitationMessage={invitationMessage}
-              />
-            </div>
-            <div key={2}>
-              <FriendInvitationOnboardingValues
-                friendFirstName={friendFirstName}
-                friendLastName={friendLastName}
-                friendImageUrlHttpsTiny={friendImageUrlHttpsTiny}
-                friendIssueWeVoteIdList={friendIssueWeVoteIdList}
-              />
-            </div>
-            {!personalizedScoreIntroCompleted && (
-              <div key={3}>
-                <HowItWorksWrapper>
-                  <WeVoteLogoWrapper>
-                    <img
-                      className="header-logo-img"
-                      alt="We Vote logo"
-                      src={cordovaDot(logoDark)}
-                    />
-                  </WeVoteLogoWrapper>
-                  <SlideShowTitle>
-                    What&apos;s a Personalized Score?
-                  </SlideShowTitle>
-                  <HowItWorksDescription>
-                    <PersonalizedScoreIntroBody
-                      pathname=""
-                      show
-                      toggleFunction={this.personalizedScoreIntroModalToggle}
-                    />
-                  </HowItWorksDescription>
-                </HowItWorksWrapper>
-              </div>
-            )}
-          </Slider>
+          {slideHtmlContent}
           <FooterBarWrapper style={{ height: `${cordovaFooterHeight()}` }}>
             <StepsOuterWrapper>
               <StepsWrapper width={personalizedScoreIntroCompleted ? 86 : 210}>
-                <StepsChips onSelectStep={this.goToSpecificSlide} selected={activeSlideBefore} chips={stepLabels} mobile />
+                <StepsChips onSelectStep={this.goToSpecificSlide} selected={currentSlideIndex} chips={stepLabels} mobile />
               </StepsWrapper>
             </StepsOuterWrapper>
             <TwoButtonsWrapper>
@@ -242,7 +275,7 @@ class FriendInvitationOnboarding extends Component {
                 <Button
                   classes={{ root: classes.nextButtonRoot }}
                   color="primary"
-                  disabled={activeSlideBefore === 0}
+                  disabled={currentSlideIndex === 0}
                   fullWidth
                   id="voterGuideSettingsPositionsSeeFullBallot"
                   onClick={this.previousSlide}
@@ -258,9 +291,9 @@ class FriendInvitationOnboarding extends Component {
                   id="howItWorksNext"
                   variant="contained"
                   classes={{ root: classes.nextButtonRoot }}
-                  onClick={activeSlideBefore === showReadyNextTextOnThisSlide ? this.onExitOnboarding : this.nextSlide}
+                  onClick={currentSlideIndex === showCloseModalTextOnThisSlideIndex ? this.onExitOnboarding : this.nextSlide}
                 >
-                  {activeSlideBefore === showReadyNextTextOnThisSlide ? 'Done!' : 'Next'}
+                  {currentSlideIndex === showCloseModalTextOnThisSlideIndex ? 'Done!' : 'Next'}
                 </Button>
               </NextButtonWrapper>
             </TwoButtonsWrapper>
@@ -315,6 +348,7 @@ const FooterBarWrapper = styled.div`
 
 const HowItWorksDescription = styled.div`
   font-size: 16px;
+  margin-top: 30px;
   padding-bottom: 12px;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     padding-bottom: 30px;

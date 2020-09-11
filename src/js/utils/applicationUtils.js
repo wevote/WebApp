@@ -189,6 +189,7 @@ export function getApplicationViewBooleans (pathname) {
       (pathnameLowerCase === '/more/attributions') ||
       (pathnameLowerCase === '/more/privacy') ||
       (pathnameLowerCase === '/more/terms') ||
+      pathnameLowerCase.startsWith('/news') ||
       pathnameLowerCase.startsWith('/office') || // Show Footer if back to not specified above
       pathnameLowerCase.startsWith('/values') ||
       pathnameLowerCase.startsWith('/settings/account') ||
