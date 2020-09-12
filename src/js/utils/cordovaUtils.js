@@ -16,6 +16,19 @@ export function isWebApp () {
   return !isCordova();
 }
 
+export function isIOS () {
+  if (isWebApp()) return false;
+  // console.log("<><><><> uuid:  " + window.device.uuid);
+  const { platform } = window.device || '';
+  return isCordova() && platform === 'iOS';  // Ignore the "Condition is always false" warning.  This line works correctly.
+}
+
+export function isAndroid () {
+  if (isWebApp()) return false;
+  const { platform } = window.device || '';
+  return isCordova() && platform === 'Android';  // Ignore the "Condition is always false" warning.  This line works correctly.
+}
+
 // see https://github.com/ReactTraining/react-router/blob/v3/docs/guides/Histories.md
 export function historyPush (route) {
   // console.log("historyPush, route:", route);
@@ -40,30 +53,39 @@ export function cordovaDot (path) {
 }
 
 export function cordovaOpenSafariViewSub (requestURL, onExit) {
-  console.log(`cordovaOpenSafariView -1- requestURL: ${requestURL}`);
-  SafariViewController.isAvailable(() => { // eslint-disable-line no-undef
-    oAuthLog(`cordovaOpenSafariView requestURL: ${requestURL}`);
-    SafariViewController.show({ // eslint-disable-line no-undef
-      url: requestURL,
-    },
-
-    (result) => {
-      if (result.event === 'opened') {
-        oAuthLog(`cordovaOpenSafariView opened url: ${requestURL}`);
-      } else if (result.event === 'loaded') {
-        oAuthLog(`cordovaOpenSafariView URL result from loading: ${JSON.stringify(result)}`);
-      } else if (result.event === 'closed') {
-        oAuthLog(`cordovaOpenSafariView closed: ${JSON.stringify(result)}`);
-        if (onExit) {
-          onExit();
+  if (isIOS()) {
+    console.log(`cordovaOpenSafariView -1- requestURL: ${requestURL}`);
+    SafariViewController.isAvailable(() => { // eslint-disable-line no-undef
+      oAuthLog(`cordovaOpenSafariView requestURL: ${requestURL}`);
+      SafariViewController.show({ // eslint-disable-line no-undef
+        url: requestURL,
+      },
+      (result) => {
+        if (result.event === 'opened') {
+          oAuthLog(`cordovaOpenSafariView opened url: ${requestURL}`);
+        } else if (result.event === 'loaded') {
+          oAuthLog(`cordovaOpenSafariView URL result from loading: ${JSON.stringify(result)}`);
+        } else if (result.event === 'closed') {
+          oAuthLog(`cordovaOpenSafariView closed: ${JSON.stringify(result)}`);
+          if (onExit) {
+            onExit();
+          }
         }
-      }
-    },
+      },
 
-    (msg) => {
-      oAuthLog(`cordovaOpenSafariView KO: ${JSON.stringify(msg)}`);
+      (msg) => {
+        oAuthLog(`cordovaOpenSafariView KO: ${JSON.stringify(msg)}`);
+      });
     });
-  });
+  } else {
+    // Prior to Sept 2020, we used SafariViewController for iOS and Android, but subsequently some upgrade of
+    // a Cordova plugin or platform, started requiring ChromeCustomTabs.  ChromeCustomTabs was not being installed
+    // properly by the Java packaging tools. After more than a day of fussing with it, I forked
+    // EddyVerbruggen/cordova-plugin-safariviewcontroller and modified the fork to be an iOS only plugin,
+    // and then made setup the InAppBrowser be the external website opener for Android.
+    // This will have to be revisited, especially when EddyVerbruggen/cordova-plugin-safariviewcontroller gets upgraded.
+    window.cordova.InAppBrowser.open(requestURL, '_blank', 'location=yes');
+  }
 }
 
 /**
@@ -95,19 +117,6 @@ export function logMatch (device, byModel) {
     cordovaOffsetLog(`Matched ------------ ${device} by ${byModel ? 'window.device.model' : 'pbakondyScreenSize'}`);
     matchedDevice = true;
   }
-}
-
-export function isIOS () {
-  if (isWebApp()) return false;
-  // console.log("<><><><> uuid:  " + window.device.uuid);
-  const { platform } = window.device || '';
-  return isCordova() && platform === 'iOS';  // Ignore the "Condition is always false" warning.  This line works correctly.
-}
-
-export function isAndroid () {
-  if (isWebApp()) return false;
-  const { platform } = window.device || '';
-  return isCordova() && platform === 'Android';  // Ignore the "Condition is always false" warning.  This line works correctly.
 }
 
 // https://www.theiphonewiki.com/wiki/Models
