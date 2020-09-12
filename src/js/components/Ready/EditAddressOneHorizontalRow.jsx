@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import { EditLocation } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, InputBase, Button } from '@material-ui/core';
+import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
+import cookies from '../../utils/cookies';
 import { historyPush, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
-import cookies from '../../utils/cookies';
 
 class EditAddressOneHorizontalRow extends Component {
   static propTypes = {
@@ -25,6 +26,7 @@ class EditAddressOneHorizontalRow extends Component {
     };
     this.updateVoterAddress = this.updateVoterAddress.bind(this);
     this.voterAddressSaveLocal = this.voterAddressSaveLocal.bind(this);
+    this.voterAddressSaveSubmit = this.voterAddressSaveSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
@@ -152,6 +154,17 @@ class EditAddressOneHorizontalRow extends Component {
     });
   }
 
+  voterAddressSaveSubmit () {
+    const { textForMapSearch } = this.state;
+    VoterActions.voterAddressSave(textForMapSearch);
+    BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
+    const oneMonthExpires = 86400 * 31;
+    cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
+    this.setState({
+      voterSavedAddress: true,
+    });
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('EditAddressOneHorizontalRow caught error: ', `${error} with info: `, info);
@@ -183,7 +196,7 @@ class EditAddressOneHorizontalRow extends Component {
               Enter full street address with house number for correct ballot
             </span>
           </AddressLabel>
-          <form onSubmit={this.voterAddressSaveLocal}>
+          <form onSubmit={this.voterAddressSaveSubmit}>
             <InternalFormWrapper>
               <Paper className={classes.paperInputForm} elevation={2}>
                 <EditLocation className="ion-input-icon" />
@@ -207,7 +220,7 @@ class EditAddressOneHorizontalRow extends Component {
                 color="primary"
                 fullWidth
                 id="editAddressOneHorizontalRowSaveButton"
-                onClick={this.voterAddressSaveLocal}
+                onClick={this.voterAddressSaveSubmit}
                 variant="contained"
               >
                 {(textForMapSearch) ? (
