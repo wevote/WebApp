@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import { EditLocation } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, InputBase, Button } from '@material-ui/core';
-import BallotStore from '../stores/BallotStore';
 import BallotActions from '../actions/BallotActions';
+import BallotStore from '../stores/BallotStore';
+import cookies from '../utils/cookies';
 import { historyPush, isCordova, isWebApp, prepareForCordovaKeyboard,
   restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
 import LoadingWheel from './LoadingWheel';
 import { renderLog } from '../utils/logging';
 import VoterActions from '../actions/VoterActions';
 import VoterStore from '../stores/VoterStore';
-import cookies from '../utils/cookies';
 
 class AddressBox extends Component {
   static propTypes = {
@@ -39,6 +39,7 @@ class AddressBox extends Component {
 
     this.updateVoterAddress = this.updateVoterAddress.bind(this);
     this.voterAddressSaveLocal = this.voterAddressSaveLocal.bind(this);
+    this.voterAddressSaveSubmit = this.voterAddressSaveSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
@@ -190,6 +191,18 @@ class AddressBox extends Component {
     });
   }
 
+  voterAddressSaveSubmit () {
+    const { textForMapSearch } = this.state;
+    VoterActions.voterAddressSave(textForMapSearch);
+    BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
+    const oneMonthExpires = 86400 * 31;
+    cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
+    this.setState({
+      loading: true,
+      voterSavedAddress: true,
+    });
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('AddressBox caught error: ', `${error} with info: `, info);
@@ -214,7 +227,7 @@ class AddressBox extends Component {
 
     return (
       <div className="container">
-        <form onSubmit={this.voterAddressSaveLocal} className="row">
+        <form onSubmit={this.voterAddressSaveSubmit} className="row">
           <Paper className={classes.root} elevation={2}>
             <EditLocation className="ion-input-icon" />
             <InputBase
@@ -248,7 +261,7 @@ class AddressBox extends Component {
           <Button
             color="primary"
             id={externalUniqueId ? `addressBoxModalSaveButton-${externalUniqueId}` : 'addressBoxModalSaveButton'}
-            onClick={this.voterAddressSaveLocal}
+            onClick={this.voterAddressSaveSubmit}
             variant="contained"
             classes={showCancelEditAddressButton ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
             fullWidth={!showCancelEditAddressButton}
