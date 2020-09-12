@@ -78,12 +78,12 @@ export function cordovaOpenSafariViewSub (requestURL, onExit) {
       });
     });
   } else {
-    // Prior to Sept 2020, we used SafariViewController for iOS and Android, but then some upgrade of
-    // some Cordova plugin or platform, started requiring ChromeCustomTabs which was not installed
-    // properly by the Java packaging tools, and after more than a day of fussing with it, I forked
-    // EddyVerbruggen/cordova-plugin-safariviewcontroller and modified the fork to be iOS only, and made
-    // the InAppBrowser be the external website opener for Android. This will has to be revisted, especially
-    // when EddyVerbruggen/cordova-plugin-safariviewcontroller gets upgraded.
+    // Prior to Sept 2020, we used SafariViewController for iOS and Android, but subsequently some upgrade of
+    // a Cordova plugin or platform, started requiring ChromeCustomTabs.  ChromeCustomTabs was not being installed
+    // properly by the Java packaging tools. After more than a day of fussing with it, I forked
+    // EddyVerbruggen/cordova-plugin-safariviewcontroller and modified the fork to be an iOS only plugin,
+    // and then made setup the InAppBrowser be the external website opener for Android.
+    // This will have to be revisted, especially when EddyVerbruggen/cordova-plugin-safariviewcontroller gets upgraded.
     window.cordova.InAppBrowser.open(requestURL, '_blank', 'location=yes');
   }
 }
