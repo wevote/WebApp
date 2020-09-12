@@ -83,7 +83,7 @@ export function cordovaOpenSafariViewSub (requestURL, onExit) {
     // properly by the Java packaging tools. After more than a day of fussing with it, I forked
     // EddyVerbruggen/cordova-plugin-safariviewcontroller and modified the fork to be an iOS only plugin,
     // and then made setup the InAppBrowser be the external website opener for Android.
-    // This will have to be revisted, especially when EddyVerbruggen/cordova-plugin-safariviewcontroller gets upgraded.
+    // This will have to be revisited, especially when EddyVerbruggen/cordova-plugin-safariviewcontroller gets upgraded.
     window.cordova.InAppBrowser.open(requestURL, '_blank', 'location=yes');
   }
 }
