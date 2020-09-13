@@ -465,7 +465,7 @@ const Candidate = styled.div`
 const CandidateTopRow = styled.div`
   cursor: pointer;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
 `;
 

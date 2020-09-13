@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
@@ -16,6 +17,7 @@ import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import WelcomeFooter from '../components/Welcome/WelcomeFooter';
 import { renderLog } from '../utils/logging';
+import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
 import TextBox from '../components/Welcome/TextBox';
 import Testimonial from '../components/Widgets/Testimonial';
 import { validateEmail } from '../utils/regex-checks';
@@ -52,10 +54,11 @@ class WelcomeForVoters extends PureComponent {
   constructor (props) {
     super(props);
     this.state = {
+      emailAddressSubmitted: false,
+      emailAddressVerifiedCount: 0,
+      showVerifyModal: false,
       submitEnabled: false,
-      newsletterOptInTrue: false,
-      voter: {},
-      voterEmail: '',
+      voterEmailAddress: '',
       voterFullName: '',
     };
   }
@@ -68,14 +71,32 @@ class WelcomeForVoters extends PureComponent {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    if (this.closeVerifyModalTimer) {
+      clearTimeout(this.closeVerifyModalTimer);
+      this.closeVerifyModalTimer = null;
+    }
   }
 
   onVoterStoreChange () {
     this.setState({
-      newsletterOptInTrue: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
-      voter: VoterStore.getVoter(),
+      emailAddressVerifiedCount: VoterStore.getEmailAddressesVerifiedCount(),
     });
   }
+
+  closeVerifyModal = () => {
+    // console.log('WelcomeForVoters closeVerifyModal');
+    this.setState({
+      showVerifyModal: false,
+    }, this.closeVerifyModalStep2);
+  };
+
+  closeVerifyModalStep2 = () => {
+    // console.log('WelcomeForVoters closeVerifyModalStep2');
+    this.closeVerifyModalTimer = setTimeout(() => {
+      VoterActions.clearEmailAddressStatus();
+      VoterActions.clearSecretCodeVerificationStatus();
+    }, 1000);
+  };
 
   updateVoterFullName = (event) => {
     this.setState({
@@ -91,19 +112,24 @@ class WelcomeForVoters extends PureComponent {
     }
 
     this.setState({
-      voterEmail: event.target.value,
+      voterEmailAddress: event.target.value,
       submitEnabled,
     });
   };
 
   voterEmailAddressSignUpSave = (event) => {
+    const { submitEnabled, voterEmailAddress, voterFullName } = this.state;
     // Only proceed after we have a valid email address, which will enable the submit
-    if (this.state.submitEnabled) {
+    if (submitEnabled) {
       event.preventDefault();
-      const sendLinkToSignIn = true;
-      VoterActions.voterEmailAddressSave(this.state.voterEmail, sendLinkToSignIn);
-      VoterActions.voterFullNameSoftSave('', '', this.state.voterFullName);
+      VoterActions.sendSignInCodeEmail(voterEmailAddress);
+      VoterActions.voterFullNameSoftSave('', '', voterFullName);
       VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
+
+      this.setState({
+        emailAddressSubmitted: true,
+        showVerifyModal: true,
+      });
     }
   };
 
@@ -116,8 +142,10 @@ class WelcomeForVoters extends PureComponent {
     renderLog('WelcomeForVoters');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
     // console.log('WelcomeForVoters, pathname: ', pathname);
-    const { voter, newsletterOptInTrue } = this.state;
-    const voterIsSignedIn = voter.is_signed_in;
+    const {
+      emailAddressSubmitted, emailAddressVerifiedCount, showVerifyModal,
+      submitEnabled, voterEmailAddress, voterFullName,
+    } = this.state;
 
     const testimonialAuthor = 'Alissa B., Oakland, California';
     const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
@@ -224,7 +252,7 @@ class WelcomeForVoters extends PureComponent {
             */}
           </DescriptionContainer>
         </Section>
-        <Section variant="dark" rounded={!voterIsSignedIn}>
+        <Section variant="dark" rounded={!emailAddressVerifiedCount}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
             <NetworkImage src={cordovaDot(ffwdLogo)} alt="Fast Forward" />
@@ -234,36 +262,69 @@ class WelcomeForVoters extends PureComponent {
             <NetworkImage src={cordovaDot(vipLogo)} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
-        {
-          !voterIsSignedIn && (
-            <Section>
-              <SectionTitle>Sign up to get updates about We Vote</SectionTitle>
-              <SignUpContainer>
-                <TextBox
-                  icon={<Person />}
-                  placeholder="Full Name"
-                  value={this.state.voterFullName}
-                  inputProps={{ onChange: this.updateVoterFullName }}
-                />
-                <TextBox
-                  icon={<Email />}
-                  placeholder="Email"
-                  value={this.state.voterEmail}
-                  inputProps={{ type: 'email', onChange: this.updateVoterEmailAddress }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
-                  onClick={this.voterEmailAddressSignUpSave}
-                >
-                  Sign Up
-                </Button>
-                {newsletterOptInTrue === 1 && <SignUpMessage>Please check your email for a verification link</SignUpMessage>}
-              </SignUpContainer>
-            </Section>
-          )
+        {emailAddressVerifiedCount ? (
+          <Section>
+            <SectionTitle>You are Signed In</SectionTitle>
+            <Description>
+              <Bold>Welcome! </Bold>
+              Thank you for being part of We Vote.
+              <br />
+              <Link to="/ready">
+                <span className="u-link-color">
+                  Click to get ready to vote
+                </span>
+              </Link>
+              .
+            </Description>
+          </Section>
+        ) : (
+          <Section>
+            <SectionTitle>Sign up to get updates about We Vote</SectionTitle>
+            <SignUpContainer>
+              <TextBox
+                icon={<Person />}
+                placeholder="Full Name"
+                value={voterFullName}
+                inputProps={{ onChange: this.updateVoterFullName }}
+              />
+              <TextBox
+                icon={<Email />}
+                placeholder="Email"
+                value={voterEmailAddress}
+                inputProps={{ type: 'email', onChange: this.updateVoterEmailAddress }}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
+                onClick={this.voterEmailAddressSignUpSave}
+              >
+                {submitEnabled ? (
+                  <span style={{ color: '#fff' }}>
+                    Sign Up
+                  </span>
+                ) : (
+                  <span style={{ color: '#ccc' }}>
+                    Sign Up
+                  </span>
+                )}
+              </Button>
+              {!!(emailAddressSubmitted) && (
+                <SignUpMessage>
+                  In order to be added to our mailing list, please make sure your email address is correct, click the &quot;Sign Up&quot; button above, and then enter the 6 digit verification code that is sent to your email address.
+                </SignUpMessage>
+              )}
+            </SignUpContainer>
+          </Section>
+        )
         }
+        {showVerifyModal && (
+          <SettingsVerifySecretCode
+            show={showVerifyModal}
+            closeVerifyModal={this.closeVerifyModal}
+            voterEmailAddress={voterEmailAddress}
+          />
+        )}
         <WelcomeFooter />
       </Wrapper>
     );
