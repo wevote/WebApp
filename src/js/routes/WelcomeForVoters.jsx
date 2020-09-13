@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
@@ -16,6 +17,7 @@ import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import WelcomeFooter from '../components/Welcome/WelcomeFooter';
 import { renderLog } from '../utils/logging';
+import SettingsVerifySecretCode from '../components/Settings/SettingsVerifySecretCode';
 import TextBox from '../components/Welcome/TextBox';
 import Testimonial from '../components/Widgets/Testimonial';
 import { validateEmail } from '../utils/regex-checks';
@@ -42,9 +44,6 @@ import Section, {
 } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import welcomeForVotersImage from '../../img/welcome/WelcomeForVoters-Ballot-20190507.png';
-import SettingsVerifySecretCode
-  from "../components/Settings/SettingsVerifySecretCode";
-import {Link} from "react-router";
 
 class WelcomeForVoters extends PureComponent {
   static propTypes = {
@@ -59,8 +58,6 @@ class WelcomeForVoters extends PureComponent {
       emailAddressVerifiedCount: 0,
       showVerifyModal: false,
       submitEnabled: false,
-      newsletterOptInTrue: false,
-      voter: {},
       voterEmailAddress: '',
       voterFullName: '',
     };
@@ -83,8 +80,6 @@ class WelcomeForVoters extends PureComponent {
   onVoterStoreChange () {
     this.setState({
       emailAddressVerifiedCount: VoterStore.getEmailAddressesVerifiedCount(),
-      newsletterOptInTrue: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
-      voter: VoterStore.getVoter(),
     });
   }
 
@@ -270,17 +265,17 @@ class WelcomeForVoters extends PureComponent {
         {emailAddressVerifiedCount ? (
           <Section>
             <SectionTitle>You are Signed In</SectionTitle>
-              <Description>
-                <Bold>Welcome! </Bold>
-                Thank you for being part of We Vote.
-                <br />
-                <Link to="/ready">
-                  <span className="u-link-color">
-                    Click to get ready to vote
-                  </span>
-                </Link>
-                .
-              </Description>
+            <Description>
+              <Bold>Welcome! </Bold>
+              Thank you for being part of We Vote.
+              <br />
+              <Link to="/ready">
+                <span className="u-link-color">
+                  Click to get ready to vote
+                </span>
+              </Link>
+              .
+            </Description>
           </Section>
         ) : (
           <Section>
@@ -316,7 +311,7 @@ class WelcomeForVoters extends PureComponent {
               </Button>
               {!!(emailAddressSubmitted) && (
                 <SignUpMessage>
-                  In order to be added to our mailing list, please make sure your email address is correct, click the "Sign Up" button above, and then enter the 6 digit verification code that is sent to your email address.
+                  In order to be added to our mailing list, please make sure your email address is correct, click the &quot;Sign Up&quot; button above, and then enter the 6 digit verification code that is sent to your email address.
                 </SignUpMessage>
               )}
             </SignUpContainer>
