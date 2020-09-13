@@ -16,6 +16,7 @@ import ActivityStore from '../../stores/ActivityStore';
 import ActivityPostPublicToggle from './ActivityPostPublicToggle';
 import { renderLog } from '../../utils/logging';
 import {
+  cordovaDot,
   hasIPhoneNotch, prepareForCordovaKeyboard,
   restoreStylesAfterCordovaKeyboard,
 } from '../../utils/cordovaUtils';
@@ -184,7 +185,7 @@ class ActivityPostModal extends Component {
               >
                 <img
                   alt=""
-                  src={voterPhotoUrlMedium || stockAvatar}
+                  src={voterPhotoUrlMedium || cordovaDot(stockAvatar)}
                   style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
                 />
                 <InputBase

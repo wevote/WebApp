@@ -22,6 +22,7 @@ import { convertToInteger, stringContains } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 
 class OrganizationModal extends Component {
   static propTypes = {
@@ -302,6 +303,7 @@ class OrganizationModal extends Component {
 
 const styles = () => ({
   drawer: {
+    marginTop: cordovaDrawerTopMargin(),
     maxWidth: '550px !important',
     '& *': {
       maxWidth: '550px !important',

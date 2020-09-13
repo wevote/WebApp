@@ -21,6 +21,7 @@ import shareIconSvg from '../../../../img/global/svg-icons/share-icon.svg';
 import { openSnackbar } from '../SnackNotifier';
 import ChooseOrOppose from './ChooseOrOppose';
 
+
 class ItemActionBar extends PureComponent {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string,

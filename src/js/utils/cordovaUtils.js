@@ -46,7 +46,8 @@ export function historyPush (route) {
 export function cordovaDot (path) {
   if (isCordova()) {
     const { WE_VOTE_IMAGE_PATH_FOR_CORDOVA: imgPath } = webAppConfig;
-    return `${imgPath}${path}`;
+    const adjustedPath = path.replace(/(?:.*?\.us)(.*?)(?:\/img.*?$)/gi, '');
+    return `${imgPath}${adjustedPath}`;
   } else {
     return path;
   }
@@ -557,9 +558,13 @@ export function snackOffset () {
   return snackOffsetValue;
 }
 
-export function setIconBadgeMessageCount (countString) {
-  const { cordova: { plugins: { firebase: { messaging: { setBadge } } } } } = window;
-  setBadge(countString);
+export function setIconBadgeMessageCount (count) {
+  // Count can be a string or an integer
+  if (isIOS()) {
+    const { cordova: { plugins: { firebase: { messaging: { setBadge } } } } } = window;
+    // Not sure if this would do anything in Android
+    setBadge(count);
+  }
 }
 
 export function getIconBadgeMessageCount () {

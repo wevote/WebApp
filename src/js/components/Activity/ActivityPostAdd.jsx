@@ -7,7 +7,7 @@ import ActivityPostModal from './ActivityPostModal';
 import VoterStore from '../../stores/VoterStore';
 import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import { cordovaNewsPaddingTop } from '../../utils/cordovaOffsets';
-import { isCordova } from '../../utils/cordovaUtils';
+import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 
@@ -131,7 +131,7 @@ class ActivityPostAdd extends Component {
           <InnerFlexWrapper>
             <img
               alt=""
-              src={voterPhotoUrlMedium || stockAvatar}
+              src={voterPhotoUrlMedium || cordovaDot(stockAvatar)}
               style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
             />
             <InputBase
