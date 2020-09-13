@@ -14,6 +14,7 @@ import {
 import { renderLog } from '../../utils/logging';
 import CandidateStore from '../../stores/CandidateStore';
 import {
+  cordovaDot,
   hasIPhoneNotch, prepareForCordovaKeyboard,
   restoreStylesAfterCordovaKeyboard,
 } from '../../utils/cordovaUtils';
@@ -284,7 +285,7 @@ class PositionStatementModal extends Component {
               >
                 <img
                   alt=""
-                  src={voterPhotoUrlMedium || stockAvatar}
+                  src={voterPhotoUrlMedium || cordovaDot(stockAvatar)}
                   style={{ borderRadius: 6, display: 'block', marginRight: 12, width: 50 }}
                 />
                 <InputBase onChange={this.updateStatementTextToBeSaved}

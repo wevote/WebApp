@@ -754,26 +754,41 @@ export function cordovaFriendsWrapper () {
 }
 
 export function cordovaNewsPaddingTop () {
+  // if (isIOS()) {
+  //   if (isIPhone6p5in()) {                    //  11 Pro Max and XS Max
+  //     return '85px';
+  //   } else if (isIPhone6p1in()) {             // XR and 11
+  //     return '85px';
+  //   } else if (isIPhone5p8in()) {             //  X and 11 Pro
+  //     return '85px';
+  //   } else if (isIPhone5p5in()) {             //  6 Plus, 7 Plus and 8 Plus
+  //     return '68px';
+  //   } else if (isIPhone4p7in()) {             // 6, 7, 8, SE (2nd Gen)
+  //     return '65px';
+  //   } else if (isIPhone4in()) {               // SE
+  //     return '65px';
+  //   } else if (isIPad()) {
+  //     return '85px';
+  //   } else {
+  //     return '85px';
+  //   }
+  // } else if (isAndroid()) {
+  //   return '44px';
+  // }
+  return '';
+}
+
+export function cordovaDrawerTopMargin () {
   if (isIOS()) {
-    if (isIPhone6p5in()) {                    //  11 Pro Max and XS Max
-      return '85px';
-    } else if (isIPhone6p1in()) {             // XR and 11
-      return '85px';
-    } else if (isIPhone5p8in()) {             //  X and 11 Pro
-      return '85px';
-    } else if (isIPhone5p5in()) {             //  6 Plus, 7 Plus and 8 Plus
-      return '68px';
-    } else if (isIPhone4p7in()) {             // 6, 7, 8, SE (2nd Gen)
-      return '65px';
-    } else if (isIPhone4in()) {               // SE
-      return '65px';
+    if (isIPhone4in() || isIPhone4p7in() || isIPhone5p5in()) {
+      return '22px';
+    } else if (hasIPhoneNotch()) {
+      return '40px';
     } else if (isIPad()) {
-      return '85px';
-    } else {
-      return '85px';
+      return '26px';
     }
   } else if (isAndroid()) {
-    return '44px';
+    return '0px';
   }
-  return '';
+  return '0px';
 }

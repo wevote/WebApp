@@ -3,8 +3,6 @@ import {
   isIOS,
   prepareForCordovaKeyboard,
   restoreStylesAfterCordovaKeyboard,
-  getIconBadgeMessageCount,
-  setIconBadgeMessageCount,
 } from './utils/cordovaUtils';
 import VoterActions from './actions/VoterActions';
 
@@ -52,14 +50,7 @@ export function initializationForCordova () { // eslint-disable-line
           () => console.log('WeVote FCM Message navigator.notification.alert dismissed'),
           'We Vote');
 
-        // Begin throwaway test code
-        getIconBadgeMessageCount().then((cntString) => {
-          const cnt = parseInt(cntString, 10) + 1 || 1;
-          setIconBadgeMessageCount(cnt.toString());
-        });
-        // End throwaway test code
-
-        // Save until Android is debugged
+        // Save until Android badge count is working, or we gave up on it
         // for (const [key, value] of Object.entries(payload)) {
         //   console.log(`'Firebase FCM - FCM element ${key}: ${value}`);
         //   console.log('key = \'' + key + '\'');
