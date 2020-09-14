@@ -551,6 +551,7 @@ class HeaderBar extends Component {
                   <HeaderNotificationMenu />
                   <div id="profileAvatarHeaderBar"
                     className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                    style={isCordova() ? { marginBottom: 2 } : {}}
                     onClick={this.toggleProfilePopUp}
                   >
                     <img

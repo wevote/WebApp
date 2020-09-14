@@ -35,7 +35,7 @@ export function initializationForCordova () { // eslint-disable-line
     window.addEventListener('keyboardDidHide', localRestoreStylesAfterCordovaKeyboard);
 
     // https://github.com/chemerisuk/cordova-plugin-firebase-messaging
-    // For iOS, this can't be tested in a simulator
+    // For iOS, this can't be tested in a simulator.  Works fine in simulator on Android.
     messaging.getToken().then((token) => {
       console.log('Firebase FCM - Firebase Cloud Messaging registration token: ', token);
       VoterActions.deviceStoreFirebaseCloudMessagingToken(token);

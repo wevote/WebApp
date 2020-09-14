@@ -228,7 +228,7 @@ const styles = theme => ({
     padding: 16,
   },
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
+    marginTop: hasIPhoneNotch() ? '107px !important' : '48px !important',
     minHeight: '200px',
     maxHeight: '350px',
     height: '80%',
