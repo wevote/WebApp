@@ -7,6 +7,7 @@ import AnalyticsActions from '../actions/AnalyticsActions';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import { cordovaDot } from '../utils/cordovaUtils';
 import FindOpinionsForm from '../components/ReadyNoApi/FindOpinionsForm';
+import FirstAndLastNameRequiredAlert from '../components/Widgets/FirstAndLastNameRequiredAlert';
 import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
 import LoadingWheel from '../components/LoadingWheel';
@@ -37,6 +38,7 @@ export default class Values extends Component {
     this.state = {
       issuesDisplayDecisionHasBeenMade: false,
       issuesToFollowShouldBeDisplayed: false,
+      voterIsSignedIn: false,
     };
   }
 
@@ -79,7 +81,10 @@ export default class Values extends Component {
   }
 
   onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+    this.setState({
+      voter: VoterStore.getVoter(),
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+    });
   }
 
   componentDidCatch (error, info) {
@@ -91,7 +96,7 @@ export default class Values extends Component {
     if (!this.state.voter) {
       return LoadingWheel;
     }
-    const { issuesFollowedCount, issuesToFollowShouldBeDisplayed } = this.state;
+    const { issuesFollowedCount, issuesToFollowShouldBeDisplayed, voterIsSignedIn } = this.state;
 
     let publicFiguresBlockToDisplay = null;
     const publicFiguresFollowedCount = 0;
@@ -145,6 +150,9 @@ export default class Values extends Component {
               </div>
             )}
             {!!(issuesFollowedCount) && <ValuesFollowedPreview /> }
+            {voterIsSignedIn && (
+              <FirstAndLastNameRequiredAlert />
+            )}
             <SuggestedFriendsPreview />
             <div className="card">
               <div className="card-main">

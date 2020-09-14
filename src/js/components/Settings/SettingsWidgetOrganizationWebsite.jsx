@@ -129,7 +129,7 @@ class SettingsWidgetOrganizationWebsite extends Component {
       <div className="">
         <form onSubmit={(e) => { e.preventDefault(); }}>
           <Row>
-            <Column>
+            <ColumnFullWidth>
               <FormControl classes={{ root: classes.formControl }}>
                 <Label htmlFor="organizationWebsiteTextArea">{ this.state.isOrganization ? 'Organization Website' : 'Your Website'}</Label>
                 <TextField
@@ -143,8 +143,7 @@ class SettingsWidgetOrganizationWebsite extends Component {
                   onChange={this.updateOrganizationWebsite}
                 />
               </FormControl>
-            </Column>
-            <Column />
+            </ColumnFullWidth>
           </Row>
         </form>
         <div className="u-gray-mid">{this.state.organizationWebsiteSavedStatus}</div>
@@ -172,9 +171,9 @@ const Row = styled.div`
   justify-content: space-between;
 `;
 
-const Column = styled.div`
+const ColumnFullWidth = styled.div`
   padding: 8px 12px;
-  width: 50%;
+  width: 100%;
 `;
 
 const Label = styled.label`

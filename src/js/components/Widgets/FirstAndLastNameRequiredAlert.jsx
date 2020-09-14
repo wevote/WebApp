@@ -8,8 +8,8 @@ import { stringContains } from '../../utils/textFormat';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import VoterStore from '../../stores/VoterStore';
 import SettingsWidgetFirstLastName from '../Settings/SettingsWidgetFirstLastName';
+import VoterStore from '../../stores/VoterStore';
 
 class FirstAndLastNameRequiredAlert extends Component {
   constructor (props) {
@@ -17,7 +17,7 @@ class FirstAndLastNameRequiredAlert extends Component {
     this.state = {
       displayThisComponent: false,
       friendInvitationsWaitingForVerification: [],
-      friendInvitationsWaitingForVerificationCount: 0,
+      // friendInvitationsWaitingForVerificationCount: 0,
       isOrganization: false,
       organizationName: '',
       organizationNameExists: false,
@@ -71,31 +71,31 @@ class FirstAndLastNameRequiredAlert extends Component {
     });
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if not needed
-    if (this.state.displayThisComponent !== nextState.displayThisComponent) {
-      return true;
-    }
-    if (this.state.friendInvitationsWaitingForVerificationCount !== nextState.friendInvitationsWaitingForVerificationCount) {
-      return true;
-    }
-    if (this.state.isOrganization !== nextState.isOrganization) {
-      return true;
-    }
-    if (this.state.organizationName !== nextState.organizationName) {
-      return true;
-    }
-    if (this.state.organizationNameRelevantAndMissing !== nextState.organizationNameRelevantAndMissing) {
-      return true;
-    }
-    if (this.state.voterDisplayName !== nextState.voterDisplayName) {
-      return true;
-    }
-    if (this.state.voterNameRelevantAndMissing !== nextState.voterNameRelevantAndMissing) {
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if not needed
+  //   if (this.state.displayThisComponent !== nextState.displayThisComponent) {
+  //     return true;
+  //   }
+  //   if (this.state.friendInvitationsWaitingForVerificationCount !== nextState.friendInvitationsWaitingForVerificationCount) {
+  //     return true;
+  //   }
+  //   if (this.state.isOrganization !== nextState.isOrganization) {
+  //     return true;
+  //   }
+  //   if (this.state.organizationName !== nextState.organizationName) {
+  //     return true;
+  //   }
+  //   if (this.state.organizationNameRelevantAndMissing !== nextState.organizationNameRelevantAndMissing) {
+  //     return true;
+  //   }
+  //   if (this.state.voterDisplayName !== nextState.voterDisplayName) {
+  //     return true;
+  //   }
+  //   if (this.state.voterNameRelevantAndMissing !== nextState.voterNameRelevantAndMissing) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   componentWillUnmount () {
     if (this.timer > 0) {
@@ -113,13 +113,13 @@ class FirstAndLastNameRequiredAlert extends Component {
   onFriendStoreChange () {
     // console.log('FirstAndLastNameRequiredAlert.jsx onFriendStoreChange');
     const friendInvitationsWaitingForVerification = FriendStore.friendInvitationsWaitingForVerification() || [];
-    let friendInvitationsWaitingForVerificationCount = 0;
-    if (friendInvitationsWaitingForVerification) {
-      friendInvitationsWaitingForVerificationCount = friendInvitationsWaitingForVerification.length;
-    }
+    // let friendInvitationsWaitingForVerificationCount = 0;
+    // if (friendInvitationsWaitingForVerification) {
+    //   friendInvitationsWaitingForVerificationCount = friendInvitationsWaitingForVerification.length;
+    // }
     this.setState({
       friendInvitationsWaitingForVerification,
-      friendInvitationsWaitingForVerificationCount,
+      // friendInvitationsWaitingForVerificationCount,
     });
   }
 
@@ -244,7 +244,7 @@ class FirstAndLastNameRequiredAlert extends Component {
             )}
             {(!isOrganization && !voterNameRelevantAndMissing) && (
               <Alert variant="success">
-                Success! Invitations to your friends will be from
+                Success! Your name will be shown as
                 {' '}
                 &apos;
                 {voterDisplayName}
@@ -294,21 +294,20 @@ const ExplanationText = styled.div`
 `;
 
 const ParagraphStyled = styled.div`
-  margin: 15px 15px;
   font-size: 16px;
   font-weight: normal;
+  margin: 15px 15px;
+  width: 100%;
 `;
 
 const PrintWrapper = styled.div`
-  position: relative;
-  display: flex;
-  margin: 0 -10px 10px -10px;
   background-color: white;
   background-clip: border-box;
   border: 2px solid #999;
-  @media (min-width: 450px) {
-    margin: 0 0 10px 0;
-  }
+  display: flex;
+  margin: 0 0 10px 0;
+  position: relative;
+  width: 100%;
   @media print {
     display: none;
   }

@@ -22,6 +22,7 @@ import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import { cordovaDot, historyPush, isCordova, isIPad, isAndroidTablet } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
+import FirstAndLastNameRequiredAlert from '../../components/Widgets/FirstAndLastNameRequiredAlert';
 import FriendActions from '../../actions/FriendActions';
 import LoadingWheel from '../../components/LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -300,6 +301,9 @@ class News extends Component {
                 <ActivityPostAddWrapper style={reduceConstraintsIfCordova}>
                   <ActivityPostAdd />
                 </ActivityPostAddWrapper>
+                {voterIsSignedIn && (
+                  <FirstAndLastNameRequiredAlert />
+                )}
                 {activityTidbitsList.map((oneActivityTidbit) => {
                   // console.log('oneActivityTidbit:', oneActivityTidbit);
                   // console.log('numberOfActivityTidbitsDisplayed:', numberOfActivityTidbitsDisplayed);
