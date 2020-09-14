@@ -17,6 +17,7 @@ import {
   hasIPhoneNotch, prepareForCordovaKeyboard,
   restoreStylesAfterCordovaKeyboard,
 } from '../../utils/cordovaUtils';
+import FirstAndLastNameRequiredAlert from './FirstAndLastNameRequiredAlert';
 import ItemActionBar from './ItemActionBar/ItemActionBar';
 import MeasureStore from '../../stores/MeasureStore';
 import stockAvatar from '../../../img/global/icons/avatar-generic.png';
@@ -62,7 +63,8 @@ class PositionStatementModal extends Component {
     }
 
     const voter = VoterStore.getVoter();
-    const { voter_is_signed_in: voterIsSignedIn, voter_photo_url_medium: voterPhotoUrlMedium } = voter;
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    const { voter_photo_url_medium: voterPhotoUrlMedium } = voter;
 
     let ballotItemDisplayName = '';
     let ballotItemType;
@@ -160,7 +162,8 @@ class PositionStatementModal extends Component {
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
-    const { voter_is_signed_in: voterIsSignedIn, voter_photo_url_medium: voterPhotoUrlMedium } = voter;
+    const voterIsSignedIn = VoterStore.getVoterIsSignedIn();
+    const { voter_photo_url_medium: voterPhotoUrlMedium } = voter;
     this.setState({
       voterIsSignedIn,
       voterPhotoUrlMedium,
@@ -260,6 +263,9 @@ class PositionStatementModal extends Component {
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <TextFieldWrapper>
+            {voterIsSignedIn && (
+              <FirstAndLastNameRequiredAlert />
+            )}
             <form
               className={classes.formStyles}
               onSubmit={this.savePositionStatement.bind(this)}

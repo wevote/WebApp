@@ -326,7 +326,7 @@ class SettingsWidgetFirstLastName extends Component {
                   {!this.props.hideFirstLastName && (
                     <span>
                       <Row>
-                        <Column>
+                        <ColumnHalfWidth>
                           <FormControl classes={{ root: classes.formControl }}>
                             <Label>First Name</Label>
                             <StyledTextField
@@ -343,8 +343,8 @@ class SettingsWidgetFirstLastName extends Component {
                               value={firstName}
                             />
                           </FormControl>
-                        </Column>
-                        <Column>
+                        </ColumnHalfWidth>
+                        <ColumnHalfWidth>
                           <FormControl classes={{ root: classes.formControl }}>
                             <Label>Last Name</Label>
                             <StyledTextField
@@ -360,14 +360,14 @@ class SettingsWidgetFirstLastName extends Component {
                               value={lastName}
                             />
                           </FormControl>
-                        </Column>
+                        </ColumnHalfWidth>
                       </Row>
                       <div className="u-gray-mid">{voterNameSavedStatus}</div>
                     </span>
                   )}
                   {!this.props.hideNameShownWithEndorsements && (
                     <Row>
-                      <Column>
+                      <ColumnFullWidth>
                         <FormControl classes={{ root: classes.formControl }}>
                           <Label htmlFor="organization-name">
                             Name Shown with Endorsements
@@ -385,8 +385,7 @@ class SettingsWidgetFirstLastName extends Component {
                             value={organizationName}
                           />
                         </FormControl>
-                      </Column>
-                      <Column />
+                      </ColumnFullWidth>
                       <div className="u-gray-mid">
                         {organizationNameSavedStatus}
                       </div>
@@ -432,7 +431,12 @@ const Row = styled.div`
   justify-content: space-between;
 `;
 
-const Column = styled.div`
+const ColumnFullWidth = styled.div`
+  padding: 6px 12px;
+  width: 100%;
+`;
+
+const ColumnHalfWidth = styled.div`
   padding: 6px 12px;
   width: 50%;
 `;

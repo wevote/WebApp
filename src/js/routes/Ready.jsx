@@ -12,6 +12,7 @@ import cookies from '../utils/cookies';
 import EditAddressOneHorizontalRow from '../components/Ready/EditAddressOneHorizontalRow';
 import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import FindOpinionsForm from '../components/ReadyNoApi/FindOpinionsForm';
+import FirstAndLastNameRequiredAlert from '../components/Widgets/FirstAndLastNameRequiredAlert';
 import FriendActions from '../actions/FriendActions';
 import { historyPush, isWebApp } from '../utils/cordovaUtils';
 import IssueActions from '../actions/IssueActions';
@@ -42,6 +43,7 @@ class Ready extends Component {
       issuesDisplayDecisionHasBeenMade: false,
       issuesShouldBeDisplayed: false,
       textForMapSearch: '',
+      voterIsSignedIn: false,
     };
   }
 
@@ -105,6 +107,7 @@ class Ready extends Component {
     const textForMapSearch = VoterStore.getTextForMapSearch();
     this.setState({
       textForMapSearch,
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn,
     });
   }
 
@@ -120,7 +123,7 @@ class Ready extends Component {
     renderLog('Ready');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       chosenReadyIntroductionText, chosenReadyIntroductionTitle, issuesShouldBeDisplayed,
-      locationGuessClosed, textForMapSearch,
+      locationGuessClosed, textForMapSearch, voterIsSignedIn,
     } = this.state;
 
     const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;
@@ -203,6 +206,9 @@ class Ready extends Component {
               <ReadyTaskPlan
                 arrowsOn
               />
+              {voterIsSignedIn && (
+                <FirstAndLastNameRequiredAlert />
+              )}
               {nextReleaseFeaturesEnabled && (
                 <ReadyTaskFriends
                   arrowsOn

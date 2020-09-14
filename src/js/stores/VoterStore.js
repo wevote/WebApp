@@ -803,6 +803,10 @@ class VoterStore extends ReduceStore {
           if (notificationSettingsFlags === undefined) {
             notificationSettingsFlags = state.voter.notification_settings_flags;
           }
+          if (action.res.voter_updated && this.getLinkedOrganizationWeVoteId()) {
+            // console.log('voter_updated:', action.res.voter_updated);
+            OrganizationActions.organizationRetrieve(this.getLinkedOrganizationWeVoteId());
+          }
           return {
             ...state,
             voter: {
