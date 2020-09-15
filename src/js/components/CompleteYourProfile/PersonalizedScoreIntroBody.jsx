@@ -16,6 +16,7 @@ class PersonalizedScoreIntroBody extends Component {
     pathname: PropTypes.string,
     markPersonalizedScoreIntroCompleted: PropTypes.func,
     show: PropTypes.bool,
+    stepAdvanced: PropTypes.func,
     toggleFunction: PropTypes.func,
   };
 
@@ -48,8 +49,8 @@ class PersonalizedScoreIntroBody extends Component {
           closeSupportOpposeCountDisplayModal: true,
           controlAdviserMaterialUIPopoverFromProp: false,
           explanationTextTopPlain: null,
-          explanationTextTopBlue: <>A Personalized Score is the number of people who support a candidate.</>,
-          explanationTextBottomPlain: <>(We&apos;ll explain! Click the button below to continue.)</>,
+          explanationTextTopBlue: <>Your Personalized Score is the number of people who support one candidate, from among the people you follow.</>,
+          explanationTextBottomPlain: <>(We&apos;ll explain! Click the &quot;Say What?!?&quot; button below to learn more.)</>,
           explanationTextBottomBlue: null,
           openAdviserMaterialUIPopover: false,
           openSupportOpposeCountDisplayModal: false,
@@ -300,6 +301,9 @@ class PersonalizedScoreIntroBody extends Component {
     if (nextStep) {
       this.setState(personalizedScoreSteps[nextStep]);
     }
+    if (this.props.stepAdvanced) {
+      this.props.stepAdvanced();
+    }
   };
 
   clickPreviousStepButton = () => {
@@ -309,6 +313,9 @@ class PersonalizedScoreIntroBody extends Component {
     // console.log('clickPreviousStepButton, previousStep:', previousStep);
     if (previousStep) {
       this.setState(personalizedScoreSteps[previousStep]);
+    }
+    if (this.props.stepAdvanced) {
+      this.props.stepAdvanced();
     }
   };
 

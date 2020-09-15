@@ -38,7 +38,7 @@ class SharedItemIntroduction extends Component {
       <OuterWrapper>
         <InnerWrapper>
           <IntroHeader>
-            How We Vote helps you:
+            We Vote helps you:
           </IntroHeader>
           <ListWrapper>
             <ListMaxWidth>
@@ -50,11 +50,11 @@ class SharedItemIntroduction extends Component {
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                 {showAllStepOne ? (
                   <StepText>
-                    Make a plan for casting your vote. Verify your registration. Find your polling location.
+                    Make a plan for casting your vote. See your entire ballot. Find your polling location.
                   </StepText>
                 ) : (
                   <StepText onClick={this.onClickShowAllStepOne}>
-                    Make a plan for casting your vote. Verify your...
+                    Make a plan for casting your vote. See your...
                     {' '}
                     (
                     <span className="u-cursor--pointer u-link-color">
@@ -100,11 +100,11 @@ class SharedItemIntroduction extends Component {
                     {' '}
                     Now show your friends how to make sense of their decisions, so they can vote their values.
                     {' '}
-                    And the more of your friends you help to vote, the more impact you will have on the outcome of the election.
+                    The more of your friends who vote, the more impact you will have on the outcome of the election.
                   </StepText>
                 ) : (
                   <StepText onClick={this.onClickShowAllStepThree}>
-                    You&apos;ve done your homework deciding...
+                    Show your friends how to make sense of...
                     {' '}
                     (
                     <span className="u-cursor--pointer u-link-color">
