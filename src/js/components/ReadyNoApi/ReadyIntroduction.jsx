@@ -36,10 +36,10 @@ class ReadyIntroduction extends Component {
         <InnerWrapper>
           <IntroHeader>
             <span className="u-show-mobile-tablet">
-              How We Vote helps you:
+              We Vote helps you:
             </span>
             <span className="u-show-desktop">
-              How We Vote helps:
+              We Vote helps you:
             </span>
           </IntroHeader>
           <ListWrapper>
@@ -51,7 +51,7 @@ class ReadyIntroduction extends Component {
               {contentUnfurled && (
                 <ListRow>
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
-                  <StepText>Verify your registration. Make a plan for casting your vote. Find your polling location.</StepText>
+                  <StepText>Make a plan for casting your vote. See your entire ballot. Find your polling location.</StepText>
                 </ListRow>
               )}
 
@@ -82,7 +82,7 @@ class ReadyIntroduction extends Component {
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
                     <ReadMore
-                      textToDisplay="You've done your homework deciding how to vote. Now show your friends how to make sense of their decisions, so they can vote their values. And the more of your friends you help to vote, the more impact you will have on the outcome of the election."
+                      textToDisplay="Show your friends how to make sense of their decisions, so they can vote their values. The more of your friends who vote, the more impact you will have on the outcome of the election."
                       numberOfLines={3}
                     />
                   </StepText>

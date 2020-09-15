@@ -41,9 +41,12 @@ class SharedItemModal extends Component {
     super(props);
     this.state = {
       currentSlideIndex: 0,
+      isFollowing: false,
+      voterLinkedOrganizationWeVoteId: '',
       maxSlideIndex: 2,
       organizationName: '',
       organizationPhotoUrlMedium: '',
+      organizationWeVoteId: '',
       personalizedScoreIntroWatchedThisSession: false,
       sharedByOrganizationWeVoteId: '',
       slideHtmlContentDict: {},
@@ -86,6 +89,11 @@ class SharedItemModal extends Component {
             });
           }
         }
+        if (organization) {
+          this.setState({
+            organizationWeVoteId: organization.organization_we_vote_id,
+          });
+        }
       } else {
         ShareActions.sharedItemRetrieveByCode(sharedItemCode);
       }
@@ -98,6 +106,10 @@ class SharedItemModal extends Component {
     this.setState({
       sharedItemCode,
     });
+  }
+
+  componentDidUpdate () {
+    this.scrollToTop();
   }
 
   componentWillUnmount () {
@@ -144,6 +156,13 @@ class SharedItemModal extends Component {
         });
       }
     }
+    if (organization) {
+      const organizationWeVoteId = organization.organization_we_vote_id;
+      this.setState({
+        isFollowing: OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId),
+        organizationWeVoteId,
+      });
+    }
   }
 
   onShareStoreChange () {
@@ -169,6 +188,11 @@ class SharedItemModal extends Component {
       } else {
         OrganizationActions.organizationRetrieve(sharedByOrganizationWeVoteId);
       }
+      if (organization) {
+        this.setState({
+          organizationWeVoteId: organization.organization_we_vote_id,
+        });
+      }
       this.setState({
         sharedByOrganizationType,
         sharedByOrganizationWeVoteId,
@@ -178,10 +202,9 @@ class SharedItemModal extends Component {
   }
 
   onVoterStoreChange () {
-    const personalizedScoreIntroCompleted = VoterStore.getInterfaceFlagState(VoterConstants.PERSONALIZED_SCORE_INTRO_COMPLETED);
     this.setState({
-      personalizedScoreIntroCompleted,
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+      voterLinkedOrganizationWeVoteId: VoterStore.getLinkedOrganizationWeVoteId(),
     }, this.updateSlideshowVariables);
   }
 
@@ -208,30 +231,28 @@ class SharedItemModal extends Component {
     // Nothing to do
   }
 
+  personalizedScoreStepAdvanced = () => {
+    this.scrollToTop();
+  }
+
   updateSlideshowVariables = () => {
-    const { personalizedScoreIntroCompleted, voterIsSignedIn } = this.state;
+    const { organizationName, voterIsSignedIn } = this.state;
     // We want to show two or three slides, because we need to take training opportunities.
     let maxSlideIndex = 2; // Default
-    let personalizedScoreHtml;
     let showCloseModalTextOnThisSlideIndex = 2;
-    let showPersonalizedScoreIntro = true;
-    const showVoterSignIn = !voterIsSignedIn;
     const slideHtmlContentDict = {};
-    let stepLabels;
-    let voterSignInHtml = (
-      <SignInWrapper>
-        <IntroHeader>
-          You are signed in!
-        </IntroHeader>
-      </SignInWrapper>
-    );
-    if (voterIsSignedIn && personalizedScoreIntroCompleted) {
-      showPersonalizedScoreIntro = true;
-    } else if (!voterIsSignedIn) {
-      // Only showPersonalizedScoreIntro if !personalizedScoreIntroCompleted
-      showPersonalizedScoreIntro = !personalizedScoreIntroCompleted;
+    let voterSignInHtml;
+    if (voterIsSignedIn) {
       voterSignInHtml = (
-        <SignInWrapper>
+        <SignInWrapper id="voterSignInWrapper">
+          <IntroductionTopHeader>
+            You are signed in and ready to go!
+          </IntroductionTopHeader>
+        </SignInWrapper>
+      );
+    } else {
+      voterSignInHtml = (
+        <SignInWrapper id="voterSignInWrapper">
           <IntroHeader>
             Do you already have an account?
             {' '}
@@ -246,58 +267,45 @@ class SharedItemModal extends Component {
         </SignInWrapper>
       );
     }
-    if (showPersonalizedScoreIntro && showVoterSignIn) {
-      maxSlideIndex = 2;
-      showCloseModalTextOnThisSlideIndex = 2;
-    } else if (showVoterSignIn) {
-      maxSlideIndex = 1;
-      showCloseModalTextOnThisSlideIndex = 1;
-    } else {
-      maxSlideIndex = 1;
-      showCloseModalTextOnThisSlideIndex = 1;
-    }
     slideHtmlContentDict[0] = (
-      <IntroductionWrapper>
+      <IntroductionWrapper id="introductionWrapper">
         <IntroductionTopHeader>
-          Let&apos;s get started!
-          <br />
-          Please read these
-          {' '}
-          {maxSlideIndex + 1}
-          {' '}
-          quick slides about using this website.
+          {organizationName ? (
+            <>
+              {organizationName}
+              {' '}
+              has invited you to We Vote.
+            </>
+          ) : (
+            <>
+              You&apos;ve been invited to We Vote.
+            </>
+          )}
         </IntroductionTopHeader>
         <SharedItemIntroduction />
       </IntroductionWrapper>
     );
-    if (showPersonalizedScoreIntro) {
-      personalizedScoreHtml = (
-        <PersonalizedScoreWrapper>
-          <SlideShowTitle>
-            What&apos;s a Personalized Score?
-          </SlideShowTitle>
-          <PersonalizedScoreDescription>
-            <PersonalizedScoreIntroBody
-              markPersonalizedScoreIntroCompleted={this.markPersonalizedScoreIntroCompleted}
-              pathname=""
-              show
-              toggleFunction={this.personalizedScoreIntroModalToggle}
-            />
-          </PersonalizedScoreDescription>
-        </PersonalizedScoreWrapper>
-      );
-    }
-    if (showPersonalizedScoreIntro && showVoterSignIn) {
-      slideHtmlContentDict[1] = personalizedScoreHtml;
-      slideHtmlContentDict[2] = voterSignInHtml;
-      stepLabels = ['Shared Page Introduction', 'Personalized Score', 'Signed In'];
-    } else if (showVoterSignIn) {
-      slideHtmlContentDict[1] = voterSignInHtml;
-      stepLabels = ['Shared Page Introduction', 'Signed In'];
-    } else {
-      slideHtmlContentDict[1] = personalizedScoreHtml;
-      stepLabels = ['Shared Page Introduction', 'Personalized Score'];
-    }
+    const personalizedScoreHtml = (
+      <PersonalizedScoreWrapper id="personalizedScoreWrapper">
+        <SlideShowTitle>
+          What&apos;s a Personalized Score?
+        </SlideShowTitle>
+        <PersonalizedScoreDescription>
+          <PersonalizedScoreIntroBody
+            markPersonalizedScoreIntroCompleted={this.markPersonalizedScoreIntroCompleted}
+            pathname=""
+            show
+            stepAdvanced={this.personalizedScoreStepAdvanced}
+            toggleFunction={this.personalizedScoreIntroModalToggle}
+          />
+        </PersonalizedScoreDescription>
+      </PersonalizedScoreWrapper>
+    );
+    maxSlideIndex = 2;
+    showCloseModalTextOnThisSlideIndex = 2;
+    slideHtmlContentDict[1] = personalizedScoreHtml;
+    slideHtmlContentDict[2] = voterSignInHtml;
+    const stepLabels = ['Shared Page Introduction', 'Personalized Score', 'Signed In'];
     this.setState({
       maxSlideIndex,
       showCloseModalTextOnThisSlideIndex,
@@ -306,12 +314,32 @@ class SharedItemModal extends Component {
     });
   }
 
+  scrollToTop = () => {
+    // console.log('scrollToTop');
+    const introductionWrapper = document.getElementById('introductionWrapper');
+    if (introductionWrapper) {
+      // console.log('introductionWrapper found');
+      introductionWrapper.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const personalizedScoreWrapper = document.getElementById('personalizedScoreWrapper');
+    if (personalizedScoreWrapper) {
+      // console.log('personalizedScoreWrapper found');
+      personalizedScoreWrapper.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const voterSignInWrapper = document.getElementById('voterSignInWrapper');
+    if (voterSignInWrapper) {
+      // console.log('voterSignInWrapper found');
+      voterSignInWrapper.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   goToSpecificSlide = (index) => {
     const { maxSlideIndex } = this.state;
     // console.log('goToSpecificSlide index:', index);
     const minSlideIndex = 0;
     hideZenDeskHelpVisibility();
     if (index <= maxSlideIndex && index >= minSlideIndex) {
+      // this.scrollToTop();
       this.setState({
         currentSlideIndex: index,
       });
@@ -323,6 +351,7 @@ class SharedItemModal extends Component {
     const { currentSlideIndex, maxSlideIndex } = this.state;
     // console.log('nextSlide currentSlideIndex:', currentSlideIndex);
     if (currentSlideIndex < maxSlideIndex) {
+      // this.scrollToTop();
       this.setState({
         currentSlideIndex: currentSlideIndex + 1,
       });
@@ -335,6 +364,7 @@ class SharedItemModal extends Component {
     const { currentSlideIndex } = this.state;
     const minSlideIndex = 0;
     if (currentSlideIndex > minSlideIndex) {
+      // this.scrollToTop();
       this.setState({
         currentSlideIndex: currentSlideIndex - 1,
       });
@@ -346,10 +376,12 @@ class SharedItemModal extends Component {
     // console.log('SharedItemModal render');
     const { classes } = this.props;
     const {
-      currentSlideIndex, days, electionDate,
-      organizationName, organizationPhotoUrlMedium, personalizedScoreIntroCompleted,
+      currentSlideIndex, days, electionDate, isFollowing, isFriend,
+      organizationName, organizationPhotoUrlMedium, organizationWeVoteId,
+      personalizedScoreIntroCompleted,
       sharedByOrganizationType, sharedByOrganizationWeVoteId, sharedByVoterWeVoteId,
       sharedItemCode, showCloseModalTextOnThisSlideIndex, slideHtmlContentDict, stepLabels,
+      voterLinkedOrganizationWeVoteId,
     } = this.state;
 
     if (!sharedItemCode) {
@@ -365,6 +397,18 @@ class SharedItemModal extends Component {
 
     const sharingContextText = 'has shared this page with you.';
     const slideHtmlContent = slideHtmlContentDict[currentSlideIndex];
+    const isLookingAtSelf = voterLinkedOrganizationWeVoteId === organizationWeVoteId;
+    const withButtons = !isLookingAtSelf;
+    let textNextToInfoIcon = null;
+    const nameForNextToInfoIcon = organizationName || 'This person';
+    const nameForNextToInfoIconMidSentence = organizationName || 'this person';
+    if (isFriend) {
+      textNextToInfoIcon = `${nameForNextToInfoIcon}'s opinions will be added to your personalized scores. `;
+    } else if (isFollowing) {
+      textNextToInfoIcon = `${nameForNextToInfoIcon}'s opinions will be added to your scores. Add Friend to see friend's-only opinions.`;
+    } else {
+      textNextToInfoIcon = `Click Add Friend or Follow to see ${nameForNextToInfoIconMidSentence}'s opinions. (Friends also see friend's-only opinions.)`;
+    }
     return (
       <Dialog
         id="sharedItemModal"
@@ -378,33 +422,33 @@ class SharedItemModal extends Component {
         }}
       >
         <ContentWrapper>
-          <ModalTitleArea>
-            {showCountDownDays && (
-              <ElectionCountdownText>
-                <ElectionCountdownDays>
-                  {days}
+          <ModalTitleArea withButtons={withButtons}>
+            <ModalTitleOneRow>
+              {showCountDownDays && (
+                <ElectionCountdownText>
+                  <ElectionCountdownDays>
+                    {days}
+                    {' '}
+                    days
+                  </ElectionCountdownDays>
                   {' '}
-                  days
-                </ElectionCountdownDays>
-                {' '}
-                until your next election on
-                {' '}
-                <span className="u-no-break">
-                  {formatDateToMonthDayYear(electionDate)}
-                  .
-                </span>
-              </ElectionCountdownText>
-            )}
-            <IconButton
-              aria-label="Close"
-              className={classes.closeButtonAbsolute}
-              onClick={this.closeSharedItemModalLocal}
-              id="closeSharedItemModal"
-            >
-              <Close />
-            </IconButton>
-          </ModalTitleArea>
-          <ModalContent style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }}>
+                  until your next election on
+                  {' '}
+                  <span className="u-no-break">
+                    {formatDateToMonthDayYear(electionDate)}
+                    .
+                  </span>
+                </ElectionCountdownText>
+              )}
+              <IconButton
+                aria-label="Close"
+                className={classes.closeButtonAbsolute}
+                onClick={this.closeSharedItemModalLocal}
+                id="closeSharedItemModal"
+              >
+                <Close />
+              </IconButton>
+            </ModalTitleOneRow>
             {!!(sharedByOrganizationWeVoteId && organizationName) && (
               <SharedByOrganizationOuterWrapper>
                 <SharedByOrganizationInnerWrapper>
@@ -430,15 +474,12 @@ class SharedItemModal extends Component {
                         <SharedContextText>{sharingContextText}</SharedContextText>
                       </OrganizationNameColumn>
                     </SharedByOrganization>
-                    {!!(organizationName) && (
-                      <OpinionsAddedToPersonalizedScore>
-                        <Info classes={{ root: classes.informationIcon }} />
-                        <OpinionsAddedText>
-                          {organizationName}
-                          &apos;s opinions will be added to your personalized scores.
-                        </OpinionsAddedText>
-                      </OpinionsAddedToPersonalizedScore>
-                    )}
+                    <OpinionsAddedToPersonalizedScore>
+                      <Info classes={{ root: classes.informationIcon }} />
+                      <OpinionsAddedText>
+                        {textNextToInfoIcon}
+                      </OpinionsAddedText>
+                    </OpinionsAddedToPersonalizedScore>
                   </SharedByOrganizationTopRow>
                   <SharedByOrganizationBottomRow>
                     <ActionButtonsRow>
@@ -464,6 +505,8 @@ class SharedItemModal extends Component {
                 </SharedByOrganizationInnerWrapper>
               </SharedByOrganizationOuterWrapper>
             )}
+          </ModalTitleArea>
+          <ModalContent style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }} withButtons={withButtons}>
             {slideHtmlContent}
             <br />
             <br />
@@ -669,7 +712,7 @@ const IntroductionTopHeader = styled.div`
   color: #2e3c5d;
   font-size: 24px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding-top: 20px;
   padding-bottom: 0;
   text-align: center;
@@ -683,23 +726,27 @@ const ModalTitleArea = styled.div`
   box-shadow: 0 20px 40px -25px #999;
   padding: 8px;
   z-index: 999;
-  display: flex;
-  height: 40px;
-  justify-content: flex-start;
+  ${({ withButtons }) => (withButtons ? 'height: 177px;' : 'height: 147px;')}
   position: absolute;
   top: 0;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    height: 35px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    ${({ withButtons }) => (withButtons ? 'height: 160px;' : 'height: 130px;')}
   }
 `;
 
-const ModalContent = styled.div`
-  height: ${isWebApp() ? '100%' : 'unset'};
+const ModalTitleOneRow = styled.div`
+  display: flex;
+  justify-content: flex-start;
   width: 100%;
-  margin: 50px 0 0 0 !important;
+`;
+
+const ModalContent = styled.div`
+  height: ${isWebApp() ? 'unset' : 'unset'};
+  width: 100%;
+  ${({ withButtons }) => (withButtons ? 'margin: 190px 0 0 0 !important;' : 'margin: 150px 0 0 0 !important;')}
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    margin: 40px 0 0 0 !important;
+    ${({ withButtons }) => (withButtons ? 'margin: 175px 0 0 0 !important;' : 'margin: 145px 0 0 0 !important;')}
   }
 `;
 
@@ -745,28 +792,23 @@ const PersonalizedScoreDescription = styled.div`
 `;
 
 const PersonalizedScoreWrapper = styled.div`
-  margin: 25px 15px;
+  margin: 0 15px;
   margin-bottom: 45px;
 `;
 
 const SharedByOrganizationOuterWrapper = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
   display: flex;
   justify-content: center;
   width: 100% !important;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     position: relative;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-  }
 `;
 
 const SharedByOrganizationInnerWrapper = styled.div`
   margin: 0 !important;
   max-width: 450px;
-  padding: 0 12px 12px 12px !important;
+  padding: 0 4px 12px 4px !important;
   transition: all 200ms ease-in;
 `;
 

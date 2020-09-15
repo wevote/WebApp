@@ -150,7 +150,7 @@ class FriendInvitationOnboardingIntro extends Component {
           )}
         </FriendInvitationTopHeader>
         <FriendInvitationIntroHeader className="FriendInvitationIntroHeader">
-          How We Vote helps you:
+          We Vote helps you:
         </FriendInvitationIntroHeader>
         <FriendInvitationListWrapper>
           <FriendInvitationList>
@@ -179,7 +179,7 @@ class FriendInvitationOnboardingIntro extends Component {
                       {' '}
                     </>
                   )}
-                  Make a plan for casting your vote. Verify your registration. Find your polling location.
+                  Make a plan for casting your vote. See your entire ballot. Find your polling location.
                 </StepText>
               ) : (
                 <StepText onClick={this.onClickShowAllStepOne}>
@@ -250,11 +250,11 @@ class FriendInvitationOnboardingIntro extends Component {
                   {' '}
                   Now show your friends how to make sense of their decisions, so they can vote their values.
                   {' '}
-                  And the more of your friends you help to vote, the more impact you will have on the outcome of the election.
+                  The more of your friends who vote, the more impact you will have on the outcome of the election.
                 </StepText>
               ) : (
                 <StepText onClick={this.onClickShowAllStepThree}>
-                  You&apos;ve done your homework deciding...
+                  Show your friends how to make sense of...
                   {' '}
                   (
                   <span className="u-cursor--pointer u-link-color">
@@ -326,6 +326,7 @@ const FriendInvitationListWrapper = styled.div`
 `;
 
 const FriendInvitationList = styled.div`
+  margin-bottom: 100px !important;
   max-width: 450px;
 `;
 
