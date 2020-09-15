@@ -73,7 +73,7 @@ class ShareModalOption extends Component {
                 {icon}
               </Icon>
               <Text>
-                {title}
+                {copyLinkCopied ? 'Copied!' : title}
               </Text>
             </div>
           </CopyToClipboard>
