@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import { renderLog } from '../../utils/logging';
@@ -9,10 +10,11 @@ import { renderLog } from '../../utils/logging';
 class ShareModalOption extends Component {
   static propTypes = {
     backgroundColor: PropTypes.string,
+    classes: PropTypes.object,
     copyLink: PropTypes.bool,
-    noLink: PropTypes.bool,
     icon: PropTypes.object,
     link: PropTypes.string,
+    noLink: PropTypes.bool,
     onClickFunction: PropTypes.func,
     title: PropTypes.string,
     uniqueExternalId: PropTypes.string,
@@ -20,7 +22,9 @@ class ShareModalOption extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      copyLinkCopied: false,
+    };
 
     this.copyLink = this.copyLink.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -33,9 +37,20 @@ class ShareModalOption extends Component {
     }
   }
 
+  // onCopyToClipboardClick = () => {
+  //   openSnackbar({ message: 'Copied!' });
+  //   this.setState({
+  //     copyLinkCopied: true,
+  //   });
+  // }
+  //  onClick={this.onCopyToClipboardClick}
+
   copyLink () {
     // console.log('ShareModalOption copyLink');
     openSnackbar({ message: 'Copied!' });
+    this.setState({
+      copyLinkCopied: true,
+    });
     if (this.props.onClickFunction) {
       this.props.onClickFunction();
     }
@@ -43,7 +58,8 @@ class ShareModalOption extends Component {
 
   render () {
     renderLog('ShareModalOption');  // Set LOG_RENDER_EVENTS to log all renders
-    const { backgroundColor, copyLink, icon, link, noLink, title, uniqueExternalId } = this.props;
+    const { backgroundColor, classes, copyLink, icon, link, noLink, title, uniqueExternalId } = this.props;
+    const { copyLinkCopied } = this.state;
     const linkToBeShared = link.replace(/https:\/\/file:.*?\/|https:\/\/localhost.*?\//, 'https://wevote.us/');
     console.log('ShareModalOption copyLink:', copyLink, ', noLink:', noLink, 'link:', link, ', linkToBeShared:', linkToBeShared);
     return (
@@ -51,7 +67,9 @@ class ShareModalOption extends Component {
         {copyLink ? (
           <CopyToClipboard text={linkToBeShared} onCopy={this.copyLink}>
             <div id={`shareModalOption-${uniqueExternalId}`}>
-              <Icon background={backgroundColor}>
+              <Icon
+                className={copyLinkCopied ? classes.copyLinkIconCopied : classes.copyLinkIcon}
+              >
                 {icon}
               </Icon>
               <Text>
@@ -94,6 +112,15 @@ class ShareModalOption extends Component {
     );
   }
 }
+
+const styles = () => ({
+  copyLinkIcon: {
+    background: '#000',
+  },
+  copyLinkIconCopied: {
+    background: '#1fc06f',
+  },
+});
 
 const Wrapper = styled.div`
   cursor: pointer;
@@ -155,4 +182,4 @@ const Text = styled.h3`
   color: black !important;
 `;
 
-export default ShareModalOption;
+export default withTheme(withStyles(styles)(ShareModalOption));
