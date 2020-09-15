@@ -41,6 +41,7 @@ class SharedItemModal extends Component {
     super(props);
     this.state = {
       currentSlideIndex: 0,
+      hideSharedByIntro: false,
       isFollowing: false,
       voterLinkedOrganizationWeVoteId: '',
       maxSlideIndex: 2,
@@ -339,9 +340,10 @@ class SharedItemModal extends Component {
     const minSlideIndex = 0;
     hideZenDeskHelpVisibility();
     if (index <= maxSlideIndex && index >= minSlideIndex) {
-      // this.scrollToTop();
+      const hideSharedByIntro = index !== 0;
       this.setState({
         currentSlideIndex: index,
+        hideSharedByIntro,
       });
     }
   }
@@ -351,9 +353,11 @@ class SharedItemModal extends Component {
     const { currentSlideIndex, maxSlideIndex } = this.state;
     // console.log('nextSlide currentSlideIndex:', currentSlideIndex);
     if (currentSlideIndex < maxSlideIndex) {
-      // this.scrollToTop();
+      const nextSlideIndex = currentSlideIndex + 1;
+      const hideSharedByIntro = nextSlideIndex !== 0;
       this.setState({
         currentSlideIndex: currentSlideIndex + 1,
+        hideSharedByIntro,
       });
     }
   }
@@ -364,9 +368,11 @@ class SharedItemModal extends Component {
     const { currentSlideIndex } = this.state;
     const minSlideIndex = 0;
     if (currentSlideIndex > minSlideIndex) {
-      // this.scrollToTop();
+      const nextSlideIndex = currentSlideIndex - 1;
+      const hideSharedByIntro = nextSlideIndex !== 0;
       this.setState({
-        currentSlideIndex: currentSlideIndex - 1,
+        currentSlideIndex: nextSlideIndex,
+        hideSharedByIntro,
       });
     }
   }
@@ -376,7 +382,8 @@ class SharedItemModal extends Component {
     // console.log('SharedItemModal render');
     const { classes } = this.props;
     const {
-      currentSlideIndex, days, electionDate, isFollowing, isFriend,
+      currentSlideIndex, days, electionDate,
+      hideSharedByIntro, isFollowing, isFriend,
       organizationName, organizationPhotoUrlMedium, organizationWeVoteId,
       personalizedScoreIntroCompleted,
       sharedByOrganizationType, sharedByOrganizationWeVoteId, sharedByVoterWeVoteId,
@@ -422,7 +429,7 @@ class SharedItemModal extends Component {
         }}
       >
         <ContentWrapper>
-          <ModalTitleArea withButtons={withButtons}>
+          <ModalTitleArea hideSharedByIntro={hideSharedByIntro} withButtons={withButtons}>
             <ModalTitleOneRow>
               {showCountDownDays && (
                 <ElectionCountdownText>
@@ -449,7 +456,7 @@ class SharedItemModal extends Component {
                 <Close />
               </IconButton>
             </ModalTitleOneRow>
-            {!!(sharedByOrganizationWeVoteId && organizationName) && (
+            {!!(sharedByOrganizationWeVoteId && organizationName && !hideSharedByIntro) && (
               <SharedByOrganizationOuterWrapper>
                 <SharedByOrganizationInnerWrapper>
                   <SharedByOrganizationTopRow>
@@ -474,12 +481,14 @@ class SharedItemModal extends Component {
                         <SharedContextText>{sharingContextText}</SharedContextText>
                       </OrganizationNameColumn>
                     </SharedByOrganization>
-                    <OpinionsAddedToPersonalizedScore>
-                      <Info classes={{ root: classes.informationIcon }} />
-                      <OpinionsAddedText>
-                        {textNextToInfoIcon}
-                      </OpinionsAddedText>
-                    </OpinionsAddedToPersonalizedScore>
+                    {!isLookingAtSelf && (
+                      <OpinionsAddedToPersonalizedScore>
+                        <Info classes={{ root: classes.informationIcon }} />
+                        <OpinionsAddedText>
+                          {textNextToInfoIcon}
+                        </OpinionsAddedText>
+                      </OpinionsAddedToPersonalizedScore>
+                    )}
                   </SharedByOrganizationTopRow>
                   <SharedByOrganizationBottomRow>
                     <ActionButtonsRow>
@@ -506,11 +515,18 @@ class SharedItemModal extends Component {
               </SharedByOrganizationOuterWrapper>
             )}
           </ModalTitleArea>
-          <ModalContent style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }} withButtons={withButtons}>
-            {slideHtmlContent}
-            <br />
-            <br />
-            <br />
+          <ModalContent
+            style={{ padding: `${isWebApp() ? 'undefined' : '37px 0 2px 0'}` }}
+          >
+            <ModalContentInnerWrapper
+              hideSharedByIntro={hideSharedByIntro}
+              withButtons={withButtons}
+            >
+              {slideHtmlContent}
+              <br />
+              <br />
+              <br />
+            </ModalContentInnerWrapper>
           </ModalContent>
         </ContentWrapper>
         <FooterBarWrapper style={{ height: `${cordovaFooterHeight()}` }}>
@@ -721,18 +737,26 @@ const IntroductionTopHeader = styled.div`
   }
 `;
 
+const ModalTitleSharedByHidden = `
+  height: 40px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    height: 40px;
+  }
+`;
+
+const ModalTitleSharedByShown = `
+  // height: 177px;
+`;
+
 const ModalTitleArea = styled.div`
   background: #fff;
   box-shadow: 0 20px 40px -25px #999;
   padding: 8px;
   z-index: 999;
-  ${({ withButtons }) => (withButtons ? 'height: 177px;' : 'height: 147px;')}
   position: absolute;
   top: 0;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    ${({ withButtons }) => (withButtons ? 'height: 160px;' : 'height: 130px;')}
-  }
+  ${({ hideSharedByIntro }) => ((hideSharedByIntro) ? ModalTitleSharedByHidden : ModalTitleSharedByShown)}
 `;
 
 const ModalTitleOneRow = styled.div`
@@ -741,15 +765,30 @@ const ModalTitleOneRow = styled.div`
   width: 100%;
 `;
 
-const ModalContent = styled.div`
-  height: ${isWebApp() ? 'unset' : 'unset'};
-  width: 100%;
-  ${({ withButtons }) => (withButtons ? 'margin: 190px 0 0 0 !important;' : 'margin: 150px 0 0 0 !important;')}
+const ModalContentSharedByHidden = `
+  // background: green;
+  margin: 50px 0 0 0 !important;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    ${({ withButtons }) => (withButtons ? 'margin: 175px 0 0 0 !important;' : 'margin: 145px 0 0 0 !important;')}
+    margin: 46px 0 0 0 !important;
   }
 `;
 
+const ModalContentSharedByShown = `
+  // background: red;
+  margin: 190px 0 0 0 !important;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin: 147px 0 0 0 !important;
+  }
+`;
+
+const ModalContent = styled.div`
+  height: ${isWebApp() ? 'unset' : 'unset'};
+  width: 100%;
+`;
+
+const ModalContentInnerWrapper = styled.div`
+  ${({ hideSharedByIntro }) => ((hideSharedByIntro) ? ModalContentSharedByHidden : ModalContentSharedByShown)}
+`;
 
 const NextButtonWrapper = styled.div`
   width: 100%;
