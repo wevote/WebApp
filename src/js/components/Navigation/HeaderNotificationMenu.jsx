@@ -6,7 +6,7 @@ import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
-import { historyPush, isIOS, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
+import { historyPush, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
@@ -48,9 +48,7 @@ class HeaderNotificationMenu extends Component {
       .map(activityNotice => activityNotice.activity_notice_id);
     // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
     const menuItemList = this.generateMenuItemList(allActivityNotices);
-    if (isIOS()) {
-      setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
-    }
+    setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
     this.setState({
       activityNoticeIdListNotSeen,
       allActivityNoticesNotSeenCount: activityNoticeIdListNotSeen.length,

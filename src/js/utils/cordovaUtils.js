@@ -560,7 +560,7 @@ export function snackOffset () {
 
 export function setIconBadgeMessageCount (count) {
   // Count can be a string or an integer
-  if (isIOS()) {
+  if (isCordova()) {
     const { cordova: { plugins: { firebase: { messaging: { setBadge } } } } } = window;
     // Not sure if this would do anything in Android
     setBadge(count);
@@ -568,6 +568,9 @@ export function setIconBadgeMessageCount (count) {
 }
 
 export function getIconBadgeMessageCount () {
-  const { cordova: { plugins: { firebase: { messaging: { getBadge } } } } } = window;
-  return getBadge();
+  if (isCordova()) {
+    const { cordova: { plugins: { firebase: { messaging: { getBadge } } } } } = window;
+    return getBadge();
+  }
+  return -1;
 }

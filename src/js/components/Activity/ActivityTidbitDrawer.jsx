@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Drawer, IconButton } from '@material-ui/core';
+import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 import ActivityCommentAdd from './ActivityCommentAdd';
 import ActivityStore from '../../stores/ActivityStore';
 import ActivityTidbitAddReaction from './ActivityTidbitAddReaction';
@@ -135,6 +136,7 @@ class ActivityTidbitDrawer extends Component {
 
 const styles = () => ({
   drawerClasses: {
+    marginTop: cordovaDrawerTopMargin(),
     maxWidth: '550px !important',
     '& *': {
       maxWidth: '550px !important',
