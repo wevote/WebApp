@@ -29,73 +29,13 @@ class FirstAndLastNameRequiredAlert extends Component {
   }
 
   componentDidMount () {
+    this.onVoterStoreChange();
+    this.onOrganizationStoreChange();
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     FriendActions.friendInvitationsWaitingForVerification();
-    const voter = VoterStore.getVoter();
-    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    const voterDisplayName = VoterStore.getFirstPlusLastName();
-    const voterDisplayNameExists = voterDisplayName && !stringContains('Voter-', voterDisplayName);
-    this.setState({
-      linkedOrganizationWeVoteId,
-      voterDisplayName,
-      voterDisplayNameExists,
-    });
-    let isOrganization = false;
-    let organizationName = '';
-    let organizationNameExists = false;
-    const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
-    if (organization && organization.organization_type) {
-      organizationName = organization.organization_name;
-      isOrganization = isSpeakerTypeOrganization(organization.organization_type);
-      organizationNameExists = organizationName && !stringContains('Voter-', organizationName);
-    }
-    if (isOrganization) {
-      this.setState({
-        displayThisComponent: !organizationNameExists,
-        organizationNameRelevantAndMissing: !organizationNameExists,
-        voterNameRelevantAndMissing: false,
-      });
-    } else {
-      this.setState({
-        displayThisComponent: !voterDisplayNameExists,
-        organizationNameRelevantAndMissing: false,
-        voterNameRelevantAndMissing: !voterDisplayNameExists,
-      });
-    }
-    this.setState({
-      isOrganization,
-      organizationName,
-      organizationNameExists,
-    });
   }
-
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   // This lifecycle method tells the component to NOT render if not needed
-  //   if (this.state.displayThisComponent !== nextState.displayThisComponent) {
-  //     return true;
-  //   }
-  //   if (this.state.friendInvitationsWaitingForVerificationCount !== nextState.friendInvitationsWaitingForVerificationCount) {
-  //     return true;
-  //   }
-  //   if (this.state.isOrganization !== nextState.isOrganization) {
-  //     return true;
-  //   }
-  //   if (this.state.organizationName !== nextState.organizationName) {
-  //     return true;
-  //   }
-  //   if (this.state.organizationNameRelevantAndMissing !== nextState.organizationNameRelevantAndMissing) {
-  //     return true;
-  //   }
-  //   if (this.state.voterDisplayName !== nextState.voterDisplayName) {
-  //     return true;
-  //   }
-  //   if (this.state.voterNameRelevantAndMissing !== nextState.voterNameRelevantAndMissing) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   componentWillUnmount () {
     if (this.timer > 0) {
@@ -113,29 +53,23 @@ class FirstAndLastNameRequiredAlert extends Component {
   onFriendStoreChange () {
     // console.log('FirstAndLastNameRequiredAlert.jsx onFriendStoreChange');
     const friendInvitationsWaitingForVerification = FriendStore.friendInvitationsWaitingForVerification() || [];
-    // let friendInvitationsWaitingForVerificationCount = 0;
-    // if (friendInvitationsWaitingForVerification) {
-    //   friendInvitationsWaitingForVerificationCount = friendInvitationsWaitingForVerification.length;
-    // }
     this.setState({
       friendInvitationsWaitingForVerification,
-      // friendInvitationsWaitingForVerificationCount,
     });
   }
 
   onOrganizationStoreChange () {
+    const voter = VoterStore.getVoter();
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     let isOrganization = false;
     let organizationName = '';
     let organizationNameExists = false;
-    const { voterDisplayNameExists } = this.state;
-    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
     if (organization && organization.organization_type) {
       organizationName = organization.organization_name;
       isOrganization = isSpeakerTypeOrganization(organization.organization_type);
       organizationNameExists = organizationName && !stringContains('Voter-', organizationName);
     }
-    let organizationNameRelevantAndMissing = true;
-    let voterNameRelevantAndMissing = true;
     // onOrganizationStoreChange will only make component appear -- never disappear
     if (isOrganization) {
       if (!organizationNameExists) {
@@ -143,55 +77,37 @@ class FirstAndLastNameRequiredAlert extends Component {
           displayThisComponent: true,
         });
       }
-      organizationNameRelevantAndMissing = !organizationNameExists;
-      voterNameRelevantAndMissing = false;
+      let organizationNameRelevantAndMissing = !organizationNameExists;
+      let voterNameRelevantAndMissing = false;
       this.setState({
         organizationNameRelevantAndMissing,
         voterNameRelevantAndMissing,
       });
-    } else {
-      if (!voterDisplayNameExists) {
-        this.setState({
-          displayThisComponent: true,
-        });
-      }
-      organizationNameRelevantAndMissing = false;
-      voterNameRelevantAndMissing = !voterDisplayNameExists;
       this.setState({
-        organizationNameRelevantAndMissing,
-        voterNameRelevantAndMissing,
+        isOrganization,
+        organizationName,
+        organizationNameExists,
       });
+      // Send an API tickler (with a delay) to send cached invitations
+      if (!voterNameRelevantAndMissing && !organizationNameRelevantAndMissing) this.sendInvitationsWaitingForVerification();
     }
-    this.setState({
-      isOrganization,
-      organizationName,
-      organizationNameExists,
-    });
-    // Send an API tickler (with a delay) to send cached invitations
-    if (!voterNameRelevantAndMissing && !organizationNameRelevantAndMissing) this.sendInvitationsWaitingForVerification();
   }
 
   onVoterStoreChange () {
     // console.log('FirstAndLastNameRequiredAlert.jsx onVoterStoreChange, voter: ', VoterStore.getVoter());
-    const { isOrganization, organizationNameExists } = this.state;
+    const voter = VoterStore.getVoter();
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+    let isSimpleVoter = false;
+    if (organization && organization.organization_type) {
+      isSimpleVoter = !isSpeakerTypeOrganization(organization.organization_type);
+    }
     const voterDisplayName = VoterStore.getFirstPlusLastName();
     const voterDisplayNameExists = voterDisplayName && !stringContains('Voter-', voterDisplayName);
     let organizationNameRelevantAndMissing = true;
     let voterNameRelevantAndMissing = true;
     // onVoterStoreChange will only make component appear -- never disappear
-    if (isOrganization) {
-      if (!organizationNameExists) {
-        this.setState({
-          displayThisComponent: true,
-        });
-      }
-      organizationNameRelevantAndMissing = !organizationNameExists;
-      voterNameRelevantAndMissing = false;
-      this.setState({
-        organizationNameRelevantAndMissing,
-        voterNameRelevantAndMissing,
-      });
-    } else {
+    if (isSimpleVoter) {
       if (!voterDisplayNameExists) {
         this.setState({
           displayThisComponent: true,
@@ -203,13 +119,13 @@ class FirstAndLastNameRequiredAlert extends Component {
         organizationNameRelevantAndMissing: false,
         voterNameRelevantAndMissing: !voterDisplayNameExists,
       });
+      this.setState({
+        voterDisplayName,
+        voterDisplayNameExists,
+      });
+      // Send an API tickler (with a delay) to send cached invitations
+      if (!voterNameRelevantAndMissing && !organizationNameRelevantAndMissing) this.sendInvitationsWaitingForVerification();
     }
-    this.setState({
-      voterDisplayName,
-      voterDisplayNameExists,
-    });
-    // Send an API tickler (with a delay) to send cached invitations
-    if (!voterNameRelevantAndMissing && !organizationNameRelevantAndMissing) this.sendInvitationsWaitingForVerification();
   }
 
   sendInvitationsWaitingForVerification () {
@@ -255,7 +171,7 @@ class FirstAndLastNameRequiredAlert extends Component {
             {(organizationNameRelevantAndMissing || voterNameRelevantAndMissing) && (
               <ExplanationText>
                 <Alert variant="danger">
-                  Please add your name so your friends recognize you.
+                  {organizationNameRelevantAndMissing ? 'Please add your name so people recognize you.' : 'Please add your name so your friends recognize you.'}
                   {' '}
                   {friendInvitationsWaitingForVerification && friendInvitationsWaitingForVerification.length > 0 && (
                     <span>
