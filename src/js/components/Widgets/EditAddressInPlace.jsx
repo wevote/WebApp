@@ -90,7 +90,7 @@ class EditAddressInPlace extends Component {
           onClick={this.toggleEditingAddress}
         >
           <FullAddressWrapper>
-            So we can give you the correct ballot, please make sure this is your full street address (with house number).
+            To find your correct ballot, we need your full address, including house number. We are a nonprofit, and will never reveal your address.
           </FullAddressWrapper>
           <EditAddressPreview>
             { textForMapSearch.length ? shortenText(textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }

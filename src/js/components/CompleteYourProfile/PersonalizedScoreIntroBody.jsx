@@ -107,7 +107,7 @@ class PersonalizedScoreIntroBody extends Component {
           explanationTextTopPlain: <>But how is the +3 calculated?</>,
           explanationTextTopBlue: null,
           explanationTextBottomPlain: null,
-          explanationTextBottomBlue: <>In this example, we pretend you are following 3 advisers.</>,
+          explanationTextBottomBlue: <>In this example, we pretend you are following 3 advisers (the Sierra Club, Oprah and the League of Women Voters.)</>,
           openAdviserMaterialUIPopover: false,
           openSupportOpposeCountDisplayModal: false,
           supportOpposeCountDisplayModalTutorialOn: true,
