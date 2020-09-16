@@ -20,10 +20,8 @@ class FirstAndLastNameRequiredAlert extends Component {
       // friendInvitationsWaitingForVerificationCount: 0,
       isOrganization: false,
       organizationName: '',
-      organizationNameExists: false,
       organizationNameRelevantAndMissing: false,
       voterDisplayName: '',
-      voterDisplayNameExists: false,
       voterNameRelevantAndMissing: false,
     };
   }
@@ -77,8 +75,8 @@ class FirstAndLastNameRequiredAlert extends Component {
           displayThisComponent: true,
         });
       }
-      let organizationNameRelevantAndMissing = !organizationNameExists;
-      let voterNameRelevantAndMissing = false;
+      const organizationNameRelevantAndMissing = !organizationNameExists;
+      const voterNameRelevantAndMissing = false;
       this.setState({
         organizationNameRelevantAndMissing,
         voterNameRelevantAndMissing,
@@ -86,7 +84,6 @@ class FirstAndLastNameRequiredAlert extends Component {
       this.setState({
         isOrganization,
         organizationName,
-        organizationNameExists,
       });
       // Send an API tickler (with a delay) to send cached invitations
       if (!voterNameRelevantAndMissing && !organizationNameRelevantAndMissing) this.sendInvitationsWaitingForVerification();
@@ -121,7 +118,6 @@ class FirstAndLastNameRequiredAlert extends Component {
       });
       this.setState({
         voterDisplayName,
-        voterDisplayNameExists,
       });
       // Send an API tickler (with a delay) to send cached invitations
       if (!voterNameRelevantAndMissing && !organizationNameRelevantAndMissing) this.sendInvitationsWaitingForVerification();
