@@ -7,32 +7,33 @@ import { withStyles } from '@material-ui/core/styles';
 import ActivityActions from '../../actions/ActivityActions';
 import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
-import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
+import { cordovaBallotFilterTopMargin, cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
+import { cordovaDot, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import FirstAndLastNameRequiredAlert from '../../components/Widgets/FirstAndLastNameRequiredAlert';
 import FriendActions from '../../actions/FriendActions';
+import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
 import FriendInvitationsSentByMePreview from '../../components/Friends/FriendInvitationsSentByMePreview';
+import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
 import FriendInvitationsSentToMePreview from '../../components/Friends/FriendInvitationsSentToMePreview';
 import FriendStore from '../../stores/FriendStore';
+import FriendsCurrent from './FriendsCurrent';
 import FriendsCurrentPreview from '../../components/Friends/FriendsCurrentPreview';
-import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import FriendsPromoBox from '../../components/Friends/FriendsPromoBox';
+import InviteByEmail from './InviteByEmail';
+import isMobileScreenSize from '../../utils/isMobileScreenSize';
+import LoadingWheel from '../../components/LoadingWheel';
+import MessageCard from '../../components/Widgets/MessageCard';
+import { renderLog } from '../../utils/logging';
+import sortFriendListByMutualFriends from '../../utils/friendFunctions';
+import SuggestedFriends from './SuggestedFriends';
 import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
+import testimonialImage from '../../../img/global/photos/Dale_McGrew-200x200.jpg';
 import TwitterSignInCard from '../../components/Twitter/TwitterSignInCard';
 import VoterStore from '../../stores/VoterStore';
-import testimonialImage from '../../../img/global/photos/Dale_McGrew-200x200.jpg';
-import { cordovaDot, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
-import FriendInvitationsSentToMe from './FriendInvitationsSentToMe';
-import SuggestedFriends from './SuggestedFriends';
-import FriendsCurrent from './FriendsCurrent';
-import InviteByEmail from './InviteByEmail';
-import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
-import MessageCard from '../../components/Widgets/MessageCard';
-import AppStore from '../../stores/AppStore';
-import { cordovaBallotFilterTopMargin, cordovaFriendsWrapper } from '../../utils/cordovaOffsets';
-import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import WeVoteTooltip from '../../components/Widgets/Tooltip';
 
 const testimonialAuthor = 'Dale M., Oakland, California';
@@ -59,7 +60,7 @@ class Friends extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      currentFriends: [],
+      currentFriendList: [],
       defaultTabItem: '',
       friendActivityExists: false,
       friendInvitationsSentByMe: [],
@@ -81,16 +82,18 @@ class Friends extends Component {
     FriendActions.suggestedFriendList();
     const friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
     const friendInvitationsSentToMe = FriendStore.friendInvitationsSentToMe();
-    const suggestedFriendList = FriendStore.suggestedFriendList();
-
+    const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
+    const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
     const voter = VoterStore.getVoter();
     let voterIsSignedIn = false;
     if (voter && voter.is_signed_in) {
       voterIsSignedIn = voter.is_signed_in;
     }
 
+    const currentFriendListUnsorted = FriendStore.currentFriends();
+    const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
     this.setState({
-      currentFriends: FriendStore.currentFriends(),
+      currentFriendList,
       friendInvitationsSentToMe,
       friendInvitationsSentByMe,
       suggestedFriendList,
@@ -122,14 +125,15 @@ class Friends extends Component {
 
   onFriendStoreChange () {
     let {
-      currentFriends,
+      currentFriendList,
       friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList,
     } = this.state;
     let resetDefaultTab = false;
-    if (currentFriends && currentFriends.length !== FriendStore.currentFriends().length) {
-      currentFriends = FriendStore.currentFriends();
-      this.setState({ currentFriends });
-      // console.log('currentFriends has changed, currentFriends:', currentFriends);
+    if (currentFriendList && currentFriendList.length !== FriendStore.currentFriends().length) {
+      const currentFriendListUnsorted = FriendStore.currentFriends();
+      currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
+      this.setState({ currentFriendList });
+      // console.log('currentFriendList has changed, currentFriendList:', currentFriendList);
     }
     if (friendInvitationsSentByMe && friendInvitationsSentByMe.length !== FriendStore.friendInvitationsSentByMe().length) {
       friendInvitationsSentByMe = FriendStore.friendInvitationsSentByMe();
@@ -144,7 +148,8 @@ class Friends extends Component {
       resetDefaultTab = true;
     }
     if (suggestedFriendList && suggestedFriendList.length !== FriendStore.suggestedFriendList().length) {
-      suggestedFriendList = FriendStore.suggestedFriendList();
+      const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
+      suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
       this.setState({ suggestedFriendList });
       // console.log('suggestedFriends has changed, suggestedFriendList:', suggestedFriendList);
       resetDefaultTab = true;
@@ -152,7 +157,7 @@ class Friends extends Component {
     if (resetDefaultTab) {
       this.resetDefaultTabForMobile(FriendStore.friendInvitationsSentToMe(), FriendStore.suggestedFriendList(), FriendStore.friendInvitationsSentByMe());
     }
-    const friendActivityExists = Boolean((currentFriends && currentFriends.length) || (friendInvitationsSentByMe && friendInvitationsSentByMe.length) || (friendInvitationsSentToMe && friendInvitationsSentToMe.length) || (suggestedFriendList && suggestedFriendList.length));
+    const friendActivityExists = Boolean((currentFriendList && currentFriendList.length) || (friendInvitationsSentByMe && friendInvitationsSentByMe.length) || (friendInvitationsSentToMe && friendInvitationsSentToMe.length) || (suggestedFriendList && suggestedFriendList.length));
     // console.log('friendActivityExists:', friendActivityExists);
     if (friendActivityExists) {
       // Only set to true -- never false in order to avoid a weird loop
@@ -167,7 +172,7 @@ class Friends extends Component {
   }
 
   getSelectedTab () {
-    const { currentFriends, defaultTabItem, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList } = this.state;
+    const { currentFriendList, defaultTabItem, friendInvitationsSentByMe, friendInvitationsSentToMe, suggestedFriendList } = this.state;
     // console.log('getSelectedTab this.props.params.tabItem:', this.props.params.tabItem, ', defaultTabItem:', defaultTabItem);
     let selectedTab = this.props.params.tabItem || defaultTabItem;
     // Don't return a selected tab if the tab isn't available
@@ -180,7 +185,7 @@ class Friends extends Component {
         selectedTab = 'invite';
       }
     } else if (String(selectedTab) === 'friends') {
-      if (currentFriends.length < 1) {
+      if (currentFriendList.length < 1) {
         selectedTab = 'invite';
       }
     } else if (String(selectedTab) === 'sent-requests') {
@@ -218,7 +223,7 @@ class Friends extends Component {
   render () {
     renderLog('Friends');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      currentFriends, friendActivityExists, friendsHeaderUnpinned, friendInvitationsSentByMe,
+      currentFriendList, friendActivityExists, friendsHeaderUnpinned, friendInvitationsSentByMe,
       friendInvitationsSentToMe, suggestedFriendList, voter, voterIsSignedIn,
     } = this.state;
     const { classes } = this.props;
@@ -321,7 +326,7 @@ class Friends extends Component {
       case 'current':
         mobileContentToDisplay = (
           <>
-            {currentFriends.length > 0 ? (
+            {currentFriendList.length > 0 ? (
               <FriendsCurrent />
             ) : (
               <>
@@ -534,7 +539,7 @@ class Friends extends Component {
             this.handleNavigation('/friends/invite');
           }}
         />
-        {currentFriends.length > 0 && (
+        {currentFriendList.length > 0 && (
           <Tab
             classes={{ root: classes.navigationTab }}
             value="current"

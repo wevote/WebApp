@@ -9,6 +9,7 @@ import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
+import ReadMore from '../Widgets/ReadMore';
 import StickyPopover from '../Ballot/StickyPopover';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import { numberWithCommas, timeFromDate } from '../../utils/textFormat';
@@ -123,24 +124,26 @@ class ActivitySpeakerCard extends Component {
           )}
         </StickyPopover>
         <SpeakerActionTimeWrapper>
-          <StickyPopover
-            delay={{ show: 700, hide: 100 }}
-            popoverComponent={organizationPopoverCard}
-            placement="auto"
-            id={`speakerNameOrganizationPopover-${activityTidbitWeVoteId}`}
-          >
-            <SpeakerAndActionWrapper>
+          <SpeakerAndActionWrapper>
+            <StickyPopover
+              delay={{ show: 700, hide: 100 }}
+              popoverComponent={organizationPopoverCard}
+              placement="auto"
+              id={`speakerNameOrganizationPopover-${activityTidbitWeVoteId}`}
+            >
               <SpeakerNameWrapper>
                 {speakerIsVoter ? 'You' : speakerName}
               </SpeakerNameWrapper>
-              {(actionDescription && isActivityNoticeSeed) && (
-                <ActionDescriptionWrapper>
-                  {actionDescription}
-                  .
-                </ActionDescriptionWrapper>
-              )}
-            </SpeakerAndActionWrapper>
-          </StickyPopover>
+            </StickyPopover>
+            {(actionDescription && isActivityNoticeSeed) && (
+              <ActionDescriptionWrapper>
+                <ReadMore
+                  textToDisplay={`${actionDescription}.`}
+                  numberOfLines={5}
+                />
+              </ActionDescriptionWrapper>
+            )}
+          </SpeakerAndActionWrapper>
           <SecondLineWrapper>
             <TimeAndFriendsOnlyWrapper>
               {(activityTimeFromDate) && (
@@ -203,6 +206,7 @@ const SpeakerAvatar = styled.div`
   background: transparent;
   display: flex;
   justify-content: center;
+  min-width: 50px;
   position: relative;
 `;
 
@@ -223,6 +227,7 @@ const SpeakerNameWrapper = styled.div`
   font-size: 18px;
   font-weight: 700;
   padding: 0px !important;
+  margin-right: 3px;
 `;
 
 const TimeAndFriendsOnlyWrapper = styled.div`

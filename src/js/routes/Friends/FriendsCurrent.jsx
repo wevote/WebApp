@@ -5,9 +5,10 @@ import filter from 'lodash-es/filter';
 import FriendList from '../../components/Friends/FriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
+import MessageCard from '../../components/Widgets/MessageCard';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
-import MessageCard from '../../components/Widgets/MessageCard';
+import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
 export default class FriendsCurrent extends Component {
   static propTypes = {
@@ -27,8 +28,10 @@ export default class FriendsCurrent extends Component {
 
   componentDidMount () {
     FriendActions.currentFriends();
+    const currentFriendListUnsorted = FriendStore.currentFriends();
+    const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
     this.setState({
-      currentFriendList: FriendStore.currentFriends(),
+      currentFriendList,
     });
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -39,8 +42,10 @@ export default class FriendsCurrent extends Component {
   }
 
   onFriendStoreChange () {
+    const currentFriendListUnsorted = FriendStore.currentFriends();
+    const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
     this.setState({
-      currentFriendList: FriendStore.currentFriends(),
+      currentFriendList,
     });
   }
 

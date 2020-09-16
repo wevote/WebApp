@@ -36,7 +36,6 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/more/about' ||
     pathnameLowerCase === '/more/absentee' ||
     pathnameLowerCase === '/more/alerts' ||
-    pathnameLowerCase === '/more/connect' ||
     pathnameLowerCase === '/more/credits' ||
     pathnameLowerCase.startsWith('/more/donate') ||
     pathnameLowerCase === '/more/elections' ||

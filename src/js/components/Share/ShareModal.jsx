@@ -29,6 +29,7 @@ import {
 } from './shareButtonCommon';
 import { cordovaDot, hasIPhoneNotch, isAndroid, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { stringContains } from '../../utils/textFormat';
 
 class ShareModal extends Component {
@@ -47,7 +48,7 @@ class ShareModal extends Component {
       pathname: '',
       chosenPreventSharingOpinions: false,
       currentFullUrlToShare: '',
-      currentFriendsList: [],
+      currentFriendList: [],
       // friendsToShareWith: [],
       shareModalStep: '',
       urlWithSharedItemCode: '',
@@ -79,9 +80,11 @@ class ShareModal extends Component {
     if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
       ShareActions.sharedItemSave(currentFullUrlToShare);
     }
+    const currentFriendListUnsorted = FriendStore.currentFriends();
+    const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
     this.setState({
       chosenPreventSharingOpinions,
-      currentFriendsList: FriendStore.currentFriends(),
+      currentFriendList,
       currentFullUrlToShare,
       pathname: this.props.pathname,
       shareModalStep: shareModalStep || 'ballotShareOptions',
@@ -108,9 +111,11 @@ class ShareModal extends Component {
   }
 
   onFriendStoreChange () {
-    const { currentFriendsList } = this.state;
-    if (currentFriendsList.length !== FriendStore.currentFriends().length) {
-      this.setState({ currentFriendsList: FriendStore.currentFriends() });
+    let { currentFriendList } = this.state;
+    if (currentFriendList.length !== FriendStore.currentFriends().length) {
+      const currentFriendListUnsorted = FriendStore.currentFriends();
+      currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
+      this.setState({ currentFriendList });
     }
   }
 
@@ -508,7 +513,7 @@ class ShareModal extends Component {
       //     </DialogContent>
       //   </Dialog>
       // );
-    } else if (shareModalStep === 'friends' && voterIsSignedIn && this.state.currentFriendsList.length > 0) {
+    } else if (shareModalStep === 'friends' && voterIsSignedIn && this.state.currentFriendList.length > 0) {
       shareModalHtml = (
         <Dialog
           classes={{ paper: classes.dialogPaper }}
@@ -543,7 +548,7 @@ class ShareModal extends Component {
                   Invite friends by email or phone
                 </SubTitle>
               </FriendsShareTextWrapper>
-              <FriendsShareList list={this.state.currentFriendsList} />
+              <FriendsShareList list={this.state.currentFriendList} />
             </div>
           </DialogContent>
         </Dialog>

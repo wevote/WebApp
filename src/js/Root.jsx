@@ -126,6 +126,7 @@ const routes = () => {  // eslint-disable-line arrow-body-style
 
           {/* Friend related Pages */}
           <Route path="/friends" component={componentLoader('Friends')} />
+          {/* /friends/current */}
           <Route path="/friends/:tabItem" component={componentLoader('Friends')} />
           <Route path="/facebook_invitable_friends" component={componentLoader('FacebookInvitableFriends')} />
           <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={componentLoader('FriendInvitationOnboarding')} />
@@ -135,7 +136,6 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/more/absentee" component={componentLoader('AbsenteeBallot')} />
           <Route path="/more/alerts" component={componentLoader('ElectionReminder')} />
           <Route path="/more/attributions" component={componentLoader('Attributions')} />
-          <Route path="/more/connect" component={componentLoader('Connect')} />
           <Route path="/more/credits" component={componentLoader('Credits')} />
           <Route path="/more/donate" component={isNotWeVoteMarketingSite ? componentLoader('ReadyRedirect') : componentLoader('Donate')} />
           <Route path="/more/donate_thank_you" component={isNotWeVoteMarketingSite ? componentLoader('ReadyRedirect') : componentLoader('DonateThankYou')} />

@@ -10,7 +10,7 @@ import { renderLog } from '../../utils/logging';
 
 export default class CurrentFriends extends Component {
   static propTypes = {
-    currentFriendsList: PropTypes.array,
+    currentFriendList: PropTypes.array,
     maximumFriendDisplay: PropTypes.number,
   };
 
@@ -20,24 +20,24 @@ export default class CurrentFriends extends Component {
     this.show_popover = false;
 
     this.state = {
-      currentFriendsList: this.props.currentFriendsList,
+      currentFriendList: this.props.currentFriendList,
       maximumFriendDisplay: this.props.maximumFriendDisplay,
     };
   }
 
   componentDidMount () {
     this.setState({
-      currentFriendsList: this.props.currentFriendsList,
+      currentFriendList: this.props.currentFriendList,
       maximumFriendDisplay: this.props.maximumFriendDisplay,
     });
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("CurrentFriends, componentWillReceiveProps, nextProps.currentFriendsList:", nextProps.currentFriendsList);
+    // console.log("CurrentFriends, componentWillReceiveProps, nextProps.currentFriendList:", nextProps.currentFriendList);
     // if (nextProps.instantRefreshOn ) {
     // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
     this.setState({
-      currentFriendsList: nextProps.currentFriendsList,
+      currentFriendList: nextProps.currentFriendList,
       maximumFriendDisplay: nextProps.maximumFriendDisplay,
     });
     // }
@@ -73,17 +73,17 @@ export default class CurrentFriends extends Component {
 
   render () {
     renderLog('CurrentFriends');  // Set LOG_RENDER_EVENTS to log all renders
-    if (this.state.currentFriendsList === undefined) {
+    if (this.state.currentFriendList === undefined) {
       return null;
     }
 
     let localCounter = 0;
     let friendsNotShownCount = 0;
-    if (this.state.currentFriendsList &&
-      this.state.currentFriendsList.length > this.state.maximumFriendDisplay) {
-      friendsNotShownCount = this.state.currentFriendsList.length - this.state.maximumFriendDisplay;
+    if (this.state.currentFriendList &&
+      this.state.currentFriendList.length > this.state.maximumFriendDisplay) {
+      friendsNotShownCount = this.state.currentFriendList.length - this.state.maximumFriendDisplay;
     }
-    const friendsListToDisplay = this.state.currentFriendsList.map((oneFriend) => {
+    const friendsListToDisplay = this.state.currentFriendList.map((oneFriend) => {
       localCounter++;
       const friendWeVoteId = oneFriend.voter_we_vote_id;
       if (localCounter > this.state.maximumFriendDisplay) {
