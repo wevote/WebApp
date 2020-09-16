@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import AddressBox from '../AddressBox';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
+import ReadMore from './ReadMore';
 import { renderLog } from '../../utils/logging';
 
 class EditAddressInPlace extends Component {
@@ -66,7 +67,7 @@ class EditAddressInPlace extends Component {
     const noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : '- no address entered -';
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
-
+    const addressIntroduction = "To find your correct ballot, we need your full address, including house number. We are a nonprofit, and will never reveal your address. Note: our partner who provides what's-on-the-ballot data works incredibly hard to cover the entire United States, but we cannot guarantee 100% of the items on your official ballot items will be shown on We Vote. Please contact us if you have questions.";
     if (editingAddress) {
       return (
         <span>
@@ -84,27 +85,32 @@ class EditAddressInPlace extends Component {
       );
     } else {
       return (
-        <EditBlockWrapper
-          className="u-cursor--pointer"
-          id="editAddressInPlaceModalEditButton"
-          onClick={this.toggleEditingAddress}
-        >
-          <FullAddressWrapper>
-            To find your correct ballot, we need your full address, including house number. We are a nonprofit, and will never reveal your address.
-          </FullAddressWrapper>
-          <EditAddressPreview>
-            { textForMapSearch.length ? shortenText(textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }
-            {' '}
-            <ChangeAddressWrapper className="u-no-break">
-              <SettingsIconWrapper>
-                <Settings classes={{ root: classes.settingsIcon }} />
-              </SettingsIconWrapper>
-              <ChangeAddressText>
-                change address
-              </ChangeAddressText>
-            </ChangeAddressWrapper>
-          </EditAddressPreview>
-        </EditBlockWrapper>
+        <>
+          <EditBlockWrapper
+            className="u-cursor--pointer"
+            id="editAddressInPlaceModalEditButton"
+            onClick={this.toggleEditingAddress}
+          >
+            <EditAddressPreview>
+              { textForMapSearch.length ? shortenText(textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }
+              {' '}
+              <ChangeAddressWrapper className="u-no-break">
+                <SettingsIconWrapper>
+                  <Settings classes={{ root: classes.settingsIcon }} />
+                </SettingsIconWrapper>
+                <ChangeAddressText>
+                  change address
+                </ChangeAddressText>
+              </ChangeAddressWrapper>
+            </EditAddressPreview>
+          </EditBlockWrapper>
+          <AddressIntroductionWrapper>
+            <ReadMore
+              textToDisplay={addressIntroduction}
+              numberOfLines={4}
+            />
+          </AddressIntroductionWrapper>
+        </>
       );
     }
   }
@@ -136,14 +142,21 @@ const EditAddressPreview = styled.div`
   font-weight: bold;
 `;
 
-const FullAddressWrapper = styled.div`
+const AddressIntroductionWrapper = styled.div`
   font-size: 0.9rem;
   font-weight: 500;
+  margin-top: 8px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 `;
 
 const EditBlockWrapper = styled.div`
-  margin-left: 15px;
-  margin-right: 15px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 `;
 
 const SettingsIconWrapper = styled.div`

@@ -6,6 +6,7 @@ import FriendList from './FriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
+import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
 export default class FriendsCurrentPreview extends Component {
   static propTypes = {
@@ -20,8 +21,10 @@ export default class FriendsCurrentPreview extends Component {
 
   componentDidMount () {
     FriendActions.currentFriends();
+    const currentFriendListUnsorted = FriendStore.currentFriends();
+    const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
     this.setState({
-      currentFriendList: FriendStore.currentFriends(),
+      currentFriendList,
     });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
   }
@@ -31,8 +34,10 @@ export default class FriendsCurrentPreview extends Component {
   }
 
   onFriendStoreChange () {
+    const currentFriendListUnsorted = FriendStore.currentFriends();
+    const currentFriendList = sortFriendListByMutualFriends(currentFriendListUnsorted);
     this.setState({
-      currentFriendList: FriendStore.currentFriends(),
+      currentFriendList,
     });
   }
 

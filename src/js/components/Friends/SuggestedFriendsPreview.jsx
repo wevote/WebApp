@@ -7,6 +7,7 @@ import SuggestedFriendList from './SuggestedFriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
+import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
 export default class SuggestedFriendsPreview extends Component {
   static propTypes = {
@@ -31,11 +32,8 @@ export default class SuggestedFriendsPreview extends Component {
   }
 
   onFriendStoreChange () {
-    const suggestedFriendList = FriendStore.suggestedFriendList();
-    // suggestedFriendList.sort((optionA, optionB) => (optionB.voter_photo_url_medium ? 1 : 0) - (optionA.voter_photo_url_medium ? 1 : 0));
-    // suggestedFriendList.sort((optionA, optionB) => optionB.positions_taken - optionA.positions_taken);
-    suggestedFriendList.sort((optionA, optionB) => optionB.voter_date_last_changed - optionA.voter_date_last_changed);
-    suggestedFriendList.sort((optionA, optionB) => optionB.mutual_friends - optionA.mutual_friends);
+    const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
+    const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
     // console.log('suggestedFriendList:', suggestedFriendList);
     this.setState({
       suggestedFriendList,

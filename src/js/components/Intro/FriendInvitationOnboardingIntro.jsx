@@ -352,7 +352,7 @@ const Dot = styled.div`
 `;
 
 const OrganizationImageWrapper = styled.span`
-  padding-right: 4px;
+  margin-right: 4px;
 `;
 
 const StepNumber = styled.div`

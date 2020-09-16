@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import SuggestedFriendList from '../../components/Friends/SuggestedFriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
-import { renderLog } from '../../utils/logging';
 import MessageCard from '../../components/Widgets/MessageCard';
+import { renderLog } from '../../utils/logging';
+import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
 export default class SuggestedFriends extends Component {
   static propTypes = {
@@ -20,8 +21,10 @@ export default class SuggestedFriends extends Component {
 
   componentDidMount () {
     FriendActions.suggestedFriendList();
+    const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
+    const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
     this.setState({
-      suggestedFriendList: FriendStore.suggestedFriendList(),
+      suggestedFriendList,
     });
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -32,8 +35,10 @@ export default class SuggestedFriends extends Component {
   }
 
   onFriendStoreChange () {
+    const suggestedFriendListUnsorted = FriendStore.suggestedFriendList();
+    const suggestedFriendList = sortFriendListByMutualFriends(suggestedFriendListUnsorted);
     this.setState({
-      suggestedFriendList: FriendStore.suggestedFriendList(),
+      suggestedFriendList,
     });
   }
 

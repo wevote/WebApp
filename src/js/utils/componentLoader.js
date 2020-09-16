@@ -25,8 +25,6 @@ export default function componentLoader (componentName) {
       return React.lazy(() => import('../routes/Ballot/CandidateForExtension'));
     case 'ClaimYourPage':
       return React.lazy(() => import('../routes/Settings/ClaimYourPage'));
-    case 'Connect':
-      return React.lazy(() => import('../routes/Connect'));
     case 'Credits':
       return React.lazy(() => import('../routes/More/Credits'));
     case 'Donate':
