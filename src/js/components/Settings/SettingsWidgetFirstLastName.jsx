@@ -200,7 +200,7 @@ class SettingsWidgetFirstLastName extends Component {
       this.setState({
         organizationName: event.target.value,
         organizationNameSavedStatus: isWebApp() ?
-          'Saving Organization Name...' :
+          'Saving Display Name...' :
           '',
       });
     }
