@@ -107,7 +107,7 @@ class Ready extends Component {
     const textForMapSearch = VoterStore.getTextForMapSearch();
     this.setState({
       textForMapSearch,
-      voterIsSignedIn: VoterStore.getVoterIsSignedIn,
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
     });
   }
 
