@@ -134,7 +134,7 @@ class SelectBallotModal extends Component {
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <Row>
-            <div className="u-show-mobile">
+            <div className="u-show-mobile-tablet">
               {!hideAddressEdit && (
                 <EditAddressInPlaceWrapperMobile>
                   <EditAddressInPlace
@@ -147,14 +147,19 @@ class SelectBallotModal extends Component {
                   />
                 </EditAddressInPlaceWrapperMobile>
               )}
+              {!editingAddress && (
+                <MapChartWrapper>
+                  <MapChart onClickFunction={this.mapHandler} />
+                </MapChartWrapper>
+              )}
             </div>
             {!editingAddress && (
-              <MapChartWrapper>
+              <MapChartWrapperDesktop className="u-show-desktop">
                 <MapChart onClickFunction={this.mapHandler} />
-              </MapChartWrapper>
+              </MapChartWrapperDesktop>
             )}
             <SidebarWrapper>
-              <div className="u-show-desktop-tablet">
+              <div className="u-show-desktop">
                 {!hideAddressEdit && (
                   <EditAddressInPlace
                     address={voterAddressObject}
@@ -337,9 +342,32 @@ const MapChartWrapper = styled.div`
   svg {
     margin-top: -22px;
   }
+  @media(min-width: 576px) {
+    width: auto;
+    flex: 1 1 0;
+  }
+  // @media (min-width: 860px) {
+  //   display: block;
+  //   width: 50%;
+  //   padding: 16px;
+  //   position: sticky;
+  //   top: 0;
+  //   svg {
+  //     margin-top: -36px;
+  //   }
+  // }
+`;
+
+const MapChartWrapperDesktop = styled.div`
+  display: block;
+  width: 50%;
+  padding: 12px;
+  top: 0;
+  svg {
+    margin-top: -22px;
+  }
   @media (min-width: 860px) {
     display: block;
-    width: 50%;
     padding: 16px;
     position: sticky;
     top: 0;
@@ -355,6 +383,7 @@ const SidebarWrapper = styled.div`
     padding-top: 0px;
   }
   @media(min-width: 576px) {
+    max-width: 50%;
     width: auto;
     flex: 1 1 0;
   }

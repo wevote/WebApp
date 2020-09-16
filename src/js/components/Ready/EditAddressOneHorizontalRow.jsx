@@ -21,6 +21,7 @@ class EditAddressOneHorizontalRow extends Component {
   constructor (props, context) {
     super(props, context);
     this.state = {
+      showAddressExplanation: false,
       textForMapSearch: '',
       voterSavedAddress: false,
     };
@@ -103,6 +104,12 @@ class EditAddressOneHorizontalRow extends Component {
     }
   }
 
+  onClickShowAddressExplanation = () => {
+    this.setState({
+      showAddressExplanation: true,
+    });
+  }
+
   _placeChanged (addressAutocomplete) {
     // I believe this gets called when we get a response from Google
     const place = addressAutocomplete.getPlace();
@@ -174,7 +181,7 @@ class EditAddressOneHorizontalRow extends Component {
     renderLog('EditAddressOneHorizontalRow');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('EditAddressOneHorizontalrow render');
     const { classes } = this.props;
-    const { textForMapSearch, voterSavedAddress } = this.state;
+    const { showAddressExplanation, textForMapSearch, voterSavedAddress } = this.state;
 
     if (voterSavedAddress) {
       return <span />;
@@ -184,17 +191,19 @@ class EditAddressOneHorizontalRow extends Component {
       <OuterWrapper>
         <InnerWrapper className="u-show-mobile">
           <AddressLabelMobile>
-            Enter full street address with house number for correct ballot
+            Enter street address with house number
+            &nbsp;
           </AddressLabelMobile>
         </InnerWrapper>
         <InnerWrapper>
           <AddressLabel>
             <span className="u-show-tablet">
-              Enter street address with house number for correct ballot
+              Enter street address with house number
             </span>
             <span className="u-show-desktop">
-              Enter full street address with house number for correct ballot
+              Enter full street address with house number
             </span>
+            &nbsp;
           </AddressLabel>
           <form onSubmit={this.voterAddressSaveSubmit}>
             <InternalFormWrapper>
@@ -236,10 +245,42 @@ class EditAddressOneHorizontalRow extends Component {
             </InternalFormWrapper>
           </form>
         </InnerWrapper>
+        <InnerWrapper>
+          {showAddressExplanation ? (
+            <AddressExplanation>
+              <i className="fas fa-info-circle" />
+              To find your correct ballot, we need your full address, including house number.
+              {' '}
+              We are a nonprofit, and will never reveal your address.
+            </AddressExplanation>
+          ) : (
+            <AddressExplanation onClick={this.onClickShowAddressExplanation}>
+              <i className="fas fa-info-circle" />
+              Why house number?
+              {' '}
+              (
+              <span className="u-cursor--pointer u-link-color">
+                more
+              </span>
+              )
+            </AddressExplanation>
+          )}
+        </InnerWrapper>
       </OuterWrapper>
     );
   }
 }
+
+const AddressExplanation = styled.div`
+  color: #999;
+  font-size: 16px;
+  font-weight: 400;
+  padding-bottom: 0;
+  padding-top: 4px;
+  @include breakpoints (max mid-small) {
+    font-size: 14px;
+  }
+`;
 
 const AddressLabel = styled.div`
   font-weight: 600;
@@ -248,6 +289,7 @@ const AddressLabel = styled.div`
 
 const AddressLabelMobile = styled.div`
   font-weight: 600;
+  margin-bottom: 4px;
   text-align: center;
 `;
 
