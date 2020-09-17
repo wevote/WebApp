@@ -33,6 +33,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
+    hideEndorsementsOverview: PropTypes.bool,
     hideNumbersOfAllPositions: PropTypes.bool,
     hideShowMoreLink: PropTypes.bool,
     inModal: PropTypes.bool,
@@ -464,7 +465,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     renderLog('BallotItemSupportOpposeCountDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       ballotItemWeVoteId, classes, closeSupportOpposeCountDisplayModal, controlAdviserMaterialUIPopoverFromProp,
-      hideNumbersOfAllPositions, hideShowMoreLink, inModal,
+      hideEndorsementsOverview, hideNumbersOfAllPositions, hideShowMoreLink, inModal,
       openAdviserMaterialUIPopover, openSupportOpposeCountDisplayModal, supportOpposeCountDisplayModalTutorialOn,
       supportOpposeCountDisplayModalTutorialText, showDownArrow, showUpArrow, uniqueExternalId,
     } = this.props;
@@ -850,6 +851,61 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         </PopoverWrapper>
       );
     }
+    const endorsementsOverviewPopover = (
+      <PopoverWrapper>
+        <PopoverHeader>
+          <PopoverTitleText>
+            Opinions
+            {ballotItemDisplayName ? ` about ${ballotItemDisplayName}` : ''}
+            {' '}
+          </PopoverTitleText>
+        </PopoverHeader>
+        <PopoverBody>
+          <ItemActionBarWrapper>
+            <ItemActionBar
+              inModal={inModal}
+              ballotItemWeVoteId={ballotItemWeVoteId}
+              commentButtonHide
+              externalUniqueId={`BallotItemSupportOrOpposeCountDisplay-ItemActionBar-${uniqueExternalId}-${ballotItemWeVoteId}`}
+              hidePositionPublicToggle
+              positionPublicToggleWrapAllowed
+              shareButtonHide
+            />
+          </ItemActionBarWrapper>
+          <div>
+            Follow opinions to build your personalized score
+            {(ballotItemDisplayName) && (
+              <span>
+                {' '}
+                about
+                {' '}
+                <strong>
+                  {ballotItemDisplayName}
+                </strong>
+              </span>
+            )}
+            .
+          </div>
+          <div>
+            {positionsOutOfNetworkSummaryList && (
+              <RenderedOrganizationsWrapper>
+                <PositionSummaryListForPopover
+                  ballotItemWeVoteId={ballotItemWeVoteId}
+                  controlAdviserMaterialUIPopoverFromProp={controlAdviserMaterialUIPopoverFromProp}
+                  openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
+                  positionSummaryList={positionsOutOfNetworkSummaryList}
+                  showAllPositions={this.props.goToBallotItem}
+                  voterPersonalNetworkScore={voterPersonalNetworkScore}
+                  voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                  voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                  voterPersonalNetworkScoreWithSign={voterPersonalNetworkScoreWithSign}
+                />
+              </RenderedOrganizationsWrapper>
+            )}
+          </div>
+        </PopoverBody>
+      </PopoverWrapper>
+    );
 
     const commentCountExists = numberOfAllInfoOnlyPositions > 0;
     const opposeCountExists = numberOfAllOpposePositions > 0;
@@ -871,6 +927,70 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         onMouseEnter={this.handleEnterHoverLocalArea}
         onMouseLeave={this.handleLeaveHoverLocalArea}
       >
+        {/* Gray overview display. Show if no personalized score, or voter position */}
+        {!hideEndorsementsOverview && (
+          <>
+            <EndorsementsOverviewShowOrNotShow className={(!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem) ? '' : 'u-show-desktop-tablet'}>
+              <StickyPopover
+                delay={{ show: 700, hide: 100 }}
+                popoverComponent={endorsementsOverviewPopover}
+                placement="bottom"
+                id="endorsements-overview-trigger-click-root-close"
+                openOnClick
+                // openPopoverByProp={openSupportOpposeCountDisplayModal}
+                // closePopoverByProp={closeSupportOpposeCountDisplayModal}
+                showCloseIcon
+              >
+                {hideNumbersOfAllPositions ? (
+                  <NetworkScore
+                    hideNumbersOfAllPositions
+                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+                  >
+                    <YourScoreWrapper>
+                      Your Score
+                    </YourScoreWrapper>
+                  </NetworkScore>
+                ) : (
+                  <EndorsementsContainer>
+                    <EndorsementsTitle>
+                      Endorsements
+                    </EndorsementsTitle>
+                    <EndorsementWrapper>
+                      <EndorsementRow>
+                        <Endorsement>
+                          <ThumbUp classes={{ root: classes.endorsementIconRoot }} />
+                          <EndorsementCount>
+                            {numberOfAllSupportPositions}
+                          </EndorsementCount>
+                        </Endorsement>
+                        { showOpposeCount && (
+                          <Endorsement>
+                            <ThumbDown classes={{ root: classes.endorsementIconRoot }} />
+                            <EndorsementCount>
+                              {numberOfAllOpposePositions}
+                            </EndorsementCount>
+                          </Endorsement>
+                        )}
+                        { showCommentCount && (
+                          <Endorsement>
+                            <Comment classes={{ root: classes.endorsementIconRoot }} />
+                            <EndorsementCount>
+                              {numberOfAllInfoOnlyPositions}
+                            </EndorsementCount>
+                          </Endorsement>
+                        )}
+                      </EndorsementRow>
+                    </EndorsementWrapper>
+                  </EndorsementsContainer>
+                )}
+              </StickyPopover>
+            </EndorsementsOverviewShowOrNotShow>
+
+            {(showVoterPersonalScore || voterSupportsBallotItem || voterOpposesBallotItem) && <EndorsementsOverviewSpacer />}
+          </>
+        )}
+
         { (voterSupportsBallotItem) && (
           <StickyPopover
             delay={{ show: 700, hide: 100 }}
@@ -906,64 +1026,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <NotInterested classes={{ root: classes.decidedIcon }} />
               </VoterChoiceWrapper>
             </NetworkScore>
-          </StickyPopover>
-        )}
-
-        {/* Gray overview display. Show if no personalized score, or voter position */}
-        {(!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem) && (
-          <StickyPopover
-            delay={{ show: 700, hide: 100 }}
-            popoverComponent={positionsPopover}
-            placement="bottom"
-            id="ballot-support-oppose-count-trigger-click-root-close"
-            openOnClick
-            openPopoverByProp={openSupportOpposeCountDisplayModal}
-            closePopoverByProp={closeSupportOpposeCountDisplayModal}
-            showCloseIcon
-          >
-            {hideNumbersOfAllPositions ? (
-              <NetworkScore
-                hideNumbersOfAllPositions
-                voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
-                voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
-              >
-                <YourScoreWrapper>
-                  Your Score
-                </YourScoreWrapper>
-              </NetworkScore>
-            ) : (
-              <EndorsementsContainer>
-                <EndorsementsTitle>
-                  Endorsements
-                </EndorsementsTitle>
-                <EndorsementWrapper>
-                  <EndorsementRow>
-                    <Endorsement>
-                      <ThumbUp classes={{ root: classes.endorsementIconRoot }} />
-                      <EndorsementCount>
-                        {numberOfAllSupportPositions}
-                      </EndorsementCount>
-                    </Endorsement>
-                    { showOpposeCount && (
-                      <Endorsement>
-                        <ThumbDown classes={{ root: classes.endorsementIconRoot }} />
-                        <EndorsementCount>
-                          {numberOfAllOpposePositions}
-                        </EndorsementCount>
-                      </Endorsement>
-                    )}
-                    { showCommentCount && (
-                      <Endorsement>
-                        <Comment classes={{ root: classes.endorsementIconRoot }} />
-                        <EndorsementCount>
-                          {numberOfAllInfoOnlyPositions}
-                        </EndorsementCount>
-                      </Endorsement>
-                    )}
-                  </EndorsementRow>
-                </EndorsementWrapper>
-              </EndorsementsContainer>
-            )}
           </StickyPopover>
         )}
 
@@ -1061,6 +1123,9 @@ const styles = theme => ({
 });
 
 const Wrapper = styled.div`
+  align-items: flex-start;
+  display: flex;
+  justify-content: flex-end;
   margin-top: .1rem;
 `;
 
@@ -1068,10 +1133,33 @@ const DecidedIconWrapper = styled.span`
   margin-right: 6px;
 `;
 
+const Endorsement = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  font-size: 12px;
+`;
+
+const EndorsementCount = styled.div`
+  padding-top: 4px;
+`;
+
+const EndorsementRow = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+`;
+
+const EndorsementsOverviewShowOrNotShow = styled.div`
+`;
+
 const EndorsementsContainer = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: space-between;
+`;
+
+const EndorsementsOverviewSpacer = styled.div`
+  padding-right: 8px;
 `;
 
 const EndorsementsTitle = styled.div`
@@ -1092,22 +1180,6 @@ const EndorsementWrapper = styled.div`
   padding-bottom: 8px;
   margin-top: -4px;
   justify-content: space-between;
-`;
-
-const Endorsement = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  font-size: 12px;
-`;
-
-const EndorsementRow = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-end;
-`;
-
-const EndorsementCount = styled.div`
-  padding-top: 4px;
 `;
 
 const ItemActionBarWrapper = styled.div`

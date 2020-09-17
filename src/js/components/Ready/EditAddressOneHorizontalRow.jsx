@@ -104,9 +104,10 @@ class EditAddressOneHorizontalRow extends Component {
     }
   }
 
-  onClickShowAddressExplanation = () => {
+  onClickToggleAddressExplanation = () => {
+    const { showAddressExplanation } = this.state;
     this.setState({
-      showAddressExplanation: true,
+      showAddressExplanation: !showAddressExplanation,
     });
   }
 
@@ -247,16 +248,22 @@ class EditAddressOneHorizontalRow extends Component {
         </InnerWrapper>
         <InnerWrapper>
           {showAddressExplanation ? (
-            <AddressExplanation>
+            <AddressExplanation onClick={this.onClickToggleAddressExplanation}>
               <i className="fas fa-info-circle" />
               To find your correct ballot, we need your full address, including house number.
               {' '}
               We are a nonprofit, and will never reveal your address.
               {' '}
               Note: our partner who provides what&apos;s-on-the-ballot data works incredibly hard to cover the entire United States, but we cannot guarantee 100% of the items on your official ballot items will be shown on We Vote. Please contact us if you have questions.
+              {' '}
+              (
+              <span className="u-cursor--pointer u-link-color">
+                less
+              </span>
+              )
             </AddressExplanation>
           ) : (
-            <AddressExplanation onClick={this.onClickShowAddressExplanation}>
+            <AddressExplanation onClick={this.onClickToggleAddressExplanation}>
               <i className="fas fa-info-circle" />
               Why house number?
               {' '}

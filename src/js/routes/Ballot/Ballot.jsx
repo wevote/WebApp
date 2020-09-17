@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Badge, Chip, CircularProgress, Link } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import ActivityActions from '../../actions/ActivityActions';
+import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
@@ -38,6 +39,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs';
 import ShowMoreItems from '../../components/Widgets/ShowMoreItems';
+import SuggestedFriendsPreview from '../../components/Friends/SuggestedFriendsPreview';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import { checkShouldUpdate, formatVoterBallotList } from './utils';
@@ -1439,6 +1441,18 @@ class Ballot extends Component {
                           />
                         </ValuesListWrapper>
                       )}
+                      <SuggestedFriendsPreview friendsToShowMaxIncoming={7} inSideColumn />
+                      <div className="card">
+                        <div className="card-main">
+                          <SectionTitle>
+                            Voting Is Better with Friends
+                          </SectionTitle>
+                          <SectionDescription>
+                            Hear about upcoming elections and what you can do to get ready to vote. Add friends you feel comfortable talking politics with.
+                          </SectionDescription>
+                          <AddFriendsByEmail addAnotherButtonOff inSideColumn uniqueExternalId="sidebar" />
+                        </div>
+                      </div>
                     </div>
                   )
                 }
@@ -1498,6 +1512,20 @@ const SearchTitle = styled.div`
   font-size: 24px;
   margin-top: 12px;
   margin-bottom: 12px;
+`;
+
+const SectionDescription = styled.div`
+  color: #999;
+  font-size: 14px;
+  margin-bottom: 4px;
+`;
+
+const SectionTitle = styled.h2`
+  width: fit-content;
+  font-weight: bolder;
+  font-size: 18px;
+  margin-bottom: 4px;
+  display: inline;
 `;
 
 const ValuesListWrapper = styled.div`

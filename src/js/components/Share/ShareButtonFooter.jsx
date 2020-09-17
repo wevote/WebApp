@@ -467,7 +467,7 @@ class ShareButtonFooter extends Component {
                 classes={{ root: classes.shareIcon }}
               />
             </Icon>
-            Share
+            Share Page
           </Button>
         )}
         <Drawer
