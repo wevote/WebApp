@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import ImageHandler from '../ImageHandler';
 import FriendActions from '../../actions/FriendActions';
 import SuggestedFriendToggle from './SuggestedFriendToggle';
@@ -11,6 +12,7 @@ import { renderLog } from '../../utils/logging';
 
 class SuggestedFriendDisplayForList extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     inSideColumn: PropTypes.bool,
     linked_organization_we_vote_id: PropTypes.string,
     mutual_friends: PropTypes.number,
@@ -42,6 +44,7 @@ class SuggestedFriendDisplayForList extends Component {
   render () {
     renderLog('SuggestedFriendDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
+      classes,
       inSideColumn,
       mutual_friends: mutualFriends,
       positions_taken: positionsTaken,
@@ -108,6 +111,7 @@ class SuggestedFriendDisplayForList extends Component {
           <SuggestedFriendToggle otherVoterWeVoteId={otherVoterWeVoteId} />
           <ButtonContainer inSideColumn={inSideColumn}>
             <Button
+              classes={{ root: classes.removeButton }}
               color="primary"
               disabled={ignoreSuggestedFriendSent}
               fullWidth
@@ -133,6 +137,12 @@ class SuggestedFriendDisplayForList extends Component {
     }
   }
 }
+
+const styles = () => ({
+  removeButton: {
+    fontSize: 10,
+  },
+});
 
 const AvatarNotInColumn = `
   @media (min-width: 400px) {
@@ -172,7 +182,7 @@ const ButtonContainerNotInColumn = `
 
 const ButtonContainer = styled.div`
   width: 100%;
-  margin-right: 12px;
+  margin-right: 8px;
   ${({ inSideColumn }) => ((inSideColumn) ? '' : ButtonContainerNotInColumn)}
 `;
 
@@ -307,4 +317,4 @@ const Wrapper = styled.div`
   ${({ inSideColumn }) => ((inSideColumn) ? '' : WrapperNotInSideColumn)}
 `;
 
-export default SuggestedFriendDisplayForList;
+export default withStyles(styles)(SuggestedFriendDisplayForList);

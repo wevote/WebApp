@@ -11,20 +11,28 @@ import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
 export default class SuggestedFriendsPreview extends Component {
   static propTypes = {
+    friendsToShowMaxIncoming: PropTypes.number,
     inSideColumn: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
+      friendsToShowMax: 3,
       suggestedFriendList: [],
     };
   }
 
   componentDidMount () {
+    const { friendsToShowMaxIncoming } = this.props;
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.onFriendStoreChange();
     FriendActions.suggestedFriendList();
+    const FRIENDS_TO_SHOW_MAX_DEFAULT = 3;
+    const friendsToShowMax = friendsToShowMaxIncoming || FRIENDS_TO_SHOW_MAX_DEFAULT;
+    this.setState({
+      friendsToShowMax,
+    });
   }
 
   componentWillUnmount () {
@@ -47,13 +55,12 @@ export default class SuggestedFriendsPreview extends Component {
   render () {
     renderLog('SuggestedFriendsPreview');  // Set LOG_RENDER_EVENTS to log all renders
     const { inSideColumn } = this.props;
-    const { suggestedFriendList } = this.state;
+    const { friendsToShowMax, suggestedFriendList } = this.state;
     if (!suggestedFriendList || !(suggestedFriendList.length > 0)) {
       return null;
     }
 
-    const FRIENDS_TO_SHOW = 3;
-    const suggestedFriendListLimited = suggestedFriendList.slice(0, FRIENDS_TO_SHOW);
+    const suggestedFriendListLimited = suggestedFriendList.slice(0, friendsToShowMax);
 
     return (!!(suggestedFriendListLimited && suggestedFriendListLimited.length > 0) && (
       <div className="opinion-view">
@@ -72,7 +79,7 @@ export default class SuggestedFriendsPreview extends Component {
                 inSideColumn={inSideColumn}
                 previewMode
               />
-              {suggestedFriendList.length > FRIENDS_TO_SHOW && <Link to="/friends/suggested">See All</Link>}
+              {suggestedFriendList.length > friendsToShowMax && <Link to="/friends/suggested">See All</Link>}
             </div>
           </div>
         </section>

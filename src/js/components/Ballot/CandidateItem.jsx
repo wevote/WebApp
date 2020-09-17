@@ -37,6 +37,7 @@ class CandidateItem extends Component {
     hideBallotItemSupportOpposeComment: PropTypes.bool,
     hideCandidateText: PropTypes.bool,
     hideCandidateUrl: PropTypes.bool,
+    hideEndorsementsOverview: PropTypes.bool,
     hideIssuesRelatedToCandidate: PropTypes.bool,
     hideShowMoreFooter: PropTypes.bool,
     linkToBallotItemPage: PropTypes.bool,
@@ -405,6 +406,7 @@ class CandidateItem extends Component {
               goToBallotItem={this.props.goToBallotItem}
               handleLeaveCandidateCard={forDesktop ? this.handleLeave : null}
               handleEnterCandidateCard={forDesktop ? this.handleEnter : null}
+              hideEndorsementsOverview={this.props.hideEndorsementsOverview}
               hideShowMoreLink={!linkToBallotItemPage}
               openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
               openSupportOpposeCountDisplayModal={openSupportOpposeCountDisplayModal}

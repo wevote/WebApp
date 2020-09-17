@@ -159,7 +159,7 @@ class ShareButtonDesktopTablet extends Component {
               classes={{ root: classes.shareIcon }}
             />
           </Icon>
-          Share
+          Share Page
         </Button>
         <Menu
           anchorEl={anchorEl}

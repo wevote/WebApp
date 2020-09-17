@@ -19,6 +19,7 @@ import { focusTextFieldAndroid, blurTextFieldAndroid } from '../../utils/cordova
 
 class AddFriendsByEmail extends Component {
   static propTypes = {
+    addAnotherButtonOff: PropTypes.bool,
     classes: PropTypes.object,
     inSideColumn: PropTypes.bool,
     uniqueExternalId: PropTypes.string,
@@ -237,7 +238,7 @@ class AddFriendsByEmail extends Component {
 
   render () {
     renderLog('AddFriendsByEmail');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, inSideColumn, uniqueExternalId } = this.props;
+    const { addAnotherButtonOff, classes, inSideColumn, uniqueExternalId } = this.props;
     const {
       emailAddressesError, errorMessageToShowVoter, friendContactInfo, friendFirstName, friendInvitationsWaitingForVerification,
       friendLastName, friendsToInvite,
@@ -387,20 +388,22 @@ class AddFriendsByEmail extends Component {
                       ) : null
                       }
                       <ButtonContainer>
-                        <Button
-                          classes={{ root: classes.addButton }}
-                          disabled={!this.allEnteredEmailsOrPhonesVerified()}
-                          onClick={this.addFriend}
-                          color="primary"
-                          variant="outlined"
-                        >
-                          <span className="u-show-mobile">
-                            Add
-                          </span>
-                          <span className="u-show-desktop-tablet">
-                            Add Another
-                          </span>
-                        </Button>
+                        {!addAnotherButtonOff && (
+                          <Button
+                            classes={{ root: classes.addButton }}
+                            disabled={!this.allEnteredEmailsOrPhonesVerified()}
+                            onClick={this.addFriend}
+                            color="primary"
+                            variant="outlined"
+                          >
+                            <span className="u-show-mobile">
+                              Add
+                            </span>
+                            <span className="u-show-desktop-tablet">
+                              Add Another
+                            </span>
+                          </Button>
+                        )}
                         <Button
                           color="primary"
                           classes={{ root: classes.sendButton }}

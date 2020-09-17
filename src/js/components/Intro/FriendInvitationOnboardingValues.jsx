@@ -23,9 +23,10 @@ class FriendInvitationOnboardingValues extends Component {
     this.state = {};
   }
 
-  onClickShowAllTopHeaderExplanation = () => {
+  onClickToggleAllTopHeaderExplanation = () => {
+    const { showAllTopHeaderExplanation } = this.state;
     this.setState({
-      showAllTopHeaderExplanation: true,
+      showAllTopHeaderExplanation: !showAllTopHeaderExplanation,
     });
   }
 
@@ -47,16 +48,22 @@ class FriendInvitationOnboardingValues extends Component {
             Follow what you care about.
           </div>
           {showAllTopHeaderExplanation ? (
-            <div className="FriendInvitationTopHeaderExplanation">
+            <div className="FriendInvitationTopHeaderExplanation" onClick={this.onClickToggleAllTopHeaderExplanation}>
               <i className="fas fa-info-circle" />
               Opinions will be highlighted on your ballot based on what you follow. Follow as many values/issues as you would like.
               {' '}
               We promise to never sell your email address.
               {' '}
               You can stop following values/issues at any time in the &quot;Opinions&quot; section.
+              {' '}
+              (
+              <span className="u-cursor--pointer u-link-color">
+                less
+              </span>
+              )
             </div>
           ) : (
-            <div className="FriendInvitationTopHeaderExplanation" onClick={this.onClickShowAllTopHeaderExplanation}>
+            <div className="FriendInvitationTopHeaderExplanation" onClick={this.onClickToggleAllTopHeaderExplanation}>
               <i className="fas fa-info-circle" />
               Opinions will be highlighted on...
               {' '}

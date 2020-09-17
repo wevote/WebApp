@@ -345,6 +345,7 @@ class PersonalizedScoreIntroBody extends Component {
                   hideBallotItemSupportOpposeComment
                   hideCandidateText
                   hideCandidateUrl
+                  hideEndorsementsOverview
                   hideIssuesRelatedToCandidate
                   hideShowMoreFooter
                   openAdviserMaterialUIPopover={openAdviserMaterialUIPopover}
