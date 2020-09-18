@@ -47,6 +47,8 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/news/a/" component={componentLoader('News')} />
           <Route path="/ready" component={componentLoader('Ready')} />
           <Route path="/ready/election/:google_civic_election_id" component={componentLoader('Ready')} />
+          <Route path="/ready/modal/:modal_to_show/:shared_item_code" component={componentLoader('Ready')} />
+          <Route path="/ready/modal/:modal_to_show" component={componentLoader('Ready')} />
           <Route path="/register" component={componentLoader('Register')} />
           <Route path="/ballot" component={componentLoader('Ballot')} />
           <Route path="/ballot?voter_refresh_timer_on=:voter_refresh_timer_on" component={componentLoader('Ballot')} />
@@ -80,15 +82,15 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/ballot/vote" component={componentLoader('Vote')} />
           <Route path="/ballot/modal/:modal_to_show/:shared_item_code" component={componentLoader('Ballot')} />
           <Route path="/ballot/modal/:modal_to_show" component={componentLoader('Ballot')} />
-          <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show/:shared_item_code" component={componentLoader('Ballot')} />
-          <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show" component={componentLoader('Ballot')} />
-          <Route path="/ballot/:ballot_location_shortcut" component={componentLoader('Ballot')} />
           <Route path="/ballot/id/:ballot_returned_we_vote_id/modal/:modal_to_show/:shared_item_code" component={componentLoader('Ballot')} />
           <Route path="/ballot/id/:ballot_returned_we_vote_id/modal/:modal_to_show" component={componentLoader('Ballot')} />
           <Route path="/ballot/id/:ballot_returned_we_vote_id" component={componentLoader('Ballot')} />
           <Route path="/ballot/election/:google_civic_election_id/modal/:modal_to_show/:shared_item_code" component={componentLoader('Ballot')} />
           <Route path="/ballot/election/:google_civic_election_id/modal/:modal_to_show" component={componentLoader('Ballot')} />
           <Route path="/ballot/election/:google_civic_election_id" component={componentLoader('Ballot')} />
+          <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show/:shared_item_code" component={componentLoader('Ballot')} />
+          <Route path="/ballot/:ballot_location_shortcut/modal/:modal_to_show" component={componentLoader('Ballot')} />
+          <Route path="/ballot/:ballot_location_shortcut" component={componentLoader('Ballot')} />
 
           <Route path="/candidate-for-extension" component={componentLoader('CandidateForExtension')} />
           <Route path="/add-candidate-for-extension" component={componentLoader('AddCandidateForExtension')} />
@@ -275,6 +277,8 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
           <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
           <Route path=":twitter_handle" component={componentLoader('TwitterHandleLanding')} />
+          <Route path=":twitter_handle/modal/:modal_to_show/:shared_item_code" component={componentLoader('TwitterHandleLanding')} />
+          <Route path=":twitter_handle/modal/:modal_to_show" component={componentLoader('TwitterHandleLanding')} />
           <Route path="*" component={componentLoader('PageNotFound')} />
         </Route>
       </Suspense>

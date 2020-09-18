@@ -25,7 +25,7 @@ export default {
     });
   },
 
-  sharedItemSave (destinationFullUrl, kindOfShare = 'BALLOT', ballotItemWeVoteId = '', googleCivicElectionId = 0) {
+  sharedItemSave (destinationFullUrl, kindOfShare = 'BALLOT', ballotItemWeVoteId = '', googleCivicElectionId = 0, organizationWeVoteId = '') {
     // Look up siteOwnerOrganizationWeVoteId
     return Dispatcher.loadEndpoint('sharedItemSave', {
       ballot_item_we_vote_id: ballotItemWeVoteId,
@@ -35,6 +35,9 @@ export default {
       is_candidate_share: (kindOfShare === 'CANDIDATE'),
       is_measure_share: (kindOfShare === 'MEASURE'),
       is_office_share: (kindOfShare === 'OFFICE'),
+      is_organization_share: (kindOfShare === 'ORGANIZATION'),
+      is_ready_share: (kindOfShare === 'READY'),
+      organization_we_vote_id: organizationWeVoteId,
     });
   },
 };

@@ -114,6 +114,8 @@ class Ballot extends Component {
   }
 
   componentDidMount () {
+    const currentPathname = window.location.pathname;
+    // console.log('componentDidMount, Current pathname:', currentPathname);
     const ballotBaseUrl = '/ballot';
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
@@ -190,7 +192,14 @@ class Ballot extends Component {
 
           // Change the URL to match
           const ballotElectionUrl = `${ballotBaseUrl}/election/${googleCivicElectionIdFromUrl}`;
-          historyPush(ballotElectionUrl);
+          // console.log('ballotElectionUrl: ', ballotElectionUrl);
+          // If the current pathname we are on starts with ballotElectionUrl, do not historyPush
+          const currentPathnameStartsWithNewUrl = currentPathname && currentPathname.startsWith(ballotElectionUrl);
+          if (!currentPathnameStartsWithNewUrl) {
+            // As long as the current pathname starts with the new URL, do NOT redirect
+            // console.log('REDIRECTING TO ballotElectionUrl');
+            historyPush(ballotElectionUrl);
+          }
         }
 
         // No change to the URL needed
@@ -200,13 +209,17 @@ class Ballot extends Component {
         // No need to retrieve data again
         // Change the URL to match the current googleCivicElectionId
         const ballotElectionUrl2 = `${ballotBaseUrl}/election/${googleCivicElectionId}`;
-        historyPush(ballotElectionUrl2);
+        // console.log('ballotElectionUrl2: ', ballotElectionUrl2);
+        const currentPathnameStartsWithNewUrl2 = currentPathname && currentPathname.startsWith(ballotElectionUrl2);
+        if (!currentPathnameStartsWithNewUrl2) {
+          historyPush(ballotElectionUrl2);
+        }
       }
     } else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false) { // No ballot found
       // console.log('if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false');
       historyPush('/settings/location');
     } else if (ballotWithItemsFromCompletionFilterType === undefined) {
-      // console.log('WebApp doesn't know the election or have ballot data, so ask the API server to return best guess');
+      // console.log('WebApp doesn\'t know the election or have ballot data, so ask the API server to return best guess');
       BallotActions.voterBallotItemsRetrieve(0, '', '');
     }
 
@@ -278,12 +291,14 @@ class Ballot extends Component {
     }
 
     const modalToOpen = this.props.params.modal_to_show || '';
+    // console.log('componentDidMount modalToOpen:', modalToOpen);
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
         AppActions.setShowShareModal(true);
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = this.props.params.shared_item_code || '';
+      // console.log('componentDidMount sharedItemCode:', sharedItemCode);
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
           AppActions.setShowSharedItemModal(sharedItemCode);
@@ -297,7 +312,7 @@ class Ballot extends Component {
   // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // WARN: Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
-    console.log('Ballot UNSAFE_componentWillReceiveProps');
+    // console.log('Ballot UNSAFE_componentWillReceiveProps');
 
     // We don't want to let the googleCivicElectionId disappear
     const googleCivicElectionId = nextProps.params.google_civic_election_id || this.state.googleCivicElectionId;
@@ -338,10 +353,12 @@ class Ballot extends Component {
     }
 
     const modalToOpen = nextProps.params.modal_to_show || '';
+    // console.log('UNSAFE_componentWillReceiveProps modalToOpen:', modalToOpen);
     if (modalToOpen === 'share') {
       AppActions.setShowShareModal(true);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = nextProps.params.shared_item_code || '';
+      // console.log('UNSAFE_componentWillReceiveProps sharedItemCode:', sharedItemCode);
       if (sharedItemCode) {
         AppActions.setShowSharedItemModal(sharedItemCode);
       }
@@ -943,6 +960,7 @@ class Ballot extends Component {
     const { showSelectBallotModal } = this.state;
     // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
+      // console.log('toggleSelectBallotModal destinationUrlForHistoryPush:', destinationUrlForHistoryPush);
       historyPush(destinationUrlForHistoryPush);
     } else {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
@@ -1127,6 +1145,7 @@ class Ballot extends Component {
     // console.log('inRemainingDecisionsMode: ', inRemainingDecisionsMode);
 
     if (ballotWithItemsFromCompletionFilterType.length === 0 && inRemainingDecisionsMode) {
+      // console.log('inRemainingDecisionsMode historyPush');
       historyPush(this.state.pathname);
     }
     const showAddressVerificationForm = !locationGuessClosed || !textForMapSearch;

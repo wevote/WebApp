@@ -113,13 +113,12 @@ export default class TwitterHandleLanding extends Component {
     }
 
     const {
-      activeRoute, voter, kindOfOwner, ownerWeVoteId, twitterHandle,
+      activeRoute, voter, kindOfOwner, ownerWeVoteId, twitterHandle: twitterHandleBeingViewed,
     } = this.state;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
     let signedInWithThisTwitterAccount = false;
     let lookingAtPositionsForFriendsOnly = false;
     if (signedInTwitter) {
-      const twitterHandleBeingViewed = twitterHandle; // Variable copied for code clarity
       // That is, you are looking at yourself
       signedInWithThisTwitterAccount = voter.twitter_screen_name === twitterHandleBeingViewed;
 
@@ -173,11 +172,11 @@ export default class TwitterHandleLanding extends Component {
             <div className="medium">
               We were not able to find an account for this
               Twitter Handle
-              { twitterHandle ? (
+              { twitterHandleBeingViewed ? (
                 <span>
                   {' '}
                   &quot;
-                  {twitterHandle}
+                  {twitterHandleBeingViewed}
                   &quot;
                 </span>
               ) :
