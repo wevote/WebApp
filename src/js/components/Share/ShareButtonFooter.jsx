@@ -37,7 +37,6 @@ class ShareButtonFooter extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      allOpinions: false,
       candidateShare: false,
       chosenPreventSharingOpinions: false,
       currentFullUrlToShare: '',
@@ -45,6 +44,8 @@ class ShareButtonFooter extends Component {
       measureShare: false,
       officeShare: false,
       openShareButtonDrawer: false,
+      organizationShare: false,
+      readyShare: false,
       shareFooterStep: '',
       showingOneCompleteYourProfileModal: false,
       showShareButton: true,
@@ -52,6 +53,7 @@ class ShareButtonFooter extends Component {
       showSignInModal: false,
       showVoterPlanModal: false,
       voterIsSignedIn: false,
+      withOpinions: false,
     };
   }
 
@@ -67,20 +69,31 @@ class ShareButtonFooter extends Component {
     const chosenPreventSharingOpinions = AppStore.getChosenPreventSharingOpinions();
     const currentFullUrlAdjusted = this.getCurrentFullUrl();
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
+
+    const ballotShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ballot');
     const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
     const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
     const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
+    const readyShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ready');
+    const organizationShare = !ballotShare && !candidateShare && !measureShare && !officeShare && !readyShare;
+
     const urlWithSharedItemCode = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare);
     const urlWithSharedItemCodeAllOpinions = ShareStore.getUrlWithSharedItemCodeByFullUrl(currentFullUrlToShare, true);
     // console.log('ShareButtonFooter componentDidMount urlWithSharedItemCode:', urlWithSharedItemCode, ', urlWithSharedItemCodeAllOpinions:', urlWithSharedItemCodeAllOpinions);
     if (!urlWithSharedItemCode || !urlWithSharedItemCodeAllOpinions) {
-      let kindOfShare = 'BALLOT';
+      let kindOfShare;
       if (candidateShare) {
         kindOfShare = 'CANDIDATE';
       } else if (measureShare) {
         kindOfShare = 'MEASURE';
       } else if (officeShare) {
         kindOfShare = 'OFFICE';
+      } else if (organizationShare) {
+        kindOfShare = 'ORGANIZATION';
+      } else if (readyShare) {
+        kindOfShare = 'READY';
+      } else {
+        kindOfShare = 'BALLOT';
       }
       ShareActions.sharedItemSave(currentFullUrlToShare, kindOfShare);
     }
@@ -93,6 +106,8 @@ class ShareButtonFooter extends Component {
       currentFullUrlToShare,
       measureShare,
       officeShare,
+      organizationShare,
+      readyShare,
       showingOneCompleteYourProfileModal,
       showShareModal,
       showSignInModal,
@@ -183,13 +198,13 @@ class ShareButtonFooter extends Component {
   }
 
   setStep (shareFooterStep) {
-    let allOpinions = false;
+    let withOpinions = false;
     if (stringContains('AllOpinions', shareFooterStep)) {
-      allOpinions = true;
+      withOpinions = true;
     }
     const showSignInModal = AppStore.showSignInModal();
     this.setState({
-      allOpinions,
+      withOpinions,
       shareFooterStep,
       showSignInModal,
     });
@@ -200,16 +215,27 @@ class ShareButtonFooter extends Component {
     const { pathname } = this.props;
     const { currentFullUrlAdjusted } = this.state;
     const currentFullUrlToShare = currentFullUrlAdjusted.replace('/modal/share', '');
+
+    const ballotShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ballot');
     const candidateShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/candidate');
     const measureShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/measure');
     const officeShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/office');
-    let kindOfShare = 'BALLOT';
+    const readyShare = typeof pathname !== 'undefined' && pathname && pathname.startsWith('/ready');
+    const organizationShare = !ballotShare && !candidateShare && !measureShare && !officeShare && !readyShare;
+
+    let kindOfShare;
     if (candidateShare) {
       kindOfShare = 'CANDIDATE';
     } else if (measureShare) {
       kindOfShare = 'MEASURE';
     } else if (officeShare) {
       kindOfShare = 'OFFICE';
+    } else if (organizationShare) {
+      kindOfShare = 'ORGANIZATION';
+    } else if (readyShare) {
+      kindOfShare = 'READY';
+    } else {
+      kindOfShare = 'BALLOT';
     }
     ShareActions.sharedItemSave(currentFullUrlAdjusted, kindOfShare);
     this.setState({
@@ -219,6 +245,8 @@ class ShareButtonFooter extends Component {
       measureShare,
       officeShare,
       openShareButtonDrawer: true,
+      organizationShare,
+      readyShare,
       shareFooterStep: '',
       showShareButton: false,
     });
@@ -234,17 +262,17 @@ class ShareButtonFooter extends Component {
 
   handleBackButtonClick = () => {
     this.setState({
-      allOpinions: false,
+      withOpinions: false,
       shareFooterStep: '',
     });
   }
 
-  openShareOptions = (allOpinions = false) => {
+  openShareOptions = (withOpinions = false) => {
     // console.log('ShareButtonFooter openShareOptions');
-    const { candidateShare, measureShare, officeShare } = this.state;
+    const { candidateShare, measureShare, officeShare, organizationShare, readyShare } = this.state;
     let shareFooterStep;
     if (candidateShare) {
-      if (allOpinions) {
+      if (withOpinions) {
         shareFooterStep = 'candidateShareOptionsAllOpinions';
         AnalyticsActions.saveActionShareCandidateAllOpinions(VoterStore.electionId());
       } else {
@@ -252,7 +280,7 @@ class ShareButtonFooter extends Component {
         AnalyticsActions.saveActionShareCandidate(VoterStore.electionId());
       }
     } else if (measureShare) {
-      if (allOpinions) {
+      if (withOpinions) {
         shareFooterStep = 'measureShareOptionsAllOpinions';
         AnalyticsActions.saveActionShareMeasureAllOpinions(VoterStore.electionId());
       } else {
@@ -260,15 +288,31 @@ class ShareButtonFooter extends Component {
         AnalyticsActions.saveActionShareMeasure(VoterStore.electionId());
       }
     } else if (officeShare) {
-      if (allOpinions) {
+      if (withOpinions) {
         shareFooterStep = 'officeShareOptionsAllOpinions';
         AnalyticsActions.saveActionShareOfficeAllOpinions(VoterStore.electionId());
       } else {
         shareFooterStep = 'officeShareOptions';
         AnalyticsActions.saveActionShareOffice(VoterStore.electionId());
       }
+    } else if (organizationShare) {
+      if (withOpinions) {
+        shareFooterStep = 'organizationShareOptionsAllOpinions';
+        AnalyticsActions.saveActionShareOrganizationAllOpinions(VoterStore.electionId());
+      } else {
+        shareFooterStep = 'organizationShareOptions';
+        AnalyticsActions.saveActionShareOrganization(VoterStore.electionId());
+      }
+    } else if (readyShare) {
+      if (withOpinions) {
+        shareFooterStep = 'readyShareOptionsAllOpinions';
+        AnalyticsActions.saveActionShareReadyAllOpinions(VoterStore.electionId());
+      } else {
+        shareFooterStep = 'readyShareOptions';
+        AnalyticsActions.saveActionShareReady(VoterStore.electionId());
+      }
       // Default to ballot
-    } else if (allOpinions) {
+    } else if (withOpinions) {
       shareFooterStep = 'ballotShareOptionsAllOpinions';
       AnalyticsActions.saveActionShareBallotAllOpinions(VoterStore.electionId());
     } else {
@@ -276,7 +320,7 @@ class ShareButtonFooter extends Component {
       AnalyticsActions.saveActionShareBallot(VoterStore.electionId());
     }
     this.setState({
-      allOpinions,
+      withOpinions,
     });
     this.setStep(shareFooterStep);
   }
@@ -370,9 +414,10 @@ class ShareButtonFooter extends Component {
     renderLog('ShareButtonFooter');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
     const {
-      allOpinions,
+      withOpinions,
       candidateShare, chosenPreventSharingOpinions, currentFullUrlToShare,
-      hideShareButtonFooter, measureShare, officeShare, openShareButtonDrawer,
+      hideShareButtonFooter, measureShare, officeShare,
+      openShareButtonDrawer, organizationShare, readyShare,
       shareFooterStep, showingOneCompleteYourProfileModal, showShareButton,
       showShareModal, showSignInModal, showVoterPlanModal,
       urlWithSharedItemCode, urlWithSharedItemCodeAllOpinions,
@@ -437,6 +482,12 @@ class ShareButtonFooter extends Component {
     } else if (officeShare) {
       shareMenuTextDefault = 'Office';
       shareMenuTextAllOpinions = 'Office + Your Opinions';
+    } else if (organizationShare) {
+      shareMenuTextDefault = 'This Page';
+      shareMenuTextAllOpinions = 'This Page + Your Opinions';
+    } else if (readyShare) {
+      shareMenuTextDefault = 'Ready Page';
+      shareMenuTextAllOpinions = 'Ready Page + Your Opinions';
     } else {
       // Default to ballot
       shareMenuTextDefault = 'Ballot';
@@ -487,7 +538,11 @@ class ShareButtonFooter extends Component {
               (shareFooterStep === 'measureShareOptions') ||
               (shareFooterStep === 'measureShareOptionsAllOpinions') ||
               (shareFooterStep === 'officeShareOptions') ||
-              (shareFooterStep === 'officeShareOptionsAllOpinions')
+              (shareFooterStep === 'officeShareOptionsAllOpinions') ||
+              (shareFooterStep === 'organizationShareOptions') ||
+              (shareFooterStep === 'organizationShareOptionsAllOpinions') ||
+              (shareFooterStep === 'readyShareOptions') ||
+              (shareFooterStep === 'readyShareOptionsAllOpinions')
             )}
           >
             {(shareFooterStep === 'ballotShareOptions') ||
@@ -497,7 +552,11 @@ class ShareButtonFooter extends Component {
               (shareFooterStep === 'measureShareOptions') ||
               (shareFooterStep === 'measureShareOptionsAllOpinions') ||
               (shareFooterStep === 'officeShareOptions') ||
-              (shareFooterStep === 'officeShareOptionsAllOpinions') ? (
+              (shareFooterStep === 'officeShareOptionsAllOpinions') ||
+              (shareFooterStep === 'organizationShareOptions') ||
+              (shareFooterStep === 'organizationShareOptionsAllOpinions') ||
+              (shareFooterStep === 'readyShareOptions') ||
+              (shareFooterStep === 'readyShareOptionsAllOpinions') ? (
                 <>
                   <ModalTitleArea>
                     <Button
@@ -521,6 +580,10 @@ class ShareButtonFooter extends Component {
                         {(shareFooterStep === 'measureShareOptionsAllOpinions') && 'Measure + Your Opinions'}
                         {(shareFooterStep === 'officeShareOptions') && 'Office'}
                         {(shareFooterStep === 'officeShareOptionsAllOpinions') && 'Office + Your Opinions'}
+                        {(shareFooterStep === 'organizationShareOptions') && 'This Page'}
+                        {(shareFooterStep === 'organizationShareOptionsAllOpinions') && 'This Page + Your Opinions'}
+                        {(shareFooterStep === 'readyShareOptions') && 'Ready Page'}
+                        {(shareFooterStep === 'readyShareOptionsAllOpinions') && 'Ready Page + Your Opinions'}
                       </strong>
                     </Title>
                     <SubTitle>
@@ -547,6 +610,18 @@ class ShareButtonFooter extends Component {
                       )}
                       {(shareFooterStep === 'officeShareOptionsAllOpinions') && (
                         <>Share a link to this office.</>
+                      )}
+                      {(shareFooterStep === 'organizationShareOptions') && (
+                        <>Share a link to this page.</>
+                      )}
+                      {(shareFooterStep === 'organizationShareOptionsAllOpinions') && (
+                        <>Share a link to this page.</>
+                      )}
+                      {(shareFooterStep === 'readyShareOptions') && (
+                        <>Share a link to this Ready page.</>
+                      )}
+                      {(shareFooterStep === 'readyShareOptionsAllOpinions') && (
+                        <>Share a link to this Ready page.</>
                       )}
                       {stringContains('AllOpinions', shareFooterStep) ? (
                         <>
@@ -699,7 +774,7 @@ class ShareButtonFooter extends Component {
                       />
                     </Flex>
                   )}
-                  {allOpinions && (
+                  {withOpinions && (
                     <OpenExternalWebSite
                       linkIdAttribute="allOpinions"
                       url={linkToBeShared}

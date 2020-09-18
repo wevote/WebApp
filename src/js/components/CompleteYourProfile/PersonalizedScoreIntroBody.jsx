@@ -69,7 +69,7 @@ class PersonalizedScoreIntroBody extends Component {
           controlAdviserMaterialUIPopoverFromProp: false,
           explanationTextTopPlain: null,
           explanationTextTopBlue: <>In this example, you have a Personalized Score of &quot;+3&quot; for the historical candidate &quot;Alexander Hamilton&quot;.</>,
-          explanationTextBottomPlain: null,
+          explanationTextBottomPlain: <>Try clicking the +3 in the green box above.</>,
           explanationTextBottomBlue: null,
           openAdviserMaterialUIPopover: false,
           openSupportOpposeCountDisplayModal: false,
@@ -229,6 +229,8 @@ class PersonalizedScoreIntroBody extends Component {
               </strong>
               {' '}
               is the number of friends, public figures or groups who support one candidate, from among the people you follow.
+              {' '}
+              Click on any + or - number you see for more information, like the +3 above. Try it now!
             </>
           ),
           explanationTextBottomBlue: null,

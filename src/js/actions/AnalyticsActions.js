@@ -75,6 +75,8 @@ import AppStore from '../stores/AppStore'; // eslint-disable-line import/no-cycl
 // ACTION_UNSUBSCRIBE_SMS_PAGE = 72
 // ACTION_MEASURE = 73
 // ACTION_NEWS = 74
+// ACTION_SHARE_ORGANIZATION = 75
+// ACTION_SHARE_ORGANIZATION_ALL_OPINIONS = 76
 
 export default {
 
@@ -301,6 +303,16 @@ export default {
 
   saveActionShareOfficeAllOpinions (googleCivicElectionId) {
     const actionConstant = 57; // ACTION_SHARE_OFFICE_ALL_OPINIONS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareOrganization (googleCivicElectionId) {
+    const actionConstant = 75; // ACTION_SHARE_ORGANIZATION
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
+  },
+
+  saveActionShareOrganizationAllOpinions (googleCivicElectionId) {
+    const actionConstant = 76; // ACTION_SHARE_ORGANIZATION_ALL_OPINIONS
     this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 

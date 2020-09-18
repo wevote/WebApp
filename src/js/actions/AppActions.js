@@ -98,6 +98,10 @@ export default {
     Dispatcher.dispatch({ type: 'showValuesIntroModal', payload: show });
   },
 
+  setViewingOrganizationVoterGuide (isViewing) {
+    Dispatcher.dispatch({ type: 'viewingOrganizationVoterGuide', payload: isViewing });
+  },
+
   siteConfigurationRetrieve (hostname, refresh_string = '') {
     Dispatcher.loadEndpoint('siteConfigurationRetrieve',
       {

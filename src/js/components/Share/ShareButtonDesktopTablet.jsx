@@ -19,6 +19,10 @@ class ShareButtonDesktopTablet extends Component {
     candidateShare: PropTypes.bool,
     measureShare: PropTypes.bool,
     officeShare: PropTypes.bool,
+    organizationShare: PropTypes.bool,
+    organizationWeVoteId: PropTypes.string,
+    readyShare: PropTypes.bool,
+    shareButtonText: PropTypes.string,
   };
 
   constructor (props) {
@@ -52,8 +56,10 @@ class ShareButtonDesktopTablet extends Component {
   }
 
   handleShareButtonClick (event) {
-    const { candidateShare, measureShare, officeShare } = this.props;
+    const { candidateShare, measureShare, officeShare, organizationShare, organizationWeVoteId, readyShare } = this.props;
     const { href: destinationFullUrl } = window.location;
+    const ballotItemWeVoteId = '';
+    const googleCivicElectionId = 0;
     let kindOfShare = 'BALLOT';
     if (candidateShare) {
       kindOfShare = 'CANDIDATE';
@@ -61,8 +67,12 @@ class ShareButtonDesktopTablet extends Component {
       kindOfShare = 'MEASURE';
     } else if (officeShare) {
       kindOfShare = 'OFFICE';
+    } else if (organizationShare) {
+      kindOfShare = 'ORGANIZATION';
+    } else if (readyShare) {
+      kindOfShare = 'READY';
     }
-    ShareActions.sharedItemSave(destinationFullUrl, kindOfShare);
+    ShareActions.sharedItemSave(destinationFullUrl, kindOfShare, ballotItemWeVoteId, googleCivicElectionId, organizationWeVoteId);
     this.setState({ anchorEl: event.currentTarget, openShareMenu: true });
   }
 
@@ -71,7 +81,7 @@ class ShareButtonDesktopTablet extends Component {
   }
 
   openShareModal (withOpinions = false) {
-    const { candidateShare, measureShare, officeShare } = this.props;
+    const { candidateShare, measureShare, officeShare, organizationShare, readyShare } = this.props;
     let shareModalStep;
     if (candidateShare) {
       if (withOpinions) {
@@ -97,6 +107,22 @@ class ShareButtonDesktopTablet extends Component {
         shareModalStep = 'officeShareOptions';
         AnalyticsActions.saveActionShareOffice(VoterStore.electionId());
       }
+    } else if (organizationShare) {
+      if (withOpinions) {
+        shareModalStep = 'organizationShareOptionsAllOpinions';
+        AnalyticsActions.saveActionShareOrganizationAllOpinions(VoterStore.electionId());
+      } else {
+        shareModalStep = 'organizationShareOptions';
+        AnalyticsActions.saveActionShareOrganization(VoterStore.electionId());
+      }
+    } else if (readyShare) {
+      if (withOpinions) {
+        shareModalStep = 'readyShareOptionsAllOpinions';
+        AnalyticsActions.saveActionShareReadyAllOpinions(VoterStore.electionId());
+      } else {
+        shareModalStep = 'readyShareOptions';
+        AnalyticsActions.saveActionShareReady(VoterStore.electionId());
+      }
       // Default to ballot
     } else if (withOpinions) {
       shareModalStep = 'ballotShareOptionsAllOpinions';
@@ -119,7 +145,10 @@ class ShareButtonDesktopTablet extends Component {
 
   render () {
     renderLog('ShareButtonDesktopTablet');  // Set LOG_RENDER_EVENTS to log all renders
-    const { candidateShare, classes, measureShare, officeShare } = this.props;
+    const {
+      candidateShare, classes, measureShare, officeShare,
+      organizationShare, readyShare, shareButtonText,
+    } = this.props;
     const { anchorEl, chosenPreventSharingOpinions, openShareMenu } = this.state;
 
     let shareButtonClasses;
@@ -137,6 +166,14 @@ class ShareButtonDesktopTablet extends Component {
       shareButtonClasses = classes.buttonCandidate;
       shareMenuTextDefault = 'Office';
       shareMenuTextAllOpinions = 'Office + Your Opinions';
+    } else if (organizationShare) {
+      shareButtonClasses = classes.buttonCandidate;
+      shareMenuTextDefault = 'This Page';
+      shareMenuTextAllOpinions = 'This Page + Your Opinions';
+    } else if (readyShare) {
+      shareButtonClasses = classes.buttonDefault;
+      shareMenuTextDefault = 'Ready Page';
+      shareMenuTextAllOpinions = 'Ready Page + Your Opinions';
     } else {
       // Default to ballot
       shareButtonClasses = classes.buttonDefault;
@@ -159,7 +196,7 @@ class ShareButtonDesktopTablet extends Component {
               classes={{ root: classes.shareIcon }}
             />
           </Icon>
-          Share Page
+          {shareButtonText || 'Share Page'}
         </Button>
         <Menu
           anchorEl={anchorEl}

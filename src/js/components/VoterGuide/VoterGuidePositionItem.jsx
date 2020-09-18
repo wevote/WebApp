@@ -296,6 +296,7 @@ class VoterGuidePositionItem extends Component {
                   <BallotItemSupportOpposeCountDisplay
                     ballotItemDisplayName={ballotItemDisplayName}
                     ballotItemWeVoteId={ballotItemWeVoteId}
+                    hideEndorsementsOverview
                     hideNumbersOfAllPositions
                   />
                   <VerticalSeparator />
@@ -400,6 +401,7 @@ class VoterGuidePositionItem extends Component {
                     <BallotItemSupportOpposeCountDisplay
                       ballotItemDisplayName={ballotItemDisplayName}
                       ballotItemWeVoteId={ballotItemWeVoteId}
+                      hideEndorsementsOverview
                       hideNumbersOfAllPositions
                     />
                     <VerticalSeparator />

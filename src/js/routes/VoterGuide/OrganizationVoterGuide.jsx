@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router';
 import { Button } from '@material-ui/core';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppActions from '../../actions/AppActions';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FollowToggle from '../../components/Widgets/FollowToggle';
 import FriendActions from '../../actions/FriendActions';
@@ -14,6 +15,7 @@ import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
 import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
+import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isWebApp, historyPush } from '../../utils/cordovaUtils';
@@ -70,6 +72,26 @@ export default class OrganizationVoterGuide extends Component {
         organizationHasBeenRetrievedOnce,
         voterGuideAnalyticsHasBeenSavedOnce,
       });
+    }
+
+    const modalToOpen = this.props.params.modal_to_show || '';
+    // console.log('componentDidMount modalToOpen:', modalToOpen);
+    if (modalToOpen === 'share') {
+      this.modalOpenTimer = setTimeout(() => {
+        AppActions.setShowShareModal(true);
+      }, 1000);
+    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+      const sharedItemCode = this.props.params.shared_item_code || '';
+      // console.log('componentDidMount sharedItemCode:', sharedItemCode);
+      if (sharedItemCode) {
+        this.modalOpenTimer = setTimeout(() => {
+          AppActions.setShowSharedItemModal(sharedItemCode);
+        }, 1000);
+      }
+    } else {
+      this.modalOpenTimer = setTimeout(() => {
+        AppActions.setShowSharedItemModal();
+      }, 1000);
     }
 
     // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
@@ -151,35 +173,6 @@ export default class OrganizationVoterGuide extends Component {
     //   });
     // }
   }
-
-  // shouldComponentUpdate (nextProps, nextState) {
-  //   if (this.state.activeRoute !== nextState.activeRoute) {
-  //     // console.log('shouldComponentUpdate: this.state.activeRoute', this.state.activeRoute, ', nextState.activeRoute', nextState.activeRoute);
-  //     return true;
-  //   }
-  //   if (this.state.autoFollowRedirectHappening !== nextState.autoFollowRedirectHappening) {
-  //     // console.log('shouldComponentUpdate: this.state.autoFollowRedirectHappening', this.state.autoFollowRedirectHappening, ', nextState.autoFollowRedirectHappening', nextState.autoFollowRedirectHappening);
-  //     return true;
-  //   }
-  //   if (this.state.linkedOrganizationWeVoteId !== nextState.linkedOrganizationWeVoteId) {
-  //     // console.log('shouldComponentUpdate: this.state.linkedOrganizationWeVoteId', this.state.linkedOrganizationWeVoteId, ', nextState.linkedOrganizationWeVoteId', nextState.linkedOrganizationWeVoteId);
-  //     return true;
-  //   }
-  //   if (this.state.organizationBannerUrl !== nextState.organizationBannerUrl) {
-  //     // console.log('shouldComponentUpdate: this.state.organizationBannerUrl', this.state.organizationBannerUrl, ', nextState.organizationBannerUrl', nextState.organizationBannerUrl);
-  //     return true;
-  //   }
-  //   if (this.state.organizationId !== nextState.organizationId) {
-  //     // console.log('shouldComponentUpdate: this.state.organizationId', this.state.organizationId, ', nextState.organizationId', nextState.organizationId);
-  //     return true;
-  //   }
-  //   if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-  //     // console.log('shouldComponentUpdate: this.state.organizationWeVoteId', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
-  //     return true;
-  //   }
-  //   // console.log('shouldComponentUpdate no changes');
-  //   return false;
-  // }
 
   componentWillUnmount () {
     this.voterGuideStoreListener.remove();
@@ -322,15 +315,27 @@ export default class OrganizationVoterGuide extends Component {
     return (
       <Wrapper>
         {/* Header Banner Spacing for Desktop */}
-        <BannerContainer>
-          { organizationBannerUrl !== '' ? (
-            <div className="organization-banner-image-div d-print-none">
-              <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
-            </div>
-          ) :
-            <div className="organization-banner-image-non-twitter-users" />
-          }
-        </BannerContainer>
+        <BannerOverlayDesktopOuterWrapper>
+          <BannerOverlayDesktopInnerWrapper>
+            <BannerOverlayDesktopShareButtonWrapper>
+              <BannerOverlayDesktopShareButtonInnerWrapper>
+                <ShareButtonDesktopTablet
+                  organizationShare
+                  organizationWeVoteId={organizationWeVoteId}
+                />
+              </BannerOverlayDesktopShareButtonInnerWrapper>
+            </BannerOverlayDesktopShareButtonWrapper>
+            <BannerContainerDesktop>
+              { organizationBannerUrl !== '' ? (
+                <div className="organization-banner-image-div d-print-none">
+                  <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
+                </div>
+              ) :
+                <div className="organization-banner-image-non-twitter-users" />
+              }
+            </BannerContainerDesktop>
+          </BannerOverlayDesktopInnerWrapper>
+        </BannerOverlayDesktopOuterWrapper>
         {/* Header Banner Spacing for Mobile */}
         <div className="d-block d-sm-none d-print-none">
           { organizationBannerUrl !== '' ? (
@@ -458,7 +463,25 @@ const Wrapper = styled.div`
   flex-flow: column;
 `;
 
-const BannerContainer = styled.div`
+const BannerContainerDesktop = styled.div`
+  margin-top: -37px; // -29px (BannerOverlayDesktopShareButtonWrapper height) - 8px from BannerOverlayDesktopShareButtonInnerWrapper
+`;
+
+const BannerOverlayDesktopShareButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+`;
+
+const BannerOverlayDesktopShareButtonInnerWrapper = styled.div`
+  margin-top: 8px;
+  margin-right: 8px;
+  z-index: 2;
+`;
+
+const BannerOverlayDesktopOuterWrapper = styled.div`
   display: block;
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     align-self: flex-end;
@@ -472,6 +495,9 @@ const BannerContainer = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: none;
   }
+`;
+
+const BannerOverlayDesktopInnerWrapper = styled.div`
 `;
 
 const CardContainer = styled.div`

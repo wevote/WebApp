@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
+import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore';
 import BallotActions from '../actions/BallotActions';
 import BallotStore from '../stores/BallotStore';
@@ -25,6 +27,7 @@ import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
 import { renderLog } from '../utils/logging';
+import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTablet';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import VoterStore from '../stores/VoterStore';
 import webAppConfig from '../config';
@@ -33,7 +36,9 @@ import webAppConfig from '../config';
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class Ready extends Component {
-  static propTypes = {};
+  static propTypes = {
+    params: PropTypes.object,
+  };
 
   constructor (props) {
     super(props);
@@ -65,6 +70,23 @@ class Ready extends Component {
     ReadyActions.voterPlansForVoterRetrieve();
     ActivityActions.activityNoticeListRetrieve();
     FriendActions.suggestedFriendList();
+
+    const modalToOpen = this.props.params.modal_to_show || '';
+    // console.log('componentDidMount modalToOpen:', modalToOpen);
+    if (modalToOpen === 'share') {
+      this.modalOpenTimer = setTimeout(() => {
+        AppActions.setShowShareModal(true);
+      }, 1000);
+    } else if (modalToOpen === 'sic') { // sic = Shared Item Code
+      const sharedItemCode = this.props.params.shared_item_code || '';
+      // console.log('componentDidMount sharedItemCode:', sharedItemCode);
+      if (sharedItemCode) {
+        this.modalOpenTimer = setTimeout(() => {
+          AppActions.setShowSharedItemModal(sharedItemCode);
+        }, 1000);
+      }
+    }
+
     AnalyticsActions.saveActionReadyVisit(VoterStore.electionId());
     this.setState({
       locationGuessClosed: cookies.getItem('location_guess_closed'),
@@ -140,9 +162,19 @@ class Ready extends Component {
               </EditAddressWrapper>
             )}
             <div className="col-sm-12 col-lg-8">
-              <div className="u-cursor--pointer u-show-mobile-tablet" onClick={this.goToBallot}>
-                <ElectionCountdown daysOnlyMode />
-              </div>
+              <MobileTabletCountdownWrapper className="u-show-mobile-tablet">
+                <ShareButtonTabletWrapper>
+                  <ShareButtonInnerWrapper className="u-show-tablet">
+                    <ShareButtonDesktopTablet readyShare shareButtonText="Share" />
+                  </ShareButtonInnerWrapper>
+                </ShareButtonTabletWrapper>
+                <ElectionCountdownMobileTabletWrapper
+                  className="u-cursor--pointer u-show-mobile-tablet"
+                  onClick={this.goToBallot}
+                >
+                  <ElectionCountdown daysOnlyMode />
+                </ElectionCountdownMobileTabletWrapper>
+              </MobileTabletCountdownWrapper>
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
                 <Card className="card u-show-mobile-tablet">
                   <div className="card-main">
@@ -226,6 +258,13 @@ class Ready extends Component {
               </div>
             </div>
             <div className="col-lg-4 d-none d-lg-block">
+              <Card className="card">
+                <div className="card-main">
+                  <ShareButtonDesktopWrapper>
+                    <ShareButtonDesktopTablet readyShare />
+                  </ShareButtonDesktopWrapper>
+                </div>
+              </Card>
               <div className="u-cursor--pointer" onClick={this.goToBallot}>
                 <ElectionCountdown daysOnlyMode />
               </div>
@@ -303,6 +342,10 @@ const EditAddressWrapper = styled.div`
   padding-right: 0 !important;
 `;
 
+const ElectionCountdownMobileTabletWrapper = styled.div`
+  margin-top: -37px; // 29px for height of ShareButtonDesktopTablet - 8px for margin-top
+`;
+
 const FindWrapper = styled.div`
   width: 40%;
 `;
@@ -320,8 +363,34 @@ const IntroAndFindTabletSpacer = styled.div`
   width: 20px;
 `;
 
+const MobileTabletCountdownWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+`;
+
 const PageContainer = styled.div`
   padding-top: ${({ isWeb }) => (isWeb ? '0 !important' : '56px !important')};  // SE2: 56px, 11 Pro Max: 56px
+`;
+
+const Paragraph = styled.div`
+`;
+
+const ShareButtonInnerWrapper = styled.div`
+  z-index: 2;
+`;
+
+const ShareButtonDesktopWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const ShareButtonTabletWrapper = styled.div`
+  display: flex;
+  height: 29px;
+  justify-content: flex-end;
+  margin-top: 8px;
+  margin-right: 8px;
+  z-index: 2;
 `;
 
 const Title = styled.h2`
@@ -332,10 +401,6 @@ const Title = styled.h2`
     font-size: 14px;
     margin: 0 0 4px;
   }
-`;
-
-const Paragraph = styled.div`
-
 `;
 
 const ValuesListWrapper = styled.div`

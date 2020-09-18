@@ -211,7 +211,9 @@ export function getApplicationViewBooleans (pathname) {
   if (pathnameLowerCase.startsWith('/ballot') ||
     pathnameLowerCase.startsWith('/candidate') ||
     pathnameLowerCase.startsWith('/measure') ||
-    pathnameLowerCase.startsWith('/office')) {
+    pathnameLowerCase.startsWith('/office') ||
+    pathnameLowerCase.startsWith('/ready') ||
+    voterGuideMode) {
     showShareButtonFooter = true;
   }
 
