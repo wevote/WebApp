@@ -88,11 +88,12 @@ export default class OrganizationVoterGuide extends Component {
           AppActions.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
-    } else {
-      this.modalOpenTimer = setTimeout(() => {
-        AppActions.setShowSharedItemModal();
-      }, 1000);
     }
+    // else {
+    //   this.modalOpenTimer = setTimeout(() => {
+    //     AppActions.setShowSharedItemModal();
+    //   }, 1000);
+    // }
 
     // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
     // console.log('action_variable:' + this.props.params.action_variable);
