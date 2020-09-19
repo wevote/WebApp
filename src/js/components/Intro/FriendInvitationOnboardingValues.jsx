@@ -58,18 +58,18 @@ class FriendInvitationOnboardingValues extends Component {
               {' '}
               (
               <span className="u-cursor--pointer u-link-color">
-                less
+                show less
               </span>
               )
             </div>
           ) : (
             <div className="FriendInvitationTopHeaderExplanation" onClick={this.onClickToggleAllTopHeaderExplanation}>
               <i className="fas fa-info-circle" />
-              Opinions will be highlighted on...
+              Opinions will be highlighted on your ballot based on what you follow. Follow as many values/issues...
               {' '}
               (
               <span className="u-cursor--pointer u-link-color">
-                more
+                show more
               </span>
               )
             </div>

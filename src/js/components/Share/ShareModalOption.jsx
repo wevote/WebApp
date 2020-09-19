@@ -3,6 +3,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import AppStore from '../../stores/AppStore';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import { renderLog } from '../../utils/logging';
@@ -24,10 +25,36 @@ class ShareModalOption extends Component {
     super(props);
     this.state = {
       copyLinkCopied: false,
+      shareModalStep: '',
     };
 
     this.copyLink = this.copyLink.bind(this);
     this.onClick = this.onClick.bind(this);
+  }
+
+  componentDidMount () {
+    // console.log('Candidate componentDidMount');
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.onAppStoreChange();
+  }
+
+  componentWillUnmount () {
+    // console.log('componentWillUnmount');
+    this.appStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    const { shareModalStep } = this.state;
+    const newShareModalStep = AppStore.shareModalStep();
+    if (newShareModalStep !== shareModalStep) {
+      // If we change modes, reset the copy link state
+      this.setState({
+        copyLinkCopied: false,
+      });
+    }
+    this.setState({
+      shareModalStep: newShareModalStep,
+    });
   }
 
   onClick = () => {
@@ -61,7 +88,7 @@ class ShareModalOption extends Component {
     const { backgroundColor, classes, copyLink, icon, link, noLink, title, uniqueExternalId } = this.props;
     const { copyLinkCopied } = this.state;
     const linkToBeShared = link.replace(/https:\/\/file:.*?\/|https:\/\/localhost.*?\//, 'https://wevote.us/');
-    console.log('ShareModalOption copyLink:', copyLink, ', noLink:', noLink, 'link:', link, ', linkToBeShared:', linkToBeShared);
+    // console.log('ShareModalOption copyLink:', copyLink, ', noLink:', noLink, 'link:', link, ', linkToBeShared:', linkToBeShared);
     return (
       <Wrapper>
         {copyLink ? (

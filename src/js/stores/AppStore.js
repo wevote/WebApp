@@ -44,7 +44,7 @@ class AppStore extends ReduceStore {
       siteConfigurationHasBeenRetrieved: false,
       siteOwnerOrganizationWeVoteId: '',
       storeSignInStartFullUrl: false,
-      // viewingOrganizationVoterGuide: false,
+      viewingOrganizationVoterGuide: false,
       voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
     };
   }
@@ -91,6 +91,10 @@ class AppStore extends ReduceStore {
 
   getStartedMode () {
     return this.getState().getStartedMode;
+  }
+
+  getViewingOrganizationVoterGuide () {
+    return this.getState().viewingOrganizationVoterGuide;
   }
 
   getVoterGuideSettingsDashboardEditMode () {
@@ -182,6 +186,7 @@ class AppStore extends ReduceStore {
   }
 
   shareModalStep () {
+    // console.log('AppStore shareModalStep:', this.getState().shareModalStep);
     return this.getState().shareModalStep;
   }
 
@@ -283,6 +288,7 @@ class AppStore extends ReduceStore {
       case 'showSharedItemModal':
         return { ...state, sharedItemCode: action.payload, showSharedItemModal: (action.payload !== '') };
       case 'shareModalStep':
+        // console.log('AppStore shareModalStep:', action.payload);
         return { ...state, shareModalStep: action.payload };
       case 'showSelectBallotModal':
         return {
@@ -374,6 +380,8 @@ class AppStore extends ReduceStore {
       case 'unsetStoreSignInStartFullUrl':
         // Turn off the signal to src/js/Application.jsx to write the current pathname to the cookie 'sign_in_start_full_url'
         return { ...state, storeSignInStartFullUrl: action.payload };
+      case 'viewingOrganizationVoterGuide':
+        return { ...state, viewingOrganizationVoterGuide: action.payload };
       default:
         return state;
     }

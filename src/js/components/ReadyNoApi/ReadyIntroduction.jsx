@@ -64,7 +64,7 @@ class ReadyIntroduction extends Component {
                   <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                   <StepText>
                     <ReadMore
-                      textToDisplay="Who's running for office? What do they stand for? What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options."
+                      textToDisplay="Who's running for office? We show you what will be on your actual ballot, based on your full address. What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options."
                       numberOfLines={3}
                     />
                   </StepText>

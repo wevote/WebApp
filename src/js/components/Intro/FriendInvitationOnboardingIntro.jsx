@@ -208,7 +208,7 @@ class FriendInvitationOnboardingIntro extends Component {
                   {' '}
                   (
                   <span className="u-cursor--pointer u-link-color">
-                    more
+                    show more
                   </span>
                   )
                 </StepText>
@@ -223,15 +223,15 @@ class FriendInvitationOnboardingIntro extends Component {
               <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
               {showAllStepTwo ? (
                 <StepText>
-                  Who&apos;s running for office? What do they stand for? What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options.
+                  Who&apos;s running for office? We show you what will be on your actual ballot, based on your full address. What do your trusted friends think about what is on the ballot? We Vote helps you make sense of your options.
                 </StepText>
               ) : (
                 <StepText onClick={this.onClickShowAllStepTwo}>
-                  Who&apos;s running for office? What do they...
+                  Who&apos;s running for office? We show you...
                   {' '}
                   (
                   <span className="u-cursor--pointer u-link-color">
-                    more
+                    show more
                   </span>
                   )
                 </StepText>
@@ -258,7 +258,7 @@ class FriendInvitationOnboardingIntro extends Component {
                   {' '}
                   (
                   <span className="u-cursor--pointer u-link-color">
-                    more
+                    show more
                   </span>
                   )
                 </StepText>

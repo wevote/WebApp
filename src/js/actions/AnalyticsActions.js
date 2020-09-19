@@ -77,6 +77,8 @@ import AppStore from '../stores/AppStore'; // eslint-disable-line import/no-cycl
 // ACTION_NEWS = 74
 // ACTION_SHARE_ORGANIZATION = 75
 // ACTION_SHARE_ORGANIZATION_ALL_OPINIONS = 76
+// ACTION_VIEW_SHARED_ORGANIZATION = 77
+// ACTION_VIEW_SHARED_ORGANIZATION_ALL_OPINIONS = 78
 
 export default {
 

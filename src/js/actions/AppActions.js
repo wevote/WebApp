@@ -26,6 +26,7 @@ export default {
   },
 
   setShareModalStep (step) {
+    // console.log('setShareModalStep, step:', step);
     Dispatcher.dispatch({ type: 'shareModalStep', payload: step });
   },
 
