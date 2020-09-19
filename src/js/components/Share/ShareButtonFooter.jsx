@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import { Comment, ArrowBackIos, Reply, FileCopyOutlined } from '@material-ui/icons';
+import {
+  Comment,
+  ArrowBackIos,
+  Reply,
+  FileCopyOutlined,
+  Info,
+} from '@material-ui/icons';
 import { Drawer, MenuItem, Button } from '@material-ui/core';
 import {
   EmailIcon,
@@ -15,6 +21,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+import ReadMore from '../Widgets/ReadMore';
 import ShareActions from '../../actions/ShareActions';
 import ShareModalOption from './ShareModalOption';
 import ShareStore from '../../stores/ShareStore';
@@ -53,7 +60,6 @@ class ShareButtonFooter extends Component {
       showSignInModal: false,
       showVoterPlanModal: false,
       voterIsSignedIn: false,
-      withOpinions: false,
     };
   }
 
@@ -198,13 +204,9 @@ class ShareButtonFooter extends Component {
   }
 
   setStep (shareFooterStep) {
-    let withOpinions = false;
-    if (stringContains('AllOpinions', shareFooterStep)) {
-      withOpinions = true;
-    }
+    AppActions.setShareModalStep(shareFooterStep);
     const showSignInModal = AppStore.showSignInModal();
     this.setState({
-      withOpinions,
       shareFooterStep,
       showSignInModal,
     });
@@ -262,7 +264,6 @@ class ShareButtonFooter extends Component {
 
   handleBackButtonClick = () => {
     this.setState({
-      withOpinions: false,
       shareFooterStep: '',
     });
   }
@@ -319,9 +320,6 @@ class ShareButtonFooter extends Component {
       shareFooterStep = 'ballotShareOptions';
       AnalyticsActions.saveActionShareBallot(VoterStore.electionId());
     }
-    this.setState({
-      withOpinions,
-    });
     this.setStep(shareFooterStep);
   }
 
@@ -414,7 +412,6 @@ class ShareButtonFooter extends Component {
     renderLog('ShareButtonFooter');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
     const {
-      withOpinions,
       candidateShare, chosenPreventSharingOpinions, currentFullUrlToShare,
       hideShareButtonFooter, measureShare, officeShare,
       openShareButtonDrawer, organizationShare, readyShare,
@@ -471,25 +468,32 @@ class ShareButtonFooter extends Component {
     //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
     // }
     const shareButtonClasses = classes.buttonDefault;
+    let shareMenuItemsDescription;
     let shareMenuTextDefault;
     let shareMenuTextAllOpinions;
     if (candidateShare) {
+      shareMenuItemsDescription = 'The first \'Candidate\' option below will generate a link to this Candidate\'s page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'Candidate';
       shareMenuTextAllOpinions = 'Candidate + Your Opinions';
     } else if (measureShare) {
+      shareMenuItemsDescription = 'The first \'Measure\' option below will generate a link to this Measure page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'Measure';
       shareMenuTextAllOpinions = 'Measure + Your Opinions';
     } else if (officeShare) {
+      shareMenuItemsDescription = 'The first \'Office\' option below will generate a link to this Office page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'Office';
       shareMenuTextAllOpinions = 'Office + Your Opinions';
     } else if (organizationShare) {
+      shareMenuItemsDescription = 'The first \'This Page\' option below will generate a link to this page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'This Page';
       shareMenuTextAllOpinions = 'This Page + Your Opinions';
     } else if (readyShare) {
+      shareMenuItemsDescription = 'The first \'Ready\' Page option below will generate a link to their own Ready page without showing your opinions. The second option gives them permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'Ready Page';
       shareMenuTextAllOpinions = 'Ready Page + Your Opinions';
     } else {
       // Default to ballot
+      shareMenuItemsDescription = 'The first \'Ballot\' option below will generate a link to the ballot page without showing your opinions. The second option gives them permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'Ballot';
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
@@ -518,7 +522,7 @@ class ShareButtonFooter extends Component {
                 classes={{ root: classes.shareIcon }}
               />
             </Icon>
-            Share Page
+            Share Page (Options)
           </Button>
         )}
         <Drawer
@@ -626,6 +630,8 @@ class ShareButtonFooter extends Component {
                       {stringContains('AllOpinions', shareFooterStep) ? (
                         <>
                           {' '}
+                          A brief introduction to We Vote will be shown.
+                          {' '}
                           All of your opinions for this year are included.
                           {' '}
                           <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.doNotIncludeOpinions(shareFooterStep)}>
@@ -634,6 +640,8 @@ class ShareButtonFooter extends Component {
                         </>
                       ) : (
                         <>
+                          {' '}
+                          A brief introduction to We Vote will be shown.
                           {' '}
                           Your opinions are NOT included.
                           {' '}
@@ -774,26 +782,33 @@ class ShareButtonFooter extends Component {
                       />
                     </Flex>
                   )}
-                  {withOpinions && (
-                    <OpenExternalWebSite
-                      linkIdAttribute="allOpinions"
-                      url={linkToBeShared}
-                      target="_blank"
-                      // title={this.props.title}
-                      className="u-no-underline"
-                      body={(
-                        <Button className={classes.cancelButton} variant="contained" fullWidth color="primary">
-                          Preview
-                        </Button>
-                      )}
-                    />
-                  )}
+                  <OpenExternalWebSite
+                    linkIdAttribute="allOpinions"
+                    url={linkToBeShared}
+                    target="_blank"
+                    // title={this.props.title}
+                    className="u-no-underline"
+                    body={(
+                      <Button className={classes.previewButton} variant="contained" fullWidth color="primary">
+                        Preview
+                      </Button>
+                    )}
+                  />
                   <Button className={classes.cancelButton} fullWidth onClick={this.handleCloseShareButtonDrawer} variant="outlined" color="primary">
                     Cancel
                   </Button>
                 </>
               ) : (
                 <>
+                  {shareMenuItemsDescription && (
+                    <MenuDescription>
+                      <Info classes={{ root: classes.informationIcon }} />
+                      <ReadMore
+                        textToDisplay={shareMenuItemsDescription}
+                        numberOfLines={2}
+                      />
+                    </MenuDescription>
+                  )}
                   <MenuItemsWrapper>
                     <MenuItem className={classes.menuItem} onClick={() => this.openShareOptions()}>
                       <MenuFlex>
@@ -853,6 +868,13 @@ const styles = () => ({
   cancelButton: {
     marginTop: 12,
   },
+  informationIcon: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginRight: 3,
+  },
   menuItem: {
     zIndex: '9 !important',
     padding: '0 !important',
@@ -866,6 +888,9 @@ const styles = () => ({
       background: '#efefef',
     },
   },
+  previewButton: {
+    marginTop: 0,
+  },
   shareIcon: {
     transform: 'scaleX(-1)',
     position: 'relative',
@@ -873,49 +898,10 @@ const styles = () => ({
   },
 });
 
-const Wrapper = styled.div`
-  position: fixed;
-  width: 100%;
-  bottom:  ${props => (props.shareBottomValue)};
-  display: block;
-  @media (min-width: 576px) {
-    display: none;
-  }
-`;
-
 const Container = styled.div`
   margin: 0 auto;
   max-width: 576px;
   padding: ${props => (props.shareOptionsMode ? '16px 16px 32px' : '24px 16px 32px')};
-`;
-
-const ModalTitleArea = styled.div`
-  text-align: left;
-  width: 100%;
-  padding: 0;
-  z-index: 999;
-  @media (min-width: 769px) {
-    border-bottom: 2px solid #f7f7f7;
-  }
-  ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : '')}
-`;
-
-const Title = styled.h3`
-  font-weight: normal;
-  font-size: 20px;
-  color: black;
-  margin-top: 0;
-  margin-bottom: 12px;
-`;
-
-const SubTitle = styled.div`
-  margin-top: 0;
-  font-size: 14px;
-  width: 100%;
-`;
-
-const MenuItemsWrapper = styled.div`
-  padding: 16px 0;
 `;
 
 const Flex = styled.div`
@@ -929,6 +915,9 @@ const Flex = styled.div`
 
 const Icon = styled.span`
   margin-right: 4px;
+`;
+
+const MenuDescription = styled.div`
 `;
 
 const MenuFlex = styled.div`
@@ -957,6 +946,10 @@ const MenuIcon = styled.div`
   }
 `;
 
+const MenuItemsWrapper = styled.div`
+  padding: 16px 0;
+`;
+
 const MenuText = styled.div`
   margin-left: 12px;
 `;
@@ -973,6 +966,17 @@ const MenuSeparator = styled.div`
     width: 448px !important;
     margin: 0 auto;
   }
+`;
+
+const ModalTitleArea = styled.div`
+  text-align: left;
+  width: 100%;
+  padding: 0;
+  z-index: 999;
+  @media (min-width: 769px) {
+    border-bottom: 2px solid #f7f7f7;
+  }
+  ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : '')}
 `;
 
 // Media queries cause a lot of problems in Cordova, please test in Cordova first, or avoid them
@@ -1002,11 +1006,35 @@ const ShareWrapper = styled.div`
   }
 `;
 
+const SubTitle = styled.div`
+  margin-top: 0;
+  font-size: 14px;
+  width: 100%;
+`;
+
 const Text = styled.h3`
   font-weight: normal;
   font-size: 16px;
   color: black !important;
   padding: 6px;
+`;
+
+const Title = styled.h3`
+  font-weight: normal;
+  font-size: 20px;
+  color: black;
+  margin-top: 0;
+  margin-bottom: 12px;
+`;
+
+const Wrapper = styled.div`
+  position: fixed;
+  width: 100%;
+  bottom:  ${props => (props.shareBottomValue)};
+  display: block;
+  @media (min-width: 576px) {
+    display: none;
+  }
 `;
 
 export default withStyles(styles)(ShareButtonFooter);

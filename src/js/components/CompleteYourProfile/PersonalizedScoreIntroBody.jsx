@@ -49,7 +49,7 @@ class PersonalizedScoreIntroBody extends Component {
           closeSupportOpposeCountDisplayModal: true,
           controlAdviserMaterialUIPopoverFromProp: false,
           explanationTextTopPlain: null,
-          explanationTextTopBlue: <>Your Personalized Score is the number of people who support one candidate, from among the people you follow.</>,
+          explanationTextTopBlue: <>Your Personalized Score for Alexander Hamilton is the number of people who support him, from among the people you follow.</>,
           explanationTextBottomPlain: <>(We&apos;ll explain! Click the &quot;Say What?!?&quot; button below to learn more.)</>,
           explanationTextBottomBlue: null,
           openAdviserMaterialUIPopover: false,

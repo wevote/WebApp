@@ -188,6 +188,8 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path="/voterguide/:organization_we_vote_id/following" component={props => <OrganizationVoterGuide {...props} activeRoute="following" />} />
           <Route path="/voterguide/:organization_we_vote_id/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
           <Route path="/voterguide/:organization_we_vote_id/positions" component={props => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
+          <Route path="/voterguide/:organization_we_vote_id/modal/:modal_to_show" component={props => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
+          <Route path="/voterguide/:organization_we_vote_id/modal/:modal_to_show/:shared_item_code" component={props => <OrganizationVoterGuide {...props} activeRoute="positions" />} />
           <Route path="/voterguide/:organization_we_vote_id/:action_variable" component={OrganizationVoterGuide} />
           <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable" component={OrganizationVoterGuide} />
           <Route path="/voterguide/:organization_we_vote_id/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />

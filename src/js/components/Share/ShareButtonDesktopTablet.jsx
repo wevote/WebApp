@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Comment, Reply } from '@material-ui/icons';
+import { Comment, Info, Reply } from '@material-ui/icons';
 import { Menu, MenuItem, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -152,34 +152,43 @@ class ShareButtonDesktopTablet extends Component {
     const { anchorEl, chosenPreventSharingOpinions, openShareMenu } = this.state;
 
     let shareButtonClasses;
+    let shareMenuItemsDescription;
     let shareMenuTextDefault;
     let shareMenuTextAllOpinions;
     if (candidateShare) {
       shareButtonClasses = classes.buttonCandidate;
+      shareMenuItemsDescription = 'The first \'Candidate\' option below will generate a link to this Candidate\'s page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'Candidate';
       shareMenuTextAllOpinions = 'Candidate + Your Opinions';
     } else if (measureShare) {
       shareButtonClasses = classes.buttonCandidate;
+      shareMenuItemsDescription = 'The first \'Measure\' option below will generate a link to this Measure page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'Measure';
       shareMenuTextAllOpinions = 'Measure + Your Opinions';
     } else if (officeShare) {
       shareButtonClasses = classes.buttonCandidate;
+      shareMenuItemsDescription = 'The first \'Office\' option below will generate a link to this Office page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'Office';
       shareMenuTextAllOpinions = 'Office + Your Opinions';
     } else if (organizationShare) {
       shareButtonClasses = classes.buttonCandidate;
+      shareMenuItemsDescription = 'The first \'This Page\' option below will generate a link to this page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'This Page';
       shareMenuTextAllOpinions = 'This Page + Your Opinions';
     } else if (readyShare) {
       shareButtonClasses = classes.buttonDefault;
+      shareMenuItemsDescription = 'The first \'Ready\' Page option below will generate a link to their own Ready page without showing your opinions. The second option gives them permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'Ready Page';
       shareMenuTextAllOpinions = 'Ready Page + Your Opinions';
     } else {
       // Default to ballot
       shareButtonClasses = classes.buttonDefault;
+      shareMenuItemsDescription = 'The first \'Ballot\' option below will generate a link to the ballot page without showing your opinions. The second option gives them permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
       shareMenuTextDefault = 'Ballot';
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
+    // Temporary override
+    shareMenuItemsDescription = 'You\'ll have a chance to preview.';
     return (
       <>
         <Button
@@ -217,6 +226,12 @@ class ShareButtonDesktopTablet extends Component {
           }}
         >
           <MenuArrow />
+          <MenuItem className={classes.menuItem}>
+            <MenuItemDescriptionText>
+              <Info classes={{ root: classes.informationIcon }} />
+              {shareMenuItemsDescription}
+            </MenuItemDescriptionText>
+          </MenuItem>
           <MenuItem className={classes.menuItem} onClick={() => this.openShareModal()}>
             <MenuFlex>
               <MenuIcon>
@@ -277,10 +292,18 @@ const styles = () => ({
     padding: '2px 12px',
     width: 160,
   },
+  informationIcon: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginRight: 3,
+  },
   menuItem: {
     zIndex: '9 !important',
     padding: '0 !important',
     marginBottom: '-2px !important',
+    overflowWrap: 'break-word',
     paddingBottom: '1px !important',
     '&:last-child': {
       paddingBottom: '0 !important',
@@ -328,6 +351,13 @@ const MenuIcon = styled.div`
     position: relative;
     left: -2px;
   }
+`;
+
+const MenuItemDescriptionText = styled.div`
+  color: #999;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 5px;
 `;
 
 const MenuText = styled.div`

@@ -18,6 +18,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import FriendsShareList from '../Friends/FriendsShareList';
 import MessageCard from '../Widgets/MessageCard';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import ShareActions from '../../actions/ShareActions';
 import ShareModalOption from './ShareModalOption';
 import ShareStore from '../../stores/ShareStore';
@@ -157,6 +158,7 @@ class ShareModal extends Component {
       voterIsSignedIn = voterIsSignedInIncoming;
     }
     this.setState({ shareModalStep });
+    AppActions.setShareModalStep(shareModalStep);
     this.openSignInModalIfWeShould(shareModalStep, voterIsSignedIn);
   }
 
@@ -248,7 +250,11 @@ class ShareModal extends Component {
         (shareModalStep === 'measureShareOptions') ||
         (shareModalStep === 'measureShareOptionsAllOpinions') ||
         (shareModalStep === 'officeShareOptions') ||
-        (shareModalStep === 'officeShareOptionsAllOpinions')
+        (shareModalStep === 'officeShareOptionsAllOpinions') ||
+        (shareModalStep === 'organizationShareOptions') ||
+        (shareModalStep === 'organizationShareOptionsAllOpinions') ||
+        (shareModalStep === 'readyShareOptions') ||
+        (shareModalStep === 'readyShareOptionsAllOpinions')
     ) {
       if (stringContains('AllOpinions', shareModalStep)) {
         if (urlWithSharedItemCodeAllOpinions) {
@@ -311,6 +317,10 @@ class ShareModal extends Component {
                   {(shareModalStep === 'measureShareOptionsAllOpinions') && 'Measure + Your Opinions'}
                   {(shareModalStep === 'officeShareOptions') && 'Office for this Election'}
                   {(shareModalStep === 'officeShareOptionsAllOpinions') && 'Office + Your Opinions'}
+                  {(shareModalStep === 'organizationShareOptions') && 'This Page'}
+                  {(shareModalStep === 'organizationShareOptionsAllOpinions') && 'This Page + Your Opinions'}
+                  {(shareModalStep === 'readyShareOptions') && 'Ready Page'}
+                  {(shareModalStep === 'readyShareOptionsAllOpinions') && 'Ready Page + Your Opinions'}
                 </strong>
               </Title>
               <SubTitle>
@@ -337,6 +347,18 @@ class ShareModal extends Component {
                 )}
                 {(shareModalStep === 'officeShareOptionsAllOpinions') && (
                   <>Share a link to this office. </>
+                )}
+                {(shareModalStep === 'organizationShareOptions') && (
+                  <>Share a link to this page. </>
+                )}
+                {(shareModalStep === 'organizationShareOptionsAllOpinions') && (
+                  <>Share a link to this page. </>
+                )}
+                {(shareModalStep === 'readyShareOptions') && (
+                  <>Share a link to this Ready page. </>
+                )}
+                {(shareModalStep === 'readyShareOptionsAllOpinions') && (
+                  <>Share a link to this Ready page. </>
                 )}
                 {stringContains('AllOpinions', shareModalStep) ? (
                   <>
@@ -481,6 +503,18 @@ class ShareModal extends Component {
                   uniqueExternalId="shareModalOption-copyShareLink"
                 />
               </Flex>
+              <OpenExternalWebSite
+                linkIdAttribute="allOpinions"
+                url={linkToBeShared}
+                target="_blank"
+                // title={this.props.title}
+                className="u-no-underline"
+                body={(
+                  <Button className={classes.previewButton} variant="contained" fullWidth color="primary">
+                    Preview
+                  </Button>
+                )}
+              />
             </div>
           </DialogContent>
         </Dialog>
@@ -646,6 +680,9 @@ const styles = () => ({
     position: 'absolute',
     right: 14,
     top: 14,
+  },
+  previewButton: {
+    marginTop: 0,
   },
 });
 

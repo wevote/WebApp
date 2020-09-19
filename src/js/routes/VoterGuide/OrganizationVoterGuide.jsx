@@ -88,12 +88,11 @@ export default class OrganizationVoterGuide extends Component {
           AppActions.setShowSharedItemModal(sharedItemCode);
         }, 1000);
       }
+    } else {
+      this.viewingVoterGuideTimer = setTimeout(() => {
+        AppActions.setViewingOrganizationVoterGuide(true);
+      }, 750);
     }
-    // else {
-    //   this.modalOpenTimer = setTimeout(() => {
-    //     AppActions.setShowSharedItemModal();
-    //   }, 1000);
-    // }
 
     // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
     // console.log('action_variable:' + this.props.params.action_variable);
@@ -179,6 +178,15 @@ export default class OrganizationVoterGuide extends Component {
     this.voterGuideStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.modalOpenTimer) {
+      clearTimeout(this.modalOpenTimer);
+      this.modalOpenTimer = null;
+    }
+    if (this.viewingVoterGuideTimer) {
+      clearTimeout(this.viewingVoterGuideTimer);
+      this.viewingVoterGuideTimer = null;
+    }
+    AppActions.setViewingOrganizationVoterGuide(false);
   }
 
   onEdit () {
@@ -332,7 +340,7 @@ export default class OrganizationVoterGuide extends Component {
                   <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
                 </div>
               ) :
-                <div className="organization-banner-image-non-twitter-users" />
+                <OrganizationEmptyBannerImage />
               }
             </BannerContainerDesktop>
           </BannerOverlayDesktopInnerWrapper>
@@ -477,7 +485,7 @@ const BannerOverlayDesktopShareButtonWrapper = styled.div`
 `;
 
 const BannerOverlayDesktopShareButtonInnerWrapper = styled.div`
-  margin-top: 8px;
+  // margin-top: 8px;
   margin-right: 8px;
   z-index: 2;
 `;
@@ -499,6 +507,17 @@ const BannerOverlayDesktopOuterWrapper = styled.div`
 `;
 
 const BannerOverlayDesktopInnerWrapper = styled.div`
+  min-height: 37px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    margin-right: 7px;
+    min-height: 37px;
+  }
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    // background-color: #fff;
+    // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    // min-height: 37px;
+    width: 100%;
+  }
 `;
 
 const CardContainer = styled.div`
@@ -524,6 +543,11 @@ const FriendsFollowingFollowersMobileWrapper = styled.div`
 
 const FriendToggleMobileWrapper = styled.div`
   margin-top: 4px;
+`;
+
+const OrganizationEmptyBannerImage = styled.div`
+  height: 29px;
+  display: block;
 `;
 
 const TabNumber = styled.span`

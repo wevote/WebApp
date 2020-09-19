@@ -98,6 +98,10 @@ class Ready extends Component {
     this.appStoreListener.remove();
     this.issueStoreListener.remove();
     this.voterStoreListener.remove();
+    if (this.modalOpenTimer) {
+      clearTimeout(this.modalOpenTimer);
+      this.modalOpenTimer = null;
+    }
   }
 
   onAppStoreChange () {
@@ -261,7 +265,7 @@ class Ready extends Component {
               <Card className="card">
                 <div className="card-main">
                   <ShareButtonDesktopWrapper>
-                    <ShareButtonDesktopTablet readyShare />
+                    <ShareButtonDesktopTablet readyShare shareButtonText="Share Page (Options)" />
                   </ShareButtonDesktopWrapper>
                 </div>
               </Card>

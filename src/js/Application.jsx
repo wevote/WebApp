@@ -396,6 +396,9 @@ class Application extends Component {
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )}
+          {showShareButtonFooter && (
+            <ShareButtonFooter pathname={pathname} />
+          )}
         </div>
       );
     } else if (settingsMode) {
