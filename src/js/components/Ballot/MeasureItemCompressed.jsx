@@ -25,14 +25,14 @@ class MeasureItemCompressed extends Component {
     measureWeVoteId: PropTypes.string.isRequired,
     organization: PropTypes.object,
     organizationWeVoteId: PropTypes.string,
-    showPositionStatementActionBar: PropTypes.bool,
+    // showPositionStatementActionBar: PropTypes.bool,
     theme: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      componentDidMountFinished: false,
+      // componentDidMountFinished: false,
       externalUniqueId: '',
       measureText: '',
       measureWeVoteId: '',
@@ -41,8 +41,8 @@ class MeasureItemCompressed extends Component {
       positionListFromFriendsHasBeenRetrievedOnce: {},
       positionListHasBeenRetrievedOnce: {},
       showPositionStatement: false,
-      numberOfOpposePositionsForScore: 0,
-      numberOfSupportPositionsForScore: 0,
+      // numberOfOpposePositionsForScore: 0,
+      // numberOfSupportPositionsForScore: 0,
       voterOpposesBallotItem: false,
       voterSupportsBallotItem: false,
       yesVoteDescription: '',
@@ -87,10 +87,10 @@ class MeasureItemCompressed extends Component {
     const organizationWeVoteId = (organization && organization.organization_we_vote_id) ? organization.organization_we_vote_id : this.props.organizationWeVoteId;
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
-      componentDidMountFinished: true,
+      // componentDidMountFinished: true,
       externalUniqueId,
       localUniqueId: measureWeVoteId,
-      measure,
+      // measure,
       // measureSubtitle: measure.measure_subtitle,
       measureText: stripHtmlFromString(measure.measure_text),
       measureWeVoteId,
@@ -101,12 +101,12 @@ class MeasureItemCompressed extends Component {
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
     if (ballotItemStatSheet) {
       const {
-        numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
+        // numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
         voterOpposesBallotItem, voterSupportsBallotItem,
       } = ballotItemStatSheet;
       this.setState({
-        numberOfOpposePositionsForScore,
-        numberOfSupportPositionsForScore,
+        // numberOfOpposePositionsForScore,
+        // numberOfSupportPositionsForScore,
         voterOpposesBallotItem,
         voterSupportsBallotItem,
       });
@@ -115,51 +115,51 @@ class MeasureItemCompressed extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      return true;
-    }
-    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
-      // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
-      return true;
-    }
-    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
-      return true;
-    }
-    if (JSON.stringify(this.state.measure) !== JSON.stringify(nextState.measure)) {
-      // console.log('this.state.measure:', this.state.measure, ', nextState.measure:', nextState.measure);
-      return true;
-    }
-    if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
-      // console.log('this.props.showPositionStatementActionBar change');
-      return true;
-    }
-    if (this.state.showPositionStatement !== nextState.showPositionStatement) {
-      // console.log('this.state.showPositionStatement change');
-      return true;
-    }
-    if (this.state.numberOfOpposePositionsForScore !== nextState.numberOfOpposePositionsForScore) {
-      // console.log('this.state.showPositionStatement change');
-      return true;
-    }
-    if (this.state.numberOfSupportPositionsForScore !== nextState.numberOfSupportPositionsForScore) {
-      // console.log('this.state.showPositionStatement change');
-      return true;
-    }
-    if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
-      // console.log('this.state.showPositionStatement change');
-      return true;
-    }
-    if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
-      // console.log('this.state.showPositionStatement change');
-      return true;
-    }
-    // console.log('shouldComponentUpdate no change');
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   if (this.state.componentDidMountFinished === false) {
+  //     // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+  //     return true;
+  //   }
+  //   if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
+  //     // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
+  //     return true;
+  //   }
+  //   if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
+  //     // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
+  //     return true;
+  //   }
+  //   if (JSON.stringify(this.state.measure) !== JSON.stringify(nextState.measure)) {
+  //     // console.log('this.state.measure:', this.state.measure, ', nextState.measure:', nextState.measure);
+  //     return true;
+  //   }
+  //   if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
+  //     // console.log('this.props.showPositionStatementActionBar change');
+  //     return true;
+  //   }
+  //   if (this.state.showPositionStatement !== nextState.showPositionStatement) {
+  //     // console.log('this.state.showPositionStatement change');
+  //     return true;
+  //   }
+  //   if (this.state.numberOfOpposePositionsForScore !== nextState.numberOfOpposePositionsForScore) {
+  //     // console.log('this.state.showPositionStatement change');
+  //     return true;
+  //   }
+  //   if (this.state.numberOfSupportPositionsForScore !== nextState.numberOfSupportPositionsForScore) {
+  //     // console.log('this.state.showPositionStatement change');
+  //     return true;
+  //   }
+  //   if (this.state.voterOpposesBallotItem !== nextState.voterOpposesBallotItem) {
+  //     // console.log('this.state.showPositionStatement change');
+  //     return true;
+  //   }
+  //   if (this.state.voterSupportsBallotItem !== nextState.voterSupportsBallotItem) {
+  //     // console.log('this.state.showPositionStatement change');
+  //     return true;
+  //   }
+  //   // console.log('shouldComponentUpdate no change');
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
@@ -196,7 +196,7 @@ class MeasureItemCompressed extends Component {
     }
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
-      measure,
+      // measure,
       // measureSubtitle: measure.measure_subtitle,
       measureText: stripHtmlFromString(measure.measure_text),
       noVoteDescription: stripHtmlFromString(measure.no_vote_description),
@@ -211,12 +211,12 @@ class MeasureItemCompressed extends Component {
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId);
     if (ballotItemStatSheet) {
       const {
-        numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
+        // numberOfOpposePositionsForScore, numberOfSupportPositionsForScore,
         voterOpposesBallotItem, voterSupportsBallotItem,
       } = ballotItemStatSheet;
       this.setState({
-        numberOfOpposePositionsForScore,
-        numberOfSupportPositionsForScore,
+        // numberOfOpposePositionsForScore,
+        // numberOfSupportPositionsForScore,
         voterOpposesBallotItem,
         voterSupportsBallotItem,
       });
@@ -288,10 +288,6 @@ class MeasureItemCompressed extends Component {
                 classes={{ root: classes.cardHeaderIconRoot }}
               />
             </Title>
-            <SubTitle>{ballotDisplay[1]}</SubTitle>
-            {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
-              <MeasureText>{shortenText(measureText, 200)}</MeasureText>
-            )}
           </MeasureInfoWrapper>
           <BallotItemSupportOpposeCountDisplayWrapper>
             <BallotItemSupportOpposeCountDisplay
@@ -300,6 +296,12 @@ class MeasureItemCompressed extends Component {
             />
           </BallotItemSupportOpposeCountDisplayWrapper>
         </InfoRow>
+        <InfoDetailsRow>
+          <SubTitle>{ballotDisplay[1]}</SubTitle>
+          {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
+            <MeasureText>{shortenText(measureText, 200)}</MeasureText>
+          )}
+        </InfoDetailsRow>
         {(!voterOpposesBallotItem && !voterSupportsBallotItem) && (
           <ChoicesRow>
             <Choice
@@ -424,8 +426,11 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
 
 const InfoRow = styled.div`
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
+`;
+
+const InfoDetailsRow = styled.div`
 `;
 
 const ChoicesRow = styled.div`
@@ -503,7 +508,7 @@ const MeasureText = styled.div`
   font-size: 13px;
   font-weight: 300;
   color: #777;
-  width: 135%;
+  width: 100%;
 `;
 
 export default withTheme(withStyles(styles)(MeasureItemCompressed));

@@ -408,6 +408,10 @@ class ShareButtonFooter extends Component {
     }
   }
 
+  generateShareMenuDescription (pageName) {
+    return `Generate a link to this ${pageName}page. The '+ Your Opinions' link will also show all of your opinions for this election (both public and friends-only) to people who click the link after you send it. See a preview on the next screen.`;
+  }
+
   render () {
     renderLog('ShareButtonFooter');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, pathname } = this.props;
@@ -472,28 +476,28 @@ class ShareButtonFooter extends Component {
     let shareMenuTextDefault;
     let shareMenuTextAllOpinions;
     if (candidateShare) {
-      shareMenuItemsDescription = 'The first \'Candidate\' option below will generate a link to this Candidate\'s page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('Candidate ');
       shareMenuTextDefault = 'Candidate';
       shareMenuTextAllOpinions = 'Candidate + Your Opinions';
     } else if (measureShare) {
-      shareMenuItemsDescription = 'The first \'Measure\' option below will generate a link to this Measure page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('Measure ');
       shareMenuTextDefault = 'Measure';
       shareMenuTextAllOpinions = 'Measure + Your Opinions';
     } else if (officeShare) {
-      shareMenuItemsDescription = 'The first \'Office\' option below will generate a link to this Office page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('Office ');
       shareMenuTextDefault = 'Office';
       shareMenuTextAllOpinions = 'Office + Your Opinions';
     } else if (organizationShare) {
-      shareMenuItemsDescription = 'The first \'This Page\' option below will generate a link to this page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('');
       shareMenuTextDefault = 'This Page';
       shareMenuTextAllOpinions = 'This Page + Your Opinions';
     } else if (readyShare) {
-      shareMenuItemsDescription = 'The first \'Ready\' Page option below will generate a link to their own Ready page without showing your opinions. The second option gives them permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('Ready ');
       shareMenuTextDefault = 'Ready Page';
       shareMenuTextAllOpinions = 'Ready Page + Your Opinions';
     } else {
       // Default to ballot
-      shareMenuItemsDescription = 'The first \'Ballot\' option below will generate a link to the ballot page without showing your opinions. The second option gives them permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('Ballot ');
       shareMenuTextDefault = 'Ballot';
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
@@ -522,7 +526,8 @@ class ShareButtonFooter extends Component {
                 classes={{ root: classes.shareIcon }}
               />
             </Icon>
-            Share Page (Options)
+            <span className="u-no-break">Share Page</span>
+            <Info classes={{ root: classes.informationIconInButton }} />
           </Button>
         )}
         <Drawer
@@ -632,7 +637,7 @@ class ShareButtonFooter extends Component {
                           {' '}
                           A brief introduction to We Vote will be shown.
                           {' '}
-                          All of your opinions for this year are included.
+                          Permission to see all of your opinions for this year will be given to people who open this link.
                           {' '}
                           <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.doNotIncludeOpinions(shareFooterStep)}>
                             Don&apos;t include your opinions.
@@ -874,6 +879,13 @@ const styles = () => ({
     height: 16,
     marginTop: '-3px',
     marginRight: 3,
+  },
+  informationIconInButton: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginLeft: 3,
   },
   menuItem: {
     zIndex: '9 !important',

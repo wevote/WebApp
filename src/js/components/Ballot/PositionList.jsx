@@ -18,16 +18,19 @@ import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter
 
 const groupedFilters = [
   {
+    filterDisplayName: 'is pro',
     filterName: 'showSupportFilter',
     icon: <ThumbUp />,
     filterId: 'thumbUpFilter',
   },
   {
+    filterDisplayName: 'is con',
     filterName: 'showOpposeFilter',
     icon: <ThumbDown />,
     filterId: 'thumbDownFilter',
   },
   {
+    filterDisplayName: 'info only',
     filterName: 'showInformationOnlyFilter',
     icon: <Info />,
     filterId: 'infoFilter',
@@ -418,7 +421,7 @@ const styles = () => ({
 });
 
 const FilterWrapper = styled.div`
-  margin: 0 15px;
+  margin: 10px 15px;
 `;
 
 const LoadingItemsWheel = styled.div`

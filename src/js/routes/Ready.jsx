@@ -265,7 +265,7 @@ class Ready extends Component {
               <Card className="card">
                 <div className="card-main">
                   <ShareButtonDesktopWrapper>
-                    <ShareButtonDesktopTablet readyShare shareButtonText="Share Page (Options)" />
+                    <ShareButtonDesktopTablet readyShare shareButtonText="Share Page" />
                   </ShareButtonDesktopWrapper>
                 </div>
               </Card>

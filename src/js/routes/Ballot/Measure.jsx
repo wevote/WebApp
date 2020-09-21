@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
+import { Info } from '@material-ui/icons';
 import { capitalizeString } from '../../utils/textFormat';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
@@ -29,6 +31,7 @@ import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopT
 // The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
 class Measure extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     params: PropTypes.object.isRequired,
   };
 
@@ -244,6 +247,7 @@ class Measure extends Component {
 
   render () {
     renderLog('Measure');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes } = this.props;
     const { allCachedPositionsForThisMeasure, measure, scrolledDown } = this.state;
 
     if (!measure || !measure.ballot_item_display_name) {
@@ -297,6 +301,12 @@ class Measure extends Component {
                 incomingPositionList={allCachedPositionsForThisMeasure}
                 ballotItemDisplayName={measure.ballot_item_display_name}
                 params={this.props.params}
+                positionListExistsTitle={(
+                  <PositionListIntroductionText>
+                    <Info classes={{ root: classes.informationIcon }} />
+                    Sort these opinions about this ballot item using these filters:
+                  </PositionListIntroductionText>
+                )}
               />
             </DelayedLoad>
           </section>
@@ -333,6 +343,16 @@ class Measure extends Component {
   }
 }
 
+const styles = () => ({
+  informationIcon: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginRight: 4,
+  },
+});
+
 const MeasureShareWrapper = styled.div`
   margin-bottom: 12px;
   padding-left: 2px;
@@ -340,6 +360,10 @@ const MeasureShareWrapper = styled.div`
 
 const LeftColumnWrapper = styled.div`
   flex: 1 1 0;
+`;
+
+const PositionListIntroductionText = styled.div`
+  color: #999;
 `;
 
 const RightColumnWrapper = styled.div`
@@ -352,4 +376,4 @@ const TwoColumns = styled.div`
   margin: 0 -8px 0 -8px;
 `;
 
-export default Measure;
+export default withStyles(styles)(Measure);

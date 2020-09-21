@@ -235,7 +235,8 @@ class EditAddressOneHorizontalRow extends Component {
               >
                 {(textForMapSearch) ? (
                   <>
-                    Update
+                    <span className="u-show-desktop-tablet u-no-break">Refresh Ballot</span>
+                    <span className="u-show-mobile">Confirm</span>
                   </>
                 ) : (
                   <>
@@ -258,7 +259,7 @@ class EditAddressOneHorizontalRow extends Component {
               {' '}
               (
               <span className="u-cursor--pointer u-link-color">
-                less
+                show less
               </span>
               )
             </AddressExplanation>
@@ -269,7 +270,7 @@ class EditAddressOneHorizontalRow extends Component {
               {' '}
               (
               <span className="u-cursor--pointer u-link-color">
-                more
+                show more
               </span>
               )
             </AddressExplanation>
@@ -328,7 +329,7 @@ const styles = theme => ({
   saveButton: {
     height: 'fit-content',
     marginLeft: 8,
-    width: 120,
+    // width: 120,
   },
   inputBase: {
     flex: 1,

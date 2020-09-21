@@ -143,6 +143,10 @@ class ShareButtonDesktopTablet extends Component {
     this.setState({ openShareMenu: false });
   }
 
+  generateShareMenuDescription (pageName) {
+    return `Generate a link to this ${pageName}page. The '+ Your Opinions' link will also show all of your opinions for this election (both public and friends-only) to people who click the link after you send it. See a preview on the next screen.`;
+  }
+
   render () {
     renderLog('ShareButtonDesktopTablet');  // Set LOG_RENDER_EVENTS to log all renders
     const {
@@ -157,38 +161,38 @@ class ShareButtonDesktopTablet extends Component {
     let shareMenuTextAllOpinions;
     if (candidateShare) {
       shareButtonClasses = classes.buttonCandidate;
-      shareMenuItemsDescription = 'The first \'Candidate\' option below will generate a link to this Candidate\'s page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('Candidate ');
       shareMenuTextDefault = 'Candidate';
       shareMenuTextAllOpinions = 'Candidate + Your Opinions';
     } else if (measureShare) {
       shareButtonClasses = classes.buttonCandidate;
-      shareMenuItemsDescription = 'The first \'Measure\' option below will generate a link to this Measure page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('Measure ');
       shareMenuTextDefault = 'Measure';
       shareMenuTextAllOpinions = 'Measure + Your Opinions';
     } else if (officeShare) {
       shareButtonClasses = classes.buttonCandidate;
-      shareMenuItemsDescription = 'The first \'Office\' option below will generate a link to this Office page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('Office ');
       shareMenuTextDefault = 'Office';
       shareMenuTextAllOpinions = 'Office + Your Opinions';
     } else if (organizationShare) {
       shareButtonClasses = classes.buttonCandidate;
-      shareMenuItemsDescription = 'The first \'This Page\' option below will generate a link to this page. The second option also gives the viewer permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('');
       shareMenuTextDefault = 'This Page';
       shareMenuTextAllOpinions = 'This Page + Your Opinions';
     } else if (readyShare) {
       shareButtonClasses = classes.buttonDefault;
-      shareMenuItemsDescription = 'The first \'Ready\' Page option below will generate a link to their own Ready page without showing your opinions. The second option gives them permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('Ready ');
       shareMenuTextDefault = 'Ready Page';
       shareMenuTextAllOpinions = 'Ready Page + Your Opinions';
     } else {
       // Default to ballot
       shareButtonClasses = classes.buttonDefault;
-      shareMenuItemsDescription = 'The first \'Ballot\' option below will generate a link to the ballot page without showing your opinions. The second option gives them permission to see all of your opinions for this election (public and friends-only). On the next screen you\'ll have a chance to preview what a person sees when they click the link.';
+      shareMenuItemsDescription = this.generateShareMenuDescription('Ballot ');
       shareMenuTextDefault = 'Ballot';
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
     // Temporary override
-    shareMenuItemsDescription = 'You\'ll have a chance to preview.';
+    shareMenuItemsDescription = 'You\'ll see a preview on the next screen.';
     return (
       <>
         <Button
@@ -205,7 +209,8 @@ class ShareButtonDesktopTablet extends Component {
               classes={{ root: classes.shareIcon }}
             />
           </Icon>
-          {shareButtonText || 'Share Page'}
+          <span className="u-no-break">{shareButtonText || 'Share Page'}</span>
+          <Info classes={{ root: classes.informationIconInButton }} />
         </Button>
         <Menu
           anchorEl={anchorEl}
@@ -298,6 +303,13 @@ const styles = () => ({
     height: 16,
     marginTop: '-3px',
     marginRight: 3,
+  },
+  informationIconInButton: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginLeft: 3,
   },
   menuItem: {
     zIndex: '9 !important',
