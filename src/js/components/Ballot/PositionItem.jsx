@@ -299,9 +299,9 @@ class PositionItem extends Component {
                 <ScoreNumberWrapper advisorImageExists={position.speaker_image_url_https_medium}>
                   +1
                 </ScoreNumberWrapper>
-                <FromScoreLabel advisorImageExists={position.speaker_image_url_https_medium} className="u-no-break">
+                <ToScoreLabel advisorImageExists={position.speaker_image_url_https_medium} className="u-no-break">
                   to score
-                </FromScoreLabel>
+                </ToScoreLabel>
               </SupportAndPartOfScore>
               {position.speaker_image_url_https_medium && (
                 <OverlayImage>
@@ -323,9 +323,15 @@ class PositionItem extends Component {
                     <ScoreNumberWrapper advisorImageExists={position.speaker_image_url_https_medium}>
                       -1
                     </ScoreNumberWrapper>
-                    <FromScoreLabel advisorImageExists={position.speaker_image_url_https_medium} className="u-no-break">
-                      from score
-                    </FromScoreLabel>
+                    {position.speaker_image_url_https_medium ? (
+                      <FromScoreLabel>
+                        from score
+                      </FromScoreLabel>
+                    ) : (
+                      <FromScoreLabelNoImage>
+                        from score
+                      </FromScoreLabelNoImage>
+                    )}
                   </OpposeAndPartOfScore>
                   {position.speaker_image_url_https_medium && (
                     <OverlayImage>
@@ -777,6 +783,20 @@ const DesktopItemTwitter = styled.div`
 const DesktopItemTwitterContainer = styled.div`
 `;
 
+const FromScoreLabel = styled.div`
+  font-size: 10px;
+  line-height: .7;
+  margin-top: -13px;
+  margin-left: 15px;
+`;
+
+const FromScoreLabelNoImage = styled.div`
+  font-size: 10px;
+  line-height: .7;
+  margin-top: -13px;
+  margin-left: 9px;
+`;
+
 const MobileItemBody = styled.div`
   padding: 6px 6px 6px;
   border-bottom-right-radius: 8px;
@@ -1014,11 +1034,6 @@ const SourceLink = styled.div`
   margin-bottom: -4px;
 `;
 
-const FromScoreLabel = styled.div`
-  font-size: 7px;
-  ${({ advisorImageExists }) => (advisorImageExists ? 'margin-top: -23px;' : 'margin-top: -20px;')}
-`;
-
 const SupportAndPartOfScore = styled.div`
   align-items: center;
   background: ${({ theme }) => theme.colors.supportGreenRgb};
@@ -1035,6 +1050,11 @@ const SupportAndPartOfScore = styled.div`
   @media print{
     border: 2px solid grey;
   }
+`;
+
+const ToScoreLabel = styled.div`
+  font-size: 10px;
+  ${({ advisorImageExists }) => (advisorImageExists ? 'margin-top: -23px;' : 'margin-top: -20px;')}
 `;
 
 const TwitterIcon = styled.span`

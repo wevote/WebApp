@@ -1,26 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
+import { Info } from '@material-ui/icons';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
-import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
 import CandidateStore from '../../stores/CandidateStore';
 import { capitalizeString } from '../../utils/textFormat';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import LoadingWheel from '../../components/LoadingWheel';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
 import PositionList from '../../components/Ballot/PositionList';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
-import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import { renderLog } from '../../utils/logging';
 
 // This is based on routes/Ballot/Candidate - TO BE DEPRECATED?
-export default class OrganizationVoterGuideCandidate extends Component {
+class OrganizationVoterGuideCandidate extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     params: PropTypes.object.isRequired,
   };
 
@@ -113,6 +117,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
   render () {
     renderLog('OrganizationVoterGuideCandidate');  // Set LOG_RENDER_EVENTS to log all renders
     const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
+    const { classes } = this.props;
     const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId } = this.state;
     if (!candidate || !candidate.ballot_item_display_name) {
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
@@ -151,6 +156,12 @@ export default class OrganizationVoterGuideCandidate extends Component {
                 <PositionList
                   incomingPositionList={allCachedPositionsForThisCandidate}
                   ballotItemDisplayName={candidate.ballot_item_display_name}
+                  positionListExistsTitle={(
+                    <PositionListIntroductionText>
+                      <Info classes={{ root: classes.informationIcon }} />
+                      Opinions about this candidate are below. Use these filters to sort:
+                    </PositionListIntroductionText>
+                  )}
                 />
               </div>
             ) : null
@@ -208,3 +219,19 @@ export default class OrganizationVoterGuideCandidate extends Component {
     );
   }
 }
+
+const styles = () => ({
+  informationIcon: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginRight: 4,
+  },
+});
+
+const PositionListIntroductionText = styled.div`
+  color: #999;
+`;
+
+export default withStyles(styles)(OrganizationVoterGuideCandidate);

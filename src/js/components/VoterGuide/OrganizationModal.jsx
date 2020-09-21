@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Info } from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Drawer, IconButton } from '@material-ui/core';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -281,7 +283,7 @@ class OrganizationModal extends Component {
             />
           )}
           {isMeasure && (
-            <MeasureItem measureWeVoteId={ballotItemWeVoteId} />
+            <MeasureItem forMoreInformationSeeBallotpediaOff measureWeVoteId={ballotItemWeVoteId} />
           )}
           { !!(allCachedPositionsForThisBallotItem.length) && (
             <DelayedLoad showLoadingText waitBeforeShow={500}>
@@ -290,6 +292,12 @@ class OrganizationModal extends Component {
                   ballotItemDisplayName={ballotItemDisplayName}
                   incomingPositionList={allCachedPositionsForThisBallotItem}
                   params={this.props.params}
+                  positionListExistsTitle={(
+                    <PositionListIntroductionText>
+                      <Info classes={{ root: classes.informationIcon }} />
+                      Opinions about this ballot item are below. Use these filters to sort:
+                    </PositionListIntroductionText>
+                  )}
                 />
                 <br />
               </>
@@ -368,7 +376,17 @@ const styles = () => ({
     right: 14,
     top: 14,
   },
+  informationIcon: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginRight: 4,
+  },
 });
 
+const PositionListIntroductionText = styled.div`
+  color: #999;
+`;
 
 export default withTheme(withStyles(styles)(OrganizationModal));

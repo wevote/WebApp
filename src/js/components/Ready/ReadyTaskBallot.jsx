@@ -481,9 +481,12 @@ class ReadyTaskBallot extends React.Component {
                     </>
                   ) : (
                     <>
-                      <span className="u-show-mobile">
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
                         All Candidates
-                      </span>
+                      </ButtonTextMobileFontSmallest>
+                      <ButtonTextMobileFont className="u-show-mobile-bigger-than-iphone5">
+                        All Candidates
+                      </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
                         Decide on Candidates
                       </span>
@@ -517,18 +520,24 @@ class ReadyTaskBallot extends React.Component {
                 <ButtonText>
                   {federalAllCompleted ? (
                     <>
-                      <span className="u-show-mobile">
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
                         Federal Races
-                      </span>
+                      </ButtonTextMobileFontSmallest>
+                      <ButtonTextMobileFont className="u-show-mobile-bigger-than-iphone5">
+                        Federal Races
+                      </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
                         Your Decisions on Federal Races
                       </span>
                     </>
                   ) : (
                     <>
-                      <span className="u-show-mobile">
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
                         Federal Races
-                      </span>
+                      </ButtonTextMobileFontSmallest>
+                      <ButtonTextMobileFont className="u-show-mobile-bigger-than-iphone5">
+                        Federal Races
+                      </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
                         Decide on Federal Races
                       </span>
@@ -562,18 +571,24 @@ class ReadyTaskBallot extends React.Component {
                 <ButtonText>
                   {stateAllCompleted ? (
                     <>
-                      <span className="u-show-mobile">
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
                         State Races
-                      </span>
+                      </ButtonTextMobileFontSmallest>
+                      <ButtonTextMobileFont className="u-show-mobile-bigger-than-iphone5">
+                        State Races
+                      </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
                         Your Decisions on State Races
                       </span>
                     </>
                   ) : (
                     <>
-                      <span className="u-show-mobile">
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
                         State Races
-                      </span>
+                      </ButtonTextMobileFontSmallest>
+                      <ButtonTextMobileFont className="u-show-mobile-bigger-than-iphone5">
+                        State Races
+                      </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
                         Decide on State Races
                       </span>
@@ -608,18 +623,24 @@ class ReadyTaskBallot extends React.Component {
                 <ButtonText>
                   {measureAllCompleted ? (
                     <>
-                      <span className="u-show-mobile">
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
                         All Measures
-                      </span>
+                      </ButtonTextMobileFontSmallest>
+                      <ButtonTextMobileFont className="u-show-mobile-bigger-than-iphone5">
+                        All Measures
+                      </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
                         Your Decisions on Measures
                       </span>
                     </>
                   ) : (
                     <>
-                      <span className="u-show-mobile">
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
                         All Measures
-                      </span>
+                      </ButtonTextMobileFontSmallest>
+                      <ButtonTextMobileFont className="u-show-mobile-bigger-than-iphone5">
+                        All Measures
+                      </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
                         Decide on Measures
                       </span>
@@ -653,18 +674,24 @@ class ReadyTaskBallot extends React.Component {
                 <ButtonText>
                   {localAllCompleted ? (
                     <>
-                      <span className="u-show-mobile">
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
                         Local Races
-                      </span>
+                      </ButtonTextMobileFontSmallest>
+                      <ButtonTextMobileFont className="u-show-mobile-bigger-than-iphone5">
+                        Local Races
+                      </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
                         Your Decisions on Local Races
                       </span>
                     </>
                   ) : (
                     <>
-                      <span className="u-show-mobile">
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
                         Local Races
-                      </span>
+                      </ButtonTextMobileFontSmallest>
+                      <ButtonTextMobileFont className="u-show-mobile-bigger-than-iphone5">
+                        Local Races
+                      </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
                         Decide on Local Races
                       </span>
@@ -699,21 +726,24 @@ class ReadyTaskBallot extends React.Component {
                 <ButtonText>
                   {howItWorksCompleted ? (
                     <>
-                      <span className="u-show-mobile">
-                        How We Vote Works
-                      </span>
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
+                        How It Works
+                      </ButtonTextMobileFontSmallest>
+                      <ButtonTextMobileFont className="u-show-mobile-bigger-than-iphone5">
+                        How It Works
+                      </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
                         How We Vote Works Completed
                       </span>
                     </>
                   ) : (
                     <span>
-                      <span className="u-show-mobile-iphone5-or-smaller">
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
                         How It Works
-                      </span>
-                      <span className="u-show-mobile-bigger-than-iphone5">
-                        How We Vote Works
-                      </span>
+                      </ButtonTextMobileFontSmallest>
+                      <ButtonTextMobileFont className="u-show-mobile-bigger-than-iphone5">
+                        How It Works
+                      </ButtonTextMobileFont>
                       <span className="u-show-desktop-tablet">
                         How We Vote Works
                       </span>
@@ -759,9 +789,9 @@ class ReadyTaskBallot extends React.Component {
                     </>
                   ) : (
                     <>
-                      <span className="u-show-mobile-iphone5-or-smaller">
+                      <ButtonTextMobileFontSmallest className="u-show-mobile-iphone5-or-smaller">
                         My Score?
-                      </span>
+                      </ButtonTextMobileFontSmallest>
                       <span className="u-show-mobile-bigger-than-iphone5">
                         Personalized Score?
                       </span>
@@ -807,6 +837,14 @@ const styles = theme => ({
     },
   },
 });
+
+const ButtonTextMobileFont = styled.span`
+  font-size: 16px;
+`;
+
+const ButtonTextMobileFontSmallest = styled.span`
+  font-size: 12px;
+`;
 
 const NumberComplete = styled.div`
   font-size: 12px;

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
+import { Info } from '@material-ui/icons';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
@@ -30,9 +32,11 @@ import webAppConfig from '../../config';
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
+// 2020-09-21 This component doesn't seem to be in use. Why not?
 class CandidateForDrawer extends Component {
   static propTypes = {
     candidateWeVoteId: PropTypes.string,
+    classes: PropTypes.object,
     params: PropTypes.object.isRequired,
   };
 
@@ -219,6 +223,7 @@ class CandidateForDrawer extends Component {
 
   render () {
     renderLog('Candidate');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes } = this.props;
     const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown } = this.state;
     // console.log('candidate: ', candidate);
     // if (!candidate || !candidate.ballot_item_display_name) {
@@ -285,6 +290,12 @@ class CandidateForDrawer extends Component {
                 incomingPositionList={allCachedPositionsForThisCandidate}
                 ballotItemDisplayName={candidate.ballot_item_display_name}
                 params={this.props.params}
+                positionListExistsTitle={(
+                  <PositionListIntroductionText>
+                    <Info classes={{ root: classes.informationIcon }} />
+                    Opinions about this candidate are below. Use these filters to sort:
+                  </PositionListIntroductionText>
+                )}
               />
             </DelayedLoad>
           </section>
@@ -326,12 +337,26 @@ class CandidateForDrawer extends Component {
   }
 }
 
+const styles = () => ({
+  informationIcon: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginRight: 4,
+  },
+});
+
 const CandidateShareWrapper = styled.div`
   margin-bottom: 12px;
 `;
 
 const LeftColumnWrapper = styled.div`
   flex: 1 1 0;
+`;
+
+const PositionListIntroductionText = styled.div`
+  color: #999;
 `;
 
 const RightColumnWrapper = styled.div`
@@ -344,4 +369,4 @@ const TwoColumns = styled.div`
   margin: 0 -8px 0 -8px;
 `;
 
-export default CandidateForDrawer;
+export default withStyles(styles)(CandidateForDrawer);

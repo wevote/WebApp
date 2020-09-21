@@ -304,7 +304,7 @@ class Measure extends Component {
                 positionListExistsTitle={(
                   <PositionListIntroductionText>
                     <Info classes={{ root: classes.informationIcon }} />
-                    Sort these opinions about this ballot item using these filters:
+                    Opinions about this ballot item are below. Use these filters to sort:
                   </PositionListIntroductionText>
                 )}
               />

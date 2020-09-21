@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
+import { Info } from '@material-ui/icons';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
@@ -35,6 +37,7 @@ import webAppConfig from '../../config';
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 class Candidate extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     params: PropTypes.object.isRequired,
   };
 
@@ -255,6 +258,7 @@ class Candidate extends Component {
 
   render () {
     renderLog('Candidate');  // Set LOG_RENDER_EVENTS to log all renders
+    const { classes } = this.props;
     const { allCachedPositionsForThisCandidate, candidate, organizationWeVoteId, scrolledDown } = this.state;
     // console.log('candidate: ', candidate);
     if (!candidate || !candidate.ballot_item_display_name) {
@@ -320,6 +324,12 @@ class Candidate extends Component {
                 incomingPositionList={allCachedPositionsForThisCandidate}
                 ballotItemDisplayName={candidate.ballot_item_display_name}
                 params={this.props.params}
+                positionListExistsTitle={(
+                  <PositionListIntroductionText>
+                    <Info classes={{ root: classes.informationIcon }} />
+                    Opinions about this candidate are below. Use these filters to sort:
+                  </PositionListIntroductionText>
+                )}
               />
             </DelayedLoad>
           </section>
@@ -362,6 +372,16 @@ class Candidate extends Component {
   }
 }
 
+const styles = () => ({
+  informationIcon: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginRight: 4,
+  },
+});
+
 const CandidateShareWrapper = styled.div`
   margin-bottom: 12px;
   padding-left: 2px;
@@ -369,6 +389,10 @@ const CandidateShareWrapper = styled.div`
 
 const LeftColumnWrapper = styled.div`
   flex: 1 1 0;
+`;
+
+const PositionListIntroductionText = styled.div`
+  color: #999;
 `;
 
 const RightColumnWrapper = styled.div`
@@ -381,4 +405,4 @@ const TwoColumns = styled.div`
   margin: 0 -8px 0 -8px;
 `;
 
-export default Candidate;
+export default withStyles(styles)(Candidate);
