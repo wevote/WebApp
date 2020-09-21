@@ -22,16 +22,19 @@ import { arrayContains } from '../../utils/textFormat';
 // Thumbs up/down needs to be fixed
 const groupedFilters = [
   {
+    filterDisplayName: 'pro',
     filterName: 'showSupportFilter',
     icon: <ThumbUp />,
     filterId: 'thumbUpFilter',
   },
   {
+    filterDisplayName: 'con',
     filterName: 'showOpposeFilter',
     icon: <ThumbDown />,
     filterId: 'thumbDownFilter',
   },
   {
+    filterDisplayName: 'info',
     filterName: 'showInformationOnlyFilter',
     icon: <Info />,
     filterId: 'infoFilter',

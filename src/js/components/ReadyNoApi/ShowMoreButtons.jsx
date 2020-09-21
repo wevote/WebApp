@@ -61,14 +61,14 @@ const ShowMoreButtonsStyled = styled.div`
   cursor: pointer;
   display: block !important;
   background: #fff !important;
-  font-size: 12px;
+  font-size: 18px;
   margin-bottom: 0px !important;
   margin-top: 0px !important;
   padding: 0px !important;
   text-align: center !important;
   user-select: none;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 18px;
+    font-size: 16px;
   }
   &:hover {
     background-color: rgba(46, 60, 93, 0.15) !important;

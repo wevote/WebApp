@@ -15,6 +15,7 @@ import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeCo
 class MeasureItem extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    forMoreInformationSeeBallotpediaOff: PropTypes.bool,
     measureWeVoteId: PropTypes.string.isRequired,
     // theme: PropTypes.object,
   };
@@ -86,7 +87,7 @@ class MeasureItem extends Component {
   render () {
     renderLog('MeasureItem');  // Set LOG_RENDER_EVENTS to log all renders
     // const { supportProps, transitioning } = this.state;
-    const { classes } = this.props;
+    const { classes, forMoreInformationSeeBallotpediaOff } = this.props;
     let {
       ballotItemDisplayName, stateDisplayName,
     } = this.state;
@@ -136,10 +137,12 @@ class MeasureItem extends Component {
             />
           </MeasureTextWrapper>
         )}
-        <ForMoreInformationSeeBallotpedia className="u-show-desktop-tablet">
-          <Info classes={{ root: classes.informationIcon }} />
-          If you want to learn more, click the Ballotpedia and Google Search buttons to the right.
-        </ForMoreInformationSeeBallotpedia>
+        {!forMoreInformationSeeBallotpediaOff && (
+          <ForMoreInformationSeeBallotpedia className="u-show-desktop-tablet">
+            <Info classes={{ root: classes.informationIcon }} />
+            If you want to learn more, click the Ballotpedia and Google Search buttons to the right.
+          </ForMoreInformationSeeBallotpedia>
+        )}
         <BallotItemSupportOpposeComment
           ballotItemWeVoteId={measureWeVoteId}
           externalUniqueId="measureItem"

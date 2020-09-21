@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Card } from '@material-ui/core';
-import { Ballot } from '@material-ui/icons';
+import { Ballot, Info } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
 import BallotActions from '../../actions/BallotActions';
@@ -307,6 +307,13 @@ class VoterGuideEndorsements extends Component {
                       incomingPositionList={allOrganizationPositions}
                       organizationWeVoteId={organizationWeVoteId}
                       params={this.props.params}
+                      positionListExistsTitle={(
+                        <PositionListIntroductionText>
+                          <Info classes={{ root: classes.informationIcon }} />
+                          {organizationName}
+                          &apos;s opinions are below. Use these filters to sort:
+                        </PositionListIntroductionText>
+                      )}
                     />
                   </DelayedLoad>
                 </section>
@@ -375,6 +382,13 @@ const styles = theme => ({
       width: '100%',
     },
   },
+  informationIcon: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginRight: 4,
+  },
   settingsIcon: {
     color: '#999',
     marginTop: '-5px',
@@ -407,6 +421,11 @@ const ExtraActionsWrapper = styled.div`
   margin-bottom: 20px;
   margin-left: -15px;
   margin-right: -15px;
+`;
+
+const PositionListIntroductionText = styled.div`
+  color: #999;
+  margin-top: 10px;
 `;
 
 const VoterGuideEndorsementsWrapper = styled.div`

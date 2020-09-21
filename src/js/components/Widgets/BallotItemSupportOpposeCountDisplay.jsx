@@ -1002,18 +1002,16 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <Done classes={{ root: classes.decidedIcon }} />
               </VoterChoiceWrapper>
               {voterPersonalScoreHasBeenCalculated ? (
-                <ScoreLabelAfterDecision className="u-no-break">
-                  score
-                  {' '}
+                <ScoreNumberAfterDecision className="u-no-break">
                   {voterPersonalNetworkScoreIsPositive && (
                     <span>+</span>
                   )}
-                  {voterPersonalNetworkScore}
-                </ScoreLabelAfterDecision>
+                  {voterPersonalNetworkScore === 0 ? 'score 0' : voterPersonalNetworkScore}
+                </ScoreNumberAfterDecision>
               ) : (
-                <ScoreLabelAfterDecision className="u-no-break">
+                <ScoreLabelAfterDecisionNoScore className="u-no-break">
                   no score
-                </ScoreLabelAfterDecision>
+                </ScoreLabelAfterDecisionNoScore>
               )}
             </NetworkScore>
           </StickyPopover>
@@ -1035,18 +1033,16 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <NotInterested classes={{ root: classes.decidedIcon }} />
               </VoterChoiceWrapper>
               {voterPersonalScoreHasBeenCalculated ? (
-                <ScoreLabelAfterDecision className="u-no-break">
-                  score
-                  {' '}
+                <ScoreNumberAfterDecision className="u-no-break">
                   {voterPersonalNetworkScoreIsPositive && (
                     <span>+</span>
                   )}
-                  {voterPersonalNetworkScore}
-                </ScoreLabelAfterDecision>
+                  {voterPersonalNetworkScore === 0 ? 'score 0' : voterPersonalNetworkScore}
+                </ScoreNumberAfterDecision>
               ) : (
-                <ScoreLabelAfterDecision className="u-no-break">
+                <ScoreLabelAfterDecisionNoScore className="u-no-break">
                   no score
-                </ScoreLabelAfterDecision>
+                </ScoreLabelAfterDecisionNoScore>
               )}
             </NetworkScore>
           </StickyPopover>
@@ -1069,7 +1065,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <ScoreLabel>
                   score
                 </ScoreLabel>
-                0
+                <ScoreNumberWrapper>
+                  0
+                </ScoreNumberWrapper>
               </NetworkScore>
             ) : (
               <NetworkScoreWrapper>
@@ -1077,7 +1075,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   <ScoreLabel>
                     score
                   </ScoreLabel>
-                  { voterPersonalNetworkScoreWithSign }
+                  <ScoreNumberWrapper>
+                    { voterPersonalNetworkScoreWithSign }
+                  </ScoreNumberWrapper>
                 </NetworkScore>
                 {showDownArrow && (
                   <DownArrow>
@@ -1252,7 +1252,7 @@ const NetworkScore = styled.div`
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   cursor: pointer;
   display: flex;
-  flex-flow: column wrap;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   width: 40px;
@@ -1329,14 +1329,24 @@ const RenderedOrganizationsWrapper = styled.div`
 `;
 
 const ScoreLabel = styled.div`
+  font-size: 13px;
+  margin-top: -4px;
+`;
+
+const ScoreNumberAfterDecision = styled.div`
+  font-size: 12px;
+  margin-top: -4px;
+`;
+
+const ScoreLabelAfterDecisionNoScore = styled.div`
   font-size: 10px;
   margin-top: -4px;
 `;
 
-const ScoreLabelAfterDecision = styled.div`
-  font-size: 8px;
+const ScoreNumberWrapper = styled.div`
+  font-size: 18px;
+  margin-top: -8px;
 `;
-
 const ShowCandidateFooterWrapper = styled.div`
   margin-top: 10px;
 `;
@@ -1349,6 +1359,7 @@ const VoterChoiceWrapper = styled.div`
   @media print{
     color: #1fc06f;
   }
+  margin-top: 2px;
 `;
 
 const YourOpinion = styled.div`

@@ -18,19 +18,19 @@ import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter
 
 const groupedFilters = [
   {
-    filterDisplayName: 'is pro',
+    filterDisplayName: 'pro',
     filterName: 'showSupportFilter',
     icon: <ThumbUp />,
     filterId: 'thumbUpFilter',
   },
   {
-    filterDisplayName: 'is con',
+    filterDisplayName: 'con',
     filterName: 'showOpposeFilter',
     icon: <ThumbDown />,
     filterId: 'thumbDownFilter',
   },
   {
-    filterDisplayName: 'info only',
+    filterDisplayName: 'info',
     filterName: 'showInformationOnlyFilter',
     icon: <Info />,
     filterId: 'infoFilter',
@@ -297,23 +297,24 @@ class PositionList extends Component {
       numberOfPositionItemsToDisplay, positionSearchResults, searchText,
       totalNumberOfPositionSearchResults,
     } = this.state;
-    // console.log('PositionList render');
+    const { positionListExistsTitle } = this.props;
+    // console.log('PositionList render, positionListExistsTitle:', positionListExistsTitle);
     // console.log('this.state.filteredPositionList render: ', this.state.filteredPositionList);
     let showTitle = false;
     let count;
     for (count = 0; count < positionList.length; count++) {
       showTitle = true;
     }
+    // console.log('showTitle:', showTitle);
     const selectedFiltersDefault = ['endorsingGroup', 'newsOrganization', 'publicFigure', 'sortByMagic', 'yourFriends'];
     let numberOfPositionItemsDisplayed = 0;
     let searchTextString = '';
     return (
       <div>
         <FilterWrapper>
-          { showTitle ?
-            <span>{this.props.positionListExistsTitle}</span> :
-            null
-          }
+          { showTitle && (
+            <span>{positionListExistsTitle}</span>
+          )}
           <FilterBase
             allItems={positionList}
             groupedFilters={groupedFilters}
