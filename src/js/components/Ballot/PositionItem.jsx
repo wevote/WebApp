@@ -296,7 +296,12 @@ class PositionItem extends Component {
           {supportOpposeInfo === 'SupportAndPartOfScore' ? (
             <OrganizationSupportWrapper>
               <SupportAndPartOfScore>
-                +1
+                <ScoreNumberWrapper advisorImageExists={position.speaker_image_url_https_medium}>
+                  +1
+                </ScoreNumberWrapper>
+                <FromScoreLabel advisorImageExists={position.speaker_image_url_https_medium} className="u-no-break">
+                  to score
+                </FromScoreLabel>
               </SupportAndPartOfScore>
               {position.speaker_image_url_https_medium && (
                 <OverlayImage>
@@ -315,7 +320,12 @@ class PositionItem extends Component {
               {supportOpposeInfo === 'OpposeAndPartOfScore' ? (
                 <OrganizationOpposeWrapper>
                   <OpposeAndPartOfScore>
-                    -1
+                    <ScoreNumberWrapper advisorImageExists={position.speaker_image_url_https_medium}>
+                      -1
+                    </ScoreNumberWrapper>
+                    <FromScoreLabel advisorImageExists={position.speaker_image_url_https_medium} className="u-no-break">
+                      from score
+                    </FromScoreLabel>
                   </OpposeAndPartOfScore>
                   {position.speaker_image_url_https_medium && (
                     <OverlayImage>
@@ -873,17 +883,18 @@ const MobileSmallItemNameContainer = styled.div`
 `;
 
 const OpposeAndPartOfScore = styled.div`
+  align-items: center;
   background: ${({ theme }) => theme.colors.opposeRedRgb};
+  border-radius: 5px;
   color: white;
   cursor: pointer;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  font-size: 16px;
+  font-weight: bold;
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
   @media print{
     border: 2px solid grey;
   }
@@ -994,23 +1005,33 @@ const PositionItemMobile = styled.li`
   }
 `;
 
+const ScoreNumberWrapper = styled.div`
+  ${({ advisorImageExists }) => (advisorImageExists ? 'margin-top: -5px;' : 'margin-top: 0px;')}
+`;
+
 const SourceLink = styled.div`
   float: right;
   margin-bottom: -4px;
 `;
 
+const FromScoreLabel = styled.div`
+  font-size: 7px;
+  ${({ advisorImageExists }) => (advisorImageExists ? 'margin-top: -23px;' : 'margin-top: -20px;')}
+`;
+
 const SupportAndPartOfScore = styled.div`
+  align-items: center;
   background: ${({ theme }) => theme.colors.supportGreenRgb};
+  border-radius: 5px;
   color: white;
   cursor: pointer;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  font-size: 16px;
+  font-weight: bold;
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
   @media print{
     border: 2px solid grey;
   }

@@ -333,7 +333,6 @@ const NumberOfItemsFoundWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
-  padding-top: 10px;
   display: flex;
   flex-flow: column;
 `;

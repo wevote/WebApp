@@ -242,6 +242,8 @@ class OfficeItemCompressed extends Component {
     const supportedCandidatesList = candidateList.filter(candidate => arrayContains(candidate.we_vote_id, candidatesToShowForSearchResults) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
     const hideCandidateDetails = supportedCandidatesList.length;
+    let voterOpposesBallotItem;
+    let voterSupportsBallotItem;
     return (
       <Container candidateLength={candidatesToRender.length}>
         { candidatesToRender.slice(0, candidatePreviewLimit)
@@ -251,6 +253,8 @@ class OfficeItemCompressed extends Component {
             }
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
             const localUniqueId = oneCandidate.we_vote_id;
+            voterSupportsBallotItem = SupportStore.voterSupportsList[oneCandidate.we_vote_id] || false;
+            voterOpposesBallotItem = SupportStore.voterOpposesList[oneCandidate.we_vote_id] || false;
             return (
               <Column
                 candidateLength={candidatesToRender.length}
@@ -314,7 +318,15 @@ class OfficeItemCompressed extends Component {
                                 color="primary"
                                 classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
                               >
-                                Choose or Oppose
+                                {voterOpposesBallotItem || voterSupportsBallotItem ? (
+                                  <>
+                                    View
+                                  </>
+                                ) : (
+                                  <>
+                                    Choose or Oppose
+                                  </>
+                                )}
                               </Button>
                             </MoreButtonWrapper>
                           </span>

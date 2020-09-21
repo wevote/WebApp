@@ -123,13 +123,14 @@ export function toTitleCase (incomingString) {
       txt => txt.toLowerCase());
   }
 
-  // Leave state codes and measure names upper case
+  // Leave state codes, measure names and 'VP' upper case
   const uppers = ['Us', 'Ak', 'Al', 'Ar', 'Az', 'Ca', 'Co', 'Ct', 'Dc', 'De', 'Fl', 'Ga', 'Gu', 'Hi', 'Ia', 'Id',
     'Il', 'In', 'Ks', 'La', 'Ma', 'Md', 'Me', 'Mi', 'Mn', 'Mo', 'Mp', 'Ms', 'Mt', 'Na', 'Nc', 'Nd', 'Ne',
     'Nh', 'Nj', 'Nm', 'Nv', 'Ny', 'Oh', 'Ok', 'Pa', 'Pr', 'Ri', 'Sc', 'Sd', 'Tn', 'Tx', 'Ut', 'Va', 'Vi',
     'Vt', 'Wa', 'Wi', 'Wv', 'Wy',
     'Aa', 'Bb', 'Cc', 'Dd', 'Ee', 'Ff', 'Gg', 'Hh', 'Ii', 'Jj', 'Kk', 'Ll', 'Mm', 'Nn', 'Oo', 'Pp',
-    'Qq', 'Rr', 'Ss', 'Tt', 'Uu', 'Vv', 'Ww', 'Xx', 'Yy', 'Zz'];
+    'Qq', 'Rr', 'Ss', 'Tt', 'Uu', 'Vv', 'Ww', 'Xx', 'Yy', 'Zz',
+    'Vp'];
   for (count = 0, arrayLength = uppers.length; count < arrayLength; count++) {
     str = str.replace(new RegExp(`\\b${uppers[count]}\\b`, 'g'),
       uppers[count].toUpperCase());

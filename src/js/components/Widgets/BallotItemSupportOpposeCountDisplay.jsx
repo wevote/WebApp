@@ -313,6 +313,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       let numberOfSupportPositionsForScore = 0;
       let numberOfOpposePositionsForScore = 0;
       let voterPersonalNetworkScore = 0;
+      let voterPersonalScoreHasBeenCalculated = false;
       let voterPersonalNetworkScoreWithSign;
       let voterPersonalNetworkScoreIsNegative = false;
       let voterPersonalNetworkScoreIsPositive = false;
@@ -339,12 +340,16 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         // There is NOT an issue score, and BOTH network_support and network_oppose must be zero to hide Network Score
         showVoterPersonalScore = false;
       }
+      if (numberOfSupportPositionsForScore || numberOfOpposePositionsForScore) {
+        voterPersonalScoreHasBeenCalculated = true;
+      }
       this.setState({
         showVoterPersonalScore,
         voterPersonalNetworkScore,
         voterPersonalNetworkScoreIsNegative,
         voterPersonalNetworkScoreIsPositive,
         voterPersonalNetworkScoreWithSign,
+        voterPersonalScoreHasBeenCalculated,
         voterOpposesBallotItem,
         voterSupportsBallotItem,
       });
@@ -477,6 +482,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       positionsOutOfNetworkSummaryList,
       showVoterPersonalScore,
       voterPersonalNetworkScore,
+      voterPersonalScoreHasBeenCalculated,
       voterPersonalNetworkScoreIsNegative,
       voterPersonalNetworkScoreIsPositive,
       voterPersonalNetworkScoreWithSign,
@@ -928,9 +934,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         onMouseLeave={this.handleLeaveHoverLocalArea}
       >
         {/* Gray overview display. Show if no personalized score, or voter position */}
-        {!hideEndorsementsOverview && (
+        {(!hideEndorsementsOverview && !hideNumbersOfAllPositions) && (
           <>
-            <EndorsementsOverviewShowOrNotShow className={(!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem) ? '' : 'u-show-desktop-tablet'}>
+            {/*  className={(!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem) ? '' : 'u-show-desktop-tablet'} */}
+            <EndorsementsOverviewShowOrNotShow>
               <StickyPopover
                 delay={{ show: 700, hide: 100 }}
                 popoverComponent={endorsementsOverviewPopover}
@@ -941,57 +948,45 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 // closePopoverByProp={closeSupportOpposeCountDisplayModal}
                 showCloseIcon
               >
-                {hideNumbersOfAllPositions ? (
-                  <NetworkScore
-                    hideNumbersOfAllPositions
-                    voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
-                    voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
-                  >
-                    <YourScoreWrapper>
-                      Your Score
-                    </YourScoreWrapper>
-                  </NetworkScore>
-                ) : (
-                  <EndorsementsContainer>
-                    <EndorsementsTitle>
-                      Endorsements
-                    </EndorsementsTitle>
-                    <EndorsementWrapper>
-                      <EndorsementRow>
+                <EndorsementsContainer>
+                  <EndorsementsTitle>
+                    Opinions
+                  </EndorsementsTitle>
+                  <EndorsementWrapper>
+                    <EndorsementRow>
+                      <Endorsement>
+                        <ThumbUp classes={{ root: classes.endorsementIconRoot }} />
+                        <EndorsementCount>
+                          {numberOfAllSupportPositions}
+                        </EndorsementCount>
+                      </Endorsement>
+                      { showOpposeCount && (
                         <Endorsement>
-                          <ThumbUp classes={{ root: classes.endorsementIconRoot }} />
+                          <ThumbDown classes={{ root: classes.endorsementIconRoot }} />
                           <EndorsementCount>
-                            {numberOfAllSupportPositions}
+                            {numberOfAllOpposePositions}
                           </EndorsementCount>
                         </Endorsement>
-                        { showOpposeCount && (
-                          <Endorsement>
-                            <ThumbDown classes={{ root: classes.endorsementIconRoot }} />
-                            <EndorsementCount>
-                              {numberOfAllOpposePositions}
-                            </EndorsementCount>
-                          </Endorsement>
-                        )}
-                        { showCommentCount && (
-                          <Endorsement>
-                            <Comment classes={{ root: classes.endorsementIconRoot }} />
-                            <EndorsementCount>
-                              {numberOfAllInfoOnlyPositions}
-                            </EndorsementCount>
-                          </Endorsement>
-                        )}
-                      </EndorsementRow>
-                    </EndorsementWrapper>
-                  </EndorsementsContainer>
-                )}
+                      )}
+                      { showCommentCount && (
+                        <Endorsement>
+                          <Comment classes={{ root: classes.endorsementIconRoot }} />
+                          <EndorsementCount>
+                            {numberOfAllInfoOnlyPositions}
+                          </EndorsementCount>
+                        </Endorsement>
+                      )}
+                    </EndorsementRow>
+                  </EndorsementWrapper>
+                </EndorsementsContainer>
               </StickyPopover>
             </EndorsementsOverviewShowOrNotShow>
 
-            {(showVoterPersonalScore || voterSupportsBallotItem || voterOpposesBallotItem) && <EndorsementsOverviewSpacer />}
+            <EndorsementsOverviewSpacer />
           </>
         )}
 
-        { (voterSupportsBallotItem) && (
+        {(voterSupportsBallotItem) && (
           <StickyPopover
             delay={{ show: 700, hide: 100 }}
             popoverComponent={positionsPopover}
@@ -1006,11 +1001,25 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               <VoterChoiceWrapper>
                 <Done classes={{ root: classes.decidedIcon }} />
               </VoterChoiceWrapper>
+              {voterPersonalScoreHasBeenCalculated ? (
+                <ScoreLabelAfterDecision className="u-no-break">
+                  score
+                  {' '}
+                  {voterPersonalNetworkScoreIsPositive && (
+                    <span>+</span>
+                  )}
+                  {voterPersonalNetworkScore}
+                </ScoreLabelAfterDecision>
+              ) : (
+                <ScoreLabelAfterDecision className="u-no-break">
+                  no score
+                </ScoreLabelAfterDecision>
+              )}
             </NetworkScore>
           </StickyPopover>
         )}
 
-        { (voterOpposesBallotItem) && (
+        {(voterOpposesBallotItem) && (
           <StickyPopover
             delay={{ show: 700, hide: 100 }}
             popoverComponent={positionsPopover}
@@ -1025,12 +1034,26 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               <VoterChoiceWrapper>
                 <NotInterested classes={{ root: classes.decidedIcon }} />
               </VoterChoiceWrapper>
+              {voterPersonalScoreHasBeenCalculated ? (
+                <ScoreLabelAfterDecision className="u-no-break">
+                  score
+                  {' '}
+                  {voterPersonalNetworkScoreIsPositive && (
+                    <span>+</span>
+                  )}
+                  {voterPersonalNetworkScore}
+                </ScoreLabelAfterDecision>
+              ) : (
+                <ScoreLabelAfterDecision className="u-no-break">
+                  no score
+                </ScoreLabelAfterDecision>
+              )}
             </NetworkScore>
           </StickyPopover>
         )}
 
         {/* Show green or red score square. A personalized score exists, and the voter hasn't chosen to support or oppose yet. */}
-        { (showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem) ? (
+        {(voterPersonalScoreHasBeenCalculated && !voterSupportsBallotItem && !voterOpposesBallotItem) ? (
           <StickyPopover
             delay={{ show: 700, hide: 100 }}
             popoverComponent={positionsPopover}
@@ -1043,11 +1066,17 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           >
             { voterPersonalNetworkScore === 0 ? (
               <NetworkScore voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+                <ScoreLabel>
+                  score
+                </ScoreLabel>
                 0
               </NetworkScore>
             ) : (
               <NetworkScoreWrapper>
                 <NetworkScore voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative} voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}>
+                  <ScoreLabel>
+                    score
+                  </ScoreLabel>
                   { voterPersonalNetworkScoreWithSign }
                 </NetworkScore>
                 {showDownArrow && (
@@ -1065,6 +1094,31 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           </StickyPopover>
         ) : null
         }
+        {/* Your Score: Where you aren't supporting or opposing yet */}
+        {(!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem) && (
+          <>
+            <StickyPopover
+              delay={{ show: 700, hide: 100 }}
+              popoverComponent={endorsementsOverviewPopover}
+              placement="bottom"
+              id="endorsements-overview-trigger-click-root-close"
+              openOnClick
+              // openPopoverByProp={openSupportOpposeCountDisplayModal}
+              // closePopoverByProp={closeSupportOpposeCountDisplayModal}
+              showCloseIcon
+            >
+              <NetworkScore
+                hideNumbersOfAllPositions
+                voterPersonalNetworkScoreIsNegative={voterPersonalNetworkScoreIsNegative}
+                voterPersonalNetworkScoreIsPositive={voterPersonalNetworkScoreIsPositive}
+              >
+                <YourScoreWrapper>
+                  Your Score
+                </YourScoreWrapper>
+              </NetworkScore>
+            </StickyPopover>
+          </>
+        )}
         <span className="sr-only">
           {voterPersonalNetworkScore > 0 ? `${voterPersonalNetworkScore} Support` : null }
           {voterPersonalNetworkScore < 0 ? `${voterPersonalNetworkScore} Oppose` : null }
@@ -1198,6 +1252,7 @@ const NetworkScore = styled.div`
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   cursor: pointer;
   display: flex;
+  flex-flow: column wrap;
   align-items: center;
   justify-content: center;
   width: 40px;
@@ -1229,13 +1284,6 @@ const NetworkScoreSmall = styled.div`
     border-width: 1 px;
     border-style: solid;
     border-color: ${({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => ((voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
-  }
-`;
-
-const VoterChoiceWrapper = styled.div`
-  color: white;
-  @media print{
-    color: #1fc06f;
   }
 `;
 
@@ -1280,11 +1328,27 @@ const RenderedOrganizationsWrapper = styled.div`
   margin-top: 6px;
 `;
 
+const ScoreLabel = styled.div`
+  font-size: 10px;
+  margin-top: -4px;
+`;
+
+const ScoreLabelAfterDecision = styled.div`
+  font-size: 8px;
+`;
+
 const ShowCandidateFooterWrapper = styled.div`
   margin-top: 10px;
 `;
 
 const TutorialTextBlue = styled.div`
+`;
+
+const VoterChoiceWrapper = styled.div`
+  color: white;
+  @media print{
+    color: #1fc06f;
+  }
 `;
 
 const YourOpinion = styled.div`
@@ -1296,9 +1360,14 @@ const YourPersonalNetworkIntroText = styled.div`
 `;
 
 const YourScoreWrapper = styled.div`
-  text-align: center;
   color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 12px;
+  text-align: center;
+  width: 40px;
+  height: 40px;
 `;
 
 const DownArrow = styled.div`

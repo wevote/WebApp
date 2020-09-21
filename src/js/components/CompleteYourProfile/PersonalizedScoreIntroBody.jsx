@@ -485,7 +485,7 @@ const PersonalizedScoreIntroBodyWrapper = styled.div`
 `;
 
 const ScrollableContentWrapper = styled.div`
-  padding-bottom: 30px;
+  padding-bottom: 15px;
   overflow-y: auto;
 `;
 

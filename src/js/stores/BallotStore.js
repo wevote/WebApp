@@ -615,7 +615,7 @@ class BallotStore extends ReduceStore {
             }
           }
           alphanumericFilteredItems.sort((a, b) => a.ballot_item_display_name.localeCompare(b.ballot_item_display_name, undefined, { numeric: true, sensitivity: 'base' }));
-          newBallots[googleCivicElectionId].ballot_item_list = alphanumericFilteredItems.concat(unfilteredItems);
+          newBallots[googleCivicElectionId].ballot_item_list = unfilteredItems.concat(alphanumericFilteredItems);
 
           // tracking displaying raccoon flags for offices
           newBallots[googleCivicElectionId].ballot_item_list.forEach((ballotItem) => {

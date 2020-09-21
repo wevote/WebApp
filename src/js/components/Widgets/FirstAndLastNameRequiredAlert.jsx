@@ -167,7 +167,19 @@ class FirstAndLastNameRequiredAlert extends Component {
             {(organizationNameRelevantAndMissing || voterNameRelevantAndMissing) && (
               <ExplanationText>
                 <Alert variant="danger">
-                  {organizationNameRelevantAndMissing ? 'Please add your name so people recognize you.' : 'Please add your name so your friends recognize you.'}
+                  {organizationNameRelevantAndMissing ? (
+                    <span>
+                      Please add your name so people recognize you.
+                      {' '}
+                      Your name will only be shown on We Vote.
+                    </span>
+                  ) : (
+                    <span>
+                      Please add your name so your friends recognize you.
+                      {' '}
+                      Your name will only be shown on We Vote.
+                    </span>
+                  )}
                   {' '}
                   {friendInvitationsWaitingForVerification && friendInvitationsWaitingForVerification.length > 0 && (
                     <span>

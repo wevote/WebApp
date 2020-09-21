@@ -328,7 +328,7 @@ class ShareModal extends Component {
                   <>Share a link to this election so that your friends can get ready to vote.</>
                 )}
                 {(shareModalStep === 'ballotShareOptionsAllOpinions') && (
-                  <>Share a link to all of your opinions for this year. </>
+                  <>Share a link to this election with all of your opinions for this year. </>
                 )}
                 {(shareModalStep === 'candidateShareOptions') && (
                   <>Share a link to this candidate. </>
@@ -363,7 +363,9 @@ class ShareModal extends Component {
                 {stringContains('AllOpinions', shareModalStep) ? (
                   <>
                     {' '}
-                    All of your opinions for this year are included.
+                    A brief introduction to We Vote will be shown.
+                    {' '}
+                    All of the people who open this link will get permission to see all of your opinions for this year (both public and friends-only).
                     {' '}
                     <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.doNotIncludeOpinions(shareModalStep)}>
                       Don&apos;t include your opinions.
@@ -371,6 +373,8 @@ class ShareModal extends Component {
                   </>
                 ) : (
                   <>
+                    {' '}
+                    A brief introduction to We Vote will be shown.
                     {' '}
                     Your opinions are NOT included.
                     {' '}
@@ -652,7 +656,7 @@ const styles = () => ({
     margin: '0 auto',
   },
   dialogContent: {
-    padding: '24px 24px 36px 24px',
+    padding: '0px 24px 36px 24px',
     background: 'white',
     height: 'fit-content',
     display: 'flex',

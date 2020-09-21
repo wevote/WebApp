@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Info } from '@material-ui/icons';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
@@ -13,6 +14,7 @@ import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeCo
 
 class MeasureItem extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     measureWeVoteId: PropTypes.string.isRequired,
     // theme: PropTypes.object,
   };
@@ -84,6 +86,7 @@ class MeasureItem extends Component {
   render () {
     renderLog('MeasureItem');  // Set LOG_RENDER_EVENTS to log all renders
     // const { supportProps, transitioning } = this.state;
+    const { classes } = this.props;
     let {
       ballotItemDisplayName, stateDisplayName,
     } = this.state;
@@ -105,29 +108,26 @@ class MeasureItem extends Component {
             <Title>
               {ballotItemDisplayName}
             </Title>
-            { electionDisplayName || regionalDisplayName || stateDisplayName ?
-              (
-                <SubTitle>
-                  { electionDisplayName || 'Appearing on the ballot in ' }
-                  { electionDisplayName ? <span> &middot; </span> : null }
-                  { regionalDisplayName || null }
-                  { regionalDisplayName && stateDisplayName ? ', ' : null }
-                  { stateDisplayName }
-                </SubTitle>
-              ) :
-              null
-            }
-            {/* <SubTitle>{measureSubtitle}</SubTitle> */}
           </MeasureInfoWrapper>
           <BallotItemSupportOpposeCountDisplayWrapper>
             <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
           </BallotItemSupportOpposeCountDisplayWrapper>
         </InfoRow>
-        <BallotItemSupportOpposeComment
-          ballotItemWeVoteId={measureWeVoteId}
-          externalUniqueId="measureItem"
-          showPositionStatementActionBar={this.state.showPositionStatementActionBar}
-        />
+        <InfoDetailsRow>
+          { electionDisplayName || regionalDisplayName || stateDisplayName ?
+            (
+              <SubTitle>
+                { electionDisplayName || 'Appearing on the ballot in ' }
+                { electionDisplayName ? <span> &middot; </span> : null }
+                { regionalDisplayName || null }
+                { regionalDisplayName && stateDisplayName ? ', ' : null }
+                { stateDisplayName }
+              </SubTitle>
+            ) :
+            null
+          }
+          {/* <SubTitle>{measureSubtitle}</SubTitle> */}
+        </InfoDetailsRow>
         { measureText && (
           <MeasureTextWrapper>
             <ReadMore
@@ -136,6 +136,15 @@ class MeasureItem extends Component {
             />
           </MeasureTextWrapper>
         )}
+        <ForMoreInformationSeeBallotpedia className="u-show-desktop-tablet">
+          <Info classes={{ root: classes.informationIcon }} />
+          If you want to learn more, click the Ballotpedia and Google Search buttons to the right.
+        </ForMoreInformationSeeBallotpedia>
+        <BallotItemSupportOpposeComment
+          ballotItemWeVoteId={measureWeVoteId}
+          externalUniqueId="measureItem"
+          showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+        />
       </MeasureItemWrapper>
     );
   }
@@ -160,6 +169,13 @@ const styles = theme => ({
     fontSize: 14,
     margin: '0 0 .1rem .4rem',
   },
+  informationIcon: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginRight: 4,
+  },
 });
 
 const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
@@ -167,10 +183,17 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
   float: right;
 `;
 
+const ForMoreInformationSeeBallotpedia = styled.div`
+  color: #999;
+`;
+
 const InfoRow = styled.div`
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
+`;
+
+const InfoDetailsRow = styled.div`
 `;
 
 const MeasureInfoWrapper = styled.div`
@@ -208,7 +231,7 @@ const SubTitle = styled.h3`
   color: #555;
   margin-bottom: 4px;
   margin-top: .6rem;
-  width: 135%;
+  width: 100%;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 13px;
   }
