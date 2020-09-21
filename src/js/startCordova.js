@@ -1,5 +1,6 @@
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import {
+  isCordova,
   isIOS,
   prepareForCordovaKeyboard,
   restoreStylesAfterCordovaKeyboard,
@@ -33,11 +34,14 @@ export function initializationForCordova () { // eslint-disable-line
     // Unfortunately this event only works on iOS, but fortunately it is most needed on iOS
     window.addEventListener('keyboardWillShow', localPrepareForCordovaKeyboard);
     window.addEventListener('keyboardDidHide', localRestoreStylesAfterCordovaKeyboard);
+  }
 
+  if (isCordova()) {
     // https://github.com/chemerisuk/cordova-plugin-firebase-messaging
     // For iOS, this can't be tested in a simulator.  Works fine in simulator on Android.
     messaging.getToken().then((token) => {
-      console.log('Firebase FCM - Firebase Cloud Messaging registration token: ', token);
+      console.log('Firebase FCM - registration token first 75: ', token.substring(0, 75));
+      console.log('Firebase FCM - registration token last    : ', token.substring(75));
       VoterActions.deviceStoreFirebaseCloudMessagingToken(token);
     });
 
