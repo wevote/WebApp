@@ -73,6 +73,9 @@ export default class SuggestedFriendsPreview extends Component {
               {suggestedFriendList.length}
               )
             </SectionTitle>
+            <SectionDescription>
+              Add friends you feel comfortable talking politics with.
+            </SectionDescription>
             <div>
               <SuggestedFriendList
                 friendList={suggestedFriendListLimited}
@@ -88,9 +91,16 @@ export default class SuggestedFriendsPreview extends Component {
   }
 }
 
+const SectionDescription = styled.div`
+  font-weight: 200;
+  font-size: 14px;
+  margin-bottom: 16px;
+  width: fit-content;
+`;
+
 const SectionTitle = styled.h2`
   font-weight: bold;
   font-size: 18px;
-  margin-bottom: 16px;
+  margin-bottom: 4px;
   width: fit-content;
 `;

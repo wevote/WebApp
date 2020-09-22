@@ -80,6 +80,7 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
             hideUpcomingElectionTitle
             organizationWeVoteId={organizationWeVoteId}
             showPriorElectionsList
+            stateToShow="all"
             toggleFunction={this.props.toggleFunction}
           />
         </DialogContent>

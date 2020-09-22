@@ -34,6 +34,7 @@ class ElectionCountdown extends React.Component {
   }
 
   onBallotStoreChange () {
+    const { daysOnlyMode } = this.props;
     const electionDayText = BallotStore.currentBallotElectionDate;
     // console.log('electionDayText:', electionDayText);
     if (electionDayText) {
@@ -44,11 +45,16 @@ class ElectionCountdown extends React.Component {
       this.setState({
         electionDate,
       });
+      let refreshIntervalInMilliseconds = 1000; // One second
+      if (daysOnlyMode) {
+        this.setNewTime(electionDate);
+        refreshIntervalInMilliseconds = 3600000; // One hours worth of milliseconds
+      }
       if (this.timeInterval) {
         clearInterval(this.timeInterval);
         this.timeInterval = null;
       }
-      this.timeInterval = setInterval(() => this.setNewTime(electionDate), 1000);
+      this.timeInterval = setInterval(() => this.setNewTime(electionDate), refreshIntervalInMilliseconds);
     }
   }
 

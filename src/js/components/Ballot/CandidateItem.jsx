@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextTruncate from 'react-text-truncate';
 import styled from 'styled-components';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import { Info } from '@material-ui/icons';
 import AppActions from '../../actions/AppActions';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
@@ -30,10 +32,12 @@ import {
 class CandidateItem extends Component {
   static propTypes = {
     candidateWeVoteId: PropTypes.string.isRequired,
+    classes: PropTypes.object,
     closeSupportOpposeCountDisplayModal: PropTypes.bool,
     controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
     goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     expandIssuesByDefault: PropTypes.bool,
+    forMoreInformationSeeBallotpediaOff: PropTypes.bool,
     hideBallotItemSupportOpposeComment: PropTypes.bool,
     hideCandidateText: PropTypes.bool,
     hideCandidateUrl: PropTypes.bool,
@@ -324,7 +328,8 @@ class CandidateItem extends Component {
 
   candidateRenderBlock = (candidateWeVoteId, useLinkToCandidatePage = false, forDesktop = false, openSupportOpposeCountDisplayModal = false) => {
     const {
-      controlAdviserMaterialUIPopoverFromProp, closeSupportOpposeCountDisplayModal, hideCandidateUrl, linkToBallotItemPage, linkToOfficePage,
+      controlAdviserMaterialUIPopoverFromProp, closeSupportOpposeCountDisplayModal,
+      hideCandidateUrl, linkToBallotItemPage, linkToOfficePage,
       openAdviserMaterialUIPopover,
       supportOpposeCountDisplayModalTutorialOn, supportOpposeCountDisplayModalTutorialText,
       showDownArrow, showUpArrow, showHover, showOfficeName,
@@ -357,9 +362,9 @@ class CandidateItem extends Component {
               />
             </div>
             <Candidate>
-              <h2 className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
+              <div className={`card-main__display-name ${linkToBallotItemPage && largeAreaHoverColorOnNow && showHover ? 'card__blue' : ''}`}>
                 {ballotItemDisplayName}
-              </h2>
+              </div>
               {!!(twitterFollowersCount && forDesktop) && (
                 <span
                   className={`u-show-desktop twitter-followers__badge ${linkToBallotItemPage ? 'u-cursor--pointer' : ''}`}
@@ -576,7 +581,10 @@ class CandidateItem extends Component {
 
   render () {
     renderLog('CandidateItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { linkToBallotItemPage, openSupportOpposeCountDisplayModal, showHover } = this.props;
+    const {
+      classes, forMoreInformationSeeBallotpediaOff,
+      linkToBallotItemPage, openSupportOpposeCountDisplayModal, showHover,
+    } = this.props;
     const {
       candidateText, candidateWeVoteId,
       largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow,
@@ -605,6 +613,12 @@ class CandidateItem extends Component {
               {this.candidateRenderBlock(candidateWeVoteId, linkToBallotItemPage, forDesktop, openSupportOpposeCountDisplayModalAtDesktopScreenSize)}
             </div>
           )}
+          {!forMoreInformationSeeBallotpediaOff && (
+            <ForMoreInformationSeeBallotpedia className="u-show-desktop-tablet">
+              <Info classes={{ root: classes.informationIcon }} />
+              If you want to learn more, click the Ballotpedia and Google Search buttons to the right.
+            </ForMoreInformationSeeBallotpedia>
+          )}
           <div>
             {this.candidateIssuesAndCommentBlock(candidateText, 'desktopIssuesComment')}
           </div>
@@ -621,6 +635,16 @@ class CandidateItem extends Component {
     );
   }
 }
+
+const styles = () => ({
+  informationIcon: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginRight: 4,
+  },
+});
 
 const BallotItemSupportOpposeCountDisplayWrapper = styled.div`
   cursor: pointer;
@@ -661,7 +685,11 @@ const ExternalWebSiteWrapper = styled.span`
   white-space: nowrap;
 `;
 
+const ForMoreInformationSeeBallotpedia = styled.div`
+  color: #999;
+`;
+
 const MobileTabletWrapper = styled.div`
 `;
 
-export default CandidateItem;
+export default withTheme(withStyles(styles)(CandidateItem));

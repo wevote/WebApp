@@ -5,7 +5,7 @@ import ReactSVG from 'react-svg';
 import uniqBy from 'lodash-es/uniqBy';
 import { withStyles } from '@material-ui/core/styles';
 import { Card } from '@material-ui/core';
-import { Ballot } from '@material-ui/icons';
+import { Ballot, Info } from '@material-ui/icons';
 import styled from 'styled-components';
 import ActivityActions from '../actions/ActivityActions';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -54,7 +54,7 @@ const islandFilters = [
   {
     filterName: 'showBallotItemsFilter',
     icon: <Ballot />,
-    filterDisplayName: 'Ballot',
+    filterDisplayName: 'Ballot Items',
     filterId: 'islandFilterBallotItems',
   },
 ];
@@ -556,7 +556,6 @@ class Opinions2020 extends Component {
       totalNumberOfBallotSearchResults = ballotSearchResults.length;
     }
     let searchTextString = '';
-    // const { classes } = this.props;
     // console.log('filteredOpinionsAndBallotItems: ', filteredOpinionsAndBallotItems);
     // console.log('atLeastOneFoundWithTheseFilters: ', atLeastOneFoundWithTheseFilters);
     return (
@@ -599,6 +598,10 @@ class Opinions2020 extends Component {
             {/*    &quot; */}
             {/*  </SearchTitle> */}
             {/* )} */}
+            <IntroductionWrapper>
+              <Info classes={{ root: classes.informationIcon }} />
+              Follow people or organizations to add their opinions to the personalized scores on your ballot.
+            </IntroductionWrapper>
           </div>
         </Card>
         {((!isSearching && atLeastOneFoundWithTheseFilters && filteredOpinionsAndBallotItems && filteredOpinionsAndBallotItems.length) || (isSearching && ballotSearchResults && ballotSearchResults.length)) ? (
@@ -770,6 +773,13 @@ const styles = theme => ({
       width: '100%',
     },
   },
+  informationIcon: {
+    color: '#999',
+    width: 16,
+    height: 16,
+    marginTop: '-3px',
+    marginRight: 4,
+  },
   previewButton: {
     height: 27,
     marginBottom: 3,
@@ -799,6 +809,9 @@ const EmptyBallotText = styled.p`
 
 const FilterBaseWrapper = styled.div`
   margin-top: -12px;
+`;
+
+const IntroductionWrapper = styled.div`
 `;
 
 const SearchResultsFoundInExplanation = styled.div`

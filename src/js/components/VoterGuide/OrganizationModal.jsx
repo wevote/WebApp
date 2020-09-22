@@ -272,6 +272,7 @@ class OrganizationModal extends Component {
             <CandidateItem
               candidateWeVoteId={ballotItemWeVoteId}
               expandIssuesByDefault
+              forMoreInformationSeeBallotpediaOff
               hideShowMoreFooter
               inModal
               linkToBallotItemPage
@@ -299,6 +300,8 @@ class OrganizationModal extends Component {
                     </PositionListIntroductionText>
                   )}
                 />
+                <br />
+                <br />
                 <br />
               </>
             </DelayedLoad>

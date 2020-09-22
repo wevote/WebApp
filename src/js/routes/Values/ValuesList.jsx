@@ -5,10 +5,11 @@ import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import IssueActions from '../../actions/IssueActions';
+import IssueCard from '../../components/Values/IssueCard';
 import IssueStore from '../../stores/IssueStore';
+import ReadMore from '../../components/Widgets/ReadMore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
-import IssueCard from '../../components/Values/IssueCard';
 
 
 export default class ValuesList extends Component {
@@ -141,9 +142,22 @@ export default class ValuesList extends Component {
             <Helmet title="Values - We Vote" />
             <section className="card">
               <div className="card-main">
-                <h1 className="h1">Values</h1>
+                <h1 className="h1">
+                  Values
+                  {(allIssues && allIssues.length > 0) && (
+                    <>
+                      {' '}
+                      (
+                      {allIssues.length}
+                      )
+                    </>
+                  )}
+                </h1>
                 <p>
-                  Follow the values and issues you care about, so we can highlight the advocates (organizations and public figures) that care about the same issues you do.
+                  <ReadMore
+                    textToDisplay="Follow the values and issues you care about, so we can highlight the advocates (organizations and public figures) that care about the same issues you do. All of the advocates under values or issues you follow will be added to your Personalized Score."
+                    numberOfLines={3}
+                  />
                 </p>
                 <SearchBar
                   clearButton
@@ -155,7 +169,7 @@ export default class ValuesList extends Component {
                 />
                 <br />
                 <>
-                  { this.state.allIssues && this.state.allIssues.length ? (
+                  {allIssues && allIssues.length ? (
                     <Row className="row">
                       {issuesListForDisplay}
                     </Row>

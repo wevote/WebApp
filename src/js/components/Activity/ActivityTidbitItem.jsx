@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Alert from 'react-bootstrap/Alert';
+import { Link } from 'react-router';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { MoreHoriz } from '@material-ui/icons';
 import ActivityPositionList from './ActivityPositionList';
@@ -48,6 +50,7 @@ class ActivityTidbitItem extends Component {
     const {
       kind_of_activity: kindOfActivity,
       position_we_vote_id_list: positionWeVoteIdList,
+      speaker_name: speakerName,
       speaker_organization_we_vote_id: speakerOrganizationWeVoteId,
       speaker_voter_we_vote_id: speakerVoterWeVoteId,
       statement_text: statementText,
@@ -68,6 +71,7 @@ class ActivityTidbitItem extends Component {
     this.setState({
       isActivityPost,
       speakerIsVoter,
+      speakerName,
       speakerOrganizationWeVoteId,
       statementText,
     });
@@ -123,7 +127,7 @@ class ActivityTidbitItem extends Component {
     const { activityTidbitWeVoteId, startingNumberOfPositionsToDisplay } = this.props;
     const {
       externalUniqueId, isActivityPost, newPositionsEntered,
-      showActivityPostModal, speakerIsVoter, speakerOrganizationWeVoteId, statementText,
+      showActivityPostModal, speakerIsVoter, speakerName, speakerOrganizationWeVoteId, statementText,
     } = this.state;
     if (!activityTidbitWeVoteId) {
       return null;
@@ -144,6 +148,18 @@ class ActivityTidbitItem extends Component {
             </ActivityPostEditWrapper>
           )}
         </ActivitySpeakerCardWrapper>
+        {(!speakerName && speakerIsVoter) && (
+          <MissingNameAlertWrapper>
+            <Alert variant="danger">
+              Please add your name so we can show this post.
+              {' '}
+              <Link className="u-link-color" id="addName" to="/settings/profile">
+                add name
+              </Link>
+            </Alert>
+          </MissingNameAlertWrapper>
+        )}
+
         {(newPositionsEntered && newPositionsEntered.length) ? (
           <DelayedLoad showLoadingText waitBeforeShow={500}>
             <ActivityPositionListWrapper>
@@ -202,6 +218,10 @@ const ActivitySpeakerCardWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+`;
+
+const MissingNameAlertWrapper = styled.div`
+  margin-top: 3px;
 `;
 
 const Wrapper = styled.div`
