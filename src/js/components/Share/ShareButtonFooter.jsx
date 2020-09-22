@@ -28,7 +28,10 @@ import ShareStore from '../../stores/ShareStore';
 import VoterStore from '../../stores/VoterStore';
 import isMobile from '../../utils/isMobile';
 import { androidFacebookClickHandler, androidTwitterClickHandler, cordovaSocialSharingByEmail } from './shareButtonCommon';
-import { getApplicationViewBooleans } from '../../utils/applicationUtils';
+import {
+  getApplicationViewBooleans,
+  hideZenDeskHelpVisibility, showZenDeskHelpVisibility,
+} from '../../utils/applicationUtils';
 import { historyPush, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 import { renderLog } from '../../utils/logging';
@@ -210,6 +213,7 @@ class ShareButtonFooter extends Component {
       shareFooterStep,
       showSignInModal,
     });
+    hideZenDeskHelpVisibility();
     this.openSignInModalIfWeShould(shareFooterStep);
   }
 
@@ -240,6 +244,7 @@ class ShareButtonFooter extends Component {
       kindOfShare = 'BALLOT';
     }
     ShareActions.sharedItemSave(currentFullUrlAdjusted, kindOfShare);
+    hideZenDeskHelpVisibility();
     this.setState({
       candidateShare,
       currentFullUrlAdjusted,
@@ -255,6 +260,7 @@ class ShareButtonFooter extends Component {
   }
 
   handleCloseShareButtonDrawer = () => {
+    showZenDeskHelpVisibility();
     this.setState({
       openShareButtonDrawer: false,
       shareFooterStep: '',
@@ -409,7 +415,7 @@ class ShareButtonFooter extends Component {
   }
 
   generateShareMenuDescription (pageName) {
-    return `Generate a link to this ${pageName}page. The '+ Your Opinions' link will also show all of your opinions for this election (both public and friends-only) to people who click the link after you send it. See a preview on the next screen.`;
+    return `Generate a link to this ${pageName}page. The 'Your Opinions' link will also show all of your opinions for this election (both public and friends-only) to people who click the link after you send it. See a preview on the next screen.`;
   }
 
   render () {
@@ -919,7 +925,7 @@ const Container = styled.div`
 const Flex = styled.div`
   display: flex;
   flex-wrap: wrap;
-  padding: 20px 0 12px 0;
+  padding: 10px 0 0 0;
   justify-content: center;
   max-width: 320px !important;
   margin: 0 auto;
@@ -995,7 +1001,7 @@ const ModalTitleArea = styled.div`
 const ShareWrapper = styled.div`
   cursor: pointer;
   display: block !important;
-  margin-bottom: 12px;
+  // margin-bottom: 12px;
   @media (min-width: 600px) {
     flex: 1 1 0;
   }

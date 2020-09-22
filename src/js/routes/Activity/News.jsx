@@ -60,6 +60,7 @@ class News extends Component {
       voter: {},
       voterSignedInFacebook: false,
       voterSignedInTwitter: false,
+      voterWeVoteId: '',
     };
     this.onScroll = this.onScroll.bind(this);
   }
@@ -137,6 +138,7 @@ class News extends Component {
     if (activityTidbitsWeVoteIdList.length > 0) {
       this.retrieveReactionLikeStatusListIfNeeded(activityTidbitsWeVoteIdList);
     }
+    // console.log('activityTidbitsList:', activityTidbitsList);
     this.setState({
       activityTidbitsList,
       activityTidbitsListLength: activityTidbitsList.length,
@@ -150,6 +152,7 @@ class News extends Component {
       is_signed_in: voterIsSignedIn,
       signed_in_facebook: voterSignedInFacebook,
       signed_in_twitter: voterSignedInTwitter,
+      we_vote_id: voterWeVoteId,
     } = voter;
     this.setState({
       dateVoterJoined,
@@ -157,6 +160,7 @@ class News extends Component {
       voterIsSignedIn,
       voterSignedInFacebook,
       voterSignedInTwitter,
+      voterWeVoteId,
     });
   }
 
@@ -248,7 +252,7 @@ class News extends Component {
     const {
       activityTidbitsList, componentDidMountFinished, dateVoterJoined, activityTidbitsListLength,
       loadingMoreItems, numberOfActivityTidbitsToDisplay,
-      voter, voterIsSignedIn, voterSignedInFacebook, voterSignedInTwitter,
+      voter, voterIsSignedIn, voterSignedInFacebook, voterSignedInTwitter, voterWeVoteId,
     } = this.state;
     // console.log('voter:', voter);
     if (!voter || !componentDidMountFinished) {
@@ -307,7 +311,9 @@ class News extends Component {
                 {activityTidbitsList.map((oneActivityTidbit) => {
                   // console.log('oneActivityTidbit:', oneActivityTidbit);
                   // console.log('numberOfActivityTidbitsDisplayed:', numberOfActivityTidbitsDisplayed);
-                  if (!oneActivityTidbit || !oneActivityTidbit.speaker_name || !oneActivityTidbit.we_vote_id) {
+                  const speakerNameNotValid = !oneActivityTidbit.speaker_name || (oneActivityTidbit.speaker_name && oneActivityTidbit.speaker_name.startsWith('Voter-'));
+                  const isVotersPost = voterWeVoteId === oneActivityTidbit.speaker_voter_we_vote_id;
+                  if (!oneActivityTidbit || (speakerNameNotValid && !isVotersPost) || !oneActivityTidbit.we_vote_id) {
                     // console.log('Missing oneActivityTidbit.we_vote_id:', oneActivityTidbit);
                     return null;
                   }

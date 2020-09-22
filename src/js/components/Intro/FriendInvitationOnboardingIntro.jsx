@@ -57,8 +57,9 @@ class FriendInvitationOnboardingIntro extends Component {
         const distance = electionTime - currentTime;
 
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const daysAdjusted = days + 1;
         this.setState({
-          days,
+          days: daysAdjusted,
           electionDate,
         });
       }
@@ -168,9 +169,7 @@ class FriendInvitationOnboardingIntro extends Component {
                       {' '}
                       {days}
                       {' '}
-                      days
-                      {' '}
-                      until your next election on
+                      days until your next election on
                       {' '}
                       <span className="u-no-break">
                         {formatDateToMonthDayYear(electionDate)}
@@ -189,9 +188,7 @@ class FriendInvitationOnboardingIntro extends Component {
                       {' '}
                       {days}
                       {' '}
-                      days
-                      {' '}
-                      until your next election on
+                      days until your next election on
                       {' '}
                       <span className="u-no-break">
                         {formatDateToMonthDayYear(electionDate)}

@@ -77,7 +77,7 @@ export default class OrganizationsToFollowPreview extends Component {
   }
 }
 
-const SectionDescription = styled.h2`
+const SectionDescription = styled.div`
   font-weight: 200;
   font-size: 14px;
   margin-bottom: 16px;

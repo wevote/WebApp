@@ -74,6 +74,7 @@ class VoterGuideChooseElectionModal extends Component {
           <BallotElectionListWithFilters
             hideUpcomingElectionTitle
             organizationWeVoteId={this.props.organization_we_vote_id}
+            stateToShow="all"
             toggleFunction={this.props.toggleFunction}
           />
         </DialogContent>

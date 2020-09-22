@@ -98,7 +98,7 @@ class ActivitySpeakerCard extends Component {
       speakerProfileImageUrlMedium, speakerTwitterFollowersCount, speakerTwitterHandle,
       visibilityIsPublic,
     } = this.state;
-    if (!speakerName) {
+    if (!speakerName && !speakerIsVoter) {
       return <div>{LoadingWheel}</div>;
     }
     const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={speakerOrganizationWeVoteId} />);
