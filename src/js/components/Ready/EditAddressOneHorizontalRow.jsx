@@ -7,6 +7,7 @@ import { Paper, InputBase, Button } from '@material-ui/core';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import cookies from '../../utils/cookies';
+import isMobile from '../../utils/isMobile';
 import { historyPush, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
@@ -183,6 +184,7 @@ class EditAddressOneHorizontalRow extends Component {
     // console.log('EditAddressOneHorizontalrow render');
     const { classes } = this.props;
     const { showAddressExplanation, textForMapSearch, voterSavedAddress } = this.state;
+    const notMobile = !isMobile();
 
     if (voterSavedAddress) {
       return <span />;
@@ -206,7 +208,7 @@ class EditAddressOneHorizontalRow extends Component {
             </span>
             &nbsp;
           </AddressLabel>
-          <form onSubmit={this.voterAddressSaveSubmit}>
+          <form onSubmit={this.voterAddressSaveSubmit} style={notMobile ? {} : { width: '100%' }}>
             <InternalFormWrapper>
               <Paper className={classes.paperInputForm} elevation={2}>
                 <EditLocation className="ion-input-icon" />
@@ -228,7 +230,7 @@ class EditAddressOneHorizontalRow extends Component {
               <Button
                 classes={{ root: classes.saveButton }}
                 color="primary"
-                fullWidth
+                fullWidth={notMobile}
                 id="editAddressOneHorizontalRowSaveButton"
                 onClick={this.voterAddressSaveSubmit}
                 variant="contained"
