@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Select, FormControl, InputLabel } from '@material-ui/core';
-import { convertStateCodeToStateText } from '../../utils/address-functions';
+import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import { renderLog } from '../../utils/logging';
 
 

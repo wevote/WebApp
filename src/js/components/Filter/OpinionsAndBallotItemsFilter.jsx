@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Chip, FormControlLabel, Input, MenuItem, Select } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { arrayContains, removeValueFromArray } from '../../utils/textFormat';
-import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/address-functions';
+import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/addressFunctions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../utils/logging';

@@ -1339,8 +1339,8 @@ const ScoreNumberAfterDecision = styled.div`
 `;
 
 const ScoreLabelAfterDecisionNoScore = styled.div`
-  font-size: 10px;
-  margin-top: -4px;
+  font-size: 9px;
+  margin-top: -5px;
 `;
 
 const ScoreNumberWrapper = styled.div`

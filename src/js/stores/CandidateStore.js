@@ -2,6 +2,7 @@ import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import OfficeActions from '../actions/OfficeActions';
 import OfficeStore from './OfficeStore';
+import { mostLikelyOfficeDictFromList } from '../utils/candidateFunctions';
 import { cordovaDot } from '../utils/cordovaUtils';  // eslint-disable-line import/no-cycle
 import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions';  // eslint-disable-line import/no-cycle
 import { stringContains } from '../utils/textFormat';
@@ -67,16 +68,9 @@ class CandidateStore extends ReduceStore {
     return {
       allCachedCandidates: explanationCandidates, // Dictionary with candidate_we_vote_id as key and the candidate as value
       allCachedPositionsAboutCandidates: explanationPositions, // Dictionary with candidate_we_vote_id as one key, organization_we_vote_id as the second key, and the position as value
+      candidateListsByOfficeWeVoteId: {}, // Dictionary with office_we_vote_id as key and list of candidates in the office as value
       numberOfCandidatesRetrievedByOffice: {}, // Dictionary with office_we_vote_id as key and number of candidates as value
     };
-  }
-
-  getCandidate (candidateId) {
-    return this.getState().allCachedCandidates[candidateId] || {};
-  }
-
-  getNumberOfCandidatesRetrievedByOffice (officeWeVoteId) {
-    return this.getState().numberOfCandidatesRetrievedByOffice[officeWeVoteId] || 0;
   }
 
   getAllCachedPositionsDictByCandidateWeVoteId (candidateWeVoteId) {
@@ -86,6 +80,41 @@ class CandidateStore extends ReduceStore {
   getAllCachedPositionsByCandidateWeVoteId (candidateWeVoteId) {
     const allCachedPositionsForThisCandidateDict = this.getState().allCachedPositionsAboutCandidates[candidateWeVoteId] || {};
     return Object.values(allCachedPositionsForThisCandidateDict);
+  }
+
+  getCandidateListByOfficeWeVoteId (officeWeVoteId) {
+    // console.log('officeWeVoteId:', officeWeVoteId, ', this.getState().candidateListsByOfficeWeVoteId:', this.getState().candidateListsByOfficeWeVoteId);
+    const candidateListsDict = this.getState().candidateListsByOfficeWeVoteId;
+    if (candidateListsDict) {
+      return candidateListsDict[officeWeVoteId] || [];
+    } else {
+      return [];
+    }
+  }
+
+  getCandidate (candidateWeVoteId) {
+    return this.getState().allCachedCandidates[candidateWeVoteId] || {};
+  }
+
+  getMostLikelyOfficeDictFromCandidateWeVoteId (candidateWeVoteId) {
+    const candidate = this.getState().allCachedCandidates[candidateWeVoteId] || {};
+    // console.log('getMostLikelyOfficeDictFromCandidateWeVoteId candidate:', candidate)
+    if (candidate && candidate.contest_office_list && candidate.contest_office_list[0]) {
+      return mostLikelyOfficeDictFromList(candidate.contest_office_list);
+    }
+    // Not ideal
+    // console.log('getMostLikelyOfficeDictFromCandidateWeVoteId falling back on candidate.contest_office_we_vote_id');
+    return {
+      contest_office_name: candidate.contest_office_name,
+      contest_office_we_vote_id: candidate.contest_office_we_vote_id,
+      election_day_text: candidate.election_day_text,
+      google_civic_election_id: candidate.google_civic_election_id,
+      state_code: candidate.state_code,
+    };
+  }
+
+  getNumberOfCandidatesRetrievedByOffice (officeWeVoteId) {
+    return this.getState().numberOfCandidatesRetrievedByOffice[officeWeVoteId] || 0;
   }
 
   getNumberOfPositionsByCandidateWeVoteId (candidateWeVoteId) {
@@ -172,7 +201,10 @@ class CandidateStore extends ReduceStore {
 
   reduce (state, action) {
     const {
-      numberOfCandidatesRetrievedByOffice, allCachedCandidates, allCachedPositionsAboutCandidates,
+      allCachedCandidates, allCachedPositionsAboutCandidates, numberOfCandidatesRetrievedByOffice,
+    } = state;
+    let {
+      candidateListsByOfficeWeVoteId,
     } = state;
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
@@ -182,6 +214,7 @@ class CandidateStore extends ReduceStore {
     let candidateList;
     let googleCivicElectionId;
     let incomingCandidateCount = 0;
+    let localCandidateList = [];
     let newPositionList;
     let officePositionList;
     let onePosition;
@@ -224,10 +257,23 @@ class CandidateStore extends ReduceStore {
 
         incomingCandidateCount = 0;
         candidateList = action.res.candidate_list;
+        // console.log('CandidateStore candidatesRetrieve contestOfficeWeVoteId:', contestOfficeWeVoteId, ', candidateList:', candidateList);
+        if (!candidateListsByOfficeWeVoteId) {
+          candidateListsByOfficeWeVoteId = {};
+        }
+        localCandidateList = [];
         candidateList.forEach((one) => {
           allCachedCandidates[one.we_vote_id] = one;
           incomingCandidateCount += 1;
+          localCandidateList.push(one);
         });
+        // console.log('localCandidateList:', localCandidateList);
+        candidateListsByOfficeWeVoteId[contestOfficeWeVoteId] = localCandidateList;
+        // console.log('candidateListsByOfficeWeVoteId:', candidateListsByOfficeWeVoteId);
+        // console.log('candidateListsByOfficeWeVoteId[contestOfficeWeVoteId]:', candidateListsByOfficeWeVoteId[contestOfficeWeVoteId]);
+        // candidateListsByOfficeWeVoteId[contestOfficeWeVoteId].forEach((two) => {
+        //   console.log('two:', two);
+        // });
         if (contestOfficeWeVoteId.length) {
           numberOfCandidatesRetrievedByOffice[contestOfficeWeVoteId] = incomingCandidateCount;
         }
@@ -235,6 +281,7 @@ class CandidateStore extends ReduceStore {
         return {
           ...state,
           allCachedCandidates,
+          candidateListsByOfficeWeVoteId,
           numberOfCandidatesRetrievedByOffice,
         };
 

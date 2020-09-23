@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
 // import { Comment } from '@material-ui/icons';
 import { Info, ThumbUp, ThumbDown } from '@material-ui/icons';
-import { getStateCodesFoundInObjectList } from '../../utils/address-functions';
+import { getStateCodesFoundInObjectList } from '../../utils/addressFunctions';
 import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
 import FriendActions from '../../actions/FriendActions';

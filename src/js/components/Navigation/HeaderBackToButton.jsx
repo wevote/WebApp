@@ -23,19 +23,20 @@ class HeaderBackToButton extends Component {
   static propTypes = {
     backToLink: PropTypes.string.isRequired,
     backToLinkText: PropTypes.string,
+    className: PropTypes.string,
     classes: PropTypes.object,
   };
 
   render () {
     renderLog('HeaderBackToButton');  // Set LOG_RENDER_EVENTS to log all renders
-    const { classes, backToLink, backToLinkText } = this.props;
+    const { classes, className, backToLink, backToLinkText } = this.props;
 
     return (
       <Button
         variant="text"
         color="primary"
         classes={{ root: classes.root }}
-        className="page-header__backToButton"
+        className={`page-header__backToButton ${className}`}
         id="backToLinkTabHeader"
         onClick={() => historyPush(backToLink)}
       >

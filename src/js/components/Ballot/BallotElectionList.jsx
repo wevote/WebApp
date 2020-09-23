@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
-import { convertStateCodeToStateText } from '../../utils/address-functions';
+import { convertStateCodeToStateText } from '../../utils/addressFunctions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { historyPush } from '../../utils/cordovaUtils';

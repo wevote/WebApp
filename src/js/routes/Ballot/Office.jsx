@@ -73,6 +73,9 @@ class Office extends Component {
             positionListFromFriendsHasBeenRetrievedOnce,
           });
         }
+      } else {
+        // console.log('Calling candidatesRetrieve, officeWeVoteId:', officeWeVoteId);
+        CandidateActions.candidatesRetrieve(officeWeVoteId);
       }
       this.setState({
         candidateList,
@@ -81,7 +84,9 @@ class Office extends Component {
     } else if (officeWeVoteId) {
       OfficeActions.officeRetrieve(officeWeVoteId);
       CandidateActions.candidatesRetrieve(officeWeVoteId);
-      // console.log('componentDidMount officeRetrieve');
+      // console.log('componentDidMount officeRetrieve, officeWeVoteId:', officeWeVoteId);
+    } else {
+      // console.log('componentDidMount Missing officeWeVoteId');
     }
 
     if (officeWeVoteId) {
@@ -135,10 +140,11 @@ class Office extends Component {
     if (!officeWeVoteId) {
       officeWeVoteId = this.props.params.office_we_vote_id;
     }
-    // console.log('onCandidateStoreChange officeWeVoteId:', officeWeVoteId);
+    // console.log('onCandidateStoreChange officeWeVoteId:', officeWeVoteId, ', candidateList:', candidateList);
     let newCandidate;
-    const newCandidateList = [];
-    if (candidateList && candidateList.length && officeWeVoteId) {
+    let newCandidateList = [];
+    if (candidateList && candidateList.length > 0 && officeWeVoteId) {
+      // console.log('In candidateList loop');
       candidateList.forEach((candidate) => {
         if (candidate && candidate.we_vote_id) {
           newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
@@ -150,6 +156,7 @@ class Office extends Component {
         }
       });
       candidateList = sortCandidateList(newCandidateList);
+      // console.log('onCandidateStoreChange from state, candidateList:', candidateList);
       this.setState({
         candidateList,
       });
@@ -175,6 +182,14 @@ class Office extends Component {
           positionListFromFriendsHasBeenRetrievedOnce,
         });
       }
+    } else {
+      // console.log('getCandidateListByOfficeWeVoteId, officeWeVoteId:', officeWeVoteId);
+      const rawCandidateList = CandidateStore.getCandidateListByOfficeWeVoteId(officeWeVoteId);
+      // console.log('getCandidateListByOfficeWeVoteId, rawCandidateList:', rawCandidateList);
+      newCandidateList = sortCandidateList(rawCandidateList);
+      this.setState({
+        candidateList: newCandidateList,
+      });
     }
   }
 
@@ -189,7 +204,8 @@ class Office extends Component {
     const newCandidateList = [];
     if (office && office.ballot_item_display_name) {
       let { candidate_list: candidateList } = office;
-      if (candidateList && candidateList.length && officeWeVoteId) {
+      if (candidateList && candidateList.length > 0 && officeWeVoteId) {
+        // console.log('In Office candidateList loop');
         candidateList.forEach((candidate) => {
           if (candidate && candidate.we_vote_id) {
             newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
@@ -201,6 +217,10 @@ class Office extends Component {
           }
         });
         candidateList = sortCandidateList(newCandidateList);
+        this.setState({
+          candidateList,
+        });
+
         if (officeWeVoteId &&
           !this.localPositionListHasBeenRetrievedOnce(officeWeVoteId) &&
           !BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)
@@ -225,7 +245,6 @@ class Office extends Component {
         });
       }
       this.setState({
-        candidateList,
         office,
         officeWeVoteId,
       });
@@ -251,7 +270,7 @@ class Office extends Component {
   render () {
     renderLog('Office');  // Set LOG_RENDER_EVENTS to log all renders
     const { candidateList, office } = this.state;
-    // console.log('Office.jsx office:', office);
+    // console.log('Office.jsx office:', office, ', candidateList:', candidateList);
 
     if (!office || !office.ballot_item_display_name) {
       // TODO DALE If the officeWeVoteId is not valid, we need to update this with a notice
@@ -287,6 +306,7 @@ class Office extends Component {
             <div>
               <CandidateList
                 contest_office_name={office.ballot_item_display_name}
+                forMoreInformationSeeBallotpediaOff
               >
                 {candidateList}
               </CandidateList>

@@ -10,7 +10,7 @@ import routes from './RootForReady';
 import muiTheme from './mui-theme';
 import styledTheme from './styled-theme';
 import { renderLog } from './utils/logging';
-import { numberOfNeedlesFoundInString } from './utils/search-functions';
+import { numberOfNeedlesFoundInString } from './utils/searchFunctions';
 
 
 // Adding functions to the String prototype will make stuff like `for (char in str)` break, because it will loop over the substringOccurrences property.

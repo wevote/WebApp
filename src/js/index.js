@@ -1,6 +1,6 @@
 import webAppConfig from './config';
 import startReactApp from './startReactApp';
-import { numberOfNeedlesFoundInString } from './utils/search-functions';
+import { numberOfNeedlesFoundInString } from './utils/searchFunctions';
 import { isWebApp, isIPad, getCordovaScreenHeight } from './utils/cordovaUtils';
 
 // If in Cordova, need this function before cordovaUtils might be loaded

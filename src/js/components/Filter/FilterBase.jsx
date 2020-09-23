@@ -5,7 +5,7 @@ import { Badge } from '@material-ui/core';
 import { FilterList } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
-import { getAllStateCodeFilters } from '../../utils/address-functions';
+import { getAllStateCodeFilters } from '../../utils/addressFunctions';
 import FilterBaseSearch from './FilterBaseSearch';
 import { renderLog } from '../../utils/logging';
 import StateDropDown from './StateDropDown';

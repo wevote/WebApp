@@ -9,6 +9,7 @@ import { historyPush } from '../../utils/cordovaUtils';
 export default class CandidateList extends Component {
   static propTypes = {
     children: PropTypes.array.isRequired,
+    forMoreInformationSeeBallotpediaOff: PropTypes.bool,
   };
 
   constructor (props) {
@@ -33,6 +34,8 @@ export default class CandidateList extends Component {
 
   render () {
     renderLog('CandidateList');  // Set LOG_RENDER_EVENTS to log all renders
+    const { forMoreInformationSeeBallotpediaOff } = this.props;
+    // console.log('CandidateList render');
     let candidateNumber = 0;
     let candidatesDelayed = 0;
     let showLoadingText = true;
@@ -45,6 +48,7 @@ export default class CandidateList extends Component {
               <div key={child.we_vote_id} className="card">
                 <CandidateItem
                   candidateWeVoteId={child.we_vote_id}
+                  forMoreInformationSeeBallotpediaOff={forMoreInformationSeeBallotpediaOff}
                   goToBallotItem={this.goToCandidateLink}
                   hideBallotItemSupportOpposeComment
                   key={child.we_vote_id}

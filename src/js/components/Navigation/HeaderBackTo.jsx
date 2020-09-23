@@ -240,6 +240,7 @@ class HeaderBackTo extends Component {
           <HeaderBackToButton
             backToLink={backToLink}
             backToLinkText={backToLinkText}
+            className="HeaderBackTo"
             id="backToLinkTabHeader"
           />
 
@@ -302,7 +303,7 @@ class HeaderBackTo extends Component {
                 onClick={this.toggleSignInModal}
                 variant="text"
               >
-                Sign In
+                <span className="u-no-break">Sign In</span>
               </Button>
             )}
           </NotificationsAndProfileWrapper>

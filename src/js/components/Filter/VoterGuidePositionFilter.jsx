@@ -8,7 +8,7 @@ import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
-import { convertStateCodeFilterToStateCode } from '../../utils/address-functions';
+import { convertStateCodeFilterToStateCode } from '../../utils/addressFunctions';
 
 
 class VoterGuidePositionFilter extends Component {
