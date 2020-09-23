@@ -261,6 +261,8 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path=":twitter_handle/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
           <Route path=":twitter_handle/:action_variable" component={TwitterHandleLanding} />
           <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable" component={TwitterHandleLanding} />
+          <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
+          <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={TwitterHandleLanding} />
           <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
           <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/followers" component={props => <TwitterHandleLanding {...props} activeRoute="followers" />} />
           <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
@@ -272,6 +274,8 @@ const routes = () => {  // eslint-disable-line arrow-body-style
           <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />
           <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable/:action_variable/m/following" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="following" />} />
           <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable" component={TwitterHandleLanding} />
+          <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/modal/:modal_to_show/:shared_item_code" component={TwitterHandleLanding} />
+          <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={TwitterHandleLanding} />
           <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/friends" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="friends" />} />
           <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/followers" component={props => <TwitterHandleLanding {...props} activeRoute="followers" />} />
           <Route path=":twitter_handle/btmeas/:back_to_meas_we_vote_id/b/:back_to_variable/m/followers" component={props => <OrganizationVoterGuideMobileDetails {...props} activeRoute="followers" />} />

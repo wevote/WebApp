@@ -415,7 +415,7 @@ class ShareButtonFooter extends Component {
   }
 
   generateShareMenuDescription (pageName) {
-    return `Generate a link to this ${pageName}page. The 'Your Opinions' link will also show all of your opinions for this election (both public and friends-only) to people who click the link after you send it. See a preview on the next screen.`;
+    return `Generate a link to this ${pageName}page. The 'Your Opinions' link will also show all of your opinions. A preview link on the next screen will show you what your friends will see.`;
   }
 
   render () {
@@ -603,47 +603,47 @@ class ShareButtonFooter extends Component {
                     </Title>
                     <SubTitle>
                       {(shareFooterStep === 'ballotShareOptions') && (
-                        <>Share a link to this election so that your friends can get ready to vote.</>
+                        <>Send friends to their ballot so they can get ready to vote.</>
                       )}
                       {(shareFooterStep === 'ballotShareOptionsAllOpinions') && (
-                        <>Share a link to all of your opinions for this year.</>
+                        <>Send friends to their ballot.</>
                       )}
                       {(shareFooterStep === 'candidateShareOptions') && (
-                        <>Share a link to this candidate.</>
+                        <>Send friends this candidate.</>
                       )}
                       {(shareFooterStep === 'candidateShareOptionsAllOpinions') && (
-                        <>Share a link to this candidate.</>
+                        <>Send friends to this candidate.</>
                       )}
                       {(shareFooterStep === 'measureShareOptions') && (
-                        <>Share a link to this measure/proposition.</>
+                        <>Send friends to this measure/proposition.</>
                       )}
                       {(shareFooterStep === 'measureShareOptionsAllOpinions') && (
-                        <>Share a link to this measure/proposition.</>
+                        <>Send friends to this measure/proposition.</>
                       )}
                       {(shareFooterStep === 'officeShareOptions') && (
-                        <>Share a link to this office.</>
+                        <>Send friends to this office.</>
                       )}
                       {(shareFooterStep === 'officeShareOptionsAllOpinions') && (
-                        <>Share a link to this office.</>
+                        <>Send friends to this office.</>
                       )}
                       {(shareFooterStep === 'organizationShareOptions') && (
-                        <>Share a link to this page.</>
+                        <>Send friends to this page.</>
                       )}
                       {(shareFooterStep === 'organizationShareOptionsAllOpinions') && (
-                        <>Share a link to this page.</>
+                        <>Send friends to this page.</>
                       )}
                       {(shareFooterStep === 'readyShareOptions') && (
-                        <>Share a link to this Ready page.</>
+                        <>Send friends to their own Ready page.</>
                       )}
                       {(shareFooterStep === 'readyShareOptionsAllOpinions') && (
-                        <>Share a link to this Ready page.</>
+                        <>Send friends to their own Ready page.</>
                       )}
                       {stringContains('AllOpinions', shareFooterStep) ? (
                         <>
                           {' '}
-                          A brief introduction to We Vote will be shown.
+                          A three-step intro to We Vote will be shown in a popup.
                           {' '}
-                          Permission to see all of your opinions for this year will be given to people who open this link.
+                          This link will give permission to see your opinions.
                           {' '}
                           <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.doNotIncludeOpinions(shareFooterStep)}>
                             Don&apos;t include your opinions.
@@ -652,7 +652,7 @@ class ShareButtonFooter extends Component {
                       ) : (
                         <>
                           {' '}
-                          A brief introduction to We Vote will be shown.
+                          A three-step intro to We Vote will be shown in a popup.
                           {' '}
                           Your opinions are NOT included.
                           {' '}
@@ -800,8 +800,8 @@ class ShareButtonFooter extends Component {
                     // title={this.props.title}
                     className="u-no-underline"
                     body={(
-                      <Button className={classes.previewButton} variant="contained" fullWidth color="primary">
-                        Preview
+                      <Button className={classes.previewButton} variant="outlined" fullWidth color="primary">
+                        Preview Link in New Window
                       </Button>
                     )}
                   />
@@ -881,8 +881,8 @@ const styles = () => ({
   },
   informationIcon: {
     color: '#999',
-    width: 16,
-    height: 16,
+    width: 20,
+    height: 20,
     marginTop: '-3px',
     marginRight: 3,
   },
@@ -936,6 +936,7 @@ const Icon = styled.span`
 `;
 
 const MenuDescription = styled.div`
+  font-size: 18px;
 `;
 
 const MenuFlex = styled.div`
@@ -1026,8 +1027,11 @@ const ShareWrapper = styled.div`
 
 const SubTitle = styled.div`
   margin-top: 0;
-  font-size: 14px;
+  font-size: 19px;
   width: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 17px;
+  }
 `;
 
 const Text = styled.h3`
@@ -1039,10 +1043,14 @@ const Text = styled.h3`
 
 const Title = styled.h3`
   font-weight: normal;
-  font-size: 20px;
+  font-size: 21px;
   color: black;
   margin-top: 0;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
 `;
 
 const Wrapper = styled.div`
