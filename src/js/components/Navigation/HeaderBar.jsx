@@ -626,9 +626,7 @@ class HeaderBar extends Component {
                   id="signInHeaderBar"
                   onClick={this.toggleSignInModal}
                 >
-                  <span className="u-no-break">
-                    Sign In
-                  </span>
+                  <span className="u-no-break">Sign In</span>
                 </Button>
               </NotificationsAndProfileWrapper>
               )

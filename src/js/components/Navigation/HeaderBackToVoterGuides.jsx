@@ -323,6 +323,7 @@ class HeaderBackToVoterGuides extends Component {
           <HeaderBackToButton
             backToLink={backToLink}
             backToLinkText={backToOrganizationLinkText}
+            className="HeaderBackToVoterGuides"
             id="backToLinkTabHeader"
           />
 
@@ -385,7 +386,7 @@ class HeaderBackToVoterGuides extends Component {
                 onClick={this.toggleSignInModal}
                 variant="text"
               >
-                Sign In
+                <span className="u-no-break">Sign In</span>
               </Button>
             )}
           </div>

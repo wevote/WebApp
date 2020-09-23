@@ -73,6 +73,24 @@ class VoterStore extends ReduceStore {
     return this.getState().address.voter_entered_address || false;
   }
 
+  getVoterStateCode () {
+    // TODO in getVoterStateCode we check for normalized_state in the address object. We should be
+    //  capturing the state when we call Google address Auto Complete (search for _placeChanged)
+    //  and we should also figure out the state_code when we call API server voterAddressSave and put it in the "address"
+    //  return data.
+    // console.log('this.getState().address:', this.getState().address);
+    // console.log('this.getState().voter:', this.getState().voter);
+    if (this.getState().address && this.getState().address.normalized_state) {
+      // console.log('normalized_state:', this.getState().address.normalized_state);
+      return this.getState().address.normalized_state;
+    }
+    if (this.getState().voter && this.getState().voter.state_code_from_ip_address) {
+      // console.log('state_code_from_ip_address:', this.getState().voter.state_code_from_ip_address);
+      return this.getState().voter.state_code_from_ip_address;
+    }
+    return '';
+  }
+
   getAddressObject () {
     return this.getState().address || {};
   }

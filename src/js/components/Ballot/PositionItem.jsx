@@ -24,6 +24,7 @@ import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
 import ReadMore from '../Widgets/ReadMore';
 import StickyPopover from './StickyPopover';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 class PositionItem extends Component {
@@ -231,6 +232,15 @@ class PositionItem extends Component {
         if (this.props.params.back_to_variable) {
           speakerLink += `/b/${this.props.params.back_to_variable}`;
         }
+      }
+    }
+
+    let positionSpeakerDisplayName = position.speaker_display_name;
+    // console.log('position:', position, ', VoterStore.getLinkedOrganizationWeVoteId():', VoterStore.getLinkedOrganizationWeVoteId());
+    if (VoterStore.getLinkedOrganizationWeVoteId() === position.speaker_we_vote_id) {
+      // Voter looking at own position
+      if (position.speaker_display_name && position.speaker_display_name.startsWith('Voter-')) {
+        positionSpeakerDisplayName = 'You';
       }
     }
 
@@ -484,7 +494,7 @@ class PositionItem extends Component {
                               onClick={this.closeOrganizationModal}
                               to={speakerLink}
                             >
-                              { position.speaker_display_name }
+                              { positionSpeakerDisplayName }
                             </Link>
                           </div>
                         </StickyPopover>
@@ -577,7 +587,7 @@ class PositionItem extends Component {
                       onClick={this.closeOrganizationModal}
                       to={speakerLink}
                     >
-                      { position.speaker_display_name }
+                      { positionSpeakerDisplayName }
                     </Link>
                   </MobileItemName>
                   <MobileItemIssues>
@@ -592,7 +602,7 @@ class PositionItem extends Component {
                 <MobileSmallItemNameContainer>
                   <MobileItemName>
                     <Link to={speakerLink} className="u-break-word">
-                      { position.speaker_display_name }
+                      { positionSpeakerDisplayName }
                     </Link>
                   </MobileItemName>
                 </MobileSmallItemNameContainer>

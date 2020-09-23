@@ -91,21 +91,31 @@ class HeaderBackToBallot extends Component {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
         // console.log('HeaderBackToBallot, candidateWeVoteId:', candidateWeVoteId, ', candidate:', candidate);
         if (candidate) {
-          officeWeVoteId = candidate.contest_office_we_vote_id;
-          officeName = candidate.contest_office_name;
-          if (VoterStore.electionId()) {
-            googleCivicElectionId = VoterStore.electionId();
-          } else {
-            googleCivicElectionId = candidate.google_civic_election_id;
+          const mostLikelyOfficeDict = CandidateStore.getMostLikelyOfficeDictFromCandidateWeVoteId(candidateWeVoteId);
+          if (mostLikelyOfficeDict.google_civic_election_id) {
+            this.setState({
+              googleCivicElectionId: mostLikelyOfficeDict.google_civic_election_id,
+            });
+          }
+          if (mostLikelyOfficeDict.contest_office_we_vote_id) {
+            this.setState({
+              officeWeVoteId: mostLikelyOfficeDict.contest_office_we_vote_id,
+            });
+          }
+          if (mostLikelyOfficeDict.contest_office_name) {
+            this.setState({
+              officeName: mostLikelyOfficeDict.contest_office_name,
+            });
           }
         } else {
           googleCivicElectionId = VoterStore.electionId();
+          this.setState({
+            googleCivicElectionId,
+          });
         }
         this.setState({
+          candidate,
           candidateWeVoteId,
-          googleCivicElectionId,
-          officeName,
-          officeWeVoteId,
         });
       } else if (officeWeVoteId && officeWeVoteId !== '') {
         const office = OfficeStore.getOffice(officeWeVoteId);
@@ -197,22 +207,31 @@ class HeaderBackToBallot extends Component {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
         // console.log('HeaderBackToBallot, candidateWeVoteId:', candidateWeVoteId, ', candidate:', candidate);
         if (candidate) {
-          officeWeVoteId = candidate.contest_office_we_vote_id;
-          officeName = candidate.contest_office_name;
-          if (VoterStore.electionId()) {
-            googleCivicElectionId = VoterStore.electionId();
-          } else {
-            googleCivicElectionId = candidate.google_civic_election_id;
+          const mostLikelyOfficeDict = CandidateStore.getMostLikelyOfficeDictFromCandidateWeVoteId(candidateWeVoteId);
+          if (mostLikelyOfficeDict.google_civic_election_id) {
+            this.setState({
+              googleCivicElectionId: mostLikelyOfficeDict.google_civic_election_id,
+            });
+          }
+          if (mostLikelyOfficeDict.contest_office_we_vote_id) {
+            this.setState({
+              officeWeVoteId: mostLikelyOfficeDict.contest_office_we_vote_id,
+            });
+          }
+          if (mostLikelyOfficeDict.contest_office_name) {
+            this.setState({
+              officeName: mostLikelyOfficeDict.contest_office_name,
+            });
           }
         } else {
           googleCivicElectionId = VoterStore.electionId();
+          this.setState({
+            googleCivicElectionId,
+          });
         }
         this.setState({
           candidate,
           candidateWeVoteId,
-          googleCivicElectionId,
-          officeName,
-          officeWeVoteId,
         });
       } else if (officeWeVoteId && officeWeVoteId !== '') {
         const office = OfficeStore.getOffice(officeWeVoteId);
@@ -384,29 +403,38 @@ class HeaderBackToBallot extends Component {
   }
 
   onCandidateStoreChange () {
-    const { candidateWeVoteId } = this.state;
-    let { googleCivicElectionId, officeWeVoteId } = this.state;
+    const { candidateWeVoteId, officeWeVoteId } = this.state;
+    let { googleCivicElectionId } = this.state;
     // console.log('Candidate onCandidateStoreChange');
     let officeName;
     if (candidateWeVoteId && candidateWeVoteId !== '') {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
       // console.log('HeaderBackToBallot -- onCandidateStoreChange, candidateWeVoteId:', this.state.candidateWeVoteId, ', candidate:', candidate);
       if (candidate) {
-        officeWeVoteId = candidate.contest_office_we_vote_id;
-        officeName = candidate.contest_office_name;
-        if (VoterStore.electionId()) {
-          googleCivicElectionId = VoterStore.electionId();
-        } else {
-          googleCivicElectionId = candidate.google_civic_election_id;
+        const mostLikelyOfficeDict = CandidateStore.getMostLikelyOfficeDictFromCandidateWeVoteId(candidateWeVoteId);
+        if (mostLikelyOfficeDict.google_civic_election_id) {
+          this.setState({
+            googleCivicElectionId: mostLikelyOfficeDict.google_civic_election_id,
+          });
+        }
+        if (mostLikelyOfficeDict.contest_office_we_vote_id) {
+          this.setState({
+            officeWeVoteId: mostLikelyOfficeDict.contest_office_we_vote_id,
+          });
+        }
+        if (mostLikelyOfficeDict.contest_office_name) {
+          this.setState({
+            officeName: mostLikelyOfficeDict.contest_office_name,
+          });
         }
       } else {
         googleCivicElectionId = VoterStore.electionId();
+        this.setState({
+          googleCivicElectionId,
+        });
       }
       this.setState({
         candidate,
-        googleCivicElectionId,
-        officeName,
-        officeWeVoteId,
       });
     } else if (officeWeVoteId && officeWeVoteId !== '') {
       const office = OfficeStore.getOffice(officeWeVoteId);
@@ -417,18 +445,18 @@ class HeaderBackToBallot extends Component {
         } else {
           googleCivicElectionId = office.google_civic_election_id;
         }
-      } else {
-        googleCivicElectionId = VoterStore.electionId();
+        this.setState({
+          googleCivicElectionId,
+          officeName,
+        });
       }
-      this.setState({
-        googleCivicElectionId,
-        officeName,
-      });
     } else {
       googleCivicElectionId = VoterStore.electionId();
-      this.setState({
-        googleCivicElectionId,
-      });
+      if (googleCivicElectionId) {
+        this.setState({
+          googleCivicElectionId,
+        });
+      }
     }
   }
 
@@ -463,17 +491,12 @@ class HeaderBackToBallot extends Component {
         } else {
           googleCivicElectionId = office.google_civic_election_id;
         }
-      } else {
-        googleCivicElectionId = VoterStore.electionId();
+        this.setState({
+          googleCivicElectionId,
+          officeName,
+        });
       }
-    } else {
-      googleCivicElectionId = VoterStore.electionId();
     }
-
-    this.setState({
-      googleCivicElectionId,
-      officeName,
-    });
   }
 
   onVoterStoreChange () {
@@ -481,9 +504,38 @@ class HeaderBackToBallot extends Component {
     const voterFirstName = VoterStore.getFirstName();
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    const googleCivicElectionId = VoterStore.electionId();
+    let googleCivicElectionId;
+    if (this.props.params) {
+      const candidateWeVoteId = this.props.params.candidate_we_vote_id || '';
+      if (candidateWeVoteId && candidateWeVoteId !== '') {
+        const candidate = CandidateStore.getCandidate(candidateWeVoteId);
+        // console.log('HeaderBackToBallot, candidateWeVoteId:', candidateWeVoteId, ', candidate:', candidate);
+        if (candidate) {
+          const mostLikelyOfficeDict = CandidateStore.getMostLikelyOfficeDictFromCandidateWeVoteId(candidateWeVoteId);
+          googleCivicElectionId = mostLikelyOfficeDict.google_civic_election_id;
+          const officeWeVoteId = mostLikelyOfficeDict.contest_office_we_vote_id;
+          if (googleCivicElectionId) {
+            this.setState({
+              googleCivicElectionId,
+            });
+          }
+          if (officeWeVoteId) {
+            this.setState({
+              officeWeVoteId,
+            });
+          }
+        }
+      }
+    }
+    if (!googleCivicElectionId) {
+      googleCivicElectionId = VoterStore.electionId();
+      if (googleCivicElectionId) {
+        this.setState({
+          googleCivicElectionId,
+        });
+      }
+    }
     this.setState({
-      googleCivicElectionId,
       voter,
       voterFirstName,
       voterIsSignedIn,
@@ -492,10 +544,11 @@ class HeaderBackToBallot extends Component {
   }
 
   getOfficeLink () {
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
-      return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
+    const { officeWeVoteId, organizationWeVoteId } = this.state;
+    if (organizationWeVoteId && organizationWeVoteId !== '') {
+      return `/office/${officeWeVoteId}/btvg/${organizationWeVoteId}`;
     } else {
-      return `/office/${this.state.officeWeVoteId}/b/btdb`; // back-to-default-ballot
+      return `/office/${officeWeVoteId}/b/btdb`; // back-to-default-ballot
     }
   }
 
@@ -652,6 +705,7 @@ class HeaderBackToBallot extends Component {
           <HeaderBackToButton
             backToLink={backToLink}
             backToLinkText={backToLinkText}
+            className="HeaderBackToBallot"
             id="backToLinkTabHeader"
           />
 
@@ -714,7 +768,7 @@ class HeaderBackToBallot extends Component {
                 onClick={this.toggleSignInModal}
                 variant="text"
               >
-                Sign In
+                <span className="u-no-break">Sign In</span>
               </Button>
             )}
           </NotificationsAndProfileWrapper>

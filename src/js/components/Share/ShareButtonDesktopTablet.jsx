@@ -218,7 +218,7 @@ class ShareButtonDesktopTablet extends Component {
             vertical: 'bottom',
             horizontal: 'right',
           }}
-          className="u-z-index-5020"
+          className="u-z-index-9010"
           classes={{ paper: classes.paper }}
           id="shareMenuDesktopTablet"
           elevation={2}

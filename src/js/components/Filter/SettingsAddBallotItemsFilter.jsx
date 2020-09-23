@@ -5,7 +5,7 @@ import isEqual from 'lodash-es/isEqual';
 import { FormControlLabel, Radio, Select, Chip, Input, MenuItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { arrayContains, removeValueFromArray } from '../../utils/textFormat';
-import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/address-functions';
+import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/addressFunctions';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../utils/logging';
