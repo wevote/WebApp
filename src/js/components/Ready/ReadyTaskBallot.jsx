@@ -10,7 +10,7 @@ import ballot100Percent from '../../../img/global/svg-icons/ready/ballot-100-per
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
-import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
+import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
 import ShowMoreButtons from '../ReadyNoApi/ShowMoreButtons';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
@@ -398,15 +398,15 @@ class ReadyTaskBallot extends React.Component {
       ballotImage = ballot50Percent;
       yourBallotTitle = 'Ballot To-Do List';
       if (percentCompleted < 10) {
-        yourBallotSubtitle = 'The first step of any journey is the hardest.';
+        yourBallotSubtitle = 'Start filling out your ballot now!';
       } else if (percentCompleted < 50) {
-        yourBallotSubtitle = 'Keep deciding how you\'ll vote!';
+        yourBallotSubtitle = 'Keep filling out your ballot now!';
       } else if (percentCompleted === 50) {
-        yourBallotSubtitle = 'You\'re half way there!';
+        yourBallotSubtitle = 'You\'re half way there! Filling out your ballot completely will feel soooo good.';
       } else if (percentCompleted < 80) {
-        yourBallotSubtitle = 'Excellent work.';
+        yourBallotSubtitle = 'After you finish filling out your ballot, you can buy yourself a donut.';
       } else {
-        yourBallotSubtitle = 'You are almost there!';
+        yourBallotSubtitle = 'You are almost there! Finish filling out your ballot.';
       }
     } else {
       altValue = 'Ballot Completed';
@@ -429,12 +429,12 @@ class ReadyTaskBallot extends React.Component {
         </Icon>
         <div>
           <TitleRowWrapper>
-            <Title
+            <BallotToDoTitle
               className="u-cursor--pointer"
               onClick={this.goToBallot}
             >
               {yourBallotTitle}
-            </Title>
+            </BallotToDoTitle>
             <PercentComplete
               className="u-cursor--pointer"
               onClick={() => this.showMoreButtonsLink()}
@@ -837,6 +837,22 @@ const styles = theme => ({
     },
   },
 });
+
+const BallotToDoTitle = styled.h3`
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  margin-top: 12px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 24px;
+    margin-top: 0;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 20px;
+    margin-top: 0;
+  }
+`;
 
 const ButtonTextMobileFont = styled.span`
   font-size: 16px;

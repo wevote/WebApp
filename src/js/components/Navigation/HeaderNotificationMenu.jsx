@@ -268,9 +268,9 @@ const styles = theme => ({
   badgeClasses: {
     backgroundColor: 'rgba(250, 62, 62)',
     fontSize: 10,
-    height: 12,
-    minWidth: 12,
-    width: 12,
+    height: 15,
+    minWidth: 15,
+    width: 15,
   },
   iconButtonRoot: {
     color: 'rgba(17, 17, 17, .4)',
@@ -342,8 +342,8 @@ const ActivityTime = styled.div`
 `;
 
 const BadgeCountWrapper = styled.span`
-  margin-top: ${props => (props.isNumberOne ? '-1px' : '0')};
-  margin-left: ${props => (props.isNumberOne ? '1px' : '0')};
+  margin-top: ${props => (props.isNumberOne ? '2px' : '2px')};
+  margin-left: ${props => (props.isNumberOne ? '0' : '1px')};
 `;
 
 const HeaderNotificationMenuWrapper = styled.div`

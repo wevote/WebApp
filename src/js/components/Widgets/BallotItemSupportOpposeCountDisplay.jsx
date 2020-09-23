@@ -1335,7 +1335,7 @@ const ScoreLabel = styled.div`
 
 const ScoreNumberAfterDecision = styled.div`
   font-size: 12px;
-  margin-top: -4px;
+  margin-top: -5px;
 `;
 
 const ScoreLabelAfterDecisionNoScore = styled.div`
@@ -1359,7 +1359,7 @@ const VoterChoiceWrapper = styled.div`
   @media print{
     color: #1fc06f;
   }
-  margin-top: 2px;
+  margin-top: 0px;
 `;
 
 const YourOpinion = styled.div`

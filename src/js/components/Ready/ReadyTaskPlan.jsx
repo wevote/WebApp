@@ -8,7 +8,7 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import plan0Percent from '../../../img/global/svg-icons/ready/plan-0-percent.svg';
 import plan100Percent from '../../../img/global/svg-icons/ready/plan-100-percent.svg';
 import ReadyStore from '../../stores/ReadyStore';
-import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, Title, TitleRowWrapper } from './ReadyTaskStyles';
+import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
@@ -85,7 +85,7 @@ class ReadyTaskPlan extends React.Component {
         </Icon>
         <div>
           <TitleRowWrapper>
-            <Title
+            <PlanTitle
               className="u-cursor--pointer"
               onClick={this.showVoterPlanModal}
             >
@@ -101,14 +101,14 @@ class ReadyTaskPlan extends React.Component {
               ) : (
                 <>
                   <span className="u-show-mobile">
-                    Your Plan to Vote?
+                    Make Plan to Vote
                   </span>
                   <span className="u-show-desktop-tablet">
-                    Your Plan to Vote?
+                    Make Plan to Vote
                   </span>
                 </>
               )}
-            </Title>
+            </PlanTitle>
             <PercentComplete showprogresscolor={completed || undefined}>
               {completed ? '100%' : '0%'}
               {!!(completed) && (
@@ -128,7 +128,7 @@ class ReadyTaskPlan extends React.Component {
           ) : (
             <>
               <SubTitle className="u-cursor--pointer" onClick={this.showVoterPlanModal}>
-                Write your own adventure and cast your vote!
+                When will you cast your vote? By mail, or at polling location?
               </SubTitle>
               <StyledButton
                 id="makeYourPlanNowButton"
@@ -170,6 +170,22 @@ const styles = theme => ({
     },
   },
 });
+
+const PlanTitle = styled.h3`
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  margin-top: 12px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: 24px;
+    margin-top: 0;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 20px;
+    margin-top: 0;
+  }
+`;
 
 const VoterPlanPreview = styled.div`
   padding: 8px;

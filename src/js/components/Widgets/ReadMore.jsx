@@ -49,10 +49,10 @@ export default class ReadMore extends Component {
       numberOfLines = 3;
     }
     if (linkText === undefined) {
-      linkText = 'More';
+      linkText = '(show more)';
     }
     if (collapseText === undefined) {
-      collapseText = 'Show Less  ';
+      collapseText = '(show less) ';
     }
 
     let expandedTextArray = [];
@@ -122,6 +122,7 @@ export default class ReadMore extends Component {
             text={textToDisplay}
             textTruncateChild={(
               <a // eslint-disable-line
+                className="u-link-color u-no-break"
                 tabIndex="0"
                 href="#"
                 id="readMore"
@@ -141,6 +142,7 @@ export default class ReadMore extends Component {
           {expandedTextToDisplay}
           &nbsp;&nbsp;
           <a // eslint-disable-line
+            className="u-link-color u-no-break"
             tabIndex="0"
             href="#"
             id="showLess"

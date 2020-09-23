@@ -208,12 +208,13 @@ export function getApplicationViewBooleans (pathname) {
   }
 
   let showShareButtonFooter = false;
+  const onFollowSubPage = stringContains('/m/followers', pathnameLowerCase) || stringContains('/m/following', pathnameLowerCase);
   if (pathnameLowerCase.startsWith('/ballot') ||
     pathnameLowerCase.startsWith('/candidate') ||
     pathnameLowerCase.startsWith('/measure') ||
     pathnameLowerCase.startsWith('/office') ||
     pathnameLowerCase.startsWith('/ready') ||
-    voterGuideMode) {
+    (voterGuideMode && !onFollowSubPage)) {
     showShareButtonFooter = true;
   }
 

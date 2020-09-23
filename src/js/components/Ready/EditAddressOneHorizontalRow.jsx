@@ -194,7 +194,12 @@ class EditAddressOneHorizontalRow extends Component {
       <OuterWrapper>
         <InnerWrapper className="u-show-mobile">
           <AddressLabelMobile>
-            Enter street address with house number
+            <span className="u-show-mobile-iphone5-or-smaller">
+              Enter street address + house number
+            </span>
+            <span className="u-show-mobile-bigger-than-iphone5">
+              Enter street address with house number
+            </span>
             &nbsp;
           </AddressLabelMobile>
         </InnerWrapper>
