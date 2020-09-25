@@ -77,7 +77,8 @@ export function pageEnumeration () {
   } else if (href.indexOf('/index.html#/vg/') > 0) {
     return enums.voterGuideCreatorWild;
   } else if (stringContains('btcand', href) ||
-             stringContains('btmeas', href)) {
+             stringContains('btmeas', href) ||
+             stringContains('/btdb', href)) { // Added Sept 24, 2020 -- for iPadPro 1.9", hope it is ok in all device sizes
     return enums.voterGuideWild;
   } else if (href.indexOf('/index.html#/wevoteintro/') > 0) {
     return enums.wevoteintroWild;

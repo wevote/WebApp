@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import CandidateStore from '../../stores/CandidateStore';
+import { isCordova } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import ItemActionBar from '../Widgets/ItemActionBar/ItemActionBar';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
@@ -182,6 +183,7 @@ class CandidateItemForAddPositions extends Component {
     ) :
       null;
 
+    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? "-cordova" : ""}`;
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
     return (
       <Wrapper>
@@ -189,7 +191,7 @@ class CandidateItemForAddPositions extends Component {
           <Candidate>
             {/* Candidate Image */}
             <ImageHandler
-              className="card-main__avatar-compressed"
+              className={avatarCompressed}
               sizeClassName="icon-candidate-small u-push--sm "
               imageUrl={oneCandidate.candidate_photo_url_medium}
               alt="candidate-photo"
