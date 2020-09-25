@@ -15,7 +15,7 @@ import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 class PositionItemScorePopover extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    positionItem: PropTypes.object.isRequired,
+    positionWeVoteId: PropTypes.string,
     showPersonalScoreInformation: PropTypes.bool,
   };
 
@@ -25,9 +25,10 @@ class PositionItemScorePopover extends Component {
       ballotItemDisplayName: '',
       issuesInCommonBetweenOrganizationAndVoter: [],
       issuesInCommonBetweenOrganizationAndVoterLength: 0,
+      organizationInformationOnlyBallotItem: false,
       organizationInVotersNetwork: false,
-      organizationOpposes: false,
-      organizationSupports: false,
+      organizationOpposesBallotItem: false,
+      organizationSupportsBallotItem: false,
       organizationWeVoteId: '',
       speakerDisplayName: '',
       voterFollowingThisOrganization: false,
@@ -39,14 +40,11 @@ class PositionItemScorePopover extends Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    const { positionItem } = this.props;
+    this.onOrganizationStoreChange();
+    const { positionWeVoteId } = this.props;
+    const positionItem = OrganizationStore.getPositionByPositionWeVoteId(positionWeVoteId);
     if (positionItem) {
       const {
-        ballot_item_display_name: ballotItemDisplayName,
-        is_information_only: organizationProvidingInformationOnly,
-        is_oppose_or_negative_rating: organizationOpposes,
-        is_support_or_positive_rating: organizationSupports,
-        speaker_display_name: speakerDisplayName,
         speaker_we_vote_id: organizationWeVoteId,
       } = positionItem;
 
@@ -56,47 +54,10 @@ class PositionItemScorePopover extends Component {
       const voterFollowingThisOrganization = OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId);
       const voterIsFriendsWithThisOrganization = FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId);
       this.setState({
-        ballotItemDisplayName,
         issuesInCommonBetweenOrganizationAndVoter,
         issuesInCommonBetweenOrganizationAndVoterLength,
         organizationInVotersNetwork,
-        organizationProvidingInformationOnly,
-        organizationOpposes,
-        organizationSupports,
         organizationWeVoteId,
-        speakerDisplayName,
-        voterFollowingThisOrganization,
-        voterIsFriendsWithThisOrganization,
-      });
-    }
-  }
-
-  componentWillReceiveProps (nextProps) {
-    // console.log('componentWillReceiveProps, nextProps: ', nextProps);
-    const { positionItem } = nextProps;
-    if (positionItem) {
-      const {
-        ballot_item_display_name: ballotItemDisplayName,
-        is_oppose_or_negative_rating: organizationOpposes,
-        is_support_or_positive_rating: organizationSupports,
-        speaker_display_name: speakerDisplayName,
-        speaker_we_vote_id: organizationWeVoteId,
-      } = positionItem;
-
-      const issuesInCommonBetweenOrganizationAndVoter = IssueStore.getIssuesInCommonBetweenOrganizationAndVoter(organizationWeVoteId) || [];
-      const issuesInCommonBetweenOrganizationAndVoterLength = issuesInCommonBetweenOrganizationAndVoter.length;
-      const organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
-      const voterFollowingThisOrganization = OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId);
-      const voterIsFriendsWithThisOrganization = FriendStore.isVoterFriendsWithThisOrganization(organizationWeVoteId);
-      this.setState({
-        ballotItemDisplayName,
-        issuesInCommonBetweenOrganizationAndVoter,
-        issuesInCommonBetweenOrganizationAndVoterLength,
-        organizationInVotersNetwork,
-        organizationOpposes,
-        organizationSupports,
-        organizationWeVoteId,
-        speakerDisplayName,
         voterFollowingThisOrganization,
         voterIsFriendsWithThisOrganization,
       });
@@ -117,12 +78,12 @@ class PositionItemScorePopover extends Component {
       // console.log('this.state.organizationInVotersNetwork: ', this.state.organizationInVotersNetwork, ', nextState.organizationInVotersNetwork', nextState.organizationInVotersNetwork);
       return true;
     }
-    if (this.state.organizationOpposes !== nextState.organizationOpposes) {
-      // console.log('this.state.organizationOpposes: ', this.state.organizationOpposes, ', nextState.organizationOpposes', nextState.organizationOpposes);
+    if (this.state.organizationOpposesBallotItem !== nextState.organizationOpposesBallotItem) {
+      // console.log('this.state.organizationOpposesBallotItem: ', this.state.organizationOpposesBallotItem, ', nextState.organizationOpposesBallotItem', nextState.organizationOpposesBallotItem);
       return true;
     }
-    if (this.state.organizationSupports !== nextState.organizationSupports) {
-      // console.log('this.state.organizationSupports: ', this.state.organizationSupports, ', nextState.organizationSupports', nextState.organizationSupports);
+    if (this.state.organizationSupportsBallotItem !== nextState.organizationSupportsBallotItem) {
+      // console.log('this.state.organizationSupportsBallotItem: ', this.state.organizationSupportsBallotItem, ', nextState.organizationSupportsBallotItem', nextState.organizationSupportsBallotItem);
       return true;
     }
     if (this.state.speakerDisplayName !== nextState.speakerDisplayName) {
@@ -167,7 +128,24 @@ class PositionItemScorePopover extends Component {
   }
 
   onOrganizationStoreChange () {
-    const { organizationWeVoteId } = this.state;
+    const { positionWeVoteId } = this.props;
+    const positionItem = OrganizationStore.getPositionByPositionWeVoteId(positionWeVoteId);
+    const {
+      ballot_item_display_name: ballotItemDisplayName,
+      is_information_only: organizationInformationOnlyBallotItem,
+      is_oppose: organizationOpposesBallotItem,
+      is_support: organizationSupportsBallotItem,
+      speaker_display_name: speakerDisplayName,
+      speaker_we_vote_id: organizationWeVoteId,
+    } = positionItem;
+    this.setState({
+      ballotItemDisplayName,
+      organizationInformationOnlyBallotItem,
+      organizationOpposesBallotItem,
+      organizationSupportsBallotItem,
+      organizationWeVoteId,
+      speakerDisplayName,
+    });
     const issuesInCommonBetweenOrganizationAndVoter = IssueStore.getIssuesInCommonBetweenOrganizationAndVoter(organizationWeVoteId) || [];
     const organizationInVotersNetwork = isOrganizationInVotersNetwork(organizationWeVoteId);
     const voterFollowingThisOrganization = OrganizationStore.isVoterFollowingThisOrganization(organizationWeVoteId);
@@ -179,14 +157,15 @@ class PositionItemScorePopover extends Component {
   }
 
   render () {
-    const { classes, positionItem, showPersonalScoreInformation } = this.props;
+    const { classes, positionWeVoteId, showPersonalScoreInformation } = this.props;
     // console.log('PositionItemScorePopover render');
-    if (!positionItem) {
+    if (!positionWeVoteId) {
       return null;
     }
     const {
       ballotItemDisplayName, issuesInCommonBetweenOrganizationAndVoter, organizationInVotersNetwork,
-      organizationProvidingInformationOnly, organizationOpposes, organizationSupports, organizationWeVoteId,
+      organizationInformationOnlyBallotItem, organizationOpposesBallotItem,
+      organizationSupportsBallotItem, organizationWeVoteId,
       speakerDisplayName, voterFollowingThisOrganization, voterIsFriendsWithThisOrganization,
     } = this.state;
     return (
@@ -199,27 +178,27 @@ class PositionItemScorePopover extends Component {
         </PopoverHeader>
         <PopoverDescriptionText>
           <PositionSummaryWrapper>
-            {organizationSupports && !organizationInVotersNetwork && (
+            {organizationSupportsBallotItem && !organizationInVotersNetwork && (
               <SupportButNotPartOfScore>
                 <ThumbUp classes={{ root: classes.endorsementIcon }} />
               </SupportButNotPartOfScore>
             )}
-            {organizationSupports && organizationInVotersNetwork && (
+            {organizationSupportsBallotItem && organizationInVotersNetwork && (
               <SupportAndPartOfScore>
                 +1
               </SupportAndPartOfScore>
             )}
-            {organizationOpposes && !organizationInVotersNetwork && (
+            {organizationOpposesBallotItem && !organizationInVotersNetwork && (
               <OpposeButNotPartOfScore>
                 <ThumbDown classes={{ root: classes.endorsementIcon }} />
               </OpposeButNotPartOfScore>
             )}
-            {organizationOpposes && organizationInVotersNetwork && (
+            {organizationOpposesBallotItem && organizationInVotersNetwork && (
               <OpposeAndPartOfScore>
                 -1
               </OpposeAndPartOfScore>
             )}
-            {organizationProvidingInformationOnly && (
+            {organizationInformationOnlyBallotItem && (
               <InformationOnly>
                 <Info classes={{ root: classes.informationOnlyIcon }} />
               </InformationOnly>
@@ -229,7 +208,7 @@ class PositionItemScorePopover extends Component {
                 {speakerDisplayName}
               </strong>
               {' '}
-              {organizationSupports && (
+              {organizationSupportsBallotItem && (
                 <span>
                   supports
                   {' '}
@@ -239,7 +218,7 @@ class PositionItemScorePopover extends Component {
                   .
                 </span>
               )}
-              {organizationOpposes && (
+              {organizationOpposesBallotItem && (
                 <span>
                   opposes
                   {' '}
@@ -249,7 +228,7 @@ class PositionItemScorePopover extends Component {
                   .
                 </span>
               )}
-              {organizationProvidingInformationOnly && (
+              {organizationInformationOnlyBallotItem && (
                 <span>
                   has this commentary, but no endorsement.
                 </span>
@@ -261,12 +240,12 @@ class PositionItemScorePopover extends Component {
               {organizationInVotersNetwork ? (
                 <>
                   <OrganizationAddsToYourPersonalScoreExplanation>
-                    {organizationSupports && (
+                    {organizationSupportsBallotItem && (
                       <span>
                         This opinion adds +1 to your personalized score because:
                       </span>
                     )}
-                    {organizationOpposes && (
+                    {organizationOpposesBallotItem && (
                       <span>
                         This opinion subtracts -1 from your personalized score because:
                       </span>
@@ -320,7 +299,7 @@ class PositionItemScorePopover extends Component {
                       {speakerDisplayName}
                     </strong>
                     {' '}
-                    {organizationSupports && (
+                    {organizationSupportsBallotItem && (
                       <span>
                         to add +1 to your personalized score about
                         {' '}
@@ -328,7 +307,7 @@ class PositionItemScorePopover extends Component {
                         .
                       </span>
                     )}
-                    {organizationOpposes && (
+                    {organizationOpposesBallotItem && (
                       <span>
                         to subtract -1 from your personalized score about
                         {' '}
@@ -336,7 +315,7 @@ class PositionItemScorePopover extends Component {
                         .
                       </span>
                     )}
-                    {organizationProvidingInformationOnly && (
+                    {organizationInformationOnlyBallotItem && (
                       <span>
                         to see more of their opinions.
                       </span>

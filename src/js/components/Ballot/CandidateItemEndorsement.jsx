@@ -429,7 +429,7 @@ class CandidateItemEndorsement extends Component {
             {/*  organizationOpposesBallotItem={organizationOpposesBallotItem} */}
             {/*  organizationSupportsBallotItem={organizationSupportsBallotItem} */}
             {/*  organizationImageUrlHttpsTiny={organizationImageUrlHttpsTiny} */}
-            {/*  positionItem={position} */}
+            {/*  positionWeVoteId={position.position_we_vote_id} */}
             {/* /> */}
           </BallotItemSupportOpposeCountDisplayWrapper>
         </CandidateWrapper>

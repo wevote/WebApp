@@ -16,6 +16,7 @@ import MeasureActions from '../../actions/MeasureActions';
 import MeasureStore from '../../stores/MeasureStore';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+import OrganizationStore from '../../stores/OrganizationStore';
 import { capitalizeString, numberWithCommas, stringContains } from '../../utils/textFormat';
 import ReadMore from '../Widgets/ReadMore';
 
@@ -23,7 +24,7 @@ class VoterGuidePositionItem extends Component {
   static propTypes = {
     // ballotItemDisplayName: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string,
-    position: PropTypes.object.isRequired,
+    positionWeVoteId: PropTypes.string.isRequired,
     searchResultsNode: PropTypes.object,
   };
 
@@ -39,6 +40,10 @@ class VoterGuidePositionItem extends Component {
   }
 
   componentDidMount () {
+    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
+    this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.onOrganizationStoreChange();
     const { ballotItemWeVoteId } = this.props;
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
@@ -78,14 +83,12 @@ class VoterGuidePositionItem extends Component {
         });
       }
     }
-
-    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
+    this.organizationStoreListener.remove();
   }
 
   onCandidateStoreChange () {
@@ -152,6 +155,35 @@ class VoterGuidePositionItem extends Component {
     }
   }
 
+  onOrganizationStoreChange () {
+    const { positionWeVoteId } = this.props;
+    const positionItem = OrganizationStore.getPositionByPositionWeVoteId(positionWeVoteId);
+    const {
+      ballot_item_display_name: ballotItemDisplayName,
+      ballot_item_image_url_https_medium: ballotItemImageUrlHttpsMedium,
+      contest_office_name: contestOfficeName,
+      is_oppose: organizationOpposesBallotItem,
+      is_support: organizationSupportsBallotItem,
+      kind_of_ballot_item: kindOfBallotItem,
+      more_info_url: moreInfoUrl,
+      position_year: positionYear,
+      statement_text: positionDescription,
+      speaker_twitter_followers_count: twitterFollowersCount,
+    } = positionItem;
+    this.setState({
+      ballotItemDisplayName,
+      ballotItemImageUrlHttpsMedium,
+      contestOfficeName,
+      kindOfBallotItem,
+      moreInfoUrl,
+      organizationOpposesBallotItem,
+      organizationSupportsBallotItem,
+      positionDescription,
+      positionYear,
+      twitterFollowersCount,
+    });
+  }
+
   onClickShowOrganizationModal () {
     const { ballotItemWeVoteId } = this.props;
     AppActions.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
@@ -181,24 +213,22 @@ class VoterGuidePositionItem extends Component {
 
   render () {
     renderLog('VoterGuidePositionItem');  // Set LOG_RENDER_EVENTS to log all renders
-    const { ballotItemWeVoteId, position, searchResultsNode } = this.props;
-    // const { thisYearInteger } = this.state;
-    // console.log('VoterGuidePositionItem render position:', position);
-    let {
-      ballot_item_display_name: ballotItemDisplayName,
-      more_info_url: moreInfoUrl,
-    } = position;
+    const { ballotItemWeVoteId, positionWeVoteId, searchResultsNode } = this.props;
     const {
-      ballot_item_image_url_https_medium: ballotItemImageUrlHttpsMedium,
-      is_information_only: organizationInformationOnlyBallotItem,
-      is_oppose: organizationOpposesBallotItem,
-      is_support: organizationSupportsBallotItem,
-      kind_of_ballot_item: kindOfBallotItem,
-      position_year: positionYear,
-      speaker_image_url_https_tiny: organizationImageUrlHttpsTiny,
-      statement_text: positionDescription,
-      speaker_twitter_followers_count: twitterFollowersCount,
-    } = position;
+      ballotItemImageUrlHttpsMedium,
+      contestOfficeName,
+      kindOfBallotItem,
+      organizationOpposesBallotItem,
+      organizationSupportsBallotItem,
+      positionDescription,
+      positionYear,
+      twitterFollowersCount,
+    } = this.state;
+    // console.log('VoterGuidePositionItem render');
+    let {
+      ballotItemDisplayName,
+      moreInfoUrl,
+    } = this.state;
     const isCandidate = String(kindOfBallotItem) === 'CANDIDATE';
     // console.log('kindOfBallotItem:', kindOfBallotItem, 'isCandidate:', isCandidate);
     if (!ballotItemWeVoteId) {
@@ -213,15 +243,6 @@ class VoterGuidePositionItem extends Component {
     }
 
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
-    let contestOfficeName;
-    // let politicalParty;
-    // let ballotDisplay = [];
-    if (isCandidate) {
-      contestOfficeName = position.contest_office_name;
-      // politicalParty = position.ballot_item_political_party;
-    } else {
-      // ballotDisplay = ballotItemDisplayName.split(':');
-    }
     if (moreInfoUrl) {
       if (!moreInfoUrl.toLowerCase().startsWith('http')) {
         moreInfoUrl = `http://${moreInfoUrl}`;
@@ -301,11 +322,7 @@ class VoterGuidePositionItem extends Component {
                   />
                   <VerticalSeparator />
                   <BallotItemVoterGuideSupportOpposeDisplay
-                    organizationInformationOnlyBallotItem={organizationInformationOnlyBallotItem}
-                    organizationOpposesBallotItem={organizationOpposesBallotItem}
-                    organizationSupportsBallotItem={organizationSupportsBallotItem}
-                    organizationImageUrlHttpsTiny={organizationImageUrlHttpsTiny}
-                    positionItem={position}
+                    positionWeVoteId={positionWeVoteId}
                   />
                 </BallotItemSupportOpposeCountDisplayWrapper>
               </DesktopItemHeader>
@@ -406,11 +423,7 @@ class VoterGuidePositionItem extends Component {
                     />
                     <VerticalSeparator />
                     <BallotItemVoterGuideSupportOpposeDisplay
-                      organizationInformationOnlyBallotItem={organizationInformationOnlyBallotItem}
-                      organizationOpposesBallotItem={organizationOpposesBallotItem}
-                      organizationSupportsBallotItem={organizationSupportsBallotItem}
-                      organizationImageUrlHttpsTiny={organizationImageUrlHttpsTiny}
-                      positionItem={position}
+                      positionWeVoteId={positionWeVoteId}
                     />
                   </BallotItemSupportOpposeCountDisplayWrapper>
                 </MobileItemEndorsementDisplay>

@@ -166,13 +166,6 @@ class SupportStore extends ReduceStore {
         if (voterSupports && voterSupports[ballotItemWeVoteId] !== undefined) {
           delete voterSupports[ballotItemWeVoteId];
         }
-        isCandidate = stringContains('cand', ballotItemWeVoteId);
-        isMeasure = stringContains('meas', ballotItemWeVoteId);
-        if (isCandidate) {
-          CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
-        } else if (isMeasure) {
-          MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
-        }
         return {
           ...state,
           voter_supports: voterSupports,
@@ -193,13 +186,6 @@ class SupportStore extends ReduceStore {
         ({ voter_opposes: voterOpposes } = state);
         if (voterOpposes && voterOpposes[ballotItemWeVoteId] !== undefined) {
           delete voterOpposes[ballotItemWeVoteId];
-        }
-        isCandidate = stringContains('cand', ballotItemWeVoteId);
-        isMeasure = stringContains('meas', ballotItemWeVoteId);
-        if (isCandidate) {
-          CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
-        } else if (isMeasure) {
-          MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
         }
         return {
           ...state,
@@ -233,13 +219,6 @@ class SupportStore extends ReduceStore {
 
       case 'voterPositionVisibilitySave':
         // Add the visibility to the list in memory
-        isCandidate = stringContains('cand', ballotItemWeVoteId);
-        isMeasure = stringContains('meas', ballotItemWeVoteId);
-        if (isCandidate) {
-          CandidateActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
-        } else if (isMeasure) {
-          MeasureActions.positionListForBallotItemFromFriends(ballotItemWeVoteId);
-        }
         return {
           ...state,
           is_public_position: this.isForPublicListWithChanges(state.is_public_position, ballotItemWeVoteId, action.res.is_public_position),

@@ -169,7 +169,7 @@ class VoterGuideMeasureItemCompressed extends Component {
       <VoterGuidePositionItem
         ballotItemWeVoteId={measureWeVoteId}
         organizationWeVoteId={organizationWeVoteId}
-        position={organizationPositionForMeasure}
+        positionWeVoteId={organizationPositionForMeasure.position_we_vote_id}
       />
     );
   }

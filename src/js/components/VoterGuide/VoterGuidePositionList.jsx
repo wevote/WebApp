@@ -503,7 +503,7 @@ class VoterGuidePositionList extends Component {
                   ballotItemWeVoteId={onePosition.ballot_item_we_vote_id}
                   // ballotItemDisplayName={onePosition.ballot_item_display_name}
                   organizationWeVoteId={organizationWeVoteId}
-                  position={onePosition}
+                  positionWeVoteId={onePosition.position_we_vote_id}
                   searchResultsNode={searchResultsNode}
                 />
               </div>

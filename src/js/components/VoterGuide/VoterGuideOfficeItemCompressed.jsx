@@ -187,7 +187,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                       <VoterGuidePositionItem
                         ballotItemWeVoteId={candidateWeVoteId}
                         organizationWeVoteId={organizationWeVoteId}
-                        position={orgPositionForCandidate}
+                        positionWeVoteId={orgPositionForCandidate.position_we_vote_id}
                       />
                     </div>
                   );

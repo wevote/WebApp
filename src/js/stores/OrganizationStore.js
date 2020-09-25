@@ -295,6 +295,35 @@ class OrganizationStore extends ReduceStore {
     return filteredOrganizations;
   }
 
+  modifyPositionObject (positionItem, setInformationOnlyFalse = false, setInformationOnlyTrue = false, setOpposeFalse = false, setOpposeTrue = false, setSupportFalse = false, setSupportTrue = false) {
+    if (!positionItem) {
+      return {};
+    }
+    if (setInformationOnlyFalse) {
+      positionItem.is_information_only = false;
+    }
+    if (setInformationOnlyTrue) {
+      positionItem.is_information_only = true;
+    }
+    if (setOpposeFalse) {
+      positionItem.is_oppose = false;
+      positionItem.is_oppose_or_negative_rating = false;
+    }
+    if (setOpposeTrue) {
+      positionItem.is_oppose = true;
+      positionItem.is_oppose_or_negative_rating = true;
+    }
+    if (setSupportFalse) {
+      positionItem.is_support = false;
+      positionItem.is_support_or_positive_rating = false;
+    }
+    if (setSupportTrue) {
+      positionItem.is_support = true;
+      positionItem.is_support_or_positive_rating = true;
+    }
+    return positionItem;
+  }
+
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
@@ -306,19 +335,26 @@ class OrganizationStore extends ReduceStore {
     let {
       organizationWeVoteIdsVoterIsFollowing, organizationWeVoteIdsVoterIsIgnoring,
     } = state;
+    const allCachedPositionsForOneOrganization = [];
+    let ballotItemWeVoteId;
     let chosenFeaturePackage;
     let existingPosition;
     let featuresProvidedBitmap;
     let googleCivicElectionId;
     let hostname;
+    let isPublicPosition;
+    let modifiedPosition;
+    let modifiedPositionChangeFound = false;
     let newPositionList;
     let numberOfSearchResults = 0;
     let organizationWeVoteId;
     let organization;
     let organizationsList = [];
     let organizationsFollowedOnTwitterList;
+    let positionWeVoteId;
     let priorCopyOfOrganization;
     let revisedState;
+    let statementText;
     let voterGuides;
     let voterLinkedOrganizationWeVoteId;
     let voterOrganizationFeaturesProvided;
@@ -924,6 +960,99 @@ class OrganizationStore extends ReduceStore {
         // console.log('resetting OrganizationStore');
         OrganizationActions.organizationsFollowedRetrieve();
         return this.resetState();
+
+      case 'voterOpposingSave':
+      case 'voterPositionCommentSave':
+      case 'voterPositionVisibilitySave':
+      case 'voterStopOpposingSave':
+      case 'voterStopSupportingSave':
+      case 'voterSupportingSave':
+        revisedState = state;
+        // Voter has done action that modifies one of their positions. Update the position where it is cached.
+        ballotItemWeVoteId = action.res.ballot_item_we_vote_id;
+        isPublicPosition = action.res.is_public_position;
+        positionWeVoteId = action.res.position_we_vote_id;
+        statementText = action.res.statement_text;
+        voterLinkedOrganizationWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
+        if (positionWeVoteId && voterLinkedOrganizationWeVoteId) {
+          if (allCachedPositionsByOrganization[voterLinkedOrganizationWeVoteId]) {
+            allCachedPositionsByOrganization[voterLinkedOrganizationWeVoteId].forEach((onePosition) => {
+              modifiedPosition = onePosition;
+              if (modifiedPosition) {
+                if (onePosition.position_we_vote_id === positionWeVoteId) {
+                  if (action.type === 'voterOpposingSave') {
+                    modifiedPosition = this.modifyPositionObject(modifiedPosition, true, false, false, true, true, false);
+                  } else if (action.type === 'voterSupportingSave') {
+                    modifiedPosition = this.modifyPositionObject(modifiedPosition, true, false, true, false, false, true);
+                  } else if (action.type === 'voterStopOpposingSave') {
+                    modifiedPosition = this.modifyPositionObject(modifiedPosition, false, true, true, false, false, false);
+                  } else if (action.type === 'voterStopSupportingSave') {
+                    modifiedPosition = this.modifyPositionObject(modifiedPosition, false, true, false, false, true, false);
+                  } else if (action.type === 'voterPositionCommentSave') {
+                    modifiedPosition.statement_text = statementText;
+                  } else if (action.type === 'voterPositionVisibilitySave') {
+                    modifiedPosition.is_public_position = isPublicPosition;
+                  }
+                  modifiedPositionChangeFound = true;
+                }
+                allCachedPositionsForOneOrganization.push(modifiedPosition);
+              }
+            });
+            if (modifiedPositionChangeFound) {
+              allCachedPositionsByOrganization[voterLinkedOrganizationWeVoteId] = allCachedPositionsForOneOrganization;
+              revisedState = Object.assign({}, revisedState, {
+                allCachedPositionsByOrganization,
+              });
+            }
+          }
+        }
+        if (positionWeVoteId) {
+          modifiedPosition = allCachedPositionsByPositionWeVoteId[positionWeVoteId];
+          if (modifiedPosition) {
+            if (action.type === 'voterOpposingSave') {
+              modifiedPosition = this.modifyPositionObject(modifiedPosition, true, false, false, true, true, false);
+            } else if (action.type === 'voterSupportingSave') {
+              modifiedPosition = this.modifyPositionObject(modifiedPosition, true, false, true, false, false, true);
+            } else if (action.type === 'voterStopOpposingSave') {
+              modifiedPosition = this.modifyPositionObject(modifiedPosition, false, true, true, false, false, false);
+            } else if (action.type === 'voterStopSupportingSave') {
+              modifiedPosition = this.modifyPositionObject(modifiedPosition, false, true, false, false, true, false);
+            } else if (action.type === 'voterPositionCommentSave') {
+              modifiedPosition.statement_text = statementText;
+            } else if (action.type === 'voterPositionVisibilitySave') {
+              modifiedPosition.is_public_position = isPublicPosition;
+            }
+            allCachedPositionsByPositionWeVoteId[positionWeVoteId] = modifiedPosition;
+            revisedState = Object.assign({}, revisedState, {
+              allCachedPositionsByPositionWeVoteId,
+            });
+          }
+        }
+        if (ballotItemWeVoteId && voterLinkedOrganizationWeVoteId) {
+          if (allCachedPositionsByOrganizationDict[voterLinkedOrganizationWeVoteId] && allCachedPositionsByOrganizationDict[voterLinkedOrganizationWeVoteId][ballotItemWeVoteId]) {
+            modifiedPosition = allCachedPositionsByOrganizationDict[voterLinkedOrganizationWeVoteId][ballotItemWeVoteId];
+            if (modifiedPosition) {
+              if (action.type === 'voterOpposingSave') {
+                modifiedPosition = this.modifyPositionObject(modifiedPosition, true, false, false, true, true, false);
+              } else if (action.type === 'voterSupportingSave') {
+                modifiedPosition = this.modifyPositionObject(modifiedPosition, true, false, true, false, false, true);
+              } else if (action.type === 'voterStopOpposingSave') {
+                modifiedPosition = this.modifyPositionObject(modifiedPosition, false, true, true, false, false, false);
+              } else if (action.type === 'voterStopSupportingSave') {
+                modifiedPosition = this.modifyPositionObject(modifiedPosition, false, true, false, false, true, false);
+              } else if (action.type === 'voterPositionCommentSave') {
+                modifiedPosition.statement_text = statementText;
+              } else if (action.type === 'voterPositionVisibilitySave') {
+                modifiedPosition.is_public_position = isPublicPosition;
+              }
+              allCachedPositionsByOrganizationDict[voterLinkedOrganizationWeVoteId][ballotItemWeVoteId] = modifiedPosition;
+              revisedState = Object.assign({}, revisedState, {
+                allCachedPositionsByOrganizationDict,
+              });
+            }
+          }
+        }
+        return revisedState;
 
       default:
         return state;
