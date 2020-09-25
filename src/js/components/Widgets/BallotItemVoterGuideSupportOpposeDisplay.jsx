@@ -6,6 +6,7 @@ import { Info, ThumbUp, ThumbDown } from '@material-ui/icons';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import FriendsOnlyIndicator from './FriendsOnlyIndicator';
+import OrganizationStore from '../../stores/OrganizationStore';
 import PositionItemScorePopover from './PositionItemScorePopover';
 import StickyPopover from '../Ballot/StickyPopover';
 
@@ -17,11 +18,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
   static propTypes = {
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
-    organizationImageUrlHttpsTiny: PropTypes.string,
-    organizationInformationOnlyBallotItem: PropTypes.bool,
-    organizationOpposesBallotItem: PropTypes.bool,
-    organizationSupportsBallotItem: PropTypes.bool,
-    positionItem: PropTypes.object,
+    positionWeVoteId: PropTypes.string,
   };
 
   constructor (props) {
@@ -34,6 +31,32 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
 
   componentDidMount () {
     // console.log('BallotItemVoterGuideSupportOpposeDisplay componentDidMount');
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.onOrganizationStoreChange();
+  }
+
+  componentWillUnmount () {
+    this.organizationStoreListener.remove();
+  }
+
+  onOrganizationStoreChange () {
+    const { positionWeVoteId } = this.props;
+    const positionItem = OrganizationStore.getPositionByPositionWeVoteId(positionWeVoteId);
+    const {
+      is_information_only: organizationInformationOnlyBallotItem,
+      is_oppose: organizationOpposesBallotItem,
+      is_public_position: isPublicPosition,
+      is_support: organizationSupportsBallotItem,
+      speaker_image_url_https_tiny: organizationImageUrlHttpsTiny,
+    } = positionItem;
+    // organizationImageUrlHttpsTiny: PropTypes.string,
+    this.setState({
+      isPublicPosition,
+      organizationImageUrlHttpsTiny,
+      organizationInformationOnlyBallotItem,
+      organizationOpposesBallotItem,
+      organizationSupportsBallotItem,
+    });
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -61,24 +84,21 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
 
   render () {
     renderLog('BallotItemVoterGuideSupportOpposeDisplay');  // Set LOG_RENDER_EVENTS to log all renders
+    const { positionWeVoteId } = this.props;
     const {
+      isPublicPosition,
       organizationImageUrlHttpsTiny,
       organizationInformationOnlyBallotItem,
       organizationOpposesBallotItem,
       organizationSupportsBallotItem,
-      positionItem,
-    } = this.props;
+    } = this.state;
     // console.log('BallotItemVoterGuideSupportOpposeDisplay render, organizationSupportsBallotItem/organizationOpposesBallotItem:', organizationSupportsBallotItem, organizationOpposesBallotItem);
-
-    const {
-      is_public_position: isPublicPosition,
-    } = positionItem;
 
     const noOpinionsExist = !(organizationSupportsBallotItem || organizationOpposesBallotItem || organizationInformationOnlyBallotItem);
 
     const positionsPopover = (
       <PositionItemScorePopover
-        positionItem={positionItem}
+        positionWeVoteId={positionWeVoteId}
       />
     );
 

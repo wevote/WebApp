@@ -1002,12 +1002,20 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <Done classes={{ root: classes.decidedIcon }} />
               </VoterChoiceWrapper>
               {voterPersonalScoreHasBeenCalculated ? (
-                <ScoreNumberAfterDecision className="u-no-break">
-                  {voterPersonalNetworkScoreIsPositive && (
-                    <span>+</span>
+                <>
+                  {voterPersonalNetworkScore === 0 ? (
+                    <ScoreNumberZeroAfterDecision className="u-no-break">
+                      score 0
+                    </ScoreNumberZeroAfterDecision>
+                  ) : (
+                    <ScoreNumberAfterDecision className="u-no-break">
+                      {voterPersonalNetworkScoreIsPositive && (
+                        <span>+</span>
+                      )}
+                      {voterPersonalNetworkScore}
+                    </ScoreNumberAfterDecision>
                   )}
-                  {voterPersonalNetworkScore === 0 ? 'score 0' : voterPersonalNetworkScore}
-                </ScoreNumberAfterDecision>
+                </>
               ) : (
                 <ScoreLabelAfterDecisionNoScore className="u-no-break">
                   no score
@@ -1033,12 +1041,20 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 <NotInterested classes={{ root: classes.decidedIcon }} />
               </VoterChoiceWrapper>
               {voterPersonalScoreHasBeenCalculated ? (
-                <ScoreNumberAfterDecision className="u-no-break">
-                  {voterPersonalNetworkScoreIsPositive && (
-                    <span>+</span>
+                <>
+                  {voterPersonalNetworkScore === 0 ? (
+                    <ScoreNumberZeroAfterDecision className="u-no-break">
+                      score 0
+                    </ScoreNumberZeroAfterDecision>
+                  ) : (
+                    <ScoreNumberAfterDecision className="u-no-break">
+                      {voterPersonalNetworkScoreIsPositive && (
+                        <span>+</span>
+                      )}
+                      {voterPersonalNetworkScore}
+                    </ScoreNumberAfterDecision>
                   )}
-                  {voterPersonalNetworkScore === 0 ? 'score 0' : voterPersonalNetworkScore}
-                </ScoreNumberAfterDecision>
+                </>
               ) : (
                 <ScoreLabelAfterDecisionNoScore className="u-no-break">
                   no score
@@ -1338,8 +1354,13 @@ const ScoreNumberAfterDecision = styled.div`
   margin-top: -5px;
 `;
 
+const ScoreNumberZeroAfterDecision = styled.div`
+  font-size: 10px;
+  margin-top: -5px;
+`;
+
 const ScoreLabelAfterDecisionNoScore = styled.div`
-  font-size: 9px;
+  font-size: 8px;
   margin-top: -5px;
 `;
 

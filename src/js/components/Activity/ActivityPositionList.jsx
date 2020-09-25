@@ -91,7 +91,7 @@ class ActivityPositionList extends Component {
                   // ballotItemDisplayName={onePosition.ballot_item_display_name}
                   ballotItemWeVoteId={onePosition.ballot_item_we_vote_id}
                   organizationWeVoteId={organizationWeVoteId}
-                  position={onePosition}
+                  positionWeVoteId={onePosition.position_we_vote_id}
                 />
               </div>
             );

@@ -419,7 +419,6 @@ class VoterGuidePositions extends Component {
       searchIsUnderway,
       voterGuideElectionListCount,
     } = this.state;
-    // console.log('voterGuideElectionListCount:', voterGuideElectionListCount);
 
     if (!organization) {
       // Wait until organization has been set to render
@@ -522,7 +521,7 @@ class VoterGuidePositions extends Component {
                           <VoterGuidePositionItem
                             ballotItemWeVoteId={onePosition.ballot_item_we_vote_id}
                             organizationWeVoteId={organizationWeVoteId}
-                            position={onePosition}
+                            positionWeVoteId={onePosition.position_we_vote_id}
                           />
                         </VoterGuidePositionItemWrapper>
                       );
