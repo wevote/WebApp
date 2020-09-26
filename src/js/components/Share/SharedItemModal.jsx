@@ -409,6 +409,7 @@ class SharedItemModal extends Component {
     let textNextToInfoIcon = null;
     const nameForNextToInfoIcon = organizationName || 'This person';
     const nameForNextToInfoIconMidSentence = organizationName || 'this person';
+    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? "-cordova" : ""}`;
     if (isFriend) {
       textNextToInfoIcon = `${nameForNextToInfoIcon}'s opinions will be added to your personalized scores. `;
     } else if (isFollowing) {
@@ -466,7 +467,7 @@ class SharedItemModal extends Component {
                       {/* SharedByOrganization Image */}
                       <OrganizationImageWrapper>
                         <ImageHandler
-                          className="card-main__avatar-compressed"
+                          className={avatarCompressed}
                           sizeClassName="icon-candidate-small u-push--sm "
                           imageUrl={organizationPhotoUrlMedium}
                           alt={`${organizationName}`}

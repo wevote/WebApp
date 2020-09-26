@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import TextTruncate from 'react-text-truncate';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import CandidateStore from '../../stores/CandidateStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';
@@ -114,6 +114,7 @@ export default class CandidateItemCompressed extends Component {
     const candidatePartyText = this.state.oneCandidate.party && this.state.oneCandidate.party.length ? `${this.state.oneCandidate.party}. ` : '';
     const candidateDescriptionText = this.state.oneCandidate.twitter_description && this.state.oneCandidate.twitter_description.length ? this.state.oneCandidate.twitter_description : '';
     const candidateText = candidatePartyText + candidateDescriptionText;
+    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? "-cordova" : ""} o-media-object__anchor u-cursor--pointer u-self-start u-push--sm`;
 
     return (
       <div key={oneCandidateWeVoteId} className="u-stack--md">
@@ -124,7 +125,7 @@ export default class CandidateItemCompressed extends Component {
           {/* Candidate Photo, only shown in Desktop */}
           <Link to={this.getCandidateLink(this.state.oneCandidate.we_vote_id)}>
             <ImageHandler
-              className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
+              className={avatarCompressed}
               sizeClassName="icon-candidate-small u-push--sm "
               imageUrl={this.state.oneCandidate.candidate_photo_url_medium}
               alt="candidate-photo"

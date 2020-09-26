@@ -15,7 +15,7 @@ import OfficeActions from '../../actions/OfficeActions';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { sortCandidateList } from '../../utils/positionFunctions';
 import { arrayContains, toTitleCase } from '../../utils/textFormat';
@@ -255,6 +255,8 @@ class OfficeItemCompressed extends Component {
             const localUniqueId = oneCandidate.we_vote_id;
             voterSupportsBallotItem = SupportStore.voterSupportsList[oneCandidate.we_vote_id] || false;
             voterOpposesBallotItem = SupportStore.voterOpposesList[oneCandidate.we_vote_id] || false;
+            const avatarCompressed = `card-main__avatar-compressed${isCordova() ? "-cordova" : ""}`;
+
             return (
               <Column
                 candidateLength={candidatesToRender.length}
@@ -272,7 +274,7 @@ class OfficeItemCompressed extends Component {
                     >
                       {/* Candidate Image */}
                       <ImageHandler
-                        className="card-main__avatar-compressed"
+                        className={avatarCompressed}
                         sizeClassName="icon-candidate-small u-push--sm "
                         imageUrl={oneCandidate.candidate_photo_url_medium}
                         alt="candidate-photo"

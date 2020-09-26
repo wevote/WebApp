@@ -10,7 +10,7 @@ import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActi
 import { renderLog } from '../../utils/logging';
 import SupportStore from '../../stores/SupportStore';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isCordova } from '../../utils/cordovaUtils';
 
 
 class CandidateItemForOpinions extends Component {
@@ -203,6 +203,7 @@ class CandidateItemForOpinions extends Component {
       null;
 
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
+    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? "-cordova" : ""}`;
     return (
       <Wrapper>
         <CandidateTopRow>
@@ -210,7 +211,7 @@ class CandidateItemForOpinions extends Component {
             {/* Candidate Image */}
             <Link to={this.getCandidateLink()} className="card-main__no-underline">
               <ImageHandler
-                className="card-main__avatar-compressed"
+                className={avatarCompressed}
                 sizeClassName="icon-candidate-small u-push--sm "
                 imageUrl={oneCandidate.candidate_photo_url_medium}
                 alt="candidate-photo"

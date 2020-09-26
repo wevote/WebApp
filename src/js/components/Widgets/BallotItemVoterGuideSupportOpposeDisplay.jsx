@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Info, ThumbUp, ThumbDown } from '@material-ui/icons';
+import { isCordova } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import FriendsOnlyIndicator from './FriendsOnlyIndicator';
@@ -122,7 +123,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
                   <ThumbUp />
                 </OrganizationSupportIconWrapper>
               </OrganizationSupportSquare>
-              <OverlayImage className="image-border-support ">
+              <OverlayImage className="image-border-support " style={isCordova() ? {width: 20} : {}}>
                 <OrganizationIconWrapper>
                   {organizationImageUrlHttpsTiny ? (
                     <ImageHandler

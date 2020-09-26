@@ -13,6 +13,7 @@ $header-height-back-to-ballot: 96px;
 $header-height-back-to-ballot-cordova: 71px;
 $header-height-voter-guide-creator: 108px;
 $header-padding-left: 15px;
+$ipad-margin-top: 26px;
 
 .page-header {
   // required overrides for Bootstrap :(
@@ -36,7 +37,6 @@ $header-padding-left: 15px;
   }
 
   &__container_ipad {
-    $ipad-margin-top: 26px;
     background-color: $page-header-color;
     margin-top: $ipad-margin-top !important;
   }
