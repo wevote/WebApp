@@ -175,8 +175,8 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   componentWillUnmount () {
-    this.voterGuideStoreListener.remove();
     this.organizationStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
     if (this.modalOpenTimer) {
       clearTimeout(this.modalOpenTimer);

@@ -9,6 +9,7 @@ import IssueStore from '../../stores/IssueStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import { convertStateCodeFilterToStateCode } from '../../utils/addressFunctions';
+import { convertToInteger } from '../../utils/textFormat';
 
 
 class VoterGuidePositionFilter extends Component {
@@ -17,6 +18,7 @@ class VoterGuidePositionFilter extends Component {
     onFilteredItemsChange: PropTypes.func,
     onSelectSortByFilter: PropTypes.func,
     onToggleFilter: PropTypes.func,
+    onToggleMultipleFilters: PropTypes.func,
     selectedFilters: PropTypes.array,
     showAllFilters: PropTypes.bool,
     classes: PropTypes.object,
@@ -27,6 +29,7 @@ class VoterGuidePositionFilter extends Component {
     this.state = {
       allItemsLength: 0,
       issues: IssueStore.getAllIssues(),
+      positionUltimateElectionDateCutOffInteger: 0,
       sortedBy: '',
       thisYearInteger: 0,
     };
@@ -40,8 +43,25 @@ class VoterGuidePositionFilter extends Component {
     }
     const today = new Date();
     const thisYearInteger = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let monthDay = today.getDate();
+    // We want to roll back positionUltimateElectionDateCutOffInteger by 5 so we can still see endorsements for an election in last 5 days
+    if (monthDay < 6) {
+      monthDay = 1;
+      if (month > 1) {
+        month -= 1;
+      }
+    } else {
+      monthDay -= 5;
+    }
+    const monthAsString = month < 10 ? `0${month}` : `${month}`; // `${month}` for string result
+    const monthDayAsString = monthDay < 10 ? `0${monthDay}` : `${monthDay}`; // `${monthDay}` for string result
+    const electionDateAsString = `${thisYearInteger}${monthAsString}${monthDayAsString}`;
+    const positionUltimateElectionDateCutOffInteger = convertToInteger(electionDateAsString);
+    // console.log('positionUltimateElectionDateCutOffInteger:', positionUltimateElectionDateCutOffInteger);
     this.setState({
       allItemsLength,
+      positionUltimateElectionDateCutOffInteger,
       thisYearInteger,
     });
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -99,7 +119,7 @@ class VoterGuidePositionFilter extends Component {
 
   getNewFilteredItems = () => {
     const { allItems, selectedFilters } = this.props;
-    const { thisYearInteger } = this.state;
+    const { positionUltimateElectionDateCutOffInteger, thisYearInteger } = this.state;
     // console.log('getNewFilteredItems allItems:', allItems, ', selectedFilters:', selectedFilters);
     let filteredItems = [];
     if (!selectedFilters || !selectedFilters.length) return allItems;
@@ -151,10 +171,13 @@ class VoterGuidePositionFilter extends Component {
     } else {
       filteredItems = allItems;
     }
-    // thisYear, priorYears, battlegroundRaces
+    // upcomingOnly, thisYear, priorYears, battlegroundRaces
     let containsAtLeastOneYear = false;
     selectedFilters.forEach((filter) => {
       switch (filter) {
+        case 'upcomingOnly':
+          containsAtLeastOneYear = true;
+          break;
         case 'thisYear':
           containsAtLeastOneYear = true;
           break;
@@ -170,6 +193,9 @@ class VoterGuidePositionFilter extends Component {
       filteredItems = [];
       selectedFilters.forEach((filter) => {
         switch (filter) {
+          case 'upcomingOnly':
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.position_ultimate_election_date > positionUltimateElectionDateCutOffInteger))];
+            break;
           case 'thisYear':
             filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.position_year === thisYearInteger))];
             break;
@@ -282,6 +308,58 @@ class VoterGuidePositionFilter extends Component {
     this.props.onToggleFilter(name);
   }
 
+  toggleUpcomingOnly = (upcomingOnlyChecked, thisYearChecked, priorYearsChecked) => {
+    const filterNameList = [];
+    if (upcomingOnlyChecked) {
+      // If here, we are unchecking 'Upcoming Only'
+      // Goal: Toggle ON thisYear
+      if (!thisYearChecked) {
+        filterNameList.push('thisYear');
+      }
+      filterNameList.push('upcomingOnly');
+    } else {
+      // Goal: Toggle OFF thisYear and priorYears
+      if (thisYearChecked) {
+        filterNameList.push('thisYear');
+      }
+      if (priorYearsChecked) {
+        filterNameList.push('priorYears');
+      }
+      filterNameList.push('upcomingOnly');
+    }
+    if (this.props.onToggleMultipleFilters && filterNameList && filterNameList.length > 0) {
+      this.props.onToggleMultipleFilters(filterNameList);
+    }
+  }
+
+  toggleThisYear = (upcomingOnlyChecked, thisYearChecked, priorYearsChecked) => {
+    const filterNameList = [];
+    filterNameList.push('thisYear');
+    if (thisYearChecked) {
+      // Goal: Since we are unchecking thisYear, IF priorYears is NOT checked, Toggle ON upcomingOnly
+      if (!priorYearsChecked && !upcomingOnlyChecked) {
+        filterNameList.push('upcomingOnly');
+      }
+    } else if (upcomingOnlyChecked) filterNameList.push('upcomingOnly'); // Goal: If upcomingOnly is currently checked, Toggle OFF upcomingOnly
+    if (this.props.onToggleMultipleFilters && filterNameList && filterNameList.length > 0) {
+      this.props.onToggleMultipleFilters(filterNameList);
+    }
+  }
+
+  togglePriorYears = (upcomingOnlyChecked, thisYearChecked, priorYearsChecked) => {
+    const filterNameList = [];
+    filterNameList.push('priorYears');
+    if (priorYearsChecked) {
+      // Goal: Since we are unchecking priorYears, IF thisYear is NOT checked, Toggle ON upcomingOnly
+      if (!thisYearChecked && !upcomingOnlyChecked) {
+        filterNameList.push('upcomingOnly');
+      }
+    } else if (upcomingOnlyChecked) filterNameList.push('upcomingOnly'); // Goal: Since we are check the Prior Years box, if upcomingOnly is currently checked, Toggle OFF upcomingOnly
+    if (this.props.onToggleMultipleFilters && filterNameList && filterNameList.length > 0) {
+      this.props.onToggleMultipleFilters(filterNameList);
+    }
+  }
+
   selectSortByFilter = (name) => {
     this.props.onSelectSortByFilter(name);
   }
@@ -330,8 +408,20 @@ class VoterGuidePositionFilter extends Component {
               classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
+                  checked={selectedFilters.indexOf('upcomingOnly') > -1}
+                  onChange={() => this.toggleUpcomingOnly(selectedFilters.indexOf('upcomingOnly') > -1, selectedFilters.indexOf('thisYear') > -1, selectedFilters.indexOf('priorYears') > -1)}
+                  value="upcomingOnly"
+                  color="primary"
+                />
+              )}
+              label="Upcoming Only"
+            />
+            <FormControlLabel
+              classes={{ label: classes.formControlLabel }}
+              control={(
+                <Checkbox
                   checked={selectedFilters.indexOf('thisYear') > -1}
-                  onChange={() => this.toggleFilter('thisYear')}
+                  onChange={() => this.toggleThisYear(selectedFilters.indexOf('upcomingOnly') > -1, selectedFilters.indexOf('thisYear') > -1, selectedFilters.indexOf('priorYears') > -1)}
                   value="thisYear"
                   color="primary"
                 />
@@ -343,7 +433,7 @@ class VoterGuidePositionFilter extends Component {
               control={(
                 <Checkbox
                   checked={selectedFilters.indexOf('priorYears') > -1}
-                  onChange={() => this.toggleFilter('priorYears')}
+                  onChange={() => this.togglePriorYears(selectedFilters.indexOf('upcomingOnly') > -1, selectedFilters.indexOf('thisYear') > -1, selectedFilters.indexOf('priorYears') > -1)}
                   value="priorYears"
                   color="primary"
                 />

@@ -435,6 +435,7 @@ const VoterGuideEndorsementsWrapper = styled.div`
 `;
 
 const VoterGuideEndorsementsOuterWrapper = styled.div`
+  margin-bottom: 45px;
 `;
 
 export default withStyles(styles)(VoterGuideEndorsements);

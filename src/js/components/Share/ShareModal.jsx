@@ -311,11 +311,11 @@ class ShareModal extends Component {
                 <strong>
                   {(shareModalStep === 'ballotShareOptions') && 'Ballot'}
                   {(shareModalStep === 'ballotShareOptionsAllOpinions') && 'Ballot + Your Opinions'}
-                  {(shareModalStep === 'candidateShareOptions') && 'Candidate for this Election'}
+                  {(shareModalStep === 'candidateShareOptions') && 'Candidate'}
                   {(shareModalStep === 'candidateShareOptionsAllOpinions') && 'Candidate + Your Opinions'}
-                  {(shareModalStep === 'measureShareOptions') && 'Measure for this Election'}
+                  {(shareModalStep === 'measureShareOptions') && 'Measure'}
                   {(shareModalStep === 'measureShareOptionsAllOpinions') && 'Measure + Your Opinions'}
-                  {(shareModalStep === 'officeShareOptions') && 'Office for this Election'}
+                  {(shareModalStep === 'officeShareOptions') && 'Office'}
                   {(shareModalStep === 'officeShareOptionsAllOpinions') && 'Office + Your Opinions'}
                   {(shareModalStep === 'organizationShareOptions') && 'This Page'}
                   {(shareModalStep === 'organizationShareOptionsAllOpinions') && 'This Page + Your Opinions'}
@@ -325,47 +325,47 @@ class ShareModal extends Component {
               </Title>
               <SubTitle>
                 {(shareModalStep === 'ballotShareOptions') && (
-                  <>Share a link to this election so that your friends can get ready to vote.</>
+                  <>Send friends to their ballot so they can get ready to vote.</>
                 )}
                 {(shareModalStep === 'ballotShareOptionsAllOpinions') && (
-                  <>Share a link to this election with all of your opinions for this year. </>
+                  <>Send friends to their ballot.</>
                 )}
                 {(shareModalStep === 'candidateShareOptions') && (
-                  <>Share a link to this candidate. </>
+                  <>Send friends to this candidate.</>
                 )}
                 {(shareModalStep === 'candidateShareOptionsAllOpinions') && (
-                  <>Share a link to this candidate. </>
+                  <>Send friends to this candidate.</>
                 )}
                 {(shareModalStep === 'measureShareOptions') && (
-                  <>Share a link to this measure/proposition. </>
+                  <>Send friends to this measure/proposition.</>
                 )}
                 {(shareModalStep === 'measureShareOptionsAllOpinions') && (
-                  <>Share a link to this measure/proposition. </>
+                  <>Send friends to this measure/proposition.</>
                 )}
                 {(shareModalStep === 'officeShareOptions') && (
-                  <>Share a link to this office. </>
+                  <>Send friends to this office.</>
                 )}
                 {(shareModalStep === 'officeShareOptionsAllOpinions') && (
-                  <>Share a link to this office. </>
+                  <>Send friends to this office.</>
                 )}
                 {(shareModalStep === 'organizationShareOptions') && (
-                  <>Share a link to this page. </>
+                  <>Send friends to this page.</>
                 )}
                 {(shareModalStep === 'organizationShareOptionsAllOpinions') && (
-                  <>Share a link to this page. </>
+                  <>Send friends to this page.</>
                 )}
                 {(shareModalStep === 'readyShareOptions') && (
-                  <>Share a link to this Ready page. </>
+                  <>Send friends to their own Ready page.</>
                 )}
                 {(shareModalStep === 'readyShareOptionsAllOpinions') && (
-                  <>Share a link to this Ready page. </>
+                  <>Send friends to their own Ready page.</>
                 )}
                 {stringContains('AllOpinions', shareModalStep) ? (
                   <>
                     {' '}
-                    A brief introduction to We Vote will be shown.
+                    A three-step intro to We Vote will be shown in a popup.
                     {' '}
-                    All of the people who open this link will get permission to see all of your opinions for this year (both public and friends-only).
+                    This link will give permission to see your opinions.
                     {' '}
                     <span className="u-link-color u-underline u-cursor--pointer" onClick={() => this.doNotIncludeOpinions(shareModalStep)}>
                       Don&apos;t include your opinions.
@@ -374,7 +374,7 @@ class ShareModal extends Component {
                 ) : (
                   <>
                     {' '}
-                    A brief introduction to We Vote will be shown.
+                    A three-step intro to We Vote will be shown in a popup.
                     {' '}
                     Your opinions are NOT included.
                     {' '}
@@ -514,8 +514,8 @@ class ShareModal extends Component {
                 // title={this.props.title}
                 className="u-no-underline"
                 body={(
-                  <Button className={classes.previewButton} variant="contained" fullWidth color="primary">
-                    Preview
+                  <Button className={classes.previewButton} variant="outlined" fullWidth color="primary">
+                    Preview Link in New Window
                   </Button>
                 )}
               />
@@ -578,7 +578,7 @@ class ShareModal extends Component {
                 <Title left>
                   <strong>Share Ballot With Friends</strong>
                   {' '}
-                  <Tooltip title="Share a link to this election so that your friends can get ready to vote. Your opinions are NOT included." arrow enterDelay={300}>
+                  <Tooltip title="Send friends to their ballot so they can get ready to vote. Your opinions are NOT included." arrow enterDelay={300}>
                     <i className="fas fa-info-circle" />
                   </Tooltip>
                 </Title>

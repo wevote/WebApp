@@ -105,11 +105,15 @@ class Office extends Component {
     }
     const modalToOpen = this.props.params.modal_to_show || '';
     if (modalToOpen === 'share') {
-      AppActions.setShowShareModal(true);
+      this.modalOpenTimer = setTimeout(() => {
+        AppActions.setShowShareModal(true);
+      }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = this.props.params.shared_item_code || '';
       if (sharedItemCode) {
-        AppActions.setShowSharedItemModal(sharedItemCode);
+        this.modalOpenTimer = setTimeout(() => {
+          AppActions.setShowSharedItemModal(sharedItemCode);
+        }, 1000);
       }
     }
     ActivityActions.activityNoticeListRetrieve();
@@ -120,11 +124,15 @@ class Office extends Component {
     // console.log('Office componentWillReceiveProps');
     const modalToOpen = nextProps.params.modal_to_show || '';
     if (modalToOpen === 'share') {
-      AppActions.setShowShareModal(true);
+      this.modalOpenTimer = setTimeout(() => {
+        AppActions.setShowShareModal(true);
+      }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = nextProps.params.shared_item_code || '';
       if (sharedItemCode) {
-        AppActions.setShowSharedItemModal(sharedItemCode);
+        this.modalOpenTimer = setTimeout(() => {
+          AppActions.setShowSharedItemModal(sharedItemCode);
+        }, 1000);
       }
     }
   }
@@ -132,6 +140,10 @@ class Office extends Component {
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.officeStoreListener.remove();
+    if (this.modalOpenTimer) {
+      clearTimeout(this.modalOpenTimer);
+      this.modalOpenTimer = null;
+    }
   }
 
   onCandidateStoreChange () {

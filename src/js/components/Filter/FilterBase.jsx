@@ -115,6 +115,38 @@ class FilterBase extends React.Component {
     }
   };
 
+  onToggleMultipleFilters = (filterNameList) => {
+    let { selectedFilters } = this.state;
+    let lastFilterAdded;
+    filterNameList.forEach((filterName) => {
+      if (selectedFilters.indexOf(filterName) > -1) {
+        // Remove this filter
+        selectedFilters = selectedFilters.filter(filter => filter !== filterName);
+        // this.setState({ selectedFilters: selectedFilters.filter(filter => filter !== filterName) });
+      } else {
+        // Add this filter
+        selectedFilters = [...selectedFilters, filterName];
+        lastFilterAdded = filterName;
+      }
+    });
+    if (lastFilterAdded) {
+      this.setState({
+        lastFilterAdded,
+      });
+    }
+    this.setState({
+      selectedFilters,
+    });
+    // And finally, cancel any search that might be underway
+    this.setState({ isSearching: false });
+    if (this.props.onToggleSearch) {
+      this.props.onToggleSearch(true);
+    }
+    if (this.props.onSearch) {
+      this.props.onSearch('', []);
+    }
+  };
+
   selectSortByFilter = (filterName) => {
     const { selectedFilters, sortFilters } = this.state;
     let updatedFilters = selectedFilters;
@@ -301,6 +333,7 @@ class FilterBase extends React.Component {
             lastFilterAdded: this.state.lastFilterAdded,
             onSelectSortByFilter: this.selectSortByFilter,
             onToggleFilter: this.toggleFilter,
+            onToggleMultipleFilters: this.onToggleMultipleFilters,
             onFilteredItemsChange: this.onFilteredItemsChange,
             selectedFilters: this.state.selectedFilters,
             showAllFilters: this.state.showAllFilters,

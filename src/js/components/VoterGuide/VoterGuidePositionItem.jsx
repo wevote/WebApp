@@ -158,6 +158,7 @@ class VoterGuidePositionItem extends Component {
   onOrganizationStoreChange () {
     const { positionWeVoteId } = this.props;
     const positionItem = OrganizationStore.getPositionByPositionWeVoteId(positionWeVoteId);
+    // console.log('positionItem:', positionItem);
     const {
       ballot_item_display_name: ballotItemDisplayName,
       ballot_item_image_url_https_medium: ballotItemImageUrlHttpsMedium,
