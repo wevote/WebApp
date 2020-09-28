@@ -147,8 +147,8 @@ class VoterGuidePositionList extends Component {
   }
 
   // componentWillReceiveProps (nextProps) {
-  //   console.log('VoterGuidePositionList componentWillReceiveProps');
   //   let { incomingPositionList } = nextProps;
+  //   console.log('VoterGuidePositionList componentWillReceiveProps, incomingPositionList:', incomingPositionList);
   //   const candidateAlreadySeenThisYear = {};
   //
   //   // Replicate onOrganizationStoreChange
