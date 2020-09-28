@@ -102,7 +102,7 @@ class PositionList extends Component {
     // console.log('PositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
     // eslint-disable-next-line arrow-body-style
     incomingPositionList = incomingPositionList.map((position) => {
-      // console.log('PositionList onFriendStoreChange, position: ', position);
+      // console.log('PositionList componentDidMount, position: ', position);
       return ({
         ...position,
         currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,

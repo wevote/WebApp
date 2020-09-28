@@ -298,7 +298,6 @@ class Ballot extends Component {
       }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = this.props.params.shared_item_code || '';
-      // console.log('componentDidMount sharedItemCode:', sharedItemCode);
       if (sharedItemCode) {
         this.modalOpenTimer = setTimeout(() => {
           AppActions.setShowSharedItemModal(sharedItemCode);

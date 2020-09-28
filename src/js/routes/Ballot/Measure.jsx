@@ -102,11 +102,15 @@ class Measure extends Component {
     });
     const modalToOpen = this.props.params.modal_to_show || '';
     if (modalToOpen === 'share') {
-      AppActions.setShowShareModal(true);
+      this.modalOpenTimer = setTimeout(() => {
+        AppActions.setShowShareModal(true);
+      }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = this.props.params.shared_item_code || '';
       if (sharedItemCode) {
-        AppActions.setShowSharedItemModal(sharedItemCode);
+        this.modalOpenTimer = setTimeout(() => {
+          AppActions.setShowSharedItemModal(sharedItemCode);
+        }, 1000);
       }
     }
     ActivityActions.activityNoticeListRetrieve();
@@ -116,11 +120,15 @@ class Measure extends Component {
   componentWillReceiveProps (nextProps) {
     const modalToOpen = nextProps.params.modal_to_show || '';
     if (modalToOpen === 'share') {
-      AppActions.setShowShareModal(true);
+      this.modalOpenTimer = setTimeout(() => {
+        AppActions.setShowShareModal(true);
+      }, 1000);
     } else if (modalToOpen === 'sic') { // sic = Shared Item Code
       const sharedItemCode = nextProps.params.shared_item_code || '';
       if (sharedItemCode) {
-        AppActions.setShowSharedItemModal(sharedItemCode);
+        this.modalOpenTimer = setTimeout(() => {
+          AppActions.setShowSharedItemModal(sharedItemCode);
+        }, 1000);
       }
     }
     // When a new measure is passed in, update this component to show the new data
@@ -191,9 +199,13 @@ class Measure extends Component {
   }
 
   componentWillUnmount () {
+    this.appStoreListener.remove();
     this.measureStoreListener.remove();
     this.voterGuideStoreListener.remove();
-    this.appStoreListener.remove();
+    if (this.modalOpenTimer) {
+      clearTimeout(this.modalOpenTimer);
+      this.modalOpenTimer = null;
+    }
   }
 
   onAppStoreChange () {

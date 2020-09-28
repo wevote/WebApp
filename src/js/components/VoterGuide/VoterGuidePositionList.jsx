@@ -83,19 +83,20 @@ class VoterGuidePositionList extends Component {
 
   componentDidMount () {
     // console.log('VoterGuidePositionList componentDidMount');
-    let { incomingPositionList } = this.props;
+    const { incomingPositionList } = this.props;
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
 
-    // console.log('componentDidMount incomingPositionList:', incomingPositionList);
+    // console.log('START componentDidMount incomingPositionList:', incomingPositionList);
     const candidateAlreadySeenThisYear = {};
 
     // Replicate onOrganizationStoreChange
     const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
     // eslint-disable-next-line arrow-body-style
-    incomingPositionList = incomingPositionList.map((position) => {
-      // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
-      if (!position) {
+    const positionListModified1 = incomingPositionList.map((position) => {
+      // console.log('VoterGuidePositionList componentDidMount positionListModified1, position: ', position);
+      if (!position.position_we_vote_id) {
+        // console.log('MISSING position.position_we_vote_id');
         return null;
       }
       if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && arrayContains(position.position_year, candidateAlreadySeenThisYear[position.ballot_item_we_vote_id])) {
@@ -112,18 +113,20 @@ class VoterGuidePositionList extends Component {
         followed: organizationsVoterIsFollowing.filter(org => (position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
       });
     });
+    const positionListModified1Filtered = positionListModified1.filter(position => position != null);
 
     // Replicate onFriendStoreChange
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
     // console.log('VoterGuidePositionList onFriendStoreChange, organizationsVoterIsFriendsWith:', organizationsVoterIsFriendsWith);
     // eslint-disable-next-line arrow-body-style
-    incomingPositionList = incomingPositionList.map((position) => {
-      // console.log('VoterGuidePositionList onFriendStoreChange, position: ', position);
+    const positionListModified2 = positionListModified1Filtered.map((position) => {
+      // console.log('VoterGuidePositionList componentDidMount positionListModified2, position: ', position);
       return ({
         ...position,
         currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => (position && organizationWeVoteId === position.speaker_we_vote_id)).length > 0,
       });
     });
+    const positionListModified2Filtered = positionListModified2.filter(position => position != null);
 
     OrganizationActions.organizationsFollowedRetrieve();
     if (!organizationsVoterIsFriendsWith.length > 0) {
@@ -135,50 +138,50 @@ class VoterGuidePositionList extends Component {
 
     window.addEventListener('scroll', this.onScroll);
     this.setState({
-      positionList: incomingPositionList,
-      filteredPositionList: incomingPositionList,
-      filteredPositionListLength: incomingPositionList.length,
+      positionList: positionListModified2Filtered,
+      filteredPositionList: positionListModified2Filtered,
+      filteredPositionListLength: positionListModified2Filtered.length,
       stateCodesToDisplay,
       numberOfPositionItemsToDisplay: this.props.startingNumberOfPositionsToDisplay || STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY,
     });
   }
 
-  componentWillReceiveProps (nextProps) {
-    // console.log('VoterGuidePositionList componentWillReceiveProps');
-    let { incomingPositionList } = nextProps;
-    const candidateAlreadySeenThisYear = {};
-
-    // Replicate onOrganizationStoreChange
-    const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
-    // eslint-disable-next-line arrow-body-style
-    incomingPositionList = incomingPositionList.map((position) => {
-      // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
-      if (!position) {
-        return null;
-      }
-      if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && arrayContains(position.position_year, candidateAlreadySeenThisYear[position.ballot_item_we_vote_id])) {
-        // console.log('componentWillReceiveProps already seen');
-        return null;
-      } else if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id]) {
-        candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].push(position.position_year);
-      } else {
-        candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] = [];
-        candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].push(position.position_year);
-      }
-      return ({
-        ...position,
-        followed: organizationsVoterIsFollowing.filter(org => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
-      });
-    });
-
-    const stateCodesToDisplay = getStateCodesFoundInObjectList(incomingPositionList);
-    this.setState({
-      positionList: incomingPositionList,
-      // filteredPositionList: incomingPositionList, // Do not update
-      stateCodesToDisplay,
-    });
-    // }
-  }
+  // componentWillReceiveProps (nextProps) {
+  //   let { incomingPositionList } = nextProps;
+  //   console.log('VoterGuidePositionList componentWillReceiveProps, incomingPositionList:', incomingPositionList);
+  //   const candidateAlreadySeenThisYear = {};
+  //
+  //   // Replicate onOrganizationStoreChange
+  //   const organizationsVoterIsFollowing = OrganizationStore.getOrganizationsVoterIsFollowing();
+  //   // eslint-disable-next-line arrow-body-style
+  //   incomingPositionList = incomingPositionList.map((position) => {
+  //     // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
+  //     if (!position) {
+  //       return null;
+  //     }
+  //     if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] && arrayContains(position.position_year, candidateAlreadySeenThisYear[position.ballot_item_we_vote_id])) {
+  //       // console.log('componentWillReceiveProps already seen');
+  //       return null;
+  //     } else if (candidateAlreadySeenThisYear[position.ballot_item_we_vote_id]) {
+  //       candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].push(position.position_year);
+  //     } else {
+  //       candidateAlreadySeenThisYear[position.ballot_item_we_vote_id] = [];
+  //       candidateAlreadySeenThisYear[position.ballot_item_we_vote_id].push(position.position_year);
+  //     }
+  //     return ({
+  //       ...position,
+  //       followed: organizationsVoterIsFollowing.filter(org => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
+  //     });
+  //   });
+  //
+  //   const stateCodesToDisplay = getStateCodesFoundInObjectList(incomingPositionList);
+  //   this.setState({
+  //     positionList: incomingPositionList,
+  //     // filteredPositionList: incomingPositionList, // Do not update
+  //     stateCodesToDisplay,
+  //   });
+  //   // }
+  // }
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if not needed
@@ -388,7 +391,7 @@ class VoterGuidePositionList extends Component {
     for (count = 0; count < positionList.length; count++) {
       showTitle = true;
     }
-    const selectedFiltersDefault = ['sortByAlphabetical', 'thisYear', 'federalRaces', 'stateRaces', 'measureRaces', 'localRaces'];
+    const selectedFiltersDefault = ['sortByAlphabetical', 'upcomingOnly', 'federalRaces', 'stateRaces', 'measureRaces', 'localRaces'];
     let numberOfPositionItemsDisplayed = 0;
     let searchTextString = '';
     return (
