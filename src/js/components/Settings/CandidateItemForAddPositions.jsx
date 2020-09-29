@@ -183,7 +183,7 @@ class CandidateItemForAddPositions extends Component {
     ) :
       null;
 
-    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? "-cordova" : ""}`;
+    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
     return (
       <Wrapper>

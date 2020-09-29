@@ -114,7 +114,7 @@ export default class CandidateItemCompressed extends Component {
     const candidatePartyText = this.state.oneCandidate.party && this.state.oneCandidate.party.length ? `${this.state.oneCandidate.party}. ` : '';
     const candidateDescriptionText = this.state.oneCandidate.twitter_description && this.state.oneCandidate.twitter_description.length ? this.state.oneCandidate.twitter_description : '';
     const candidateText = candidatePartyText + candidateDescriptionText;
-    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? "-cordova" : ""} o-media-object__anchor u-cursor--pointer u-self-start u-push--sm`;
+    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''} o-media-object__anchor u-cursor--pointer u-self-start u-push--sm`;
 
     return (
       <div key={oneCandidateWeVoteId} className="u-stack--md">

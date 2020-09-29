@@ -90,7 +90,6 @@ class TwitterStore extends ReduceStore {
   }
 
   reduce (state, action) {
-
     switch (action.type) {
       case 'resetTwitterHandleLanding':
         // console.log('TwitterStore resetTwitterHandleLanding');

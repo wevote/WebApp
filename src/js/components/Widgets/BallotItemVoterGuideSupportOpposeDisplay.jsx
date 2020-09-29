@@ -123,7 +123,7 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
                   <ThumbUp />
                 </OrganizationSupportIconWrapper>
               </OrganizationSupportSquare>
-              <OverlayImage className="image-border-support " style={isCordova() ? {width: 20} : {}}>
+              <OverlayImage className="image-border-support " style={isCordova() ? { width: 20 } : {}}>
                 <OrganizationIconWrapper>
                   {organizationImageUrlHttpsTiny ? (
                     <ImageHandler
