@@ -9,6 +9,10 @@ export default {
     VoterActions.voterRetrieve();
   },
 
+  resetTwitterHandleLanding () {
+    Dispatcher.dispatch({ type: 'resetTwitterHandleLanding', payload: true });
+  },
+
   twitterIdentityRetrieve (newTwitterHandle) {
     Dispatcher.loadEndpoint('twitterIdentityRetrieve',
       {

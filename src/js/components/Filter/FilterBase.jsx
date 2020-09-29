@@ -325,7 +325,7 @@ class FilterBase extends React.Component {
             {numberOfItemsFoundNode}
           </NumberOfItemsFoundWrapper>
         </FilterTop>
-        {
+        {!isSearching && (
           React.cloneElement(this.props.children, {
             allItems: this.props.allItems,
             changeTrigger: this.state.changeTrigger,
@@ -339,7 +339,7 @@ class FilterBase extends React.Component {
             showAllFilters: this.state.showAllFilters,
             updateSelectedFilters: this.updateSelectedFilters,
           })
-        }
+        )}
       </Wrapper>
     );
   }

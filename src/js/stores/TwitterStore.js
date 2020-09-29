@@ -90,11 +90,37 @@ class TwitterStore extends ReduceStore {
   }
 
   reduce (state, action) {
-    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success) return state;
 
     switch (action.type) {
+      case 'resetTwitterHandleLanding':
+        // console.log('TwitterStore resetTwitterHandleLanding');
+        return {
+          ...state,
+          kind_of_owner: '',
+          owner_we_vote_id: '',
+          twitter_handle: '',
+          twitter_description: '',
+          twitter_followers_count: 0,
+          twitter_name: '',
+          twitter_photo_url: '',
+          twitter_user_website: '',
+          status: '',
+          // voter_device_id: this.getState().voter_device_id || '',
+          twitter_handle_found: '',
+          twitter_secret_key: '',
+          // existing_twitter_account_found: '',
+          twitter_profile_image_url_https: '',
+          twitter_retrieve_attempted: false,
+          // voter_we_vote_id: this.getState().voter_we_vote_id || '',
+          voter_we_vote_id_attached_to_twitter: '',
+          we_vote_hosted_profile_image_url_large: '',
+          we_vote_hosted_profile_image_url_medium: '',
+          we_vote_hosted_profile_image_url_tiny: '',
+        };
+
       case 'twitterIdentityRetrieve':
+        // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+        if (!action.res || !action.res.success) return state;
         if (action.res.kind_of_owner === 'ORGANIZATION') {
           OrganizationActions.organizationRetrieve(action.res.owner_we_vote_id);
         } else if (action.res.kind_of_owner === 'CANDIDATE') {
@@ -117,6 +143,8 @@ class TwitterStore extends ReduceStore {
         };
 
       case 'twitterNativeSignInSave':
+        // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+        if (!action.res || !action.res.success) return state;
         if (action.res.success) {
           TwitterActions.twitterSignInRetrieve();
         }
@@ -131,6 +159,8 @@ class TwitterStore extends ReduceStore {
 
 
       case 'twitterSignInRetrieve':
+        // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+        if (!action.res || !action.res.success) return state;
         if (action.res.twitter_sign_in_verified) {
           VoterActions.voterRetrieve();
           VoterActions.twitterRetrieveIdsIfollow();
@@ -154,6 +184,8 @@ class TwitterStore extends ReduceStore {
         };
 
       case 'voterSignOut':
+        // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+        if (!action.res || !action.res.success) return state;
         // console.log("resetting TwitterStore");
         // return this.resetState();
         return this.resetVoterSpecificData();

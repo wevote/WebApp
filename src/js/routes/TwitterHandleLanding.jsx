@@ -33,6 +33,7 @@ export default class TwitterHandleLanding extends Component {
   componentDidMount () {
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    TwitterActions.resetTwitterHandleLanding();
     const { activeRoute, params } = this.props;
     const { twitter_handle: twitterHandle } = params;
     // console.log(`TwitterHandleLanding componentDidMount, twitterHandle: ${twitterHandle}`);
@@ -64,6 +65,7 @@ export default class TwitterHandleLanding extends Component {
   }
 
   componentWillUnmount () {
+    TwitterActions.resetTwitterHandleLanding();
     this.twitterStoreListener.remove();
     this.voterStoreListener.remove();
   }
