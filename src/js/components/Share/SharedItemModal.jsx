@@ -409,7 +409,7 @@ class SharedItemModal extends Component {
     let textNextToInfoIcon = null;
     const nameForNextToInfoIcon = organizationName || 'This person';
     const nameForNextToInfoIconMidSentence = organizationName || 'this person';
-    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? "-cordova" : ""}`;
+    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
     if (isFriend) {
       textNextToInfoIcon = `${nameForNextToInfoIcon}'s opinions will be added to your personalized scores. `;
     } else if (isFollowing) {

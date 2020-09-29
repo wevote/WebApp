@@ -203,7 +203,7 @@ class CandidateItemForOpinions extends Component {
       null;
 
     const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
-    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? "-cordova" : ""}`;
+    const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
     return (
       <Wrapper>
         <CandidateTopRow>

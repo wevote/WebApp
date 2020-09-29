@@ -255,7 +255,7 @@ class OfficeItemCompressed extends Component {
             const localUniqueId = oneCandidate.we_vote_id;
             voterSupportsBallotItem = SupportStore.voterSupportsList[oneCandidate.we_vote_id] || false;
             voterOpposesBallotItem = SupportStore.voterOpposesList[oneCandidate.we_vote_id] || false;
-            const avatarCompressed = `card-main__avatar-compressed${isCordova() ? "-cordova" : ""}`;
+            const avatarCompressed = `card-main__avatar-compressed${isCordova() ? '-cordova' : ''}`;
 
             return (
               <Column

@@ -337,7 +337,7 @@ class VoterGuidePositionList extends Component {
 
   onPositionSearch = (searchText, filteredItems) => {
     // console.log('onPositionSearch');
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0); // This causes unpleasant jump in mobile
     const totalNumberOfPositionSearchResults = filteredItems.length || 0;
     this.setState({
       positionSearchResults: filteredItems,
