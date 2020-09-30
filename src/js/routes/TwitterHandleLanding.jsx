@@ -57,6 +57,7 @@ export default class TwitterHandleLanding extends Component {
     if (nextTwitterHandle && twitterHandle.toLowerCase() !== nextTwitterHandle.toLowerCase()) {
       // We need this test to prevent an infinite loop
       // console.log('TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ', nextProps.params.twitter_handle);
+      TwitterActions.resetTwitterHandleLanding();
       TwitterActions.twitterIdentityRetrieve(nextTwitterHandle);
       this.setState({
         twitterHandle: nextTwitterHandle,

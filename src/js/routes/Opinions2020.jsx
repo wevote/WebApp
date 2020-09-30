@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
-import uniqBy from 'lodash-es/uniqBy';
 import { withStyles } from '@material-ui/core/styles';
 import { Card } from '@material-ui/core';
 import { Ballot, Info } from '@material-ui/icons';
@@ -72,7 +71,6 @@ class Opinions2020 extends Component {
       allBallotItemSearchResults: [],
       allOpinionsAndBallotItems: [],
       allOrganizationSearchResults: [],
-      allVoterGuides: [],
       ballotItemWeVoteIdsAlreadyFoundList: [],
       ballotSearchResults: [],
       componentDidMount: false,
@@ -82,13 +80,13 @@ class Opinions2020 extends Component {
       localAllBallotItemsHaveBeenRetrieved: {},
       localPositionListHasBeenRetrieved: {},
       numberOfBallotItemsToDisplay: 5,
-      organizationWeVoteIdsAlreadyFoundList: [],
       searchText: '',
       searchTextDefault: '',
       selectedFiltersAddDefault: [],
       stateCodeFromIpAddress: '',
       stateCodeToRetrieve: '',
       totalNumberOfBallotItems: 0,
+      voterGuidesMinusOrganizationsInSearchResults: [],
     };
     this.onScroll = this.onScroll.bind(this);
   }
@@ -129,14 +127,24 @@ class Opinions2020 extends Component {
     const voterGuidesToFollowAll = VoterGuideStore.getVoterGuidesToFollowAll();
     const voterGuidesVoterIsFollowing = VoterGuideStore.getVoterGuidesVoterIsFollowing();
     const allVoterGuidesBeforeFilter = voterGuidesToFollowAll.concat(voterGuidesVoterIsFollowing);
-    const allVoterGuides = uniqBy(allVoterGuidesBeforeFilter, 'organization_we_vote_id');
+    // const voterGuidesMinusOrganizationsInSearchResults = uniqBy(allVoterGuidesBeforeFilter, 'organization_we_vote_id');
 
-    const allOpinionsAndBallotItems = allVoterGuides.concat(allBallotItemsFlattened);
+    // Deduplicate allVoterGuidesBeforeFilter and put in voterGuidesMinusOrganizationsInSearchResults
+    const voterGuidesMinusOrganizationsInSearchResults = [];
+    const organizationWeVoteIdsFoundInVoterGuides = [];
+    allVoterGuidesBeforeFilter.forEach((oneOrganization) => {
+      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInVoterGuides)) {
+        organizationWeVoteIdsFoundInVoterGuides.push(oneOrganization.organization_we_vote_id);
+        voterGuidesMinusOrganizationsInSearchResults.push(oneOrganization);
+      }
+    });
+
+    const allOpinionsAndBallotItems = voterGuidesMinusOrganizationsInSearchResults.concat(allBallotItemsFlattened);
     // console.log('Opinions2020, onBallotStoreChange allBallotItemsFlattened:', allBallotItemsFlattened);
     this.setState({
       allBallotItems: allBallotItemsFlattened,
       allOpinionsAndBallotItems,
-      allVoterGuides,
+      voterGuidesMinusOrganizationsInSearchResults,
       filteredOpinionsAndBallotItems: allOpinionsAndBallotItems,
       totalNumberOfBallotItems: allOpinionsAndBallotItems.length,
     });
@@ -204,9 +212,9 @@ class Opinions2020 extends Component {
   }
 
   onBallotStoreChange () {
-    const { allBallotItemSearchResults, allOrganizationSearchResults, allVoterGuides, ballotItemWeVoteIdsAlreadyFoundList } = this.state;
+    const { allBallotItemSearchResults, allOrganizationSearchResults, voterGuidesMinusOrganizationsInSearchResults, ballotItemWeVoteIdsAlreadyFoundList } = this.state;
     const localGoogleCivicElectionId = VoterStore.electionId();
-    // console.log('onBallotStoreChange, localGoogleCivicElectionId:', localGoogleCivicElectionId);
+    // console.log('onBallotStoreChange');
     const allBallotItemsFlattened = BallotStore.getAllBallotItemsFlattened(localGoogleCivicElectionId);
     let ballotItemWeVoteIdsAlreadyFoundChanged = false;
     // console.log('Opinions2020, onBallotStoreChange allBallotItemsFlattened:', allBallotItemsFlattened);
@@ -294,7 +302,7 @@ class Opinions2020 extends Component {
         });
       }
     }
-    const allOpinionsAndBallotItems = allVoterGuides.concat(allBallotItemsFlattened, allBallotItemSearchResults, allOrganizationSearchResults);  // , allBallotItemSearchResults
+    const allOpinionsAndBallotItems = voterGuidesMinusOrganizationsInSearchResults.concat(allBallotItemsFlattened, allBallotItemSearchResults, allOrganizationSearchResults);  // , allBallotItemSearchResults
     this.setState({
       allBallotItems: allBallotItemsFlattened,
       allOpinionsAndBallotItems,
@@ -310,7 +318,7 @@ class Opinions2020 extends Component {
     } = this.state;
     let { stateCodeFromIpAddress } = this.state;
     const localGoogleCivicElectionId = VoterStore.electionId();
-    // console.log('onOrganizationStoreChange, linkedOrganizationWeVoteId: ', linkedOrganizationWeVoteId);
+    // console.log('onOrganizationStoreChange');
     if (!linkedOrganizationWeVoteId) {
       const voter = VoterStore.getVoter();
       // console.log('onOrganizationStoreChange, voter: ', voter);
@@ -376,55 +384,89 @@ class Opinions2020 extends Component {
     }
     // Anything coming back from search?
     const organizationSearchResultsList = OrganizationStore.getOrganizationSearchResultsList();
-    // console.log('organizationSearchResultsList:', organizationSearchResultsList);
-    const { allOrganizationSearchResults, organizationWeVoteIdsAlreadyFoundList } = this.state;
-    if (organizationSearchResultsList && organizationSearchResultsList.length) {
-      // Figure out which of these organizations has already been retrieved so we are only adding new
-      const newOrganizationSearchResults = organizationSearchResultsList.filter(org => !arrayContains(org.organization_we_vote_id, organizationWeVoteIdsAlreadyFoundList));
-      // console.log('newOrganizationSearchResults:', newOrganizationSearchResults);
-
-      // Figure out the organizations we already have voterGuides for so we don't duplicate
-      if (newOrganizationSearchResults.length) {
-        let newOrganization;
-        const newOrganizations = [];
-        for (let count = 0; count < newOrganizationSearchResults.length; count++) {
-          organizationWeVoteIdsAlreadyFoundList.push(newOrganizationSearchResults[count].organization_we_vote_id);
-          newOrganization = {
-            organization_we_vote_id: newOrganizationSearchResults[count].organization_we_vote_id,
-            twitter_description: newOrganizationSearchResults[count].organization_twitter_description || '',
-            twitter_followers_count: newOrganizationSearchResults[count].organization_twitter_followers_count || 0,
-            twitter_handle: newOrganizationSearchResults[count].organization_twitter_handle,
-            voter_guide_display_name: newOrganizationSearchResults[count].organization_name,
-            voter_guide_image_url_medium: newOrganizationSearchResults[count].organization_photo_url_medium,
-            voter_guide_owner_type: newOrganizationSearchResults[count].organization_type || '',
-            we_vote_id: newOrganizationSearchResults[count].organization_we_vote_id,
-          };
-          newOrganizations.push(newOrganization);
-          allOrganizationSearchResults.push(newOrganization);
-        }
-        const { allBallotItems, allBallotItemSearchResults, allVoterGuides } = this.state;
-        const allOpinionsAndBallotItems = allBallotItems.concat(allBallotItemSearchResults, allVoterGuides, newOrganizations);
-        this.setState({
-          allOpinionsAndBallotItems,
-          allOrganizationSearchResults,
-          organizationWeVoteIdsAlreadyFoundList,
-        });
+    const organizationSearchResultsListDeDuplicated = [];
+    const organizationWeVoteIdsFoundInOrganizationSearchResults = [];
+    organizationSearchResultsList.forEach((oneOrganization) => {
+      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInOrganizationSearchResults)) {
+        organizationWeVoteIdsFoundInOrganizationSearchResults.push(oneOrganization.organization_we_vote_id);
+        organizationSearchResultsListDeDuplicated.push(oneOrganization);
       }
+    });
+    // console.log('organizationSearchResultsList:', organizationSearchResultsList);
+
+    // Modify the voterGuidesMinusOrganizationsInSearchResults to take into consideration the new Organization search results
+    let { voterGuidesMinusOrganizationsInSearchResults } = this.state;
+    const voterGuidesMinusOrganizationsInSearchResultsCopy = voterGuidesMinusOrganizationsInSearchResults;
+    voterGuidesMinusOrganizationsInSearchResults = [];
+    voterGuidesMinusOrganizationsInSearchResultsCopy.forEach((oneOrganization) => {
+      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInOrganizationSearchResults)) {
+        voterGuidesMinusOrganizationsInSearchResults.push(oneOrganization);
+      }
+    });
+
+    const allOrganizationSearchResults = [];
+    if (organizationSearchResultsListDeDuplicated && organizationSearchResultsListDeDuplicated.length) {
+      let newOrganization;
+      for (let count = 0; count < organizationSearchResultsListDeDuplicated.length; count++) {
+        newOrganization = {
+          organization_we_vote_id: organizationSearchResultsListDeDuplicated[count].organization_we_vote_id,
+          twitter_description: organizationSearchResultsListDeDuplicated[count].organization_twitter_description || '',
+          twitter_followers_count: organizationSearchResultsListDeDuplicated[count].organization_twitter_followers_count || 0,
+          twitter_handle: organizationSearchResultsListDeDuplicated[count].organization_twitter_handle,
+          voter_guide_display_name: organizationSearchResultsListDeDuplicated[count].organization_name,
+          voter_guide_image_url_medium: organizationSearchResultsListDeDuplicated[count].organization_photo_url_medium,
+          voter_guide_owner_type: organizationSearchResultsListDeDuplicated[count].organization_type || '',
+          we_vote_id: organizationSearchResultsListDeDuplicated[count].organization_we_vote_id,
+        };
+        allOrganizationSearchResults.push(newOrganization);
+      }
+      const { allBallotItems, allBallotItemSearchResults } = this.state;
+      const allOpinionsAndBallotItems = allBallotItems.concat(allBallotItemSearchResults, voterGuidesMinusOrganizationsInSearchResults, allOrganizationSearchResults);
+      this.setState({
+        allOpinionsAndBallotItems,
+      });
     }
+    this.setState({
+      allOrganizationSearchResults,
+      voterGuidesMinusOrganizationsInSearchResults,
+    });
   }
 
   onVoterGuideStoreChange () {
     const { allBallotItems, allBallotItemSearchResults, allOrganizationSearchResults } = this.state;
     const voterGuidesToFollowAll = VoterGuideStore.getVoterGuidesToFollowAll();
     const voterGuidesVoterIsFollowing = VoterGuideStore.getVoterGuidesVoterIsFollowing();
-    const allVoterGuidesBeforeFilter = voterGuidesToFollowAll.concat(voterGuidesVoterIsFollowing);
+    const allVoterGuidesConcatenated = voterGuidesToFollowAll.concat(voterGuidesVoterIsFollowing);
     // console.log('allVoterGuidesBeforeFilter:', allVoterGuidesBeforeFilter);
-    const allVoterGuides = uniqBy(allVoterGuidesBeforeFilter, 'organization_we_vote_id');
-    // console.log('allVoterGuides:', allVoterGuides);
-    const allOpinionsAndBallotItems = allBallotItems.concat(allBallotItemSearchResults, allVoterGuides, allOrganizationSearchResults);
+
+    // Deduplicate allVoterGuidesBeforeFilter and put in allVoterGuidesDeDuplicated
+    const allVoterGuidesDeDuplicated = [];
+    const organizationWeVoteIdsFoundInVoterGuides = [];
+    allVoterGuidesConcatenated.forEach((oneOrganization) => {
+      if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInVoterGuides)) {
+        organizationWeVoteIdsFoundInVoterGuides.push(oneOrganization.organization_we_vote_id);
+        allVoterGuidesDeDuplicated.push(oneOrganization);
+      }
+    });
+
+    // We want to favor the organization search results because they are "fresher" (since the voter guides are retrieved from our CDN)
+    // Modify voterGuides list to remove any organizations found in allOrganizationSearchResults
+    const organizationWeVoteIdsFoundInOrganizationSearchResults = [];
+    allOrganizationSearchResults.forEach((oneOrganization) => {
+      organizationWeVoteIdsFoundInOrganizationSearchResults.push(oneOrganization.organization_we_vote_id);
+    });
+    const voterGuidesMinusOrganizationsInSearchResults = [];
+    allVoterGuidesDeDuplicated.forEach((oneOrganization) => {
+      if (oneOrganization && oneOrganization.organization_we_vote_id && arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsFoundInOrganizationSearchResults)) {
+        // Skip this entry
+      } else {
+        voterGuidesMinusOrganizationsInSearchResults.push(oneOrganization);
+      }
+    });
+    const allOpinionsAndBallotItems = allBallotItems.concat(allBallotItemSearchResults, voterGuidesMinusOrganizationsInSearchResults, allOrganizationSearchResults);
     this.setState({
       allOpinionsAndBallotItems,
-      allVoterGuides,
+      voterGuidesMinusOrganizationsInSearchResults,
     });
   }
 
