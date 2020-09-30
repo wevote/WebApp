@@ -348,7 +348,7 @@ const ActivityTime = styled.div`
 `;
 
 const BadgeCountWrapper = styled.span`
-  margin-top: ${props => (props.isNumberOne ? '2px' : '2px')};
+  margin-top: ${props => (props.isNumberOne ? '-3px' : '2px')};
   margin-left: ${props => (props.isNumberOne ? '0' : '1px')};
 `;
 
