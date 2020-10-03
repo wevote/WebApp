@@ -109,7 +109,6 @@ class HeaderBackToVoterGuides extends Component {
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
-  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // WARN: Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-unsafe-component-lifecycles for details.
     // console.log('HeaderBackToVoterGuides componentWillReceiveProps, nextProps: ', nextProps);
