@@ -39,7 +39,7 @@ class StickyPopover extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (nextProps.openPopoverByProp) {
       this.setState({ showPopover: true });
     } else if (nextProps.closePopoverByProp) {

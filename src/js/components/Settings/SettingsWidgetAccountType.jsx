@@ -38,7 +38,7 @@ export default class SettingsWidgetAccountType extends Component {
     this.updateOrganizationType = this.updateOrganizationType.bind(this);
   }
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     prepareForCordovaKeyboard('SettingsWidgetAccountType');
   }
 

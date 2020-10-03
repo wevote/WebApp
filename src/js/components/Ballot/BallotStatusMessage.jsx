@@ -66,7 +66,7 @@ class BallotStatusMessage extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("BallotStatusMessage componentWillReceiveProps");
     this.setState({
       ballotLocationChosen: nextProps.ballotLocationChosen,

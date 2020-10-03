@@ -183,7 +183,7 @@ class Vote extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('Ballot componentWillReceiveProps');
 
     // We don't want to let the googleCivicElectionId disappear

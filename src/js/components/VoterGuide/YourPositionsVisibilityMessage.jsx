@@ -35,7 +35,7 @@ export default class YourPositionsVisibilityMessage extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("BallotStatusMessage componentWillReceiveProps");
     let visibleToPublicCount = 0;
     let visibleToFriendsOnlyCount = 0;

@@ -65,7 +65,7 @@ class PositionItemScorePopoverTextOnly extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     console.log('componentWillReceiveProps, nextProps: ', nextProps);
     const { positionItem } = nextProps;
     if (positionItem) {

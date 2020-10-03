@@ -168,7 +168,7 @@ class HowItWorks extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (!this.props.inModal) {
       if (nextProps.params.category_string === 'for-campaigns') {
         this.setState({

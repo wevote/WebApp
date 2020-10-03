@@ -40,7 +40,7 @@ export default class SearchPage extends Component {
     this.searchAllStoreListener = SearchAllStore.addListener(this.onSearchAllStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.onSearchAllStoreChange();
     if (nextProps.params.encoded_search_string) {
       this.setState({ textFromSearchField: nextProps.params.encoded_search_string || '' });

@@ -22,7 +22,7 @@ export default class SettingsBannerAndOrganizationCard extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("SettingsBannerAndOrganizationCard componentWillReceiveProps");
     this.setState({
       organization: nextProps.organization,

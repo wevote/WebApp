@@ -25,7 +25,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // When a new organization is passed in, update this component to show the new data
     this.setState({
       organization: nextProps.organization,

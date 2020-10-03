@@ -38,7 +38,7 @@ export default class SearchBar extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("SearchBar, nextProps.clearSearchTextNow:", nextProps.clearSearchTextNow);
     if (nextProps.clearSearchTextNow) {
       this.props.clearFunction();

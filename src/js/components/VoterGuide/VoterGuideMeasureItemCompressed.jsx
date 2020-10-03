@@ -67,7 +67,7 @@ class VoterGuideMeasureItemCompressed extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const { measureWeVoteId, organizationWeVoteId } = nextProps;
     const measure = MeasureStore.getMeasure(measureWeVoteId);
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);

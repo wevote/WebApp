@@ -66,7 +66,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('BallotItemSupportOpposeComment, componentWillReceiveProps');
     let ballotItemDisplayName = '';
     let ballotItemType;

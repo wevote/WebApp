@@ -23,7 +23,7 @@ export default class OpinionsFollowedList extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.setState({
       organizationsFollowed: nextProps.organizationsFollowed,
     });

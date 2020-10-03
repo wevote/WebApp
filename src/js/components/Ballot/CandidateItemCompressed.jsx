@@ -47,7 +47,7 @@ export default class CandidateItemCompressed extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("officeItem nextProps", nextProps);
     if (nextProps.candidateWeVoteId) {
       const candidate = CandidateStore.getCandidate(nextProps.candidateWeVoteId);

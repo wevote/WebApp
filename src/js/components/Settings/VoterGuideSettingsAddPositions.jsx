@@ -120,7 +120,7 @@ class VoterGuideSettingsAddPositions extends Component {
     window.addEventListener('scroll', this.onScroll);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('componentWillReceiveProps addNewPositionsMode:', nextProps.addNewPositionsMode, ', nextProps.voterGuideWeVoteId:', nextProps.voterGuideWeVoteId);
     this.setState({
       addNewPositionsMode: nextProps.addNewPositionsMode,

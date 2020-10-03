@@ -73,7 +73,7 @@ export default class SettingsIssueLinks extends Component {
     this.setState(newState);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const newState = {};
     if (nextProps.organizationWeVoteId !== this.state.organizationWeVoteId) {
       IssueActions.retrieveIssuesToLinkForOrganization(

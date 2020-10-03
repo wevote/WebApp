@@ -73,7 +73,7 @@ class OpinionsAndBallotItemsFilter extends Component {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const { filtersAlreadyPassedInOnce, selectedStates } = this.state;
     const { filtersPassedInOnce, selectedFilters } = nextProps;
     // console.log('componentWillReceiveProps selectedFilters at start:', selectedFilters);

@@ -56,7 +56,7 @@ class VoterGuideListDashboard extends Component {
     }
   }
 
-  componentWillReceiveProps () {
+  UNSAFE_componentWillReceiveProps () {
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
     this.setState({

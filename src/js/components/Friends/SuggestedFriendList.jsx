@@ -23,7 +23,7 @@ export default class SuggestedFriendList extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.setState({
       suggestedFriendList: nextProps.friendList,
     });

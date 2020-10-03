@@ -17,7 +17,7 @@ export default class OfficeNameText extends Component {
     };
   }
 
-  componentWillReceiveProps () {
+  UNSAFE_componentWillReceiveProps () {
     this.setState();
   }
 

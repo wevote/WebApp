@@ -43,7 +43,7 @@ class AddressBox extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     prepareForCordovaKeyboard('AddressBox');
   }
 

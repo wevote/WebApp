@@ -37,7 +37,7 @@ export default class VoterGuidesMenuMobile extends Component {
     }
   }
 
-  componentWillReceiveProps () {
+  UNSAFE_componentWillReceiveProps () {
     const voter = VoterStore.getVoter();
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log('VoterGuidesMenuMobile componentWillReceiveProps linkedOrganizationWeVoteId: ', linkedOrganizationWeVoteId);

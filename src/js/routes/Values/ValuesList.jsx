@@ -45,7 +45,7 @@ export default class ValuesList extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const { currentIssue } = nextProps;
     const allIssues = IssueStore.getAllIssues();
     this.setState({

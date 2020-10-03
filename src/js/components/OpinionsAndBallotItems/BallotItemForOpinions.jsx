@@ -44,7 +44,7 @@ class BallotItemForOpinions extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('componentDidMount, nextProps.candidateList', nextProps.candidateList);
     // console.log('componentDidMount, nextProps.kindOfBallotItem', nextProps.kindOfBallotItem);
     const candidateList = nextProps.candidateList || [];

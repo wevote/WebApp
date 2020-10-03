@@ -45,7 +45,7 @@ class VoterGuideListSearchResults extends Component {
     window.addEventListener('scroll', this.onScroll);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("VoterGuideListSearchResults componentWillReceiveProps, nextProps.clearSearchTextNow:", nextProps.clearSearchTextNow);
     this.setState({
       clearSearchTextNow: nextProps.clearSearchTextNow,

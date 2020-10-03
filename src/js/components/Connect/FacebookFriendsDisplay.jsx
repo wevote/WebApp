@@ -38,7 +38,7 @@ export default class FacebookFriendsDisplay extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.setState({
       facebookInvitableFriendsList: nextProps.facebookInvitableFriendsList,
       maximumFriendDisplay: nextProps.maximumFriendDisplay,

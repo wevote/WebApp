@@ -31,7 +31,7 @@ export default class PositionListForFriends extends Component {
     OrganizationActions.positionListForOpinionMakerForFriends(organizationWeVoteId, false, true);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // When a new candidate is passed in, update this component to show the new data
     this.setState({ organizationWeVoteId: nextProps.params.organization_we_vote_id });
 

@@ -29,7 +29,7 @@ export default class VoterGuideSettingsSideBar extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("VoterGuideSettingsSideBar componentWillReceiveProps");
     this.setState({
       editMode: nextProps.editMode,

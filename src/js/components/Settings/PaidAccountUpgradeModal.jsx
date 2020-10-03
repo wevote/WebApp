@@ -100,7 +100,7 @@ class PaidAccountUpgradeModal extends Component {
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.setState({
       pathname: nextProps.pathname,
     });

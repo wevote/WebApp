@@ -35,7 +35,7 @@ class SettingsWidgetOrganizationDescription extends Component {
     this.updateOrganizationDescription = this.updateOrganizationDescription.bind(this);
   }
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     prepareForCordovaKeyboard('SettingsWidgetOrganizationDescription');
   }
 

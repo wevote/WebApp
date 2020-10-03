@@ -34,7 +34,7 @@ class SettingsWidgetOrganizationWebsite extends Component {
     this.updateOrganizationWebsite = this.updateOrganizationWebsite.bind(this);
   }
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     prepareForCordovaKeyboard('SettingsWidgetOrganizationWebsite');
   }
 

@@ -70,7 +70,7 @@ class VoterGuideSettingsDashboard extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('VoterGuideSettingsDashboard componentDidMount');
     this.onAppStoreChange();
     // console.log('nextProps.params.voter_guide_we_vote_id:', nextProps.params.voter_guide_we_vote_id);

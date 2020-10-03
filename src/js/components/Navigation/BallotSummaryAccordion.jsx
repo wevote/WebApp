@@ -30,7 +30,7 @@ class BallotSummaryAccordion extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('BallotSummaryAccordion componentWillReceiveProps');
     const openSections = {};
     const { children } = nextProps;

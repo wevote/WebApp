@@ -66,7 +66,7 @@ class OrganizationVoterGuideCandidate extends Component {
     // console.log('OrganizationVoterGuideCandidate, organizationWeVoteId: ', organizationWeVoteId);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('Candidate componentWillReceiveProps');
     const { candidateWeVoteId: priorCandidateWeVoteId } = this.state;
     const { candidate_we_vote_id: candidateWeVoteId } = nextProps.params;

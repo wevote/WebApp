@@ -50,7 +50,7 @@ class OfficeItemForAddPositions extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const candidatesToShowForSearchResults = nextProps.candidatesToShowForSearchResults || [];
     const candidatesToShowForSearchResultsCount = candidatesToShowForSearchResults.length;
     const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organizationWeVoteId;

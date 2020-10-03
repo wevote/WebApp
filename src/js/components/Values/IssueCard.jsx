@@ -58,7 +58,7 @@ class IssueCard extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("IssueCard, componentWillReceiveProps, nextProps:", nextProps);
     if (nextProps.issue && nextProps.issue.issue_we_vote_id) {
       const { issue_we_vote_id: issueWeVoteId } = nextProps.issue;

@@ -39,7 +39,7 @@ class FriendInvitationOnboarding extends Component {
     this.previousSlide = this.previousSlide.bind(this);
   }
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     document.body.style.backgroundColor = '#A3A3A3';
     document.body.className = 'story-view';
   }

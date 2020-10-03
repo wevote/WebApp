@@ -139,7 +139,7 @@ class PositionList extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('PositionList componentWillReceiveProps');
     const { incomingPositionList } = nextProps;
     this.setState({

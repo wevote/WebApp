@@ -55,7 +55,7 @@ class IssuesByOrganizationDisplayList extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const issuesUnderThisOrganization = IssueStore.getIssuesLinkedToByOrganization(nextProps.organizationWeVoteId) || [];
     const issuesUnderThisOrganizationLength = issuesUnderThisOrganization.length;
     const { organizationWeVoteId } = nextProps;

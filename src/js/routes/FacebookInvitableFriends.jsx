@@ -60,7 +60,7 @@ export default class FacebookInvitableFriends extends Component {
     };
   }
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     this.selectedCheckBoxes = [];
   }
 

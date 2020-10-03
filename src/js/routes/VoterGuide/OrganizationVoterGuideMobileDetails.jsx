@@ -35,7 +35,7 @@ class OrganizationVoterGuideMobileDetails extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('OrganizationVoterGuideMobileDetails componentWillReceiveProps');
     const { params } = nextProps;
     const { incomingTwitterHandle } = this.state;

@@ -92,7 +92,7 @@ export default class SettingsDashboard extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const voter = VoterStore.getVoter();
     this.setState({
       voter,

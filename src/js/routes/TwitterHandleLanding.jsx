@@ -45,7 +45,7 @@ export default class TwitterHandleLanding extends Component {
     this.onVoterStoreChange();
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('TwitterHandleLanding componentWillReceiveProps');
     const { activeRoute, params } = nextProps;
     const { twitter_handle: nextTwitterHandle } = params;

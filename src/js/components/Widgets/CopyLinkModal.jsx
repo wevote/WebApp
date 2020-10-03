@@ -16,13 +16,13 @@ export default class CopyLinkModal extends Component {
     };
   }
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     this.setState({
       wasCopied: false,
     });
   }
 
-  componentWillReceiveProps () {
+  UNSAFE_componentWillReceiveProps () {
     this.setState({
       wasCopied: false,
     });

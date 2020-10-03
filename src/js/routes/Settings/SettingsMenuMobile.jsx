@@ -52,7 +52,7 @@ export default class SettingsMenuMobile extends Component {
     }
   }
 
-  componentWillReceiveProps () {
+  UNSAFE_componentWillReceiveProps () {
     const voter = VoterStore.getVoter();
     this.setState({
       voter,

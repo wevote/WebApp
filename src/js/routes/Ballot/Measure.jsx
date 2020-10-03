@@ -117,7 +117,7 @@ class Measure extends Component {
     AnalyticsActions.saveActionMeasure(VoterStore.electionId(), measureWeVoteId);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const modalToOpen = nextProps.params.modal_to_show || '';
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
