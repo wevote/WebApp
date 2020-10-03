@@ -125,6 +125,7 @@ export default class OrganizationVoterGuide extends Component {
     FriendActions.currentFriends();  // We need this so we can identify if the voter is friends with this organization/person
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('OrganizationVoterGuide, componentWillReceiveProps, nextProps.params.organization_we_vote_id: ', nextProps.params.organization_we_vote_id);
     // When a new organization is passed in, update this component to show the new data

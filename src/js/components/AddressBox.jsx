@@ -43,6 +43,7 @@ class AddressBox extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillMount () {
     prepareForCordovaKeyboard('AddressBox');
   }

@@ -40,6 +40,7 @@ export default class SearchPage extends Component {
     this.searchAllStoreListener = SearchAllStore.addListener(this.onSearchAllStoreChange.bind(this));
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     this.onSearchAllStoreChange();
     if (nextProps.params.encoded_search_string) {

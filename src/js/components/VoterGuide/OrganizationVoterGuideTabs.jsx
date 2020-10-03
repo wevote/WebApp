@@ -92,6 +92,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     document.body.scrollTop = this.state.scrollDownValue;
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('OrganizationVoterGuideTabs, componentWillReceiveProps');
     // When a new organization is passed in, update this component to show the new data

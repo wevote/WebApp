@@ -31,6 +31,7 @@ export default class PositionListForFriends extends Component {
     OrganizationActions.positionListForOpinionMakerForFriends(organizationWeVoteId, false, true);
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // When a new candidate is passed in, update this component to show the new data
     this.setState({ organizationWeVoteId: nextProps.params.organization_we_vote_id });

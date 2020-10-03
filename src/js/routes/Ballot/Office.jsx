@@ -120,6 +120,7 @@ class Office extends Component {
     AnalyticsActions.saveActionOffice(VoterStore.electionId(), this.props.params.office_we_vote_id);
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('Office componentWillReceiveProps');
     const modalToOpen = nextProps.params.modal_to_show || '';

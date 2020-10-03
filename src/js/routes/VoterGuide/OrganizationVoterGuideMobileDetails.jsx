@@ -35,6 +35,7 @@ class OrganizationVoterGuideMobileDetails extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('OrganizationVoterGuideMobileDetails componentWillReceiveProps');
     const { params } = nextProps;

@@ -43,6 +43,7 @@ export default class SettingsPersonalSideBar extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     const { isSignedIn } = nextProps;
     this.setState({

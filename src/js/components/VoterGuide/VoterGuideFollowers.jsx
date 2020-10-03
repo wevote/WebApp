@@ -52,6 +52,7 @@ class VoterGuideFollowers extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     const { organizationWeVoteId } = this.props;
     const { organizationWeVoteId: nextOrganizationWeVoteId } = nextProps;

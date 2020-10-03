@@ -390,6 +390,7 @@ class Pricing extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     this.onVoterStoreChange();
     let pricingChoice = '';

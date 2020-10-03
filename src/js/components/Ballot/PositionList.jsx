@@ -139,6 +139,7 @@ class PositionList extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('PositionList componentWillReceiveProps');
     const { incomingPositionList } = nextProps;

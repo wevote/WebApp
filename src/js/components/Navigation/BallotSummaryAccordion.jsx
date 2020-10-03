@@ -30,6 +30,7 @@ class BallotSummaryAccordion extends Component {
     }
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('BallotSummaryAccordion componentWillReceiveProps');
     const openSections = {};

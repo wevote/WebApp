@@ -67,6 +67,7 @@ class VoterGuideMeasureItemCompressed extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     const { measureWeVoteId, organizationWeVoteId } = nextProps;
     const measure = MeasureStore.getMeasure(measureWeVoteId);

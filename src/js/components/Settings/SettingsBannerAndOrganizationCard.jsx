@@ -22,6 +22,7 @@ export default class SettingsBannerAndOrganizationCard extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("SettingsBannerAndOrganizationCard componentWillReceiveProps");
     this.setState({

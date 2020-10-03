@@ -29,6 +29,7 @@ export default class VoterGuideSettingsSideBar extends Component {
     }
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("VoterGuideSettingsSideBar componentWillReceiveProps");
     this.setState({

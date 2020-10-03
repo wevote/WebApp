@@ -52,6 +52,7 @@ export default class SettingsMenuMobile extends Component {
     }
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps () {
     const voter = VoterStore.getVoter();
     this.setState({

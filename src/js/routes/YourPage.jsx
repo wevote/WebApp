@@ -16,6 +16,7 @@ export default class YourPage extends Component {
     this.state = { voter: VoterStore.getVoter() };
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillMount () {
     const { voter } = this.state;
 

@@ -117,6 +117,7 @@ class Measure extends Component {
     AnalyticsActions.saveActionMeasure(VoterStore.electionId(), measureWeVoteId);
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     const modalToOpen = nextProps.params.modal_to_show || '';
     if (modalToOpen === 'share') {

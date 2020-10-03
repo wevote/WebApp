@@ -87,6 +87,7 @@ class VoterPlanModal extends Component {
     AnalyticsActions.saveActionModalVoterPlan(VoterStore.electionId());
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     const { pathname } = this.props;
     if (nextProps.show) {

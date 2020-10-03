@@ -17,6 +17,7 @@ export default class OfficeNameText extends Component {
     };
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps () {
     this.setState();
   }

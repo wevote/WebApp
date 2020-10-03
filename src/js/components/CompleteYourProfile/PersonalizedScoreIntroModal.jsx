@@ -30,6 +30,7 @@ class PersonalizedScoreIntroModal extends Component {
     }
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (nextProps.show) {
       hideZenDeskHelpVisibility();

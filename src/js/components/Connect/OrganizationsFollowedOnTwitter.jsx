@@ -33,6 +33,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("OrganizationsFollowedOnTwitter, componentWillReceiveProps, nextProps.organizationsFollowedOnTwitter:", nextProps.organizationsFollowedOnTwitter);
     // if (nextProps.instantRefreshOn ) {

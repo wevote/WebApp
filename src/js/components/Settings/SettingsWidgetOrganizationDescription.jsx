@@ -35,6 +35,7 @@ class SettingsWidgetOrganizationDescription extends Component {
     this.updateOrganizationDescription = this.updateOrganizationDescription.bind(this);
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillMount () {
     prepareForCordovaKeyboard('SettingsWidgetOrganizationDescription');
   }

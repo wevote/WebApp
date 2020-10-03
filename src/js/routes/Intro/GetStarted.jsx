@@ -17,6 +17,7 @@ export default class GetStarted extends Component {
     };
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillMount () {
     document.body.style.backgroundColor = '#A3A3A3';
     document.body.className = 'story-view';

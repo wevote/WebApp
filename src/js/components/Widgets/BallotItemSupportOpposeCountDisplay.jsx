@@ -117,6 +117,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.onCachedPositionsOrIssueStoreChange();
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('BallotItemSupportOpposeCountDisplay componentWillReceiveProps, nextProps: ', nextProps);
     let ballotItemDisplayName;

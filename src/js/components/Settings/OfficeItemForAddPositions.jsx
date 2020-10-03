@@ -50,6 +50,7 @@ class OfficeItemForAddPositions extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     const candidatesToShowForSearchResults = nextProps.candidatesToShowForSearchResults || [];
     const candidatesToShowForSearchResultsCount = candidatesToShowForSearchResults.length;

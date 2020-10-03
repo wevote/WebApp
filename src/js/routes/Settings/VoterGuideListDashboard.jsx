@@ -56,6 +56,7 @@ class VoterGuideListDashboard extends Component {
     }
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps () {
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;

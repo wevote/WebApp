@@ -65,6 +65,7 @@ class PositionItemScorePopoverTextOnly extends Component {
     }
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     console.log('componentWillReceiveProps, nextProps: ', nextProps);
     const { positionItem } = nextProps;

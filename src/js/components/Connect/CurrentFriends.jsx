@@ -32,6 +32,7 @@ export default class CurrentFriends extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("CurrentFriends, componentWillReceiveProps, nextProps.currentFriendList:", nextProps.currentFriendList);
     // if (nextProps.instantRefreshOn ) {

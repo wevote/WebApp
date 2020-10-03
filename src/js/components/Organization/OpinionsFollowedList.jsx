@@ -23,6 +23,7 @@ export default class OpinionsFollowedList extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     this.setState({
       organizationsFollowed: nextProps.organizationsFollowed,

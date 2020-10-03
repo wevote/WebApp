@@ -35,6 +35,7 @@ export default class YourPositionsVisibilityMessage extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("BallotStatusMessage componentWillReceiveProps");
     let visibleToPublicCount = 0;

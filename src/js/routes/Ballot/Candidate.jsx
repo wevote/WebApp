@@ -145,6 +145,7 @@ class Candidate extends Component {
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), candidateWeVoteId);
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('Candidate componentWillReceiveProps');
     const modalToOpen = nextProps.params.modal_to_show || '';

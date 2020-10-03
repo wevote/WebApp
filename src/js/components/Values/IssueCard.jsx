@@ -58,6 +58,7 @@ class IssueCard extends Component {
     }
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("IssueCard, componentWillReceiveProps, nextProps:", nextProps);
     if (nextProps.issue && nextProps.issue.issue_we_vote_id) {

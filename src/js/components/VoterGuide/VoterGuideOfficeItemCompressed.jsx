@@ -47,6 +47,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     }
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('officeItemCompressed componentWillReceiveProps, nextProps.candidate_list:', nextProps.candidate_list);
     // 2018-05-10 I don't think we need to trigger a new render because the incoming candidate_list should be the same

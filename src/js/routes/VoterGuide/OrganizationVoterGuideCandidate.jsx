@@ -66,6 +66,7 @@ class OrganizationVoterGuideCandidate extends Component {
     // console.log('OrganizationVoterGuideCandidate, organizationWeVoteId: ', organizationWeVoteId);
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('Candidate componentWillReceiveProps');
     const { candidateWeVoteId: priorCandidateWeVoteId } = this.state;

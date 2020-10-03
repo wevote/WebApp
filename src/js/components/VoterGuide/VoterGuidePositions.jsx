@@ -169,6 +169,7 @@ class VoterGuidePositions extends Component {
     window.addEventListener('scroll', this.onScroll);
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('VoterGuidePositions componentWillReceiveProps');
     // When a new organization is passed in, update this component to show the new data

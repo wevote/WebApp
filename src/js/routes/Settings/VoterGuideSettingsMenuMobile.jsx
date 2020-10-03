@@ -73,6 +73,7 @@ export default class VoterGuideSettingsMenuMobile extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (nextProps.params.edit_mode) {
       this.setState({ editMode: nextProps.params.edit_mode });

@@ -45,6 +45,7 @@ export default class TwitterHandleLanding extends Component {
     this.onVoterStoreChange();
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('TwitterHandleLanding componentWillReceiveProps');
     const { activeRoute, params } = nextProps;

@@ -54,6 +54,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     });
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // When a new measure is passed in, update this component to show the new data
     if (nextProps.params.measure_we_vote_id !== this.state.measureWeVoteId) {

@@ -58,6 +58,7 @@ class GuideList extends Component {
     window.addEventListener('scroll', this.onScroll);
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('GuideList componentWillReceiveProps');
     // Do not update the state if the voterGuideList list looks the same, and the ballotItemWeVoteId hasn't changed

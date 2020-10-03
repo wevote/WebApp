@@ -223,6 +223,7 @@ class VoterGuideBallot extends Component {
     }
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('VoterGuideBallot componentWillReceiveProps, nextProps: ', nextProps);
 

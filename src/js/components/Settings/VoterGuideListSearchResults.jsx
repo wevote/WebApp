@@ -45,6 +45,7 @@ class VoterGuideListSearchResults extends Component {
     window.addEventListener('scroll', this.onScroll);
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("VoterGuideListSearchResults componentWillReceiveProps, nextProps.clearSearchTextNow:", nextProps.clearSearchTextNow);
     this.setState({

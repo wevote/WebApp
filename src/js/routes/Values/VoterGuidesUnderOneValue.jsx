@@ -42,6 +42,7 @@ class VoterGuidesUnderOneValue extends Component {
     }
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     const issue = IssueStore.getIssueBySlug(nextProps.params.value_slug);
     const voterGuidesForValue = VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id);

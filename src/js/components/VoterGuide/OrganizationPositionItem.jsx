@@ -109,6 +109,7 @@ export default class OrganizationPositionItem extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
+  // eslint-disable-next-line camelcase,react/sort-comp
   UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('OrganizationPositionItem componentWillReceiveProps');
     const { organizationWeVoteId, position } = nextProps;
