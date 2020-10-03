@@ -83,7 +83,21 @@ export default class About extends Component {
               target="_blank"
               body="small team of core staff"
             />
-            that eats way too much Thai food, and volunteer board members.
+            and volunteer board members.
+            Please feel free to reach out to us with questions via our
+            <OpenExternalWebSite
+              linkIdAttribute="weVoteContactUsPage"
+              url="https://help.wevote.us/hc/en-us/requests/new"
+              target="_blank"
+              body="Contact Us form."
+            />
+            Our mailing address is:
+            <br />
+            We Vote
+            <br />
+            1423 Broadway PMB 158
+            <br />
+            Oakland, CA 94612
             <br />
             <br />
 

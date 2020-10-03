@@ -163,7 +163,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
           </DelayedLoad>
           <DelayedLoad waitBeforeShow={5000}>
             <div>
-              Preparing your ballot...
+              Preparing your ballot based on our best guess of your location...
             </div>
           </DelayedLoad>
           {LoadingWheel}
@@ -244,7 +244,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
           </DelayedLoad>
           <DelayedLoad waitBeforeShow={5000}>
             <div>
-              Preparing your ballot.
+              Preparing your ballot based on our best guess of your location.
             </div>
           </DelayedLoad>
           {LoadingWheel}
