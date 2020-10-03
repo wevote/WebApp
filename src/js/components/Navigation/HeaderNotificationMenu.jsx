@@ -212,7 +212,6 @@ class HeaderNotificationMenu extends Component {
     // console.log('HeaderNotificationMenu render');
     const { classes } = this.props;
     const { allActivityNoticesNotSeenCount, anchorEl, menuItemList, menuOpen } = this.state;
-
     return (
       <HeaderNotificationMenuWrapper>
         <IconButton
@@ -224,7 +223,7 @@ class HeaderNotificationMenu extends Component {
         >
           {allActivityNoticesNotSeenCount ? (
             <Badge
-              badgeContent={<BadgeCountWrapper isNumberOne={allActivityNoticesNotSeenCount === 1}>{allActivityNoticesNotSeenCount}</BadgeCountWrapper>}
+              badgeContent={<BadgeCountWrapper>{allActivityNoticesNotSeenCount}</BadgeCountWrapper>}
               classes={{
                 badge: classes.badgeClasses,
                 anchorOriginTopRightRectangle: classes.anchorOriginTopRightRectangle,
@@ -348,8 +347,8 @@ const ActivityTime = styled.div`
 `;
 
 const BadgeCountWrapper = styled.span`
-  margin-top: ${props => (props.isNumberOne ? '-3px' : '2px')};
-  margin-left: ${props => (props.isNumberOne ? '0' : '1px')};
+  margin-top: -3px;
+  margin-left: 1px;
 `;
 
 const HeaderNotificationMenuWrapper = styled.div`

@@ -49,6 +49,20 @@ class ToolBar extends Component {
           />
 
           <OpenExternalWebSite
+            linkIdAttribute="wevoteInstagram"
+            className="u-no-underline"
+            url="https://www.instagram.com/WeVote"
+            target="_blank"
+            body={(
+              <Tooltip title="Instagram">
+                <IconButton>
+                  <Icon className="fab fa-instagram" />
+                </IconButton>
+              </Tooltip>
+            )}
+          />
+
+          <OpenExternalWebSite
             linkIdAttribute="eepurl"
             className="u-no-underline"
             url="http://eepurl.com/cx_frP"

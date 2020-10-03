@@ -105,6 +105,15 @@ class WelcomeFooter extends Component {
                 )}
                 className={classes.link}
               />
+              <OpenExternalWebSite
+                linkIdAttribute="footerLinkInstagram"
+                url="https://instagram.com/WeVote"
+                target="_blank"
+                body={(
+                  <span>Instagram - @WeVote</span>
+                )}
+                className={classes.link}
+              />
             </Column>
             <Column>
               <ColumnTitle>Support</ColumnTitle>
