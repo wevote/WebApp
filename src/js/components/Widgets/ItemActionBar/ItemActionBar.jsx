@@ -104,7 +104,8 @@ class ItemActionBar extends PureComponent {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('itemActionBar, RELOAD componentWillReceiveProps');
     if (nextProps.ballotItemWeVoteId !== undefined && nextProps.ballotItemWeVoteId && nextProps.ballotItemWeVoteId !== this.state.ballotItemWeVoteId) {
       // console.log('itemActionBar, ballotItemWeVoteId setState');

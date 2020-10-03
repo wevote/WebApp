@@ -21,7 +21,8 @@ class BrowserPushMessage extends Component {
     };
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // When a new candidate is passed in, update this component to show the new data
     if (nextProps.incomingProps && nextProps.incomingProps.location && nextProps.incomingProps.location.state) {
       this.setState({

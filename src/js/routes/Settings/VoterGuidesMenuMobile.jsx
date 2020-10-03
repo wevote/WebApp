@@ -37,7 +37,8 @@ export default class VoterGuidesMenuMobile extends Component {
     }
   }
 
-  componentWillReceiveProps () {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps () {
     const voter = VoterStore.getVoter();
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log('VoterGuidesMenuMobile componentWillReceiveProps linkedOrganizationWeVoteId: ', linkedOrganizationWeVoteId);

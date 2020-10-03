@@ -38,7 +38,8 @@ export default class SettingsWidgetAccountType extends Component {
     this.updateOrganizationType = this.updateOrganizationType.bind(this);
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillMount () {
     prepareForCordovaKeyboard('SettingsWidgetAccountType');
   }
 

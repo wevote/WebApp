@@ -28,7 +28,8 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // When a new organization_we_vote_id is passed in, update this component to show the new data
     this.setState({
       organizationWeVoteId: nextProps.organization_we_vote_id,

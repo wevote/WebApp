@@ -52,7 +52,8 @@ class VoterGuideFollowers extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const { organizationWeVoteId } = this.props;
     const { organizationWeVoteId: nextOrganizationWeVoteId } = nextProps;
     // When a new organization is passed in, update this component to show the new data

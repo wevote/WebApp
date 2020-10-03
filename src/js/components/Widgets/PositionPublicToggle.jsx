@@ -58,7 +58,8 @@ class PositionPublicToggle extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.onVoterStoreChange();
     const { ballotItemWeVoteId } = nextProps;
     let voterPositionIsPublic = false;

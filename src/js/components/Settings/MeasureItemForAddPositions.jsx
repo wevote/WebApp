@@ -63,7 +63,8 @@ class MeasureItemForAddPositions extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organization_we_vote_id;
     if (nextProps.ballotItemWeVoteId) {
       const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(nextProps.ballotItemWeVoteId);

@@ -80,7 +80,8 @@ export default class OrganizationCard extends Component {
     // If no position, we need to call positionListForOpinionMaker here
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('OrganizationCard, componentWillReceiveProps, nextProps:', nextProps);
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({

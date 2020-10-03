@@ -38,7 +38,8 @@ export default class FacebookFriendsDisplay extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.setState({
       facebookInvitableFriendsList: nextProps.facebookInvitableFriendsList,
       maximumFriendDisplay: nextProps.maximumFriendDisplay,

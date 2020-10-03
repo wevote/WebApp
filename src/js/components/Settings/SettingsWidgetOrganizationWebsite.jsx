@@ -34,7 +34,8 @@ class SettingsWidgetOrganizationWebsite extends Component {
     this.updateOrganizationWebsite = this.updateOrganizationWebsite.bind(this);
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillMount () {
     prepareForCordovaKeyboard('SettingsWidgetOrganizationWebsite');
   }
 

@@ -35,7 +35,8 @@ export default class OrganizationDisplayForList extends Component {
     this.OrganizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organizationWeVoteId),
       organizationWeVoteId: nextProps.organizationWeVoteId,

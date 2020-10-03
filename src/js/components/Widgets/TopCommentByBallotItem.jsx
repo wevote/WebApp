@@ -84,7 +84,8 @@ class TopCommentByBallotItem extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('TopCommentByBallotItem componentWillReceiveProps');
     // Do not update the state if the organizationsToFollow list looks the same, and the ballotItemWeVoteId hasn't changed
     const { ballotItemWeVoteId } = nextProps;

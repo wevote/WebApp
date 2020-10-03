@@ -60,7 +60,8 @@ export default class FacebookInvitableFriends extends Component {
     };
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillMount () {
     this.selectedCheckBoxes = [];
   }
 

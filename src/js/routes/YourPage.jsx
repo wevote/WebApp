@@ -16,7 +16,8 @@ export default class YourPage extends Component {
     this.state = { voter: VoterStore.getVoter() };
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillMount () {
     const { voter } = this.state;
 
     const voterHasTwitterHandle = !!voter.twitter_screen_name;

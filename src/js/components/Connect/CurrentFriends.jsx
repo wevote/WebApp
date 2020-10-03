@@ -32,7 +32,8 @@ export default class CurrentFriends extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("CurrentFriends, componentWillReceiveProps, nextProps.currentFriendList:", nextProps.currentFriendList);
     // if (nextProps.instantRefreshOn ) {
     // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked

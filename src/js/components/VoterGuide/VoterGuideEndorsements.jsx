@@ -143,7 +143,8 @@ class VoterGuideEndorsements extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('VoterGuideEndorsements componentWillReceiveProps');
     // When a new organization is passed in, update this component to show the new data
     const differentElection = this.state.currentGoogleCivicElectionId !== VoterStore.electionId();

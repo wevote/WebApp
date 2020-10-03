@@ -75,7 +75,8 @@ class SettingsAddBallotItemsFilter extends Component {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const { filtersAlreadyPassedInOnce, selectedStates } = this.state;
     const { filtersPassedInOnce, selectedFilters } = nextProps;
     // console.log('componentWillReceiveProps selectedFilters at start:', selectedFilters);

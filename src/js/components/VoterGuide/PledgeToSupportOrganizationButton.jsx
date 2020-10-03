@@ -28,7 +28,8 @@ export default class PledgeToSupportOrganizationButton extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // When a new organization is passed in, update this component to show the new data
     this.setState({
       organization: nextProps.organization,

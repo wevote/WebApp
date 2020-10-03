@@ -37,7 +37,8 @@ class EditAddressInPlace extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('EditAddressInPlace componentWillReceiveProps');
     this.setState({
       textForMapSearch: nextProps.address.text_for_map_search || '',

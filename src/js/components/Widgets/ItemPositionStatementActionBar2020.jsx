@@ -55,7 +55,8 @@ class ItemPositionStatementActionBar2020 extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const { ballotItemWeVoteId } = this.props;
     const { showEditPositionStatementInput } = this.state;
     const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(ballotItemWeVoteId);

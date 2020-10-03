@@ -16,13 +16,15 @@ export default class CopyLinkModal extends Component {
     };
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillMount () {
     this.setState({
       wasCopied: false,
     });
   }
 
-  componentWillReceiveProps () {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps () {
     this.setState({
       wasCopied: false,
     });

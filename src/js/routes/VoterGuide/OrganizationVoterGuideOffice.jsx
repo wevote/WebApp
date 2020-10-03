@@ -42,7 +42,8 @@ export default class OrganizationVoterGuideOffice extends Component {
     // console.log("OrganizationVoterGuideOffice, organization_we_vote_id: ", this.props.params.organization_we_vote_id);
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // When a new office is passed in, update this component to show the new data
     const office = OfficeStore.getOffice(nextProps.params.office_we_vote_id);
     if (!office || !office.ballot_item_display_name) {

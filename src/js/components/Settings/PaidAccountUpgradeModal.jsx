@@ -100,7 +100,8 @@ class PaidAccountUpgradeModal extends Component {
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.setState({
       pathname: nextProps.pathname,
     });

@@ -73,7 +73,8 @@ export default class SettingsIssueLinks extends Component {
     this.setState(newState);
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const newState = {};
     if (nextProps.organizationWeVoteId !== this.state.organizationWeVoteId) {
       IssueActions.retrieveIssuesToLinkForOrganization(

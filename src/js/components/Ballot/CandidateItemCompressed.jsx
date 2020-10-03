@@ -47,7 +47,8 @@ export default class CandidateItemCompressed extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log("officeItem nextProps", nextProps);
     if (nextProps.candidateWeVoteId) {
       const candidate = CandidateStore.getCandidate(nextProps.candidateWeVoteId);

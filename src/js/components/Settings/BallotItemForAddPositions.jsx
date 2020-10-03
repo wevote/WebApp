@@ -48,7 +48,8 @@ class BallotItemForAddPositions extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // console.log('componentDidMount, nextProps.candidateList', nextProps.candidateList);
     // console.log('componentDidMount, nextProps.kindOfBallotItem', nextProps.kindOfBallotItem);
     const candidateList = nextProps.candidateList || [];

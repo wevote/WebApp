@@ -23,7 +23,8 @@ export default class SuggestedFriendList extends Component {
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.setState({
       suggestedFriendList: nextProps.friendList,
     });

@@ -146,7 +146,7 @@ class VoterGuidePositionList extends Component {
     });
   }
 
-  // componentWillReceiveProps (nextProps) {
+  // UNSAFE_componentWillReceiveProps (nextProps) {
   //   let { incomingPositionList } = nextProps;
   //   console.log('VoterGuidePositionList componentWillReceiveProps, incomingPositionList:', incomingPositionList);
   //   const candidateAlreadySeenThisYear = {};
