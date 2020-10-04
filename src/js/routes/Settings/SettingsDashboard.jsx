@@ -28,10 +28,6 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 
 export default class SettingsDashboard extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -304,3 +300,6 @@ export default class SettingsDashboard extends Component {
     );
   }
 }
+SettingsDashboard.propTypes = {
+  params: PropTypes.object,
+};

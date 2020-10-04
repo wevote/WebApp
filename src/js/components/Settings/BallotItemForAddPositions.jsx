@@ -8,19 +8,6 @@ import OfficeItemForAddPositions from './OfficeItemForAddPositions';
 
 
 class BallotItemForAddPositions extends Component {
-  static propTypes = {
-    allBallotItemsCount: PropTypes.number,
-    ballotItemDisplayName: PropTypes.string.isRequired,
-    ballotItemWeVoteId: PropTypes.string.isRequired,
-    candidateList: PropTypes.array,
-    candidatesToShowForSearchResults: PropTypes.array,
-    kindOfBallotItem: PropTypes.string.isRequired,
-    measureText: PropTypes.string,
-    organization: PropTypes.object,
-    organizationWeVoteId: PropTypes.string,
-    externalUniqueId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -151,8 +138,20 @@ class BallotItemForAddPositions extends Component {
     );
   }
 }
+BallotItemForAddPositions.propTypes = {
+  allBallotItemsCount: PropTypes.number,
+  ballotItemDisplayName: PropTypes.string.isRequired,
+  ballotItemWeVoteId: PropTypes.string.isRequired,
+  candidateList: PropTypes.array,
+  candidatesToShowForSearchResults: PropTypes.array,
+  kindOfBallotItem: PropTypes.string.isRequired,
+  measureText: PropTypes.string,
+  organization: PropTypes.object,
+  organizationWeVoteId: PropTypes.string,
+  externalUniqueId: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   cardHeaderIconRoot: {
     marginTop: '-.3rem',
     fontSize: 20,

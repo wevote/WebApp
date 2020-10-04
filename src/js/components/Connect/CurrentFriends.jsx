@@ -9,11 +9,6 @@ import FriendDisplayForList from '../Friends/FriendDisplayForList';
 import { renderLog } from '../../utils/logging';
 
 export default class CurrentFriends extends Component {
-  static propTypes = {
-    currentFriendList: PropTypes.array,
-    maximumFriendDisplay: PropTypes.number,
-  };
-
   constructor (props) {
     super(props);
 
@@ -155,3 +150,7 @@ export default class CurrentFriends extends Component {
     );
   }
 }
+CurrentFriends.propTypes = {
+  currentFriendList: PropTypes.array,
+  maximumFriendDisplay: PropTypes.number,
+};

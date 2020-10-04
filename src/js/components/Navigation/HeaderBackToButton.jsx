@@ -20,13 +20,6 @@ const styles = {
 };
 
 class HeaderBackToButton extends Component {
-  static propTypes = {
-    backToLink: PropTypes.string.isRequired,
-    backToLinkText: PropTypes.string,
-    className: PropTypes.string,
-    classes: PropTypes.object,
-  };
-
   render () {
     renderLog('HeaderBackToButton');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, className, backToLink, backToLinkText } = this.props;
@@ -52,5 +45,11 @@ class HeaderBackToButton extends Component {
     );
   }
 }
+HeaderBackToButton.propTypes = {
+  backToLink: PropTypes.string.isRequired,
+  backToLinkText: PropTypes.string,
+  className: PropTypes.string,
+  classes: PropTypes.object,
+};
 
 export default withStyles(styles)(HeaderBackToButton);

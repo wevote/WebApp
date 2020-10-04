@@ -5,10 +5,6 @@ import { renderLog } from '../../utils/logging';
 import ImageHandler from '../ImageHandler';
 
 class TeamMemberDisplayForList extends Component {
-  static propTypes = {
-    teamMember: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -91,6 +87,9 @@ class TeamMemberDisplayForList extends Component {
     );
   }
 }
+TeamMemberDisplayForList.propTypes = {
+  teamMember: PropTypes.object,
+};
 
 const Col = styled.div`
   @media (min-width: 992px) {

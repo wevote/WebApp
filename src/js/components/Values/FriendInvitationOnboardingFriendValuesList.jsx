@@ -9,10 +9,6 @@ import { arrayContains } from '../../utils/textFormat';
 
 
 export default class FriendInvitationOnboardingFriendValuesList extends Component {
-  static propTypes = {
-    friendIssueWeVoteIdList: PropTypes.array,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -89,6 +85,9 @@ export default class FriendInvitationOnboardingFriendValuesList extends Componen
     );
   }
 }
+FriendInvitationOnboardingFriendValuesList.propTypes = {
+  friendIssueWeVoteIdList: PropTypes.array,
+};
 
 const Wrapper = styled.div`
   margin-bottom: 12px;

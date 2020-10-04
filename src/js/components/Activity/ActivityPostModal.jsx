@@ -24,14 +24,6 @@ import stockAvatar from '../../../img/global/icons/avatar-generic.png';
 import VoterStore from '../../stores/VoterStore';
 
 class ActivityPostModal extends Component {
-  static propTypes = {
-    activityTidbitWeVoteId: PropTypes.string,
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-    show: PropTypes.bool,
-    toggleActivityPostModal: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -223,7 +215,15 @@ class ActivityPostModal extends Component {
     );
   }
 }
-const styles = theme => ({
+ActivityPostModal.propTypes = {
+  activityTidbitWeVoteId: PropTypes.string,
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+  show: PropTypes.bool,
+  toggleActivityPostModal: PropTypes.func.isRequired,
+};
+
+const styles = (theme) => ({
   dialogTitle: {
     padding: 16,
   },

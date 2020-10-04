@@ -15,10 +15,6 @@ import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/
 import { historyPush } from '../../utils/cordovaUtils';
 
 class OrganizationPopoverCard extends Component {
-  static propTypes = {
-    organizationWeVoteId: PropTypes.string.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -182,8 +178,7 @@ class OrganizationPopoverCard extends Component {
                   twitter_description={twitterDescriptionMinusName}
                 />
               </Description>
-            )
-            }
+            )}
             {organizationWebsite && (
               <span className="u-wrap-links">
                 <OpenExternalWebSite
@@ -207,6 +202,9 @@ class OrganizationPopoverCard extends Component {
     );
   }
 }
+OrganizationPopoverCard.propTypes = {
+  organizationWeVoteId: PropTypes.string.isRequired,
+};
 
 const Wrapper = styled.div`
   overflow-x: hidden;

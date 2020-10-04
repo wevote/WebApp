@@ -13,12 +13,6 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 
 class PositionItemScorePopover extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    positionWeVoteId: PropTypes.string,
-    showPersonalScoreInformation: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -274,7 +268,7 @@ class PositionItemScorePopover extends Component {
                       )}
                     </>
                   )}
-                  {issuesInCommonBetweenOrganizationAndVoter.map(issue => (
+                  {issuesInCommonBetweenOrganizationAndVoter.map((issue) => (
                     <ScoreExplanationWrapper key={`issueInScore-${issue.issue_we_vote_id}`}>
                       <PopoverTitleIcon>
                         <ReactSVG
@@ -333,6 +327,11 @@ class PositionItemScorePopover extends Component {
     );
   }
 }
+PositionItemScorePopover.propTypes = {
+  classes: PropTypes.object,
+  positionWeVoteId: PropTypes.string,
+  showPersonalScoreInformation: PropTypes.bool,
+};
 
 const styles = () => ({
   endorsementIcon: {

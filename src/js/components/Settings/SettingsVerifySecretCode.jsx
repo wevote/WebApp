@@ -12,15 +12,6 @@ import VoterStore from '../../stores/VoterStore';
 /* global $ */
 
 class SettingsVerifySecretCode extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    show: PropTypes.bool,
-    closeVerifyModal: PropTypes.func,
-    voterEmailAddress: PropTypes.string,
-    voterPhoneNumber: PropTypes.string,
-  };
-
-
   constructor (props) {
     super(props);
     this.state = {
@@ -339,7 +330,7 @@ class SettingsVerifySecretCode extends Component {
 
     const regex = /^[0-9]$/;
 
-    const allDigits = pastedInputArray.filter(digit => regex.test(digit));
+    const allDigits = pastedInputArray.filter((digit) => regex.test(digit));
 
     if (allDigits[5]) {
       this.setState({
@@ -617,8 +608,15 @@ class SettingsVerifySecretCode extends Component {
     );
   }
 }
+SettingsVerifySecretCode.propTypes = {
+  classes: PropTypes.object,
+  show: PropTypes.bool,
+  closeVerifyModal: PropTypes.func,
+  voterEmailAddress: PropTypes.string,
+  voterPhoneNumber: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     [theme.breakpoints.up('sm')]: {
@@ -691,7 +689,7 @@ const styles = theme => ({
 
 const ModalTitleArea = styled.div`
   width: 100%;
-  padding: ${props => (props.condensed ? '8px' : '12px')};
+  padding: ${(props) => (props.condensed ? '8px' : '12px')};
   box-shadow: 0 20px 40px -25px #999;
   z-index: 999;
   display: flex;
@@ -703,27 +701,27 @@ const ModalTitleArea = styled.div`
 const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: ${props => (props.condensed ? 'flex-start' : 'space-evenly')};
+  align-items: ${(props) => (props.condensed ? 'flex-start' : 'space-evenly')};
   height: isWebApp() ? 100% : 'unset';
   width: 80%;
   max-width: 400px;
   margin: 0 auto;
   padding: 86px 0 72px 0;
-  padding: ${props => (props.condensed ? '66px 0 0 0' : '86px 0 72px 0')};
+  padding: ${(props) => (props.condensed ? '66px 0 0 0' : '86px 0 72px 0')};
 `;
 
 const TextContainer = styled.div`
 `;
 
 const ButtonsContainer = styled.div`
-  margin-top: ${props => (props.condensed ? '16px' : 'auto')};
+  margin-top: ${(props) => (props.condensed ? '16px' : 'auto')};
 `;
 
 const Title = styled.h3`
   font-weight: bold;
   font-size: ${() => (isIPhone4in() ? '26px' : '30px')};
   padding: 0 10px;
-  margin-bottom: ${props => (props.condensed ? '16px' : '36px')};
+  margin-bottom: ${(props) => (props.condensed ? '16px' : '36px')};
   color: black;
   text-align: center;
   media(min-width: 569px) {
@@ -748,7 +746,7 @@ const InputContainer = styled.div`
   justify-content: space-between;
   margin: auto;
   width: 100%;
-  margin-top: ${props => (props.condensed ? '16px' : '32px')};
+  margin-top: ${(props) => (props.condensed ? '16px' : '32px')};
 `;
 
 const ErrorMessage = styled.div`

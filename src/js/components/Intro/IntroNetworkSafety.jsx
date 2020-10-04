@@ -15,10 +15,6 @@ then you can't use relative paths."
 */
 
 export default class IntroNetworkSafety extends Component {
-  static propTypes = {
-    next: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -69,3 +65,6 @@ export default class IntroNetworkSafety extends Component {
     );
   }
 }
+IntroNetworkSafety.propTypes = {
+  next: PropTypes.func,
+};

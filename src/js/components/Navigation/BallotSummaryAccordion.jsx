@@ -4,11 +4,6 @@ import BallotSummaryAccordionSection from './BallotSummaryAccordionSection';
 import { renderLog } from '../../utils/logging';
 
 class BallotSummaryAccordion extends Component {
-  static propTypes = {
-    allowMultipleOpen: PropTypes.bool,
-    children: PropTypes.instanceOf(Object).isRequired,
-  };
-
   constructor (props) {
     super(props);
 
@@ -95,11 +90,14 @@ class BallotSummaryAccordion extends Component {
           } else {
             return null;
           }
-        })
-        }
+        })}
       </>
     );
   }
 }
+BallotSummaryAccordion.propTypes = {
+  allowMultipleOpen: PropTypes.bool,
+  children: PropTypes.instanceOf(Object).isRequired,
+};
 
 export default BallotSummaryAccordion;

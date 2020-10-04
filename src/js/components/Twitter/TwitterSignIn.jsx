@@ -76,13 +76,6 @@ class TwitterSignIn extends Component {
     }
   }
 
-  static propTypes = {
-    buttonText: PropTypes.string,
-    buttonSubmittedText: PropTypes.string,
-    closeSignInModal: PropTypes.func,
-    inModal: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -205,6 +198,12 @@ class TwitterSignIn extends Component {
     );
   }
 }
+TwitterSignIn.propTypes = {
+  buttonText: PropTypes.string,
+  buttonSubmittedText: PropTypes.string,
+  closeSignInModal: PropTypes.func,
+  inModal: PropTypes.bool,
+};
 
 export default TwitterSignIn;
 

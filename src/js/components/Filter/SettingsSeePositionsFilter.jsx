@@ -7,17 +7,6 @@ import { renderLog } from '../../utils/logging';
 
 
 class SettingsSeePositionsFilter extends Component {
-  static propTypes = {
-    allItems: PropTypes.array,
-    classes: PropTypes.object,
-    onFilteredItemsChange: PropTypes.func,
-    onSelectSortByFilter: PropTypes.func,
-    onToggleFilter: PropTypes.func,
-    selectedFilters: PropTypes.array,
-    showAllFilters: PropTypes.bool,
-    // updateSelectedFilters: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -58,7 +47,7 @@ class SettingsSeePositionsFilter extends Component {
 
   getFilteredItemsByLinkedIssue = (issueFilter) => {
     const { allItems } = this.props;
-    return allItems.filter(item => item.issue_we_vote_ids_linked === issueFilter.issue_we_vote_id);
+    return allItems.filter((item) => item.issue_we_vote_ids_linked === issueFilter.issue_we_vote_id);
   };
 
   orderByFollowedOrgsFirst = (firstGuide, secondGuide) => secondGuide.followed - firstGuide.followed;
@@ -124,16 +113,16 @@ class SettingsSeePositionsFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'showFederalRaceFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.race_office_level === 'Federal')];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.race_office_level === 'Federal')];
             break;
           case 'showStateRaceFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.race_office_level === 'State')];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.race_office_level === 'State')];
             break;
           case 'showMeasureRaceFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.kind_of_ballot_item === 'MEASURE')];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.kind_of_ballot_item === 'MEASURE')];
             break;
           case 'showLocalRaceFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.race_office_level === 'Local')];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.race_office_level === 'Local')];
             break;
           default:
             break;
@@ -157,7 +146,7 @@ class SettingsSeePositionsFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'showCommentFilter':
-            filteredItems = [...filteredItems, ...filterItemsCommentSnapshot.filter(item => item.statement_text && item.statement_text.length)];
+            filteredItems = [...filteredItems, ...filterItemsCommentSnapshot.filter((item) => item.statement_text && item.statement_text.length)];
             break;
           default:
             break;
@@ -264,8 +253,18 @@ class SettingsSeePositionsFilter extends Component {
     );
   }
 }
+SettingsSeePositionsFilter.propTypes = {
+  allItems: PropTypes.array,
+  classes: PropTypes.object,
+  onFilteredItemsChange: PropTypes.func,
+  onSelectSortByFilter: PropTypes.func,
+  onToggleFilter: PropTypes.func,
+  selectedFilters: PropTypes.array,
+  showAllFilters: PropTypes.bool,
+  // updateSelectedFilters: PropTypes.func,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   formControlLabel: {
     [theme.breakpoints.down('lg')]: {
       fontSize: 14,

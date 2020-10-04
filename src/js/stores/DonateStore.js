@@ -195,8 +195,8 @@ class DonateStore extends ReduceStore {
           status: apiStatus,
           success: apiSuccess,
         } = action.res);
-        donationJournalList = completeDonationJournalList.filter(item => (item.is_organization_plan === false));
-        subscriptionJournalHistory = completeDonationJournalList.filter(item => (item.is_organization_plan === true));
+        donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
+        subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
         if (success === false) {
           console.log(`donation with stripe failed:  ${stripeErrorMessageForVoter}  ---  ${apiStatus}`);
         }
@@ -233,8 +233,8 @@ class DonateStore extends ReduceStore {
           donation_list: completeDonationJournalList,
           organization_saved: organizationSaved,
         } = action.res);
-        donationJournalList = completeDonationJournalList.filter(item => (item.is_organization_plan === false));
-        subscriptionJournalHistory = completeDonationJournalList.filter(item => (item.is_organization_plan === true));
+        donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
+        subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
         if (organizationSaved) {
           OrganizationActions.organizationRetrieve(VoterStore.getLinkedOrganizationWeVoteId());
         }
@@ -253,8 +253,8 @@ class DonateStore extends ReduceStore {
           active_paid_plan: activePaidPlan,
           donation_list: completeDonationJournalList,
         } = action.res);
-        donationJournalList = completeDonationJournalList.filter(item => (item.is_organization_plan === false));
-        subscriptionJournalHistory = completeDonationJournalList.filter(item => (item.is_organization_plan === true));
+        donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
+        subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
         return {
           ...state,
           activePaidPlan,
@@ -267,8 +267,8 @@ class DonateStore extends ReduceStore {
         ({
           donation_list: completeDonationJournalList,
         } = action.res);
-        donationJournalList = completeDonationJournalList.filter(item => (item.is_organization_plan === false));
-        subscriptionJournalHistory = completeDonationJournalList.filter(item => (item.is_organization_plan === true));
+        donationJournalList = completeDonationJournalList.filter((item) => (item.is_organization_plan === false));
+        subscriptionJournalHistory = completeDonationJournalList.filter((item) => (item.is_organization_plan === true));
         return {
           ...state,
           charge,

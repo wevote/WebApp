@@ -22,11 +22,6 @@ import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
 
 class FriendInvitationOnboarding extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -304,8 +299,12 @@ class FriendInvitationOnboarding extends Component {
     );
   }
 }
+FriendInvitationOnboarding.propTypes = {
+  classes: PropTypes.object,
+  params: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonRoot: {
     fontSize: 12,
     padding: '4px 8px',

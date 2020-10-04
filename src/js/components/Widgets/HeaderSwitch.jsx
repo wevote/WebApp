@@ -3,13 +3,6 @@ import PropTypes from 'prop-types';
 import styled, { withTheme } from 'styled-components';
 
 class HeaderSwitch extends PureComponent {
-  static propTypes = {
-    color: PropTypes.string.isRequired,
-    choices: PropTypes.array.isRequired,
-    selectedCategoryIndex: PropTypes.number.isRequired,
-    switchToDifferentCategoryFunction: PropTypes.func,
-  };
-
   switchToDifferentCategory (switchToChoice = 0) {
     if (this.props.switchToDifferentCategoryFunction) {
       this.props.switchToDifferentCategoryFunction(switchToChoice);
@@ -33,6 +26,12 @@ class HeaderSwitch extends PureComponent {
     );
   }
 }
+HeaderSwitch.propTypes = {
+  color: PropTypes.string.isRequired,
+  choices: PropTypes.array.isRequired,
+  selectedCategoryIndex: PropTypes.number.isRequired,
+  switchToDifferentCategoryFunction: PropTypes.func,
+};
 
 const Container = styled.div`
   display: flex;

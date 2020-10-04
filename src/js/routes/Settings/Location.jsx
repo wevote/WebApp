@@ -11,10 +11,6 @@ import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
 export default class Location extends Component {
-  static propTypes = {
-    location: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -93,3 +89,6 @@ export default class Location extends Component {
     );
   }
 }
+Location.propTypes = {
+  location: PropTypes.object,
+};

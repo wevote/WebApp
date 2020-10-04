@@ -398,7 +398,7 @@ class OrganizationStore extends ReduceStore {
           ...state,
           organizationWeVoteIdsVoterIsFollowing,
           organizationWeVoteIdsVoterIsIgnoring: state.organizationWeVoteIdsVoterIsIgnoring.filter(
-            existingOrgWeVoteId => existingOrgWeVoteId !== voterLinkedOrganizationWeVoteId,
+            (existingOrgWeVoteId) => existingOrgWeVoteId !== voterLinkedOrganizationWeVoteId,
           ),
         };
 
@@ -443,7 +443,7 @@ class OrganizationStore extends ReduceStore {
         OrganizationActions.organizationsFollowedRetrieve();
         return {
           ...state,
-          organizationWeVoteIdsVoterIsFollowing: organizationWeVoteIdsVoterIsFollowing.filter(existingOrgWeVoteId => existingOrgWeVoteId !== organizationWeVoteId),
+          organizationWeVoteIdsVoterIsFollowing: organizationWeVoteIdsVoterIsFollowing.filter((existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId),
         };
 
       case 'organizationFollowIgnore':
@@ -482,7 +482,7 @@ class OrganizationStore extends ReduceStore {
           ...state,
           organizationWeVoteIdsVoterIsIgnoring,
           organizationWeVoteIdsVoterIsFollowing: organizationWeVoteIdsVoterIsFollowing.filter(
-            existingOrgWeVoteId => existingOrgWeVoteId !== organizationWeVoteId,
+            (existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId,
           ),
         };
 
@@ -579,9 +579,7 @@ class OrganizationStore extends ReduceStore {
           organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
         }
         allCachedOrganizationsDict[organizationWeVoteId] = organization;
-        revisedState = Object.assign({}, revisedState, {
-          allCachedOrganizationsDict,
-        });
+        revisedState = { ...revisedState, allCachedOrganizationsDict };
         // console.log('allCachedOrganizationsDict:', allCachedOrganizationsDict);
         voterLinkedOrganizationWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
         if (organizationWeVoteId === voterLinkedOrganizationWeVoteId) {
@@ -596,9 +594,7 @@ class OrganizationStore extends ReduceStore {
             chosenPromotedOrganizationsAllowed: this.getChosenSettingsFlagState(VoterConstants.CHOSEN_PROMOTED_ORGANIZATIONS_ALLOWED),
             featuresProvidedBitmap,
           };
-          revisedState = Object.assign({}, revisedState, {
-            voterOrganizationFeaturesProvided,
-          });
+          revisedState = { ...revisedState, voterOrganizationFeaturesProvided };
         }
         return revisedState;
 
@@ -729,7 +725,7 @@ class OrganizationStore extends ReduceStore {
             organization.position_list_for_one_election.forEach((onePosition) => {
               // console.log('OrganizationStore, positionListForOpinionMaker, onePosition: ', onePosition);
               // Check to see if this position has already been put in this array
-              existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find(possibleMatch => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
+              existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find((possibleMatch) => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
               if (!existingPosition) {
                 allCachedPositionsByOrganization[organizationWeVoteId].push(onePosition);
               }
@@ -788,7 +784,7 @@ class OrganizationStore extends ReduceStore {
             organization.position_list_for_all_except_one_election.forEach((onePosition) => {
               // console.log('OrganizationStore, positionListForOpinionMaker, onePosition: ', onePosition);
               // Check to see if this position has already been put in this array
-              existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find(possibleMatch => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
+              existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find((possibleMatch) => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
               if (!existingPosition) {
                 allCachedPositionsByOrganization[organizationWeVoteId].push(onePosition);
               }
@@ -845,7 +841,7 @@ class OrganizationStore extends ReduceStore {
             positionList.forEach((onePosition) => {
               // console.log('OrganizationStore, positionListForOpinionMaker,  NEITHER filter_out_voter nor filter_for_voter,  onePosition: ', onePosition);
               // Check to see if this position has already been put in this array
-              existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find(possibleMatch => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
+              existingPosition = allCachedPositionsByOrganization[organizationWeVoteId].find((possibleMatch) => possibleMatch.position_we_vote_id === onePosition.position_we_vote_id);
               if (!existingPosition) {
                 allCachedPositionsByOrganization[organizationWeVoteId].push(onePosition);
               }
@@ -933,7 +929,7 @@ class OrganizationStore extends ReduceStore {
         // console.log('OrganizationStore call OrganizationActions.organizationsFollowedRetrieve action.type:', action.type);
         OrganizationActions.organizationsFollowedRetrieve();
         revisedState = state;
-        revisedState = Object.assign({}, revisedState, {
+        revisedState = { ...revisedState,
           organizationWeVoteIdsVoterIsFollowing: explanationOrganizationsVoterIsFollowing,
           organizationWeVoteIdsVoterIsIgnoring: [],
           organizationWeVoteIdsVoterIsFollowingOnTwitter: [],
@@ -952,8 +948,7 @@ class OrganizationStore extends ReduceStore {
             chosenSocialShareDescriptionAllowed: false,
             chosenPromotedOrganizationsAllowed: false,
             featuresProvidedBitmap: 0,
-          },
-        });
+          } };
         return revisedState;
 
       case 'voterSignOut':
@@ -1000,9 +995,7 @@ class OrganizationStore extends ReduceStore {
             });
             if (modifiedPositionChangeFound) {
               allCachedPositionsByOrganization[voterLinkedOrganizationWeVoteId] = allCachedPositionsForOneOrganization;
-              revisedState = Object.assign({}, revisedState, {
-                allCachedPositionsByOrganization,
-              });
+              revisedState = { ...revisedState, allCachedPositionsByOrganization };
             }
           }
         }
@@ -1023,9 +1016,7 @@ class OrganizationStore extends ReduceStore {
               modifiedPosition.is_public_position = isPublicPosition;
             }
             allCachedPositionsByPositionWeVoteId[positionWeVoteId] = modifiedPosition;
-            revisedState = Object.assign({}, revisedState, {
-              allCachedPositionsByPositionWeVoteId,
-            });
+            revisedState = { ...revisedState, allCachedPositionsByPositionWeVoteId };
           }
         }
         if (ballotItemWeVoteId && voterLinkedOrganizationWeVoteId) {
@@ -1046,9 +1037,7 @@ class OrganizationStore extends ReduceStore {
                 modifiedPosition.is_public_position = isPublicPosition;
               }
               allCachedPositionsByOrganizationDict[voterLinkedOrganizationWeVoteId][ballotItemWeVoteId] = modifiedPosition;
-              revisedState = Object.assign({}, revisedState, {
-                allCachedPositionsByOrganizationDict,
-              });
+              revisedState = { ...revisedState, allCachedPositionsByOrganizationDict };
             }
           }
         }

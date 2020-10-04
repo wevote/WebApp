@@ -31,7 +31,7 @@ const SectionTitle = styled.h1`
 `;
 
 const SectionTitleBold = styled.span`
-  color: ${props => props.theme.colors.brandBlue};
+  color: ${(props) => props.theme.colors.brandBlue};
   font-weight: bold;
 `;
 
@@ -53,7 +53,7 @@ const Step = styled.div`
 const StepNumber = styled.div`
   width: 24px;
   height: 24px;
-  background: ${props => props.theme.colors.brandBlue};
+  background: ${(props) => props.theme.colors.brandBlue};
   color: white;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {

@@ -62,7 +62,7 @@ class BallotStore extends ReduceStore {
   getAllBallotItemsFlattened (googleCivicElectionId = 0) {
     if (googleCivicElectionId) {
       const allBallotItemsSnapshot = this.getState().allBallotItemsFlattened || [];
-      return allBallotItemsSnapshot.filter(item => item.google_civic_election_id === googleCivicElectionId);
+      return allBallotItemsSnapshot.filter((item) => item.google_civic_election_id === googleCivicElectionId);
     } else {
       return this.getState().allBallotItemsFlattened || [];
     }
@@ -151,7 +151,7 @@ class BallotStore extends ReduceStore {
       const { kind_of_ballot_item: kindOfBallot, we_vote_id: weVoteId, candidate_list: candidateList } = item;
       // console.log('BallotStore ballotRemainingChoices, kindOfBallot: ', kindOfBallot, ', weVoteId:', weVoteId);
       if (kindOfBallot === 'OFFICE') { // OFFICE - you are undecided if you haven't supported anyone
-        return candidateList.filter(candidate => SupportStore.voterSupportsList[candidate.we_vote_id]).length === 0;
+        return candidateList.filter((candidate) => SupportStore.voterSupportsList[candidate.we_vote_id]).length === 0;
       } else { // MEASURES - you haven't decided if you neither support nor oppose
         return !SupportStore.voterSupportsList[weVoteId] && !SupportStore.voterOpposesList[weVoteId];
       }
@@ -468,14 +468,13 @@ class BallotStore extends ReduceStore {
           // }
         });
 
-        revisedState = Object.assign({}, revisedState, {
+        revisedState = { ...revisedState,
           allBallotItemsByOfficeOrMeasure: Object.values(allBallotItemsByOfficeOrMeasureDict),
           allBallotItemsByOfficeOrMeasureDict,
           allBallotItemsFlattened: Object.values(allBallotItemsFlattenedDict),
           allBallotItemsFlattenedDict,
           allBallotItemsHaveBeenRetrievedForElection,
-          allBallotItemsLastStateCodeReceived: allBallotItemsStateCode,
-        });
+          allBallotItemsLastStateCodeReceived: allBallotItemsStateCode };
         return revisedState;
 
       case 'allBallotItemsRetrieveCalled':
@@ -581,9 +580,7 @@ class BallotStore extends ReduceStore {
         googleCivicElectionId = parseInt(googleCivicElectionId, 10);
         revisedState = state;
         textForMapSearch = action.res.text_for_map_search;
-        revisedState = Object.assign({}, revisedState, {
-          textForMapSearch,
-        });
+        revisedState = { ...revisedState, textForMapSearch };
         if (googleCivicElectionId !== 0) {
           newBallots[googleCivicElectionId] = action.res;
 
@@ -623,10 +620,9 @@ class BallotStore extends ReduceStore {
               newBallotItemUnfurledTracker[ballotItem.we_vote_id] = false;
             }
           });
-          revisedState = Object.assign({}, revisedState, {
+          revisedState = { ...revisedState,
             ballots: newBallots,
-            ballotItemUnfurledTracker: newBallotItemUnfurledTracker,
-          });
+            ballotItemUnfurledTracker: newBallotItemUnfurledTracker };
         }
         // Now capture the candidate we vote ids under each office
         // let officeWeVoteId;
@@ -647,9 +643,7 @@ class BallotStore extends ReduceStore {
               });
             }
           });
-          revisedState = Object.assign({}, revisedState, {
-            ballotItemListCandidatesDict,
-          });
+          revisedState = { ...revisedState, ballotItemListCandidatesDict };
         }
         return revisedState;
 
@@ -750,12 +744,12 @@ class BallotStore extends ReduceStore {
           }
         }
         revisedState = state;
-        revisedState = Object.assign({}, revisedState, {
+        revisedState = { ...revisedState,
           allBallotItemsHaveBeenRetrievedForElection: {},
           ballotItemSearchResultsList: [],
           ballotItemUnfurledTracker: {},
           positionListFromFriendsHasBeenRetrievedOnceByBallotItem: {}, // Dictionary with ballot_item_we_vote_id as key and true/false as value
-        });
+        };
         return revisedState;
 
       case 'error-voterBallotItemsRetrieve':

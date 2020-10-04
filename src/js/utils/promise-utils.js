@@ -7,6 +7,6 @@ export default function factory (promiseFactory) {
 
   promiseFactory.reduce((curr, next) => {
     if (next instanceof Function !== true) throw new Error('next is not a function');
-    return curr.then(data => new Promise(next.bind(data)));
+    return curr.then((data) => new Promise(next.bind(data)));
   }, new Promise(firstPromiseFn));
 }

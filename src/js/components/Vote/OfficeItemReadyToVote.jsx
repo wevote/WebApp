@@ -13,10 +13,6 @@ import { toTitleCase } from '../../utils/textFormat';
 
 
 class OfficeItemReadyToVote extends Component {
-  static propTypes = {
-    candidateList: PropTypes.array,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -87,7 +83,7 @@ class OfficeItemReadyToVote extends Component {
     }
     let candidatePhotoUrl;
     return (
-      <React.Fragment>
+      <>
         <Wrapper>
           { this.props.candidateList.map((oneCandidate) => {
             candidatePhotoUrl = '';
@@ -133,14 +129,16 @@ class OfficeItemReadyToVote extends Component {
                 )}
               </React.Fragment>
             );
-          })
-          }
+          })}
         </Wrapper>
         <HR />
-      </React.Fragment>
+      </>
     );
   }
 }
+OfficeItemReadyToVote.propTypes = {
+  candidateList: PropTypes.array,
+};
 
 const styles = ({
 });

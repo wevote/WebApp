@@ -8,14 +8,6 @@ import { renderLog } from '../../utils/logging';
 
 
 class BallotSummaryAccordionSection extends Component {
-  static propTypes = {
-    children: PropTypes.instanceOf(Object).isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    label: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-    classes: PropTypes.object,
-  };
-
   onClick = () => {
     this.props.onClick(this.props.label);
   };
@@ -50,6 +42,13 @@ class BallotSummaryAccordionSection extends Component {
     );
   }
 }
+BallotSummaryAccordionSection.propTypes = {
+  children: PropTypes.instanceOf(Object).isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  label: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  classes: PropTypes.object,
+};
 
 const styles = () => ({
   iconButtonRoot: {
@@ -72,7 +71,7 @@ const AccordionBorderWrapper = styled.div`
 `;
 
 const AccordionTitle = styled.div`
-  font-weight: ${props => (props.isOpen ? 600 : 500)};
+  font-weight: ${(props) => (props.isOpen ? 600 : 500)};
   font-size: 16px;
   width: 100%;
 `;

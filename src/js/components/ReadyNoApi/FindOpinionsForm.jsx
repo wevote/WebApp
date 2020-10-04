@@ -11,16 +11,6 @@ import ImageHandler from '../ImageHandler';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 class FindOpinionsForm extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    headerText: PropTypes.string,
-    introHeaderLink: PropTypes.string,
-    searchTextLarge: PropTypes.bool,
-    showVoterGuidePhotos: PropTypes.bool,
-    theme: PropTypes.object,
-    uniqueExternalId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -180,8 +170,17 @@ class FindOpinionsForm extends Component {
     );
   }
 }
+  FindOpinionsForm.propTypes = {
+    classes: PropTypes.object,
+    headerText: PropTypes.string,
+    introHeaderLink: PropTypes.string,
+    searchTextLarge: PropTypes.bool,
+    showVoterGuidePhotos: PropTypes.bool,
+    theme: PropTypes.object,
+    uniqueExternalId: PropTypes.string,
+  };
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonRoot: {
     fontSize: 12,
     padding: '4px 8px',

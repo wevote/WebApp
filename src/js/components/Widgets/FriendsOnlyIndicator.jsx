@@ -9,10 +9,6 @@ import groupIcon from '../../../img/global/svg-icons/group-icon.svg';
 import publicIcon from '../../../img/global/svg-icons/public-icon.svg';
 
 export default class FriendsOnlyIndicator extends Component {
-  static propTypes = {
-    isFriendsOnly: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -44,3 +40,6 @@ export default class FriendsOnlyIndicator extends Component {
     );
   }
 }
+FriendsOnlyIndicator.propTypes = {
+  isFriendsOnly: PropTypes.bool,
+};

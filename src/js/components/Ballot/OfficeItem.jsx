@@ -8,12 +8,6 @@ import { hasIPhoneNotch, historyPush, isCordova } from '../../utils/cordovaUtils
 import { renderLog } from '../../utils/logging';
 
 class OfficeItem extends Component {
-  static propTypes = {
-    weVoteId: PropTypes.string.isRequired,
-    ballotItemDisplayName: PropTypes.string.isRequired,
-    linkToBallotItemPage: PropTypes.bool,
-  };
-
   render () {
     renderLog('OfficeItem');  // Set LOG_RENDER_EVENTS to log all renders
     let { ballotItemDisplayName } = this.props;
@@ -30,8 +24,7 @@ class OfficeItem extends Component {
           <OfficeNameWrapper>
             { this.props.linkToBallotItemPage ?
               <Link to={officeLink}>{ballotItemDisplayName}</Link> :
-              ballotItemDisplayName
-            }
+              ballotItemDisplayName}
           </OfficeNameWrapper>
 
           <div
@@ -45,8 +38,13 @@ class OfficeItem extends Component {
     );
   }
 }
+OfficeItem.propTypes = {
+  weVoteId: PropTypes.string.isRequired,
+  ballotItemDisplayName: PropTypes.string.isRequired,
+  linkToBallotItemPage: PropTypes.bool,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     [theme.breakpoints.down('xs')]: {

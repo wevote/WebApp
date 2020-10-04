@@ -15,11 +15,6 @@ import VoterStore from '../../stores/VoterStore';
 import DelayedLoad from '../Widgets/DelayedLoad';
 
 class SettingsSiteText extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -253,6 +248,10 @@ class SettingsSiteText extends Component {
     );
   }
 }
+SettingsSiteText.propTypes = {
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+};
 
 const styles = () => ({
   formControl: {

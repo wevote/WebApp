@@ -59,11 +59,6 @@ const islandFilters = [
 ];
 
 class Opinions2020 extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -238,7 +233,7 @@ class Opinions2020 extends Component {
     // console.log('ballotItemSearchResultsList:', ballotItemSearchResultsList);
     if (ballotItemSearchResultsList && ballotItemSearchResultsList.length) {
       // Figure out which of these organizations has already been retrieved so we are only adding new
-      const newBallotItemSearchResults = ballotItemSearchResultsList.filter(ballotItem => !arrayContains(ballotItem.we_vote_id, ballotItemWeVoteIdsAlreadyFoundList));
+      const newBallotItemSearchResults = ballotItemSearchResultsList.filter((ballotItem) => !arrayContains(ballotItem.we_vote_id, ballotItemWeVoteIdsAlreadyFoundList));
       // console.log('newBallotItemSearchResults:', newBallotItemSearchResults);
 
       // Figure out the organizations we already have voterGuides for so we don't duplicate
@@ -703,8 +698,7 @@ class Opinions2020 extends Component {
                           );
                           foundInItemsAlreadyShown += 1;
                           return foundInStringItem;
-                        })
-                        }
+                        })}
                       </SearchResultsFoundInExplanation>
                     )}
                     {(isCandidate) && (
@@ -757,8 +751,7 @@ class Opinions2020 extends Component {
                     )}
                   </div>
                 );
-              })
-              }
+              })}
             </CardChildListGroup>
             <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfBallotItemsToDisplay}>
               <ShowMoreItems
@@ -786,8 +779,7 @@ class Opinions2020 extends Component {
               </EmptyBallotText>
             </EmptyBallotMessageContainer>
           </Card>
-        )
-        }
+        )}
         <span className="d-print-none">
           <br />
           <Link to="/opinions_followed" className="u-no-break">See organizations you follow</Link>
@@ -799,8 +791,12 @@ class Opinions2020 extends Component {
     );
   }
 }
+Opinions2020.propTypes = {
+  classes: PropTypes.object,
+  params: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 150,
     height: 150,

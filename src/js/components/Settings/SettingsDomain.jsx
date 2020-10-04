@@ -20,11 +20,6 @@ import DelayedLoad from '../Widgets/DelayedLoad';
 
 
 class SettingsDomain extends Component {
-  static propTypes = {
-    externalUniqueId: PropTypes.string,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -620,6 +615,10 @@ class SettingsDomain extends Component {
     );
   }
 }
+SettingsDomain.propTypes = {
+  externalUniqueId: PropTypes.string,
+  classes: PropTypes.object,
+};
 
 const styles = () => ({
   formControl: {
@@ -679,7 +678,7 @@ const IconInputContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  border-left: ${props => (props.error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)')} ;
+  border-left: ${(props) => (props.error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)')} ;
   padding-left: 12px;
   color: rgba(0, 0, 0, 0.54);
   height: 100%;
@@ -689,15 +688,15 @@ const IconInputContainer = styled.div`
 const InputBoxLabel = styled.h4`
   font-size: 14px;
   font-weight: bold;
-  color: ${props => (props.error ? 'rgb(255, 73, 34)' : 'black')}
+  color: ${(props) => (props.error ? 'rgb(255, 73, 34)' : 'black')}
 `;
 
 const InputBoxHelperLabel = styled.p`
   margin: 0;
   font-size: 14px;
-  margin-bottom:  ${props => (props.error ? '6px' : '4px')};
-  margin-top:  ${props => (props.error ? '6px' : '-4px')};
-  color: ${props => (props.error ? 'rgb(255, 73, 34)' : 'black')};
+  margin-bottom:  ${(props) => (props.error ? '6px' : '4px')};
+  margin-top:  ${(props) => (props.error ? '6px' : '-4px')};
+  color: ${(props) => (props.error ? 'rgb(255, 73, 34)' : 'black')};
 `;
 
 const InputBoxDescriptionUnder = styled.div`
@@ -709,8 +708,8 @@ const InputBoxDescriptionUnder = styled.div`
 
 const SubdomainExtensionText = styled.h5`
   margin: 0;
-  height: ${props => (props.error ? '52.4px' : '53.4px')};
-  border-left: ${props => (props.error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)')};
+  height: ${(props) => (props.error ? '52.4px' : '53.4px')};
+  border-left: ${(props) => (props.error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)')};
   background-color: #eee;
   color: rgba(0, 0, 0, 0.45);
   width: fit-content;

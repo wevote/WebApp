@@ -239,12 +239,11 @@ class SupportStore extends ReduceStore {
         // console.log('SupportStore call SupportActions.voterAllPositionsRetrieve action.type:', action.type);
         SupportActions.voterAllPositionsRetrieve();
         revisedState = state;
-        revisedState = Object.assign({}, revisedState, {
+        revisedState = { ...revisedState,
           voter_supports: {},
           voter_opposes: {},
           voter_statement_text: {},
-          is_public_position: {},
-        });
+          is_public_position: {} };
         return revisedState;
 
       default:

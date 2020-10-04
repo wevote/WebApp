@@ -28,18 +28,6 @@ import VoterStore from '../../stores/VoterStore';
 import { stringContains } from '../../utils/textFormat';
 
 class PositionStatementModal extends Component {
-  // This modal will show a users ballot guides from previous and current elections.
-
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-    hideAddressEdit: PropTypes.bool,
-    hideElections: PropTypes.bool,
-    show: PropTypes.bool,
-    togglePositionStatementModal: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -340,7 +328,17 @@ class PositionStatementModal extends Component {
     );
   }
 }
-const styles = theme => ({
+PositionStatementModal.propTypes = {
+  ballotItemWeVoteId: PropTypes.string.isRequired,
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+  hideAddressEdit: PropTypes.bool,
+  hideElections: PropTypes.bool,
+  show: PropTypes.bool,
+  togglePositionStatementModal: PropTypes.func.isRequired,
+};
+
+const styles = (theme) => ({
   dialogTitle: {
     padding: 16,
   },

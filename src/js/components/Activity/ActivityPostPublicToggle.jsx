@@ -12,17 +12,6 @@ import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
 class ActivityPostPublicToggle extends Component {
-  static propTypes = {
-    activityTidbitWeVoteId: PropTypes.string,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    externalUniqueId: PropTypes.string,
-    initialVisibilityIsPublic: PropTypes.bool,
-    inTestMode: PropTypes.bool,
-    preventStackedButtons: PropTypes.bool,
-    onToggleChange: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -261,8 +250,18 @@ class ActivityPostPublicToggle extends Component {
     );
   }
 }
+ActivityPostPublicToggle.propTypes = {
+  activityTidbitWeVoteId: PropTypes.string,
+  classes: PropTypes.object,
+  className: PropTypes.string,
+  externalUniqueId: PropTypes.string,
+  initialVisibilityIsPublic: PropTypes.bool,
+  inTestMode: PropTypes.bool,
+  preventStackedButtons: PropTypes.bool,
+  onToggleChange: PropTypes.func.isRequired,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   dialogRoot: isCordova() ? {
     height: '100%',
     position: 'absolute !important',

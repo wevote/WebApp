@@ -5,10 +5,6 @@ import { Info } from '@material-ui/icons';
 import { Tooltip } from '@material-ui/core';
 
 class WeVoteTooltip extends Component {
-  static propTypes = {
-    title: PropTypes.string,
-  };
-
   render () {
     return (
       <Icon>
@@ -21,6 +17,9 @@ class WeVoteTooltip extends Component {
     );
   }
 }
+WeVoteTooltip.propTypes = {
+  title: PropTypes.string,
+};
 
 const Icon = styled.span`
   position: relative;

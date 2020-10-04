@@ -11,10 +11,6 @@ import VoterActions from '../../actions/VoterActions';
 // import WouldYouLikeToMergeAccounts from '../../components/WouldYouLikeToMergeAccounts';
 
 export default class FriendInvitationByEmailVerifyProcess extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -253,3 +249,6 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     }
   }
 }
+FriendInvitationByEmailVerifyProcess.propTypes = {
+  params: PropTypes.object,
+};

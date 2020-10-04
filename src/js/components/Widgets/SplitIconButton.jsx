@@ -6,25 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { getTextColorFromBackground } from '../../utils/color';
 
 class SplitIconButton extends PureComponent {
-  static propTypes = {
-    adjustedIconWidth: PropTypes.number,
-    backgroundColor: PropTypes.string,
-    buttonText: PropTypes.string,
-    classes: PropTypes.object,
-    compressedSize: PropTypes.bool,
-    disabled: PropTypes.bool,
-    externalUniqueId: PropTypes.string,
-    fontColor: PropTypes.string,
-    fontSize: PropTypes.string,
-    icon: PropTypes.node,
-    iconRight: PropTypes.bool,
-    onClick: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    separatorColor: PropTypes.string,
-    title: PropTypes.string,
-    variant: PropTypes.string,
-  };
-
   render () {
     const {
       backgroundColor,
@@ -87,6 +68,24 @@ class SplitIconButton extends PureComponent {
     );
   }
 }
+SplitIconButton.propTypes = {
+  adjustedIconWidth: PropTypes.number,
+  backgroundColor: PropTypes.string,
+  buttonText: PropTypes.string,
+  classes: PropTypes.object,
+  compressedSize: PropTypes.bool,
+  disabled: PropTypes.bool,
+  externalUniqueId: PropTypes.string,
+  fontColor: PropTypes.string,
+  fontSize: PropTypes.string,
+  icon: PropTypes.node,
+  iconRight: PropTypes.bool,
+  onClick: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  separatorColor: PropTypes.string,
+  title: PropTypes.string,
+  variant: PropTypes.string,
+};
 
 const styles = () => ({
   label: {

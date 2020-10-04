@@ -7,10 +7,6 @@ import ReadMore from '../Widgets/ReadMore';
 import ShowMoreButtons from './ShowMoreButtons';
 
 class ReadyIntroduction extends Component {
-  static propTypes = {
-    showStep3WhenCompressed: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -100,8 +96,11 @@ class ReadyIntroduction extends Component {
     );
   }
 }
+ReadyIntroduction.propTypes = {
+  showStep3WhenCompressed: PropTypes.bool,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonRoot: {
     fontSize: 12,
     padding: '4px 8px',
@@ -172,7 +171,7 @@ const Dot = styled.div`
 `;
 
 const StepNumber = styled.div`
-  background: ${props => props.theme.colors.brandBlue};
+  background: ${(props) => props.theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
   font-size: 14px;

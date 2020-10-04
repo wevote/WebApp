@@ -18,15 +18,6 @@ class IssuesByOrganizationDisplayList extends Component {
     document.body.click();
   }
 
-  static propTypes = {
-    organizationWeVoteId: PropTypes.string.isRequired,
-    children: PropTypes.object,
-    fullWidth: PropTypes.bool,
-    handleLeaveCandidateCard: PropTypes.func,
-    handleEnterCandidateCard: PropTypes.func,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -269,6 +260,14 @@ class IssuesByOrganizationDisplayList extends Component {
     );
   }
 }
+IssuesByOrganizationDisplayList.propTypes = {
+  organizationWeVoteId: PropTypes.string.isRequired,
+  children: PropTypes.object,
+  fullWidth: PropTypes.bool,
+  handleLeaveCandidateCard: PropTypes.func,
+  handleEnterCandidateCard: PropTypes.func,
+  classes: PropTypes.object,
+};
 
 const styles = () => ({
   chipStyle: {
@@ -296,10 +295,10 @@ const FollowIssueToggleContainer = styled.div`
 `;
 
 const IssuesByOrganization = styled.div`
-  width: ${props => (props.fullWidth ? '100%' : '85%')};
+  width: ${(props) => (props.fullWidth ? '100%' : '85%')};
   padding: 6px 0 0 0;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: ${props => (props.fullWidth ? '100%' : '90%')};
+    width: ${(props) => (props.fullWidth ? '100%' : '90%')};
   }
 `;
 

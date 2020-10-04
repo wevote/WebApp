@@ -10,16 +10,6 @@ import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 
 class PersonalizedScoreIntroBody extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    inModal: PropTypes.bool,
-    pathname: PropTypes.string,
-    markPersonalizedScoreIntroCompleted: PropTypes.func,
-    show: PropTypes.bool,
-    stepAdvanced: PropTypes.func,
-    toggleFunction: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -447,6 +437,16 @@ class PersonalizedScoreIntroBody extends Component {
     );
   }
 }
+PersonalizedScoreIntroBody.propTypes = {
+  classes: PropTypes.object,
+  inModal: PropTypes.bool,
+  pathname: PropTypes.string,
+  markPersonalizedScoreIntroCompleted: PropTypes.func,
+  show: PropTypes.bool,
+  stepAdvanced: PropTypes.func,
+  toggleFunction: PropTypes.func,
+};
+
 const styles = () => ({
   backButtonRoot: {
     width: '85%',

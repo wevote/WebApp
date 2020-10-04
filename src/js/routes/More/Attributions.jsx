@@ -48,10 +48,9 @@ export default class Attributions extends React.Component {
             </Link>
             .
           </div>
-          { attributions.map(oneLicense => (
+          { attributions.map((oneLicense) => (
             Attributions.parseLicense(oneLicense)
-          ))
-          }
+          ))}
         </div>
       </div>
     );

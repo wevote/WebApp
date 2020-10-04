@@ -12,13 +12,6 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 
 // This is based on components/Ballot/OfficeItemCompressed
 export default class VoterGuideOfficeItemCompressed extends Component {
-  static propTypes = {
-    we_vote_id: PropTypes.string.isRequired,
-    ballot_item_display_name: PropTypes.string.isRequired,
-    candidate_list: PropTypes.array,
-    organizationWeVoteId: PropTypes.string.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -195,11 +188,16 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                 }
               }
               return null;
-            })
-          }
+            })}
           </div>
         </div>
       </div>
     );
   }
 }
+VoterGuideOfficeItemCompressed.propTypes = {
+  we_vote_id: PropTypes.string.isRequired,
+  ballot_item_display_name: PropTypes.string.isRequired,
+  candidate_list: PropTypes.array,
+  organizationWeVoteId: PropTypes.string.isRequired,
+};

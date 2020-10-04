@@ -14,14 +14,6 @@ import { shortenText } from '../../utils/textFormat';
 
 
 class BallotTitleHeader extends Component {
-  static propTypes = {
-    electionName: PropTypes.string,
-    electionDayTextObject: PropTypes.object,
-    scrolled: PropTypes.bool,
-    toggleSelectBallotModal: PropTypes.func,
-    classes: PropTypes.object,
-  };
-
   shortenElectionNameCordova () {
     if (isIPhone3p5in() || isIPhone4in()) {
       return 26;  // iphone5-or-smaller
@@ -113,6 +105,13 @@ class BallotTitleHeader extends Component {
     }
   }
 }
+BallotTitleHeader.propTypes = {
+  electionName: PropTypes.string,
+  electionDayTextObject: PropTypes.object,
+  scrolled: PropTypes.bool,
+  toggleSelectBallotModal: PropTypes.func,
+  classes: PropTypes.object,
+};
 
 const styles = {
   settingsIcon: {
@@ -131,7 +130,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: ${props => (props.marginTop)};
+  margin-top: ${(props) => (props.marginTop)};
 `;
 
 const Title = styled.h1`

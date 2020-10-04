@@ -42,10 +42,6 @@ const STARTING_NUMBER_OF_ACTIVITY_TIDBITS_TO_DISPLAY = 10;
 
 
 class News extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -289,7 +285,7 @@ class News extends Component {
         unsetSomeRowStylesIfCordova.paddingBottom = '625px';  // big enough for the largest phone with a footer menu
       }
     }
-    const unsetSomeRowStylesIfCordovaMdBlock = Object.assign({}, unsetSomeRowStylesIfCordova);
+    const unsetSomeRowStylesIfCordovaMdBlock = { ...unsetSomeRowStylesIfCordova };
     if (isIPad() || isAndroidTablet()) {
       unsetSomeRowStylesIfCordovaMdBlock.transform = 'translate(0, 5%)';
     }
@@ -463,6 +459,9 @@ class News extends Component {
     );
   }
 }
+News.propTypes = {
+  params: PropTypes.object,
+};
 
 const ActivityPostAddWrapper = styled.div`
 `;
@@ -567,7 +566,7 @@ const VoterAndWeVoteLogos = styled.div`
   justify-content: center;
 `;
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 150,
     height: 150,

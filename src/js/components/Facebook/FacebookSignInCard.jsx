@@ -12,8 +12,6 @@ const facebookInfoText = (
 );
 
 class FacebookSignInCard extends Component {
-  static propTypes={};
-
   constructor (props) {
     super(props);
     this.state = {};

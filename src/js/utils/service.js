@@ -22,8 +22,8 @@ const defaults = {
     } : {};
   },
 
-  success: res => console.warn('Success function not defined:', res),
-  error: err => console.error(`Ajax error: ${err.message}`),
+  success: (res) => console.warn('Success function not defined:', res),
+  error: (err) => console.error(`Ajax error: ${err.message}`),
 };
 
 /*

@@ -4,10 +4,6 @@ import { renderLog } from '../../utils/logging';
 import OrganizationCard from '../VoterGuide/OrganizationCard';
 
 export default class SettingsBannerAndOrganizationCard extends Component {
-  static propTypes = {
-    organization: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -42,8 +38,7 @@ export default class SettingsBannerAndOrganizationCard extends Component {
           <div className="organization-banner-image-div">
             <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
           </div>
-        ) : null
-        }
+        ) : null}
         {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith('Voter-') ? (
           <div className="container-fluid">
             <div className="row">
@@ -59,9 +54,11 @@ export default class SettingsBannerAndOrganizationCard extends Component {
               </div>
             </div>
           </div>
-        ) : null
-        }
+        ) : null}
       </div>
     );
   }
 }
+SettingsBannerAndOrganizationCard.propTypes = {
+  organization: PropTypes.object,
+};

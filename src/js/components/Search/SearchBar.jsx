@@ -6,16 +6,6 @@ import { renderLog } from '../../utils/logging';
 import removeCircleIcon from '../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle.svg';
 
 export default class SearchBar extends Component {
-  static propTypes = {
-    clearButton: PropTypes.bool,
-    clearFunction: PropTypes.func.isRequired,
-    clearSearchTextNow: PropTypes.bool,
-    placeholder: PropTypes.string,
-    searchButton: PropTypes.bool,
-    searchFunction: PropTypes.func.isRequired,
-    searchUpdateDelayTime: PropTypes.number.isRequired,
-  };
-
   constructor (props) {
     super(props);
 
@@ -115,3 +105,12 @@ export default class SearchBar extends Component {
     );
   }
 }
+SearchBar.propTypes = {
+  clearButton: PropTypes.bool,
+  clearFunction: PropTypes.func.isRequired,
+  clearSearchTextNow: PropTypes.bool,
+  placeholder: PropTypes.string,
+  searchButton: PropTypes.bool,
+  searchFunction: PropTypes.func.isRequired,
+  searchUpdateDelayTime: PropTypes.number.isRequired,
+};

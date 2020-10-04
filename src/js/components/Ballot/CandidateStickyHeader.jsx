@@ -7,11 +7,6 @@ import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 import { renderLog } from '../../utils/logging';
 
 class CandidateStickyHeader extends Component {
-  static propTypes = {
-    candidate: PropTypes.object,
-    // weVoteId: PropTypes.string,
-  };
-
   render () {
     renderLog('CandidateStickyHeader');  // Set LOG_RENDER_EVENTS to log all renders
     const { candidate } = this.props;
@@ -64,6 +59,10 @@ class CandidateStickyHeader extends Component {
     );
   }
 }
+CandidateStickyHeader.propTypes = {
+  candidate: PropTypes.object,
+  // weVoteId: PropTypes.string,
+};
 
 const slideDown = keyframes`
   from {

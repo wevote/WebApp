@@ -15,13 +15,6 @@ import { renderLog } from '../../utils/logging';
 const delayBeforeRemovingSavedStatus = 2000;
 
 export default class SettingsWidgetAccountType extends Component {
-  static propTypes = {
-    closeEditFormOnChoice: PropTypes.bool, // When a voter makes a choice, close the edit form
-    editFormOpen: PropTypes.bool, // Normally we load this component with the edit options closed
-    externalUniqueId: PropTypes.string, // Unique add on to an id distinguishing between mobile and desktop renders
-    showEditToggleOption: PropTypes.bool, // Should the voter be able to hide/show the form fields
-  };
-
   constructor (props) {
     super(props);
     // We intentionally don't define this.state.organization or this.state.voter
@@ -327,6 +320,12 @@ export default class SettingsWidgetAccountType extends Component {
     );
   }
 }
+SettingsWidgetAccountType.propTypes = {
+  closeEditFormOnChoice: PropTypes.bool, // When a voter makes a choice, close the edit form
+  editFormOpen: PropTypes.bool, // Normally we load this component with the edit options closed
+  externalUniqueId: PropTypes.string, // Unique add on to an id distinguishing between mobile and desktop renders
+  showEditToggleOption: PropTypes.bool, // Should the voter be able to hide/show the form fields
+};
 
 const Wrapper = styled.div`
   margin-top: 20px;

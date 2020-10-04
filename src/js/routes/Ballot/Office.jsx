@@ -25,10 +25,6 @@ import daleMcGrewJpm from '../../../img/global/photos/Dale_McGrew-200x200.jpg';
 
 // This is related to routes/VoterGuide/OrganizationVoterGuideOffice
 class Office extends Component {
-  static propTypes = {
-    params: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -325,8 +321,7 @@ class Office extends Component {
               </CandidateList>
             </div>
           ) :
-            <span>Loading candidates...</span>
-        }
+            <span>Loading candidates...</span>}
         </div>
         <div className="col-lg-3 d-none d-lg-block">
           <div className="card">
@@ -344,7 +339,9 @@ class Office extends Component {
     );
   }
 }
-
+Office.propTypes = {
+  params: PropTypes.object.isRequired,
+};
 
 const OfficeWrapper = styled.div`
   display: flex;

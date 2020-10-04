@@ -16,10 +16,6 @@ import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
 class VoterGuideFollowing extends Component {
-  static propTypes = {
-    organizationWeVoteId: PropTypes.string.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -129,7 +125,7 @@ class VoterGuideFollowing extends Component {
       const searchTermLowerCase = searchTerm.toLowerCase();
       const { voterGuideFollowedList } = this.state;
       const searchedFollowedList = filter(voterGuideFollowedList,
-        user => user.voter_guide_display_name.toLowerCase().includes(searchTermLowerCase));
+        (user) => user.voter_guide_display_name.toLowerCase().includes(searchTermLowerCase));
 
       this.setState({
         searchTerm,
@@ -229,8 +225,7 @@ class VoterGuideFollowing extends Component {
                     )}
                   </TitleWrapper>
                 </DelayedLoad>
-              )
-            }
+              )}
             {/* ********** */}
             {/* Search Box */}
             {voterGuideFollowedList && voterGuideFollowedList.length > 0 && (
@@ -266,6 +261,9 @@ class VoterGuideFollowing extends Component {
     );
   }
 }
+VoterGuideFollowing.propTypes = {
+  organizationWeVoteId: PropTypes.string.isRequired,
+};
 
 const SearchInputWrapper = styled.div`
   margin-left: 15px;

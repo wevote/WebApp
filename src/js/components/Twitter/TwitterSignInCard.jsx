@@ -12,8 +12,6 @@ const twitterInfoText = (
 );
 
 class TwitterSignInCard extends Component {
-  static propTypes={};
-
   constructor (props) {
     super(props);
     this.state = {};

@@ -7,13 +7,6 @@ import { renderLog } from '../../utils/logging';
 
 
 class ShowMoreButtons extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    showMoreId: PropTypes.string.isRequired,
-    showMoreButtonsLink: PropTypes.func.isRequired,
-    showMoreButtonWasClicked: PropTypes.bool,
-  };
-
   render () {
     renderLog('ShowMoreButtons');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, showMoreId, showMoreButtonsLink, showMoreButtonWasClicked } = this.props;
@@ -44,8 +37,14 @@ class ShowMoreButtons extends React.Component {
     );
   }
 }
+ShowMoreButtons.propTypes = {
+  classes: PropTypes.object,
+  showMoreId: PropTypes.string.isRequired,
+  showMoreButtonsLink: PropTypes.func.isRequired,
+  showMoreButtonWasClicked: PropTypes.bool,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   cardFooterIconRoot: {
     fontSize: 30,
     marginBottom: '.2rem',

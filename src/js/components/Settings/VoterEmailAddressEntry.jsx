@@ -18,16 +18,6 @@ import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 /* global $ */
 
 class VoterEmailAddressEntry extends Component {
-  static propTypes = {
-    cancelShouldCloseModal: PropTypes.bool,
-    classes: PropTypes.object,
-    closeSignInModal: PropTypes.func,
-    hideEverythingButSignInWithEmailForm: PropTypes.bool,
-    hideSignInWithEmailForm: PropTypes.bool,
-    lockOpenEmailVerificationButton: PropTypes.bool,
-    toggleOtherSignInOptions: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -360,8 +350,7 @@ class VoterEmailAddressEntry extends Component {
               </div>
             )}
           </Alert>
-          ) : null
-        }
+          ) : null}
         { emailAddressStatus.email_address_created ||
         emailAddressStatus.email_address_deleted ||
         emailAddressStatus.email_ownership_is_verified ||
@@ -379,8 +368,7 @@ class VoterEmailAddressEntry extends Component {
             { emailAddressStatus.make_primary_email && (emailAddressStatus.email_address_created || emailAddressStatus.email_address_found || emailAddressStatus.sign_in_code_email_sent) && !secretCodeSystemLocked ? <span>Your have chosen a new primary email. </span> : null }
             { emailAddressStatus.sign_in_code_email_sent ? <span>Please check your email. A sign in verification code was sent. </span> : null }
           </Alert>
-          ) : null
-        }
+          ) : null}
       </span>
     );
 
@@ -602,6 +590,15 @@ class VoterEmailAddressEntry extends Component {
     );
   }
 }
+VoterEmailAddressEntry.propTypes = {
+  cancelShouldCloseModal: PropTypes.bool,
+  classes: PropTypes.object,
+  closeSignInModal: PropTypes.func,
+  hideEverythingButSignInWithEmailForm: PropTypes.bool,
+  hideSignInWithEmailForm: PropTypes.bool,
+  lockOpenEmailVerificationButton: PropTypes.bool,
+  toggleOtherSignInOptions: PropTypes.func,
+};
 
 const styles = {
   root: {

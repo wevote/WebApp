@@ -16,20 +16,6 @@ import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 
 export default class OrganizationPositionItem extends Component {
-  static propTypes = {
-    ballotItemLink: PropTypes.string,
-    comment_text_off: PropTypes.bool,
-    editMode: PropTypes.bool,
-    organizationWeVoteId: PropTypes.string.isRequired,
-    placement: PropTypes.string,
-    position: PropTypes.object.isRequired,
-    popover_off: PropTypes.bool,
-    stance_display_off: PropTypes.bool,
-    turnOffLogo: PropTypes.bool,
-    turnOffName: PropTypes.bool,
-    inModal: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -386,18 +372,15 @@ export default class OrganizationPositionItem extends Component {
                 { (signedInWithThisTwitterAccount ||
                   signedInWithThisOrganization ||
                   signedInWithThisFacebookAccount) &&
-                  <FriendsOnlyIndicator isFriendsOnly={!voterPositionIsPublic} />
-                }
+                  <FriendsOnlyIndicator isFriendsOnly={!voterPositionIsPublic} />}
               </div>
-            ) : null
-            }
+            ) : null}
             { position.kind_of_ballot_item === 'CANDIDATE' && contestOfficeName !== undefined ? (
               <OfficeNameText
                 politicalParty={politicalParty}
                 contestOfficeName={contestOfficeName}
               />
-            ) : null
-            }
+            ) : null}
             {/* show explicit position, if available, otherwise show rating */}
             { positionDescription }
             { this.props.editMode ? (
@@ -424,11 +407,23 @@ export default class OrganizationPositionItem extends Component {
                     />
                   )}
               </div>
-            ) : null
-            }
+            ) : null}
           </div>
         </div>
       </li>
     );
   }
 }
+OrganizationPositionItem.propTypes = {
+  ballotItemLink: PropTypes.string,
+  comment_text_off: PropTypes.bool,
+  editMode: PropTypes.bool,
+  organizationWeVoteId: PropTypes.string.isRequired,
+  placement: PropTypes.string,
+  position: PropTypes.object.isRequired,
+  popover_off: PropTypes.bool,
+  stance_display_off: PropTypes.bool,
+  turnOffLogo: PropTypes.bool,
+  turnOffName: PropTypes.bool,
+  inModal: PropTypes.bool,
+};

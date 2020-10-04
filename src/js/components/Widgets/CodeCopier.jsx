@@ -8,15 +8,6 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { openSnackbar } from './SnackNotifier';
 
 export default class CodeCopier extends Component {
-  static propTypes = {
-    codeCopierButtonId: PropTypes.string,
-    exampleUrl: PropTypes.string,
-    externalUniqueId: PropTypes.string,
-    imageUrl: PropTypes.string,
-    sourceUrl: PropTypes.string,
-    title: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -201,8 +192,7 @@ export default class CodeCopier extends Component {
                 >
                   {this.state.status}
                 </p>
-              ) : null
-              }
+              ) : null}
               <Button
                 color="primary"
                 id={externalUniqueId ? `${codeCopierButtonId}-${externalUniqueId}` : `${codeCopierButtonId}`}
@@ -222,8 +212,7 @@ export default class CodeCopier extends Component {
                     { this.state.viewCode ? 'Hide Code' : 'Show Code' }
                   </a>
                 </div>
-              ) : null
-              }
+              ) : null}
               { !this.state.isLoading && this.state.isTwitterHandleValid && this.state.viewCode ? (
                 <textarea
                   ref={(text) => { this.textareaCode = text; }}
@@ -305,3 +294,11 @@ export default class CodeCopier extends Component {
     }
   }
 }
+CodeCopier.propTypes = {
+  codeCopierButtonId: PropTypes.string,
+  exampleUrl: PropTypes.string,
+  externalUniqueId: PropTypes.string,
+  imageUrl: PropTypes.string,
+  sourceUrl: PropTypes.string,
+  title: PropTypes.string,
+};

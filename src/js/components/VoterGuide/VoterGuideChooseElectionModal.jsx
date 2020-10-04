@@ -7,16 +7,6 @@ import { renderLog } from '../../utils/logging';
 import BallotElectionListWithFilters from '../Ballot/BallotElectionListWithFilters';
 
 class VoterGuideChooseElectionModal extends Component {
-  // This modal will show a users ballot guides from previous and current elections.
-
-  static propTypes = {
-    classes: PropTypes.object,
-    organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
-    pathname: PropTypes.string,
-    show: PropTypes.bool,
-    toggleFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -83,7 +73,15 @@ class VoterGuideChooseElectionModal extends Component {
     );
   }
 }
-const styles = theme => ({
+VoterGuideChooseElectionModal.propTypes = {
+  classes: PropTypes.object,
+  organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
+  pathname: PropTypes.string,
+  show: PropTypes.bool,
+  toggleFunction: PropTypes.func.isRequired,
+};
+
+const styles = (theme) => ({
   dialogPaper: {
     [theme.breakpoints.down('xs')]: {
       minWidth: '95%',

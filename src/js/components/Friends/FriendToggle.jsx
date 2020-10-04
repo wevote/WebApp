@@ -10,13 +10,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 export default class FriendToggle extends Component {
-  static propTypes = {
-    displayFullWidth: PropTypes.bool,
-    lightModeOn: PropTypes.bool,
-    otherVoterWeVoteId: PropTypes.string.isRequired,
-    showFriendsText: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -130,6 +123,12 @@ export default class FriendToggle extends Component {
     );
   }
 }
+FriendToggle.propTypes = {
+  displayFullWidth: PropTypes.bool,
+  lightModeOn: PropTypes.bool,
+  otherVoterWeVoteId: PropTypes.string.isRequired,
+  showFriendsText: PropTypes.bool,
+};
 
 const Menu = styled.div`
   position: absolute !important;

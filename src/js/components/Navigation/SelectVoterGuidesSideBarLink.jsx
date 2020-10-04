@@ -9,14 +9,6 @@ import VoterStore from '../../stores/VoterStore';
 
 
 export default class SelectVoterGuidesSideBarLink extends Component {
-  static propTypes = {
-    label: PropTypes.string,
-    subtitle: PropTypes.string,
-    displaySubtitles: PropTypes.bool,
-    electionId: PropTypes.number,
-    voterGuideWeVoteId: PropTypes.string,
-  };
-
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.onVoterStoreChange();
@@ -91,12 +83,18 @@ export default class SelectVoterGuidesSideBarLink extends Component {
             </Content>
           </Wrapper>
         ) :
-          null
-      }
+          null}
       </span>
     );
   }
 }
+SelectVoterGuidesSideBarLink.propTypes = {
+  label: PropTypes.string,
+  subtitle: PropTypes.string,
+  displaySubtitles: PropTypes.bool,
+  electionId: PropTypes.number,
+  voterGuideWeVoteId: PropTypes.string,
+};
 
 const Wrapper = styled.div`
   border: 1px solid #ddd;

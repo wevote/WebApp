@@ -11,12 +11,6 @@ import ShowMoreItems from '../Widgets/ShowMoreItems';
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 6;
 
 class ActivityPositionList extends Component {
-  static propTypes = {
-    incomingPositionList: PropTypes.array.isRequired,
-    organizationWeVoteId: PropTypes.string.isRequired,
-    startingNumberOfPositionsToDisplay: PropTypes.number,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -95,8 +89,7 @@ class ActivityPositionList extends Component {
                 />
               </div>
             );
-          })
-          }
+          })}
         </ul>
         <ShowMoreItemsWrapper onClick={this.increaseNumberOfPositionItemsToDisplay}>
           {!!(incomingPositionList && incomingPositionList.length > 1) && (
@@ -116,6 +109,11 @@ class ActivityPositionList extends Component {
     );
   }
 }
+ActivityPositionList.propTypes = {
+  incomingPositionList: PropTypes.array.isRequired,
+  organizationWeVoteId: PropTypes.string.isRequired,
+  startingNumberOfPositionsToDisplay: PropTypes.number,
+};
 
 const styles = () => ({
   iconButton: {

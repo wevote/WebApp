@@ -122,7 +122,7 @@ class SharedItemIntroduction extends Component {
   }
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonRoot: {
     fontSize: 12,
     padding: '4px 8px',
@@ -194,7 +194,7 @@ const Dot = styled.div`
 `;
 
 const StepNumber = styled.div`
-  background: ${props => props.theme.colors.brandBlue};
+  background: ${(props) => props.theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
   font-size: 16px;

@@ -21,13 +21,6 @@ import { capitalizeString, numberWithCommas, stringContains } from '../../utils/
 import ReadMore from '../Widgets/ReadMore';
 
 class VoterGuidePositionItem extends Component {
-  static propTypes = {
-    // ballotItemDisplayName: PropTypes.string,
-    ballotItemWeVoteId: PropTypes.string,
-    positionWeVoteId: PropTypes.string.isRequired,
-    searchResultsNode: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -358,8 +351,7 @@ class VoterGuidePositionItem extends Component {
                         url={moreInfoUrl}
                       />
                     </SourceLink>
-                  ) : null
-                  }
+                  ) : null}
                 </DesktopItemFooter>
               </DesktopItemBody>
             </PositionItemDesktop>
@@ -491,8 +483,14 @@ class VoterGuidePositionItem extends Component {
     );
   }
 }
+VoterGuidePositionItem.propTypes = {
+  // ballotItemDisplayName: PropTypes.string,
+  ballotItemWeVoteId: PropTypes.string,
+  positionWeVoteId: PropTypes.string.isRequired,
+  searchResultsNode: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 150,
     height: 150,

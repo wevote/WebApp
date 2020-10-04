@@ -13,13 +13,6 @@ import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 
 class ValuesIntroModal extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    pathname: PropTypes.string,
-    show: PropTypes.bool,
-    toggleFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -115,6 +108,13 @@ class ValuesIntroModal extends Component {
     );
   }
 }
+ValuesIntroModal.propTypes = {
+  classes: PropTypes.object,
+  pathname: PropTypes.string,
+  show: PropTypes.bool,
+  toggleFunction: PropTypes.func.isRequired,
+};
+
 const styles = () => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,

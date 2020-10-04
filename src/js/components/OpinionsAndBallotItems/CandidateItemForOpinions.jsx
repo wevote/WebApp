@@ -14,12 +14,6 @@ import { historyPush, isCordova } from '../../utils/cordovaUtils';
 
 
 class CandidateItemForOpinions extends Component {
-  static propTypes = {
-    oneCandidate: PropTypes.object,
-    numberOfCandidatesInList: PropTypes.number,
-    inModal: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -263,8 +257,13 @@ class CandidateItemForOpinions extends Component {
     );
   }
 }
+CandidateItemForOpinions.propTypes = {
+  oneCandidate: PropTypes.object,
+  numberOfCandidatesInList: PropTypes.number,
+  inModal: PropTypes.bool,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   cardHeaderIconRoot: {
     marginTop: '-.3rem',
     fontSize: 20,

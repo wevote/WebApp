@@ -4,14 +4,6 @@ import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 
 export default class CurrentFriendTinyDisplay extends Component {
-  static propTypes = {
-    showPlaceholderImage: PropTypes.bool,
-    voter_photo_url_tiny: PropTypes.string,
-    voter_display_name: PropTypes.string,
-    facebook_user_profile_url_https: PropTypes.string,
-    facebook_user_name: PropTypes.string,
-  };
-
   render () {
     renderLog('CurrentFriendTinyDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     // TODO DALE NOTE: We need to generate a popover here
@@ -46,3 +38,10 @@ export default class CurrentFriendTinyDisplay extends Component {
     );
   }
 }
+CurrentFriendTinyDisplay.propTypes = {
+  showPlaceholderImage: PropTypes.bool,
+  voter_photo_url_tiny: PropTypes.string,
+  voter_display_name: PropTypes.string,
+  facebook_user_profile_url_https: PropTypes.string,
+  facebook_user_name: PropTypes.string,
+};

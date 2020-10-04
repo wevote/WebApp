@@ -19,12 +19,6 @@ import VoterStore from '../stores/VoterStore';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 
 class HowItWorks extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    inModal: PropTypes.bool,
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -404,6 +398,11 @@ class HowItWorks extends Component {
     );
   }
 }
+HowItWorks.propTypes = {
+  classes: PropTypes.object,
+  inModal: PropTypes.bool,
+  params: PropTypes.object,
+};
 
 const styles = ({
   getStartedButtonRoot: {

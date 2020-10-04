@@ -39,9 +39,6 @@ import WouldYouLikeToMergeAccounts from '../components/WouldYouLikeToMergeAccoun
 */
 
 export default class FacebookInvitableFriends extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -164,7 +161,7 @@ export default class FacebookInvitableFriends extends Component {
       const searchTermLowercase = searchTerm.toLowerCase();
       const { facebookInvitableFriends } = this.state;
       const searchedFriendsList = filter(facebookInvitableFriends.facebook_invitable_friends_list,
-        user => user.name.toLowerCase().includes(searchTermLowercase));
+        (user) => user.name.toLowerCase().includes(searchTermLowercase));
 
       this.setState({
         searchFilter: true,
@@ -311,7 +308,7 @@ export default class FacebookInvitableFriends extends Component {
       facebookInvitableFriendsList = this.state.facebookInvitableFriendsFilteredBySearch;
     }
 
-    const facebookFriendListForDisplay = facebookInvitableFriendsList.map(friend => (
+    const facebookFriendListForDisplay = facebookInvitableFriendsList.map((friend) => (
       <CheckBox
         key={friend.id}
         friendId={friend.id}

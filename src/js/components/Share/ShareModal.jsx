@@ -34,15 +34,6 @@ import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { stringContains } from '../../utils/textFormat';
 
 class ShareModal extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    voterIsSignedIn: PropTypes.bool,
-    pathname: PropTypes.string,
-    show: PropTypes.bool,
-    shareModalStep: PropTypes.string,
-    closeShareModal: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -384,8 +375,7 @@ class ShareModal extends Component {
                       </span>
                     )}
                   </>
-                )
-                }
+                )}
               </SubTitle>
             </div>
             <IconButton
@@ -635,6 +625,15 @@ class ShareModal extends Component {
     );
   }
 }
+ShareModal.propTypes = {
+  classes: PropTypes.object,
+  voterIsSignedIn: PropTypes.bool,
+  pathname: PropTypes.string,
+  show: PropTypes.bool,
+  shareModalStep: PropTypes.string,
+  closeShareModal: PropTypes.func.isRequired,
+};
+
 const styles = () => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
@@ -694,13 +693,13 @@ const styles = () => ({
 const ModalTitleArea = styled.div`
   justify-content: flex-start;
   width: 100%;
-  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : props.onSignInSlide ? '20px 14px 10px' : '10px 14px')};
+  padding: ${(props) => (props.firstSlide ? '24px 24px 12px 24px' : props.onSignInSlide ? '20px 14px 10px' : '10px 14px')};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;
   }
-  display: ${props => (props.onSignInSlide ? 'block' : 'flex')};
-  text-align: ${props => (props.onSignInSlide ? 'center' : 'left')};
+  display: ${(props) => (props.onSignInSlide ? 'block' : 'flex')};
+  text-align: ${(props) => (props.onSignInSlide ? 'center' : 'left')};
 `;
 
 const FriendsShareTextWrapper = styled.div`
@@ -717,9 +716,9 @@ const Flex = styled.div`
 
 const SubTitle = styled.div`
   margin-top: 0;
-  font-size: ${props => (props.larger ? '18px' : '14px')};
+  font-size: ${(props) => (props.larger ? '18px' : '14px')};
   width: 100%;
-  text-align: ${props => (props.left && 'left')};
+  text-align: ${(props) => (props.left && 'left')};
   @media(min-width: 420px) {
     // width: 80%;
   }
@@ -733,13 +732,13 @@ const Text = styled.h3`
 `;
 
 const Title = styled.h3`
-  font-size: ${props => (props.bold ? '30px' : '24px')};
+  font-size: ${(props) => (props.bold ? '30px' : '24px')};
   color: black;
-  margin: ${props => (props.onSignInSlide ? '0 auto' : '0')};
+  margin: ${(props) => (props.onSignInSlide ? '0 auto' : '0')};
   margin-top: 0;
-  margin-bottom: ${props => (props.bold ? '0' : '12px')};
-  font-weight: ${props => (props.bold ? 'bold' : 'initial')};
-  text-align: ${props => (props.left && 'left')};
+  margin-bottom: ${(props) => (props.bold ? '0' : '12px')};
+  font-weight: ${(props) => (props.bold ? 'bold' : 'initial')};
+  text-align: ${(props) => (props.left && 'left')};
 `;
 
 const Wrapper = styled.div`

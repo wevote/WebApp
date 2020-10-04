@@ -7,10 +7,6 @@ import { withStyles } from '@material-ui/core/styles';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 class FindPollingLocation extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -45,8 +41,11 @@ class FindPollingLocation extends Component {
     );
   }
 }
+FindPollingLocation.propTypes = {
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 150,
     height: 150,

@@ -9,17 +9,6 @@ import CandidateStore from '../../stores/CandidateStore';
 import { renderLog } from '../../utils/logging';
 
 class OfficeItemForOpinions extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string.isRequired,
-    ballotItemDisplayName: PropTypes.string.isRequired,
-    candidateList: PropTypes.array,
-    candidatesToShowForSearchResults: PropTypes.array,
-    organization: PropTypes.object,
-    organizationWeVoteId: PropTypes.string,
-    theme: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -165,8 +154,18 @@ class OfficeItemForOpinions extends Component {
     );
   }
 }
+OfficeItemForOpinions.propTypes = {
+  ballotItemWeVoteId: PropTypes.string.isRequired,
+  ballotItemDisplayName: PropTypes.string.isRequired,
+  candidateList: PropTypes.array,
+  candidatesToShowForSearchResults: PropTypes.array,
+  organization: PropTypes.object,
+  organizationWeVoteId: PropTypes.string,
+  theme: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   cardHeaderIconRoot: {
     marginTop: '-.3rem',
     fontSize: 20,

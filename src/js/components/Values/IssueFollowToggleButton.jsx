@@ -13,20 +13,6 @@ import { openSnackbar } from '../Widgets/SnackNotifier';
 
 
 class IssueFollowToggleButton extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    currentBallotIdInUrl: PropTypes.string,
-    issueWeVoteId: PropTypes.string.isRequired,
-    issueName: PropTypes.string.isRequired,
-    onIssueFollowFunction: PropTypes.func,
-    onIssueStopFollowingFunction: PropTypes.func,
-    showFollowingButtonText: PropTypes.bool,
-    showIssueNameOnFollowButton: PropTypes.bool,
-    urlWithoutHash: PropTypes.string,
-    lightModeOn: PropTypes.bool,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -152,7 +138,7 @@ class IssueFollowToggleButton extends Component {
     return (
       <div className="issues-follow-container" id="issues-follow-container">
         {isFollowing ? (
-          <React.Fragment>
+          <>
             <Button
               type="button"
               className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled"
@@ -203,7 +189,7 @@ class IssueFollowToggleButton extends Component {
                 Unfollow
               </MenuItem>
             </Menu>
-          </React.Fragment>
+          </>
         ) : (
           <Button
             type="button"
@@ -218,6 +204,19 @@ class IssueFollowToggleButton extends Component {
     );
   }
 }
+IssueFollowToggleButton.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
+  currentBallotIdInUrl: PropTypes.string,
+  issueWeVoteId: PropTypes.string.isRequired,
+  issueName: PropTypes.string.isRequired,
+  onIssueFollowFunction: PropTypes.func,
+  onIssueStopFollowingFunction: PropTypes.func,
+  showFollowingButtonText: PropTypes.bool,
+  showIssueNameOnFollowButton: PropTypes.bool,
+  urlWithoutHash: PropTypes.string,
+  lightModeOn: PropTypes.bool,
+  classes: PropTypes.object,
+};
 
 const styles = () => ({
   paper: {

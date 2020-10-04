@@ -10,19 +10,6 @@ import { renderLog } from '../../utils/logging';
 import BallotSummaryFooterItem from './BallotSummaryFooterItem';
 
 class BallotSummaryFooter extends Component {
-  static propTypes = {
-    activeRaceItem: PropTypes.string,
-    ballotWithAllItemsByFilterType: PropTypes.array,
-    ballotItemLinkHasBeenClicked: PropTypes.func,
-    classes: PropTypes.object,
-    displayTitle: PropTypes.bool,
-    displaySubtitles: PropTypes.bool,
-    onClick: PropTypes.func,
-    pathname: PropTypes.string,
-    raceLevelFilterItemsInThisBallot: PropTypes.array,
-    setActiveRaceItem: PropTypes.func,
-  };
-
   static defaultProps = {
     pathname: '/ballot',
   };
@@ -197,7 +184,7 @@ class BallotSummaryFooter extends Component {
     // Make the incoming raceLevelFilterItems match the standard order
     if (raceLevelFilterItemsInThisBallot) {
       for (let i = 0; i < BALLOT_ITEM_FILTER_TYPES.length; i++) {
-        if (raceLevelFilterItemsInThisBallot.findIndex(item => BALLOT_ITEM_FILTER_TYPES[i].toLowerCase() === item.toLowerCase()) !== -1 && BALLOT_ITEM_FILTER_TYPES[i].toLowerCase() !== this.props.activeRaceItem.toLowerCase()) {
+        if (raceLevelFilterItemsInThisBallot.findIndex((item) => BALLOT_ITEM_FILTER_TYPES[i].toLowerCase() === item.toLowerCase()) !== -1 && BALLOT_ITEM_FILTER_TYPES[i].toLowerCase() !== this.props.activeRaceItem.toLowerCase()) {
           raceLevelFilterItemsInThisBallotOrdered.push(BALLOT_ITEM_FILTER_TYPES[i]);
         }
       }
@@ -219,11 +206,10 @@ class BallotSummaryFooter extends Component {
                 </Typography>
               </>
             ) :
-              null
-            }
+              null}
             <Row className="row">
               <BallotSummaryFooterItem
-                setActiveRaceItem={type => this.props.setActiveRaceItem(type)}
+                setActiveRaceItem={(type) => this.props.setActiveRaceItem(type)}
                 activeRaceItem={this.props.activeRaceItem}
               >
                 {raceLevelFilterItemsInThisBallotOrdered.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
@@ -237,8 +223,20 @@ class BallotSummaryFooter extends Component {
     }
   }
 }
+BallotSummaryFooter.propTypes = {
+  activeRaceItem: PropTypes.string,
+  ballotWithAllItemsByFilterType: PropTypes.array,
+  ballotItemLinkHasBeenClicked: PropTypes.func,
+  classes: PropTypes.object,
+  displayTitle: PropTypes.bool,
+  displaySubtitles: PropTypes.bool,
+  onClick: PropTypes.func,
+  pathname: PropTypes.string,
+  raceLevelFilterItemsInThisBallot: PropTypes.array,
+  setActiveRaceItem: PropTypes.func,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   typography: {
     padding: '16px 0',
     fontWeight: 600,

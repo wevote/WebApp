@@ -31,13 +31,6 @@ import VoterStore from '../stores/VoterStore';
 
 
 class Vote extends Component {
-  static propTypes = {
-    location: PropTypes.object,
-    pathname: PropTypes.string,
-    params: PropTypes.object,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -220,6 +213,11 @@ class Vote extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('Ballot caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     // console.log('Ballot componentWillUnmount');
     this.setState({
@@ -384,11 +382,6 @@ class Vote extends Component {
   //   document.getElementById('location_guess').style.display = 'none';
   // }
 
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('Ballot caught error: ', `${error} with info: `, info);
-  }
-
   updateOfficeDisplayUnfurledTracker (weVoteId, status) {
     const { ballotItemUnfurledTracker } = this.state;
     const newBallotItemUnfurledTracker = { ...ballotItemUnfurledTracker, [weVoteId]: status };
@@ -438,7 +431,7 @@ class Vote extends Component {
                     <BallotFilterRow>
                       <div className="ballot__item-filter-tabs">
                         { ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
-                          <React.Fragment>
+                          <>
                             <FilterBaseSearch
                               isSearching={isSearching}
                               onToggleSearch={this.handleToggleSearchBallot}
@@ -446,9 +439,8 @@ class Vote extends Component {
                               onFilterBaseSearch={this.handleSearch}
                               alwaysOpen={!showFilterTabs}
                             />
-                          </React.Fragment>
-                        ) : null
-                        }
+                          </>
+                        ) : null}
                       </div>
                     </BallotFilterRow>
                   </div>
@@ -477,7 +469,7 @@ class Vote extends Component {
                       <ReturnOfficialBallotContainer>
                         <ReturnOfficialBallot />
                       </ReturnOfficialBallotContainer>
-                      {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
+                      {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
                     </Card>
                   ) : /* No items decided */ (
                     <div>
@@ -505,8 +497,7 @@ class Vote extends Component {
                         </EmptyBallotMessageContainer>
                       </Card>
                     </div>
-                  )
-                  }
+                  )}
                 </div>
 
                 {/* Right column */}
@@ -525,6 +516,12 @@ class Vote extends Component {
     );
   }
 }
+Vote.propTypes = {
+  location: PropTypes.object,
+  pathname: PropTypes.string,
+  params: PropTypes.object,
+  classes: PropTypes.object,
+};
 
 const VoteContainer = styled.div`
   padding-top: ${({ padTop }) => padTop};
@@ -590,7 +587,7 @@ const CardGap = styled.div`
   padding: 7px;
 `;
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 150,
     height: 150,

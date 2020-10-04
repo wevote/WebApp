@@ -11,22 +11,6 @@ import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
 class SuggestedFriendDisplayForList extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    inSideColumn: PropTypes.bool,
-    linked_organization_we_vote_id: PropTypes.string,
-    mutual_friends: PropTypes.number,
-    positions_taken: PropTypes.number,
-    voter_we_vote_id: PropTypes.string,
-    voter_photo_url_large: PropTypes.string,
-    voter_display_name: PropTypes.string,
-    voter_twitter_handle: PropTypes.string,
-    voter_twitter_description: PropTypes.string,
-    // voter_twitter_followers_count: PropTypes.number,
-    voter_email_address: PropTypes.string,
-    previewMode: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -137,6 +121,21 @@ class SuggestedFriendDisplayForList extends Component {
     }
   }
 }
+SuggestedFriendDisplayForList.propTypes = {
+  classes: PropTypes.object,
+  inSideColumn: PropTypes.bool,
+  linked_organization_we_vote_id: PropTypes.string,
+  mutual_friends: PropTypes.number,
+  positions_taken: PropTypes.number,
+  voter_we_vote_id: PropTypes.string,
+  voter_photo_url_large: PropTypes.string,
+  voter_display_name: PropTypes.string,
+  voter_twitter_handle: PropTypes.string,
+  voter_twitter_description: PropTypes.string,
+  // voter_twitter_followers_count: PropTypes.number,
+  voter_email_address: PropTypes.string,
+  previewMode: PropTypes.bool,
+};
 
 const styles = () => ({
   removeButton: {

@@ -13,27 +13,6 @@ import StateDropDown from './StateDropDown';
 const defaultSortFilters = ['sortByMagic', 'sortByNetwork', 'sortByReach'];
 
 class FilterBase extends React.Component {
-  static propTypes = {
-    allItems: PropTypes.array,
-    children: PropTypes.node, // This is the component that updates the items displayed
-    classes: PropTypes.object,
-    groupedFilters: PropTypes.array,
-    islandFilters: PropTypes.array,
-    numberOfItemsFoundNode: PropTypes.node,
-    onSearch: PropTypes.func,
-    onFilteredItemsChange: PropTypes.func,
-    onToggleSearch: PropTypes.func,
-    opinionsAndBallotItemsSearchMode: PropTypes.bool,
-    positionSearchMode: PropTypes.bool,
-    searchOnOwnLine: PropTypes.bool,
-    searchTextDefault: PropTypes.string,
-    searchTextLarge: PropTypes.bool,
-    selectedFiltersDefault: PropTypes.array,
-    sortFilters: PropTypes.array,
-    stateCodesToDisplay: PropTypes.array,
-    voterGuidePositionSearchMode: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -65,7 +44,7 @@ class FilterBase extends React.Component {
     // Figure out which other filters to remove when we switch to a new stateCode filter
     const allStateCodeFilters = getAllStateCodeFilters();
     // Get all other stateCode filters, minus the one we want to switch to
-    const stateCodeFiltersToRemove = allStateCodeFilters.filter(stateCode => stateCodeFilter !== stateCode);
+    const stateCodeFiltersToRemove = allStateCodeFilters.filter((stateCode) => stateCodeFilter !== stateCode);
     // console.log('selectedFilters: ', selectedFilters);
     // console.log('stateCodeFiltersToRemove: ', stateCodeFiltersToRemove);
 
@@ -76,7 +55,7 @@ class FilterBase extends React.Component {
       updatedFilters = [...updatedFilters, stateCodeFilter];
     }
     // Only include state filters that aren't in stateCodeFiltersToRemove
-    const updatedSelectedFilters = updatedFilters.filter(item => !stateCodeFiltersToRemove.includes(item));
+    const updatedSelectedFilters = updatedFilters.filter((item) => !stateCodeFiltersToRemove.includes(item));
     // console.log('updatedSelectedFilters:', updatedSelectedFilters);
     this.setState({ selectedFilters: updatedSelectedFilters });
   };
@@ -97,7 +76,7 @@ class FilterBase extends React.Component {
     const { selectedFilters } = this.state;
     if (selectedFilters.indexOf(filterName) > -1) {
       // Remove this filter
-      this.setState({ selectedFilters: selectedFilters.filter(filter => filter !== filterName) });
+      this.setState({ selectedFilters: selectedFilters.filter((filter) => filter !== filterName) });
     } else {
       // Add this filter
       this.setState({
@@ -121,7 +100,7 @@ class FilterBase extends React.Component {
     filterNameList.forEach((filterName) => {
       if (selectedFilters.indexOf(filterName) > -1) {
         // Remove this filter
-        selectedFilters = selectedFilters.filter(filter => filter !== filterName);
+        selectedFilters = selectedFilters.filter((filter) => filter !== filterName);
         // this.setState({ selectedFilters: selectedFilters.filter(filter => filter !== filterName) });
       } else {
         // Add this filter
@@ -151,14 +130,14 @@ class FilterBase extends React.Component {
     const { selectedFilters, sortFilters } = this.state;
     let updatedFilters = selectedFilters;
     // Figure out which other filters to remove when we switch to a new sortBy filter
-    const remainingSortFiltersToRemove = sortFilters.filter(item => item !== filterName);
+    const remainingSortFiltersToRemove = sortFilters.filter((item) => item !== filterName);
 
     if (updatedFilters.indexOf(filterName) > -1) {
       // Sort-by already selected. Do nothing.
     } else {
       updatedFilters = [...updatedFilters, filterName];
     }
-    this.setState({ selectedFilters: updatedFilters.filter(item => !remainingSortFiltersToRemove.includes(item)) });
+    this.setState({ selectedFilters: updatedFilters.filter((item) => !remainingSortFiltersToRemove.includes(item)) });
   };
 
   onFilteredItemsChange = (filteredItems, currentSelectedBallotFilters) => {
@@ -177,13 +156,13 @@ class FilterBase extends React.Component {
   getGroupedFilterCountsFromFilteredItems = () => {
     const { allItems, groupedFilters } = this.props;
     let allItemsWithoutCandidates = [];
-    allItemsWithoutCandidates = [...allItemsWithoutCandidates, ...allItems.filter(item => (item && item.kind_of_ballot_item !== 'CANDIDATE'))];
+    allItemsWithoutCandidates = [...allItemsWithoutCandidates, ...allItems.filter((item) => (item && item.kind_of_ballot_item !== 'CANDIDATE'))];
     const resultsDict = {};
     let oneRaceOfficeLevelItems = [];
     groupedFilters.forEach((oneFilter) => {
       oneRaceOfficeLevelItems = [];
       // console.log('getGroupedFilterCountsFromFilteredItems oneFilter.filterDisplayName:', oneFilter.filterDisplayName);
-      oneRaceOfficeLevelItems = [...oneRaceOfficeLevelItems, ...allItemsWithoutCandidates.filter(item => (item && item.race_office_level === oneFilter.filterDisplayName))];
+      oneRaceOfficeLevelItems = [...oneRaceOfficeLevelItems, ...allItemsWithoutCandidates.filter((item) => (item && item.race_office_level === oneFilter.filterDisplayName))];
       resultsDict[oneFilter.filterName] = oneRaceOfficeLevelItems.length;
     });
     // console.log('resultsDict:', resultsDict);
@@ -214,8 +193,7 @@ class FilterBase extends React.Component {
                   {groupedFilterCounts[item.filterName]}
                   )
                 </span>
-              ) : null
-              }
+              ) : null}
             </span>
           ) : null
         }
@@ -223,7 +201,7 @@ class FilterBase extends React.Component {
     ));
   };
 
-  generateIslandFilters = () => this.props.islandFilters.map(item => (
+  generateIslandFilters = () => this.props.islandFilters.map((item) => (
     <div
       key={item.filterName}
       className={`listFilter ${this.state.selectedFilters.indexOf(item.filterName) > -1 ? 'listFilterSelected' : ''}`}
@@ -272,7 +250,7 @@ class FilterBase extends React.Component {
       numberOfItemsFoundNode, searchOnOwnLine, searchTextDefault, searchTextLarge,
       stateCodesToDisplay, voterGuidePositionSearchMode,
     } = this.props;
-    const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
+    const selectedFiltersWithoutSorts = selectedFilters.filter((item) => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
     const filterBaseSearch = (
       <FilterBaseSearch
@@ -344,8 +322,28 @@ class FilterBase extends React.Component {
     );
   }
 }
+FilterBase.propTypes = {
+  allItems: PropTypes.array,
+  children: PropTypes.node, // This is the component that updates the items displayed
+  classes: PropTypes.object,
+  groupedFilters: PropTypes.array,
+  islandFilters: PropTypes.array,
+  numberOfItemsFoundNode: PropTypes.node,
+  onSearch: PropTypes.func,
+  onFilteredItemsChange: PropTypes.func,
+  onToggleSearch: PropTypes.func,
+  opinionsAndBallotItemsSearchMode: PropTypes.bool,
+  positionSearchMode: PropTypes.bool,
+  searchOnOwnLine: PropTypes.bool,
+  searchTextDefault: PropTypes.string,
+  searchTextLarge: PropTypes.bool,
+  selectedFiltersDefault: PropTypes.array,
+  sortFilters: PropTypes.array,
+  stateCodesToDisplay: PropTypes.array,
+  voterGuidePositionSearchMode: PropTypes.bool,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   badge: {
     right: '1rem',
     background: theme.palette.primary.main,

@@ -20,10 +20,6 @@ import {
 } from './ReadyTaskStyles';
 
 class ReadyTaskRegister extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -137,8 +133,11 @@ class ReadyTaskRegister extends React.Component {
     );
   }
 }
+ReadyTaskRegister.propTypes = {
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   arrowRoot: {
     fontSize: 14,
     marginBottom: 3,

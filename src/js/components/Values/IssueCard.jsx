@@ -12,21 +12,6 @@ import { convertNameToSlug } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 class IssueCard extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    currentBallotIdInUrl: PropTypes.string,
-    followToggleOn: PropTypes.bool,
-    followToggleOnItsOwnLine: PropTypes.bool,
-    hideAdvocatesCount: PropTypes.bool,
-    includeLinkToIssue: PropTypes.bool,
-    issue: PropTypes.object.isRequired,
-    issueImageSize: PropTypes.string,
-    turnOffDescription: PropTypes.bool,
-    turnOffIssueImage: PropTypes.bool,
-    urlWithoutHash: PropTypes.string,
-    condensed: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -223,14 +208,28 @@ class IssueCard extends Component {
     );
   }
 }
+IssueCard.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
+  currentBallotIdInUrl: PropTypes.string,
+  followToggleOn: PropTypes.bool,
+  followToggleOnItsOwnLine: PropTypes.bool,
+  hideAdvocatesCount: PropTypes.bool,
+  includeLinkToIssue: PropTypes.bool,
+  issue: PropTypes.object.isRequired,
+  issueImageSize: PropTypes.string,
+  turnOffDescription: PropTypes.bool,
+  turnOffIssueImage: PropTypes.bool,
+  urlWithoutHash: PropTypes.string,
+  condensed: PropTypes.bool,
+};
 
 const Wrapper = styled.div`
   display: block !important;
   background: white;
-  // border: ${props => (props.condensed ? '1px solid #888' : 'none')};
-  box-shadow: ${props => (props.condensed ? 'none !important' : null)};
-  padding: ${props => (props.condensed ? '0 0' : null)};
-  height: ${props => (props.condensed ? 'fit-content' : null)};
+  // border: ${(props) => (props.condensed ? '1px solid #888' : 'none')};
+  box-shadow: ${(props) => (props.condensed ? 'none !important' : null)};
+  padding: ${(props) => (props.condensed ? '0 0' : null)};
+  height: ${(props) => (props.condensed ? 'fit-content' : null)};
   @media (max-width: 479px) {
     margin: 0 -16px;
   }
@@ -252,18 +251,18 @@ const FollowIssueToggleContainer = styled.div`
 `;
 
 const Flex = styled.div`
-  ${props => (props.followToggleOnItsOwnLine ?
+  ${(props) => (props.followToggleOnItsOwnLine ?
     '' :
     'display: flex; align-items: center; justify-content: flex-start;'
   )}
-  width: ${props => (props.condensed ? '100%' : null)};
+  width: ${(props) => (props.condensed ? '100%' : null)};
 `;
 
 const FlexNameAndIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: ${props => (props.condensed ? '100%' : null)};
+  width: ${(props) => (props.condensed ? '100%' : null)};
 `;
 
 const Description = styled.div`

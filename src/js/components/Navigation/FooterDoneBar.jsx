@@ -26,11 +26,6 @@ const footContainer = {
 };
 
 export default class FooterDoneBar extends Component {
-  static propTypes = {
-    doneFunction: PropTypes.func.isRequired,
-    doneButtonText: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -63,3 +58,7 @@ export default class FooterDoneBar extends Component {
     );
   }
 }
+FooterDoneBar.propTypes = {
+  doneFunction: PropTypes.func.isRequired,
+  doneButtonText: PropTypes.string,
+};

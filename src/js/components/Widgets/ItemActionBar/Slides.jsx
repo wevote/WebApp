@@ -6,14 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../../utils/logging';
 
 class Slides extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    slides: PropTypes.array,
-    startIndex: PropTypes.number,
-    onClose: PropTypes.func,
-    voterIsSignedIn: PropTypes.bool,
-  }
-
   constructor (props) {
     super(props);
     this.state = {
@@ -124,8 +116,15 @@ class Slides extends Component {
     );
   }
 }
+Slides.propTypes = {
+  classes: PropTypes.object,
+  slides: PropTypes.array,
+  startIndex: PropTypes.number,
+  onClose: PropTypes.func,
+  voterIsSignedIn: PropTypes.bool,
+}
 
-const styles = theme => ({
+const styles = (theme) => ({
   optionsButton: {
     minWidth: '40%',
     width: '100%',

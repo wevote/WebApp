@@ -32,11 +32,6 @@ import Section, {
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 
 class WelcomeForOrganizations extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    pathname: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -290,6 +285,10 @@ class WelcomeForOrganizations extends Component {
     );
   }
 }
+WelcomeForOrganizations.propTypes = {
+  classes: PropTypes.object,
+  pathname: PropTypes.string,
+};
 
 const styles = () => ({
   buttonContained: {

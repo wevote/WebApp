@@ -7,14 +7,6 @@ import BallotActions from '../../actions/BallotActions';
 import { renderLog } from '../../utils/logging';
 
 class BallotDecisionsTabs extends Component {
-  static propTypes = {
-    ballotLength: PropTypes.number,
-    ballotLengthRemaining: PropTypes.number,
-    classes: PropTypes.object,
-    completionLevelFilterType: PropTypes.string,
-    setBallotItemFilterTypeToAll: PropTypes.func,
-  };
-
   shouldComponentUpdate (nextProps) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     // console.log('BallotDecisionsTabs shouldComponentUpdate');
@@ -125,8 +117,7 @@ class BallotDecisionsTabs extends Component {
               </Badge>
             )}
           />
-        ) : null
-        }
+        ) : null}
 
         { showDecisionsMade ? (
           <Tab
@@ -150,15 +141,21 @@ class BallotDecisionsTabs extends Component {
               </Badge>
             )}
           />
-        ) : null
-        }
+        ) : null}
       </Tabs>
     );
   }
 }
+BallotDecisionsTabs.propTypes = {
+  ballotLength: PropTypes.number,
+  ballotLengthRemaining: PropTypes.number,
+  classes: PropTypes.object,
+  completionLevelFilterType: PropTypes.string,
+  setBallotItemFilterTypeToAll: PropTypes.func,
+};
 
 // mobile transition: sm
-const styles = theme => ({
+const styles = (theme) => ({
   badge: {
     height: 19.5,
     right: -14,

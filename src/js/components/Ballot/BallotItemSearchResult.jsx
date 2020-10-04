@@ -10,14 +10,6 @@ const TYPES = require('keymirror')({
 });
 
 export default class BallotItemSearchResult extends Component {
-  static propTypes = {
-    // allBallotItemsCount: PropTypes.number,
-    kind_of_ballot_item: PropTypes.string.isRequired,
-    organization: PropTypes.object,
-    we_vote_id: PropTypes.string.isRequired,
-    // updateOfficeDisplayUnfurledTracker: PropTypes.func,
-  };
-
   isMeasure () {
     return this.props.kind_of_ballot_item === TYPES.MEASURE;
   }
@@ -36,9 +28,15 @@ export default class BallotItemSearchResult extends Component {
             candidateWeVoteId={this.props.we_vote_id}
             organization={this.props.organization}
           />
-        )
-        }
+        )}
       </div>
     );
   }
 }
+BallotItemSearchResult.propTypes = {
+  // allBallotItemsCount: PropTypes.number,
+  kind_of_ballot_item: PropTypes.string.isRequired,
+  organization: PropTypes.object,
+  we_vote_id: PropTypes.string.isRequired,
+  // updateOfficeDisplayUnfurledTracker: PropTypes.func,
+};

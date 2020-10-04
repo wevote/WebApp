@@ -6,13 +6,6 @@ import OrganizationDisplayForListCompressed from './OrganizationDisplayForListCo
 import { renderLog } from '../../utils/logging';
 
 export default class OpinionsFollowedListCompressed extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    organizationsFollowed: PropTypes.array,
-    instantRefreshOn: PropTypes.bool,
-    editMode: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -40,7 +33,7 @@ export default class OpinionsFollowedListCompressed extends Component {
     OrganizationActions.organizationFollowIgnore(organizationWeVoteId);
     const { organizationsFollowed } = this.state;
     this.setState({
-      organizationsFollowed: organizationsFollowed.filter(oneOrganization => oneOrganization.organization_we_vote_id !== organizationWeVoteId),
+      organizationsFollowed: organizationsFollowed.filter((oneOrganization) => oneOrganization.organization_we_vote_id !== organizationWeVoteId),
     });
   }
 
@@ -76,3 +69,9 @@ export default class OpinionsFollowedListCompressed extends Component {
     );
   }
 }
+OpinionsFollowedListCompressed.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
+  organizationsFollowed: PropTypes.array,
+  instantRefreshOn: PropTypes.bool,
+  editMode: PropTypes.bool,
+};

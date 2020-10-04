@@ -4,10 +4,6 @@ import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 import { renderLog } from '../../utils/logging';
 
 export default class YourPositionsVisibilityMessage extends Component {
-  static propTypes = {
-    positionList: PropTypes.array,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -131,3 +127,6 @@ export default class YourPositionsVisibilityMessage extends Component {
     }
   }
 }
+YourPositionsVisibilityMessage.propTypes = {
+  positionList: PropTypes.array,
+};

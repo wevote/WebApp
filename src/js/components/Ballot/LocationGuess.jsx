@@ -9,11 +9,6 @@ import VoterStore from '../../stores/VoterStore';
 
 // DEPRECATED
 class LocationGuess extends Component {
-  static propTypes = {
-    toggleSelectBallotModal: PropTypes.func.isRequired,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -90,8 +85,7 @@ class LocationGuess extends Component {
                   {' '}
                 </span>
               ) :
-              null
-            }
+              null}
             <AddressLink
               id="locationGuessEnterYourFullAddress"
               onClick={toggleSelectBallotModal}
@@ -109,6 +103,10 @@ class LocationGuess extends Component {
     }
   }
 }
+LocationGuess.propTypes = {
+  toggleSelectBallotModal: PropTypes.func.isRequired,
+  classes: PropTypes.object,
+};
 
 const styles = ({
   iconRoot: {

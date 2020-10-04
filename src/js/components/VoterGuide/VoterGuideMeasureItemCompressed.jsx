@@ -11,11 +11,6 @@ import VoterGuidePositionItem from './VoterGuidePositionItem';
 
 
 class VoterGuideMeasureItemCompressed extends Component {
-  static propTypes = {
-    organizationWeVoteId: PropTypes.string,
-    measureWeVoteId: PropTypes.string.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -175,8 +170,12 @@ class VoterGuideMeasureItemCompressed extends Component {
     );
   }
 }
+VoterGuideMeasureItemCompressed.propTypes = {
+  organizationWeVoteId: PropTypes.string,
+  measureWeVoteId: PropTypes.string.isRequired,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   cardRoot: {
     padding: '16px 16px 8px 16px',
     [theme.breakpoints.down('lg')]: {

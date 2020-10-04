@@ -16,12 +16,6 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
     document.body.click();
   }
 
-  static propTypes = {
-    handleLeaveCandidateCard: PropTypes.func,
-    handleEnterCandidateCard: PropTypes.func,
-    positionWeVoteId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.mobile = 'ontouchstart' in document.documentElement;
@@ -231,8 +225,13 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
     );
   }
 }
+BallotItemVoterGuideSupportOpposeDisplay.propTypes = {
+  handleLeaveCandidateCard: PropTypes.func,
+  handleEnterCandidateCard: PropTypes.func,
+  positionWeVoteId: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   decidedIcon: {
     fontSize: 32,
     [theme.breakpoints.down('lg')]: {

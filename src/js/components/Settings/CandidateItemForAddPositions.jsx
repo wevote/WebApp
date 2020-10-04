@@ -12,13 +12,6 @@ import SupportStore from '../../stores/SupportStore';
 
 
 class CandidateItemForAddPositions extends Component {
-  static propTypes = {
-    oneCandidate: PropTypes.object,
-    numberOfCandidatesInList: PropTypes.number,
-    inModal: PropTypes.bool,
-    // togglePositionStatement: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -224,8 +217,14 @@ class CandidateItemForAddPositions extends Component {
     );
   }
 }
+CandidateItemForAddPositions.propTypes = {
+  oneCandidate: PropTypes.object,
+  numberOfCandidatesInList: PropTypes.number,
+  inModal: PropTypes.bool,
+  // togglePositionStatement: PropTypes.func,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   cardHeaderIconRoot: {
     marginTop: '-.3rem',
     fontSize: 20,

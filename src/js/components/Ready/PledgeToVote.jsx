@@ -6,10 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { formatDateToYearMonthDay } from '../../utils/textFormat';
 
 class PledgeToVote extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -167,7 +163,7 @@ class PledgeToVote extends React.Component {
           </ProgressBar>
           {commentsToDisplay && commentsToDisplay.length > 0 ? (
             <CommentsWrapper id="comments-wrapper">
-              {commentsToDisplay.map(comment => (
+              {commentsToDisplay.map((comment) => (
                 <CommentWrapper className="comment" key={comment.id}>
                   <Comment>{comment.comment}</Comment>
                   <CommentName>
@@ -201,6 +197,9 @@ class PledgeToVote extends React.Component {
     );
   }
 }
+PledgeToVote.propTypes = {
+  classes: PropTypes.object,
+};
 
 const styles = () => ({
   label: {
@@ -239,7 +238,7 @@ const ProgressBar = styled.div`
   border-radius: 50px;
   margin: 0px 0 12px;
   span {
-    width: ${props => props.percentage}%;
+    width: ${(props) => props.percentage}%;
     display: block;
     height: 12px;
     border-radius: 50px;

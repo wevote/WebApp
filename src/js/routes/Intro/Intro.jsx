@@ -8,11 +8,6 @@ import AddressBox from '../../components/AddressBox';
 import { numberWithCommas } from '../../utils/textFormat';
 
 export default class Intro extends Component {
-  static propTypes = {
-    history: PropTypes.object,
-    children: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -111,9 +106,12 @@ export default class Intro extends Component {
             </li>
           </ul>
         </div>
-        )
-        }
+        )}
       </div>
     );
   }
 }
+Intro.propTypes = {
+  history: PropTypes.object,
+  children: PropTypes.object,
+};

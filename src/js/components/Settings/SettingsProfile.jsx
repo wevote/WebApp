@@ -17,11 +17,6 @@ import VoterStore from '../../stores/VoterStore';
 
 
 class SettingsProfile extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -84,6 +79,10 @@ class SettingsProfile extends Component {
     );
   }
 }
+SettingsProfile.propTypes = {
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+};
 
 const styles = () => ({
   informationIcon: {

@@ -9,11 +9,6 @@ import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 
 export default class VerifyEmailProcess extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-    email_secret_key: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -191,3 +186,7 @@ export default class VerifyEmailProcess extends Component {
     }
   }
 }
+VerifyEmailProcess.propTypes = {
+  params: PropTypes.object,
+  email_secret_key: PropTypes.string,
+};

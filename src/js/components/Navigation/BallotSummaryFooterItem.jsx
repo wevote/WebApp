@@ -6,12 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 
 class BallotSummaryFooterItem extends Component {
-  static propTypes = {
-    children: PropTypes.instanceOf(Object).isRequired,
-    classes: PropTypes.object,
-    setActiveRaceItem: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
 
@@ -57,12 +51,16 @@ class BallotSummaryFooterItem extends Component {
           } else {
             return null;
           }
-        })
-        }
+        })}
       </>
     );
   }
 }
+BallotSummaryFooterItem.propTypes = {
+  children: PropTypes.instanceOf(Object).isRequired,
+  classes: PropTypes.object,
+  setActiveRaceItem: PropTypes.func,
+};
 
 const styles = () => ({
   button: {

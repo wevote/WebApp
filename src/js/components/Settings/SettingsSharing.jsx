@@ -21,11 +21,6 @@ import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingF
 import DelayedLoad from '../Widgets/DelayedLoad';
 
 class SettingsSharing extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -401,14 +396,14 @@ class SettingsSharing extends Component {
                   {voterFeaturePackageExceedsOrEqualsEnterprise ? (
                     'Upload'
                   ) : (
-                    <React.Fragment>
+                    <>
                       <DesktopView className="u-show-desktop">
                         Upgrade to Enterprise
                       </DesktopView>
                       <MobileTabletView className="u-show-mobile-tablet">
                         Upgrade
                       </MobileTabletView>
-                    </React.Fragment>
+                    </>
                   )}
                 </PremiumableButton>
                 {
@@ -451,14 +446,14 @@ class SettingsSharing extends Component {
                   {voterFeaturePackageExceedsOrEqualsEnterprise ? (
                     'Upload'
                   ) : (
-                    <React.Fragment>
+                    <>
                       <DesktopView className="u-show-desktop">
                         Upgrade to Enterprise
                       </DesktopView>
                       <MobileTabletView className="u-show-mobile-tablet">
                         Upgrade
                       </MobileTabletView>
-                    </React.Fragment>
+                    </>
                   )}
                 </PremiumableButton>
                 {
@@ -509,14 +504,14 @@ class SettingsSharing extends Component {
                     {voterFeaturePackageExceedsOrEqualsEnterprise ? (
                       'Save'
                     ) : (
-                      <React.Fragment>
+                      <>
                         <DesktopView className="u-show-desktop">
                           Upgrade to Enterprise
                         </DesktopView>
                         <MobileTabletView className="u-show-mobile-tablet">
                           Upgrade
                         </MobileTabletView>
-                      </React.Fragment>
+                      </>
                     )}
                   </PremiumableButton>
                 </Actions>
@@ -549,8 +544,12 @@ class SettingsSharing extends Component {
     );
   }
 }
+SettingsSharing.propTypes = {
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   button: {
     marginRight: 8,
   },

@@ -9,10 +9,6 @@ import { renderLog } from '../../utils/logging';
 
 
 export default class DonationListForm extends Component {
-  static propTypes = {
-    waitForWebhook: PropTypes.bool.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -90,3 +86,6 @@ export default class DonationListForm extends Component {
     }
   }
 }
+DonationListForm.propTypes = {
+  waitForWebhook: PropTypes.bool.isRequired,
+};

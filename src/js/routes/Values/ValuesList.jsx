@@ -13,11 +13,6 @@ import SearchBar from '../../components/Search/SearchBar';
 
 
 export default class ValuesList extends Component {
-  static propTypes = {
-    displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
-    currentIssue: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -82,7 +77,7 @@ export default class ValuesList extends Component {
     // let issuesNotCurrentIssue = [];
     if (allIssues) {
       if (this.props.displayOnlyIssuesNotFollowedByVoter) {
-        issuesList = allIssues.filter(issue => issue.issue_we_vote_id !== currentIssue.issue_we_vote_id).filter(issue => !IssueStore.isVoterFollowingThisIssue(issue.issue_we_vote_id));
+        issuesList = allIssues.filter((issue) => issue.issue_we_vote_id !== currentIssue.issue_we_vote_id).filter((issue) => !IssueStore.isVoterFollowingThisIssue(issue.issue_we_vote_id));
       } else {
         issuesList = allIssues;
       }
@@ -93,7 +88,7 @@ export default class ValuesList extends Component {
     if (searchQuery.length > 0) {
       const searchQueryLowercase = searchQuery.toLowerCase();
       issuesList = filter(issuesList,
-        oneIssue => oneIssue.issue_name.toLowerCase().includes(searchQueryLowercase) ||
+        (oneIssue) => oneIssue.issue_name.toLowerCase().includes(searchQueryLowercase) ||
             oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase));
     }
 
@@ -175,8 +170,7 @@ export default class ValuesList extends Component {
                       {issuesListForDisplay}
                     </Row>
                   ) :
-                    null
-                  }
+                    null}
                 </>
               </div>
             </section>
@@ -187,6 +181,10 @@ export default class ValuesList extends Component {
     );
   }
 }
+ValuesList.propTypes = {
+  displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
+  currentIssue: PropTypes.object,
+};
 
 const Row = styled.div`
   // margin-left: -16px;

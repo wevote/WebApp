@@ -11,10 +11,6 @@ import { renderLog } from '../../utils/logging';
 import MessageCard from '../../components/Widgets/MessageCard';
 
 class FriendInvitationsSentToMe extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -86,6 +82,9 @@ class FriendInvitationsSentToMe extends Component {
     );
   }
 }
+FriendInvitationsSentToMe.propTypes = {
+  classes: PropTypes.object,
+};
 
 const styles = () => ({
   headerBadge: {

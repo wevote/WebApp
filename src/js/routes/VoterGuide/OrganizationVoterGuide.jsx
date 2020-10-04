@@ -25,12 +25,6 @@ import { renderLog } from '../../utils/logging';
 const AUTO_FOLLOW = 'af';
 
 export default class OrganizationVoterGuide extends Component {
-  static propTypes = {
-    activeRoute: PropTypes.string,
-    location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -297,7 +291,7 @@ export default class OrganizationVoterGuide extends Component {
     const friendsList = []; // Dummy placeholder till the actual logic is in place
     if (this.state.voter.linked_organization_we_vote_id === organizationWeVoteId) {
       // If looking at your own voter guide, filter out your own entry as a follower
-      voterGuideFollowersList = voterGuideFollowersList.filter(oneVoterGuide => (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id ? oneVoterGuide : null));
+      voterGuideFollowersList = voterGuideFollowersList.filter((oneVoterGuide) => (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id ? oneVoterGuide : null));
     }
     const developmentFeatureTurnedOn = false;
 
@@ -341,8 +335,7 @@ export default class OrganizationVoterGuide extends Component {
                   <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
                 </div>
               ) :
-                <OrganizationEmptyBannerImage />
-              }
+                <OrganizationEmptyBannerImage />}
             </BannerContainerDesktop>
           </BannerOverlayDesktopInnerWrapper>
         </BannerOverlayDesktopOuterWrapper>
@@ -353,8 +346,7 @@ export default class OrganizationVoterGuide extends Component {
               <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
             </div>
           ) :
-            <div className="organization-banner-image-non-twitter-users" />
-          }
+            <div className="organization-banner-image-non-twitter-users" />}
         </div>
 
         <div className="u-show-mobile">
@@ -467,6 +459,11 @@ export default class OrganizationVoterGuide extends Component {
     );
   }
 }
+OrganizationVoterGuide.propTypes = {
+  activeRoute: PropTypes.string,
+  location: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
+};
 
 const Wrapper = styled.div`
   display: flex;

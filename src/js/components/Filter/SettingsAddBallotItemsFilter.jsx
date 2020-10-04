@@ -23,24 +23,6 @@ const MenuProps = {
 
 
 class SettingsAddBallotItemsFilter extends Component {
-  static propTypes = {
-    // Passed in through FilterBase
-    allItems: PropTypes.array,
-    classes: PropTypes.object,
-    changeTrigger: PropTypes.string,
-    forceChangeTrigger: PropTypes.func,
-    lastFilterAdded: PropTypes.string,
-    onFilteredItemsChange: PropTypes.func,
-    onSelectSortByFilter: PropTypes.func,
-    onToggleFilter: PropTypes.func,
-    selectedFilters: PropTypes.array,
-    showAllFilters: PropTypes.bool,
-    updateSelectedFilters: PropTypes.func,
-    // Passed in directly
-    filtersPassedInOnce: PropTypes.array,
-    googleCivicElectionId: PropTypes.number,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -225,7 +207,7 @@ class SettingsAddBallotItemsFilter extends Component {
 
   getFilteredItemsByLinkedIssue = (issueFilter) => {
     const { allItems } = this.props;
-    return allItems.filter(item => item.issue_we_vote_ids_linked === issueFilter.issue_we_vote_id);
+    return allItems.filter((item) => item.issue_we_vote_ids_linked === issueFilter.issue_we_vote_id);
   };
 
   orderByFollowedOrgsFirst = (firstGuide, secondGuide) => secondGuide.followed - firstGuide.followed;
@@ -253,7 +235,7 @@ class SettingsAddBallotItemsFilter extends Component {
     // Remove all Candidates
     let filterItemsSnapshot = filteredItems;
     filteredItems = [];
-    filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.kind_of_ballot_item !== 'CANDIDATE')];
+    filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.kind_of_ballot_item !== 'CANDIDATE')];
 
     // Remove states that aren't in the selectedFilters?
     const stateCodeList = Object.keys(stateCodeMap);
@@ -268,7 +250,7 @@ class SettingsAddBallotItemsFilter extends Component {
     if (stateCodesSelected.length) {
       filterItemsSnapshot = filteredItems;
       filteredItems = [];
-      filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => arrayContains(item.state_code, stateCodesSelected))];
+      filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => arrayContains(item.state_code, stateCodesSelected))];
     }
 
     // Which showFederalRaceFilter/showOpposeFilter/showCommentFilter to show?
@@ -339,16 +321,16 @@ class SettingsAddBallotItemsFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'showFederalRaceFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.race_office_level === 'Federal')];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.race_office_level === 'Federal')];
             break;
           case 'showStateRaceFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.race_office_level === 'State')];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.race_office_level === 'State')];
             break;
           case 'showMeasureRaceFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.kind_of_ballot_item === 'MEASURE')];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.kind_of_ballot_item === 'MEASURE')];
             break;
           case 'showLocalRaceFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.race_office_level === 'Local')];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.race_office_level === 'Local')];
             break;
           default:
             break;
@@ -373,7 +355,7 @@ class SettingsAddBallotItemsFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'showCommentFilter':
-            filteredItems = [...filteredItems, ...filterItemsCommentSnapshot.filter(item => item.statement_text && item.statement_text.length)];
+            filteredItems = [...filteredItems, ...filterItemsCommentSnapshot.filter((item) => item.statement_text && item.statement_text.length)];
             break;
           default:
             break;
@@ -412,7 +394,7 @@ class SettingsAddBallotItemsFilter extends Component {
   removeTheseFilters = (filterListToRemove) => {
     // Remove the items in filterList that are currently in selectedFilters
     // console.log('SettingsAddBallotItemsFilter, removeTheseFilters filterListToRemove:', filterListToRemove);
-    const newFilteredItems = this.props.selectedFilters.filter(oneItem => !filterListToRemove.includes(oneItem));
+    const newFilteredItems = this.props.selectedFilters.filter((oneItem) => !filterListToRemove.includes(oneItem));
     this.props.updateSelectedFilters(newFilteredItems);
   };
 
@@ -576,8 +558,25 @@ class SettingsAddBallotItemsFilter extends Component {
     );
   }
 }
+SettingsAddBallotItemsFilter.propTypes = {
+  // Passed in through FilterBase
+  allItems: PropTypes.array,
+  classes: PropTypes.object,
+  changeTrigger: PropTypes.string,
+  forceChangeTrigger: PropTypes.func,
+  lastFilterAdded: PropTypes.string,
+  onFilteredItemsChange: PropTypes.func,
+  onSelectSortByFilter: PropTypes.func,
+  onToggleFilter: PropTypes.func,
+  selectedFilters: PropTypes.array,
+  showAllFilters: PropTypes.bool,
+  updateSelectedFilters: PropTypes.func,
+  // Passed in directly
+  filtersPassedInOnce: PropTypes.array,
+  googleCivicElectionId: PropTypes.number,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   formControlLabel: {
     [theme.breakpoints.down('lg')]: {
       fontSize: 14,

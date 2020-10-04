@@ -23,11 +23,6 @@ import { renderLog } from '../../utils/logging';
 
 // This is based on routes/Ballot/Candidate - TO BE DEPRECATED?
 class OrganizationVoterGuideCandidate extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    params: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -165,8 +160,7 @@ class OrganizationVoterGuideCandidate extends Component {
                   )}
                 />
               </div>
-            ) : null
-            }
+            ) : null}
             {this.state.voterGuidesToFollowForLatestBallotItem.length === 0 ?
               <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
                 <div>
@@ -177,8 +171,7 @@ class OrganizationVoterGuideCandidate extends Component {
                   {/*  incomingVoterGuideList={this.state.voterGuidesToFollowForLatestBallotItem} */}
                   {/* /> */}
                 </div>
-              )
-            }
+              )}
           </div>
         </section>
         <EndorsementCard
@@ -214,12 +207,15 @@ class OrganizationVoterGuideCandidate extends Component {
               )}
             />
           </span>
-        ) : null
-        }
+        ) : null}
       </span>
     );
   }
 }
+OrganizationVoterGuideCandidate.propTypes = {
+  classes: PropTypes.object,
+  params: PropTypes.object.isRequired,
+};
 
 const styles = () => ({
   informationIcon: {

@@ -32,14 +32,14 @@ const positions = {
 };
 
 /* eslint-disable react/prop-types */
-const MapChart = props => (
+const MapChart = (props) => (
   <ComposableMap className="map-svg" projection="geoAlbersUsa">
     <Geographies className="map-svg" geography={geoUrl}>
       {({ geographies }) => (
         <>
           {/* eslint-disable-next-line arrow-body-style */}
           {geographies.map((geo) => {
-            const cur = allStates.find(s => s.val === geo.id);
+            const cur = allStates.find((s) => s.val === geo.id);
             // console.log(cur);
 
             return (
@@ -56,7 +56,7 @@ const MapChart = props => (
           })}
           {geographies.map((geo) => {
             const centroid = geoCentroid(geo);
-            const cur = allStates.find(s => s.val === geo.id);
+            const cur = allStates.find((s) => s.val === geo.id);
             return (
               <StyledG
                 dx={positions[cur.id] ? positions[cur.id][0] : 0}
@@ -119,8 +119,8 @@ const StyledG = styled.g`
   width: 10px !important;
   height: 10px !important;
   position: relative;
-  left: ${props => props.dx}px;
-  top: ${props => props.dy}px;
+  left: ${(props) => props.dx}px;
+  top: ${(props) => props.dy}px;
 `;
 
 const StyledMarker = styled(Marker)`

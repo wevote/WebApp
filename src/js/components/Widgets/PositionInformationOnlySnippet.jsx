@@ -11,17 +11,6 @@ import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 import noPositionIcon from '../../../img/global/svg-icons/no-position-icon.svg';
 
 export default class PositionInformationOnlySnippet extends Component {
-  static propTypes = {
-    ballot_item_display_name: PropTypes.string,
-    is_on_ballot_item_page: PropTypes.bool,
-    is_looking_at_self: PropTypes.bool,
-    more_info_url: PropTypes.string,
-    speaker_display_name: PropTypes.string,
-    statement_text: PropTypes.string,
-    stance_display_off: PropTypes.bool,
-    comment_text_off: PropTypes.bool,
-  };
-
   render () {
     renderLog('PositionInformationOnlySnippet');  // Set LOG_RENDER_EVENTS to log all renders
     const { is_looking_at_self: isLookingAtSelf } = this.props;
@@ -114,8 +103,7 @@ export default class PositionInformationOnlySnippet extends Component {
                 )}
                 <br />
               </span>
-            )
-          }
+            )}
           { commentTextOff ? null : (
             <span>
               <span>{statementTextHtml}</span>
@@ -140,8 +128,7 @@ export default class PositionInformationOnlySnippet extends Component {
                     )}
                   />
                 </div>
-              ) : null
-              }
+              ) : null}
             </span>
           )}
         </div>
@@ -149,3 +136,13 @@ export default class PositionInformationOnlySnippet extends Component {
     );
   }
 }
+PositionInformationOnlySnippet.propTypes = {
+  ballot_item_display_name: PropTypes.string,
+  is_on_ballot_item_page: PropTypes.bool,
+  is_looking_at_self: PropTypes.bool,
+  more_info_url: PropTypes.string,
+  speaker_display_name: PropTypes.string,
+  statement_text: PropTypes.string,
+  stance_display_off: PropTypes.bool,
+  comment_text_off: PropTypes.bool,
+};

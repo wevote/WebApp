@@ -26,7 +26,7 @@ export default {
       voter_guide_possibility_id: voterGuidePossibilityId,
       voter_guide_possibility_position_id: voterGuidePossibilityPositionId,
     };
-    dispatchDictionary = Object.assign({}, dispatchDictionary, dictionaryToSave);
+    dispatchDictionary = { ...dispatchDictionary, ...dictionaryToSave };
     // console.log('voterGuidePossibilityPositionSave dispatchDictionary:', dispatchDictionary);
     Dispatcher.loadEndpoint('voterGuidePossibilityPositionSave', dispatchDictionary);
   },
@@ -42,7 +42,7 @@ export default {
     let dispatchDictionary = {
       voter_guide_possibility_id: voterGuidePossibilityId,
     };
-    dispatchDictionary = Object.assign({}, dispatchDictionary, dictionaryToSave);
+    dispatchDictionary = { ...dispatchDictionary, ...dictionaryToSave };
     Dispatcher.loadEndpoint('voterGuidePossibilitySave', dispatchDictionary);
   },
 };

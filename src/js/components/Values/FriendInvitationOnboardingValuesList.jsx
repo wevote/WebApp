@@ -10,14 +10,6 @@ import { arrayContains } from '../../utils/textFormat';
 
 
 export default class FriendInvitationOnboardingValuesList extends Component {
-  static propTypes = {
-    displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
-    followToggleOnItsOwnLine: PropTypes.bool,
-    friendIssueWeVoteIdList: PropTypes.array,
-    includeLinkToIssue: PropTypes.bool,
-    oneColumn: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -50,14 +42,14 @@ export default class FriendInvitationOnboardingValuesList extends Component {
     let allIssuesForDisplay = [];
     if (allIssuesRaw) {
       if (displayOnlyIssuesNotFollowedByVoter) {
-        allIssuesForDisplay = allIssuesRaw.filter(issue => !IssueStore.isVoterFollowingThisIssue(issue.issue_we_vote_id));
+        allIssuesForDisplay = allIssuesRaw.filter((issue) => !IssueStore.isVoterFollowingThisIssue(issue.issue_we_vote_id));
       } else {
         allIssuesForDisplay = allIssuesRaw;
       }
     }
     // Remove issues shown under friend who invited voter
     if (friendIssueWeVoteIdList && friendIssueWeVoteIdList.length) {
-      allIssuesForDisplay = allIssuesForDisplay.filter(issue => !arrayContains(issue.issue_we_vote_id, friendIssueWeVoteIdList));
+      allIssuesForDisplay = allIssuesForDisplay.filter((issue) => !arrayContains(issue.issue_we_vote_id, friendIssueWeVoteIdList));
     }
     let oneIssue;
     const allIssuesNoLean = [];
@@ -184,12 +176,18 @@ export default class FriendInvitationOnboardingValuesList extends Component {
             {rightIssuesListForDisplay}
           </Row>
         ) :
-          null
-        }
+          null}
       </Wrapper>
     );
   }
 }
+FriendInvitationOnboardingValuesList.propTypes = {
+  displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
+  followToggleOnItsOwnLine: PropTypes.bool,
+  friendIssueWeVoteIdList: PropTypes.array,
+  includeLinkToIssue: PropTypes.bool,
+  oneColumn: PropTypes.bool,
+};
 
 const Wrapper = styled.div`
   margin-bottom: 18px;

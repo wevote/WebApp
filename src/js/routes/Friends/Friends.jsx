@@ -52,11 +52,6 @@ class Friends extends Component {
     return null;
   }
 
-  static propTypes = {
-    classes: PropTypes.object,
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -196,7 +191,7 @@ class Friends extends Component {
     return selectedTab;
   }
 
-  handleNavigation = to => historyPush(to);
+  handleNavigation = (to) => historyPush(to);
 
   resetDefaultTabForMobile (friendInvitationsSentToMe, suggestedFriendList, friendInvitationsSentByMe) {
     let defaultTabItem;
@@ -599,6 +594,10 @@ class Friends extends Component {
     );
   }
 }
+Friends.propTypes = {
+  classes: PropTypes.object,
+  params: PropTypes.object,
+};
 
 const styles = () => ({
   tooltip: {

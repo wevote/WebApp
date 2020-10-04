@@ -11,9 +11,6 @@ import SearchBar from '../../components/Search/SearchBar';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
 export default class FriendsCurrent extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -60,7 +57,7 @@ export default class FriendsCurrent extends Component {
       const searchTermLowercase = searchTerm.toLowerCase();
       const { currentFriendList } = this.state;
       const searchedFriendList = filter(currentFriendList,
-        voter => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
+        (voter) => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
 
       this.setState({
         currentFriendListFilteredBySearch: searchedFriendList,
@@ -117,8 +114,7 @@ export default class FriendsCurrent extends Component {
                   {this.state.searchTerm}
                   &quot; not found
                 </p>
-              ) : null
-              }
+              ) : null}
               <FriendList
                 friendList={currentFriendList}
               />
@@ -129,8 +125,7 @@ export default class FriendsCurrent extends Component {
               buttonText="Invite Friends"
               buttonURL="/friends/invite"
             />
-          )
-          }
+          )}
         </div>
       </div>
     );

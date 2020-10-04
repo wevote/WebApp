@@ -10,13 +10,6 @@ import FacebookActions from '../../actions/FacebookActions';
 import { renderLog } from '../../utils/logging';
 
 export default class FacebookFriendsDisplay extends Component {
-  static propTypes = {
-    maximumFriendDisplay: PropTypes.number,
-    facebookInvitableFriendsList: PropTypes.array,
-    facebookInvitableFriendsImageWidth: PropTypes.number,
-    facebookInvitableFriendsImageHeight: PropTypes.number,
-  };
-
   constructor (props) {
     super(props);
 
@@ -159,3 +152,9 @@ export default class FacebookFriendsDisplay extends Component {
     );
   }
 }
+FacebookFriendsDisplay.propTypes = {
+  maximumFriendDisplay: PropTypes.number,
+  facebookInvitableFriendsList: PropTypes.array,
+  facebookInvitableFriendsImageWidth: PropTypes.number,
+  facebookInvitableFriendsImageHeight: PropTypes.number,
+};

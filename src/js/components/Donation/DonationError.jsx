@@ -4,10 +4,6 @@ import Badge from 'react-bootstrap/Badge';
 import { renderLog } from '../../utils/logging';
 
 export default class DonationError extends Component {
-  static propTypes = {
-    errorMessage: PropTypes.string.isRequired,
-  };
-
   render () {
     renderLog('DonationError');  // Set LOG_RENDER_EVENTS to log all renders
     return (
@@ -17,3 +13,6 @@ export default class DonationError extends Component {
     );
   }
 }
+DonationError.propTypes = {
+  errorMessage: PropTypes.string.isRequired,
+};

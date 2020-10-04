@@ -36,7 +36,7 @@ export function arrayContains (needle, arrayHaystack) {
 // When we find the first object in the arrayHaystack, replace it with the newObject
 export function arrayReplaceObjectMatchingPropertyValue (needleValue, needleProperty, arrayHaystack, newObject) {
   let objectWasReplaced = false;
-  const indexOfExistingObject = arrayHaystack.findIndex(existingObject => existingObject[needleProperty] === needleValue);
+  const indexOfExistingObject = arrayHaystack.findIndex((existingObject) => existingObject[needleProperty] === needleValue);
   if (indexOfExistingObject !== -1) {
     arrayHaystack.splice(indexOfExistingObject, 1, newObject);
     objectWasReplaced = true;
@@ -112,7 +112,7 @@ export function toTitleCase (incomingString) {
   let count;
   let arrayLength;
   let str;
-  str = incomingString.replace(/([^\W_]+[^\s-]*) */g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  str = incomingString.replace(/([^\W_]+[^\s-]*) */g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 
   // Certain minor words should be left lowercase unless
   // they are the first or last words in the string
@@ -120,7 +120,7 @@ export function toTitleCase (incomingString) {
     'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
   for (count = 0, arrayLength = lowers.length; count < arrayLength; count++) {
     str = str.replace(new RegExp(`\\s${lowers[count]}\\s`, 'g'),
-      txt => txt.toLowerCase());
+      (txt) => txt.toLowerCase());
   }
 
   // Leave state codes, measure names and 'VP' upper case

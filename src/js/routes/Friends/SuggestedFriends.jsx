@@ -9,9 +9,6 @@ import { renderLog } from '../../utils/logging';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
 export default class SuggestedFriends extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -74,8 +71,7 @@ export default class SuggestedFriends extends Component {
               buttonText="Invite Friends"
               buttonURL="/friends/invite"
             />
-          )
-          }
+          )}
         </div>
       </div>
     );

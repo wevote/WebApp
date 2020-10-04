@@ -8,13 +8,6 @@ import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 class AdviserIntroModal extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    pathname: PropTypes.string,
-    show: PropTypes.bool,
-    toggleFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -82,6 +75,13 @@ class AdviserIntroModal extends Component {
     );
   }
 }
+AdviserIntroModal.propTypes = {
+  classes: PropTypes.object,
+  pathname: PropTypes.string,
+  show: PropTypes.bool,
+  toggleFunction: PropTypes.func.isRequired,
+};
+
 const styles = () => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,

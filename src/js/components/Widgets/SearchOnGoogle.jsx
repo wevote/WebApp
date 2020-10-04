@@ -8,10 +8,6 @@ import SplitIconButton from './SplitIconButton';
 
 
 class SearchOnGoogle extends Component {
-  static propTypes={
-    googleQuery: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -48,6 +44,9 @@ class SearchOnGoogle extends Component {
     );
   }
 }
+SearchOnGoogle.propTypes = {
+  googleQuery: PropTypes.string,
+};
 
 const Wrapper = styled.div`
 `;

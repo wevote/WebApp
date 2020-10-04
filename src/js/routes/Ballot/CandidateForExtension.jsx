@@ -21,11 +21,6 @@ import VoterStore from '../../stores/VoterStore';
 
 // https://localhost:3000/candidate-for-extension?candidate_name=Phil%20Ting&candidate_we_vote_id=wv02cand40131&endorsement_page_url=https%3A%2F%2Fwww.sierraclub.org%2Fcalifornia%2F2020-endorsements&candidate_specific_endorsement_url=https%3A%2F%2Fwww.philting.com%2F
 class CandidateForExtension extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    location: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -261,8 +256,12 @@ class CandidateForExtension extends Component {
     );
   }
 }
+CandidateForExtension.propTypes = {
+  classes: PropTypes.object,
+  location: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   indicator: {
     backgroundColor: theme.palette.primary.main,
     height: 2.5,

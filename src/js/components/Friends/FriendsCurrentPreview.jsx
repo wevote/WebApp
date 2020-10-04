@@ -9,9 +9,6 @@ import { renderLog } from '../../utils/logging';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
 export default class FriendsCurrentPreview extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {

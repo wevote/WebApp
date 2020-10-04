@@ -12,18 +12,6 @@ import BallotSummaryAccordion from './BallotSummaryAccordion';
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-restricted-syntax: 1 */
 class BallotSideBar extends Component {
-  static propTypes = {
-    ballotWithAllItemsByFilterType: PropTypes.array,
-    ballotItemLinkHasBeenClicked: PropTypes.func,
-    displayTitle: PropTypes.bool,
-    displaySubtitles: PropTypes.bool,
-    onClick: PropTypes.func,
-    pathname: PropTypes.string,
-    raceLevelFilterItemsInThisBallot: PropTypes.array,
-    classes: PropTypes.object,
-    activeRaceItem: PropTypes.string,
-  };
-
   static defaultProps = {
     pathname: '/ballot',
   };
@@ -198,7 +186,7 @@ class BallotSideBar extends Component {
     // Make the incoming raceLevelFilterItems match the standard order
     if (raceLevelFilterItemsInThisBallot) {
       for (let i = 0; i < BALLOT_ITEM_FILTER_TYPES.length; i++) {
-        if (raceLevelFilterItemsInThisBallot.findIndex(item => BALLOT_ITEM_FILTER_TYPES[i].toLowerCase() === item.toLowerCase()) !== -1) {
+        if (raceLevelFilterItemsInThisBallot.findIndex((item) => BALLOT_ITEM_FILTER_TYPES[i].toLowerCase() === item.toLowerCase()) !== -1) {
           raceLevelFilterItemsInThisBallotOrdered.push(BALLOT_ITEM_FILTER_TYPES[i]);
         }
       }
@@ -217,8 +205,7 @@ class BallotSideBar extends Component {
               <Separator />
             </>
           ) :
-            null
-          }
+            null}
           <List>
             <BallotSummaryAccordion activeRaceItem={this.props.activeRaceItem} allowMultipleOpen>
               {raceLevelFilterItemsInThisBallotOrdered.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
@@ -258,8 +245,19 @@ class BallotSideBar extends Component {
     }
   }
 }
+BallotSideBar.propTypes = {
+  ballotWithAllItemsByFilterType: PropTypes.array,
+  ballotItemLinkHasBeenClicked: PropTypes.func,
+  displayTitle: PropTypes.bool,
+  displaySubtitles: PropTypes.bool,
+  onClick: PropTypes.func,
+  pathname: PropTypes.string,
+  raceLevelFilterItemsInThisBallot: PropTypes.array,
+  classes: PropTypes.object,
+  activeRaceItem: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   typography: {
     padding: '16px 0',
     textAlign: 'center',

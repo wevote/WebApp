@@ -12,12 +12,6 @@ import VoterActions from '../../actions/VoterActions';
 
 
 class FacebookSignIn extends Component {
-  static propTypes = {
-    closeSignInModal: PropTypes.func,
-    buttonSubmittedText: PropTypes.string,
-    buttonText: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -217,15 +211,18 @@ class FacebookSignIn extends Component {
               <div className="u-loading-spinner__wrapper">
                 <div className="u-loading-spinner">Please wait...</div>
               </div>
-            ) : null
-            }
+            ) : null}
           </FacebookErrorContainer>
-        ) : null
-        }
+        ) : null}
       </div>
     );
   }
 }
+FacebookSignIn.propTypes = {
+  closeSignInModal: PropTypes.func,
+  buttonSubmittedText: PropTypes.string,
+  buttonText: PropTypes.string,
+};
 
 export default FacebookSignIn;
 

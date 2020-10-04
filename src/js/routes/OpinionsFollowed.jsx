@@ -66,7 +66,7 @@ export default class OpinionsFollowed extends Component {
     if (this.state.searchQuery.length > 0) {
       const searchQueryLowercase = this.state.searchQuery.toLowerCase();
       organizationsFollowedListForDisplay = filter(this.state.organizationsFollowedList,
-        oneOrganization => oneOrganization.organization_name.toLowerCase().includes(searchQueryLowercase) ||
+        (oneOrganization) => oneOrganization.organization_name.toLowerCase().includes(searchQueryLowercase) ||
             oneOrganization.organization_twitter_handle.toLowerCase().includes(searchQueryLowercase));
     } else {
       organizationsFollowedListForDisplay = this.state.organizationsFollowedList;
@@ -100,8 +100,7 @@ export default class OpinionsFollowed extends Component {
                   <OpinionsFollowedList
                     organizationsFollowed={organizationsFollowedListForDisplay}
                   />
-                ) : null
-                }
+                ) : null}
               </div>
             </div>
             <Link className="pull-left" to="/opinions">Find organizations to follow</Link>

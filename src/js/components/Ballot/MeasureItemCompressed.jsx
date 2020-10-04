@@ -19,16 +19,6 @@ import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 
 
 class MeasureItemCompressed extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-    measureWeVoteId: PropTypes.string.isRequired,
-    organization: PropTypes.object,
-    organizationWeVoteId: PropTypes.string,
-    // showPositionStatementActionBar: PropTypes.bool,
-    theme: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -377,8 +367,17 @@ class MeasureItemCompressed extends Component {
     );
   }
 }
+MeasureItemCompressed.propTypes = {
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+  measureWeVoteId: PropTypes.string.isRequired,
+  organization: PropTypes.object,
+  organizationWeVoteId: PropTypes.string,
+  // showPositionStatementActionBar: PropTypes.bool,
+  theme: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonRoot: {
     padding: 4,
     fontSize: 12,

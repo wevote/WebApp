@@ -18,13 +18,6 @@ import { focusTextFieldAndroid, blurTextFieldAndroid } from '../../utils/cordova
 
 
 class AddFriendsByEmail extends Component {
-  static propTypes = {
-    addAnotherButtonOff: PropTypes.bool,
-    classes: PropTypes.object,
-    inSideColumn: PropTypes.bool,
-    uniqueExternalId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -139,7 +132,7 @@ class AddFriendsByEmail extends Component {
   deleteFriendFromList = (friend) => {
     const { friendsToInvite } = this.state;
 
-    const newArray = [...friendsToInvite].filter(item => item.email !== friend.email);
+    const newArray = [...friendsToInvite].filter((item) => item.email !== friend.email);
 
     // console.log('New array: ', newArray);
     // console.log('Email: ', friend.email);
@@ -271,7 +264,7 @@ class AddFriendsByEmail extends Component {
         {friendsToInvite.length !== 0 && (
           <FriendsDisplay>
             <SectionTitle>Invite List</SectionTitle>
-            {friendsToInvite.map(friend => (
+            {friendsToInvite.map((friend) => (
               <FriendBadge key={friend.email}>
                 <strong>{friend.firstName}</strong>
                 {' '}
@@ -290,7 +283,7 @@ class AddFriendsByEmail extends Component {
               <Alert variant="danger">
                 Your invitations will be sent after you sign in:
                 <ul>
-                  {friendInvitationsWaitingForVerification.map(friend => (
+                  {friendInvitationsWaitingForVerification.map((friend) => (
                     <li key={friend.invitation_sent_to}>
                       {friend.invitation_sent_to}
                     </li>
@@ -385,8 +378,7 @@ class AddFriendsByEmail extends Component {
                             placeholder="Here’s how I’m figuring out this election."
                           />
                         </>
-                      ) : null
-                      }
+                      ) : null}
                       <ButtonContainer>
                         {!addAnotherButtonOff && (
                           <Button
@@ -415,8 +407,7 @@ class AddFriendsByEmail extends Component {
                         >
                           { this.hasValidEmail() ?
                             <span>Send</span> :
-                            <span>Next &gt;</span>
-                            }
+                            <span>Next &gt;</span>}
                         </Button>
                       </ButtonContainer>
                     </form>
@@ -430,6 +421,12 @@ class AddFriendsByEmail extends Component {
     );
   }
 }
+AddFriendsByEmail.propTypes = {
+  addAnotherButtonOff: PropTypes.bool,
+  classes: PropTypes.object,
+  inSideColumn: PropTypes.bool,
+  uniqueExternalId: PropTypes.string,
+};
 
 const styles = () => ({
   textField: {

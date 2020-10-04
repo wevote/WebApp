@@ -8,14 +8,6 @@ import DonateActions from '../../actions/DonateActions';
 import { renderLog } from '../../utils/logging';
 
 export default class DonationCancelOrRefund extends Component {
-  static propTypes = {
-    item: PropTypes.object,
-    refundDonation: PropTypes.bool, // true to enable refunding of donations, false to enable cancellation of subscriptions
-    active: PropTypes.bool,
-    cancelText: PropTypes.string,
-    showOrganizationPlan: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -112,5 +104,10 @@ export default class DonationCancelOrRefund extends Component {
     );
   }
 }
-
-
+DonationCancelOrRefund.propTypes = {
+  item: PropTypes.object,
+  refundDonation: PropTypes.bool, // true to enable refunding of donations, false to enable cancellation of subscriptions
+  active: PropTypes.bool,
+  cancelText: PropTypes.string,
+  showOrganizationPlan: PropTypes.bool,
+};

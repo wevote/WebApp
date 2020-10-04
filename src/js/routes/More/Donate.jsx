@@ -25,9 +25,6 @@ class Donate extends Component {
     return {};
   }
 
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
 
@@ -219,14 +216,12 @@ class Donate extends Component {
                   />
                 </span>
               </span>
-            ) : null
-            }
+            ) : null}
             {Number.isNaN(this.state.custom_amount) || this.state.custom_amount === '0' ? (
               <span>
                 <p>Please enter a valid number</p>
               </span>
-            ) : null
-            }
+            ) : null}
           </DonateDescriptionContainer>
           <DonateDescriptionContainer>
             Contributions or gifts made on this page are not tax deductible, and fund We Vote USA, a 501(c)(4) nonprofit.
@@ -255,7 +250,7 @@ class Donate extends Component {
   }
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,

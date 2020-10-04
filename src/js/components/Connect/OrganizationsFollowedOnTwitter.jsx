@@ -9,11 +9,6 @@ import OrganizationCard from '../VoterGuide/OrganizationCard';
 import OrganizationTinyDisplay from '../VoterGuide/OrganizationTinyDisplay';
 
 export default class OrganizationsFollowedOnTwitter extends Component {
-  static propTypes = {
-    organizationsFollowedOnTwitter: PropTypes.array,
-    maximumOrganizationDisplay: PropTypes.number,
-  };
-
   constructor (props) {
     super(props);
 
@@ -157,3 +152,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
     );
   }
 }
+OrganizationsFollowedOnTwitter.propTypes = {
+  organizationsFollowedOnTwitter: PropTypes.array,
+  maximumOrganizationDisplay: PropTypes.number,
+};

@@ -32,11 +32,6 @@ const styles = {
 };
 
 export default class DonationList extends Component {
-  static propTypes = {
-    displayDonations: PropTypes.bool,
-    showOrganizationPlan: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -199,3 +194,7 @@ export default class DonationList extends Component {
     }
   }
 }
+DonationList.propTypes = {
+  displayDonations: PropTypes.bool,
+  showOrganizationPlan: PropTypes.bool,
+};

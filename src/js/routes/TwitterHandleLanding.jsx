@@ -16,12 +16,6 @@ import UnknownTwitterAccount from './VoterGuide/UnknownTwitterAccount';
 import VoterStore from '../stores/VoterStore';
 
 export default class TwitterHandleLanding extends Component {
-  static propTypes = {
-    activeRoute: PropTypes.string,
-    params: PropTypes.object,
-    location: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -184,8 +178,7 @@ export default class TwitterHandleLanding extends Component {
                   &quot;
                 </span>
               ) :
-                <span />
-              }
+                <span />}
               .
             </div>
             <br />
@@ -209,3 +202,8 @@ export default class TwitterHandleLanding extends Component {
     }
   }
 }
+TwitterHandleLanding.propTypes = {
+  activeRoute: PropTypes.string,
+  params: PropTypes.object,
+  location: PropTypes.object.isRequired,
+};

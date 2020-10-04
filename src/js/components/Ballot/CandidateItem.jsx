@@ -30,39 +30,6 @@ import {
 
 // This is related to /js/components/VoterGuide/OrganizationVoterGuideCandidateItem.jsx
 class CandidateItem extends Component {
-  static propTypes = {
-    candidateWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-    closeSupportOpposeCountDisplayModal: PropTypes.bool,
-    controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
-    goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
-    expandIssuesByDefault: PropTypes.bool,
-    forMoreInformationSeeBallotpediaOff: PropTypes.bool,
-    hideBallotItemSupportOpposeComment: PropTypes.bool,
-    hideCandidateText: PropTypes.bool,
-    hideCandidateUrl: PropTypes.bool,
-    hideEndorsementsOverview: PropTypes.bool,
-    hideIssuesRelatedToCandidate: PropTypes.bool,
-    hideShowMoreFooter: PropTypes.bool,
-    linkToBallotItemPage: PropTypes.bool,
-    linkToOfficePage: PropTypes.bool,
-    openAdviserMaterialUIPopover: PropTypes.bool,
-    openSupportOpposeCountDisplayModal: PropTypes.bool,
-    organizationWeVoteId: PropTypes.string,
-    supportOpposeCountDisplayModalTutorialOn: PropTypes.bool,
-    supportOpposeCountDisplayModalTutorialText: PropTypes.object,
-    showDownArrow: PropTypes.bool,
-    showUpArrow: PropTypes.bool,
-    showHover: PropTypes.bool,
-    showOfficeName: PropTypes.bool,
-    showLargeImage: PropTypes.bool,
-    showPositionStatementActionBar: PropTypes.bool,
-    showTopCommentByBallotItem: PropTypes.bool,
-    inModal: PropTypes.bool,
-    hidePositionPublicToggle: PropTypes.bool,
-    showPositionPublicToggle: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -477,8 +444,7 @@ class CandidateItem extends Component {
                 externalUniqueId={`candidateItem-${localUniqueId}`}
                 showPositionStatementActionBar={showPositionStatementActionBar}
               />
-            )
-          }
+            )}
           {/* If there is a quote about the candidate, show that here. */}
           {showTopCommentByBallotItem ? (
             <>
@@ -517,8 +483,7 @@ class CandidateItem extends Component {
                       <br />
                       {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
                     </div>
-                  )
-                }
+                  )}
               </div>
               <div className="u-show-mobile-tablet">
                 {linkToBallotItemPage ? (
@@ -561,8 +526,7 @@ class CandidateItem extends Component {
         </div>
         {hideShowMoreFooter ?
           null :
-          <ShowMoreFooter showMoreId="candidateItemShowMoreFooter" showMoreLink={this.goToCandidateLink} />
-        }
+          <ShowMoreFooter showMoreId="candidateItemShowMoreFooter" showMoreLink={this.goToCandidateLink} />}
       </>
     );
   };
@@ -635,6 +599,38 @@ class CandidateItem extends Component {
     );
   }
 }
+CandidateItem.propTypes = {
+  candidateWeVoteId: PropTypes.string.isRequired,
+  classes: PropTypes.object,
+  closeSupportOpposeCountDisplayModal: PropTypes.bool,
+  controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
+  goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
+  expandIssuesByDefault: PropTypes.bool,
+  forMoreInformationSeeBallotpediaOff: PropTypes.bool,
+  hideBallotItemSupportOpposeComment: PropTypes.bool,
+  hideCandidateText: PropTypes.bool,
+  hideCandidateUrl: PropTypes.bool,
+  hideEndorsementsOverview: PropTypes.bool,
+  hideIssuesRelatedToCandidate: PropTypes.bool,
+  hideShowMoreFooter: PropTypes.bool,
+  linkToBallotItemPage: PropTypes.bool,
+  linkToOfficePage: PropTypes.bool,
+  openAdviserMaterialUIPopover: PropTypes.bool,
+  openSupportOpposeCountDisplayModal: PropTypes.bool,
+  organizationWeVoteId: PropTypes.string,
+  supportOpposeCountDisplayModalTutorialOn: PropTypes.bool,
+  supportOpposeCountDisplayModalTutorialText: PropTypes.object,
+  showDownArrow: PropTypes.bool,
+  showUpArrow: PropTypes.bool,
+  showHover: PropTypes.bool,
+  showOfficeName: PropTypes.bool,
+  showLargeImage: PropTypes.bool,
+  showPositionStatementActionBar: PropTypes.bool,
+  showTopCommentByBallotItem: PropTypes.bool,
+  inModal: PropTypes.bool,
+  hidePositionPublicToggle: PropTypes.bool,
+  showPositionPublicToggle: PropTypes.bool,
+};
 
 const styles = () => ({
   informationIcon: {

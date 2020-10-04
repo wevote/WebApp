@@ -6,15 +6,6 @@ import { IconButton, Popover, Typography } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 
 class MaterialUIPopover extends Component {
-  static propTypes = {
-    children: PropTypes.object,
-    classes: PropTypes.object,
-    controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
-    externalUniqueId: PropTypes.string,
-    openAdviserMaterialUIPopover: PropTypes.bool,
-    popoverDisplayObject: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -138,6 +129,14 @@ class MaterialUIPopover extends Component {
     );
   }
 }
+MaterialUIPopover.propTypes = {
+  children: PropTypes.object,
+  classes: PropTypes.object,
+  controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
+  externalUniqueId: PropTypes.string,
+  openAdviserMaterialUIPopover: PropTypes.bool,
+  popoverDisplayObject: PropTypes.object,
+};
 
 const styles = () => ({
   popoverRoot: {

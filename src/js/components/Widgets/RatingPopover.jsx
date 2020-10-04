@@ -6,11 +6,6 @@ import downArrowColorIcon from '../../../img/global/icons/down-arrow-color-icon.
 import upArrowColorIcon from '../../../img/global/icons/up-arrow-color-icon.svg';
 
 export default class RatingPopover extends Component {
-  static propTypes = {
-    showDescription: PropTypes.bool,
-    toggleDescription: PropTypes.func,
-  };
-
   render () {
     renderLog('RatingPopover');  // Set LOG_RENDER_EVENTS to log all renders
 
@@ -56,3 +51,7 @@ export default class RatingPopover extends Component {
     );
   }
 }
+RatingPopover.propTypes = {
+  showDescription: PropTypes.bool,
+  toggleDescription: PropTypes.func,
+};

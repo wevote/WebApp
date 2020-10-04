@@ -9,11 +9,6 @@ import SupportStore from '../../stores/SupportStore';
 
 
 class MeasureItemReadyToVote extends Component {
-  static propTypes = {
-    measureWeVoteId: PropTypes.string.isRequired,
-    ballotItemDisplayName: PropTypes.string.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -66,7 +61,7 @@ class MeasureItemReadyToVote extends Component {
     const { voterOpposesBallotItem, voterSupportsBallotItem } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <Wrapper>
           { (voterOpposesBallotItem || voterSupportsBallotItem) && (  // eslint-disable-line no-nested-ternary
             <InnerWrapper>
@@ -79,14 +74,17 @@ class MeasureItemReadyToVote extends Component {
                 <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
               </OfficeColumn>
             </InnerWrapper>
-          )
-          }
+          )}
         </Wrapper>
         <HR />
-      </React.Fragment>
+      </>
     );
   }
 }
+MeasureItemReadyToVote.propTypes = {
+  measureWeVoteId: PropTypes.string.isRequired,
+  ballotItemDisplayName: PropTypes.string.isRequired,
+};
 
 const styles = ({
 });

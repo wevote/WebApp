@@ -17,10 +17,6 @@ import webAppConfig from '../../config';
 
 // This is based on routes/Ballot/Measure - TO BE DEPRECATED?
 export default class OrganizationVoterGuideMeasure extends Component {
-  static propTypes = {
-    params: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -132,8 +128,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
                 ballotItemDisplayName={this.state.measure.ballot_item_display_name}
               />
             </div>
-          ) : null
-          }
+          ) : null}
           {this.state.voterGuidesToFollowForLatestBallotItem.length === 0 ?
             <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
               <div>
@@ -144,8 +139,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
                 {/*  incomingVoterGuideList={this.state.voterGuidesToFollowForLatestBallotItem} */}
                 {/* /> */}
               </div>
-            )
-          }
+            )}
         </div>
         {/* Show links to this candidate in the admin tools */}
         { voter.is_admin || voter.is_verified_volunteer ? (
@@ -164,9 +158,11 @@ export default class OrganizationVoterGuideMeasure extends Component {
               )}
             />
           </span>
-        ) : null
-        }
+        ) : null}
       </section>
     );
   }
 }
+OrganizationVoterGuideMeasure.propTypes = {
+  params: PropTypes.object.isRequired,
+};

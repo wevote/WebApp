@@ -4,12 +4,6 @@ import SuggestedFriendDisplayForList from './SuggestedFriendDisplayForList';
 import { renderLog } from '../../utils/logging';
 
 export default class SuggestedFriendList extends Component {
-  static propTypes = {
-    friendList: PropTypes.array,
-    inSideColumn: PropTypes.bool,
-    previewMode: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -51,10 +45,14 @@ export default class SuggestedFriendList extends Component {
                 <hr />
               ) : null}
             </div>
-          ))
-          }
+          ))}
         </div>
       </div>
     );
   }
 }
+SuggestedFriendList.propTypes = {
+  friendList: PropTypes.array,
+  inSideColumn: PropTypes.bool,
+  previewMode: PropTypes.bool,
+};

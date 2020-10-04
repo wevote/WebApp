@@ -13,10 +13,6 @@ import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 // Take in this.props.params.organization_we_vote_id and this.props.params.google_civic_election_id and
 // redirect to the correct voter guide edit page
 export default class OrganizationVoterGuideEdit extends Component {
-  static propTypes = {
-    params: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -175,3 +171,6 @@ export default class OrganizationVoterGuideEdit extends Component {
     return null;
   }
 }
+OrganizationVoterGuideEdit.propTypes = {
+  params: PropTypes.object.isRequired,
+};

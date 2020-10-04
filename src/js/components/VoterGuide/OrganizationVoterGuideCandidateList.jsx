@@ -5,17 +5,11 @@ import OrganizationVoterGuideCandidateItem from './OrganizationVoterGuideCandida
 
 // This is related to components/Ballot/CandidateList.jsx
 export default class OrganizationVoterGuideCandidateList extends Component {
-  static propTypes = {
-    children: PropTypes.array.isRequired,
-    contest_office_name: PropTypes.string,
-    organization_we_vote_id: PropTypes.string.isRequired,
-  };
-
   render () {
     renderLog('OrganizationVoterGuideCandidateList');  // Set LOG_RENDER_EVENTS to log all renders
     return (
       <article className="card-main__list-group">
-        { this.props.children.map(child => (
+        { this.props.children.map((child) => (
           <div key={child.we_vote_id} className="card">
             <OrganizationVoterGuideCandidateItem
               key={child.we_vote_id}
@@ -25,9 +19,13 @@ export default class OrganizationVoterGuideCandidateList extends Component {
               {...child}
             />
           </div>
-        ))
-        }
+        ))}
       </article>
     );
   }
 }
+OrganizationVoterGuideCandidateList.propTypes = {
+  children: PropTypes.array.isRequired,
+  contest_office_name: PropTypes.string,
+  organization_we_vote_id: PropTypes.string.isRequired,
+};

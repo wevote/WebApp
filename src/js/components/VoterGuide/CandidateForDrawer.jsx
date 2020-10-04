@@ -34,12 +34,6 @@ import webAppConfig from '../../config';
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 // 2020-09-21 This component doesn't seem to be in use. Why not?
 class CandidateForDrawer extends Component {
-  static propTypes = {
-    candidateWeVoteId: PropTypes.string,
-    classes: PropTypes.object,
-    params: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -336,6 +330,11 @@ class CandidateForDrawer extends Component {
     );
   }
 }
+CandidateForDrawer.propTypes = {
+  candidateWeVoteId: PropTypes.string,
+  classes: PropTypes.object,
+  params: PropTypes.object.isRequired,
+};
 
 const styles = () => ({
   informationIcon: {

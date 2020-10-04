@@ -10,10 +10,6 @@ import LoadingWheel from '../../components/LoadingWheel';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 
 export default class PositionListForFriends extends Component {
-  static propTypes = {
-    params: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = { organizationWeVoteId: this.props.params.organization_we_vote_id };
@@ -71,15 +67,14 @@ export default class PositionListForFriends extends Component {
           </div>
           <ul className="list-group">
             { friendsPositionListForOneElection ?
-              friendsPositionListForOneElection.map(item => (
+              friendsPositionListForOneElection.map((item) => (
                 <OrganizationPositionItem
                   key={item.position_we_vote_id}
                   position={item}
                   organizationWeVoteId={organizationWeVoteId}
                 />
               )) :
-              <div>{LoadingWheel}</div>
-            }
+              <div>{LoadingWheel}</div>}
             { friendsPositionListForAllExceptOneElection ? (
               <span>
                 { friendsPositionListForAllExceptOneElection.length ? (
@@ -88,20 +83,17 @@ export default class PositionListForFriends extends Component {
                     <h4 className="card__additional-heading">Endorsements for Other Elections</h4>
                   </span>
                 ) :
-                  <span />
-                }
-                { friendsPositionListForAllExceptOneElection.map(item => (
+                  <span />}
+                { friendsPositionListForAllExceptOneElection.map((item) => (
                   <OrganizationPositionItem
                     key={item.position_we_vote_id}
                     position={item}
                     organizationWeVoteId={organizationWeVoteId}
                   />
-                ))
-                }
+                ))}
               </span>
             ) :
-              <div>{LoadingWheel}</div>
-            }
+              <div>{LoadingWheel}</div>}
           </ul>
         </div>
         <br />
@@ -115,3 +107,6 @@ export default class PositionListForFriends extends Component {
     );
   }
 }
+PositionListForFriends.propTypes = {
+  params: PropTypes.object.isRequired,
+};

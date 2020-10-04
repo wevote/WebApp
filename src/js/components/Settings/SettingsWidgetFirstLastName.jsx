@@ -22,15 +22,6 @@ const delayBeforeApiUpdateCall = 2000;
 const delayBeforeRemovingSavedStatus = 4000;
 
 class SettingsWidgetFirstLastName extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    displayOnly: PropTypes.bool,
-    externalUniqueId: PropTypes.string,
-    hideFirstLastName: PropTypes.bool,
-    hideNameShownWithEndorsements: PropTypes.bool,
-    voterHasMadeChangesFunction: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -411,6 +402,14 @@ class SettingsWidgetFirstLastName extends Component {
     );
   }
 }
+SettingsWidgetFirstLastName.propTypes = {
+  classes: PropTypes.object,
+  displayOnly: PropTypes.bool,
+  externalUniqueId: PropTypes.string,
+  hideFirstLastName: PropTypes.bool,
+  hideNameShownWithEndorsements: PropTypes.bool,
+  voterHasMadeChangesFunction: PropTypes.func,
+};
 
 const styles = () => ({
   formControl: {

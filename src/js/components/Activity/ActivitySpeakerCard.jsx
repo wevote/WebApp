@@ -16,11 +16,6 @@ import { numberWithCommas, timeFromDate } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
 
 class ActivitySpeakerCard extends Component {
-  static propTypes = {
-    activityTidbitWeVoteId: PropTypes.string.isRequired,
-    showTwitterInformation: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -182,6 +177,10 @@ class ActivitySpeakerCard extends Component {
     );
   }
 }
+ActivitySpeakerCard.propTypes = {
+  activityTidbitWeVoteId: PropTypes.string.isRequired,
+  showTwitterInformation: PropTypes.bool,
+};
 
 const ActionDescriptionWrapper = styled.div`
   font-size: 14px;

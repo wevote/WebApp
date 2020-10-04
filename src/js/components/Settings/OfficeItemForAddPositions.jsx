@@ -10,18 +10,6 @@ import CandidateStore from '../../stores/CandidateStore';
 import { renderLog } from '../../utils/logging';
 
 class OfficeItemForAddPositions extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string.isRequired,
-    ballotItemDisplayName: PropTypes.string.isRequired,
-    candidateList: PropTypes.array,
-    candidatesToShowForSearchResults: PropTypes.array,
-    classes: PropTypes.object,
-    organization: PropTypes.object,
-    organizationWeVoteId: PropTypes.string,
-    theme: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -225,8 +213,7 @@ class OfficeItemForAddPositions extends Component {
                   <ArrowDropDown
                     classes={{ root: classes.cardHeaderIconRoot }}
                   />
-                )
-              }
+                )}
             </Title>
           </div>
           {/* Display all candidates running for this office */}
@@ -257,8 +244,19 @@ class OfficeItemForAddPositions extends Component {
     );
   }
 }
+OfficeItemForAddPositions.propTypes = {
+  ballotItemWeVoteId: PropTypes.string.isRequired,
+  ballotItemDisplayName: PropTypes.string.isRequired,
+  candidateList: PropTypes.array,
+  candidatesToShowForSearchResults: PropTypes.array,
+  classes: PropTypes.object,
+  organization: PropTypes.object,
+  organizationWeVoteId: PropTypes.string,
+  theme: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   cardHeaderIconRoot: {
     marginTop: '-.3rem',
     fontSize: 20,

@@ -18,12 +18,6 @@ import signInModalGlobalState from './signInModalGlobalState';
 /* global $ */
 
 class SignInModal extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    show: PropTypes.bool,
-    closeFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -196,6 +190,11 @@ class SignInModal extends Component {
     );
   }
 }
+SignInModal.propTypes = {
+  classes: PropTypes.object,
+  show: PropTypes.bool,
+  closeFunction: PropTypes.func.isRequired,
+};
 
 /*
 This modal dialog floats up in the DOM, to just below the body, so no styles from the app are inherited.
@@ -204,7 +203,7 @@ the size of the keyboard, and if the DOM is overconstrained, i.e  has hard coded
 be honored, Cordova tries to do the best it can, but sometimes it crashes and locks up the instance.
 For Cordova eliminate as many fixed vertical dimensions as needed to avoid overconstraint.
 */
-const styles = theme => ({
+const styles = (theme) => ({
   dialogRoot: isWebApp() ? {
     height: '100%',
     // position: 'absolute !important', // Causes problem on Firefox

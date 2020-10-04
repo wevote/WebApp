@@ -13,13 +13,6 @@ import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpp
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 
 class MeasureItem extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    forMoreInformationSeeBallotpediaOff: PropTypes.bool,
-    measureWeVoteId: PropTypes.string.isRequired,
-    // theme: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -125,8 +118,7 @@ class MeasureItem extends Component {
                 { stateDisplayName }
               </SubTitle>
             ) :
-            null
-          }
+            null}
           {/* <SubTitle>{measureSubtitle}</SubTitle> */}
         </InfoDetailsRow>
         { measureText && (
@@ -152,8 +144,14 @@ class MeasureItem extends Component {
     );
   }
 }
+MeasureItem.propTypes = {
+  classes: PropTypes.object,
+  forMoreInformationSeeBallotpediaOff: PropTypes.bool,
+  measureWeVoteId: PropTypes.string.isRequired,
+  // theme: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   cardRoot: {
     padding: '16px 16px 8px 16px',
     [theme.breakpoints.down('lg')]: {

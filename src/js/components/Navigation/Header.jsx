@@ -27,14 +27,6 @@ import VoterPlanModal from '../Ready/VoterPlanModal';
 
 
 export default class Header extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-    location: PropTypes.object,
-    pathname: PropTypes.string,
-    voter: PropTypes.object,
-    weVoteBrandingOff: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -255,11 +247,9 @@ export default class Header extends Component {
                 </span>
               )}
               { showBackToVoterGuides &&
-                <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} />
-              }
+                <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} />}
               { !showBackToVoterGuides && !showBackToSettingsDesktop && !showBackToSettingsMobile &&
-                <HeaderBar location={location} pathname={pathname} voter={voter} />
-              }
+                <HeaderBar location={location} pathname={pathname} voter={voter} />}
             </div>
           </div>
           {showHowItWorksModal && (
@@ -312,8 +302,7 @@ export default class Header extends Component {
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToValues ?
                 <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} location={location} params={params} /> :
-                <HeaderBar location={location} pathname={pathname} voter={voter} />
-              }
+                <HeaderBar location={location} pathname={pathname} voter={voter} />}
             </div>
           </div>
           {showHowItWorksModal && (
@@ -361,8 +350,7 @@ export default class Header extends Component {
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToFriends ?
                 <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} location={location} params={params} /> :
-                <HeaderBar location={location} pathname={pathname} voter={voter} />
-              }
+                <HeaderBar location={location} pathname={pathname} voter={voter} />}
             </div>
           </div>
           {showHowItWorksModal && (
@@ -434,8 +422,7 @@ export default class Header extends Component {
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToBallotHeader ?
                 <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> :
-                <HeaderBar location={location} pathname={pathname} voter={voter} />
-              }
+                <HeaderBar location={location} pathname={pathname} voter={voter} />}
             </div>
           </div>
           {showActivityTidbitDrawer && (
@@ -483,3 +470,10 @@ export default class Header extends Component {
     }
   }
 }
+Header.propTypes = {
+  params: PropTypes.object,
+  location: PropTypes.object,
+  pathname: PropTypes.string,
+  voter: PropTypes.object,
+  weVoteBrandingOff: PropTypes.bool,
+};

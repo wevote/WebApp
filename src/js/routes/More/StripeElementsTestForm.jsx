@@ -16,10 +16,6 @@ import DonationList from '../../components/Donation/DonationList';
 
 
 class StripeElementsTestForm extends Component {
-  static propTypes = {
-    stripe: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -170,6 +166,9 @@ class StripeElementsTestForm extends Component {
     );
   }
 }
+StripeElementsTestForm.propTypes = {
+  stripe: PropTypes.object,
+};
 
 export default injectStripe(StripeElementsTestForm);
 

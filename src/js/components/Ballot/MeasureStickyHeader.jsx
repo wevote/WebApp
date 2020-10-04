@@ -8,10 +8,6 @@ import MeasureStore from '../../stores/MeasureStore';
 import ReadMore from '../Widgets/ReadMore';
 
 class MeasureStickyHeader extends Component {
-  static propTypes = {
-    measureWeVoteId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -75,6 +71,9 @@ class MeasureStickyHeader extends Component {
     );
   }
 }
+MeasureStickyHeader.propTypes = {
+  measureWeVoteId: PropTypes.string,
+};
 
 const slideDown = keyframes`
   from {

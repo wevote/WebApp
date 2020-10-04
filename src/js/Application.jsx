@@ -26,12 +26,6 @@ import VoterStore from './stores/VoterStore';
 import webAppConfig from './config';
 
 class Application extends Component {
-  static propTypes = {
-    children: PropTypes.element,
-    location: PropTypes.object,
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -482,6 +476,11 @@ class Application extends Component {
     );
   }
 }
+Application.propTypes = {
+  children: PropTypes.element,
+  location: PropTypes.object,
+  params: PropTypes.object,
+};
 
 const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};

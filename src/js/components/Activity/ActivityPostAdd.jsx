@@ -12,11 +12,6 @@ import { renderLog } from '../../utils/logging';
 
 
 class ActivityPostAdd extends Component {
-  static propTypes = {
-    externalUniqueId: PropTypes.string,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -160,8 +155,12 @@ class ActivityPostAdd extends Component {
     );
   }
 }
+ActivityPostAdd.propTypes = {
+  externalUniqueId: PropTypes.string,
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     boxShadow: 'none',
     border: '1px solid #333',

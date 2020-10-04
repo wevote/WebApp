@@ -25,18 +25,6 @@ import VoterStore from '../../stores/VoterStore';
 
 class SelectBallotModal extends Component {
   // This modal will show a users ballot guides from previous and current elections.
-
-  static propTypes = {
-    ballotBaseUrl: PropTypes.string,
-    classes: PropTypes.object,
-    hideAddressEdit: PropTypes.bool,
-    hideElections: PropTypes.bool,
-    organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
-    pathname: PropTypes.string,
-    show: PropTypes.bool,
-    toggleFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -265,7 +253,18 @@ class SelectBallotModal extends Component {
     );
   }
 }
-const styles = theme => ({
+SelectBallotModal.propTypes = {
+  ballotBaseUrl: PropTypes.string,
+  classes: PropTypes.object,
+  hideAddressEdit: PropTypes.bool,
+  hideElections: PropTypes.bool,
+  organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
+  pathname: PropTypes.string,
+  show: PropTypes.bool,
+  toggleFunction: PropTypes.func.isRequired,
+};
+
+const styles = (theme) => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     minHeight: '80%',
@@ -390,7 +389,7 @@ const SidebarWrapper = styled.div`
 `;
 
 const BallotElectionListWrapper = styled.div`
-  margin-top: ${props => (props.addTopMargin ? '24px' : '0')};
+  margin-top: ${(props) => (props.addTopMargin ? '24px' : '0')};
 `;
 
 const ToggleGroup = styled.div`

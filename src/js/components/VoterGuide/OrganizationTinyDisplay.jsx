@@ -4,18 +4,6 @@ import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 
 export default class OrganizationTinyDisplay extends Component {
-  static propTypes = {
-    showPlaceholderImage: PropTypes.bool,
-    showOppose: PropTypes.bool,
-    showSupport: PropTypes.bool,
-    toFollow: PropTypes.bool,
-    voter_guide_image_url_tiny: PropTypes.string,
-    voter_image_url_tiny: PropTypes.string,
-    organization_photo_url_tiny: PropTypes.string,
-    voter_guide_display_name: PropTypes.string,
-    organization_name: PropTypes.string,
-  };
-
   render () {
     renderLog('OrganizationTinyDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     let displayName;
@@ -62,3 +50,14 @@ export default class OrganizationTinyDisplay extends Component {
     );
   }
 }
+OrganizationTinyDisplay.propTypes = {
+  showPlaceholderImage: PropTypes.bool,
+  showOppose: PropTypes.bool,
+  showSupport: PropTypes.bool,
+  toFollow: PropTypes.bool,
+  voter_guide_image_url_tiny: PropTypes.string,
+  voter_image_url_tiny: PropTypes.string,
+  organization_photo_url_tiny: PropTypes.string,
+  voter_guide_display_name: PropTypes.string,
+  organization_name: PropTypes.string,
+};

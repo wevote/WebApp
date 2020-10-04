@@ -3,10 +3,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 class NumberOfItemsFound extends Component {
-  static propTypes = {
-    numberOfItemsTotal: PropTypes.number,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -34,6 +30,9 @@ class NumberOfItemsFound extends Component {
     );
   }
 }
+NumberOfItemsFound.propTypes = {
+  numberOfItemsTotal: PropTypes.number,
+};
 
 const Wrapper = styled.div`
   font-size: 14px;

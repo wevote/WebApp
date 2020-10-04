@@ -19,11 +19,6 @@ const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES ===
 
 
 class SettingsNotificationsUnsubscribe extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -541,6 +536,10 @@ class SettingsNotificationsUnsubscribe extends Component {
     );
   }
 }
+SettingsNotificationsUnsubscribe.propTypes = {
+  classes: PropTypes.object,
+  params: PropTypes.object,
+};
 
 const styles = () => ({
   ballotIconRoot: {

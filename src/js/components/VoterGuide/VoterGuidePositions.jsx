@@ -30,14 +30,6 @@ import AppActions from '../../actions/AppActions';
 
 // 2020-06-10 Being replaced with VoterGuideEndorsements
 class VoterGuidePositions extends Component {
-  static propTypes = {
-    activeRoute: PropTypes.string,
-    classes: PropTypes.object,
-    location: PropTypes.object,
-    organizationWeVoteId: PropTypes.string.isRequired,
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -598,8 +590,15 @@ class VoterGuidePositions extends Component {
     );
   }
 }
+VoterGuidePositions.propTypes = {
+  activeRoute: PropTypes.string,
+  classes: PropTypes.object,
+  location: PropTypes.object,
+  organizationWeVoteId: PropTypes.string.isRequired,
+  params: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 150,
     height: 150,

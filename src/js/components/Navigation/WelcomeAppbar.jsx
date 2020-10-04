@@ -24,11 +24,6 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import { voterPhoto } from '../../utils/voterPhoto';
 
 class WelcomeAppbar extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    pathname: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -265,51 +260,37 @@ class WelcomeAppbar extends Component {
           <Navigation>
             <DesktopView>
               {showWelcomeForVoters &&
-                <NavLink id="welcomePageLink" to="/welcome">Welcome</NavLink>
-              }
+                <NavLink id="welcomePageLink" to="/welcome">Welcome</NavLink>}
               {showWelcomeForOrganizations &&
-                <NavLink id="welcomePageLink" to="/for-organizations">Welcome</NavLink>
-              }
+                <NavLink id="welcomePageLink" to="/for-organizations">Welcome</NavLink>}
               {showWelcomeForCampaigns &&
-                <NavLink id="welcomePageLink" to="/for-campaigns">Welcome</NavLink>
-              }
+                <NavLink id="welcomePageLink" to="/for-campaigns">Welcome</NavLink>}
               {/* Don't show 'For Organizations' or 'For Voters' when on How It Works page */}
               {showForOrganizations &&
-                <NavLink id="welcomeForOrganizations" to="/for-organizations">For Organizations</NavLink>
-              }
+                <NavLink id="welcomeForOrganizations" to="/for-organizations">For Organizations</NavLink>}
               {showForVoters &&
-                <NavLink id="welcomeForVoters" to="/welcome">For Voters</NavLink>
-              }
+                <NavLink id="welcomeForVoters" to="/welcome">For Voters</NavLink>}
               {/* Don't show 'For Organizations' or 'For Campaigns' when on How It Works page */}
               { (showWelcomeForVoters || showWelcomeForOrganizations || showWelcomeForCampaigns || showForOrganizations || showForVoters) &&
-                <Divider />
-              }
+                <Divider />}
               { showForOrganizationsDesktop &&
-                <NavLink id="welcomeForOrganizations" to="/for-organizations">For Organizations</NavLink>
-              }
+                <NavLink id="welcomeForOrganizations" to="/for-organizations">For Organizations</NavLink>}
               { showForOrganizationsDesktop && showForCampaignsDesktop &&
-                <Divider />
-              }
+                <Divider />}
               { showForCampaignsDesktop &&
-                <NavLink id="welcomeForCampaigns" to="/for-campaigns">For Campaigns</NavLink>
-              }
+                <NavLink id="welcomeForCampaigns" to="/for-campaigns">For Campaigns</NavLink>}
               {/* Turn off How It Works link on that page */}
               { (showForOrganizationsDesktop || showForCampaignsDesktop) &&
-                <Divider />
-              }
+                <Divider />}
               {/* Change the How It Works link depending on which welcome page you are on */}
               { showHowItWorksForVoters &&
-                <NavLink id="welcomeHowItWorks" to="/how/for-voters">How It Works</NavLink>
-              }
+                <NavLink id="welcomeHowItWorks" to="/how/for-voters">How It Works</NavLink>}
               { showHowItWorksForCampaigns &&
-                <NavLink id="welcomeHowItWorks" to="/how/for-campaigns">How It Works</NavLink>
-              }
+                <NavLink id="welcomeHowItWorks" to="/how/for-campaigns">How It Works</NavLink>}
               { showHowItWorksForOrganizations &&
-                <NavLink id="welcomeHowItWorks" to="/how/for-organizations">How It Works</NavLink>
-              }
+                <NavLink id="welcomeHowItWorks" to="/how/for-organizations">How It Works</NavLink>}
               { (showHowItWorksForVoters || showHowItWorksForCampaigns || showHowItWorksForOrganizations) &&
-                <Divider />
-              }
+                <Divider />}
               <NavLink id="welcomeYourBallot" to="/ready">Your Ballot</NavLink>
               <Divider />
               {!voterIsSignedIn && <NavLink id="welcomeSignIn" to="" onClick={() => this.toggleSignInModal()}>Sign In</NavLink> }
@@ -342,8 +323,7 @@ class WelcomeAppbar extends Component {
                         <AccountCircle />
                       </IconButton>
                     </ProfileIconWrapper>
-                  )
-                  }
+                  )}
                   {this.state.profilePopUpOpen && voterIsSignedIn && (
                     <HeaderBarProfilePopUp
                       onClick={this.toggleProfilePopUp}
@@ -387,8 +367,7 @@ class WelcomeAppbar extends Component {
                         <AccountCircle />
                       </IconButton>
                     </ProfileIconWrapper>
-                  )
-                  }
+                  )}
                   {this.state.profilePopUpOpen && voterIsSignedIn && (
                     <HeaderBarProfilePopUp
                       onClick={this.toggleProfilePopUp}
@@ -467,8 +446,7 @@ class WelcomeAppbar extends Component {
                           >
                             Sign In
                           </Button>
-                        )
-                      }
+                        )}
                     </NavRow>
                   </MobileNavigationMenu>
                 )
@@ -495,8 +473,12 @@ class WelcomeAppbar extends Component {
     );
   }
 }
+WelcomeAppbar.propTypes = {
+  classes: PropTypes.object,
+  pathname: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   appBarRoot: {
     background: 'transparent',
     alignItems: 'center',

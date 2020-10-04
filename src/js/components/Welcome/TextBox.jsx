@@ -6,13 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 
 class TextBox extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    icon: PropTypes.node,
-    placeholder: PropTypes.string,
-    inputProps: PropTypes.object,
-  };
-
   render () {
     renderLog('TextBox');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes, placeholder, inputProps, icon } = this.props;
@@ -29,8 +22,14 @@ class TextBox extends Component {
     );
   }
 }
+TextBox.propTypes = {
+  classes: PropTypes.object,
+  icon: PropTypes.node,
+  placeholder: PropTypes.string,
+  inputProps: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   input: {
     paddingTop: 4,
     color: '#555',

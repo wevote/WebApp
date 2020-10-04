@@ -3,9 +3,6 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import groupIcon from '../../../img/global/svg-icons/group-icon.svg';
 
 export default class FriendsIcon extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {};

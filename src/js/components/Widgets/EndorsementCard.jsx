@@ -9,14 +9,6 @@ import SplitIconButton from './SplitIconButton';
 import VoterStore from '../../stores/VoterStore';
 
 class EndorsementCard extends PureComponent {
-  static propTypes = {
-    buttonText: PropTypes.string,
-    organizationWeVoteId: PropTypes.string,
-    title: PropTypes.string,
-    text: PropTypes.string,
-    whiteOnBlue: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -115,6 +107,13 @@ class EndorsementCard extends PureComponent {
     );
   }
 }
+EndorsementCard.propTypes = {
+  buttonText: PropTypes.string,
+  organizationWeVoteId: PropTypes.string,
+  title: PropTypes.string,
+  text: PropTypes.string,
+  whiteOnBlue: PropTypes.bool,
+};
 
 const Container = styled.div`
   padding: 16px;

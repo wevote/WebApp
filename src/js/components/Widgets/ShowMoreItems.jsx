@@ -3,13 +3,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 class ShowMoreItems extends Component {
-  static propTypes = {
-    hideShowMoreLink: PropTypes.bool,
-    loadingMoreItemsNow: PropTypes.bool,
-    numberOfItemsDisplayed: PropTypes.number,
-    numberOfItemsTotal: PropTypes.number,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -40,6 +33,12 @@ class ShowMoreItems extends Component {
     );
   }
 }
+ShowMoreItems.propTypes = {
+  hideShowMoreLink: PropTypes.bool,
+  loadingMoreItemsNow: PropTypes.bool,
+  numberOfItemsDisplayed: PropTypes.number,
+  numberOfItemsTotal: PropTypes.number,
+};
 
 const Wrapper = styled.div`
   font-size: 14px;

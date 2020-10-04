@@ -5,11 +5,6 @@ import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import TwitterAccountCard from '../../components/Twitter/TwitterAccountCard';
 
 export default class UnknownTwitterAccount extends Component {
-  static propTypes = {
-    twitterHandle: PropTypes.string,
-    twitterName: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -34,3 +29,7 @@ export default class UnknownTwitterAccount extends Component {
     );
   }
 }
+UnknownTwitterAccount.propTypes = {
+  twitterHandle: PropTypes.string,
+  twitterName: PropTypes.string,
+};

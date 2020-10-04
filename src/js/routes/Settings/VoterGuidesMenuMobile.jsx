@@ -8,9 +8,6 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 
 export default class VoterGuidesMenuMobile extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {

@@ -8,12 +8,6 @@ import { isWebApp, snackOffset } from '../../utils/cordovaUtils';
 
 
 class BrowserPushMessage extends Component {
-  static propTypes = {
-    externalUniqueId: PropTypes.string,
-    incomingProps: PropTypes.object, // needs more specificity
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -80,8 +74,13 @@ class BrowserPushMessage extends Component {
     );
   }
 }
+BrowserPushMessage.propTypes = {
+  externalUniqueId: PropTypes.string,
+  incomingProps: PropTypes.object, // needs more specificity
+  classes: PropTypes.object,
+};
 
-const styles = theme => (
+const styles = (theme) => (
   isWebApp() ? {
     anchorOriginBottomCenter: {
       bottom: 54,

@@ -12,10 +12,6 @@ import VoterStore from '../../stores/VoterStore';
 
 // This is based on routes/Ballot/Office
 export default class OrganizationVoterGuideOffice extends Component {
-  static propTypes = {
-    params: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -97,9 +93,11 @@ export default class OrganizationVoterGuideOffice extends Component {
             </OrganizationVoterGuideCandidateList>
           </div>
         ) :
-          <span>Loading candidates...</span>
-        }
+          <span>Loading candidates...</span>}
       </div>
     );
   }
 }
+OrganizationVoterGuideOffice.propTypes = {
+  params: PropTypes.object.isRequired,
+};

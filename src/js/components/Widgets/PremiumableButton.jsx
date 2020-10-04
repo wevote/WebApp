@@ -4,16 +4,10 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 class PremiumableButton extends PureComponent {
-  static propTypes = {
-    premium: PropTypes.number, // This can't be a bool or else there'll be a warning.
-    children: PropTypes.node,
-    classes: PropTypes.object,
-  };
-
   render () {
     const { premium, children, classes } = this.props;
     return (
-      <React.Fragment>
+      <>
         {premium ?
           (
             <Button
@@ -32,12 +26,16 @@ class PremiumableButton extends PureComponent {
             >
               {children}
             </Button>
-          )
-        }
-      </React.Fragment>
+          )}
+      </>
     );
   }
 }
+PremiumableButton.propTypes = {
+  premium: PropTypes.number, // This can't be a bool or else there'll be a warning.
+  children: PropTypes.node,
+  classes: PropTypes.object,
+};
 
 const styles = ({
   containedSecondary: {

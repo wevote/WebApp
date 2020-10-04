@@ -9,10 +9,6 @@ import { renderLog } from '../utils/logging';
 import { historyPush, isCordova } from '../utils/cordovaUtils';
 
 class PageNotFound extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-  };
-
   static getProps () {
     return {};
   }
@@ -48,6 +44,9 @@ class PageNotFound extends Component {
     );
   }
 }
+PageNotFound.propTypes = {
+  classes: PropTypes.object,
+};
 
 const Wrapper = styled.div`
   @media (max-width: ${({ theme, cordova }) => (cordova ? undefined : theme.breakpoints.md)}) {
@@ -71,7 +70,7 @@ const EmptyBallotText = styled.p`
   }
 `;
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 150,
     height: 150,

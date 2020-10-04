@@ -439,11 +439,10 @@ class IssueStore extends ReduceStore {
             issueWeVoteIdsVoterCanFollow.push(issue.issue_we_vote_id);
           }
         });
-        revisedState = Object.assign({}, revisedState, {
+        revisedState = { ...revisedState,
           allCachedIssues,
           issueWeVoteIdsVoterCanFollow,
-          issueWeVoteIdsBySlug,
-        });
+          issueWeVoteIdsBySlug };
         return revisedState;
 
       case 'issueDescriptionsRetrieveCalled':
@@ -471,11 +470,10 @@ class IssueStore extends ReduceStore {
             }
           }
         });
-        revisedState = Object.assign({}, revisedState, {
+        revisedState = { ...revisedState,
           issuesFollowedLoadedFromAPIServer: true,
           issueWeVoteIdsVoterCanFollow,
-          issueWeVoteIdsVoterIsFollowing,
-        });
+          issueWeVoteIdsVoterIsFollowing };
         return revisedState;
 
       case 'issuesUnderBallotItemsRetrieve':
@@ -513,11 +511,10 @@ class IssueStore extends ReduceStore {
             }
           }
         }
-        revisedState = Object.assign({}, revisedState, {
+        revisedState = { ...revisedState,
           issuesUnderBallotItemsRetrieveCalled,
           issueWeVoteIdsUnderEachBallotItem,
-          googleCivicElectionId,
-        });
+          googleCivicElectionId };
         return revisedState;
 
       case 'issuesUnderBallotItemsRetrieveCalled':

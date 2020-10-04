@@ -6,10 +6,6 @@ import BallotStore from '../../stores/BallotStore';
 import { formatDateToMonthDayYear } from '../../utils/textFormat';
 
 class ElectionCountdown extends React.Component {
-  static propTypes = {
-    daysOnlyMode: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -340,6 +336,9 @@ class ElectionCountdown extends React.Component {
     }
   }
 }
+ElectionCountdown.propTypes = {
+  daysOnlyMode: PropTypes.bool,
+};
 
 const Card = styled.div`
   padding-top: 4px;
@@ -386,14 +385,14 @@ const CardTitlePast = styled.h1`
 `;
 
 const CardSubTitle = styled.h3`
-  font-size: ${props => (props.desktopMode ? '18px' : '22px')};
+  font-size: ${(props) => (props.desktopMode ? '18px' : '22px')};
   font-weight: 700;
   color: #2E3C5D !important;
   width: fit-content;
   margin-bottom: 0 !important;
-  margin-top: ${props => (props.desktopMode ? '24px' : null)};
+  margin-top: ${(props) => (props.desktopMode ? '24px' : null)};
   width: 100%;
-  text-align: ${props => (props.center ? 'center' : 'left')};
+  text-align: ${(props) => (props.center ? 'center' : 'left')};
   // border-bottom: 1px solid #2E3C5D;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 14px;
@@ -424,7 +423,7 @@ const TimeSection = styled.div`
 `;
 
 const Time = styled.h1`
-  ${props => (props.timeStillLoading ? 'color: #ccc;' : '')}
+  ${(props) => (props.timeStillLoading ? 'color: #ccc;' : '')}
   font-size: 60px !important;
   font-weight: 800 !important;
   margin: 0;

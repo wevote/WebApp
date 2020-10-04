@@ -46,11 +46,6 @@ import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import welcomeForVotersImage from '../../img/welcome/WelcomeForVoters-Ballot-20190507.png';
 
 class WelcomeForVoters extends PureComponent {
-  static propTypes = {
-    classes: PropTypes.object,
-    pathname: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -316,8 +311,7 @@ class WelcomeForVoters extends PureComponent {
               )}
             </SignUpContainer>
           </Section>
-        )
-        }
+        )}
         {showVerifyModal && (
           <SettingsVerifySecretCode
             show={showVerifyModal}
@@ -330,8 +324,12 @@ class WelcomeForVoters extends PureComponent {
     );
   }
 }
+WelcomeForVoters.propTypes = {
+  classes: PropTypes.object,
+  pathname: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,

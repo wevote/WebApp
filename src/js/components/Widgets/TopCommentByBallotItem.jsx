@@ -12,20 +12,6 @@ import { shortenText, stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
 class TopCommentByBallotItem extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    children: PropTypes.object,
-    childChangeIndicator: PropTypes.string,
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-    hideMoreButton: PropTypes.bool,
-    learnMoreText: PropTypes.string,
-    learnMoreUrl: PropTypes.string,
-    limitToNo: PropTypes.bool,
-    limitToYes: PropTypes.bool,
-    onClickFunction: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -247,16 +233,28 @@ class TopCommentByBallotItem extends Component {
               >
                 {learnMoreText}
               </Button>
-            )
-            }
+            )}
           </LearnMoreWrapper>
         )}
       </Wrapper>
     );
   }
 }
+TopCommentByBallotItem.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
+  children: PropTypes.object,
+  childChangeIndicator: PropTypes.string,
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+  hideMoreButton: PropTypes.bool,
+  learnMoreText: PropTypes.string,
+  learnMoreUrl: PropTypes.string,
+  limitToNo: PropTypes.bool,
+  limitToYes: PropTypes.bool,
+  onClickFunction: PropTypes.func,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonRoot: {
     padding: 4,
     fontSize: 12,
@@ -319,7 +317,7 @@ const BallotItemEndorsementTextMobile = styled.span`
 
 const LearnMoreWrapper = styled.div`
   margin-left: auto;
-  display: ${props => (props.isButton ? 'flex' : 'inline')};
+  display: ${(props) => (props.isButton ? 'flex' : 'inline')};
   justify-content: flex-end;
 `;
 

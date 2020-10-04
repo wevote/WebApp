@@ -6,11 +6,6 @@ import { renderLog } from '../../utils/logging';
 import FriendsShareListItem from './FriendsShareListItem';
 
 class FriendShareList extends Component {
-  static propTypes = {
-    list: PropTypes.array,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
 
@@ -37,7 +32,7 @@ class FriendShareList extends Component {
       let newFriendsToShareWith = [];
 
       if (!event.target.checked) {
-        newFriendsToShareWith = this.state.friendsToShareWith.filter(newItem => newItem.voter_we_vote_id !== item.voter_we_vote_id);
+        newFriendsToShareWith = this.state.friendsToShareWith.filter((newItem) => newItem.voter_we_vote_id !== item.voter_we_vote_id);
       } else {
         newFriendsToShareWith = [...this.state.friendsToShareWith, item];
       }
@@ -71,6 +66,10 @@ class FriendShareList extends Component {
     );
   }
 }
+FriendShareList.propTypes = {
+  list: PropTypes.array,
+  classes: PropTypes.object,
+};
 
 const styles = () => ({
   formControl: {

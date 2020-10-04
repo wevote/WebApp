@@ -12,21 +12,6 @@ import VoterStore from '../../stores/VoterStore';
 import { openSnackbar } from './SnackNotifier';
 
 export default class FollowToggle extends Component {
-  static propTypes = {
-    currentBallotIdInUrl: PropTypes.string,
-    handleIgnore: PropTypes.func,
-    hideStopFollowingButton: PropTypes.bool,
-    hideStopIgnoringButton: PropTypes.bool,
-    ballotItemWeVoteId: PropTypes.string,
-    showFollowingText: PropTypes.bool,
-    urlWithoutHash: PropTypes.string,
-    organizationWeVoteId: PropTypes.string,
-    hideDropdownButtonUntilFollowing: PropTypes.bool,
-    lightModeOn: PropTypes.bool,
-    anchorLeft: PropTypes.bool,
-    platformType: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -478,3 +463,17 @@ export default class FollowToggle extends Component {
     );
   }
 }
+FollowToggle.propTypes = {
+  currentBallotIdInUrl: PropTypes.string,
+  handleIgnore: PropTypes.func,
+  hideStopFollowingButton: PropTypes.bool,
+  hideStopIgnoringButton: PropTypes.bool,
+  ballotItemWeVoteId: PropTypes.string,
+  showFollowingText: PropTypes.bool,
+  urlWithoutHash: PropTypes.string,
+  organizationWeVoteId: PropTypes.string,
+  hideDropdownButtonUntilFollowing: PropTypes.bool,
+  lightModeOn: PropTypes.bool,
+  anchorLeft: PropTypes.bool,
+  platformType: PropTypes.string,
+};

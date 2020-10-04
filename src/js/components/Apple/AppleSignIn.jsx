@@ -9,11 +9,6 @@ import { openSnackbar } from '../Widgets/SnackNotifier';
 import { oAuthLog, renderLog } from '../../utils/logging';
 
 class AppleSignIn extends Component {
-  static propTypes = {
-    closeSignInModal: PropTypes.func,
-    signedIn: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.signInToAppleIOS = this.signInToAppleIOS.bind(this);
@@ -179,6 +174,10 @@ class AppleSignIn extends Component {
     }
   }
 }
+AppleSignIn.propTypes = {
+  closeSignInModal: PropTypes.func,
+  signedIn: PropTypes.bool,
+};
 
 export default AppleSignIn;
 

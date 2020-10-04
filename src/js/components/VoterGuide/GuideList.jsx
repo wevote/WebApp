@@ -12,13 +12,6 @@ import { openSnackbar } from '../Widgets/SnackNotifier';
 import ShowMoreItems from '../Widgets/ShowMoreItems';
 
 class GuideList extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    hideShowMoreItems: PropTypes.bool,
-    incomingVoterGuideList: PropTypes.array,
-    instantRefreshOn: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -190,7 +183,7 @@ class GuideList extends Component {
     const { voterGuideList } = this.state;
     // OrganizationActions.organizationFollowIgnore(organizationWeVoteId); // This is run within FollowToggle
     const newVoterGuideList = voterGuideList.filter(
-      org => org.organization_we_vote_id !== organizationWeVoteId,
+      (org) => org.organization_we_vote_id !== organizationWeVoteId,
     );
     let voterGuideListCount = 0;
     if (newVoterGuideList) {
@@ -261,8 +254,7 @@ class GuideList extends Component {
                   />
                 </VoterGuideDisplayForList>
               );
-            })
-            }
+            })}
             {!hideShowMoreItems && (
               <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfItemsToDisplay}>
                 <ShowMoreItems
@@ -278,6 +270,12 @@ class GuideList extends Component {
     );
   }
 }
+GuideList.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
+  hideShowMoreItems: PropTypes.bool,
+  incomingVoterGuideList: PropTypes.array,
+  instantRefreshOn: PropTypes.bool,
+};
 
 const ShowMoreItemsWrapper = styled.div`
 `;

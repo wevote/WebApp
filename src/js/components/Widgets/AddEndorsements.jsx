@@ -14,8 +14,6 @@ const endorsementText = (
 );
 
 class AddEndorsements extends Component {
-  static propTypes={};
-
   constructor (props) {
     super(props);
     this.state = {};

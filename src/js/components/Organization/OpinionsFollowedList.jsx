@@ -6,10 +6,6 @@ import OrganizationDisplayForList from './OrganizationDisplayForList';
 import { renderLog } from '../../utils/logging';
 
 export default class OpinionsFollowedList extends Component {
-  static propTypes = {
-    organizationsFollowed: PropTypes.array,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -34,7 +30,7 @@ export default class OpinionsFollowedList extends Component {
     OrganizationActions.organizationFollowIgnore(organizationWeVoteId);
     const { organizationsFollowed } = this.state;
     this.setState({
-      organizationsFollowed: organizationsFollowed.filter(oneOrganization => oneOrganization.organization_we_vote_id !== organizationWeVoteId),
+      organizationsFollowed: organizationsFollowed.filter((oneOrganization) => oneOrganization.organization_we_vote_id !== organizationWeVoteId),
     });
   }
 
@@ -62,3 +58,6 @@ export default class OpinionsFollowedList extends Component {
     );
   }
 }
+OpinionsFollowedList.propTypes = {
+  organizationsFollowed: PropTypes.array,
+};

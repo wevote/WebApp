@@ -97,8 +97,7 @@ export default class GetStarted extends Component {
                   <br />
                 </div>
               </div>
-            )
-          }
+            )}
           {this.state.voter.signed_in_twitter ?
             null : (
               <div className="row">
@@ -114,8 +113,7 @@ export default class GetStarted extends Component {
                   <br />
                 </div>
               </div>
-            )
-          }
+            )}
           <footer className="intro-story__footer">
             <button
               type="button"

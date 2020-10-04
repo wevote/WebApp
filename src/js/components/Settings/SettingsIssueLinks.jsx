@@ -33,11 +33,6 @@ const INCOMPATIBLE_ISSUES = {
 
 
 export default class SettingsIssueLinks extends Component {
-  static propTypes = {
-    params: PropTypes.object.isRequired,
-    organizationWeVoteId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
 
@@ -172,7 +167,7 @@ export default class SettingsIssueLinks extends Component {
     // console.log('-----------------------------------------------------')
     switch (activeTab) {
       case 'issues_to_link':
-        issuesToDisplay = this.state.issuesToLinkTo.map(issue => (
+        issuesToDisplay = this.state.issuesToLinkTo.map((issue) => (
           <IssueLinkToggle
             key={issue.issue_we_vote_id}
             issue={issue}
@@ -184,7 +179,7 @@ export default class SettingsIssueLinks extends Component {
         break;
       default:
       case 'issues_linked':
-        issuesToDisplay = this.state.issuesLinkedTo.map(issue => (
+        issuesToDisplay = this.state.issuesLinkedTo.map((issue) => (
           <IssueLinkToggle
             key={issue.issue_we_vote_id}
             issue={issue}
@@ -229,3 +224,7 @@ export default class SettingsIssueLinks extends Component {
     );
   }
 }
+SettingsIssueLinks.propTypes = {
+  params: PropTypes.object.isRequired,
+  organizationWeVoteId: PropTypes.string,
+};

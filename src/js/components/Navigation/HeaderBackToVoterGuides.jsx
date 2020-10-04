@@ -30,13 +30,6 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import { voterPhoto } from '../../utils/voterPhoto';
 
 class HeaderBackToVoterGuides extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    location: PropTypes.object,
-    params: PropTypes.object.isRequired,
-    pathname: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -361,8 +354,7 @@ class HeaderBackToVoterGuides extends Component {
                       <AccountCircle />
                     </IconButton>
                   </div>
-                )
-                }
+                )}
                 {profilePopUpOpen && (
                 <HeaderBarProfilePopUp
                   hideProfilePopUp={this.hideProfilePopUp}
@@ -424,8 +416,14 @@ class HeaderBackToVoterGuides extends Component {
     );
   }
 }
+HeaderBackToVoterGuides.propTypes = {
+  classes: PropTypes.object,
+  location: PropTypes.object,
+  params: PropTypes.object.isRequired,
+  pathname: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   headerBadge: {
     right: -15,
     top: 9,

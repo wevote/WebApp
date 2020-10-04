@@ -31,16 +31,6 @@ import VoterPhoneEmailCordovaEntryModal from './VoterPhoneEmailCordovaEntryModal
 const debugMode = false;
 
 export default class SettingsAccount extends Component {
-  static propTypes = {
-    externalUniqueId: PropTypes.string,
-    inModal: PropTypes.bool,
-    pleaseSignInTextOff: PropTypes.bool,
-    pleaseSignInTitle: PropTypes.string,
-    pleaseSignInSubTitle: PropTypes.string,
-    closeSignInModal: PropTypes.func,
-    focusedOnSingleInputToggle: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -364,14 +354,12 @@ export default class SettingsAccount extends Component {
       <>
         <Helmet title={pageTitle} />
         {!hideDialogForCordova &&
-          <BrowserPushMessage incomingProps={this.props} />
-        }
+          <BrowserPushMessage incomingProps={this.props} />}
         <div className={inModal ? 'card-main full-width' : 'card'} style={{ display: `${hideDialogForCordova ? ' none' : 'undefined'}` }}>
           <Main inModal={inModal} id={`settingsAccountMain-${externalUniqueId}`}>
             {voterIsSignedInTwitter && voterIsSignedInFacebook ?
               null :
-              <h1 className="h3">{!hideTwitterSignInButton && !hideFacebookSignInButton && voterIsSignedIn ? <span>{yourAccountTitle}</span> : null}</h1>
-            }
+              <h1 className="h3">{!hideTwitterSignInButton && !hideFacebookSignInButton && voterIsSignedIn ? <span>{yourAccountTitle}</span> : null}</h1>}
             {!hideCurrentlySignedInHeader && (
               <div>
                 {voterIsSignedIn ?
@@ -386,8 +374,7 @@ export default class SettingsAccount extends Component {
                         <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
                       </div>
                     </>
-                  )
-                }
+                  )}
               </div>
             )}
             {(!voterIsSignedInTwitter || !voterIsSignedInFacebook) && !hideDialogForCordova ? (
@@ -403,8 +390,7 @@ export default class SettingsAccount extends Component {
                         closeSignInModal={this.localCloseSignInModal}
                       />
                     </span>
-                  )
-                  }
+                  )}
                 </div>
                 <div className="u-stack--md">
                   { !hideFacebookSignInButton && !voterIsSignedInFacebook && isOnFacebookSupportedDomainUrl && (
@@ -415,12 +401,10 @@ export default class SettingsAccount extends Component {
                         buttonText="Sign in with Facebook"
                       />
                     </span>
-                  )
-                  }
+                  )}
                 </div>
               </>
-            ) : null
-            }
+            ) : null}
             {!hideAppleSignInButton && (
               <AppleSignIn signedIn={voterIsSignedInWithApple} closeSignInModal={this.localCloseSignInModal} />
             )}
@@ -486,8 +470,7 @@ export default class SettingsAccount extends Component {
                         </div>
                       )}
                     </div>
-                  ) : null
-                  }
+                  ) : null}
                   <div className="u-margin-top--sm">
                     {!hideFacebookSignInButton && voterIsSignedInFacebook && (
                     <span>
@@ -500,8 +483,7 @@ export default class SettingsAccount extends Component {
                   </div>
                 </div>
               </div>
-            ) : null
-            }
+            ) : null}
             {!hideVoterPhoneEntry && (
               <VoterPhoneVerificationEntry
                 closeSignInModal={this.localCloseSignInModal}
@@ -574,6 +556,15 @@ export default class SettingsAccount extends Component {
     );
   }
 }
+SettingsAccount.propTypes = {
+  externalUniqueId: PropTypes.string,
+  inModal: PropTypes.bool,
+  pleaseSignInTextOff: PropTypes.bool,
+  pleaseSignInTitle: PropTypes.string,
+  pleaseSignInSubTitle: PropTypes.string,
+  closeSignInModal: PropTypes.func,
+  focusedOnSingleInputToggle: PropTypes.func,
+};
 
 const Main = styled.div`
   margin-top: ${({ inModal }) => (inModal ? '-16px' : '0')};

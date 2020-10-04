@@ -21,11 +21,6 @@ import { formatDateToYearMonthDay, stringContains } from '../../utils/textFormat
 import DelayedLoad from '../Widgets/DelayedLoad';
 
 class SettingsSubscriptionPlan extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -139,7 +134,7 @@ class SettingsSubscriptionPlan extends Component {
       activePaidPlanBillingFrequencyDisplay = '';
     }
     const subscriptionJournalHistoryRaw = DonateStore.getSubscriptionJournalHistory();
-    const subscriptionJournalHistory = subscriptionJournalHistoryRaw.filter(item => item.record_enum !== 'SUBSCRIPTION_SETUP_AND_INITIAL');
+    const subscriptionJournalHistory = subscriptionJournalHistoryRaw.filter((item) => item.record_enum !== 'SUBSCRIPTION_SETUP_AND_INITIAL');
     const subscriptionJournalHistoryCount = subscriptionJournalHistory.length;
     const nextInvoice = DonateStore.getNextInvoice();
     const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
@@ -667,6 +662,10 @@ class SettingsSubscriptionPlan extends Component {
     );
   }
 }
+SettingsSubscriptionPlan.propTypes = {
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+};
 
 const styles = () => ({
   iconButton: {

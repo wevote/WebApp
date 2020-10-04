@@ -7,11 +7,6 @@ import { historyPush } from '../../utils/cordovaUtils';
 
 // This is related to components/VoterGuide/OrganizationVoterGuideCandidateList.jsx
 export default class CandidateList extends Component {
-  static propTypes = {
-    children: PropTypes.array.isRequired,
-    forMoreInformationSeeBallotpediaOff: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -80,9 +75,12 @@ export default class CandidateList extends Component {
               </DelayedLoad>
             );
           }
-        })
-        }
+        })}
       </article>
     );
   }
 }
+CandidateList.propTypes = {
+  children: PropTypes.array.isRequired,
+  forMoreInformationSeeBallotpediaOff: PropTypes.bool,
+};

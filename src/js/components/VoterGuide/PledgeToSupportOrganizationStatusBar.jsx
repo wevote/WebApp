@@ -5,10 +5,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 export default class PledgeToSupportOrganizationStatusBar extends Component {
-  static propTypes = {
-    organization: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -39,7 +35,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
   }
 
   onVoterGuideStoreChange () {
-    this.setState(prevState => (
+    this.setState((prevState) => (
       { voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(prevState.organization.organization_we_vote_id, VoterStore.electionId()) }
     ));
   }
@@ -107,9 +103,11 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
             <span> Share with friends so we can get to {numberOfSupportersGoal}.</span> :
             null */}
           </div>
-        ) : null
-        }
+        ) : null}
       </span>
     );
   }
 }
+PledgeToSupportOrganizationStatusBar.propTypes = {
+  organization: PropTypes.object.isRequired,
+};
