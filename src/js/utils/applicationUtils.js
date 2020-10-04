@@ -1,6 +1,6 @@
 import React from 'react';
 import { stringContains } from './textFormat';
-import { isCordova, isWebApp } from './cordovaUtils';
+import { isAppleSilicon, isCordova, isWebApp } from './cordovaUtils';
 
 
 // We have to do all this, because we allow urls like https://wevote.us/aclu where "aclu" is a twitter account.
@@ -201,10 +201,10 @@ export function getApplicationViewBooleans (pathname) {
       pathnameLowerCase.startsWith('/settings/tools') ||
       pathnameLowerCase.startsWith('/settings')) {
     // We want to SHOW the footer bar on the above path patterns
-    showFooterBar = true;
+    showFooterBar = !isAppleSilicon();
   } else {
     // We need to default to True because of URLs like: https://WeVote.US/orlandosentinel
-    showFooterBar = true;
+    showFooterBar = !isAppleSilicon();
   }
 
   let showShareButtonFooter = false;
@@ -215,7 +215,7 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase.startsWith('/office') ||
     pathnameLowerCase.startsWith('/ready') ||
     (voterGuideMode && !onFollowSubPage)) {
-    showShareButtonFooter = true;
+    showShareButtonFooter = !isAppleSilicon();
   }
 
   // console.log('applicationUtils, showFooterBar: ', showFooterBar, ', pathnameLowerCase:', pathnameLowerCase, ', showBackToSettingsMobile:', showBackToSettingsMobile);

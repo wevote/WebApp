@@ -503,6 +503,7 @@ class OrganizationStore extends ReduceStore {
           allCachedOrganizationsDict[organizationWeVoteId] = organization;
           // Now request fresh siteConfiguration data if the siteOwner was updated
           ({ hostname } = window.location);
+          hostname = hostname || 'silicon';
           // console.log('OrganizationStore organizationPhotosSave hostname:', hostname, ', organizationWeVoteId:', organizationWeVoteId);
           AppActions.siteConfigurationRetrieve(hostname);
           return {

@@ -3,17 +3,11 @@ import PropTypes from 'prop-types';
 import ActivityTidbitDrawer from '../Activity/ActivityTidbitDrawer';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
+import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import {
-  hasIPhoneNotch,
-  isCordova,
-  isIOS,
-  isWebApp,
-  isIPad,
-  historyPush,
-} from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isAppleSilicon, isCordova, isIOS, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToBallot from './HeaderBackToBallot';
 import HeaderBackTo from './HeaderBackTo';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
@@ -25,6 +19,7 @@ import { stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 import VoterPlanModal from '../Ready/VoterPlanModal';
 
+const appleSiliconDebug = false;
 
 export default class Header extends Component {
   static propTypes = {
@@ -57,6 +52,9 @@ export default class Header extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.setState({ windowWidth: window.innerWidth });
     window.addEventListener('resize', this.handleResize);
+    if (isAppleSilicon() && appleSiliconDebug) {
+      dumpCssFromId('header-container');
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -125,6 +123,7 @@ export default class Header extends Component {
     this.setState({ windowWidth: window.innerWidth });
   }
 
+
   render () {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 
@@ -141,15 +140,15 @@ export default class Header extends Component {
     let iPhoneSpacer = '';
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
-    } else if (isCordova() && isIOS() && !hasIPhoneNotch()) {
+    } else if (isCordova() && isIOS() && !hasIPhoneNotch() && !isAppleSilicon()) {
       iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '26px' : 'undefined'}` }} />;
     }
 
     // console.log('organizationModalBallotItemWeVoteId: ', this.state.organizationModalBallotItemWeVoteId);
 
-    let pageHeaderStyle = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
-    if (isIPad()) {
-      pageHeaderStyle = pageHeaderStyle.replace('page-header__container', 'page-header__container_ipad');
+    let pageHeaderClasses = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
+    if (isIPad() && !isAppleSilicon()) {
+      pageHeaderClasses = pageHeaderClasses.replace('page-header__container', 'page-header__container_ipad');
     }
     // console.log(`Header href: ${window.location.href}  cordovaStyle: `, cordovaTopHeaderTopMargin());
 
@@ -180,7 +179,7 @@ export default class Header extends Component {
         <div id="app-header">
           {iPhoneSpacer}
           <div className={headroomWrapper}>
-            <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
+            <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               {headerBarObject}
             </div>
           </div>
@@ -229,7 +228,7 @@ export default class Header extends Component {
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp() ? classNameHeadroom : ''} id="headroom-wrapper">
-            <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
+            <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
                 <span>
                   <span className="u-show-desktop-tablet">
@@ -309,7 +308,7 @@ export default class Header extends Component {
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
-            <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
+            <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToValues ?
                 <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} location={location} params={params} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
@@ -358,7 +357,7 @@ export default class Header extends Component {
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
-            <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
+            <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToFriends ?
                 <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} location={location} params={params} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
@@ -431,7 +430,7 @@ export default class Header extends Component {
           <div className={classNameHeadroom}
             id="headroom-wrapper"
           >
-            <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
+            <div className={pageHeaderClasses} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToBallotHeader ?
                 <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />

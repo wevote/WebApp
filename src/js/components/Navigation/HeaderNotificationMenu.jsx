@@ -6,7 +6,7 @@ import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
-import { historyPush, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
+import { historyPush, isAppleSilicon, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
@@ -33,7 +33,7 @@ class HeaderNotificationMenu extends Component {
     this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
     ActivityActions.activityNoticeListRetrieve();
     ActivityActions.activityListRetrieve();
-    setIconBadgeMessageCount(0);
+    if (!isAppleSilicon()) setIconBadgeMessageCount(0);
   }
 
   componentWillUnmount () {
@@ -48,7 +48,7 @@ class HeaderNotificationMenu extends Component {
       .map(activityNotice => activityNotice.activity_notice_id);
     // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
     const menuItemList = this.generateMenuItemList(allActivityNotices);
-    setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
+    if (!isAppleSilicon()) setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
     this.setState({
       activityNoticeIdListNotSeen,
       allActivityNoticesNotSeenCount: activityNoticeIdListNotSeen.length,
@@ -207,11 +207,17 @@ class HeaderNotificationMenu extends Component {
     });
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('HeaderNotificationMenu caught error: ', `${error} with info: `, info);
+  }
+
   render () {
     renderLog('HeaderNotificationMenu');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('HeaderNotificationMenu render');
     const { classes } = this.props;
     const { allActivityNoticesNotSeenCount, anchorEl, menuItemList, menuOpen } = this.state;
+
     return (
       <HeaderNotificationMenuWrapper>
         <IconButton

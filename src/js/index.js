@@ -1,7 +1,7 @@
 import webAppConfig from './config';
 import startReactApp from './startReactApp';
 import { numberOfNeedlesFoundInString } from './utils/searchFunctions';
-import { isWebApp, isIPad, getCordovaScreenHeight } from './utils/cordovaUtils';
+import { isWebApp, isIPad, getCordovaScreenHeight, isAppleSilicon } from './utils/cordovaUtils';
 
 // If in Cordova, need this function before cordovaUtils might be loaded
 function localIsCordova () {
@@ -72,6 +72,7 @@ if (localIsCordova()) {
   document.addEventListener('deviceready', (id) => {
     window.isDeviceReady = true;
     console.log('Received Cordova Event: ', id.type);
+    isAppleSilicon();  // initialize the global boolean -- before it is needed
     const { splashscreen } = navigator;
     splashscreen.hide();
     const { plugins: { screensize } } = window;
