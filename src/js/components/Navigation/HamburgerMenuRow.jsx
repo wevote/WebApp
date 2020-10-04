@@ -7,17 +7,6 @@ import { renderLog } from '../../utils/logging';
 import SettingsAccountLevelChip from '../Settings/SettingsAccountLevelChip';
 
 class HamburgerMenuRow extends Component {
-  static propTypes = {
-    fullIcon: PropTypes.object,
-    icon: PropTypes.string,
-    iconStyle: PropTypes.object,
-    indented: PropTypes.bool,
-    linkText: PropTypes.string.isRequired,
-    onClickAction: PropTypes.func,
-    showProChip: PropTypes.bool,
-    to: PropTypes.string.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -39,8 +28,7 @@ class HamburgerMenuRow extends Component {
           <td className="hamburger-menu__td-1">
             <Link onClick={this.onClickAction} to={this.props.to}>
               {this.props.fullIcon ? this.props.fullIcon :
-              <span className={this.props.icon} style={this.props.iconStyle} />
-              }
+              <span className={this.props.icon} style={this.props.iconStyle} />}
             </Link>
           </td>
           <td className="hamburger-menu__td-2">
@@ -59,8 +47,7 @@ class HamburgerMenuRow extends Component {
           <td className="hamburger-menu__td-0">
             <Link onClick={this.onClickAction} to={this.props.to}>
               {this.props.fullIcon ? this.props.fullIcon :
-              <span className={this.props.icon} style={this.props.iconStyle} />
-              }
+              <span className={this.props.icon} style={this.props.iconStyle} />}
             </Link>
           </td>
           <td className="hamburger-menu__td-1" colSpan={2}>
@@ -76,6 +63,16 @@ class HamburgerMenuRow extends Component {
     }
   }
 }
+HamburgerMenuRow.propTypes = {
+  fullIcon: PropTypes.object,
+  icon: PropTypes.string,
+  iconStyle: PropTypes.object,
+  indented: PropTypes.bool,
+  linkText: PropTypes.string.isRequired,
+  onClickAction: PropTypes.func,
+  showProChip: PropTypes.bool,
+  to: PropTypes.string.isRequired,
+};
 
 const styles = () => ({
   indicator: {

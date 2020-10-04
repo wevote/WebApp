@@ -9,17 +9,6 @@ import ReadMore from './ReadMore';
 import { renderLog } from '../../utils/logging';
 
 class EditAddressInPlace extends Component {
-  static propTypes = {
-    address: PropTypes.object.isRequired,
-    ballotBaseUrl: PropTypes.string,
-    classes: PropTypes.object,
-    defaultIsEditingAddress: PropTypes.bool,
-    noAddressMessage: PropTypes.string,
-    pathname: PropTypes.string,
-    toggleEditingAddress: PropTypes.func,
-    toggleFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props, context) {
     super(props, context);
     this.state = {
@@ -116,6 +105,16 @@ class EditAddressInPlace extends Component {
     }
   }
 }
+EditAddressInPlace.propTypes = {
+  address: PropTypes.object.isRequired,
+  ballotBaseUrl: PropTypes.string,
+  classes: PropTypes.object,
+  defaultIsEditingAddress: PropTypes.bool,
+  noAddressMessage: PropTypes.string,
+  pathname: PropTypes.string,
+  toggleEditingAddress: PropTypes.func,
+  toggleFunction: PropTypes.func.isRequired,
+};
 
 const styles = {
   settingsIcon: {

@@ -12,12 +12,6 @@ import OrganizationStore from '../../stores/OrganizationStore';
 
 // OrganizationDisplayForList is used to display Organizations (as opposed to Voter Guides)
 export default class OrganizationDisplayForList extends Component {
-  static propTypes = {
-    organizationWeVoteId: PropTypes.string,
-    children: PropTypes.array, // Typically the FollowToggle
-    position: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -108,8 +102,7 @@ export default class OrganizationDisplayForList extends Component {
                 textToDisplay={twitterDescriptionMinusName}
                 numberOfLines={numberOfLines}
               />
-            ) : null
-            }
+            ) : null}
             { positionDescription }
           </div>
           <div className="card-child__additional">
@@ -130,3 +123,8 @@ export default class OrganizationDisplayForList extends Component {
     );
   }
 }
+OrganizationDisplayForList.propTypes = {
+  organizationWeVoteId: PropTypes.string,
+  children: PropTypes.array, // Typically the FollowToggle
+  position: PropTypes.object,
+};

@@ -23,23 +23,6 @@ const MenuProps = {
 
 
 class OpinionsAndBallotItemsFilter extends Component {
-  static propTypes = {
-    // Passed in through FilterBase
-    allItems: PropTypes.array,
-    classes: PropTypes.object,
-    changeTrigger: PropTypes.string,
-    forceChangeTrigger: PropTypes.func,
-    onFilteredItemsChange: PropTypes.func,
-    onSelectSortByFilter: PropTypes.func,
-    onToggleFilter: PropTypes.func,
-    selectedFilters: PropTypes.array,
-    showAllFilters: PropTypes.bool,
-    updateSelectedFilters: PropTypes.func,
-    // Passed in directly
-    filtersPassedInOnce: PropTypes.array,
-    googleCivicElectionId: PropTypes.number,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -319,7 +302,7 @@ class OpinionsAndBallotItemsFilter extends Component {
   removeTheseFilters = (filterListToRemove) => {
     // Remove the items in filterList that are currently in selectedFilters
     // console.log('OpinionsAndBallotItemsFilter, removeTheseFilters filterListToRemove:', filterListToRemove);
-    const newFilteredItems = this.props.selectedFilters.filter(oneItem => !filterListToRemove.includes(oneItem));
+    const newFilteredItems = this.props.selectedFilters.filter((oneItem) => !filterListToRemove.includes(oneItem));
     this.props.updateSelectedFilters(newFilteredItems);
   };
 
@@ -438,8 +421,24 @@ class OpinionsAndBallotItemsFilter extends Component {
     );
   }
 }
+OpinionsAndBallotItemsFilter.propTypes = {
+  // Passed in through FilterBase
+  allItems: PropTypes.array,
+  classes: PropTypes.object,
+  changeTrigger: PropTypes.string,
+  forceChangeTrigger: PropTypes.func,
+  onFilteredItemsChange: PropTypes.func,
+  onSelectSortByFilter: PropTypes.func,
+  onToggleFilter: PropTypes.func,
+  selectedFilters: PropTypes.array,
+  showAllFilters: PropTypes.bool,
+  updateSelectedFilters: PropTypes.func,
+  // Passed in directly
+  filtersPassedInOnce: PropTypes.array,
+  googleCivicElectionId: PropTypes.number,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   formControlLabel: {
     [theme.breakpoints.down('lg')]: {
       fontSize: 14,

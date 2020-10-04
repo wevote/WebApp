@@ -12,11 +12,6 @@ import StickyPopover from '../Ballot/StickyPopover';
 
 
 class ActivityTidbitReactionsSummary extends Component {
-  static propTypes = {
-    activityTidbitWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -81,7 +76,7 @@ class ActivityTidbitReactionsSummary extends Component {
           </PopoverTitleText>
         </PopoverHeader>
         <PopoverBody>
-          {reactionLikesList.map(reactionLike => (
+          {reactionLikesList.map((reactionLike) => (
             <div key={`voterNameLiked-${reactionLike.voter_we_vote_id}-${activityTidbitWeVoteId}`}>{reactionLike.voter_display_name}</div>
           ))}
         </PopoverBody>
@@ -138,6 +133,10 @@ class ActivityTidbitReactionsSummary extends Component {
     );
   }
 }
+ActivityTidbitReactionsSummary.propTypes = {
+  activityTidbitWeVoteId: PropTypes.string.isRequired,
+  classes: PropTypes.object,
+};
 
 const styles = () => ({
   likeIcon: {

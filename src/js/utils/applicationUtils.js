@@ -273,10 +273,10 @@ export function setZenDeskHelpVisibility (pathname) {
     // console.log('setZenDeskHelpVisibility true, pathname:', pathname, ', showFooterBar:', showFooterBar);
     if ((showFooterBar ||
       ['/ballot', '/ballot/vote', '/friends', '/more/network', '/office', '/opinions', '/settings', '/value'].some(
-        match => pathname.toLowerCase().startsWith(match),
+        (match) => pathname.toLowerCase().startsWith(match),
       )) &&
       !['/wevoteintro', '/how', '/candidate-for-extension'].some(
-        match => pathname.toLowerCase().startsWith(match),
+        (match) => pathname.toLowerCase().startsWith(match),
       )
     ) { // '/values'
       try {

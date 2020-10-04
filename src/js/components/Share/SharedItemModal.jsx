@@ -30,13 +30,6 @@ import VoterStore from '../../stores/VoterStore';
 import VoterActions from '../../actions/VoterActions';
 
 class SharedItemModal extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    show: PropTypes.bool,
-    closeSharedItemModal: PropTypes.func,
-    sharedItemCode: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -577,8 +570,14 @@ class SharedItemModal extends Component {
     );
   }
 }
+SharedItemModal.propTypes = {
+  classes: PropTypes.object,
+  show: PropTypes.bool,
+  closeSharedItemModal: PropTypes.func,
+  sharedItemCode: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     // overflow: 'scroll',

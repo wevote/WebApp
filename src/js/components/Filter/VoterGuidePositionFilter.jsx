@@ -13,17 +13,6 @@ import { convertToInteger } from '../../utils/textFormat';
 
 
 class VoterGuidePositionFilter extends Component {
-  static propTypes = {
-    allItems: PropTypes.array,
-    onFilteredItemsChange: PropTypes.func,
-    onSelectSortByFilter: PropTypes.func,
-    onToggleFilter: PropTypes.func,
-    onToggleMultipleFilters: PropTypes.func,
-    selectedFilters: PropTypes.array,
-    showAllFilters: PropTypes.bool,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -98,7 +87,7 @@ class VoterGuidePositionFilter extends Component {
 
   getFilteredItemsByLinkedIssue = (issueFilter) => {
     const { allItems } = this.props;
-    return allItems.filter(item => (item && item.issue_we_vote_ids_linked === issueFilter.issue_we_vote_id));
+    return allItems.filter((item) => (item && item.issue_we_vote_ids_linked === issueFilter.issue_we_vote_id));
   };
 
   orderByCurrentFriendsFirst = (firstGuide, secondGuide) => {
@@ -146,18 +135,18 @@ class VoterGuidePositionFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'federalRaces':
-            filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'Federal'))];
+            filteredItems = [...filteredItems, ...allItems.filter((item) => (item && item.race_office_level === 'Federal'))];
             federalRacesFilterUsed = true;
             break;
           case 'stateRaces':
-            filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'State'))];
+            filteredItems = [...filteredItems, ...allItems.filter((item) => (item && item.race_office_level === 'State'))];
             stateRacesFilterUsed = true;
             break;
           case 'measureRaces':
-            filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.kind_of_ballot_item === 'MEASURE'))];
+            filteredItems = [...filteredItems, ...allItems.filter((item) => (item && item.kind_of_ballot_item === 'MEASURE'))];
             break;
           case 'localRaces':
-            filteredItems = [...filteredItems, ...allItems.filter(item => (item && item.race_office_level === 'Local'))];
+            filteredItems = [...filteredItems, ...allItems.filter((item) => (item && item.race_office_level === 'Local'))];
             localRacesFilterUsed = true;
             break;
           default:
@@ -166,7 +155,7 @@ class VoterGuidePositionFilter extends Component {
       });
       // Now add in candidate items that might have been left out from bad data
       if (federalRacesFilterUsed && stateRacesFilterUsed && localRacesFilterUsed) {
-        filteredItems = [...filteredItems, ...allItems.filter(item => (item && (!item.race_office_level && item.kind_of_ballot_item === 'CANDIDATE')))];
+        filteredItems = [...filteredItems, ...allItems.filter((item) => (item && (!item.race_office_level && item.kind_of_ballot_item === 'CANDIDATE')))];
       }
     } else {
       filteredItems = allItems;
@@ -194,13 +183,13 @@ class VoterGuidePositionFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'upcomingOnly':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.position_ultimate_election_date > positionUltimateElectionDateCutOffInteger))];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => (item && item.position_ultimate_election_date > positionUltimateElectionDateCutOffInteger))];
             break;
           case 'thisYear':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.position_year === thisYearInteger))];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => (item && item.position_year === thisYearInteger))];
             break;
           case 'priorYears':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.position_year < thisYearInteger))];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => (item && item.position_year < thisYearInteger))];
             break;
           default:
             break;
@@ -227,13 +216,13 @@ class VoterGuidePositionFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'showSupportFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.is_support_or_positive_rating))];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => (item && item.is_support_or_positive_rating))];
             break;
           case 'showOpposeFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.is_oppose_or_negative_rating))];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => (item && item.is_oppose_or_negative_rating))];
             break;
           case 'showInformationOnlyFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.is_information_only))];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => (item && item.is_information_only))];
             break;
           default:
             break;
@@ -255,7 +244,7 @@ class VoterGuidePositionFilter extends Component {
       const filterItemsSnapshot = filteredItems;
       filteredItems = [];
       stateCodesToShow.forEach((stateCode) => {
-        filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => (item && item.state_code.toLowerCase() === stateCode.toLowerCase()))];
+        filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => (item && item.state_code.toLowerCase() === stateCode.toLowerCase()))];
       });
     }
     // Comment or no comment?
@@ -275,7 +264,7 @@ class VoterGuidePositionFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'showCommentFilter':
-            filteredItems = [...filteredItems, ...filterItemsCommentSnapshot.filter(item => (item && item.statement_text && item.statement_text.length))];
+            filteredItems = [...filteredItems, ...filterItemsCommentSnapshot.filter((item) => (item && item.statement_text && item.statement_text.length))];
             break;
           default:
             break;
@@ -301,7 +290,7 @@ class VoterGuidePositionFilter extends Component {
           break;
       }
     });
-    return uniqBy(filteredItems, x => x.position_we_vote_id);
+    return uniqBy(filteredItems, (x) => x.position_we_vote_id);
   }
 
   toggleFilter = (name) => {
@@ -509,8 +498,18 @@ class VoterGuidePositionFilter extends Component {
     );
   }
 }
+VoterGuidePositionFilter.propTypes = {
+  allItems: PropTypes.array,
+  onFilteredItemsChange: PropTypes.func,
+  onSelectSortByFilter: PropTypes.func,
+  onToggleFilter: PropTypes.func,
+  onToggleMultipleFilters: PropTypes.func,
+  selectedFilters: PropTypes.array,
+  showAllFilters: PropTypes.bool,
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   formControlLabel: {
     [theme.breakpoints.down('lg')]: {
       fontSize: 14,

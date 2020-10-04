@@ -21,15 +21,6 @@ class Pricing extends Component {
     return {};
   }
 
-  static propTypes = {
-    classes: PropTypes.object,
-    initialPricingChoice: PropTypes.string,
-    initialPricingPlan: PropTypes.string,
-    modalDisplayMode: PropTypes.bool,
-    params: PropTypes.object,
-    pricingPlanChosenFunction: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
 
@@ -545,7 +536,7 @@ class Pricing extends Component {
                     pricingCardFeatures={currentPricingDict.Free.pricingCardFeatures}
                   />
                 ) : (
-                  <React.Fragment>
+                  <>
                     {selectedPricingPlanIndex === 1 ? (
                       <PricingCard
                         featurePackage="PROFESSIONAL"
@@ -577,7 +568,7 @@ class Pricing extends Component {
                         pricingCardFeatures={currentPricingDict.Enterprise.pricingCardFeatures}
                       />
                     )}
-                  </React.Fragment>
+                  </>
                 )}
               </Row>
             </div>
@@ -636,8 +627,16 @@ class Pricing extends Component {
     );
   }
 }
+Pricing.propTypes = {
+  classes: PropTypes.object,
+  initialPricingChoice: PropTypes.string,
+  initialPricingPlan: PropTypes.string,
+  modalDisplayMode: PropTypes.bool,
+  params: PropTypes.object,
+  pricingPlanChosenFunction: PropTypes.func,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,

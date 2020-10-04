@@ -10,10 +10,6 @@ import VoterStore from '../../stores/VoterStore';
 import DelayedLoad from '../Widgets/DelayedLoad';
 
 export default class SettingsPromotedOrganizations extends Component {
-  static propTypes = {
-    samplePropName: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -109,6 +105,9 @@ export default class SettingsPromotedOrganizations extends Component {
     );
   }
 }
+SettingsPromotedOrganizations.propTypes = {
+  samplePropName: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+};
 
 const Wrapper = styled.div`
 `;

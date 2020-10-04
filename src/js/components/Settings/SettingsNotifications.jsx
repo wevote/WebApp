@@ -21,11 +21,6 @@ const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES ===
 
 
 class SettingsNotifications extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -513,6 +508,10 @@ class SettingsNotifications extends Component {
     );
   }
 }
+SettingsNotifications.propTypes = {
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+};
 
 const styles = () => ({
   emailIconRoot: {

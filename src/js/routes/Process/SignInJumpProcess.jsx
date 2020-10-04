@@ -10,10 +10,6 @@ import VoterStore from '../../stores/VoterStore';
 
 // This component allows us to jump from the native apps to WebApp, and preserve the sign in state
 export default class SignInJumpProcess extends Component {
-  static propTypes = {
-    location: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -143,3 +139,6 @@ export default class SignInJumpProcess extends Component {
     }
   }
 }
+SignInJumpProcess.propTypes = {
+  location: PropTypes.object.isRequired,
+};

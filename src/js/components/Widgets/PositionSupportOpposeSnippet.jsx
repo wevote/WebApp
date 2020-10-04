@@ -10,19 +10,6 @@ import thumbsUpColorIcon from '../../../img/global/svg-icons/thumbs-up-color-ico
 import thumbsDownColorIcon from '../../../img/global/svg-icons/thumbs-down-color-icon.svg';
 
 export default class PositionSupportOpposeSnippet extends Component {
-  static propTypes = {
-    ballot_item_display_name: PropTypes.string,
-    is_on_ballot_item_page: PropTypes.bool,
-    is_looking_at_self: PropTypes.bool,
-    is_support: PropTypes.bool.isRequired,
-    is_oppose: PropTypes.bool.isRequired,
-    more_info_url: PropTypes.string,
-    speaker_display_name: PropTypes.string,
-    statement_text: PropTypes.string,
-    stance_display_off: PropTypes.bool,
-    comment_text_off: PropTypes.bool,
-  };
-
   render () {
     renderLog('PositionSupportOpposeSnippet');  // Set LOG_RENDER_EVENTS to log all renders
     let stanceIconSrc;
@@ -147,8 +134,7 @@ export default class PositionSupportOpposeSnippet extends Component {
                         )}
                       />
                     </div>
-                  ) : null
-                  }
+                  ) : null}
                 </span>
               )}
             </div>
@@ -157,3 +143,15 @@ export default class PositionSupportOpposeSnippet extends Component {
     );
   }
 }
+PositionSupportOpposeSnippet.propTypes = {
+  ballot_item_display_name: PropTypes.string,
+  is_on_ballot_item_page: PropTypes.bool,
+  is_looking_at_self: PropTypes.bool,
+  is_support: PropTypes.bool.isRequired,
+  is_oppose: PropTypes.bool.isRequired,
+  more_info_url: PropTypes.string,
+  speaker_display_name: PropTypes.string,
+  statement_text: PropTypes.string,
+  stance_display_off: PropTypes.bool,
+  comment_text_off: PropTypes.bool,
+};

@@ -10,10 +10,6 @@ import DelayedLoad from '../../components/Widgets/DelayedLoad';
 
 
 class ExtensionSignIn extends Component {
-  static propTypes = {
-    location: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -99,6 +95,10 @@ class ExtensionSignIn extends Component {
     }
   }
 }
+ExtensionSignIn.propTypes = {
+  location: PropTypes.object,
+};
+
 
 const SignInOuterWrapper = styled.div`
   display: flex;

@@ -7,13 +7,6 @@ import ImageHandler from '../ImageHandler';
 
 
 class Testimonial extends React.Component {
-  static propTypes = {
-    testimonialAuthor: PropTypes.string,
-    testimonial: PropTypes.string,
-    imageUrl: PropTypes.string,
-    textStyle: PropTypes.object,
-  };
-
   shouldComponentUpdate (nextProps) {
     // This lifecycle method tells the component to NOT render if not needed
     if (this.props.testimonialAuthor !== nextProps.testimonialAuthor) {
@@ -59,6 +52,12 @@ class Testimonial extends React.Component {
     );
   }
 }
+Testimonial.propTypes = {
+  testimonialAuthor: PropTypes.string,
+  testimonial: PropTypes.string,
+  imageUrl: PropTypes.string,
+  textStyle: PropTypes.object,
+};
 
 const TestimonialContainer = styled.div`
   display: block;

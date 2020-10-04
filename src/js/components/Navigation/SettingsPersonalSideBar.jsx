@@ -14,13 +14,8 @@ const NONPROFIT_501C4 = 'C4';
 const NEWS_ORGANIZATION = 'NW';
 const POLITICAL_ACTION_COMMITTEE = 'P';
 const PUBLIC_FIGURE = 'PF';
-export default class SettingsPersonalSideBar extends Component {
-  static propTypes = {
-    editMode: PropTypes.string,
-    isSignedIn: PropTypes.bool,
-    organizationType: PropTypes.string.isRequired,
-  };
 
+export default class SettingsPersonalSideBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -289,3 +284,8 @@ export default class SettingsPersonalSideBar extends Component {
     );
   }
 }
+SettingsPersonalSideBar.propTypes = {
+  editMode: PropTypes.string,
+  isSignedIn: PropTypes.bool,
+  organizationType: PropTypes.string.isRequired,
+};

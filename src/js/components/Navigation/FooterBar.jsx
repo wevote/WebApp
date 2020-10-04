@@ -20,11 +20,6 @@ function isFriendsTabSelected () {
 }
 
 class FooterBar extends React.Component {
-  static propTypes = {
-    // classes: PropTypes.object,
-    pathname: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -125,7 +120,7 @@ class FooterBar extends React.Component {
     return -1;
   };
 
-  handleNavigation = to => historyPush(to);
+  handleNavigation = (to) => historyPush(to);
 
   render () {
     renderLog('FooterBar');  // Set LOG_RENDER_EVENTS to log all renders
@@ -190,6 +185,10 @@ class FooterBar extends React.Component {
     );
   }
 }
+FooterBar.propTypes = {
+  // classes: PropTypes.object,
+  pathname: PropTypes.string,
+};
 
 const styles = () => ({
   anchorOriginTopRightRectangle: {

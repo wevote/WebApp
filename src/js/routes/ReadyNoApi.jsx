@@ -31,8 +31,6 @@ import { renderLog } from '../utils/logging';
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class ReadyNoApi extends Component {
-  static propTypes = {};
-
   constructor (props) {
     super(props);
     this.state = {
@@ -210,7 +208,7 @@ class ReadyNoApi extends Component {
   }
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 150,
     height: 150,

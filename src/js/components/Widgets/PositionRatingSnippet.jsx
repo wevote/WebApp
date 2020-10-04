@@ -7,13 +7,6 @@ import downArrowColorIcon from '../../../img/global/icons/down-arrow-color-icon.
 import mixedRatingIcon from '../../../img/global/icons/mixed-rating-icon.svg';
 
 export default class PositionRatingSnippet extends Component {
-  static propTypes = {
-    ballot_item_display_name: PropTypes.string,
-    vote_smart_rating: PropTypes.string.isRequired,
-    vote_smart_time_span: PropTypes.string.isRequired,
-    show_rating_description: PropTypes.func,
-  };
-
   render () {
     renderLog('PositionRatingSnippet');  // Set LOG_RENDER_EVENTS to log all renders
     const displayName = this.props.ballot_item_display_name;
@@ -63,11 +56,16 @@ export default class PositionRatingSnippet extends Component {
                 in
                 {ratingTimeSpan}
               </span>
-            ) : null
-            }
+            ) : null}
           </span>
         </div>
       </div>
     );
   }
 }
+PositionRatingSnippet.propTypes = {
+  ballot_item_display_name: PropTypes.string,
+  vote_smart_rating: PropTypes.string.isRequired,
+  vote_smart_time_span: PropTypes.string.isRequired,
+  show_rating_description: PropTypes.func,
+};

@@ -16,11 +16,6 @@ import ValuesList from './ValuesList';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 class VoterGuidesUnderOneValue extends Component {
-  static propTypes = {
-    params: PropTypes.object.isRequired,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -166,8 +161,12 @@ class VoterGuidesUnderOneValue extends Component {
     );
   }
 }
+VoterGuidesUnderOneValue.propTypes = {
+  params: PropTypes.object.isRequired,
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 100,
     height: 100,

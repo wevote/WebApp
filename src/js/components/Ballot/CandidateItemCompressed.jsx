@@ -13,11 +13,6 @@ import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 export default class CandidateItemCompressed extends Component {
-  static propTypes = {
-    candidateWeVoteId: PropTypes.string.isRequired,
-    organization: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -157,3 +152,7 @@ export default class CandidateItemCompressed extends Component {
     );
   }
 }
+CandidateItemCompressed.propTypes = {
+  candidateWeVoteId: PropTypes.string.isRequired,
+  organization: PropTypes.object,
+};

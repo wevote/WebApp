@@ -19,10 +19,6 @@ import ShowMoreButtons from './ShowMoreButtons';
 // import VoterConstants from '../../constants/VoterConstants';
 
 class ReadyTaskBallotNoApi extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -708,8 +704,11 @@ class ReadyTaskBallotNoApi extends React.Component {
     );
   }
 }
+ReadyTaskBallotNoApi.propTypes = {
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   arrowRoot: {
     fontSize: 14,
     marginBottom: 3,

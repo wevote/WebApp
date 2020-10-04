@@ -13,9 +13,6 @@ import VoterStore from '../../stores/VoterStore';
 import VoterActions from '../../actions/VoterActions';
 
 export default class TwitterSignInProcess extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {

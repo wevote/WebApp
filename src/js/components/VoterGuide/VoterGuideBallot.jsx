@@ -38,15 +38,6 @@ import webAppConfig from '../../config';
 // We can delete after 2020-08-31
 // Related to WebApp/src/js/routes/Ballot/Ballot.jsx
 class VoterGuideBallot extends Component {
-  static propTypes = {
-    activeRoute: PropTypes.string,
-    classes: PropTypes.object,
-    location: PropTypes.object,
-    organizationWeVoteId: PropTypes.string.isRequired,
-    params: PropTypes.object,
-    pathname: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -773,7 +764,7 @@ class VoterGuideBallot extends Component {
                 <VoterGuideBallotWrapper>
                   {ballotWithOrganizationEndorsementsLength > 0 ? (
                     <div className="BallotList">
-                      {ballotWithOrganizationEndorsements.map(item => (
+                      {ballotWithOrganizationEndorsements.map((item) => (
                         <VoterGuideBallotItemCompressed
                           key={item.we_vote_id}
                           organization={organization}
@@ -805,8 +796,7 @@ class VoterGuideBallot extends Component {
                         */}
                       </EmptyBallotMessageContainer>
                     </Card>
-                  )
-                }
+                  )}
                 </VoterGuideBallotWrapper>
                 <ExtraActionsWrapper>
                   <EndorsementCard
@@ -879,8 +869,16 @@ class VoterGuideBallot extends Component {
     );
   }
 }
+VoterGuideBallot.propTypes = {
+  activeRoute: PropTypes.string,
+  classes: PropTypes.object,
+  location: PropTypes.object,
+  organizationWeVoteId: PropTypes.string.isRequired,
+  params: PropTypes.object,
+  pathname: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   badge: {
     top: 13,
     minWidth: 16,

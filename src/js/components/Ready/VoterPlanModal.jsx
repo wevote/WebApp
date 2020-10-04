@@ -19,13 +19,6 @@ import webAppConfig from '../../config';
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class VoterPlanModal extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    pathname: PropTypes.string,
-    show: PropTypes.bool,
-    toggleFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -563,7 +556,14 @@ class VoterPlanModal extends Component {
     );
   }
 }
-const styles = theme => ({
+VoterPlanModal.propTypes = {
+  classes: PropTypes.object,
+  pathname: PropTypes.string,
+  show: PropTypes.bool,
+  toggleFunction: PropTypes.func.isRequired,
+};
+
+const styles = (theme) => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     '@media (min-width: 576px)': {
@@ -700,7 +700,7 @@ const ModalTitleArea = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
+  padding: ${(props) => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
   z-index: 999;
   box-shadow: 0px 0px 25px 0px #ddd;
   @media (min-width: 769px) {

@@ -32,12 +32,6 @@ class DeviceDialog extends Component {
     document.cookie = `location_guess_closed=; expires=${d}; path=/;`;
   }
 
-  static propTypes = {
-    classes: PropTypes.object,
-    show: PropTypes.bool,
-    visibilityOffFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.handleClose = this.handleClose.bind(this);
@@ -121,8 +115,7 @@ class DeviceDialog extends Component {
                   </span>
                 </div>
               </div>
-            )
-          }
+            )}
           <div className="card-child__fine_print" style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>
             Your internal We Vote id: &nbsp;
             {VoterStore.getVoter().we_vote_id}
@@ -137,8 +130,13 @@ class DeviceDialog extends Component {
     );
   }
 }
+DeviceDialog.propTypes = {
+  classes: PropTypes.object,
+  show: PropTypes.bool,
+  visibilityOffFunction: PropTypes.func.isRequired,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     [theme.breakpoints.down('sm')]: {

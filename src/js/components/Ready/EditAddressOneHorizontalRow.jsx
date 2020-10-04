@@ -14,11 +14,6 @@ import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 
 class EditAddressOneHorizontalRow extends Component {
-  static propTypes = {
-    saveUrl: PropTypes.string,
-    classes: PropTypes.object,
-  };
-
   constructor (props, context) {
     super(props, context);
     this.state = {
@@ -287,6 +282,10 @@ class EditAddressOneHorizontalRow extends Component {
     );
   }
 }
+EditAddressOneHorizontalRow.propTypes = {
+  saveUrl: PropTypes.string,
+  classes: PropTypes.object,
+};
 
 const AddressExplanation = styled.div`
   color: #999;
@@ -326,7 +325,7 @@ const InnerWrapper = styled.div`
   justify-content: center;
 `;
 
-const styles = theme => ({
+const styles = (theme) => ({
   paperInputForm: {
     padding: '2px .7rem',
     display: 'flex',

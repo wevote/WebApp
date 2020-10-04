@@ -22,11 +22,6 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 
 class VerifyThisIsMe extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-    twitter_handle: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -324,8 +319,7 @@ class VerifyThisIsMe extends Component {
                 &quot;
               </span>
             ) :
-              <span />
-            }
+              <span />}
             .
           </div>
           <br />
@@ -334,6 +328,10 @@ class VerifyThisIsMe extends Component {
     }
   }
 }
+VerifyThisIsMe.propTypes = {
+  params: PropTypes.object,
+  twitter_handle: PropTypes.string,
+};
 
 const BackToVoterGuideWrapper = styled.div`
   text-align: left;

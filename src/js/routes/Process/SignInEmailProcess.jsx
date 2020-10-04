@@ -10,11 +10,6 @@ import VoterStore from '../../stores/VoterStore';
 import WouldYouLikeToMergeAccountsOld from '../../components/WouldYouLikeToMergeAccountsOld';
 
 export default class SignInEmailProcess extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-    email_secret_key: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -198,3 +193,7 @@ export default class SignInEmailProcess extends Component {
     return LoadingWheel;
   }
 }
+SignInEmailProcess.propTypes = {
+  params: PropTypes.object,
+  email_secret_key: PropTypes.string,
+};

@@ -41,13 +41,6 @@ class HeaderBar extends Component {
     historyPush(getStartedNow);
   }
 
-  static propTypes = {
-    location: PropTypes.object,
-    voter: PropTypes.object,
-    pathname: PropTypes.string,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -308,7 +301,7 @@ class HeaderBar extends Component {
     return false;
   };
 
-  handleNavigation = to => historyPush(to);
+  handleNavigation = (to) => historyPush(to);
 
   closeAdviserIntroModal = () => {
     AppActions.setShowAdviserIntroModal(false);
@@ -699,8 +692,14 @@ class HeaderBar extends Component {
     );
   }
 }
+HeaderBar.propTypes = {
+  location: PropTypes.object,
+  voter: PropTypes.object,
+  pathname: PropTypes.string,
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   headerBadge: {
     right: -15,
     top: 9,

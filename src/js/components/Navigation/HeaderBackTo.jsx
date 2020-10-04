@@ -21,14 +21,6 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 
 class HeaderBackTo extends Component {
-  static propTypes = {
-    backToLink: PropTypes.string,
-    backToLinkText: PropTypes.string,
-    classes: PropTypes.object,
-    location: PropTypes.object,
-    // voterWeVoteId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -167,7 +159,7 @@ class HeaderBackTo extends Component {
     });
   }
 
-  handleNavigation = to => historyPush(to);
+  handleNavigation = (to) => historyPush(to);
 
   transitionToYourVoterGuide () {
     // Positions for this organization, for this voter / election
@@ -278,8 +270,7 @@ class HeaderBackTo extends Component {
                       <AccountCircle />
                     </IconButton>
                   </span>
-                )
-                }
+                )}
                 {profilePopUpOpen && (
                 <HeaderBarProfilePopUp
                   hideProfilePopUp={this.hideProfilePopUp}
@@ -319,8 +310,15 @@ class HeaderBackTo extends Component {
     );
   }
 }
+HeaderBackTo.propTypes = {
+  backToLink: PropTypes.string,
+  backToLinkText: PropTypes.string,
+  classes: PropTypes.object,
+  location: PropTypes.object,
+  // voterWeVoteId: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   headerButtonRoot: {
     paddingTop: 2,
     paddingBottom: 2,

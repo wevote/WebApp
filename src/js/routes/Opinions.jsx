@@ -8,9 +8,6 @@ import GuideList from '../components/VoterGuide/GuideList';
 
 
 export default class Opinions extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -72,8 +69,7 @@ export default class Opinions extends Component {
           <SearchGuidesToFollowBox />
           { ballotHasGuides ?
             <p /> :
-            <p>There are no organizations with opinions on your ballot. Here are some popular organizations:</p>
-          }
+            <p>There are no organizations with opinions on your ballot. Here are some popular organizations:</p>}
           <div className="card">
             <Suspense fallback={<span>Loading...</span>}>
               <GuideList incomingVoterGuideList={voterGuidesToFollowAll} />

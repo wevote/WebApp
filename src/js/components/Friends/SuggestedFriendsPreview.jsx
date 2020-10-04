@@ -10,11 +10,6 @@ import { renderLog } from '../../utils/logging';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 
 export default class SuggestedFriendsPreview extends Component {
-  static propTypes = {
-    friendsToShowMaxIncoming: PropTypes.number,
-    inSideColumn: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -90,6 +85,10 @@ export default class SuggestedFriendsPreview extends Component {
     ));
   }
 }
+SuggestedFriendsPreview.propTypes = {
+  friendsToShowMaxIncoming: PropTypes.number,
+  inSideColumn: PropTypes.bool,
+};
 
 const SectionDescription = styled.div`
   font-weight: 200;

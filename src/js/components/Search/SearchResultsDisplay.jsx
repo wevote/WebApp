@@ -6,16 +6,6 @@ import { capitalizeString } from '../../utils/textFormat';
 import ImageHandler from '../ImageHandler';
 
 export default class SearchResultsDisplay extends Component {
-  static propTypes = {
-    searchResults: PropTypes.array.isRequired,
-    selectedIndex: PropTypes.number,
-    textFromSearchField: PropTypes.string.isRequired,
-    onSearchElectionResultClick: PropTypes.func,
-    onSearchResultMouseOver: PropTypes.func,
-    onSearchResultClick: PropTypes.func,
-    links: PropTypes.array,
-  };
-
   searchHasContent () {
     if (this.props.searchResults) {
       return (this.props.searchResults.length > 0);
@@ -125,3 +115,12 @@ export default class SearchResultsDisplay extends Component {
     );
   }
 }
+SearchResultsDisplay.propTypes = {
+  searchResults: PropTypes.array.isRequired,
+  selectedIndex: PropTypes.number,
+  textFromSearchField: PropTypes.string.isRequired,
+  onSearchElectionResultClick: PropTypes.func,
+  onSearchResultMouseOver: PropTypes.func,
+  onSearchResultClick: PropTypes.func,
+  links: PropTypes.array,
+};

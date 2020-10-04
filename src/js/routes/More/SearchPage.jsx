@@ -9,10 +9,6 @@ import SearchAllStore from '../../stores/SearchAllStore';
 import SearchResultsDisplay from '../../components/Search/SearchResultsDisplay';
 
 export default class SearchPage extends Component {
-  static propTypes = {
-    params: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -69,7 +65,7 @@ export default class SearchPage extends Component {
         }
       }
 
-      this.links = newState.searchResults.map(r => makeSearchLink(r.twitter_handle, r.we_vote_id, r.kind_of_owner, r.link_internal, r.google_civic_election_id));
+      this.links = newState.searchResults.map((r) => makeSearchLink(r.twitter_handle, r.we_vote_id, r.kind_of_owner, r.link_internal, r.google_civic_election_id));
     }
 
     if (SearchAllStore.getForceClosed()) {
@@ -101,3 +97,6 @@ export default class SearchPage extends Component {
     );
   }
 }
+SearchPage.propTypes = {
+  params: PropTypes.object.isRequired,
+};

@@ -9,7 +9,7 @@ import ElectionStore from '../../stores/ElectionStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
-const styles = theme => ({
+const styles = (theme) => ({
   anchorOriginBottomCenter: {
     bottom: 54,
     [theme.breakpoints.up('md')]: {
@@ -19,12 +19,6 @@ const styles = theme => ({
 });
 
 class BallotStatusMessage extends Component {
-  static propTypes = {
-    ballotLocationChosen: PropTypes.bool.isRequired,
-    googleCivicElectionId: PropTypes.number,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -262,9 +256,14 @@ class BallotStatusMessage extends Component {
         />
       );
     } else {
-      return <React.Fragment />;
+      return <></>;
     }
   }
 }
+BallotStatusMessage.propTypes = {
+  ballotLocationChosen: PropTypes.bool.isRequired,
+  googleCivicElectionId: PropTypes.number,
+  classes: PropTypes.object,
+};
 
 export default withStyles(styles)(BallotStatusMessage);

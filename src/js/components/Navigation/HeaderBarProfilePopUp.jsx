@@ -8,18 +8,6 @@ import { isCordova, isWebApp, restoreStylesAfterCordovaKeyboard } from '../../ut
 import { renderLog } from '../../utils/logging';
 
 class HeaderBarProfilePopUp extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    hideProfilePopUp: PropTypes.func.isRequired,
-    isWelcomeMobilePage: PropTypes.bool,
-    profilePopUpOpen: PropTypes.bool,
-    signOutAndHideProfilePopUp: PropTypes.func.isRequired,
-    toggleProfilePopUp: PropTypes.func.isRequired,
-    toggleSignInModal: PropTypes.func.isRequired,
-    transitionToYourVoterGuide: PropTypes.func.isRequired,
-    voter: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.hideProfilePopUp = this.props.hideProfilePopUp.bind(this);
@@ -185,8 +173,7 @@ class HeaderBarProfilePopUp extends Component {
                   </Link>
                 </ListItemWrapper>
               </li>
-            ) : null
-            }
+            ) : null}
           </ul>
           <div>
             <span className="terms-and-privacy">
@@ -211,6 +198,17 @@ class HeaderBarProfilePopUp extends Component {
     );
   }
 }
+HeaderBarProfilePopUp.propTypes = {
+  classes: PropTypes.object,
+  hideProfilePopUp: PropTypes.func.isRequired,
+  isWelcomeMobilePage: PropTypes.bool,
+  profilePopUpOpen: PropTypes.bool,
+  signOutAndHideProfilePopUp: PropTypes.func.isRequired,
+  toggleProfilePopUp: PropTypes.func.isRequired,
+  toggleSignInModal: PropTypes.func.isRequired,
+  transitionToYourVoterGuide: PropTypes.func.isRequired,
+  voter: PropTypes.object,
+};
 
 const styles = {
   signOutButton: {

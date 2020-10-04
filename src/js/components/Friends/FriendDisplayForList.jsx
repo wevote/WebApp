@@ -7,20 +7,6 @@ import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 
 class FriendDisplayForList extends Component {
-  static propTypes = {
-    linked_organization_we_vote_id: PropTypes.string,
-    mutual_friends: PropTypes.number,
-    positions_taken: PropTypes.number,
-    previewMode: PropTypes.bool,
-    voter_we_vote_id: PropTypes.string,
-    voter_photo_url_large: PropTypes.string,
-    voter_email_address: PropTypes.string,
-    voter_display_name: PropTypes.string,
-    voter_twitter_handle: PropTypes.string,
-    // voter_twitter_description: PropTypes.string,
-    // voter_twitter_followers_count: PropTypes.number,
-  };
-
   render () {
     renderLog('FriendDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
@@ -101,6 +87,19 @@ class FriendDisplayForList extends Component {
     }
   }
 }
+FriendDisplayForList.propTypes = {
+  linked_organization_we_vote_id: PropTypes.string,
+  mutual_friends: PropTypes.number,
+  positions_taken: PropTypes.number,
+  previewMode: PropTypes.bool,
+  voter_we_vote_id: PropTypes.string,
+  voter_photo_url_large: PropTypes.string,
+  voter_email_address: PropTypes.string,
+  voter_display_name: PropTypes.string,
+  voter_twitter_handle: PropTypes.string,
+  // voter_twitter_description: PropTypes.string,
+  // voter_twitter_followers_count: PropTypes.number,
+};
 
 const Wrapper = styled.div`
   margin: 12px 0;

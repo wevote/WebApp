@@ -9,18 +9,6 @@ import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import { renderLog } from '../../utils/logging';
 
 class ShareModalOption extends Component {
-  static propTypes = {
-    backgroundColor: PropTypes.string,
-    classes: PropTypes.object,
-    copyLink: PropTypes.bool,
-    icon: PropTypes.object,
-    link: PropTypes.string,
-    noLink: PropTypes.bool,
-    onClickFunction: PropTypes.func,
-    title: PropTypes.string,
-    uniqueExternalId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -139,6 +127,17 @@ class ShareModalOption extends Component {
     );
   }
 }
+ShareModalOption.propTypes = {
+  backgroundColor: PropTypes.string,
+  classes: PropTypes.object,
+  copyLink: PropTypes.bool,
+  icon: PropTypes.object,
+  link: PropTypes.string,
+  noLink: PropTypes.bool,
+  onClickFunction: PropTypes.func,
+  title: PropTypes.string,
+  uniqueExternalId: PropTypes.string,
+};
 
 const styles = () => ({
   copyLinkIcon: {
@@ -183,7 +182,7 @@ const Icon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${props => props.backgroundColor || 'black'};
+  background: ${(props) => props.backgroundColor || 'black'};
   padding: 0px;
   border-radius: 60px;
   font-size: 30px;

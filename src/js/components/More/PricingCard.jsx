@@ -10,22 +10,6 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 
 class PricingCard extends Component {
-  static propTypes = {
-    bullets: PropTypes.array,
-    buttonOnClickFunction: PropTypes.func,
-    buttonOnClickId: PropTypes.string,
-    buttonText: PropTypes.string,
-    classes: PropTypes.object,
-    description: PropTypes.string,
-    featurePackage: PropTypes.string,
-    fullWidth: PropTypes.bool,
-    planName: PropTypes.string,
-    price: PropTypes.number,
-    priceDescribe: PropTypes.string,
-    pricingPlanStringIdentifier: PropTypes.string,
-    pricingCardFeatures: PropTypes.array,
-  };
-
   constructor (props) {
     super(props);
 
@@ -46,7 +30,7 @@ class PricingCard extends Component {
     const isPremiumFeaturePlan = (String(featurePackage) === 'ENTERPRISE' || String(featurePackage) === 'PROFESSIONAL');
     const voterFeaturePackageExceedsOrEquals = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, featurePackage);
 
-    const items = pricingCardFeatures.map(item => (
+    const items = pricingCardFeatures.map((item) => (
       <CollectionItem key={`pricingItem-${item.featureDescription}`}>
         {item.iconType === 'checkMark' ? (
           <Check
@@ -55,7 +39,7 @@ class PricingCard extends Component {
             }}
           />
         ) : (
-          <React.Fragment>
+          <>
             {item.iconType === 'paidCheckMark' ? (
               <Check
                 style={{
@@ -69,7 +53,7 @@ class PricingCard extends Component {
                 }}
               />
             )}
-          </React.Fragment>
+          </>
         )}
         <ItemText>{item.featureDescription}</ItemText>
         {item.iconType === 'notAvailable' && (
@@ -89,7 +73,7 @@ class PricingCard extends Component {
                 <DefaultName>{planName}</DefaultName>
               )}
               {price === 0 || price ? (
-                <React.Fragment>
+                <>
                   <DollarSign>$</DollarSign>
                   <Price>{price}</Price>
                   <PriceDescribe>
@@ -98,9 +82,9 @@ class PricingCard extends Component {
                       <PriceDescribeLight>or $150 month to month</PriceDescribeLight>
                     )}
                   </PriceDescribe>
-                </React.Fragment>
+                </>
               ) : (
-                <React.Fragment>
+                <>
                   <h6 className="mb-0"
                   style={{
                     fontSize: '20px',
@@ -122,7 +106,7 @@ class PricingCard extends Component {
                       our sales team for a quote.
                     </strong>
                   </p>
-                </React.Fragment>
+                </>
               )}
             </PricingCardHeader>
             <hr />
@@ -173,6 +157,21 @@ class PricingCard extends Component {
     );
   }
 }
+PricingCard.propTypes = {
+  bullets: PropTypes.array,
+  buttonOnClickFunction: PropTypes.func,
+  buttonOnClickId: PropTypes.string,
+  buttonText: PropTypes.string,
+  classes: PropTypes.object,
+  description: PropTypes.string,
+  featurePackage: PropTypes.string,
+  fullWidth: PropTypes.bool,
+  planName: PropTypes.string,
+  price: PropTypes.number,
+  priceDescribe: PropTypes.string,
+  pricingPlanStringIdentifier: PropTypes.string,
+  pricingCardFeatures: PropTypes.array,
+};
 
 const styles = () => ({
   goldButton: {
@@ -186,7 +185,7 @@ const styles = () => ({
 
 const Card = styled.div`
   border-radius: 2px;
-  box-shadow: ${props => (props.mobile ? '1px 1px 10px 4px #e1e1e1' : '1px 1px 8px 2px #e3e3e3')};
+  box-shadow: ${(props) => (props.mobile ? '1px 1px 10px 4px #e1e1e1' : '1px 1px 8px 2px #e3e3e3')};
 `;
 
 const CardWrapper = styled.div`
@@ -194,7 +193,7 @@ const CardWrapper = styled.div`
 `;
 
 const PricingCardHeader = styled.div`
-  min-height: ${props => (props.mobile ? '75px' : '105px')}
+  min-height: ${(props) => (props.mobile ? '75px' : '105px')}
   @media (min-width: 960px) and (max-width: 991px) {
     min-height: 100px;
   }

@@ -8,11 +8,6 @@ import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../utils/logging';
 
 class BallotShowAllItemsFooter extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    setActiveRaceItem: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -69,8 +64,12 @@ class BallotShowAllItemsFooter extends Component {
     }
   }
 }
+BallotShowAllItemsFooter.propTypes = {
+  classes: PropTypes.object,
+  setActiveRaceItem: PropTypes.func,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   typography: {
     padding: '16px 0',
     fontWeight: 600,

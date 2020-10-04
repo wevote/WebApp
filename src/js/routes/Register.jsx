@@ -23,10 +23,6 @@ import turboVote from '../../img/global/logos/turbovote-logo.png';
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 class Register extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -601,8 +597,11 @@ class Register extends Component {
     );
   }
 }
+Register.propTypes = {
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   formControl: {
     width: '100%',
   },

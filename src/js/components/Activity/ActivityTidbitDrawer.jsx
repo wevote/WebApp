@@ -17,13 +17,6 @@ import { renderLog } from '../../utils/logging';
 
 
 class ActivityTidbitDrawer extends Component {
-  static propTypes = {
-    activityTidbitWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-    modalOpen: PropTypes.bool,
-    toggleFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -133,6 +126,12 @@ class ActivityTidbitDrawer extends Component {
     );
   }
 }
+ActivityTidbitDrawer.propTypes = {
+  activityTidbitWeVoteId: PropTypes.string.isRequired,
+  classes: PropTypes.object,
+  modalOpen: PropTypes.bool,
+  toggleFunction: PropTypes.func.isRequired,
+};
 
 const styles = () => ({
   drawerClasses: {

@@ -7,15 +7,6 @@ import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 
 export default class TwitterAccountCard extends Component {
-  static propTypes = {
-    twitterHandle: PropTypes.string,
-    twitterDescription: PropTypes.string,
-    twitterFollowersCount: PropTypes.number,
-    twitterPhotoUrl: PropTypes.string,
-    twitterUserWebsite: PropTypes.string,
-    twitterName: PropTypes.string,
-  };
-
   render () {
     renderLog('TwitterAccountCard');  // Set LOG_RENDER_EVENTS to log all renders
     const {
@@ -43,8 +34,7 @@ export default class TwitterAccountCard extends Component {
                   twitter_description={twitterDescriptionMinusName}
                 />
               ) :
-                null
-              }
+                null}
               { twitterHandle ? (
                 <span>
                   @
@@ -52,15 +42,13 @@ export default class TwitterAccountCard extends Component {
                   &nbsp;&nbsp;
                 </span>
               ) :
-                <span />
-              }
+                <span />}
               {twitterFollowersCount ? (
                 <span className="twitter-followers__badge">
                   <span className="fab fa-twitter" />
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
-              ) : null
-              }
+              ) : null}
               {twitterUserWebsite ? (
                 <span>
                   &nbsp;&nbsp;
@@ -77,8 +65,7 @@ export default class TwitterAccountCard extends Component {
                   />
                   <br />
                 </span>
-              ) : null
-              }
+              ) : null}
             </div>
           </div>
         </div>
@@ -86,3 +73,11 @@ export default class TwitterAccountCard extends Component {
     );
   }
 }
+TwitterAccountCard.propTypes = {
+  twitterHandle: PropTypes.string,
+  twitterDescription: PropTypes.string,
+  twitterFollowersCount: PropTypes.number,
+  twitterPhotoUrl: PropTypes.string,
+  twitterUserWebsite: PropTypes.string,
+  twitterName: PropTypes.string,
+};

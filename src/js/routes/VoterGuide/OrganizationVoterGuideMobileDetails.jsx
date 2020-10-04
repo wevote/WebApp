@@ -11,11 +11,6 @@ import VoterGuideFollowing from '../../components/VoterGuide/VoterGuideFollowing
 import VoterGuideFollowers from '../../components/VoterGuide/VoterGuideFollowers';
 
 class OrganizationVoterGuideMobileDetails extends Component {
-  static propTypes = {
-    activeRoute: PropTypes.string,
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -99,7 +94,10 @@ class OrganizationVoterGuideMobileDetails extends Component {
     );
   }
 }
-
+OrganizationVoterGuideMobileDetails.propTypes = {
+  activeRoute: PropTypes.string,
+  params: PropTypes.object,
+};
 
 const EmptyContainer = styled.div`
   padding: 3em 2em;

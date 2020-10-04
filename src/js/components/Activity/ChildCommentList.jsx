@@ -17,16 +17,6 @@ import VoterStore from '../../stores/VoterStore';
 const STARTING_NUMBER_OF_PARENT_COMMENTS_TO_DISPLAY = 1;
 
 class ChildCommentList extends Component {
-  static propTypes = {
-    activityTidbitWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-    editingTurnedOff: PropTypes.bool,
-    hideChildCommentBottomLinks: PropTypes.bool,
-    onClickToggleReplyToComment: PropTypes.func,
-    parentCommentWeVoteId: PropTypes.string.isRequired,
-    showAllChildComments: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -308,6 +298,15 @@ class ChildCommentList extends Component {
     );
   }
 }
+ChildCommentList.propTypes = {
+  activityTidbitWeVoteId: PropTypes.string.isRequired,
+  classes: PropTypes.object,
+  editingTurnedOff: PropTypes.bool,
+  hideChildCommentBottomLinks: PropTypes.bool,
+  onClickToggleReplyToComment: PropTypes.func,
+  parentCommentWeVoteId: PropTypes.string.isRequired,
+  showAllChildComments: PropTypes.bool,
+};
 
 const styles = () => ({
   accountCircle: {

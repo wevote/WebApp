@@ -20,14 +20,6 @@ const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
 // DEPRECATED - MIGRATE AWAY FROM THIS - DEPRECATED - DEPRECATED - DEPRECATED
 // New file is BallotElectionListWithFilters
 export default class BallotElectionList extends Component {
-  static propTypes = {
-    ballotElectionList: PropTypes.array.isRequired,
-    ballotBaseUrl: PropTypes.string,
-    organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
-    showRelevantElections: PropTypes.bool,
-    toggleFunction: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     let priorElectionId = '';
@@ -140,7 +132,7 @@ export default class BallotElectionList extends Component {
   }
 
   filterElectionsInState (electionList) {
-    return electionList.filter(election => this.isElectionInState(election));
+    return electionList.filter((election) => this.isElectionInState(election));
   }
 
   // filterElectionsOutsideState (electionList) {
@@ -161,15 +153,15 @@ export default class BallotElectionList extends Component {
 
 
   toggleShowMoreUpcomingElections () {
-    this.setState(prevState => ({ showMoreUpcomingElections: !prevState.showMoreUpcomingElections }));
+    this.setState((prevState) => ({ showMoreUpcomingElections: !prevState.showMoreUpcomingElections }));
   }
 
   toggleShowMorePriorElections () {
-    this.setState(prevState => ({ showMorePriorElections: !prevState.showMorePriorElections }));
+    this.setState((prevState) => ({ showMorePriorElections: !prevState.showMorePriorElections }));
   }
 
   toggleShowPriorElectionsList () {
-    this.setState(prevState => ({ showPriorElectionsList: !prevState.showPriorElectionsList }));
+    this.setState((prevState) => ({ showPriorElectionsList: !prevState.showPriorElectionsList }));
   }
 
   renderUpcomingElectionList (list, currentDate) {
@@ -354,12 +346,10 @@ export default class BallotElectionList extends Component {
             <h4 className="h4">
               Upcoming Election
               { (upcomingElectionListInState && upcomingElectionListInState.length !== 1 && !this.state.showMoreUpcomingElections) ||
-                (upcomingElectionList && upcomingElectionList.length !== 1 && this.state.showMoreUpcomingElections) ? 's' : null
-              }
+                (upcomingElectionList && upcomingElectionList.length !== 1 && this.state.showMoreUpcomingElections) ? 's' : null}
               { this.state.stateName && this.state.stateName.length && !this.state.showMoreUpcomingElections ?
                 ` in ${this.state.stateName}` :
-                null
-              }
+                null}
             </h4>
             { this.state.showMoreUpcomingElections ?    // eslint-disable-line no-nested-ternary
               upcomingElectionList && upcomingElectionList.length ?
@@ -367,16 +357,14 @@ export default class BallotElectionList extends Component {
                 'There are no upcoming elections at this time.' :
               upcomingElectionListInState && upcomingElectionListInState.length ?
                 upcomingElectionListInState :
-                'There are no upcoming elections in the state you are in at this time.'
-            }
+                'There are no upcoming elections in the state you are in at this time.'}
             { upcomingElectionListOutsideCount ?          // eslint-disable-line no-nested-ternary
               this.state.showMoreUpcomingElections ? (
                 <div className="ballot-election-list__show-all">
                   <div className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
                     { this.state.stateName && this.state.stateName.length ?
                       `Only show elections in ${this.state.stateName}` :
-                      'Hide state elections'
-                    }
+                      'Hide state elections'}
                   </div>
                 </div>
               ) : (
@@ -391,8 +379,7 @@ export default class BallotElectionList extends Component {
                   </div>
                 </div>
               ) :
-              null
-            }
+              null}
           </div>
 
           { this.state.showPriorElectionsList ? (
@@ -403,30 +390,25 @@ export default class BallotElectionList extends Component {
                   { (priorElectionListInState.length > 1 ||
                     (priorElectionList && priorElectionList.length > 1)) ?
                     's' :
-                    null
-                  }
+                    null}
                   { this.state.stateName && this.state.stateName.length && !this.state.showMorePriorElections ?
                     ` in ${this.state.stateName}` :
-                    null
-                  }
+                    null}
                 </h4>
-              ) : null
-              }
+              ) : null}
               { this.state.showMorePriorElections ?    // eslint-disable-line no-nested-ternary
                 priorElectionList && priorElectionList.length ?
                   priorElectionList :
                   null :
                 priorElectionListInState && priorElectionListInState.length ?
                   priorElectionListInState :
-                  null
-              }
+                  null}
               { priorElectionListOutsideCount ?          // eslint-disable-line no-nested-ternary
                 this.state.showMorePriorElections ? (
                   <div className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
                     { this.state.stateName && this.state.stateName.length ?
                       `Only show elections in ${this.state.stateName}` :
-                      'Hide state elections'
-                    }
+                      'Hide state elections'}
                   </div>
                 ) : (
                   <div className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
@@ -437,8 +419,7 @@ export default class BallotElectionList extends Component {
                     more election
                     { priorElectionListOutsideCount !== 1 ? 's' : null }
                   </div>
-                ) : null
-              }
+                ) : null}
             </div>
           ) : (
             <div className="ballot-election-list__prior">
@@ -459,8 +440,7 @@ export default class BallotElectionList extends Component {
                 { upcomingElectionList.length > 1 ? 's' : null }
               </h4>
             ) :
-              null
-            }
+              null}
             { upcomingElectionList && upcomingElectionList.length ? upcomingElectionList : null }
           </div>
 
@@ -471,8 +451,7 @@ export default class BallotElectionList extends Component {
                 { priorElectionList.length > 1 ? 's' : null }
               </h4>
             ) :
-              null
-            }
+              null}
             { priorElectionList && priorElectionList.length ? priorElectionList : null }
           </div>
         </div>
@@ -480,6 +459,13 @@ export default class BallotElectionList extends Component {
     }
   }
 }
+BallotElectionList.propTypes = {
+  ballotElectionList: PropTypes.array.isRequired,
+  ballotBaseUrl: PropTypes.string,
+  organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
+  showRelevantElections: PropTypes.bool,
+  toggleFunction: PropTypes.func,
+};
 
 const ButtonContentsWrapper = styled.div`
   display: flex;

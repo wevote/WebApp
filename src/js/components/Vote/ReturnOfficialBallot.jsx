@@ -6,9 +6,6 @@ import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 class ReturnOfficialBallot extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {

@@ -15,12 +15,6 @@ const delayBeforeApiUpdateCall = 1200;
 const delayBeforeRemovingSavedStatus = 4000;
 
 class SettingsWidgetOrganizationWebsite extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-    voterHasMadeChangesFunction: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -152,6 +146,11 @@ class SettingsWidgetOrganizationWebsite extends Component {
     );
   }
 }
+SettingsWidgetOrganizationWebsite.propTypes = {
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+  voterHasMadeChangesFunction: PropTypes.func,
+};
 
 const styles = () => ({
   formControl: {

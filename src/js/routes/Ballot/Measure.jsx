@@ -30,11 +30,6 @@ import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopT
 
 // The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
 class Measure extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    params: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -355,6 +350,10 @@ class Measure extends Component {
     );
   }
 }
+Measure.propTypes = {
+  classes: PropTypes.object,
+  params: PropTypes.object.isRequired,
+};
 
 const styles = () => ({
   informationIcon: {

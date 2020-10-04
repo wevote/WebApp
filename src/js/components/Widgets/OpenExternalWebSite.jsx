@@ -4,19 +4,6 @@ import { cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 export default class OpenExternalWebSite extends Component {
-  static propTypes = {
-    url: PropTypes.string.isRequired,
-    className: PropTypes.string,
-    linkIdAttribute: PropTypes.string,
-    target: PropTypes.string,
-    title: PropTypes.string,
-    body: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object,
-    ]),
-    delay: PropTypes.number,
-  };
-
   render () {
     renderLog('OpenExternalWebSite');  // Set LOG_RENDER_EVENTS to log all renders
     // console.log('OpenExternalWebSite props ', this.props);
@@ -51,3 +38,15 @@ export default class OpenExternalWebSite extends Component {
     }
   }
 }
+OpenExternalWebSite.propTypes = {
+  url: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  linkIdAttribute: PropTypes.string,
+  target: PropTypes.string,
+  title: PropTypes.string,
+  body: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
+  delay: PropTypes.number,
+};

@@ -3,12 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 class DelayedLoad extends Component {
-  static propTypes = {
-    children: PropTypes.object,
-    showLoadingText: PropTypes.bool,
-    waitBeforeShow: PropTypes.number.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = { hidden: true };
@@ -43,6 +37,11 @@ class DelayedLoad extends Component {
     ) : this.props.children;
   }
 }
+DelayedLoad.propTypes = {
+  children: PropTypes.object,
+  showLoadingText: PropTypes.bool,
+  waitBeforeShow: PropTypes.number.isRequired,
+};
 
 const DelayedLoadingWrapper = styled.div`
   padding: 5px;

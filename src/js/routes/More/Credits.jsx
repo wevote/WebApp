@@ -43,7 +43,7 @@ class Credits extends Component {
               We Vote uses.
             </span>
             <CompanyWrapper>
-              { organizationalDonors.map(item => (
+              { organizationalDonors.map((item) => (
                 <div className="credits-company" key={item.alt}>
                   <div>
                     <div className="credits-company__logo-container">
@@ -62,8 +62,7 @@ class Credits extends Component {
                         <p className="credits-company__title">
                           {item.title}
                         </p>
-                      )
-                      }
+                      )}
                     </div>
                   </div>
                 </div>
@@ -100,7 +99,7 @@ class Credits extends Component {
             <br />
             <br />
             <ul>
-              { teamOfVolunteers.map(item => (
+              { teamOfVolunteers.map((item) => (
                 <div key={item.name}>
                   <li>
                     <strong>{item.name}</strong>
@@ -114,8 +113,7 @@ class Credits extends Component {
                     )}
                   </li>
                 </div>
-              ))
-              }
+              ))}
             </ul>
             <br />
             <br />
@@ -130,7 +128,7 @@ class Credits extends Component {
   }
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,

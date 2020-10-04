@@ -6,14 +6,6 @@ import { renderLog } from '../../utils/logging';
 import checkMarkIcon from '../../../img/global/svg-icons/check-mark-v2-40x43.svg';
 
 export default class CheckBox extends Component {
-  static propTypes = {
-    friendId: PropTypes.string.isRequired,
-    friendName: PropTypes.string,
-    friendImage: PropTypes.string,
-    grid: PropTypes.string,
-    handleCheckboxChange: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -53,3 +45,10 @@ export default class CheckBox extends Component {
     );
   }
 }
+CheckBox.propTypes = {
+  friendId: PropTypes.string.isRequired,
+  friendName: PropTypes.string,
+  friendImage: PropTypes.string,
+  grid: PropTypes.string,
+  handleCheckboxChange: PropTypes.func.isRequired,
+};

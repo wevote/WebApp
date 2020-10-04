@@ -10,21 +10,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 class FriendInvitationEmailLinkDisplayForList extends Component {
-  static propTypes = {
-    invitation_status: PropTypes.string, // Comes friend data object from API server
-    linked_organization_we_vote_id: PropTypes.string,
-    mutual_friends: PropTypes.number,
-    positions_taken: PropTypes.number,
-    // voter_display_name: PropTypes.string, // Comes friend data object from API server
-    voter_email_address: PropTypes.string, // Comes friend data object from API server
-    voter_photo_url_large: PropTypes.string, // Comes friend data object from API server
-    // voter_twitter_description: PropTypes.string, // Comes friend data object from API server
-    // voter_twitter_followers_count: PropTypes.number, // Comes friend data object from API server
-    voter_twitter_handle: PropTypes.string, // Comes friend data object from API server
-    // voter_we_vote_id: PropTypes.string, // Comes friend data object from API server
-    previewMode: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -144,8 +129,7 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
                 </Button>
               </ButtonContainer>
             </Link>
-          ) : null
-          }
+          ) : null}
         </ButtonWrapper>
       </Wrapper>
     );
@@ -161,6 +145,20 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
     }
   }
 }
+FriendInvitationEmailLinkDisplayForList.propTypes = {
+  invitation_status: PropTypes.string, // Comes friend data object from API server
+  linked_organization_we_vote_id: PropTypes.string,
+  mutual_friends: PropTypes.number,
+  positions_taken: PropTypes.number,
+  // voter_display_name: PropTypes.string, // Comes friend data object from API server
+  voter_email_address: PropTypes.string, // Comes friend data object from API server
+  voter_photo_url_large: PropTypes.string, // Comes friend data object from API server
+  // voter_twitter_description: PropTypes.string, // Comes friend data object from API server
+  // voter_twitter_followers_count: PropTypes.number, // Comes friend data object from API server
+  voter_twitter_handle: PropTypes.string, // Comes friend data object from API server
+  // voter_we_vote_id: PropTypes.string, // Comes friend data object from API server
+  previewMode: PropTypes.bool,
+};
 
 const Wrapper = isWebApp() ? styled.div`
   margin: 24px 0;

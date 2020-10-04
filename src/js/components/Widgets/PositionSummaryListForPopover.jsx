@@ -13,19 +13,6 @@ import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import { cleanArray } from '../../utils/textFormat';
 
 class PositionSummaryListForPopover extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    classes: PropTypes.object,
-    controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
-    openAdviserMaterialUIPopover: PropTypes.bool,
-    positionSummaryList: PropTypes.array,
-    showAllPositions: PropTypes.func,
-    voterPersonalNetworkScore: PropTypes.number,
-    voterPersonalNetworkScoreIsNegative: PropTypes.bool,
-    voterPersonalNetworkScoreIsPositive: PropTypes.bool,
-    voterPersonalNetworkScoreWithSign: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -165,7 +152,7 @@ class PositionSummaryListForPopover extends Component {
                   // Limits the number of displayed Issue icons
                   // The popover isn't big enough to accommodate more than 4 icons without making them too small!
                   <VoterAndOrganizationShareTheseIssuesWrapper>
-                    {issuesInCommonForIconDisplayArray.map(issue => (
+                    {issuesInCommonForIconDisplayArray.map((issue) => (
                       <IssueIcon key={`issueInScore-${issue.issue_we_vote_id}`}>
                         <ReactSVG
                           src={cordovaDot(`/img/global/svg-icons/issues/${issue.issue_icon_local_path}.svg`)}
@@ -247,6 +234,18 @@ class PositionSummaryListForPopover extends Component {
     return cleanArray(renderedList);
   }
 }
+PositionSummaryListForPopover.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
+  classes: PropTypes.object,
+  controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
+  openAdviserMaterialUIPopover: PropTypes.bool,
+  positionSummaryList: PropTypes.array,
+  showAllPositions: PropTypes.func,
+  voterPersonalNetworkScore: PropTypes.number,
+  voterPersonalNetworkScoreIsNegative: PropTypes.bool,
+  voterPersonalNetworkScoreIsPositive: PropTypes.bool,
+  voterPersonalNetworkScoreWithSign: PropTypes.string,
+};
 
 const styles = () => ({
   endorsementIcon: {

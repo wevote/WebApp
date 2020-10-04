@@ -10,12 +10,6 @@ import VoterStore from '../../stores/VoterStore';
 import FacebookFriendsDisplay from './FacebookFriendsDisplay';
 
 export default class AddFacebookFriends extends Component {
-  static propTypes = {
-    maximumFriendDisplay: PropTypes.number,
-    facebookInvitableFriendsImageWidth: PropTypes.number,
-    facebookInvitableFriendsImageHeight: PropTypes.number,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -99,3 +93,8 @@ export default class AddFacebookFriends extends Component {
     );
   }
 }
+AddFacebookFriends.propTypes = {
+  maximumFriendDisplay: PropTypes.number,
+  facebookInvitableFriendsImageWidth: PropTypes.number,
+  facebookInvitableFriendsImageHeight: PropTypes.number,
+};

@@ -14,17 +14,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 class ShareButtonDesktopTablet extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    candidateShare: PropTypes.bool,
-    measureShare: PropTypes.bool,
-    officeShare: PropTypes.bool,
-    organizationShare: PropTypes.bool,
-    organizationWeVoteId: PropTypes.string,
-    readyShare: PropTypes.bool,
-    shareButtonText: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -282,6 +271,16 @@ class ShareButtonDesktopTablet extends Component {
     );
   }
 }
+ShareButtonDesktopTablet.propTypes = {
+  classes: PropTypes.object,
+  candidateShare: PropTypes.bool,
+  measureShare: PropTypes.bool,
+  officeShare: PropTypes.bool,
+  organizationShare: PropTypes.bool,
+  organizationWeVoteId: PropTypes.string,
+  readyShare: PropTypes.bool,
+  shareButtonText: PropTypes.string,
+};
 
 const styles = () => ({
   paper: {

@@ -15,17 +15,6 @@ import StickyPopover from '../Ballot/StickyPopover';
 import { renderLog } from '../../utils/logging';
 
 class ValueIconAndText extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    ballotItemDisplayName: PropTypes.string,
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-    issueFollowedByVoter: PropTypes.bool,
-    issueWidths: PropTypes.object,
-    oneIssue: PropTypes.object,
-    subtractTotalWidth: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -206,6 +195,16 @@ class ValueIconAndText extends Component {
     );
   }
 }
+ValueIconAndText.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
+  ballotItemDisplayName: PropTypes.string,
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+  issueFollowedByVoter: PropTypes.bool,
+  issueWidths: PropTypes.object,
+  oneIssue: PropTypes.object,
+  subtractTotalWidth: PropTypes.func,
+};
 
 const styles = () => ({
   chipStyle: {

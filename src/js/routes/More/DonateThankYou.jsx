@@ -34,7 +34,7 @@ class DonateThankYou extends Component {
   }
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,

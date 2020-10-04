@@ -34,11 +34,6 @@ import Section, {
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 
 class WelcomeForCampaigns extends PureComponent {
-  static propTypes = {
-    classes: PropTypes.object,
-    pathname: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -288,6 +283,10 @@ class WelcomeForCampaigns extends PureComponent {
     );
   }
 }
+WelcomeForCampaigns.propTypes = {
+  classes: PropTypes.object,
+  pathname: PropTypes.string,
+};
 
 const styles = () => ({
   buttonContained: {
@@ -358,7 +357,7 @@ const HeaderStepNumber = styled.div`
   width: 24px;
   height: 24px;
   background: white;
-  color: ${props => props.theme.colors.brandBlue};
+  color: ${(props) => props.theme.colors.brandBlue};
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 24px;

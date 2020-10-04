@@ -12,18 +12,6 @@ import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 
 class ItemPositionStatementActionBar extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string.isRequired,
-    ballotItemDisplayName: PropTypes.string,
-    ballotItemType: PropTypes.string.isRequired,
-    commentEditModeOn: PropTypes.bool,
-    externalUniqueId: PropTypes.string,
-    shownInList: PropTypes.bool,
-    classes: PropTypes.object,
-    mobile: PropTypes.bool,
-    // inModal: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -363,8 +351,19 @@ class ItemPositionStatementActionBar extends Component {
     );
   }
 }
+ItemPositionStatementActionBar.propTypes = {
+  ballotItemWeVoteId: PropTypes.string.isRequired,
+  ballotItemDisplayName: PropTypes.string,
+  ballotItemType: PropTypes.string.isRequired,
+  commentEditModeOn: PropTypes.bool,
+  externalUniqueId: PropTypes.string,
+  shownInList: PropTypes.bool,
+  classes: PropTypes.object,
+  mobile: PropTypes.bool,
+  // inModal: PropTypes.bool,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     boxShadow: 'none',
     border: '1px solid #333',

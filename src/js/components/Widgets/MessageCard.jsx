@@ -6,17 +6,6 @@ import { historyPush } from '../../utils/cordovaUtils';
 import AppActions from '../../actions/AppActions';
 
 export default class MessageCard extends Component {
-  static propTypes = {
-    buttonText: PropTypes.string,
-    buttonURL: PropTypes.string,
-    fullWidthButton: PropTypes.bool,
-    icon: PropTypes.object,
-    inShareModal: PropTypes.bool,
-    mainText: PropTypes.string,
-    noCard: PropTypes.bool,
-    secondaryText: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -61,9 +50,19 @@ export default class MessageCard extends Component {
     );
   }
 }
+MessageCard.propTypes = {
+  buttonText: PropTypes.string,
+  buttonURL: PropTypes.string,
+  fullWidthButton: PropTypes.bool,
+  icon: PropTypes.object,
+  inShareModal: PropTypes.bool,
+  mainText: PropTypes.string,
+  noCard: PropTypes.bool,
+  secondaryText: PropTypes.string,
+};
 
 const Card = styled.div`
-  padding: ${props => (props.inModal ? '0' : '64px 32px')};
+  padding: ${(props) => (props.inModal ? '0' : '64px 32px')};
 `;
 
 const InnerWrapper = styled.div`

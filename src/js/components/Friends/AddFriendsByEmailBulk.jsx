@@ -186,14 +186,12 @@ export default class AddFriendsByEmailBulk extends Component {
           <div className="alert alert-success">
             Invitations sent. Is there anyone else you&apos;d like to invite?
           </div>
-        ) : null
-        }
+        ) : null}
         {this.state.emailAddressesError || this.state.senderEmailAddressError ? (
           <div className="alert alert-danger">
             {this.state.errorMessage}
           </div>
-        ) : null
-        }
+        ) : null}
         {this.state.onEnterEmailAddressStep ? (
           <div>
             <form onSubmit={this.AddFriendsByEmailStepsManager} className="u-stack--md">
@@ -220,8 +218,7 @@ export default class AddFriendsByEmailBulk extends Component {
                     />
                   </label>
                 </span>
-              ) : null
-              }
+              ) : null}
             </form>
             <div className="u-stack--md">
               <span style={floatRight}>
@@ -234,8 +231,7 @@ export default class AddFriendsByEmailBulk extends Component {
                 >
                   { this.hasValidEmail() ?
                     <span>Send</span> :
-                    <span>Next</span>
-                }
+                    <span>Next</span>}
                 </Button>
               </span>
               <span>
@@ -244,8 +240,7 @@ export default class AddFriendsByEmailBulk extends Component {
               </span>
             </div>
           </div>
-        ) : null
-        }
+        ) : null}
 
         {this.state.onCollectEmailStep ? (
           <div>
@@ -274,8 +269,7 @@ export default class AddFriendsByEmailBulk extends Component {
               <p>In order to send your message, you will need to verify your email address. We will never sell your email.</p>
             </div>
           </div>
-        ) : null
-        }
+        ) : null}
       </div>
     );
   }

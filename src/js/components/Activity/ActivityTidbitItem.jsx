@@ -17,11 +17,6 @@ import VoterStore from '../../stores/VoterStore';
 
 
 class ActivityTidbitItem extends Component {
-  static propTypes = {
-    activityTidbitWeVoteId: PropTypes.string.isRequired,
-    startingNumberOfPositionsToDisplay: PropTypes.number,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -191,6 +186,10 @@ class ActivityTidbitItem extends Component {
     );
   }
 }
+ActivityTidbitItem.propTypes = {
+  activityTidbitWeVoteId: PropTypes.string.isRequired,
+  startingNumberOfPositionsToDisplay: PropTypes.number,
+};
 
 const styles = () => ({
   buttonOutlinedPrimary: {

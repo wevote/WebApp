@@ -19,22 +19,6 @@ import voterGuidePositionSearchPriority from '../../utils/voterGuidePositionSear
 const delayBeforeSearchExecution = 600;
 
 class FilterBaseSearch extends Component {
-  static propTypes = {
-    addVoterGuideMode: PropTypes.bool,
-    allItems: PropTypes.array,
-    alwaysOpen: PropTypes.bool,
-    classes: PropTypes.object,
-    isSearching: PropTypes.bool,
-    onFilterBaseSearch: PropTypes.func,
-    opinionsAndBallotItemsSearchMode: PropTypes.bool,
-    onToggleSearch: PropTypes.func,
-    positionSearchMode: PropTypes.bool,
-    searchTextDefault: PropTypes.string,
-    searchTextLarge: PropTypes.bool,
-    theme: PropTypes.object,
-    voterGuidePositionSearchMode: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -102,7 +86,7 @@ class FilterBaseSearch extends Component {
     }
   }
 
-  filterItems = search => this.props.allItems.map((item) => {
+  filterItems = (search) => this.props.allItems.map((item) => {
     // console.log('FilterBaseSearch filterItems');
     const { opinionsAndBallotItemsSearchMode, positionSearchMode, voterGuidePositionSearchMode } = this.props;
     let candidatesToShowForSearchResults = [];
@@ -159,7 +143,7 @@ class FilterBaseSearch extends Component {
     // Filter out items without the search terms, and put the most likely search result at the top
     // Only return results if they get past the filter
     this.searchNewItems(searchText);
-    const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter(item => item.searchPriority > 0);
+    const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter((item) => item.searchPriority > 0);
     // console.log('sortedFiltered:', sortedFiltered);
     return this.props.onFilterBaseSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
   }
@@ -207,7 +191,7 @@ class FilterBaseSearch extends Component {
       this.searchNewItems(searchText);
       // Filter out items without the search terms, and put the most likely search result at the top
       // Only return results if they get past the filter
-      const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter(item => item.searchPriority > 0);
+      const sortedFiltered = sortBy(this.filterItems(searchText), ['searchPriority']).reverse().filter((item) => item.searchPriority > 0);
       // console.log('sortedFiltered:', sortedFiltered);
       return this.props.onFilterBaseSearch(searchText, sortedFiltered.length ? sortedFiltered : []);
     }, delayBeforeSearchExecution);
@@ -268,9 +252,24 @@ class FilterBaseSearch extends Component {
     );
   }
 }
+FilterBaseSearch.propTypes = {
+  addVoterGuideMode: PropTypes.bool,
+  allItems: PropTypes.array,
+  alwaysOpen: PropTypes.bool,
+  classes: PropTypes.object,
+  isSearching: PropTypes.bool,
+  onFilterBaseSearch: PropTypes.func,
+  opinionsAndBallotItemsSearchMode: PropTypes.bool,
+  onToggleSearch: PropTypes.func,
+  positionSearchMode: PropTypes.bool,
+  searchTextDefault: PropTypes.string,
+  searchTextLarge: PropTypes.bool,
+  theme: PropTypes.object,
+  voterGuidePositionSearchMode: PropTypes.bool,
+};
 
 // Breakpoints and media queries, have unexpected effects in Cordova, please avoid them, or condition them as isWebApp only
-const styles = theme => ({
+const styles = (theme) => ({
   iconButtonRoot: {
     padding: 0,
     borderRadius: 16,

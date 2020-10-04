@@ -25,18 +25,6 @@ const NUMBER_OF_CANDIDATES_TO_DISPLAY = 4;
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
 class OfficeItemCompressed extends Component {
-  static propTypes = {
-    officeWeVoteId: PropTypes.string.isRequired,
-    ballotItemDisplayName: PropTypes.string.isRequired,
-    candidateList: PropTypes.array,
-    candidatesToShowForSearchResults: PropTypes.array,
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-    organization: PropTypes.object,
-    organizationWeVoteId: PropTypes.string,
-    theme: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -239,7 +227,7 @@ class OfficeItemCompressed extends Component {
     const { candidateList } = this.state;
     const candidatePreviewLimit = this.state.maximumNumberOrganizationsToDisplay;
     // If voter has chosen 1+ candidates, only show those
-    const supportedCandidatesList = candidateList.filter(candidate => arrayContains(candidate.we_vote_id, candidatesToShowForSearchResults) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
+    const supportedCandidatesList = candidateList.filter((candidate) => arrayContains(candidate.we_vote_id, candidatesToShowForSearchResults) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
     const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
     const hideCandidateDetails = supportedCandidatesList.length;
     let voterOpposesBallotItem;
@@ -390,14 +378,24 @@ class OfficeItemCompressed extends Component {
 
         { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
           <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
-          <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} />
-        }
+          <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} />}
       </OfficeItemCompressedWrapper>
     );
   }
 }
+OfficeItemCompressed.propTypes = {
+  officeWeVoteId: PropTypes.string.isRequired,
+  ballotItemDisplayName: PropTypes.string.isRequired,
+  candidateList: PropTypes.array,
+  candidatesToShowForSearchResults: PropTypes.array,
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+  organization: PropTypes.object,
+  organizationWeVoteId: PropTypes.string,
+  theme: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonRoot: {
     fontSize: 12,
     padding: 4,
@@ -456,7 +454,7 @@ const CandidateInfo = styled.div`
   transition: all 200ms ease-in;
   width: 100% !important;
   &:hover {
-    border: 1px solid ${props => (props.brandBlue)};
+    border: 1px solid ${(props) => (props.brandBlue)};
   }
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     position: relative;

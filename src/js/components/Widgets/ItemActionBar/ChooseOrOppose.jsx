@@ -10,14 +10,6 @@ import SettingsAccount from '../../Settings/SettingsAccount';
 import VoterStore from '../../../stores/VoterStore';
 
 class ChooseOrOppose extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    ballotItemType: PropTypes.string.isRequired,
-    externalUniqueId: PropTypes.string,
-    onClose: PropTypes.func,
-    inModal: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -49,7 +41,7 @@ class ChooseOrOppose extends Component {
     const { voterIsSignedIn } = this.state;
     const slides = [
       (
-        <React.Fragment>
+        <>
           <SubTitle>Your position is only visible to your We Vote friends.</SubTitle>
           <PlainText>You can change the privacy toggle to make your views public.</PlainText>
           <Row>
@@ -63,14 +55,14 @@ class ChooseOrOppose extends Component {
               inTestMode
             />
           </Row>
-        </React.Fragment>
+        </>
       ),
       (
-        <React.Fragment>
+        <>
           <SubTitle>We Vote helps you get ready.</SubTitle>
           <BoldText>BUT, you cannot use We Vote to cast your vote.</BoldText>
           <PlainText>Make sure to return your official ballot to your polling location!</PlainText>
-        </React.Fragment>
+        </>
       ),
       (
         <>
@@ -96,7 +88,7 @@ class ChooseOrOppose extends Component {
     const { classes } = this.props;
     const { voterIsSignedIn } = this.state;
     return (
-      <React.Fragment>
+      <>
         <DialogTitle classes={{ root: classes.dialogTitle }}>
           <TitleText>Choose or Oppose</TitleText>
           <IconButton
@@ -116,12 +108,19 @@ class ChooseOrOppose extends Component {
             voterIsSignedIn={voterIsSignedIn}
           />
         </DialogContent>
-      </React.Fragment>
+      </>
     );
   }
 }
+ChooseOrOppose.propTypes = {
+  classes: PropTypes.object,
+  ballotItemType: PropTypes.string.isRequired,
+  externalUniqueId: PropTypes.string,
+  onClose: PropTypes.func,
+  inModal: PropTypes.bool,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   button: {
     width: '100%',
   },

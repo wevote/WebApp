@@ -5,12 +5,6 @@ import Button from 'react-bootstrap/Button';
 import { renderLog } from '../utils/logging';
 
 export default class WouldYouLikeToMergeAccounts extends Component {
-  static propTypes = {
-    pleaseMergeAccountsFunction: PropTypes.func.isRequired,
-    cancelMergeFunction: PropTypes.func.isRequired,
-  };
-
-
   render () {
     renderLog('WouldYouLikeToMergeAccounts');  // Set LOG_RENDER_EVENTS to log all renders
     const { cancelMergeFunction, pleaseMergeAccountsFunction } = this.props;
@@ -48,3 +42,7 @@ export default class WouldYouLikeToMergeAccounts extends Component {
     );
   }
 }
+WouldYouLikeToMergeAccounts.propTypes = {
+  pleaseMergeAccountsFunction: PropTypes.func.isRequired,
+  cancelMergeFunction: PropTypes.func.isRequired,
+};

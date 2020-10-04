@@ -17,10 +17,6 @@ import VoterStore from '../../stores/VoterStore';
 import VoterConstants from '../../constants/VoterConstants';
 
 class ReadyTaskBallot extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -826,8 +822,11 @@ class ReadyTaskBallot extends React.Component {
     );
   }
 }
+ReadyTaskBallot.propTypes = {
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   arrowRoot: {
     fontSize: 14,
     marginBottom: 3,

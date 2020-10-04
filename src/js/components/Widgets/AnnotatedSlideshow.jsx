@@ -7,14 +7,6 @@ import { ArrowLeft, ArrowRight } from '@material-ui/icons';
 import { cordovaDot } from '../../utils/cordovaUtils';
 
 class AnnotatedSlideshow extends PureComponent {
-  static propTypes = {
-    classes: PropTypes.object,
-    inModal: PropTypes.bool,
-    onChangeSlide: PropTypes.func,
-    selectedStepIndex: PropTypes.number.isRequired,
-    slides: PropTypes.object.isRequired,
-  };
-
   componentDidMount () {
   }
 
@@ -39,7 +31,7 @@ class AnnotatedSlideshow extends PureComponent {
     const { slides, selectedStepIndex, classes } = this.props;
     const data = Object.values(slides);
     const { length } = data;
-    const { title, description, imgSrc } = data.find(slide => slide.index === selectedStepIndex);
+    const { title, description, imgSrc } = data.find((slide) => slide.index === selectedStepIndex);
     // console.log('AnnotatedSlideshow selectedStepIndex:', selectedStepIndex, 'length:', length);
     return (
       <Wrapper inModal={this.props.inModal}>
@@ -92,8 +84,15 @@ class AnnotatedSlideshow extends PureComponent {
     );
   }
 }
+AnnotatedSlideshow.propTypes = {
+  classes: PropTypes.object,
+  inModal: PropTypes.bool,
+  onChangeSlide: PropTypes.func,
+  selectedStepIndex: PropTypes.number.isRequired,
+  slides: PropTypes.object.isRequired,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   navIconRoot: {
     fontSize: 72,
     '&:hover': {
@@ -196,8 +195,8 @@ const Image = styled.img`
   border: 1px solid #999;
   border-radius: 16px;
   box-shadow: 2px 2px 4px 2px ${({ theme }) => theme.colors.grayLight};
-  ${inModal => (inModal ? 'width: 100%;' : 'width: 640px;')}
-  ${inModal => (inModal ? 'height: auto;' : 'height: 360px;')}
+  ${(inModal) => (inModal ? 'width: 100%;' : 'width: 640px;')}
+  ${(inModal) => (inModal ? 'height: auto;' : 'height: 360px;')}
   transition: all 150ms ease-in;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 90vw;

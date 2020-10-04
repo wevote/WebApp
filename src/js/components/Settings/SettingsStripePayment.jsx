@@ -13,17 +13,6 @@ import { numberWithCommas } from '../../utils/textFormat';
 
 
 class SettingsStripePayment extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    couponCode: PropTypes.string,
-    numberOfMonthsService: PropTypes.number,
-    payByMonthCostPerMonth: PropTypes.number,
-    payByYearCostPerYear: PropTypes.number,
-    paymentProcessedFunction: PropTypes.func,
-    pricingPlanChosen: PropTypes.string,
-    stripe: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -272,6 +261,16 @@ class SettingsStripePayment extends Component {
     );
   }
 }
+SettingsStripePayment.propTypes = {
+  classes: PropTypes.object,
+  couponCode: PropTypes.string,
+  numberOfMonthsService: PropTypes.number,
+  payByMonthCostPerMonth: PropTypes.number,
+  payByYearCostPerYear: PropTypes.number,
+  paymentProcessedFunction: PropTypes.func,
+  pricingPlanChosen: PropTypes.string,
+  stripe: PropTypes.object,
+};
 
 const styles = () => ({
   paymentButton: {

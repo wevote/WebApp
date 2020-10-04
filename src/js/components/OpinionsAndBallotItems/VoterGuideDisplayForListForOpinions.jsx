@@ -21,18 +21,6 @@ import StickyPopover from '../Ballot/StickyPopover';
 import { renderLog } from '../../utils/logging';
 
 class voterGuideDisplayForListForOpinions extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    organizationWeVoteId: PropTypes.string,
-    searchResultsNode: PropTypes.object,
-    twitterDescription: PropTypes.string,
-    twitterFollowersCount: PropTypes.number,
-    twitterHandle: PropTypes.string,
-    voterGuideDisplayName: PropTypes.string,
-    voterGuideImageUrlMedium: PropTypes.string,
-    voterGuideOwnerType: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -335,8 +323,19 @@ class voterGuideDisplayForListForOpinions extends Component {
     );
   }
 }
+voterGuideDisplayForListForOpinions.propTypes = {
+  classes: PropTypes.object,
+  organizationWeVoteId: PropTypes.string,
+  searchResultsNode: PropTypes.object,
+  twitterDescription: PropTypes.string,
+  twitterFollowersCount: PropTypes.number,
+  twitterHandle: PropTypes.string,
+  voterGuideDisplayName: PropTypes.string,
+  voterGuideImageUrlMedium: PropTypes.string,
+  voterGuideOwnerType: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonRoot: {
     fontSize: 12,
     padding: '4px 8px',

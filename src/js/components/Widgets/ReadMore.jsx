@@ -4,14 +4,6 @@ import TextTruncate from 'react-text-truncate';
 import { renderLog } from '../../utils/logging';
 
 export default class ReadMore extends Component {
-  static propTypes = {
-    textToDisplay: PropTypes.node.isRequired,
-    linkText: PropTypes.node,
-    collapseText: PropTypes.node,
-    numberOfLines: PropTypes.number,
-    className: PropTypes.string,
-  };
-
   constructor (...args) {
     super(...args);
 
@@ -156,3 +148,10 @@ export default class ReadMore extends Component {
     }
   } // end render
 }
+ReadMore.propTypes = {
+  textToDisplay: PropTypes.node.isRequired,
+  linkText: PropTypes.node,
+  collapseText: PropTypes.node,
+  numberOfLines: PropTypes.number,
+  className: PropTypes.string,
+};

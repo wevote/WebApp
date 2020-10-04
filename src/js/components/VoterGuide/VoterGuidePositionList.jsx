@@ -54,14 +54,6 @@ const islandFilters = [
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 6;
 
 class VoterGuidePositionList extends Component {
-  static propTypes = {
-    incomingPositionList: PropTypes.array.isRequired,
-    organizationWeVoteId: PropTypes.string.isRequired,
-    positionListExistsTitle: PropTypes.object,
-    startingNumberOfPositionsToDisplay: PropTypes.string,
-    turnOffOnScroll: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -110,10 +102,10 @@ class VoterGuidePositionList extends Component {
       }
       return ({
         ...position,
-        followed: organizationsVoterIsFollowing.filter(org => (position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
+        followed: organizationsVoterIsFollowing.filter((org) => (position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
       });
     });
-    const positionListModified1Filtered = positionListModified1.filter(position => position != null);
+    const positionListModified1Filtered = positionListModified1.filter((position) => position != null);
 
     // Replicate onFriendStoreChange
     const organizationsVoterIsFriendsWith = FriendStore.currentFriendsOrganizationWeVoteIDList();
@@ -123,10 +115,10 @@ class VoterGuidePositionList extends Component {
       // console.log('VoterGuidePositionList componentDidMount positionListModified2, position: ', position);
       return ({
         ...position,
-        currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => (position && organizationWeVoteId === position.speaker_we_vote_id)).length > 0,
+        currentFriend: organizationsVoterIsFriendsWith.filter((organizationWeVoteId) => (position && organizationWeVoteId === position.speaker_we_vote_id)).length > 0,
       });
     });
-    const positionListModified2Filtered = positionListModified2.filter(position => position != null);
+    const positionListModified2Filtered = positionListModified2.filter((position) => position != null);
 
     OrganizationActions.organizationsFollowedRetrieve();
     if (!organizationsVoterIsFriendsWith.length > 0) {
@@ -246,7 +238,7 @@ class VoterGuidePositionList extends Component {
     let atLeastOneFriendAdded = false;
     const positionListWithFriendData = positionList.map((position) => {
       // console.log('VoterGuidePositionList onFriendStoreChange, position: ', position);
-      currentFriend = organizationsVoterIsFriendsWith.filter(organizationWeVoteId => (position && organizationWeVoteId === position.speaker_we_vote_id)).length > 0;
+      currentFriend = organizationsVoterIsFriendsWith.filter((organizationWeVoteId) => (position && organizationWeVoteId === position.speaker_we_vote_id)).length > 0;
       if (currentFriend) {
         atLeastOneFriendAdded = true;
       }
@@ -272,7 +264,7 @@ class VoterGuidePositionList extends Component {
       // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
-        followed: organizationsVoterIsFollowing.filter(org => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
+        followed: organizationsVoterIsFollowing.filter((org) => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
       });
     });
     // eslint-disable-next-line arrow-body-style
@@ -280,7 +272,7 @@ class VoterGuidePositionList extends Component {
       // console.log('VoterGuidePositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
-        followed: organizationsVoterIsFollowing.filter(org => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
+        followed: organizationsVoterIsFollowing.filter((org) => (org && position && org.organization_we_vote_id === position.speaker_we_vote_id)).length > 0,
       });
     });
     this.setState({
@@ -399,8 +391,7 @@ class VoterGuidePositionList extends Component {
         <FilterWrapper>
           { showTitle ?
             <span>{this.props.positionListExistsTitle}</span> :
-            null
-          }
+            null}
           <FilterBase
             allItems={positionList}
             groupedFilters={groupedFilters}
@@ -496,8 +487,7 @@ class VoterGuidePositionList extends Component {
                   );
                   foundInItemsAlreadyShown += 1;
                   return foundInStringItem;
-                })
-                }
+                })}
               </SearchResultsFoundInExplanation>
             ) : null;
             return (
@@ -511,8 +501,7 @@ class VoterGuidePositionList extends Component {
                 />
               </div>
             );
-          })
-          }
+          })}
         </ul>
         <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
           <ShowMoreItems
@@ -530,6 +519,13 @@ class VoterGuidePositionList extends Component {
     );
   }
 }
+VoterGuidePositionList.propTypes = {
+  incomingPositionList: PropTypes.array.isRequired,
+  organizationWeVoteId: PropTypes.string.isRequired,
+  positionListExistsTitle: PropTypes.object,
+  startingNumberOfPositionsToDisplay: PropTypes.string,
+  turnOffOnScroll: PropTypes.bool,
+};
 
 const styles = () => ({
   iconButton: {

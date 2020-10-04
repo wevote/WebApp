@@ -197,7 +197,7 @@ class About extends Component {
           </AboutDescriptionContainer>
           <MemberListContainer>
             <div className="row position-relative">
-              {weVoteFounders.map(teamMember => (
+              {weVoteFounders.map((teamMember) => (
                 <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
               ))}
             </div>
@@ -302,7 +302,7 @@ class About extends Component {
   }
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonContained: {
     borderRadius: 32,
     height: 50,

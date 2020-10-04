@@ -16,16 +16,6 @@ import { openSnackbar } from './SnackNotifier';
 // import VoterConstants from '../../constants/VoterConstants';
 
 class PositionPublicToggle extends Component {
-  static propTypes = {
-    ballotItemType: PropTypes.string.isRequired,
-    ballotItemWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-    className: PropTypes.string.isRequired,
-    externalUniqueId: PropTypes.string,
-    inTestMode: PropTypes.bool,
-    preventStackedButtons: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -316,8 +306,17 @@ class PositionPublicToggle extends Component {
     );
   }
 }
+PositionPublicToggle.propTypes = {
+  ballotItemType: PropTypes.string.isRequired,
+  ballotItemWeVoteId: PropTypes.string.isRequired,
+  classes: PropTypes.object,
+  className: PropTypes.string.isRequired,
+  externalUniqueId: PropTypes.string,
+  inTestMode: PropTypes.bool,
+  preventStackedButtons: PropTypes.bool,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   dialogRoot: isCordova() ? {
     height: '100%',
     position: 'absolute !important',

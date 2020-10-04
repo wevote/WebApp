@@ -42,8 +42,7 @@ class Main extends React.Component {
       <div>
         {this.state.userId ?
           <FacebookDownloadPicture /> :
-          <div />
-        }
+          <div />}
         <FacebookPicture
           facebookPictureStatus={this.state.facebookPictureStatus}
           facebookPictureUrl={this.state.facebookPictureUrl}

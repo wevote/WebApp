@@ -71,7 +71,7 @@ export function convertStateCodeToStateText (stateCode) {
 
 export function convertStateTextToStateCode (stateText) {
   if (stateText) {
-    const stateTextInArray = Object.keys(stateCodeMap).filter(stateCode => stateCodeMap[stateCode] === stateText);
+    const stateTextInArray = Object.keys(stateCodeMap).filter((stateCode) => stateCodeMap[stateCode] === stateText);
     return stateTextInArray[0];
   }
   return '';
@@ -79,14 +79,14 @@ export function convertStateTextToStateCode (stateText) {
 
 export function convertStateCodeFilterToStateCode (stateCodeFilter) {
   if (stateCodeFilter) {
-    const stateCodeInArray = Object.keys(stateCodeMap).filter(stateCode => `stateCode${stateCode}` === stateCodeFilter);
+    const stateCodeInArray = Object.keys(stateCodeMap).filter((stateCode) => `stateCode${stateCode}` === stateCodeFilter);
     return stateCodeInArray[0];
   }
   return '';
 }
 
 export function getAllStateCodeFilters () {
-  return Object.keys(stateCodeMap).map(stateCode => `stateCode${stateCode}`);
+  return Object.keys(stateCodeMap).map((stateCode) => `stateCode${stateCode}`);
 }
 
 export function getAllStateCodes () {

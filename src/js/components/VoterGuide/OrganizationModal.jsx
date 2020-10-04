@@ -27,16 +27,6 @@ import VoterStore from '../../stores/VoterStore';
 import { cordovaDrawerTopMargin } from '../../utils/cordovaOffsets';
 
 class OrganizationModal extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    classes: PropTypes.object,
-    modalOpen: PropTypes.bool,
-    organizationWeVoteId: PropTypes.string,
-    params: PropTypes.object,
-    pathname: PropTypes.string,
-    toggleFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -311,6 +301,15 @@ class OrganizationModal extends Component {
     );
   }
 }
+OrganizationModal.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
+  classes: PropTypes.object,
+  modalOpen: PropTypes.bool,
+  organizationWeVoteId: PropTypes.string,
+  params: PropTypes.object,
+  pathname: PropTypes.string,
+  toggleFunction: PropTypes.func.isRequired,
+};
 
 const styles = () => ({
   drawer: {

@@ -14,18 +14,6 @@ import VoterActions from '../actions/VoterActions';
 import VoterStore from '../stores/VoterStore';
 
 class AddressBox extends Component {
-  static propTypes = {
-    externalUniqueId: PropTypes.string,
-    showCancelEditAddressButton: PropTypes.bool,
-    disableAutoFocus: PropTypes.bool,
-    manualFocus: PropTypes.bool,
-    toggleEditingAddress: PropTypes.func,
-    toggleSelectAddressModal: PropTypes.func,
-    saveUrl: PropTypes.string.isRequired,
-    waitingMessage: PropTypes.string,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -256,8 +244,7 @@ class AddressBox extends Component {
             >
               Cancel
             </Button>
-          ) : null
-          }
+          ) : null}
           <br />
           <Button
             color="primary"
@@ -276,6 +263,17 @@ class AddressBox extends Component {
     );
   }
 }
+AddressBox.propTypes = {
+  externalUniqueId: PropTypes.string,
+  showCancelEditAddressButton: PropTypes.bool,
+  disableAutoFocus: PropTypes.bool,
+  manualFocus: PropTypes.bool,
+  toggleEditingAddress: PropTypes.func,
+  toggleSelectAddressModal: PropTypes.func,
+  saveUrl: PropTypes.string.isRequired,
+  waitingMessage: PropTypes.string,
+  classes: PropTypes.object,
+};
 
 const styles = {
   root: {

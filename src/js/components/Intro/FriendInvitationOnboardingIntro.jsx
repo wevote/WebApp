@@ -13,13 +13,6 @@ import { renderLog } from '../../utils/logging';
 import { convertToInteger, formatDateToMonthDayYear } from '../../utils/textFormat';
 
 class FriendInvitationOnboardingIntro extends Component {
-  static propTypes = {
-    friendFirstName: PropTypes.string,
-    friendLastName: PropTypes.string,
-    friendImageUrlHttpsTiny: PropTypes.string,
-    invitationMessage: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -267,8 +260,14 @@ class FriendInvitationOnboardingIntro extends Component {
     );
   }
 }
+FriendInvitationOnboardingIntro.propTypes = {
+  friendFirstName: PropTypes.string,
+  friendLastName: PropTypes.string,
+  friendImageUrlHttpsTiny: PropTypes.string,
+  invitationMessage: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonRoot: {
     fontSize: 12,
     padding: '4px 8px',
@@ -353,7 +352,7 @@ const OrganizationImageWrapper = styled.span`
 `;
 
 const StepNumber = styled.div`
-  background: ${props => props.theme.colors.brandBlue};
+  background: ${(props) => props.theme.colors.brandBlue};
   border-radius: 4px;
   color: white;
   font-size: 16px;

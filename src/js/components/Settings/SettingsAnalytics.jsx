@@ -18,11 +18,6 @@ import VoterStore from '../../stores/VoterStore';
 import DelayedLoad from '../Widgets/DelayedLoad';
 
 class SettingsAnalytics extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -359,8 +354,7 @@ class SettingsAnalytics extends Component {
                       </span>
                     </span>
                   </Button>
-                )
-                }
+                )}
               </ButtonsContainer>
             )}
             <Separator />
@@ -407,6 +401,10 @@ class SettingsAnalytics extends Component {
     );
   }
 }
+SettingsAnalytics.propTypes = {
+  classes: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+};
 
 const styles = () => ({
   formControl: {

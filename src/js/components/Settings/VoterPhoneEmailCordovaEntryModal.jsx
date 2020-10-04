@@ -13,12 +13,6 @@ import { renderLog } from '../../utils/logging';
 
 // Work around for dialog placement in Cordova when virtual keyboard appears
 class VoterPhoneEmailCordovaEntryModal extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    isPhone: PropTypes.bool,
-    hideDialogForCordova: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -53,7 +47,7 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
     const isSmallApple = isIPhone3p5in() || isIPhone4in() || isIPhone4p7in();
 
     return (
-      <React.Fragment>
+      <>
         <div className="u-stack--md">
           <SplitIconButton
             backgroundColor="#2E3C5D"
@@ -100,12 +94,17 @@ class VoterPhoneEmailCordovaEntryModal extends Component {
             )}
           </DialogContent>
         </Dialog>
-      </React.Fragment>
+      </>
     );
   }
 }
+VoterPhoneEmailCordovaEntryModal.propTypes = {
+  classes: PropTypes.object,
+  isPhone: PropTypes.bool,
+  hideDialogForCordova: PropTypes.func,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   dialogPaper: {
     marginTop: 48,
     [theme.breakpoints.down('xs')]: {

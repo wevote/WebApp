@@ -8,9 +8,6 @@ import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
 export default class SettingsAddress extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {

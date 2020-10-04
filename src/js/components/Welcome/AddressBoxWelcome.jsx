@@ -7,10 +7,6 @@ import { isWebApp, restoreStylesAfterCordovaKeyboard } from '../../utils/cordova
 import { renderLog } from '../../utils/logging';
 
 class AddressBoxWelcome extends PureComponent {
-  static propTypes = {
-    inputProps: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -115,5 +111,8 @@ class AddressBoxWelcome extends PureComponent {
     );
   }
 }
+AddressBoxWelcome.propTypes = {
+  inputProps: PropTypes.object,
+};
 
 export default AddressBoxWelcome;

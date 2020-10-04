@@ -4,13 +4,6 @@ import { Link } from 'react-router';
 import { renderLog } from '../../utils/logging';
 
 export default class OfficeNameText extends Component {
-  static propTypes = {
-    contestOfficeName: PropTypes.string,
-    officeLink: PropTypes.string,
-    politicalParty: PropTypes.string,
-    showOfficeName: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -36,8 +29,7 @@ export default class OfficeNameText extends Component {
                 <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>
               </Link>
             ) :
-              <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>
-            }
+              <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>}
           </span>
         );
       }
@@ -54,8 +46,7 @@ export default class OfficeNameText extends Component {
               <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>
             </Link>
           ) :
-            <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>
-          }
+            <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>}
         </span>
       );
     } else {
@@ -69,3 +60,9 @@ export default class OfficeNameText extends Component {
     return nameText;
   }
 }
+OfficeNameText.propTypes = {
+  contestOfficeName: PropTypes.string,
+  officeLink: PropTypes.string,
+  politicalParty: PropTypes.string,
+  showOfficeName: PropTypes.bool,
+};

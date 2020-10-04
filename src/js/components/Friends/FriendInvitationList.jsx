@@ -5,12 +5,6 @@ import FriendInvitationEmailLinkDisplayForList from './FriendInvitationEmailLink
 import { renderLog } from '../../utils/logging';
 
 export default class FriendInvitationList extends Component {
-  static propTypes = {
-    friendList: PropTypes.array,
-    invitationsSentByMe: PropTypes.bool,
-    previewMode: PropTypes.bool,
-  };
-
   render () {
     renderLog('FriendInvitationList');  // Set LOG_RENDER_EVENTS to log all renders
     const { friendList, invitationsSentByMe, previewMode } = this.props;
@@ -67,3 +61,8 @@ export default class FriendInvitationList extends Component {
     );
   }
 }
+FriendInvitationList.propTypes = {
+  friendList: PropTypes.array,
+  invitationsSentByMe: PropTypes.bool,
+  previewMode: PropTypes.bool,
+};

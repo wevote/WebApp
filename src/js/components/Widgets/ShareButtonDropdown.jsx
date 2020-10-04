@@ -5,12 +5,6 @@ import { renderLog } from '../../utils/logging';
 import { isWebApp } from '../../utils/cordovaUtils';
 
 export default class ShareButtonDropDown extends Component {
-  static propTypes = {
-    shareIcon: PropTypes.object,
-    shareText: PropTypes.string,
-    urlBeingShared: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -107,8 +101,7 @@ export default class ShareButtonDropDown extends Component {
                 </a>
               </li>
             </ul>
-          ) : null
-          }
+          ) : null}
         </div>
         <CopyLinkModal
           show={this.state.showCopyLinkModal}
@@ -119,3 +112,8 @@ export default class ShareButtonDropDown extends Component {
     );
   }
 }
+ShareButtonDropDown.propTypes = {
+  shareIcon: PropTypes.object,
+  shareText: PropTypes.string,
+  urlBeingShared: PropTypes.string,
+};

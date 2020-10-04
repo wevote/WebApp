@@ -49,13 +49,6 @@ const islandFilters = [
 const STARTING_NUMBER_OF_POSITIONS_TO_DISPLAY = 6;
 
 class PositionList extends Component {
-  static propTypes = {
-    ballotItemDisplayName: PropTypes.string.isRequired,
-    incomingPositionList: PropTypes.array.isRequired,
-    params: PropTypes.object,
-    positionListExistsTitle: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -85,7 +78,7 @@ class PositionList extends Component {
       // console.log('PositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
-        followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+        followed: organizationsVoterIsFollowing.filter((org) => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
       });
     });
     // eslint-disable-next-line arrow-body-style
@@ -105,7 +98,7 @@ class PositionList extends Component {
       // console.log('PositionList componentDidMount, position: ', position);
       return ({
         ...position,
-        currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
+        currentFriend: organizationsVoterIsFriendsWith.filter((organizationWeVoteId) => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
       });
     });
 
@@ -168,7 +161,7 @@ class PositionList extends Component {
       // console.log('PositionList onFriendStoreChange, position: ', position);
       return ({
         ...position,
-        currentFriend: organizationsVoterIsFriendsWith.filter(organizationWeVoteId => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
+        currentFriend: organizationsVoterIsFriendsWith.filter((organizationWeVoteId) => organizationWeVoteId === position.speaker_we_vote_id).length > 0,
       });
     });
     // eslint-disable-next-line arrow-body-style
@@ -195,7 +188,7 @@ class PositionList extends Component {
       // console.log('PositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
-        followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+        followed: organizationsVoterIsFollowing.filter((org) => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
       });
     });
     // eslint-disable-next-line arrow-body-style
@@ -203,7 +196,7 @@ class PositionList extends Component {
       // console.log('PositionList onOrganizationStoreChange, position: ', position);
       return ({
         ...position,
-        followed: organizationsVoterIsFollowing.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+        followed: organizationsVoterIsFollowing.filter((org) => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
       });
     });
     this.setState({
@@ -382,8 +375,7 @@ class PositionList extends Component {
                   );
                   foundInItemsAlreadyShown += 1;
                   return foundInStringItem;
-                })
-                }
+                })}
               </SearchResultsFoundInExplanation>
             ) : null;
             return (
@@ -396,8 +388,7 @@ class PositionList extends Component {
                 />
               </div>
             );
-          })
-          }
+          })}
         </UnorderedListWrapper>
         <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
           <ShowMoreItems
@@ -415,6 +406,12 @@ class PositionList extends Component {
     );
   }
 }
+PositionList.propTypes = {
+  ballotItemDisplayName: PropTypes.string.isRequired,
+  incomingPositionList: PropTypes.array.isRequired,
+  params: PropTypes.object,
+  positionListExistsTitle: PropTypes.object,
+};
 
 const styles = () => ({
   iconButton: {

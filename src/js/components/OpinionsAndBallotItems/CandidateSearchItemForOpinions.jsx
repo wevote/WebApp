@@ -7,15 +7,6 @@ import CandidateItemForOpinions from './CandidateItemForOpinions';
 import { renderLog } from '../../utils/logging';
 
 class CandidateSearchItemForOpinions extends Component {
-  static propTypes = {
-    candidateWeVoteId: PropTypes.string.isRequired,
-    contestOfficeName: PropTypes.string,
-    contestOfficeWeVoteId: PropTypes.string,
-    oneCandidate: PropTypes.object,
-    theme: PropTypes.object,
-    externalUniqueId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -98,8 +89,16 @@ class CandidateSearchItemForOpinions extends Component {
     );
   }
 }
+CandidateSearchItemForOpinions.propTypes = {
+  candidateWeVoteId: PropTypes.string.isRequired,
+  contestOfficeName: PropTypes.string,
+  contestOfficeWeVoteId: PropTypes.string,
+  oneCandidate: PropTypes.object,
+  theme: PropTypes.object,
+  externalUniqueId: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   cardHeaderIconRoot: {
     marginTop: '-.3rem',
     fontSize: 20,

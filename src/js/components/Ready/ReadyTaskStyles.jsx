@@ -22,7 +22,7 @@ const ReadyCard = styled.div`
     content: "";
     display: block;
     position: absolute;
-    background: ${props => (props.showprogresscolor ? 'rgb(31,192,111)' : '#bed1fb')};
+    background: ${(props) => (props.showprogresscolor ? 'rgb(31,192,111)' : '#bed1fb')};
     width: 4px;
     z-index: 0;
     height: calc(100% - 32px);
@@ -57,7 +57,7 @@ const Icon = styled.div`
 `;
 
 const PercentComplete = styled.div`
-  color: ${props => (props.showprogresscolor ? 'green' : 'black')};
+  color: ${(props) => (props.showprogresscolor ? 'green' : 'black')};
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 6px;
@@ -93,20 +93,20 @@ const SubTitle = styled.small`
 `;
 
 const StyledButton = styled(Button)`
-  border: 1.5px solid ${props => (props.completed ? 'rgb(31,192,111)' : '#ddd')} !important;
+  border: 1.5px solid ${(props) => (props.completed ? 'rgb(31,192,111)' : '#ddd')} !important;
   padding: 8px 12px !important;
   margin-top: 12px !important;
   border-radius: 5px !important;
-  ${props => (props.completed ? '' : 'font-weight: bold !important;')}
+  ${(props) => (props.completed ? '' : 'font-weight: bold !important;')}
   font-size: 16px !important;
   width: 100% !important;
-  color: ${props => (props.completed ? 'rgb(31,192,111)' : 'inherit')} !important;
+  color: ${(props) => (props.completed ? 'rgb(31,192,111)' : 'inherit')} !important;
   .MuiButton-label {
     width: 100% !important;
     padding: 0 !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: ${props => (props.withoutsteps ? 'flex-start' : 'space-between')} !important;
+    justify-content: ${(props) => (props.withoutsteps ? 'flex-start' : 'space-between')} !important;
   }
   :hover {
     background: #f7f7f7 !important;

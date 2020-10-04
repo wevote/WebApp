@@ -43,8 +43,8 @@ const SubTitle = styled.h3`
   font-weight: 300;
   font-size: 24px;
   text-align: center;
-  visibility: ${props => (props.out ? 'hidden' : 'visible')};
-  animation: ${props => (props.out ? fadeOut : fadeIn)} 300ms ease-in;
+  visibility: ${(props) => (props.out ? 'hidden' : 'visible')};
+  animation: ${(props) => (props.out ? fadeOut : fadeIn)} 300ms ease-in;
   transition: visibility 1s linear;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 20px;

@@ -4,9 +4,6 @@ import FacebookActions from '../../actions/FacebookActions';
 import { renderLog } from '../../utils/logging';
 
 class FacebookDownloadPicture extends React.Component {
-  static propTypes = {
-  };
-
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have a "Oh snap" page

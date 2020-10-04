@@ -23,27 +23,6 @@ import ChooseOrOppose from './ChooseOrOppose';
 
 
 class ItemActionBar extends PureComponent {
-  static propTypes = {
-    ballotItemDisplayName: PropTypes.string,
-    ballotItemWeVoteId: PropTypes.string.isRequired,
-    buttonsOnly: PropTypes.bool,
-    classes: PropTypes.object,
-    commentButtonHide: PropTypes.bool,
-    commentButtonHideInMobile: PropTypes.bool,
-    // currentBallotIdInUrl: PropTypes.string,
-    externalUniqueId: PropTypes.string,
-    handleDisableLink: PropTypes.func,
-    handleEnableLink: PropTypes.func,
-    hidePositionPublicToggle: PropTypes.bool,
-    opposeHideInMobile: PropTypes.bool,
-    positionPublicToggleWrapAllowed: PropTypes.bool,
-    shareButtonHide: PropTypes.bool,
-    supportOrOpposeHasBeenClicked: PropTypes.func,
-    togglePositionStatementFunction: PropTypes.func,
-    inModal: PropTypes.bool,
-    // urlWithoutHash: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -797,8 +776,28 @@ class ItemActionBar extends PureComponent {
     );
   }
 }
+ItemActionBar.propTypes = {
+  ballotItemDisplayName: PropTypes.string,
+  ballotItemWeVoteId: PropTypes.string.isRequired,
+  buttonsOnly: PropTypes.bool,
+  classes: PropTypes.object,
+  commentButtonHide: PropTypes.bool,
+  commentButtonHideInMobile: PropTypes.bool,
+  // currentBallotIdInUrl: PropTypes.string,
+  externalUniqueId: PropTypes.string,
+  handleDisableLink: PropTypes.func,
+  handleEnableLink: PropTypes.func,
+  hidePositionPublicToggle: PropTypes.bool,
+  opposeHideInMobile: PropTypes.bool,
+  positionPublicToggleWrapAllowed: PropTypes.bool,
+  shareButtonHide: PropTypes.bool,
+  supportOrOpposeHasBeenClicked: PropTypes.func,
+  togglePositionStatementFunction: PropTypes.func,
+  inModal: PropTypes.bool,
+  // urlWithoutHash: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonIcon: {
     fontSize: 18,
     marginRight: '.3rem',

@@ -4,11 +4,6 @@ import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 
 export default class FacebookFriendTinyDisplay extends Component {
-  static propTypes = {
-    name: PropTypes.string,
-    picture: PropTypes.object,
-  };
-
   render () {
     renderLog('FacebookFriendTinyDisplay');  // Set LOG_RENDER_EVENTS to log all renders
     let displayName = '';
@@ -33,3 +28,7 @@ export default class FacebookFriendTinyDisplay extends Component {
     );
   }
 }
+FacebookFriendTinyDisplay.propTypes = {
+  name: PropTypes.string,
+  picture: PropTypes.object,
+};

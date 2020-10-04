@@ -24,28 +24,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     document.body.click();
   }
 
-  static propTypes = {
-    ballotItemDisplayName: PropTypes.string,
-    ballotItemWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-    closeSupportOpposeCountDisplayModal: PropTypes.bool,
-    controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
-    goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
-    handleLeaveCandidateCard: PropTypes.func,
-    handleEnterCandidateCard: PropTypes.func,
-    hideEndorsementsOverview: PropTypes.bool,
-    hideNumbersOfAllPositions: PropTypes.bool,
-    hideShowMoreLink: PropTypes.bool,
-    inModal: PropTypes.bool,
-    openAdviserMaterialUIPopover: PropTypes.bool,
-    openSupportOpposeCountDisplayModal: PropTypes.bool,
-    supportOpposeCountDisplayModalTutorialOn: PropTypes.bool,
-    supportOpposeCountDisplayModalTutorialText: PropTypes.object,
-    showDownArrow: PropTypes.bool,
-    showUpArrow: PropTypes.bool,
-    uniqueExternalId: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.mobile = 'ontouchstart' in document.documentElement;
@@ -1109,8 +1087,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               </NetworkScoreWrapper>
             )}
           </StickyPopover>
-        ) : null
-        }
+        ) : null}
         {/* Your Score: Where you aren't supporting or opposing yet */}
         {(!showVoterPersonalScore && !voterSupportsBallotItem && !voterOpposesBallotItem) && (
           <>
@@ -1144,9 +1121,30 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     );
   }
 }
+BallotItemSupportOpposeCountDisplay.propTypes = {
+  ballotItemDisplayName: PropTypes.string,
+  ballotItemWeVoteId: PropTypes.string.isRequired,
+  classes: PropTypes.object,
+  closeSupportOpposeCountDisplayModal: PropTypes.bool,
+  controlAdviserMaterialUIPopoverFromProp: PropTypes.bool,
+  goToBallotItem: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
+  handleLeaveCandidateCard: PropTypes.func,
+  handleEnterCandidateCard: PropTypes.func,
+  hideEndorsementsOverview: PropTypes.bool,
+  hideNumbersOfAllPositions: PropTypes.bool,
+  hideShowMoreLink: PropTypes.bool,
+  inModal: PropTypes.bool,
+  openAdviserMaterialUIPopover: PropTypes.bool,
+  openSupportOpposeCountDisplayModal: PropTypes.bool,
+  supportOpposeCountDisplayModalTutorialOn: PropTypes.bool,
+  supportOpposeCountDisplayModalTutorialText: PropTypes.object,
+  showDownArrow: PropTypes.bool,
+  showUpArrow: PropTypes.bool,
+  uniqueExternalId: PropTypes.string,
+};
 
 // ${theme.colors.opposeRedRgb}  // Why doesn't this pull from WebApp/src/js/styled-theme.js ?
-const styles = theme => ({
+const styles = (theme) => ({
   arrowRightAltIconDown: {
     transform: 'rotate(90deg) scale(2, 2)',
     position: 'relative',

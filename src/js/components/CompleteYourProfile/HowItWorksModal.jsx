@@ -12,13 +12,6 @@ import HowItWorks from '../../routes/HowItWorks';
 import { hideZenDeskHelpVisibility, setZenDeskHelpVisibility } from '../../utils/applicationUtils';
 
 class HowItWorksModal extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    pathname: PropTypes.string,
-    show: PropTypes.bool,
-    toggleFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -100,6 +93,13 @@ class HowItWorksModal extends Component {
     );
   }
 }
+HowItWorksModal.propTypes = {
+  classes: PropTypes.object,
+  pathname: PropTypes.string,
+  show: PropTypes.bool,
+  toggleFunction: PropTypes.func.isRequired,
+};
+
 const styles = () => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
@@ -151,7 +151,7 @@ const ModalTitleArea = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: ${props => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
+  padding: ${(props) => (props.firstSlide ? '24px 24px 12px 24px' : '10px 14px')};
   z-index: 999;
   @media (min-width: 769px) {
     border-bottom: 2px solid #f7f7f7;

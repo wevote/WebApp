@@ -7,14 +7,6 @@ import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingF
 import AppActions from '../../actions/AppActions';
 
 class SettingsAccountLevelChip extends Component {
-  static propTypes = {
-    chosenFeaturePackage: PropTypes.oneOf(['FREE', 'PROFESSIONAL', 'ENTERPRISE']),
-    classes: PropTypes.object,
-    ignoreIfUpgraded: PropTypes.bool,
-    onClickDisabled: PropTypes.bool,
-    requiredFeaturePackage: PropTypes.oneOf(['PROFESSIONAL', 'ENTERPRISE']),
-  };
-
   constructor (props) {
     super(props);
 
@@ -62,6 +54,13 @@ class SettingsAccountLevelChip extends Component {
     );
   }
 }
+SettingsAccountLevelChip.propTypes = {
+  chosenFeaturePackage: PropTypes.oneOf(['FREE', 'PROFESSIONAL', 'ENTERPRISE']),
+  classes: PropTypes.object,
+  ignoreIfUpgraded: PropTypes.bool,
+  onClickDisabled: PropTypes.bool,
+  requiredFeaturePackage: PropTypes.oneOf(['PROFESSIONAL', 'ENTERPRISE']),
+};
 
 const styles = {
   root: {

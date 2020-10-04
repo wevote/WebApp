@@ -19,18 +19,6 @@ import webAppConfig from '../../config';
 /* global $ */
 
 class PaidAccountUpgradeModal extends Component {
-  // This modal will show a users ballot guides from previous and current elections.
-
-  static propTypes = {
-    classes: PropTypes.object,
-    initialPaidAccountProcessStep: PropTypes.string,
-    initialPricingPlan: PropTypes.string,
-    pathname: PropTypes.string,
-    show: PropTypes.bool,
-    // stripe: PropTypes.object,
-    toggleFunction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -1050,6 +1038,16 @@ class PaidAccountUpgradeModal extends Component {
     );
   }
 }
+PaidAccountUpgradeModal.propTypes = {
+  classes: PropTypes.object,
+  initialPaidAccountProcessStep: PropTypes.string,
+  initialPricingPlan: PropTypes.string,
+  pathname: PropTypes.string,
+  show: PropTypes.bool,
+  // stripe: PropTypes.object,
+  toggleFunction: PropTypes.func.isRequired,
+};
+
 const styles = () => ({
   button: {
     marginRight: 8,

@@ -17,17 +17,6 @@ import VoterStore from '../../stores/VoterStore';
 
 
 class ActivityCommentAdd extends Component {
-  static propTypes = {
-    activityTidbitWeVoteId: PropTypes.string.isRequired,
-    activityCommentWeVoteId: PropTypes.string,
-    addChildSavedFunction: PropTypes.func,
-    classes: PropTypes.object,
-    commentEditSavedFunction: PropTypes.func,
-    hidePhotoFromTextField: PropTypes.bool,
-    inEditMode: PropTypes.bool,
-    parentCommentWeVoteId: PropTypes.string,  // Signifies that this is a response to a comment
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -165,6 +154,17 @@ class ActivityCommentAdd extends Component {
     );
   }
 }
+ActivityCommentAdd.propTypes = {
+  activityTidbitWeVoteId: PropTypes.string.isRequired,
+  activityCommentWeVoteId: PropTypes.string,
+  addChildSavedFunction: PropTypes.func,
+  classes: PropTypes.object,
+  commentEditSavedFunction: PropTypes.func,
+  hidePhotoFromTextField: PropTypes.bool,
+  inEditMode: PropTypes.bool,
+  parentCommentWeVoteId: PropTypes.string,  // Signifies that this is a response to a comment
+};
+
 
 const styles = () => ({
   accountCircle: {

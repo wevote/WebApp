@@ -31,15 +31,13 @@ import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTabl
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import VoterStore from '../stores/VoterStore';
 import webAppConfig from '../config';
+import FriendInvitationByEmailVerifyProcess
+  from "./Process/FriendInvitationByEmailVerifyProcess";
 // import PledgeToVote from '../components/Ready/PledgeToVote';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class Ready extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -317,8 +315,11 @@ class Ready extends Component {
     );
   }
 }
+Ready.propTypes = {
+  params: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 150,
     height: 150,

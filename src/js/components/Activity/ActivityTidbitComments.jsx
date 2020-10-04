@@ -18,13 +18,6 @@ import VoterStore from '../../stores/VoterStore';
 const STARTING_NUMBER_OF_PARENT_COMMENTS_TO_DISPLAY = 1;
 
 class ActivityTidbitComments extends Component {
-  static propTypes = {
-    activityTidbitWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-    editingTurnedOff: PropTypes.bool,
-    showAllParentComments: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -353,6 +346,12 @@ class ActivityTidbitComments extends Component {
     );
   }
 }
+ActivityTidbitComments.propTypes = {
+  activityTidbitWeVoteId: PropTypes.string.isRequired,
+  classes: PropTypes.object,
+  editingTurnedOff: PropTypes.bool,
+  showAllParentComments: PropTypes.bool,
+};
 
 const styles = () => ({
   accountCircle: {

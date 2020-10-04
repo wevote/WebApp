@@ -14,11 +14,6 @@ import { arrayContains } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 class ValuesToFollowPreview extends Component {
-  static propTypes = {
-    followToggleOnItsOwnLine: PropTypes.bool,
-    includeLinkToIssue: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -152,6 +147,10 @@ class ValuesToFollowPreview extends Component {
     );
   }
 }
+ValuesToFollowPreview.propTypes = {
+  followToggleOnItsOwnLine: PropTypes.bool,
+  includeLinkToIssue: PropTypes.bool,
+};
 
 const OneVoterGuideWrapper = styled.div`
   margin: 1px !important;

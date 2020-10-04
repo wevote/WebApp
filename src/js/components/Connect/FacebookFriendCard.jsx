@@ -4,11 +4,6 @@ import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 
 export default class FacebookFriendCard extends Component {
-  static propTypes = {
-    picture: PropTypes.object,
-    name: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -29,11 +24,14 @@ export default class FacebookFriendCard extends Component {
                 {this.props.name}
               </span>
             ) :
-              null
-            }
+              null}
           </div>
         </div>
       </div>
     );
   }
 }
+FacebookFriendCard.propTypes = {
+  picture: PropTypes.object,
+  name: PropTypes.string,
+};

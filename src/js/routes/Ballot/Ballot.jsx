@@ -61,13 +61,6 @@ const delayBeforeVoterRefreshCall = 1000;
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
 class Ballot extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    location: PropTypes.object,
-    params: PropTypes.object,
-    pathname: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -602,7 +595,7 @@ class Ballot extends Component {
         // console.log('onBallotStoreChange completionLevelFilterType: ', completionLevelFilterType);
         let ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
         if (ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length) {
-          raceLevelFilterItems = ballotWithItemsFromCompletionFilterType.filter(item => item.race_office_level === raceLevelFilterType ||
+          raceLevelFilterItems = ballotWithItemsFromCompletionFilterType.filter((item) => item.race_office_level === raceLevelFilterType ||
             item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
           this.setState({
             doubleFilteredBallotItemsLength: raceLevelFilterItems.length,
@@ -763,7 +756,7 @@ class Ballot extends Component {
     const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
     let totalNumberOfBallotItems;
     if (ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length) {
-      const raceLevelFilterItems = ballotWithItemsFromCompletionFilterType.filter(item => item.race_office_level === raceLevelFilterType ||
+      const raceLevelFilterItems = ballotWithItemsFromCompletionFilterType.filter((item) => item.race_office_level === raceLevelFilterType ||
         item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
       if (raceLevelFilterItems && raceLevelFilterItems.length) {
         totalNumberOfBallotItems = raceLevelFilterItems.length;
@@ -1002,7 +995,7 @@ class Ballot extends Component {
 
   ballotItemLinkHasBeenClicked (selectedBallotItemId) {
     const { ballotWithItemsFromCompletionFilterType, ballotWithAllItems } = this.state;
-    const ballotItem = ballotWithItemsFromCompletionFilterType.find(item => item.we_vote_id === selectedBallotItemId);
+    const ballotItem = ballotWithItemsFromCompletionFilterType.find((item) => item.we_vote_id === selectedBallotItemId);
     // If the ballot item exists in the array of ballot items filtered by the completion filter type
     if (ballotItem) {
       const raceCategoryDisplayText = mapCategoryFilterType(ballotItem.race_office_level || ballotItem.kind_of_ballot_item);
@@ -1014,7 +1007,7 @@ class Ballot extends Component {
       }
     } else {
       // The ballot item was not found in the array of ballot items filtered by completion filter type
-      const ballotItemFromAll = ballotWithAllItems.find(item => item.we_vote_id === selectedBallotItemId);
+      const ballotItemFromAll = ballotWithAllItems.find((item) => item.we_vote_id === selectedBallotItemId);
       const raceCategoryDisplayText = mapCategoryFilterType(ballotItemFromAll.race_office_level || ballotItemFromAll.kind_of_ballot_item);
       // console.log('ballotItemLinkHasBeenClicked raceLevelFilterType ballotItem=False:', raceCategoryDisplayText);
       BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
@@ -1171,7 +1164,7 @@ class Ballot extends Component {
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
                       { showBallotDecisionsTabs() && (
-                        <React.Fragment>
+                        <>
                           <div className="ballot__filter d-print-none">
                             <BallotDecisionsTabs
                               completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
@@ -1181,12 +1174,12 @@ class Ballot extends Component {
                             />
                           </div>
                           <hr className="ballot-header-divider" />
-                        </React.Fragment>
+                        </>
                       )}
                       <BallotFilterRow showFilterTabs={showFilterTabs}>
                         <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
                           { ballotWithItemsFromCompletionFilterType.length ? (
-                            <React.Fragment>
+                            <>
                               <FilterBaseSearch
                                 alwaysOpen={!showFilterTabs}
                                 isSearching={isSearching}
@@ -1265,16 +1258,13 @@ class Ballot extends Component {
                                     return null;
                                   }
                                 })
-                              )
-                            }
-                            </React.Fragment>
-                          ) : null
-                          }
+                              )}
+                            </>
+                          ) : null}
                         </div>
                       </BallotFilterRow>
                     </div>
-                  ) : null
-                  }
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -1293,8 +1283,7 @@ class Ballot extends Component {
                     ballotLocationChosen
                     googleCivicElectionId={this.state.googleCivicElectionId}
                   />
-                ) : null
-                }
+                ) : null}
                 <div className="col-sm-12 col-lg-9" id="ballotRoute-topOfBallot">
                   {(isSearching && searchText) && (
                     <SearchTitle>
@@ -1375,8 +1364,7 @@ class Ballot extends Component {
                                       );
                                       foundInItemsAlreadyShown += 1;
                                       return foundInStringItem;
-                                    })
-                                    }
+                                    })}
                                   </SearchResultsFoundInExplanation>
                                 )}
                                 <BallotItemCompressed
@@ -1392,11 +1380,9 @@ class Ballot extends Component {
                         } else {
                           return null;
                         }
-                      })
-                      }
+                      })}
                       {doubleFilteredBallotItemsLength === 0 &&
-                        this.showUserEmptyOptions()
-                      }
+                        this.showUserEmptyOptions()}
                       {!!(totalNumberOfBallotItems) && (
                         <ShowMoreItemsWrapper id="showMoreItemsId" onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>
                           <ShowMoreItems
@@ -1435,8 +1421,7 @@ class Ballot extends Component {
                         )}
                       />
                     </span>
-                  ) : null
-                }
+                  ) : null}
                 </div>
 
                 { ballotWithItemsFromCompletionFilterType.length === 0 ?
@@ -1472,8 +1457,7 @@ class Ballot extends Component {
                         </div>
                       </div>
                     </div>
-                  )
-                }
+                  )}
               </div>
             </Wrapper>
           </div>
@@ -1482,6 +1466,12 @@ class Ballot extends Component {
     );
   }
 }
+Ballot.propTypes = {
+  classes: PropTypes.object,
+  location: PropTypes.object,
+  params: PropTypes.object,
+  pathname: PropTypes.string,
+};
 
 const BallotListWrapper = styled.div`
   padding-bottom: 40px;
@@ -1556,7 +1546,7 @@ const Wrapper = styled.div`
   padding-bottom: ${({ padBottom }) => padBottom};
 `;
 
-const styles = theme => ({
+const styles = (theme) => ({
   badge: {
     top: 13,
     minWidth: 16,

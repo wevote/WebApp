@@ -9,13 +9,6 @@ import { renderLog } from '../../utils/logging';
 
 class StateDropDown extends Component {
   // This modal will show a users ballot guides from previous and current elections.
-
-  static propTypes = {
-    classes: PropTypes.object,
-    onStateDropDownChange: PropTypes.func,
-    stateCodesToDisplay: PropTypes.array,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -139,6 +132,12 @@ class StateDropDown extends Component {
     );
   }
 }
+StateDropDown.propTypes = {
+  classes: PropTypes.object,
+  onStateDropDownChange: PropTypes.func,
+  stateCodesToDisplay: PropTypes.array,
+};
+
 const styles = ({
   formControl: {
     height: 26,

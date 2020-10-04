@@ -11,17 +11,6 @@ import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActi
 
 
 class MeasureItemForAddPositions extends Component {
-  static propTypes = {
-    ballotItemDisplayName: PropTypes.string.isRequired,
-    ballotItemWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-    measureText: PropTypes.string,
-    organization: PropTypes.object,
-    organization_we_vote_id: PropTypes.string,
-    showPositionStatementActionBar: PropTypes.bool,
-    inModal: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -242,8 +231,18 @@ class MeasureItemForAddPositions extends Component {
     );
   }
 }
+MeasureItemForAddPositions.propTypes = {
+  ballotItemDisplayName: PropTypes.string.isRequired,
+  ballotItemWeVoteId: PropTypes.string.isRequired,
+  classes: PropTypes.object,
+  measureText: PropTypes.string,
+  organization: PropTypes.object,
+  organization_we_vote_id: PropTypes.string,
+  showPositionStatementActionBar: PropTypes.bool,
+  inModal: PropTypes.bool,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   cardRoot: {
     padding: '16px 16px 8px 16px',
     [theme.breakpoints.down('lg')]: {

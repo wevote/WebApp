@@ -6,14 +6,6 @@ import Testimonial from '../Widgets/Testimonial';
 import cookies from '../../utils/cookies';
 
 class FriendsPromoBox extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    testimonialAuthor: PropTypes.string,
-    testimonial: PropTypes.string,
-    imageUrl: PropTypes.string,
-    isMobile: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -39,7 +31,7 @@ class FriendsPromoBox extends React.Component {
     const { testimonialAuthor, imageUrl, testimonial, isMobile, classes } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         { isMobile ?
           !this.state.friendSectionBoxClosed && (
             <div className={classes.mobile}>
@@ -72,12 +64,19 @@ class FriendsPromoBox extends React.Component {
               </div>
             </div>
           )}
-      </React.Fragment>
+      </>
     );
   }
 }
+FriendsPromoBox.propTypes = {
+  classes: PropTypes.object,
+  testimonialAuthor: PropTypes.string,
+  testimonial: PropTypes.string,
+  imageUrl: PropTypes.string,
+  isMobile: PropTypes.bool,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   closeButton: {
     fontSize: '25px',
     position: 'absolute',

@@ -39,11 +39,6 @@ import { shareBottomOffset } from '../../utils/cordovaOffsets';
 import { stringContains } from '../../utils/textFormat';
 
 class ShareButtonFooter extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    pathname: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -662,8 +657,7 @@ class ShareButtonFooter extends Component {
                             </span>
                           )}
                         </>
-                      )
-                      }
+                      )}
                     </SubTitle>
                   </ModalTitleArea>
                   {(developmentFeatureTurnedOn && isMobile() && navigator.share) ? (
@@ -851,14 +845,17 @@ class ShareButtonFooter extends Component {
                     Cancel
                   </Button>
                 </>
-              )
-            }
+              )}
           </Container>
         </Drawer>
       </Wrapper>
     );
   }
 }
+ShareButtonFooter.propTypes = {
+  classes: PropTypes.object,
+  pathname: PropTypes.string,
+};
 
 const styles = () => ({
   buttonDefault: {
@@ -919,7 +916,7 @@ const styles = () => ({
 const Container = styled.div`
   margin: 0 auto;
   max-width: 576px;
-  padding: ${props => (props.shareOptionsMode ? '16px 16px 32px' : '24px 16px 32px')};
+  padding: ${(props) => (props.shareOptionsMode ? '16px 16px 32px' : '24px 16px 32px')};
 `;
 
 const Flex = styled.div`
@@ -1056,7 +1053,7 @@ const Title = styled.h3`
 const Wrapper = styled.div`
   position: fixed;
   width: 100%;
-  bottom:  ${props => (props.shareBottomValue)};
+  bottom:  ${(props) => (props.shareBottomValue)};
   display: block;
   @media (min-width: 576px) {
     display: none;

@@ -13,10 +13,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 class ReadyTaskPlan extends React.Component {
-  static propTypes = {
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -159,8 +155,11 @@ class ReadyTaskPlan extends React.Component {
     );
   }
 }
+ReadyTaskPlan.propTypes = {
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   arrowRoot: {
     fontSize: 14,
     marginBottom: 3,

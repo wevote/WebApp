@@ -10,17 +10,6 @@ import IssueImageDisplay from './IssueImageDisplay';
 import ReadMore from '../Widgets/ReadMore';
 
 class IssueCardCompressed extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    currentBallotIdInUrl: PropTypes.string,
-    followToggleOn: PropTypes.bool,
-    issue: PropTypes.object.isRequired,
-    issueImageSize: PropTypes.string,
-    turnOffDescription: PropTypes.bool,
-    turnOffIssueImage: PropTypes.bool,
-    urlWithoutHash: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -138,8 +127,7 @@ class IssueCardCompressed extends Component {
                   >
                     {issueImage}
                   </Link>
-                )
-              }
+                )}
             </div>
             <IssueName>
               <Link to={this.getIssueLink}
@@ -160,8 +148,7 @@ class IssueCardCompressed extends Component {
                   urlWithoutHash={this.props.urlWithoutHash}
                 />
               </div>
-            ) : null
-            }
+            ) : null}
           </Flex>
           { this.props.turnOffDescription ?
             <Description /> :
@@ -176,13 +163,22 @@ class IssueCardCompressed extends Component {
                   />
                 </Link>
               </Description>
-            )
-          }
+            )}
         </Wrapper>
       </Item>
     );
   }
 }
+IssueCardCompressed.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
+  currentBallotIdInUrl: PropTypes.string,
+  followToggleOn: PropTypes.bool,
+  issue: PropTypes.object.isRequired,
+  issueImageSize: PropTypes.string,
+  turnOffDescription: PropTypes.bool,
+  turnOffIssueImage: PropTypes.bool,
+  urlWithoutHash: PropTypes.string,
+};
 
 const Item = styled.div`
   width: 100%;

@@ -13,13 +13,6 @@ import ShowMoreItems from '../Widgets/ShowMoreItems';
 
 
 class VoterGuideListSearchResults extends Component {
-  static propTypes = {
-    clearSearchTextNow: PropTypes.bool,
-    googleCivicElectionId: PropTypes.number,
-    organizationWeVoteId: PropTypes.string,
-    searchUnderwayFunction: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -267,8 +260,7 @@ class VoterGuideListSearchResults extends Component {
                           );
                           foundInItemsAlreadyShown += 1;
                           return foundInStringItem;
-                        })
-                        }
+                        })}
                       </SearchResultsFoundInExplanation>
                       )}
                       { searchPriority > 0  && (
@@ -286,8 +278,7 @@ class VoterGuideListSearchResults extends Component {
                       )}
                     </div>
                   );
-                })
-                }
+                })}
               </CardChildListGroup>
             ) : (
               <span>{ noSearchResultsPossibility }</span>
@@ -307,6 +298,12 @@ class VoterGuideListSearchResults extends Component {
     );
   }
 }
+VoterGuideListSearchResults.propTypes = {
+  clearSearchTextNow: PropTypes.bool,
+  googleCivicElectionId: PropTypes.number,
+  organizationWeVoteId: PropTypes.string,
+  searchUnderwayFunction: PropTypes.func,
+};
 
 const CardChildListGroup = styled.ul`
   padding: 0;

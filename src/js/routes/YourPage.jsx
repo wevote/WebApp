@@ -8,9 +8,6 @@ import VoterStore from '../stores/VoterStore';
 
 // This file is only for use with people who aren't signed in
 export default class YourPage extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = { voter: VoterStore.getVoter() };
@@ -42,7 +39,8 @@ export default class YourPage extends Component {
     VoterActions.positionListForVoter(showOnlyThisElection, showAllOtherElections);
   }
 
-  componentWillUpdate () {
+  // eslint-disable-next-line camelcase,react/sort-comp
+  UNSAFE_componentWillUpdate () {
     const { voter } = this.state;
 
     const voterHasTwitterHandle = !!voter.twitter_screen_name;

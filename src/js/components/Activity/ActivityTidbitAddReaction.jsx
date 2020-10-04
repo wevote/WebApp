@@ -11,11 +11,6 @@ import { renderLog } from '../../utils/logging';
 
 
 class ActivityTidbitAddReaction extends Component {
-  static propTypes = {
-    activityTidbitWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -121,6 +116,10 @@ class ActivityTidbitAddReaction extends Component {
     );
   }
 }
+ActivityTidbitAddReaction.propTypes = {
+  activityTidbitWeVoteId: PropTypes.string.isRequired,
+  classes: PropTypes.object,
+};
 
 const styles = () => ({
   commentsButton: {

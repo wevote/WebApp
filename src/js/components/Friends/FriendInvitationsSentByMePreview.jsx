@@ -7,9 +7,6 @@ import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 
 export default class FriendInvitationsSentByMePreview extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {

@@ -5,11 +5,6 @@ import FacebookConstants from '../../constants/FacebookConstants';
 import { renderLog } from '../../utils/logging';
 
 export default class FacebookPicture extends React.Component {
-  static propTypes = {
-    facebookPictureStatus: PropTypes.string,
-    facebookPictureUrl: PropTypes.string,
-  };
-
   get facebookStatus () {
     let msg;
 
@@ -42,3 +37,7 @@ export default class FacebookPicture extends React.Component {
     );
   }
 }
+FacebookPicture.propTypes = {
+  facebookPictureStatus: PropTypes.string,
+  facebookPictureUrl: PropTypes.string,
+};

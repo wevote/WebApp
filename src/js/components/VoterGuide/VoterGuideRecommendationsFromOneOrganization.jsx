@@ -6,10 +6,6 @@ import GuideList from './GuideList';
 
 
 export default class VoterGuideRecommendationsFromOneOrganization extends Component {
-  static propTypes = {
-    organization_we_vote_id: PropTypes.string.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -77,3 +73,6 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
     return null;
   }
 }
+VoterGuideRecommendationsFromOneOrganization.propTypes = {
+  organization_we_vote_id: PropTypes.string.isRequired,
+};

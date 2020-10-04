@@ -19,16 +19,6 @@ import VoterStore from '../../stores/VoterStore';
 /* global $ */
 
 class VoterPhoneVerificationEntry extends Component {
-  static propTypes = {
-    cancelShouldCloseModal: PropTypes.bool,
-    classes: PropTypes.object,
-    closeSignInModal: PropTypes.func,
-    hideEverythingButSignInWithPhoneForm: PropTypes.bool,
-    hideSignInWithPhoneForm: PropTypes.bool,
-    lockOpenPhoneVerificationButton: PropTypes.bool,
-    toggleOtherSignInOptions: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -393,8 +383,7 @@ class VoterPhoneVerificationEntry extends Component {
               { smsPhoneNumberStatus.make_primary_sms ? <span>Your have chosen a new primary phone number. </span> : null }
               { smsPhoneNumberStatus.sign_in_code_sms_sent && !smsPhoneNumberStatus.sms_phone_number_created ? <span>Please check your phone. A sign in verification code was sent. </span> : null }
             </Alert>
-          ) : null
-        }
+          ) : null}
       </span>
     );
     // console.log('VoterPhoneVerificationEntry render, smsPhoneNumberStatusHtml: ', smsPhoneNumberStatusHtml, ', smsPhoneNumberStatus:', smsPhoneNumberStatus);
@@ -618,6 +607,15 @@ class VoterPhoneVerificationEntry extends Component {
     );
   }
 }
+VoterPhoneVerificationEntry.propTypes = {
+  cancelShouldCloseModal: PropTypes.bool,
+  classes: PropTypes.object,
+  closeSignInModal: PropTypes.func,
+  hideEverythingButSignInWithPhoneForm: PropTypes.bool,
+  hideSignInWithPhoneForm: PropTypes.bool,
+  lockOpenPhoneVerificationButton: PropTypes.bool,
+  toggleOtherSignInOptions: PropTypes.func,
+};
 
 const styles = {
   root: {

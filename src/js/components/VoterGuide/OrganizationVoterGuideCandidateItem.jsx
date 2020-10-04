@@ -13,21 +13,6 @@ import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 
 // This is related to /js/components/Ballot/CandidateItem.jsx
 export default class OrganizationVoterGuideCandidateItem extends Component {
-  static propTypes = {
-    ballot_item_display_name: PropTypes.string.isRequired,
-    candidate_photo_url_large: PropTypes.string.isRequired,
-    candidate_photo_url_medium: PropTypes.string,
-    contest_office_name: PropTypes.string,
-    showLargeImage: PropTypes.bool,
-    link_to_ballot_item_page: PropTypes.bool,
-    linkToOfficePage: PropTypes.bool,
-    organization_we_vote_id: PropTypes.string.isRequired,
-    party: PropTypes.string,
-    twitter_description: PropTypes.string,
-    twitter_followers_count: PropTypes.number,
-    we_vote_id: PropTypes.string.isRequired, // This is the candidateWeVoteId
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -137,8 +122,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
           <div className="card-main__media-object-anchor">
             {this.props.link_to_ballot_item_page ?
               <Link to={this.getCandidateLink} className="u-no-underline">{candidatePhotoUrlHtml}</Link> :
-              candidatePhotoUrlHtml
-            }
+              candidatePhotoUrlHtml}
             {twitterFollowersCount ? (
               <span
                 className={this.props.link_to_ballot_item_page ?
@@ -149,23 +133,20 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                 <span className="fab fa-twitter" />
                 <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
               </span>
-            ) : null
-            }
+            ) : null}
           </div>
 
           <div className="card-main__media-object-content">
             <h2 className="card-main__display-name">
               { this.props.link_to_ballot_item_page ?
                 <Link to={this.getCandidateLink}>{ballotItemDisplayName}</Link> :
-                ballotItemDisplayName
-            }
+                ballotItemDisplayName}
             </h2>
             <span onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}>
               <p
                 className={this.props.link_to_ballot_item_page ?
                   'u-gray-darker u-cursor--pointer' :
-                  'u-gray-darker'
-                }
+                  'u-gray-darker'}
               >
                 { contestOfficeName ? (
                   <OfficeNameText
@@ -173,8 +154,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                     contestOfficeName={contestOfficeName}
                     officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
                   />
-                ) : null
-                }
+                ) : null}
               </p>
             </span>
             { twitterDescription ? (
@@ -189,11 +169,9 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                 </Link>
                 { this.props.link_to_ballot_item_page ?
                   <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;Read more</Link> :
-                  null
-              }
+                  null}
               </div>
-            ) : null
-            }
+            ) : null}
           </div>
           {' '}
           {/* END .card-main__media-object-content */}
@@ -215,3 +193,17 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     );
   }
 }
+OrganizationVoterGuideCandidateItem.propTypes = {
+  ballot_item_display_name: PropTypes.string.isRequired,
+  candidate_photo_url_large: PropTypes.string.isRequired,
+  candidate_photo_url_medium: PropTypes.string,
+  contest_office_name: PropTypes.string,
+  showLargeImage: PropTypes.bool,
+  link_to_ballot_item_page: PropTypes.bool,
+  linkToOfficePage: PropTypes.bool,
+  organization_we_vote_id: PropTypes.string.isRequired,
+  party: PropTypes.string,
+  twitter_description: PropTypes.string,
+  twitter_followers_count: PropTypes.number,
+  we_vote_id: PropTypes.string.isRequired, // This is the candidateWeVoteId
+};

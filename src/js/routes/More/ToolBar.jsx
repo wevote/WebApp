@@ -7,11 +7,6 @@ import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 
 class ToolBar extends Component {
-  static propTypes = {
-    // classes: PropTypes.object,
-    hideGitHub: PropTypes.bool,
-  };
-
   render () {
     renderLog('ToolBar');  // Set LOG_RENDER_EVENTS to log all renders
     // const { classes } = this.props;
@@ -90,8 +85,7 @@ class ToolBar extends Component {
                 </Tooltip>
               )}
             />
-          )
-          }
+          )}
           <OpenExternalWebSite
             linkIdAttribute="wevoteBlog"
             className="u-no-underline"
@@ -110,6 +104,10 @@ class ToolBar extends Component {
     );
   }
 }
+ToolBar.propTypes = {
+  // classes: PropTypes.object,
+  hideGitHub: PropTypes.bool,
+};
 
 const Icon = styled.i`
   color: white;
@@ -125,7 +123,7 @@ const ToolBarContainer = styled.div`
   top: -10px;
 `;
 
-const styles = theme => ({
+const styles = (theme) => ({
   iconButtonRoot: {
     '&:hover': {
       backgroundColor: 'transparent',

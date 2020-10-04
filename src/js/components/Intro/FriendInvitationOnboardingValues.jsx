@@ -11,13 +11,6 @@ import { renderLog } from '../../utils/logging';
 
 
 class FriendInvitationOnboardingValues extends Component {
-  static propTypes = {
-    friendFirstName: PropTypes.string,
-    friendLastName: PropTypes.string,
-    friendImageUrlHttpsTiny: PropTypes.string,
-    friendIssueWeVoteIdList: PropTypes.array,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -134,8 +127,14 @@ class FriendInvitationOnboardingValues extends Component {
     );
   }
 }
+FriendInvitationOnboardingValues.propTypes = {
+  friendFirstName: PropTypes.string,
+  friendLastName: PropTypes.string,
+  friendImageUrlHttpsTiny: PropTypes.string,
+  friendIssueWeVoteIdList: PropTypes.array,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonRoot: {
     fontSize: 12,
     padding: '4px 8px',

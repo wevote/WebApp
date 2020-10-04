@@ -12,10 +12,6 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 
 class PositionItemScorePopoverTextOnly extends Component {
-  static propTypes = {
-    positionItem: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -223,7 +219,7 @@ class PositionItemScorePopoverTextOnly extends Component {
                 )}
               </>
             )}
-            {issuesInCommonBetweenOrganizationAndVoter.map(issue => (
+            {issuesInCommonBetweenOrganizationAndVoter.map((issue) => (
               <ScoreExplanationWrapper key={`issueInScore-${issue.issue_we_vote_id}`}>
                 <PopoverTitleIcon>
                   <ReactSVG
@@ -270,6 +266,9 @@ class PositionItemScorePopoverTextOnly extends Component {
     );
   }
 }
+PositionItemScorePopoverTextOnly.propTypes = {
+  positionItem: PropTypes.object.isRequired,
+};
 
 const styles = () => ({
   endorsementIcon: {

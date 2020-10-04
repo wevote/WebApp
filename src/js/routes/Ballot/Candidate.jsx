@@ -36,11 +36,6 @@ import webAppConfig from '../../config';
 
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 class Candidate extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    params: PropTypes.object.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -384,6 +379,10 @@ class Candidate extends Component {
     );
   }
 }
+Candidate.propTypes = {
+  classes: PropTypes.object,
+  params: PropTypes.object.isRequired,
+};
 
 const styles = () => ({
   informationIcon: {

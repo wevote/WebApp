@@ -8,10 +8,6 @@ import SplitIconButton from './SplitIconButton';
 
 
 class ViewOnBallotpedia extends Component {
-  static propTypes={
-    externalLinkUrl: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -42,6 +38,9 @@ class ViewOnBallotpedia extends Component {
     );
   }
 }
+ViewOnBallotpedia.propTypes = {
+  externalLinkUrl: PropTypes.string,
+};
 
 const Wrapper = styled.div`
   margin-bottom: 12px;

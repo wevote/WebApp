@@ -17,12 +17,6 @@ import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
 class OrganizationVoterGuideCard extends Component {
-  static propTypes = {
-    organization: PropTypes.object.isRequired,
-    isVoterOwner: PropTypes.bool,
-    turnOffDescription: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -69,8 +63,7 @@ class OrganizationVoterGuideCard extends Component {
               <img src={organizationPhotoUrlLarge} alt={`${displayName}`} />
             </Link>
           </ProfileAvatar>
-        ) : null
-        }
+        ) : null}
         <br />
         <Link to={voterGuideLink}>
           <h3 className="card-main__display-name">{displayName}</h3>
@@ -157,8 +150,7 @@ class OrganizationVoterGuideCard extends Component {
             />
           </TwitterDescription>
         ) :
-          <p className="card-main__description" />
-        }
+          <p className="card-main__description" />}
         <IssuesWrapper>
           <IssuesByOrganizationDisplayList
             organizationWeVoteId={organizationWeVoteId}
@@ -170,6 +162,11 @@ class OrganizationVoterGuideCard extends Component {
     );
   }
 }
+OrganizationVoterGuideCard.propTypes = {
+  organization: PropTypes.object.isRequired,
+  isVoterOwner: PropTypes.bool,
+  turnOffDescription: PropTypes.bool,
+};
 
 const CardMain = styled.div`
   border: 1px solid #fff;

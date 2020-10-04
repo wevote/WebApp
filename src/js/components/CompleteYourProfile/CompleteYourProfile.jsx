@@ -15,10 +15,6 @@ import { renderLog } from '../../utils/logging';
 // import { ThumbUp } from '@material-ui/icons';
 
 class CompleteYourProfile extends Component {
-  static propTypes = {
-    // classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -262,7 +258,7 @@ class CompleteYourProfile extends Component {
 
   goToNextIncompleteStep = () => {
     const { steps } = this.state;
-    const notCompletedSteps = steps.filter(oneStep => !oneStep.completed);
+    const notCompletedSteps = steps.filter((oneStep) => !oneStep.completed);
     if (notCompletedSteps && notCompletedSteps[0]) {
       this.setState({
         activeStep: notCompletedSteps[0].id,
@@ -280,7 +276,7 @@ class CompleteYourProfile extends Component {
   previousStep () {
     this.sortSteps();
     const { steps } = this.state;
-    const currentIndex = steps.map(oneStep => oneStep.id).indexOf(this.state.activeStep);
+    const currentIndex = steps.map((oneStep) => oneStep.id).indexOf(this.state.activeStep);
     // console.log('currentIndex: ', currentIndex);
     if (currentIndex >= 1) {
       this.setState({
@@ -292,7 +288,7 @@ class CompleteYourProfile extends Component {
   nextStep () {
     this.sortSteps();
     const { steps } = this.state;
-    const currentIndex = steps.map(e => e.id).indexOf(this.state.activeStep);
+    const currentIndex = steps.map((e) => e.id).indexOf(this.state.activeStep);
     // console.log('currentIndex: ', currentIndex);
     if (steps[currentIndex + 1]) {
       this.setState({
@@ -316,8 +312,8 @@ class CompleteYourProfile extends Component {
       return comparison;
     }
 
-    const completed = this.state.steps.filter(oneStep => oneStep.completed);
-    const notCompleted = this.state.steps.filter(oneStep => !oneStep.completed);
+    const completed = this.state.steps.filter((oneStep) => oneStep.completed);
+    const notCompleted = this.state.steps.filter((oneStep) => !oneStep.completed);
 
     if (completed) {
       completed.sort(compare);
@@ -360,7 +356,7 @@ class CompleteYourProfile extends Component {
             <Flex>
               <span>
                 <strong>
-                  {steps.filter(oneStep => oneStep.completed).length }
+                  {steps.filter((oneStep) => oneStep.completed).length }
                   {' '}
                   of
                   {' '}
@@ -371,7 +367,7 @@ class CompleteYourProfile extends Component {
                 completed
               </span>
               <Indicators>
-                {steps.map(step => (
+                {steps.map((step) => (
                   <Indicator
                     active={step.id === activeStep}
                     complete={step.completed}
@@ -412,8 +408,7 @@ class CompleteYourProfile extends Component {
                               .
                               {' '}
                             </YourLocation>
-                          )
-                        }
+                          )}
                         {step.completed && (
                           <Completed>
                             <CheckCircle />
@@ -538,10 +533,10 @@ const Indicator = styled.div`
   flex: 1 1 0;
   height: 8px;
   margin: 0 4px;
-  ${props => (props.complete && props.active ? 'background: rgb(31,192,111); border-bottom: 2px solid #2E3C5D;' : '')}
-  ${props => (props.complete && !props.active ? 'background: rgb(31,192,111);' : '')}
-  ${props => (!props.complete && props.active ? 'background: #e1e1e1; border-bottom: 2px solid #2E3C5D;' : '')}
-  ${props => (!props.complete && !props.active ? 'background: #e1e1e1;' : '')}
+  ${(props) => (props.complete && props.active ? 'background: rgb(31,192,111); border-bottom: 2px solid #2E3C5D;' : '')}
+  ${(props) => (props.complete && !props.active ? 'background: rgb(31,192,111);' : '')}
+  ${(props) => (!props.complete && props.active ? 'background: #e1e1e1; border-bottom: 2px solid #2E3C5D;' : '')}
+  ${(props) => (!props.complete && !props.active ? 'background: #e1e1e1;' : '')}
 `;
 
 const Info = styled.span`

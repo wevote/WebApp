@@ -18,26 +18,6 @@ import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 // and Opinions (you can follow) Components
 // Please see VoterGuide/OrganizationCard for the Component displayed by TwitterHandle
 class VoterGuideDisplayForList extends PureComponent {
-  static propTypes = {
-    children: PropTypes.object, // This is how we pass in the FollowToggle
-    organization_we_vote_id: PropTypes.string,
-    voter_guide_image_url_large: PropTypes.string,
-    voter_guide_display_name: PropTypes.string,
-    candidate_name: PropTypes.string,
-    speaker_display_name: PropTypes.string,
-    twitter_description: PropTypes.string,
-    twitter_followers_count: PropTypes.number,
-    twitter_handle: PropTypes.string,
-    is_support: PropTypes.bool,
-    is_positive_rating: PropTypes.bool,
-    is_oppose: PropTypes.bool,
-    is_negative_rating: PropTypes.bool,
-    is_information_only: PropTypes.bool,
-    vote_smart_rating: PropTypes.string,
-    speaker_text: PropTypes.string,
-    more_info_url: PropTypes.string,
-  };
-
   render () {
     renderLog('VoterGuideDisplayForList');  // Set LOG_RENDER_EVENTS to log all renders
     if (this.props.organization_we_vote_id === undefined) {
@@ -109,8 +89,7 @@ class VoterGuideDisplayForList extends PureComponent {
                 textToDisplay={twitterDescriptionMinusName}
                 numberOfLines={numOfLines}
               />
-            ) : null
-            }
+            ) : null}
             { positionDescription }
           </div>
           <div className="card-child__additional">
@@ -129,8 +108,27 @@ class VoterGuideDisplayForList extends PureComponent {
     );
   }
 }
+VoterGuideDisplayForList.propTypes = {
+  children: PropTypes.object, // This is how we pass in the FollowToggle
+  organization_we_vote_id: PropTypes.string,
+  voter_guide_image_url_large: PropTypes.string,
+  voter_guide_display_name: PropTypes.string,
+  candidate_name: PropTypes.string,
+  speaker_display_name: PropTypes.string,
+  twitter_description: PropTypes.string,
+  twitter_followers_count: PropTypes.number,
+  twitter_handle: PropTypes.string,
+  is_support: PropTypes.bool,
+  is_positive_rating: PropTypes.bool,
+  is_oppose: PropTypes.bool,
+  is_negative_rating: PropTypes.bool,
+  is_information_only: PropTypes.bool,
+  vote_smart_rating: PropTypes.string,
+  speaker_text: PropTypes.string,
+  more_info_url: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 150,
     height: 150,

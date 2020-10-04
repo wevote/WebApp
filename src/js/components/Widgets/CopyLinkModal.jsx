@@ -5,10 +5,6 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { renderLog } from '../../utils/logging';
 
 export default class CopyLinkModal extends Component {
-  static propTypes = {
-    urlBeingShared: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -69,10 +65,12 @@ export default class CopyLinkModal extends Component {
             <span style={{ color: 'red' }}>
               Link copied to your clipboard! You can now paste into an email or social media.
             </span>
-          ) : null
-          }
+          ) : null}
         </Modal.Body>
       </Modal>
     );
   }
 }
+CopyLinkModal.propTypes = {
+  urlBeingShared: PropTypes.string,
+};

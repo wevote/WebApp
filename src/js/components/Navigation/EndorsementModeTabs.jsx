@@ -7,10 +7,6 @@ import AppStore from '../../stores/AppStore';
 import { renderLog } from '../../utils/logging';
 
 class EndorsementModeTabs extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -106,8 +102,11 @@ class EndorsementModeTabs extends Component {
     );
   }
 }
+EndorsementModeTabs.propTypes = {
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   badge: {
     top: 9,
     right: -14,

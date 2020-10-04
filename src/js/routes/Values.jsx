@@ -31,8 +31,6 @@ const imageUrl = cordovaDot(TestimonialPhoto);
 const testimonial = 'I like seeing the opinions of people who share my values.';
 
 export default class Values extends Component {
-  static propTypes = {};
-
   constructor (props) {
     super(props);
     this.state = {
@@ -52,6 +50,10 @@ export default class Values extends Component {
     }
     IssueActions.issuesFollowedRetrieve();
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
+  }
+
+  componentDidCatch (error, info) {
+    console.log('Values.jsx caught: ', error, info.componentStack);
   }
 
   componentWillUnmount () {
@@ -85,10 +87,6 @@ export default class Values extends Component {
       voter: VoterStore.getVoter(),
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
     });
-  }
-
-  componentDidCatch (error, info) {
-    console.log('Values.jsx caught: ', error, info.componentStack);
   }
 
   render () {

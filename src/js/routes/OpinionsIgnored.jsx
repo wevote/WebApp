@@ -52,8 +52,7 @@ export default class OpinionsIgnored extends Component {
                     organizationsIgnored={this.state.voter_guide_ignored_list}
                     instantRefreshOn
                   />
-                ) : null
-                }
+                ) : null}
               </div>
             </div>
             <Link className="pull-right" to="/opinions_followed">See organizations you follow</Link>

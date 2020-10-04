@@ -11,11 +11,6 @@ import VoterActions from '../actions/VoterActions';
 import VoterStore from '../stores/VoterStore';
 
 export default class WouldYouLikeToMergeAccountsOld extends Component {
-  static propTypes = {
-    emailSecretKey: PropTypes.string,
-    facebookSecretKey: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -86,14 +81,12 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
             <br />
             Press &quot;Sign In and Merge My Offline Changes&quot; to merge your recent choices with the choices that were saved when you previously signed in.
           </Alert>
-        ) : null
-        }
+        ) : null}
         { this.state.email_sign_in_status.email_address_created ? (
           <Alert variant="success">
             { this.state.email_sign_in_status.email_address_created ? <span>Your email address was saved. </span> : null }
           </Alert>
-        ) : null
-        }
+        ) : null}
       </span>
     );
 
@@ -136,3 +129,7 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
     );
   }
 }
+WouldYouLikeToMergeAccountsOld.propTypes = {
+  emailSecretKey: PropTypes.string,
+  facebookSecretKey: PropTypes.string,
+};

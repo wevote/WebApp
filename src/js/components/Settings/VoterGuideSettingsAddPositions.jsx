@@ -56,12 +56,6 @@ const islandFilters = [
 ];
 
 class VoterGuideSettingsAddPositions extends Component {
-  static propTypes = {
-    addNewPositionsMode: PropTypes.bool,
-    classes: PropTypes.object,
-    voterGuideWeVoteId: PropTypes.string.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -626,8 +620,7 @@ class VoterGuideSettingsAddPositions extends Component {
                       externalUniqueId={`currentPositionKey-${ballotItemWeVoteIdForPosition}-${onePosition.position_we_vote_id}`}
                     />
                   );
-                })
-                }
+                })}
               </CardChildListGroup>
               <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfPositionItemsToDisplay}>
                 <ShowMoreItems
@@ -777,8 +770,7 @@ class VoterGuideSettingsAddPositions extends Component {
                             );
                             foundInItemsAlreadyShown += 1;
                             return foundInStringItem;
-                          })
-                          }
+                          })}
                         </SearchResultsFoundInExplanation>
                       )}
                       <BallotItemForAddPositions
@@ -793,8 +785,7 @@ class VoterGuideSettingsAddPositions extends Component {
                       />
                     </div>
                   );
-                })
-                }
+                })}
               </CardChildListGroup>
               <ShowMoreItemsWrapper id="showMoreItemsId" onClick={this.increaseNumberOfBallotItemsToDisplay}>
                 <ShowMoreItems
@@ -828,13 +819,17 @@ class VoterGuideSettingsAddPositions extends Component {
                 </EmptyBallotText>
               </EmptyBallotMessageContainer>
             </Card>
-          )
-          }
+          )}
         </div>
       );
     }
   }
 }
+VoterGuideSettingsAddPositions.propTypes = {
+  addNewPositionsMode: PropTypes.bool,
+  classes: PropTypes.object,
+  voterGuideWeVoteId: PropTypes.string.isRequired,
+};
 
 const CardChildListGroup = styled.ul`
   padding: 0;
@@ -887,7 +882,7 @@ const SearchTitle = styled.div`
 const ShowMoreItemsWrapper = styled.div`
 `;
 
-const styles = theme => ({
+const styles = (theme) => ({
   ballotIconRoot: {
     width: 150,
     height: 150,

@@ -7,12 +7,6 @@ import { renderLog } from '../../utils/logging';
 import webAppConfig from '../../config';
 
 export default class DonationForm extends Component {
-  static propTypes = {
-    donationAmount: PropTypes.number,
-    donateButtonText: PropTypes.string,
-    donateMonthly: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
 
@@ -99,3 +93,8 @@ export default class DonationForm extends Component {
     );
   }
 }
+DonationForm.propTypes = {
+  donationAmount: PropTypes.number,
+  donateButtonText: PropTypes.string,
+  donateMonthly: PropTypes.bool,
+};

@@ -7,13 +7,6 @@ import VoterStore from '../../stores/VoterStore';
 import SplitIconButton from './SplitIconButton';
 
 class ThisIsMeAction extends Component {
-  static propTypes = {
-    kindOfOwner: PropTypes.string,
-    nameBeingViewed: PropTypes.string,
-    twitterHandleBeingViewed: PropTypes.string,
-    whiteOnBlue: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -97,12 +90,17 @@ class ThisIsMeAction extends Component {
                 </div>
               </Container>
             </div>
-          )
-        }
+          )}
       </div>
     );
   }
 }
+ThisIsMeAction.propTypes = {
+  kindOfOwner: PropTypes.string,
+  nameBeingViewed: PropTypes.string,
+  twitterHandleBeingViewed: PropTypes.string,
+  whiteOnBlue: PropTypes.bool,
+};
 
 const Container = styled.div`
   padding: 16px;

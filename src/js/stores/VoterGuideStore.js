@@ -68,7 +68,7 @@ class VoterGuideStore extends ReduceStore {
         +(a.value.election_day_text === b.value.election_day_text) - 1);
 
     const orderedArray = [];
-    mapped.forEach(element => orderedArray.push(element.value));
+    mapped.forEach((element) => orderedArray.push(element.value));
     // The prior line replaces the following lines for eslint 12/1/18
     // for (const element of mapped) {
     //   orderedArray.push(element.value);
@@ -93,7 +93,7 @@ class VoterGuideStore extends ReduceStore {
     // Take the list that we are already following
     const organizationWeVoteIdsFollowed = this.getState().organizationWeVoteIdsVoterIsFollowing || [];
     // Remove organizationWeVoteIdsVoterIsFollowing
-    organizationWeVoteIdsToFollow = organizationWeVoteIdsToFollow.filter(organizationWeVoteId => !organizationWeVoteIdsFollowed.includes(organizationWeVoteId));
+    organizationWeVoteIdsToFollow = organizationWeVoteIdsToFollow.filter((organizationWeVoteId) => !organizationWeVoteIdsFollowed.includes(organizationWeVoteId));
     let organizationWeVoteIdsToFollowWithLimit = [];
     if (limitToPublicFigures) {
       const listToFilter1 = this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollow) || [];
@@ -175,7 +175,7 @@ class VoterGuideStore extends ReduceStore {
     // Take the list that we are already following
     const organizationWeVoteIdsFollowed = this.getState().organizationWeVoteIdsVoterIsFollowing || [];
     // Remove organizationWeVoteIdsVoterIsFollowing
-    organizationWeVoteIdsToFollow = organizationWeVoteIdsToFollow.filter(el => !organizationWeVoteIdsFollowed.includes(el));
+    organizationWeVoteIdsToFollow = organizationWeVoteIdsToFollow.filter((el) => !organizationWeVoteIdsFollowed.includes(el));
 
     const voterGuidesToFollow = this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollow) || [];
     const voterGuidesToFollowSupport = [];
@@ -339,13 +339,13 @@ class VoterGuideStore extends ReduceStore {
             VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
             voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId || [];
             voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
-            revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId });
+            revisedState = { ...revisedState, voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId };
           }
           if (!this.voterGuidesUpcomingStopped(googleCivicElectionId)) {
             VoterGuideActions.voterGuidesUpcomingRetrieve(googleCivicElectionId);
             voterGuidesUpcomingStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingStoppedByGoogleCivicElectionId || [];
             voterGuidesUpcomingStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
-            revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingStoppedByGoogleCivicElectionId });
+            revisedState = { ...revisedState, voterGuidesUpcomingStoppedByGoogleCivicElectionId };
           }
 
           VoterGuideActions.voterGuidesFollowedRetrieve(googleCivicElectionId);
@@ -360,19 +360,19 @@ class VoterGuideStore extends ReduceStore {
           VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
           voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId || [];
           voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
-          revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId });
+          revisedState = { ...revisedState, voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId };
         }
         if (!this.voterGuidesUpcomingStopped(googleCivicElectionId)) {
           VoterGuideActions.voterGuidesUpcomingRetrieve(googleCivicElectionId);
           voterGuidesUpcomingStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingStoppedByGoogleCivicElectionId || [];
           voterGuidesUpcomingStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
-          revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingStoppedByGoogleCivicElectionId });
+          revisedState = { ...revisedState, voterGuidesUpcomingStoppedByGoogleCivicElectionId };
         }
         if (!this.voterGuidesFollowedRetrieveStopped()) {
           VoterGuideActions.voterGuidesFollowedRetrieve(googleCivicElectionId);
           voterGuidesUpcomingStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingStoppedByGoogleCivicElectionId || [];
           voterGuidesUpcomingStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
-          revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingStoppedByGoogleCivicElectionId });
+          revisedState = { ...revisedState, voterGuidesUpcomingStoppedByGoogleCivicElectionId };
         }
         return revisedState;
 
@@ -386,17 +386,17 @@ class VoterGuideStore extends ReduceStore {
             VoterGuideActions.voterGuidesFromFriendsUpcomingRetrieve(googleCivicElectionId);
             voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId || [];
             voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
-            revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId });
+            revisedState = { ...revisedState, voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId };
           }
           if (!this.voterGuidesUpcomingStopped(googleCivicElectionId)) {
             VoterGuideActions.voterGuidesUpcomingRetrieve(googleCivicElectionId);
             voterGuidesUpcomingStoppedByGoogleCivicElectionId = state.voterGuidesUpcomingStoppedByGoogleCivicElectionId || [];
             voterGuidesUpcomingStoppedByGoogleCivicElectionId.push(googleCivicElectionId);
-            revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingStoppedByGoogleCivicElectionId });
+            revisedState = { ...revisedState, voterGuidesUpcomingStoppedByGoogleCivicElectionId };
           }
           if (!this.voterGuidesFollowedRetrieveStopped()) {
             VoterGuideActions.voterGuidesFollowedRetrieve(googleCivicElectionId);
-            revisedState = Object.assign({}, revisedState, { voterGuidesFollowedRetrieveStopped: true });
+            revisedState = { ...revisedState, voterGuidesFollowedRetrieveStopped: true };
           }
         }
         VoterGuideActions.voterGuidesIgnoredRetrieve();
@@ -848,8 +848,8 @@ class VoterGuideStore extends ReduceStore {
         organizationWeVoteId = action.res.organization_we_vote_id;
         return {
           ...state,
-          organizationWeVoteIdsToFollowAll: state.organizationWeVoteIdsToFollowAll.filter(existingOrgWeVoteId => existingOrgWeVoteId !== organizationWeVoteId),
-          organizationWeVoteIdsToFollowForLatestBallotItem: state.organizationWeVoteIdsToFollowForLatestBallotItem.filter(existingOrgWeVoteId => existingOrgWeVoteId !== organizationWeVoteId),
+          organizationWeVoteIdsToFollowAll: state.organizationWeVoteIdsToFollowAll.filter((existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId),
+          organizationWeVoteIdsToFollowForLatestBallotItem: state.organizationWeVoteIdsToFollowForLatestBallotItem.filter((existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId),
         };
 
       case 'organizationStopFollowing':
@@ -870,8 +870,8 @@ class VoterGuideStore extends ReduceStore {
         organizationWeVoteId = action.res.organization_we_vote_id;
         return {
           ...state,
-          organizationWeVoteIdsToFollowAll: state.organizationWeVoteIdsToFollowAll.filter(existingOrgWeVoteId => existingOrgWeVoteId !== organizationWeVoteId),
-          organizationWeVoteIdsToFollowForLatestBallotItem: state.organizationWeVoteIdsToFollowForLatestBallotItem.filter(existingOrgWeVoteId => existingOrgWeVoteId !== organizationWeVoteId),
+          organizationWeVoteIdsToFollowAll: state.organizationWeVoteIdsToFollowAll.filter((existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId),
+          organizationWeVoteIdsToFollowForLatestBallotItem: state.organizationWeVoteIdsToFollowForLatestBallotItem.filter((existingOrgWeVoteId) => existingOrgWeVoteId !== organizationWeVoteId),
         };
 
       case 'twitterNativeSignInSave':
@@ -883,11 +883,11 @@ class VoterGuideStore extends ReduceStore {
         // Voter is signing in
         // console.log('VoterGuideStore resetVoterSpecificState action.type:', action.type);
         revisedState = state;
-        revisedState = Object.assign({}, revisedState, {
+        revisedState = { ...revisedState,
           voterGuidesFollowedRetrieveStopped: false, // While this is set to true, don't allow any more calls to this API
           voterGuidesToFollowRetrieveStopped: false, // While this is set to true, don't allow any more calls to this API
           voterGuidesUpcomingFromFriendsStoppedByGoogleCivicElectionId: [], // stores google_civic_election_id for elections where all voter guides have been retrieved
-        });
+        };
         return revisedState;
 
       default:

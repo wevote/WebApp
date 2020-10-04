@@ -7,16 +7,6 @@ import IssueStore from '../../stores/IssueStore';
 
 
 export default class IssueImageDisplay extends Component {
-  static propTypes = {
-    issueWeVoteId: PropTypes.string.isRequired,
-    issueImageSize: PropTypes.string,
-    showPlaceholderImage: PropTypes.bool,
-    showOppose: PropTypes.bool,
-    showSupport: PropTypes.bool,
-    isVoterFollowingThisIssue: PropTypes.bool,
-    turnOffIssueFade: PropTypes.bool,
-  };
-
   render () {
     renderLog('IssueImageDisplay');  // Set LOG_RENDER_EVENTS to log all renders
 
@@ -96,3 +86,12 @@ export default class IssueImageDisplay extends Component {
     return <span className="issue__image-modal">{issueImage}</span>;
   }
 }
+IssueImageDisplay.propTypes = {
+  issueWeVoteId: PropTypes.string.isRequired,
+  issueImageSize: PropTypes.string,
+  showPlaceholderImage: PropTypes.bool,
+  showOppose: PropTypes.bool,
+  showSupport: PropTypes.bool,
+  isVoterFollowingThisIssue: PropTypes.bool,
+  turnOffIssueFade: PropTypes.bool,
+};

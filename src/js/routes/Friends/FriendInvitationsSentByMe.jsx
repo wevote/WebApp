@@ -10,9 +10,6 @@ import SearchBar from '../../components/Search/SearchBar';
 import MessageCard from '../../components/Widgets/MessageCard';
 
 export default class FriendInvitationsSentByMe extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -55,7 +52,7 @@ export default class FriendInvitationsSentByMe extends Component {
       const searchTermLowercase = searchTerm.toLowerCase();
       const { friendInvitationsSentByMe } = this.state;
       const searchedFriendList = filter(friendInvitationsSentByMe,
-        voter => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
+        (voter) => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
 
       this.setState({
         friendInvitationsSentByMeFilteredBySearch: searchedFriendList,
@@ -112,8 +109,7 @@ export default class FriendInvitationsSentByMe extends Component {
                   {this.state.searchTerm}
                   &quot; not found
                 </p>
-              ) : null
-              }
+              ) : null}
               <FriendInvitationList
                 editMode
                 friendList={friendInvitationsSentByMe}

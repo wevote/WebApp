@@ -8,16 +8,6 @@ import issuePhotoGenericIcon from '../../img/global/svg-icons/issue-photo-generi
 import organizationIcon from '../../img/global/svg-icons/organization-icon.svg';
 
 export default class ImageHandler extends Component {
-  static propTypes = {
-    alt: PropTypes.string,
-    className: PropTypes.string,
-    hidePlaceholder: PropTypes.bool,
-    imageUrl: PropTypes.string,
-    kind_of_ballot_item: PropTypes.string,
-    kind_of_image: PropTypes.string,
-    sizeClassName: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = { error: false };
@@ -94,3 +84,12 @@ export default class ImageHandler extends Component {
     }
   }
 }
+ImageHandler.propTypes = {
+  alt: PropTypes.string,
+  className: PropTypes.string,
+  hidePlaceholder: PropTypes.bool,
+  imageUrl: PropTypes.string,
+  kind_of_ballot_item: PropTypes.string,
+  kind_of_image: PropTypes.string,
+  sizeClassName: PropTypes.string,
+};

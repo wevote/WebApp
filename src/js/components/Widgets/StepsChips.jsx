@@ -3,13 +3,6 @@ import PropTypes from 'prop-types';
 import styled, { withTheme } from 'styled-components';
 
 class StepChips extends PureComponent {
-  static propTypes = {
-    chips: PropTypes.array.isRequired,
-    selected: PropTypes.number,
-    mobile: PropTypes.bool,
-    onSelectStep: PropTypes.func,
-  };
-
   generateChips = () => this.props.chips.map((item, idx) => (
     <React.Fragment key={item}>
       {
@@ -44,6 +37,12 @@ class StepChips extends PureComponent {
     );
   }
 }
+StepChips.propTypes = {
+  chips: PropTypes.array.isRequired,
+  selected: PropTypes.number,
+  mobile: PropTypes.bool,
+  onSelectStep: PropTypes.func,
+};
 
 const Wrapper = styled.div`
   display: flex;

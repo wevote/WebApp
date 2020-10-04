@@ -763,7 +763,7 @@ class VoterStore extends ReduceStore {
         VoterActions.voterEmailAddressRetrieve();
         VoterActions.voterSMSPhoneNumberRetrieve();
         revisedState = state;
-        revisedState = Object.assign({}, revisedState, this.getInitialState());
+        revisedState = { ...revisedState, ...this.getInitialState() };
         return revisedState;
 
       case 'voterSMSPhoneNumberRetrieve':

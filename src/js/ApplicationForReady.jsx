@@ -12,12 +12,6 @@ import { renderLog } from './utils/logging';
 import SnackNotifier from './components/Widgets/SnackNotifier';
 
 class ApplicationForReady extends Component {
-  static propTypes = {
-    children: PropTypes.element,
-    location: PropTypes.object,
-    // params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -112,8 +106,7 @@ class ApplicationForReady extends Component {
           >
             <h1 className="h1">More election data loading...</h1>
             { isCordova() &&
-              <h2 className="h1">Does your phone have access to the internet?</h2>
-            }
+              <h2 className="h1">Does your phone have access to the internet?</h2>}
             <div className="u-loading-spinner u-loading-spinner--light" />
           </div>
         </LoadingScreen>
@@ -170,6 +163,11 @@ class ApplicationForReady extends Component {
     );
   }
 }
+ApplicationForReady.propTypes = {
+  children: PropTypes.element,
+  location: PropTypes.object,
+  // params: PropTypes.object,
+};
 
 const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};

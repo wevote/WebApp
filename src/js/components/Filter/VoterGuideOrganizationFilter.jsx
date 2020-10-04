@@ -15,16 +15,6 @@ const groupTypeIdentifiers = ['C', 'C3', 'C4', 'G', 'NP', 'O', 'P'];
 const privateCitizenIdentifiers = ['I', 'V'];
 
 class VoterGuideOrganizationFilter extends Component {
-  static propTypes = {
-    allItems: PropTypes.array,
-    onFilteredItemsChange: PropTypes.func,
-    onSelectSortByFilter: PropTypes.func,
-    onToggleFilter: PropTypes.func,
-    selectedFilters: PropTypes.array,
-    showAllFilters: PropTypes.bool,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -90,7 +80,7 @@ class VoterGuideOrganizationFilter extends Component {
 
   getFilteredItemsByLinkedIssue = (issueFilter) => {
     const { allItems } = this.props;
-    return allItems.filter(item => item.issue_we_vote_ids_linked === issueFilter.issue_we_vote_id);
+    return allItems.filter((item) => item.issue_we_vote_ids_linked === issueFilter.issue_we_vote_id);
   };
 
   orderByCurrentFriendsFirst = (firstGuide, secondGuide) => {
@@ -127,19 +117,19 @@ class VoterGuideOrganizationFilter extends Component {
     selectedFilters.forEach((filter) => {
       switch (filter) {
         case 'endorsingGroup':
-          filteredItems = [...filteredItems, ...allItems.filter(item => groupTypeIdentifiers.includes(item.speaker_type))];
+          filteredItems = [...filteredItems, ...allItems.filter((item) => groupTypeIdentifiers.includes(item.speaker_type))];
           break;
         case 'individualVoter':
-          filteredItems = [...filteredItems, ...allItems.filter(item => privateCitizenIdentifiers.includes(item.speaker_type) && !currentSharedItemOrganizationWeVoteIds.includes(item.speaker_we_vote_id))];
+          filteredItems = [...filteredItems, ...allItems.filter((item) => privateCitizenIdentifiers.includes(item.speaker_type) && !currentSharedItemOrganizationWeVoteIds.includes(item.speaker_we_vote_id))];
           break;
         case 'newsOrganization':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'NW')];
+          filteredItems = [...filteredItems, ...allItems.filter((item) => item.speaker_type === 'NW')];
           break;
         case 'publicFigure':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'PF')];
+          filteredItems = [...filteredItems, ...allItems.filter((item) => item.speaker_type === 'PF')];
           break;
         case 'yourFriends':
-          filteredItems = [...filteredItems, ...allItems.filter(item => currentFriendsOrganizationWeVoteIds.includes(item.speaker_we_vote_id) || currentSharedItemOrganizationWeVoteIds.includes(item.speaker_we_vote_id) || currentVoterOrganizationWeVoteId === item.speaker_we_vote_id)];
+          filteredItems = [...filteredItems, ...allItems.filter((item) => currentFriendsOrganizationWeVoteIds.includes(item.speaker_we_vote_id) || currentSharedItemOrganizationWeVoteIds.includes(item.speaker_we_vote_id) || currentVoterOrganizationWeVoteId === item.speaker_we_vote_id)];
           break;
         default:
           break;
@@ -169,13 +159,13 @@ class VoterGuideOrganizationFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'showSupportFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.is_support_or_positive_rating)];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.is_support_or_positive_rating)];
             break;
           case 'showOpposeFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.is_oppose_or_negative_rating)];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.is_oppose_or_negative_rating)];
             break;
           case 'showInformationOnlyFilter':
-            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.is_information_only)];
+            filteredItems = [...filteredItems, ...filterItemsSnapshot.filter((item) => item.is_information_only)];
             break;
           default:
             break;
@@ -199,7 +189,7 @@ class VoterGuideOrganizationFilter extends Component {
       selectedFilters.forEach((filter) => {
         switch (filter) {
           case 'showCommentFilter':
-            filteredItems = [...filteredItems, ...filterItemsCommentSnapshot.filter(item => item.statement_text && item.statement_text.length)];
+            filteredItems = [...filteredItems, ...filterItemsCommentSnapshot.filter((item) => item.statement_text && item.statement_text.length)];
             break;
           default:
             break;
@@ -253,7 +243,7 @@ class VoterGuideOrganizationFilter extends Component {
           break;
       }
     });
-    return uniqBy(filteredItems, x => x.position_we_vote_id);
+    return uniqBy(filteredItems, (x) => x.position_we_vote_id);
   }
 
   toggleFilter = (name) => {
@@ -381,8 +371,17 @@ class VoterGuideOrganizationFilter extends Component {
     );
   }
 }
+VoterGuideOrganizationFilter.propTypes = {
+  allItems: PropTypes.array,
+  onFilteredItemsChange: PropTypes.func,
+  onSelectSortByFilter: PropTypes.func,
+  onToggleFilter: PropTypes.func,
+  selectedFilters: PropTypes.array,
+  showAllFilters: PropTypes.bool,
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   formControlLabel: {
     [theme.breakpoints.down('lg')]: {
       fontSize: 14,

@@ -8,9 +8,6 @@ import { historyPush } from '../../utils/cordovaUtils';
 
 
 export default class PublicFiguresToFollowPreview extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {

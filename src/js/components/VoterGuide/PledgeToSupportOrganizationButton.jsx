@@ -7,11 +7,6 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 
 export default class PledgeToSupportOrganizationButton extends Component {
-  static propTypes = {
-    organization: PropTypes.object.isRequired,
-    pledgeToVoteAction: PropTypes.func.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -42,7 +37,7 @@ export default class PledgeToSupportOrganizationButton extends Component {
   }
 
   onVoterGuideStoreChange () {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(prevState.organization.organization_we_vote_id, VoterStore.electionId()),
     }));
     // console.log("voterGuide object ", this.state.voterGuide.we_vote_id);
@@ -70,8 +65,7 @@ export default class PledgeToSupportOrganizationButton extends Component {
           block
           size="large"
           variant="danger"
-          onClick={() => { this.props.pledgeToVoteAction(); }
-              }
+          onClick={() => { this.props.pledgeToVoteAction(); }}
         >
           <span className="voter-guide__pledge-to-support__i-stand-with-button d-none d-sm-block">{iStandWithText}</span>
           <span className="voter-guide__pledge-to-support__i-stand-with-button d-block d-sm-none">{iStandWithTextMobile}</span>
@@ -83,3 +77,7 @@ export default class PledgeToSupportOrganizationButton extends Component {
     );
   }
 }
+PledgeToSupportOrganizationButton.propTypes = {
+  organization: PropTypes.object.isRequired,
+  pledgeToVoteAction: PropTypes.func.isRequired,
+};

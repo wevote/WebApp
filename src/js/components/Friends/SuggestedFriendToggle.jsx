@@ -9,12 +9,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 export default class SuggestedFriendToggle extends Component {
-  static propTypes = {
-    displayFullWidth: PropTypes.bool,
-    lightModeOn: PropTypes.bool,
-    otherVoterWeVoteId: PropTypes.string.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -99,6 +93,11 @@ export default class SuggestedFriendToggle extends Component {
     );
   }
 }
+SuggestedFriendToggle.propTypes = {
+  displayFullWidth: PropTypes.bool,
+  lightModeOn: PropTypes.bool,
+  otherVoterWeVoteId: PropTypes.string.isRequired,
+};
 
 const ButtonContainer = styled.div`
   white-space: nowrap;

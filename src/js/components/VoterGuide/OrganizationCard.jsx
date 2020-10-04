@@ -25,19 +25,6 @@ import {
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
 export default class OrganizationCard extends Component {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    currentBallotIdInUrl: PropTypes.string,
-    followToggleOn: PropTypes.bool,
-    organization: PropTypes.object.isRequired,
-    turnOffDescription: PropTypes.bool,
-    turnOffLogo: PropTypes.bool,
-    turnOffTwitterHandle: PropTypes.bool,
-    useReadMoreForTwitterDescription: PropTypes.bool,
-    urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -187,8 +174,7 @@ export default class OrganizationCard extends Component {
                 organizationWeVoteId={this.state.organizationWeVoteId}
               />
             </div>
-          ) : null
-          }
+          ) : null}
         </div>
         <div className="card-main__media-object-content">
           <Link to={voterGuideLink}>
@@ -219,8 +205,7 @@ export default class OrganizationCard extends Component {
               )}
             </>
           ) :
-            <p className="card-main__description" />
-          }
+            <p className="card-main__description" />}
           { !turnOffDescription ? (
             <div>
               { organizationTwitterHandle && !turnOffTwitterHandle && (
@@ -266,20 +251,30 @@ export default class OrganizationCard extends Component {
               />
               {/* 5 of your friends follow Organization Name<br /> */}
             </div>
-          ) : null
-          }
+          ) : null}
           { this.state.organizationPosition.vote_smart_rating ? (
             <RatingPopover
               showDescription={this.state.showRatingDescription}
               toggleDescription={this.toggleRatingDescription}
             />
-          ) : null
-          }
+          ) : null}
         </div>
       </OrganizationCardWrapper>
     );
   }
 }
+OrganizationCard.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
+  currentBallotIdInUrl: PropTypes.string,
+  followToggleOn: PropTypes.bool,
+  organization: PropTypes.object.isRequired,
+  turnOffDescription: PropTypes.bool,
+  turnOffLogo: PropTypes.bool,
+  turnOffTwitterHandle: PropTypes.bool,
+  useReadMoreForTwitterDescription: PropTypes.bool,
+  urlWithoutHash: PropTypes.string,
+  we_vote_id: PropTypes.string,
+};
 
 const OrganizationCardWrapper = styled.div`
 `;

@@ -9,9 +9,6 @@ import { stringContains } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
 
 export default class AppleSignInProcess extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {

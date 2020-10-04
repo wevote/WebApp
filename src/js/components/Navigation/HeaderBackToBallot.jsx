@@ -28,13 +28,6 @@ import VoterStore from '../../stores/VoterStore';
 import { voterPhoto } from '../../utils/voterPhoto';
 
 class HeaderBackToBallot extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    location: PropTypes.object,
-    params: PropTypes.object.isRequired,
-    pathname: PropTypes.string,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -743,8 +736,7 @@ class HeaderBackToBallot extends Component {
                       <AccountCircle />
                     </IconButton>
                   </span>
-                )
-                }
+                )}
                 {profilePopUpOpen && (
                   <HeaderBarProfilePopUp
                     hideProfilePopUp={this.hideProfilePopUp}
@@ -803,8 +795,14 @@ class HeaderBackToBallot extends Component {
     );
   }
 }
+HeaderBackToBallot.propTypes = {
+  classes: PropTypes.object,
+  location: PropTypes.object,
+  params: PropTypes.object.isRequired,
+  pathname: PropTypes.string,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   noBoxShadow: {
     boxShadow: '0 0 0 0',
   },

@@ -14,17 +14,6 @@ class IssuesByBallotItemDisplayList extends Component {
     document.body.click();
   }
 
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string.isRequired,
-    ballotItemDisplayName: PropTypes.string,
-    children: PropTypes.object,
-    disableMoreWrapper: PropTypes.bool,
-    expandIssuesByDefault: PropTypes.bool,
-    externalUniqueId: PropTypes.string,
-    handleLeaveCandidateCard: PropTypes.func,
-    handleEnterCandidateCard: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -277,12 +266,21 @@ class IssuesByBallotItemDisplayList extends Component {
           <MoreWrapper id="issuesByBallotItemDisplayListMoreIssuesIcon" onClick={this.handleExpandIssues}>
             <MoreHoriz />
           </MoreWrapper>
-        )
-        }
+        )}
       </Wrapper>
     );
   }
 }
+IssuesByBallotItemDisplayList.propTypes = {
+  ballotItemWeVoteId: PropTypes.string.isRequired,
+  ballotItemDisplayName: PropTypes.string,
+  children: PropTypes.object,
+  disableMoreWrapper: PropTypes.bool,
+  expandIssuesByDefault: PropTypes.bool,
+  externalUniqueId: PropTypes.string,
+  handleLeaveCandidateCard: PropTypes.func,
+  handleEnterCandidateCard: PropTypes.func,
+};
 
 const Wrapper = styled.div`
   overflow: show;

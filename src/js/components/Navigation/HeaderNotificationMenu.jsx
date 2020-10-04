@@ -14,10 +14,6 @@ import { returnFirstXWords, timeFromDate } from '../../utils/textFormat';
 
 
 class HeaderNotificationMenu extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -44,8 +40,8 @@ class HeaderNotificationMenu extends Component {
     const allActivityNotices = ActivityStore.allActivityNotices();
     // console.log('allActivityNotices:', allActivityNotices);
     const activityNoticeIdListNotSeen = allActivityNotices
-      .filter(activityNotice => activityNotice.activity_notice_seen === false)
-      .map(activityNotice => activityNotice.activity_notice_id);
+      .filter((activityNotice) => activityNotice.activity_notice_seen === false)
+      .map((activityNotice) => activityNotice.activity_notice_id);
     // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
     const menuItemList = this.generateMenuItemList(allActivityNotices);
     setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
@@ -264,8 +260,11 @@ class HeaderNotificationMenu extends Component {
     );
   }
 }
+HeaderNotificationMenu.propTypes = {
+  classes: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   anchorOriginTopRightRectangle: {
     right: 3,
     top: 11,

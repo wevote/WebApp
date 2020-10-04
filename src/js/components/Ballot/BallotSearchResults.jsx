@@ -12,13 +12,6 @@ import thumbDownIcon from '../../../img/global/svg-icons/thumbs-down-icon.svg';
 
 
 export default class BallotSearchResults extends Component {
-  static propTypes = {
-    clearSearchTextNow: PropTypes.bool,
-    googleCivicElectionId: PropTypes.number,
-    organizationWeVoteId: PropTypes.string,
-    searchUnderwayFunction: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -141,7 +134,7 @@ export default class BallotSearchResults extends Component {
     );
 
     // Jan 2019, Steve:  What sets the state.ballotItemSearchResultsList? (I think nothing sets it)
-    const searchResults = ballotItemSearchResultsList.map(ballotItem => (
+    const searchResults = ballotItemSearchResultsList.map((ballotItem) => (
       <BallotItemSearchResult
         key={ballotItem.we_vote_id}
         allBallotItemsCount={ballotItemSearchResultsList.length}
@@ -173,11 +166,16 @@ export default class BallotSearchResults extends Component {
                 {searchResults}
               </div>
             ) :
-              <span>{ noSearchResultsPossibility }</span>
-            }
+              <span>{ noSearchResultsPossibility }</span>}
           </div>
         </div>
       </div>
     );
   }
 }
+BallotSearchResults.propTypes = {
+  clearSearchTextNow: PropTypes.bool,
+  googleCivicElectionId: PropTypes.number,
+  organizationWeVoteId: PropTypes.string,
+  searchUnderwayFunction: PropTypes.func,
+};

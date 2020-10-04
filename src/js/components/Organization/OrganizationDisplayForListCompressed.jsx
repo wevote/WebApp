@@ -6,14 +6,6 @@ import { renderLog } from '../../utils/logging';
 
 // OrganizationDisplayForListCompressed is used by OpinionsFollowedListCompressed for viewing organizations
 export default class OrganizationDisplayForListCompressed extends Component {
-  static propTypes = {
-    organization_we_vote_id: PropTypes.string,
-    organization_photo_url_medium: PropTypes.string,
-    organization_name: PropTypes.string,
-    children: PropTypes.array, // A list of the tags in OrganizationDisplayForList when called (from GuideList for example)
-    organization_twitter_handle: PropTypes.string,
-  };
-
   render () {
     renderLog('OrganizationDisplayForListCompressed');  // Set LOG_RENDER_EVENTS to log all renders
     const {
@@ -55,3 +47,10 @@ export default class OrganizationDisplayForListCompressed extends Component {
     );
   }
 }
+OrganizationDisplayForListCompressed.propTypes = {
+  organization_we_vote_id: PropTypes.string,
+  organization_photo_url_medium: PropTypes.string,
+  organization_name: PropTypes.string,
+  children: PropTypes.array, // A list of the tags in OrganizationDisplayForList when called (from GuideList for example)
+  organization_twitter_handle: PropTypes.string,
+};

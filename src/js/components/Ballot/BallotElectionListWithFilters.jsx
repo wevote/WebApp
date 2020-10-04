@@ -19,17 +19,6 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 
 
 export default class BallotElectionListWithFilters extends Component {
-  static propTypes = {
-    ballotBaseUrl: PropTypes.string,
-    displayElectionsForOrganizationVoterGuidesMode: PropTypes.bool,
-    hideUpcomingElectionsList: PropTypes.bool,
-    hideUpcomingElectionTitle: PropTypes.bool,
-    organizationWeVoteId: PropTypes.string, // If looking at voter guide, we pass in the parent organizationWeVoteId
-    showPriorElectionsList: PropTypes.bool,
-    stateToShow: PropTypes.string,
-    toggleFunction: PropTypes.func,
-  };
-
   constructor (props) {
     super(props);
 
@@ -375,7 +364,7 @@ export default class BallotElectionListWithFilters extends Component {
     if (!list || !Array.isArray(list)) {
       return null;
     }
-    const renderedList = list.filter(filterItem => filterItem.state_code_list && filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
+    const renderedList = list.filter((filterItem) => filterItem.state_code_list && filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
       // console.log('election.election_description_text: ', election.election_description_text, 'election.election_day_text: ', election.election_day_text);
       if (!election.election_description_text || election.election_description_text === '') return null;
       const electionDateTomorrowMoment = moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days');
@@ -485,7 +474,7 @@ export default class BallotElectionListWithFilters extends Component {
     if (!list || !Array.isArray(list)) {
       return null;
     }
-    const renderedList = list.filter(filterItem => filterItem.state_code_list && filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
+    const renderedList = list.filter((filterItem) => filterItem.state_code_list && filterItem.state_code_list.includes(this.props.stateToShow)).map((election) => {
       const electionDateTomorrowMoment = moment(election.election_day_text, 'YYYY-MM-DD').add(1, 'days');
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       let electionStateCodeList = [];
@@ -615,8 +604,7 @@ export default class BallotElectionListWithFilters extends Component {
                 <>
                   {this.props.stateToShow === 'all' ? upcomingElectionList :
                     upcomingElectionListByState.length > 0 ? upcomingElectionListByState :
-                      'There are no upcoming elections for this state.'
-                  }
+                      'There are no upcoming elections for this state.'}
                 </>
               ) : (
                 <DelayedLoad showLoadingText waitBeforeShow={2000}>
@@ -624,8 +612,7 @@ export default class BallotElectionListWithFilters extends Component {
                     {this.props.stateToShow !== 'all' ? 'There are no upcoming elections at this time for this state.' : 'There are no upcoming elections at this time.'}
                   </div>
                 </DelayedLoad>
-              )
-            }
+              )}
           </div>
         )}
         {(!hideUpcomingElectionsList && showPriorElectionsList) && (
@@ -641,8 +628,7 @@ export default class BallotElectionListWithFilters extends Component {
                   <strong><h4 className="h4">Prior Elections</h4></strong>
                   {this.props.stateToShow === 'all' ? priorElectionList :
                     priorElectionListByState.length > 0 ? priorElectionListByState :
-                      'There are no prior elections for this state.'
-                  }
+                      'There are no prior elections for this state.'}
                 </PriorOrUpcomingElectionsWrapper>
               ) : (
                 <DelayedLoad showLoadingText waitBeforeShow={2000}>
@@ -650,14 +636,23 @@ export default class BallotElectionListWithFilters extends Component {
                     {this.props.stateToShow !== 'all' ? 'There are no prior elections at this time for this state.' : 'There are no prior elections at this time.'}
                   </div>
                 </DelayedLoad>
-              )
-            }
+              )}
           </div>
         )}
       </div>
     );
   }
 }
+BallotElectionListWithFilters.propTypes = {
+  ballotBaseUrl: PropTypes.string,
+  displayElectionsForOrganizationVoterGuidesMode: PropTypes.bool,
+  hideUpcomingElectionsList: PropTypes.bool,
+  hideUpcomingElectionTitle: PropTypes.bool,
+  organizationWeVoteId: PropTypes.string, // If looking at voter guide, we pass in the parent organizationWeVoteId
+  showPriorElectionsList: PropTypes.bool,
+  stateToShow: PropTypes.string,
+  toggleFunction: PropTypes.func,
+};
 
 const ElectionButton = styled(Button)`
   background: white !important;

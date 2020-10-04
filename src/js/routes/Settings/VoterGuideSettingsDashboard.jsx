@@ -15,10 +15,6 @@ import VoterStore from '../../stores/VoterStore';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 
 class VoterGuideSettingsDashboard extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -230,6 +226,9 @@ class VoterGuideSettingsDashboard extends Component {
     );
   }
 }
+VoterGuideSettingsDashboard.propTypes = {
+  params: PropTypes.object,
+};
 
 const styles = () => ({
   formControl: {

@@ -7,19 +7,6 @@ import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
 class BallotSideBarLink extends Component {
-  static propTypes = {
-    ballotItemLinkHasBeenClicked: PropTypes.func,
-    url: PropTypes.string,
-    id: PropTypes.string,
-    key: PropTypes.string,
-    label: PropTypes.string,
-    subtitle: PropTypes.string,
-    displaySubtitles: PropTypes.bool,
-    onClick: PropTypes.func,
-    plainTextLink: PropTypes.bool,
-    classes: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -87,6 +74,18 @@ class BallotSideBarLink extends Component {
     );
   }
 }
+BallotSideBarLink.propTypes = {
+  ballotItemLinkHasBeenClicked: PropTypes.func,
+  url: PropTypes.string,
+  id: PropTypes.string,
+  key: PropTypes.string,
+  label: PropTypes.string,
+  subtitle: PropTypes.string,
+  displaySubtitles: PropTypes.bool,
+  onClick: PropTypes.func,
+  plainTextLink: PropTypes.bool,
+  classes: PropTypes.object,
+};
 
 const styles = () => ({
   button: {

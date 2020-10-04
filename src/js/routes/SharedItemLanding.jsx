@@ -7,10 +7,6 @@ import ShareActions from '../actions/ShareActions';
 import ShareStore from '../stores/ShareStore';
 
 export default class SharedItemLanding extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -99,3 +95,6 @@ export default class SharedItemLanding extends Component {
     }
   }
 }
+SharedItemLanding.propTypes = {
+  params: PropTypes.object,
+};

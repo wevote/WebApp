@@ -18,14 +18,6 @@ import { renderLog } from '../../utils/logging';
 // import VoterGuideBallot from './VoterGuideBallot';  // We can delete after 2020-08-31
 
 export default class OrganizationVoterGuideTabs extends Component {
-  static propTypes = {
-    activeRoute: PropTypes.string,
-    activeRouteChanged: PropTypes.func,
-    organizationWeVoteId: PropTypes.string.isRequired,
-    location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
-  };
-
   // static getDerivedStateFromProps (props, state) {
   //   const { defaultTabItem } = state;
   //   // console.log('Friends getDerivedStateFromProps defaultTabItem:', defaultTabItem, ', this.props.params.tabItem:', props.params.tabItem);
@@ -254,7 +246,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     let voterGuideFollowersList = this.state.voterGuideFollowersList || [];
     if (this.state.voter.linked_organization_we_vote_id === organizationWeVoteId) {
       // If looking at your own voter guide, filter out your own entry as a follower
-      voterGuideFollowersList = voterGuideFollowersList.filter(oneVoterGuide => (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id ? oneVoterGuide : null));
+      voterGuideFollowersList = voterGuideFollowersList.filter((oneVoterGuide) => (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id ? oneVoterGuide : null));
     }
     if (lookingAtSelf) {
       followingTitleLong = this.state.voterGuideFollowedList.length === 0 ?
@@ -375,3 +367,10 @@ export default class OrganizationVoterGuideTabs extends Component {
     );
   }
 }
+OrganizationVoterGuideTabs.propTypes = {
+  activeRoute: PropTypes.string,
+  activeRouteChanged: PropTypes.func,
+  organizationWeVoteId: PropTypes.string.isRequired,
+  location: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
+};

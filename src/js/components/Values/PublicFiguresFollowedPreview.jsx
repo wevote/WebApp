@@ -9,9 +9,6 @@ import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedList
 import EndorsementCard from '../Widgets/EndorsementCard';
 
 export default class PublicFiguresFollowedPreview extends Component {
-  static propTypes = {
-  };
-
   constructor (props) {
     super(props);
     this.state = {

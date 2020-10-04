@@ -7,17 +7,6 @@ import OpenExternalWebSite from './OpenExternalWebSite';
 import { renderLog } from '../../utils/logging';
 
 class LearnMore extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    text_to_display: PropTypes.node.isRequired,
-    show_more_text: PropTypes.string,
-    learn_more_link: PropTypes.string,
-    learn_more_text: PropTypes.string,
-    num_of_lines: PropTypes.number,
-    on_click: PropTypes.func,
-    always_show_external_link: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
 
@@ -145,8 +134,7 @@ class LearnMore extends Component {
         <span>
           {expandedTextToDisplay}
           {alwaysShowExternalLink &&
-            externalLink
-          }
+            externalLink}
         </span>
       );
     }
@@ -183,8 +171,18 @@ class LearnMore extends Component {
     }
   }
 }
+LearnMore.propTypes = {
+  classes: PropTypes.object,
+  text_to_display: PropTypes.node.isRequired,
+  show_more_text: PropTypes.string,
+  learn_more_link: PropTypes.string,
+  learn_more_text: PropTypes.string,
+  num_of_lines: PropTypes.number,
+  on_click: PropTypes.func,
+  always_show_external_link: PropTypes.bool,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   headerButtonRoot: {
     paddingTop: 2,
     paddingBottom: 2,

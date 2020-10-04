@@ -28,13 +28,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 class PositionItem extends Component {
-  static propTypes = {
-    classes: PropTypes.object,
-    position: PropTypes.object.isRequired,
-    params: PropTypes.object,
-    searchResultsNode: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -555,8 +548,7 @@ class PositionItem extends Component {
                           url={moreInfoUrl}
                         />
                       </SourceLink>
-                    ) : null
-                    }
+                    ) : null}
                   </DesktopItemFooter>
                 </DesktopItemBody>
               </PositionItemDesktop>
@@ -677,8 +669,7 @@ class PositionItem extends Component {
                         url={moreInfoUrl}
                       />
                     </SourceLink>
-                  ) : null
-                  }
+                  ) : null}
                 </MobileItemFooter>
               </MobileItemBody>
             </PositionItemMobile>
@@ -690,8 +681,14 @@ class PositionItem extends Component {
     }
   }
 }
+PositionItem.propTypes = {
+  classes: PropTypes.object,
+  position: PropTypes.object.isRequired,
+  params: PropTypes.object,
+  searchResultsNode: PropTypes.object,
+};
 
-const styles = theme => ({
+const styles = (theme) => ({
   buttonRoot: {
     fontSize: 12,
     padding: '4px 8px',

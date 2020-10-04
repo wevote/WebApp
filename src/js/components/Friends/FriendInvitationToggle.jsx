@@ -8,10 +8,6 @@ import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 
 export default class FriendInvitationToggle extends Component {
-  static propTypes = {
-    otherVoterWeVoteId: PropTypes.string.isRequired,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -89,6 +85,9 @@ export default class FriendInvitationToggle extends Component {
     );
   }
 }
+FriendInvitationToggle.propTypes = {
+  otherVoterWeVoteId: PropTypes.string.isRequired,
+};
 
 const ButtonContainer = styled.div`
   width: 100%;

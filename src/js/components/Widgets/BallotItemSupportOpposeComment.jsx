@@ -9,17 +9,6 @@ import MeasureStore from '../../stores/MeasureStore';
 import { stringContains } from '../../utils/textFormat';
 
 class BallotItemSupportOpposeComment extends PureComponent {
-  static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
-    currentBallotIdInUrl: PropTypes.string,
-    externalUniqueId: PropTypes.string,
-    showPositionStatementActionBar: PropTypes.bool,
-    showPositionPublicToggle: PropTypes.bool,
-    hidePositionPublicToggle: PropTypes.bool,
-    urlWithoutHash: PropTypes.string,
-    inModal: PropTypes.bool,
-  };
-
   constructor (props) {
     super(props);
 
@@ -136,7 +125,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
   }
 
   togglePositionStatement () {
-    this.setState(state => ({
+    this.setState((state) => ({
       showPositionStatement: !state.showPositionStatement,
       // shouldFocusCommentArea: true,
     }));
@@ -237,11 +226,21 @@ class BallotItemSupportOpposeComment extends PureComponent {
     );
   }
 }
+BallotItemSupportOpposeComment.propTypes = {
+  ballotItemWeVoteId: PropTypes.string,
+  currentBallotIdInUrl: PropTypes.string,
+  externalUniqueId: PropTypes.string,
+  showPositionStatementActionBar: PropTypes.bool,
+  showPositionPublicToggle: PropTypes.bool,
+  hidePositionPublicToggle: PropTypes.bool,
+  urlWithoutHash: PropTypes.string,
+  inModal: PropTypes.bool,
+};
 
 const Wrapper = styled.div`
   width: 100%;
   background-color: ${({ showPositionStatementActionBar, inModal }) => (showPositionStatementActionBar || inModal ? '#eee' : 'white')} !important;
-  padding: ${props => (props.showPositionStatementActionBar || props.inModal ? '12px 12px 0 12px' : '0')} !important;
+  padding: ${(props) => (props.showPositionStatementActionBar || props.inModal ? '12px 12px 0 12px' : '0')} !important;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;

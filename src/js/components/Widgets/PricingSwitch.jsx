@@ -3,14 +3,6 @@ import PropTypes from 'prop-types';
 import styled, { withTheme } from 'styled-components';
 
 class PricingSwitch extends PureComponent {
-  static propTypes = {
-    chosenTextColor: PropTypes.string,
-    chosenBackgroundColor: PropTypes.string,
-    choices: PropTypes.array.isRequired,
-    selectedPricingPlanIndex: PropTypes.number.isRequired,
-    switchToDifferentCategoryFunction: PropTypes.func,
-  };
-
   switchToDifferentCategory (switchToChoice = 0) {
     if (this.props.switchToDifferentCategoryFunction) {
       this.props.switchToDifferentCategoryFunction(switchToChoice);
@@ -59,6 +51,13 @@ class PricingSwitch extends PureComponent {
     );
   }
 }
+PricingSwitch.propTypes = {
+  chosenTextColor: PropTypes.string,
+  chosenBackgroundColor: PropTypes.string,
+  choices: PropTypes.array.isRequired,
+  selectedPricingPlanIndex: PropTypes.number.isRequired,
+  switchToDifferentCategoryFunction: PropTypes.func,
+};
 
 const Container = styled.div`
   display: flex;

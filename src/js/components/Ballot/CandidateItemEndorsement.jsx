@@ -22,16 +22,6 @@ https://localhost:3000/candidate-for-extension?candidate_we_vote_id=wv02cand6259
 
 // This is related to /js/components/VoterGuide/OrganizationVoterGuideCandidateItem.jsx
 class CandidateItemEndorsement extends Component {
-  static propTypes = {
-    candidateWeVoteId: PropTypes.string.isRequired,
-    candidateSpecificEndorsementUrlIncoming: PropTypes.string,
-    hideCandidateUrl: PropTypes.bool,
-    organizationWeVoteId: PropTypes.string,
-    showOfficeName: PropTypes.bool,
-    showLargeImage: PropTypes.bool,
-    voterGuidePossibilityId: PropTypes.node,     // Untyped.  A db id for an existing possibility, 0 for creating a new one on save, and '' for don't create a new one.
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -520,6 +510,15 @@ class CandidateItemEndorsement extends Component {
     );
   }
 }
+CandidateItemEndorsement.propTypes = {
+  candidateWeVoteId: PropTypes.string.isRequired,
+  candidateSpecificEndorsementUrlIncoming: PropTypes.string,
+  hideCandidateUrl: PropTypes.bool,
+  organizationWeVoteId: PropTypes.string,
+  showOfficeName: PropTypes.bool,
+  showLargeImage: PropTypes.bool,
+  voterGuidePossibilityId: PropTypes.node,     // Untyped.  A db id for an existing possibility, 0 for creating a new one on save, and '' for don't create a new one.
+};
 
 const styles = () => ({
   input: {
