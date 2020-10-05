@@ -51,6 +51,10 @@ class Register extends Component {
     return false;
   }
 
+  componentDidCatch (error, info) {
+    console.log('Register.jsx caught: ', error, info.componentStack);
+  }
+
   componentWillUnmount () {
     this.appStoreListener.remove();
     this.voterStoreListener.remove();
@@ -70,10 +74,6 @@ class Register extends Component {
   // goToBallot = () => {
   //   historyPush('/ballot');
   // }
-
-  componentDidCatch (error, info) {
-    console.log('Register.jsx caught: ', error, info.componentStack);
-  }
 
   handleChooseStateChange (e) {
     if (e.target.value !== 'all') {

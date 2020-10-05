@@ -88,6 +88,11 @@ class CandidateItemForAddPositions extends Component {
     return false;
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('CandidateItemForAddPositions caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.supportStoreListener.remove();
@@ -121,11 +126,6 @@ class CandidateItemForAddPositions extends Component {
         voterTextStatement,
       });
     }
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('CandidateItemForAddPositions caught error: ', `${error} with info: `, info);
   }
 
   togglePositionStatement () {

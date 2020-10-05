@@ -32,6 +32,11 @@ class ActivityPostAdd extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('ActivityPostAdd caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
@@ -68,11 +73,6 @@ class ActivityPostAdd extends Component {
 
   handleFocus (e) {
     e.target.blur();
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('ActivityPostAdd caught error: ', `${error} with info: `, info);
   }
 
   render () {

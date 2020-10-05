@@ -211,6 +211,11 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     return false;
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('BallotItemSupportOpposeCountDisplay caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.friendStoreListener.remove();
@@ -431,11 +436,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     }
     SupportActions.voterStopSupportingSave(ballotItemWeVoteId, kindOfBallotItem);
     openSnackbar({ message: 'Support removed!' });
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('BallotItemSupportOpposeCountDisplay caught error: ', `${error} with info: `, info);
   }
 
   goToBallotItemLinkLocal (ballotItemWeVoteId) {

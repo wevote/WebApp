@@ -12,10 +12,6 @@ import BallotSummaryAccordion from './BallotSummaryAccordion';
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-restricted-syntax: 1 */
 class BallotSideBar extends Component {
-  static defaultProps = {
-    pathname: '/ballot',
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -245,6 +241,9 @@ class BallotSideBar extends Component {
     }
   }
 }
+BallotSideBar.defaultProps = {
+  pathname: '/ballot',
+};
 BallotSideBar.propTypes = {
   ballotWithAllItemsByFilterType: PropTypes.array,
   ballotItemLinkHasBeenClicked: PropTypes.func,

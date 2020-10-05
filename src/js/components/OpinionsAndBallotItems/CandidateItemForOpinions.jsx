@@ -90,6 +90,11 @@ class CandidateItemForOpinions extends Component {
     return false;
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('CandidateItemForOpinions caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.supportStoreListener.remove();
@@ -146,11 +151,6 @@ class CandidateItemForOpinions extends Component {
       showPositionStatement: !showPositionStatement,
       // shouldFocusCommentArea: true,
     });
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('CandidateItemForOpinions caught error: ', `${error} with info: `, info);
   }
 
   render () {

@@ -10,6 +10,7 @@ import DelayedLoad from '../Widgets/DelayedLoad';
 import OrganizationActions from '../../actions/OrganizationActions';
 import SearchBar from '../Search/SearchBar';
 import ShowMoreItems from '../Widgets/ShowMoreItems';
+import BallotItemSearchResult from "../Ballot/BallotItemSearchResult";
 
 
 class VoterGuideListSearchResults extends Component {
@@ -151,9 +152,9 @@ class VoterGuideListSearchResults extends Component {
     // const searchResults = ballotItemSearchResultsList.map(ballotItem => (
     //   <BallotItemSearchResult
     //     key={ballotItem.we_vote_id}
-    //     we_vote_id={ballotItem.we_vote_id}
     //     allBallotItemsCount={ballotItemSearchResultsList.length}
-    //     {...ballotItem}
+    //     ballotItemWeVoteId={ballotItem.we_vote_id}
+    //     kindOfBallotItem={ballotItem.kind_of_ballot_item}
     //   />
     // ));
     let ballotItemDisplayNameForPosition;

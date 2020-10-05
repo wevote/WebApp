@@ -73,6 +73,11 @@ class ItemPositionStatementActionBar2020 extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('ItemPositionStatementActionBar2020 caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.supportStoreListener.remove();
     this.voterStoreListener.remove();
@@ -149,11 +154,6 @@ class ItemPositionStatementActionBar2020 extends Component {
 
   handleFocus (e) {
     e.target.blur();
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('ItemPositionStatementActionBar2020 caught error: ', `${error} with info: `, info);
   }
 
   render () {

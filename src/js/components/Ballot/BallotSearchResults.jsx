@@ -138,7 +138,8 @@ export default class BallotSearchResults extends Component {
       <BallotItemSearchResult
         key={ballotItem.we_vote_id}
         allBallotItemsCount={ballotItemSearchResultsList.length}
-        {...ballotItem}
+        kindOfBallotItem={ballotItem.kind_of_ballot_item}
+        ballotItemWeVoteId={ballotItem.we_vote_id}
       />
     ));
 

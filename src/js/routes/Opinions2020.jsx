@@ -194,6 +194,11 @@ class Opinions2020 extends Component {
   // shouldComponentUpdate (nextProps, nextState) {
   // }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('Opinions2020 caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.ballotStoreListener.remove();
     this.organizationStoreListener.remove();
@@ -560,11 +565,6 @@ class Opinions2020 extends Component {
         numberOfBallotItemsToDisplay,
       });
     }, 500);
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('Opinions2020 caught error: ', `${error} with info: `, info);
   }
 
   render () {

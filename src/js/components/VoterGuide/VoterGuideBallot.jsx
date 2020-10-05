@@ -345,6 +345,11 @@ class VoterGuideBallot extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('VoterGuideBallot caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     // console.log('VoterGuideBallot componentWillUnmount');
     this.setState({
@@ -636,11 +641,6 @@ class VoterGuideBallot extends Component {
         }
       }, 0);
     }
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('VoterGuideBallot caught error: ', `${error} with info: `, info);
   }
 
   localDoesOrganizationHavePositionOnBallotItem (contestWeVoteId) {

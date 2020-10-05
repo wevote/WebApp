@@ -91,6 +91,11 @@ class AddressBox extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('AddressBox caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.ballotStoreListener.remove();
@@ -190,11 +195,6 @@ class AddressBox extends Component {
       loading: true,
       voterSavedAddress: true,
     });
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('AddressBox caught error: ', `${error} with info: `, info);
   }
 
   render () {

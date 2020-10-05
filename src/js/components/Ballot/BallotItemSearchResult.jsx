@@ -11,22 +11,24 @@ const TYPES = require('keymirror')({
 
 export default class BallotItemSearchResult extends Component {
   isMeasure () {
-    return this.props.kind_of_ballot_item === TYPES.MEASURE;
+    const { kindOfBallotItem } = this.props;
+    return kindOfBallotItem === TYPES.MEASURE;
   }
 
   render () {
     renderLog('BallotItemSearchResult');  // Set LOG_RENDER_EVENTS to log all renders
+    const { ballotItemWeVoteId, organization } = this.props;
     return (
-      <div className="BallotItem card" id={this.props.we_vote_id}>
+      <div className="BallotItem card" id={ballotItemWeVoteId}>
         { this.isMeasure() ? (
           <MeasureItemCompressed
-            measureWeVoteId={this.props.we_vote_id}
-            organization={this.props.organization}
+            measureWeVoteId={ballotItemWeVoteId}
+            organization={organization}
           />
         ) : (
           <CandidateItemCompressed
-            candidateWeVoteId={this.props.we_vote_id}
-            organization={this.props.organization}
+            candidateWeVoteId={ballotItemWeVoteId}
+            organization={organization}
           />
         )}
       </div>
@@ -35,8 +37,8 @@ export default class BallotItemSearchResult extends Component {
 }
 BallotItemSearchResult.propTypes = {
   // allBallotItemsCount: PropTypes.number,
-  kind_of_ballot_item: PropTypes.string.isRequired,
+  kindOfBallotItem: PropTypes.string.isRequired,
   organization: PropTypes.object,
-  we_vote_id: PropTypes.string.isRequired,
+  ballotItemWeVoteId: PropTypes.string.isRequired,
   // updateOfficeDisplayUnfurledTracker: PropTypes.func,
 };

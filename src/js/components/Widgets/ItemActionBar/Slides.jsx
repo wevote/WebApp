@@ -122,7 +122,7 @@ Slides.propTypes = {
   startIndex: PropTypes.number,
   onClose: PropTypes.func,
   voterIsSignedIn: PropTypes.bool,
-}
+};
 
 const styles = (theme) => ({
   optionsButton: {

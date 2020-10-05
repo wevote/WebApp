@@ -30,6 +30,11 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
     this.onOrganizationStoreChange();
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('BallotItemVoterGuideSupportOpposeDisplay caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.organizationStoreListener.remove();
   }
@@ -71,11 +76,6 @@ class BallotItemVoterGuideSupportOpposeDisplay extends Component {
       this.props.handleEnterCandidateCard();
     }
   };
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('BallotItemVoterGuideSupportOpposeDisplay caught error: ', `${error} with info: `, info);
-  }
 
   render () {
     renderLog('BallotItemVoterGuideSupportOpposeDisplay');  // Set LOG_RENDER_EVENTS to log all renders

@@ -8,10 +8,13 @@ import { snackOffset } from '../../utils/cordovaUtils';
 let openSnackbarFn;
 
 class SnackNotifier extends Component {
-  state = {
-    open: false,
-    message: '',
-  };
+  constructor (props) {
+    super(props);
+    this.state = {
+      open: false,
+      message: '',
+    };
+  }
 
   componentDidMount () {
     openSnackbarFn = this.openSnackbar;

@@ -170,6 +170,11 @@ export default class SettingsAccount extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('SignIn caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     // console.log("SettingsAccount componentWillUnmount");
     signInModalGlobalState.set('textOrEmailSignInInProcess', false);
@@ -268,11 +273,6 @@ export default class SettingsAccount extends Component {
     if (pathname !== '/settings/account') {
       AppActions.storeSignInStartFullUrl();
     }
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('SignIn caught error: ', `${error} with info: `, info);
   }
 
   facebookLogOutOnKeyDown (event) {

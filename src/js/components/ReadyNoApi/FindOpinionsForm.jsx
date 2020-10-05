@@ -170,15 +170,15 @@ class FindOpinionsForm extends Component {
     );
   }
 }
-  FindOpinionsForm.propTypes = {
-    classes: PropTypes.object,
-    headerText: PropTypes.string,
-    introHeaderLink: PropTypes.string,
-    searchTextLarge: PropTypes.bool,
-    showVoterGuidePhotos: PropTypes.bool,
-    theme: PropTypes.object,
-    uniqueExternalId: PropTypes.string,
-  };
+FindOpinionsForm.propTypes = {
+  classes: PropTypes.object,
+  headerText: PropTypes.string,
+  introHeaderLink: PropTypes.string,
+  searchTextLarge: PropTypes.bool,
+  showVoterGuidePhotos: PropTypes.bool,
+  theme: PropTypes.object,
+  uniqueExternalId: PropTypes.string,
+};
 
 const styles = (theme) => ({
   buttonRoot: {

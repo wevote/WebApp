@@ -589,7 +589,6 @@ class SettingsDomain extends Component {
                       </Button>
                       <PremiumableButton
                         id={`saveOrganizationDomainPremiumButton-${externalUniqueId}`}
-
                         premium={voterFeaturePackageExceedsOrEqualsProfessional ? 1 : 0}
                         onClick={voterFeaturePackageExceedsOrEqualsProfessional ? this.onSaveDomainNameButton : () => this.openPaidAccountUpgradeModal('professional')}
                       >
