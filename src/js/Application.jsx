@@ -6,7 +6,7 @@ import AppActions from './actions/AppActions';
 import AppStore from './stores/AppStore';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
-import { getToastClass, historyPush, isCordova, isWebApp } from './utils/cordovaUtils';
+import { getToastClass, historyPush, isAppleSilicon, isCordova, isWebApp } from './utils/cordovaUtils';
 import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
 import DelayedLoad from './components/Widgets/DelayedLoad';
 import displayFriendsTabs from './utils/displayFriendsTabs';
@@ -35,9 +35,10 @@ class Application extends Component {
   }
 
   componentDidMount () {
-    const { hostname } = window.location;
+    let { hostname } = window.location;
+    hostname = hostname || 'silicon';
     AppActions.siteConfigurationRetrieve(hostname);
-    console.log('React Application ---------------   componentDidMount () hostname: ', hostname);
+    console.log('React Application --------------- componentDidMount () hostname: ', hostname);
     polyfillObjectEntries();
     this.initializeFacebookSdkForJavascript();
     if (isCordova()) {
@@ -191,7 +192,7 @@ class Application extends Component {
   getAppBaseClass = () => {
     // console.log('Determine the headroom space pathname:' + pathname);
     let appBaseClass = 'app-base';
-    if (isWebApp()) {
+    if (isWebApp() || isAppleSilicon()) {
       appBaseClass += ' headroom-webapp';
     } else {
       appBaseClass += ' cordova-base';
@@ -341,6 +342,7 @@ class Application extends Component {
       voterGuideMode,
     } = getApplicationViewBooleans(pathname);
     // console.log('showShareButtonFooter:', showShareButtonFooter);
+    // dumpObjProps('Application params', this.props.params);
     // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
     if (extensionPageMode || sharedItemLandingPage || twitterSignInMode) {

@@ -14,6 +14,7 @@ import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
+import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import BallotTitleHeader from './BallotTitleHeader';
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import FilterBaseSearch from '../../components/Filter/FilterBaseSearch';
@@ -24,7 +25,7 @@ import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 import { cordovaBallotFilterTopMargin, cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
-import { chipLabelText, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { chipLabelText, historyPush, isAppleSilicon, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ElectionActions from '../../actions/ElectionActions';
@@ -53,6 +54,8 @@ const TYPES = require('keymirror')({
   OFFICE: null,
   MEASURE: null,
 });
+
+const appleSiliconDebug = false;
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
 const BALLOT_ITEM_FILTER_TYPES = ['All', 'Federal', 'State', 'Measure', 'Local'];
@@ -299,6 +302,10 @@ class Ballot extends Component {
     }
     ActivityActions.activityNoticeListRetrieve();
     window.addEventListener('scroll', this.onScroll);
+
+    if (isAppleSilicon() && appleSiliconDebug) {
+      dumpCssFromId('ballotWrapper');
+    }
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
@@ -1020,10 +1027,11 @@ class Ballot extends Component {
     }
   }
 
-  // componentDidCatch (error, info) {
-  //   // We should get this information to Splunk!
-  //   console.error('Ballot caught error: ', `${error} with info: `, info);
-  // }
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    // Oct 2020: If this .error is causing problems, please feel free to make it a log
+    console.error('Ballot caught error: ', `${error} with info: `, info);
+  }
 
   updateOfficeDisplayUnfurledTracker (weVoteId, status) {
     const { ballotItemUnfurledTracker } = this.state;
@@ -1273,7 +1281,7 @@ class Ballot extends Component {
 
         <div className="page-content-container">
           <div className="container-fluid">
-            <Wrapper padTop={cordovaScrollablePaneTopPadding()} padBottom={padBallotWindowBottomForCordova}>
+            <Wrapper padTop={cordovaScrollablePaneTopPadding()} padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
               {emptyBallot}
               {/* eslint-disable-next-line no-nested-ternary */}
               <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>

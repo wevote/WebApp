@@ -6,9 +6,10 @@ import { Button, AppBar, IconButton, Toolbar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
+import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isAppleSilicon, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderNotificationMenu from './HeaderNotificationMenu';
@@ -26,6 +27,9 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
 import { voterPhoto } from '../../utils/voterPhoto';
+
+const appleSiliconDebug = false;
+
 
 class HeaderBackToBallot extends Component {
   constructor (props) {
@@ -179,6 +183,10 @@ class HeaderBackToBallot extends Component {
       voterPhotoUrlMedium,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
+
+    if (isAppleSilicon() && appleSiliconDebug) {
+      dumpCssFromId('backToBallotAppBar');
+    }
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
@@ -684,16 +692,21 @@ class HeaderBackToBallot extends Component {
       return cname;
     }());
 
-    let appBarClasses;
+    let appBarClasses = {};
     const onCandidateOrMeasureRoute = stringContains('/candidate/', pathname.toLowerCase()) || stringContains('/measure/', pathname.toLowerCase());
     if (scrolledDown && onCandidateOrMeasureRoute) {
       appBarClasses = { root: classes.noBoxShadow };
     }
 
+    const shareButtonInHeader = stringContains('/office', pathname.toLowerCase())  && officeName;
     const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 8px', right: 'unset' };
+    if (isAppleSilicon()) {
+      cordovaOverrides.height = shareButtonInHeader ? '87px' : '50px';
+      // dumpObjProps('cordovaOverrides', cordovaOverrides);
+    }
 
     return (
-      <AppBar className={headerClassName} color="default" classes={appBarClasses} style={cordovaOverrides}>
+      <AppBar id="backToBallotAppBar" className={headerClassName} color="default" classes={appBarClasses} style={cordovaOverrides}>
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}
@@ -765,7 +778,7 @@ class HeaderBackToBallot extends Component {
             )}
           </NotificationsAndProfileWrapper>
         </Toolbar>
-        {stringContains('/office', pathname.toLowerCase())  && officeName && (
+        {shareButtonInHeader && (
           <OfficeNameWrapper className="header-toolbar">
             <OfficeItem
               weVoteId={officeWeVoteId}

@@ -1,10 +1,5 @@
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
-import {
-  isCordova,
-  isIOS,
-  prepareForCordovaKeyboard,
-  restoreStylesAfterCordovaKeyboard,
-} from './utils/cordovaUtils';
+import { isAppleSilicon, isCordova, isIOS, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
 import VoterActions from './actions/VoterActions';
 
 function localPrepareForCordovaKeyboard () {
@@ -26,7 +21,8 @@ export function initializationForCordova () { // eslint-disable-line
   };
 
   // Cordova only, override "open" to use InAppBrowser to open any outside site
-  const { cordova: { InAppBrowser, plugins: { firebase: { messaging } } } } = window;
+  // const { cordova: { InAppBrowser, plugins: { firebase: { messaging } } } } = window;
+  const { cordova: { InAppBrowser } } = window;
   window.open = InAppBrowser.open;
 
   // Special keyboard handling for iOS
@@ -36,7 +32,8 @@ export function initializationForCordova () { // eslint-disable-line
     window.addEventListener('keyboardDidHide', localRestoreStylesAfterCordovaKeyboard);
   }
 
-  if (isCordova()) {
+  if (isCordova() && !isAppleSilicon()) {
+    const { cordova: { plugins: { firebase: { messaging } } } } = window;
     // https://github.com/chemerisuk/cordova-plugin-firebase-messaging
     // For iOS, this can't be tested in a simulator.  Works fine in simulator on Android.
     messaging.getToken().then((token) => {

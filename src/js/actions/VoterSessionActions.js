@@ -23,7 +23,8 @@ export default {
   },
 
   setVoterDeviceIdCookie (id) {
-    const { hostname } = window.location;
+    let { hostname } = window.location;
+    hostname = hostname || 'silicon';
     console.log('VoterSessionActions setVoterDeviceIdCookie hostname:', hostname);
     if (hostname && stringContains('wevote.us', hostname)) {
       // If hanging off We Vote subdomain, store the cookie with top level domain
