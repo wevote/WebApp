@@ -65,6 +65,10 @@ class ReadyNoApi extends Component {
     // historyPush('/ballot');
   }
 
+  componentDidCatch (error, info) {
+    console.log('ReadyNoApi.jsx caught: ', error, info.componentStack);
+  }
+
   componentWillUnmount () {
     // DALE 2020-06 jQuery off
     // this.appStoreListener.remove();
@@ -103,10 +107,6 @@ class ReadyNoApi extends Component {
 
   goToBallot = () => {
     // historyPush('/ballot');
-  }
-
-  componentDidCatch (error, info) {
-    console.log('ReadyNoApi.jsx caught: ', error, info.componentStack);
   }
 
   render () {

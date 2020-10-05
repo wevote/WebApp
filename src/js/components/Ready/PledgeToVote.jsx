@@ -158,7 +158,7 @@ class PledgeToVote extends React.Component {
         <div className="card-main">
           <CardTitle>2,678</CardTitle>
           <CardSubTitle>confirmed or pledged voters</CardSubTitle>
-          <ProgressBar percentage={total / goal * 100}>
+          <ProgressBar percentage={(total / goal) * 100}>
             <span />
           </ProgressBar>
           {commentsToDisplay && commentsToDisplay.length > 0 ? (

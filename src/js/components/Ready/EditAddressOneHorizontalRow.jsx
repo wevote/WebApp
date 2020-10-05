@@ -54,6 +54,11 @@ class EditAddressOneHorizontalRow extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('EditAddressOneHorizontalRow caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.ballotStoreListener.remove();
@@ -167,11 +172,6 @@ class EditAddressOneHorizontalRow extends Component {
     this.setState({
       voterSavedAddress: true,
     });
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('EditAddressOneHorizontalRow caught error: ', `${error} with info: `, info);
   }
 
   render () {

@@ -89,6 +89,11 @@ class ItemPositionStatementActionBar extends Component {
     return false;
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('ItemPositionStatementActionBar caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.supportStoreListener.remove();
     this.voterStoreListener.remove();
@@ -182,11 +187,6 @@ class ItemPositionStatementActionBar extends Component {
       voterTextStatement: e.target.value,
       showEditPositionStatementInput: true,
     });
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('ItemPositionStatementActionBar caught error: ', `${error} with info: `, info);
   }
 
   render () {

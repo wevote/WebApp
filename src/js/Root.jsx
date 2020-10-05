@@ -20,7 +20,8 @@ const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', ''];   // lo
 const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
 const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
 
-const routes = () => {  // eslint-disable-line arrow-body-style
+/* eslint-disable react/jsx-props-no-spreading */
+const routes = () => {
   // console.log('window.innerWidth:', window.innerWidth);
   console.log('Root.jsx routes immediately prior to instantiation');
   return (

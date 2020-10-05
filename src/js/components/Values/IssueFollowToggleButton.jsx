@@ -43,6 +43,14 @@ class IssueFollowToggleButton extends Component {
     return false;
   }
 
+  componentDidCatch (error, errorInfo) {
+    // console.log('Error in IssueFollowToggleButton, errorInfo:', errorInfo);
+    this.setState({
+      error,
+      errorInfo,
+    });
+  }
+
   componentWillUnmount () {
     this.issueStoreListener.remove();
   }
@@ -103,14 +111,6 @@ class IssueFollowToggleButton extends Component {
     // Update state so the next render will show the fallback UI, We should have a 'Oh snap' page
     // console.log('getDerivedStateFromError IssueFollowToggleButton, error:', error);
     return { hasError: true };
-  }
-
-  componentDidCatch (error, errorInfo) {
-    // console.log('Error in IssueFollowToggleButton, errorInfo:', errorInfo);
-    this.setState({
-      error,
-      errorInfo,
-    });
   }
 
   handleClick (event) {

@@ -101,6 +101,10 @@ class News extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    console.log('News.jsx caught: ', error, info.componentStack);
+  }
+
   componentWillUnmount () {
     const { componentDidMountFinished } = this.state;
     if (componentDidMountFinished) {
@@ -237,10 +241,6 @@ class News extends Component {
         localLikedItemWeVoteIdsHaveBeenRetrieved,
       });
     }
-  }
-
-  componentDidCatch (error, info) {
-    console.log('News.jsx caught: ', error, info.componentStack);
   }
 
   render () {

@@ -42,6 +42,11 @@ class OfficeItemForOpinions extends Component {
     });
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('OfficeItemForOpinions caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.candidateStoreListener.remove();
   }
@@ -99,11 +104,6 @@ class OfficeItemForOpinions extends Component {
   goToOfficeLink () {
     const officeLink = this.getOfficeLink();
     historyPush(officeLink);
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('OfficeItemForOpinions caught error: ', `${error} with info: `, info);
   }
 
   render () {

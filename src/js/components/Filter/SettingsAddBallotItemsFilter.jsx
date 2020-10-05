@@ -193,6 +193,11 @@ class SettingsAddBallotItemsFilter extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('SettingsAddBallotItemsFilter caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.ballotStoreListener.remove();
   }
@@ -446,11 +451,6 @@ class SettingsAddBallotItemsFilter extends Component {
       }
     }
   };
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('SettingsAddBallotItemsFilter caught error: ', `${error} with info: `, info);
-  }
 
   render () {
     renderLog('SettingsAddBallotItemsFilter');  // Set LOG_RENDER_EVENTS to log all renders

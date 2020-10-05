@@ -315,7 +315,7 @@ HeaderBackTo.propTypes = {
   backToLinkText: PropTypes.string,
   classes: PropTypes.object,
   location: PropTypes.object,
-  // voterWeVoteId: PropTypes.string,
+  voterWeVoteId: PropTypes.string,
 };
 
 const styles = (theme) => ({

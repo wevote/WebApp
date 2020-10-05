@@ -64,6 +64,11 @@ export default class Header extends Component {
     return this.state.windowWidth !== nextState.windowWidth;
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('Header caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.appStoreListener.remove();
     window.removeEventListener('resize', this.handleResize);
@@ -81,11 +86,6 @@ export default class Header extends Component {
       showOrganizationModal: AppStore.showOrganizationModal(),
       showSharedItemModal: AppStore.showSharedItemModal(),
     });
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('Header caught error: ', `${error} with info: `, info);
   }
 
   closeActivityTidbitDrawer () {

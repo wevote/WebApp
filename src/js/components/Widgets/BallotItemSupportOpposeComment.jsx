@@ -82,6 +82,11 @@ class BallotItemSupportOpposeComment extends PureComponent {
     });
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('BallotItemSupportOpposeComment caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
@@ -113,11 +118,6 @@ class BallotItemSupportOpposeComment extends PureComponent {
         ballotItemDisplayName,
       });
     }
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('BallotItemSupportOpposeComment caught error: ', `${error} with info: `, info);
   }
 
   passDataBetweenItemActionToItemPosition () {

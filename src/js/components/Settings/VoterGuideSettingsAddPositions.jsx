@@ -196,6 +196,11 @@ class VoterGuideSettingsAddPositions extends Component {
   // shouldComponentUpdate (nextProps, nextState) {
   // }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('VoterGuideSettingsAddPositions caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.ballotStoreListener.remove();
     this.organizationStoreListener.remove();
@@ -486,11 +491,6 @@ class VoterGuideSettingsAddPositions extends Component {
 
   goToDifferentVoterGuideSettingsDashboardTab (dashboardEditMode = '') {
     AppActions.setVoterGuideSettingsDashboardEditMode(dashboardEditMode);
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('VoterGuideSettingsAddPositions caught error: ', `${error} with info: `, info);
   }
 
   render () {

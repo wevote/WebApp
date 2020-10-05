@@ -31,8 +31,6 @@ import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTabl
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import VoterStore from '../stores/VoterStore';
 import webAppConfig from '../config';
-import FriendInvitationByEmailVerifyProcess
-  from "./Process/FriendInvitationByEmailVerifyProcess";
 // import PledgeToVote from '../components/Ready/PledgeToVote';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -92,6 +90,10 @@ class Ready extends Component {
     });
   }
 
+  componentDidCatch (error, info) {
+    console.log('Ready.jsx caught: ', error, info.componentStack);
+  }
+
   componentWillUnmount () {
     this.appStoreListener.remove();
     this.issueStoreListener.remove();
@@ -137,10 +139,6 @@ class Ready extends Component {
 
   goToBallot = () => {
     historyPush('/ballot');
-  }
-
-  componentDidCatch (error, info) {
-    console.log('Ready.jsx caught: ', error, info.componentStack);
   }
 
   render () {

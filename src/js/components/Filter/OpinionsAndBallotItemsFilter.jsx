@@ -158,6 +158,11 @@ class OpinionsAndBallotItemsFilter extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('OpinionsAndBallotItemsFilter caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.ballotStoreListener.remove();
   }
@@ -354,11 +359,6 @@ class OpinionsAndBallotItemsFilter extends Component {
       }
     }
   };
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('OpinionsAndBallotItemsFilter caught error: ', `${error} with info: `, info);
-  }
 
   render () {
     renderLog('OpinionsAndBallotItemsFilter');  // Set LOG_RENDER_EVENTS to log all renders

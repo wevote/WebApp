@@ -23,6 +23,11 @@ class CandidateSearchItemForOpinions extends Component {
     return { hasError: true };
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('CandidateSearchItemForOpinions caught error: ', `${error} with info: `, info);
+  }
+
   getCandidateLink () {
     const { candidateWeVoteId } = this.props;
     return `/candidate/${candidateWeVoteId}/b/btdb`; // back-to-default-ballot
@@ -35,11 +40,6 @@ class CandidateSearchItemForOpinions extends Component {
     } else {
       return '';
     }
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('CandidateSearchItemForOpinions caught error: ', `${error} with info: `, info);
   }
 
   goToOfficeLink () {

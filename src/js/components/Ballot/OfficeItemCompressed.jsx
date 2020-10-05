@@ -101,6 +101,11 @@ class OfficeItemCompressed extends Component {
   //   return false;
   // }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('OfficeItemCompressed caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.supportStoreListener.remove();
@@ -203,11 +208,6 @@ class OfficeItemCompressed extends Component {
       // If no organizationWeVoteId, signal that we want to link back to default ballot
       return `/office/${this.props.officeWeVoteId}/b/btdb`; // back-to-default-ballot
     }
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('OfficeItemCompressed caught error: ', `${error} with info: `, info);
   }
 
   goToCandidateLink (candidateWeVoteId) {

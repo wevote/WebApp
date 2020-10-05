@@ -46,6 +46,11 @@ class SignInModal extends Component {
     }
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('SignInModal caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     // console.log('SignInModal componentWillUnmount');
     signInModalGlobalState.set('textOrEmailSignInInProcess', false);
@@ -108,11 +113,6 @@ class SignInModal extends Component {
     //   this.closeFunction();
     // }
   };
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('SignInModal caught error: ', `${error} with info: `, info);
-  }
 
   render () {
     renderLog('SignInModal');  // Set LOG_RENDER_EVENTS to log all renders

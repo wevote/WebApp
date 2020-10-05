@@ -51,6 +51,11 @@ class ApplicationForReady extends Component {
     return { hasError: true };
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('Application caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     // this.appStoreListener.remove();
     // this.voterStoreListener.remove();
@@ -70,11 +75,6 @@ class ApplicationForReady extends Component {
     }
     return appBaseClass;
   };
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('Application caught error: ', `${error} with info: `, info);
-  }
 
   render () {
     renderLog('ApplicationForReady');  // Set LOG_RENDER_EVENTS to log all renders

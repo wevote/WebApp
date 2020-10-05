@@ -10,10 +10,6 @@ import { renderLog } from '../../utils/logging';
 import BallotSummaryFooterItem from './BallotSummaryFooterItem';
 
 class BallotSummaryFooter extends Component {
-  static defaultProps = {
-    pathname: '/ballot',
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -235,6 +231,10 @@ BallotSummaryFooter.propTypes = {
   raceLevelFilterItemsInThisBallot: PropTypes.array,
   setActiveRaceItem: PropTypes.func,
 };
+BallotSummaryFooter.defaultProps = {
+  pathname: '/ballot',
+};
+
 
 const styles = (theme) => ({
   typography: {
