@@ -10,7 +10,7 @@ import { historyPush, isAppleSilicon, setIconBadgeMessageCount } from '../../uti
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
-import { returnFirstXWords, startsWith, timeFromDate } from '../../utils/textFormat';
+import { returnFirstXWords, timeFromDate } from '../../utils/textFormat';
 
 
 class HeaderNotificationMenu extends Component {
@@ -30,11 +30,6 @@ class HeaderNotificationMenu extends Component {
     ActivityActions.activityNoticeListRetrieve();
     ActivityActions.activityListRetrieve();
     if (!isAppleSilicon()) setIconBadgeMessageCount(0);
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('HeaderNotificationMenu caught error: ', `${error} with info: `, info);
   }
 
   componentWillUnmount () {
@@ -114,7 +109,7 @@ class HeaderNotificationMenu extends Component {
     const maxNumberToShow = 10;
     const menuItemListActivities = allActivityNotices.map((activityNotice) => {
       // console.log('activityNotice:', activityNotice);
-      if (!activityNotice.speaker_name || startsWith('Voter-', activityNotice.speaker_name)) {
+      if (!activityNotice.speaker_name || activityNotice.speaker_name.startsWith('Voter-')) {
         if (activityNotice.kind_of_notice && activityNotice.kind_of_notice === 'NOTICE_FRIEND_ENDORSEMENTS') {
           // Filter out friends with name problem
           return null;
@@ -206,6 +201,11 @@ class HeaderNotificationMenu extends Component {
       anchorEl: null,
       menuOpen: false,
     });
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('HeaderNotificationMenu caught error: ', `${error} with info: `, info);
   }
 
   render () {

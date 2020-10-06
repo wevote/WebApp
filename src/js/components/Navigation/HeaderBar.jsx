@@ -227,11 +227,6 @@ class HeaderBar extends Component {
     return false;
   }
 
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('HeaderBar caught error: ', `${error} with info: `, info);
-  }
-
   componentWillUnmount () {
     this.appStoreListener.remove();
     this.friendStoreListener.remove();
@@ -403,6 +398,12 @@ class HeaderBar extends Component {
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
     this.setState({ profilePopUpOpen: false });
   }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('HeaderBar caught error: ', `${error} with info: `, info);
+  }
+
 
   render () {
     renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders
