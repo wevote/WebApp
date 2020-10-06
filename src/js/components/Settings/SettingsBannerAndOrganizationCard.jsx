@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
 import OrganizationCard from '../VoterGuide/OrganizationCard';
+import { startsWith } from '../../utils/textFormat';
 
 export default class SettingsBannerAndOrganizationCard extends Component {
   constructor (props) {
@@ -39,7 +40,7 @@ export default class SettingsBannerAndOrganizationCard extends Component {
             <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
           </div>
         ) : null}
-        {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith('Voter-') ? (
+        {this.state.organization.organization_name && !startsWith('Voter-', this.state.organization.organization_name) ? (
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-12">

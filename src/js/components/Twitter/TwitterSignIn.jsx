@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { shortenText } from '../../utils/textFormat';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import $ajax from '../../utils/service';
 import cookies from '../../utils/cookies';
 import {
   isWebApp, cordovaOpenSafariView, isIOS, isAndroid, historyPush,
 } from '../../utils/cordovaUtils';
-import webAppConfig from '../../config';
-import TwitterActions from '../../actions/TwitterActions';
 import SplitIconButton from '../Widgets/SplitIconButton';
+import { shortenText, startsWith } from '../../utils/textFormat';
+import TwitterActions from '../../actions/TwitterActions';
+import webAppConfig from '../../config';
 
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 
@@ -17,7 +17,7 @@ class TwitterSignIn extends Component {
   // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
   static handleTwitterOpenURL (url) {
     oAuthLog(`---------------xxxxxx-------- Application handleTwitterOpenUrl: ${url}`);
-    if (url.startsWith('wevotetwitterscheme://')) {
+    if (startsWith('wevotetwitterscheme://', url)) {
       oAuthLog(`handleTwitterOpenURL received wevotetwitterscheme: ${url}`);
       const search = url.replace(new RegExp('&amp;', 'g'), '&');
       const urlParams = new URLSearchParams(search);
@@ -61,7 +61,7 @@ class TwitterSignIn extends Component {
         }
 
         historyPush('/twitter_sign_in');
-      } else if (url.startsWith('wevotetwitterscheme://sign_in_email')) {
+      } else if (startsWith('wevotetwitterscheme://sign_in_email', url)) {
         oAuthLog(`twitterSignIn by email cordova, (not really twitter) -- received url = ${url}`);
 
         // Example url: wevotetwitterscheme://sign_in_email/1278821

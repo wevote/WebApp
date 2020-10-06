@@ -14,7 +14,6 @@ import ImageHandler from '../ImageHandler';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import IssueStore from '../../stores/IssueStore';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
-import { numberWithCommas } from '../../utils/textFormat';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -22,10 +21,11 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { isOrganizationInVotersNetwork } from '../../utils/positionFunctions';
 import PositionItemScorePopover from '../Widgets/PositionItemScorePopover';
 import ReadMore from '../Widgets/ReadMore';
+import { renderLog } from '../../utils/logging';
+import { numberWithCommas, startsWith } from '../../utils/textFormat';
 import StickyPopover from './StickyPopover';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
 
 class PositionItem extends Component {
   constructor (props) {
@@ -232,7 +232,7 @@ class PositionItem extends Component {
     // console.log('position:', position, ', VoterStore.getLinkedOrganizationWeVoteId():', VoterStore.getLinkedOrganizationWeVoteId());
     if (VoterStore.getLinkedOrganizationWeVoteId() === position.speaker_we_vote_id) {
       // Voter looking at own position
-      if (position.speaker_display_name && position.speaker_display_name.startsWith('Voter-')) {
+      if (position.speaker_display_name && startsWith('Voter-', position.speaker_display_name)) {
         positionSpeakerDisplayName = 'You';
       }
     }
@@ -283,7 +283,7 @@ class PositionItem extends Component {
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
       let moreInfoUrl = position.more_info_url;
       if (moreInfoUrl) {
-        if (!moreInfoUrl.toLowerCase().startsWith('http')) {
+        if (!startsWith('http', moreInfoUrl.toLowerCase())) {
           moreInfoUrl = `http://${moreInfoUrl}`;
         }
       }

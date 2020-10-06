@@ -25,7 +25,7 @@ import ValuesIntroModal from '../CompleteYourProfile/ValuesIntroModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
-import { shortenText, stringContains } from '../../utils/textFormat';
+import { shortenText, startsWith, stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import ShareModal from '../Share/ShareModal';
@@ -227,6 +227,11 @@ class HeaderBar extends Component {
     return false;
   }
 
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('HeaderBar caught error: ', `${error} with info: `, info);
+  }
+
   componentWillUnmount () {
     this.appStoreListener.remove();
     this.friendStoreListener.remove();
@@ -293,10 +298,10 @@ class HeaderBar extends Component {
   getSelectedTab = () => {
     const { pathname } = this.props;
     if (typeof pathname !== 'undefined' && pathname) {
-      if (pathname.toLowerCase().startsWith('/ready')) return 0;
-      if (pathname.toLowerCase().startsWith('/ballot')) return 1;
+      if (startsWith('/ready', pathname.toLowerCase())) return 0;
+      if (startsWith('/ballot', pathname.toLowerCase())) return 1;
       if (stringContains('/value', pathname.toLowerCase()) || stringContains('/opinions', pathname.toLowerCase())) return 2; // '/values'
-      if (pathname.toLowerCase().startsWith('/news')) return 3;
+      if (startsWith('/news', pathname.toLowerCase())) return 3;
     }
     return false;
   };
@@ -398,12 +403,6 @@ class HeaderBar extends Component {
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
     this.setState({ profilePopUpOpen: false });
   }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('HeaderBar caught error: ', `${error} with info: `, info);
-  }
-
 
   render () {
     renderLog('HeaderBar');  // Set LOG_RENDER_EVENTS to log all renders

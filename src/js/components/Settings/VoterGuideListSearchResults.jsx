@@ -10,7 +10,6 @@ import DelayedLoad from '../Widgets/DelayedLoad';
 import OrganizationActions from '../../actions/OrganizationActions';
 import SearchBar from '../Search/SearchBar';
 import ShowMoreItems from '../Widgets/ShowMoreItems';
-import BallotItemSearchResult from "../Ballot/BallotItemSearchResult";
 
 
 class VoterGuideListSearchResults extends Component {

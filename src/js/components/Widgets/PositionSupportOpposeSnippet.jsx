@@ -5,7 +5,7 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from './OpenExternalWebSite';
 import ReadMore from './ReadMore';
-import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
+import { startsWith, vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 import thumbsUpColorIcon from '../../../img/global/svg-icons/thumbs-up-color-icon.svg';
 import thumbsDownColorIcon from '../../../img/global/svg-icons/thumbs-down-color-icon.svg';
 
@@ -77,7 +77,7 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
 
     if (moreInfoUrl) {
-      if (!moreInfoUrl.toLowerCase().startsWith('http')) {
+      if (!startsWith('http', moreInfoUrl.toLowerCase())) {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }

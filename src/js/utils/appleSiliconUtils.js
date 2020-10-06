@@ -13,5 +13,5 @@ export function dumpCssFromId (id) {
 
 export function dumpObjProps (name, obj) {
   // eslint-disable-next-line guard-for-in
-  Object.keys(obj).forEach(key => console.log(`Dump Object ${name} ${key}: ${obj[key]}`));
+  Object.keys(obj).forEach((key) => console.log(`Dump Object ${name} ${key}: ${obj[key]}`));
 }
