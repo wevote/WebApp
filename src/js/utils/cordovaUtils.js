@@ -30,6 +30,15 @@ export function isAppleSilicon () {
     if (!isIOS()) {
       isAppleSiliconGlobal = false;
     } else {
+      // Apple silicon identifies as a March 2020, iPad Pro (11-inch) (2nd generation), J417AP iPad8,9 (Wi-Fi model), but with no serial number
+      // The only place this test should be a problem is on an iPad simulagor for a 'J417AP' if that is even possible
+      // https://www.theiphonewiki.com/wiki/IPad_Pro_(11-inch)_(2nd_generation)
+      isAppleSiliconGlobal =
+        (window.devicePixelRatio === 1) &&
+        (window.screen.width === 768) &&
+        (window.screen.height === 1024) &&
+        (window.device.model === 'iPad8,9') &&
+        (window.device.serial === 'unknown');
       const { diagnostic: { getArchitecture } } = window.cordova.plugins;
       getArchitecture((arch) => {
         isAppleSiliconGlobal = stringContains('ARM', arch);

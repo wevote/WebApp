@@ -115,6 +115,7 @@ export default class Header extends Component {
     this.setState({ windowWidth: window.innerWidth });
   }
 
+
   render () {
     renderLog('Header');  // Set LOG_RENDER_EVENTS to log all renders
 

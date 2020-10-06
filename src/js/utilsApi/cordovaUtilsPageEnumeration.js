@@ -1,119 +1,88 @@
+import CordovaPageConstants from '../constants/CordovaPageConstants';
 import showBallotDecisionsTabs from './showBallotDecisionsTabs'; // eslint-disable-line import/no-cycle
 import { stringContains } from '../utils/textFormat';
 
 
-export const enums = {
-  ballotVote: 1,
-  settingsAccount: 2,
-  moreAbout: 3,
-  settingsHamburger: 4,
-  settingsNotifications: 5,
-  settingsSubscription: 6,
-  settingsVoterGuideLst: 7,
-  moreTools: 8,
-  moreTerms: 9,
-  valuesList: 10,
-  officeWild: 100,
-  settingsWild: 101,
-  wevoteintroWild: 102,
-  ballotSmHdrWild: 103,
-  ballotLgHdrWild: 104,
-  candidateWild: 105,
-  measureWild: 106,
-  valueWild: 107,
-  voterGuideCreatorWild: 109,
-  welcomeWild: 108,
-  candidate: 200,
-  friends: 201,
-  opinions: 202,
-  values: 203,
-  voterGuideWild: 204,
-  ready: 205,
-  twitterSignIn: 206,
-  news: 207,
-  twitterIdMFollowers: 208,
-  defaultVal: 1000,
-};
-
+// eslint-disable-next-line import/prefer-default-export
 export function pageEnumeration () {
   const { href } = window.location;
   // const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
 
   // second level paths must be tried first
   if (href.indexOf('/index.html#/ballot/vote') > 0) {
-    return enums.ballotVote;
+    return CordovaPageConstants.ballotVote;
   } else if (href.indexOf('/index.html#/more/about') > 0) {
-    return enums.moreAbout;
+    return CordovaPageConstants.moreAbout;
   } else if (href.indexOf('/index.html#/more/privacy') > 0 ||
              href.indexOf('/index.html#/more/terms') > 0) {
-    return enums.moreTerms;
+    return CordovaPageConstants.moreTerms;
   } else if (href.indexOf('/index.html#/settings/account') > 0) {
-    return enums.settingsAccount;
+    return CordovaPageConstants.settingsAccount;
   } else if (href.indexOf('/index.html#/settings/hamburger') > 0) {
-    return enums.settingsHamburger;
+    return CordovaPageConstants.settingsHamburger;
   } else if (href.indexOf('/index.html#/settings/tools') > 0) {
-    return enums.moreTools;
+    return CordovaPageConstants.moreTools;
   } else if (href.indexOf('/index.html#/settings/notifications') > 0) {
-    return enums.settingsNotifications;
+    return CordovaPageConstants.settingsNotifications;
   } else if (href.indexOf('/index.html#/settings/subscription') > 0) {
-    return enums.settingsSubscription;
+    return CordovaPageConstants.settingsSubscription;
   } else if (href.indexOf('/index.html#/settings/voterguidelist') > 0) {
-    return enums.settingsVoterGuideLst;
+    return CordovaPageConstants.settingsVoterGuideLst;
   } else if (href.indexOf('/index.html#/ready') > 0) {
-    return enums.ready;
+    return CordovaPageConstants.ready;
   } else if (href.indexOf('/index.html#/values/list') > 0) {
-    return enums.valuesList;
+    return CordovaPageConstants.valuesList;
 
   // then wildcarded second level paths
   } else if (href.indexOf('/index.html#/candidate/') > 0) {
-    return enums.candidateWild;
+    return CordovaPageConstants.candidateWild;
   } else if (href.indexOf('/index.html#/office/') > 0) {
-    return enums.officeWild;
+    return CordovaPageConstants.officeWild;
   } else if (href.indexOf('/index.html#/settings/') > 0 ||
              stringContains('facebook_sign_in', href)) {
-    return enums.settingsWild;
+    return CordovaPageConstants.settingsWild;
   } else if (href.indexOf('/index.html#/value/') > 0) {
-    return enums.valueWild;
+    return CordovaPageConstants.valueWild;
   } else if (href.indexOf('/index.html#/vg/') > 0) {
-    return enums.voterGuideCreatorWild;
+    return CordovaPageConstants.voterGuideCreatorWild;
   } else if (stringContains('btcand', href) ||
              stringContains('btmeas', href) ||
              stringContains('/btdb', href)) { // Added Sept 24, 2020 -- for iPadPro 9.1"
-    return enums.voterGuideWild;
+    return CordovaPageConstants.voterGuideWild;
   } else if (href.indexOf('/index.html#/wevoteintro/') > 0) {
-    return enums.wevoteintroWild;
+    return CordovaPageConstants.wevoteintroWild;
   } else if (href.indexOf('/index.html#/ballot') > 0) {
     if (showBallotDecisionsTabs()) {
-      return enums.ballotLgHdrWild;
+      return CordovaPageConstants.ballotLgHdrWild;
     } else {
-      return enums.ballotSmHdrWild;
+      return CordovaPageConstants.ballotSmHdrWild;
     }
   } else if (href.indexOf('/index.html#/measure/') > 0) {
-    return enums.measureWild;
+    return CordovaPageConstants.measureWild;
 
   // then specific first level paths
   } if (href.indexOf('/index.html#/candidate') > 0) {
-    return enums.candidate;
+    return CordovaPageConstants.candidate;
   } else if (href.indexOf('/index.html#/friends') > 0) {
-    return enums.friends;
+    return CordovaPageConstants.friends;
   } else if (href.indexOf('/index.html#/opinions') > 0) {
-    return enums.opinions;
+    return CordovaPageConstants.opinions;
   } else if (href.indexOf('/index.html#/ready') > 0) {
-    return enums.values; // Use /value setting
+    return CordovaPageConstants.values; // Use /value setting
   } else if (href.indexOf('/index.html#/values') > 0) {
-    return enums.values;
+    return CordovaPageConstants.values;
   } else if (href.indexOf('/index.html#/welcome') > 0 ||
              href.indexOf('/index.html#/for-organizations') > 0 ||
              href.indexOf('/index.html#/for-campaigns') > 0 ||
              href.indexOf('/index.html#/more/pricing') > 0 ||
              href.indexOf('/index.html#/how') > 0) {
-    return enums.welcomeWild;
+    return CordovaPageConstants.welcomeWild;
   } else if (href.indexOf('/index.html#/twitter_sign_in') > 0) {
-    return enums.twitterSignIn;
+    return CordovaPageConstants.twitterSignIn;
   } else if (href.indexOf('/index.html#/news') > 0) {
-    return enums.news;
+    return CordovaPageConstants.news;
   } else if (href.indexOf('/m/followers') > 0 || href.indexOf('/m/friends') > 0 || href.indexOf('/m/following') > 0) {
-    return enums.twitterIdMFollowers;
+    return CordovaPageConstants.twitterIdMFollowers;
   }
-  return enums.defaultVal;
+  return CordovaPageConstants.defaultVal;
 }
