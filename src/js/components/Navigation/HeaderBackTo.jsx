@@ -6,8 +6,9 @@ import { AppBar, IconButton, Toolbar, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
+import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isAppleSilicon, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderNotificationMenu from './HeaderNotificationMenu';
@@ -19,6 +20,9 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import { voterPhoto } from '../../utils/voterPhoto';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import VoterStore from '../../stores/VoterStore';
+
+const appleSiliconDebug = false;
+
 
 class HeaderBackTo extends Component {
   constructor (props) {
@@ -63,6 +67,10 @@ class HeaderBackTo extends Component {
       voterWeVoteId: voter.we_vote_id || voterWeVoteId,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
+    if (isAppleSilicon() && appleSiliconDebug) {
+      console.log('before dummpCss headerBackToAppBar');
+      dumpCssFromId('headerBackToAppBar');
+    }
   }
 
   // eslint-disable-next-line camelcase,react/sort-comp
@@ -227,7 +235,7 @@ class HeaderBackTo extends Component {
     const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 8px', right: 'unset' };
 
     return (
-      <AppBar className={headerClassName} color="default" style={cordovaOverrides}>
+      <AppBar id="headerBackToAppBar" className={headerClassName} color="default" style={cordovaOverrides}>
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}

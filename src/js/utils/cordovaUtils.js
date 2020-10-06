@@ -1,11 +1,12 @@
 import { browserHistory, hashHistory } from 'react-router';
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
-import { startsWith } from './textFormat';
+import { startsWith, stringContains } from './textFormat';
 
 /* global $  */
 
 let androidPixels = 0;
+let isAppleSiliconGlobal;
 
 
 export function isCordova () {
@@ -22,6 +23,29 @@ export function isIOS () {
   // console.log("<><><><> uuid:  " + window.device.uuid);
   const { platform } = window.device || '';
   return isCordova() && platform === 'iOS';  // Ignore the "Condition is always false" warning.  This line works correctly.
+}
+
+export function isAppleSilicon () {
+  if (isAppleSiliconGlobal === undefined) {
+    if (!isIOS()) {
+      isAppleSiliconGlobal = false;
+    } else {
+      const { diagnostic: { getArchitecture } } = window.cordova.plugins;
+      getArchitecture((arch) => {
+        isAppleSiliconGlobal = stringContains('ARM', arch);
+        if (isAppleSiliconGlobal) {
+          console.log(`Processor Architecture ARM64 (Running on Apple Silicon): ${arch}`);
+        } else {
+          console.log(`Processor Architecture: ${arch}`);
+        }
+      }, (error) => {
+        isAppleSiliconGlobal = false;  // default on error
+        console.error('cordova.plugins.diagnostic.getArchitecture threw: ', error);
+      });
+    }
+  }
+
+  return isAppleSiliconGlobal;
 }
 
 export function isAndroid () {
@@ -116,7 +140,7 @@ export function deviceTypeString () {
 let matchedDevice = false;
 export function logMatch (device, byModel) {
   if (!matchedDevice) {
-    cordovaOffsetLog(`Matched ------------ ${device} by ${byModel ? 'window.device.model' : 'pbakondyScreenSize'}`);
+    cordovaOffsetLog(`Matched ------------ ${device} by ${byModel ? 'window.device.model' : 'pbakondyScreenSize'}${isAppleSilicon() ? ', but AppleSilicon detected' : ''}`);
     matchedDevice = true;
   }
 }
@@ -257,7 +281,7 @@ export function isIPhone6p5in () {
 }
 
 export function isIPad () {
-  if (isIOS()) {
+  if (isIOS() && !isAppleSilicon()) {
     if (window.device.model.substring(0, 4) === 'iPad') {
       logMatch('iPad', true);
       return true;

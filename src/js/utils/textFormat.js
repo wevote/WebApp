@@ -259,6 +259,16 @@ export function numberWithCommas (rawNumber) {
   }
 }
 
+export function startsWith (needle, incomingString) {
+  // We implement this function because IE 10 does not support the "string.startsWith" function.
+  // console.log("startsWith, needle:", needle, ", haystack: ", incomingString);
+  if (incomingString) {
+    return incomingString.indexOf(needle) === 0;
+  } else {
+    return false;
+  }
+}
+
 // If Display name is repeated in beginning of the description, remove the name from the description (along with trailing 'is') and capitalize next word to begin description.
 export function removeTwitterNameFromDescription (displayName, twitterDescription) {
   const displayNameNotNull = displayName || '';
@@ -346,16 +356,6 @@ export function shortenText (incomingString, maximumLength) {
   const minimumCharactersToDisplay = 3;
   cropLengthToMakeRoomForEllipses = cropLengthToMakeRoomForEllipses > 2 ? cropLengthToMakeRoomForEllipses : minimumCharactersToDisplay;
   return incomingString.length < maximumLengthInteger ? incomingString : `${incomingString.slice(0, cropLengthToMakeRoomForEllipses)}...`;
-}
-
-export function startsWith (needle, incomingString) {
-  // We implement this function because IE 10 does not support the "string.startsWith" function.
-  // console.log("startsWith, needle:", needle, ", haystack: ", incomingString);
-  if (incomingString) {
-    return incomingString.indexOf(needle) === 0;
-  } else {
-    return false;
-  }
 }
 
 export function stringContains (needle, stringHaystack) {

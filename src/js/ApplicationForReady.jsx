@@ -21,7 +21,8 @@ class ApplicationForReady extends Component {
   }
 
   componentDidMount () {
-    const { hostname } = window.location;
+    let { hostname } = window.location;
+    hostname = hostname || 'silicon';
     // AppActions.siteConfigurationRetrieve(hostname);
     console.log('ApplicationForReady ---------------   componentDidMount () hostname: ', hostname);
     polyfillObjectEntries();
