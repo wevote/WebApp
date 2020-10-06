@@ -1,11 +1,12 @@
 import displayFriendsTabs from './displayFriendsTabs';
+import { startsWith } from './textFormat';
 
 export default function shouldHeaderRetreat (pathname) {
   const shouldRetreat = (
     typeof pathname !== 'undefined' && pathname && (
-      pathname.startsWith('/ballot') ||
-      pathname.startsWith('/candidate') ||
-      pathname.startsWith('/measure') ||
+      startsWith('/ballot', pathname) ||
+      startsWith('/candidate', pathname) ||
+      startsWith('/measure', pathname) ||
       displayFriendsTabs()
     )
   );

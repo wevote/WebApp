@@ -17,8 +17,8 @@ import MeasureStore from '../../stores/MeasureStore';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { capitalizeString, numberWithCommas, stringContains } from '../../utils/textFormat';
 import ReadMore from '../Widgets/ReadMore';
+import { capitalizeString, numberWithCommas, startsWith, stringContains } from '../../utils/textFormat';
 
 class VoterGuidePositionItem extends Component {
   constructor (props) {
@@ -238,7 +238,7 @@ class VoterGuidePositionItem extends Component {
 
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
     if (moreInfoUrl) {
-      if (!moreInfoUrl.toLowerCase().startsWith('http')) {
+      if (!startsWith('http', moreInfoUrl.toLowerCase())) {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }

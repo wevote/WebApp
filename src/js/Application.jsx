@@ -19,7 +19,7 @@ import { renderLog, routingLog } from './utils/logging';
 import ShareButtonFooter from './components/Share/ShareButtonFooter';
 import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
 import SnackNotifier from './components/Widgets/SnackNotifier';
-import { stringContains } from './utils/textFormat';
+import { startsWith, stringContains } from './utils/textFormat';
 import { initializationForCordova, removeCordovaSpecificListeners } from './startCordova';
 import VoterActions from './actions/VoterActions';
 import VoterStore from './stores/VoterStore';
@@ -441,11 +441,11 @@ class Application extends Component {
         { typeof pathname !== 'undefined' && pathname &&
           (String(pathname) === '/for-campaigns' ||
           String(pathname) === '/for-organizations' ||
-          pathname.startsWith('/how') ||
+          startsWith('/how', pathname) ||
           String(pathname) === '/more/about' ||
           String(pathname) === '/more/credits' ||
-          pathname.startsWith('/more/donate') ||
-          pathname.startsWith('/more/pricing') ||
+          startsWith('/more/donate', pathname) ||
+          startsWith('/more/pricing', pathname) ||
           String(pathname) === '/welcome' ||
           !contentFullWidthMode || displayFriendsTabs()) ?
           (

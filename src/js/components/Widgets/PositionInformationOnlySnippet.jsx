@@ -5,10 +5,10 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import noPositionIcon from '../../../img/global/svg-icons/no-position-icon.svg';
 import OpenExternalWebSite from './OpenExternalWebSite';
 import ReadMore from './ReadMore';
-import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
-import noPositionIcon from '../../../img/global/svg-icons/no-position-icon.svg';
+import { startsWith, vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 
 export default class PositionInformationOnlySnippet extends Component {
   render () {
@@ -58,7 +58,7 @@ export default class PositionInformationOnlySnippet extends Component {
       commentTextOff = !!this.props.comment_text_off;
     }
     if (moreInfoUrl) {
-      if (!moreInfoUrl.toLowerCase().startsWith('http')) {
+      if (!startsWith('http', moreInfoUrl.toLowerCase())) {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }

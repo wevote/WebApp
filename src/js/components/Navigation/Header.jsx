@@ -20,9 +20,9 @@ import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
 import HeaderBar from './HeaderBar';
 import HowItWorksModal from '../CompleteYourProfile/HowItWorksModal';
 import OrganizationModal from '../VoterGuide/OrganizationModal';
-import SharedItemModal from '../Share/SharedItemModal';
-import { stringContains } from '../../utils/textFormat';
+import { startsWith, stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
+import SharedItemModal from '../Share/SharedItemModal';
 import VoterPlanModal from '../Ready/VoterPlanModal';
 
 
@@ -391,11 +391,11 @@ export default class Header extends Component {
       typeof pathname !== 'undefined' && pathname &&
       (pathname === '/for-campaigns' ||
       pathname === '/for-organizations' ||
-      pathname.startsWith('/how') ||
+      startsWith('/how', pathname) ||
       pathname === '/more/about' ||
       pathname === '/more/credits' ||
-      pathname.startsWith('/more/donate') ||
-      pathname.startsWith('/more/pricing') ||
+      startsWith('/more/donate', pathname) ||
+      startsWith('/more/pricing', pathname) ||
       pathname === '/welcome')) {
       return null;
     } else {

@@ -14,6 +14,7 @@ import { hideZenDeskHelpVisibility, showZenDeskHelpVisibility } from '../../util
 import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import DelayedLoad from '../Widgets/DelayedLoad';
 import { renderLog } from '../../utils/logging';
+import { startsWith } from '../../utils/textFormat';
 
 
 class ActivityTidbitDrawer extends Component {
@@ -58,7 +59,7 @@ class ActivityTidbitDrawer extends Component {
     if (isCordova()) {
       pathname = hrefRaw.replace(/file:\/\/.*?Vote.app\/www\/index.html#\//, '');
     }
-    if (typeof pathname !== 'undefined' && pathname && pathname.startsWith('/news/a/')) {
+    if (typeof pathname !== 'undefined' && pathname && startsWith('/news/a/', pathname)) {
       historyPush(`/news#${activityTidbitWeVoteId}`);
     }
   }

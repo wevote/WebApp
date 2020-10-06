@@ -1,6 +1,7 @@
 import { browserHistory, hashHistory } from 'react-router';
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
+import { startsWith } from './textFormat';
 
 /* global $  */
 
@@ -441,7 +442,7 @@ export function isWebAppHeight737to896 () {
 }
 
 export function isAndroidSimulator () {
-  return window.location.href.startsWith('file:///android');
+  return startsWith('file:///android', window.location.href);
 }
 
 export function isCordovaButNotATablet () {
@@ -449,7 +450,7 @@ export function isCordovaButNotATablet () {
 }
 
 export function isIOsSimulator () {
-  return window.location.href.startsWith('file:///Users');
+  return startsWith('file:///Users', window.location.href);
 }
 
 export function isSimulator () {
