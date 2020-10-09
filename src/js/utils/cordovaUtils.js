@@ -25,6 +25,7 @@ export function isIOS () {
 }
 
 export function isIOSAppOnMac () {
+  if (isWebApp()) return false;
   const { isiOSAppOnMac } = window.device;
   // Our fork of cordova-plugin-device exposed the
   return isiOSAppOnMac;

@@ -1,4 +1,4 @@
-# Apple Silicon on macOS Big Sur 11 beta, October 26, 2020
+# Apple Silicon on macOS Big Sur 11 beta, October 9, 2020
 
 Will remove these notes once Big Sur is released, and Apple Silicon (iOS app running on the desktop) is stable.
 
