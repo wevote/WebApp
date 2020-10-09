@@ -24,8 +24,9 @@ import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllI
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
-import { cordovaBallotFilterTopMargin, cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
-import { chipLabelText, historyPush, isAppleSilicon, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
+import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
+import { chipLabelText, historyPush, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ElectionActions from '../../actions/ElectionActions';
@@ -304,7 +305,7 @@ class Ballot extends Component {
     ActivityActions.activityNoticeListRetrieve();
     window.addEventListener('scroll', this.onScroll);
 
-    if (isAppleSilicon() && appleSiliconDebug) {
+    if (isIOSAppOnMac() && appleSiliconDebug) {
       dumpCssFromId('ballotWrapper');
     }
   }

@@ -11,7 +11,7 @@ import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
 import WelcomeFooter from '../components/Welcome/WelcomeFooter';
-import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
+import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import Testimonial from '../components/Widgets/Testimonial';
 import { validateEmail } from '../utils/regex-checks';

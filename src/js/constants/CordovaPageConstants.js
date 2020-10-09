@@ -24,6 +24,7 @@ const CordovaPageConstants = {
   candidate: null,
   friends: null,
   opinions: null,
+  opinionsPubFigs: null,
   values: null,
   voterGuideWild: null,
   ready: null,

@@ -6,7 +6,7 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import AppActions from '../actions/AppActions';
-import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
+import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isCordova } from '../utils/cordovaUtils';
 import WelcomeFooter from '../components/Welcome/WelcomeFooter';
 import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader';

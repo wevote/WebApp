@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
+import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../utils/logging';

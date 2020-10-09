@@ -22,7 +22,7 @@ class ApplicationForReady extends Component {
 
   componentDidMount () {
     let { hostname } = window.location;
-    hostname = hostname || 'silicon';
+    hostname = hostname || '';
     // AppActions.siteConfigurationRetrieve(hostname);
     console.log('ApplicationForReady ---------------   componentDidMount () hostname: ', hostname);
     polyfillObjectEntries();

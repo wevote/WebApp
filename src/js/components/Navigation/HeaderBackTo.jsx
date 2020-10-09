@@ -6,16 +6,16 @@ import { AppBar, IconButton, Toolbar, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
-import { dumpCssFromId } from '../../utils/appleSiliconUtils';
+import { dumpCssFromId, dumpObjProps } from '../../utils/appleSiliconUtils';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, historyPush, isAppleSilicon, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp, isIPad } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderNotificationMenu from './HeaderNotificationMenu';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import SignInModal from '../Widgets/SignInModal';
-import { shortenText } from '../../utils/textFormat';
+import { shortenText, stringContains } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import { voterPhoto } from '../../utils/voterPhoto';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -67,7 +67,7 @@ class HeaderBackTo extends Component {
       voterWeVoteId: voter.we_vote_id || voterWeVoteId,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
-    if (isAppleSilicon() && appleSiliconDebug) {
+    if (isIOSAppOnMac() && appleSiliconDebug) {
       console.log('before dummpCss headerBackToAppBar');
       dumpCssFromId('headerBackToAppBar');
     }
@@ -232,7 +232,14 @@ class HeaderBackTo extends Component {
       }
     }());
 
-    const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 8px', right: 'unset' };
+    const { pathname } = window.location;  // Oct 9, 2020: Previously this came as a prop
+    const shareButtonInHeader = pathname && stringContains('/office', pathname.toLowerCase());
+    const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 9px', right: 'unset' };
+    if (isIOSAppOnMac() || isIPad()) {
+      cordovaOverrides.height = shareButtonInHeader ? '87px !important' : '50px';
+      // dumpObjProps('cordovaOverrides', cordovaOverrides);
+    }
+    dumpObjProps('cordovaOverrides', cordovaOverrides);
 
     return (
       <AppBar id="headerBackToAppBar" className={headerClassName} color="default" style={cordovaOverrides}>

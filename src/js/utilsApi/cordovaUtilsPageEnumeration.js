@@ -59,6 +59,9 @@ export function pageEnumeration () {
     }
   } else if (href.indexOf('/index.html#/measure/') > 0) {
     return CordovaPageConstants.measureWild;
+  } else if (href.indexOf('/showPublicFiguresFilter') > 0 ||  // /opinions/f/showPublicFiguresFilter
+             href.indexOf('/showOrganizationsFilter') > 0) {  // /opinions/f/showOrganizationsFilter
+    return CordovaPageConstants.opinionsPubFigs;
 
   // then specific first level paths
   } if (href.indexOf('/index.html#/candidate') > 0) {

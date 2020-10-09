@@ -7,7 +7,7 @@ import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
 import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, historyPush, isAppleSilicon, isCordova, isIOS, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isIOS, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToBallot from './HeaderBackToBallot';
 import HeaderBackTo from './HeaderBackTo';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
@@ -44,7 +44,7 @@ export default class Header extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.setState({ windowWidth: window.innerWidth });
     window.addEventListener('resize', this.handleResize);
-    if (isAppleSilicon() && appleSiliconDebug) {
+    if (isIOSAppOnMac() && appleSiliconDebug) {
       dumpCssFromId('header-container');
     }
   }
@@ -132,14 +132,14 @@ export default class Header extends Component {
     let iPhoneSpacer = '';
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
-    } else if (isCordova() && isIOS() && !hasIPhoneNotch() && !isAppleSilicon()) {
+    } else if (isCordova() && isIOS() && !hasIPhoneNotch() && !isIOSAppOnMac()) {
       iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '26px' : 'undefined'}` }} />;
     }
 
     // console.log('organizationModalBallotItemWeVoteId: ', this.state.organizationModalBallotItemWeVoteId);
 
     let pageHeaderClasses = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
-    if (isIPad() && !isAppleSilicon()) {
+    if (isIPad() && !isIOSAppOnMac()) {
       pageHeaderClasses = pageHeaderClasses.replace('page-header__container', 'page-header__container_ipad');
     }
     // console.log(`Header href: ${window.location.href}  cordovaStyle: `, cordovaTopHeaderTopMargin());

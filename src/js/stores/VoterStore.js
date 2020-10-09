@@ -269,7 +269,7 @@ class VoterStore extends ReduceStore {
     cookies.removeItem('voter_device_id');
     cookies.removeItem('voter_device_id', '/');
     let { hostname } = window.location;
-    hostname = hostname || 'silicon';
+    hostname = hostname || '';
     // console.log('setVoterDeviceIdCookie hostname:', hostname);
     if (hostname && stringContains('wevote.us', hostname)) {
       cookies.setItem('voter_device_id', id, Infinity, '/', 'wevote.us');

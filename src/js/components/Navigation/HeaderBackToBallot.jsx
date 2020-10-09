@@ -9,7 +9,7 @@ import AppStore from '../../stores/AppStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, historyPush, isAppleSilicon, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderNotificationMenu from './HeaderNotificationMenu';
@@ -184,7 +184,7 @@ class HeaderBackToBallot extends Component {
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
 
-    if (isAppleSilicon() && appleSiliconDebug) {
+    if (isIOSAppOnMac() && appleSiliconDebug) {
       dumpCssFromId('backToBallotAppBar');
     }
   }
@@ -698,12 +698,13 @@ class HeaderBackToBallot extends Component {
       appBarClasses = { root: classes.noBoxShadow };
     }
 
-    const shareButtonInHeader = stringContains('/office', pathname.toLowerCase())  && officeName;
+    const shareButtonInHeader = stringContains('/office', pathname.toLowerCase());
     const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 8px', right: 'unset' };
-    if (isAppleSilicon()) {
+    if (isIOSAppOnMac() || isIPad()) {
       cordovaOverrides.height = shareButtonInHeader ? '87px' : '50px';
-      // dumpObjProps('cordovaOverrides', cordovaOverrides);
+      // dumpObjProps('cordovaOverrides: ', cordovaOverrides);
     }
+
 
     return (
       <AppBar id="backToBallotAppBar" className={headerClassName} color="default" classes={appBarClasses} style={cordovaOverrides}>
@@ -784,7 +785,7 @@ class HeaderBackToBallot extends Component {
               weVoteId={officeWeVoteId}
               ballotItemDisplayName={officeName}
             />
-            <OfficeShareWrapper className="u-show-desktop-tablet">
+            <OfficeShareWrapper className="u-show-desktop-tablet" ipad={isIPad() || isIOSAppOnMac()}>
               <ShareButtonDesktopTablet officeShare />
             </OfficeShareWrapper>
           </OfficeNameWrapper>
@@ -859,6 +860,7 @@ const OfficeNameWrapper = styled.div`
 
 const OfficeShareWrapper = styled.div`
   margin-bottom: 12px;
+  margin-right: ${({ ipad }) => (ipad ? '19px' : '')};
 `;
 
 export default withStyles(styles)(HeaderBackToBallot);
