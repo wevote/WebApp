@@ -79,7 +79,7 @@ export default class Location extends Component {
             Enter address where you are registered to vote
           </h3>
           <div>
-            <AddressBox {...this.props} saveUrl="/ballot" />
+            <AddressBox saveUrl="/ballot" />
           </div>
         </div>
         <div className="elections-list-container container-fluid well u-stack--md u-inset--md">

@@ -1121,7 +1121,7 @@ class Ballot extends Component {
           Enter address where you are registered to vote
         </h3>
         <div>
-          <AddressBox {...this.props} saveUrl={ballotBaseUrl} />
+          <AddressBox saveUrl={ballotBaseUrl} />
         </div>
       </div>
     );

@@ -70,7 +70,7 @@ export default class Intro extends Component {
           <span className="medium">
             This is our best guess - feel free to change.
           </span>
-          <AddressBox {...this.props} saveUrl="/ballot" />
+          <AddressBox saveUrl="/ballot" />
           <br />
           <ul className="list-group">
             <li className="list-group-item">Research ballot items</li>

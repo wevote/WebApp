@@ -246,7 +246,12 @@ class GuideList extends Component {
               return (
                 <VoterGuideDisplayForList
                   key={organization.organization_we_vote_id}
-                  {...organization}
+                  organizationWeVoteId={organization.organization_we_vote_id}
+                  voterGuideImageUrlLarge={organization.voter_guide_image_url_large}
+                  voterGuideDisplayName={organization.voter_guide_display_name}
+                  twitterDescription={organization.twitter_description}
+                  twitterFollowersCount={organization.twitter_followers_count}
+                  twitterHandle={organization.twitter_handle}
                 >
                   <FollowToggle
                     organizationWeVoteId={organization.organization_we_vote_id}

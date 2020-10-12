@@ -69,7 +69,6 @@ class EditAddressInPlace extends Component {
             toggleEditingAddress={this.toggleEditingAddress}
             saveUrl={ballotBaseUrl}
             toggleSelectAddressModal={this.props.toggleFunction}
-            editingAddress={editingAddress}
           />
         </span>
       );
