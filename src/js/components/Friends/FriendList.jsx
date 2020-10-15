@@ -24,7 +24,14 @@ export default class FriendList extends Component {
           <FriendDisplayForList
             key={friend.voter_we_vote_id}
             previewMode={this.props.previewMode}
-            {...friend}
+            linkedOrganizationWeVoteId={friend.linkedOrganizationWeVoteId}
+            mutualFriends={friend.mutualFriends}
+            positionsTaken={friend.positionsTaken}
+            voterWeVoteId={friend.voterWeVoteId}
+            voterPhotoUrlLarge={friend.voterPhotoUrlLarge}
+            voterEmailAddress={friend.voterEmailAddress}
+            voterDisplayName={friend.voterDisplayName}
+            voterTwitterHandle={friend.voterTwitterHandle}
           />
         ))}
       </div>

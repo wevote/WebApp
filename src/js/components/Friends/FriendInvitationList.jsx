@@ -27,7 +27,16 @@ export default class FriendInvitationList extends Component {
                   <div key={`invite-key-${friend.voter_we_vote_id}`}>
                     <FriendInvitationVoterLinkDisplayForList
                       id={`invite-id-${friend.voter_we_vote_id}`}
-                      {...friend}
+                      invitationsSentByMe={friend.inivitationSentByMe}
+                      linkedOrganizationWeVoteId={friend.linkedOrganizationWeVoteId}
+                      mutualFriends={friend.mutualFriends}
+                      positionsTaken={friend.positionsTaken}
+                      voterWeVoteId={friend.voterWeVoteId}
+                      voterPhotoUrlLarge={friend.voterPhotoUrlLarge}
+                      voterDisplayName={friend.voterDisplayName}
+                      voterTwitterHandle={friend.voterTwitterHandle}
+                      voterTwitterDescription={friend.voterTwitterDescription}
+                      voterEmailAddress = {friend.voterEmailAddress}
                       invitationsSentByMe={invitationsSentByMe}
                       previewMode={previewMode}
                     />
@@ -42,7 +51,13 @@ export default class FriendInvitationList extends Component {
                   <div key={`invite-key-${simpleKeyCounter}`}>
                     <FriendInvitationEmailLinkDisplayForList
                       id={`invite-id-${simpleKeyCounter}`}
-                      {...friend}
+                      invitationStatus={friend.invitationStatus}
+                      linkedOrganizationWeVoteId={friend.linkedOrganizationWeVoteId}
+                      mutualFriends={friend.mutualFriends}
+                      positionsTaken={friend.positionsTaken}
+                      voterEmailAddress={friend.voterEmailAddress} // Comes friend data object from API server
+                      voterPhotoUrlLarge={friend.voterPhotoUrlLarge} // Comes friend data object from API server
+                      voterTwitterHandle={friend.voterTwitterHandle}// Comes friend data object from API server
                       invitationsSentByMe={invitationsSentByMe}
                       previewMode={previewMode}
                     />

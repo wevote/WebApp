@@ -146,16 +146,16 @@ class FriendInvitationEmailLinkDisplayForList extends Component {
   }
 }
 FriendInvitationEmailLinkDisplayForList.propTypes = {
-  invitation_status: PropTypes.string, // Comes friend data object from API server
-  linked_organization_we_vote_id: PropTypes.string,
-  mutual_friends: PropTypes.number,
-  positions_taken: PropTypes.number,
+  invitationStatus: PropTypes.string, // Comes friend data object from API server
+  linkedOrganizationWeVoteId: PropTypes.string,
+  mutualFriends: PropTypes.number,
+  positionsTaken: PropTypes.number,
   // voter_display_name: PropTypes.string, // Comes friend data object from API server
-  voter_email_address: PropTypes.string, // Comes friend data object from API server
-  voter_photo_url_large: PropTypes.string, // Comes friend data object from API server
+  voterEmailAddress: PropTypes.string, // Comes friend data object from API server
+  voterPhotoUrlLarge: PropTypes.string, // Comes friend data object from API server
   // voter_twitter_description: PropTypes.string, // Comes friend data object from API server
   // voter_twitter_followers_count: PropTypes.number, // Comes friend data object from API server
-  voter_twitter_handle: PropTypes.string, // Comes friend data object from API server
+  voterTwitterHandle: PropTypes.string, // Comes friend data object from API server
   // voter_we_vote_id: PropTypes.string, // Comes friend data object from API server
   previewMode: PropTypes.bool,
 };

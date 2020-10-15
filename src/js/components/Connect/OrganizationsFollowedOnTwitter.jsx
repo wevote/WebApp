@@ -135,7 +135,14 @@ export default class OrganizationsFollowedOnTwitter extends Component {
             <span className="position-rating__source with-popover">
               <Link to={voterGuideLink}>
                 <OrganizationTinyDisplay
-                  {...oneOrganization}
+                  showOppose={oneOrganization.showOppose}
+                  showSupport={oneOrganization.showSupport}
+                  toFollow={oneOrganization.toFollow}
+                  voterGuideImageUrlTiny={oneOrganization.voterGuideImageUrlTiny}
+                  voterImageUrlTiny={oneOrganization.voterImageUrlTiny}
+                  organizationPhotoUrlTiny={oneOrganization.organizationPhotoUrlTiny}
+                  voterGuideDisplayName={oneOrganization.voterGuideDisplayName}
+                  organizationName={oneOrganization.organizationName}
                   showPlaceholderImage
                 />
               </Link>

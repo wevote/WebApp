@@ -71,14 +71,14 @@ class FriendsShareListItem extends Component {
   }
 }
 FriendsShareListItem.propTypes = {
-  linked_organization_we_vote_id: PropTypes.string,
-  mutual_friends: PropTypes.number,
-  positions_taken: PropTypes.number,
+  linkedOrganizationWeVoteId: PropTypes.string,
+  mutualFriends: PropTypes.number,
+  positionsTaken: PropTypes.number,
   // voter_we_vote_id: PropTypes.string,
-  voter_photo_url_large: PropTypes.string,
-  voter_email_address: PropTypes.string,
-  voter_display_name: PropTypes.string,
-  voter_twitter_handle: PropTypes.string,
+  voterPhotoUrlLarge: PropTypes.string,
+  voterEmailAddress: PropTypes.string,
+  voterDisplayName: PropTypes.string,
+  voterTwitterHandle: PropTypes.string,
   // voter_twitter_description: PropTypes.string,
   // voter_twitter_followers_count: PropTypes.number,
 };
