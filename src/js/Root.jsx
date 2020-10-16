@@ -16,7 +16,7 @@ const WelcomeForOrganizations = React.lazy(() => import('./routes/WelcomeForOrga
 // const ballotHasBeenVisited = cookies.getItem('ballot_has_been_visited');
 const firstVisit = !cookies.getItem('voter_device_id');
 let { hostname } = window.location;
-hostname = hostname || 'silicon';
+hostname = hostname || '';
 const weVoteSites = ['wevote.us', 'quality.wevote.us', 'localhost', 'silicon', ''];   // localhost on Cordova is a ''
 const isWeVoteMarketingSite = weVoteSites.includes(String(hostname));
 const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;

@@ -6,7 +6,7 @@ import { Badge, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import ActivityActions from '../../actions/ActivityActions';
 import ActivityStore from '../../stores/ActivityStore';
-import { historyPush, isAppleSilicon, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
+import { historyPush, isIOSAppOnMac, setIconBadgeMessageCount } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
@@ -29,7 +29,7 @@ class HeaderNotificationMenu extends Component {
     this.activityStoreListener = ActivityStore.addListener(this.onActivityStoreChange.bind(this));
     ActivityActions.activityNoticeListRetrieve();
     ActivityActions.activityListRetrieve();
-    if (!isAppleSilicon()) setIconBadgeMessageCount(0);
+    if (!isIOSAppOnMac()) setIconBadgeMessageCount(0);
   }
 
   componentDidCatch (error, info) {
@@ -49,7 +49,7 @@ class HeaderNotificationMenu extends Component {
       .map((activityNotice) => activityNotice.activity_notice_id);
     // console.log('activityNoticeIdListNotSeen:', activityNoticeIdListNotSeen);
     const menuItemList = this.generateMenuItemList(allActivityNotices);
-    if (!isAppleSilicon()) setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
+    if (!isIOSAppOnMac()) setIconBadgeMessageCount(activityNoticeIdListNotSeen.length);
     this.setState({
       activityNoticeIdListNotSeen,
       allActivityNoticesNotSeenCount: activityNoticeIdListNotSeen.length,

@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import CodeCopier from '../Widgets/CodeCopier';
-import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
+import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 

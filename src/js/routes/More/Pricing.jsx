@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
-import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
+import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { renderLog } from '../../utils/logging';
 import WelcomeFooter from '../../components/Welcome/WelcomeFooter';
 import Section from '../../components/Welcome/Section';

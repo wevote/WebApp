@@ -28,7 +28,7 @@ import {
   androidTwitterClickHandler,
   cordovaSocialSharingByEmail,
 } from './shareButtonCommon';
-import { cordovaDot, hasIPhoneNotch, isAndroid, isCordova } from '../../utils/cordovaUtils';
+import { cordovaDot, hasIPhoneNotch, isAndroid, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import sortFriendListByMutualFriends from '../../utils/friendFunctions';
 import { stringContains } from '../../utils/textFormat';
@@ -497,18 +497,20 @@ class ShareModal extends Component {
                   uniqueExternalId="shareModalOption-copyShareLink"
                 />
               </Flex>
-              <OpenExternalWebSite
-                linkIdAttribute="allOpinions"
-                url={linkToBeShared}
-                target="_blank"
-                // title={this.props.title}
-                className="u-no-underline"
-                body={(
-                  <Button className={classes.previewButton} variant="outlined" fullWidth color="primary">
-                    Preview Link in New Window
-                  </Button>
-                )}
-              />
+              {isWebApp() && (  // This has many problems in Cordova
+                <OpenExternalWebSite
+                  linkIdAttribute="allOpinions"
+                  url={linkToBeShared}
+                  target="_blank"
+                  // title={this.props.title}
+                  className="u-no-underline"
+                  body={(
+                    <Button className={classes.previewButton} variant="outlined" fullWidth color="primary">
+                      Preview Link in New Window
+                    </Button>
+                  )}
+                />
+              )}
             </div>
           </DialogContent>
         </Dialog>

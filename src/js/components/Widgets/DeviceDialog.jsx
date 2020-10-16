@@ -121,6 +121,10 @@ class DeviceDialog extends Component {
             Your internal We Vote id: &nbsp;
             {VoterStore.getVoter().we_vote_id}
           </div>
+          <div className="card-child__fine_print" style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>
+            We Vote App Version: &nbsp;
+            {window.weVoteAppVersion}
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.visibilityOffFunction} color="primary">

@@ -1,12 +1,11 @@
 import { browserHistory, hashHistory } from 'react-router';
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
-import { startsWith, stringContains } from './textFormat';
+import { startsWith } from './textFormat';
 
 /* global $  */
 
 let androidPixels = 0;
-let isAppleSiliconGlobal;
 
 
 export function isCordova () {
@@ -25,36 +24,22 @@ export function isIOS () {
   return isCordova() && platform === 'iOS';  // Ignore the "Condition is always false" warning.  This line works correctly.
 }
 
-export function isAppleSilicon () {
-  if (isAppleSiliconGlobal === undefined) {
-    if (!isIOS()) {
-      isAppleSiliconGlobal = false;
-    } else {
-      // Apple silicon identifies as a March 2020, iPad Pro (11-inch) (2nd generation), J417AP iPad8,9 (Wi-Fi model), but with no serial number
-      // The only place this test should be a problem is on an iPad simulagor for a 'J417AP' if that is even possible
-      // https://www.theiphonewiki.com/wiki/IPad_Pro_(11-inch)_(2nd_generation)
-      isAppleSiliconGlobal =
-        (window.devicePixelRatio === 1) &&
-        (window.screen.width === 768) &&
-        (window.screen.height === 1024) &&
-        (window.device.model === 'iPad8,9') &&
-        (window.device.serial === 'unknown');
-      const { diagnostic: { getArchitecture } } = window.cordova.plugins;
-      getArchitecture((arch) => {
-        isAppleSiliconGlobal = stringContains('ARM', arch);
-        if (isAppleSiliconGlobal) {
-          console.log(`Processor Architecture ARM64 (Running on Apple Silicon): ${arch}`);
-        } else {
-          console.log(`Processor Architecture: ${arch}`);
-        }
-      }, (error) => {
-        isAppleSiliconGlobal = false;  // default on error
-        console.error('cordova.plugins.diagnostic.getArchitecture threw: ', error);
-      });
-    }
-  }
+export function isIOSAppOnMac () {
+  if (isWebApp()) return false;
+  const { isiOSAppOnMac } = window.device;
+  // Our fork of cordova-plugin-device exposes the underlyinng native code variable isiOSAppOnMac
+  return isiOSAppOnMac;
+}
 
-  return isAppleSiliconGlobal;
+export function getProcessorArchitecture () {
+  const { diagnostic: { getArchitecture } } = window.cordova.plugins;
+  getArchitecture((arch) => {
+    console.log(`Processor Architecture: ${arch}`);
+    return arch;
+  }, (error) => {
+    console.error('cordova.plugins.diagnostic.getArchitecture threw: ', error);
+    return 'error';
+  });
 }
 
 export function isAndroid () {
@@ -149,7 +134,7 @@ export function deviceTypeString () {
 let matchedDevice = false;
 export function logMatch (device, byModel) {
   if (!matchedDevice) {
-    cordovaOffsetLog(`Matched ------------ ${device} by ${byModel ? 'window.device.model' : 'pbakondyScreenSize'}${isAppleSilicon() ? ', but AppleSilicon detected' : ''}`);
+    cordovaOffsetLog(`Matched ------------ ${device} by ${byModel ? 'window.device.model' : 'pbakondyScreenSize'}${isIOSAppOnMac() ? ', but AppleSilicon detected' : ''}`);
     matchedDevice = true;
   }
 }
@@ -204,7 +189,7 @@ export function getIOSSizeString () {
   } else if (size.height === '2436' && size.width === '1125') {  // iPhone X, XS, 11 Pro
     return 'isIPhone5p8in';
   } else if ((size.height === '1792' && size.width === '828') ||  // iPhone XR, 11 (11 as described on apple.com)
-            (size.height === '1624' && size.width === '750')) {   // iPhone 11 in Simulator
+    (size.height === '1624' && size.width === '750')) {   // iPhone 11 in Simulator
     return 'isIPhone6p1in';
   } else if (size.height === '2688' && size.width === '1242') {  // iPhone XS Max, 11 Pro Max
     return 'isIPhone6p5in';
@@ -290,7 +275,7 @@ export function isIPhone6p5in () {
 }
 
 export function isIPad () {
-  if (isIOS() && !isAppleSilicon()) {
+  if (isIOS() && !isIOSAppOnMac()) {
     if (window.device.model.substring(0, 4) === 'iPad') {
       logMatch('iPad', true);
       return true;
@@ -490,13 +475,13 @@ export function isSimulator () {
   return isAndroidSimulator() || isIOsSimulator();
 }
 
-// This block of code run when cordovaUiils is loaded, and is not specifically called by a function
+// This block of code run when cordovaUils is loaded, and is not specifically called by a function
 if (isSimulator()) {
   if (isAndroidSimulator()) {
-    cordovaOffsetLog(`cordovaScrollablePaneTopPadding: ${window.location.href}`);
+    cordovaOffsetLog(`href on entry: ${window.location.href}`);
   } else {
-    cordovaOffsetLog(`cordovaScrollablePaneTopPadding: ${window.location.href.slice(0, 40)}`);
-    cordovaOffsetLog(`cordovaScrollablePaneTopPadding: ${window.location.href.slice(window.location.href.indexOf('WeVoteCordova.app') - 1)}`);
+    cordovaOffsetLog(`href on entry (first 60): ${window.location.href.slice(0, 60)}`);
+    cordovaOffsetLog(`href on entry (last 60): ${window.location.href.slice(window.location.href.length - 60)}`);
   }
 }
 

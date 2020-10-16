@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import cookies from '../../utils/cookies';
-import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
+import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';

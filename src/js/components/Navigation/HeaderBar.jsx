@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Button, AppBar, Toolbar, Tabs, Tab, IconButton, Tooltip } from '@material-ui/core';
 import { Place, AccountCircle } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import { hasIPhoneNotch, historyPush, isAppleSilicon, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import AdviserIntroModal from '../CompleteYourProfile/AdviserIntroModal';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
@@ -504,7 +504,7 @@ class HeaderBar extends Component {
             )}
             <div className="header-nav">
               <Tabs
-                className={isAppleSilicon() ? '' : 'u-show-desktop'}
+                className={isIOSAppOnMac() ? '' : 'u-show-desktop'}
                 value={this.getSelectedTab()}
                 indicatorColor="primary"
                 classes={{ indicator: classes.indicator }}

@@ -787,18 +787,21 @@ class ShareButtonFooter extends Component {
                       />
                     </Flex>
                   )}
-                  <OpenExternalWebSite
-                    linkIdAttribute="allOpinions"
-                    url={linkToBeShared}
-                    target="_blank"
-                    // title={this.props.title}
-                    className="u-no-underline"
-                    body={(
-                      <Button className={classes.previewButton} variant="outlined" fullWidth color="primary">
-                        Preview Link in New Window
-                      </Button>
-                    )}
-                  />
+                  {isWebApp() && (  // This has many problems in Cordova
+                    <OpenExternalWebSite
+                      linkIdAttribute="allOpinions"
+                      url={linkToBeShared}
+                      target="_blank"
+                      // title={this.props.title}
+                      className="u-no-underline"
+                      body={(
+                        <Button className={classes.previewButton} variant="outlined" fullWidth color="primary">
+                          Preview Link in New Window
+                        </Button>
+                      )}
+                      style={isCordova() ? { display: 'none' } : {}}
+                    />
+                  )}
                   <Button className={classes.cancelButton} fullWidth onClick={this.handleCloseShareButtonDrawer} variant="outlined" color="primary">
                     Cancel
                   </Button>

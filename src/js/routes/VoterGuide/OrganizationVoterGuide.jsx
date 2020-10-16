@@ -18,7 +18,7 @@ import OrganizationVoterGuideTabs from '../../components/VoterGuide/Organization
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import { isWebApp, historyPush } from '../../utils/cordovaUtils';
+import { isWebApp, historyPush, isIPad } from '../../utils/cordovaUtils';
 import { isSpeakerTypePrivateCitizen } from '../../utils/organization-functions';
 import { renderLog } from '../../utils/logging';
 
@@ -321,7 +321,7 @@ export default class OrganizationVoterGuide extends Component {
         {/* Header Banner Spacing for Desktop */}
         <BannerOverlayDesktopOuterWrapper>
           <BannerOverlayDesktopInnerWrapper>
-            <BannerOverlayDesktopShareButtonWrapper>
+            <BannerOverlayDesktopShareButtonWrapper ipad={isIPad()}>
               <BannerOverlayDesktopShareButtonInnerWrapper>
                 <ShareButtonDesktopTablet
                   organizationShare
@@ -329,7 +329,7 @@ export default class OrganizationVoterGuide extends Component {
                 />
               </BannerOverlayDesktopShareButtonInnerWrapper>
             </BannerOverlayDesktopShareButtonWrapper>
-            <BannerContainerDesktop>
+            <BannerContainerDesktop ipad={isIPad()}>
               { organizationBannerUrl !== '' ? (
                 <div className="organization-banner-image-div d-print-none">
                   <img alt="Organization Banner Image" className="organization-banner-image-img" src={organizationBannerUrl} aria-hidden="true" />
@@ -471,7 +471,7 @@ const Wrapper = styled.div`
 `;
 
 const BannerContainerDesktop = styled.div`
-  margin-top: -37px; // -29px (BannerOverlayDesktopShareButtonWrapper height) - 8px from BannerOverlayDesktopShareButtonInnerWrapper
+  margin-top: ${({ ipad }) => (ipad ? '-11px' : '-37px')} // -29px (BannerOverlayDesktopShareButtonWrapper height) - 8px from BannerOverlayDesktopShareButtonInnerWrapper
 `;
 
 const BannerOverlayDesktopShareButtonWrapper = styled.div`
@@ -480,6 +480,7 @@ const BannerOverlayDesktopShareButtonWrapper = styled.div`
   width: 100%;
   position: relative;
   z-index: 1;
+  transform: ${({ ipad }) => (ipad ? 'translate(0%, 100%)' : '')}
 `;
 
 const BannerOverlayDesktopShareButtonInnerWrapper = styled.div`

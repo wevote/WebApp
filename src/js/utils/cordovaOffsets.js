@@ -1,384 +1,11 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
-import VoterStore from '../stores/VoterStore';
-import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs';
 import { cordovaOffsetLog } from './logging';
 import { pageEnumeration } from '../utilsApi/cordovaUtilsPageEnumeration';
-import { getAndroidSize, hasAndroidNotch, hasIPhoneNotch,
-  isAndroid, isAndroidSimulator, isAppleSilicon, isCordova, isIOS, isIPad,
+import { getAndroidSize, hasIPhoneNotch,
+  isAndroid, isAndroidSimulator, isIOSAppOnMac, isCordova, isIOS, isIPad,
   isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator,
 } from './cordovaUtils';
 
-
-// <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
-// renders approximately as ...  <div className="Ballot__Wrapper-sc-11u8kf3-0 dYbfmq">
-//                               <div className="Application__Wrapper-sc-1ek38e7-0 bYNRzy">
-// <VoteContainer padTop={cordovaScrollablePaneTopPadding()}>   /index.html#/ballot/vote
-// This function controls the padding above the content that makes room for the header for a particular section
-export function cordovaScrollablePaneTopPadding () {
-  const voter = VoterStore.getVoter();
-  const { is_signed_in: isSignedIn } = voter;
-  // const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) && (BallotStore.ballotRemainingChoicesLength > 0);
-
-  if (isSimulator()) {
-    if (isAndroidSimulator()) {
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding android: ${window.location.href}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionsTabs(): ${showBallotDecisionsTabs()}`);
-    } else {
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(0, 40)}, pageEnumeration(): ${pageEnumeration()}, showBallotDecisionsTabs(): ${showBallotDecisionsTabs()}`);
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(window.location.href.length - 60)}`);
-    }
-  }
-
-  if (isIOS()) {
-    if (isIPhone4in()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone4in');
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '48px' : '32px';
-        case CordovaPageConstants.ballotSmHdrWild:       return '141px';  // $body-padding-top-no-decision-tabs
-        case CordovaPageConstants.ballotVote:            return '157px';
-        case CordovaPageConstants.candidate:             return '42px';
-        case CordovaPageConstants.candidateWild:         return '42px';
-        case CordovaPageConstants.measureWild:           return '42px';
-        case CordovaPageConstants.moreAbout:             return '22px';
-        case CordovaPageConstants.moreTerms:             return '40px';
-        case CordovaPageConstants.moreTools:             return '44px';
-        case CordovaPageConstants.officeWild:            return '84px';
-        case CordovaPageConstants.settingsHamburger:     return '57px';
-        case CordovaPageConstants.settingsWild:          return '67px';
-        case CordovaPageConstants.twitterSignIn:         return '20px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
-        case CordovaPageConstants.welcomeWild:           return '10px';
-        case CordovaPageConstants.wevoteintroWild:       return '18px';
-        default:                          return '0px';
-      }
-    } else if (isIPhone4p7in()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone4p7in');
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '52px' : '36px';
-        case CordovaPageConstants.ballotSmHdrWild:       return isSignedIn ? '144px' : '160px';
-        case CordovaPageConstants.ballotVote:            return isSignedIn ? '149px' : '148px';
-        case CordovaPageConstants.candidate:             return '42px';
-        case CordovaPageConstants.candidateWild:         return '57px';
-        case CordovaPageConstants.measureWild:           return '58px';
-        case CordovaPageConstants.moreAbout:             return '22px';
-        case CordovaPageConstants.moreTerms:             return '40px';
-        case CordovaPageConstants.moreTools:             return '44px';
-        case CordovaPageConstants.officeWild:            return '84px';
-        case CordovaPageConstants.settingsAccount:       return '71px';
-        case CordovaPageConstants.settingsHamburger:     return '66px';
-        case CordovaPageConstants.settingsSubscription:  return '72px';
-        case CordovaPageConstants.settingsVoterGuideLst: return '73px';
-        case CordovaPageConstants.settingsWild:          return '76px';
-        case CordovaPageConstants.twitterSignIn:         return '20px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
-        case CordovaPageConstants.welcomeWild:           return '10px';
-        case CordovaPageConstants.wevoteintroWild:       return '18px';
-        default:                          return '0px';
-      }
-    } else if (isIPhone5p5in()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone5p5in');
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '35px' : '19px';
-        case CordovaPageConstants.ballotSmHdrWild:       return '148px';
-        case CordovaPageConstants.ballotVote:            return '157px';
-        case CordovaPageConstants.candidate:             return '40px';
-        case CordovaPageConstants.candidateWild:         return '59px';
-        case CordovaPageConstants.measureWild:           return '58px';
-        case CordovaPageConstants.moreAbout:             return '22px';
-        case CordovaPageConstants.moreTerms:             return '44px';
-        case CordovaPageConstants.moreTools:             return '44px';
-        case CordovaPageConstants.officeWild:            return '84px';
-        case CordovaPageConstants.settingsAccount:       return '76px';
-        case CordovaPageConstants.settingsHamburger:     return '10px';
-        case CordovaPageConstants.settingsVoterGuideLst: return '75px';
-        case CordovaPageConstants.settingsWild:          return '51px';
-        case CordovaPageConstants.twitterSignIn:         return '20px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
-        case CordovaPageConstants.welcomeWild:           return '22px';
-        case CordovaPageConstants.wevoteintroWild:       return '18px';
-        default:                          return '0px';
-      }
-    } else if (isIPhone6p1in()) {  // XR  and maybe iPhone 11
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone6p1in');
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '41px';
-        case CordovaPageConstants.ballotSmHdrWild:       return '169px';
-        case CordovaPageConstants.ballotVote:            return isSignedIn ? '163px' : '165px';
-        case CordovaPageConstants.candidate:             return '56px';
-        case CordovaPageConstants.candidateWild:         return '72px';
-        case CordovaPageConstants.measureWild:           return '58px';
-        case CordovaPageConstants.moreAbout:             return '22px';
-        case CordovaPageConstants.moreTerms:             return '60px';
-        case CordovaPageConstants.moreTools:             return '44px';
-        case CordovaPageConstants.officeWild:            return '101px';
-        case CordovaPageConstants.opinions:              return '10px';
-        case CordovaPageConstants.ready:                 return '24px';
-        case CordovaPageConstants.settingsAccount:       return '81px';
-        case CordovaPageConstants.settingsHamburger:     return '90px';
-        case CordovaPageConstants.settingsWild:          return '89px';
-        case CordovaPageConstants.twitterSignIn:         return '20px';
-        case CordovaPageConstants.values:                return '10px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
-        case CordovaPageConstants.welcomeWild:           return '22px';
-        case CordovaPageConstants.wevoteintroWild:       return '32px';
-        default:                          return '0px';
-      }
-    } else if (isIPhone6p5in()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone6p5in');
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '42px';
-        case CordovaPageConstants.ballotSmHdrWild:       return '170px';
-        case CordovaPageConstants.ballotVote:            return isSignedIn ? '165px' : '173px';
-        case CordovaPageConstants.candidate:             return '56px';
-        case CordovaPageConstants.candidateWild:         return '73px';
-        case CordovaPageConstants.measureWild:           return '56px';
-        case CordovaPageConstants.moreAbout:             return '22px';
-        case CordovaPageConstants.moreTerms:             return '60px';
-        case CordovaPageConstants.moreTools:             return '44px';
-        case CordovaPageConstants.officeWild:            return '76px';
-        case CordovaPageConstants.ready:                 return '7px';
-        case CordovaPageConstants.settingsAccount:       return '84px';
-        case CordovaPageConstants.settingsHamburger:     return '81px';
-        case CordovaPageConstants.settingsNotifications: return '79px';
-        case CordovaPageConstants.settingsSubscription:  return '90px';
-        case CordovaPageConstants.settingsVoterGuideLst: return '98px';
-        case CordovaPageConstants.settingsWild:          return '63px';
-        case CordovaPageConstants.twitterSignIn:         return '50px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
-        case CordovaPageConstants.welcomeWild:           return '22px';
-        case CordovaPageConstants.wevoteintroWild:       return '32px';
-        default:                          return '0px';
-      }
-    } else if (hasIPhoneNotch()) {  // defaults for X or 11 Pro
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding: hasIPhoneNotch -- signed in: ${isSignedIn}`);
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.wevoteintroWild:       return '32px';
-        case CordovaPageConstants.measureWild:           return '72px';
-        case CordovaPageConstants.candidate:             return '66px';
-        case CordovaPageConstants.candidateWild:         return '69px';
-        case CordovaPageConstants.opinions:              return '10px';
-        case CordovaPageConstants.officeWild:            return '96px';
-        case CordovaPageConstants.ballotVote:            return '162px';
-        case CordovaPageConstants.ballotSmHdrWild:       return '163px';
-        case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '42px';
-        case CordovaPageConstants.moreAbout:             return '22px';
-        case CordovaPageConstants.settingsAccount:       return '81px';
-        case CordovaPageConstants.settingsNotifications: return '82px';
-        case CordovaPageConstants.moreTerms:             return '60px';
-        // case CordovaPageConstants.voterGuideWild: return 'YYx'; // See cordovaVoterGuideTopPadding instead
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
-        case CordovaPageConstants.welcomeWild:           return '22px';
-        case CordovaPageConstants.settingsHamburger:     return '35px';
-        case CordovaPageConstants.moreTools:             return '44px';
-        case CordovaPageConstants.settingsSubscription:  return '87px';
-        case CordovaPageConstants.settingsVoterGuideLst: return '72px';
-        case CordovaPageConstants.settingsWild:          return '67px';
-        case CordovaPageConstants.ready:                 return '35px';
-        default:                          return '0px';
-      }
-    } else if (isAppleSilicon()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: is Apple Silicon ARM64');
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:       return '34px';  // tested 9/30/20
-        case CordovaPageConstants.ballotSmHdrWild:       return '134px'; // tested 10/2/20
-        case CordovaPageConstants.ballotVote:            return '131px';
-        case CordovaPageConstants.candidate:             return '40px';
-        case CordovaPageConstants.candidateWild:         return '49px';  // tested 10/2/20
-        case CordovaPageConstants.measureWild:           return '67px';
-        case CordovaPageConstants.moreAbout:             return '22px';  // tested 10/1/20
-        case CordovaPageConstants.moreTerms:             return '44px';
-        case CordovaPageConstants.moreTools:             return '44px';
-        case CordovaPageConstants.news:                  return '9px';   // tested 9/30/20
-        case CordovaPageConstants.officeWild:            return '106px';
-        case CordovaPageConstants.opinions:              return '14px';
-        case CordovaPageConstants.ready:                 return '0px';   // tested 9/30/20
-        case CordovaPageConstants.settingsAccount:       return '85px';
-        case CordovaPageConstants.settingsHamburger:     return '45px';  // tested 10/1/20
-        case CordovaPageConstants.settingsNotifications: return '67px';  // tested 9/30/20
-        case CordovaPageConstants.settingsSubscription:  return '87px';
-        case CordovaPageConstants.settingsWild:          return '61px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px';  // $headroom-wrapper-webapp__voter-guide
-        case CordovaPageConstants.voterGuideWild:        return '47px';  // tested 10/1/20
-        case CordovaPageConstants.welcomeWild:           return '0px';
-        case CordovaPageConstants.wevoteintroWild:       return '18px';
-        default:                          return '0px';
-      }
-    } else if (isIPad()) {
-      cordovaOffsetLog('cordovaScrollablePaneTopPadding: is IPad');
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:       return '86px';
-        case CordovaPageConstants.ballotSmHdrWild:       return '165px';
-        case CordovaPageConstants.ballotVote:            return '131px';
-        case CordovaPageConstants.candidate:             return '40px';
-        case CordovaPageConstants.candidateWild:         return '65px';
-        case CordovaPageConstants.measureWild:           return '67px';
-        case CordovaPageConstants.moreAbout:             return '22px';
-        case CordovaPageConstants.moreTerms:             return '44px';
-        case CordovaPageConstants.moreTools:             return '44px';
-        case CordovaPageConstants.news:                  return '19px';
-        case CordovaPageConstants.officeWild:            return '106px';
-        case CordovaPageConstants.opinions:              return '14px';
-        case CordovaPageConstants.ready:                 return '24px';
-        case CordovaPageConstants.settingsAccount:       return '85px';
-        case CordovaPageConstants.settingsHamburger:     return '75px';
-        case CordovaPageConstants.settingsNotifications: return '83px';
-        case CordovaPageConstants.settingsSubscription:  return '87px';
-        case CordovaPageConstants.settingsWild:          return '61px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
-        case CordovaPageConstants.voterGuideWild:        return '65px';
-        case CordovaPageConstants.welcomeWild:           return '0px';
-        case CordovaPageConstants.wevoteintroWild:       return '18px';
-        default:                          return '0px';
-      }
-    } else {
-      cordovaOffsetLog('********* Did not find a screen size match for this iPhone simulator *********');
-    }
-  } else if (isAndroid()) {
-    const sizeString = getAndroidSize();
-    cordovaOffsetLog(`cordovaScrollablePaneTopPadding sizeString: ${sizeString}`);
-    if (sizeString === '--fold') {
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:
-          return '25px';
-        case CordovaPageConstants.ballotSmHdrWild:
-          return '0';
-        case CordovaPageConstants.ballotVote:
-          return isSignedIn ? '149px' : '145px';
-        case CordovaPageConstants.candidate:
-          return '64px';
-        case CordovaPageConstants.candidateWild:
-          return '53px';
-        case CordovaPageConstants.measureWild:
-          return '57px';
-        case CordovaPageConstants.moreTerms:
-          return '32px';
-        case CordovaPageConstants.officeWild:
-          return '79px';
-        case CordovaPageConstants.settingsAccount:
-          return '53px';
-        case CordovaPageConstants.settingsHamburger:
-          return '43px';
-        case CordovaPageConstants.settingsNotifications:
-          return '39px';
-        case CordovaPageConstants.settingsSubscription:
-          return '54px';
-        case CordovaPageConstants.settingsWild:
-          return '57px';
-        case CordovaPageConstants.twitterSignIn:
-          return hasAndroidNotch() ? '20px' : '10px';
-        case CordovaPageConstants.voterGuideCreatorWild:
-          return '10px'; // $headroom-wrapper-webapp__voter-guide
-        default:
-          return '0px';
-      }
-    } else if (sizeString === '--xl') {
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:
-          return showBallotDecisionsTabs() ? '36px' : '42px';
-        case CordovaPageConstants.ballotSmHdrWild:
-          return '131px';
-        case CordovaPageConstants.ballotVote:
-          return isSignedIn ? '149px' : '145px';
-        case CordovaPageConstants.candidate:
-          return '64px';
-        case CordovaPageConstants.candidateWild:
-          return '53px';
-        case CordovaPageConstants.measureWild:
-          return '57px';
-        case CordovaPageConstants.moreTerms:
-          return '32px';
-        case CordovaPageConstants.officeWild:
-          return '79px';
-        case CordovaPageConstants.settingsAccount:
-          return '53px';
-        case CordovaPageConstants.settingsHamburger:
-          return '43px';
-        case CordovaPageConstants.settingsNotifications:
-          return '39px';
-        case CordovaPageConstants.settingsSubscription:
-          return '54px';
-        case CordovaPageConstants.settingsWild:
-          return '57px';
-        case CordovaPageConstants.twitterSignIn:
-          return hasAndroidNotch() ? '20px' : '10px';
-        case CordovaPageConstants.voterGuideCreatorWild:
-          return '10px'; // $headroom-wrapper-webapp__voter-guide
-        default:
-          return '0px';
-      }
-    } else if (sizeString === '--fold') {
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '36px' : '42px';
-        case CordovaPageConstants.ballotSmHdrWild:       return '131px';
-        case CordovaPageConstants.ballotVote:            return isSignedIn ? '149px' : '145px';
-        case CordovaPageConstants.candidate:             return '64px';
-        case CordovaPageConstants.candidateWild:         return '53px';
-        case CordovaPageConstants.measureWild:           return '57px';
-        case CordovaPageConstants.moreTerms:             return '32px';
-        case CordovaPageConstants.officeWild:            return '79px';
-        case CordovaPageConstants.settingsAccount:       return '53px';
-        case CordovaPageConstants.settingsHamburger:     return '43px';
-        case CordovaPageConstants.settingsNotifications: return '39px';
-        case CordovaPageConstants.settingsSubscription:  return '54px';
-        case CordovaPageConstants.settingsWild:          return '57px';
-        case CordovaPageConstants.twitterSignIn:         return hasAndroidNotch() ? '20px' : '10px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
-        default:                          return '0px';
-      }
-    } else if (sizeString === '--lg') {
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotSmHdrWild:       return '135px';
-        case CordovaPageConstants.ballotVote:            return isSignedIn ? '128px' : '135px';
-        case CordovaPageConstants.candidate:             return '55px';
-        case CordovaPageConstants.candidateWild:         return '53px';
-        case CordovaPageConstants.measureWild:           return '40px';
-        case CordovaPageConstants.moreTerms:             return '32px';
-        case CordovaPageConstants.officeWild:            return '78px';
-        case CordovaPageConstants.settingsAccount:       return '51px';
-        case CordovaPageConstants.settingsHamburger:     return '46px';
-        case CordovaPageConstants.settingsNotifications: return '39px';
-        case CordovaPageConstants.settingsSubscription:  return '87px';
-        case CordovaPageConstants.settingsWild:          return '61px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
-        default:                          return '0px';
-      }
-    } if (sizeString === '--md') {
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '42px';
-        case CordovaPageConstants.ballotSmHdrWild:       return '124px';
-        case CordovaPageConstants.ballotVote:            return isSignedIn ? '132px' : '131px';
-        case CordovaPageConstants.candidate:             return '53px';
-        case CordovaPageConstants.candidateWild:         return '51px';
-        case CordovaPageConstants.measureWild:           return '53px';
-        case CordovaPageConstants.moreTerms:             return '32px';
-        case CordovaPageConstants.officeWild:            return '84px';
-        case CordovaPageConstants.settingsAccount:       return '53px';
-        case CordovaPageConstants.settingsHamburger:     return '38px';
-        case CordovaPageConstants.settingsNotifications: return '39px';
-        case CordovaPageConstants.settingsSubscription:  return '53px';
-        case CordovaPageConstants.settingsWild:          return '61px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
-        default:                          return '0px';
-      }
-    } else if (sizeString === '--sm') {
-      switch (pageEnumeration()) {
-        case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '58px' : '42px';
-        case CordovaPageConstants.ballotSmHdrWild:       return '114px';
-        case CordovaPageConstants.ballotVote:            return isSignedIn ? '131px' : '128px';
-        case CordovaPageConstants.candidate:             return '24px';
-        case CordovaPageConstants.candidateWild:         return '36px';
-        case CordovaPageConstants.measureWild:           return '42px';
-        case CordovaPageConstants.moreTerms:             return '32px';
-        case CordovaPageConstants.officeWild:            return '42px';
-        case CordovaPageConstants.settingsHamburger:     return '43px';
-        case CordovaPageConstants.settingsNotifications: return '39px';
-        case CordovaPageConstants.settingsWild:          return '55px';
-        case CordovaPageConstants.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp__voter-guide
-        default:                          return '0px';
-      }
-    }
-  }
-  return '0px';
-}
 
 // <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
 // This determines where the top of the "All", "Choices" and "Decided" tabs should start.
@@ -413,7 +40,7 @@ export function cordovaBallotFilterTopMargin () {
       if (pageEnumeration() === CordovaPageConstants.candidateWild) {
         return '65px';
       }
-    } else if (isAppleSilicon()) {
+    } else if (isIOSAppOnMac()) {
       if (pageEnumeration() === CordovaPageConstants.news) {
         return '69px';
       // } else if (pageEnumeration === CordovaPageConstants.friends) {
@@ -626,20 +253,22 @@ export function cordovaTopHeaderTopMargin () {
     marginLeft: 'auto',
     marginBottom: '0',
   };
+  const page = pageEnumeration();
 
   if (isCordova()) {
     if (isSimulator()) {
       if (isAndroidSimulator()) {
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin android: ${window.location.href}, pageEnumeration(): ${pageEnumeration()}`);
+        cordovaOffsetLog(`cordovaTopHeaderTopMargin android: ${window.location.href}, page: ${page}`);
       } else {
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS (first 60): ${window.location.href.slice(0, 60)}, pageEnumeration(): ${pageEnumeration()}`);
+        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS page: ${page}`);
+        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS (first 60): ${window.location.href.slice(0, 60)}`);
         cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS (last 60): ${window.location.href.slice(window.location.href.length - 60)}`);
       }
     }
 
     if (isIOS()) {
       if (isIPhone5p5in() || isIPhone4p7in()) {
-        switch (pageEnumeration()) {
+        switch (page) {
           case CordovaPageConstants.officeWild:      style.marginTop = '16px'; break;
           case CordovaPageConstants.measureWild:     style.marginTop = '22px'; break;
           case CordovaPageConstants.values:          style.marginTop = '19px'; break;
@@ -654,7 +283,7 @@ export function cordovaTopHeaderTopMargin () {
           default:                          style.marginTop = '19px'; break;
         }
       } else if (hasIPhoneNotch()) {
-        switch (pageEnumeration()) {
+        switch (page) {
           case CordovaPageConstants.officeWild:      style.marginTop = '30px'; break;
           case CordovaPageConstants.measureWild:     style.marginTop = '34px'; break;
           case CordovaPageConstants.candidate:       style.marginTop = '35px'; break;
@@ -674,12 +303,15 @@ export function cordovaTopHeaderTopMargin () {
           case CordovaPageConstants.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp__voter-guide-creator
           case CordovaPageConstants.voterGuideWild:        style.marginTop = '38px'; break; // Any page with btcand or btmeas
           case CordovaPageConstants.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
-          default:                          style.marginTop = '16px'; break;
+          default:                                         style.marginTop = '16px'; break;
         }
-      } else if (isAppleSilicon()) {
+      } else if (isIOSAppOnMac()) {
         style.marginTop = '0px';
       } else if (isIPad()) {
-        style.marginTop = '0px';
+        switch (page) {
+          case CordovaPageConstants.defaultVal:            style.marginTop = '26px'; break;
+          default:                                         style.marginTop = '0px'; break;
+        }
       } else {
         style.marginTop = '20px';
       }
@@ -696,13 +328,19 @@ export function cordovaTopHeaderTopMargin () {
 export function cordovaStickyHeaderPaddingTop () {
   if (isIOS()) {
     if (isIPhone5p5in()) {
-      return '62px';
+      return '71px';
     } else if (isIPhone4p7in()) {
-      return '62px';
+      return '69px';
+    } else if (isIPhone5p8in()) {
+      return '83px';
+    } else if (isIPhone6p1in()) {
+      return '81px';
+    } else if (isIPhone6p5in()) {
+      return '81px';
     } else if (hasIPhoneNotch()) {
       return '76px';
-    } else if (isIPad()) {
-      return '62px';
+    } else if (isIPad() || isIOSAppOnMac()) {
+      return '77px';
     }
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();

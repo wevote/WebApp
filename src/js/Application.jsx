@@ -6,8 +6,9 @@ import AppActions from './actions/AppActions';
 import AppStore from './stores/AppStore';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
-import { getToastClass, historyPush, isAppleSilicon, isCordova, isWebApp } from './utils/cordovaUtils';
-import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
+import { getToastClass, historyPush, isIOSAppOnMac, isCordova, isWebApp } from './utils/cordovaUtils';
+import { cordovaContainerMainOverride, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
+import cordovaScrollablePaneTopPadding from './utils/cordovaScrollablePaneTopPadding';
 import DelayedLoad from './components/Widgets/DelayedLoad';
 import displayFriendsTabs from './utils/displayFriendsTabs';
 import ElectionActions from './actions/ElectionActions';
@@ -36,7 +37,7 @@ class Application extends Component {
 
   componentDidMount () {
     let { hostname } = window.location;
-    hostname = hostname || 'silicon';
+    hostname = hostname || '';
     AppActions.siteConfigurationRetrieve(hostname);
     console.log('React Application --------------- componentDidMount () hostname: ', hostname);
     polyfillObjectEntries();
@@ -192,7 +193,7 @@ class Application extends Component {
   getAppBaseClass = () => {
     // console.log('Determine the headroom space pathname:' + pathname);
     let appBaseClass = 'app-base';
-    if (isWebApp() || isAppleSilicon()) {
+    if (isWebApp() || isIOSAppOnMac()) {
       appBaseClass += ' headroom-webapp';
     } else {
       appBaseClass += ' cordova-base';

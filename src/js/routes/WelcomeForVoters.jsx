@@ -13,7 +13,7 @@ import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
 import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
 import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
 import AnalyticsActions from '../actions/AnalyticsActions';
-import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
+import cordovaScrollablePaneTopPadding from '../utils/cordovaScrollablePaneTopPadding';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import WelcomeFooter from '../components/Welcome/WelcomeFooter';
 import { renderLog } from '../utils/logging';

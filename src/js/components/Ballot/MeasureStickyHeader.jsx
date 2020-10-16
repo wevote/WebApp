@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
+import { isIOSAppOnMac, isIPad } from '../../utils/cordovaUtils';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
@@ -36,7 +37,7 @@ class MeasureStickyHeader extends Component {
     const { ballotItemDisplayName } = this.state;
     const ballotItemDisplay = ballotItemDisplayName ? ballotItemDisplayName.split(':') : [];
     return (
-      <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()}>
+      <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()} ipad={isIPad() || isIOSAppOnMac()}>
         <Container>
           <Flex>
             <ColumnOne>
@@ -99,7 +100,7 @@ const Wrapper = styled.div`
   box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
   animation: ${slideDown} 150ms ease-in;
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding-top: 48px;
+    padding-top: ${({ ipad }) => (ipad ? '' : '48px')};
   }
 `;
 

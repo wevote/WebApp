@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Settings } from '@material-ui/icons';
-import { isAndroid, isAndroidSizeFold, isAppleSilicon, isIPad, isIPhone3p5in, isIPhone4in, isWebApp } from '../../utils/cordovaUtils';
+import { isAndroid, isAndroidSizeFold, isIOSAppOnMac, isIPad, isIPhone3p5in, isIPhone4in, isWebApp } from '../../utils/cordovaUtils';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import { shortenText } from '../../utils/textFormat';
@@ -25,7 +25,7 @@ class BallotTitleHeader extends Component {
   }
 
   marginTopOffset () {
-    if (isAppleSilicon()) {
+    if (isIOSAppOnMac()) {
       return '44px';
     } else if (isIPad()) {
       return '12px';
