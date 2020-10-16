@@ -35,7 +35,10 @@ export default class SettingsAddress extends Component {
                 Enter address where you are registered to vote
               </h3>
               <div className={isWebApp() ? 'u-padding-bottom--md' : 'SettingsCardBottomCordova'}>
-                <AddressBox {...this.props} saveUrl="/ballot" />
+                <AddressBox
+                  externalUniqueId={this.props.externalUniqueId}
+                  saveUrl="/ballot"
+                />
               </div>
             </div>
           </div>

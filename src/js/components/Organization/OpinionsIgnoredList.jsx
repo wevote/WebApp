@@ -38,7 +38,15 @@ export default class OpinionsIgnoredList extends Component {
     return (
       <div className="guidelist card-child__list-group">
         {this.state.organizationsIgnored.map((oneOrganization) => (
-          <VoterGuideDisplayForList key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
+          <VoterGuideDisplayForList
+            key={oneOrganization.organization_we_vote_id}
+            organizationWeVoteId={oneOrganization.organization_we_vote_id}
+            voterGuideImageUrlLarge={oneOrganization.voter_guide_image_url_large}
+            voterGuideDisplayName={oneOrganization.voter_guide_display_name}
+            twitterDescription={oneOrganization.twitter_description}
+            twitterFollowersCount={oneOrganization.twitter_followers_count}
+            twitterHandle={oneOrganization.twitter_handle}
+          >
             <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
           </VoterGuideDisplayForList>
         ))}
