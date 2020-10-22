@@ -6,6 +6,7 @@ import { startsWith } from './textFormat';
 /* global $  */
 
 let androidPixels = 0;
+let androidSizeString;
 
 
 export function isCordova () {
@@ -308,14 +309,18 @@ export function isIOsSmallerThanPlus () {
 }
 
 export function getAndroidSize () {
+  if (androidSizeString !== undefined) {
+    return androidSizeString;
+  }
   const ratio = window.devicePixelRatio || 1;
+  const aspectRatio = window.screen.height / window.screen.width;
   const screen = {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
 
   androidPixels = screen.width * screen.height;
-  let sizeString = 'default';
+  androidSizeString = 'default';
   const ratioString = parseFloat(ratio).toFixed(2);
 
   /* sm   = 480*800   =   384,000     Nexus One
@@ -331,21 +336,21 @@ export function getAndroidSize () {
 
   if (window.device.model === 'Moto G (5) Plus') {
     logMatch('Moto G (5) Plus', true);
-    return '--md';
-  } else if (androidPixels < 3.4E6 && ratioString === '2.00') {
-    sizeString = '--fold';
+    androidSizeString = '--md';
+  } else if (androidPixels < 3.4E6 && ratioString === '2.00' && aspectRatio > 1.4) {
+    androidSizeString = '--fold';
   } else if (androidPixels > 3.7E6 || ratioString === '1.33') {
-    sizeString = '--xl';
+    androidSizeString = '--xl';
   } else if (androidPixels > 3E6) {
-    sizeString = '--lg';
+    androidSizeString = '--lg';
   } else if (androidPixels > 1E6) {
-    sizeString = '--md';
+    androidSizeString = '--md';
   } else {
-    sizeString = '--sm';
+    androidSizeString = '--sm';
   }
-  cordovaOffsetLog(`getAndroidSize(): ${sizeString}`);
+  cordovaOffsetLog(`getAndroidSize(): ${androidSizeString}`);
 
-  return sizeString;
+  return androidSizeString;
 }
 
 export function hasAndroidNotch () {

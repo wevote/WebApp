@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Comment, Info, Reply } from '@material-ui/icons';
-import { Menu, MenuItem, Button } from '@material-ui/core';
+import { Button, Menu, MenuItem } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { Comment, Info, Reply } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
-import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import ShareActions from '../../actions/ShareActions';
-import { stringContains } from '../../utils/textFormat';
+import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
+import { historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import { stringContains } from '../../utils/textFormat';
 
 class ShareButtonDesktopTablet extends Component {
   constructor (props) {
@@ -180,7 +180,7 @@ class ShareButtonDesktopTablet extends Component {
       shareMenuTextDefault = 'Ballot';
       shareMenuTextAllOpinions = 'Ballot + Your Opinions';
     }
-    // Temporary override
+    // Temporary override.  Note 10/16/20 ... the voter doesn't really see a preview on the next screen, these words are misleading
     shareMenuItemsDescription = 'You\'ll see a preview on the next screen.';
     return (
       <>
@@ -220,7 +220,7 @@ class ShareButtonDesktopTablet extends Component {
           }}
         >
           <MenuArrow />
-          <MenuItem className={classes.menuItem}>
+          <MenuItem className={classes.menuItem} style={isCordova() ? { display: 'none' } : {}}>
             <MenuItemDescriptionText>
               <Info classes={{ root: classes.informationIcon }} />
               {shareMenuItemsDescription}

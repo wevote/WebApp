@@ -16,7 +16,7 @@ import ElectionCountdown from '../components/Ready/ElectionCountdown';
 import FindOpinionsForm from '../components/ReadyNoApi/FindOpinionsForm';
 import FirstAndLastNameRequiredAlert from '../components/Widgets/FirstAndLastNameRequiredAlert';
 import FriendActions from '../actions/FriendActions';
-import { historyPush, isWebApp } from '../utils/cordovaUtils';
+import { historyPush, isAndroid, isIOS, isWebApp } from '../utils/cordovaUtils';
 import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
 import ReadMore from '../components/Widgets/ReadMore';
@@ -141,6 +141,18 @@ class Ready extends Component {
     historyPush('/ballot');
   }
 
+  getTopPadding = () => {
+    if (isWebApp()) {
+      return { paddingTop: '0 !important' };
+    } else if (isIOS()) {
+      // TODO: This is a bad place to set a top padding: Move it to Application__Wrapper on the next iOS pass
+      return { paddingTop: '56px !important' };  // SE2: 56px, 11 Pro Max: 56px
+    } else if (isAndroid()) {
+      return { paddingTop: 'unset' };
+    }
+    return {};
+  }
+
   render () {
     renderLog('Ready');  // Set LOG_RENDER_EVENTS to log all renders
     const {
@@ -152,7 +164,7 @@ class Ready extends Component {
     // console.log('locationGuessClosed:', locationGuessClosed, ', textForMapSearch:', textForMapSearch, ', showAddressVerificationForm:', showAddressVerificationForm);
     return (
       <Wrapper className="page-content-container">
-        <PageContainer className="container-fluid" isWeb={isWebApp()}>
+        <PageContainer className="container-fluid" style={this.getTopPadding()}>
           <Helmet title="Ready to Vote? - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
           <div className="row">
@@ -372,7 +384,7 @@ const MobileTabletCountdownWrapper = styled.div`
 `;
 
 const PageContainer = styled.div`
-  padding-top: ${({ isWeb }) => (isWeb ? '0 !important' : '56px !important')};  // SE2: 56px, 11 Pro Max: 56px
+// This is a bad place to set a top padding for the scrollable pane, it should be in Application__Wrapper
 `;
 
 const Paragraph = styled.div`
