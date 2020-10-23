@@ -1,6 +1,6 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
-import showBallotDecisionsTabs from './showBallotDecisionsTabs'; // eslint-disable-line import/no-cycle
-import { stringContains } from '../utils/textFormat';
+import showBallotDecisionsTabs from '../utilsApi/showBallotDecisionsTabs'; // eslint-disable-line import/no-cycle
+import { stringContains } from './textFormat';
 
 
 // eslint-disable-next-line import/prefer-default-export
@@ -45,9 +45,10 @@ export function pageEnumeration () {
     return CordovaPageConstants.valueWild;
   } else if (href.indexOf('/index.html#/vg/') > 0) {
     return CordovaPageConstants.voterGuideCreatorWild;
-  } else if (stringContains('btcand', href) ||
-             stringContains('btmeas', href) ||
-             stringContains('/btdb', href)) { // Added Sept 24, 2020 -- for iPadPro 9.1"
+  } else if (stringContains('/index.html#/voterguide/') && (
+    stringContains('btcand', href) ||
+    stringContains('btmeas', href) ||
+    stringContains('/btdb', href))) {
     return CordovaPageConstants.voterGuideWild;
   } else if (href.indexOf('/index.html#/wevoteintro/') > 0) {
     return CordovaPageConstants.wevoteintroWild;

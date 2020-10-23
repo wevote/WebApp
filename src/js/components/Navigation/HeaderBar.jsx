@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Button, AppBar, Toolbar, Tabs, Tab, IconButton, Tooltip } from '@material-ui/core';
 import { Place, AccountCircle } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp, isAndroid, getAndroidSize } from '../../utils/cordovaUtils';
 import AdviserIntroModal from '../CompleteYourProfile/AdviserIntroModal';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
@@ -427,6 +427,7 @@ class HeaderBar extends Component {
     const showingBallot = stringContains('/ballot', pathname.toLowerCase().slice(0, 7));
     const showingFriendsTabs = displayFriendsTabs();
     const voterPhotoUrlMedium = voterPhoto(voter);
+    const hideAddressWrapper = false; // isAndroid() && getAndroidSize() === '--xl';
     const editAddressButtonHtml = (
       <Tooltip title="Change my location or election" aria-label="Change Address or Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
         <>
@@ -447,7 +448,9 @@ class HeaderBar extends Component {
               Address & Elections
             </Button>
           </AddressWrapperDesktop>
-          <AddressWrapperMobile className="u-show-mobile-bigger-than-iphone5">
+          <AddressWrapperMobile className="u-show-mobile-bigger-than-iphone5"
+                                style={hideAddressWrapper ? { display: 'none' } : {}}
+          >
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
               id="changeAddressOnlyHeaderBar"
@@ -464,7 +467,9 @@ class HeaderBar extends Component {
               Address
             </Button>
           </AddressWrapperMobile>
-          <AddressWrapperMobileTiny className="u-show-mobile-iphone5-or-smaller">
+          <AddressWrapperMobileTiny className="u-show-mobile-iphone5-or-smaller"
+                                    style={hideAddressWrapper ? { display: 'none' } : {}}
+          >
             <IconButton
               classes={{ root: classes.iconButtonRoot }}
               id="changeAddressOnlyHeaderBar"

@@ -410,7 +410,7 @@ class ShareButtonFooter extends Component {
   }
 
   generateShareMenuDescription (pageName) {
-    return `Generate a link to this ${pageName}page. The 'Your Opinions' link will also show all of your opinions. A preview link on the next screen will show you what your friends will see.`;
+    return `Generate a link to this ${pageName}page. The 'Your Opinions' link will also show all of your opinions. ${isWebApp() ? 'A preview link on the next screen will show you what your friends will see.' : ''}`;
   }
 
   render () {
@@ -472,7 +472,7 @@ class ShareButtonFooter extends Component {
     //   emailSubjectEncoded = encodeURI('Ready to vote?');
     //   emailBodyEncoded = encodeURI(`Check out this cool ballot tool! ${linkToBeShared}`);
     // }
-    const shareButtonClasses = classes.buttonDefault;
+    const shareButtonClasses = isWebApp() ? classes.buttonDefault : classes.buttonDefaultCordova;
     let shareMenuItemsDescription;
     let shareMenuTextDefault;
     let shareMenuTextAllOpinions;
@@ -636,7 +636,7 @@ class ShareButtonFooter extends Component {
                       {stringContains('AllOpinions', shareFooterStep) ? (
                         <>
                           {' '}
-                          A three-step intro to We Vote will be shown in a popup.
+                          {isWebApp() ? 'A three-step intro to We Vote will be shown in a popup.' : ''}
                           {' '}
                           This link will give permission to see your opinions.
                           {' '}
@@ -647,7 +647,7 @@ class ShareButtonFooter extends Component {
                       ) : (
                         <>
                           {' '}
-                          A three-step intro to We Vote will be shown in a popup.
+                          {isWebApp() ? 'A three-step intro to We Vote will be shown in a popup.' : ''}
                           {' '}
                           Your opinions are NOT included.
                           {' '}
@@ -867,6 +867,13 @@ const styles = () => ({
     boxShadow: 'none !important',
     borderRadius: '0 !important',
     height: '45px !important',
+  },
+  buttonDefaultCordova: {
+    padding: '0 12px',
+    width: '100%',
+    boxShadow: 'none !important',
+    borderRadius: '0 !important',
+    height: '35px !important',
   },
   backButton: {
     marginBottom: 6,

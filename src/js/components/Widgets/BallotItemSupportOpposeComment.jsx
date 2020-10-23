@@ -7,6 +7,7 @@ import ItemPositionStatementActionBar from './ItemPositionStatementActionBar2020
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import { stringContains } from '../../utils/textFormat';
+import { isCordova } from '../../utils/cordovaUtils';
 
 class BallotItemSupportOpposeComment extends PureComponent {
   constructor (props) {
@@ -137,6 +138,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
       currentBallotIdInUrl, externalUniqueId, showPositionStatementActionBar,
       showPositionPublicToggle, hidePositionPublicToggle, urlWithoutHash, inModal,
     } = this.props;
+    const inModal2 = inModal || false;
     const {
       ballotItemDisplayName, ballotItemType, ballotItemWeVoteId,
       showPositionStatement, transitioning,
@@ -153,7 +155,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
     const itemActionBar = (
       <ItemActionBar
         showPositionPublicToggle={showPositionPublicToggle}
-        inModal={inModal}
+        inModal={inModal2}
         showPositionStatementActionBar={showPositionStatementActionBar}
         ballotItemDisplayName={ballotItemDisplayName}
         ballotItemWeVoteId={ballotItemWeVoteId}
@@ -174,7 +176,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
       <div className="d-none d-sm-block">
         <ItemPositionStatementActionBar
           showPositionPublicToggle={showPositionPublicToggle}
-          inModal={inModal}
+          inModal={inModal2}
           showPositionStatementActionBar={showPositionStatementActionBar}
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
@@ -193,7 +195,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
       <div className="d-block d-sm-none">
         <ItemPositionStatementActionBar
           showPositionPublicToggle={showPositionPublicToggle}
-          inModal={inModal}
+          inModal={inModal2}
           showPositionStatementActionBar={showPositionStatementActionBar}
           ballotItemWeVoteId={ballotItemWeVoteId}
           ballotItemDisplayName={ballotItemDisplayName}
@@ -212,13 +214,13 @@ class BallotItemSupportOpposeComment extends PureComponent {
     // console.log('White background from root: ', showPositionStatementActionBar);
 
     return (
-      <Wrapper inModal={inModal} showPositionStatementActionBar={showPositionStatementActionBar}>
+      <Wrapper inModal={inModal2} showPositionStatementActionBar={showPositionStatementActionBar} crunched={isCordova() && !inModal2}>
         {/* <BallotHeaderDivider className="u-show-mobile" /> */}
-        <ActionBarWrapper inModal={inModal}>
+        <ActionBarWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
           {/* Support/Oppose/Comment toggle here */}
           {itemActionBar}
         </ActionBarWrapper>
-        <CommentDisplayWrapper inModal={inModal}>
+        <CommentDisplayWrapper inModal={inModal2} crunched={isCordova() && !inModal2}>
           { commentDisplayDesktop }
           { commentDisplayMobile }
         </CommentDisplayWrapper>
@@ -246,17 +248,17 @@ const Wrapper = styled.div`
     background-color: white;
     padding: 0;
   }
-  margin-top: 12px;
+  margin-top: ${(crunched) => (crunched ? '0' : '12px')};
 `;
 
 const ActionBarWrapper = styled.div`
   padding: 0px;
-  margin-bottom: 12px;
+  margin-bottom: ${(crunched) => (crunched ? '3px' : '12px')};
 `;
 
 const CommentDisplayWrapper = styled.div`
   padding: 0px;
-  padding-bottom: 12px;
+  padding-bottom: ${(crunched) => (crunched ? '0' : '12px')};
 `;
 
 

@@ -9,7 +9,7 @@ import AppStore from '../../stores/AppStore';
 import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isIPad, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isAndroid, isIOSAppOnMac, isCordova, isIPad, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderNotificationMenu from './HeaderNotificationMenu';
@@ -703,6 +703,8 @@ class HeaderBackToBallot extends Component {
     if (isIOSAppOnMac() || isIPad()) {
       cordovaOverrides.height = shareButtonInHeader ? '87px' : '50px';
       // dumpObjProps('cordovaOverrides: ', cordovaOverrides);
+    } else if (isAndroid()) {
+      cordovaOverrides.height = shareButtonInHeader ? '87px' : '50px';
     }
 
 
