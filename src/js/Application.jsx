@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import AppActions from './actions/AppActions';
 import AppStore from './stores/AppStore';
-import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
+import { getApplicationViewBooleans, polyfillFixes, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
 import { getToastClass, historyPush, isIOSAppOnMac, isCordova, isWebApp } from './utils/cordovaUtils';
 import { cordovaContainerMainOverride, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
@@ -40,7 +40,7 @@ class Application extends Component {
     hostname = hostname || '';
     AppActions.siteConfigurationRetrieve(hostname);
     console.log('React Application --------------- componentDidMount () hostname: ', hostname);
-    polyfillObjectEntries();
+    polyfillFixes();
     this.initializeFacebookSdkForJavascript();
     if (isCordova()) {
       initializationForCordova();
