@@ -246,10 +246,10 @@ export function getApplicationViewBooleans (pathname) {
   };
 }
 
-// November 2, 2018:  Polyfill for "Object.entries"
-//   react-bootstrap 1.0 (bootstrap 4) relies on Object.entries in splitComponentProps.js
-//   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries#Polyfill
-export function polyfillObjectEntries () {
+export function polyfillFixes () {
+  // November 2, 2018:  Polyfill for "Object.entries"
+  //   react-bootstrap 1.0 (bootstrap 4) relies on Object.entries in splitComponentProps.js
+  //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries#Polyfill
   if (!Object.entries) {
     Object.entries = function poly (obj) {
       const localProps = Object.keys(obj);
@@ -263,6 +263,23 @@ export function polyfillObjectEntries () {
   // And another for ObjectAssign
   if (!Object.assign) {
     Object.assign = React.__spread;
+  }
+
+  // And another for Microsoft Internet Explorer 11
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes
+  if (!String.prototype.includes) {
+    // eslint-disable-next-line no-extend-native,func-names
+    String.prototype.includes = function (search, start) {
+      // eslint-disable-next-line
+      'use strict';
+
+      if (search instanceof RegExp) {
+        throw TypeError('first argument must not be a RegExp');
+      }
+      // eslint-disable-next-line no-param-reassign
+      if (start === undefined) { start = 0; }
+      return this.indexOf(search, start) !== -1;
+    };
   }
 }
 
