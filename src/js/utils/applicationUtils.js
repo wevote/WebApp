@@ -281,6 +281,21 @@ export function polyfillFixes () {
       return this.indexOf(search, start) !== -1;
     };
   }
+
+  // And yet, another for Microsoft Internet Explorer 11
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
+  if (!String.prototype.startsWith) {
+    // eslint-disable-next-line no-extend-native
+    Object.defineProperty(String.prototype, 'startsWith', {
+      // eslint-disable-next-line object-shorthand
+      value: function(search, rawPos) {
+        // eslint-disable-next-line no-var, no-bitwise
+        var pos = rawPos > 0 ? rawPos | 0 : 0;
+        return this.substring(pos, pos + search.length) === search;
+      },
+    });
+  }
+
 }
 
 // Choose to show/hide zendesk help widget based on route

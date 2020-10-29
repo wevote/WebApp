@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import AppActions from './actions/AppActions';
 import AppStore from './stores/AppStore';
-import { getApplicationViewBooleans, polyfillFixes, setZenDeskHelpVisibility } from './utils/applicationUtils';
+import { getApplicationViewBooleans, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
 import { getToastClass, historyPush, isIOSAppOnMac, isCordova, isWebApp } from './utils/cordovaUtils';
 import { cordovaContainerMainOverride, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
@@ -20,7 +20,7 @@ import { renderLog, routingLog } from './utils/logging';
 import ShareButtonFooter from './components/Share/ShareButtonFooter';
 import signInModalGlobalState from './components/Widgets/signInModalGlobalState';
 import SnackNotifier from './components/Widgets/SnackNotifier';
-import { startsWith, stringContains } from './utils/textFormat';
+import { stringContains } from './utils/textFormat';
 import { initializationForCordova, removeCordovaSpecificListeners } from './startCordova';
 import VoterActions from './actions/VoterActions';
 import VoterStore from './stores/VoterStore';
@@ -40,7 +40,6 @@ class Application extends Component {
     hostname = hostname || '';
     AppActions.siteConfigurationRetrieve(hostname);
     console.log('React Application --------------- componentDidMount () hostname: ', hostname);
-    polyfillFixes();
     this.initializeFacebookSdkForJavascript();
     if (isCordova()) {
       initializationForCordova();
@@ -445,11 +444,11 @@ class Application extends Component {
         { typeof pathname !== 'undefined' && pathname &&
           (String(pathname) === '/for-campaigns' ||
           String(pathname) === '/for-organizations' ||
-          startsWith('/how', pathname) ||
+          String(pathname).startsWith('/how') ||
           String(pathname) === '/more/about' ||
           String(pathname) === '/more/credits' ||
-          startsWith('/more/donate', pathname) ||
-          startsWith('/more/pricing', pathname) ||
+          String(pathname).startsWith('/more/donate') ||
+          String(pathname).startsWith('/more/pricing') ||
           String(pathname) === '/welcome' ||
           !contentFullWidthMode || displayFriendsTabs()) ?
           (
