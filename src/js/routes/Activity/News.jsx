@@ -323,7 +323,7 @@ class News extends Component {
                   activityTidbitWeVoteId = oneActivityTidbit.we_vote_id;
                   return (
                     <ActivityTidbitWrapper key={activityTidbitWeVoteId}>
-                      <a // eslint-disable-line jsx-a11y/anchor-has-content
+                      <a // eslint-disable-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
                         href={`#${activityTidbitWeVoteId}`}
                         name={activityTidbitWeVoteId}
                       />

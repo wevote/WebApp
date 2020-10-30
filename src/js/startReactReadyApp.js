@@ -1,17 +1,17 @@
 import React from 'react';
 import { render } from 'react-dom';
-import {
-  browserHistory, Router, applyRouterMiddleware,
-} from 'react-router';
+import { browserHistory, Router, applyRouterMiddleware } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from 'styled-components';
-import routes from './RootForReady';
 import muiTheme from './mui-theme';
+import routes from './RootForReady';
 import styledTheme from './styled-theme';
+import { polyfillFixes } from './utils/cordovaUtils';
 import { renderLog } from './utils/logging';
 import { numberOfNeedlesFoundInString } from './utils/searchFunctions';
 
+polyfillFixes('startReactReadyApp');
 
 // Adding functions to the String prototype will make stuff like `for (char in str)` break, because it will loop over the substringOccurrences property.
 // As long as we use `forEach()` or `for (char of str)` then that side effect will be mitigated.

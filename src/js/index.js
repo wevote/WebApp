@@ -1,8 +1,7 @@
 import webAppConfig from './config';
 import startReactApp from './startReactApp';
-import { polyfillFixes } from './utils/applicationUtils';
 import { numberOfNeedlesFoundInString } from './utils/searchFunctions';
-import { isWebApp, isIPad, getCordovaScreenHeight } from './utils/cordovaUtils';
+import { isWebApp, isIPad, getCordovaScreenHeight, polyfillFixes } from './utils/cordovaUtils';
 
 // If in Cordova, need this function before cordovaUtils might be loaded
 function localIsCordova () {
@@ -39,7 +38,7 @@ function startApp () {
 
 // begin of inline startup code
 console.log('index.js loaded');
-polyfillFixes();
+polyfillFixes('index.js');
 
 // ServiceWorker setup for Workbox Progressive Web App (PWA)
 if ('ENABLE_WORKBOX_SERVICE_WORKER' in webAppConfig &&

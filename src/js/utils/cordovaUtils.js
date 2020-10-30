@@ -1,3 +1,4 @@
+import React from 'react';
 import { browserHistory, hashHistory } from 'react-router';
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
@@ -6,6 +7,7 @@ import { cordovaOffsetLog, oAuthLog } from './logging';
 
 let androidPixels = 0;
 let androidSizeString;
+let polyfillsLoaded;
 
 
 export function isCordova () {
@@ -597,3 +599,62 @@ export function getIconBadgeMessageCount () {
   }
   return -1;
 }
+
+export function polyfillFixes (file) {
+  if (polyfillsLoaded) {
+    return;   // Only load them once
+  }
+  polyfillsLoaded = true;
+  console.log(`Polyfills have been installed from "${file}"`);
+  // November 2, 2018:  Polyfill for "Object.entries"
+  //   react-bootstrap 1.0 (bootstrap 4) relies on Object.entries in splitComponentProps.js
+  //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries#Polyfill
+  if (!Object.entries) {
+    Object.entries = function poly (obj) {
+      const localProps = Object.keys(obj);
+      let i = localProps.length;
+      const resArray = new Array(i); // preallocate the Array
+      while (i--) resArray[i] = [localProps[i], obj[localProps[i]]];
+      return resArray;
+    };
+  }
+
+  // And another for ObjectAssign
+  if (!Object.assign) {
+    Object.assign = React.__spread;
+  }
+
+  // And another for Microsoft Internet Explorer 11
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes
+  if (!String.prototype.includes) {
+    // eslint-disable-next-line no-extend-native,func-names
+    String.prototype.includes = function (search, start) {
+      // eslint-disable-next-line
+      'use strict';
+
+      if (search instanceof RegExp) {
+        throw TypeError('first argument must not be a RegExp');
+      }
+      // eslint-disable-next-line no-param-reassign
+      if (start === undefined) { start = 0; }
+      return this.indexOf(search, start) !== -1;
+    };
+  }
+
+  // And yet, another for Microsoft Internet Explorer 11
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
+  if (!String.prototype.startsWith) {
+    // eslint-disable-next-line no-extend-native
+    Object.defineProperty(String.prototype, 'startsWith', {
+      // eslint-disable-next-line object-shorthand, func-names
+      value: function (search, rawPos) {
+        // eslint-disable-next-line no-var, no-bitwise
+        var pos = rawPos > 0 ? rawPos | 0 : 0;
+        return this.substring(pos, pos + search.length) === search;
+      },
+    });
+  }
+}
+
+// In-line
+polyfillFixes('cordovaUtils.js'); // Possibly redundant, but its need was confirmed in the debugger.  This has to run, before any polyfill is needed.
