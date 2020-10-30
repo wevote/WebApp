@@ -259,8 +259,15 @@ export function numberWithCommas (rawNumber) {
   }
 }
 
+/**
+ * DEPRECATED -- DO NOT USE ANYMORE
+ * We now have a String.startsWith polyfill for IE 10
+ * @param needle
+ * @param incomingString
+ * @returns {boolean}
+ */
 export function startsWith (needle, incomingString) {
-  // We implement this function because IE 10 does not support the "string.startsWith" function.
+  // IE 10 does not support the "string.startsWith" function.  DO NOT USE THIS FUNCTION
   // console.log("startsWith, needle:", needle, ", haystack: ", incomingString);
   if (incomingString) {
     return incomingString.indexOf(needle) === 0;

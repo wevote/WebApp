@@ -17,7 +17,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 // eslint-disable-next-line import/no-cycle
 import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
 import SignInModal from '../Widgets/SignInModal';
-import { shortenText, startsWith } from '../../utils/textFormat';
+import { shortenText } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -214,29 +214,29 @@ class WelcomeAppbar extends Component {
       showForOrganizations = true;
     }
     if (typeof pathname !== 'undefined' && pathname &&
-      !startsWith('/how', pathname) &&
+      !pathname.startsWith('/how') &&
       String(pathname) !== '/welcome' &&
       String(pathname) !== '/more/credits' &&
-      !startsWith('/more/donate', pathname) &&
-      !startsWith('/more/pricing', pathname)) {
+      !pathname.startsWith('/more/donate') &&
+      !pathname.startsWith('/more/pricing')) {
       showForVoters = true;
     }
     if (typeof pathname !== 'undefined' && pathname &&
-      !startsWith('/how', pathname) &&
+      !pathname.startsWith('/how') &&
       (String(pathname) === '/for-campaigns' ||
         String(pathname) === '/more/about' ||
         String(pathname) === '/more/credits' ||
-        startsWith('/more/donate', pathname) ||
-        startsWith('/more/pricing', pathname))) {
+        pathname.startsWith('/more/donate') ||
+        pathname.startsWith('/more/pricing'))) {
       showForOrganizationsDesktop = true;
     }
     if (typeof pathname !== 'undefined' && pathname &&
-      !startsWith('/how', pathname) &&
+      !pathname.startsWith('/how') &&
       (String(pathname) === '/welcome' ||
         String(pathname) === '/for-organizations' ||
         String(pathname) === '/more/credits' ||
-        startsWith('/more/donate', pathname) ||
-        startsWith('/more/pricing', pathname))) {
+        pathname.startsWith('/more/donate') ||
+        pathname.startsWith('/more/pricing'))) {
       showForCampaignsDesktop = true;
     }
     if (typeof pathname !== 'undefined' && pathname &&
