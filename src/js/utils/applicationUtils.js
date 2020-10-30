@@ -1,4 +1,3 @@
-import React from 'react';
 import { isIOSAppOnMac, isCordova, isWebApp } from './cordovaUtils';
 import { startsWith, stringContains } from './textFormat';
 
@@ -244,58 +243,6 @@ export function getApplicationViewBooleans (pathname) {
     voterGuideCreatorMode,
     voterGuideMode,
   };
-}
-
-export function polyfillFixes () {
-  // November 2, 2018:  Polyfill for "Object.entries"
-  //   react-bootstrap 1.0 (bootstrap 4) relies on Object.entries in splitComponentProps.js
-  //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries#Polyfill
-  if (!Object.entries) {
-    Object.entries = function poly (obj) {
-      const localProps = Object.keys(obj);
-      let i = localProps.length;
-      const resArray = new Array(i); // preallocate the Array
-      while (i--) resArray[i] = [localProps[i], obj[localProps[i]]];
-      return resArray;
-    };
-  }
-
-  // And another for ObjectAssign
-  if (!Object.assign) {
-    Object.assign = React.__spread;
-  }
-
-  // And another for Microsoft Internet Explorer 11
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes
-  if (!String.prototype.includes) {
-    // eslint-disable-next-line no-extend-native,func-names
-    String.prototype.includes = function (search, start) {
-      // eslint-disable-next-line
-      'use strict';
-
-      if (search instanceof RegExp) {
-        throw TypeError('first argument must not be a RegExp');
-      }
-      // eslint-disable-next-line no-param-reassign
-      if (start === undefined) { start = 0; }
-      return this.indexOf(search, start) !== -1;
-    };
-  }
-
-  // And yet, another for Microsoft Internet Explorer 11
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
-  if (!String.prototype.startsWith) {
-    // eslint-disable-next-line no-extend-native
-    Object.defineProperty(String.prototype, 'startsWith', {
-      // eslint-disable-next-line object-shorthand
-      value: function(search, rawPos) {
-        // eslint-disable-next-line no-var, no-bitwise
-        var pos = rawPos > 0 ? rawPos | 0 : 0;
-        return this.substring(pos, pos + search.length) === search;
-      },
-    });
-  }
-
 }
 
 // Choose to show/hide zendesk help widget based on route
