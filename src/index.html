@@ -53,7 +53,7 @@
           top: 0;
           width: 100vw;
           ">
-          <div>Your election is loading...</div>
+          <div id="loadingMessage">Your election is loading...</div>
         </div>
       </div>
     </div>
@@ -71,6 +71,8 @@
       firstExistingScript.parentNode.insertBefore(scriptElementForBootstrap, firstExistingScript);
 
       if (document.documentMode) {
+        //  https://gs.statcounter.com/browser-market-share/all/united-states-of-america                                           48%     35%      4%     5%      0.06%
+        document.getElementById('loadingMessage').innerHTML = "We're sorry, we no longer support Internet Explorer. We recommend Chrome, Safari, Firefox, Edge or Chromium.";
         console.log('NOT LOADING appleid.auth.js for those who still are using Internet Explorer');
       } else {
         let scriptElementForAppleIdAuth = document.createElement('script');
