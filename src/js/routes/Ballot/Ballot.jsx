@@ -307,6 +307,7 @@ class Ballot extends Component {
 
     if (isIOSAppOnMac() && appleSiliconDebug) {
       dumpCssFromId('ballotWrapper');
+      dumpCssFromId('rightColumnSidebar');
     }
   }
 
@@ -1074,6 +1075,27 @@ class Ballot extends Component {
       }
     }
 
+    // Undo the breakpoints/media queries
+    const leftColumnIOSAppOnMac = isIOSAppOnMac() ? {
+      flex: '0 0 75%',
+      maxWidth: '75%',
+      position: 'relative',
+      // width: '100%',
+      paddingRight: '15px',
+      paddingLeft: '15px',
+    } : {};
+
+    // Undo the breakpoints/media queries
+    const rightColumnIOSAppOnMac = isIOSAppOnMac() ? {
+      display: 'block !important',
+      flex: '0 0 25%',
+      maxWidth: '25%',
+      position: 'relative',
+      // width: '100%',
+      paddingRight: '15px',
+      paddingLeft: '15px',
+    } : {};
+
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
         <DelayedLoad showLoadingText waitBeforeShow={2000}>
@@ -1290,7 +1312,7 @@ class Ballot extends Component {
             <Wrapper padTop={cordovaScrollablePaneTopPadding()} padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
               {emptyBallot}
               {/* eslint-disable-next-line no-nested-ternary */}
-              <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
+              <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || isIOSAppOnMac() ? 'row ballot__body__no-decision-tabs' : undefined}>
                 <BrowserPushMessage incomingProps={this.props} />
                 {ballotWithItemsFromCompletionFilterType.length > 0 ? (
                   <BallotStatusMessage
@@ -1298,7 +1320,7 @@ class Ballot extends Component {
                     googleCivicElectionId={this.state.googleCivicElectionId}
                   />
                 ) : null}
-                <div className="col-sm-12 col-lg-9" id="ballotRoute-topOfBallot">
+                <div className={isIOSAppOnMac() ? '' : 'col-sm-12 col-lg-9'} id="ballotRoute-topOfBallot" style={leftColumnIOSAppOnMac}>
                   {(isSearching && searchText) && (
                     <SearchTitle>
                       Searching for &quot;
@@ -1419,7 +1441,7 @@ class Ballot extends Component {
                     </div>
                   </BallotListWrapper>
                   {/* Show links to this candidate in the admin tools */}
-                  { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
+                  { !isIOSAppOnMac() && (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
                     <span className="u-wrap-links d-print-none">
                       <span>Admin:</span>
                       <OpenExternalWebSite
@@ -1440,7 +1462,7 @@ class Ballot extends Component {
 
                 { ballotWithItemsFromCompletionFilterType.length === 0 ?
                   null : (
-                    <div className="col-lg-3 d-none d-lg-block sidebar-menu">
+                    <div className={isIOSAppOnMac() ? '' : 'col-lg-3 d-none d-lg-block sidebar-menu'} style={rightColumnIOSAppOnMac} id="rightColumnSidebar">
                       <BallotSideBar
                         activeRaceItem={raceLevelFilterType}
                         displayTitle

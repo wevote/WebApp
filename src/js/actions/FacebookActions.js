@@ -58,10 +58,11 @@ export default {
       console.log('FacebookActions.getFacebookData was not invoked, see ENABLE_FACEBOOK in config.js');
       return;
     }
-
+    // console.log('FacebookActions.getFacebookData invocation');
     if (this.facebookApi()) {
       this.facebookApi().api(
         '/me?fields=id,email,first_name,middle_name,last_name,cover', (response) => {
+          // console.log('FacebookActions.getFacebookData response ', response);
           oAuthLog('getFacebookData response', response);
           Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
@@ -284,6 +285,7 @@ export default {
       this.facebookApi().getLoginStatus(
         (response) => {
           oAuthLog('FacebookActions this.facebookApi().getLoginStatus response: ', response);
+          // dumpObjProps('facebookApi().getLoginStatus()', response);
           if (response.status === 'connected') {
             Dispatcher.dispatch({
               type: FacebookConstants.FACEBOOK_LOGGED_IN,

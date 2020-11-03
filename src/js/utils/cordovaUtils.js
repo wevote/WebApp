@@ -2,6 +2,8 @@ import React from 'react';
 import { browserHistory, hashHistory } from 'react-router';
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
+import { dumpObjProps } from './appleSiliconUtils';
+
 
 /* global $  */
 
@@ -44,6 +46,11 @@ export function getProcessorArchitecture () {
   });
 }
 
+export function dumpScreenAndDeviceFields () {
+  dumpObjProps('window.screen', window.screen);
+  dumpObjProps('window.device', window.device);
+}
+
 export function isAndroid () {
   if (isWebApp()) return false;
   const { platform } = window.device || '';
@@ -75,6 +82,7 @@ export function cordovaDot (path) {
 }
 
 export function cordovaOpenSafariViewSub (requestURL, onExit) {
+  //  console.log(`cordovaOpenSafariView -0000- requestURL: ${requestURL}`);
   if (isIOS()) {
     console.log(`cordovaOpenSafariView -1- requestURL: ${requestURL}`);
     SafariViewController.isAvailable(() => { // eslint-disable-line no-undef
@@ -510,7 +518,7 @@ export function getCordovaScreenHeight () {
 }
 
 export function prepareForCordovaKeyboard (callerString) {
-  if (callerString && isCordova()) {
+  if (callerString && isCordova() && !isIOSAppOnMac()) {
     const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
     console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
     cordovaOffsetLog(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
@@ -521,7 +529,7 @@ export function prepareForCordovaKeyboard (callerString) {
 }
 
 export function restoreStylesAfterCordovaKeyboard (callerString) {
-  if (callerString && isCordova()) {
+  if (callerString && isCordova() && !isIOSAppOnMac()) {
     const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
     cordovaOffsetLog(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${fileName}`);
     $('#app').removeClass('app-wrapper__cordova').addClass('app-wrapper');

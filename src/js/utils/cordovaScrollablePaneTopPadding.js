@@ -189,8 +189,8 @@ export default function cordovaScrollablePaneTopPadding () {
     } else if (isIOSAppOnMac()) {
       cordovaOffsetLog(`cordovaScrollablePaneTopPadding: is Apple Silicon ARM64, page: ${page}`);
       switch (page) {
-        case CordovaPageConstants.ballotLgHdrWild:       return '34px';  // tested 9/30/20
-        case CordovaPageConstants.ballotSmHdrWild:       return '134px'; // tested 10/2/20
+        case CordovaPageConstants.ballotLgHdrWild:       return '34px';  // tested 11/3/20
+        case CordovaPageConstants.ballotSmHdrWild:       return '34px';  // tested 11/2/20
         case CordovaPageConstants.ballotVote:            return '131px';
         case CordovaPageConstants.candidate:             return '40px';
         case CordovaPageConstants.candidateWild:         return '49px';  // tested 10/2/20
@@ -201,7 +201,7 @@ export default function cordovaScrollablePaneTopPadding () {
         case CordovaPageConstants.news:                  return '9px';   // tested 9/30/20
         case CordovaPageConstants.officeWild:            return '106px';
         case CordovaPageConstants.opinions:              return '14px';
-        case CordovaPageConstants.ready:                 return '0px';   // tested 9/30/20
+        case CordovaPageConstants.ready:                 return '50px';   // tested 11/3/20
         case CordovaPageConstants.settingsAccount:       return '85px';
         case CordovaPageConstants.settingsHamburger:     return '45px';  // tested 10/1/20
         case CordovaPageConstants.settingsNotifications: return '67px';  // tested 9/30/20
