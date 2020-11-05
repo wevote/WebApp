@@ -300,6 +300,7 @@ class Candidate extends Component {
             <CandidateStickyHeader candidate={candidate} />
           )
         }
+        {/* The following style adjustment prevents horizontal scrolling from the .card style */}
         <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
           <TwoColumns>
             <LeftColumnWrapper>

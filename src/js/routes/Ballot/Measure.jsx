@@ -285,7 +285,8 @@ class Measure extends Component {
             <MeasureStickyHeader measureWeVoteId={measure.we_vote_id} />
           )
         }
-        <div className="card"  style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
+        {/* The following style adjustment prevents horizontal scrolling from the .card style */}
+        <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
           <TwoColumns>
             <LeftColumnWrapper>
               <MeasureItem measureWeVoteId={measure.we_vote_id} />

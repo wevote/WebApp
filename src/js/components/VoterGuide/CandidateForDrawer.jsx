@@ -251,6 +251,7 @@ class CandidateForDrawer extends Component {
             <CandidateStickyHeader candidate={candidate} />
           )
         }
+        {/* The following style adjustment prevents horizontal scrolling from the .card style */}
         <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
           <TwoColumns>
             <LeftColumnWrapper>
@@ -279,6 +280,7 @@ class CandidateForDrawer extends Component {
           </TwoColumns>
         </div>
         { !!(allCachedPositionsForThisCandidate.length) && (
+          // The following style adjustment prevents horizontal scrolling from the .card style
           <section className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
             <DelayedLoad showLoadingText waitBeforeShow={500}>
               <PositionList
