@@ -26,7 +26,7 @@ import cookies from '../../utils/cookies';
 import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import { chipLabelText, historyPush, isIOSAppOnMac, isCordova, isWebApp, isAndroid, getAndroidSize } from '../../utils/cordovaUtils';
+import { chipLabelText, historyPush, isIOSAppOnMac, isCordova, isWebApp, isAndroid, getAndroidSize, isIPadGiantSize } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ElectionActions from '../../actions/ElectionActions';
@@ -1075,8 +1075,9 @@ class Ballot extends Component {
       }
     }
 
+    const twoColumnDisplay = isIOSAppOnMac() || isIPadGiantSize();
     // Undo the breakpoints/media queries
-    const leftColumnIOSAppOnMac = isIOSAppOnMac() ? {
+    const leftTwoColumnDisplay = twoColumnDisplay ? {
       flex: '0 0 75%',
       maxWidth: '75%',
       position: 'relative',
@@ -1086,7 +1087,7 @@ class Ballot extends Component {
     } : {};
 
     // Undo the breakpoints/media queries
-    const rightColumnIOSAppOnMac = isIOSAppOnMac() ? {
+    const rightTwoColumnDisplay = twoColumnDisplay ? {
       display: 'block !important',
       flex: '0 0 25%',
       maxWidth: '25%',
@@ -1312,7 +1313,7 @@ class Ballot extends Component {
             <Wrapper padTop={cordovaScrollablePaneTopPadding()} padBottom={padBallotWindowBottomForCordova} id="ballotWrapper">
               {emptyBallot}
               {/* eslint-disable-next-line no-nested-ternary */}
-              <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || isIOSAppOnMac() ? 'row ballot__body__no-decision-tabs' : undefined}>
+              <div className={showBallotDecisionsTabs() ? 'row ballot__body' : isWebApp() || twoColumnDisplay ? 'row ballot__body__no-decision-tabs' : undefined}>
                 <BrowserPushMessage incomingProps={this.props} />
                 {ballotWithItemsFromCompletionFilterType.length > 0 ? (
                   <BallotStatusMessage
@@ -1320,7 +1321,7 @@ class Ballot extends Component {
                     googleCivicElectionId={this.state.googleCivicElectionId}
                   />
                 ) : null}
-                <div className={isIOSAppOnMac() ? '' : 'col-sm-12 col-lg-9'} id="ballotRoute-topOfBallot" style={leftColumnIOSAppOnMac}>
+                <div className={twoColumnDisplay ? '' : 'col-sm-12 col-lg-9'} id="ballotRoute-topOfBallot" style={leftTwoColumnDisplay}>
                   {(isSearching && searchText) && (
                     <SearchTitle>
                       Searching for &quot;
@@ -1441,7 +1442,7 @@ class Ballot extends Component {
                     </div>
                   </BallotListWrapper>
                   {/* Show links to this candidate in the admin tools */}
-                  { !isIOSAppOnMac() && (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
+                  { (!twoColumnDisplay) && (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
                     <span className="u-wrap-links d-print-none">
                       <span>Admin:</span>
                       <OpenExternalWebSite
@@ -1462,7 +1463,7 @@ class Ballot extends Component {
 
                 { ballotWithItemsFromCompletionFilterType.length === 0 ?
                   null : (
-                    <div className={isIOSAppOnMac() ? '' : 'col-lg-3 d-none d-lg-block sidebar-menu'} style={rightColumnIOSAppOnMac} id="rightColumnSidebar">
+                    <div className={twoColumnDisplay ? '' : 'col-lg-3 d-none d-lg-block sidebar-menu'} style={rightTwoColumnDisplay} id="rightColumnSidebar">
                       <BallotSideBar
                         activeRaceItem={raceLevelFilterType}
                         displayTitle

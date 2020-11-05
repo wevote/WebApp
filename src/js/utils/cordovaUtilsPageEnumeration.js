@@ -87,6 +87,11 @@ export function pageEnumeration () {
     return CordovaPageConstants.news;
   } else if (href.indexOf('/m/followers') > 0 || href.indexOf('/m/friends') > 0 || href.indexOf('/m/following') > 0) {
     return CordovaPageConstants.twitterIdMFollowers;
+  } else if (stringContains('/index.html#/', href) && (
+    stringContains('btcand', href) ||
+    stringContains('btmeas', href) ||
+    stringContains('/btdb', href))) {
+    return CordovaPageConstants.twitterInfoPage;
   }
   return CordovaPageConstants.defaultVal;
 }

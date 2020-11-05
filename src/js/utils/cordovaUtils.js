@@ -309,6 +309,23 @@ export function isIPad () {
   return false;
 }
 
+export function isIPadGiantSize () {
+  if (!isIPad()) {
+    return false;
+  }
+  const ratio = window.devicePixelRatio || 1;
+  const screen = {
+    width: window.screen.width * ratio,
+    height: window.screen.height * ratio,
+  };
+  if (screen.width === 2048 && screen.height === 2732) { // iPad Pro 12.9" Gen 2, 2018
+    logMatch('iPadGiantSize', true);
+    return true;
+  }
+  return false;
+}
+
+
 export function hasIPhoneNotch () {
   return isIPhone5p8in() || isIPhone6p1in() || isIPhone6p5in();
 }

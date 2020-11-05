@@ -302,7 +302,7 @@ export function cordovaTopHeaderTopMargin () {
         }
       } else if (hasIPhoneNotch()) {
         switch (page) {
-          case CordovaPageConstants.officeWild:      style.marginTop = '30px'; break;
+          case CordovaPageConstants.officeWild:      style.marginTop = '36px'; break;
           case CordovaPageConstants.measureWild:     style.marginTop = '34px'; break;
           case CordovaPageConstants.candidate:       style.marginTop = '35px'; break;
           case CordovaPageConstants.candidateWild:   style.marginTop = '33px'; break;
@@ -319,8 +319,9 @@ export function cordovaTopHeaderTopMargin () {
           case CordovaPageConstants.settingsNotifications: style.marginTop = '36px'; break;
           case CordovaPageConstants.settingsWild:          style.marginTop = '38px'; break;
           case CordovaPageConstants.voterGuideCreatorWild: style.marginTop = '38px'; break; // $headroom-wrapper-webapp__voter-guide-creator
-          case CordovaPageConstants.voterGuideWild:        style.marginTop = '38px'; break; // Any page with btcand or btmeas
+          case CordovaPageConstants.voterGuideWild:        style.marginTop = '38px'; break; // Any voter page with btcand or btmeas
           case CordovaPageConstants.twitterIdMFollowers:   style.marginTop = '37px'; break; // /*/m/friends, /*/m/following, /*/m/followers
+          case CordovaPageConstants.twitterInfoPage:       style.marginTop = '32px'; break; // A twitter page guess, that ends with 'btcand' 'btmeas' or'btdb'
           default:                                         style.marginTop = '16px'; break;
         }
       } else if (isIOSAppOnMac()) {

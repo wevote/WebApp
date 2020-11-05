@@ -289,7 +289,9 @@ class News extends Component {
     // eslint-disable-next-line prefer-object-spread
     const unsetSomeRowStylesIfCordovaMdBlock = Object.assign({}, unsetSomeRowStylesIfCordova);
     if (isIPad() /* || isAndroidTablet() */) {
-      unsetSomeRowStylesIfCordovaMdBlock.transform = 'translate(0, 5%)';
+      unsetSomeRowStylesIfCordovaMdBlock.transform = isIPad() ? 'translate(0, 0.2%)' : 'translate(0, 5%)';
+      unsetSomeRowStylesIfCordovaMdBlock.marginLeft = isIPad() ? 15 : 0;
+      unsetSomeRowStylesIfCordovaMdBlock.flex = isIPad() ? '0 0 31%' : '';
     }
 
     return (
