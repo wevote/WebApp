@@ -14,6 +14,7 @@ import CandidateItem from '../../components/Ballot/CandidateItem';
 import ShareButtonDesktopTablet from '../../components/Share/ShareButtonDesktopTablet';
 import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import CandidateStore from '../../stores/CandidateStore';
+import { isWebApp } from '../../utils/cordovaUtils';
 import { capitalizeString, convertToInteger } from '../../utils/textFormat';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
@@ -299,7 +300,7 @@ class Candidate extends Component {
             <CandidateStickyHeader candidate={candidate} />
           )
         }
-        <div className="card">
+        <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
           <TwoColumns>
             <LeftColumnWrapper>
               <CandidateItem

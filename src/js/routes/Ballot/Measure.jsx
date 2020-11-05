@@ -4,6 +4,7 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { Info } from '@material-ui/icons';
+import { isWebApp } from '../../utils/cordovaUtils';
 import { capitalizeString } from '../../utils/textFormat';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
@@ -284,7 +285,7 @@ class Measure extends Component {
             <MeasureStickyHeader measureWeVoteId={measure.we_vote_id} />
           )
         }
-        <div className="card">
+        <div className="card"  style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
           <TwoColumns>
             <LeftColumnWrapper>
               <MeasureItem measureWeVoteId={measure.we_vote_id} />
