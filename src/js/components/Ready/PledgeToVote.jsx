@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { renderLog } from '../../utils/logging';
 import { formatDateToYearMonthDay } from '../../utils/textFormat';
 
 class PledgeToVote extends React.Component {
@@ -150,6 +151,7 @@ class PledgeToVote extends React.Component {
   }
 
   render () {
+    renderLog('PledgeToVote');  // Set LOG_RENDER_EVENTS to log all renders
     const { goal, total, shareNameAndEmail, commentsToDisplay } = this.state;
     const { classes } = this.props;
 
