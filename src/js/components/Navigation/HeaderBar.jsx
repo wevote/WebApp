@@ -31,6 +31,7 @@ import displayFriendsTabs from '../../utils/displayFriendsTabs';
 import ShareModal from '../Share/ShareModal';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import { voterPhoto } from '../../utils/voterPhoto';
+import ImageUploadModal from '../Settings/ImageUploadModal';
 
 // const webAppConfig = require('../../config');
 
@@ -64,6 +65,7 @@ class HeaderBar extends Component {
       showPaidAccountUpgradeModal: false,
       showPersonalizedScoreIntroModal: false,
       showValuesIntroModal: false,
+      showImageUploadModal: false,
       shareModalStep: '',
       organizationModalBallotItemWeVoteId: '',
       voter: {},
@@ -104,6 +106,7 @@ class HeaderBar extends Component {
       showSelectBallotModalHideElections: AppStore.showSelectBallotModalHideElections(),
       showSignInModal: AppStore.showSignInModal(),
       showValuesIntroModal: AppStore.showValuesIntroModal(),
+      showImageUploadModal: AppStore.showImageUploadModal(),
       voter: this.props.voter,
       voterFirstName,
       voterIsSignedIn: this.props.voter && this.props.voter.is_signed_in,
@@ -170,6 +173,9 @@ class HeaderBar extends Component {
       return true;
     }
     if (this.state.showValuesIntroModal !== nextState.showValuesIntroModal) {
+      return true;
+    }
+    if (this.state.showImageUploadModal !== nextState.showImageUploadModal) {
       return true;
     }
     if (this.state.voterFirstName !== nextState.voterFirstName) {
@@ -262,6 +268,7 @@ class HeaderBar extends Component {
       showSelectBallotModalHideElections: AppStore.showSelectBallotModalHideElections(),
       showSignInModal: AppStore.showSignInModal(),
       showValuesIntroModal: AppStore.showValuesIntroModal(),
+      showImageUploadModal: AppStore.showImageUploadModal(),
     });
   }
 
@@ -415,7 +422,7 @@ class HeaderBar extends Component {
       showAdviserIntroModal, showEditAddressButton, showFirstPositionIntroModal,
       showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalHideAddress, showSelectBallotModalHideElections,
-      showShareModal, showSignInModal, showValuesIntroModal,
+      showShareModal, showSignInModal, showValuesIntroModal, showImageUploadModal,
       voter, voterFirstName, voterIsSignedIn,
     } = this.state;
 
@@ -696,6 +703,13 @@ class HeaderBar extends Component {
             pathname={pathname}
             show={showValuesIntroModal}
             toggleFunction={this.closeValuesIntroModal}
+          />
+        )}
+        {showImageUploadModal && (
+          <ImageUploadModal
+            pathname={pathname}
+            show={showImageUploadModal}
+            toggleFunction={this.closeImageUploadModal}
           />
         )}
       </Wrapper>

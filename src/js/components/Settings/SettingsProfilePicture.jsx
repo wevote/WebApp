@@ -5,20 +5,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import { Button, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
-
-const ProfileOption = () => {
-  return (
-    <ProfileOptionWrapper>
-      Test
-    </ProfileOptionWrapper>
-  )
-}
+import AppActions from '../../actions/AppActions';
 
 class SettingsProfilePicture extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      value: "custom",
+      value: 'custom',
+      files: [],
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -43,7 +37,7 @@ class SettingsProfilePicture extends Component {
               <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
               {value === 'custom' && (
                 <>
-                  <Button classes={{ root: classes.button }} color="primary" variant="contained" fullWidth>Upload</Button>
+                  <Button onClick={() => AppActions.setShowImageUploadModal(true)} classes={{ root: classes.button }} color="primary" variant="contained" fullWidth>Upload</Button>
                   <Button color="primary" variant="outlined" fullWidth>Remove</Button>
                 </>
               )}
@@ -54,12 +48,6 @@ class SettingsProfilePicture extends Component {
               <FormControlLabel value="facebook" control={<Radio color="primary" />} label="Facebook picture" />
               <Seperator />
               <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
-              {value === 'facebook' && (
-                <>
-                  <Button classes={{ root: classes.button }} color="primary" variant="contained" fullWidth>Upload</Button>
-                  <Button color="primary" variant="outlined" fullWidth>Remove</Button>
-                </>
-              )}
             </ProfilePictureOption>
           </CustomColumns>
           <CustomColumns className="col">
@@ -67,12 +55,6 @@ class SettingsProfilePicture extends Component {
               <FormControlLabel value="twitter" control={<Radio color="primary" />} label="Twitter picture" />
               <Seperator />
               <ProfilePicture src="../../../img/global/photos/Aaron_Travis-200x200.jpg" />
-              {value === 'twitter' && (
-                <>
-                  <Button classes={{ root: classes.button }} color="primary" variant="contained" fullWidth>Upload</Button>
-                  <Button color="primary" variant="outlined" fullWidth>Remove</Button>
-                </>
-              )}
             </ProfilePictureOption>
           </CustomColumns>
         </div>

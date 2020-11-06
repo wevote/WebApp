@@ -99,6 +99,11 @@ export default {
     Dispatcher.dispatch({ type: 'showValuesIntroModal', payload: show });
   },
 
+  setShowImageUploadModal (show) {
+    console.log("Setting image upload modal to open!");
+    Dispatcher.dispatch({ type: 'showImageUploadModal', payload: show });
+  },
+
   setViewingOrganizationVoterGuide (isViewing) {
     Dispatcher.dispatch({ type: 'viewingOrganizationVoterGuide', payload: isViewing });
   },
