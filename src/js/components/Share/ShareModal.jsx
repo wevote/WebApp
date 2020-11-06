@@ -354,7 +354,7 @@ class ShareModal extends Component {
                 {stringContains('AllOpinions', shareModalStep) ? (
                   <>
                     {' '}
-                    A three-step intro to We Vote will be shown in a popup.
+                    {isWebApp() ? 'A three-step intro to We Vote will be shown in a popup.' : ''}
                     {' '}
                     This link will give permission to see your opinions.
                     {' '}
@@ -365,7 +365,7 @@ class ShareModal extends Component {
                 ) : (
                   <>
                     {' '}
-                    A three-step intro to We Vote will be shown in a popup.
+                    {isWebApp() ? 'A three-step intro to We Vote will be shown in a popup.' : ''}
                     {' '}
                     Your opinions are NOT included.
                     {' '}

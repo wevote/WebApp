@@ -42,6 +42,7 @@ export default class SettingsAccount extends Component {
       hideTwitterSignInButton: false,
       hideVoterEmailAddressEntry: false,
       hideVoterPhoneEntry: false,
+      isInternetExplorer: document.documentMode || false, // Yes, we are talking about that old Microsoft product
       isOnWeVoteRootUrl: true,
       isOnWeVoteSubdomainUrl: false,
       isOnFacebookSupportedDomainUrl: false,
@@ -225,10 +226,11 @@ export default class SettingsAccount extends Component {
   toggleNonEmailSignInOptions = () => {
     const {
       hideAppleSignInButton, hideCurrentlySignedInHeader, hideFacebookSignInButton,
-      hideTwitterSignInButton, hideVoterPhoneEntry,
+      hideTwitterSignInButton, hideVoterPhoneEntry, isInternetExplorer,
     } = this.state;
+
     this.setState({
-      hideAppleSignInButton: !hideAppleSignInButton,
+      hideAppleSignInButton: !hideAppleSignInButton || isInternetExplorer,
       hideCurrentlySignedInHeader: !hideCurrentlySignedInHeader,
       hideFacebookSignInButton: !hideFacebookSignInButton,
       hideTwitterSignInButton: !hideTwitterSignInButton,
@@ -241,10 +243,11 @@ export default class SettingsAccount extends Component {
   toggleNonPhoneSignInOptions = () => {
     const {
       hideAppleSignInButton, hideCurrentlySignedInHeader, hideFacebookSignInButton,
-      hideTwitterSignInButton, hideVoterEmailAddressEntry,
+      hideTwitterSignInButton, hideVoterEmailAddressEntry, isInternetExplorer,
     } = this.state;
     this.setState({
-      hideAppleSignInButton: !hideAppleSignInButton,
+      hideAppleSignInButton: !hideAppleSignInButton || isInternetExplorer,
+
       hideCurrentlySignedInHeader: !hideCurrentlySignedInHeader,
       hideFacebookSignInButton: !hideFacebookSignInButton,
       hideTwitterSignInButton: !hideTwitterSignInButton,

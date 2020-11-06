@@ -24,7 +24,7 @@ export default class ImageHandler extends Component {
     const alt = this.props.alt || 'icon';
     let replacementClass = '';
     const sizeClassName = this.props.sizeClassName || '';
-    const showPlaceholderIfImageMissing = !this.props.hidePlaceholder;
+    const showPlaceholderIfImageMissing = this.props.hidePlaceholder === undefined || !this.props.hidePlaceholder;
     let placeHolderImageUrl = '';
     const { kind_of_ballot_item: kindOfBallotItem } = this.props;
     const kindOfImage = this.props.kind_of_image ? this.props.kind_of_image : kindOfBallotItem;
@@ -60,7 +60,7 @@ export default class ImageHandler extends Component {
           <img
             alt={alt}
             className={`${sizeClassName} ${incomingClassName} ${replacementClass}`}
-            src={cordovaDot(placeHolderImageUrl)}
+            src={placeHolderImageUrl}
           />
         ) : (
           <img

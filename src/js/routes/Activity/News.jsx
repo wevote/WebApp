@@ -19,7 +19,7 @@ import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
-import { cordovaDot, historyPush, isCordova, isIPad, isAndroidTablet } from '../../utils/cordovaUtils';
+import { cordovaDot, historyPush, isCordova, isIPad } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import FacebookSignInCard from '../../components/Facebook/FacebookSignInCard';
 import FirstAndLastNameRequiredAlert from '../../components/Widgets/FirstAndLastNameRequiredAlert';
@@ -285,8 +285,10 @@ class News extends Component {
         unsetSomeRowStylesIfCordova.paddingBottom = '625px';  // big enough for the largest phone with a footer menu
       }
     }
-    const unsetSomeRowStylesIfCordovaMdBlock = { ...unsetSomeRowStylesIfCordova };
-    if (isIPad() || isAndroidTablet()) {
+
+    // eslint-disable-next-line prefer-object-spread
+    const unsetSomeRowStylesIfCordovaMdBlock = Object.assign({}, unsetSomeRowStylesIfCordova);
+    if (isIPad() /* || isAndroidTablet() */) {
       unsetSomeRowStylesIfCordovaMdBlock.transform = 'translate(0, 5%)';
     }
 
@@ -321,7 +323,7 @@ class News extends Component {
                   activityTidbitWeVoteId = oneActivityTidbit.we_vote_id;
                   return (
                     <ActivityTidbitWrapper key={activityTidbitWeVoteId}>
-                      <a // eslint-disable-line jsx-a11y/anchor-has-content
+                      <a // eslint-disable-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
                         href={`#${activityTidbitWeVoteId}`}
                         name={activityTidbitWeVoteId}
                       />

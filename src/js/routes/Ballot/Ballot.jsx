@@ -26,7 +26,7 @@ import cookies from '../../utils/cookies';
 import CompleteYourProfile from '../../components/CompleteYourProfile/CompleteYourProfile';
 import { cordovaBallotFilterTopMargin } from '../../utils/cordovaOffsets';
 import cordovaScrollablePaneTopPadding from '../../utils/cordovaScrollablePaneTopPadding';
-import { chipLabelText, historyPush, isIOSAppOnMac, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { chipLabelText, historyPush, isIOSAppOnMac, isCordova, isWebApp, isAndroid, getAndroidSize } from '../../utils/cordovaUtils';
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import EditAddressOneHorizontalRow from '../../components/Ready/EditAddressOneHorizontalRow';
 import ElectionActions from '../../actions/ElectionActions';
@@ -1157,7 +1157,9 @@ class Ballot extends Component {
     let searchTextString = '';
     return (
       <div className="ballot_root">
-        <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}>
+        <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}
+             style={isAndroid() && getAndroidSize() === '--xl' ? { paddingTop: '99px' } : {}}
+        >
           <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             <div className="container-fluid">
               <div className="row">
@@ -1209,6 +1211,7 @@ class Ballot extends Component {
                                     className="btn_ballot_filter"
                                     classes={{ root: classes.chipRootAll, label: classes.chipLabel, outlinedPrimary: (raceLevelFilterType === 'All' && !isSearching) ? classes.chipOutlined : null }}
                                     label="All"
+                                    style={isSearching && isCordova() ? { width: 'unset' } : {}}
                                   />
                                 </div>
                               )}
@@ -1235,6 +1238,7 @@ class Ballot extends Component {
                                         className="btn_ballot_filter"
                                         classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
                                         label={chipLabelText(oneTypeOfBallotItem)}
+                                        style={isSearching && isCordova() ? { width: 'unset' } : {}}
                                       />
                                     );
                                     return (

@@ -1,11 +1,13 @@
+import React from 'react';
 import { browserHistory, hashHistory } from 'react-router';
 import webAppConfig from '../config';
 import { cordovaOffsetLog, oAuthLog } from './logging';
-import { startsWith } from './textFormat';
 
 /* global $  */
 
 let androidPixels = 0;
+let androidSizeString;
+let polyfillsLoaded;
 
 
 export function isCordova () {
@@ -308,14 +310,18 @@ export function isIOsSmallerThanPlus () {
 }
 
 export function getAndroidSize () {
+  if (androidSizeString !== undefined) {
+    return androidSizeString;
+  }
   const ratio = window.devicePixelRatio || 1;
+  const aspectRatio = window.screen.height / window.screen.width;
   const screen = {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
 
   androidPixels = screen.width * screen.height;
-  let sizeString = 'default';
+  androidSizeString = 'default';
   const ratioString = parseFloat(ratio).toFixed(2);
 
   /* sm   = 480*800   =   384,000     Nexus One
@@ -331,21 +337,21 @@ export function getAndroidSize () {
 
   if (window.device.model === 'Moto G (5) Plus') {
     logMatch('Moto G (5) Plus', true);
-    return '--md';
-  } else if (androidPixels < 3.4E6 && ratioString === '2.00') {
-    sizeString = '--fold';
+    androidSizeString = '--md';
+  } else if (androidPixels < 3.4E6 && ratioString === '2.00' && aspectRatio > 1.4) {
+    androidSizeString = '--fold';
   } else if (androidPixels > 3.7E6 || ratioString === '1.33') {
-    sizeString = '--xl';
+    androidSizeString = '--xl';
   } else if (androidPixels > 3E6) {
-    sizeString = '--lg';
+    androidSizeString = '--lg';
   } else if (androidPixels > 1E6) {
-    sizeString = '--md';
+    androidSizeString = '--md';
   } else {
-    sizeString = '--sm';
+    androidSizeString = '--sm';
   }
-  cordovaOffsetLog(`getAndroidSize(): ${sizeString}`);
+  cordovaOffsetLog(`getAndroidSize(): ${androidSizeString}`);
 
-  return sizeString;
+  return androidSizeString;
 }
 
 export function hasAndroidNotch () {
@@ -460,7 +466,7 @@ export function isWebAppHeight737to896 () {
 }
 
 export function isAndroidSimulator () {
-  return startsWith('file:///android', window.location.href);
+  return window.location.href.startsWith('file:///android');
 }
 
 export function isCordovaButNotATablet () {
@@ -468,7 +474,7 @@ export function isCordovaButNotATablet () {
 }
 
 export function isIOsSimulator () {
-  return startsWith('file:///Users', window.location.href);
+  return window.location.href.startsWith('file:///Users');
 }
 
 export function isSimulator () {
@@ -593,3 +599,62 @@ export function getIconBadgeMessageCount () {
   }
   return -1;
 }
+
+export function polyfillFixes (file) {
+  if (polyfillsLoaded) {
+    return;   // Only load them once
+  }
+  polyfillsLoaded = true;
+  console.log(`Polyfills have been installed from "${file}"`);
+  // November 2, 2018:  Polyfill for "Object.entries"
+  //   react-bootstrap 1.0 (bootstrap 4) relies on Object.entries in splitComponentProps.js
+  //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries#Polyfill
+  if (!Object.entries) {
+    Object.entries = function poly (obj) {
+      const localProps = Object.keys(obj);
+      let i = localProps.length;
+      const resArray = new Array(i); // preallocate the Array
+      while (i--) resArray[i] = [localProps[i], obj[localProps[i]]];
+      return resArray;
+    };
+  }
+
+  // And another for ObjectAssign
+  if (!Object.assign) {
+    Object.assign = React.__spread;
+  }
+
+  // And another for Microsoft Internet Explorer 11
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes
+  if (!String.prototype.includes) {
+    // eslint-disable-next-line no-extend-native,func-names
+    String.prototype.includes = function (search, start) {
+      // eslint-disable-next-line
+      'use strict';
+
+      if (search instanceof RegExp) {
+        throw TypeError('first argument must not be a RegExp');
+      }
+      // eslint-disable-next-line no-param-reassign
+      if (start === undefined) { start = 0; }
+      return this.indexOf(search, start) !== -1;
+    };
+  }
+
+  // And yet, another for Microsoft Internet Explorer 11
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
+  if (!String.prototype.startsWith) {
+    // eslint-disable-next-line no-extend-native
+    Object.defineProperty(String.prototype, 'startsWith', {
+      // eslint-disable-next-line object-shorthand, func-names
+      value: function (search, rawPos) {
+        // eslint-disable-next-line no-var, no-bitwise
+        var pos = rawPos > 0 ? rawPos | 0 : 0;
+        return this.substring(pos, pos + search.length) === search;
+      },
+    });
+  }
+}
+
+// In-line
+polyfillFixes('cordovaUtils.js'); // Possibly redundant, but its need was confirmed in the debugger.  This has to run, before any polyfill is needed.

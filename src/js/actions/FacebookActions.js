@@ -257,10 +257,10 @@ export default {
   getPermissions () {
     if (isWebApp()) {
       return {
-        scope: 'public_profile, email, user_friends',
+        scope: 'public_profile, email',   // was 'public_profile, email, user_friends', prior to Oct 2020
       };
     } else {
-      return ['public_profile', 'email', 'user_friends'];
+      return ['public_profile', 'email'];  // was ['public_profile', 'email', 'user_friends']; prior to Oct 2020
     }
   },
 

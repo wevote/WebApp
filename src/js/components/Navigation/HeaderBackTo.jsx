@@ -6,7 +6,7 @@ import { AppBar, IconButton, Toolbar, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
-import { dumpCssFromId, dumpObjProps } from '../../utils/appleSiliconUtils';
+import { dumpCssFromId } from '../../utils/appleSiliconUtils';
 import cookies from '../../utils/cookies';
 import { hasIPhoneNotch, historyPush, isIOSAppOnMac, isCordova, isWebApp, isIPad } from '../../utils/cordovaUtils';
 import HeaderBackToButton from './HeaderBackToButton';
@@ -237,9 +237,8 @@ class HeaderBackTo extends Component {
     const cordovaOverrides = isWebApp() ? {} : { marginLeft: 0, padding: '4px 0 0 9px', right: 'unset' };
     if (isIOSAppOnMac() || isIPad()) {
       cordovaOverrides.height = shareButtonInHeader ? '87px !important' : '50px';
-      // dumpObjProps('cordovaOverrides', cordovaOverrides);
     }
-    dumpObjProps('cordovaOverrides', cordovaOverrides);
+    // dumpObjProps('cordovaOverrides', cordovaOverrides);
 
     return (
       <AppBar id="headerBackToAppBar" className={headerClassName} color="default" style={cordovaOverrides}>

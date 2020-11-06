@@ -1,15 +1,21 @@
 import CordovaPageConstants from '../constants/CordovaPageConstants';
 import { cordovaOffsetLog } from './logging';
-import { pageEnumeration } from '../utilsApi/cordovaUtilsPageEnumeration';
-import { getAndroidSize, hasIPhoneNotch,
+import { pageEnumeration } from './cordovaUtilsPageEnumeration';
+import {
+  getAndroidSize, hasIPhoneNotch,
   isAndroid, isAndroidSimulator, isIOSAppOnMac, isCordova, isIOS, isIPad,
-  isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator,
+  isIPhone4in, isIPhone4p7in, isIPhone5p5in, isIPhone5p8in, isIPhone6p1in, isIPhone6p5in, isSimulator, isWebApp,
 } from './cordovaUtils';
 
 
 // <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
 // This determines where the top of the "All", "Choices" and "Decided" tabs should start.
 export function cordovaBallotFilterTopMargin () {
+  if (isWebApp()) {
+    return undefined;
+  }
+
+  const page = pageEnumeration();
   if (isIOS()) {
     if (isIPhone4p7in()) {
       return '65px';
@@ -37,11 +43,11 @@ export function cordovaBallotFilterTopMargin () {
       }
       return '89px';
     } else if (hasIPhoneNotch()) {
-      if (pageEnumeration() === CordovaPageConstants.candidateWild) {
+      if (page === CordovaPageConstants.candidateWild) {
         return '65px';
       }
     } else if (isIOSAppOnMac()) {
-      if (pageEnumeration() === CordovaPageConstants.news) {
+      if (page === CordovaPageConstants.news) {
         return '69px';
       // } else if (pageEnumeration === CordovaPageConstants.friends) {
       //   return '0px'; // test hack
@@ -78,8 +84,16 @@ export function cordovaBallotFilterTopMargin () {
     } else if (sizeString === '--xl') {
       if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-10px';
+      } else if (page === CordovaPageConstants.ballotSmHdrWild ||  // Not signed in
+                 page === CordovaPageConstants.ballotLgHdrWild) {  // Signed in
+        return '0';
       }
       return '52px';
+    } else if (sizeString === '--fold') {
+      if (page === 'news') {
+        return '52px';
+      }
+      return '0px';
     }
   }
   return undefined;
@@ -115,6 +129,9 @@ export function cordovaContainerMainOverride () {
     }
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
+    if (sizeString === '--fold') {
+      return '0px';
+    }
     if (sizeString === '--xl') {
       return '0px';
     }
@@ -148,6 +165,7 @@ export function cordovaFooterHeight () {
 // This pushes down the voter guide organization Twitter banner - parallel to voterGuideWild
 export function cordovaVoterGuideTopPadding () {
   if (isIOS()) {
+    const page = pageEnumeration();
     if (isIPhone5p5in()) {
       return '11px';
     } else if (isIPhone4p7in()) {
@@ -155,10 +173,10 @@ export function cordovaVoterGuideTopPadding () {
     } else if (hasIPhoneNotch()) {
       return '28px';
     } else if (isIPad()) {
-      switch (pageEnumeration()) {
+      switch (page) {
         case CordovaPageConstants.news:             return '19px';
         case CordovaPageConstants.voterGuideWild:   return '26px';
-        default:                     return '0px';
+        default:                                    return '0px';
       }
     }
   } else if (isAndroid()) {
@@ -348,13 +366,13 @@ export function cordovaStickyHeaderPaddingTop () {
       cordovaOffsetLog(`cordovaStickyHeaderPaddingTop sizeString: >${sizeString}<`);
     }
     if (sizeString === '--sm') {
-      return '42px';
+      return '48px';
     } else if (sizeString === '--md') {
-      return '40px';
+      return '49px';
     } else if (sizeString === '--lg') {
-      return '38px';
+      return '48px';
     } else if (sizeString === '--xl') {
-      return '31px';
+      return '48px';
     }
   }
   return '';
@@ -391,7 +409,7 @@ export function shareBottomOffset (pinToBottom) {
       return pinToBottom ? '0' : '66px';
     }
   } else if (isAndroid()) {
-    return pinToBottom ? '10px' : '57px';
+    return pinToBottom ? '0px' : '57px';
   }
 
   // Default for all other devices, including desktop and mobile browsers

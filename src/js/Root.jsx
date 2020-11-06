@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { IndexRedirect, Route } from 'react-router'; // Route,
 import cookies from './utils/cookies';
 import componentLoader from './utils/componentLoader';
-import { isWebApp } from './utils/cordovaUtils';
+import { isWebApp, polyfillFixes } from './utils/cordovaUtils';
 
 // Temp until we can find alternative
 const OrganizationVoterGuide = React.lazy(() => import('./routes/VoterGuide/OrganizationVoterGuide'));
@@ -11,6 +11,8 @@ const TwitterHandleLanding = React.lazy(() => import('./routes/TwitterHandleLand
 const WelcomeForVoters = React.lazy(() => import('./routes/WelcomeForVoters'));
 const WelcomeForCampaigns = React.lazy(() => import('./routes/WelcomeForCampaigns'));
 const WelcomeForOrganizations = React.lazy(() => import('./routes/WelcomeForOrganizations'));
+
+polyfillFixes('Root.jsx');
 
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
 // const ballotHasBeenVisited = cookies.getItem('ballot_has_been_visited');

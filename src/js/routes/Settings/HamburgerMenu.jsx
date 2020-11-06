@@ -295,6 +295,19 @@ export default class HamburgerMenu extends Component {
               </td>
             </tr>
             )}
+            {isCordova() && (
+            <tr className="hamburger-terms__tr-terms">
+              <td className="hamburger-terms__td" colSpan={3}>
+                <div>
+                  <span className="hamburger-terms__text" style={{ color: 'black', opacity: '0.7' }}>
+                    Version:&nbsp;&nbsp;
+                    {window.weVoteAppVersion}
+                  </span>
+                  <DeviceDialog visibilityOffFunction={this.deviceTableVisibilityOff} show={this.state.showDeviceDialog} />
+                </div>
+              </td>
+            </tr>
+            )}
           </tbody>
         </Table>
       </div>

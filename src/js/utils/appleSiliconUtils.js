@@ -1,4 +1,5 @@
 // Misc utilities to help with Apple Silicon debugging, where the Safari Web Inspector is not available.
+import cookies from './cookies';
 
 export function dumpCssFromId (id) {
   const el = document.getElementById(id);
@@ -9,6 +10,12 @@ export function dumpCssFromId (id) {
       console.log(`style dump for ${id} - ${index}: ${value}`);
     }
   }, {});
+}
+
+export function dumpCookies () {
+  return cookies.keys().forEach((key) => {
+    console.log(`cookies dump for ${key} - ${cookies.getItem(key)}`);
+  });
 }
 
 export function dumpObjProps (name, obj) {

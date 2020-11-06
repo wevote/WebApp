@@ -1,4 +1,3 @@
-import React from 'react';
 import { isIOSAppOnMac, isCordova, isWebApp } from './cordovaUtils';
 import { startsWith, stringContains } from './textFormat';
 
@@ -244,26 +243,6 @@ export function getApplicationViewBooleans (pathname) {
     voterGuideCreatorMode,
     voterGuideMode,
   };
-}
-
-// November 2, 2018:  Polyfill for "Object.entries"
-//   react-bootstrap 1.0 (bootstrap 4) relies on Object.entries in splitComponentProps.js
-//   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries#Polyfill
-export function polyfillObjectEntries () {
-  if (!Object.entries) {
-    Object.entries = function poly (obj) {
-      const localProps = Object.keys(obj);
-      let i = localProps.length;
-      const resArray = new Array(i); // preallocate the Array
-      while (i--) resArray[i] = [localProps[i], obj[localProps[i]]];
-      return resArray;
-    };
-  }
-
-  // And another for ObjectAssign
-  if (!Object.assign) {
-    Object.assign = React.__spread;
-  }
 }
 
 // Choose to show/hide zendesk help widget based on route

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
-import { polyfillObjectEntries } from './utils/applicationUtils';
 import { getToastClass, isCordova, isWebApp } from './utils/cordovaUtils';
 // import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding } from './utils/cordovaOffsets';
 // import FooterBar from './components/Navigation/FooterBar';
@@ -25,7 +24,7 @@ class ApplicationForReady extends Component {
     hostname = hostname || '';
     // AppActions.siteConfigurationRetrieve(hostname);
     console.log('ApplicationForReady ---------------   componentDidMount () hostname: ', hostname);
-    polyfillObjectEntries();
+    // polyfillFixes();
     // this.initializeFacebookSdkForJavascript();
     // if (isCordova()) {
     //   initializationForCordova();
