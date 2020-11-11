@@ -13,6 +13,7 @@ import SettingsWidgetAccountType from './SettingsWidgetAccountType';
 import SettingsWidgetFirstLastName from './SettingsWidgetFirstLastName';
 import SettingsWidgetOrganizationDescription from './SettingsWidgetOrganizationDescription';
 import SettingsWidgetOrganizationWebsite from './SettingsWidgetOrganizationWebsite';
+import SettingsProfilePicture from './SettingsProfilePicture';
 import VoterStore from '../../stores/VoterStore';
 
 
@@ -72,6 +73,8 @@ class SettingsProfile extends Component {
                 closeEditFormOnChoice
                 showEditToggleOption
               />
+              <SectionTitle>Profile Picture</SectionTitle>
+              <SettingsProfilePicture />
             </div>
           </div>
         </div>
@@ -95,6 +98,14 @@ const styles = () => ({
 });
 
 const IntroductionWrapper = styled.div`
+`;
+
+const SectionTitle = styled.h2`
+  width: fit-content;
+  font-weight: bold;
+  font-size: 22px;
+  margin-bottom: 16px;
+  margin-top: 32px;
 `;
 
 export default withStyles(styles)(SettingsProfile);

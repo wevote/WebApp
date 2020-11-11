@@ -218,6 +218,10 @@ class AppStore extends ReduceStore {
     return this.getState().showValuesIntroModal;
   }
 
+  showImageUploadModal () {
+    return this.getState().showImageUploadModal;
+  }
+
   siteConfigurationHasBeenRetrieved () {
     return this.getState().siteConfigurationHasBeenRetrieved;
   }
@@ -303,6 +307,8 @@ class AppStore extends ReduceStore {
         return { ...state, showOrganizationModal: action.payload };
       case 'showValuesIntroModal':
         return { ...state, showValuesIntroModal: action.payload };
+      case 'showImageUploadModal':
+        return { ...state, showImageUploadModal: action.payload };
       case 'siteConfigurationRetrieve':
         ({
           status: apiStatus,
