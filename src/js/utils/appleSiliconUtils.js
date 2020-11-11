@@ -2,14 +2,19 @@
 import cookies from './cookies';
 
 export function dumpCssFromId (id) {
-  const el = document.getElementById(id);
-  const styles = window.getComputedStyle(el);
-  return Object.keys(styles).forEach((index) => {
-    const value = styles.getPropertyValue(index);
-    if (value !== null  && value.length > 0) {
-      console.log(`style dump for ${id} - ${index}: ${value}`);
-    }
-  }, {});
+  try {
+    const el = document.getElementById(id);
+    const styles = window.getComputedStyle(el);
+    return Object.keys(styles).forEach((index) => {
+      const value = styles.getPropertyValue(index);
+      if (value !== null && value.length > 0) {
+        console.log(`style dump for ${id} - ${index}: ${value}`);
+      }
+    }, {});
+  } catch (error) {
+    console.log('Error in dumpCssFromId for id: "', id, '" - ', error);
+    return {};
+  }
 }
 
 export function dumpCookies () {

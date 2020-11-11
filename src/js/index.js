@@ -16,15 +16,18 @@ String.prototype.numberOfNeedlesFoundInString = numberOfNeedlesFoundInString; //
 
 function startApp () {
   // http://harrymoreno.com/2015/07/14/Deploying-a-React-App-to-Cordova.html
+  // console.log('Cordova startApp entry');
   // eslint-disable-next-line no-undef
   if (window.device && window.device.platform === 'iOS') {
     const { device, Keyboard, Keyboard: { shrinkView, disableScrollingInShrinkView }, screen } = window;
     // eslint-disable-next-line no-undef
     console.log('cordova startup device: ', device);
     console.log('cordova startup window.screen: ', screen);
+    // dumpObjProps(window.device);
 
     // eslint-disable-next-line global-require
     window.$ = require('jquery');
+    // console.log('cordova startup after require(\'jquery\')');
 
     // prevent keyboard scrolling our view, https://www.npmjs.com/package/cordova-plugin-keyboard
     if (Keyboard) {
@@ -78,6 +81,7 @@ if (localIsCordova()) {
     const { plugins: { screensize } } = window;
     screensize.get((result) => {
       console.log('screensize.get: ', result);
+      // dumpObjProps('window.device', window.device);
       window.pbakondyScreenSize = result;
       if (isIPad()) {
         document.querySelector('body').style.height = getCordovaScreenHeight();

@@ -10,6 +10,7 @@ import ballot100Percent from '../../../img/global/svg-icons/ready/ballot-100-per
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 import { ButtonLeft, ButtonText, Icon, PercentComplete, ReadyCard, StyledButton, StyledCheckbox, StyledCheckboxCompleted, SubTitle, TitleRowWrapper } from './ReadyTaskStyles';
 import ShowMoreButtons from '../ReadyNoApi/ShowMoreButtons';
 import SupportStore from '../../stores/SupportStore';
@@ -367,6 +368,7 @@ class ReadyTaskBallot extends React.Component {
   }
 
   render () {
+    renderLog('ReadyTaskBallot');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
       allCandidatesButtonNeeded, allCandidatesAllCompleted, allCandidatesNumberCompleted, allCandidatesShowButton, allCandidatesTotalNumber,

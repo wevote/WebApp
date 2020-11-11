@@ -5,6 +5,7 @@ import { ArrowForward, CheckCircle } from '@material-ui/icons';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import register0Percent from '../../../img/global/svg-icons/ready/register-0-percent.svg';
 import register100Percent from '../../../img/global/svg-icons/ready/register-100-percent.svg';
+import { renderLog } from '../../utils/logging';
 import {
   ButtonLeft,
   ButtonText,
@@ -43,6 +44,7 @@ class ReadyTaskFriends extends React.Component {
   }
 
   render () {
+    renderLog('ReadyTaskFriends');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
     const {
       numberOfFriendsReady, numberOfFriendsRegistered, numberOfFriendsWithBallot,

@@ -3,6 +3,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import BallotStore from '../../stores/BallotStore';
+import { renderLog } from '../../utils/logging';
 import { formatDateToMonthDayYear } from '../../utils/textFormat';
 
 class ElectionCountdown extends React.Component {
@@ -114,6 +115,7 @@ class ElectionCountdown extends React.Component {
   }
 
   render () {
+    renderLog('ElectionCountdown');  // Set LOG_RENDER_EVENTS to log all renders
     const { daysOnlyMode } = this.props;
     const { days, daysMobile, electionIsToday, electionInPast, hours, minutes, seconds, electionDate } = this.state;
     const timeStillLoading = !(days || hours || minutes || seconds);

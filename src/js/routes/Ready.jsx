@@ -26,6 +26,7 @@ import ReadyTaskBallot from '../components/Ready/ReadyTaskBallot';
 import ReadyTaskFriends from '../components/Ready/ReadyTaskFriends';
 import ReadyTaskPlan from '../components/Ready/ReadyTaskPlan';
 import ReadyTaskRegister from '../components/Ready/ReadyTaskRegister';
+import ReadyInformationDisclaimer from '../components/Ready/ReadyInformationDisclaimer';
 import { renderLog } from '../utils/logging';
 import ShareButtonDesktopTablet from '../components/Share/ShareButtonDesktopTablet';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
@@ -250,6 +251,7 @@ class Ready extends Component {
               <ReadyTaskPlan
                 arrowsOn
               />
+              <ReadyInformationDisclaimer />
               {voterIsSignedIn && (
                 <FirstAndLastNameRequiredAlert />
               )}

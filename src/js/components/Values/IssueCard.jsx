@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 import LoadingWheel from '../LoadingWheel';
+import { isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import ReadMore from '../Widgets/ReadMore';
 import { convertNameToSlug } from '../../utils/textFormat';
@@ -136,6 +137,7 @@ class IssueCard extends Component {
         key={`issue-card-${issueWeVoteId}`}
         className={this.props.condensed ? "card-child u-full-height" : "card-child u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"}
         condensed={!!this.props.condensed}
+        style={isCordova() ? { margin: 'unset' } : {}}   // stops horizontal scrolling
       >
         <Flex condensed={!!this.props.condensed} followToggleOnItsOwnLine={!!followToggleOnItsOwnLine}>
           <FlexNameAndIcon condensed={!!this.props.condensed}>

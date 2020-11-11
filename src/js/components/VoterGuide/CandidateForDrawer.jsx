@@ -8,6 +8,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppStore from '../../stores/AppStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
+import { isWebApp } from '../../utils/cordovaUtils';
 import CandidateItem from '../Ballot/CandidateItem';
 import ShareButtonDesktopTablet from '../Share/ShareButtonDesktopTablet';
 import CandidateStickyHeader from '../Ballot/CandidateStickyHeader';
@@ -250,7 +251,8 @@ class CandidateForDrawer extends Component {
             <CandidateStickyHeader candidate={candidate} />
           )
         }
-        <div className="card">
+        {/* The following style adjustment prevents horizontal scrolling from the .card style */}
+        <div className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
           <TwoColumns>
             <LeftColumnWrapper>
               <CandidateItem
@@ -278,7 +280,8 @@ class CandidateForDrawer extends Component {
           </TwoColumns>
         </div>
         { !!(allCachedPositionsForThisCandidate.length) && (
-          <section className="card">
+          // The following style adjustment prevents horizontal scrolling from the .card style
+          <section className="card" style={isWebApp() ? {} : { marginRight: 0, marginLeft: 0 }}>
             <DelayedLoad showLoadingText waitBeforeShow={500}>
               <PositionList
                 incomingPositionList={allCachedPositionsForThisCandidate}

@@ -1,5 +1,4 @@
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
-import { dumpScreenAndDeviceFields } from './utils/appleSiliconUtils';
 import { getProcessorArchitecture, isIOSAppOnMac, isCordova, isIOS,
   prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './utils/cordovaUtils';
 import VoterActions from './actions/VoterActions';
@@ -29,19 +28,22 @@ export function initializationForCordova () { // eslint-disable-line
 
   getProcessorArchitecture();
 
-  const { cordova: { getAppVersion: getVersionNumber } } = window;
-  getVersionNumber().then((version) => {
-    window.weVoteAppVersion = version;
-    return true;
-  });
-
-
-  if (isIOSAppOnMac()) {
-    dumpScreenAndDeviceFields();
+  try {
+    const { cordova: { getAppVersion: getVersionNumber } } = window;
+    getVersionNumber().then((version) => {
+      window.weVoteAppVersion = version;
+      return true;
+    });
+  } catch (err) {
+    console.log('ERROR unable to determine version number');
   }
 
+  // if (isIOSAppOnMac()) {
+  //   dumpScreenAndDeviceFields();
+  // }
+
   // Special keyboard handling for iOS
-  if (isIOS()) {
+  if (isIOS() && !isIOSAppOnMac) {
     // Unfortunately this event only works on iOS, but fortunately it is most needed on iOS
     window.addEventListener('keyboardWillShow', localPrepareForCordovaKeyboard);
     window.addEventListener('keyboardDidHide', localRestoreStylesAfterCordovaKeyboard);

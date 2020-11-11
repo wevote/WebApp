@@ -31,6 +31,7 @@ class ShareButtonDesktopTablet extends Component {
     this.setState({
       chosenPreventSharingOpinions,
     });
+    // dumpObjProps('cookies in ShareButtonDesktopTablet: ', cookies.keys);
   }
 
   componentWillUnmount () {
