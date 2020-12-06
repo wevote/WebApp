@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, OverlayTrigger } from 'react-bootstrap';
 import Popover from 'react-bootstrap/Popover';
-import { isWebApp } from '../../utils/cordovaUtils';
+import { isAndroid, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 class ReadyInformationDisclaimer extends React.Component {
@@ -14,14 +15,16 @@ class ReadyInformationDisclaimer extends React.Component {
       boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12)',
       display: 'flex',
       flexDirection: 'column',
-      margin: '16px -16px 16px -16px',
+      // margin: '16px -16px 16px -16px',
       minWidth: 0,
       padding: '18px 16px 18px 16px',
       position: 'relative',
       wordWrap: 'break-word',
     };
 
-    if (isWebApp()) {
+    const { top, bottom } = this.props;
+
+    if (isWebApp() || (isAndroid() && bottom)  || (isIOS() && top)) {
       return null;
     }
     return (
@@ -75,5 +78,9 @@ class ReadyInformationDisclaimer extends React.Component {
     );
   }
 }
+ReadyInformationDisclaimer.propTypes = {
+  bottom: PropTypes.bool,
+  top: PropTypes.bool,
+};
 
 export default ReadyInformationDisclaimer;
