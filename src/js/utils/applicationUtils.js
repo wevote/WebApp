@@ -245,10 +245,35 @@ export function getApplicationViewBooleans (pathname) {
   };
 }
 
+export function hideZenDeskHelpVisibility () {
+  // console.log('hideZenDeskHelpVisibility');
+  if (isWebApp()) {
+    try {
+      const { zE } = global;
+      zE('webWidget', 'show');
+    } catch (err) {
+      console.log('hideZenDeskHelpVisibility global.zE failure hide, ', err);
+    }
+  }
+}
+
+export function showZenDeskHelpVisibility () {
+  // console.log('showZenDeskHelpVisibility');
+  if (isWebApp()) {
+    try {
+      const { zE } = global;
+      zE('webWidget', 'show');
+    } catch (err) {
+      console.log('hideZenDeskHelpVisibility global.zE failure show, ', err);
+    }
+  }
+}
+
 // Choose to show/hide zendesk help widget based on route
 export function setZenDeskHelpVisibility (pathname) {
   // console.log('setZenDeskHelpVisibility true, pathname:', pathname);
-  if (isWebApp()) {
+  const { zE } = global;   // takes 16 seconds after load to be initialized, see index.html
+  if (isWebApp() && zE) {
     const { showFooterBar } = getApplicationViewBooleans(pathname);
     // console.log('setZenDeskHelpVisibility true, pathname:', pathname, ', showFooterBar:', showFooterBar);
     if ((showFooterBar ||
@@ -258,41 +283,11 @@ export function setZenDeskHelpVisibility (pathname) {
       !['/wevoteintro', '/how', '/candidate-for-extension'].some(
         (match) => startsWith(match, pathname.toLowerCase()),
       )
-    ) { // '/values'
-      try {
-        global.zE('webWidget', 'show');
-      } catch {
-        console.log('setZenDeskHelpVisibility global.zE failure show');
-      }
-      // eslint-disable-next-line no-undef
+    ) {
+      showZenDeskHelpVisibility();
     } else {
-      try {
-        global.zE('webWidget', 'hide');
-      } catch {
-        console.log('setZenDeskHelpVisibility global.zE failure hide');
-      }
+      hideZenDeskHelpVisibility();
     }
   }
 }
 
-export function hideZenDeskHelpVisibility () {
-  // console.log('hideZenDeskHelpVisibility');
-  if (isWebApp()) {
-    try {
-      global.zE('webWidget', 'hide');
-    } catch {
-      console.log('hideZenDeskHelpVisibility global.zE failure hide');
-    }
-  }
-}
-
-export function showZenDeskHelpVisibility () {
-  // console.log('showZenDeskHelpVisibility');
-  if (isWebApp()) {
-    try {
-      global.zE('webWidget', 'show');
-    } catch {
-      console.log('hideZenDeskHelpVisibility global.zE failure show');
-    }
-  }
-}

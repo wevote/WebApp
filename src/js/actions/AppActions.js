@@ -100,7 +100,7 @@ export default {
   },
 
   setShowImageUploadModal (show) {
-    console.log("Setting image upload modal to open!");
+    console.log('Setting image upload modal to open!');
     Dispatcher.dispatch({ type: 'showImageUploadModal', payload: show });
   },
 
