@@ -68,7 +68,8 @@ class Ready extends Component {
     ActivityActions.activityNoticeListRetrieve();
     FriendActions.suggestedFriendList();
 
-    const modalToOpen = this.props.params.modal_to_show || '';
+    let { modalToOpen } = this.props.params;
+    modalToOpen = modalToOpen || '';
     // console.log('componentDidMount modalToOpen:', modalToOpen);
     if (modalToOpen === 'share') {
       this.modalOpenTimer = setTimeout(() => {
@@ -203,6 +204,7 @@ class Ready extends Component {
                   </div>
                 </Card>
               )}
+              <ReadyInformationDisclaimer top />
               <ReadyTaskBallot
                 arrowsOn
               />
@@ -251,7 +253,7 @@ class Ready extends Component {
               <ReadyTaskPlan
                 arrowsOn
               />
-              <ReadyInformationDisclaimer />
+              <ReadyInformationDisclaimer bottom />
               {voterIsSignedIn && (
                 <FirstAndLastNameRequiredAlert />
               )}

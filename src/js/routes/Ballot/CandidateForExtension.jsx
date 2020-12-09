@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Box, Button, Tabs, Tab } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import cookies from '../../utils/cookies';
 import { renderLog } from '../../utils/logging';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
@@ -34,10 +35,24 @@ class CandidateForExtension extends Component {
 
   componentDidMount () {
     // console.log('Candidate componentDidMount');
+
+    // Don't even load Stripe, Google Analytics, Google Maps, FontAwesome and Zen, they make startup very slow and are not needed for the Chrome Extension
+    window.leanLoadForChromeExtension = true;
+
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.voterGuidePossibilityStoreListener = VoterGuidePossibilityStore.addListener(this.onVoterGuidePossibilityStoreChange.bind(this));
-    const { candidate_we_vote_id: candidateWeVoteId, endorsement_page_url: endorsementPageUrl, organization_we_vote_id: organizationWeVoteId } = this.props.location.query;
+    const { organization_we_vote_id: organizationWeVoteId } = this.props.location.query;
+    let { candidate_we_vote_id: candidateWeVoteId, endorsement_page_url: endorsementPageUrl } = this.props.location.query;
     // console.log('candidateWeVoteId:', candidateWeVoteId);
+
+    if (candidateWeVoteId) {
+      const expires = 300;  // seconds
+      cookies.setItem('candidateWeVoteId', candidateWeVoteId, expires, '/');
+      cookies.setItem('endorsementPageUrl', endorsementPageUrl, expires, '/');
+    } else {
+      candidateWeVoteId = cookies.getItem('candidateWeVoteId');
+      endorsementPageUrl = cookies.getItem('endorsementPageUrl');
+    }
 
     VoterGuidePossibilityActions.voterGuidePossibilityRetrieve(endorsementPageUrl);
 
@@ -139,12 +154,14 @@ class CandidateForExtension extends Component {
                 inModal
                 candidateWeVoteId={candidateWeVoteId}
                 organizationWeVoteId={organizationWeVoteId}
-                hideShowMoreFooter
                 expandIssuesByDefault
+                forMoreInformationSeeBallotpediaOff
+                hideCandidateUrl
+                hideShowMoreFooter
                 showLargeImage
-                showTopCommentByBallotItem
                 showOfficeName
                 showPositionStatementActionBar
+                showTopCommentByBallotItem
               />
               <Buttons>
                 <OneButton>
@@ -281,10 +298,16 @@ const styles = (theme) => ({
   },
 });
 
+// On 12/8/20, Reverted the change from 4/24/20, since it was incomplete
+// const Wrapper = styled.div`
+//   background: white;
+//   overflow-x: hidden !important;
+//   overflow-y
+// `;
+
 const Wrapper = styled.div`
+  height: 100vh;
   background: white;
-  overflow-x: hidden !important;
-  overflow-y
 `;
 
 const Buttons = styled.div`
